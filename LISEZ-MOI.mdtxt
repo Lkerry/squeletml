@@ -1,0 +1,9 @@
+# Squeletml
+
+## Variables possibles avant l'inclusion de premier.inc.php
+
+- `$title`: contenu de la balise `title`
+- `$description`: contenu de la métabalise `description`
+- `$keywords`: contenu de la métabalise `keywords`
+- `$langue`: permet de préciser la langue pour la page courante, donc écrase la valeur par défaut pour le site
+

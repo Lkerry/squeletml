@@ -1,0 +1,93 @@
+/* Structuration */
+
+#page {
+	max-width: 900px;
+	margin: 5px auto;
+}
+
+#ancres {
+	position: absolute;
+	left: -5000px;
+}
+
+#contenu {
+	float: right;
+	width: 78%;
+}
+
+#interieurContenu {
+	padding: 10px;
+}
+
+#menu {
+	width: 20%;
+}
+
+#basDePage {
+	clear: both;
+}
+
+/* Général */
+
+#contenu h1, body.accueil #interieurContenu> h2:first-child {
+	margin-top: 0;
+	padding-top: 0;
+}
+
+.erreur, .succes {
+	border-width: 2px;
+	border-style: solid;
+	font-weight: bold;
+	font-size: 1.1em;
+	padding: 10px;
+}
+
+.erreur {
+	border-color: red;
+}
+
+.succes {
+	border-color: green;
+}
+
+/* Page contact.php */
+
+#formContact label {
+	font-weight: bold;
+}
+
+#formContact input.champInfo {
+	width: 35%;
+}
+
+#formContact textarea {
+	width: 70%;
+}
+
+/* Bloc message pour IE6 */
+
+div#messageIE6 {
+	border: 3px solid #090;
+	margin: 0;
+	padding: 0;
+	background: #cfc;
+	color: #000;
+}
+
+div#messageIE6 p {
+	margin: 10px;
+}
+
+div#messageIE6 p img, div#messageIE6 p span {
+	vertical-align: middle;
+	display: inline-block; 
+}
+
+div#messageIE6 p img {
+	border: none;
+}
+
+div#messageIE6 p a {
+	color: #006;
+}
+
