@@ -1,13 +1,12 @@
 <?php
-$title = "Me contacter";
-$description = "Formulaire de contact";
-include 'inc/premier.inc.php'; // Le cas échéant, changer le chemin d'inclusion
+include 'init.inc.php';
+if (file_exists($racine . '/site/inc/page.contact.inc.php'))
+{
+	include $racine . '/site/inc/page.contact.inc.php';
+}
+else
+{
+	include $racine . '/inc/page.contact.inc.php';
+}
+
 ?>
-
-<h1>Me contacter</h1>
-
-<p>Veuillez remplir le formulaire suivant:</p>
-
-<?php include $racine . '/inc/contact.inc.php'; ?>
-
-<?php include $racine . '/inc/dernier.inc.php'; ?>

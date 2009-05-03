@@ -1,6 +1,18 @@
 <?php
-include 'config.inc.php';
+if (!INIT_INC_PHP)
+{
+	include dirname(__FILE__) . '/../init.inc.php';
+}
+include $racine . '/inc/config.inc.php';
 include $racine . '/inc/fonctions.inc.php';
+if (file_exists($racine . '/site/inc/config.inc.php'))
+{
+	include $racine . '/site/inc/config.inc.php';
+}
+if (file_exists($racine . '/site/inc/fonctions.inc.php'))
+{
+	include $racine . '/site/inc/fonctions.inc.php';
+}
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo langue($lang, $langue); ?>" lang="<?php echo langue($lang, $langue); ?>">
@@ -9,6 +21,7 @@ include $racine . '/inc/fonctions.inc.php';
 <meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
 <meta name="description" content="<?php echo $description; ?>" />
 <meta name="keywords" content="<?php echo construitMotsCles($keywords, $description); ?>" />
+<meta name="robots" content="<?php echo robots($metaRobots, $robots); ?>" />
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript); ?>
 </head>
 <body class="<?php echo construitClass(estAccueil()); ?>">
@@ -27,16 +40,13 @@ if ($messageIE6)
 	</div><!-- /titre -->
 
 	<div id="sousTitre">
-		<?php include $racine . '/inc/html.sous-titre.inc.php'; ?>
+		<?php inclutSousTitre($racine); ?>
 	</div><!-- /sousTitre -->
 </div><!-- /entete -->
 
 <div id="ancres">
-	<ul>
-		<li><a href="#menu">Aller au menu</a></li>
-		<li><a href="#contenu">Aller au contenu</a></li>
-	</ul>
-</div>
+	<?php inclutAncres($racine); ?>
+</div><!-- /ancres -->
 
 <?php if (!$menuSousLeContenu): ?>
 	<?php afficheMenu($racine, $accueil); ?>

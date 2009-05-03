@@ -1,13 +1,12 @@
 <?php
-$title = "Page introuvable";
-$description = "La page demandée n'existe pas.";
-include 'inc/premier.inc.php'; // Le cas échéant, changer le chemin d'inclusion
+include 'init.inc.php';
+if (file_exists($racine . '/site/inc/page.404.inc.php'))
+{
+	include $racine . '/site/inc/page.404.inc.php';
+}
+else
+{
+	include $racine . '/inc/page.404.inc.php';
+}
+
 ?>
-
-<h1>Page introuvable</h1>
-
-<p>La page demandée n'existe pas.</p>
-
-<p>Vous pouvez <?php echo construitLienVersAccueil($accueil, estAccueil(), "retourner à la page d'accueil"); ?>.</p>
-
-<?php include $racine . '/inc/dernier.inc.php'; ?>

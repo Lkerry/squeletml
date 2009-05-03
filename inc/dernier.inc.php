@@ -7,7 +7,7 @@
 
 <?php if ($basDePage): ?>
 	<div id="basDePage">
-		<?php include $racine . '/inc/html.bas-de-page.inc.php'; ?>
+		<?php inclutBasDePage($racine); ?>
 	</div><!-- /basDePage -->
 <?php endif; ?>
 

@@ -252,6 +252,14 @@ function construitClass($estAccueil)
 }
 
 /**
+Retourne le contenu de la métabalise robots.
+*/
+function robots($metaRobots, $robots)
+{
+	return if (!empty($robots)) ? $robots : $metaRobots;
+}
+
+/**
 Construit le message affiché à IE6. Les 4 paramètres sont relatifs à l'image de Firefox qui va être affichée dans le message.
 */
 function messageIE6($src, $alt, $width, $height)
@@ -270,7 +278,7 @@ MESSAGE;
 }
 
 /**
-Affiche le menu sur la sortie standard.
+Affiche le menu sur la sortie standard. Le menu inclus est celui personnalisé s'il existe dans `site/inc/`, sinon c'ets celui par défaut.
 
 @param racine chemin vers la racine du site
 @param accueil url vers l'accueil du site
@@ -279,8 +287,66 @@ Affiche le menu sur la sortie standard.
 function afficheMenu($racine, $accueil)
 {
 	echo '<div id="menu">' . "\n";
-	include $racine . '/inc/html.menu.inc.php';
+	if (file_exists($racine . '/site/inc/html.menu.inc.php'))
+	{
+		include $racine . '/inc/html.menu.inc.php';
+	}
+	else
+	{
+		include $racine . '/inc/html.menu.inc.php';
+	}
 	echo '</div><!-- /basDePage -->' . "\n";
+	
+	return;
+}
+
+/**
+Inclut le sous-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sous-titre par défaut.
+*/
+function inclutSousTitre($racine)
+{
+	if (file_exists(include $racine . '/site/inc/html.sous-titre.inc.php'))
+	{
+		include include $racine . '/site/inc/html.sous-titre.inc.php';
+	}
+	else
+	{
+		include $racine . '/inc/html.sous-titre.inc.php';
+	}
+	
+	return;
+}
+
+/**
+Inclut le fichier d'ancres personnalisé s'il existe dans `site/inc/`, sinon inclut les ancres par défaut.
+*/
+function inclutAncres($racine)
+{
+	if (file_exists($racine . '/site/inc/html.ancres.inc.php'))
+	{
+		include $racine . '/site/inc/html.ancres.inc.php';
+	}
+	else
+	{
+		include $racine . '/inc/html.ancres.inc.php';
+	}
+	
+	return;
+}
+
+/**
+Inclut le bas de page personnalisé s'il existe dans `site/inc/`, sinon inclut le base de page par défaut.
+*/
+function inclutBasDePage($racine)
+{
+	if (file_exists($racine . '/site/inc/html.bas-de-page.inc.php'))
+	{
+		include $racine . '/site/inc/html.bas-de-page.inc.php';
+	}
+	else
+	{
+		include $racine . '/inc/html.bas-de-page.inc.php';
+	}
 	
 	return;
 }

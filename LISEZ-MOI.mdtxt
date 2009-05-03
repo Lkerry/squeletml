@@ -1,9 +1,37 @@
 # Squeletml
 
-## Variables possibles avant l'inclusion de premier.inc.php
+## Introduction
+
+Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP, c'est-à-dire un site dont le coeur des pages est créé à la main en HTML et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Cependant, Squeletml a été pensé dans un but d'optimisation du référencement et de personnalisation aisée de chaque page. Ainsi, contrairement à ce qu'on voit souvent avec ce genre de construction de site, la balise title, les métabalises description et keywords, la langue de la page, etc. sont facilement personnalisables pour chaque page, et un fichier de configuration permet également de préciser des caractéristiques pour le site en entier.
+
+La mise à jour de Squeletml se veut la plus facile possible. Pour cette raison, les fichiers livrés par défaut sont modifiables en créant des fichiers de même nom dans le répertoire `site`. Le coeur de Squeletml peut donc être mis à jour sans écraser la configuration du site se trouvant dans le répertoire `site`.
+
+Quelques modules sont livrés par défaut avec Squeletml, comme un formulaire de contact.
+
+## Variables optionnelles avant l'inclusion de `premier.inc.php`
 
 - `$title`: contenu de la balise `title`
 - `$description`: contenu de la métabalise `description`
 - `$keywords`: contenu de la métabalise `keywords`
-- `$langue`: permet de préciser la langue pour la page courante, donc écrase la valeur par défaut pour le site
+- `$langue`: langue de la page courante
+- `$robots`: contenu de la métabalise `robots`
+
+## Licence de Squeletml
+
+Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
+Copyright © Jean-Philippe Fleury, 2009.
+
+Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
+modifier suivant les termes de la GNU Affero General Public License telle que
+publiée par la Free Software Foundation: soit la version 3 de cette
+licence, soit (à votre gré) toute version ultérieure.
+
+Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
+AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
+ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
+générale GNU Affero pour plus de détails.
+
+Vous devriez avoir reçu une copie de la Licence publique générale GNU Affero
+avec ce programme; si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>.
 

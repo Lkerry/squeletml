@@ -1,4 +1,4 @@
 Options -Indexes
 
-ErrorDocument 404 http://www.site.ext/404.php
+ErrorDocument 404 http://localhost/serveur_local/squeletml/404.php
 
