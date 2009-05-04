@@ -527,7 +527,7 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 			{
 				$fleche = 'droite';
 			}
-			$src = 'src="' . $squeletmlAccueil . '/images/galerie/fleche-' . $fleche . '.png"';
+			$src = 'src="' . $squeletmlAccueil . '/fichiers/png/fleche-' . $fleche . '.png"';
 		}
 
 		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')

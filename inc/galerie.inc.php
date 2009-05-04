@@ -14,12 +14,12 @@ phpGettext($racine, langue($langue));
 if (isset($idGalerie) && file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.inc.php'))
 {
 	include $racine . '/site/inc/galerie-' . $idGalerie . '.inc.php';
-	$racineImgSrc = $squeletmlAccueil . '/site/images/galeries/' . $idGalerie;
+	$racineImgSrc = $squeletmlAccueil . '/site/fichiers/galeries/' . $idGalerie;
 }
 else
 {
 	include $racine . '/inc/galerie-0.inc.php';
-	$racineImgSrc = $squeletmlAccueil . '/images/galeries/0';
+	$racineImgSrc = $squeletmlAccueil . '/fichiers/galeries/0';
 }
 
 // Une oeuvre en particulier est demandée
