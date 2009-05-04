@@ -5,37 +5,39 @@
 ##
 ########################################################################
 
-// Complément de la balise title pour chaque page
-$titleComplement = "Site de...";
+// Complément de la balise title selon la langue
+$baliseTitleComplement['fr'] = "Site de...";
+$baliseTitleComplement['en'] = "Site of...";
 
 // Fichiers inclus par la balise `link` et la balise `script` pour le javascript
 /*
 Syntaxe: $fichiersLinkScript[] = array ("URL" => "TYPE:fichier à inclure");
 Les types possibles sont: css, cssltIE7, cssIE7, javascript, favicon.
 Ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants. Exemples:
-$fichiersLinkScript[] = array ("$accueil/page.php" => "css:$accueil/css/style.css");
-$fichiersLinkScript[] = array ("$accueil/page.php*" => "css:$accueil/css/style.css");
+$fichiersLinkScript[] = array ("$squeletmlAccueil/page.php" => "css:$squeletmlAccueil/css/style.css");
+$fichiersLinkScript[] = array ("$squeletmlAccueil/page.php*" => "css:$squeletmlAccueil/css/style.css");
 */
-$fichiersLinkScript[] = array ("$accueil*" => "css:$accueil/css/squeletml.css");
+$fichiersLinkScript[] = array ("$squeletmlAccueil*" => "css:$squeletmlAccueil/css/squeletml.css");
 
 // Version des fichiers précédemment déclarés
 /* La version sera ajoutée à la suite du nom des fichiers en tant que variable GET.
 Pratique quand un fichier a été modifié et qu'on veut forcer son retéléchargement. */
 $versionFichiersLinkScript = 1;
 
-// Langue par défaut. Si la variable $langue existe (par exemple créée dans une page précise), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
-$lang = 'fr';
+// Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
+$langue[0] = 'fr';
 
 // Contenu par défaut de la métabalise robots
 /* Liste de valeurs possibles: index, follow, archive, noindex, nofollow, noarchive, noodp, noydir */
-$metaRobots = "index, follow, archive";
+$robots[0] = "index, follow, archive";
 
 // Encodage
 $charset = 'UTF-8';
 
 // Titre du site en en-tête
 /* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un h1 s'il s'agit de la page d'accueil, ou dans un p pour toutes les autres pages. */
-$titreSite = "Titre du site";
+$titreSite['fr'] = "Titre du site";
+$titreSite['en'] = "Website title";
 
 // Message pour IE6
 $messageIE6 = TRUE; // TRUE|FALSE

@@ -1,4 +1,7 @@
 <?php
+// Nécessaire à la traduction du module
+phpGettext($racine, langue($langue));
+
 $nom = '';
 $courriel = '';
 $message = '';
@@ -16,7 +19,7 @@ if (isset($_POST['envoyer']))
 
 	if (empty($nom))
 	{
-		$msg['erreur'][] = "Vous n'avez pas inscrit de nom.";
+		$msg['erreur'][] = T_("Vous n'avez pas inscrit de nom.");
 	}
 
 	if ($verifCourriel)
@@ -25,13 +28,13 @@ if (isset($_POST['envoyer']))
 
 		if (!preg_match($motifCourriel, $courriel))
 		{
-			$msg['erreur'][] = "L'adresse courriel que vous avez saisi ne semble pas avoir une forme valide. Veuillez vérifier.";
+			$msg['erreur'][] = T_("L'adresse courriel que vous avez saisi ne semble pas avoir une forme valide. Veuillez vérifier.");
 		}
 	}
 
 	if (empty($message))
 	{
-		$msg['erreur'][] = "Vous n'avez pas écrit de message.";
+		$msg['erreur'][] = T_("Vous n'avez pas écrit de message.");
 	}
 
 	if ($captchaCalcul)
@@ -40,7 +43,7 @@ if (isset($_POST['envoyer']))
 		$abSomme = $_POST['a'] + $_POST['d'];
 		if ($abSomme != $ab)
 		{
-			$msg['erreur'][] = "Veuillez répondre correctement à la question antipourriel.";
+			$msg['erreur'][] = T_("Veuillez répondre correctement à la question antipourriel.");
 		}
 	}
 
@@ -48,7 +51,7 @@ if (isset($_POST['envoyer']))
 	{
 		if (substr_count($message, 'http') > $captchaLiensNbre)
 		{
-			$msg['erreur'][] = "Votre message a une forme qui le fait malheureusement classer comme du pourriel. Veuillez le modifier.";
+			$msg['erreur'][] = T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel. Veuillez le modifier.");
 		}
 	}
 
@@ -66,7 +69,7 @@ if (isset($_POST['envoyer']))
 
 		$entete .= "MIME-Version: 1.0\n";
 		$entete .= "Content-Type: text/plain; charset=\"utf-8\"\n";
-		$corps = "Message de $nom <$courriel>\n\n" . str_replace("\r", '', $message) . "\n";
+		$corps = "Message de " . "$nom <$courriel>\n\n" . str_replace("\r", '', $message) . "\n";
 
 		// Si l'internaute veut une copie, on met son adresse comme destinataire, le courriel contact se trouvant déjà en Bcc
 		if ($copieCourriel)
@@ -76,7 +79,7 @@ if (isset($_POST['envoyer']))
 
 		if (mail($courrielContact, $courrielObjetId . "Message de $courriel", $corps, $entete))
 		{
-			$msg['envoi'][1] = "Votre message a bien été envoyé.";
+			$msg['envoi'][1] = T_("Votre message a bien été envoyé.");
 			unset($nom);
 			unset($courriel);
 			unset($message);
@@ -84,7 +87,7 @@ if (isset($_POST['envoyer']))
 		}
 		else
 		{
-			$msg['envoi'][0] = "ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.";
+			$msg['envoi'][0] = T_("ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.");
 		}
 	}
 
@@ -103,7 +106,7 @@ if (isset($_POST['envoyer']))
 	elseif (!empty($msg['erreur']))
 	{
 		echo '<div class="erreur">';
-		echo "<p>Le formulaire n'a pas été rempli correctement:</p>";
+		echo '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>';
 		echo '<ul>';
 		foreach ($msg['erreur'] as $erreur)
 		{
@@ -119,21 +122,21 @@ if (isset($_POST['envoyer']))
 <form id="formContact" method="post" action="<?echo $_SERVER['PHP_SELF']; ?>">
 <div id="divContact">
 
-<p><label>Votre nom:</label><br />
+<p><label><?php echo T_("Votre nom:"); ?></label><br />
 <input class="champInfo" name="nom" type="text" size="30" maxlength="120" value="<?php echo $nom; ?>" /></p>
 
-<p><label>Votre courriel:</label><br />
+<p><label><?php echo T_("Votre courriel:"); ?></label><br />
 <input class="champInfo" name="courriel" type="text" size="30" maxlength="120" value="<?php echo $courriel; ?>" /></p>
 
-<p><label>Votre message:</label><br />
+<p><label><?php echo T_("Votre message:"); ?></label><br />
 <textarea name="message" cols="30" rows="10" id="message"><?php echo $message; ?></textarea></p>
 
 <?php if ($captchaCalcul): ?>
 	<?php $captchaCalcul1 = rand($captchaCalculMin, $captchaCalculMax); ?>
 	<?php $captchaCalcul2 = rand($captchaCalculMin, $captchaCalculMax); ?>
 	<?php $captchaCalculBidon = rand($captchaCalculMin, $captchaCalculMax); ?>
-	<p><label>Antipourriel:</label><br />
-	<?php echo "Compléter: $captchaCalcul1 ajouté à $captchaCalcul2"; ?> vaut <input name="ab" type="text" size="2" maxlength="2" /></p>
+	<p><label><?php echo T_("Antipourriel:"); ?></label><br />
+	<?php printf(T_("Compléter: %1$s ajouté à %2$s vaut %3$s"), $captchaCalcul1, $captchaCalcul2, "<input name='ab' type='text' size='2' maxlength='2' />"); ?></p>
 	<input name="a" type="hidden" value="<?php echo $captchaCalcul1; ?>" />
 	<input name="b" type="hidden" value="<?php echo $captchaCalculBidon; ?>" />
 	<?php
@@ -164,10 +167,10 @@ if (isset($_POST['envoyer']))
 			checked="checked"
 		<?php endif; ?>
 	/>
-	Je souhaite recevoir une copie du message</p>
+	<?php echo T_("Je souhaite recevoir une copie du message"); ?></p>
 <?php endif; ?>
 
-<p><input name="envoyer" type="submit" value="Envoyer le message" /></p>
+<p><input name="envoyer" type="submit" value="<?php echo T_('Envoyer le message'); ?>" /></p>
 
 </div><!-- /divContact -->
 </form>

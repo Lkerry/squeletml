@@ -1,19 +1,85 @@
 <?php
+/* Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des modules */
+function phpGettext($racine, $langue)
+{
+	require_once $racine . '/inc/php-gettext/gettext.inc';
+	$locale = $langue;
+	T_setlocale(LC_MESSAGES, $locale);
+	$domain = 'squeletml';
+	T_bindtextdomain($domain, $racine . '/locale');
+	T_bind_textdomain_codeset($domain, 'UTF-8');
+	T_textdomain($domain);
+	return;
+}
+
+/**
+Retourne un tableau contenant les fichiers à inclure.
+*/
+function init($racine, $langue)
+{
+	$fichiers = array ();
+	
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	
+	$fichiers[] = $racine . '/inc/config.inc.php';
+
+	$fichiers[] = $racine . '/inc/constantes.inc.php';
+	
+	if (file_exists($racine . '/site/inc/config.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/config.inc.php';
+	}
+	
+	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
+	}
+	
+	if (file_exists($racine . '/site/inc/constantes.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/constantes.inc.php';
+	}
+	
+	return $fichiers;
+}
+
+/**
+Retourne le lien vers l'accueil de la langue de la page.
+*/
+function accueil($tableauAccueil, $tableauLangue)
+{
+	if (array_key_exists(langue($tableauLangue), $tableauAccueil))
+	{
+		return $tableauAccueil[langue($tableauLangue)];
+	}
+	else
+	{
+		return $tableauAccueil[langueParDefaut($tableauLangue)];
+	}
+}
 
 /**
 Retourne la langue de la page courante.
 */
-function langue($lang, $langue)
+function langue($langue)
 {
-	return isset($langue) ? $langue : $lang;
+	return isset($langue[1]) ? $langue[1] : $langue[0];
 }
 
 /**
-Si $keywords est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise keywords, et retourne cette liste, sinon retourne tout simplement $keywords.
+Retourne la langue par défaut du site
 */
-function construitMotsCles($keywords, $chaine)
+function langueParDefaut($langue)
 {
-	if (empty($keywords))
+	return $langue[0];
+}
+
+/**
+Si $motsCles est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise keywords, et retourne cette liste, sinon retourne tout simplement $motsCles.
+*/
+function construitMotsCles($motsCles, $chaine)
+{
+	if (empty($motsCles))
 	{
 		$chaine = trim($chaine);
 
@@ -74,7 +140,7 @@ function construitMotsCles($keywords, $chaine)
 	}
 	else
 	{
-		return $keywords;
+		return $motsCles;
 	}
 }
 
@@ -196,14 +262,12 @@ function construitNomSite($estAccueil, $contenu)
 /**
 Renvoie TRUE si la page est l'accueil, sinon renvoie FALSE.
 */
-function estAccueil()
+function estAccueil($accueil)
 {
-	global $accueil;
-
-	if ("http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . "/"
-		|| "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . "/index.php"
-		|| "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . "/index.html"
-		|| "http://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . "/index.htm")
+	if ('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/'
+		|| 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/index.php'
+		|| 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/index.html'
+		|| 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/index.htm')
 	{
 		return TRUE;
 	}
@@ -254,17 +318,20 @@ function construitClass($estAccueil)
 /**
 Retourne le contenu de la métabalise robots.
 */
-function robots($metaRobots, $robots)
+function robots($robots)
 {
-	return !empty($robots) ? $robots : $metaRobots;
+	return isset($robots[1]) ? $robots[1] : $robots[0];
 }
 
 /**
-Construit le message affiché à IE6. Les 4 paramètres sont relatifs à l'image de Firefox qui va être affichée dans le message.
+Construit le message affiché à IE6. Les 4 premiers paramètres sont relatifs à l'image de Firefox qui va être affichée dans le message. le dernier précise la langue du message.
 */
-function messageIE6($src, $alt, $width, $height)
+function messageIE6($src, $alt, $width, $height, $langue)
 {
-	return <<<MESSAGE
+	switch ($langue)
+	{
+		default:
+			return <<<MESSAGE
 <!--[if lt IE 7]>
 <div id="messageIE6">
 <p><strong>Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?</strong></p>
@@ -275,6 +342,38 @@ function messageIE6($src, $alt, $width, $height)
 </div>
 <![endif]-->
 MESSAGE;
+			break;
+	}
+}
+
+/**
+Retourne le complément de la balise `title`.
+*/
+function baliseTitleComplement($tableauBaliseTitleComplement, $tableauLangue)
+{
+	if (array_key_exists(langue($tableauLangue), $tableauBaliseTitleComplement))
+	{
+		return $tableauBaliseTitleComplement[langue($tableauLangue)];
+	}
+	else
+	{
+		return $tableauBaliseTitleComplement[langueParDefaut($tableauLangue)];
+	}
+}
+
+/**
+Retourne le titre du site.
+*/
+function titreSite($tableauTitreSite, $tableauLangue)
+{
+	if (array_key_exists(langue($tableauLangue), $tableauTitreSite))
+	{
+		return $tableauTitreSite[langue($tableauLangue)];
+	}
+	else
+	{
+		return $tableauTitreSite[langueParDefaut($tableauLangue)];
+	}
 }
 
 /**
@@ -282,73 +381,87 @@ Affiche le menu sur la sortie standard. Le menu inclus est celui personnalisé s
 
 @param racine chemin vers la racine du site
 @param accueil url vers l'accueil du site
-@return rien
+@return menu un tableau de 3 cellules:
+	1ère: code HTML de début
+	2e: fichier à inclure
+	3e: code HTML de fin
 */
-function afficheMenu($racine, $accueil)
+function construitMenu($racine, $tableauLangue)
 {
-	echo '<div id="menu">' . "\n";
-	if (file_exists($racine . '/site/inc/html.menu.inc.php'))
+	$menu = array ();
+	$menu[0] = '<div id="menu">' . "\n";
+	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
 	{
-		include $racine . '/site/inc/html.menu.inc.php';
+		$menu[1] = $racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
+	}
+	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
+	{
+		$menu[1] = $racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
 	}
 	else
 	{
-		include $racine . '/inc/html.menu.inc.php';
+		$menu[1] = $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.menu.inc.php';
 	}
-	echo '</div><!-- /basDePage -->' . "\n";
+	$menu[2] = '</div><!-- /basDePage -->' . "\n";
 	
-	return;
+	return $menu;
 }
 
 /**
 Inclut le sous-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sous-titre par défaut.
 */
-function inclutSousTitre($racine)
+function fichierSousTitre($racine, $tableauLangue)
 {
-	if (file_exists($racine . '/site/inc/html.sous-titre.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php'))
 	{
-		include $racine . '/site/inc/html.sous-titre.inc.php';
+		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php';
+	}
+	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php'))
+	{
+		return $racine . '/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php';
 	}
 	else
 	{
-		include $racine . '/inc/html.sous-titre.inc.php';
+		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.sous-titre.inc.php';
 	}
-	
-	return;
 }
 
 /**
 Inclut le fichier d'ancres personnalisé s'il existe dans `site/inc/`, sinon inclut les ancres par défaut.
 */
-function inclutAncres($racine)
+function fichierAncres($racine, $tableauLangue)
 {
-	if (file_exists($racine . '/site/inc/html.ancres.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.ancres.inc.php'))
 	{
-		include $racine . '/site/inc/html.ancres.inc.php';
+		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.ancres.inc.php';
+	}
+	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.ancres.inc.php'))
+	{
+		return $racine . '/inc/html.' . langue($tableauLangue) . '.ancres.inc.php';
 	}
 	else
 	{
-		include $racine . '/inc/html.ancres.inc.php';
+		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.ancres.inc.php';
 	}
-	
-	return;
 }
 
 /**
 Inclut le bas de page personnalisé s'il existe dans `site/inc/`, sinon inclut le base de page par défaut.
 */
-function inclutBasDePage($racine)
+function fichierBasDePage($racine, $tableauLangue)
 {
-	if (file_exists($racine . '/site/inc/html.bas-de-page.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php'))
 	{
-		include $racine . '/site/inc/html.bas-de-page.inc.php';
+		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php';
+	}
+	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php'))
+	{
+		return $racine . '/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php';
 	}
 	else
 	{
-		include $racine . '/inc/html.bas-de-page.inc.php';
+		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.bas-de-page.inc.php';
 	}
-	
-	return;
 }
 
 /**
@@ -362,7 +475,7 @@ function nomFichierGalerie()
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($accueil, $racineImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens)
+function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens)
 {
 	if ($taille == 'grande')
 	{
@@ -408,7 +521,7 @@ function afficheOeuvre($accueil, $racineImgSrc, $galerie, $galerieNavigation, $t
 			{
 				$fleche = 'droite';
 			}
-			$src = 'src="' . $accueil . '/images/galerie/fleche-' . $fleche . '.png"';
+			$src = 'src="' . $squeletmlAccueil . '/images/galerie/fleche-' . $fleche . '.png"';
 		}
 
 		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')

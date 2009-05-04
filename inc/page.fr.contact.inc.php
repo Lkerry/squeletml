@@ -1,5 +1,5 @@
 <?php
-$title = "Me contacter";
+$baliseTitle = "Me contacter";
 $description = "Formulaire de contact";
 include $racine . '/inc/premier.inc.php';
 ?>

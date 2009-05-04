@@ -1,13 +1,19 @@
 	</div><!-- /interieurContenu -->
 </div><!-- /contenu -->
 
-<?php if ($menuSousLeContenu): ?>
-	<?php afficheMenu($racine, $accueil); ?>
-<?php endif; ?>
+<?php
+if ($menuSousLeContenu)
+{
+	$menu = construitMenu($racine, $langue);
+	echo $menu[0];
+	include $menu[1];
+	echo $menu[2];
+}
+?>
 
 <?php if ($basDePage): ?>
 	<div id="basDePage">
-		<?php inclutBasDePage($racine); ?>
+		<?php include fichierBasDePage($racine, $langue); ?>
 	</div><!-- /basDePage -->
 <?php endif; ?>
 

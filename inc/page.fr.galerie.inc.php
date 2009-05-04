@@ -1,5 +1,5 @@
 <?php
-$title = "Galerie";
+$baliseTitle = "Galerie";
 $description = "Galerie";
 include $racine . '/inc/galerie.inc.php'; // Important d'insérer avant premier.inc.php, pour permettre la modification des balises de l'en-tête
 include $racine . '/inc/premier.inc.php';

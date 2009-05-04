@@ -10,11 +10,11 @@ Quelques modules sont livrés par défaut avec Squeletml, comme un formulaire de
 
 ## Variables optionnelles avant l'inclusion de `premier.inc.php`
 
-- `$title`: contenu de la balise `title`
+- `$baliseTitle`: contenu de la balise `title`
 - `$description`: contenu de la métabalise `description`
-- `$keywords`: contenu de la métabalise `keywords`
-- `$langue`: langue de la page courante
-- `$robots`: contenu de la métabalise `robots`
+- `$motsCles`: contenu de la métabalise `keywords`
+- `$langue[1]`: langue de la page courante
+- `$robots[1]`: contenu de la métabalise `robots`
 - `$idGalerie`: un nombre identifiant la galerie. Représente le répertoire qui sera lu pour lister les images
 
 ## Licence de Squeletml

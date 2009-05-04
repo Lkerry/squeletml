@@ -1,5 +1,5 @@
 <?php
-$title = "Titre";
+$baliseTitle = "Titre";
 $description = "Description de la page";
 include $racine . '/inc/premier.inc.php';
 ?>

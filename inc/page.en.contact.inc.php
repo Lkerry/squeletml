@@ -1,12 +1,13 @@
 <?php
-$title = "Me contacter";
-$description = "Formulaire de contact";
+$baliseTitle = "Contact me";
+$description = "Contact form";
+$langue[1] = 'en';
 include $racine . '/inc/premier.inc.php';
 ?>
 
-<h1>Me contacter</h1>
+<h1>Contact me</h1>
 
-<p>Veuillez remplir le formulaire suivant:</p>
+<p>Please complete the following form:</p>
 
 <?php include $racine . '/inc/contact.inc.php'; ?>
 

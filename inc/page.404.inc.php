@@ -1,5 +1,5 @@
 <?php
-$title = "Page introuvable";
+$baliseTitle = "Page introuvable";
 $description = "La page demandée n'existe pas.";
 include $racine . '/inc/premier.inc.php';
 ?>
@@ -8,6 +8,6 @@ include $racine . '/inc/premier.inc.php';
 
 <p>La page demandée n'existe pas.</p>
 
-<p>Vous pouvez <?php echo construitLienVersAccueil($accueil, estAccueil(), "retourner à la page d'accueil"); ?>.</p>
+<p>Vous pouvez <?php echo construitLienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), "retourner à la page d'accueil"); ?>.</p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>
