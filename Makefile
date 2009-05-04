@@ -55,9 +55,9 @@ menage-pot:
 po: pot
 	for po in `find ./ -iname *.po`;\
 	do\
-		msgmerge -o $$po2 $$po ../../squeletml.pot;\
+		msgmerge -o tempo $$po locale/squeletml.pot;\
 		rm $$po;\
-		mv $$po2 $$po;\
+		mv tempo $$po;\
 	done
 
 pot: menage-pot

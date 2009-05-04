@@ -136,7 +136,7 @@ if (isset($_POST['envoyer']))
 	<?php $captchaCalcul2 = rand($captchaCalculMin, $captchaCalculMax); ?>
 	<?php $captchaCalculBidon = rand($captchaCalculMin, $captchaCalculMax); ?>
 	<p><label><?php echo T_("Antipourriel:"); ?></label><br />
-	<?php printf(T_("Compléter: %1$s ajouté à %2$s vaut %3$s"), $captchaCalcul1, $captchaCalcul2, "<input name='ab' type='text' size='2' maxlength='2' />"); ?></p>
+	<?php sprintf(T_("Compléter: %1$s ajouté à %2$s vaut %3$s"), $captchaCalcul1, $captchaCalcul2, "<input name='ab' type='text' size='2' maxlength='2' />"); ?></p>
 	<input name="a" type="hidden" value="<?php echo $captchaCalcul1; ?>" />
 	<input name="b" type="hidden" value="<?php echo $captchaCalculBidon; ?>" />
 	<?php

@@ -3,7 +3,6 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
@@ -54,7 +53,7 @@ msgstr ""
 
 #: inc/contact.inc.php:125
 msgid "Votre nom:"
-msgstr ""
+msgstr "Your name:"
 
 #: inc/contact.inc.php:128
 msgid "Votre courriel:"
