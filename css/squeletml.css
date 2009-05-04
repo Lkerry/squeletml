@@ -50,7 +50,7 @@
 	border-color: green;
 }
 
-/* Page contact.php */
+/* Module contact */
 
 #formContact label {
 	font-weight: bold;
@@ -62,6 +62,36 @@
 
 #formContact textarea {
 	width: 70%;
+}
+
+/* Module galerie */
+
+#galerie img {
+	margin: 3px;
+	border: 1px solid gray;
+}
+
+p.galerieNavigationPrecedent {
+	float: left;
+}
+
+p.galerieNavigationSuivant {
+	float: right;
+}
+
+.galerieFleche {
+	border: none !important; width:40px; height:40px;
+}
+
+p#galerieGrande {
+	text-align: center;
+}
+
+span#galerieGrandeCommentaire {
+	display: block;
+	width: 400px;
+	margin: 10px auto;
+	text-align: center;
 }
 
 /* Bloc message pour IE6 */

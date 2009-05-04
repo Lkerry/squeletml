@@ -256,7 +256,7 @@ Retourne le contenu de la métabalise robots.
 */
 function robots($metaRobots, $robots)
 {
-	return if (!empty($robots)) ? $robots : $metaRobots;
+	return !empty($robots) ? $robots : $metaRobots;
 }
 
 /**
@@ -289,7 +289,7 @@ function afficheMenu($racine, $accueil)
 	echo '<div id="menu">' . "\n";
 	if (file_exists($racine . '/site/inc/html.menu.inc.php'))
 	{
-		include $racine . '/inc/html.menu.inc.php';
+		include $racine . '/site/inc/html.menu.inc.php';
 	}
 	else
 	{
@@ -305,9 +305,9 @@ Inclut le sous-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le
 */
 function inclutSousTitre($racine)
 {
-	if (file_exists(include $racine . '/site/inc/html.sous-titre.inc.php'))
+	if (file_exists($racine . '/site/inc/html.sous-titre.inc.php'))
 	{
-		include include $racine . '/site/inc/html.sous-titre.inc.php';
+		include $racine . '/site/inc/html.sous-titre.inc.php';
 	}
 	else
 	{
@@ -349,6 +349,109 @@ function inclutBasDePage($racine)
 	}
 	
 	return;
+}
+
+/**
+Retourne le nom du fichier affichant la galerie.
+*/
+function nomFichierGalerie()
+{
+	return $_SERVER['SCRIPT_NAME'];
+}
+
+/**
+Construit et retourne le code pour afficher une oeuvre dans la galerie.
+*/
+function afficheOeuvre($accueil, $racineImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens)
+{
+	if ($taille == 'grande')
+	{
+		if (!empty($galerie[$indice]['grandeLargeur']))
+		{
+			$width = 'width="' . $galerie[$indice]['grandeLargeur'] . '"';
+		}
+		
+		if (!empty($galerie[$indice]['grandeHauteur']))
+		{
+			$height = 'height="' . $galerie[$indice]['grandeHauteur'] . '"';
+		}
+		
+		if (!empty($galerie[$indice]['grandeAlt']))
+		{
+			$alt = 'alt="' . $galerie[$indice]['grandeAlt'] . '"';
+		}
+		else
+		{
+			$alt = 'alt="Oeuvre ' . $galerie[$indice]['id'] . '"';
+		}
+		
+		if (!empty($galerie[$indice]['grandeCommentaire']))
+		{
+			$commentaire = '<span id="galerieGrandeCommentaire">' . $galerie[$indice]['grandeCommentaire'] . '</span>';
+		}
+
+		return '<img src="' . $racineImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $commentaire;
+	}
+
+	elseif ($taille == 'vignette')
+	{
+		if ($galerieNavigation == 'fleches' && $sens != 'aucun')
+		{
+			$class = ' galerieFleche';
+			$width = 'width="80"';
+			$height = 'height="80"';
+			if ($sens == 'precedent')
+			{
+				$fleche = 'gauche';
+			}
+			elseif ($sens == 'suivant')
+			{
+				$fleche = 'droite';
+			}
+			$src = 'src="' . $accueil . '/images/galerie/fleche-' . $fleche . '.png"';
+		}
+
+		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')
+			|| $galerieNavigation == 'vignettes')
+		{
+			if (!empty($galerie[$indice]['vignetteLargeur']))
+			{
+				$width = 'width="' . $galerie[$indice]['vignetteLargeur'] . '"';
+			}
+			if (!empty($galerie[$indice]['vignetteHauteur']))
+			{
+				$height = 'height="' . $galerie[$indice]['vignetteHauteur'] . '"';
+			}
+			
+			if (!empty($galerie[$indice]['vignetteNom']))
+			{
+				$src = 'src="' . $racineImgSrc . '/' . $galerie[$indice]['vignetteNom'] . '"';
+			}
+			else
+			{
+				$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
+				$vignetteNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
+				$vignetteNom .= '-vignette.' . $infoGrandeNom['extension'];
+				$src = 'src="' . $racineImgSrc . '/' . $vignetteNom . '"';
+			}
+		}
+
+		if (!empty($galerie[$indice]['vignetteAlt']))
+		{
+			$alt = 'alt="' . $galerie[$indice]['vignetteAlt'] . '"';
+		}
+		else
+		{
+			$alt = 'alt="Oeuvre ' . $galerie[$indice]['id'] . '"';
+		}
+
+		return '<a href="' . nomFichierGalerie() . '?oeuvre=' . $galerie[$indice]['id'] . '"><img class="galerieNavigation' . $class . '" ' . "$src $width $height $alt /></a>";
+	}
+	
+	else
+	{
+		return;
+	}
 }
 
 ?>

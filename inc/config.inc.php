@@ -74,6 +74,18 @@ $copieCourriel = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
+## Configuration de la galerie
+##
+########################################################################
+
+// Choix de la navigation dans la galerie
+$galerieNavigation = 'fleches'; // fleches ou vignettes
+
+// Choix de l'emplacement de la navigation
+$galerieNavigationEmplacement = 'haut'; // haut ou bas
+
+########################################################################
+##
 ## Ne pas modifier ce qui suit
 ##
 ########################################################################
