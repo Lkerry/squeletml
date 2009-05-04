@@ -24,7 +24,7 @@ foreach (init($racine, langue($langue)) as $fichier)
 <?php
 if ($messageIE6)
 {
-	echo messageIE6($squeletmlAccueil . '/images/firefox-52x52.gif', '', 52, 52, $langue);
+	echo messageIE6($squeletmlAccueil . '/images/firefox-52x52.gif', '', 52, 52);
 }
 ?>
 

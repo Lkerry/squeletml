@@ -326,24 +326,19 @@ function robots($robots)
 /**
 Construit le message affiché à IE6. Les 4 premiers paramètres sont relatifs à l'image de Firefox qui va être affichée dans le message. le dernier précise la langue du message.
 */
-function messageIE6($src, $alt, $width, $height, $langue)
+function messageIE6($src, $alt, $width, $height)
 {
-	switch ($langue)
-	{
-		default:
-			return <<<MESSAGE
-<!--[if lt IE 7]>
-<div id="messageIE6">
-<p><strong>Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?</strong></p>
-
-<p>Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, performant, sécuritaire et respectueux des standards sur lesquels le web est basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au travail, vous pouvez faire la suggestion à votre service informatique.</p>
-
-<p><strong><a href="http://www.mozilla-europe.org/fr/"><img src="$src" alt="$alt" width="$width" height="$height" /></a> <a href="http://www.mozilla-europe.org/fr/"><span>Télécharger Firefox</span></a></strong></p>
-</div>
-<![endif]-->
-MESSAGE;
-			break;
-	}
+	$message = '<!--[if lt IE 7]>' . "\n";
+	$message .= '<div id="messageIE6">' . "\n";
+	$message .= '<p><strong>' . T_("Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?") . '</strong></p>' . "\n";
+	$message .= "\n";
+	$message .= '<p>' . T_("Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, performant, sécuritaire et respectueux des standards sur lesquels le web est basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au travail, vous pouvez faire la suggestion à votre service informatique.") . '</p>' . "\n";
+	$message .= "\n";
+	$message .= "<p><strong><a href=\"http://www.mozilla-europe.org/fr/\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" /></a> <a href=\"http://www.mozilla-europe.org/fr/\"><span>" . T_("Télécharger Firefox") . '</span></a></strong></p>' . "\n";
+	$message .= '</div>';
+	$message .= '<![endif]-->';
+	
+	return $message;
 }
 
 /**
@@ -555,7 +550,7 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 		}
 		else
 		{
-			$alt = 'alt="Oeuvre ' . $galerie[$indice]['id'] . '"';
+			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $galerie[$indice]['id']) . '"';
 		}
 
 		return '<a href="' . nomFichierGalerie() . '?oeuvre=' . $galerie[$indice]['id'] . '"><img class="galerieNavigation' . $class . '" ' . "$src $width $height $alt /></a>";

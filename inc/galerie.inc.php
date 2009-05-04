@@ -6,6 +6,9 @@ foreach (init($racine, langue($langue)) as $fichier)
 	include_once $fichier;
 }
 
+// Nécessaire à la traduction du module
+phpGettext($racine, langue($langue));
+
 // Insertion du tableau contenant la liste des oeuvres à afficher
 // Recherche `site/inc/galerie-$idGalerie.inc.php`, sinon inclut `inc/galerie-0.inc.php`
 if (isset($idGalerie) && file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.inc.php'))
@@ -36,7 +39,7 @@ if (isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$baliseTitle = 'Oeuvre ' . $galerie[$i]['id'] . ' de la galerie';
+				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie"), $galerie[$i]['id']);
 			}
 
 			if (!empty($galerie[$i]['pageGrandeDescription']))
@@ -45,7 +48,7 @@ if (isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$description = "Taille maximale de l'oeuvre " . $galerie[$i]['id'] . ' de la galerie' . ' | ' . $baliseTitleComplement[langue($langue)];
+				$description = sprintf(T_("Taille maximale de l'oeuvre %1\$s de la galerie"), $galerie[$i]['id']) . ' | ' . $baliseTitleComplement[langue($langue)];
 			}
 
 			$motsCles = construitMotsCles($galerie[$i]['pageGrandeKeywords'], $description);
@@ -95,7 +98,7 @@ if (isset($_GET['oeuvre']))
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie pour éviter le contenu dupliqué.
 	else
 	{
-		$corpsGalerie = "<p>L'oeuvre demandée est introuvable. " . '<a href="' . nomFichierGalerie() . '">Voir toutes les oeuvres</a>.</p>';
+		$corpsGalerie = '<p>' . sprintf(T_("L'oeuvre demandée est introuvable. <a href='%1$s'>Voir toutes les oeuvres</a>."), nomFichierGalerie()) . '</p>';
 	}
 }
 

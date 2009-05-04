@@ -28,10 +28,15 @@ publier: bz2
 bz2: menage-bz2 ChangeLog
 	bzr export -r tag:$(tag) $(tag)
 	mv ChangeLog $(tag)/
-	for po in $(find $(tag)/ -iname *.po);\
+	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
+	          # une variable de Makefile dans une commande shell $(...).
+	          # Par exemple, ceci ne fonctionne pas:
+	          # for po in $(find $(tag) -iname *.po);\
+	for po in `find . -iname *.po`;\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
+	cd ../
 	rm $(tag)/Makefile
 	tar -jcvf $(tag).tar.bz2 $(tag)
 	rm -rf $(tag)
@@ -51,6 +56,12 @@ menage-ChangeLog:
 menage-pot:
 	rm -f locale/squeletml.pot
 	touch locale/squeletml.pot # sinon xgettext -j va planter en précisant que le fichier est introuvable
+
+mo:
+	for po in `find locale/ -iname *.po`;\
+	do\
+		msgfmt -o $${po%\.*}.mo $$po;\
+	done
 
 po: pot
 	for po in `find ./ -iname *.po`;\

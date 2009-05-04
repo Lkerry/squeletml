@@ -1,19 +1,42 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# Traduction en anglais de Squeletml
+# Copyright (C) 2009 Jean-Philippe Fleury <contact@jpfleury.net>
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-04 14:13-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2009-05-04 17:14-0400\n"
+"PO-Revision-Date: 2009-05-04 17:00-0400\n"
+"Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: inc/fonctions.inc.php:333
+msgid ""
+"Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
+"visitez sur ce site actuellement) est obsolète?"
+msgstr ""
+
+#: inc/fonctions.inc.php:335
+msgid ""
+"Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
+"recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
+"performant, sécuritaire et respectueux des standards sur lesquels le web est "
+"basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au "
+"travail, vous pouvez faire la suggestion à votre service informatique."
+msgstr ""
+
+#: inc/fonctions.inc.php:337
+msgid "Télécharger Firefox"
+msgstr "Download Firefox"
+
+#: inc/fonctions.inc.php:553
+#, php-format
+msgid "Oeuvre %1$s"
+msgstr "Work %1$s"
 
 #: inc/contact.inc.php:22
 msgid "Vous n'avez pas inscrit de nom."
@@ -57,14 +80,19 @@ msgstr "Your name:"
 
 #: inc/contact.inc.php:128
 msgid "Votre courriel:"
-msgstr ""
+msgstr "Your email:"
 
 #: inc/contact.inc.php:131
 msgid "Votre message:"
-msgstr ""
+msgstr "Your message:"
 
 #: inc/contact.inc.php:138
 msgid "Antipourriel:"
+msgstr "Anti-spam:"
+
+#: inc/contact.inc.php:139
+#, php-format
+msgid "Compléter: %1$s ajouté à %2$s vaut %3$s"
 msgstr ""
 
 #: inc/contact.inc.php:170
@@ -73,4 +101,14 @@ msgstr ""
 
 #: inc/contact.inc.php:173
 msgid "Envoyer le message"
+msgstr ""
+
+#: inc/galerie.inc.php:42
+#, php-format
+msgid "Oeuvre %1$s de la galerie"
+msgstr ""
+
+#: inc/galerie.inc.php:51
+#, php-format
+msgid "Taille maximale de l'oeuvre %1$s de la galerie"
 msgstr ""
