@@ -49,6 +49,10 @@ $basDePage = TRUE; // TRUE|FALSE
 /* Le menu peut être inséré dans le flux HTML au-dessus du contenu ou bien en-dessous. */
 $menuSousLeContenu = TRUE; // TRUE|FALSE
 
+// Le cas échéant, position du menu des langues
+/* Le menu des langues peut être inséré dans le flux HTML au-dessus du contenu ou bien en-dessous. */
+$menuLanguesSousLeContenu = TRUE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## Configuration du formulaire de contact

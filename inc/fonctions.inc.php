@@ -372,32 +372,43 @@ function titreSite($tableauTitreSite, $tableauLangue)
 }
 
 /**
-Affiche le menu sur la sortie standard. Le menu inclus est celui personnalisé s'il existe dans `site/inc/`, sinon c'ets celui par défaut.
-
-@param racine chemin vers la racine du site
-@param accueil url vers l'accueil du site
-@return menu un tableau de 3 cellules:
-	1ère: code HTML de début
-	2e: fichier à inclure
-	3e: code HTML de fin
+Retourne le fichier de menu des langues.
 */
-function construitMenu($racine, $tableauLangue)
+function fichierMenuLangues($racine, $tableauLangue)
 {
-	$menu = array ();
-	$menu[0] = '<div id="menu">' . "\n";
-	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php'))
 	{
-		$menu[1] = $racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
+		$menuLangues = $racine . '/site/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php';
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
+	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php'))
 	{
-		$menu[1] = $racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
+		$menuLangues = $racine . '/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php';
 	}
 	else
 	{
-		$menu[1] = $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.menu.inc.php';
+		$menuLangues = $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.menu-langues.inc.php';
 	}
-	$menu[2] = '</div><!-- /basDePage -->' . "\n";
+	
+	return $menuLangues;
+}
+
+/**
+Retourne le fichier de menu.
+*/
+function fichierMenu($racine, $tableauLangue)
+{
+	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
+	{
+		$menu = $racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
+	}
+	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
+	{
+		$menu = $racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
+	}
+	else
+	{
+		$menu = $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.menu.inc.php';
+	}
 	
 	return $menu;
 }

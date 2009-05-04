@@ -1,15 +1,17 @@
 	</div><!-- /interieurContenu -->
 </div><!-- /contenu -->
 
-<?php
-if ($menuSousLeContenu)
-{
-	$menu = construitMenu($racine, $langue);
-	echo $menu[0];
-	include $menu[1];
-	echo $menu[2];
-}
-?>
+<?php if ($menuLanguesSousLeContenu): ?>
+	<div id="menuLangues">
+		<?php include fichierMenuLangues($racine, $langue); ?>
+	</div><!-- /menuLangues -->
+<?php endif; ?>
+
+<?php if ($menuSousLeContenu): ?>
+	<div id="menu">
+		<?php include fichierMenu($racine, $langue); ?>
+	</div><!-- /menu -->
+<?php endif; ?>
 
 <?php if ($basDePage): ?>
 	<div id="basDePage">
