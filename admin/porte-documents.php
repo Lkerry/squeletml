@@ -51,7 +51,7 @@ $niveauTitreSuivant2 = $niveauTitreScript + 2;
 </div>
 
 <div id="porteDocumentsBoiteMessages" class="porteDocumentsBoite">
-<h<?php echo $niveauTitreSuivant; ?>>Messages d'avancement, de confirmation ou d'erreur</h<?php echo $niveauTitreSuivant; ?>>
+<h<?php echo $niveauTitreSuivant; ?> id="messagesPorteDocuments">Messages d'avancement, de confirmation ou d'erreur</h<?php echo $niveauTitreSuivant; ?>>
 
 <?php
 if (isset($_POST['telechargerSuppr']))
@@ -265,7 +265,7 @@ if (isset($erreur))
 </div>
 
 <div class="porteDocumentsBoite">
-<h<?php echo $niveauTitreSuivant; ?>>Fichiers et dossiers</h<?php echo $niveauTitreSuivant; ?>>
+<h<?php echo $niveauTitreSuivant; ?> id="fichiersEtDossiers">Fichiers et dossiers</h<?php echo $niveauTitreSuivant; ?>>
 
 <div class="porteDocumentsBoite2">
 <h<?php echo $niveauTitreSuivant2; ?>>Affichage détaillé</h<?php echo $niveauTitreSuivant2; ?>>
@@ -348,7 +348,7 @@ asort($liste2);
 echo "<ul>\n";
 foreach ($liste2 as $valeur)
 {
-	echo "<li><a href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur\">Parcourir</a> <span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur\">Renommer</a> <span class='porteDocumentsSep'>|</span> Supprimer <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" /> <span class='porteDocumentsSep'>|</span> <span class='porteDocumentsNom'>$valeur</span></li>\n";
+	echo "<li><a href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur#fichiersEtDossiers\">Parcourir</a> <span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur#messagesPorteDocuments\">Renommer</a> <span class='porteDocumentsSep'>|</span> Supprimer <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" /> <span class='porteDocumentsSep'>|</span> <span class='porteDocumentsNom'>$valeur</span></li>\n";
 }
 echo "</ul>\n";
 ?>
@@ -372,7 +372,7 @@ echo "</ul>\n";
 <div class="porteDocumentsBoite2">
 <h<?php echo $niveauTitreSuivant2; ?>>Ajouter un fichier</h<?php echo $niveauTitreSuivant2; ?>>
 
-<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
+<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post" enctype="multipart/form-data">
 <div>
 <label>Fichier:</label> <input type="file" name="fichier" size="25"/><br /><br />
 <label>Dossier:</label> <select name="rep" size="1in/porte-documen">
@@ -401,7 +401,7 @@ foreach ($liste as $valeur)
 	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau_dossier/nouveau_fichier.ext</span></li>
 </ul>
 
-<form action="<?php echo $action; ?>" method="post">
+<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
 <div>
 <label>Nom:</label> <input type="text" name="porteDocumentsFichierCreeNom" size="50" value="<?php echo $dossierRacine . '/'; ?>" /><br /><br />
 <label>Type:</label> <select name="porteDocumentsFichierCreeType" size="1">
