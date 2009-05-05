@@ -1,0 +1,55 @@
+/* Structuration générale */
+
+#entete {
+	border: 1px solid black;
+	background-color: #f5f5f5;
+	padding: 5px;
+}
+
+#entete ul li {
+	display: inline;
+}
+
+#ancres {
+	position: absolute;
+	left: -5000px;
+}
+
+/* Porte-documents */
+
+.porteDocumentsListeDossiers {
+	margin-bottom: 15px;
+}
+
+.porteDocumentsNom {
+	font-family: monospace;
+}
+
+.porteDocumentsSep {
+	font-weight: bold;
+}
+
+.porteDocumentsBoite {
+	margin: 25px; border: 1px solid black; padding: 5px; background-color: #f5f5f5;
+}
+
+.porteDocumentsBoite2 {
+	margin: 25px; border: 1px dashed black; padding: 5px; background-color: #f7f7f7;
+}
+
+#porteDocumentsBoiteMessages {
+	border: 1px dashed black;
+}
+
+#porteDocumentsBoiteMessages .succes {
+	color: #006400;
+}
+
+#porteDocumentsBoiteMessages .erreur {
+	color: red;
+}
+
+#porteDocumentsBoiteMessages h2, #porteDocumentsBoiteMessages h3, #porteDocumentsBoiteMessages h4, #porteDocumentsBoiteMessages h5, #porteDocumentsBoiteMessages h6 {
+	color: black;
+}
+
