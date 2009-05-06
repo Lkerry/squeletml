@@ -485,14 +485,26 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 {
 	if ($taille == 'grande')
 	{
-		if (!empty($galerie[$indice]['grandeLargeur']))
+		if (!empty($galerie[$indice]['grandeLargeur'])
+			|| !empty($galerie[$indice]['grandeHauteur']))
 		{
-			$width = 'width="' . $galerie[$indice]['grandeLargeur'] . '"';
+			if (!empty($galerie[$indice]['grandeLargeur']))
+			{
+				$width = 'width="' . $galerie[$indice]['grandeLargeur'] . '"';
+			}
+			
+			if (!empty($galerie[$indice]['grandeHauteur']))
+			{
+				$height = 'height="' . $galerie[$indice]['grandeHauteur'] . '"';
+			}
 		}
-		
-		if (!empty($galerie[$indice]['grandeHauteur']))
+		else
 		{
-			$height = 'height="' . $galerie[$indice]['grandeHauteur'] . '"';
+			list($larg, $haut) = getimagesize($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+			{
+				$width = 'width="' . $larg . '"';
+				$height = 'height="' . $haut . '"';
+			}
 		}
 		
 		if (!empty($galerie[$indice]['grandeAlt']))
@@ -501,7 +513,17 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 		}
 		else
 		{
-			$alt = 'alt="Oeuvre ' . $galerie[$indice]['id'] . '"';
+			// On récupère l'id de l'image
+			if (!empty($galerie[$indice]['id']))
+			{
+				$id = $galerie[$indice]['id'];
+			}
+			else
+			{
+				$id = $galerie[$indice]['grandeNom'];
+			}
+			
+			$alt = 'alt="Oeuvre ' . $id . '"';
 		}
 		
 		if (!empty($galerie[$indice]['grandeCommentaire']))
@@ -533,15 +555,6 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')
 			|| $galerieNavigation == 'vignettes')
 		{
-			if (!empty($galerie[$indice]['vignetteLargeur']))
-			{
-				$width = 'width="' . $galerie[$indice]['vignetteLargeur'] . '"';
-			}
-			if (!empty($galerie[$indice]['vignetteHauteur']))
-			{
-				$height = 'height="' . $galerie[$indice]['vignetteHauteur'] . '"';
-			}
-			
 			if (!empty($galerie[$indice]['vignetteNom']))
 			{
 				$src = 'src="' . $racineImgSrc . '/' . $galerie[$indice]['vignetteNom'] . '"';
@@ -553,18 +566,50 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 				$vignetteNom .= '-vignette.' . $infoGrandeNom['extension'];
 				$src = 'src="' . $racineImgSrc . '/' . $vignetteNom . '"';
 			}
+			
+			if (!empty($galerie[$indice]['vignetteLargeur'])
+				|| !empty($galerie[$indice]['vignetteHauteur']))
+			{
+				if (!empty($galerie[$indice]['vignetteLargeur']))
+				{
+					$width = 'width="' . $galerie[$indice]['vignetteLargeur'] . '"';
+				}
+				
+				if (!empty($galerie[$indice]['vignetteHauteur']))
+				{
+					$height = 'height="' . $galerie[$indice]['vignetteHauteur'] . '"';
+				}
+			}
+			else
+			{
+				list($larg, $haut) = getimagesize($racineImgSrc . '/' . $vignetteNom);
+				{
+					$width = 'width="' . $larg . '"';
+					$height = 'height="' . $haut . '"';
+				}
+			}
 		}
-
+		
+		// On récupère l'id de l'image
+		if (!empty($galerie[$indice]['id']))
+		{
+			$id = $galerie[$indice]['id'];
+		}
+		else
+		{
+			$id = $galerie[$indice]['grandeNom'];
+		}
+		
 		if (!empty($galerie[$indice]['vignetteAlt']))
 		{
 			$alt = 'alt="' . $galerie[$indice]['vignetteAlt'] . '"';
 		}
 		else
 		{
-			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $galerie[$indice]['id']) . '"';
+			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
 		}
 
-		return '<a href="' . nomFichierGalerie() . '?oeuvre=' . $galerie[$indice]['id'] . '"><img class="galerieNavigation' . $class . '" ' . "$src $width $height $alt /></a>";
+		return '<a href="' . nomFichierGalerie() . '?oeuvre=' . $id . '"><img class="galerieNavigation' . $class . '" ' . "$src $width $height $alt /></a>";
 	}
 	
 	else

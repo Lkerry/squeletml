@@ -29,7 +29,17 @@ if (isset($_GET['oeuvre']))
 	$i = 0;
 	foreach($galerie as $oeuvre)
 	{
-		if ($oeuvre['id'] == $_GET['oeuvre'])
+		// On récupère l'id de chaque image
+		if (!empty($oeuvre['id']))
+		{
+			$id = $oeuvre['id'];
+		}
+		else
+		{
+			$id = $oeuvre['grandeNom'];
+		}
+		
+		if ($id == $_GET['oeuvre'])
 		{
 			$imageExiste = TRUE;
 			// L'image existe, on peut donc écraser les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable $galerie, on donne une valeur automatiquement.
@@ -39,7 +49,7 @@ if (isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie"), $galerie[$i]['id']);
+				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie"), $id);
 			}
 
 			if (!empty($galerie[$i]['pageGrandeDescription']))
@@ -48,11 +58,11 @@ if (isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$description = sprintf(T_("Taille maximale de l'oeuvre %1\$s de la galerie"), $galerie[$i]['id']) . ' | ' . $baliseTitleComplement[langue($langue)];
+				$description = sprintf(T_("Taille maximale de l'oeuvre %1\$s de la galerie"), $id) . ' | ' . $baliseTitleComplement[langue($langue)];
 			}
 
 			$motsCles = construitMotsCles($galerie[$i]['pageGrandeKeywords'], $description);
-			$motsCles .= ', ' . $galerie[$i]['id'];
+			$motsCles .= ', ' . $id;
 
 			break; // On arrête la boucle
 		}
