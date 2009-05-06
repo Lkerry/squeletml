@@ -1,0 +1,11 @@
+grandeNom=lucertola_architetto_fra_01.png
+grandeCommentaire=Bla bla
+__IMG__
+grandeNom=lucertola_maya_architett_01.png
+__IMG__
+grandeNom=lucertolona_architetto_f_01.png
+__IMG__
+grandeNom=lucertolone_architetto_f_01.png
+__IMG__
+grandeNom=ramarro_architetto_franc_01.png
+__IMG__

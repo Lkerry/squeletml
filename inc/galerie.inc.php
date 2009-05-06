@@ -11,15 +11,67 @@ phpGettext($racine, langue($langue));
 
 // Insertion du tableau contenant la liste des oeuvres à afficher
 // Recherche `site/inc/galerie-$idGalerie.inc.php`, sinon inclut `inc/galerie-0.inc.php`
-if (isset($idGalerie) && file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.inc.php'))
+/*
+Chaque oeuvre de la galerie possède sa propre entrée dans le tableau $galerie. Voici la structure d'une entrée:
+
+ id: id image. L'id est utilisé dans l'URL au lieu de l'indice de l'oeuvre dans le tableau pour identifier l'oeuvre, ce qui permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si vide, l'id sera généré automatiquement à partir du nom de fichier image.
+
+ vignetteNom: nom Vignette. Si vide, correspond à grandeNom(sans extension)-vignette.extension
+
+ vignetteLargeur: largeur Vignette. Si vignetteLargeur ou vignetteHauteur sont renseignées, seulement la ou les informations renseignées seront affichées. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement.
+
+ vignetteHauteur: hauteur Vignette. Voir vignetteLargeur.
+
+ vignetteAlt: alt Vignette. Si vide, génération automatique.
+
+ grandeNom: nom Grande. Champ obligatoire.
+
+ grandeLargeur: largeur Grande. Voir vignetteLargeur.
+
+ grandeHauteur: hauteur Grande. Voir grandeLargeur.
+
+ grandeAlt: alt Grande. Si vide, génération automatique.
+
+ grandeCommentaire: commentaire Grande. Message affiché sous l'image.
+
+ pageGrandeTitle: title page Grande ; laisser vide pour génération automatique.
+
+ pageGrandeDescription: description page Grande ; laisser vide pour génération automatique.
+
+ pageGrandeKeywords: keywords page Grande ; laisser vide pour génération automatique.
+
+Voici une entrée vide qu'il est possible de copier/coller:
+
+array (
+	'id'                     => "",
+	'vignetteNom'            => "",
+	'vignetteLargeur'        => "",
+	'vignetteHauteur'        => "",
+	'vignetteAlt'            => "",
+	'grandeNom'              => "*",
+	'grandeLargeur'          => "",
+	'grandeHauteur'          => "",
+	'grandeAlt'              => "",
+	'grandeCommentaire'      => "",
+	'pageGrandeTitle'        => "",
+	'pageGrandeDescription'  => "",
+	'pageGrandeKeywords'     => "",
+),
+
+*/
+
+if (isset($idGalerie)
+	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/')
+	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.txt'))
 {
-	include $racine . '/site/inc/galerie-' . $idGalerie . '.inc.php';
+	$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $idGalerie . '.txt');
 	$urlImgSrc = $squeletmlAccueil . '/site/fichiers/galeries/' . $idGalerie;
 	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
 }
 else
 {
-	include $racine . '/inc/galerie-0.inc.php';
+	// Galerie démo par défaut
+	$galerie = construitTableauGalerie($racine . '/inc/galerie-0.txt');
 	$urlImgSrc = $squeletmlAccueil . '/fichiers/galeries/0';
 	$racineImgSrc = $racine . '/fichiers/galeries/0';
 }

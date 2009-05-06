@@ -17,6 +17,10 @@ Quelques modules sont livrés par défaut avec Squeletml, comme un formulaire de
 - `$robots[1]`: contenu de la métabalise `robots`
 - `$idGalerie`: un nombre identifiant la galerie. Représente le répertoire qui sera lu pour lister les images
 
+## Galeries
+
+Chaque image (grande ou vignette) d'une galerie peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `nom du fichier`) de la balise `img`. Le balayage automatique évite de devoir remplir la seule information obligatoire (nom du fichier de la grande image).
+
 ## Licence de Squeletml
 
 Auteur: Jean-Philippe Fleury <contact@jpfleury.net>

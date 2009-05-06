@@ -692,4 +692,36 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $
 	}
 }
 
+/**
+Construit et retourne un tableau PHP à partir d'un fichier texte dont la syntaxe est clé=valeur.
+*/
+function construitTableauGalerie($fichierTexte)
+{
+	$galerie = array ();
+	
+	$fic = @fopen($fichierTexte, 'r');
+	if ($fic)
+	{
+		$galerieTemp = array ();
+		while (!feof($fic))
+		{
+			$ligne = rtrim(fgets($fic));
+			if ($ligne != '__IMG__')
+			{
+				list($cle, $valeur) = split('=', $ligne, 2);
+				$galerieTemp[$cle] = $valeur;
+			}
+			else
+			{
+				$galerie[] = $galerieTemp;
+				unset($galerieTemp);
+			}
+		}
+		
+		fclose($fic);
+	}
+	
+	return $galerie;
+}
+
 ?>
