@@ -481,7 +481,7 @@ function nomFichierGalerie()
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens)
+function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette)
 {
 	if ($taille == 'grande')
 	{
@@ -500,7 +500,7 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 		}
 		else
 		{
-			list($larg, $haut) = getimagesize($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+			list($larg, $haut) = getimagesize($urlImgSrc . '/' . $galerie[$indice]['grandeNom']);
 			{
 				$width = 'width="' . $larg . '"';
 				$height = 'height="' . $haut . '"';
@@ -531,7 +531,7 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 			$commentaire = '<span id="galerieGrandeCommentaire">' . $galerie[$indice]['grandeCommentaire'] . '</span>';
 		}
 
-		return '<img src="' . $racineImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $commentaire;
+		return '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $commentaire;
 	}
 
 	elseif ($taille == 'vignette')
@@ -555,16 +555,90 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')
 			|| $galerieNavigation == 'vignettes')
 		{
+			// Si le nom de la vignette a été renseigné, on prend pour acquis que le fichier existe avec ce nom. On assigne donc une valeur à l'attribut `src`.
 			if (!empty($galerie[$indice]['vignetteNom']))
 			{
-				$src = 'src="' . $racineImgSrc . '/' . $galerie[$indice]['vignetteNom'] . '"';
+				$src = 'src="' . $urlImgSrc . '/' . $galerie[$indice]['vignetteNom'] . '"';
 			}
 			else
 			{
+				// Si le nom de la vignette n'a pas été renseigné, on génère un nom automatique selon le nom de la version grande de l'image.
 				$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 				$vignetteNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
 				$vignetteNom .= '-vignette.' . $infoGrandeNom['extension'];
-				$src = 'src="' . $racineImgSrc . '/' . $vignetteNom . '"';
+				
+				// On vérifie si un fichier existe avec ce nom.
+				// Si oui, on assigne une valeur à l'attribut `src`. 
+				if (file_exists($racineImgSrc . '/' . $vignetteNom))
+				{
+					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
+				}
+				// Sinon, on génère une vignette avec gd
+				else
+				{
+					// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
+					if (strtolower($infoGrandeNom['extension']) == 'gif')
+					{
+						$type = 'gif';
+					}
+					elseif (strtolower($infoGrandeNom['extension']) == 'jpg' || strtolower($infoGrandeNom['extension']) == 'jpeg')
+					{
+						$type = 'jpeg';
+					}
+					elseif (strtolower($infoGrandeNom['extension']) == 'png')
+					{
+						$type = 'png';
+					}
+					
+					// Grande image
+					switch ($type)
+					{
+						case 'gif':
+							$imageGrande = imagecreatefromgif($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+							break;
+						
+						case 'jpeg':
+							$imageGrande = imagecreatefromjpeg($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+							break;
+						
+						case 'png':
+							$imageGrande = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+							break;
+					}
+					
+					// Dimensions de la grande image
+					$imageGrandeLargeur = imagesx($imageGrande);
+					$imageGrandeHauteur = imagesy($imageGrande);
+					
+					// On trouve les futures dimensions de la vignette
+					$imageVignetteHauteur = $galerieHauteurVignette;
+					$imageVignetteLargeur = ($imageVignetteHauteur / $imageGrandeHauteur) * $imageGrandeLargeur;
+					
+					// On crée une vignette vide
+					$imageVignette = imagecreatetruecolor($imageVignetteLargeur, $imageVignetteHauteur);
+					
+					// On crée la vignette à partir de la grande image
+					imagecopyresampled($imageVignette, $imageGrande, 0, 0, 0, 0, $imageVignetteLargeur, $imageVignetteHauteur, $imageGrandeLargeur, $imageGrandeHauteur);
+					
+					// On enregistre la vignette
+					switch ($type)
+					{
+						case 'gif':
+							imagegif($imageVignette, $racineImgSrc . '/' . $vignetteNom);
+							break;
+						
+						case 'jpeg':
+							imagejpeg($imageVignette, $racineImgSrc . '/' . $vignetteNom);
+							break;
+						
+						case 'png':
+							imagepng($imageVignette, $racineImgSrc . '/' . $vignetteNom);
+							break;
+					}
+					
+					// On assigne l'attribut `src`
+					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
+				}
 			}
 			
 			if (!empty($galerie[$indice]['vignetteLargeur'])
@@ -582,7 +656,7 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $galerie, $galerieNavig
 			}
 			else
 			{
-				list($larg, $haut) = getimagesize($racineImgSrc . '/' . $vignetteNom);
+				list($larg, $haut) = getimagesize($urlImgSrc . '/' . $vignetteNom);
 				{
 					$width = 'width="' . $larg . '"';
 					$height = 'height="' . $haut . '"';

@@ -90,6 +90,9 @@ $galerieNavigation = 'fleches'; // fleches ou vignettes
 // Choix de l'emplacement de la navigation
 $galerieNavigationEmplacement = 'haut'; // haut ou bas
 
+// Hauteur des vignettes si génération automatique
+$galerieHauteurVignette = 100;
+
 ########################################################################
 ##
 ## Ne pas modifier ce qui suit

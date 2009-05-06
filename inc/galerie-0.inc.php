@@ -130,6 +130,22 @@ array (
 	'pageGrandeKeywords'     => "",
 ),
 
+array (
+	'id'                     => 6,
+	'vignetteNom'            => "",
+	'vignetteLargeur'        => "",
+	'vignetteHauteur'        => "",
+	'vignetteAlt'            => "",
+	'grandeNom'              => "porcupine.png",
+	'grandeLargeur'          => "",
+	'grandeHauteur'          => "",
+	'grandeAlt'              => "",
+	'grandeCommentaire'      => "",
+	'pageGrandeTitle'        => "",
+	'pageGrandeDescription'  => "",
+	'pageGrandeKeywords'     => "",
+),
+
 );
 
 ?>

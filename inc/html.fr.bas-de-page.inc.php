@@ -1,1 +1,1 @@
-<p><?php echo construitLienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), "Bas de page"); ?></p>
+<p>Propulsé par <a href="http://www.jpfleury.net/squeletml">Squeletml</a> | <a href="<?php echo $squeletmlAccueil; ?>/admin/">Admin</a></p>
