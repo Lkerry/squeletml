@@ -16,6 +16,8 @@ function init()
 	
 	$fichiers[] = 'inc/config.inc.php';
 	
+	$fichiers[] = 'inc/php-markdown/markdown.php';
+	
 	if (file_exists('../site/inc/config-admin.inc.php'))
 	{
 		$fichiers[] = '../site/inc/config-admin.inc.php';

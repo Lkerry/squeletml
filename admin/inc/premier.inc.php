@@ -23,6 +23,7 @@ foreach (init() as $fichier)
 	<ul>
 		<li><a href="index.php">Accueil de l'admin</a> | </li>
 		<li><a href="porte-documents.php">Porte-documents</a> | </li>
+		<li><a href="documentation.php">Documentation</a> | </li>
 		<li><a href="../index.php">Retour au site</a></li>
 	</ul>
 </div><!-- /entete -->
