@@ -95,6 +95,7 @@ if (isset($_POST['telechargerSuppr']))
 
 if (isset($_GET['action']))
 {
+	// Action Renommer
 	if ($_GET['action'] == 'renommer')
 	{
 		$ancienNom = $_GET['valeur'];
@@ -119,6 +120,73 @@ if (isset($_GET['action']))
 		</form>
 		<?php
 	}
+	
+	// Action Modifier
+	if ($_GET['action'] == 'modifier')
+	{
+		echo "<h$niveauTitreSuivant2>Insctructions de modification</h$niveauTitreSuivant2>";
+		echo "<p>Le fichier est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».</p>";
+		?>
+		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
+		<div>
+		<?php
+		$fic = fopen($_GET['valeur'], 'r');
+		$contenuFichier = fread($fic, filesize($_GET['valeur']));
+		fclose($fic);
+		?>
+		<textarea name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea>
+		<input type="hidden" name="porteDocumentsModifierNom" value="<?php echo $_GET['valeur']; ?>" />
+		<input type="submit" value="Sauvegarder les modifications" />
+		
+		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
+		<div>
+		<input type="submit" name="porteDocumentsModifierAnnuler" value="Annuler" />
+		<input type="hidden" name="porteDocumentsModifierNom" value="<?php echo $_GET['valeur']; ?>" />
+		</div>
+		</form>
+		
+		</div>
+		</form>
+		<?php
+	}
+}
+
+if (isset($_POST['porteDocumentsModifierAnnuler']))
+{
+	echo "<p class='succes'>Aucune modification apportée au fichier " . $_POST['porteDocumentsModifierNom'] . ".</p>";
+}
+elseif (isset($_POST['porteDocumentsContenuFichier']))
+{
+	$messageErreurModifier = '';
+	$messageErreurModifier .= "<p class='erreur'>Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.</p>\n";
+	$messageErreurModifier .= '<p><textarea name="porteDocumentsContenuFichier" readonly="readonly">';
+	$messageErreurModifier .= formateTexte($_POST['porteDocumentsContenuFichier']);
+	$messageErreurModifier .= "</textarea></p>\n";
+
+	echo "<ul>\n";
+
+	if (is_writable($_POST['porteDocumentsModifierNom']))
+	{
+		if (!$fic = fopen($_POST['porteDocumentsModifierNom'], 'w'))
+		{
+			echo "<li><p class='erreur'>Le fichier <span class='porteDocumentsNom'>" . $_POST['porteDocumentsModifierNom'] . "</span> n'a pas pu être ouvert.</p>\n$messageErreurModifier</li>\n";
+		}
+	
+		if (fwrite($fic, formateTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
+		{
+			echo "<li><p class='erreur'>Impossible d'écrire dans le fichier <span class='porteDocumentsNom'>" . $_POST['porteDocumentsModifierNom'] . "</span>.</p>\n$messageErreurModifier</li>\n";
+		}
+	
+		echo "<li class='succes'>Modification du fichier <span class='porteDocumentsNom'>" . $_POST['porteDocumentsModifierNom'] . "</span> effectuée.</li>\n";
+	
+		fclose($fic);
+	}
+	else
+	{
+		echo "<li><p class='erreur'>Le fichier <span class='porteDocumentsNom'>" . $_POST['porteDocumentsModifierNom'] . "</span> n'est pas accessible en écriture.</p>\n$messageErreurModifier</li>\n";
+	}
+
+	echo "</ul>\n";
 }
 
 if (isset($_POST['porteDocumentsNouveauNom']))
@@ -270,7 +338,7 @@ if (isset($erreur))
 <div class="porteDocumentsBoite2">
 <h<?php echo $niveauTitreSuivant2; ?>>Affichage détaillé</h<?php echo $niveauTitreSuivant2; ?>>
 
-<form action="<?php echo $action; ?>" method="post">
+<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
 <div>
 <?php
 

@@ -1,5 +1,13 @@
 <?php
 /**
+Traite une chaîne pour l'afficher sécuritairement à l'écran.
+*/
+function formateTexte($texte)
+{
+	return stripslashes($texte);
+}
+
+/**
 Retourne un tableau contenant les fichiers à inclure.
 */
 function init()
@@ -98,7 +106,9 @@ function parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFilt
 				$dim = '';
 			}
 
-			$liste[$dossierRacine][] = "<a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Renommer</a> <span class='porteDocumentsSep'>|</span> Supprimer <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" /> <span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><span class='porteDocumentsNom'>$fichier</span></a> $dim";
+			$liste[$dossierRacine][] = "<a href=\"$action" . $symboleUrl . "action=modifier&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Modifier</a> <span class='porteDocumentsSep'>|</span> Supprimer <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
+			<a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Renommer</a> <span class='porteDocumentsSep'>|</span>
+			<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><span class='porteDocumentsNom'>$fichier</span></a> $dim";
 		}
 	}
 
