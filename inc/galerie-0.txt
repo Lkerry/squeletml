@@ -1,5 +1,4 @@
 grandeNom=lucertola_architetto_fra_01.png
-grandeCommentaire=Bla bla
 __IMG__
 grandeNom=lucertola_maya_architett_01.png
 __IMG__
