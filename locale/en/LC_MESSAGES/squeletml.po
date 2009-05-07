@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-04 17:14-0400\n"
+"POT-Creation-Date: 2009-05-06 22:34-0400\n"
 "PO-Revision-Date: 2009-05-04 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:553
+#: inc/fonctions.inc.php:683
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
@@ -103,12 +103,12 @@ msgstr ""
 msgid "Envoyer le message"
 msgstr ""
 
-#: inc/galerie.inc.php:42
+#: inc/galerie.inc.php:57
 #, php-format
 msgid "Oeuvre %1$s de la galerie"
 msgstr ""
 
-#: inc/galerie.inc.php:51
+#: inc/galerie.inc.php:66
 #, php-format
 msgid "Taille maximale de l'oeuvre %1$s de la galerie"
 msgstr ""

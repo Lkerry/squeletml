@@ -2,11 +2,52 @@
 
 ## Introduction
 
-Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP, c'est-à-dire un site dont le coeur des pages est créé à la main en HTML et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Cependant, Squeletml a été pensé dans un but d'optimisation du référencement et de personnalisation aisée de chaque page. Ainsi, contrairement à ce qu'on voit souvent avec ce genre de construction de site, la balise title, les métabalises description et keywords, la langue de la page, etc. sont facilement personnalisables pour chaque page, et un fichier de configuration permet également de préciser des caractéristiques pour le site en entier.
+Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Cependant, contrairement à ce qui se produit souvent avec ce genre de sites, Squeletml permet de facilement personnaliser l'en-tête de chaque page (et ce peut importe la langue de la page), d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement. Voici une liste non exhaustive de fonctionnalités de Squeletml:
 
-La mise à jour de Squeletml se veut la plus facile possible. Pour cette raison, les fichiers livrés par défaut sont modifiables en créant des fichiers de même nom dans le répertoire `site`. Le coeur de Squeletml peut donc être mis à jour sans écraser la configuration du site se trouvant dans le répertoire `site`.
+- Structure valide XHTML 1.0 Strict.
+- Syntaxe simple dans la configuration pour insérer des fichiers CSS ou Javascipt dans l'ent-ête seulement pour des pages en particulier, ou bien tout le site.
+- Formulaire de contact avec options d'antipourriel.
+- Module de galerie photos:
+  - nombre illimité de galeries;
+  - navigation personnalisable entre chaque image d'une galerie;
+  - information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique de ces informations, évitant ainsi le contenu dupliqué d'une manière ou d'une autre;
+  - réordonnement d'une image dans une galerie sans modifier l'URL de cette image;
+  - possibilité de générer automatiquement les vignettes ou d'utiliser des vignettes personnalisées.
+- Mise à jour rapide et aisée: la configuration personnalisée d'un site se trouve dans un dossier qui ne sera pas écrasé lors d'une mise à jour de Squeletml.
+- Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue de la page.
+- Gestion multilingue, et structure de site (menu, bas de page, etc.) selon la langue de la page. 
+- Personnalisation de l'en-tête pour chaque page: balise `title`, métabalises `description`, `keywords`, `robots`, langue de la page, etc.
+- Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox.
+- Section d'administration offrant quelques fonctionnalités utiles sans passer par le ftp:
+  - parcours des dossiers du site, renommage, suppression, création, modification, téléversement, téléchargement... des fichiers;
+  - ajout d'utilisateurs ayant le droit d'accéder à l'administration.
 
-Quelques modules sont livrés par défaut avec Squeletml, comme un formulaire de contact et une galerie.
+Squeletml n'a pas pour but d'offrir un système de gestion de contenu avancé, par exemple [Drupal](http://www.drupal-fr.org/), mais d'optimiser le plus possible un site créé *à l'ancienne* :-), dont chaque page représente un *vrai* fichier sur le serveur et codé à la mitaine. J'ai donc codé Squeletml dans le but de pouvoir mettre sur pied un site le plus rapidement et facilement possible, de pouvoir modifier plusieurs aspects des sites (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et de pouvoir mettre à jour le script sans craindre une perte de données ou de configuration des sites.
+
+## Téléchargement
+
+## Fonctionnement
+
+
+
+## Licence de Squeletml
+
+Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
+Copyright © Jean-Philippe Fleury, 2009.
+
+Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
+modifier suivant les termes de la GNU Affero General Public License telle que
+publiée par la Free Software Foundation: soit la version 3 de cette
+licence, soit (à votre gré) toute version ultérieure.
+
+Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
+AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
+ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
+générale GNU Affero pour plus de détails.
+
+Vous devriez avoir reçu une copie de la Licence publique générale GNU Affero
+avec ce programme; si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>.
 
 ## Variables optionnelles avant l'inclusion de `premier.inc.php`
 
@@ -67,22 +108,4 @@ array (
 	'pageGrandeKeywords'     => "",
 ),
 
-## Licence de Squeletml
-
-Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
-Copyright © Jean-Philippe Fleury, 2009.
-
-Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
-modifier suivant les termes de la GNU Affero General Public License telle que
-publiée par la Free Software Foundation: soit la version 3 de cette
-licence, soit (à votre gré) toute version ultérieure.
-
-Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
-AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
-ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
-générale GNU Affero pour plus de détails.
-
-Vous devriez avoir reçu une copie de la Licence publique générale GNU Affero
-avec ce programme; si ce n'est pas le cas, consultez
-<http://www.gnu.org/licenses/>.
 
