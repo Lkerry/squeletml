@@ -16,14 +16,14 @@ if (isset($idGalerie)
 	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.txt'))
 {
 	$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $idGalerie . '.txt');
-	$urlImgSrc = $squeletmlAccueil . '/site/fichiers/galeries/' . $idGalerie;
+	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . $idGalerie;
 	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
 }
 else
 {
 	// Galerie démo par défaut
 	$galerie = construitTableauGalerie($racine . '/inc/galerie-0.txt');
-	$urlImgSrc = $squeletmlAccueil . '/fichiers/galeries/0';
+	$urlImgSrc = $urlRacine . '/fichiers/galeries/0';
 	$racineImgSrc = $racine . '/fichiers/galeries/0';
 }
 
@@ -79,7 +79,7 @@ if (isset($_GET['oeuvre']))
 	if ($imageExiste)
 	{
 		// On récupère le code de l'oeuvre demandée en grande version
-		$oeuvreGrande = '<p id="galerieGrande">' . afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'grande', $i, 'aucun', $galerieHauteurVignette) . '</p>';
+		$oeuvreGrande = '<p id="galerieGrande">' . afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'grande', $i, 'aucun', $galerieHauteurVignette) . '</p>';
 
 		// On recherche l'oeuvre précédente pour la navigation .  Si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente
 		if (array_key_exists($i - 1, $galerie))
@@ -87,7 +87,7 @@ if (isset($_GET['oeuvre']))
 			$op = $i - 1; // $op est l'indice de l'oeuvre précédente
 
 			// On récupère le code de la vignette de l'oeuvre précédente
-			$oeuvrePrecedente = '<p class="galerieNavigationPrecedent">' . afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $op, 'precedent', $galerieHauteurVignette) . '</p>';
+			$oeuvrePrecedente = '<p class="galerieNavigationPrecedent">' . afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $op, 'precedent', $galerieHauteurVignette) . '</p>';
 		}
 
 		// On recherche l'oeuvre suivante pour la navigation
@@ -96,7 +96,7 @@ if (isset($_GET['oeuvre']))
 			$os = $i + 1;
 
 			// On récupère le code de la vignette de l'oeuvre suivante
-			$oeuvreSuivante .= '<p class="galerieNavigationSuivant">' . afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $os, 'suivant', $galerieHauteurVignette) . '</p>';
+			$oeuvreSuivante .= '<p class="galerieNavigationSuivant">' . afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $os, 'suivant', $galerieHauteurVignette) . '</p>';
 		}
 
 		// On crée le corps de la galerie
@@ -124,7 +124,7 @@ else
 	$corpsGalerie = '';
 	foreach($galerie as $oeuvre)
 	{
-		$corpsGalerie .= afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $compteurGalerie, 'aucun', $galerieHauteurVignette);
+		$corpsGalerie .= afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $compteurGalerie, 'aucun', $galerieHauteurVignette);
 		$compteurGalerie++;
 	}
 }

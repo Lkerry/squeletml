@@ -14,10 +14,10 @@ $baliseTitleComplement['en'] = "Site of...";
 Syntaxe: $fichiersLinkScript[] = array ("URL" => "TYPE:fichier à inclure");
 Les types possibles sont: css, cssltIE7, cssIE7, javascript, favicon.
 Ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants. Exemples:
-$fichiersLinkScript[] = array ("$squeletmlAccueil/page.php" => "css:$squeletmlAccueil/css/style.css");
-$fichiersLinkScript[] = array ("$squeletmlAccueil/page.php*" => "css:$squeletmlAccueil/css/style.css");
+$fichiersLinkScript[] = array ("$urlRacine/page.php" => "css:$urlRacine/css/style.css");
+$fichiersLinkScript[] = array ("$urlRacine/page.php*" => "css:$urlRacine/css/style.css");
 */
-$fichiersLinkScript[] = array ("$squeletmlAccueil*" => "css:$squeletmlAccueil/css/squeletml.css");
+$fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/squeletml.css");
 
 // Version des fichiers précédemment déclarés
 /* La version sera ajoutée à la suite du nom des fichiers en tant que variable GET.
@@ -101,5 +101,9 @@ $galerieHauteurVignette = 100;
 
 // DOCUMENT_ROOT n'a pas toujours la bonne valeur selon les serveurs
 $_SERVER['DOCUMENT_ROOT'] = $racine;
+
+// Diverses variables utiles pour les liens dans les pages
+$urlSite = $urlRacine . '/site';
+$urlFichiers = $urlRacine . '/site/fichiers';
 
 ?>

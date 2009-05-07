@@ -481,7 +481,7 @@ function nomFichierGalerie()
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette)
+function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette)
 {
 	if ($taille == 'grande')
 	{
@@ -549,7 +549,7 @@ function afficheOeuvre($squeletmlAccueil, $racineImgSrc, $urlImgSrc, $galerie, $
 			{
 				$fleche = 'droite';
 			}
-			$src = 'src="' . $squeletmlAccueil . '/fichiers/png/fleche-' . $fleche . '.png"';
+			$src = 'src="' . $urlRacine . '/fichiers/fleche-' . $fleche . '.png"';
 		}
 
 		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')
