@@ -1,9 +1,10 @@
-# Squeletml
+# Squeletml, squelette de site XHTML et PHP
 
 ## Introduction
 
-Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Cependant, contrairement à ce qui se produit souvent avec ce genre de sites, Squeletml permet de facilement personnaliser l'en-tête de chaque page (et ce peut importe la langue de la page), d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement. Voici une liste non exhaustive de fonctionnalités de Squeletml:
+Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP, sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Cependant, contrairement à ce qui se produit souvent avec ce genre de sites, Squeletml permet de facilement personnaliser l'en-tête de chaque page (et ce peut importe la langue de la page), d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement. Voici une liste non exhaustive de fonctionnalités ou de caractéristiques de Squeletml:
 
+- Sans base de données.
 - Structure valide XHTML 1.0 Strict.
 - Syntaxe simple dans la configuration pour insérer des fichiers CSS ou Javascipt dans l'ent-ête seulement pour des pages en particulier, ou bien tout le site.
 - Formulaire de contact avec options d'antipourriel.
@@ -22,7 +23,7 @@ Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fich
   - parcours des dossiers du site, renommage, suppression, création, modification, téléversement, téléchargement... des fichiers;
   - ajout d'utilisateurs ayant le droit d'accéder à l'administration.
 
-Squeletml n'a pas pour but d'offrir un système de gestion de contenu avancé, par exemple [Drupal](http://www.drupal-fr.org/), mais d'optimiser le plus possible un site créé *à l'ancienne* :-), dont chaque page représente un *vrai* fichier sur le serveur et codé à la mitaine. J'ai donc codé Squeletml dans le but de pouvoir mettre sur pied un site le plus rapidement et facilement possible, de pouvoir modifier plusieurs aspects des sites (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et de pouvoir mettre à jour le script sans craindre une perte de données ou de configuration des sites.
+Squeletml n'a pas pour but d'offrir un système de gestion de contenu avancé (par exemple [Drupal](http://www.drupal-fr.org/)), mais d'optimiser le plus possible un site créé *à l'ancienne* :-), dont chaque page représente un *vrai* fichier sur le serveur et codé à la mitaine. J'ai donc codé Squeletml dans le but de pouvoir mettre sur pied un site le plus rapidement et facilement possible, de pouvoir modifier plusieurs aspects des sites (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et de pouvoir mettre à jour le script sans craindre une perte de données ou de configuration des sites.
 
 ## Téléchargement
 
@@ -32,7 +33,7 @@ Squeletml n'a pas pour but d'offrir un système de gestion de contenu avancé, p
 
 ## Licence de Squeletml
 
-Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
+Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
 Copyright © Jean-Philippe Fleury, 2009.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le

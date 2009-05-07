@@ -25,9 +25,10 @@ publier: bz2
 ##
 ########################################################################
 
-bz2: menage-bz2 ChangeLog
+bz2: menage-bz2 ChangeLog version.txt
 	bzr export -r tag:$(tag) $(tag)
 	mv ChangeLog $(tag)/
+	mv version.txt $(tag)/
 	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
 	          # une variable de Makefile dans une commande shell $(...).
 	          # Par exemple, ceci ne fonctionne pas:
@@ -57,6 +58,9 @@ menage-pot:
 	rm -f locale/squeletml.pot
 	touch locale/squeletml.pot # sinon xgettext -j va planter en précisant que le fichier est introuvable
 
+menage-version.txt:
+	rm -f version.txt
+
 mo:
 	for po in `find locale/ -iname *.po`;\
 	do\
@@ -73,4 +77,7 @@ po: pot
 
 pot: menage-pot
 	find ./ -iname "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
+
+version.txt: menage-version.txt
+	echo $(tag) > version.txt
 
