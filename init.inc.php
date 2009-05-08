@@ -1,5 +1,6 @@
 <?php
 // Chemin racine de l'installation de Squeletml
+#$racine = $_SERVER['DOCUMENT_ROOT'];
 $racine = '/var/www/serveur_local/squeletml'; // Sans la barre finale /
 
 // URL racine de l'installation de Squeletml

@@ -24,7 +24,8 @@ foreach (init() as $fichier)
 		<li><a href="index.php">Accueil de l'admin</a> | </li>
 		<li><a href="droits.php">Droits d'accès</a> | </li>
 		<li><a href="galeries.php">Galeries</a> | </li>
-		<li><a href="porte-documents.php">Porte-documents</a> | </li>
+		<li><a href="porte-documents.php">Porte-documents</a> <strong>||</strong> </li>
+		<li><a href="lisez-moi.php">Lisez-moi</a> | </li>
 		<li><a href="documentation.php">Documentation</a> | </li>
 		<li><a href="../index.php">Retour au site</a></li>
 	</ul>

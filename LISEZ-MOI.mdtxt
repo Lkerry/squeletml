@@ -1,12 +1,16 @@
 # Squeletml, squelette de site XHTML et PHP
 
-## Introduction
+## Qu'est-ce que Squeletml?
 
-Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP, sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Cependant, contrairement à ce qui se produit souvent avec ce genre de sites, Squeletml permet de facilement personnaliser l'en-tête de chaque page (et ce peut importe la langue de la page), d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement. Voici une liste non exhaustive de fonctionnalités ou de caractéristiques de Squeletml:
+Le logiciel libre Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP, sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Cependant, contrairement à ce qui se produit souvent avec ce genre de sites, Squeletml permet de facilement personnaliser l'en-tête de chaque page (et ce peut importe la langue de la page), d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement.
+
+## Fonctionnalités
+
+Voici une liste non exhaustive de fonctionnalités ou de caractéristiques de Squeletml:
 
 - Sans base de données.
 - Structure valide XHTML 1.0 Strict.
-- Syntaxe simple dans la configuration pour insérer des fichiers CSS ou Javascipt dans l'ent-ête seulement pour des pages en particulier, ou bien tout le site.
+- Syntaxe simple dans le fichier de configuration pour insérer des fichiers CSS ou Javascipt dans l'ent-ête pour certaines pages en particulier, ou bien pour tout le site.
 - Formulaire de contact avec options d'antipourriel.
 - Module de galerie photos:
   - nombre illimité de galeries;
@@ -23,17 +27,15 @@ Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fich
   - parcours des dossiers du site, renommage, suppression, création, modification, téléversement, téléchargement... des fichiers;
   - ajout d'utilisateurs ayant le droit d'accéder à l'administration.
 
-Squeletml n'a pas pour but d'offrir un système de gestion de contenu avancé (par exemple [Drupal](http://www.drupal-fr.org/)), mais d'optimiser le plus possible un site créé *à l'ancienne* :-), dont chaque page représente un *vrai* fichier sur le serveur et codé à la mitaine. J'ai donc codé Squeletml dans le but de pouvoir mettre sur pied un site le plus rapidement et facilement possible, de pouvoir modifier plusieurs aspects des sites (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et de pouvoir mettre à jour le script sans craindre une perte de données ou de configuration des sites.
+Squeletml n'a pas pour but d'offrir un système de gestion de contenu avancé (par exemple [Drupal](http://www.drupal-fr.org/)), mais d'optimiser le plus possible un site créé *à l'ancienne* :-), dont chaque page représente un *vrai* fichier sur le serveur et est codé à la mitaine. J'ai donc écrit Squeletml dans le but de pouvoir mettre sur pied un site le plus rapidement et facilement possible, pouvoir modifier plusieurs aspects des sites (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et pouvoir mettre à jour le script sans craindre une perte de données ou de configuration personnalisée des sites.
 
-## Téléchargement
+## Documentation
 
-## Fonctionnement
-
-
+Voir le fichier documentation.mdtxt.
 
 ## Licence de Squeletml
 
-Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
+Auteur: Jean-Philippe Fleury <http://www.jpfleury.net/contact>  
 Copyright © Jean-Philippe Fleury, 2009.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
@@ -49,64 +51,4 @@ générale GNU Affero pour plus de détails.
 Vous devriez avoir reçu une copie de la Licence publique générale GNU Affero
 avec ce programme; si ce n'est pas le cas, consultez
 <http://www.gnu.org/licenses/>.
-
-## Variables optionnelles avant l'inclusion de `premier.inc.php`
-
-- `$baliseTitle`: contenu de la balise `title`
-- `$description`: contenu de la métabalise `description`
-- `$motsCles`: contenu de la métabalise `keywords`
-- `$langue[1]`: langue de la page courante
-- `$robots[1]`: contenu de la métabalise `robots`
-- `$idGalerie`: un nombre identifiant la galerie. Représente le répertoire qui sera lu pour lister les images
-
-## Galeries
-
-Chaque image (grande ou vignette) d'une galerie peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `nom du fichier`) de la balise `img`. Le balayage automatique évite de devoir remplir la seule information obligatoire (nom du fichier de la grande image).
-
-Chaque oeuvre de la galerie possède sa propre entrée dans le tableau $galerie. Voici la structure d'une entrée:
-
- id: id image. L'id est utilisé dans l'URL au lieu de l'indice de l'oeuvre dans le tableau pour identifier l'oeuvre, ce qui permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si vide, l'id sera généré automatiquement à partir du nom de fichier image.
-
- vignetteNom: nom Vignette. Si vide, correspond à grandeNom(sans extension)-vignette.extension
-
- vignetteLargeur: largeur Vignette. Si vignetteLargeur ou vignetteHauteur sont renseignées, seulement la ou les informations renseignées seront affichées. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement.
-
- vignetteHauteur: hauteur Vignette. Voir vignetteLargeur.
-
- vignetteAlt: alt Vignette. Si vide, génération automatique.
-
- grandeNom: nom Grande. Champ obligatoire.
-
- grandeLargeur: largeur Grande. Voir vignetteLargeur.
-
- grandeHauteur: hauteur Grande. Voir grandeLargeur.
-
- grandeAlt: alt Grande. Si vide, génération automatique.
-
- grandeCommentaire: commentaire Grande. Message affiché sous l'image.
-
- pageGrandeTitle: title page Grande ; laisser vide pour génération automatique.
-
- pageGrandeDescription: description page Grande ; laisser vide pour génération automatique.
-
- pageGrandeKeywords: keywords page Grande ; laisser vide pour génération automatique.
-
-Voici une entrée vide qu'il est possible de copier/coller:
-
-array (
-	'id'                     => "",
-	'vignetteNom'            => "",
-	'vignetteLargeur'        => "",
-	'vignetteHauteur'        => "",
-	'vignetteAlt'            => "",
-	'grandeNom'              => "*",
-	'grandeLargeur'          => "",
-	'grandeHauteur'          => "",
-	'grandeAlt'              => "",
-	'grandeCommentaire'      => "",
-	'pageGrandeTitle'        => "",
-	'pageGrandeDescription'  => "",
-	'pageGrandeKeywords'     => "",
-),
-
 

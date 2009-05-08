@@ -1,0 +1,165 @@
+# Documentation de Squeletml
+
+## Installation
+
+Squeletml requiert un serveur PHP, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il n'est donc nécessaire que télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire l'archive, et de placer les fichiers sur un serveur, par exemple par ftp.
+
+Mise en situation:
+
+On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.4`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-1.4` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-1.4`, ce qui nous donne l'adresse `http://nomDeDomaine.ext/`.
+
+## Configuration de base
+
+### Le fichier `init.inc.php`
+
+Un seul fichier doit obligatoirement être modifié et configuré, bien que vous voudrez probablement personnaliser ensuite le reste du site.
+
+Connectez-vous par ftp au serveur hébergeant votre site. Trouvez le fichier `init.inc.php`, situé à la racine de votre installation de Squeletml. Ce fichier contient trois variables à renseigner:
+
+- `$racine`: il s'agit du chemin absolu vers votre installation de Squeletml. Souvent, cette information équivaut à la valeur de la variable `$_SERVER['DOCUMENT_ROOT']`, mais ce n'est pas toujours le cas.
+
+- `$urlRacine`: il s'agit de l'adresse URL vers votre installation de Squeletml. Par exemple, `http://nomDeDomaine.ext/monSiteSqueletml` ou `http://nomDeDomaine.ext`.
+
+- `$accueil[]`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site. Si votre site est offert dans une seule langue, le tableau ne contiendra qu'un élément. Exemple:
+
+		$accueil['fr'] = $urlRacine;
+
+	Vous pouvez ajouter autant de langues que vous le désirez. Seulement, prenez note que pour l'instant, Squeletml offre une traduction de son squelette prête à être utilisée pour seulement deux langues: le français et l'anglais.
+
+Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation.
+
+### Le fichier `.htaccess`
+
+Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Trouvez la ligne:
+
+	ErrorDocument 404 http://localhost/serveur_local/squeletml/404.php
+
+et modifier `http://localhost/serveur_local/squeletml` par la bonne adresse.
+
+### Le fichier `inc/config.inc.php`
+
+Ce fichier contient beaucoup de paramètres au sujet du site. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml.
+
+## Structure de Squeletml
+
+La structure de Squeletml est la suivante:
+
+- `admin`
+- `css`
+- `en`
+- `fichiers`
+- `inc`
+- `locale`
+- **`site`**
+
+Tous les dossiers, à part `site`, font partie de la structure officielle par défaut de Squeletml, et ne doivent pas être modifiés, sous peine de perdre les modifications lors d'une mise à jour de Squeletml.
+
+**Toute modification apportée à la configuration doit donc être effectuée dans le dossier `site`.**
+
+Par exemple, pour modifier l'apparence du site, **ne modifiez pas** le fichier `css/style-general.css`, mais créez un fichier dans `site/css/`, par exemple `site/css/style.css`. Il faudra ensuite ajouter ce fichier dans les styles à inclure. Nous verrons comment faire un peu plus loin.
+
+Pour ajouter des images, mettez vos fichiers dans `site/fichiers`. Pour ajouter des fichiers à inclure, créez des fichiers dans `site/inc`. Vous aurez compris, le dossier `site` recrée la structure par défaut de Squeletml, ce qui permet de pouvoir facilement personnaliser le site sans toucher aux fichiers officiels de Squeletml. La mise à jour du logiciel en sera grandement facilitée.
+
+### Le dossier `inc`
+
+Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il s'agit autant de la configuration que de la structure HTML (en-tête, menu, etc.). Chaque fichier peut être personnalisé en créant un fichier de même nom dans `site/inc`, et Squeletml reconnaîtra automatiquement le fichier personnel. Voici la liste des fichiers de `inc` que vous pouvez personnaliser dans votre dossier `site/inc`:
+
+- `config.inc.php`: fichier important, contenant presque toute la configuration du site, autant pour le formulaire de contact, les galeries photos, le titre du site, etc. Pour modifier une variable de ce fichier, créer un fichier de même nom dans `site/inc`, ce qui donne:
+
+		site/inc/config.inc.php
+
+	et y réassigner les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
+
+- `constantes.inc.php`: contient les constantes PHP utilisées dans Squeletml. Vous pouvez ajouter vos propres constantes en créant le fichier `site/inc/constantes.inc.php`. S'il existe, ce fichier sera inséré après celui par défaut.
+
+- `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
+
+- Les fichiers de structure HTML, qui sont, pour le français:
+
+  - html.fr.ancres.inc.php
+  - html.fr.bas-de-page.inc.php
+  - html.fr.menu.inc.php
+  - html.fr.menu-langues.inc.php
+  - html.fr.sous-titre.inc.php
+
+	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `html.en.menu.inc.php`.
+
+	Ces fichiers contiennent le contenu par défaut pour chaque structure représentée. Vous pouvez personnaliser chaque structure en créant un fichier de même nom dans `site/inc`. Par exemple, pour modifier le menu en français, créer un fichier `site/inc/html.fr.menu.inc.php` et modifiez son contenu comme désiré. **Ceci écrasera le fichier par défaut.** Ainsi, si `site/inc/html.fr.menu.inc.php` existe, le fichier par défaut `inc/html.fr.menu.inc.php` ne sera pas inclus.
+
+- Les fichiers de page. La page d'erreur n'est pas traduite pour l'instant:
+
+  - page.404.inc.php
+
+	Les autres le sont:
+
+  - page.fr.contact.inc.php
+  - page.fr.galerie.inc.php
+  - page.fr.index.inc.php
+
+	**Il s'agit des pages livrées par défaut par Squeletml.** C'ets pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer vos modifications. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans `site/incpage.fr.index.inc.php` et modifier son contenu. **Le fichier personnalisé va être inclus à la place du fichier par défaut.**
+
+## Configuration plus poussée
+
+### Le fichier `inc/config.inc.php`
+
+Nous revoilà avec le fichier `inc/config.inc.php`.
+
+## Variables optionnelles avant l'inclusion de `premier.inc.php`
+
+- `$baliseTitle`: contenu de la balise `title`
+- `$description`: contenu de la métabalise `description`
+- `$motsCles`: contenu de la métabalise `keywords`
+- `$langue[1]`: langue de la page courante
+- `$robots[1]`: contenu de la métabalise `robots`
+- `$idGalerie`: un nombre identifiant la galerie. Représente le répertoire qui sera lu pour lister les images
+
+## Galeries
+
+Chaque image (grande ou vignette) d'une galerie peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `nom du fichier`) de la balise `img`. Le balayage automatique évite de devoir remplir la seule information obligatoire (nom du fichier de la grande image).
+
+Chaque oeuvre de la galerie possède sa propre entrée dans le tableau $galerie. Voici la structure d'une entrée:
+
+ id: id image. L'id est utilisé dans l'URL au lieu de l'indice de l'oeuvre dans le tableau pour identifier l'oeuvre, ce qui permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si vide, l'id sera généré automatiquement à partir du nom de fichier image.
+
+ vignetteNom: nom Vignette. Si vide, correspond à grandeNom(sans extension)-vignette.extension
+
+ vignetteLargeur: largeur Vignette. Si vignetteLargeur ou vignetteHauteur sont renseignées, seulement la ou les informations renseignées seront affichées. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement.
+
+ vignetteHauteur: hauteur Vignette. Voir vignetteLargeur.
+
+ vignetteAlt: alt Vignette. Si vide, génération automatique.
+
+ grandeNom: nom Grande. Champ obligatoire.
+
+ grandeLargeur: largeur Grande. Voir vignetteLargeur.
+
+ grandeHauteur: hauteur Grande. Voir grandeLargeur.
+
+ grandeAlt: alt Grande. Si vide, génération automatique.
+
+ grandeCommentaire: commentaire Grande. Message affiché sous l'image.
+
+ pageGrandeTitle: title page Grande ; laisser vide pour génération automatique.
+
+ pageGrandeDescription: description page Grande ; laisser vide pour génération automatique.
+
+ pageGrandeKeywords: keywords page Grande ; laisser vide pour génération automatique.
+
+Voici une entrée vide qu'il est possible de copier/coller:
+
+array (
+	'id'                     => "",
+	'vignetteNom'            => "",
+	'vignetteLargeur'        => "",
+	'vignetteHauteur'        => "",
+	'vignetteAlt'            => "",
+	'grandeNom'              => "*",
+	'grandeLargeur'          => "",
+	'grandeHauteur'          => "",
+	'grandeAlt'              => "",
+	'grandeCommentaire'      => "",
+	'pageGrandeTitle'        => "",
+	'pageGrandeDescription'  => "",
+	'pageGrandeKeywords'     => "",
+),
+

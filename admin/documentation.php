@@ -2,8 +2,8 @@
 $baliseTitle = "Documentation de Squeletml";
 include 'inc/premier.inc.php';
 
-$fic = fopen('../LISEZ-MOI.mdtxt', 'r');
-$documentationMdtxt = fread($fic, filesize('../LISEZ-MOI.mdtxt'));
+$fic = fopen('../documentation.mdtxt', 'r');
+$documentationMdtxt = fread($fic, filesize('../documentation.mdtxt'));
 fclose($fic);
 $documentationHtml = Markdown($documentationMdtxt);
 
