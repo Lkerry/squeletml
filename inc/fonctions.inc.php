@@ -531,9 +531,9 @@ function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerie
 			$alt = 'alt="Oeuvre ' . $id . '"';
 		}
 		
-		if (!empty($galerie[$indice]['grandeCommentaire']))
+		if (!empty($galerie[$indice]['grandeLegende']))
 		{
-			$commentaire = '<span id="galerieGrandeCommentaire">' . $galerie[$indice]['grandeCommentaire'] . '</span>';
+			$commentaire = '<span id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</span>';
 		}
 
 		return '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $commentaire;

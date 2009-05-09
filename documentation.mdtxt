@@ -199,55 +199,97 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 
 ## Galeries
 
-Intro
+Petit rappel: pour créer une galerie, voici les étapes à suivre:
+
+1. Ajouter une variable `$idGalerie` au début du fichier qu'on veut utiliser comme galerie.
+
+2. Ajouter également une `$introGalerie`, pour personnaliser l'introduction (cette étape est optionnelle).
+
+3. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
+
+4. Créer un fichier de configuration `site/inc/galerie-$idGalerie.txt`. Cette étape sera développée ci-dessous.
 
 ### Fichier de configuration
 
-Chaque image (grande ou vignette) d'une galerie peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `nom du fichier`) de la balise `img`. Le balayage automatique évite de devoir remplir la seule information obligatoire (nom du fichier de la grande image).
+Chaque image d'une galerie est déclinée en deux versions: grande ou vignette. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version grande.
 
-Chaque oeuvre de la galerie possède sa propre entrée dans le tableau $galerie. Voici la structure d'une entrée:
+Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.txt`. Vous pouvez générer automatiquement le contenu de ce fichier en utilisant le script d'aide dans la section d'administration. Vous n'aurez qu'ensuite qu'à copier le contenu généré, créer le fichier `site/inc/galerie-$idGalerie.txt` et y coller l'information.
 
- id: id image. L'id est utilisé dans l'URL au lieu de l'indice de l'oeuvre dans le tableau pour identifier l'oeuvre, ce qui permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si vide, l'id sera généré automatiquement à partir du nom de fichier image.
+Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `__IMG__`. Voici un exemple:
 
- vignetteNom: nom Vignette. Si vide, correspond à grandeNom(sans extension)-vignette.extension
+	grandeNom=fichier1.jpg
+	__IMG__
+	grandeNom=fichier2.jpg
+	__IMG__
 
- vignetteLargeur: largeur Vignette. Si vignetteLargeur ou vignetteHauteur sont renseignées, seulement la ou les informations renseignées seront affichées. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement.
+Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète:
 
- vignetteHauteur: hauteur Vignette. Voir vignetteLargeur.
+- `grandeNom`: nom du fichier image en version grande. **Le seul champ obligatoire.** Exemple:
 
- vignetteAlt: alt Vignette. Si vide, génération automatique.
+	grandeNom=fichier1.jpg
 
- grandeNom: nom Grande. Champ obligatoire.
+- `id`: l'id est utilisée dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Cela permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'id n'est pas renseignée, elle sera générée automatiquement à partir du nom du fichier image. Exemple:
 
- grandeLargeur: largeur Grande. Voir vignetteLargeur.
+	id=5
 
- grandeHauteur: hauteur Grande. Voir grandeLargeur.
+- `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-vignette.extension`. Exemple:
 
- grandeAlt: alt Grande. Si vide, génération automatique.
+	vignetteNom=fichier1Petit.jpg
 
- grandeCommentaire: commentaire Grande. Message affiché sous l'image.
+- `vignetteLargeur`: largeur de la vignette. Si `vignetteLargeur` ou `vignetteHauteur` sont renseignées, seulement la ou les informations renseignées seront affichées dans la balise `img`. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement. Exemple:
 
- pageGrandeTitle: title page Grande ; laisser vide pour génération automatique.
+	vignetteLargeur=100
 
- pageGrandeDescription: description page Grande ; laisser vide pour génération automatique.
+- `vignetteHauteur`: hauteur de la vignette. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
- pageGrandeKeywords: keywords page Grande ; laisser vide pour génération automatique.
+	vignetteHauteur=150
 
-Voici une entrée vide qu'il est possible de copier/coller:
+- `vignetteAlt`: texte alternatif (contenu de l'attribut `alt`) de la vignette. Si vide, le contenu sera généré automatiquement. Exemple:
 
-array (
-	'id'                     => "",
-	'vignetteNom'            => "",
-	'vignetteLargeur'        => "",
-	'vignetteHauteur'        => "",
-	'vignetteAlt'            => "",
-	'grandeNom'              => "*",
-	'grandeLargeur'          => "",
-	'grandeHauteur'          => "",
-	'grandeAlt'              => "",
-	'grandeCommentaire'      => "",
-	'pageGrandeTitle'        => "",
-	'pageGrandeDescription'  => "",
-	'pageGrandeKeywords'     => "",
-),
+	vignetteAlt=Chien assis sur un divan.
+
+- `grandeLargeur`: largeur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
+
+	grandeLargeur=500
+
+- `grandeHauteur`: hauteur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
+
+	grandeHauteur=750
+
+- `grandeAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version grande. Si vide, le contenu sera généré automatiquement. Exemple:
+
+	grandeAlt=Chien dormant sur un divan.
+
+- `grandeLegende`: commentaire qui sera affiché sous l'image en version grande. Exemple:
+
+	grandeLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
+
+- `pageGrandeBaliseTitle`: contenu de la balise `title` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
+
+	pageGrandeBaliseTitle=Bla bla bla
+
+- `pageGrandeDescription`: contenu de la métabalise `description` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
+
+	pageGrandeDescription=Bla bla bla
+
+- `pageGrandeMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
+
+	pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
+
+Voici une entrée vide, qu'il est possible de copier/coller:
+
+	grandeNom="OBLIGATOIRE"
+	id=""
+	vignetteNom=""
+	vignetteLargeur=""
+	vignetteHauteur=""
+	vignetteAlt=""
+	grandeLargeur=""
+	grandeHauteur=""
+	grandeAlt=""
+	grandeLegende=""
+	pageGrandeBaliseTitle=""
+	pageGrandeDescription=""
+	pageGrandeMotsCles=""
+	__IMG__
 

@@ -48,9 +48,9 @@ if (isset($_GET['oeuvre']))
 		{
 			$imageExiste = TRUE;
 			// L'image existe, on peut donc écraser les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable $galerie, on donne une valeur automatiquement.
-			if (!empty($galerie[$i]['pageGrandeTitle']))
+			if (!empty($galerie[$i]['pageGrandeBaliseTitle']))
 			{
-				$baliseTitle = $galerie[$i]['pageGrandeTitle'];
+				$baliseTitle = $galerie[$i]['pageGrandeBaliseTitle'];
 			}
 			else
 			{
@@ -66,7 +66,7 @@ if (isset($_GET['oeuvre']))
 				$description = sprintf(T_("Taille maximale de l'oeuvre %1\$s de la galerie"), $id) . ' | ' . $baliseTitleComplement[langue($langue)];
 			}
 
-			$motsCles = construitMotsCles($galerie[$i]['pageGrandeKeywords'], $description);
+			$motsCles = construitMotsCles($galerie[$i]['pageGrandeMotsCles'], $description);
 			$motsCles .= ', ' . $id;
 
 			break; // On arrête la boucle
