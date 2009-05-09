@@ -4,23 +4,25 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.0\n"
+"Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-06 22:34-0400\n"
-"PO-Revision-Date: 2009-05-04 17:00-0400\n"
+"POT-Creation-Date: 2009-05-08 23:17-0400\n"
+"PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: inc/fonctions.inc.php:333
+#: inc/fonctions.inc.php:338
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
+"Do you know that Internet&nbsp;Explorer&nbsp;6 (with which you are visiting "
+"this site) is out of date?"
 
-#: inc/fonctions.inc.php:335
+#: inc/fonctions.inc.php:340
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -28,51 +30,55 @@ msgid ""
 "basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au "
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
+"To get the best and safest possible experience browsing, we recommend using "
+"<strong>Firefox</strong>, an open browser, caracterised by security, high "
+"performance and respect of web standards. Firefox is totally free. If you "
+"are using a computer at work you should contact your IT administrator."
 
-#: inc/fonctions.inc.php:337
+#: inc/fonctions.inc.php:342
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:683
+#: inc/fonctions.inc.php:688
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
 
 #: inc/contact.inc.php:22
 msgid "Vous n'avez pas inscrit de nom."
-msgstr ""
+msgstr "You have not written your name."
 
 #: inc/contact.inc.php:31
 msgid ""
 "L'adresse courriel que vous avez saisi ne semble pas avoir une forme valide. "
 "Veuillez vérifier."
-msgstr ""
+msgstr "The e-mail entered seems to contain some errors. Please check it."
 
 #: inc/contact.inc.php:37
 msgid "Vous n'avez pas écrit de message."
-msgstr ""
+msgstr "You have not written any text."
 
 #: inc/contact.inc.php:46
 msgid "Veuillez répondre correctement à la question antipourriel."
-msgstr ""
+msgstr "Please answer correctly the anti-spam question."
 
 #: inc/contact.inc.php:54
 msgid ""
 "Votre message a une forme qui le fait malheureusement classer comme du "
 "pourriel. Veuillez le modifier."
-msgstr ""
+msgstr "Unfortunately your text has been identified as spam. Please change it."
 
 #: inc/contact.inc.php:82
 msgid "Votre message a bien été envoyé."
-msgstr ""
+msgstr "Your email has been sent."
 
 #: inc/contact.inc.php:90
 msgid "ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard."
-msgstr ""
+msgstr "CAUTION: your e-mail could not be sent. Please try again later."
 
 #: inc/contact.inc.php:109
 msgid "Le formulaire n'a pas été rempli correctement"
-msgstr ""
+msgstr "The form has not been filled correctly"
 
 #: inc/contact.inc.php:125
 msgid "Votre nom:"
@@ -84,7 +90,7 @@ msgstr "Your email:"
 
 #: inc/contact.inc.php:131
 msgid "Votre message:"
-msgstr "Your message:"
+msgstr "Your text:"
 
 #: inc/contact.inc.php:138
 msgid "Antipourriel:"
@@ -93,22 +99,22 @@ msgstr "Anti-spam:"
 #: inc/contact.inc.php:139
 #, php-format
 msgid "Compléter: %1$s ajouté à %2$s vaut %3$s"
-msgstr ""
+msgstr "Answer: adding %1$s to %2$s makes %3$s"
 
 #: inc/contact.inc.php:170
 msgid "Je souhaite recevoir une copie du message"
-msgstr ""
+msgstr "I want to receive a copy"
 
 #: inc/contact.inc.php:173
 msgid "Envoyer le message"
-msgstr ""
+msgstr "Send email"
 
 #: inc/galerie.inc.php:57
 #, php-format
 msgid "Oeuvre %1$s de la galerie"
-msgstr ""
+msgstr "Work %1$s of this gallery"
 
 #: inc/galerie.inc.php:66
 #, php-format
 msgid "Taille maximale de l'oeuvre %1$s de la galerie"
-msgstr ""
+msgstr "Max size of the work %1$s of this gallery"
