@@ -42,7 +42,7 @@ if ($messageIE6)
 	<?php include fichierAncres($racine, $langue); ?>
 </div><!-- /ancres -->
 
-<?php if (!$menuLanguesSousLeContenu): ?>
+<?php if (!$menuLanguesSousLeContenu && count($accueil) > 1): ?>
 	<div id="menuLangues">
 		<?php include fichierMenuLangues($racine, $langue); ?>
 	</div><!-- /menuLangues -->

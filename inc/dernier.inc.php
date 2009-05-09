@@ -9,7 +9,7 @@
 	</div><!-- /interieurContenu -->
 </div><!-- /contenu -->
 
-<?php if ($menuLanguesSousLeContenu): ?>
+<?php if ($menuLanguesSousLeContenu && count($accueil) > 1): ?>
 	<div id="menuLangues">
 		<?php include fichierMenuLangues($racine, $langue); ?>
 	</div><!-- /menuLangues -->
