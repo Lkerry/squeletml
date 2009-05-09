@@ -40,7 +40,7 @@ function init($racine, $langue, $idGalerie)
 		$fichiers[] = $racine . '/site/inc/constantes.inc.php';
 	}
 	
-	if (!empty($idGalerie) || $idGalerie == 0)
+	if (isset($idGalerie))
 	{
 		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important d'insérer avant premier.inc.php, pour permettre la modification des balises de l'en-tête
 	}
