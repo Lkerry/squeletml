@@ -51,4 +51,4 @@ if (isset($_POST['soumettre']))
 </div>
 </form>
 
-<?php include 'inc/dernier.inc.php'; ?>
+<?php include $racine . '/admin/inc/dernier.inc.php'; ?>

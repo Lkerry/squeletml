@@ -2,7 +2,7 @@
 // Début des insertions
 include_once dirname(__FILE__) . '/../init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
-foreach (init($racine, langue($langue)) as $fichier)
+foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }

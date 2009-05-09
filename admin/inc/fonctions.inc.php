@@ -10,17 +10,17 @@ function formateTexte($texte)
 /**
 Retourne un tableau contenant les fichiers à inclure.
 */
-function init()
+function init($racine)
 {
 	$fichiers = array ();
 	
-	$fichiers[] = 'inc/config.inc.php';
+	$fichiers[] = $racine . '/admin/inc/config.inc.php';
 	
-	$fichiers[] = 'inc/php-markdown/markdown.php';
+	$fichiers[] = $racine . '/admin/inc/php-markdown/markdown.php';
 	
-	if (file_exists('../site/inc/config-admin.inc.php'))
+	if (file_exists($racine . '/site/inc/config-admin.inc.php'))
 	{
-		$fichiers[] = '../site/inc/config-admin.inc.php';
+		$fichiers[] = $racine . '/site/inc/config-admin.inc.php';
 	}
 	
 	return $fichiers;
@@ -128,6 +128,19 @@ function parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFilt
 	}
 
 	return $liste;
+}
+
+/**
+Retourne la version de l'installation
+*/
+function versionLogiciel($racine)
+{
+	$fic = fopen($racine . '/version.txt', 'r');
+	$tag = fgets($fic, 20); // exemple: logiciel-1.4
+	fclose($fic);
+	$version = explode('-', $tag);
+	
+	return $version[1];
 }
 
 ?>

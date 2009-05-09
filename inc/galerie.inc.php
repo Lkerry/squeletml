@@ -1,7 +1,7 @@
 <?php
 // Insertion des fichiers nécessaires
 include_once $racine . '/inc/fonctions.inc.php';
-foreach (init($racine, langue($langue)) as $fichier)
+foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }
@@ -129,5 +129,15 @@ else
 	}
 }
 
-$corpsGalerie = '<div id="galerie">' . "\n" . $corpsGalerie . "\n" . '</div><!-- /galerie -->' . "\n";
+// Intro à la galerie
+if (isset($introGalerie) && !empty($introGalerie))
+{
+	$intro = $introGalerie . "\n\n";
+}
+else
+{
+	$intro = '';
+}
+
+$corpsGalerie = '<div id="galerie">' . "\n" . $intro . $corpsGalerie . "\n" . '</div><!-- /galerie -->' . "\n";
 ?>

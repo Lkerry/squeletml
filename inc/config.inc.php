@@ -69,9 +69,6 @@ $captchaLiensNbre = 5; // Nombre de liens max dans un message
 // Vérification de la forme du courriel
 $verifCourriel = TRUE; // TRUE|FALSE
 
-// Courriel qui va recevoir les messages
-$courrielContact = "courriel@site.ext";
-
 // Ajout optionnel d'un identifiant dans l'objet; ex.: "[Contact] "
 $courrielObjetId = "[Contact] ";
 

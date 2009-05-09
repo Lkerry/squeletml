@@ -1,6 +1,3 @@
 <?php
-$baliseTitle = "Administration";
-include 'inc/premier.inc.php';
-
-include 'inc/dernier.inc.php';
+header('Location: index.admin.php');
 ?>

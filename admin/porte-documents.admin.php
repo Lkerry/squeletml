@@ -483,4 +483,4 @@ foreach ($liste as $valeur)
 
 </div>
 
-<?php include 'inc/dernier.inc.php'; ?>
+<?php include $racine . '/admin/inc/dernier.inc.php'; ?>

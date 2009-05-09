@@ -15,7 +15,7 @@ function phpGettext($racine, $langue)
 /**
 Retourne un tableau contenant les fichiers à inclure.
 */
-function init($racine, $langue)
+function init($racine, $langue, $idGalerie)
 {
 	$fichiers = array ();
 	
@@ -38,6 +38,11 @@ function init($racine, $langue)
 	if (file_exists($racine . '/site/inc/constantes.inc.php'))
 	{
 		$fichiers[] = $racine . '/site/inc/constantes.inc.php';
+	}
+	
+	if (!empty($idGalerie) || $idGalerie == 0)
+	{
+		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important d'insérer avant premier.inc.php, pour permettre la modification des balises de l'en-tête
 	}
 	
 	return $fichiers;

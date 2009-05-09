@@ -8,7 +8,7 @@ Mise en situation:
 
 On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.4`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-1.4` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-1.4`, ce qui nous donne l'adresse `http://nomDeDomaine.ext/`.
 
-## Configuration de base
+## Configuration
 
 ### Le fichier `init.inc.php`
 
@@ -30,15 +30,25 @@ Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adre
 
 ### Le fichier `.htaccess`
 
-Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Trouvez la ligne:
+Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Si en visitant une page inexistante, vous ne voyez pas le contenu de la page d'erreur, ouvrez le fichier `.htaccess`, trouvez la ligne:
 
-	ErrorDocument 404 http://localhost/serveur_local/squeletml/404.php
+	ErrorDocument 404 /404.php
 
-et modifier `http://localhost/serveur_local/squeletml` par la bonne adresse.
+et modifiez `/404.php` par la bonne adresse URL, par exemple `http://nomDeDomaine.ext/404.php`.
+
+Ce fichier va également contenir les instructions pour protéger le dossier d'administration.
+
+### Protéger l'administration
+
+Il est important de protéger la section d'administration du site tout de suite après l'installation. Pour ce faire, visitez la page suivante:
+
+	http://nomDeDomaine.ext/admin/droits.php
+
+et ajoutez un utilisateur.
 
 ### Le fichier `inc/config.inc.php`
 
-Ce fichier contient beaucoup de paramètres au sujet du site. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml.
+Ce fichier contient beaucoup de paramètres au sujet du site. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml. Vous serez ensuite en mesure de modifier des paramètres de votre site.
 
 ## Structure de Squeletml
 
@@ -70,6 +80,8 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 	et y réassigner les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
 
+	*Note: il est également possible de personnaliser la configuration de la section d'administration. Pour ce faire, créez un fichier `site/inc/config-admin.inc.php`*, et ajoutez y les variables que vous voulez modifier.
+
 - `constantes.inc.php`: contient les constantes PHP utilisées dans Squeletml. Vous pouvez ajouter vos propres constantes en créant le fichier `site/inc/constantes.inc.php`. S'il existe, ce fichier sera inséré après celui par défaut.
 
 - `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
@@ -98,22 +110,98 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 	**Il s'agit des pages livrées par défaut par Squeletml.** C'ets pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer vos modifications. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans `site/incpage.fr.index.inc.php` et modifier son contenu. **Le fichier personnalisé va être inclus à la place du fichier par défaut.**
 
-## Configuration plus poussée
+## Mise à jour de Squeletml
 
-### Le fichier `inc/config.inc.php`
+*Note: lisez tout ce qui suit avant d'effectuer une mise à jour.*
 
-Nous revoilà avec le fichier `inc/config.inc.php`.
+Pour mettre à jour Squeletml, téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier ressemblant à `squeletml-1.4`. Ensuite, copier tout le contenu de ce dossier, à l'exception du dossier `site`, et éventuellement de ce qui suit:
 
-## Variables optionnelles avant l'inclusion de `premier.inc.php`
+- Vous avez probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'Accès à l'administration) ou le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés.
 
-- `$baliseTitle`: contenu de la balise `title`
-- `$description`: contenu de la métabalise `description`
-- `$motsCles`: contenu de la métabalise `keywords`
-- `$langue[1]`: langue de la page courante
-- `$robots[1]`: contenu de la métabalise `robots`
-- `$idGalerie`: un nombre identifiant la galerie. Représente le répertoire qui sera lu pour lister les images
+Maintenant, collez votre précédente sélection dans l'emplacement de votre site. Vous pouvez accepter d'écraser les fichiers existants.
+
+Il s'agit probablement de la méthode la plus simple. Cependant, de vieux vieux supprimés entre deux versions de Squeletml peuvent encore être présent sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant de coller votre sélection. Prenez garde encore une fois de **ne pas supprimer le dossier `site`**.
+
+## Créer des pages
+
+Vous pouvez copier le fichier `modele.php` et le coller avec le nom désiré. Voici la structure d'une page:
+
+1. variables PHP
+2. inclusion du premier fichier PHP
+3. contenu de la page
+4. inclusion du dernier fichier PHP
+
+### variables PHP
+
+Voici les différentes variables optionnelles avant l'inclusion du premier fichier PHP:
+
+- `$baliseTitle`: contenu de la balise `title`.
+
+- `$description`: contenu de la métabalise `description`.
+
+- `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`.
+
+- `$langue[1]`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `config.inc.php`.
+
+- `$robots[1]`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `config.inc.php`.
+
+- `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
+
+- `$idGalerie`: un nombre identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Si cette variable existe et n'est pas vide (ou vaut `0`), et si le fichier de configuration existe pour cet `id` (voir plus loin), une galerie sera insérée dans la page.
+
+	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/0`).
+
+- `$introGalerie`: contenu (balises HTML permises) qui sera affiché au-dessus de la galerie. Il est suggéré d'inclure à tout le moins un titre `h1`, par exemple:
+
+		$introGalerie = "<h1>Galerie</h1>";
+
+### Inclusion du premier fichier PHP
+
+Il suffit d'inclure le fichier `inc/premier.inc.php`. Ne pas oublier de vérifier le chemin d'inclusion. Par exemple, pour une page à la racine du site, ça donnera:
+
+	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+
+Pour une page dans un dossier:
+
+	include '../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+
+Pour une page dans un sous-dossier (dossier dans un dossier):
+
+	include '../../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+
+### Contenu
+
+Mettre tout ce que vous désirez. Du texte, du code HTML, du code PHP, etc.
+
+### Inclusion du dernier fichier PHP
+
+Il suffit d'inclure le fichier `inc/dernier.inc.php`. Cette fois-ci, il n'est pas nécessaire de faire attention au chemin d'inclusion. Nous pouvons utiliser la variable `$racine`. Exemple:
+
+	<?php include $racine . '/inc/dernier.inc.php'; ?>
+
+### Exemple complet
+
+Voici un exemple:
+
+<div><code type="php">
+<?php
+$baliseTitle = "Titre (contenu de la balise `title`)";
+$description = "Description de la page";
+include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+?>
+
+<h1>Titre de la page</h1>
+
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>
+
+<?php include $racine . '/inc/dernier.inc.php'; ?>
+</code></div>
 
 ## Galeries
+
+Intro
+
+### Fichier de configuration
 
 Chaque image (grande ou vignette) d'une galerie peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `nom du fichier`) de la balise `img`. Le balayage automatique évite de devoir remplir la seule information obligatoire (nom du fichier de la grande image).
 

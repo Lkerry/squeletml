@@ -9,5 +9,5 @@ $lisezMoiHtml = Markdown($lisezMoiMdtxt);
 
 echo $lisezMoiHtml;
 
-include 'inc/dernier.inc.php';
+include $racine . '/admin/inc/dernier.inc.php';
 ?>

@@ -1,7 +1,8 @@
 <?php
 // Début des insertions
-include_once 'inc/fonctions.inc.php';
-foreach (init() as $fichier)
+include_once dirname(__FILE__) . '/../../init.inc.php';
+include_once $racine . '/admin/inc/fonctions.inc.php';
+foreach (init($racine) as $fichier)
 {
 	include_once $fichier;
 }
@@ -19,16 +20,9 @@ foreach (init() as $fichier)
 <div id="page">
 
 <div id="entete">
-	<p>Options d'administration:</p>
-	<ul>
-		<li><a href="index.php">Accueil de l'admin</a> | </li>
-		<li><a href="droits.php">Droits d'accès</a> | </li>
-		<li><a href="galeries.php">Galeries</a> | </li>
-		<li><a href="porte-documents.php">Porte-documents</a> <strong>||</strong> </li>
-		<li><a href="lisez-moi.php">Lisez-moi</a> | </li>
-		<li><a href="documentation.php">Documentation</a> | </li>
-		<li><a href="../index.php">Retour au site</a></li>
-	</ul>
+	<div id="menu">
+		<?php include $racine . '/admin/inc/html.menu.inc.php'; ?>
+	</div><!-- /menu -->
 </div><!-- /entete -->
 
 <div id="ancres">

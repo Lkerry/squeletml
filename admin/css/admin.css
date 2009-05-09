@@ -1,4 +1,4 @@
-/* Structuration générale */
+/* Structuration */
 
 #entete {
 	border: 1px solid black;
@@ -13,6 +13,16 @@
 #ancres {
 	position: absolute;
 	left: -5000px;
+}
+
+/* Général */
+
+.succes {
+	color: #006400;
+}
+
+.erreur {
+	color: red;
 }
 
 /* Porte-documents */
@@ -39,14 +49,6 @@
 
 #porteDocumentsBoiteMessages {
 	border: 1px dashed black;
-}
-
-#porteDocumentsBoiteMessages .succes {
-	color: #006400;
-}
-
-#porteDocumentsBoiteMessages .erreur {
-	color: red;
 }
 
 #porteDocumentsBoiteMessages h2, #porteDocumentsBoiteMessages h3, #porteDocumentsBoiteMessages h4, #porteDocumentsBoiteMessages h5, #porteDocumentsBoiteMessages h6 {
