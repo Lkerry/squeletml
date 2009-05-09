@@ -41,6 +41,7 @@ bz2: menage-bz2 ChangeLog version.txt
 	rm $(tag)/Makefile
 	tar -jcvf $(tag).tar.bz2 $(tag)
 	rm -rf $(tag)
+	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2 
 
 ChangeLog: menage-ChangeLog
 	#Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
@@ -49,7 +50,7 @@ ChangeLog: menage-ChangeLog
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(tag) > ChangeLog
 
 menage-bz2:
-	rm -f $(tag).tar.bz2
+	rm -f $(tag).tbz2
 
 menage-ChangeLog:
 	rm -f ChangeLog
