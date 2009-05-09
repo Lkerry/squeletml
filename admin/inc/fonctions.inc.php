@@ -140,7 +140,7 @@ function versionLogiciel($racine)
 	fclose($fic);
 	$version = explode('-', $tag);
 	
-	return $version[1];
+	return trim($version[1]);
 }
 
 ?>

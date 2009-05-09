@@ -8,12 +8,14 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 	{
 		$htaccess = '';
 		$htaccess .= "\n";
+		$htaccess .= "# Ajout automatique de Squeletml. Ne pas modifier.\n";
 		$htaccess .= '<FilesMatch "\.admin\.php$">' . "\n";
 		$htaccess .= "\tAuthType Basic\n";
 		$htaccess .= "\tAuthName \"Zone d'identification\"\n";
 		$htaccess .= "\tAuthUserFile $racine/.acces\n";
 		$htaccess .= "\tRequire valid-user\n";
-		$htaccess .= "</FilesMatch>";
+		$htaccess .= "</FilesMatch>\n";
+		$htaccess .= "# Fin de l'ajout automatique de Squeletml.\n";
 		
 		$fic = fopen($racine . '/.htaccess', 'a+');
 		fputs($fic, $htaccess);
@@ -113,6 +115,34 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		fputs($fic2, implode("\n", $utilisateurs));
 		fclose($fic2);
 		
+		// S'il n'y a plus d'utilisateurs dans le fichier `.acces`, on supprime l'authentification dans le .htaccess
+		clearstatcache();
+		if (filesize($racine . '/.acces') == 0)
+		{
+			$fic2 = fopen($racine . '/.htaccess', 'r');
+			$fichierHtaccess = array ();
+			while (!feof($fic2))
+			{
+				$ligne = rtrim(fgets($fic2));
+				if (preg_match('/^# Ajout automatique de Squeletml. Ne pas modifier./', $ligne))
+				{
+					while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml./', $ligne))
+					{
+						$ligne = fgets($fic2);
+					}
+				}
+				else
+				{
+					$fichierHtaccess[] = $ligne;
+				}
+			}
+		
+			fclose($fic2);
+			$fic2 = fopen($racine . '/.htaccess', 'w');
+			fputs($fic2, implode("\n", $fichierHtaccess));
+			fclose($fic2);
+		}
+		
 		if ($utilisateurAbsent)
 		{
 			echo '<p class="erreur">L\'utilisateur <em>' . formateTexte($_POST['nom']) . '</em> n\'a pas les droits. Il ne peut donc pas être supprimé.</p>';
@@ -140,7 +170,7 @@ if ($fic3)
 	while (!feof($fic3))
 	{
 		$ligne = fgets($fic3);
-		if (preg_match('/^[^:]:/', $ligne))
+		if (preg_match('/^[^:]+:/', $ligne))
 		{
 			list($utilisateur, $motDePasse) = split(':', $ligne, 2);
 			echo '<li>' . $utilisateur . '</li>';
@@ -167,7 +197,7 @@ if (!$i)
 <p><label>Nom:</label><br />
 <input type="text" name="nom" /></p>
 <p><label>Mot de passe:</label><br />
-<input type="text" name="motDePasse" /></p>
+<input type="password" name="motDePasse" /></p>
 <p><input type="submit" name="ajouter" value="Ajouter" /> <input type="submit" name="modifier" value="Modifier" /> <input type="submit" name="supprimer" value="Supprimer" /></p>
 </div>
 </form>
