@@ -56,3 +56,7 @@ if ($messageIE6)
 
 <div id="contenu">
 	<div id="interieurContenu">
+		
+		<?php if (isset($idGalerie)): ?>
+			<div id="galerie">
+		<?php endif; ?>

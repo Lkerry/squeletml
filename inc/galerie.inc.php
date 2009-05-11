@@ -129,15 +129,4 @@ else
 	}
 }
 
-// Intro à la galerie
-if (isset($introGalerie) && !empty($introGalerie))
-{
-	$intro = $introGalerie . "\n\n";
-}
-else
-{
-	$intro = '';
-}
-
-$corpsGalerie = '<div id="galerie">' . "\n" . $intro . $corpsGalerie . "\n" . '</div><!-- /galerie -->' . "\n";
 ?>

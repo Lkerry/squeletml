@@ -153,10 +153,6 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/0`).
 
-- `$introGalerie`: contenu (balises HTML permises) qui sera affiché au-dessus de la galerie. Il est suggéré d'inclure à tout le moins un titre `h1`, par exemple:
-
-		$introGalerie = "<h1>Galerie</h1>";
-
 ### Inclusion du premier fichier PHP
 
 Il suffit d'inclure le fichier `inc/premier.inc.php`. Ne pas oublier de vérifier le chemin d'inclusion. Par exemple, pour une page à la racine du site, ça donnera:
@@ -205,11 +201,9 @@ Petit rappel: pour créer une galerie, voici les étapes à suivre:
 
 1. Ajouter une variable `$idGalerie` au début du fichier qu'on veut utiliser comme galerie.
 
-2. Ajouter également une `$introGalerie`, pour personnaliser l'introduction (cette étape est optionnelle).
+2. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
 
-3. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
-
-4. Créer un fichier de configuration `site/inc/galerie-$idGalerie.txt`. Cette étape sera développée ci-dessous.
+3. Créer un fichier de configuration `site/inc/galerie-$idGalerie.txt`. Cette étape sera développée ci-dessous.
 
 ### Fichier de configuration
 
