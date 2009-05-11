@@ -2,3 +2,4 @@
 *.mo
 version.txt
 .acces
+init.inc.php

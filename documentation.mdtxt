@@ -10,11 +10,13 @@ On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.4`. Pour 
 
 ## Configuration
 
-### Le fichier `init.inc.php`
+### Le fichier `init.inc.php.defaut`
 
 Un seul fichier doit obligatoirement être modifié et configuré, bien que vous voudrez probablement personnaliser ensuite le reste du site.
 
-Connectez-vous par ftp au serveur hébergeant votre site. Trouvez le fichier `init.inc.php`, situé à la racine de votre installation de Squeletml. Ce fichier contient trois variables à renseigner:
+Connectez-vous par ftp au serveur hébergeant votre site. Trouvez le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml. Copiez-le et coller-le sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
+
+Ce fichier contient trois variables à renseigner:
 
 - `$racine`: il s'agit du chemin absolu vers votre installation de Squeletml. Souvent, cette information équivaut à la valeur de la variable `$_SERVER['DOCUMENT_ROOT']`, mais ce n'est pas toujours le cas.
 
@@ -26,7 +28,7 @@ Connectez-vous par ftp au serveur hébergeant votre site. Trouvez le fichier `in
 
 	Vous pouvez ajouter autant de langues que vous le désirez. Seulement, prenez note que pour l'instant, Squeletml offre une traduction de son squelette prête à être utilisée pour seulement deux langues: le français et l'anglais.
 
-Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation.
+Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation, par exemple `http://nomDeDomaine.ext`.
 
 ### Le fichier `.htaccess`
 
@@ -116,7 +118,7 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 Pour mettre à jour Squeletml, téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier ressemblant à `squeletml-1.4`. Ensuite, copier tout le contenu de ce dossier, à l'exception du dossier `site`, et éventuellement de ce qui suit:
 
-- Vous avez probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'Accès à l'administration) ou le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés.
+- Vous avez fort probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'accès à l'administration) ou le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés.
 
 Maintenant, collez votre précédente sélection dans l'emplacement de votre site. Vous pouvez accepter d'écraser les fichiers existants.
 

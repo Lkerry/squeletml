@@ -1,17 +1,4 @@
 <?php
-/* Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des modules */
-function phpGettext($racine, $langue)
-{
-	require_once $racine . '/inc/php-gettext/gettext.inc';
-	$locale = $langue;
-	T_setlocale(LC_MESSAGES, $locale);
-	$domain = 'squeletml';
-	T_bindtextdomain($domain, $racine . '/locale');
-	T_bind_textdomain_codeset($domain, 'UTF-8');
-	T_textdomain($domain);
-	return;
-}
-
 /**
 Retourne un tableau contenant les fichiers à inclure.
 */
@@ -49,6 +36,21 @@ function init($racine, $langue, $idGalerie)
 }
 
 /**
+Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des pages.
+*/
+function phpGettext($racine, $langue)
+{
+	require_once $racine . '/inc/php-gettext/gettext.inc';
+	$locale = $langue;
+	T_setlocale(LC_MESSAGES, $locale);
+	$domain = 'squeletml';
+	T_bindtextdomain($domain, $racine . '/locale');
+	T_bind_textdomain_codeset($domain, 'UTF-8');
+	T_textdomain($domain);
+	return;
+}
+
+/**
 Retourne le lien vers l'accueil de la langue de la page.
 */
 function accueil($tableauAccueil, $tableauLangue)
@@ -68,6 +70,13 @@ Retourne la langue de la page courante.
 */
 function langue($langue)
 {
+	if ($langue == 'navigateur')
+	{
+		$langue = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		$langue = strtolower(substr(chop($langue[0]), 0, 2));
+		return $langue;
+	}
+	
 	return isset($langue[1]) ? $langue[1] : $langue[0];
 }
 
