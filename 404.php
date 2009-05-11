@@ -1,13 +1,34 @@
 <?php
 include_once 'init.inc.php';
 
-if (file_exists($racine . '/site/inc/page.404.inc.php'))
+$codeLangue = langue('navigateur');
+
+if (file_exists($racine . '/site/inc/page.' . $codeLangue . '.404.inc.php'))
 {
-	include $racine . '/site/inc/page.404.inc.php';
+	include $racine . '/site/inc/page.' . $codeLangue . '.404.inc.php';
+}
+elseif (file_exists($racine . '/inc/page.' . $codeLangue . '.404.inc.php'))
+{
+	include $racine . '/inc/page.' . $codeLangue . '.404.inc.php';
 }
 else
 {
-	include $racine . '/inc/page.404.inc.php';
+	include_once $racine . '/inc/config.inc.php';
+	if (file_exists($racine . '/site/inc/config.inc.php'))
+	{
+		include_once $racine . '/site/inc/config.inc.php';
+	}
+	
+	$langueParDefaut = $langue[0];
+	
+	if (file_exists($racine . '/site/inc/page.' . $langueParDefaut . '.404.inc.php'))
+	{
+		include $racine . '/site/inc/page.' . $langueParDefaut . '.404.inc.php';
+	}
+	else
+	{
+		include $racine . '/inc/page.' . $langueParDefaut . '.404.inc.php';
+	}
 }
 
 ?>

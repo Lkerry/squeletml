@@ -1,6 +1,7 @@
 <?php
 $baliseTitle = "Me contacter";
 $description = "Formulaire de contact";
+$langue[1] = 'fr';
 $courrielContact = " ";
 include $racine . '/inc/premier.inc.php';
 ?>

@@ -1,6 +1,7 @@
 <?php
 $baliseTitle = "Titre";
 $description = "Description de la page";
+$langue[1] = 'fr';
 include $racine . '/inc/premier.inc.php';
 ?>
 

@@ -74,6 +74,7 @@ function langue($langue)
 	{
 		$langue = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
 		$langue = strtolower(substr(chop($langue[0]), 0, 2));
+		
 		return $langue;
 	}
 	

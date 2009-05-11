@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-11 16:33-0400\n"
+"POT-Creation-Date: 2009-05-11 17:58-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -14,7 +14,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: index.php:12
+#: index.php:18
+msgid "Erreur: configuration non accessible"
+msgstr ""
+
+#: index.php:27
 #, php-format
 msgid ""
 "Erreur: le fichier %1$s n'existe pas. Ce fichier est nécessaire au "
@@ -23,7 +27,7 @@ msgid ""
 "variables y étant contenues."
 msgstr ""
 
-#: inc/fonctions.inc.php:347
+#: inc/fonctions.inc.php:348
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
@@ -31,7 +35,7 @@ msgstr ""
 "Do you know that Internet&nbsp;Explorer&nbsp;6 (with which you are visiting "
 "this site) is out of date?"
 
-#: inc/fonctions.inc.php:349
+#: inc/fonctions.inc.php:350
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -44,11 +48,11 @@ msgstr ""
 "performance and respect of web standards. Firefox is totally free. If you "
 "are using a computer at work you should contact your IT administrator."
 
-#: inc/fonctions.inc.php:351
+#: inc/fonctions.inc.php:352
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:697
+#: inc/fonctions.inc.php:698
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
