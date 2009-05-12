@@ -28,6 +28,9 @@ publier: bz2
 bz2: menage-bz2 ChangeLog version.txt
 	bzr export -r tag:$(tag) $(tag)
 	mv ChangeLog $(tag)/
+	php ./scripts.cli.php mdtxt ChangeLogDerniereVersion
+	mv ChangeLogDerniereVersion.mdtxt ~/Bureau/ChangeLog-$(tag).mdtxt
+	mv ChangeLogDerniereVersion $(tag)/
 	mv version.txt $(tag)/
 	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
 	          # une variable de Makefile dans une commande shell $(...).
@@ -38,22 +41,26 @@ bz2: menage-bz2 ChangeLog version.txt
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 	cd ../
-	rm $(tag)/Makefile
+	rm -f $(tag)/Makefile
+	rm -f $(tag)/scripts.cli.php
 	tar -jcvf $(tag).tar.bz2 $(tag)
 	rm -rf $(tag)
-	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2 
+	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2
+	mv $(tag).tbz2 ~/Bureau/
 
 ChangeLog: menage-ChangeLog
-	#Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
-	#Ne pas oublier de mettre ce fichier dans le dossier de plugins de bzr,
-	#par exemple ~/.bazaar/plugins/
+	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
+	# Ne pas oublier de mettre ce fichier dans le dossier de plugins de bzr,
+	# par exemple ~/.bazaar/plugins/
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(tag) > ChangeLog
+	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r tag:$(tag) > ChangeLogDerniereVersion
 
 menage-bz2:
 	rm -f $(tag).tbz2
 
 menage-ChangeLog:
 	rm -f ChangeLog
+	rm -f ChangeLogDerniereVersion
 
 menage-pot:
 	rm -f locale/squeletml.pot
