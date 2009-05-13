@@ -17,7 +17,7 @@ if ($argv[1] == 'mdtxt')
 	$fichier = preg_replace('/^\t$/m', '', $fichier);
 	
 	// Optionnel. Supprime l'adresse courriel.
-	$fichier = preg_replace('/^(\t- [0-9]{4}(-[0-9]{2}){2}[^<]+) <[^@]+@[^>]+>/m', "\t" . '$1', $fichier);
+	$fichier = preg_replace('/^(\t- [0-9]{4}(-[0-9]{2}){2}[^<]+) <[^@]+@[^>]+>/m', '$1', $fichier);
 	
 	fwrite($fic, $fichier);
 	fclose($fic);
