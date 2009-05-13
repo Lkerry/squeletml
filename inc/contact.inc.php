@@ -13,7 +13,10 @@ if (isset($_POST['envoyer']))
 	$nom = securiseTexte($_POST['nom']);
 	$courriel = securiseTexte($_POST['courriel']);
 	$message = securiseTexte($_POST['message']);
-	$copie = securiseTexte($_POST['copie']);
+	if (isset($_POST['copie']))
+	{
+		$copie = securiseTexte($_POST['copie']);
+	}
 	
 	$msg = array ();
 

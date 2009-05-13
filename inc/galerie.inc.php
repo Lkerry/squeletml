@@ -1,6 +1,10 @@
 <?php
 // Insertion des fichiers nécessaires
 include_once $racine . '/inc/fonctions.inc.php';
+if (!isset($idGalerie))
+{
+	$idGalerie = FALSE;
+}
 foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 {
 	include_once $fichier;
@@ -10,7 +14,7 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 phpGettext($racine, langue($langue));
 
 // Insertion du tableau contenant la liste des oeuvres à afficher
-// Recherche `site/inc/galerie-$idGalerie.txt`, sinon inclut `inc/galerie-0.txt`
+// Recherche `site/inc/galerie-$idGalerie.txt`, sinon inclut `inc/galerie-demo.txt`
 if (isset($idGalerie)
 	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/')
 	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.txt'))
@@ -22,9 +26,9 @@ if (isset($idGalerie)
 else
 {
 	// Galerie démo par défaut
-	$galerie = construitTableauGalerie($racine . '/inc/galerie-0.txt');
-	$urlImgSrc = $urlRacine . '/fichiers/galeries/0';
-	$racineImgSrc = $racine . '/fichiers/galeries/0';
+	$galerie = construitTableauGalerie($racine . '/inc/galerie-demo.txt');
+	$urlImgSrc = $urlRacine . '/fichiers/galeries/demo';
+	$racineImgSrc = $racine . '/fichiers/galeries/demo';
 }
 
 // Une oeuvre en particulier est demandée
@@ -65,7 +69,12 @@ if (isset($_GET['oeuvre']))
 			{
 				$description = sprintf(T_("Taille maximale de l'oeuvre %1\$s de la galerie"), $id) . ' | ' . $baliseTitleComplement[langue($langue)];
 			}
-
+			
+			if (!isset($galerie[$i]['pageGrandeMotsCles']))
+			{
+				$galerie[$i]['pageGrandeMotsCles'] = '';
+			}
+			
 			$motsCles = construitMotsCles($galerie[$i]['pageGrandeMotsCles'], $description);
 			$motsCles .= ', ' . $id;
 
@@ -89,6 +98,10 @@ if (isset($_GET['oeuvre']))
 			// On récupère le code de la vignette de l'oeuvre précédente
 			$oeuvrePrecedente = '<p class="galerieNavigationPrecedent">' . afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $op, 'precedent', $galerieHauteurVignette) . '</p>';
 		}
+		else
+		{
+			$oeuvrePrecedente = '';
+		}
 
 		// On recherche l'oeuvre suivante pour la navigation
 		if (array_key_exists($i + 1, $galerie))
@@ -96,7 +109,11 @@ if (isset($_GET['oeuvre']))
 			$os = $i + 1;
 
 			// On récupère le code de la vignette de l'oeuvre suivante
-			$oeuvreSuivante .= '<p class="galerieNavigationSuivant">' . afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $os, 'suivant', $galerieHauteurVignette) . '</p>';
+			$oeuvreSuivante = '<p class="galerieNavigationSuivant">' . afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $os, 'suivant', $galerieHauteurVignette) . '</p>';
+		}
+		else
+		{
+			$oeuvreSuivante = '';
 		}
 
 		// On crée le corps de la galerie

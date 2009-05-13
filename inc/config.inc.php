@@ -92,11 +92,12 @@ $galerieHauteurVignette = 100;
 
 ########################################################################
 ##
-## NE PAS MODIFIER CE QUI SUIT
+## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites)
 ##
 ########################################################################
 
-// DOCUMENT_ROOT n'a pas toujours la bonne valeur selon les serveurs
+// DOCUMENT_ROOT n'a pas toujours la bonne valeur selon les serveurs.
+// On écrase donc sa valeur par défaut
 $_SERVER['DOCUMENT_ROOT'] = $racine;
 
 // Diverses variables utiles pour les liens dans les pages

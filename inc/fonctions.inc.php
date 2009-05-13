@@ -27,7 +27,7 @@ function init($racine, $langue, $idGalerie)
 		$fichiers[] = $racine . '/site/inc/constantes.inc.php';
 	}
 	
-	if (isset($idGalerie))
+	if ($idGalerie)
 	{
 		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important d'insérer avant premier.inc.php, pour permettre la modification des balises de l'en-tête
 	}
@@ -545,6 +545,10 @@ function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerie
 		{
 			$commentaire = '<span id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</span>';
 		}
+		else
+		{
+			$commentaire = '';
+		}
 
 		return '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $commentaire;
 	}
@@ -697,7 +701,12 @@ function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerie
 		{
 			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
 		}
-
+		
+		// On s'assure que la variable $class existe (pour éviter un avertissement).
+		if (!isset($class))
+		{
+			$class= '';
+		}
 		return '<a href="' . nomFichierGalerie() . '?oeuvre=' . $id . '"><img class="galerieNavigation' . $class . '" ' . "$src $width $height $alt /></a>";
 	}
 	
@@ -721,12 +730,12 @@ function construitTableauGalerie($fichierTexte)
 		while (!feof($fic))
 		{
 			$ligne = rtrim(fgets($fic));
-			if ($ligne != '__IMG__')
+			if (strstr($ligne, '='))
 			{
 				list($cle, $valeur) = split('=', $ligne, 2);
 				$galerieTemp[$cle] = $valeur;
 			}
-			else
+			elseif ($ligne == '__IMG__')
 			{
 				$galerie[] = $galerieTemp;
 				unset($galerieTemp);

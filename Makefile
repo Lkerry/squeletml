@@ -34,7 +34,7 @@ bz2: menage-bz2 ChangeLog version.txt
 	php ./scripts.cli.php mdtxt ChangeLogDerniereVersion
 	mv ChangeLogDerniereVersion.mdtxt ~/Bureau/ChangeLog-$(tag).mdtxt
 	mv ChangeLogDerniereVersion $(tag)/
-	mv version.txt $(tag)/
+	cp version.txt $(tag)/
 	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
 	          # une variable de Makefile dans une commande shell $(...).
 	          # Par exemple, ceci ne fonctionne pas:

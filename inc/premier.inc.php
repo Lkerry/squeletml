@@ -2,6 +2,10 @@
 // Début des insertions
 include_once dirname(__FILE__) . '/../init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
+if (!isset($idGalerie))
+{
+	$idGalerie = FALSE;
+}
 foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 {
 	include_once $fichier;

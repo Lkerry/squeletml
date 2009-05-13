@@ -2,7 +2,7 @@
 $baliseTitle = "Galerie";
 $description = "Galerie";
 $langue[1] = 'fr';
-$idGalerie = 0;
+$idGalerie = 'demo';
 include $racine . '/inc/premier.inc.php';
 ?>
 

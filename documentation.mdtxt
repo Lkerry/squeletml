@@ -149,9 +149,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
-- `$idGalerie`: un nombre identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Si cette variable existe et n'est pas vide (ou vaut `0`), et si le fichier de configuration existe pour cet `id` (voir plus loin), une galerie sera insérée dans la page.
+- `$idGalerie`: un nombre ou un mot identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir plus loin), une galerie sera insérée dans la page.
 
-	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/0`).
+	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/demo`).
 
 ### Inclusion du premier fichier PHP
 
