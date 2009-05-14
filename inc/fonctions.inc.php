@@ -10,6 +10,8 @@ function init($racine, $langue, $idGalerie)
 	
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
 	
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
+	
 	$fichiers[] = $racine . '/inc/config.inc.php';
 
 	$fichiers[] = $racine . '/inc/constantes.inc.php';
@@ -55,6 +57,22 @@ function phpGettext($racine, $langue)
 	T_bind_textdomain_codeset($domain, 'UTF-8');
 	T_textdomain($domain);
 	return;
+}
+
+/**
+Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
+*/
+function mdtxt($fichier)
+{
+	return Markdown(file_get_contents($fichier));
+}
+
+/**
+Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaîne convertie en HTML.
+*/
+function mdtxtChaine($chaine)
+{
+	return Markdown($chaine);
 }
 
 /**
