@@ -155,7 +155,11 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 ### Inclusion du premier fichier PHP
 
-Il suffit d'inclure le fichier `inc/premier.inc.php`. Ne pas oublier de vérifier le chemin d'inclusion. Par exemple, pour une page à la racine du site, ça donnera:
+Il suffit d'inclure le fichier `inc/premier.inc.php`.
+
+#### Cas de l'installation par défaut de Squeletml
+
+Ne pas oublier de vérifier le chemin d'inclusion. Par exemple, pour une page à la racine du site, ça donnera:
 
 	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
 
@@ -166,6 +170,18 @@ Pour une page dans un dossier:
 Pour une page dans un sous-dossier (dossier dans un dossier):
 
 	include '../../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+
+#### Cas avec insertion automatique du fichier `init.inc.php`
+
+Le fichier `init.inc.php` contient entre autres la variable `$racine`. En faisant insérer automatiquement ce fichier dans toutes les pages, il est donc possible d'utiliser la variable `$racine` pour inclure le fichier `inc/premier.inc.php`, ce qui nous dispense de devoir modifier le chemin d'inclusion selon le dossier dans lequel la page est située.
+
+Pour ce faire, ouvrir le fichier `.htaccess`, trouver la ligne contenant la directive `auto_prepend_file`, et la décommenter, ce qui va donner:
+
+	<FilesMatch "\.(php)$"> 
+		php_value auto_prepend_file "/var/www/serveur_local/squeletml/init.inc.php"
+	</FilesMatch>
+
+Ne pas oublier de modifier le chemin d'inclusion du fichier `init.inc.php`.
 
 ### Contenu
 

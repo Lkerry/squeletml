@@ -1,7 +1,34 @@
-Options -Indexes
+########################################################################
+##
+## Possiblement configurable
+##
+########################################################################
 
+# Page s'affichant à la place d'une page inexistante
+# Au besoin, changer le chemin vers la page
 ErrorDocument 404 /404.php
 
+# Décommenter la ligne ci-dessous pour inclure automatiquement le fichier init.inc.php dans tous les fichiers PHP
+<FilesMatch "\.(php)$"> 
+	#php_value auto_prepend_file "/var/www/serveur_local/squeletml/init.inc.php"
+</FilesMatch>
+
+########################################################################
+##
+## Normalement, ce qui suit ne devrait pas être modifié
+##
+########################################################################
+
+# Ne pas lister les fichiers dans un dossier sans fichier `index`
+Options -Indexes
+
+# Empêcher l'accès au fichier informant de la version en cours
 <Files version.txt>
 	Deny from all
 </Files>
+
+# Empêcher l'accès aux fichiers Markdown
+<FilesMatch "\.(mdtxt)$">
+	Deny from all
+</FilesMatch>
+
