@@ -207,7 +207,7 @@ Petit rappel: pour créer une galerie, voici les étapes à suivre:
 
 ### Fichier de configuration
 
-Chaque image d'une galerie est déclinée en deux versions: grande ou vignette. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version grande.
+Chaque image d'une galerie est déclinée en au moins deux versions: vignette et grande. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version grande.
 
 Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.txt`. Vous pouvez générer automatiquement le contenu de ce fichier en utilisant le script d'aide dans la section d'administration. Vous n'aurez qu'ensuite qu'à copier le contenu généré, créer le fichier `site/inc/galerie-$idGalerie.txt` et y coller l'information.
 
@@ -272,20 +272,25 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 	pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
 
+- `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté dans le bas de l'image en version grande. Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien de téléchargement sera ajouté. Exemple:
+
+	origNom=fichier1Orig.jpg
+
 Voici une entrée vide, qu'il est possible de copier/coller:
 
-	grandeNom="OBLIGATOIRE"
-	id=""
-	vignetteNom=""
-	vignetteLargeur=""
-	vignetteHauteur=""
-	vignetteAlt=""
-	grandeLargeur=""
-	grandeHauteur=""
-	grandeAlt=""
-	grandeLegende=""
-	pageGrandeBaliseTitle=""
-	pageGrandeDescription=""
-	pageGrandeMotsCles=""
+	grandeNom=SEULE INFORMATION OBLIGATOIRE
+	id=
+	vignetteNom=
+	vignetteLargeur=
+	vignetteHauteur=
+	vignetteAlt=
+	grandeLargeur=
+	grandeHauteur=
+	grandeAlt=
+	grandeLegende=
+	pageGrandeBaliseTitle=
+	pageGrandeDescription=
+	pageGrandeMotsCles=
+	origNom=
 	__IMG__
 

@@ -27,7 +27,7 @@ $niveauTitreSuivant2 = $niveauTitreScript + 2;
 <h<?php echo $niveauTitreSuivant; ?>>Information</h<?php echo $niveauTitreSuivant; ?>>
 
 <ul>
-	<li><strong>Taille maximale d'un fichier:</strong> <?php echo $tailleMaxFichiers; ?> octets (<?php echo octetsVersMo($tailleMaxFichiers); ?> Mo).</li>
+	<li><strong>Taille maximale d'un fichier:</strong> <?php echo $tailleMaxFichiers; ?> octets (<?php echo octetsVersMio($tailleMaxFichiers); ?> Mio).</li>
 	<li><strong>Extensions permises:</strong>
 	<?php
 	if ($filtreExtensions)
@@ -285,7 +285,7 @@ if (isset($_FILES['fichier']))
 
 	if (file_exists($_FILES['fichier']['tmp_name']) && filesize($_FILES['fichier']['tmp_name']) > $tailleMaxFichiers)
 	{
-		$erreur .= "<li class='erreur'>Votre fichier doit faire moins de $tailleMaxFichiers octets (" . octetsVersMo($tailleMaxFichiers) . " Mo).</li>\n";
+		$erreur .= "<li class='erreur'>Votre fichier doit faire moins de $tailleMaxFichiers octets (" . octetsVersMio($tailleMaxFichiers) . " Mio).</li>\n";
 	}
 
 	if ($filtreNom)

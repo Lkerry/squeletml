@@ -90,6 +90,9 @@ $galerieNavigationEmplacement = 'haut'; // haut ou bas
 // Hauteur des vignettes si génération automatique
 $galerieHauteurVignette = 100;
 
+// Si un lien est ajouté vers l'image au format original, est-ce qu'on force son téléchargement sans affichage dans le navigateur?
+$galerieTelechargeOrig = FALSE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites)

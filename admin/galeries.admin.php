@@ -22,9 +22,28 @@ if (isset($_POST['soumettre']))
 		{
 			if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 			{
-				if ($_POST['exclusion'] != 'vignette' || !preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier))
+				if (($_POST['exclureVignette'] != 'vignette' || !preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier)) && ($_POST['exclureOrig'] != 'orig' || !preg_match('/-orig\.[[:alpha:]]{3,4}$/', $fichier)))
 				{
-					$listeFichiers .= "grandeNom=$fichier\n__IMG__\n";
+					$listeFichiers .= "grandeNom=$fichier\n";
+					
+					if ($_POST['info'] == 'tout')
+					{
+						$listeFichiers .= "id=\n";
+						$listeFichiers .= "vignetteNom=\n";
+						$listeFichiers .= "vignetteLargeur=\n";
+						$listeFichiers .= "vignetteHauteur=\n";
+						$listeFichiers .= "vignetteAlt=\n";
+						$listeFichiers .= "grandeLargeur=\n";
+						$listeFichiers .= "grandeHauteur=\n";
+						$listeFichiers .= "grandeAlt=\n";
+						$listeFichiers .= "grandeLegende=\n";
+						$listeFichiers .= "pageGrandeBaliseTitle=\n";
+						$listeFichiers .= "pageGrandeDescription=\n";
+						$listeFichiers .= "pageGrandeMotsCles=\n";
+						$listeFichiers .= "origNom=\n";
+					}
+					
+					$listeFichiers .= "__IMG__\n";
 				}
 			}
 		}
@@ -44,10 +63,21 @@ if (isset($_POST['soumettre']))
 
 <form action="<? echo $action; ?>" method="post">
 <div>
+
 <p><label>Id de la galerie:</label><br />
-<input type="text" name="id" /><br />
-<input type=checkbox name="exclusion" value="vignette" checked="checked" /> <label>Ne pas tenir compte des fichiers terminant par <code>-vignette.extension</code></label></p>
+<input type="text" name="id" /></p>
+
+<p><input type=checkbox name="info" value="tout" /> <label>Ajouter des champs vides pour chaque oeuvre</label></p>
+
+<fieldset>
+<legend>Exclusions</legend>
+<p><input type=checkbox name="exclureVignette" value="vignette" checked="checked" /> <label>Ne pas tenir compte des fichiers terminant par <code>-vignette.extension</code></label></p>
+
+<p><input type=checkbox name="exclureOrig" value="orig" checked="checked" /> <label>Ne pas tenir compte des fichiers terminant par <code>-orig.extension</code></label></p>
+</fieldset>
+
 <p><input type="submit" name="soumettre" value="Soumettre" /></p>
+
 </div>
 </form>
 

@@ -6,6 +6,8 @@ function init($racine, $langue, $idGalerie)
 {
 	$fichiers = array ();
 	
+	$fichiers[] = $racine . '/inc/fonctions-communes-admin.inc.php';
+	
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
 	
 	$fichiers[] = $racine . '/inc/config.inc.php';
@@ -501,7 +503,7 @@ function nomFichierGalerie()
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette)
+function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig)
 {
 	if ($taille == 'grande')
 	{
@@ -548,14 +550,45 @@ function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerie
 		
 		if (!empty($galerie[$indice]['grandeLegende']))
 		{
-			$commentaire = '<span id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</span>';
+			$legende = '<span id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</span>';
 		}
 		else
 		{
-			$commentaire = '';
+			$legende = '';
 		}
-
-		return '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $commentaire;
+		
+		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
+		if (!empty($galerie[$indice]['origNom']))
+		{
+			$origNom = $galerie[$indice]['origNom'];
+		}
+		
+		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version grande de l'image.
+		else
+		{
+			$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
+			$origNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
+			$origNom .= '-orig.' . $infoGrandeNom['extension'];
+		}
+			
+		// On vérifie maintenant si le fichier $origNom existe. S'il existe, on insère un lien vers l'image.
+		if (file_exists($racineImgSrc . '/' . $origNom))
+		{
+			$lienOrigHref = '';
+			if ($galerieTelechargeOrig)
+			{
+				$lienOrigHref .= $urlRacine . '/telecharger.php?url=';
+			}
+			$lienOrigHref .= $urlImgSrc . '/' . $origNom;
+			
+			$lienOrig = '<span id="galerieLienOrig"><a href="' . $lienOrigHref . '">' . sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;') . '</a></span>';
+		}
+		else
+		{
+			$lienOrig = '';
+		}
+		
+		return '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $legende . $lienOrig;
 	}
 
 	elseif ($taille == 'vignette')

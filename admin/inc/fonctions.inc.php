@@ -14,6 +14,8 @@ function init($racine)
 {
 	$fichiers = array ();
 	
+	$fichiers[] = $racine . '/inc/fonctions-communes-admin.inc.php';
+	
 	$fichiers[] = $racine . '/admin/inc/config.inc.php';
 	
 	$fichiers[] = $racine . '/admin/inc/php-markdown/markdown.php';
@@ -24,14 +26,6 @@ function init($racine)
 	}
 	
 	return $fichiers;
-}
-
-/**
-Conversion des octets en Mo.
-*/
-function octetsVersMo($octets)
-{
-	return $octets / 1000000;
 }
 
 /**
