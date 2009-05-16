@@ -117,15 +117,18 @@ if (isset($_GET['oeuvre']))
 			// Simule l'espace de la flèche de navigation pour que l'image demeure centrée
 			$oeuvreSuivante = '<p class="galerieNavigationSuivant galerieFleche"></p>';
 		}
-
+		
+		//On crée un lien vers l'accueil de la galerie
+		$lienVersGalerie = '<p id="galerieLienAccueil"><a href="' . $_SERVER['PHP_SELF'] . '">' . T_("Accueil de la galerie"). '</a></p>' . "\n\n";
+		
 		// On crée le corps de la galerie
 		if ($galerieNavigationEmplacement == 'haut')
 		{
-			$corpsGalerie = $oeuvrePrecedente . $oeuvreSuivante . $oeuvreGrande;
+			$corpsGalerie = $lienVersGalerie . $oeuvrePrecedente . $oeuvreSuivante . $oeuvreGrande;
 		}
 		elseif ($galerieNavigationEmplacement == 'bas')
 		{
-			$corpsGalerie = $oeuvreGrande . $oeuvrePrecedente . $oeuvreSuivante;
+			$corpsGalerie = $lienVersGalerie . $oeuvreGrande . $oeuvrePrecedente . $oeuvreSuivante;
 		}
 	}
 
