@@ -61,6 +61,6 @@ if ($messageIE6)
 <div id="contenu">
 	<div id="interieurContenu">
 		
-		<?php if (isset($idGalerie)): ?>
+		<?php if ($idGalerie): ?>
 			<div id="galerie">
 		<?php endif; ?>

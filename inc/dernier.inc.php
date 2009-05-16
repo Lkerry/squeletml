@@ -6,7 +6,7 @@
 			<?php echo $corpsGalerie; ?>
 		<?php endif; ?>
 		
-		<?php if (isset($idGalerie)): ?>
+		<?php if ($idGalerie): ?>
 			</div><!-- /galerie -->
 		<?php endif; ?>
 		

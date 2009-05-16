@@ -100,7 +100,8 @@ if (isset($_GET['oeuvre']))
 		}
 		else
 		{
-			$oeuvrePrecedente = '';
+			// Simule l'espace de la flèche de navigation pour que l'image demeure centrée
+			$oeuvrePrecedente = '<p class="galerieNavigationPrecedent galerieFleche"></p>';
 		}
 
 		// On recherche l'oeuvre suivante pour la navigation
@@ -113,7 +114,8 @@ if (isset($_GET['oeuvre']))
 		}
 		else
 		{
-			$oeuvreSuivante = '';
+			// Simule l'espace de la flèche de navigation pour que l'image demeure centrée
+			$oeuvreSuivante = '<p class="galerieNavigationSuivant galerieFleche"></p>';
 		}
 
 		// On crée le corps de la galerie

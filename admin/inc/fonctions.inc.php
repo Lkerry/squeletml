@@ -90,7 +90,7 @@ function parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFilt
 			{
 				if (list($larg, $haut, $type, $attr) = @getimagesize("$dossierRacine/$fichier"))
 				{
-					$dim = "(haut.: $haut, larg.: $larg)\n";
+					$dim = " (${larg}&nbsp;x&nbsp;$haut)\n";
 				}
 				else
 				{
@@ -101,10 +101,20 @@ function parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFilt
 			{
 				$dim = '';
 			}
-
-			$liste[$dossierRacine][] = "<a href=\"$action" . $symboleUrl . "action=modifier&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Modifier</a> <span class='porteDocumentsSep'>|</span> Supprimer <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
-			<a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Renommer</a> <span class='porteDocumentsSep'>|</span>
-			<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><span class='porteDocumentsNom'>$fichier</span></a> $dim";
+			
+			if (empty($dim))
+			{
+				$lienModifier = "<a href=\"$action" . $symboleUrl . "action=modifier&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Modifier</a>";
+			}
+			else
+			{
+				$lienModifier = 'Modifier';
+			}
+			
+			$liste[$dossierRacine][] = "$lienModifier
+				<span class='porteDocumentsSep'>|</span> Supprimer <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
+				<span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Renommer</a>
+				<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><span class='porteDocumentsNom'>$fichier</span></a>$dim";
 		}
 	}
 

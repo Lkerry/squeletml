@@ -54,6 +54,8 @@ Ce fichier contient beaucoup de paramètres au sujet du site. Mais pour bien com
 
 ## Structure de Squeletml
 
+### Dossiers
+
 La structure de Squeletml est la suivante:
 
 - `admin`
@@ -72,7 +74,7 @@ Par exemple, pour modifier l'apparence du site, **ne modifiez pas** le fichier `
 
 Pour ajouter des images, mettez vos fichiers dans `site/fichiers`. Pour ajouter des fichiers à inclure, créez des fichiers dans `site/inc`. Vous aurez compris, le dossier `site` recrée la structure par défaut de Squeletml, ce qui permet de pouvoir facilement personnaliser le site sans toucher aux fichiers officiels de Squeletml. La mise à jour du logiciel en sera grandement facilitée.
 
-### Le dossier `inc`
+#### Le dossier `inc`
 
 Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il s'agit autant de la configuration que de la structure HTML (en-tête, menu, etc.). Chaque fichier peut être personnalisé en créant un fichier de même nom dans `site/inc`, et Squeletml reconnaîtra automatiquement le fichier personnel. Voici la liste des fichiers de `inc` que vous pouvez personnaliser dans votre dossier `site/inc`:
 
@@ -88,7 +90,7 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 - `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
 
-- Les fichiers de structure HTML, qui sont, pour le français:
+- Les fichiers de division HTML, qui sont, pour le français:
 
   - html.fr.ancres.inc.php
   - html.fr.bas-de-page.inc.php
@@ -98,19 +100,70 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `html.en.menu.inc.php`.
 
-	Ces fichiers contiennent le contenu par défaut pour chaque structure représentée. Vous pouvez personnaliser chaque structure en créant un fichier de même nom dans `site/inc`. Par exemple, pour modifier le menu en français, créer un fichier `site/inc/html.fr.menu.inc.php` et modifiez son contenu comme désiré. **Ceci écrasera le fichier par défaut.** Ainsi, si `site/inc/html.fr.menu.inc.php` existe, le fichier par défaut `inc/html.fr.menu.inc.php` ne sera pas inclus.
+	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez personnaliser chaque division en créant un fichier de même nom dans `site/inc`. Par exemple, pour modifier le menu en français, créer un fichier `site/inc/html.fr.menu.inc.php` et modifiez son contenu comme désiré. **Ceci écrasera le fichier par défaut.** Ainsi, si `site/inc/html.fr.menu.inc.php` existe, le fichier par défaut `inc/html.fr.menu.inc.php` ne sera pas inclus.
 
-- Les fichiers de page. La page d'erreur n'est pas traduite pour l'instant:
+- Les fichiers de page:
 
-  - page.404.inc.php
-
-	Les autres le sont:
-
+  - page.fr.404.inc.php
   - page.fr.contact.inc.php
   - page.fr.galerie.inc.php
   - page.fr.index.inc.php
 
-	**Il s'agit des pages livrées par défaut par Squeletml.** C'ets pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer vos modifications. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans `site/incpage.fr.index.inc.php` et modifier son contenu. **Le fichier personnalisé va être inclus à la place du fichier par défaut.**
+	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans `site/inc/page.fr.index.inc.php` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier par défaut.**
+
+### Divisions HTML
+
+Voici un modèle simplifié d'une page de Squeletml:
+
+	Doctype XHTML 1.0 Strict
+	<html ...><!-- La langue déclarée est celle de la page en cours -->
+		<head>
+			<title>...</title>
+			Déclaration de l'encodage UTF-8
+			Métabalises (description, keywords, robots)
+			Insertion des feuilles de style et des scripts Javascript
+		</head>
+	
+		<body ...><!-- Selon le cas, diverses class pour body -->
+			<div id="page">
+				S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
+
+				<div id="entete">
+					<div id="titre">
+						Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
+					</div><!-- /titre -->
+
+					<div id="sousTitre">
+						...
+					</div><!-- /sousTitre -->
+				</div><!-- /entete -->
+
+				<div id="ancres">
+					...
+				</div><!-- /ancres -->
+
+				<div id="contenu">
+					<div id="interieurContenu">
+						...
+					</div><!-- /interieurContenu -->
+				</div><!-- /contenu -->
+
+				<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+					...
+				</div><!-- /menuLangues -->
+
+				<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+					...
+				</div><!-- /menu -->
+
+				<div id="basDePage">
+					...
+				</div><!-- /basDePage -->
+			</div><!-- /page -->
+		</body>
+	</html>
+
+D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`.
 
 ## Mise à jour de Squeletml
 
@@ -187,9 +240,11 @@ Ne pas oublier de modifier le chemin d'inclusion du fichier `init.inc.php`.
 
 Mettre tout ce que vous désirez. Du texte, du code HTML, du code PHP, etc.
 
-Il est possible d'utiliser la syntaxe Markdown. Pour ce faire, il y a deux fonctions mises à disposition:
+#### Utiliser la syntaxe Markdown
 
-#### Fonction `mdtxt()`
+Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/syntaxe/). Pour ce faire, il y a deux fonctions mises à disposition:
+
+##### Fonction `mdtxt()`
 
 Écrire le contenu en Markdown dans un fichier. Ensuite, faire appel à cette fonction dans la page du site. Exemple:
 
@@ -201,7 +256,7 @@ Il est possible d'utiliser la syntaxe Markdown. Pour ce faire, il y a deux fonct
 
 		<?php echo mdtxt('ma-page.php.mdtxt'); ?>
 
-#### Fonction `mdtxtChaine()`
+##### Fonction `mdtxtChaine()`
 
 On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxtChaine()`. Exemple:
 
@@ -230,6 +285,40 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 		TEXTE;
 	
 		<?php echo mdtxtChaine($chaine); ?>
+
+#### Variables et constantes utiles
+
+Quelques variables et constantes PHP peuvent être utilisées dans la rédaction du contenu pour faciliter l'élaboration des chemins vers les fichiers:
+
+- variable `$racine`: contient le chemin absolu sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
+
+		<?php include $racine . '/fichier.inc.php'; ?>
+
+- variable `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
+
+		<a href="<?php echo $urlRacine . '/admin/'; ?>">lien vers la section d'administration</a>
+
+- variable `$urlSite`: contient l'URL vers le dossier `site`. Exemple de lien vers une image:
+
+		<a href="<?php echo $urlSite; ?>/fichiers/image.jpg">lien vers une image</a>
+
+- variable `$urlFichiers`: contient l'URL vers le dossier `site/fichiers`. Exemple de lien vers la même image:
+
+		<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
+
+- constante `ACCUEIL`: contient l'URL pointant vers l'accueil de la langue de la page.
+
+  - Exemple d'utilisation dans une page dont la langue est le français:
+
+			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en français</a>
+
+  - Exemple d'utilisation dans une page dont la langue est l'anglais:
+
+		<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
+
+- tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
+
+		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
 
 ### Inclusion du dernier fichier PHP
 

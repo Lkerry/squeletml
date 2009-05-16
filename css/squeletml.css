@@ -81,7 +81,9 @@ p.galerieNavigationSuivant {
 }
 
 .galerieFleche {
-	border: none !important; width:40px; height:40px;
+	border: none !important;
+	width:40px;
+	height:40px;
 }
 
 p#galerieGrande {

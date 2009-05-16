@@ -27,7 +27,7 @@ $niveauTitreSuivant2 = $niveauTitreScript + 2;
 <h<?php echo $niveauTitreSuivant; ?>>Information</h<?php echo $niveauTitreSuivant; ?>>
 
 <ul>
-	<li><strong>Taille maximale d'un fichier:</strong> <?php echo $tailleMaxFichiers; ?> octets (<?php echo octetsVersMio($tailleMaxFichiers); ?> Mio).</li>
+	<li><strong>Taille maximale d'un transfert de fichier:</strong> <?php echo $tailleMaxFichiers; ?> octets (<?php echo octetsVersMio($tailleMaxFichiers); ?> Mio).</li>
 	<li><strong>Extensions permises:</strong>
 	<?php
 	if ($filtreExtensions)
@@ -101,13 +101,13 @@ if (isset($_GET['action']))
 		$ancienNom = $_GET['valeur'];
 		echo "<h$niveauTitreSuivant2>Insctructions de renommage</h$niveauTitreSuivant2>";
 		echo "<ul>\n";
-		echo "<li>Pour renommer <span class='porteDocumentsNom'>$ancienNom</span>, taper le nouveau nom dans le champ.</li>";
+		echo "<li>Pour renommer <span class='porteDocumentsNom'>$ancienNom</span>, saisir le nouveau nom dans le champ.</li>";
 		echo "<li>Ne pas oublier de mettre le chemin dans le nom.";
 		echo "<li>Exemples:";
 		echo "<ul>\n";
-		echo "<li><span class='porteDocumentsNom'>$dossierRacine/nouveau_nom_dossier</span></li>";
-		echo "<li><span class='porteDocumentsNom'>$dossierRacine/nouveau_nom.txt</span></li>";
-		echo "<li><span class='porteDocumentsNom'>fichiers/nouveau_nom_dossier/nouveau_nom_fichier.ext</span>.</li>";
+		echo "<li><span class='porteDocumentsNom'>$dossierRacine/nouveau-nom-dossier</span></li>";
+		echo "<li><span class='porteDocumentsNom'>$dossierRacine/nouveau-nom.txt</span></li>";
+		echo "<li><span class='porteDocumentsNom'>fichiers/nouveau-nom-dossier/nouveau-nom-fichier.txt</span>.</li>";
 		echo "</ul></li>";
 		echo "<li>Important: ne pas mettre de barre oblique / dans le nouveau nom du fichier. N'utiliser ce signe que pour marquer le chemin vers le fichier.</li>";
 		echo "</ul>\n";
@@ -461,12 +461,12 @@ foreach ($liste as $valeur)
 <div class="porteDocumentsBoite2">
 <h<?php echo $niveauTitreSuivant2; ?>>Créer un fichier ou un dossier</h<?php echo $niveauTitreSuivant2; ?>>
 
-<p>Taper le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans le nom. Exemples:</p>
+<p>Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans le nom. Exemples:</p>
 
 <ul>
-	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau_dossier</span></li>
-	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau_fichier.ext</span></li>
-	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau_dossier/nouveau_fichier.ext</span></li>
+	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau-dossier</span></li>
+	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau-fichier.txt</span></li>
+	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau-dossier/nouveau-fichier.txt</span></li>
 </ul>
 
 <form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
