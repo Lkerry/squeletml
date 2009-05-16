@@ -30,6 +30,19 @@
 
 /* Général */
 
+div#titre h1, div#titre p {
+	margin: 5px;
+	padding: 0px;
+	font-weight: bold;
+	font-size: 1.2em;
+	line-height: 1.2em;
+}
+
+div#titre p a, div#titre p a:visited {
+	color: black;
+	text-decoration: none;
+}
+
 #contenu h1, body.accueil #interieurContenu> h2:first-child {
 	margin-top: 0;
 	padding-top: 0;
