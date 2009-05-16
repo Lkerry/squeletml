@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-13 21:48-0400\n"
+"POT-Creation-Date: 2009-05-16 19:06-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,13 +29,13 @@ msgid ""
 "variables y étant contenues."
 msgstr ""
 
-#: inc/fonctions.inc.php:355
+#: inc/fonctions.inc.php:373
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
 
-#: inc/fonctions.inc.php:357
+#: inc/fonctions.inc.php:375
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -44,16 +44,16 @@ msgid ""
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
 
-#: inc/fonctions.inc.php:359
+#: inc/fonctions.inc.php:377
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:584
+#: inc/fonctions.inc.php:602
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:740
+#: inc/fonctions.inc.php:758
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
@@ -131,4 +131,8 @@ msgstr ""
 #: inc/galerie.inc.php:70
 #, php-format
 msgid "Taille maximale de l'oeuvre %1$s de la galerie"
+msgstr ""
+
+#: inc/galerie.inc.php:122
+msgid "Accueil de la galerie"
 msgstr ""
