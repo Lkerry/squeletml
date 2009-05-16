@@ -53,6 +53,10 @@ $menuSousLeContenu = TRUE; // TRUE|FALSE
 /* Le menu des langues peut être inséré dans le flux HTML au-dessus du contenu ou bien en-dessous. */
 $menuLanguesSousLeContenu = TRUE; // TRUE|FALSE
 
+// Le cas échéant, l'ordre d'affichage des menus
+/* Si le menu ainsi que le menu des langues sont situés dans la même région (par exemple, tous les deux au-dessus du contenu ou tous les deux en-dessous), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
+$menuSousLeMenuLangues = TRUE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## Configuration du formulaire de contact

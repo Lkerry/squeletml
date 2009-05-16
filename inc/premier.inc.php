@@ -46,16 +46,26 @@ if ($messageIE6)
 	<?php include fichierAncres($racine, $langue); ?>
 </div><!-- /ancres -->
 
+<?php if (!$menuSousLeMenuLangues): ?>
+	<?php if (!$menuSousLeContenu): ?>
+		<div id="menu">
+			<?php include fichierMenu($racine, $langue); ?>
+		</div><!-- /menu -->
+	<?php endif; ?>
+<?php endif; ?>
+
 <?php if (!$menuLanguesSousLeContenu && count($accueil) > 1): ?>
 	<div id="menuLangues">
 		<?php include fichierMenuLangues($racine, $langue); ?>
 	</div><!-- /menuLangues -->
 <?php endif; ?>
 
-<?php if (!$menuSousLeContenu): ?>
-	<div id="menu">
-		<?php include fichierMenu($racine, $langue); ?>
-	</div><!-- /menu -->
+<?php if ($menuSousLeMenuLangues): ?>
+	<?php if (!$menuSousLeContenu): ?>
+		<div id="menu">
+			<?php include fichierMenu($racine, $langue); ?>
+		</div><!-- /menu -->
+	<?php endif; ?>
 <?php endif; ?>
 
 <div id="contenu">
