@@ -3,6 +3,28 @@ include 'inc/zero.inc.php';
 $baliseTitle = T_("Gestion des droits d'accès");
 include 'inc/premier.inc.php';
 
+// Début des tests pour vérifier l'accessibilité des fichiers nécessaires au script
+if ($ficTest = fopen($racine . '/.htaccess', 'a+'))
+{
+	fclose($ficTest);
+}
+else
+{
+	echo '<p>' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), $racine . '/.htaccess') . '</p>';
+	exit(1);
+}
+
+if ($ficTest = fopen($racine . '/.acces', 'a+'))
+{
+	fclose($ficTest);
+}
+else
+{
+	echo '<p>' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), $racine . '/.acces') . '</p>';
+	exit(1);
+}
+// Fin des tests
+
 if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
 {
 	if (!file_exists($racine . '/.acces'))
@@ -18,67 +40,77 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		$htaccess .= "</FilesMatch>\n";
 		$htaccess .= "# Fin de l'ajout automatique de Squeletml.\n";
 		
-		$fic = fopen($racine . '/.htaccess', 'a+');
-		fputs($fic, $htaccess);
-		fclose($fic);
+		if ($fic = fopen($racine . '/.htaccess', 'a+'))
+		{
+			fputs($fic, $htaccess);
+			fclose($fic);
+		}
 	}
 	
 	// Ajout d'un utilisateur
 	if (isset($_POST['ajouter']))
 	{
-		$fic2 = fopen($racine . '/.acces', 'a+');
-		
-		$acces = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n"; 
-		
-		// On vérifie si l'utilisateur est déjà présent
-		$utilisateurAbsent = TRUE;
-		while (!feof($fic2))
+		if ($fic2 = fopen($racine . '/.acces', 'a+'))
 		{
-			$ligne = fgets($fic2);
-			if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+			$acces = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n"; 
+			
+			// On vérifie si l'utilisateur est déjà présent
+			$utilisateurAbsent = TRUE;
+			while (!feof($fic2))
 			{
-				$utilisateurAbsent = FALSE;
-				break;
+				$ligne = fgets($fic2);
+				if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+				{
+					$utilisateurAbsent = FALSE;
+					break;
+				}
 			}
-		}
 		
-		if ($utilisateurAbsent)
-		{
-			fputs($fic2, $acces);
-			echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), adminFormateTexte($_POST['nom'])) . '</p>';
-		}
-		else
-		{
-			echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), adminFormateTexte($_POST['nom'])) . '</p>';
-		}
+			if ($utilisateurAbsent)
+			{
+				fputs($fic2, $acces);
+				echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), adminFormateTexte($_POST['nom'])) . '</p>';
+			}
+			else
+			{
+				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), adminFormateTexte($_POST['nom'])) . '</p>';
+			}
 		
-		fclose($fic2);
+			fclose($fic2);
+		}
 	}
 	
 	// Modification d'un utilisateur
 	elseif (isset($_POST['modifier']))
 	{
-		$fic2 = fopen($racine . '/.acces', 'r');
-		$utilisateurs = array ();
-		// On vérifie si l'utilisateur est déjà présent
-		$utilisateurAbsent = TRUE;
 		
-		while (!feof($fic2))
+		
+		if ($fic2 = fopen($racine . '/.acces', 'r'))
 		{
-			$ligne = fgets($fic2);
-			if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+			$utilisateurs = array ();
+			// On vérifie si l'utilisateur est déjà présent
+			$utilisateurAbsent = TRUE;
+		
+			while (!feof($fic2))
 			{
-				$utilisateurAbsent = FALSE;
-				$ligne = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
-			}
+				$ligne = fgets($fic2);
+				if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+				{
+					$utilisateurAbsent = FALSE;
+					$ligne = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+				}
 			
-			$utilisateurs[] = $ligne;
+				$utilisateurs[] = $ligne;
+			}
+		
+			fclose($fic2);
 		}
 		
-		fclose($fic2);
-		$fic2 = fopen($racine . '/.acces', 'w');
-		fputs($fic2, implode("\n", $utilisateurs));
-		fclose($fic2);
+		if ($fic2 = fopen($racine . '/.acces', 'w'))
+		{
+			fputs($fic2, implode("\n", $utilisateurs));
+			fclose($fic2);
+		}
 		
 		if ($utilisateurAbsent)
 		{
@@ -93,55 +125,65 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		// Suppression d'un utilisateur
 	elseif (isset($_POST['supprimer']))
 	{
-		$fic2 = fopen($racine . '/.acces', 'r');
-		$utilisateurs = array ();
-		// On vérifie si l'utilisateur est déjà présent
-		$utilisateurAbsent = TRUE;
-		
-		while (!feof($fic2))
+		if ($fic2 = fopen($racine . '/.acces', 'r'))
 		{
-			$ligne = fgets($fic2);
-			if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+			$utilisateurs = array ();
+			// On vérifie si l'utilisateur est déjà présent
+			$utilisateurAbsent = TRUE;
+		
+			while (!feof($fic2))
 			{
-				$utilisateurAbsent = FALSE;
+				$ligne = fgets($fic2);
+				if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+				{
+					$utilisateurAbsent = FALSE;
+				}
+				else
+				{
+					$utilisateurs[] = $ligne;
+				}
 			}
-			else
-			{
-				$utilisateurs[] = $ligne;
-			}
+		
+			fclose($fic2);
 		}
 		
-		fclose($fic2);
-		$fic2 = fopen($racine . '/.acces', 'w');
-		fputs($fic2, implode("\n", $utilisateurs));
-		fclose($fic2);
+		if ($fic2 = fopen($racine . '/.acces', 'w'))
+		{
+			fputs($fic2, implode("\n", $utilisateurs));
+			fclose($fic2);
+		}
 		
 		// S'il n'y a plus d'utilisateurs dans le fichier `.acces`, on supprime l'authentification dans le .htaccess
 		clearstatcache();
 		if (filesize($racine . '/.acces') == 0)
 		{
-			$fic2 = fopen($racine . '/.htaccess', 'r');
-			$fichierHtaccess = array ();
-			while (!feof($fic2))
+			if ($fic2 = fopen($racine . '/.htaccess', 'r'))
 			{
-				$ligne = rtrim(fgets($fic2));
-				if (preg_match('/^# Ajout automatique de Squeletml. Ne pas modifier./', $ligne))
+				$fichierHtaccess = array ();
+				while (!feof($fic2))
 				{
-					while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml./', $ligne))
+					$ligne = rtrim(fgets($fic2));
+					if (preg_match('/^# Ajout automatique de Squeletml. Ne pas modifier./', $ligne))
 					{
-						$ligne = fgets($fic2);
+						while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml./', $ligne))
+						{
+							$ligne = fgets($fic2);
+						}
+					}
+					else
+					{
+						$fichierHtaccess[] = $ligne;
 					}
 				}
-				else
-				{
-					$fichierHtaccess[] = $ligne;
-				}
-			}
 		
-			fclose($fic2);
-			$fic2 = fopen($racine . '/.htaccess', 'w');
-			fputs($fic2, implode("\n", $fichierHtaccess));
-			fclose($fic2);
+				fclose($fic2);
+			}
+			
+			if ($fic2 = fopen($racine . '/.htaccess', 'w'))
+			{
+				fputs($fic2, implode("\n", $fichierHtaccess));
+				fclose($fic2);
+			}
 		}
 		
 		if ($utilisateurAbsent)
@@ -164,9 +206,9 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 
 <ul>
 <?php
-$fic3 = @fopen($racine . '/.acces', 'r');
+
 $i = 0;
-if ($fic3)
+if ($fic3 = fopen($racine . '/.acces', 'r'))
 {
 	while (!feof($fic3))
 	{
@@ -178,7 +220,7 @@ if ($fic3)
 			$i++;
 		}
 	}
-	
+
 	fclose($fic3);
 }
 
