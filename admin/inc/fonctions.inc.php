@@ -2,7 +2,7 @@
 /**
 Traite une chaîne pour l'afficher sécuritairement à l'écran.
 */
-function formateTexte($texte)
+function adminFormateTexte($texte)
 {
 	return stripslashes($texte);
 }
@@ -10,15 +10,17 @@ function formateTexte($texte)
 /**
 Retourne un tableau contenant les fichiers à inclure.
 */
-function init($racine)
+function adminInit($racine)
 {
 	$fichiers = array ();
 	
-	$fichiers[] = $racine . '/inc/fonctions-communes-admin.inc.php';
+	$fichiers[] = $racine . '/inc/fonctions.inc.php';
+	
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
 	
 	$fichiers[] = $racine . '/admin/inc/config.inc.php';
-	
-	$fichiers[] = $racine . '/admin/inc/php-markdown/markdown.php';
 	
 	if (file_exists($racine . '/site/inc/config-admin.inc.php'))
 	{
@@ -31,7 +33,7 @@ function init($racine)
 /**
 
 */
-function parcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)
+function adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)
 {
 	static $liste = array ();
 	$dossier = opendir($dossierRacine);
@@ -43,7 +45,7 @@ function parcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiers
 			{
 				$liste[] = $dossierRacine . '/' . $fichier;
 			}
-			parcourirDossiers($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres);
+			adminParcourirDossiers($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres);
 		}
 	}
 
@@ -73,7 +75,7 @@ function parcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiers
 /**
 
 */
-function parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl)
+function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl)
 {
 	static $liste = array ();
 	$dossier = opendir($dossierRacine);
@@ -81,7 +83,7 @@ function parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFilt
 	{
 		if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
 		{
-			parcourirTout($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
+			adminParcourirTout($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
 		}
 
 		elseif ($fichier != '.' && $fichier != '..')
@@ -137,7 +139,7 @@ function parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFilt
 /**
 Retourne la version de l'installation
 */
-function versionLogiciel($racine)
+function adminVersionLogiciel($racine)
 {
 	$fic = fopen($racine . '/version.txt', 'r');
 	$tag = fgets($fic, 20); // exemple: logiciel-1.4

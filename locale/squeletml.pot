@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-16 19:06-0400\n"
+"POT-Creation-Date: 2009-05-29 17:13-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,13 +29,176 @@ msgid ""
 "variables y étant contenues."
 msgstr ""
 
-#: inc/fonctions.inc.php:373
+#: admin/version.admin.php:3 admin/version.admin.php:7
+msgid "Version de Squeletml"
+msgstr ""
+
+#: admin/version.admin.php:9
+#, php-format
+msgid "La version en cours est %1$s."
+msgstr ""
+
+#: admin/index.admin.php:3
+msgid "Administration"
+msgstr ""
+
+#: admin/droits.admin.php:3 admin/droits.admin.php:159
+msgid "Gestion des droits d'accès"
+msgstr ""
+
+#: admin/droits.admin.php:48
+#, php-format
+msgid "Utilisateur <em>%1$s</em> ajouté."
+msgstr ""
+
+#: admin/droits.admin.php:52
+#, php-format
+msgid "L'utilisateur <em>%1$s</em> a déjà les droits."
+msgstr ""
+
+#: admin/droits.admin.php:85
+#, php-format
+msgid ""
+"L'utilisateur <em>%1$s</em> n'a pas les droits. Son mot de passe ne peut "
+"donc pas être modifié."
+msgstr ""
+
+#: admin/droits.admin.php:89
+#, php-format
+msgid "Mot de passe de l'utilisateur <em>%1$s</em> modifié."
+msgstr ""
+
+#: admin/droits.admin.php:149
+#, php-format
+msgid ""
+"L'utilisateur <em>%1$s</em> n'a pas les droits. Il ne peut donc pas être "
+"supprimé."
+msgstr ""
+
+#: admin/droits.admin.php:153
+#, php-format
+msgid "Utilisateur <em>%1$s</em> supprimé."
+msgstr ""
+
+#: admin/droits.admin.php:161
+msgid "Utilisateurs"
+msgstr ""
+
+#: admin/droits.admin.php:163
+msgid "Voici les utilisateurs ayant accès à l'administration:"
+msgstr ""
+
+#: admin/droits.admin.php:187
+msgid "Aucun"
+msgstr ""
+
+#: admin/droits.admin.php:192
+msgid "Gestion"
+msgstr ""
+
+#: admin/droits.admin.php:194
+msgid ""
+"Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire "
+"ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur "
+"existant."
+msgstr ""
+
+#: admin/droits.admin.php:198
+msgid "Nom"
+msgstr ""
+
+#: admin/droits.admin.php:200
+msgid "Mot de passe"
+msgstr ""
+
+#: admin/droits.admin.php:202
+msgid "Ajouter"
+msgstr ""
+
+#: admin/droits.admin.php:202
+msgid "Modifier"
+msgstr ""
+
+#: admin/droits.admin.php:202
+msgid "Supprimer"
+msgstr ""
+
+#: admin/galeries.admin.php:3 admin/galeries.admin.php:59
+msgid "Gestion des galeries"
+msgstr ""
+
+#: admin/galeries.admin.php:14
+#, php-format
+msgid "La galerie %1$s n'existe pas."
+msgstr ""
+
+#: admin/galeries.admin.php:18
+#, php-format
+msgid "Erreur lors de l'ouverture du dossier %1$s."
+msgstr ""
+
+#: admin/galeries.admin.php:54
+msgid "Résultat"
+msgstr ""
+
+#: admin/galeries.admin.php:61
+msgid "Générer un fichier de configuration de base d'une galerie"
+msgstr ""
+
+#: admin/galeries.admin.php:63
+msgid ""
+"Pour générer automatiquement la liste des images d'une galerie, et ce sous "
+"la forme <code>grandeNom=grandeImage.extension</code>, remplissez le "
+"formulaire ci-dessous. Optionnellement, vous pouvez exclure des images du "
+"résultat."
+msgstr ""
+
+#: admin/galeries.admin.php:68
+msgid "Id de la galerie"
+msgstr ""
+
+#: admin/galeries.admin.php:71
+msgid "Ajouter des champs vides pour chaque oeuvre"
+msgstr ""
+
+#: admin/galeries.admin.php:74
+msgid "Exclusions"
+msgstr ""
+
+#: admin/galeries.admin.php:75
+msgid ""
+"Ne pas tenir compte des fichiers terminant par <code>-vignette.extension</"
+"code>"
+msgstr ""
+
+#: admin/galeries.admin.php:77
+msgid ""
+"Ne pas tenir compte des fichiers terminant par <code>-orig.extension</code>"
+msgstr ""
+
+#: admin/galeries.admin.php:80
+msgid "Soumettre"
+msgstr ""
+
+#: admin/inc/premier.inc.php:4
+msgid "Administration de Squeletml"
+msgstr ""
+
+#: admin/inc/premier.inc.php:20
+msgid "Aller au menu"
+msgstr ""
+
+#: admin/inc/premier.inc.php:21
+msgid "Aller au contenu"
+msgstr ""
+
+#: inc/fonctions.inc.php:335
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
 
-#: inc/fonctions.inc.php:375
+#: inc/fonctions.inc.php:337
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -44,16 +207,16 @@ msgid ""
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
 
-#: inc/fonctions.inc.php:377
+#: inc/fonctions.inc.php:339
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:602
+#: inc/fonctions.inc.php:564
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:758
+#: inc/fonctions.inc.php:720
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""

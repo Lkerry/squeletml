@@ -1,5 +1,6 @@
 <?php
-$baliseTitle = "Gestion des droits d'accès";
+include 'inc/zero.inc.php';
+$baliseTitle = T_("Gestion des droits d'accès");
 include 'inc/premier.inc.php';
 
 if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
@@ -27,14 +28,14 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 	{
 		$fic2 = fopen($racine . '/.acces', 'a+');
 		
-		$acces = formateTexte($_POST['nom']) . ':' . crypt(formateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n"; 
+		$acces = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n"; 
 		
 		// On vérifie si l'utilisateur est déjà présent
 		$utilisateurAbsent = TRUE;
 		while (!feof($fic2))
 		{
 			$ligne = fgets($fic2);
-			if (preg_match('/^' . formateTexte($_POST['nom']) . ':/', $ligne))
+			if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
 			{
 				$utilisateurAbsent = FALSE;
 				break;
@@ -44,11 +45,11 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		if ($utilisateurAbsent)
 		{
 			fputs($fic2, $acces);
-			echo '<p class="succes">Utilisateur <em>' . formateTexte($_POST['nom']) . '</em> ajouté.</p>';
+			echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), adminFormateTexte($_POST['nom'])) . '</p>';
 		}
 		else
 		{
-			echo '<p class="erreur">L\'utilisateur <em>' . formateTexte($_POST['nom']) . '</em> a déjà les droits.</p>';
+			echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), adminFormateTexte($_POST['nom'])) . '</p>';
 		}
 		
 		fclose($fic2);
@@ -65,10 +66,10 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		while (!feof($fic2))
 		{
 			$ligne = fgets($fic2);
-			if (preg_match('/^' . formateTexte($_POST['nom']) . ':/', $ligne))
+			if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
 			{
 				$utilisateurAbsent = FALSE;
-				$ligne = formateTexte($_POST['nom']) . ':' . crypt(formateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+				$ligne = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
 			}
 			
 			$utilisateurs[] = $ligne;
@@ -81,11 +82,11 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		
 		if ($utilisateurAbsent)
 		{
-			echo '<p class="erreur">L\'utilisateur <em>' . formateTexte($_POST['nom']) . '</em> n\'a pas les droits. Son mot de passe ne peut donc pas être modifié.</p>';
+			echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Son mot de passe ne peut donc pas être modifié.'), adminFormateTexte($_POST['nom'])) . '</p>';
 		}
 		else
 		{
-			echo '<p class="succes">Mot de passe de l\'utilisateur <em>' . formateTexte($_POST['nom']) . '</em> modifié.</p>';
+			echo '<p class="succes">' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), adminFormateTexte($_POST['nom'])) . '</p>';
 		}
 	}
 	
@@ -100,7 +101,7 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		while (!feof($fic2))
 		{
 			$ligne = fgets($fic2);
-			if (preg_match('/^' . formateTexte($_POST['nom']) . ':/', $ligne))
+			if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
 			{
 				$utilisateurAbsent = FALSE;
 			}
@@ -145,21 +146,21 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		
 		if ($utilisateurAbsent)
 		{
-			echo '<p class="erreur">L\'utilisateur <em>' . formateTexte($_POST['nom']) . '</em> n\'a pas les droits. Il ne peut donc pas être supprimé.</p>';
+			echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Il ne peut donc pas être supprimé.'), adminFormateTexte($_POST['nom'])) . '</p>';
 		}
 		else
 		{
-			echo '<p class="succes">Utilisateur <em>' . formateTexte($_POST['nom']) . '</em> supprimé.</p>';
+			echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), adminFormateTexte($_POST['nom'])) . '</p>';
 		}
 	}
 }
 ?>
 
-<h1>Gestion des droits d'accès</h1>
+<h1><?php echo T_("Gestion des droits d'accès"); ?></h1>
 
-<h2>Utilisateurs</h2>
+<h2><?php echo T_("Utilisateurs"); ?></h2>
 
-<p>Voici les utilisateurs ayant accès à l'administration:</p>
+<p><?php echo T_("Voici les utilisateurs ayant accès à l'administration:"); ?></p>
 
 <ul>
 <?php
@@ -183,22 +184,22 @@ if ($fic3)
 
 if (!$i)
 {
-	echo '<li>Aucun</li>';
+	echo '<li>' . T_("Aucun") . '</li>';
 }
 ?>
 </ul>
 
-<h2>Gestion</h2>
+<h2><?php echo T_("Gestion"); ?></h2>
 
-<p>Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant.</p>
+<p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
 
 <form action="<? echo $action; ?>" method="post">
 <div>
-<p><label>Nom:</label><br />
+<p><label><?php echo T_("Nom"); ?>:</label><br />
 <input type="text" name="nom" /></p>
-<p><label>Mot de passe:</label><br />
+<p><label><?php echo T_("Mot de passe"); ?>:</label><br />
 <input type="password" name="motDePasse" /></p>
-<p><input type="submit" name="ajouter" value="Ajouter" /> <input type="submit" name="modifier" value="Modifier" /> <input type="submit" name="supprimer" value="Supprimer" /></p>
+<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer'); ?>" /></p>
 </div>
 </form>
 

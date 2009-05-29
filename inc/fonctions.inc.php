@@ -6,8 +6,6 @@ function init($racine, $langue, $idGalerie)
 {
 	$fichiers = array ();
 	
-	$fichiers[] = $racine . '/inc/fonctions-communes-admin.inc.php';
-	
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
 	
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
@@ -40,26 +38,6 @@ function init($racine, $langue, $idGalerie)
 }
 
 /**
-Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des pages.
-*/
-function phpGettext($racine, $langue)
-{
-	require_once $racine . '/inc/php-gettext/gettext.inc';
-	$locale = $langue;
-	// Palliatif à un bogue sur les serveurs de Koumbit. Aucune idée du problème. On dirait que 9 fois sur 10, php-gettext passe le relais au gettext par défaut de PHP, et que si la locale est seulement 'en', elle n'existe pas sur le serveur d'hébergement, donc la traduction ne fonctionne pas.
-	if ($locale == 'en')
-	{
-		$locale = 'en_US';
-	}
-	T_setlocale(LC_MESSAGES, $locale);
-	$domain = 'squeletml';
-	T_bindtextdomain($domain, $racine . '/locale');
-	T_bind_textdomain_codeset($domain, 'UTF-8');
-	T_textdomain($domain);
-	return;
-}
-
-/**
 Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
 function mdtxt($fichier)
@@ -88,22 +66,6 @@ function accueil($tableauAccueil, $tableauLangue)
 	{
 		return $tableauAccueil[langueParDefaut($tableauLangue)];
 	}
-}
-
-/**
-Retourne la langue de la page courante.
-*/
-function langue($langue)
-{
-	if ($langue == 'navigateur')
-	{
-		$langue = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-		$langue = strtolower(substr(chop($langue[0]), 0, 2));
-		
-		return $langue;
-	}
-	
-	return isset($langue[1]) ? $langue[1] : $langue[0];
 }
 
 /**
@@ -802,6 +764,58 @@ function construitTableauGalerie($fichierTexte)
 	}
 	
 	return $galerie;
+}
+
+/**
+Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des pages.
+*/
+function phpGettext($racine, $langue)
+{
+	require_once $racine . '/inc/php-gettext/gettext.inc';
+	$locale = $langue;
+	// Palliatif à un bogue sur les serveurs de Koumbit. Aucune idée du problème. On dirait que 9 fois sur 10, php-gettext passe le relais au gettext par défaut de PHP, et que si la locale est seulement 'en', elle n'existe pas sur le serveur d'hébergement, donc la traduction ne fonctionne pas.
+	if ($locale == 'en')
+	{
+		$locale = 'en_US';
+	}
+	T_setlocale(LC_MESSAGES, $locale);
+	$domain = 'squeletml';
+	T_bindtextdomain($domain, $racine . '/locale');
+	T_bind_textdomain_codeset($domain, 'UTF-8');
+	T_textdomain($domain);
+	return;
+}
+
+/**
+Retourne la langue de la page courante.
+*/
+function langue($langue)
+{
+	if ($langue == 'navigateur')
+	{
+		$langue = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		$langue = strtolower(substr(chop($langue[0]), 0, 2));
+		
+		return $langue;
+	}
+	
+	return isset($langue[1]) ? $langue[1] : $langue[0];
+}
+
+/**
+Conversion des octets en Kio.
+*/
+function octetsVersKio($octets)
+{
+	return number_format($octets / 1024, 1, ',', '');
+}
+
+/**
+Conversion des octets en Mio.
+*/
+function octetsVersMio($octets)
+{
+	return number_format($octets / 1048576, 1, ',', '');
 }
 
 ?>

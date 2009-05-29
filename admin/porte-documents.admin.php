@@ -1,4 +1,5 @@
 <?php
+include 'inc/zero.inc.php';
 $baliseTitle = "Porte-documents";
 include 'inc/premier.inc.php';
 
@@ -160,7 +161,7 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 	$messageErreurModifier = '';
 	$messageErreurModifier .= "<p class='erreur'>Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.</p>\n";
 	$messageErreurModifier .= '<p><textarea name="porteDocumentsContenuFichier" readonly="readonly">';
-	$messageErreurModifier .= formateTexte($_POST['porteDocumentsContenuFichier']);
+	$messageErreurModifier .= adminFormateTexte($_POST['porteDocumentsContenuFichier']);
 	$messageErreurModifier .= "</textarea></p>\n";
 
 	echo "<ul>\n";
@@ -172,7 +173,7 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 			echo "<li><p class='erreur'>Le fichier <span class='porteDocumentsNom'>" . $_POST['porteDocumentsModifierNom'] . "</span> n'a pas pu être ouvert.</p>\n$messageErreurModifier</li>\n";
 		}
 	
-		if (fwrite($fic, formateTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
+		if (fwrite($fic, adminFormateTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
 		{
 			echo "<li><p class='erreur'>Impossible d'écrire dans le fichier <span class='porteDocumentsNom'>" . $_POST['porteDocumentsModifierNom'] . "</span>.</p>\n$messageErreurModifier</li>\n";
 		}
@@ -353,7 +354,7 @@ if (isset($_GET['action']))
 
 		else
 		{
-			$liste = parcourirTout($_GET['valeur'], $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
+			$liste = adminParcourirTout($_GET['valeur'], $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
 			ksort($liste);
 
 			echo "<ul>\n";
@@ -382,7 +383,7 @@ if (isset($_GET['action']))
 
 <?php
 //Tout déplier
-/*$liste = parcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
+/*$liste = adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
 ksort($liste);
 
 echo "<ul>\n";
@@ -411,7 +412,7 @@ echo "</ul>\n";*/
 <h<?php echo $niveauTitreSuivant2; ?>>Affichage général des dossiers</h<?php echo $niveauTitreSuivant2; ?>>
 
 <?php
-$liste2 = parcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres);
+$liste2 = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres);
 asort($liste2);
 echo "<ul>\n";
 foreach ($liste2 as $valeur)
@@ -445,7 +446,7 @@ echo "</ul>\n";
 <label>Fichier:</label> <input type="file" name="fichier" size="25"/><br /><br />
 <label>Dossier:</label> <select name="rep" size="1in/porte-documen">
 <?php
-$liste = parcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres);
+$liste = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres);
 asort($liste);
 foreach ($liste as $valeur)
 {

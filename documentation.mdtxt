@@ -2,7 +2,7 @@
 
 ## Installation
 
-Squeletml requiert un serveur PHP, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il n'est donc nécessaire que télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire l'archive, et de placer les fichiers sur un serveur, par exemple par ftp.
+Squeletml requiert un serveur PHP, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il n'est donc nécessaire que de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire l'archive, et de placer les fichiers sur un serveur, par exemple par ftp.
 
 Mise en situation:
 
@@ -44,7 +44,7 @@ Ce fichier va également contenir les instructions pour protéger le dossier d'a
 
 Il est important de protéger la section d'administration du site tout de suite après l'installation. Pour ce faire, visitez la page suivante:
 
-	http://nomDeDomaine.ext/admin/droits.php
+	http://nomDeDomaine.ext/admin/droits.admin.php
 
 et ajoutez un utilisateur.
 
@@ -371,59 +371,59 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 - `grandeNom`: nom du fichier image en version grande. **Le seul champ obligatoire.** Exemple:
 
-	grandeNom=fichier1.jpg
+		grandeNom=fichier1.jpg
 
 - `id`: l'id est utilisée dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Cela permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'id n'est pas renseignée, elle sera générée automatiquement à partir du nom du fichier image. Exemple:
 
-	id=5
+		id=5
 
 - `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-vignette.extension`. Exemple:
 
-	vignetteNom=fichier1Petit.jpg
+		vignetteNom=fichier1Petit.jpg
 
 - `vignetteLargeur`: largeur de la vignette. Si `vignetteLargeur` ou `vignetteHauteur` sont renseignées, seulement la ou les informations renseignées seront affichées dans la balise `img`. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement. Exemple:
 
-	vignetteLargeur=100
+		vignetteLargeur=100
 
 - `vignetteHauteur`: hauteur de la vignette. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-	vignetteHauteur=150
+		vignetteHauteur=150
 
 - `vignetteAlt`: texte alternatif (contenu de l'attribut `alt`) de la vignette. Si vide, le contenu sera généré automatiquement. Exemple:
 
-	vignetteAlt=Chien assis sur un divan.
+		vignetteAlt=Chien assis sur un divan.
 
 - `grandeLargeur`: largeur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-	grandeLargeur=500
+		grandeLargeur=500
 
 - `grandeHauteur`: hauteur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-	grandeHauteur=750
+		grandeHauteur=750
 
 - `grandeAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version grande. Si vide, le contenu sera généré automatiquement. Exemple:
 
-	grandeAlt=Chien dormant sur un divan.
+		grandeAlt=Chien dormant sur un divan.
 
 - `grandeLegende`: commentaire qui sera affiché sous l'image en version grande. Exemple:
 
-	grandeLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
+		grandeLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
 
 - `pageGrandeBaliseTitle`: contenu de la balise `title` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
 
-	pageGrandeBaliseTitle=Bla bla bla
+		pageGrandeBaliseTitle=Bla bla bla
 
 - `pageGrandeDescription`: contenu de la métabalise `description` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
 
-	pageGrandeDescription=Bla bla bla
+		pageGrandeDescription=Bla bla bla
 
 - `pageGrandeMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
 
-	pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
+		pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
 
 - `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté dans le bas de l'image en version grande. Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien de téléchargement sera ajouté. Exemple:
 
-	origNom=fichier1Orig.jpg
+		origNom=fichier1Orig.jpg
 
 Voici une entrée vide, qu'il est possible de copier/coller:
 
