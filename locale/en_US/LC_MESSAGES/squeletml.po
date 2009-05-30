@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 01:35-0400\n"
+"POT-Creation-Date: 2009-05-30 17:30-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -238,12 +238,22 @@ msgstr ""
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:589
+#: inc/fonctions.inc.php:553
+#, fuzzy
+msgid "Oeuvre"
+msgstr "Work %1$s"
+
+#: inc/fonctions.inc.php:566
+#, php-format
+msgid "%1$s&nbsp;Kio"
+msgstr ""
+
+#: inc/fonctions.inc.php:597
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:752
+#: inc/fonctions.inc.php:775
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
@@ -313,17 +323,49 @@ msgstr "I want to receive a copy"
 msgid "Envoyer le message"
 msgstr "Send email"
 
-#: inc/galerie.inc.php:61
+#: inc/galerie.inc.php:72
 #, php-format
 msgid "Oeuvre %1$s de la galerie"
 msgstr "Work %1$s of this gallery"
 
-#: inc/galerie.inc.php:70
+#: inc/galerie.inc.php:81
 #, php-format
 msgid "Taille maximale de l'oeuvre %1$s de la galerie"
 msgstr "Max size of the work %1$s of this gallery"
 
-#: inc/galerie.inc.php:122
+#: inc/galerie.inc.php:147
+#, php-format
+msgid "Affichage de l'oeuvre %1$s sur un total de %2$s."
+msgstr ""
+
+#: inc/galerie.inc.php:147
 #, fuzzy
-msgid "Accueil de la galerie"
+msgid "Accueil de la galerie."
+msgstr "Work %1$s of this gallery"
+
+#: inc/galerie.inc.php:189
+#, php-format
+msgid ""
+"L'oeuvre demandée est introuvable. <a href=\"%1$s\">Voir toutes les oeuvres</"
+"a>."
+msgstr ""
+
+#: inc/galerie.inc.php:259
+msgid "Page précédente"
+msgstr ""
+
+#: inc/galerie.inc.php:269
+msgid "Page suivante"
+msgstr ""
+
+#: inc/galerie.inc.php:304
+#, php-format
+msgid "Cette galerie contient %1$s oeuvre."
+msgid_plural "Cette galerie contient %1$s oeuvres."
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/galerie.inc.php:304
+#, fuzzy
+msgid "Voir l'accueil de la galerie."
 msgstr "Work %1$s of this gallery"
