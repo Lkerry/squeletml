@@ -95,7 +95,7 @@ $copieCourriel = FALSE; // TRUE|FALSE
 $galerieNavigation = 'fleches'; // fleches ou vignettes
 
 // Choix de l'emplacement de la navigation
-$galerieNavigationEmplacement = 'haut'; // haut ou bas
+$galerieNavigationEmplacement = 'haut'; // haut|bas
 
 // Hauteur des vignettes si génération automatique
 $galerieHauteurVignette = 100;
@@ -116,16 +116,19 @@ $galeriePaginationAuDessous = FALSE; // TRUE|FALSE
 $galerieMinivignettes = FALSE; //TRUE|FALSE
 
 // S'il y a des minivignettes, choix de l'emplacement de la div
-$galerieMinivignettesEmplacement = 'haut'; // haut ou bas
+$galerieMinivignettesEmplacement = 'haut'; // haut|bas
 
 // Informations sur la galerie
 $galerieInfoAjout = TRUE; // TRUE|FALSE
 
 // S'il y a des informations sur la galerie, choix de l'emplacement de la div
-$galerieInfoEmplacement = 'haut'; // haut ou bas
+$galerieInfoEmplacement = 'haut'; // haut|bas
 
 // Ajout automatique d'une légende (contenu de l'attribut `alt` + taille du fichier) dans le cas où aucune légende n'a été précisée
 $galerieLegendeAutomatique = FALSE; // TRUE|FALSE
+
+// Emplacement de la légende et du lien vers l'image originale (s'il y a lieu)
+$galerieLegendeEmplacement = 'bas'; // haut|bas
 
 ########################################################################
 ##
