@@ -110,6 +110,10 @@ span#galerieGrandeLegende, span#galerieLienOrig {
 	text-align: center;
 }
 
+div.galeriePagination {
+	text-align: center;
+}
+
 /* Bloc message pour IE6 */
 
 div#messageIE6 {

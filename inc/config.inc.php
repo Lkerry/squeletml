@@ -103,6 +103,15 @@ $galerieHauteurVignette = 100;
 // Si un lien est ajouté vers l'image au format original, est-ce qu'on force son téléchargement sans affichage dans le navigateur?
 $galerieTelechargeOrig = FALSE; // TRUE|FALSE
 
+// Pagination des vignettes: nombre de vignettes par page (0 pour désactiver la pagination)
+$galerieVignettesParPage = 2;
+
+// S'il y a pagination, affichage des liens au-dessus des vignettes
+$galeriePaginationAuDessus = FALSE; // TRUE|FALSE
+
+// S'il y a pagination, affichage des liens au-dessous des vignettes
+$galeriePaginationAuDessous = TRUE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites)
