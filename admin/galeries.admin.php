@@ -17,6 +17,14 @@ if (isset($_POST['soumettre']))
 	{
 		$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
 		
+		if ($_POST['exclureSiExiste'] == 'existe')
+		{
+			if (file_exists($racine . '/site/inc/galerie-' . $_POST['id'] . '.txt'))
+			{
+				$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $_POST['id'] . '.txt');
+			}
+		}
+		
 		$listeFichiers = '';
 		
 		while($fichier = @readdir($fic))
@@ -25,26 +33,29 @@ if (isset($_POST['soumettre']))
 			{
 				if (($_POST['exclureVignette'] != 'vignette' || !preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier)) && ($_POST['exclureOrig'] != 'orig' || !preg_match('/-orig\.[[:alpha:]]{3,4}$/', $fichier)))
 				{
-					$listeFichiers .= "grandeNom=$fichier\n";
-					
-					if ($_POST['info'] == 'tout')
+					if ($_POST['exclureSiExiste'] != 'existe' || !in_array_multi($fichier, $galerie))
 					{
-						$listeFichiers .= "id=\n";
-						$listeFichiers .= "vignetteNom=\n";
-						$listeFichiers .= "vignetteLargeur=\n";
-						$listeFichiers .= "vignetteHauteur=\n";
-						$listeFichiers .= "vignetteAlt=\n";
-						$listeFichiers .= "grandeLargeur=\n";
-						$listeFichiers .= "grandeHauteur=\n";
-						$listeFichiers .= "grandeAlt=\n";
-						$listeFichiers .= "grandeLegende=\n";
-						$listeFichiers .= "pageGrandeBaliseTitle=\n";
-						$listeFichiers .= "pageGrandeDescription=\n";
-						$listeFichiers .= "pageGrandeMotsCles=\n";
-						$listeFichiers .= "origNom=\n";
-					}
+						$listeFichiers .= "grandeNom=$fichier\n";
 					
-					$listeFichiers .= "__IMG__\n";
+						if ($_POST['info'] == 'tout')
+						{
+							$listeFichiers .= "id=\n";
+							$listeFichiers .= "vignetteNom=\n";
+							$listeFichiers .= "vignetteLargeur=\n";
+							$listeFichiers .= "vignetteHauteur=\n";
+							$listeFichiers .= "vignetteAlt=\n";
+							$listeFichiers .= "grandeLargeur=\n";
+							$listeFichiers .= "grandeHauteur=\n";
+							$listeFichiers .= "grandeAlt=\n";
+							$listeFichiers .= "grandeLegende=\n";
+							$listeFichiers .= "pageGrandeBaliseTitle=\n";
+							$listeFichiers .= "pageGrandeDescription=\n";
+							$listeFichiers .= "pageGrandeMotsCles=\n";
+							$listeFichiers .= "origNom=\n";
+						}
+					
+						$listeFichiers .= "__IMG__\n";
+					}
 				}
 			}
 		}
@@ -75,6 +86,8 @@ if (isset($_POST['soumettre']))
 <p><input type=checkbox name="exclureVignette" value="vignette" checked="checked" /> <label><?php echo T_("Ne pas tenir compte des fichiers terminant par <code>-vignette.extension</code>"); ?></label></p>
 
 <p><input type=checkbox name="exclureOrig" value="orig" checked="checked" /> <label><?php echo T_("Ne pas tenir compte des fichiers terminant par <code>-orig.extension</code>"); ?></label></p>
+
+<p><input type=checkbox name="exclureSiExiste" value="existe" checked="checked" /> <label><?php echo T_("Ne pas tenir compte des images déjà présentes dans le fichier de configuration de cette galerie (s'il existe)"); ?></label></p>
 </fieldset>
 
 <p><input type="submit" name="soumettre" value="<?php echo T_('Soumettre'); ?>" /></p>

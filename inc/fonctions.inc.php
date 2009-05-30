@@ -586,7 +586,14 @@ function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerie
 			{
 				$fleche = 'droite';
 			}
-			$src = 'src="' . $urlRacine . '/fichiers/fleche-' . $fleche . '.png"';
+			if (file_exists($urlRacine . '/site/fichiers/fleche-' . $fleche . '.png'))
+			{
+				$src = 'src="' . $urlRacine . '/site/fichiers/fleche-' . $fleche . '.png"';
+			}
+			else
+			{
+				$src = 'src="' . $urlRacine . '/fichiers/fleche-' . $fleche . '.png"';
+			}
 		}
 
 		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')
@@ -816,6 +823,30 @@ Conversion des octets en Mio.
 function octetsVersMio($octets)
 {
 	return number_format($octets / 1048576, 1, ',', '');
+}
+
+/**
+Fonction `in_array()` multidimensionel.
+*/
+function in_array_multi($recherche, $tableau)
+{
+	foreach ($tableau as $pos => $val)
+	{
+		if (is_array($val))
+		{
+			if (in_array_multi($recherche, $val))
+			{
+				return 1;
+			}
+		}
+		else
+		{
+			if ($val == $recherche)
+			{
+				return 1;
+			}
+		}
+	}
 }
 
 ?>

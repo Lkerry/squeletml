@@ -443,3 +443,7 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	origNom=
 	__IMG__
 
+### Personnaliser les flèches de navigation
+
+Les flèches par défaut sont `fichiers/fleche-gauche.png` et `fichiers/fleche-droite.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/fleche-gauche.png` et `site/fichiers/fleche-droite.png`.
+
