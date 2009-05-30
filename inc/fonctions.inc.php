@@ -508,7 +508,7 @@ function nomFichierGalerie()
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig)
 {
 	if ($taille == 'grande')
 	{
@@ -611,7 +611,7 @@ function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerie
 			{
 				$fleche = 'droite';
 			}
-			if (file_exists($racineImgSrc . '/../../fleche-' . $fleche . '.png'))
+			if (file_exists($racine . '/site/fichiers/fleche-' . $fleche . '.png'))
 			{
 				$src = 'src="' . $urlRacine . '/site/fichiers/fleche-' . $fleche . '.png"';
 			}
