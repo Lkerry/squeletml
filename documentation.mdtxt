@@ -97,6 +97,7 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
   - html.fr.menu.inc.php
   - html.fr.menu-langues.inc.php
   - html.fr.sous-titre.inc.php
+  - html.fr.sur-titre.inc.php
 
 	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `html.en.menu.inc.php`.
 
@@ -129,6 +130,10 @@ Voici un modèle simplifié d'une page de Squeletml:
 				S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
 
 				<div id="entete">
+					<div id="surTitre">
+						...
+					</div><!-- /surTitre -->
+					
 					<div id="titre">
 						Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
 					</div><!-- /titre -->

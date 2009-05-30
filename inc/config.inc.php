@@ -42,6 +42,9 @@ $titreSite['en'] = "Website title";
 // Message pour IE6
 $messageIE6 = TRUE; // TRUE|FALSE
 
+// Inclusion du sur-titre
+$surTitre = FALSE; // TRUE|FALSE
+
 // Inclusion du bas de page
 $basDePage = TRUE; // TRUE|FALSE
 

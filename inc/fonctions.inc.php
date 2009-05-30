@@ -416,6 +416,25 @@ function fichierMenu($racine, $tableauLangue)
 }
 
 /**
+Inclut le sur-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sur-titre par défaut.
+*/
+function fichierSurTitre($racine, $tableauLangue)
+{
+	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php'))
+	{
+		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php';
+	}
+	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php'))
+	{
+		return $racine . '/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php';
+	}
+	else
+	{
+		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.sur-titre.inc.php';
+	}
+}
+
+/**
 Inclut le sous-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sous-titre par défaut.
 */
 function fichierSousTitre($racine, $tableauLangue)

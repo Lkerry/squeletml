@@ -33,6 +33,12 @@ if ($messageIE6)
 ?>
 
 <div id="entete">
+	<?php if ($surTitre): ?>
+		<div id="surTitre">
+			<?php include fichierSurTitre($racine, $langue); ?>
+		</div><!-- /surTitre -->
+	<?php endif; ?>
+	
 	<div id="titre">
 		<?php echo construitNomSite(estAccueil(ACCUEIL), construitLienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, $langue))); ?>
 	</div><!-- /titre -->
