@@ -24,6 +24,9 @@ $fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/squeletml.cs
 Pratique quand un fichier a été modifié et qu'on veut forcer son retéléchargement. */
 $versionFichiersLinkScript = 1;
 
+// Inclusion de la feuille de style par défaut de Squeletml (`css/squeletml.css`)
+$styleSqueletmlCss = TRUE; // TRUE|FALSE
+
 // Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
 $langue[0] = 'fr';
 

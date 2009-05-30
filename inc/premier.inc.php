@@ -20,7 +20,7 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 <meta name="description" content="<?php echo $description; ?>" />
 <meta name="keywords" content="<?php echo construitMotsCles($motsCles, $description); ?>" />
 <meta name="robots" content="<?php echo robots($robots); ?>" />
-<?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript); ?>
+<?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 </head>
 <body class="<?php echo construitClass(estAccueil(ACCUEIL)); ?>">
 <div id="page">

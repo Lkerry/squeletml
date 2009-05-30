@@ -155,12 +155,18 @@ Construit les balises d'inclusion `link` et les balises `script` pour le javascr
 @param version un identifiant (optionnel) des versions des fichiers inclus, comme une date, un nombre...
 @return les balises `link` correctement remplies
 */
-function construitLinkScript($fichiers, $version = '')
+function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 {
 	$balisesLinkScript = '';
 	if (!empty($version))
 	{
 		$version = '?' . $version;
+	}
+	
+	if (!$styleSqueletmlCss)
+	{
+		// Suppression de la feuille de style par défaut
+		unset($fichiers[0]);
 	}
 	
 	if (!empty($fichiers))
