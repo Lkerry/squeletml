@@ -1,5 +1,6 @@
 <?php
-$baliseTitle = "Lisez-moi - Introduction à Squeletml";
+include 'inc/zero.inc.php';
+$baliseTitle = T_("Lisez-moi - Introduction à Squeletml");
 include 'inc/premier.inc.php';
 
 $fic = fopen('../LISEZ-MOI.mdtxt', 'r');
