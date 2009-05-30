@@ -605,7 +605,7 @@ function afficheOeuvre($urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerie
 			{
 				$fleche = 'droite';
 			}
-			if (file_exists($urlRacine . '/site/fichiers/fleche-' . $fleche . '.png'))
+			if (file_exists($racineImgSrc . '/../../fleche-' . $fleche . '.png'))
 			{
 				$src = 'src="' . $urlRacine . '/site/fichiers/fleche-' . $fleche . '.png"';
 			}
