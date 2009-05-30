@@ -508,7 +508,7 @@ function nomFichierGalerie()
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions)
 {
 	if ($taille == 'grande')
 	{
@@ -710,26 +710,34 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 				}
 			}
 			
-			if (!empty($galerie[$indice]['vignetteLargeur'])
-				|| !empty($galerie[$indice]['vignetteHauteur']))
+			if ($vignetteAvecDimensions)
 			{
-				if (!empty($galerie[$indice]['vignetteLargeur']))
+				if (!empty($galerie[$indice]['vignetteLargeur'])
+					|| !empty($galerie[$indice]['vignetteHauteur']))
 				{
-					$width = 'width="' . $galerie[$indice]['vignetteLargeur'] . '"';
-				}
+					if (!empty($galerie[$indice]['vignetteLargeur']))
+					{
+						$width = 'width="' . $galerie[$indice]['vignetteLargeur'] . '"';
+					}
 				
-				if (!empty($galerie[$indice]['vignetteHauteur']))
+					if (!empty($galerie[$indice]['vignetteHauteur']))
+					{
+						$height = 'height="' . $galerie[$indice]['vignetteHauteur'] . '"';
+					}
+				}
+				else
 				{
-					$height = 'height="' . $galerie[$indice]['vignetteHauteur'] . '"';
+					list($larg, $haut) = getimagesize($urlImgSrc . '/' . $vignetteNom);
+					{
+						$width = 'width="' . $larg . '"';
+						$height = 'height="' . $haut . '"';
+					}
 				}
 			}
 			else
 			{
-				list($larg, $haut) = getimagesize($urlImgSrc . '/' . $vignetteNom);
-				{
-					$width = 'width="' . $larg . '"';
-					$height = 'height="' . $haut . '"';
-				}
+				$width = '';
+				$height = '';
 			}
 		}
 		

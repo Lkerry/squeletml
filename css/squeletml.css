@@ -114,6 +114,10 @@ div.galeriePagination {
 	text-align: center;
 }
 
+div#galerieMinivignettes img {
+	height: 35px;
+}
+
 /* Bloc message pour IE6 */
 
 div#messageIE6 {

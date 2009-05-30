@@ -99,7 +99,7 @@ if (isset($_GET['oeuvre']))
 	if ($imageExiste)
 	{
 		// On récupère le code de l'oeuvre demandée en grande version
-		$oeuvreGrande = '<p id="galerieGrande">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'grande', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig) . '</p>';
+		$oeuvreGrande = '<p id="galerieGrande">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'grande', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE) . '</p>';
 
 		// On recherche l'oeuvre précédente pour la navigation .  Si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente
 		if (array_key_exists($i - 1, $galerie))
@@ -107,7 +107,7 @@ if (isset($_GET['oeuvre']))
 			$op = $i - 1; // $op est l'indice de l'oeuvre précédente
 
 			// On récupère le code de la vignette de l'oeuvre précédente
-			$oeuvrePrecedente = '<p class="galerieNavigationPrecedent">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $op, 'precedent', $galerieHauteurVignette, $galerieTelechargeOrig) . '</p>';
+			$oeuvrePrecedente = '<p class="galerieNavigationPrecedent">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $op, 'precedent', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE) . '</p>';
 		}
 		else
 		{
@@ -121,7 +121,7 @@ if (isset($_GET['oeuvre']))
 			$os = $i + 1;
 
 			// On récupère le code de la vignette de l'oeuvre suivante
-			$oeuvreSuivante = '<p class="galerieNavigationSuivant">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $os, 'suivant', $galerieHauteurVignette, $galerieTelechargeOrig) . '</p>';
+			$oeuvreSuivante = '<p class="galerieNavigationSuivant">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $os, 'suivant', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE) . '</p>';
 		}
 		else
 		{
@@ -139,6 +139,7 @@ if (isset($_GET['oeuvre']))
 			$corpsGalerie .= $lienVersGalerie . $oeuvreGrande . $oeuvrePrecedente . $oeuvreSuivante;
 		}
 		
+		// $galerieInfo
 		$galerieInfo = '<div id="galerieInfo">' . "\n";
 		$galerieInfo .= '<ul>' . "\n";
 		$galerieInfo .= '<li>' . sprintf(T_('Affichage de l\'oeuvre %1$s sur un total de %2$s'), $i + 1, $nombreDoeuvres) .  '</li>';
@@ -146,7 +147,31 @@ if (isset($_GET['oeuvre']))
 		$galerieInfo .= '</ul>' . "\n";
 		$galerieInfo .= '</div><!-- /galerieInfo -->' . "\n";
 		
-		$corpsGalerie = $galerieInfo . $corpsGalerie;
+		//$corpsMinivignettes
+		$corpsMinivignettes = '';
+		if ($galerieMinivignettes)
+		{
+			$corpsMinivignettes .= '<div id="galerieMinivignettes">' . "\n";
+			
+			$premiereOeuvre = 0;
+			$derniereOeuvre = $nombreDoeuvres;
+			for ($i = $premiereOeuvre; $i < $derniereOeuvre && $i < $nombreDoeuvres; $i++)
+			{
+				$corpsMinivignettes .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, FALSE);
+			}
+			
+			$corpsMinivignettes .= '</div><!-- /galerieMinivignettes -->' . "\n";
+		}
+		
+		// Variable $corpsGalerie finale
+		if ($galerieMinivignettesEmplacement == 'haut')
+		{
+			$corpsGalerie = $galerieInfo . $corpsMinivignettes . $corpsGalerie;
+		}
+		elseif ($galerieMinivignettesEmplacement == 'bas')
+		{
+			$corpsGalerie = $galerieInfo . $corpsGalerie . $corpsMinivignettes;
+		}
 	}
 
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie pour éviter le contenu dupliqué.
@@ -246,7 +271,7 @@ else
 	
 	for ($i = $premiereOeuvre; $i < $derniereOeuvre && $i < $nombreDoeuvres; $i++)
 	{
-		$corpsGalerie .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig);
+		$corpsGalerie .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE);
 	}
 	
 	if ($galerieVignettesParPage)

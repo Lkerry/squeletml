@@ -104,13 +104,19 @@ $galerieHauteurVignette = 100;
 $galerieTelechargeOrig = FALSE; // TRUE|FALSE
 
 // Pagination des vignettes: nombre de vignettes par page (0 pour désactiver la pagination)
-$galerieVignettesParPage = 2;
+$galerieVignettesParPage = 0;
 
 // S'il y a pagination, affichage des liens au-dessus des vignettes
-$galeriePaginationAuDessus = FALSE; // TRUE|FALSE
+$galeriePaginationAuDessus = TRUE; // TRUE|FALSE
 
 // S'il y a pagination, affichage des liens au-dessous des vignettes
-$galeriePaginationAuDessous = TRUE; // TRUE|FALSE
+$galeriePaginationAuDessous = FALSE; // TRUE|FALSE
+
+// Aperçu en minivignettes du contenu de la galerie sur les pages individuelles de chaque oeuvre
+$galerieMinivignettes = TRUE; //TRUE|FALSE
+
+// S'il y a des minivignettes, choix de l'emplacement de la div
+$galerieMinivignettesEmplacement = 'haut'; // haut ou bas
 
 ########################################################################
 ##
