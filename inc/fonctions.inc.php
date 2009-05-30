@@ -508,7 +508,7 @@ function nomFichierGalerie()
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique)
 {
 	if ($taille == 'grande')
 	{
@@ -550,12 +550,20 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 				$id = $galerie[$indice]['grandeNom'];
 			}
 			
-			$alt = 'alt="Oeuvre ' . $id . '"';
+			$alt = 'alt="' . T_("Oeuvre") . ' ' . $id . '"';
 		}
 		
 		if (!empty($galerie[$indice]['grandeLegende']))
 		{
 			$legende = '<span id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</span>';
+		}
+		elseif ($galerieLegendeAutomatique)
+		{
+			if ($contenuAlt = str_replace('alt="', '', $alt))
+			{
+				$contenuAlt = substr($contenuAlt, 0, -1);
+			}
+			$legende = '<span id="galerieGrandeLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $origNom))) . ')</span>';
 		}
 		else
 		{

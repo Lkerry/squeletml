@@ -113,10 +113,19 @@ $galeriePaginationAuDessus = TRUE; // TRUE|FALSE
 $galeriePaginationAuDessous = FALSE; // TRUE|FALSE
 
 // Aperçu en minivignettes du contenu de la galerie sur les pages individuelles de chaque oeuvre
-$galerieMinivignettes = TRUE; //TRUE|FALSE
+$galerieMinivignettes = FALSE; //TRUE|FALSE
 
 // S'il y a des minivignettes, choix de l'emplacement de la div
 $galerieMinivignettesEmplacement = 'haut'; // haut ou bas
+
+// Informations sur la galerie
+$galerieInfoAjout = TRUE; // TRUE|FALSE
+
+// S'il y a des informations sur la galerie, choix de l'emplacement de la div
+$galerieInfoEmplacement = 'haut'; // haut ou bas
+
+// Ajout automatique d'une légende (contenu de l'attribut `alt` + taille du fichier) dans le cas où aucune légende n'a été précisée
+$galerieLegendeAutomatique = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
