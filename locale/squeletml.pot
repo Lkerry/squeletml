@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-31 11:52-0400\n"
+"POT-Creation-Date: 2009-05-31 19:28-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -279,21 +279,21 @@ msgstr ""
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:679
+#: inc/fonctions.inc.php:692
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:692
+#: inc/fonctions.inc.php:705
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:723
+#: inc/fonctions.inc.php:736
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:882
+#: inc/fonctions.inc.php:895
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
@@ -382,28 +382,35 @@ msgstr ""
 msgid "Accueil de la galerie."
 msgstr ""
 
-#: inc/galerie.inc.php:288
+#: inc/galerie.inc.php:289
 #, php-format
 msgid ""
 "L'oeuvre demandée est introuvable. <a href=\"%1$s\">Voir toutes les oeuvres</"
 "a>."
 msgstr ""
 
-#: inc/galerie.inc.php:358
+#: inc/galerie.inc.php:359
 msgid "Page précédente"
 msgstr ""
 
-#: inc/galerie.inc.php:368
+#: inc/galerie.inc.php:369
 msgid "Page suivante"
 msgstr ""
 
-#: inc/galerie.inc.php:403
+#: inc/galerie.inc.php:405
 #, php-format
-msgid "Cette galerie contient %1$s oeuvre."
-msgid_plural "Cette galerie contient %1$s oeuvres."
+msgid "Cette galerie contient %1$s oeuvre"
+msgid_plural "Cette galerie contient %1$s oeuvres"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:403
+#: inc/galerie.inc.php:405
+#, php-format
+msgid " (sur %1$s page)."
+msgid_plural " (sur %1$s pages)."
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/galerie.inc.php:406
 msgid "Voir l'accueil de la galerie."
 msgstr ""
