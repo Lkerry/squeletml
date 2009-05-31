@@ -118,6 +118,9 @@ $galerieMinivignettes = FALSE; //TRUE|FALSE
 // S'il y a des minivignettes, choix de l'emplacement de la div
 $galerieMinivignettesEmplacement = 'haut'; // haut|bas
 
+// S'il y a des minivignettes, le nombre à afficher (0 pour un nombre illimité)
+$galerieMinivignettesNombre = 0;
+
 // Informations sur la galerie
 $galerieInfoAjout = TRUE; // TRUE|FALSE
 

@@ -2,6 +2,8 @@ grandeNom=lucertola_architetto_fra_01.png
 origNom=lucertola_architetto_fra_01.svg
 grandeLegende=Voici une légende. <strong>Le code HTML est permis.</strong>
 __IMG__
+grandeNom=lucertola_arrotolata_arc_01.png
+__IMG__
 grandeNom=lucertola_maya_architett_01.png
 __IMG__
 grandeNom=lucertolona_architetto_f_01.png

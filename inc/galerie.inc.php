@@ -154,9 +154,84 @@ if (isset($_GET['oeuvre']))
 		{
 			$corpsMinivignettes .= '<div id="galerieMinivignettes">' . "\n";
 			
-			$premiereOeuvre = 0;
-			$derniereOeuvre = $nombreDoeuvres;
-			for ($i = $premiereOeuvre; $i < $derniereOeuvre && $i < $nombreDoeuvres; $i++)
+			// Calcul des minivignettes à afficher
+			if (!$galerieMinivignettesNombre)
+			{
+				$indicePremiereOeuvre = 0;
+				$indiceDerniereOeuvre = $nombreDoeuvres - 1;
+			}
+			else
+			{
+				$oeuvreCourante = $i + 1;
+				if ($galerieMinivignettesNombre >= $nombreDoeuvres)
+				{
+					$indicePremiereOeuvre = 0;
+					$indiceDerniereOeuvre = $nombreDoeuvres - 1;
+				}
+				else
+				{
+					$idMilieu = $i;
+					if ($galerieMinivignettesNombre % 2)
+					{
+						// A: nombre impair
+						$nombreAgauche = floor($galerieMinivignettesNombre / 2); // Arrondi à la baisse
+						$nombreAdroite = $nombreAgauche;
+						
+						$idGauche = $idMilieu - $nombreAgauche;
+						if ($idGauche >= 0)
+						{
+							$indicePremiereOeuvre = $idGauche;
+						}
+						else
+						{
+							$indicePremiereOeuvre = 0;
+							$nombreAdroite += abs($idGauche);
+						}
+						
+						$idDroite = $idMilieu + $nombreAdroite;
+						if ($idDroite <= ($nombreDoeuvres - 1))
+						{
+							$indiceDerniereOeuvre = $idDroite;
+						}
+						else
+						{
+							$indiceDerniereOeuvre = $nombreDoeuvres - 1;
+							$indicePremiereOeuvre -= $idDroite - ($nombreDoeuvres - 1);
+						}
+					}
+					
+					else
+					{
+						// A: nombre pair
+						$nombreAgauche = $galerieMinivignettesNombre / 2;
+						$nombreAdroite = $nombreAgauche - 1;
+						
+						$idGauche = $idMilieu - $nombreAgauche;
+						if ($idGauche >= 0)
+						{
+							$indicePremiereOeuvre = $idGauche;
+						}
+						else
+						{
+							$indicePremiereOeuvre = 0;
+							$nombreAdroite += abs($idGauche);
+						}
+						
+						$idDroite = $idMilieu + $nombreAdroite;
+						if ($idDroite <= ($nombreDoeuvres - 1))
+						{
+							$indiceDerniereOeuvre = $idDroite;
+						}
+						else
+						{
+							$indiceDerniereOeuvre = $nombreDoeuvres - 1;
+							$indicePremiereOeuvre -= $idDroite - ($nombreDoeuvres - 1);
+						}
+					}
+				}
+			}
+			
+			for ($i = $indicePremiereOeuvre; $i <= $indiceDerniereOeuvre && $i < $nombreDoeuvres; $i++)
 			{
 				$corpsMinivignettes .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement);
 			}
@@ -220,8 +295,8 @@ else
 			$page = 1;
 		}
 	
-		$premiereOeuvre = ($page - 1) * $galerieVignettesParPage;
-		$derniereOeuvre = $premiereOeuvre + $galerieVignettesParPage;
+		$indicePremiereOeuvre = ($page - 1) * $galerieVignettesParPage;
+		$indiceDerniereOeuvre = $indicePremiereOeuvre + $galerieVignettesParPage - 1;
 		
 		// Construction de la pagination
 		$pagination = '';
@@ -274,11 +349,11 @@ else
 	
 	else
 	{
-		$premiereOeuvre = 0;
-		$derniereOeuvre = count($galerie);
+		$indicePremiereOeuvre = 0;
+		$indiceDerniereOeuvre = count($galerie) - 1;
 	}
 	
-	for ($i = $premiereOeuvre; $i < $derniereOeuvre && $i < $nombreDoeuvres; $i++)
+	for ($i = $indicePremiereOeuvre; $i <= $indiceDerniereOeuvre && $i < $nombreDoeuvres; $i++)
 	{
 		$corpsGalerie .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement);
 	}
