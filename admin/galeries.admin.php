@@ -23,10 +23,11 @@ if (isset($_POST['generer']))
 	{
 		$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
 		
-		if (file_exists($racine . '/site/inc/galerie-' . $_POST['id'] . '.txt'))
+		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.txt';
+		
+		if (file_exists($fichierConfigChemin))
 		{
 			$fichierConfigExiste = TRUE;
-			$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.txt';
 			$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $_POST['id'] . '.txt');
 		}
 		else
@@ -42,7 +43,7 @@ if (isset($_POST['generer']))
 			{
 				if (($_POST['exclureVignette'] != 'vignette' || !preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier)) && ($_POST['exclureOrig'] != 'orig' || !preg_match('/-orig\.[[:alpha:]]{3,4}$/', $fichier)))
 				{
-					if ($_POST['exclureSiExiste'] != 'existe' || !in_array_multi($fichier, $galerie))
+					if (!$fichierConfigExiste || $_POST['exclureSiExiste'] != 'existe' || !in_array_multi($fichier, $galerie))
 					{
 						$listeFichiers .= "grandeNom=$fichier\n";
 					
@@ -62,8 +63,27 @@ if (isset($_POST['generer']))
 		
 		closedir($fic);
 		
+		$listeFichiers = rtrim($listeFichiers);
+		
+		if (isset($_POST['creerConf']) && ($_POST['creerConf'] == 'vide' || $_POST['creerConf'] == 'rempli') && !$fichierConfigExiste)
+		{
+			if ($fic = fopen($fichierConfigChemin, 'w'))
+			{
+				$fichierConfigExiste = TRUE;
+				if ($_POST['creerConf'] == 'rempli')
+				{
+					fputs($fic, $listeFichiers);
+				}
+				fclose($fic);
+			}
+			else
+			{
+				echo "<p class='erreur'>" . sprintf(T_('Impossible de créer le fichier de configuration <code>%1$s</code>. Veuillez vérifier les droits du dossier ou créer le fichier à la main.'), $fichierConfigChemin) . "</p>";
+			}
+		}
+		
 		echo '<h2>' . T_("Résultat") . '</h2>' . "\n";
-		echo '<pre id="listeFichiers">' . rtrim($listeFichiers) . '</pre>' . "\n";
+		echo '<pre id="listeFichiers">' . $listeFichiers . '</pre>' . "\n";
 		echo "<ul>\n";
 		echo "<li><a href=\"javascript:selectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 		if ($fichierConfigExiste)
@@ -83,8 +103,11 @@ if (isset($_POST['generer']))
 <p><label><?php echo T_("Id de la galerie"); ?>:</label><br />
 <input type="text" name="id" /></p>
 
-<p><label><?php echo T_("Ajouter des champs vides pour chaque oeuvre"); ?></label><br />
-<select name="info[]" multiple="multiple">
+<p><label><?php echo T_("Si aucun fichier de configuration existe pour cette galerie, en créer un:"); ?></label><br />
+<input type="radio" name="creerConf" value="vide" /> vide <input type="radio" name="creerConf" value="rempli" /> contenant le résultat de ce formulaire</p>
+
+<p><label><?php echo T_("Ajouter des champs vides pour chaque oeuvre:"); ?></label><br />
+<select name="info[]" multiple="multiple" size="4">
 <option value="aucun" selected="selected"><?php echo T_("Aucun"); ?></option>
 <option value="id">id</option>
 <option value="vignetteNom">vignetteNom</option>
@@ -159,17 +182,5 @@ if (isset($_POST['lister']))
 	echo "</ul>\n";
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
 
 <?php include $racine . '/admin/inc/dernier.inc.php'; ?>

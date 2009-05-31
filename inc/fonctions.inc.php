@@ -506,6 +506,132 @@ function nomFichierGalerie()
 }
 
 /**
+Renvoie le type d'image entre gif, jpg et png.
+*/
+function typeImage($extension)
+{
+	if (strtolower($extension) == 'gif')
+	{
+		$type = 'gif';
+	}
+	elseif (strtolower($extension) == 'jpg' || strtolower($extension) == 'jpeg')
+	{
+		$type = 'jpeg';
+	}
+	elseif (strtolower($extension) == 'png')
+	{
+		$type = 'png';
+	}
+	
+	return $type;
+}
+
+/**
+Modifie la source de la vignette pour la remplacer par une vignette tatouée d'une flèche de navigation.
+*/
+function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc)
+{
+	preg_match('/src="([^"]+)"/', $paragraphe, $res);
+	$srcContenu = $res[1];
+	$nomImgSrcContenu = basename($srcContenu);
+	$infoImgSrcContenu = pathinfo($nomImgSrcContenu);
+	$vignetteNom = basename($nomImgSrcContenu, '.' . $infoImgSrcContenu['extension']);
+	$vignetteNom .= '-' . $sens . '.' . $infoImgSrcContenu['extension'];
+	
+	if (file_exists($racineImgSrc . '/tatouage/' . $vignetteNom))
+	{
+		$srcContenu = $urlImgSrc . '/tatouage/' . $vignetteNom;
+	}
+	else
+	{
+		if (!file_exists($racineImgSrc . '/tatouage'))
+		{
+			mkdir($racineImgSrc . '/tatouage');
+		}
+	
+		copy($racineImgSrc . '/' . $nomImgSrcContenu, $racineImgSrc . '/tatouage/' . $vignetteNom);
+		
+		if (file_exists($racine . '/site/fichiers/' . $sens . '-tatouage.png'))
+		{
+			$imgSrc = imagecreatefrompng($racine . '/site/fichiers/' . $sens . '-tatouage.png');
+		}
+		else
+		{
+			$imgSrc = imagecreatefrompng($racine . '/fichiers/' . $sens . '-tatouage.png');
+		}
+	
+		$infoVignette = pathinfo($racineImgSrc . '/tatouage/' . $vignetteNom);
+		$type = typeImage($infoVignette['extension']);
+		switch ($type)
+		{
+			case 'gif':
+				$imgDest = imagecreatefromgif($racineImgSrc . '/tatouage/' . $vignetteNom);
+				break;
+	
+			case 'jpeg':
+				$imgDest = imagecreatefromjpeg($racineImgSrc . '/tatouage/' . $vignetteNom);
+				break;
+		
+			case 'png':
+				$imgDest = imagecreatefrompng($racineImgSrc . '/tatouage/' . $vignetteNom);
+				imagealphablending($imgDest, true);
+				imagesavealpha($imgDest, true);
+				break;
+		}
+	
+		$largSrc = imagesx($imgSrc);
+		$hautSrc = imagesy($imgSrc);
+		$largDest = imagesx($imgDest);
+		$hautDest = imagesy($imgDest);
+	
+		imagecopy($imgDest, $imgSrc, ($largDest / 2) - ($largSrc / 2), ($hautDest / 2) - ($hautSrc / 2), 0, 0, $largSrc, $hautSrc);
+	
+		switch ($type)
+		{
+			case 'gif':
+				imagegif($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
+				break;
+	
+			case 'jpeg':
+				imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 90);
+				break;
+		
+			case 'png':
+				imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
+				break;
+		}
+	}
+	
+	// On retourne le paragraphe avec l'attribut `src` modifié
+	return preg_replace('/src="[^"]+"/', 'src="' . $urlImgSrc . '/tatouage/' . $vignetteNom . '"', $paragraphe);
+}
+
+/**
+Ajoute une deuxième image (flèche) à la navigation par vignettes.
+*/
+function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
+{
+	if (file_exists($racine . '/site/fichiers/' . $sens . '-accompagnee.png'))
+	{
+		$img = '<img src="' . $urlRacine . '/site/fichiers/' . $sens . '-accompagnee.png' . '" alt="" width="" height="" />';
+	}
+	else
+	{
+		$img = '<img src="' . $urlRacine . '/fichiers/' . $sens . '-accompagnee.png' . '" alt="" width="" height="" />';
+	}
+	
+	// On retourne le paragraphe avec l'image de flèche en plus
+	if ($sens == 'precedent')
+	{
+		return preg_replace('/(<img [^>]+>)/', $img . '\1', $paragraphe);
+	}
+	elseif ($sens == 'suivant')
+	{
+		return preg_replace('/(<img [^>]+>)/', '\1' . $img, $paragraphe);
+	}
+}
+
+/**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
 function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement)
@@ -618,21 +744,13 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$class = ' galerieFleche';
 			$width = 'width="80"';
 			$height = 'height="80"';
-			if ($sens == 'precedent')
+			if (file_exists($racine . '/site/fichiers/' . $sens . '.png'))
 			{
-				$fleche = 'gauche';
-			}
-			elseif ($sens == 'suivant')
-			{
-				$fleche = 'droite';
-			}
-			if (file_exists($racine . '/site/fichiers/fleche-' . $fleche . '.png'))
-			{
-				$src = 'src="' . $urlRacine . '/site/fichiers/fleche-' . $fleche . '.png"';
+				$src = 'src="' . $urlRacine . '/site/fichiers/' . $sens . '.png"';
 			}
 			else
 			{
-				$src = 'src="' . $urlRacine . '/fichiers/fleche-' . $fleche . '.png"';
+				$src = 'src="' . $urlRacine . '/fichiers/' . $sens . '.png"';
 			}
 		}
 
@@ -661,18 +779,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 				else
 				{
 					// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
-					if (strtolower($infoGrandeNom['extension']) == 'gif')
-					{
-						$type = 'gif';
-					}
-					elseif (strtolower($infoGrandeNom['extension']) == 'jpg' || strtolower($infoGrandeNom['extension']) == 'jpeg')
-					{
-						$type = 'jpeg';
-					}
-					elseif (strtolower($infoGrandeNom['extension']) == 'png')
-					{
-						$type = 'png';
-					}
+					$type = typeImage($infoGrandeNom['extension']);
 					
 					// Grande image
 					switch ($type)

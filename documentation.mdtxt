@@ -448,7 +448,46 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	origNom=
 	__IMG__
 
-### Personnaliser les flèches de navigation
+### Navigation entre les oeuvres
 
-Les flèches par défaut sont `fichiers/fleche-gauche.png` et `fichiers/fleche-droite.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/fleche-gauche.png` et `site/fichiers/fleche-droite.png`.
+Il y a cinq méthodes possibles pour naviguer entre les oeuvres:
 
+#### Flèches
+
+Les flèches par défaut sont `fichiers/precedent.png` et `fichiers/suivant.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/precedent.png` et `site/fichiers/suivant.png`.
+
+Il est possible de choisir l'emplacement des flèches (haut ou bas).
+
+#### Vignettes
+
+Il est possible de choisir l'emplacement des vignettes (haut ou bas).
+
+##### Vignettes seules
+
+Les vignettes utilisées sont celles de l'image vers laquelle le lien pointe:
+
+- soit la vignette précisée dans le fichier de configuration (`champ vignetteNom`);
+
+- soit la vignette déduite automatiquement à partir du nom du fichier de l'imageen version grande (`grandeNom(sans extension)-vignette.extension`);
+
+- soit la vignette générée automatiquement par le script de galerie.
+
+##### Vignettes tatouées d'une flèche
+
+Dans le cas où l'option `$galerieNavigationVignettesTatouage` est activée dans le fichier de configuration, une vignette personnalisée est générée par le script (à partir de la vignette de l'image) sur laquelle une flèche est superposée au centre.
+
+Les fichiers par défaut pour les flèches superposées sont `fichiers/precedent-tatouage.png` et `fichiers/suivant-tatouage.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/precedent-tatouage.png` et `site/fichiers/suivant-tatouage.png`.
+
+La vignette résultante est enregistrée dans `site/fichiers/galeries/id/tatouage/vignetteNom-sens.extension`. Il y a donc deux vignettes tatouées par image (une pour le sens «précédent» et l'autre pour le sens «suivant»).
+
+##### Vignettes seules accompagnées d'une flèche
+
+Dans le cas où les vignettes seules sont utilisées (sans tatouage), il est possible d'ajouter une flèche à côté de la vignette.
+
+Les fichiers par défaut pour les flèches accompagnant les vignettes sont `fichiers/precedent-accompagnee.png` et `fichiers/suivant-accompagnee.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/precedent-accompagnee.png` et `site/fichiers/suivant-accompagnee.png`.
+
+#### Minivignettes
+
+Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de la galerie, composé de minivignettes des oeuvres de la galerie. Chaque minivignette est cliquable. Par défaut, la hauteur d'une minivignette est de 35 px. Ceci peut être modifié par CSS.
+
+Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
