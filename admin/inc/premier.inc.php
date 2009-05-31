@@ -5,6 +5,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <link rel="stylesheet" type="text/css" href="css/admin.css" media="screen" />
+<script type="text/javascript" src="js/squeletml.js"></script>
 </head>
 <body>
 <div id="page">

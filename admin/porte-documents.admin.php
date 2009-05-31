@@ -126,7 +126,7 @@ if (isset($_GET['action']))
 	if ($_GET['action'] == 'modifier')
 	{
 		echo "<h$niveauTitreSuivant2>Insctructions de modification</h$niveauTitreSuivant2>";
-		echo "<p>Le fichier est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».</p>";
+		echo "<p>Le fichier <strong><code>" . $_GET['valeur'] . "</code></strong> est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».</p>";
 		?>
 		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
 		<div>

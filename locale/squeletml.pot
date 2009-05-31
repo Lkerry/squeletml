@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 17:30-0400\n"
+"POT-Creation-Date: 2009-05-30 20:36-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/droits.admin.php:229
+#: admin/droits.admin.php:229 admin/galeries.admin.php:88
 msgid "Aucun"
 msgstr ""
 
@@ -139,16 +139,20 @@ msgstr ""
 msgid "Documentation de Squeletml"
 msgstr ""
 
-#: admin/galeries.admin.php:3 admin/galeries.admin.php:70
+#: admin/galeries.admin.php:3 admin/galeries.admin.php:9
 msgid "Gestion des galeries"
 msgstr ""
 
-#: admin/galeries.admin.php:14
+#: admin/galeries.admin.php:11
+msgid "Générer un fichier de configuration de base d'une galerie"
+msgstr ""
+
+#: admin/galeries.admin.php:20
 #, php-format
 msgid "La galerie %1$s n'existe pas."
 msgstr ""
 
-#: admin/galeries.admin.php:18
+#: admin/galeries.admin.php:24 admin/galeries.admin.php:130
 #, php-format
 msgid "Erreur lors de l'ouverture du dossier %1$s."
 msgstr ""
@@ -157,11 +161,19 @@ msgstr ""
 msgid "Résultat"
 msgstr ""
 
-#: admin/galeries.admin.php:72
-msgid "Générer un fichier de configuration de base d'une galerie"
+#: admin/galeries.admin.php:68
+msgid "Sélectionner le résultat."
 msgstr ""
 
-#: admin/galeries.admin.php:74
+#: admin/galeries.admin.php:71
+msgid "Un fichier de configuration existe pour cette galerie."
+msgstr ""
+
+#: admin/galeries.admin.php:71
+msgid "Modifier le fichier."
+msgstr ""
+
+#: admin/galeries.admin.php:78
 msgid ""
 "Pour générer automatiquement la liste des images d'une galerie, et ce sous "
 "la forme <code>grandeNom=grandeImage.extension</code>, remplissez le "
@@ -169,48 +181,70 @@ msgid ""
 "résultat."
 msgstr ""
 
-#: admin/galeries.admin.php:79
+#: admin/galeries.admin.php:83
 msgid "Id de la galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:82
+#: admin/galeries.admin.php:86
 msgid "Ajouter des champs vides pour chaque oeuvre"
 msgstr ""
 
-#: admin/galeries.admin.php:85
+#: admin/galeries.admin.php:104
 msgid "Exclusions"
 msgstr ""
 
-#: admin/galeries.admin.php:86
+#: admin/galeries.admin.php:105
 msgid ""
 "Ne pas tenir compte des fichiers terminant par <code>-vignette.extension</"
 "code>"
 msgstr ""
 
-#: admin/galeries.admin.php:88
+#: admin/galeries.admin.php:107
 msgid ""
 "Ne pas tenir compte des fichiers terminant par <code>-orig.extension</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:90
+#: admin/galeries.admin.php:109
 msgid ""
 "Ne pas tenir compte des images déjà présentes dans le fichier de "
 "configuration de cette galerie (s'il existe)"
 msgstr ""
 
-#: admin/galeries.admin.php:93
-msgid "Soumettre"
+#: admin/galeries.admin.php:112
+msgid "Générer"
+msgstr ""
+
+#: admin/galeries.admin.php:117
+msgid "Lister les fichiers de configuration existants"
+msgstr ""
+
+#: admin/galeries.admin.php:119
+msgid ""
+"Afficher la liste des fichiers de configuration existants. Chaque fichier "
+"dans la liste aura un lien permettant de le modifier dans le porte-documents."
+msgstr ""
+
+#: admin/galeries.admin.php:123
+msgid "Lister"
+msgstr ""
+
+#: admin/galeries.admin.php:146
+msgid "Liste"
+msgstr ""
+
+#: admin/galeries.admin.php:156
+msgid "Aucun fichier"
 msgstr ""
 
 #: admin/inc/premier.inc.php:4
 msgid "Administration de Squeletml"
 msgstr ""
 
-#: admin/inc/premier.inc.php:20
+#: admin/inc/premier.inc.php:21
 msgid "Aller au menu"
 msgstr ""
 
-#: admin/inc/premier.inc.php:21
+#: admin/inc/premier.inc.php:22
 msgid "Aller au contenu"
 msgstr ""
 
