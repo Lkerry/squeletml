@@ -613,17 +613,30 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 {
 	if (file_exists($racine . '/site/fichiers/' . $sens . '-accompagnee.png'))
 	{
-		$img = '<img src="' . $urlRacine . '/site/fichiers/' . $sens . '-accompagnee.png' . '" alt="" width="" height="" />';
+		$cheminImage = $racine . '/site/fichiers/' . $sens . '-accompagnee.png';
+		$urlImage = $urlRacine . '/site/fichiers/' . $sens . '-accompagnee.png';
 	}
 	else
 	{
-		$img = '<img src="' . $urlRacine . '/fichiers/' . $sens . '-accompagnee.png' . '" alt="" width="" height="" />';
+		$cheminImage = $racine . '/fichiers/' . $sens . '-accompagnee.png';
+		$urlImage = $urlRacine . '/fichiers/' . $sens . '-accompagnee.png';
 	}
+	
+	list($larg, $haut) = getimagesize($cheminImage);
+	{
+		$width = 'width="' . $larg . '"';
+		$height = 'height="' . $haut . '"';
+	}
+	preg_match('/alt="([^"]+)"/', $paragraphe, $res);
+	$altContenu = $res[1];
+	$alt = 'alt="' . $altContenu . '"';
+	
+	$img = '<span id="galerieAccompagnementVignette' . ucfirst($sens) . '"><img src="' . $urlImage . '" ' . "$alt $width $height" . ' /></span>';
 	
 	// On retourne le paragraphe avec l'image de flèche en plus
 	if ($sens == 'precedent')
 	{
-		return preg_replace('/(<img [^>]+>)/', $img . '\1', $paragraphe);
+		return preg_replace('/(<img [^>]+>)/', '\1' . $img, $paragraphe);
 	}
 	elseif ($sens == 'suivant')
 	{

@@ -93,6 +93,10 @@ p.galerieNavigationSuivant {
 	float: right;
 }
 
+p.galerieNavigationSuivant img {
+	float: right;
+}
+
 .galerieFleche {
 	border: none !important;
 	width:40px;
@@ -116,6 +120,16 @@ div.galeriePagination {
 
 div#galerieMinivignettes img {
 	height: 35px;
+}
+
+span#galerieAccompagnementVignettePrecedent {
+	display: block;
+	float: left;
+}
+
+span#galerieAccompagnementVignetteSuivant {
+	display: block;
+	clear: left;
 }
 
 /* Bloc message pour IE6 */

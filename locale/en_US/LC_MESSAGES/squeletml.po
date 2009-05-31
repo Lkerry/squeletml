@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-30 20:36-0400\n"
+"POT-Creation-Date: 2009-05-31 11:52-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -97,7 +97,7 @@ msgstr ""
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/droits.admin.php:229 admin/galeries.admin.php:88
+#: admin/droits.admin.php:229 admin/galeries.admin.php:111
 msgid "Aucun"
 msgstr ""
 
@@ -150,28 +150,35 @@ msgstr ""
 msgid "La galerie %1$s n'existe pas."
 msgstr ""
 
-#: admin/galeries.admin.php:24 admin/galeries.admin.php:130
+#: admin/galeries.admin.php:24 admin/galeries.admin.php:153
 #, php-format
 msgid "Erreur lors de l'ouverture du dossier %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:65
+#: admin/galeries.admin.php:81
+#, php-format
+msgid ""
+"Impossible de créer le fichier de configuration <code>%1$s</code>. Veuillez "
+"vérifier les droits du dossier ou créer le fichier à la main."
+msgstr ""
+
+#: admin/galeries.admin.php:85
 msgid "Résultat"
 msgstr ""
 
-#: admin/galeries.admin.php:68
+#: admin/galeries.admin.php:88
 msgid "Sélectionner le résultat."
 msgstr ""
 
-#: admin/galeries.admin.php:71
+#: admin/galeries.admin.php:91
 msgid "Un fichier de configuration existe pour cette galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:71
+#: admin/galeries.admin.php:91
 msgid "Modifier le fichier."
 msgstr ""
 
-#: admin/galeries.admin.php:78
+#: admin/galeries.admin.php:98
 msgid ""
 "Pour générer automatiquement la liste des images d'une galerie, et ce sous "
 "la forme <code>grandeNom=grandeImage.extension</code>, remplissez le "
@@ -179,59 +186,64 @@ msgid ""
 "résultat."
 msgstr ""
 
-#: admin/galeries.admin.php:83
+#: admin/galeries.admin.php:103
 #, fuzzy
 msgid "Id de la galerie"
 msgstr "Work %1$s of this gallery"
 
-#: admin/galeries.admin.php:86
-msgid "Ajouter des champs vides pour chaque oeuvre"
+#: admin/galeries.admin.php:106
+msgid ""
+"Si aucun fichier de configuration existe pour cette galerie, en créer un:"
 msgstr ""
 
-#: admin/galeries.admin.php:104
+#: admin/galeries.admin.php:109
+msgid "Ajouter des champs vides pour chaque oeuvre:"
+msgstr ""
+
+#: admin/galeries.admin.php:127
 msgid "Exclusions"
 msgstr ""
 
-#: admin/galeries.admin.php:105
+#: admin/galeries.admin.php:128
 msgid ""
 "Ne pas tenir compte des fichiers terminant par <code>-vignette.extension</"
 "code>"
 msgstr ""
 
-#: admin/galeries.admin.php:107
+#: admin/galeries.admin.php:130
 msgid ""
 "Ne pas tenir compte des fichiers terminant par <code>-orig.extension</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:109
+#: admin/galeries.admin.php:132
 msgid ""
 "Ne pas tenir compte des images déjà présentes dans le fichier de "
 "configuration de cette galerie (s'il existe)"
 msgstr ""
 
-#: admin/galeries.admin.php:112
+#: admin/galeries.admin.php:135
 msgid "Générer"
 msgstr ""
 
-#: admin/galeries.admin.php:117
+#: admin/galeries.admin.php:140
 msgid "Lister les fichiers de configuration existants"
 msgstr ""
 
-#: admin/galeries.admin.php:119
+#: admin/galeries.admin.php:142
 msgid ""
 "Afficher la liste des fichiers de configuration existants. Chaque fichier "
 "dans la liste aura un lien permettant de le modifier dans le porte-documents."
 msgstr ""
 
-#: admin/galeries.admin.php:123
+#: admin/galeries.admin.php:146
 msgid "Lister"
 msgstr ""
 
-#: admin/galeries.admin.php:146
+#: admin/galeries.admin.php:169
 msgid "Liste"
 msgstr ""
 
-#: admin/galeries.admin.php:156
+#: admin/galeries.admin.php:179
 msgid "Aucun fichier"
 msgstr ""
 
@@ -272,22 +284,22 @@ msgstr ""
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:553
+#: inc/fonctions.inc.php:679
 #, fuzzy
 msgid "Oeuvre"
 msgstr "Work %1$s"
 
-#: inc/fonctions.inc.php:566
+#: inc/fonctions.inc.php:692
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:597
+#: inc/fonctions.inc.php:723
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:775
+#: inc/fonctions.inc.php:882
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
@@ -367,39 +379,39 @@ msgstr "Work %1$s of this gallery"
 msgid "Taille maximale de l'oeuvre %1$s de la galerie"
 msgstr "Max size of the work %1$s of this gallery"
 
-#: inc/galerie.inc.php:147
+#: inc/galerie.inc.php:171
 #, php-format
 msgid "Affichage de l'oeuvre %1$s sur un total de %2$s."
 msgstr ""
 
-#: inc/galerie.inc.php:147
+#: inc/galerie.inc.php:171
 #, fuzzy
 msgid "Accueil de la galerie."
 msgstr "Work %1$s of this gallery"
 
-#: inc/galerie.inc.php:189
+#: inc/galerie.inc.php:288
 #, php-format
 msgid ""
 "L'oeuvre demandée est introuvable. <a href=\"%1$s\">Voir toutes les oeuvres</"
 "a>."
 msgstr ""
 
-#: inc/galerie.inc.php:259
+#: inc/galerie.inc.php:358
 msgid "Page précédente"
 msgstr ""
 
-#: inc/galerie.inc.php:269
+#: inc/galerie.inc.php:368
 msgid "Page suivante"
 msgstr ""
 
-#: inc/galerie.inc.php:304
+#: inc/galerie.inc.php:403
 #, php-format
 msgid "Cette galerie contient %1$s oeuvre."
 msgid_plural "Cette galerie contient %1$s oeuvres."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:304
+#: inc/galerie.inc.php:403
 #, fuzzy
 msgid "Voir l'accueil de la galerie."
 msgstr "Work %1$s of this gallery"
