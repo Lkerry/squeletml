@@ -64,6 +64,10 @@ div#titre p a, div#titre p a:visited {
 	border-color: green;
 }
 
+.sep {
+	clear: both;
+}
+
 /* Module contact */
 
 #formContact label {
@@ -85,32 +89,34 @@ div#titre p a, div#titre p a:visited {
 	border: 1px solid gray;
 }
 
-p.galerieNavigationPrecedent {
+div.galerieNavigationAccueil img {
 	float: left;
 }
 
-p.galerieNavigationSuivant {
+div.galerieNavigationPrecedent {
+	float: left;
+}
+
+div.galerieNavigationPrecedent img {
+	float: left;
+	clear: both;
+}
+
+div.galerieNavigationSuivant {
 	float: right;
 }
 
-p.galerieNavigationSuivant img {
+div.galerieNavigationSuivant img {
 	float: right;
 }
 
-.galerieFleche {
+.galerieFleche img {
 	border: none !important;
 	width:40px;
 	height:40px;
 }
 
-p#galerieGrande {
-	text-align: center;
-}
-
-span#galerieGrandeLegende, span#galerieLienOrig {
-	display: block;
-	width: 400px;
-	margin: 10px auto;
+div#galerieGrande {
 	text-align: center;
 }
 
@@ -119,17 +125,18 @@ div.galeriePagination {
 }
 
 div#galerieMinivignettes img {
+	float: left;
 	height: 35px;
 }
 
-span#galerieAccompagnementVignettePrecedent {
-	display: block;
+div#galerieAccompagnementVignettePrecedent img {
 	float: left;
+	border: none;
 }
 
-span#galerieAccompagnementVignetteSuivant {
-	display: block;
-	clear: left;
+div#galerieAccompagnementVignetteSuivant img {
+	float: right;
+	border: none;
 }
 
 /* Bloc message pour IE6 */

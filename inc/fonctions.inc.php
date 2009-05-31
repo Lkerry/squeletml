@@ -631,7 +631,7 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 	$altContenu = $res[1];
 	$alt = 'alt="' . $altContenu . '"';
 	
-	$img = '<span id="galerieAccompagnementVignette' . ucfirst($sens) . '"><img src="' . $urlImage . '" ' . "$alt $width $height" . ' /></span>';
+	$img = '<div id="galerieAccompagnementVignette' . ucfirst($sens) . '"><img src="' . $urlImage . '" ' . "$alt $width $height" . ' /></div>';
 	
 	// On retourne le paragraphe avec l'image de flèche en plus
 	if ($sens == 'precedent')
@@ -647,7 +647,7 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement)
 {
 	if ($taille == 'grande')
 	{
@@ -694,7 +694,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		
 		if (!empty($galerie[$indice]['grandeLegende']))
 		{
-			$legende = '<span id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</span>';
+			$legende = '<div id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</div>';
 		}
 		elseif ($galerieLegendeAutomatique)
 		{
@@ -702,7 +702,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			{
 				$contenuAlt = substr($contenuAlt, 0, -1);
 			}
-			$legende = '<span id="galerieGrandeLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $origNom))) . ')</span>';
+			$legende = '<div id="galerieGrandeLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $origNom))) . ')</div>';
 		}
 		else
 		{
@@ -733,7 +733,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			}
 			$lienOrigHref .= $urlImgSrc . '/' . $origNom;
 			
-			$lienOrig = '<span id="galerieLienOrig"><a href="' . $lienOrigHref . '">' . sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;') . '</a></span>';
+			$lienOrig = '<div id="galerieLienOrig"><a href="' . $lienOrigHref . '">' . sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;') . '</a></div>';
 		}
 		else
 		{
@@ -742,11 +742,11 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		
 		if ($galerieLegendeEmplacement == 'haut')
 		{
-			return $legende . $lienOrig . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />";
+			return $legende . $lienOrig . '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div>";
 		}
 		elseif ($galerieLegendeEmplacement == 'bas')
 		{
-			return '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $legende . $lienOrig;
+			return '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div>" . $legende . $lienOrig;
 		}
 	}
 
@@ -895,12 +895,21 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
 		}
 		
+		if ($estAccueil)
+		{
+			$classAccueil = 'Accueil ';
+		}
+		else
+		{
+			$classAccueil = ' ';
+		}
+		
 		// On s'assure que la variable $class existe (pour éviter un avertissement).
 		if (!isset($class))
 		{
-			$class= '';
+			$class = '';
 		}
-		return '<a href="' . nomFichierGalerie() . '?oeuvre=' . $id . '"><img class="galerieNavigation' . $class . '" ' . "$src $width $height $alt /></a>";
+		return '<div class="galerieNavigation' . $classAccueil . $class . '"><a href="' . nomFichierGalerie() . '?oeuvre=' . $id . '"><img ' . "$src $width $height $alt /></a></div>";
 	}
 	
 	else

@@ -92,7 +92,7 @@ $copieCourriel = FALSE; // TRUE|FALSE
 ########################################################################
 
 // Choix de la navigation dans la galerie
-$galerieNavigation = 'vignettes'; // fleches ou vignettes
+$galerieNavigation = 'fleches'; // fleches ou vignettes
 
 // Si la navigation est faite avec des vignettes, ajouter ou non une petite flèche au centre des vignettes (comme une sorte de tatouage numérique)
 $galerieNavigationVignettesTatouage = FALSE; // TRUE|FALSE
