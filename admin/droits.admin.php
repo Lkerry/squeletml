@@ -27,10 +27,24 @@ else
 
 if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
 {
-	if (!file_exists($racine . '/.acces'))
+	$lienAccesDansHtaccess = FALSE;
+	if ($fic = fopen($racine . '/.htaccess', 'r'))
+	{
+		while (!feof($fic))
+		{
+			$ligne = rtrim(fgets($fic));
+			if (preg_match('/^# Ajout automatique de Squeletml. Ne pas modifier./', $ligne))
+			{
+				$lienAccesDansHtaccess = TRUE;
+				break;
+			}
+		}
+		fclose($fic);
+	}
+	
+	if (!$lienAccesDansHtaccess)
 	{
 		$htaccess = '';
-		$htaccess .= "\n";
 		$htaccess .= "# Ajout automatique de Squeletml. Ne pas modifier.\n";
 		$htaccess .= '<FilesMatch "\.admin\.php$">' . "\n";
 		$htaccess .= "\tAuthType Basic\n";
@@ -153,9 +167,27 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 			fclose($fic2);
 		}
 		
-		// S'il n'y a plus d'utilisateurs dans le fichier `.acces`, on supprime l'authentification dans le .htaccess
-		clearstatcache();
-		if (filesize($racine . '/.acces') == 0)
+		// S'il n'y a plus d'utilisateurs dans le fichier `.acces`, on supprime l'authentification dans le .htaccess.
+		// Note: auparavant, je faisais:
+		// clearstatcache();
+		// if (filesize($racine . '/.acces') == 0) {...}
+		// mais des lignes vides faisaient en sorte que la taille du fichier n'était pas à 0. Maintenant je fais simplement regarder s'il y a un : dans le fichier, ce qui signifierait qu'il y a au moins un utilisateur.
+		$accesVide = TRUE;
+		if ($fic = fopen($racine . '/.acces', 'r'))
+		{
+			while (!feof($fic))
+			{
+				$ligne = rtrim(fgets($fic));
+				if (strstr($ligne, ':'))
+				{
+					$accesVide = FALSE;
+					break;
+				}
+			}
+			fclose($fic);
+		}
+		
+		if ($accesVide)
 		{
 			if ($fic2 = fopen($racine . '/.htaccess', 'r'))
 			{

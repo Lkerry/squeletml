@@ -9,7 +9,7 @@
 ErrorDocument 404 /404.php
 
 # Décommenter la ligne ci-dessous pour inclure automatiquement le fichier init.inc.php dans tous les fichiers PHP
-<FilesMatch "\.(php)$"> 
+<FilesMatch "\.(php)$">
 	#php_value auto_prepend_file "/var/www/serveur_local/squeletml/init.inc.php"
 </FilesMatch>
 
