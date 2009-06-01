@@ -1,5 +1,6 @@
 <?php
 include_once 'init.inc.php';
+include_once 'inc/fonctions.inc.php';
 
 $codeLangue = langue('navigateur');
 
