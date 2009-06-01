@@ -139,6 +139,9 @@ $galerieLegendeAutomatique = FALSE; // TRUE|FALSE
 // Emplacement de la légende et du lien vers l'image originale (s'il y a lieu)
 $galerieLegendeEmplacement = 'bas'; // haut|bas
 
+// Qualité des images JPG générées
+$qualiteJpg = 90; // 0-100
+
 ########################################################################
 ##
 ## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites)

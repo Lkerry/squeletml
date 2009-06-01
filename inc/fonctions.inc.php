@@ -593,11 +593,11 @@ function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc
 				break;
 	
 			case 'jpeg':
-				imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 90);
+				imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, $qualiteJpg);
 				break;
 		
 			case 'png':
-				imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
+				imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 9);
 				break;
 		}
 	}
@@ -647,7 +647,7 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg)
 {
 	if ($taille == 'grande')
 	{
@@ -807,6 +807,8 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 						
 						case 'png':
 							$imageGrande = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+							imagealphablending($imageGrande, true);
+							imagesavealpha($imageGrande, true);
 							break;
 					}
 					
@@ -832,11 +834,11 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 							break;
 						
 						case 'jpeg':
-							imagejpeg($imageVignette, $racineImgSrc . '/' . $vignetteNom);
+							imagejpeg($imageVignette, $racineImgSrc . '/' . $vignetteNom, $qualiteJpg);
 							break;
 						
 						case 'png':
-							imagepng($imageVignette, $racineImgSrc . '/' . $vignetteNom);
+							imagepng($imageVignette, $racineImgSrc . '/' . $vignetteNom, 9);
 							break;
 					}
 					
