@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-05-31 19:28-0400\n"
+"POT-Creation-Date: 2009-06-01 18:17-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -44,7 +44,7 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: admin/droits.admin.php:3 admin/droits.admin.php:201
+#: admin/droits.admin.php:3 admin/droits.admin.php:233
 msgid "Gestion des droits d'accès"
 msgstr ""
 
@@ -55,80 +55,80 @@ msgid ""
 "assigner les bons droits et revisiter la présente page."
 msgstr ""
 
-#: admin/droits.admin.php:72
+#: admin/droits.admin.php:86
 #, php-format
 msgid "Utilisateur <em>%1$s</em> ajouté."
 msgstr ""
 
-#: admin/droits.admin.php:76
+#: admin/droits.admin.php:90
 #, php-format
 msgid "L'utilisateur <em>%1$s</em> a déjà les droits."
 msgstr ""
 
-#: admin/droits.admin.php:117
+#: admin/droits.admin.php:131
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Son mot de passe ne peut "
 "donc pas être modifié."
 msgstr ""
 
-#: admin/droits.admin.php:121
+#: admin/droits.admin.php:135
 #, php-format
 msgid "Mot de passe de l'utilisateur <em>%1$s</em> modifié."
 msgstr ""
 
-#: admin/droits.admin.php:191
+#: admin/droits.admin.php:223
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Il ne peut donc pas être "
 "supprimé."
 msgstr ""
 
-#: admin/droits.admin.php:195
+#: admin/droits.admin.php:227
 #, php-format
 msgid "Utilisateur <em>%1$s</em> supprimé."
 msgstr ""
 
-#: admin/droits.admin.php:203
+#: admin/droits.admin.php:235
 msgid "Utilisateurs"
 msgstr ""
 
-#: admin/droits.admin.php:205
+#: admin/droits.admin.php:237
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/droits.admin.php:229 admin/galeries.admin.php:111
+#: admin/droits.admin.php:261 admin/galeries.admin.php:113
 msgid "Aucun"
 msgstr ""
 
-#: admin/droits.admin.php:234
+#: admin/droits.admin.php:266
 msgid "Gestion"
 msgstr ""
 
-#: admin/droits.admin.php:236
+#: admin/droits.admin.php:268
 msgid ""
 "Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire "
 "ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur "
 "existant."
 msgstr ""
 
-#: admin/droits.admin.php:240
+#: admin/droits.admin.php:272
 msgid "Nom"
 msgstr ""
 
-#: admin/droits.admin.php:242
+#: admin/droits.admin.php:274
 msgid "Mot de passe"
 msgstr ""
 
-#: admin/droits.admin.php:244
+#: admin/droits.admin.php:276
 msgid "Ajouter"
 msgstr ""
 
-#: admin/droits.admin.php:244
+#: admin/droits.admin.php:276
 msgid "Modifier"
 msgstr ""
 
-#: admin/droits.admin.php:244
+#: admin/droits.admin.php:276
 msgid "Supprimer"
 msgstr ""
 
@@ -145,12 +145,13 @@ msgstr "Work %1$s of this gallery"
 msgid "Générer un fichier de configuration de base d'une galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:20
+#: admin/galeries.admin.php:20 admin/galeries.admin.php:199
 #, php-format
 msgid "La galerie %1$s n'existe pas."
 msgstr ""
 
-#: admin/galeries.admin.php:24 admin/galeries.admin.php:153
+#: admin/galeries.admin.php:24 admin/galeries.admin.php:147
+#: admin/galeries.admin.php:207 admin/galeries.admin.php:232
 #, php-format
 msgid "Erreur lors de l'ouverture du dossier %1$s."
 msgstr ""
@@ -162,23 +163,23 @@ msgid ""
 "vérifier les droits du dossier ou créer le fichier à la main."
 msgstr ""
 
-#: admin/galeries.admin.php:85
+#: admin/galeries.admin.php:86
 msgid "Résultat"
 msgstr ""
 
-#: admin/galeries.admin.php:88
+#: admin/galeries.admin.php:89
 msgid "Sélectionner le résultat."
 msgstr ""
 
-#: admin/galeries.admin.php:91
+#: admin/galeries.admin.php:92
 msgid "Un fichier de configuration existe pour cette galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:91
+#: admin/galeries.admin.php:92
 msgid "Modifier le fichier."
 msgstr ""
 
-#: admin/galeries.admin.php:98
+#: admin/galeries.admin.php:100
 msgid ""
 "Pour générer automatiquement la liste des images d'une galerie, et ce sous "
 "la forme <code>grandeNom=grandeImage.extension</code>, remplissez le "
@@ -186,65 +187,154 @@ msgid ""
 "résultat."
 msgstr ""
 
-#: admin/galeries.admin.php:103
+#: admin/galeries.admin.php:105 admin/galeries.admin.php:356
 #, fuzzy
-msgid "Id de la galerie"
+msgid "Id de la galerie:"
 msgstr "Work %1$s of this gallery"
 
-#: admin/galeries.admin.php:106
+#: admin/galeries.admin.php:108
 msgid ""
 "Si aucun fichier de configuration existe pour cette galerie, en créer un:"
 msgstr ""
 
-#: admin/galeries.admin.php:109
+#: admin/galeries.admin.php:111
 msgid "Ajouter des champs vides pour chaque oeuvre:"
 msgstr ""
 
-#: admin/galeries.admin.php:127
+#: admin/galeries.admin.php:129
 msgid "Exclusions"
 msgstr ""
 
-#: admin/galeries.admin.php:128
+#: admin/galeries.admin.php:130
 msgid ""
 "Ne pas tenir compte des fichiers terminant par <code>-vignette.extension</"
 "code>"
 msgstr ""
 
-#: admin/galeries.admin.php:130
+#: admin/galeries.admin.php:132
 msgid ""
 "Ne pas tenir compte des fichiers terminant par <code>-orig.extension</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:132
+#: admin/galeries.admin.php:134
 msgid ""
 "Ne pas tenir compte des images déjà présentes dans le fichier de "
 "configuration de cette galerie (s'il existe)"
 msgstr ""
 
-#: admin/galeries.admin.php:135
+#: admin/galeries.admin.php:137
 msgid "Générer"
 msgstr ""
 
-#: admin/galeries.admin.php:140
+#: admin/galeries.admin.php:142
 msgid "Lister les fichiers de configuration existants"
 msgstr ""
 
-#: admin/galeries.admin.php:142
+#: admin/galeries.admin.php:164
+msgid "Liste"
+msgstr ""
+
+#: admin/galeries.admin.php:173
+msgid "Aucun fichier"
+msgstr ""
+
+#: admin/galeries.admin.php:181
 msgid ""
 "Afficher la liste des fichiers de configuration existants. Chaque fichier "
 "dans la liste aura un lien permettant de le modifier dans le porte-documents."
 msgstr ""
 
-#: admin/galeries.admin.php:146
+#: admin/galeries.admin.php:185
 msgid "Lister"
 msgstr ""
 
-#: admin/galeries.admin.php:169
-msgid "Liste"
+#: admin/galeries.admin.php:189
+msgid "Générer la version grande de chaque image"
 msgstr ""
 
-#: admin/galeries.admin.php:179
-msgid "Aucun fichier"
+#: admin/galeries.admin.php:218
+#, php-format
+msgid "Renommage de <code>%1$s</code> en <code>%2$s</code>"
+msgstr ""
+
+#: admin/galeries.admin.php:222
+#, php-format
+msgid "Impossible de renommer <code>%1$s</code> en <code>%2$s</code>"
+msgstr ""
+
+#: admin/galeries.admin.php:299 admin/galeries.admin.php:310
+#: admin/galeries.admin.php:321
+#, php-format
+msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code>"
+msgstr ""
+
+#: admin/galeries.admin.php:303 admin/galeries.admin.php:314
+#: admin/galeries.admin.php:325
+#, php-format
+msgid "Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>"
+msgstr ""
+
+#: admin/galeries.admin.php:336
+msgid "Aucune modification."
+msgstr ""
+
+#: admin/galeries.admin.php:340
+msgid "Modifications effectuées"
+msgstr ""
+
+#: admin/galeries.admin.php:352
+msgid ""
+"Générer la version grande de chaque image à partir de la version originale."
+msgstr ""
+
+#: admin/galeries.admin.php:359
+#, fuzzy
+msgid "Taille maximale de la version grande (hauteur x largeur):"
+msgstr "Max size of the work %1$s of this gallery"
+
+#: admin/galeries.admin.php:360
+msgid ""
+"La plus grande image contenable dans les dimensions données sera générée. "
+"Les proportions de l'image sont conservées."
+msgstr ""
+
+#: admin/galeries.admin.php:363
+msgid "Comment manipuler les images du dossier?"
+msgstr ""
+
+#: admin/galeries.admin.php:364
+msgid ""
+"Le nom des images originales se termine par <code>-orig.extension</code>. "
+"Générer un fichier sans <code>-orig</code> pour chaque version grande."
+msgstr ""
+
+#: admin/galeries.admin.php:365
+msgid ""
+"Renommer préalablement les images du dossier en <code>nom-orig.extension</"
+"code> et ensuite gérérer les image en version grande sans le suffixe <code>-"
+"orig</code>."
+msgstr ""
+
+#: admin/galeries.admin.php:367
+msgid "S'il y a lieu, qualité des images JPG générées (0-100):"
+msgstr ""
+
+#: admin/galeries.admin.php:370
+msgid ""
+"Renforcer la netteté des images redimensionnées (donne de mauvais résultats "
+"pour des images PNG avec transparence)"
+msgstr ""
+
+#: admin/galeries.admin.php:372
+msgid ""
+"Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le "
+"dossier, vous allez peut-être rencontrer une erreur de dépassement du temps "
+"alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre "
+"navigateur."
+msgstr ""
+
+#: admin/galeries.admin.php:374
+msgid "Générer les images"
 msgstr ""
 
 #: admin/inc/premier.inc.php:4
@@ -299,7 +389,7 @@ msgstr ""
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:895
+#: inc/fonctions.inc.php:897
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
