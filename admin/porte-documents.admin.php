@@ -20,7 +20,7 @@ $motifNom = "^[- \+\.\(\)_0-9a-zA-Z]*$";
 
 <h1><?php echo T_("Porte-documents"); ?></h1>
 
-<div class="porteDocumentsBoite">
+<div class="boite">
 <h2><?php echo T_("Information"); ?></h2>
 
 <ul>
@@ -47,7 +47,7 @@ $motifNom = "^[- \+\.\(\)_0-9a-zA-Z]*$";
 
 </div>
 
-<div id="porteDocumentsBoiteMessages" class="porteDocumentsBoite">
+<div id="boiteMessages" class="boite">
 <h2 id="messagesPorteDocuments"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 
 <?php
@@ -131,7 +131,7 @@ if (isset($_GET['action']))
 		$contenuFichier = fread($fic, filesize($_GET['valeur']));
 		fclose($fic);
 		?>
-		<textarea name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea>
+		<div id="redimensionnable"><textarea name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea><img src="fichiers/redimensionner.png" alt="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" title="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" /></div>
 		<input type="hidden" name="porteDocumentsModifierNom" value="<?php echo $_GET['valeur']; ?>" />
 		<input type="submit" value="<?php echo T_('Sauvegarder les modifications'); ?>" />
 		
@@ -329,10 +329,10 @@ if (isset($erreur))
 ?>
 </div>
 
-<div class="porteDocumentsBoite">
+<div class="boite">
 <h2 id="fichiersEtDossiers"><?php echo T_("Fichiers et dossiers"); ?></h2>
 
-<div class="porteDocumentsBoite2">
+<div class="boite2">
 <h3><?php echo T_("Affichage détaillé"); ?></h3>
 
 <form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
@@ -404,7 +404,7 @@ echo "</ul>\n";*/
 ?>
 </div>
 
-<div class="porteDocumentsBoite2">
+<div class="boite2">
 <h3><?php echo T_("Affichage général des dossiers"); ?></h3>
 
 <?php
@@ -421,10 +421,10 @@ echo "</ul>\n";
 
 </div>
 
-<div class="porteDocumentsBoite">
+<div class="boite">
 <h2><?php echo T_("Tâches"); ?></h2>
 
-<div class="porteDocumentsBoite2">
+<div class="boite2">
 <h3><?php echo T_("Supprimer"); ?></h3>
 
 <p><?php echo T_("Pour supprimer des fichiers, cocher la case correspondante et cliquer ensuite sur le bouton ci-dessous."); ?></p>
@@ -434,7 +434,7 @@ echo "</ul>\n";
 </form>
 </div>
 
-<div class="porteDocumentsBoite2">
+<div class="boite2">
 <h3><?php echo T_("Ajouter un fichier"); ?></h3>
 
 <form action="<?php echo $action; ?>#messagesPorteDocuments" method="post" enctype="multipart/form-data">
@@ -455,7 +455,7 @@ foreach ($liste as $valeur)
 </form>
 </div>
 
-<div class="porteDocumentsBoite2">
+<div class="boite2">
 <h3><?php echo T_("Créer un fichier ou un dossier"); ?></h3>
 
 <p><?php echo T_("Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans le nom. Exemples:"); ?></p>

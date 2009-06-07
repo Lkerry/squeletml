@@ -39,36 +39,29 @@
 	font-weight: bold;
 }
 
-.porteDocumentsBoite {
+.boite {
 	margin: 25px; border: 1px solid black; padding: 5px; background-color: #f5f5f5;
 }
 
-.porteDocumentsBoite2 {
+.boite2 {
 	margin: 25px; border: 1px dashed black; padding: 5px; background-color: #f7f7f7;
 }
 
-#porteDocumentsBoiteMessages {
+#boiteMessages {
 	border: 1px dashed black;
 }
 
-#porteDocumentsBoiteMessages h2, #porteDocumentsBoiteMessages h3, #porteDocumentsBoiteMessages h4, #porteDocumentsBoiteMessages h5, #porteDocumentsBoiteMessages h6 {
+#boiteMessages h2, #boiteMessages h3, #boiteMessages h4, #boiteMessages h5, #boiteMessages h6 {
 	color: black;
 }
 
-textarea {
+#redimensionnable {
 	width: 95%;
 	min-height: 300px;
 }
 
-/* Gestion des galeries */
-
-div.messages {
-	border: 1px dashed black; padding 5px; background-color: #f5f5f5;
-}
-
-div.messages h3 {
-	color: #00A600;
-	margin-top: 0px;
-	padding: 5px;
+textarea {
+	width: 95%;
+	height: 95%;
 }
 

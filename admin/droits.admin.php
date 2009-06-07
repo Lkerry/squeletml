@@ -2,7 +2,14 @@
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Gestion des droits d'accès");
 include 'inc/premier.inc.php';
+?>
 
+<h1><?php echo T_("Gestion des droits d'accès"); ?></h1>
+
+<div id="boiteMessages" class="boite">
+<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
+
+<?php
 // Début des tests pour vérifier l'accessibilité des fichiers nécessaires au script
 if ($ficTest = fopen($racine . '/.htaccess', 'a+'))
 {
@@ -230,9 +237,7 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 }
 ?>
 
-<h1><?php echo T_("Gestion des droits d'accès"); ?></h1>
-
-<h2><?php echo T_("Utilisateurs"); ?></h2>
+<h3><?php echo T_("Utilisateurs"); ?></h3>
 
 <p><?php echo T_("Voici les utilisateurs ayant accès à l'administration:"); ?></p>
 
@@ -262,12 +267,14 @@ if (!$i)
 }
 ?>
 </ul>
+</div><!-- /boiteMessages -->
 
+<div class="boite">
 <h2><?php echo T_("Gestion"); ?></h2>
 
 <p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
 
-<form action="<? echo $action; ?>" method="post">
+<form action="<? echo $action; ?>#messages" method="post">
 <div>
 <p><label><?php echo T_("Nom"); ?>:</label><br />
 <input type="text" name="nom" /></p>
@@ -276,5 +283,6 @@ if (!$i)
 <p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer'); ?>" /></p>
 </div>
 </form>
+</div><!-- /boite -->
 
 <?php include $racine . '/admin/inc/dernier.inc.php'; ?>

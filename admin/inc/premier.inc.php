@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <link rel="stylesheet" type="text/css" href="css/admin.css" media="screen" />
 <script type="text/javascript" src="js/squeletml.js"></script>
+<script type="text/javascript" src="js/wz_dragdrop.js"></script>
 </head>
 <body>
 <div id="page">
