@@ -15,11 +15,11 @@ $dossierRacine = '..';
 // Filtre des extensions
 $filtreExtensions = FALSE; // TRUE|FALSE
 
-//Extensions permises pour les fichiers téléchargés (si $filtreExtensions vaut FALSE, aucun filtre ne sera appliqué)
+// Si $filtreExtensions vaut FALSE, extensions permises pour les fichiers téléchargés
 $extensionsPermises = array (
 	'jpg', 'jpeg', 'png', 'gif', 'svg', 'pdf', 'txt', 'sxw', 'odt', 'ods', 'rtf', 
-	'doc', 'xls', 'tgz', 'tbz2', 'zip', '7z', 'bz2', 'gz', 'tar', 'ogg', 'mp3', 'rm', 'wma', 
-	'mpg', 'mpeg', 'mp4', 'avi', 'mov', 'wmv'
+	'doc', 'xls', 'tgz', 'tbz2', 'zip', '7z', 'bz2', 'gz', 'tar', 'ogg', 'mp3', 
+	'rm', 'wma', 'mpg', 'mpeg', 'mp4', 'avi', 'mov', 'wmv'
 	);
 
 // Filtre des dossiers
@@ -39,7 +39,7 @@ $filtreDossiers = '../.bzr|../.bzr/branch|../.bzr/branch-lock|../.bzr/checkout|.
 /* Le filtre affiche un message d'erreur si le nom du fichier contient des accents et convertit automatiquement les espaces par des barres de soulignement. */
 $filtreNom = FALSE; // TRUE|FALSE
 
-// Affiche les dimensions des images
+// Affichage des dimensions des images
 $afficheDimensionsImages = TRUE; // TRUE|FALSE
 
 // Valeur de l'attribut `action` des formulaires
@@ -48,8 +48,5 @@ $action = $_SERVER['PHP_SELF'];
 // Symbole variable GET
 /* Si la variable $action contient déjà une variable GET, mettre & sinon mettre ? */
 $symboleUrl = '?';
-
-// Niveau du titre principal en HTML du script (écrire seulement un chiffre de 1 à 4)
-$niveauTitreScript = 1;
 
 ?>
