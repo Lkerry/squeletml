@@ -14,9 +14,9 @@ function adminInit($racine)
 {
 	$fichiers = array ();
 	
-	$fichiers[] = $racine . '/inc/fonctions.inc.php';
-	
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	
+	$fichiers[] = $racine . '/inc/fonctions.inc.php';
 	
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
 	
@@ -108,7 +108,7 @@ function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossier
 			
 			if (empty($dim))
 			{
-				$lienModifier = "<a href=\"$action" . $symboleUrl . "action=modifier&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Modifier</a>";
+				$lienModifier = "<a href=\"$action" . $symboleUrl . "action=modifier&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Modifier") . "</a>";
 			}
 			else
 			{
@@ -116,8 +116,8 @@ function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossier
 			}
 			
 			$liste[$dossierRacine][] = "$lienModifier
-				<span class='porteDocumentsSep'>|</span> Supprimer <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
-				<span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">Renommer</a>
+				<span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Renommer") . "</a>
+				<span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
 				<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><span class='porteDocumentsNom'>$fichier</span></a>$dim";
 		}
 	}

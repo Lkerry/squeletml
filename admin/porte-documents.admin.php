@@ -45,7 +45,7 @@ $motifNom = "^[- \+\.\(\)_0-9a-zA-Z]*$";
 	?>
 </ul>
 
-</div>
+</div><!-- /boite -->
 
 <div id="boiteMessages" class="boite">
 <h2 id="messagesPorteDocuments"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
@@ -109,12 +109,11 @@ if (isset($_GET['action']))
 		echo "<li>" . T_("Important: ne pas mettre de barre oblique / dans le nouveau nom du fichier. N'utiliser ce signe que pour marquer le chemin vers le fichier.") . "</li>";
 		echo "</ul>\n";
 		?>
-		<form action="<?php echo $action; ?>" method="post">
-		<div>
+		<form action="<?php echo $action; ?>" method="post"><div>
+		<input type="checkbox" name="porteDocumentsRenommerDupliquer" value="dupliquer" /> <?php echo T_("Dupliquer le fichier (en faire une copie et renommer la copie)"); ?><br />
 		<input type="hidden" name="porteDocumentsAncienNom" value="<?php echo $ancienNom; ?>" /> <input type="text" name="porteDocumentsNouveauNom" value="<?php echo $ancienNom; ?>" size="50" />
 		<input type="submit" value="<?php echo T_('Renommer'); ?>" />
-		</div>
-		</form>
+		</div></form>
 		<?php
 	}
 	
@@ -124,8 +123,7 @@ if (isset($_GET['action']))
 		echo "<h3>" . T_("Insctructions de modification") . "</h3>";
 		echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), $_GET['valeur']) . "</p>";
 		?>
-		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
-		<div>
+		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
 		<?php
 		$fic = fopen($_GET['valeur'], 'r');
 		$contenuFichier = fread($fic, filesize($_GET['valeur']));
@@ -139,11 +137,9 @@ if (isset($_GET['action']))
 		<div>
 		<input type="submit" name="porteDocumentsModifierAnnuler" value="<?php echo T_('Annuler'); ?>" />
 		<input type="hidden" name="porteDocumentsModifierNom" value="<?php echo $_GET['valeur']; ?>" />
-		</div>
-		</form>
+		</div></form>
 		
-		</div>
-		</form>
+		</div></form>
 		<?php
 	}
 }
@@ -190,18 +186,41 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 {
 	$ancienNom = $_POST['porteDocumentsAncienNom'];
 	$nouveauNom = $_POST['porteDocumentsNouveauNom'];
+	if (isset($_POST['porteDocumentsRenommerDupliquer']) && $_POST['porteDocumentsRenommerDupliquer'] == 'dupliquer')
+	{
+		$dupliquer = TRUE;
+	}
+	else
+	{
+		$dupliquer = FALSE;
+	}
 
 	echo "<ul>\n";
 	if (file_exists($ancienNom))
 	{
-		if (rename($ancienNom, $nouveauNom))
+		if ($dupliquer)
 		{
-			echo "<li class='succes'>" . sprintf(T_('Renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> effectué.'), $ancienNom, $nouveauNom) . "</li>\n";
-		}
+			if (copy($ancienNom, $nouveauNom))
+			{
+				echo "<li class='succes'>" . sprintf(T_('Copie et renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> effectués.'), $ancienNom, $nouveauNom) . "</li>\n";
+			}
 
+			else
+			{
+				echo "<li class='erreur'>" . sprintf(T_('Copie et renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> impossibles.'), $ancienNom, $nouveauNom) . "</li>\n";
+			}
+		}
 		else
 		{
-			echo "<li class='erreur'>" . sprintf(T_('Renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> impossible.'), $ancienNom, $nouveauNom) . "</li>\n";
+			if (rename($ancienNom, $nouveauNom))
+			{
+				echo "<li class='succes'>" . sprintf(T_('Renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> effectué.'), $ancienNom, $nouveauNom) . "</li>\n";
+			}
+
+			else
+			{
+				echo "<li class='erreur'>" . sprintf(T_('Renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> impossible.'), $ancienNom, $nouveauNom) . "</li>\n";
+			}
 		}
 	}
 
@@ -327,16 +346,15 @@ if (isset($erreur))
 	echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de <span class="porteDocumentsNom">%1$s</span>.'), $nomFichier) . "</p>\n\n<ul>\n", $erreur, "</ul>\n";
 }
 ?>
-</div>
+</div><!-- /boiteMessages -->
 
+<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
 <div class="boite">
-<h2 id="fichiersEtDossiers"><?php echo T_("Fichiers et dossiers"); ?></h2>
+<h2 id="fichiersEtDossiers"><?php echo T_("Liste des fichiers et dossiers"); ?></h2>
 
 <div class="boite2">
 <h3><?php echo T_("Affichage détaillé"); ?></h3>
 
-<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
-<div>
 <?php
 
 if (isset($_GET['action']))
@@ -376,33 +394,7 @@ if (isset($_GET['action']))
 	}
 }
 ?>
-
-<?php
-//Tout déplier
-/*$liste = adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
-ksort($liste);
-
-echo "<ul>\n";
-foreach ($liste as $cle => $valeur)
-{
-	echo "<li>Dossier <span class='porteDocumentsNom'>$cle</span><ul>\n";
-	$cle=array();
-	foreach ($valeur as $valeur2)
-	{
-		$cle[] = $valeur2;
-	}
-
-	natcasesort($cle);
-
-	foreach ($cle as $valeur3)
-	{
-		echo "<li>$valeur3</li>\n";
-	}
-	echo "</ul></li>\n";
-}
-echo "</ul>\n";*/
-?>
-</div>
+</div><!-- /boite2 -->
 
 <div class="boite2">
 <h3><?php echo T_("Affichage général des dossiers"); ?></h3>
@@ -417,28 +409,23 @@ foreach ($liste2 as $valeur)
 }
 echo "</ul>\n";
 ?>
-</div>
+</div><!-- /boite2 -->
 
-</div>
+</div><!-- /boite -->
 
 <div class="boite">
-<h2><?php echo T_("Tâches"); ?></h2>
-
-<div class="boite2">
-<h3><?php echo T_("Supprimer"); ?></h3>
+<h2><?php echo T_("Supprimer"); ?></h2>
 
 <p><?php echo T_("Pour supprimer des fichiers, cocher la case correspondante et cliquer ensuite sur le bouton ci-dessous."); ?></p>
 
 <input type="submit" value="<?php echo T_('Supprimer'); ?>" />
-</div>
-</form>
-</div>
+</div><!-- /boite -->
+</div></form>
 
-<div class="boite2">
-<h3><?php echo T_("Ajouter un fichier"); ?></h3>
+<div class="boite">
+<h2><?php echo T_("Ajouter un fichier"); ?></h2>
 
-<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post" enctype="multipart/form-data">
-<div>
+<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post" enctype="multipart/form-data"><div>
 <label><?php echo T_("Fichier:"); ?></label> <input type="file" name="fichier" size="25"/><br /><br />
 <label><?php echo T_("Dossier:"); ?></label> <select name="rep" size="1">
 <?php
@@ -451,12 +438,11 @@ foreach ($liste as $valeur)
 ?>
 </select><br /><br />
 <input type="submit" value="<?php echo T_('Ajouter'); ?>" />
-</div>
-</form>
-</div>
+</div></form>
+</div><!-- /boite -->
 
-<div class="boite2">
-<h3><?php echo T_("Créer un fichier ou un dossier"); ?></h3>
+<div class="boite">
+<h2><?php echo T_("Créer un fichier ou un dossier"); ?></h2>
 
 <p><?php echo T_("Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans le nom. Exemples:"); ?></p>
 
@@ -466,18 +452,14 @@ foreach ($liste as $valeur)
 	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau-dossier/nouveau-fichier.txt</span></li>
 </ul>
 
-<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
-<div>
+<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
 <label><?php echo T_("Nom:"); ?></label> <input type="text" name="porteDocumentsFichierCreeNom" size="50" value="<?php echo $dossierRacine . '/'; ?>" /><br /><br />
 <label><?php echo T_("Type:"); ?></label> <select name="porteDocumentsFichierCreeType" size="1">
 <option value="Dossier"><?php echo T_("Dossier"); ?></option>
 <option value="Fichier"><?php echo T_("Fichier"); ?></option>
 </select><br /><br />
 <input type="submit" name="porteDocumentsCreer" value="<?php echo T_('Créer'); ?>" />
-</div>
-</form>
-</div>
-
-</div>
+</div></form>
+</div><!-- /boite -->
 
 <?php include $racine . '/admin/inc/dernier.inc.php'; ?>
