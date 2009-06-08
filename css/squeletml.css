@@ -110,7 +110,7 @@ div.galerieNavigationSuivant img {
 	float: right;
 }
 
-.galerieFleche img {
+.galerieFleche img, div.galerieNavigationVide {
 	border: none !important;
 	width:40px;
 	height:40px;
@@ -137,6 +137,10 @@ div#galerieAccompagnementVignettePrecedent img {
 div#galerieAccompagnementVignetteSuivant img {
 	float: right;
 	border: none;
+}
+
+div#galerieGrandeExif {
+	text-align: left;
 }
 
 /* Bloc message pour IE6 */

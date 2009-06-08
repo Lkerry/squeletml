@@ -1,4 +1,4 @@
-<?php error_reporting(E_ALL);
+<?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Gestion des galeries");
 include 'inc/premier.inc.php';

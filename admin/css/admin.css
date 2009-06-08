@@ -17,6 +17,10 @@
 
 /* Général */
 
+#page {
+	background-color: #FAFAFA;
+}
+
 .succes {
 	color: #006400;
 }

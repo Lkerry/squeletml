@@ -99,7 +99,7 @@ if (isset($_GET['oeuvre']))
 	if ($imageExiste)
 	{
 		// On récupère le code de l'oeuvre demandée en grande version
-		$oeuvreGrande = '<div id="galerieGrande">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'grande', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg) . '</div>' . "\n";
+		$oeuvreGrande = '<div id="galerieGrande">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'grande', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif) . '</div>' . "\n";
 
 		// On recherche l'oeuvre précédente pour la navigation .  Si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente
 		if (array_key_exists($i - 1, $galerie))
@@ -107,7 +107,7 @@ if (isset($_GET['oeuvre']))
 			$op = $i - 1; // $op est l'indice de l'oeuvre précédente
 
 			// On récupère le code de la vignette de l'oeuvre précédente
-			$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $op, 'precedent', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg) . '</div>' . "\n";
+			$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $op, 'precedent', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif) . '</div>' . "\n";
 			
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
@@ -123,8 +123,7 @@ if (isset($_GET['oeuvre']))
 		}
 		else
 		{
-			// Simule l'espace de la flèche de navigation pour que l'image demeure centrée
-			$oeuvrePrecedente = '<div class="galerieNavigationPrecedent galerieFleche"></div>' . "\n";
+			$oeuvrePrecedente = '';
 		}
 
 		// On recherche l'oeuvre suivante pour la navigation
@@ -133,7 +132,7 @@ if (isset($_GET['oeuvre']))
 			$os = $i + 1;
 
 			// On récupère le code de la vignette de l'oeuvre suivante
-			$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $os, 'suivant', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg) . '</div>' . "\n";
+			$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $os, 'suivant', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif) . '</div>' . "\n";
 			
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
@@ -149,8 +148,40 @@ if (isset($_GET['oeuvre']))
 		}
 		else
 		{
-			// Simule l'espace de la flèche de navigation pour que l'image demeure centrée
-			$oeuvreSuivante = '<div class="galerieNavigationSuivant galerieFleche"></div>' . "\n";
+			$oeuvreSuivante = '';
+		}
+		
+		// On simule l'espace de la flèche de navigation pour que l'image demeure centrée dans le cas où on se trouve à un extrême de la galerie (début ou fin)
+		if (empty($oeuvrePrecedente))
+		{
+			$class = "galerieNavigationPrecedent galerieFleche";
+			if ($galerieNavigation == 'vignettes')
+			{
+				$style = styleDivVideNavigation($oeuvreSuivante);
+			}
+			else
+			{
+				$class .= " galerieNavigationVide";
+				$style = '';
+			}
+			
+			$oeuvrePrecedente = '<div class="' . $class . '"' . $style . '></div>' . "\n";
+		}
+		
+		if (empty($oeuvreSuivante))
+		{
+			$class = "galerieNavigationSuivant galerieFleche";
+			if ($galerieNavigation == 'vignettes')
+			{
+				$style = styleDivVideNavigation($oeuvrePrecedente);
+			}
+			else
+			{
+				$class .= " galerieNavigationVide";
+				$style = '';
+			}
+			
+			$oeuvreSuivante = '<div class="' . $class . '"' . $style . '></div>' . "\n";
 		}
 		
 		// On crée le corps de la galerie
@@ -257,7 +288,7 @@ if (isset($_GET['oeuvre']))
 			
 			for ($i = $indicePremiereOeuvre; $i <= $indiceDerniereOeuvre && $i < $nombreDoeuvres; $i++)
 			{
-				$corpsMinivignettes .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg);
+				$corpsMinivignettes .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif);
 			}
 			
 			$corpsMinivignettes .= '</div><!-- /galerieMinivignettes -->' . "\n";
@@ -381,7 +412,7 @@ else
 	
 	for ($i = $indicePremiereOeuvre; $i <= $indiceDerniereOeuvre && $i < $nombreDoeuvres; $i++)
 	{
-		$corpsGalerie .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, TRUE, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg);
+		$corpsGalerie .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, TRUE, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOrig, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif);
 	}
 	
 	if ($galerieVignettesParPage)

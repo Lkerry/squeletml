@@ -363,7 +363,7 @@ Petit rappel: pour créer une galerie, voici les étapes à suivre:
 
 Chaque image d'une galerie est déclinée en au moins deux versions: vignette et grande. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version grande.
 
-Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.txt`. Vous pouvez générer automatiquement le contenu de ce fichier en utilisant le script d'aide dans la section d'administration. Vous n'aurez qu'ensuite qu'à copier le contenu généré, créer le fichier `site/inc/galerie-$idGalerie.txt` et y coller l'information.
+Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.txt`. Vous pouvez générer automatiquement le contenu de ce fichier en utilisant le script d'aide dans la section d'administration.
 
 Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `__IMG__`. Voici un exemple:
 

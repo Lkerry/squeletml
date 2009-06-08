@@ -645,10 +645,46 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 }
 
 /**
+Génère l'attribut `style` pour les div vide simulant la présence d'une flèche ou d'une vignette de navigation dans la galerie.
+*/
+function styleDivVideNavigation($oeuvre)
+{
+	$width = '';
+	$height = '';
+	
+	if (!empty($oeuvre))
+	{
+		preg_match('/width="(\d+)"/', $oeuvre, $resWidth);
+		preg_match('/height="(\d+)"/', $oeuvre, $resHeight);
+		if (!empty($resWidth[1]))
+		{
+			$width = $resWidth[1];
+		}
+		if (!empty($resHeight[1]))
+		{
+			$height = $resHeight[1];
+		}
+	}
+	
+	if (empty($width) && empty($height))
+	{
+		$style = '';
+	}
+	else
+	{
+		$style = ' style="width: ' . $width . 'px; height: ' . $height . 'px;"';
+	}
+	
+	return $style;
+}
+
+/**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif)
 {
+	$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
+	
 	if ($taille == 'grande')
 	{
 		if (!empty($galerie[$indice]['grandeLargeur'])
@@ -718,7 +754,6 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version grande de l'image.
 		else
 		{
-			$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 			$origNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
 			$origNom .= '-orig.' . $infoGrandeNom['extension'];
 		}
@@ -726,6 +761,9 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		// On vérifie maintenant si le fichier $origNom existe. S'il existe, on insère un lien vers l'image.
 		if (file_exists($racineImgSrc . '/' . $origNom))
 		{
+			// On génère des infos utilisables plus loin
+			$infoOrigNom = pathinfo($origNom);
+			
 			$lienOrigHref = '';
 			if ($galerieTelechargeOrig)
 			{
@@ -740,13 +778,80 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$lienOrig = '';
 		}
 		
+		// Exif
+		if ($ajoutExif && typeImage($infoGrandeNom['extension']) == 'jpeg' && function_exists('exif_read_data'))
+		{
+			$tableauExif = exif_read_data($racineImgSrc . '/' . $galerie[$indice]['grandeNom'], 'IFD0', 0);
+			
+			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si c'est du JPG
+			if (!$tableauExif && !empty($lienOrig) && typeImage($infoOrigNom['extension']) == 'jpeg')
+			{
+				$tableauExif = exif_read_data($racineImgSrc . '/' . $origNom, 'IFD0', 0);
+			}
+			
+			if ($tableauExif)
+			{
+				$exif = '';
+				foreach ($infosExif as $cle => $valeur)
+				{
+					if ($valeur && isset($tableauExif[$cle]) && !empty($tableauExif[$cle]))
+					{
+						switch ($cle)
+						{
+							case 'Model':
+								$exifTrad = T_("Modèle d'appareil photo");
+								break;
+							
+							case 'DateTime':
+								$exifTrad = T_("Date et heure");
+								break;
+							
+							case 'ExposureTime':
+								$exifTrad = T_("Durée d'exposition");
+								break;
+							
+							case 'ISOSpeedRatings':
+								$exifTrad = T_("Sensibilité ISO");
+								break;
+							
+							case 'FNumber':
+								$exifTrad = T_("Ouverture");
+								break;
+							
+							case 'FocalLength':
+								$exifTrad = T_("Distance focale");
+								break;
+							
+							case 'Make':
+								$exifTrad = T_("Fabriquant");
+								break;
+							
+							default:
+								$exifTrad = $cle;
+								break;
+						}
+						$exif .= "<li>$exifTrad: " . $tableauExif[$cle] . "</li>\n";
+					}
+				}
+			}
+			
+			if (!empty($exif))
+			{
+				$exif = "<div id='galerieGrandeExif'>\n<ul>\n" . $exif . "</ul>\n</div><!-- /galerieGrandeExif -->\n";
+			}
+		}
+		else
+		{
+			$exif = '';
+		}
+		
 		if ($galerieLegendeEmplacement == 'haut')
 		{
-			return $legende . $lienOrig . '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div>";
+			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div><!-- /galerieGrandeImg -->\n";
 		}
 		elseif ($galerieLegendeEmplacement == 'bas')
 		{
-			return '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div>" . $legende . $lienOrig;
+			return '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div><!-- /galerieGrandeImg -->\n" . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n";
 		}
 	}
 
@@ -778,7 +883,6 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			else
 			{
 				// Si le nom de la vignette n'a pas été renseigné, on génère un nom automatique selon le nom de la version grande de l'image.
-				$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 				$vignetteNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
 				$vignetteNom .= '-vignette.' . $infoGrandeNom['extension'];
 				

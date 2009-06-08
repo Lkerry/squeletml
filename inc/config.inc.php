@@ -136,7 +136,22 @@ $galerieInfoEmplacement = 'haut'; // haut|bas
 // Ajout automatique d'une légende (contenu de l'attribut `alt` + taille du fichier) dans le cas où aucune légende n'a été précisée
 $galerieLegendeAutomatique = FALSE; // TRUE|FALSE
 
-// Emplacement de la légende et du lien vers l'image originale (s'il y a lieu)
+// Affichage d'informations Exif pour les fichiers JPG
+/* La version de PHP utilisée doit être compilée avec l'option `--enable-exif`. Voir http://us3.php.net/manual/fr/exif.requirements.php pour plus de détails. Si ce n'est pas le cas, les informations Exif ne seront tout simplement pas affichées. */
+$ajoutExif = TRUE; // TRUE|FALSE
+
+// Si on affiche des informations Exif, choisir lesquelles (TRUE|FALSE)
+$infosExif = array (
+	"DateTime" => TRUE,
+	"ExposureTime" => TRUE,
+	"FNumber" => TRUE,
+	"FocalLength" => TRUE,
+	"ISOSpeedRatings" => TRUE,
+	"Make" => TRUE,
+	"Model" => TRUE,
+	);
+
+// Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
 $galerieLegendeEmplacement = 'bas'; // haut|bas
 
 // Qualité des images JPG générées

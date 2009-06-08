@@ -18,6 +18,7 @@ Voici une liste non exhaustive de fonctionnalités ou de caractéristiques de Sq
 
 - Module de galerie photos:
   - nombre illimité de galeries;
+  - formats d'image PNG, JPG ou GIF;
   - pagination possible des vignettes formant l'accueil de la galerie;
   - navigation personnalisable entre chaque image d'une galerie:
     - choix de l'emplacement (sur ou sous l'image);
@@ -26,8 +27,10 @@ Voici une liste non exhaustive de fonctionnalités ou de caractéristiques de Sq
     - avec vignettes et miniflèches (donc deux fichiers par lien «précédent» et deux fichier par lien «suivant»);
     - un aperçu de toutes les images de la galerie grâce à des minivignettes;
   - information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique de ces informations, évitant ainsi le contenu dupliqué d'une manière ou d'une autre;
+  - affichage possible d'informations Exif des images au format JPG;
   - réordonnement d'une image dans une galerie sans modifier l'URL de cette image;
   - possibilité de générer automatiquement les vignettes ou d'utiliser des vignettes personnalisées;
+  - possibilité de retailler automatiquement les images originales pour obtenir des copies de taille intermédiaire;
   - possibilité de reconnaître les tailles d'image selon le nom de fichier (par exemple `-vignette.extension` pour une vignette ou `-orig.extension` pour un lien vers une version téléchargeable de l'image);
 
 - Mise à jour rapide et aisée: la configuration personnalisée d'un site se trouve dans un dossier qui ne sera pas écrasé lors d'une mise à jour de Squeletml.
@@ -43,7 +46,7 @@ Voici une liste non exhaustive de fonctionnalités ou de caractéristiques de Sq
 - Section d'administration offrant quelques fonctionnalités utiles sans passer par le ftp:
   - fichiers: parcours des dossiers du site, renommage, suppression, création, modification, téléversement, téléchargement...;
   - droits accès: ajout d'utilisateurs ayant le droit d'accéder à l'administration;
-  - galeries: gestion des galeries, comme la création de fichiers de configuration pour chaque galerie, le listage de tous les fichiers de configuration existants, etc.
+  - galeries: gestion des galeries, comme la création de fichiers de configuration pour chaque galerie, le listage de tous les fichiers de configuration existants, la génération automatique d'images de taille intermédiaire à partir des images originales, etc.
   - documentation: consultation de l'aide en ligne.
 
 Squeletml n'a pas pour but d'offrir un système de gestion de contenu avancé (par exemple [Drupal](http://www.drupal-fr.org/)), mais d'optimiser le plus possible un site créé *à l'ancienne* :-), dont chaque page représente un *vrai* fichier sur le serveur et est codé à la mitaine. J'ai donc écrit Squeletml dans le but de pouvoir mettre sur pied un site le plus rapidement et facilement possible, pouvoir modifier plusieurs aspects des sites (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et pouvoir mettre à jour le script sans craindre une perte de données ou de configuration personnalisée des sites.
