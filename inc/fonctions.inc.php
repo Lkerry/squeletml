@@ -679,6 +679,35 @@ function styleDivVideNavigation($oeuvre)
 }
 
 /**
+Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version grande, s'il y a lieu, sinon est vide.
+*/
+function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
+{
+	if (preg_match('/(<div id="galerieGrandeTexte">.+<\/div><!-- \/galerieGrandeTexte -->)/', $corpsGalerie, $res))
+	{
+		if ($galerieLegendeEmplacement == 'sousLeContenu')
+		{
+			$corpsGalerie = preg_replace('/<div id="galerieGrandeTexte">.+<\/div><!-- \/galerieGrandeTexte -->/', '', $corpsGalerie);
+			$tableauCorpsGalerie['texteGrande'] = '<div id="galerieGrandeTexteSousLeContenu">' . $res[1] . '</div><!-- /galerieGrandeTexteSousLeContenu -->';
+		}
+		else
+		{
+			$tableauCorpsGalerie['texteGrande'] = '';
+		}
+		
+		$tableauCorpsGalerie['corpsGalerie'] = $corpsGalerie;
+	}
+	
+	else
+	{
+		$tableauCorpsGalerie['corpsGalerie'] = $corpsGalerie;
+		$tableauCorpsGalerie['texteGrande'] = '';
+	}
+	
+	return $tableauCorpsGalerie;
+}
+
+/**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
 function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif)
@@ -767,11 +796,16 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$lienOrigHref = '';
 			if ($galerieTelechargeOrig)
 			{
+				$lienOrigTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;');
 				$lienOrigHref .= $urlRacine . '/telecharger.php?url=';
+			}
+			else
+			{
+				$lienOrigTrad = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;');
 			}
 			$lienOrigHref .= $urlImgSrc . '/' . $origNom;
 			
-			$lienOrig = '<div id="galerieLienOrig"><a href="' . $lienOrigHref . '">' . sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;') . '</a></div>';
+			$lienOrig = '<div id="galerieLienOrig"><a href="' . $lienOrigHref . '">' . $lienOrigTrad . '</a></div>';
 		}
 		else
 		{
@@ -830,14 +864,14 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 								$exifTrad = $cle;
 								break;
 						}
-						$exif .= "<li>$exifTrad: " . $tableauExif[$cle] . "</li>\n";
+						$exif .= "<li>$exifTrad: " . $tableauExif[$cle] . "</li>";
 					}
 				}
 			}
 			
 			if (!empty($exif))
 			{
-				$exif = "<div id='galerieGrandeExif'>\n<ul>\n" . $exif . "</ul>\n</div><!-- /galerieGrandeExif -->\n";
+				$exif = "<div id='galerieGrandeExif'><ul>" . $exif . "</ul></div><!-- /galerieGrandeExif -->";
 			}
 		}
 		else
@@ -845,7 +879,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$exif = '';
 		}
 		
-		if ($galerieLegendeEmplacement == 'haut')
+		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousLeContenu')
 		{
 			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div><!-- /galerieGrandeImg -->\n";
 		}

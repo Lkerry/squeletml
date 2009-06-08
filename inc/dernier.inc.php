@@ -3,7 +3,8 @@
 		<?php endif; ?>
 		
 		<?php if (isset($corpsGalerie) && !empty($corpsGalerie)): ?>
-			<?php echo $corpsGalerie; ?>
+			<?php $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement); ?>
+			<?php echo $tableauCorpsGalerie['corpsGalerie']; ?>
 		<?php endif; ?>
 		
 		<?php if ($idGalerie): ?>
@@ -33,6 +34,10 @@
 			<?php include fichierMenu($racine, $langue); ?>
 		</div><!-- /menu -->
 	<?php endif; ?>
+<?php endif; ?>
+
+<?php if (!empty($tableauCorpsGalerie['texteGrande'])): ?>
+	<?php echo $tableauCorpsGalerie['texteGrande']; ?>
 <?php endif; ?>
 
 <?php if ($basDePage): ?>

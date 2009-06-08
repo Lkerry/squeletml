@@ -152,7 +152,8 @@ $infosExif = array (
 	);
 
 // Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
-$galerieLegendeEmplacement = 'bas'; // haut|bas
+/* Les emplacements `haut` et `bas` font référence à l'image en version grande, alors que `sousLeContenu` fait référence à la page. Par exemple, l'option `sousLeContenu` place avec la configuration par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
+$galerieLegendeEmplacement = 'bas'; // haut|bas|sousLeContenu
 
 // Qualité des images JPG générées
 $qualiteJpg = 90; // 0-100
