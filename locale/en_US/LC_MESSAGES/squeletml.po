@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-07 19:20-0400\n"
+"POT-Creation-Date: 2009-06-08 02:15-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -724,22 +724,56 @@ msgstr ""
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:692
+#: inc/fonctions.inc.php:757
 #, fuzzy
 msgid "Oeuvre"
 msgstr "Work %1$s"
 
-#: inc/fonctions.inc.php:705
+#: inc/fonctions.inc.php:770
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:736
+#: inc/fonctions.inc.php:799
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:897
+#: inc/fonctions.inc.php:804
+#, php-format
+msgid "Afficher l'image au format original (%1$sKio)"
+msgstr ""
+
+#: inc/fonctions.inc.php:836
+msgid "Modèle d'appareil photo"
+msgstr ""
+
+#: inc/fonctions.inc.php:840
+msgid "Date et heure"
+msgstr ""
+
+#: inc/fonctions.inc.php:844
+msgid "Durée d'exposition"
+msgstr ""
+
+#: inc/fonctions.inc.php:848
+msgid "Sensibilité ISO"
+msgstr ""
+
+#: inc/fonctions.inc.php:852
+#, fuzzy
+msgid "Ouverture"
+msgstr "Work %1$s"
+
+#: inc/fonctions.inc.php:856
+msgid "Distance focale"
+msgstr ""
+
+#: inc/fonctions.inc.php:860
+msgid "Fabriquant"
+msgstr ""
+
+#: inc/fonctions.inc.php:1035
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
@@ -819,46 +853,46 @@ msgstr "Work %1$s of this gallery"
 msgid "Taille maximale de l'oeuvre %1$s de la galerie"
 msgstr "Max size of the work %1$s of this gallery"
 
-#: inc/galerie.inc.php:171
+#: inc/galerie.inc.php:202
 #, php-format
 msgid "Affichage de l'oeuvre %1$s sur un total de %2$s."
 msgstr ""
 
-#: inc/galerie.inc.php:171
+#: inc/galerie.inc.php:202
 #, fuzzy
 msgid "Accueil de la galerie."
 msgstr "Work %1$s of this gallery"
 
-#: inc/galerie.inc.php:289
+#: inc/galerie.inc.php:320
 #, php-format
 msgid ""
 "L'oeuvre demandée est introuvable. <a href=\"%1$s\">Voir toutes les oeuvres</"
 "a>."
 msgstr ""
 
-#: inc/galerie.inc.php:359
+#: inc/galerie.inc.php:390
 msgid "Page précédente"
 msgstr ""
 
-#: inc/galerie.inc.php:369
+#: inc/galerie.inc.php:400
 msgid "Page suivante"
 msgstr ""
 
-#: inc/galerie.inc.php:405
+#: inc/galerie.inc.php:436
 #, php-format
 msgid "Cette galerie contient %1$s oeuvre"
 msgid_plural "Cette galerie contient %1$s oeuvres"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:405
+#: inc/galerie.inc.php:436
 #, php-format
 msgid " (sur %1$s page)."
 msgid_plural " (sur %1$s pages)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:406
+#: inc/galerie.inc.php:437
 #, fuzzy
 msgid "Voir l'accueil de la galerie."
 msgstr "Work %1$s of this gallery"
