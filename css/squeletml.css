@@ -103,15 +103,6 @@ div#titre p a, div#titre p a:visited {
 	padding-left: 0px;
 }
 
-#galerie img {
-	margin: 3px;
-	border: 1px solid gray;
-}
-
-div.galerieNavigationAccueil img {
-	float: left;
-}
-
 div.galerieNavigationPrecedent {
 	float: left;
 }
@@ -160,6 +151,21 @@ div#galerieAccompagnementVignetteSuivant img {
 
 div#galerieGrandeExif {
 	text-align: left;
+}
+
+div.galerieNavigationAccueil img {
+	float: left;
+	background: url('../fichiers/ombre-vignette.png') no-repeat right bottom;
+}
+
+div#galerieGrandeImg img {
+	background: url('../fichiers/ombre.png') no-repeat right bottom;
+}
+
+div.galerieNavigationAccueil img, div#galerieGrandeImg img {
+	padding: 5px 10px 10px 5px;
+	border: none;
+	margin: 10px;
 }
 
 /* Bloc message pour IE6 */

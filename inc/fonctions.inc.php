@@ -704,6 +704,12 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 		$tableauCorpsGalerie['texteGrande'] = '';
 	}
 	
+	// Dans tous les cas, on supprime la div `galerieGrandeTexte` si elle est vide
+	if (preg_match('/(<div id="galerieGrandeTexte"><\/div><!-- \/galerieGrandeTexte -->)/', $tableauCorpsGalerie['corpsGalerie']))
+	{
+		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('/<div id="galerieGrandeTexte"><\/div><!-- \/galerieGrandeTexte -->/', '', $tableauCorpsGalerie['corpsGalerie']);
+	}
+	
 	return $tableauCorpsGalerie;
 }
 
