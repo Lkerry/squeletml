@@ -17,7 +17,7 @@ premiereRevTag=`bzr tags | tail -n 2 | head -n 1 | rev | cut -d ' ' -f 1 | rev |
 ########################################################################
 
 # Met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. À faire par exemple avant le dernier commit d'une prochaine version.
-generer: po
+generer: message-accueil po
 
 # Crée une archive .bz2, y ajoute les fichiers qui ne sont pas versionnés mais nécessaires, supprime les fichiers versionnés mais inutiles. À faire après un bzr tag... quand une nouvelle version est sortie.
 publier: bz2
@@ -65,12 +65,18 @@ menage-ChangeLog:
 	rm -f ChangeLog
 	rm -f ChangeLogDerniereVersion
 
+menage-message-accueil:
+	rm -f inc/message-accueil.inc.php
+
 menage-pot:
 	rm -f locale/squeletml.pot
 	touch locale/squeletml.pot # sinon xgettext -j va planter en précisant que le fichier est introuvable
 
 menage-version.txt:
 	rm -f version.txt
+
+message-accueil: menage-message-accueil
+	php ./scripts.cli.php message-accueil
 
 mo:
 	for po in `find locale/ -iname *.po`;\

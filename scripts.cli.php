@@ -23,4 +23,48 @@ if ($argv[1] == 'mdtxt')
 	fclose($fic);
 }
 
+// Message d'accueil
+if ($argv[1] == 'message-accueil')
+{
+	include 'inc/php-markdown/markdown.php';
+	
+	if ($fic = fopen('LISEZ-MOI.mdtxt', 'r'))
+	{
+		$fichierLisezMoi = array ();
+		$fichierLisezMoi[] = '<h2>Bienvenue sur votre site Squeletml</h2>';
+		while (!feof($fic))
+		{
+			$ligne = fgets($fic);
+			if (preg_match('/^## /', $ligne))
+			{
+				$ligne = "\n"; // On fait ignorer la première ligne. Voir la comparaison plus bas
+				do
+				{
+					if ($ligne != "\n")
+					{
+						$fichierLisezMoi[] = rtrim(Markdown($ligne));
+					}
+					$ligne = fgets($fic);
+				} while (!preg_match('/^## /', $ligne));
+				break;
+			}
+		}
+		
+		fclose($fic);
+		
+		$fichierLisezMoi[] = '<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href=\'admin/documentation.admin.php\'>en visitant la documentation</a>.</p>';
+	}
+	
+	if ($fic = fopen('inc/message-accueil.inc.php', 'w'))
+	{
+		fputs($fic, "<?php\n");
+		foreach ($fichierLisezMoi as $ligne)
+		{
+			fputs($fic, 'echo T_("' . $ligne . '");' . "\n\n");
+		}
+		fputs($fic, "?>");
+		fclose($fic);
+	}
+}
+
 ?>

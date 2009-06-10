@@ -6,8 +6,8 @@
 ########################################################################
 
 // Complément de la balise title selon la langue
-$baliseTitleComplement['fr'] = "Site de...";
-$baliseTitleComplement['en'] = "Site of...";
+$baliseTitleComplement['fr'] = "Site Squeletml";
+$baliseTitleComplement['en'] = "Squeletml website";
 
 // Fichiers inclus par la balise `link` et la balise `script` pour le javascript
 /*
@@ -39,8 +39,8 @@ $charset = 'UTF-8';
 
 // Titre du site en en-tête
 /* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un h1 s'il s'agit de la page d'accueil, ou dans un p pour toutes les autres pages. */
-$titreSite['fr'] = "Titre du site";
-$titreSite['en'] = "Website title";
+$titreSite['fr'] = "Squeletml";
+$titreSite['en'] = "Squeletml";
 
 // Message pour IE6
 $messageIE6 = TRUE; // TRUE|FALSE

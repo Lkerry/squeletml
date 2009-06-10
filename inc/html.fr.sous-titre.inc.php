@@ -1,1 +1,1 @@
-<p>Sous-titre</p>
+<p>Mon site Squeletml</p>
