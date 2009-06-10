@@ -18,6 +18,7 @@ $fichiersLinkScript[] = array ("$urlRacine/page.php" => "css:$urlRacine/css/styl
 $fichiersLinkScript[] = array ("$urlRacine/page.php*" => "css:$urlRacine/css/style.css");
 */
 $fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/squeletml.css");
+$fichiersLinkScript[] = array ("$urlRacine*" => "javascript:$urlRacine/js/squeletml.js");
 
 // Version des fichiers précédemment déclarés
 /* La version sera ajoutée à la suite du nom des fichiers en tant que variable GET.

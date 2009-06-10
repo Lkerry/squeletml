@@ -17,6 +17,10 @@
 
 /* Général */
 
+pre {
+	overflow: auto;
+}
+
 #page {
 	background-color: #FAFAFA;
 }
@@ -61,6 +65,7 @@
 
 .editeur {
 	padding-bottom: 10px;
+	overflow-y: scroll;
 }
 
 #redimensionnable {

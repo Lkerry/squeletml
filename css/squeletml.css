@@ -49,6 +49,14 @@ div#titre p a, div#titre p a:visited {
 	padding-top: 0;
 }
 
+#menu a.actif {
+	font-weight: bold;
+}
+
+#menu li.actif {
+	list-style-type: circle;
+}
+
 .erreur, .succes {
 	border-width: 2px;
 	border-style: solid;

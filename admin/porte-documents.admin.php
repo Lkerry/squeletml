@@ -125,9 +125,17 @@ if (isset($_GET['action']))
 		?>
 		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
 		<?php
-		$fic = fopen($_GET['valeur'], 'r');
-		$contenuFichier = fread($fic, filesize($_GET['valeur']));
-		fclose($fic);
+		clearstatcache();
+		if (filesize($_GET['valeur']))
+		{
+			$fic = fopen($_GET['valeur'], 'r');
+			$contenuFichier = fread($fic, filesize($_GET['valeur']));
+			fclose($fic);
+		}
+		else
+		{
+			$contenuFichier = '';
+		}
 		
 		if (!$colorationSyntaxique)
 		{

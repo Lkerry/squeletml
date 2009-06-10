@@ -22,7 +22,12 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 <meta name="robots" content="<?php echo robots($robots); ?>" />
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 </head>
+
 <body class="<?php echo construitClass(estAccueil(ACCUEIL)); ?>">
+<div id="ancres">
+	<?php include fichierAncres($racine, $langue); ?>
+</div><!-- /ancres -->
+
 <div id="page">
 
 <?php
@@ -48,15 +53,12 @@ if ($messageIE6)
 	</div><!-- /sousTitre -->
 </div><!-- /entete -->
 
-<div id="ancres">
-	<?php include fichierAncres($racine, $langue); ?>
-</div><!-- /ancres -->
-
 <?php if (!$menuSousLeMenuLangues): ?>
 	<?php if (!$menuSousLeContenu): ?>
 		<div id="menu">
 			<?php include fichierMenu($racine, $langue); ?>
 		</div><!-- /menu -->
+		<script type="text/javascript">setPage();</script>
 	<?php endif; ?>
 <?php endif; ?>
 
@@ -71,6 +73,7 @@ if ($messageIE6)
 		<div id="menu">
 			<?php include fichierMenu($racine, $langue); ?>
 		</div><!-- /menu -->
+		<script type="text/javascript">setPage();</script>
 	<?php endif; ?>
 <?php endif; ?>
 
