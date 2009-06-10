@@ -46,6 +46,7 @@ bz2: menage-bz2 ChangeLog version.txt
 	cd ../
 	rm -f $(tag)/Makefile
 	rm -f $(tag)/scripts.cli.php
+	rm -rf $(tag)/src
 	tar -jcvf $(tag).tar.bz2 $(tag)
 	rm -rf $(tag)
 	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2

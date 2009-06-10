@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="68.82959"
+   height="70.095032"
+   id="svg3162"
+   sodipodi:version="0.32"
+   inkscape:version="0.46"
+   sodipodi:docname="puce.svg"
+   inkscape:output_extension="org.inkscape.output.svg.inkscape"
+   version="1.0">
+  <defs
+     id="defs3164">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective3170" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="2.6498137"
+     inkscape:cx="133.0714"
+     inkscape:cy="34.818004"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1266"
+     inkscape:window-height="891"
+     inkscape:window-x="6"
+     inkscape:window-y="52" />
+  <metadata
+     id="metadata3167">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Calque 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-103.00217,-435.7793)">
+    <a
+       id="a3201"
+       inkscape:export-xdpi="26.151546"
+       inkscape:export-ydpi="26.151546"
+       inkscape:export-filename="/home/jp/bureau/puce.png">
+      <path
+         style="fill:#008282;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:4.62586546;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
+         sodipodi:nodetypes="ccccccccccc"
+         id="path1188"
+         d="M 146.00139,476.91175 C 143.57544,491.9914 154.53124,500.02595 145.50991,503.33533 C 136.9804,505.84167 138.33886,486.79501 134.08076,481.42605 C 128.46918,482.77466 120.05196,499.52244 112.97468,493.34702 C 108.25815,485.12038 124.89883,481.69213 128.26335,472.89329 C 121.89882,468.25884 102.78038,471.82601 105.59616,461.21849 C 108.81843,453.25283 127.84673,465.45978 133.38799,460.0188 C 135.45757,451.53112 128.26653,440.13232 135.44077,438.6365 C 144.53071,433.7125 139.79002,463.85484 151.10844,462.50461 C 159.56779,463.0028 168.38848,456.99697 169.50899,464.50072 C 170.03911,474.62566 148.9787,470.56617 146.00139,476.91175 z" />
+    </a>
+  </g>
+</svg>
