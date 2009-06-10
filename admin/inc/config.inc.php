@@ -1,4 +1,18 @@
 <?php
+########################################################################
+##
+## Général
+##
+########################################################################
+
+// Langue par défaut de l'administration. Il y a deux possibilités:
+// - `$langue = 'navigateur';`, qui signifie que l'administration sera affichée 
+// dans la langue de l'internaute, si elle existe;
+// - `$langue[0] = 'fr';`, le code constituant le choix de langue pour 
+// l'administration (si elle existe).
+// Veuillez décommenter le choix voulu (un seul possible, pas les deux en même temps!): 
+$langue = 'navigateur';
+#$langue[0] = 'fr';
 
 ########################################################################
 ##

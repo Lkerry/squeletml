@@ -9,7 +9,5 @@ foreach (adminInit($racine) as $fichier)
 // Fin des insertions
 
 // Nécessaire à la traduction
-$langueNavigateur = langue('navigateur');
-$langue = $langueNavigateur;
-phpGettext('..', $langue);
+phpGettext('..', langue($langue));
 ?>

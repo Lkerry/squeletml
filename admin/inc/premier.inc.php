@@ -4,9 +4,14 @@
 <title><?php echo $baliseTitle . ' | ' . T_("Administration de Squeletml"); ?></title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 <meta name="robots" content="noindex, nofollow, noarchive" />
-<link rel="stylesheet" type="text/css" href="css/admin.css" media="screen" />
-<script type="text/javascript" src="js/squeletml.js"></script>
-<script type="text/javascript" src="js/wz_dragdrop.js"></script>
+<?php
+$fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/admin.css");
+$fichiersLinkScript[] = array ("$urlRacine/admin/galeries.admin.php" => "javascript:$urlRacine/admin/js/squeletml.js");
+$fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/js/wz_dragdrop.js");
+$fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/inc/CodeMirror/js/codemirror.js");
+
+echo construitLinkScript($fichiersLinkScript, '', TRUE);
+?>
 </head>
 <body>
 <div id="page">
@@ -18,10 +23,7 @@
 </div><!-- /entete -->
 
 <div id="ancres">
-	<ul>
-		<li><a href="#menu"><?php echo T_("Aller au menu"); ?></a></li>
-		<li><a href="#contenu"><?php echo T_("Aller au contenu"); ?></a></li>
-	</ul>
+	<?php include $racine . '/admin/inc/html.ancres.inc.php'; ?>
 </div><!-- /ancres -->
 
 <div id="contenu">

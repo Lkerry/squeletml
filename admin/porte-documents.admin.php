@@ -129,7 +129,7 @@ if (isset($_GET['action']))
 		$contenuFichier = fread($fic, filesize($_GET['valeur']));
 		fclose($fic);
 		?>
-		<div id="redimensionnable"><textarea name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea><img src="fichiers/redimensionner.png" alt="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" title="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" /></div>
+		<div id="redimensionnable"><textarea id="code" cols="80" rows="25" name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea><img src="fichiers/redimensionner.png" alt="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" title="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" width="41" height="20" /></div>
 		<input type="hidden" name="porteDocumentsModifierNom" value="<?php echo $_GET['valeur']; ?>" />
 		<input type="submit" value="<?php echo T_('Sauvegarder les modifications'); ?>" />
 		

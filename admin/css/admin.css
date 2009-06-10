@@ -59,13 +59,15 @@
 	color: black;
 }
 
-#redimensionnable {
-	width: 95%;
-	min-height: 300px;
+.editeur {
+	padding-bottom: 10px;
 }
 
-textarea {
+#redimensionnable {
 	width: 95%;
-	height: 95%;
+	height: 500px;
+	border: 1px solid black;
+	padding: 3px;
+	background-color: white;
 }
 

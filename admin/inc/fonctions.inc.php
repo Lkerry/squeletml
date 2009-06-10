@@ -151,4 +151,11 @@ function adminVersionLogiciel($racine)
 	return trim($version[1]);
 }
 
+/**
+Retourne le nom de la page en cours
+*/
+function adminNomPageEnCours($url)
+{
+	return basename($url);
+}
 ?>

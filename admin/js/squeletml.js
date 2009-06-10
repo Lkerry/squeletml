@@ -4,20 +4,23 @@ function selectionneTexte(sId)
 	if (window.getSelection)
 	{
 		var selection = window.getSelection();
+		/* Safari */
 		if (selection.setBaseAndExtent)
-		{ /* for Safari */
+		{
 			selection.setBaseAndExtent(myDiv, 0, myDiv, 1);
 		}
+		/* FF, Opera */
 		else
-		{ /* for FF, Opera */
+		{
 			var range = document.createRange();
 			range.selectNodeContents(myDiv);
 			selection.removeAllRanges();
 			selection.addRange(range);
 		}
 	}
+	/* IE */
 	else
-	{ /* for IE */
+	{
 		var range = document.body.createTextRange();
 		range.moveToElementText(myDiv);
 		range.select();
