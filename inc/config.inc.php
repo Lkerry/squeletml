@@ -40,8 +40,8 @@ $charset = 'UTF-8';
 
 // Titre du site en en-tête
 /* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un h1 s'il s'agit de la page d'accueil, ou dans un p pour toutes les autres pages. */
-$titreSite['fr'] = "Squeletml";
-$titreSite['en'] = "Squeletml";
+$titreSite['fr'] = "<img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" />";
+$titreSite['en'] = $titreSite['fr'];
 
 // Message pour IE6
 $messageIE6 = TRUE; // TRUE|FALSE
@@ -63,6 +63,14 @@ $menuLanguesSousLeContenu = TRUE; // TRUE|FALSE
 // Le cas échéant, l'ordre d'affichage des menus
 /* Si le menu ainsi que le menu des langues sont situés dans la même région (par exemple, tous les deux au-dessus du contenu ou tous les deux en-dessous), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
 $menuSousLeMenuLangues = TRUE; // TRUE|FALSE
+
+// Position de la colonne.
+/* Si `$colonneAgauche` vaut TRUE, une classe `colonneAgauche` est ajoutée au `body`, et la feuille de style par défaut place la colonne à gauche. Si la variable vaut FALSE, une classe `colonneAgaucheFalse` est ajoutée au `body` et la colonne se trouve par défaut à droite. À noter que cette option n'a aucune influence sur le flux HTML. La position de la colonne est gérée dans la feuille de style par défaut. */
+$colonneAgauche = TRUE; // TRUE|FALSE
+
+// Choix du DTD (Définition de Type de Document)
+/* Si `$xhtmlStrict` vaut TRUE, le doctype utilisé est XHTML 1.0 Strict, sinon c'est XHTML 1.0 Transitional. Si vous ne savez pas de quoi il s'agit, laissez TRUE. Le seul intérêt de choisir FALSE serait dans le cas où vous savez que vous devez utiliser des balises non valides en XHTML 1.0 Strict. */
+$xhtmlStrict = TRUE; // TRUE|FALSE
 
 ########################################################################
 ##
@@ -120,7 +128,7 @@ $galeriePaginationAuDessus = TRUE; // TRUE|FALSE
 $galeriePaginationAuDessous = FALSE; // TRUE|FALSE
 
 // Aperçu en minivignettes du contenu de la galerie sur les pages individuelles de chaque oeuvre
-$galerieMinivignettes = FALSE; //TRUE|FALSE
+$galerieMinivignettes = TRUE; //TRUE|FALSE
 
 // S'il y a des minivignettes, choix de l'emplacement de la div
 $galerieMinivignettesEmplacement = 'haut'; // haut|bas

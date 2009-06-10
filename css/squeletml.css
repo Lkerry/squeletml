@@ -3,7 +3,11 @@
 #page {
 	max-width: 900px;
 	margin: 5px auto;
-	padding: 5px;
+/*	padding: 5px;*/
+}
+
+body.colonneAgaucheFalse #page {
+	position: relative;
 }
 
 #ancres {
@@ -12,21 +16,37 @@
 }
 
 #contenu {
+	width: 80%;
+}
+
+body.colonneAgauche #contenu {
 	float: right;
-	width: 78%;
+/*	background: url('../fichiers/degrade.png') repeat-y left top;*/
+	padding-left: 20px;
+}
+
+body.colonneAgaucheFalse #contenu {
+/*	background: url('../fichiers/degrade.png') repeat-y right top;*/
+	padding-right: 20px;
 }
 
 #interieurContenu {
 	padding: 0px 10px 10px 10px;
 }
 
-#menu, #galerieGrandeTexteSousLeContenu {
-	width: 20%;
+#menu, #menuLangues, #galerieGrandeTexteSousLeContenu {
+	width: 18%;
+}
+
+body.colonneAgaucheFalse #sousContenu {
+	position: absolute;
+	top: 80px;
+	right: 0;
 }
 
 #basDePage {
-	clear: both;
 	text-align: center;
+	margin-top: 50px;
 }
 
 /* Général */
@@ -39,9 +59,25 @@ div#titre h1, div#titre p {
 	line-height: 1.2em;
 }
 
-div#titre p a, div#titre p a:visited {
+div#titre p a, div#titre p a:hover, div#titre p a:visited {
 	color: black;
 	text-decoration: none;
+	border-bottom: none;
+}
+
+div#titre p a img {
+	border: none;
+}
+
+div#sousTitre {
+	position: relative;
+	margin: -34px 0px 25px 84px;
+}
+
+div#sousTitre p {
+	margin: 0px;
+	padding: 0px;
+	font-style: italic;
 }
 
 #contenu h1, body.accueil #interieurContenu> h2:first-child {
@@ -55,6 +91,20 @@ div#titre p a, div#titre p a:visited {
 
 #menu li.actif {
 	list-style-type: circle;
+	list-style-image: url('../fichiers/puce.png');
+}
+
+h1, h2, h3, h4, h5, h6, a {
+	color: #008282;
+}
+
+a:visited {
+	color: #551A8B;
+}
+
+a:hover {
+	text-decoration: none;
+	border-bottom: 1px dotted black;
 }
 
 .erreur, .succes {
@@ -146,6 +196,8 @@ div.galeriePagination {
 div#galerieMinivignettes img {
 	float: left;
 	height: 35px;
+	border: 1px solid gray;
+	margin: 2px;
 }
 
 div#galerieAccompagnementVignettePrecedent img {

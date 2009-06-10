@@ -114,7 +114,7 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 ### Divisions HTML
 
-Voici un modèle simplifié d'une page de Squeletml:
+Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 
 	Doctype XHTML 1.0 Strict
 	<html ...><!-- La langue déclarée est celle de la page en cours -->
@@ -146,21 +146,27 @@ Voici un modèle simplifié d'une page de Squeletml:
 				<div id="ancres">
 					...
 				</div><!-- /ancres -->
-
+				
+				<div id="surContenu">
+					...
+				</div><!-- /surContenu -->
+				
 				<div id="contenu">
 					<div id="interieurContenu">
 						...
 					</div><!-- /interieurContenu -->
 				</div><!-- /contenu -->
+				
+				<div id="sousContenu">
+					<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+						...
+					</div><!-- /menuLangues -->
 
-				<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
-					...
-				</div><!-- /menuLangues -->
-
-				<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
-					...
-				</div><!-- /menu -->
-
+					<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+						...
+					</div><!-- /menu -->
+				</div><!-- /sousContenu -->
+				
 				<div id="basDePage">
 					...
 				</div><!-- /basDePage -->
@@ -168,7 +174,7 @@ Voici un modèle simplifié d'une page de Squeletml:
 		</body>
 	</html>
 
-D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`.
+D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`. Certaines `div` peuvent aussi être positionnées ailleurs selon la configuration, par exemple le menu.
 
 ## Mise à jour de Squeletml
 

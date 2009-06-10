@@ -14,6 +14,7 @@
 	</div><!-- /interieurContenu -->
 </div><!-- /contenu -->
 
+<div id="sousContenu">
 <?php if (!$menuSousLeMenuLangues): ?>
 	<?php if ($menuSousLeContenu): ?>
 		<div id="menu">
@@ -41,8 +42,10 @@
 <?php if (!empty($tableauCorpsGalerie['texteGrande'])): ?>
 	<?php echo $tableauCorpsGalerie['texteGrande']; ?>
 <?php endif; ?>
+</div><!-- /sousContenu -->
 
 <?php if ($basDePage): ?>
+	<div class="sep"></div>
 	<div id="basDePage">
 		<?php include fichierBasDePage($racine, $langue); ?>
 	</div><!-- /basDePage -->

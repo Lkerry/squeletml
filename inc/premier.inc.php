@@ -12,7 +12,8 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 }
 // Fin des insertions
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<?php echo doctype($xhtmlStrict); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo langue($langue); ?>" lang="<?php echo langue($langue); ?>">
 <head>
 <title><?php echo $baliseTitle .= ' | ' . baliseTitleComplement($baliseTitleComplement, $langue); ?></title>
@@ -23,7 +24,7 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 </head>
 
-<body class="<?php echo construitClass(estAccueil(ACCUEIL)); ?>">
+<body class="<?php echo construitClass(estAccueil(ACCUEIL), $colonneAgauche); ?>">
 <div id="ancres">
 	<?php include fichierAncres($racine, $langue); ?>
 </div><!-- /ancres -->
@@ -53,6 +54,7 @@ if ($messageIE6)
 	</div><!-- /sousTitre -->
 </div><!-- /entete -->
 
+<div id="surContenu">
 <?php if (!$menuSousLeMenuLangues): ?>
 	<?php if (!$menuSousLeContenu): ?>
 		<div id="menu">
@@ -76,6 +78,7 @@ if ($messageIE6)
 		<script type="text/javascript">setPage();</script>
 	<?php endif; ?>
 <?php endif; ?>
+</div><!-- /surContenu -->
 
 <div id="contenu">
 	<div id="interieurContenu">

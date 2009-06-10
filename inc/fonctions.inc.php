@@ -38,6 +38,21 @@ function init($racine, $langue, $idGalerie)
 }
 
 /**
+Retourne le bon DTD (Définition de Type de Document).
+*/
+function doctype($xhtmlStrict)
+{
+	if ($xhtmlStrict)
+	{
+		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">';
+	}
+	else
+	{
+		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
+	}
+}
+
+/**
 Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
 function mdtxt($fichier)
@@ -311,13 +326,22 @@ function lettreAuHasard($lettresExclues = '')
 /**
 Renvoie une liste de classes.
 */
-function construitClass($estAccueil)
+function construitClass($estAccueil, $colonneAgauche)
 {
 	$class = '';
 	
 	if ($estAccueil)
 	{
 		$class .= 'accueil ';
+	}
+	
+	if ($colonneAgauche)
+	{
+		$class .= 'colonneAgauche ';
+	}
+	else
+	{
+		$class .= 'colonneAgaucheFalse ';
 	}
 	
 	return trim($class);
