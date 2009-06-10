@@ -63,4 +63,7 @@ $action = $_SERVER['PHP_SELF'];
 /* Si la variable $action contient déjà une variable GET, mettre & sinon mettre ? */
 $symboleUrl = '?';
 
+// Coloration syntaxique en direct durant la saisie dans le textarea. La coloration s'applique au PHP, HTML, CSS et Javascript (séparément ou entremêlés dans le même fichier).
+$colorationSyntaxique = TRUE; // TRUE|FALSE
+
 ?>

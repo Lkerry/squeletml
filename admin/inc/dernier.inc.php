@@ -10,6 +10,7 @@ SET_DHTML("redimensionnable"+RESIZABLE);
 //-->
 </script>
 
+<?php if ($colorationSyntaxique): ?>
 <script type="text/javascript">
 var editor = CodeMirror.fromTextArea('code', {
 	parserfile: ["parsexml.js", "parsecss.js", "tokenizejavascript.js", "parsejavascript.js", "../contrib/php/js/tokenizephp.js", "../contrib/php/js/parsephp.js", "../contrib/php/js/parsephphtmlmixed.js"],
@@ -19,10 +20,12 @@ var editor = CodeMirror.fromTextArea('code', {
 	disableSpellcheck: false,
 	indentUnit: 4,
 	tabMode: "shift",
-	height: "468px",
+	height: "93%",
 	iframeClass: "editeur",
 });
 </script>
+<?php endif; ?>
+
 <?php endif; ?>
 
 </body>

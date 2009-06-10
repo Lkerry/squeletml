@@ -43,8 +43,8 @@ Voici une liste non exhaustive de fonctionnalités ou de caractéristiques de Sq
 
 - Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox.
 
-- Section d'administration offrant quelques fonctionnalités utiles sans passer par le ftp:
-  - fichiers: parcours des dossiers du site, renommage, suppression, création, modification, téléversement, téléchargement...;
+- Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
+  - fichiers: parcours des dossiers du site, renommage, suppression, création, modification (avec coloration syntaxique du code en direct durant la saisie), téléversement, téléchargement...;
   - droits accès: ajout d'utilisateurs ayant le droit d'accéder à l'administration;
   - galeries: gestion des galeries, comme la création de fichiers de configuration pour chaque galerie, le listage de tous les fichiers de configuration existants, la génération automatique d'images de taille intermédiaire à partir des images originales, etc.
   - documentation: consultation de l'aide en ligne.
@@ -100,3 +100,6 @@ Permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP�
 
 Sous licence LGPLv2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>
 
+### CodeMirror
+
+Sous licence BSD. Voir <http://marijn.haverbeke.nl/codemirror/>
