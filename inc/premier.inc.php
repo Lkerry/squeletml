@@ -23,8 +23,7 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 <meta name="robots" content="<?php echo robots($robots); ?>" />
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 </head>
-
-<body class="<?php echo construitClass(estAccueil(ACCUEIL), $colonneAgauche); ?>">
+<body class="<?php echo construitClass(estAccueil(ACCUEIL), $colonneAgauche, $idGalerie); ?>">
 <div id="ancres">
 	<?php include fichierAncres($racine, $langue); ?>
 </div><!-- /ancres -->

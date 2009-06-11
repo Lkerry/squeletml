@@ -1,12 +1,14 @@
-/* Structuration */
+/* Général */
 
 #page {
 	max-width: 900px;
 	margin: 5px auto;
-/*	padding: 5px;*/
+	border-left: 1px solid #f2f2f2;
+	border-right: 1px solid #f2f2f2;
+	padding: 0 5px 5px 5px;
 }
 
-body.colonneAgaucheFalse #page {
+#page {
 	position: relative;
 }
 
@@ -15,44 +17,7 @@ body.colonneAgaucheFalse #page {
 	left: -5000px;
 }
 
-#contenu {
-	width: 80%;
-}
-
-body.colonneAgauche #contenu {
-	float: right;
-/*	background: url('../fichiers/degrade.png') repeat-y left top;*/
-	padding-left: 20px;
-}
-
-body.colonneAgaucheFalse #contenu {
-/*	background: url('../fichiers/degrade.png') repeat-y right top;*/
-	padding-right: 20px;
-}
-
-#interieurContenu {
-	padding: 0px 10px 10px 10px;
-}
-
-#menu, #menuLangues, #galerieGrandeTexteSousLeContenu {
-	width: 18%;
-}
-
-body.colonneAgaucheFalse #sousContenu {
-	position: absolute;
-	top: 80px;
-	right: 0;
-}
-
-#basDePage {
-	text-align: center;
-	margin-top: 50px;
-}
-
-/* Général */
-
 div#titre h1, div#titre p {
-	margin: 0px;
 	padding: 0px;
 	font-weight: bold;
 	font-size: 1.2em;
@@ -69,15 +34,18 @@ div#titre p a img {
 	border: none;
 }
 
-div#sousTitre {
-	position: relative;
-	margin: -34px 0px 25px 84px;
-}
-
 div#sousTitre p {
 	margin: 0px;
 	padding: 0px;
 	font-style: italic;
+}
+
+#surContenu, #sousContenu {
+	width: 204px;
+}
+
+#interieurContenu {
+	padding: 0px 5px 5px 5px;
 }
 
 #contenu h1, body.accueil #interieurContenu> h2:first-child {
@@ -94,17 +62,22 @@ div#sousTitre p {
 	list-style-image: url('../fichiers/puce.png');
 }
 
+#basDePage {
+	text-align: center;
+	margin: 25px 0 0 0;
+}
+
 h1, h2, h3, h4, h5, h6, a {
-	color: #008282;
+	color: #007070;
 }
 
 a:visited {
-	color: #551A8B;
+	color: #4C177D;
 }
 
 a:hover {
 	text-decoration: none;
-	border-bottom: 1px dotted black;
+	border-bottom: 1px dotted #f2f2f2;
 }
 
 .erreur, .succes {
@@ -127,6 +100,57 @@ a:hover {
 	clear: both;
 }
 
+/* body.colonneAgauche */
+
+body.colonneAgauche #page {
+	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+}
+
+body.colonneAgauche div#titre h1, body.colonneAgauche div#titre p {
+	margin: 0px 0px 0px 209px;
+}
+
+body.colonneAgauche div#sousTitre {
+	position: relative;
+	margin: -34px 0px 25px 293px;
+}
+
+body.colonneAgauche #contenu {
+	margin-left: 204px;
+}
+
+body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
+	position: absolute;
+	top: 80px;
+	left: 0;
+}
+
+/* body.colonneAgaucheFalse */
+
+body.colonneAgaucheFalse #page {
+	background: url('../fichiers/rayures-204px.png') repeat-y right top;
+}
+
+body.colonneAgaucheFalse div#titre h1, body.colonneAgaucheFalse div#titre p {
+	margin: 0;
+}
+
+body.colonneAgaucheFalse div#sousTitre {
+	position: relative;
+	margin: -34px 0px 25px 84px;
+}
+
+body.colonneAgaucheFalse #contenu {
+	margin-right: 204px;
+	text-align: justify;
+}
+
+body.colonneAgaucheFalse #surContenu, body.colonneAgaucheFalse #sousContenu {
+	position: absolute;
+	top: 80px;
+	right: 0;
+}
+
 /* Module contact */
 
 #formContact label {
@@ -143,15 +167,24 @@ a:hover {
 
 /* Module galerie */
 
+body.galerie #page {
+	max-width: 1000px;
+}
+
 #galerieGrandeTexte ul {
 	margin-left: 25px;
 }
 
 #galerieGrandeTexteSousLeContenu {
-	border: 1px dotted gray;
-	padding: 3px;
+	border-left: 3px solid #007070;
+	padding: 0 3px 3px 3px;
 	margin-top: 25px;
 	text-align: left;
+}
+
+#galerieGrandeTexteSousLeContenu h2 {
+	margin-top: 0px;
+	font-size: 1.1em;
 }
 
 #galerieGrandeTexteSousLeContenu ul {
@@ -160,6 +193,10 @@ a:hover {
 	margin-left: 0px;
 	padding-top: 0px;
 	padding-left: 0px;
+}
+
+#galerieLienOrig {
+	margin-top: 25px;
 }
 
 div.galerieNavigationPrecedent {
@@ -196,8 +233,8 @@ div.galeriePagination {
 div#galerieMinivignettes img {
 	float: left;
 	height: 35px;
-	border: 1px solid gray;
-	margin: 2px;
+	border: 1px solid #f2f2f2;
+	margin: 2px 2px 20px 2px;
 }
 
 div#galerieAccompagnementVignettePrecedent img {
@@ -212,6 +249,11 @@ div#galerieAccompagnementVignetteSuivant img {
 
 div#galerieGrandeExif {
 	text-align: left;
+	margin-top: 25px;
+}
+
+div#galerieGrandeExif li {
+	margin-top: 10px;
 }
 
 div.galerieNavigationAccueil img {

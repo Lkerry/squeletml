@@ -14,7 +14,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
 
 - Sans base de données.
 
-- Structure valide XHTML 1.0 Strict.
+- Structure valide XHTML 1.0 Strict (si nécessaire, une option permet de passer au XHTML 1.0 Transitional).
 
 - Possibilité d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/) pour le texte des pages.
 
@@ -34,6 +34,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
     - avec des vignettes et des miniflèches (donc deux fichiers par lien «précédent» et deux fichiers par lien «suivant»), ou
     - un aperçu de toutes les images de la galerie grâce à des minivignettes.
   - Information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique de ces informations, évitant ainsi le contenu dupliqué d'une manière ou d'une autre.
+  - Possibilité d'utiliser la syntaxe Markdown pour les légendes.
   - Affichage possible d'informations Exif des images au format JPG.
   - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
   - Possibilité de générer automatiquement les vignettes ou d'utiliser des vignettes personnalisées.

@@ -326,7 +326,7 @@ function lettreAuHasard($lettresExclues = '')
 /**
 Renvoie une liste de classes.
 */
-function construitClass($estAccueil, $colonneAgauche)
+function construitClass($estAccueil, $colonneAgauche, $idGalerie)
 {
 	$class = '';
 	
@@ -342,6 +342,11 @@ function construitClass($estAccueil, $colonneAgauche)
 	else
 	{
 		$class .= 'colonneAgaucheFalse ';
+	}
+	
+	if ($idGalerie)
+	{
+		$class .= 'galerie ';
 	}
 	
 	return trim($class);
@@ -712,7 +717,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 		if ($galerieLegendeEmplacement == 'sousLeContenu')
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieGrandeTexte">.+<\/div><!-- \/galerieGrandeTexte -->/', '', $corpsGalerie);
-			$tableauCorpsGalerie['texteGrande'] = '<div id="galerieGrandeTexteSousLeContenu">' . $res[1] . '</div><!-- /galerieGrandeTexteSousLeContenu -->';
+			$tableauCorpsGalerie['texteGrande'] = '<div id="galerieGrandeTexteSousLeContenu"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieGrandeTexteSousLeContenu -->';
 		}
 		else
 		{
@@ -740,7 +745,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown)
 {
 	$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 	
@@ -789,6 +794,10 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		
 		if (!empty($galerie[$indice]['grandeLegende']))
 		{
+			if ($galerieLegendeMarkdown)
+			{
+				$galerie[$indice]['grandeLegende'] = trim(Markdown($galerie[$indice]['grandeLegende']));
+			}
 			$legende = '<div id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</div>';
 		}
 		elseif ($galerieLegendeAutomatique)
@@ -868,6 +877,10 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 							
 							case 'DateTime':
 								$exifTrad = T_("Date et heure");
+								if (preg_match('/^\d{4}:\d{2}:\d{2} /', $tableauExif[$cle]))
+								{
+									$tableauExif[$cle] = preg_replace('/(\d{4}):(\d{2}):(\d{2}) /', '$1-$2-$3 ', $tableauExif[$cle]);
+								}
 								break;
 							
 							case 'ExposureTime':
@@ -894,7 +907,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 								$exifTrad = $cle;
 								break;
 						}
-						$exif .= "<li>$exifTrad: " . $tableauExif[$cle] . "</li>";
+						$exif .= "<li><em>$exifTrad:</em> " . $tableauExif[$cle] . "</li>";
 					}
 				}
 			}

@@ -145,6 +145,10 @@ $galerieInfoEmplacement = 'haut'; // haut|bas
 // Ajout automatique d'une légende (contenu de l'attribut `alt` + taille du fichier) dans le cas où aucune légende n'a été précisée
 $galerieLegendeAutomatique = FALSE; // TRUE|FALSE
 
+// Utilisation de la syntaxe Markdown dans la légende
+/* Active la syntaxe Markdown pour le texte de la légende (contenu du champ `grandeLegende`) */
+$galerieLegendeMarkdown = FALSE; // TRUE|FALSE
+
 // Affichage d'informations Exif pour les fichiers JPG
 /* La version de PHP utilisée doit être compilée avec l'option `--enable-exif`. Voir http://us3.php.net/manual/fr/exif.requirements.php pour plus de détails. Si ce n'est pas le cas, les informations Exif ne seront tout simplement pas affichées. */
 $ajoutExif = TRUE; // TRUE|FALSE
@@ -162,7 +166,7 @@ $infosExif = array (
 
 // Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
 /* Les emplacements `haut` et `bas` font référence à l'image en version grande, alors que `sousLeContenu` fait référence à la page. Par exemple, l'option `sousLeContenu` place avec la configuration par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
-$galerieLegendeEmplacement = 'bas'; // haut|bas|sousLeContenu
+$galerieLegendeEmplacement = 'sousLeContenu'; // haut|bas|sousLeContenu
 
 // Qualité des images JPG générées
 $qualiteJpg = 90; // 0-100
