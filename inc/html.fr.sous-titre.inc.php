@@ -1,1 +1,1 @@
-<p>Mon site Squeletml</p>
+<p>Squelette XHTML musclé par PHP!</p>

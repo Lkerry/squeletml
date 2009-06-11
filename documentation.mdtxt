@@ -50,7 +50,7 @@ et ajoutez un utilisateur.
 
 ### Le fichier `inc/config.inc.php`
 
-Ce fichier contient beaucoup de paramètres au sujet du site. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml. Vous serez ensuite en mesure de modifier des paramètres de votre site.
+Ce fichier contient beaucoup de paramètres au sujet du site. Les variables modifiables sont en général documentées directement dans le fichier de configuration. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml. Vous serez ensuite en mesure de modifier des paramètres de votre site.
 
 ## Structure de Squeletml
 
