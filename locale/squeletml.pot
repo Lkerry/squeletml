@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-08 02:15-0400\n"
+"POT-Creation-Date: 2009-06-11 12:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -128,7 +128,7 @@ msgstr ""
 msgid "Mot de passe"
 msgstr ""
 
-#: admin/droits.admin.php:283 admin/porte-documents.admin.php:440
+#: admin/droits.admin.php:283 admin/porte-documents.admin.php:457
 msgid "Ajouter"
 msgstr ""
 
@@ -137,8 +137,8 @@ msgid "Modifier"
 msgstr ""
 
 #: admin/droits.admin.php:283 admin/inc/fonctions.inc.php:120
-#: admin/porte-documents.admin.php:408 admin/porte-documents.admin.php:417
-#: admin/porte-documents.admin.php:421
+#: admin/porte-documents.admin.php:425 admin/porte-documents.admin.php:434
+#: admin/porte-documents.admin.php:438
 msgid "Supprimer"
 msgstr ""
 
@@ -365,21 +365,21 @@ msgstr ""
 msgid "Lister les fichiers de configuration"
 msgstr ""
 
+#: admin/inc/html.ancres.inc.php:2
+msgid "Aller au menu"
+msgstr ""
+
+#: admin/inc/html.ancres.inc.php:3
+msgid "Aller au contenu"
+msgstr ""
+
 #: admin/inc/fonctions.inc.php:119 admin/porte-documents.admin.php:115
-#: admin/porte-documents.admin.php:408
+#: admin/porte-documents.admin.php:425
 msgid "Renommer"
 msgstr ""
 
 #: admin/inc/premier.inc.php:4
 msgid "Administration de Squeletml"
-msgstr ""
-
-#: admin/inc/premier.inc.php:22
-msgid "Aller au menu"
-msgstr ""
-
-#: admin/inc/premier.inc.php:23
-msgid "Aller au contenu"
 msgstr ""
 
 #: admin/porte-documents.admin.php:21
@@ -478,135 +478,135 @@ msgid ""
 "ensuite cliquer sur «Sauvegarder les modifications»."
 msgstr ""
 
-#: admin/porte-documents.admin.php:132
+#: admin/porte-documents.admin.php:149
 msgid ""
 "Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le "
 "champ de saisie"
 msgstr ""
 
-#: admin/porte-documents.admin.php:134
+#: admin/porte-documents.admin.php:151
 msgid "Sauvegarder les modifications"
 msgstr ""
 
-#: admin/porte-documents.admin.php:138
+#: admin/porte-documents.admin.php:155
 msgid "Annuler"
 msgstr ""
 
-#: admin/porte-documents.admin.php:149
+#: admin/porte-documents.admin.php:166
 #, php-format
 msgid "Aucune modification apportée au fichier %1$s."
 msgstr ""
 
-#: admin/porte-documents.admin.php:154
+#: admin/porte-documents.admin.php:171
 msgid ""
 "Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les "
 "consulter ci-dessous, et en enregistrer une copie sur votre ordinateur."
 msgstr ""
 
-#: admin/porte-documents.admin.php:165
+#: admin/porte-documents.admin.php:182
 #, php-format
 msgid ""
 "Le fichier <span class=\"porteDocumentsNom\">%1$s</span> n'a pas pu être "
 "ouvert."
 msgstr ""
 
-#: admin/porte-documents.admin.php:170
+#: admin/porte-documents.admin.php:187
 #, php-format
 msgid ""
 "Impossible d'écrire dans le fichier <span class=\"porteDocumentsNom\">%1$s</"
 "span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:173
+#: admin/porte-documents.admin.php:190
 #, php-format
 msgid ""
 "Modification du fichier <span class=\"porteDocumentsNom\">%1$s</span> "
 "effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:179
+#: admin/porte-documents.admin.php:196
 #, php-format
 msgid ""
 "Le fichier <span class=\"porteDocumentsNom\">%1$s</span> n'est pas "
 "accessible en écriture."
 msgstr ""
 
-#: admin/porte-documents.admin.php:205
+#: admin/porte-documents.admin.php:222
 #, php-format
 msgid ""
 "Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
 "class=\"porteDocumentsNom\">%2$s</span> effectués."
 msgstr ""
 
-#: admin/porte-documents.admin.php:210
+#: admin/porte-documents.admin.php:227
 #, php-format
 msgid ""
 "Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
 "class=\"porteDocumentsNom\">%2$s</span> impossibles."
 msgstr ""
 
-#: admin/porte-documents.admin.php:217
+#: admin/porte-documents.admin.php:234
 #, php-format
 msgid ""
 "Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
 "\"porteDocumentsNom\">%2$s</span> effectué."
 msgstr ""
 
-#: admin/porte-documents.admin.php:222
+#: admin/porte-documents.admin.php:239
 #, php-format
 msgid ""
 "Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
 "\"porteDocumentsNom\">%2$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:229
+#: admin/porte-documents.admin.php:246
 #, php-format
 msgid ""
 "<span class=\"porteDocumentsNom\">%1$s</span> n'existe pas. Renommage en "
 "<span class=\"porteDocumentsNom\">%2$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:254
+#: admin/porte-documents.admin.php:271
 #, php-format
 msgid ""
 "Création du fichier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:259
+#: admin/porte-documents.admin.php:276
 #, php-format
 msgid ""
 "Impossible de créer le fichier <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:267
+#: admin/porte-documents.admin.php:284
 #, php-format
 msgid ""
 "Création du dossier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:272
+#: admin/porte-documents.admin.php:289
 #, php-format
 msgid ""
 "Impossible de créer le dossier <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:279
+#: admin/porte-documents.admin.php:296
 #, php-format
 msgid "<span class=\"porteDocumentsNom\">%1$s</span> existe déjà."
 msgstr ""
 
-#: admin/porte-documents.admin.php:298
+#: admin/porte-documents.admin.php:315
 msgid ""
 "Veuillez sélectionner un bon format de fichier ou demandez à ce que "
 "l'extension de votre fichier soit ajoutée dans la liste."
 msgstr ""
 
-#: admin/porte-documents.admin.php:304
+#: admin/porte-documents.admin.php:321
 #, php-format
 msgid "Votre fichier doit faire moins de %1$s octets (%2$s Mio)."
 msgstr ""
 
-#: admin/porte-documents.admin.php:311
+#: admin/porte-documents.admin.php:328
 #, php-format
 msgid ""
 "Le nom de votre fichier risque de mal s'afficher dans une adresse html. "
@@ -615,96 +615,96 @@ msgid ""
 "soulignement _)."
 msgstr ""
 
-#: admin/porte-documents.admin.php:317
+#: admin/porte-documents.admin.php:334
 msgid "Un fichier existe déjà avec ce nom dans le dossier sélectionné."
 msgstr ""
 
-#: admin/porte-documents.admin.php:334
+#: admin/porte-documents.admin.php:351
 #, php-format
 msgid "Transfert de <span class=\"porteDocumentsNom\">%1$s</span> complété."
 msgstr ""
 
-#: admin/porte-documents.admin.php:339 admin/porte-documents.admin.php:346
+#: admin/porte-documents.admin.php:356 admin/porte-documents.admin.php:363
 #, php-format
 msgid "Erreur de transfert de <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:353
+#: admin/porte-documents.admin.php:370
 msgid "Liste des fichiers et dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:356
+#: admin/porte-documents.admin.php:373
 msgid "Affichage détaillé"
 msgstr ""
 
-#: admin/porte-documents.admin.php:366
+#: admin/porte-documents.admin.php:383
 #, php-format
 msgid "Impossible d'avoir accès au dossier %1$s"
 msgstr ""
 
-#: admin/porte-documents.admin.php:377 admin/porte-documents.admin.php:458
+#: admin/porte-documents.admin.php:394 admin/porte-documents.admin.php:475
 msgid "Dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:400
+#: admin/porte-documents.admin.php:417
 msgid "Affichage général des dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:408
+#: admin/porte-documents.admin.php:425
 msgid "Parcourir"
 msgstr ""
 
-#: admin/porte-documents.admin.php:419
+#: admin/porte-documents.admin.php:436
 msgid ""
 "Pour supprimer des fichiers, cocher la case correspondante et cliquer "
 "ensuite sur le bouton ci-dessous."
 msgstr ""
 
-#: admin/porte-documents.admin.php:426
+#: admin/porte-documents.admin.php:443
 msgid "Ajouter un fichier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:429
+#: admin/porte-documents.admin.php:446
 msgid "Fichier:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:430
+#: admin/porte-documents.admin.php:447
 msgid "Dossier:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:445
+#: admin/porte-documents.admin.php:462
 msgid "Créer un fichier ou un dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:447
+#: admin/porte-documents.admin.php:464
 msgid ""
 "Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans "
 "le nom. Exemples:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:456
+#: admin/porte-documents.admin.php:473
 msgid "Nom:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:457
+#: admin/porte-documents.admin.php:474
 msgid "Type:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:459
+#: admin/porte-documents.admin.php:476
 msgid "Fichier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:461
+#: admin/porte-documents.admin.php:478
 msgid "Créer"
 msgstr ""
 
-#: inc/fonctions.inc.php:341
+#: inc/fonctions.inc.php:398
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
 
-#: inc/fonctions.inc.php:343
+#: inc/fonctions.inc.php:400
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -713,58 +713,62 @@ msgid ""
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
 
-#: inc/fonctions.inc.php:345
+#: inc/fonctions.inc.php:402
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:757
+#: inc/fonctions.inc.php:748
+msgid "Légende de l'oeuvre"
+msgstr ""
+
+#: inc/fonctions.inc.php:820
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:770
+#: inc/fonctions.inc.php:837
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:799
+#: inc/fonctions.inc.php:866
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:804
+#: inc/fonctions.inc.php:871
 #, php-format
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:836
+#: inc/fonctions.inc.php:903
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:840
+#: inc/fonctions.inc.php:907
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:844
+#: inc/fonctions.inc.php:915
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:848
+#: inc/fonctions.inc.php:919
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:852
+#: inc/fonctions.inc.php:923
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:856
+#: inc/fonctions.inc.php:927
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:860
+#: inc/fonctions.inc.php:931
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1035
+#: inc/fonctions.inc.php:1106
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
@@ -882,6 +886,57 @@ msgid_plural " (sur %1$s pages)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:437
+#: inc/galerie.inc.php:440
 msgid "Voir l'accueil de la galerie."
+msgstr ""
+
+#: inc/message-accueil.inc.php:2
+msgid "<h2>Bienvenue sur votre site Squeletml</h2>"
+msgstr ""
+
+#: inc/message-accueil.inc.php:4
+msgid ""
+"<p>Le logiciel libre Squeletml est un squelette de site XHTML 1.0 Strict "
+"géré par inclusion de fichiers PHP et sans base de données, c'est-à-dire un "
+"site dont le corps de chaque page se trouve dans un fichier unique et dont "
+"les principaux éléments de structuration comme l'en-tête, le bas de page, "
+"etc. sont partagés entre toutes les pages. Il a pour but de réduire l'effort "
+"nécessaire pour la création et la maintenance de ce genre de site.</p>"
+msgstr ""
+
+#: inc/message-accueil.inc.php:6
+msgid ""
+"<p>En effet, seulement deux fichiers doivent être inclus dans chaque page "
+"(un au début et un à la fin de chaque page), et ces derniers fournissent une "
+"structure de site optimisée pour le référencement et traduite dans la langue "
+"de la page (si la langue est disponible): chaque page peut avoir facilement "
+"sa propre balise <code>title</code>, ses propres métabalises, son titre de "
+"premier niveau (<code>h1</code>), sa propre langue, etc. L'en-tête "
+"personnalisée permet d'éviter le contenu dupliqué dans les moteurs de "
+"recherche, d'avoir un site optimisé pour le référencement et d'offrir des "
+"repères aux internautes.</p>"
+msgstr ""
+
+#: inc/message-accueil.inc.php:8
+msgid ""
+"<p>Aussi, un fichier de configuration permet de choisir par simple "
+"renseignement de variables le nombre et l'emplacement des colonnes, "
+"l'emplacement des menus dans le flux HTML, la présence ou non de certaines "
+"structures comme le bas de page, etc.</p>"
+msgstr ""
+
+#: inc/message-accueil.inc.php:10
+msgid ""
+"<p>Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des "
+"formulaires de contact, des galeries photo, une interface d'administration "
+"reproduisant sensiblement les principales actions normalement effectuées par "
+"ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP "
+"Gettext pour l'affichage de l'interface.</p>"
+msgstr ""
+
+#: inc/message-accueil.inc.php:12
+msgid ""
+"<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à "
+"personnaliser votre installation, <a href='admin/documentation.admin.php'>en "
+"visitant la documentation</a>.</p>"
 msgstr ""

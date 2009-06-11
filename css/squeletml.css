@@ -64,7 +64,6 @@ div#sousTitre p {
 
 #basDePage {
 	text-align: center;
-	margin: 25px 0 0 0;
 }
 
 h1, h2, h3, h4, h5, h6, a {
@@ -125,6 +124,10 @@ body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	left: 0;
 }
 
+body.colonneAgauche #basDePage {
+	margin: 25px 0 0 204px;
+}
+
 /* body.colonneAgaucheFalse */
 
 body.colonneAgaucheFalse #page {
@@ -149,6 +152,59 @@ body.colonneAgaucheFalse #surContenu, body.colonneAgaucheFalse #sousContenu {
 	position: absolute;
 	top: 80px;
 	right: 0;
+}
+
+body.colonneAgaucheFalse #basDePage {
+	margin: 25px 204px 0 0px;
+}
+
+/* body.deuxColonnesGauche */
+
+body.deuxColonnesGauche #page {
+	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+	padding-right: 0;
+}
+
+body.deuxColonnesGauche #interieurPage {
+	background: url('../fichiers/rayures-204px.png') repeat-y right top;
+}
+
+body.deuxColonnesGauche #contenu {
+	margin-right: 204px;
+	text-align: justify;
+}
+
+body.deuxColonnesGauche #basDePage {
+	margin: 25px 204px 0 204px;
+}
+
+/* body.deuxColonnesGaucheFalse */
+
+body.deuxColonnesGaucheFalse #page {
+	padding-left: 0;
+}
+
+body.deuxColonnesGaucheFalse #interieurPage {
+	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+}
+
+body.deuxColonnesGaucheFalse div#titre h1, body.deuxColonnesGaucheFalse div#titre p {
+	margin: 0px 0px 0px 209px;
+}
+
+body.deuxColonnesGaucheFalse div#sousTitre {
+	position: relative;
+	margin: -34px 0px 25px 293px;
+}
+
+body.deuxColonnesGaucheFalse #contenu {
+	margin-left: 204px;
+	margin-right: 204px;
+	text-align: justify;
+}
+
+body.deuxColonnesGaucheFalse #basDePage {
+	margin: 25px 204px 0 204px;
 }
 
 /* Module contact */
@@ -176,9 +232,12 @@ body.galerie #page {
 }
 
 #galerieGrandeTexteSousLeContenu {
+	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+	border-top: 1px solid #f2f2f2;
+	border-bottom: 1px solid #f2f2f2;
+	
 	border-left: 3px solid #007070;
-	padding: 0 3px 3px 3px;
-	margin-top: 25px;
+	padding: 0 3px;
 	text-align: left;
 }
 
@@ -188,11 +247,11 @@ body.galerie #page {
 }
 
 #galerieGrandeTexteSousLeContenu ul {
-	list-style-type: none;
+	list-style-type: circle;
 	margin-top: 0px;
 	margin-left: 0px;
 	padding-top: 0px;
-	padding-left: 0px;
+	padding-left: 15px;
 }
 
 #galerieLienOrig {
@@ -228,6 +287,13 @@ div#galerieGrande {
 
 div.galeriePagination {
 	text-align: center;
+}
+
+div#galerieMinivignettes {
+/*	width: 575px;*/
+/*	text-align: center;*/
+/*	margin-left: auto;*/
+/*	margin-right: auto;*/
 }
 
 div#galerieMinivignettes img {

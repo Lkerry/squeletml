@@ -68,6 +68,10 @@ $menuSousLeMenuLangues = TRUE; // TRUE|FALSE
 /* Si `$colonneAgauche` vaut TRUE, une classe `colonneAgauche` est ajoutée au `body`, et la feuille de style par défaut place la colonne à gauche. Si la variable vaut FALSE, une classe `colonneAgaucheFalse` est ajoutée au `body` et la colonne se trouve par défaut à droite. À noter que cette option n'a aucune influence sur le flux HTML. La position de la colonne est gérée dans la feuille de style par défaut. */
 $colonneAgauche = TRUE; // TRUE|FALSE
 
+// Deux colonnes
+/* Si vaut TRUE, ajoute les deux classes `deuxColonnes` et (`deuxColonnesGauche` ou `deuxColonnesGaucheFalse`) au `body`. À noter que cette option n'a pas d'influence sur le flux HTML et que Squeletml ne se sert pas par défaut de cette deuxième colonne. */
+$deuxColonnes = FALSE; // TRUE|FALSE
+
 // Choix du DTD (Définition de Type de Document)
 /* Si `$xhtmlStrict` vaut TRUE, le doctype utilisé est XHTML 1.0 Strict, sinon c'est XHTML 1.0 Transitional. Si vous ne savez pas de quoi il s'agit, laissez TRUE. Le seul intérêt de choisir FALSE serait dans le cas où vous savez que vous devez utiliser des balises non valides en XHTML 1.0 Strict. */
 $xhtmlStrict = TRUE; // TRUE|FALSE

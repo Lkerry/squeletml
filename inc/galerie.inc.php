@@ -434,7 +434,12 @@ else
 	{
 		$galerieInfo .= '<div id="galerieInfo">' . "\n";
 		$galerieInfo .= '<p>' . sprintf(T_ngettext('Cette galerie contient %1$s oeuvre', 'Cette galerie contient %1$s oeuvres', $nombreDoeuvres), $nombreDoeuvres) . sprintf(T_ngettext(' (sur %1$s page).', ' (sur %1$s pages).', $nombreDePages), $nombreDePages);
-		$galerieInfo .= ' <a href="' . $_SERVER['PHP_SELF'] . '">' . T_("Voir l'accueil de la galerie."). '</a></p>' . "\n";
+		
+		if (!preg_match('|' . nomFichierGalerie() . '$|', $_SERVER['PHP_SELF']))
+		{
+			$galerieInfo .= ' <a href="' . $_SERVER['PHP_SELF'] . '">' . T_("Voir l'accueil de la galerie."). '</a></p>' . "\n";
+		}
+		
 		$galerieInfo .= '</div><!-- /galerieInfo -->' . "\n";
 	}
 	

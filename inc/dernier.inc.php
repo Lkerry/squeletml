@@ -51,6 +51,7 @@
 	</div><!-- /basDePage -->
 <?php endif; ?>
 
+	</div><!-- /interieurPage -->
 </div><!-- /page -->
 
 </body>

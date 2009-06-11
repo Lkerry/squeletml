@@ -326,13 +326,28 @@ function lettreAuHasard($lettresExclues = '')
 /**
 Renvoie une liste de classes.
 */
-function construitClass($estAccueil, $colonneAgauche, $idGalerie)
+function construitClass($estAccueil, $menuSousLeContenu, $menuLanguesSousLeContenu, $menuSousLeMenuLangues, $colonneAgauche, $deuxColonnes, $idGalerie)
 {
 	$class = '';
 	
 	if ($estAccueil)
 	{
 		$class .= 'accueil ';
+	}
+	
+	if ($menuSousLeContenu)
+	{
+		$class .= 'menuSousLeContenu ';
+	}
+	
+	if ($menuLanguesSousLeContenu)
+	{
+		$class .= 'menuLanguesSousLeContenu ';
+	}
+	
+	if ($menuSousLeMenuLangues)
+	{
+		$class .= 'menuSousLeMenuLangues ';
 	}
 	
 	if ($colonneAgauche)
@@ -342,6 +357,19 @@ function construitClass($estAccueil, $colonneAgauche, $idGalerie)
 	else
 	{
 		$class .= 'colonneAgaucheFalse ';
+	}
+	
+	if ($deuxColonnes)
+	{
+		$class .= 'deuxColonnes ';
+		if ($colonneAgauche)
+		{
+			$class .= 'deuxColonnesGauche ';
+		}
+		else
+		{
+			$class .= 'deuxColonnesGaucheFalse ';
+		}
 	}
 	
 	if ($idGalerie)

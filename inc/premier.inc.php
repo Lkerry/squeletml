@@ -23,12 +23,13 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 <meta name="robots" content="<?php echo robots($robots); ?>" />
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 </head>
-<body class="<?php echo construitClass(estAccueil(ACCUEIL), $colonneAgauche, $idGalerie); ?>">
+<body class="<?php echo construitClass(estAccueil(ACCUEIL), $menuSousLeContenu, $menuLanguesSousLeContenu, $menuSousLeMenuLangues, $colonneAgauche, $deuxColonnes, $idGalerie); ?>">
 <div id="ancres">
 	<?php include fichierAncres($racine, $langue); ?>
 </div><!-- /ancres -->
 
 <div id="page">
+	<div id="interieurPage">
 
 <?php
 if ($messageIE6)

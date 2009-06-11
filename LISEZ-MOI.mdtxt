@@ -4,9 +4,11 @@
 
 Le logiciel libre Squeletml est un squelette de site XHTML 1.0 Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but de réduire l'effort nécessaire pour la création et la maintenance de ce genre de site.
 
-En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin de chaque page), et ces derniers fournissent une structure de site optimisée pour le référencement et traduite dans la langue de la page (si la langue est disponible bien entendu): chaque page peut avoir sa propre balise `title`, ses propres métabalises, son titre de premier niveau (`h1`), sa propre langue, etc. L'en-tête personnalisée permet d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement.
+En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin de chaque page), et ces derniers fournissent une structure de site optimisée pour le référencement et traduite dans la langue de la page (si la langue est disponible): chaque page peut avoir facilement sa propre balise `title`, ses propres métabalises, son titre de premier niveau (`h1`), sa propre langue, etc. L'en-tête personnalisée permet d'éviter le contenu dupliqué dans les moteurs de recherche, d'avoir un site optimisé pour le référencement et d'offrir des repères aux internautes.
 
-Squeletml fournit également quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour l'affichage de l'interface.
+Aussi, un fichier de configuration permet de choisir par simple renseignement de variables le nombre et l'emplacement des colonnes, l'emplacement des menus dans le flux HTML, la présence ou non de certaines structures comme le bas de page, etc.
+
+Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour l'affichage de l'interface.
 
 ## Fonctionnalités
 
@@ -18,7 +20,18 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
 
 - Possibilité d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/) pour le texte des pages.
 
-- Fichier de configuration avec une syntaxe simple pour insérer des fichiers CSS ou Javascipt dans l'ent-ête de pages en particulier, ou bien pour tout le site.
+- Fichier de configuration avec une syntaxe simple pour insérer des fichiers CSS ou Javascipt dans l'ent-ête de certaines pages en particulier, ou bien pour toutes les pages du site.
+
+
+- Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue de la page.
+
+- Mise à jour rapide et aisée: la configuration personnalisée d'un site se trouve dans un dossier qui ne sera pas écrasé lors d'une mise à jour de Squeletml.
+
+- Gestion multilingue, et structure de site (menu, bas de page, etc.) selon la langue de la page.
+ 
+- Personnalisation de l'en-tête pour chaque page: balise `title`, métabalises `description`, `keywords`, `robots`, langue de la page, etc.
+
+- Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox.
 
 - Formulaire de contact dupliquable de façon illimitée avec options d'antipourriel et de copie à l'expéditeur.
 
@@ -27,29 +40,20 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
   - Nombre illimité de galeries.
   - Formats d'image PNG, JPG ou GIF.
   - Pagination possible des vignettes constituant l'accueil de la galerie.
-  - Navigation personnalisable entre chaque image d'une galerie:
+  - Choix de la navigation entre chaque image d'une galerie:
     - Eemplacement configurable (sur ou sous l'image).
     - Avec des flèches, ou
     - avec les vignettes des images précédente et suivante (possibilité d'ajouter automatiquement une image par-dessus les vignettes, par exemple une flèche au centre), ou
     - avec des vignettes et des miniflèches (donc deux fichiers par lien «précédent» et deux fichiers par lien «suivant»), ou
-    - un aperçu de toutes les images de la galerie grâce à des minivignettes.
+    - à l'aide d'un aperçu de toutes les images de la galerie grâce à des minivignettes.
   - Information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique de ces informations, évitant ainsi le contenu dupliqué d'une manière ou d'une autre.
   - Possibilité d'utiliser la syntaxe Markdown pour les légendes.
   - Affichage possible d'informations Exif des images au format JPG.
+  - Choix de l'emplacement de la légende et des informations Exif (au-dessus ou au-dessous de l'image, ou dans une colonne du site).
   - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
   - Possibilité de générer automatiquement les vignettes ou d'utiliser des vignettes personnalisées.
   - Possibilité de retailler automatiquement les images originales pour obtenir des copies de taille intermédiaire.
   - Possibilité de reconnaître les tailles d'image selon le nom du fichier (par exemple `-vignette.extension` pour une vignette ou `-orig.extension` pour la version téléchargeable de l'image).
-
-- Mise à jour rapide et aisée: la configuration personnalisée d'un site se trouve dans un dossier qui ne sera pas écrasé lors d'une mise à jour de Squeletml.
-
-- Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue de la page.
-
-- Gestion multilingue, et structure de site (menu, bas de page, etc.) selon la langue de la page.
- 
-- Personnalisation de l'en-tête pour chaque page: balise `title`, métabalises `description`, `keywords`, `robots`, langue de la page, etc.
-
-- Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox.
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
 

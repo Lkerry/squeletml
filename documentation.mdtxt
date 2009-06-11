@@ -127,49 +127,51 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 	
 		<body ...><!-- Selon le cas, diverses class pour body -->
 			<div id="page">
-				S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
+			  <div id="interieurPage">
+					S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
 
-				<div id="entete">
-					<div id="surTitre">
-						...
-					</div><!-- /surTitre -->
+					<div id="entete">
+						<div id="surTitre">
+							...
+						</div><!-- /surTitre -->
 					
-					<div id="titre">
-						Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
-					</div><!-- /titre -->
+						<div id="titre">
+							Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
+						</div><!-- /titre -->
 
-					<div id="sousTitre">
-						...
-					</div><!-- /sousTitre -->
-				</div><!-- /entete -->
+						<div id="sousTitre">
+							...
+						</div><!-- /sousTitre -->
+					</div><!-- /entete -->
 
-				<div id="ancres">
-					...
-				</div><!-- /ancres -->
-				
-				<div id="surContenu">
-					...
-				</div><!-- /surContenu -->
-				
-				<div id="contenu">
-					<div id="interieurContenu">
+					<div id="ancres">
 						...
-					</div><!-- /interieurContenu -->
-				</div><!-- /contenu -->
+					</div><!-- /ancres -->
 				
-				<div id="sousContenu">
-					<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+					<div id="surContenu">
 						...
-					</div><!-- /menuLangues -->
+					</div><!-- /surContenu -->
+				
+					<div id="contenu">
+						<div id="interieurContenu">
+							...
+						</div><!-- /interieurContenu -->
+					</div><!-- /contenu -->
+				
+					<div id="sousContenu">
+						<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+							...
+						</div><!-- /menuLangues -->
 
-					<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
-						...
-					</div><!-- /menu -->
-				</div><!-- /sousContenu -->
+						<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+							...
+						</div><!-- /menu -->
+					</div><!-- /sousContenu -->
 				
-				<div id="basDePage">
-					...
-				</div><!-- /basDePage -->
+					<div id="basDePage">
+						...
+					</div><!-- /basDePage -->
+				</div><!-- /interieurPage -->
 			</div><!-- /page -->
 		</body>
 	</html>
@@ -246,6 +248,8 @@ Pour ce faire, ouvrir le fichier `.htaccess`, trouver la ligne contenant la dire
 	</FilesMatch>
 
 Ne pas oublier de modifier le chemin d'inclusion du fichier `init.inc.php`.
+
+**Note: je n'ai pas testé à fond cette possibilité.**
 
 ### Contenu
 
