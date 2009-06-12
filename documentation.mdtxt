@@ -511,3 +511,7 @@ Les fichiers par défaut pour les flèches accompagnant les vignettes sont `fich
 Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de la galerie, composé de minivignettes des oeuvres de la galerie. Chaque minivignette est cliquable. Par défaut, la hauteur d'une minivignette est de 35 px. Ceci peut être modifié par CSS.
 
 Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
+
+## Développement
+
+`bzr` est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad]().

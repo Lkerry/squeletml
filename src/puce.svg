@@ -15,7 +15,10 @@
    inkscape:version="0.46"
    sodipodi:docname="puce.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   version="1.0">
+   version="1.0"
+   inkscape:export-filename="/tmp/puce.png"
+   inkscape:export-xdpi="14"
+   inkscape:export-ydpi="14">
   <defs
      id="defs3164">
     <inkscape:perspective
@@ -63,7 +66,7 @@
        id="a3201"
        inkscape:export-xdpi="19.259567"
        inkscape:export-ydpi="19.259567"
-       inkscape:export-filename="/home/jp/bureau/puce.png"
+       inkscape:export-filename="/tmp/puce.png"
        style="fill:#007070;fill-opacity:1">
       <path
          style="fill:#007070;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:4.62586545999999998;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1"
