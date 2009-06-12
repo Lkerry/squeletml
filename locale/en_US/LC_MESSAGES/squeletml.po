@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 13:15-0400\n"
+"POT-Creation-Date: 2009-06-11 22:49-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -864,7 +864,7 @@ msgstr ""
 
 #: inc/galerie.inc.php:202
 #, fuzzy
-msgid "Accueil de la galerie."
+msgid "Aller à l'accueil de la galerie."
 msgstr "Work %1$s of this gallery"
 
 #: inc/galerie.inc.php:320
@@ -951,3 +951,7 @@ msgid ""
 "personnaliser votre installation, <a href='admin/documentation.admin.php'>en "
 "visitant la documentation</a>.</p>"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Accueil de la galerie."
+#~ msgstr "Work %1$s of this gallery"
