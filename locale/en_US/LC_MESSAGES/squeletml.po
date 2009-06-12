@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 23:48-0400\n"
+"POT-Creation-Date: 2009-06-12 12:14-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -783,36 +783,36 @@ msgstr ""
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:903
+#: inc/fonctions.inc.php:912
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:907
+#: inc/fonctions.inc.php:916
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:915
+#: inc/fonctions.inc.php:924
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:919
+#: inc/fonctions.inc.php:928
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:923
+#: inc/fonctions.inc.php:932
 #, fuzzy
 msgid "Ouverture"
 msgstr "Work %1$s"
 
-#: inc/fonctions.inc.php:927
+#: inc/fonctions.inc.php:936
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:931
+#: inc/fonctions.inc.php:940
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1106
+#: inc/fonctions.inc.php:1134
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
