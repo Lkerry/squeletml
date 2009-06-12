@@ -1,8 +1,4 @@
 <?php
-// Chemin racine de l'installation de Squeletml
-#$racine = $_SERVER['DOCUMENT_ROOT'];
-$racine = '/var/www/serveur_local/squeletml'; // Sans la barre finale /
-
 // URL racine de l'installation de Squeletml
 $urlRacine = "http://localhost/serveur_local/squeletml"; // Sans la barre finale /
 
@@ -10,4 +6,16 @@ $urlRacine = "http://localhost/serveur_local/squeletml"; // Sans la barre finale
 // Ajouter l'URL relative de chaque langue à l'URL racine de Squeletml, `$urlRacine`
 $accueil['fr'] = $urlRacine;
 $accueil['en'] = $urlRacine . '/en';
+
+########################################################################
+##
+## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites)
+##
+########################################################################
+
+// Chemin racine de l'installation de Squeletml
+#$racine = $_SERVER['DOCUMENT_ROOT'];
+#$racine = '/var/www/serveur_local/squeletml'; // Sans la barre finale /
+$racine = dirname(__FILE__);
+
 ?>
