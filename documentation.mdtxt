@@ -14,11 +14,9 @@ On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.4`. Pour 
 
 Un seul fichier doit obligatoirement être modifié et configuré, bien que vous voudrez probablement personnaliser ensuite le reste du site.
 
-Connectez-vous par ftp au serveur hébergeant votre site. Trouvez le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml. Copiez-le et coller-le sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
+Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site ou bien en utilisant le porte-documents de la section d'administration), trouvez le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml. Copiez-le et coller-le sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
 
-Ce fichier contient trois variables à renseigner:
-
-- `$racine`: il s'agit du chemin absolu vers votre installation de Squeletml. Souvent, cette information équivaut à la valeur de la variable `$_SERVER['DOCUMENT_ROOT']`, mais ce n'est pas toujours le cas.
+Ce fichier contient deux variables à renseigner:
 
 - `$urlRacine`: il s'agit de l'adresse URL vers votre installation de Squeletml. Par exemple, `http://nomDeDomaine.ext/monSiteSqueletml` ou `http://nomDeDomaine.ext`.
 

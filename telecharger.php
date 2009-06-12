@@ -21,6 +21,10 @@ switch (strrchr(basename($nom), '.'))
 		$type = 'image/jpeg';
 		break;
 	
+	case '.svg':
+		$type = 'image/svg+xml';
+		break;
+	
 	default:
 		$type = 'application/force-download';
 		break;
