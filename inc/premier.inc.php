@@ -22,6 +22,11 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 <meta name="keywords" content="<?php echo construitMotsCles($motsCles, $description); ?>" />
 <meta name="robots" content="<?php echo robots($robots); ?>" />
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
+<?php if ($galerieAccueilJavascript && $idGalerie): ?>
+	<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
+	<script type="text/javascript" src="<?php echo $urlRacine; ?>/inc/slimbox2/js/slimbox2.js"></script>
+	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
+<?php endif; ?>
 </head>
 <body class="<?php echo construitClass(estAccueil(ACCUEIL), $menuSousLeContenu, $menuLanguesSousLeContenu, $menuSousLeMenuLangues, $colonneAgauche, $deuxColonnes, $idGalerie); ?>">
 <div id="ancres">

@@ -773,7 +773,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript)
 {
 	$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 	
@@ -1115,12 +1115,31 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$classAccueil = ' ';
 		}
 		
+		if ($estAccueil && $galerieAccueilJavascript)
+		{
+			if (!empty($galerie[$indice]['grandeLegende']))
+			{
+				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $galerie[$indice]['grandeLegende']) . '"';
+			}
+			else
+			{
+				$title = '';
+			}
+			
+			$aHref = '<a href="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '" rel="lightbox-galerie"' . $title . '>';
+		}
+		else
+		{
+			
+			$aHref = '<a href="' . nomFichierGalerie() . '?oeuvre=' . $id . '">';
+		}
+		
 		// On s'assure que la variable $class existe (pour éviter un avertissement).
 		if (!isset($class))
 		{
 			$class = '';
 		}
-		return '<div class="galerieNavigation' . $classAccueil . $class . '"><a href="' . nomFichierGalerie() . '?oeuvre=' . $id . '"><img ' . "$src $width $height $alt /></a></div>";
+		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>";
 	}
 	
 	else

@@ -104,6 +104,10 @@ $copieCourriel = FALSE; // TRUE|FALSE
 ##
 ########################################################################
 
+// Fenêtre Javascript sur l'accueil de la galerie pour consulter les images
+/* Utiliser Slimbox 2 pour passer d'une image à une autre sur la page d'accueil de la galerie au lieu de naviguer d'une image à une autre en rechargeant toute la page. */
+$galerieAccueilJavascript = FALSE; // TRUE|FALSE
+
 // Choix de la navigation dans la galerie
 $galerieNavigation = 'fleches'; // fleches ou vignettes
 

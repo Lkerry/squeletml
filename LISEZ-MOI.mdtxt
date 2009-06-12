@@ -39,11 +39,12 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
   - Formats d'image PNG, JPG ou GIF.
   - Pagination possible des vignettes constituant l'accueil de la galerie.
   - Choix de la navigation entre chaque image d'une galerie:
-    - Eemplacement configurable (sur ou sous l'image).
-    - Avec des flèches, ou
+    - Fenêtre Javascript permettant de naviguer d'une image à une autre sans rechargement de page, ou
+    - avec des flèches, ou
     - avec les vignettes des images précédente et suivante (possibilité d'ajouter automatiquement une image par-dessus les vignettes, par exemple une flèche au centre), ou
     - avec des vignettes et des miniflèches (donc deux fichiers par lien «précédent» et deux fichiers par lien «suivant»), ou
     - à l'aide d'un aperçu de toutes les images de la galerie grâce à des minivignettes.
+  - Choix de l'emplacement de la navigation dans le cas d'une navigation avec rechargement de la page (donc tous les types de navigation sauf la fenêtre Javascript).
   - Information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique de ces informations, évitant ainsi le contenu dupliqué d'une manière ou d'une autre.
   - Possibilité d'utiliser la syntaxe Markdown pour les légendes.
   - Affichage possible d'informations Exif des images au format JPG.

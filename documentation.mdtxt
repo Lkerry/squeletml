@@ -460,7 +460,13 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 
 ### Navigation entre les oeuvres
 
-Il y a cinq méthodes possibles pour naviguer entre les oeuvres:
+Il y a six méthodes possibles pour naviguer entre les oeuvres:
+
+#### Fenêtre Javascript
+
+Il s'agit de la seule méthode de navigation sans passer par le rechargement de la page pour consulter les images. Plus précisément, en choisissant cette option, le script Slimbox 2 est utilisé pour passer d'une image à une autre sur la page d'accueil de la galerie au lieu de naviguer d'une image à une autre en rechargeant toute la page.
+
+Si une légende est précisée pour une image, elle s'affiche sous cette dernière dans la fenêtre Javascript.
 
 #### Flèches
 
