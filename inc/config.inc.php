@@ -123,7 +123,13 @@ $galerieNavigationEmplacement = 'haut'; // haut|bas
 // Hauteur des vignettes si génération automatique
 $galerieHauteurVignette = 100;
 
-// Si un lien est ajouté vers l'image au format original, est-ce qu'on force son téléchargement sans affichage dans le navigateur?
+// Si le format original d'une image existe, est-ce que le lien vers le fichier est fait sur l'image ou dans la légende, ou les deux?
+$galerieLienOrigEmplacement = 'imageLegende'; // image|legende|imageLegende
+
+// Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
+$galerieLienOrigJavascript = TRUE; // TRUE|FALSE
+
+// Si le format original d'une image existe et que le lien n'est pas pris en charge par une fenêtre Javascript, est-ce que le lien vers le fichier force le téléchargement sans affichage dans le navigateur?
 $galerieTelechargeOrig = FALSE; // TRUE|FALSE
 
 // Pagination des vignettes: nombre de vignettes par page (0 pour désactiver la pagination)

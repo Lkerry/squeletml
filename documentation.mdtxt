@@ -440,7 +440,7 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
 
-- `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté dans le bas de l'image en version grande. Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien de téléchargement sera ajouté. Exemple:
+- `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté dans le bas de l'image en version grande ou directement sur l'image (selon la configuration). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien de téléchargement sera ajouté. Exemple:
 
 		origNom=fichier1Orig.jpg
 

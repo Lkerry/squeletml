@@ -773,7 +773,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOrigEmplacement, $galerieLienOrigJavascript)
 {
 	$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 	
@@ -861,7 +861,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$infoOrigNom = pathinfo($origNom);
 			
 			$lienOrigHref = '';
-			if ($galerieTelechargeOrig)
+			if ($galerieTelechargeOrig && !$galerieLienOrigJavascript && ($galerieLienOrigEmplacement == 'legende' || $galerieLienOrigEmplacement == 'imageLegende'))
 			{
 				$lienOrigTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;');
 				$lienOrigHref .= $urlRacine . '/telecharger.php?url=';
@@ -872,7 +872,16 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			}
 			$lienOrigHref .= $urlImgSrc . '/' . $origNom;
 			
-			$lienOrig = '<div id="galerieLienOrig"><a href="' . $lienOrigHref . '">' . $lienOrigTrad . '</a></div>';
+			if ($galerieLienOrigJavascript && !preg_match('|\.svg$|i', $origNom))
+			{
+				$relOrig = ' rel="lightbox"';
+			}
+			else
+			{
+				$relOrig = '';
+			}
+			
+			$lienOrig = '<div id="galerieLienOrig"><a href="' . $lienOrigHref . '"' . $relOrig . '>' . $lienOrigTrad . '</a></div>';
 		}
 		else
 		{
@@ -950,13 +959,32 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$exif = '';
 		}
 		
+		if (isset($lienOrigHref) && !empty($lienOrigHref) && ($galerieLienOrigEmplacement == 'image' || $galerieLienOrigEmplacement == 'imageLegende'))
+		{
+			if ($galerieLienOrigJavascript && !preg_match('|\.svg$|i', $origNom))
+			{
+				$relOrig = ' rel="lightbox"';
+			}
+			else
+			{
+				$relOrig = '';
+			}
+			$lienOrigAvant = '<a href="' . $lienOrigHref . '"' . $relOrig . '>';
+			$lienOrigApres = '</a>';
+		}
+		else
+		{
+			$lienOrigAvant = '';
+			$lienOrigApres = '';
+		}
+		
 		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousLeContenu')
 		{
-			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div><!-- /galerieGrandeImg -->\n";
+			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n";
 		}
 		elseif ($galerieLegendeEmplacement == 'bas')
 		{
-			return '<div id="galerieGrandeImg"><img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt /></div><!-- /galerieGrandeImg -->\n" . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n";
+			return '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n" . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n";
 		}
 	}
 
