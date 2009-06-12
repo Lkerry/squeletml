@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-11 22:49-0400\n"
+"POT-Creation-Date: 2009-06-11 23:48-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,18 +17,53 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: index.php:18
-msgid "Erreur: configuration non accessible"
+#: index.php:31
+msgid "Squeletml: actions à accomplir"
 msgstr ""
 
-#: index.php:27
+#: index.php:44
+msgid ""
+"Voici une action importante à réaliser pour bien débuter l'utilisation de "
+"Squeletml:"
+msgid_plural ""
+"Voici deux actions importantes à réaliser pour bien débuter l'utilisation de "
+"Squeletml:"
+msgstr[0] ""
+msgstr[1] ""
+
+#: index.php:49
 #, php-format
 msgid ""
-"Erreur: le fichier %1$s n'existe pas. Ce fichier est nécessaire au "
-"fonctionnement de Squeletml. Veuillez copier le fichier %2$s (situé à la "
-"racine du site), le coller sous le nom %1$s et renseigner les quelques "
-"variables y étant contenues."
+"Le fichier %1$s n'existe pas. Ce fichier est nécessaire au fonctionnement de "
+"Squeletml. Veuillez copier le fichier %2$s (situé à la racine du site), le "
+"coller sous le nom %1$s et renseigner les quelques variables y étant "
+"contenues."
 msgstr ""
+
+#: index.php:55
+#, php-format
+msgid ""
+"Après avoir créé et renseigné le fichier %1$s, veuillez visiter <a href='%2"
+"$s'>la page de gestion des droits d'accès</a> et ajouter un utilisateur pour "
+"protéger l'accès à la section d'administration de votre site."
+msgstr ""
+
+#: index.php:59
+#, php-format
+msgid ""
+"Veuillez visiter <a href='%1$s'>la page de gestion des droits d'accès</a> et "
+"ajouter un utilisateur pour protéger l'accès à la section d'administration "
+"de votre site."
+msgstr ""
+
+#: index.php:64
+msgid ""
+"Après avoir accompli l'action demandée, visitez de nouveau la présente page."
+msgid_plural ""
+"Après avoir accompli les actions demandées, visitez de nouveau la présente "
+"page."
+msgstr[0] ""
+msgstr[1] ""
 
 #: admin/version.admin.php:3 admin/version.admin.php:7
 msgid "Version de Squeletml"

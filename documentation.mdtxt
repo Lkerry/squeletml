@@ -10,11 +10,15 @@ On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.4`. Pour 
 
 ## Configuration
 
-### Le fichier `init.inc.php.defaut`
+### Actions obligatoires
 
-Un seul fichier doit obligatoirement être modifié et configuré, bien que vous voudrez probablement personnaliser ensuite le reste du site.
+Deux seuls fichiers doivent obligatoirement être créés et configurés, bien que vous voudrez probablement personnaliser ensuite le reste du site.
 
-Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site ou bien en utilisant le porte-documents de la section d'administration), trouvez le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml. Copiez-le et coller-le sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
+Tant que ces deux fichiers n'existent pas, la page d'accueil de votre installation de Squeletml émettra un avertissement.
+
+#### Le fichier `init.inc.php.defaut`
+
+Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouvez le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml. Copiez-le et coller-le sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
 
 Ce fichier contient deux variables à renseigner:
 
@@ -28,7 +32,17 @@ Ce fichier contient deux variables à renseigner:
 
 Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation, par exemple `http://nomDeDomaine.ext`.
 
-### Le fichier `.htaccess`
+#### Protéger l'administration (fichier `.acces`)
+
+Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger la section d'administration du site sans attendre. Pour ce faire, visitez la page suivante:
+
+	http://nomDeDomaine.ext/admin/droits.admin.php
+
+et ajoutez un utilisateur. Les utilisateurs sont listés dans le fichier `.acces` situé à la racine de votre installation de Squeletml.
+
+### Les autres fichiers
+
+#### Le fichier `.htaccess`
 
 Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Si en visitant une page inexistante, vous ne voyez pas le contenu de la page d'erreur, ouvrez le fichier `.htaccess`, trouvez la ligne:
 
@@ -38,15 +52,7 @@ et modifiez `/404.php` par la bonne adresse URL, par exemple `http://nomDeDomain
 
 Ce fichier va également contenir les instructions pour protéger le dossier d'administration.
 
-### Protéger l'administration
-
-Il est important de protéger la section d'administration du site tout de suite après l'installation. Pour ce faire, visitez la page suivante:
-
-	http://nomDeDomaine.ext/admin/droits.admin.php
-
-et ajoutez un utilisateur.
-
-### Le fichier `inc/config.inc.php`
+#### Le fichier `inc/config.inc.php`
 
 Ce fichier contient beaucoup de paramètres au sujet du site. Les variables modifiables sont en général documentées directement dans le fichier de configuration. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml. Vous serez ensuite en mesure de modifier des paramètres de votre site.
 
