@@ -127,7 +127,7 @@ $galerieHauteurVignette = 100;
 $galerieLienOrigEmplacement = 'imageLegende'; // image|legende|imageLegende
 
 // Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
-$galerieLienOrigJavascript = TRUE; // TRUE|FALSE
+$galerieLienOrigJavascript = FALSE; // TRUE|FALSE
 
 // Si le format original d'une image existe et que le lien n'est pas pris en charge par une fenêtre Javascript, est-ce que le lien vers le fichier force le téléchargement sans affichage dans le navigateur?
 $galerieTelechargeOrig = FALSE; // TRUE|FALSE
