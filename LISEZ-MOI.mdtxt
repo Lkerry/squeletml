@@ -52,6 +52,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
   - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
   - Possibilité de générer automatiquement les vignettes ou d'utiliser des vignettes personnalisées.
   - Possibilité de retailler automatiquement les images originales pour obtenir des copies de taille intermédiaire.
+  - Possibilité d'ajouter en une seule fois sur le site plusieurs images contenues dans une archive TAR ou ZIP.
   - Possibilité de reconnaître les tailles d'image selon le nom du fichier (par exemple `-vignette.extension` pour une vignette ou `-orig.extension` pour la version téléchargeable de l'image).
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
@@ -136,6 +137,6 @@ Sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>
 
 ### PclZip
 
-Squeletml utilise la bibliothèque PclZip (sous licence GNU/LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>
+Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>
 
 

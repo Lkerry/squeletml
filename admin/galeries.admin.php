@@ -14,6 +14,105 @@ include '../init.inc.php';
 <?php
 ########################################################################
 ##
+## Ajouter des images par lot
+##
+########################################################################
+
+if (isset($_POST['archive']))
+{
+	$cheminGaleries = $racine . '/site/fichiers/galeries';
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $_POST['id'];
+	
+	$listeModifs = array ();
+	
+	if (!file_exists($cheminGalerie))
+	{
+		if (mkdir($cheminGalerie))
+		{
+			$listeModifs[] = sprintf(T_('Création du dossier %1$s.'), '<code>' . $cheminGalerie . '</code>');
+		}
+		
+		else
+		{
+			unlink($_FILES['fichier']['tmp_name']);
+			echo "<p class='erreur'>" . sprintf(T_('Impossible de créer le dossier %1$s.'), '<code>' . $cheminGalerie . '</code>') . "</p>\n";
+			$listeModifs[] = T_('Archive supprimée.');
+		}
+	}
+	
+	if (file_exists($cheminGalerie))
+	{
+		if (isset($_FILES['fichier']))
+		{
+			$nomArchive = basename($_FILES['fichier']['name']);
+			if (file_exists($cheminGaleries . '/' . $nomArchive))
+			{
+				unlink($_FILES['fichier']['tmp_name']);
+				echo '<p class="erreur">' . T_("Un fichier %1\$s existe déjà dans le dossier %2\$s.", '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '/</code>') . "</p>\n";
+				$listeModifs[] = T_('Archive supprimée.');
+			}
+			else
+			{
+				if (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGaleries . '/' . $nomArchive))
+				{
+					$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
+					$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $_POST['id'] . '/');
+					
+					if ($resultatArchive == 0)
+					{
+						unlink($cheminGaleries . '/' . $nomArchive);
+						$listeModifs[] = T_('Archive supprimée.');
+						echo '<p class="erreur">' . T_("Erreur lors de l'extraction de l'archive %1\$s: ", '<code>' . $nomArchive . '</code>') . $archive->errorInfo(true) . "</p>\n";
+					}
+					else
+					{
+						foreach ($resultatArchive as $infoImage)
+						{
+							if ($infoImage['status'] == 'ok')
+							{
+								$listeModifs[] = sprintf(T_('Image %1$s extraite dans le dossier %2$s.'), '<code>' . $infoImage['stored_filename'] . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+							}
+							elseif ($infoImage['status'] == 'newer_exist')
+							{
+								$listeModifs[] = sprintf(T_('Un fichier nommé %1$s existe déjà dans le dossier %2$s, et est plus récent. L\'image n\'a donc pas été extraite.'), '<code>' . $infoImage['stored_filename'] . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+							}
+							else
+							{
+								$listeModifs[] = sprintf(T_('Attention: une erreur a eu lieu avec l\'image %1$s. Vérifiez son état sur le serveur, et ajoutez-là sur le serveur à la main si nécessaire.'), '<code>' . $infoImage['stored_filename'] . '</code>');
+							}
+						}
+						unlink($cheminGaleries . '/' . $nomArchive);
+						$listeModifs[] = T_('Archive supprimée.');
+					}
+				}
+				else
+				{
+					unlink($_FILES['fichier']['tmp_name']);
+					echo '<p class="erreur">' . T_("Erreur lors du déplacement de l'archive %1\$s.", '<code>' . $nomArchive . '</code>') . "</p>\n";
+					$listeModifs[] = T_('Archive supprimée.');
+				}
+			}
+		}
+		
+		if (empty($listeModifs))
+		{
+			$listeModifs[] = T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.");
+		}
+	}
+	
+	echo '<div class="boite2">' . "\n";
+	echo '<h3>' . T_("Ajout d'images") . '</h3>' . "\n";
+	echo '<ul>' . "\n";
+	foreach ($listeModifs as $modif)
+	{
+		echo '<li>' . $modif . '</li>' . "\n";
+	}
+	echo '</ul>' . "\n";
+	echo '</div><!-- /boite2 -->' . "\n";
+}
+
+########################################################################
+##
 ## Générer une copie réduite des images originales
 ##
 ########################################################################
@@ -314,13 +413,33 @@ if (isset($_POST['lister']))
 </div><!-- /boiteMessages -->
 
 <div class="boite">
+<h2 id="archive"><?php echo T_("Ajouter des images par lot"); ?></h2>
+
+<p><?php echo T_("Vous pouvez téléverser en une seule vers votre site plusieurs images contenues dans une archive de format TAR ou ZIP. Veuillez créer votre archive de telle sorte que les images soient à la racine, et non contenues dans un dossier. Prenez note que si la galerie existe déjà et qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant sur le serveur, le fichier sur le serveur ne sera pas écrasé lors de l'extraction automatique."); ?></p>
+
+<p><?php printf(T_('<strong>Taille maximale de transfert d\'une archive:</strong> %1$s.'), ini_get('upload_max_filesize')); ?></p>
+
+<form action="<?php echo $action; ?>#messages" method="post" enctype="multipart/form-data">
+<div>
+<p><label><?php echo T_("Id de la galerie (si elle n'existe pas, elle sera créée):"); ?></label><br />
+<input type="text" name="id" /></p>
+
+<p><label><?php echo T_("Archive:"); ?></label><br />
+<input type="file" name="fichier" size="25"/></p>
+
+<p><input type="submit" name="archive" value="<?php echo T_('Ajouter une archive'); ?>" /></p>
+</div>
+</form>
+</div><!-- /boite -->
+
+<div class="boite">
 <h2 id="generer"><?php echo T_("Créer un fichier de configuration pour une galerie"); ?></h2>
 
 <p><?php echo T_("Chaque galerie nécessite un fichier de configuration pour être prise en compte par Squeletml. Vous pouvez le créer à la main, ou en générer un automatiquement à l'aide de ce formulaire. Vous pourrez par la suite personnaliser ce fichier à la main si vous le désirez."); ?></p>
 
 <p><?php echo T_("Pour générer automatiquement la liste des images d'une galerie, et ce sous la forme <code>grandeNom=grandeImage.extension</code>, remplissez le formulaire ci-dessous. Optionnellement, vous pouvez exclure certaines images du résultat."); ?></p>
 
-<form action="<? echo $action; ?>#messages" method="post">
+<form action="<?php echo $action; ?>#messages" method="post">
 <div>
 
 <p><label><?php echo T_("Id de la galerie:"); ?></label><br />
@@ -366,7 +485,7 @@ if (isset($_POST['lister']))
 
 <p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version grande dans la galerie) de chaque image au format original. Aucune image au format original ne sera modifiée."); ?></p>
 
-<form action="<? echo $action; ?>#messages" method="post">
+<form action="<?php echo $action; ?>#messages" method="post">
 <div>
 <p><label><?php echo T_("Id de la galerie:"); ?></label><br />
 <input type="text" name="id" /></p>
@@ -398,7 +517,7 @@ if (isset($_POST['lister']))
 
 <p><?php echo T_("Vous pouvez faire afficher la liste des fichiers de configuration existants. Chaque fichier dans la liste aura un lien vous permettant de le modifier dans le porte-documents."); ?></p>
 
-<form action="<? echo $action; ?>#messages" method="post">
+<form action="<?php echo $action; ?>#messages" method="post">
 <div>
 <p><input type="submit" name="lister" value="<?php echo T_('Lister les fichiers de configuration'); ?>" /></p>
 </div>

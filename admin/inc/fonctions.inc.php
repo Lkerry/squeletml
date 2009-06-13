@@ -22,6 +22,8 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/admin/inc/config.inc.php';
 	
+	$fichiers[] = $racine . '/admin/inc/pclzip/pclzip.lib.php';
+	
 	$fichiers[] = $racine . '/admin/inc/UnsharpMask.inc.php';
 	
 	if (file_exists($racine . '/site/inc/config-admin.inc.php'))
