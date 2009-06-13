@@ -24,6 +24,10 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/admin/inc/pclzip/pclzip.lib.php';
 	
+	$fichiers[] = $racine . '/admin/inc/pcltar/lib/pclerror.lib.php3';
+	$fichiers[] = $racine . '/admin/inc/pcltar/lib/pcltrace.lib.php3';
+	$fichiers[] = $racine . '/admin/inc/pcltar/lib/pcltar.lib.php3';
+	
 	$fichiers[] = $racine . '/admin/inc/UnsharpMask.inc.php';
 	
 	if (file_exists($racine . '/site/inc/config-admin.inc.php'))
