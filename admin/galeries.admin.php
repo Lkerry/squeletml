@@ -55,14 +55,34 @@ if (isset($_POST['archive']))
 			{
 				if (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGaleries . '/' . $nomArchive))
 				{
-					$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
-					$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $_POST['id'] . '/');
+					$resultatArchive = 0;
+					
+					if (preg_match('/(\.tar|\.tar\.gz|\.tgz)$/i', $nomArchive))
+					{
+						$resultatArchive = PclTarExtract($cheminGaleries . '/' . $nomArchive, $cheminGaleries . '/' . $_POST['id'] . '/');
+					}
+					elseif (preg_match('/\.zip$/i', $nomArchive))
+					{
+						$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
+						$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $_POST['id'] . '/');
+					}
 					
 					if ($resultatArchive == 0)
 					{
 						unlink($cheminGaleries . '/' . $nomArchive);
 						$listeModifs[] = T_('Archive supprimée.');
-						echo '<p class="erreur">' . T_("Erreur lors de l'extraction de l'archive %1\$s: ", '<code>' . $nomArchive . '</code>') . $archive->errorInfo(true) . "</p>\n";
+						if (preg_match('/(\.tar|\.tar\.gz|\.tgz)$/i', $nomArchive))
+						{
+							echo '<p class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s."), '<code>' . $nomArchive . '</code>') . "</p>\n";
+						}
+						elseif (preg_match('/\.zip$/i', $nomArchive))
+						{
+							echo '<p class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: "), '<code>' . $nomArchive . '</code>') . $archive->errorInfo(true) . "</p>\n";
+						}
+						else
+						{
+							echo '<p class="erreur">' . sprintf(T_("Impossible d'utiliser l'archive %1\$s."), '<code>' . $nomArchive . '</code>') . "</p>\n";
+						}
 					}
 					else
 					{
@@ -70,15 +90,15 @@ if (isset($_POST['archive']))
 						{
 							if ($infoImage['status'] == 'ok')
 							{
-								$listeModifs[] = sprintf(T_('Image %1$s extraite dans le dossier %2$s.'), '<code>' . $infoImage['stored_filename'] . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+								$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . basename($infoImage['filename']) . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
 							}
 							elseif ($infoImage['status'] == 'newer_exist')
 							{
-								$listeModifs[] = sprintf(T_('Un fichier nommé %1$s existe déjà dans le dossier %2$s, et est plus récent. L\'image n\'a donc pas été extraite.'), '<code>' . $infoImage['stored_filename'] . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+								$listeModifs[] = sprintf(T_('Un fichier %1$s existe déjà, et est plus récent que celui de l\'archive. Il n\'y a donc pas eu extraction.'), '<code>' . $infoImage['filename'] . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
 							}
 							else
 							{
-								$listeModifs[] = sprintf(T_('Attention: une erreur a eu lieu avec l\'image %1$s. Vérifiez son état sur le serveur, et ajoutez-là sur le serveur à la main si nécessaire.'), '<code>' . $infoImage['stored_filename'] . '</code>');
+								$listeModifs[] = sprintf(T_('Attention: une erreur a eu lieu avec le fichier %1$s. Vérifiez son état sur le serveur (s\'il s\'y trouve), et ajoutez-le à la main si nécessaire.'), '<code>' . $infoImage['filename'] . '</code>');
 							}
 						}
 						unlink($cheminGaleries . '/' . $nomArchive);
@@ -415,7 +435,7 @@ if (isset($_POST['lister']))
 <div class="boite">
 <h2 id="archive"><?php echo T_("Ajouter des images par lot"); ?></h2>
 
-<p><?php echo T_("Vous pouvez téléverser en une seule vers votre site plusieurs images contenues dans une archive de format TAR ou ZIP. Veuillez créer votre archive de telle sorte que les images soient à la racine, et non contenues dans un dossier. Prenez note que si la galerie existe déjà et qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant sur le serveur, le fichier sur le serveur ne sera pas écrasé lors de l'extraction automatique."); ?></p>
+<p><?php echo T_("Vous pouvez téléverser en une seule vers votre site plusieurs images contenues dans une archive de format TAR (.tar, .tar.gz ou .tgz) ou ZIP (.zip). Veuillez créer votre archive de telle sorte que les images soient à la racine, et non contenues dans un dossier. Prenez note que si la galerie existe déjà et qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant sur le serveur, le fichier sur le serveur ne sera pas écrasé lors de l'extraction automatique."); ?></p>
 
 <p><?php printf(T_('<strong>Taille maximale de transfert d\'une archive:</strong> %1$s.'), ini_get('upload_max_filesize')); ?></p>
 

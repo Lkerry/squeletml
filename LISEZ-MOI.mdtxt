@@ -52,7 +52,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
   - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
   - Possibilité de générer automatiquement les vignettes ou d'utiliser des vignettes personnalisées.
   - Possibilité de retailler automatiquement les images originales pour obtenir des copies de taille intermédiaire.
-  - Possibilité d'ajouter en une seule fois sur le site plusieurs images contenues dans une archive TAR ou ZIP.
+  - Possibilité d'ajouter en une seule fois sur le site plusieurs images contenues dans une archive TAR (.tar, .tar.gz ou .tgz) ou ZIP (.zip).
   - Possibilité de reconnaître les tailles d'image selon le nom du fichier (par exemple `-vignette.extension` pour une vignette ou `-orig.extension` pour la version téléchargeable de l'image).
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
