@@ -133,3 +133,9 @@ Sous double licence MIT et GPL. Voir <http://jquery.com/>
 ### Slimbox 2
 
 Sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>
+
+### PclZip
+
+Squeletml utilise la bibliothèque PclZip (sous licence GNU/LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>
+
+
