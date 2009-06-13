@@ -12,12 +12,14 @@ $baliseTitleComplement['en'] = "Squeletml website";
 // Fichiers inclus par la balise `link` et la balise `script` pour le javascript
 /*
 Syntaxe: $fichiersLinkScript[] = array ("URL" => "TYPE:fichier à inclure");
-Les types possibles sont: css, cssltIE7, cssIE7, javascript, favicon.
+Les types possibles sont: css, cssltIE7, cssIE7, csslteIE7, javascript, favicon.
 Ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants. Exemples:
 $fichiersLinkScript[] = array ("$urlRacine/page.php" => "css:$urlRacine/css/style.css");
 $fichiersLinkScript[] = array ("$urlRacine/page.php*" => "css:$urlRacine/css/style.css");
 */
 $fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/squeletml.css");
+$fichiersLinkScript[] = array ("$urlRacine*" => "csslteIE7:$urlRacine/css/ie7.css");
+$fichiersLinkScript[] = array ("$urlRacine*" => "cssltIE7:$urlRacine/css/ie6.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "javascript:$urlRacine/js/squeletml.js");
 
 // Version des fichiers précédemment déclarés

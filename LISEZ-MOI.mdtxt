@@ -61,7 +61,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
   - Galeries: gestion des galeries, entre autres la création de fichiers de configuration pour chaque galerie, le listage de tous les fichiers de configuration existants, la génération automatique d'images de taille intermédiaire à partir des images originales, etc.
   - Documentation: consultation de l'aide directement en local.
 
-- Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox.
+- Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox. Squeletml fonctionne avec Internet Explorer 6, mais il est clairement optimisé pour les navigateurs modernes.
 
 - Mise à jour rapide: la configuration personnalisée d'un site se trouve dans un dossier qui ne sera pas écrasé lors d'une mise à jour de Squeletml.
 

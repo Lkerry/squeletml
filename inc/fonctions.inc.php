@@ -166,7 +166,7 @@ Construit les balises d'inclusion `link` et les balises `script` pour le javascr
 @param fichiers un tableau dont la syntaxe est:
 	$fichiers[] = array ("URL" => "TYPE:fichier à inclure");
 	ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants
-	Les types possibles sont: css, cssltIE7, cssIE7, javascript, favicon
+	Les types possibles sont: css, cssltIE7, cssIE7, csslteIE7, javascript, favicon
 @param version un identifiant (optionnel) des versions des fichiers inclus, comme une date, un nombre...
 @return les balises `link` correctement remplies
 */
@@ -224,6 +224,10 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 					
 						case 'cssIE7':
 							$balisesLinkScript .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+							break;
+							
+						case 'csslteIE7':
+							$balisesLinkScript .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 							break;
 				
 						case 'javascript':

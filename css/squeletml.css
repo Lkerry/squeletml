@@ -5,10 +5,7 @@
 	margin: 5px auto;
 	border-left: 1px solid #f2f2f2;
 	border-right: 1px solid #f2f2f2;
-	padding: 0 5px 5px 5px;
-}
-
-#page {
+	padding: 0 5px;
 	position: relative;
 }
 
@@ -227,6 +224,15 @@ body.galerie #page {
 	max-width: 1000px;
 }
 
+div#galerieGrande div#galerieGrandeTexte {
+	margin-bottom: 15px;
+}
+
+div#sepGalerieMinivignettes {
+	clear: both;
+	margin-bottom: 15px;
+}
+
 #galerieGrandeTexte ul {
 	margin-left: 25px;
 }
@@ -255,7 +261,7 @@ body.galerie #page {
 }
 
 #galerieLienOrig {
-	margin-top: 25px;
+	margin-top: 15px;
 }
 
 div.galerieNavigationPrecedent {
@@ -263,6 +269,7 @@ div.galerieNavigationPrecedent {
 }
 
 div.galerieNavigationPrecedent img {
+	border: none;
 	float: left;
 	clear: both;
 }
@@ -272,6 +279,7 @@ div.galerieNavigationSuivant {
 }
 
 div.galerieNavigationSuivant img {
+	border: none;
 	float: right;
 }
 
@@ -290,17 +298,15 @@ div.galeriePagination {
 }
 
 div#galerieMinivignettes {
-/*	width: 575px;*/
-/*	text-align: center;*/
-/*	margin-left: auto;*/
-/*	margin-right: auto;*/
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 div#galerieMinivignettes img {
 	float: left;
 	height: 35px;
 	border: 1px solid #f2f2f2;
-	margin: 2px 2px 20px 2px;
+	margin: 2px;
 }
 
 div#galerieAccompagnementVignettePrecedent img {
@@ -315,7 +321,11 @@ div#galerieAccompagnementVignetteSuivant img {
 
 div#galerieGrandeExif {
 	text-align: left;
-	margin-top: 25px;
+	margin-top: 15px;
+}
+
+div#galerieGrandeExif ul {
+	margin-bottom: 0;
 }
 
 div#galerieGrandeExif li {

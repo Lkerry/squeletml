@@ -1,0 +1,15 @@
+body.deuxColonnesGauche .galerieNavigationAccueil, body.deuxColonnesGaucheFalse .galerieNavigationAccueil {
+	margin-right: 204px;
+}
+
+body.deuxColonnesGauche .galerieNavigationSuivant, body.deuxColonnesGaucheFalse .galerieNavigationSuivant {
+	margin-right: 204px;
+}
+
+#galerieMinivignettes {
+	margin-bottom: 0;
+}
+
+div#galerieAccompagnementVignetteSuivant img {
+	clear: both;
+}

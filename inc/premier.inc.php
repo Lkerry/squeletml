@@ -33,15 +33,15 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 	<?php include fichierAncres($racine, $langue); ?>
 </div><!-- /ancres -->
 
-<div id="page">
-	<div id="interieurPage">
-
 <?php
 if ($messageIE6)
 {
 	echo messageIE6($urlRacine . '/fichiers/firefox-52x52.gif', '', 52, 52);
 }
 ?>
+
+<div id="page">
+	<div id="interieurPage">
 
 <div id="entete">
 	<?php if ($surTitre): ?>
