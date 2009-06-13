@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-12 12:14-0400\n"
+"POT-Creation-Date: 2009-06-12 23:00-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -733,13 +733,13 @@ msgstr ""
 msgid "Créer"
 msgstr ""
 
-#: inc/fonctions.inc.php:398
+#: inc/fonctions.inc.php:402
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
 
-#: inc/fonctions.inc.php:400
+#: inc/fonctions.inc.php:404
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -748,62 +748,62 @@ msgid ""
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
 
-#: inc/fonctions.inc.php:402
+#: inc/fonctions.inc.php:406
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:748
+#: inc/fonctions.inc.php:752
 msgid "Légende de l'oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:820
+#: inc/fonctions.inc.php:824
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:837
+#: inc/fonctions.inc.php:841
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:866
+#: inc/fonctions.inc.php:870
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:871
+#: inc/fonctions.inc.php:875
 #, php-format
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:912
+#: inc/fonctions.inc.php:916
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:916
+#: inc/fonctions.inc.php:920
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:924
+#: inc/fonctions.inc.php:928
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:928
+#: inc/fonctions.inc.php:932
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:932
+#: inc/fonctions.inc.php:936
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:936
+#: inc/fonctions.inc.php:940
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:940
+#: inc/fonctions.inc.php:944
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1134
+#: inc/fonctions.inc.php:1138
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
@@ -892,36 +892,36 @@ msgstr ""
 msgid "Aller à l'accueil de la galerie."
 msgstr ""
 
-#: inc/galerie.inc.php:320
+#: inc/galerie.inc.php:321
 #, php-format
 msgid ""
 "L'oeuvre demandée est introuvable. <a href=\"%1$s\">Voir toutes les oeuvres</"
 "a>."
 msgstr ""
 
-#: inc/galerie.inc.php:390
+#: inc/galerie.inc.php:391
 msgid "Page précédente"
 msgstr ""
 
-#: inc/galerie.inc.php:400
+#: inc/galerie.inc.php:401
 msgid "Page suivante"
 msgstr ""
 
-#: inc/galerie.inc.php:436
+#: inc/galerie.inc.php:437
 #, php-format
 msgid "Cette galerie contient %1$s oeuvre"
 msgid_plural "Cette galerie contient %1$s oeuvres"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:436
+#: inc/galerie.inc.php:437
 #, php-format
 msgid " (sur %1$s page)."
 msgid_plural " (sur %1$s pages)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:440
+#: inc/galerie.inc.php:441
 msgid "Voir l'accueil de la galerie."
 msgstr ""
 
