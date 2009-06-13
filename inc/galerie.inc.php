@@ -112,7 +112,7 @@ if (isset($_GET['oeuvre']))
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
 			{
-				$oeuvrePrecedente = vignetteTatouage($oeuvrePrecedente, 'precedent', $racine, $racineImgSrc, $urlImgSrc);
+				$oeuvrePrecedente = vignetteTatouage($oeuvrePrecedente, 'precedent', $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg);
 			}
 			
 			// Si une flèche est souhaitée à côté des vignettes, on ajoute une image
@@ -137,7 +137,7 @@ if (isset($_GET['oeuvre']))
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
 			{
-				$oeuvreSuivante = vignetteTatouage($oeuvreSuivante, 'suivant', $racine, $racineImgSrc, $urlImgSrc);
+				$oeuvreSuivante = vignetteTatouage($oeuvreSuivante, 'suivant', $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg);
 			}
 			
 			// Si une flèche est souhaitée à côté des vignettes, on ajoute une image

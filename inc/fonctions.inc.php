@@ -590,7 +590,7 @@ function typeImage($extension)
 /**
 Modifie la source de la vignette pour la remplacer par une vignette tatouée d'une flèche de navigation.
 */
-function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc)
+function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg)
 {
 	preg_match('/src="([^"]+)"/', $paragraphe, $res);
 	$srcContenu = $res[1];
