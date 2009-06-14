@@ -14,17 +14,16 @@ echo construitLinkScript($fichiersLinkScript, '', TRUE);
 ?>
 </head>
 <body>
-<div id="page">
+<div id="ancres">
+	<?php include $racine . '/admin/inc/html.ancres.inc.php'; ?>
+</div><!-- /ancres -->
 
+<div id="page">
 <div id="entete">
 	<div id="menu">
 		<?php include $racine . '/admin/inc/html.menu.inc.php'; ?>
 	</div><!-- /menu -->
 </div><!-- /entete -->
-
-<div id="ancres">
-	<?php include $racine . '/admin/inc/html.ancres.inc.php'; ?>
-</div><!-- /ancres -->
 
 <div id="contenu">
 	<div id="interieurContenu">
