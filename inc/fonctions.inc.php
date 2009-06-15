@@ -180,8 +180,8 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 	
 	if (!$styleSqueletmlCss)
 	{
-		// Suppression de la feuille de style par défaut
-		unset($fichiers[0]);
+		// Suppression des feuilles de style par défaut
+		unset($fichiers[0], $fichiers[1], $fichiers[2]);
 	}
 	
 	if (!empty($fichiers))

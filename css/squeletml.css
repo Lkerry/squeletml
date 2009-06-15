@@ -1,11 +1,16 @@
 /* Général */
 
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
 #page {
 	max-width: 900px;
-	margin: 5px auto;
+	margin: 5px auto 0 auto;
 	border-left: 1px solid #f2f2f2;
 	border-right: 1px solid #f2f2f2;
-	padding: 0 5px;
+	padding: 0;
 	position: relative;
 }
 
@@ -61,6 +66,7 @@ div#sousTitre p {
 
 #basDePage {
 	text-align: center;
+	padding: 0px 5px;
 }
 
 h1, h2, h3, h4, h5, h6, a {
@@ -103,12 +109,12 @@ body.colonneAgauche #page {
 }
 
 body.colonneAgauche div#titre h1, body.colonneAgauche div#titre p {
-	margin: 0px 0px 0px 209px;
+	margin: 0px 0px 0px 210px;
 }
 
 body.colonneAgauche div#sousTitre {
 	position: relative;
-	margin: -34px 0px 25px 293px;
+	margin: -34px 0px 25px 294px;
 }
 
 body.colonneAgauche #contenu {
@@ -132,12 +138,12 @@ body.colonneAgaucheFalse #page {
 }
 
 body.colonneAgaucheFalse div#titre h1, body.colonneAgaucheFalse div#titre p {
-	margin: 0;
+	margin: 0 0 0 6px;
 }
 
 body.colonneAgaucheFalse div#sousTitre {
 	position: relative;
-	margin: -34px 0px 25px 84px;
+	margin: -34px 0px 25px 90px;
 }
 
 body.colonneAgaucheFalse #contenu {
@@ -186,12 +192,12 @@ body.deuxColonnesGaucheFalse #interieurPage {
 }
 
 body.deuxColonnesGaucheFalse div#titre h1, body.deuxColonnesGaucheFalse div#titre p {
-	margin: 0px 0px 0px 209px;
+	margin: 0px 0px 0px 210px;
 }
 
 body.deuxColonnesGaucheFalse div#sousTitre {
 	position: relative;
-	margin: -34px 0px 25px 293px;
+	margin: -34px 0px 25px 294px;
 }
 
 body.deuxColonnesGaucheFalse #contenu {
@@ -222,6 +228,10 @@ body.deuxColonnesGaucheFalse #basDePage {
 
 body.galerie #page {
 	max-width: 1000px;
+}
+
+div#galerieInfo {
+	clear: both;
 }
 
 div#galerieGrande div#galerieGrandeTexte {
@@ -295,6 +305,7 @@ div#galerieGrande {
 
 div.galeriePagination {
 	text-align: center;
+	clear: both;
 }
 
 div#galerieMinivignettes {

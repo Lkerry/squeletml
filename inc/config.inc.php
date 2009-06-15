@@ -5,6 +5,10 @@
 ##
 ########################################################################
 
+// Choix du DTD (Définition de Type de Document)
+/* Si `$xhtmlStrict` vaut TRUE, le doctype utilisé est XHTML 1.0 Strict, sinon c'est XHTML 1.0 Transitional. Si vous ne savez pas de quoi il s'agit, laissez TRUE. Le seul intérêt de choisir FALSE serait dans le cas où vous savez que vous devez utiliser des balises non valides en XHTML 1.0 Strict. */
+$xhtmlStrict = TRUE; // TRUE|FALSE
+
 // Complément de la balise title selon la langue
 $baliseTitleComplement['fr'] = "Site Squeletml";
 $baliseTitleComplement['en'] = "Squeletml website";
@@ -17,6 +21,7 @@ Ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants. Ex
 $fichiersLinkScript[] = array ("$urlRacine/page.php" => "css:$urlRacine/css/style.css");
 $fichiersLinkScript[] = array ("$urlRacine/page.php*" => "css:$urlRacine/css/style.css");
 */
+$fichiersLinkScript = array ();
 $fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/squeletml.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "csslteIE7:$urlRacine/css/ie7.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "cssltIE7:$urlRacine/css/ie6.css");
@@ -27,11 +32,8 @@ $fichiersLinkScript[] = array ("$urlRacine*" => "javascript:$urlRacine/js/squele
 Pratique quand un fichier a été modifié et qu'on veut forcer son retéléchargement. */
 $versionFichiersLinkScript = 1;
 
-// Inclusion de la feuille de style par défaut de Squeletml (`css/squeletml.css`)
+// Inclusion des feuilles de style par défaut de Squeletml (dans le dossier `css`)
 $styleSqueletmlCss = TRUE; // TRUE|FALSE
-
-// Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
-$langue[0] = 'fr';
 
 // Contenu par défaut de la métabalise robots
 /* Liste de valeurs possibles: index, follow, archive, noindex, nofollow, noarchive, noodp, noydir */
@@ -40,10 +42,8 @@ $robots[0] = "index, follow, archive";
 // Encodage
 $charset = 'UTF-8';
 
-// Titre du site en en-tête
-/* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un h1 s'il s'agit de la page d'accueil, ou dans un p pour toutes les autres pages. */
-$titreSite['fr'] = "<img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" />";
-$titreSite['en'] = $titreSite['fr'];
+// Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
+$langue[0] = 'fr';
 
 // Message pour IE6
 $messageIE6 = TRUE; // TRUE|FALSE
@@ -51,8 +51,10 @@ $messageIE6 = TRUE; // TRUE|FALSE
 // Inclusion du sur-titre
 $surTitre = FALSE; // TRUE|FALSE
 
-// Inclusion du bas de page
-$basDePage = TRUE; // TRUE|FALSE
+// Titre du site en en-tête
+/* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un h1 s'il s'agit de la page d'accueil, ou dans un p pour toutes les autres pages. */
+$titreSite['fr'] = "<img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" />";
+$titreSite['en'] = $titreSite['fr'];
 
 // Position du menu
 /* Le menu peut être inséré dans le flux HTML au-dessus du contenu ou bien en-dessous. */
@@ -66,6 +68,9 @@ $menuLanguesSousLeContenu = TRUE; // TRUE|FALSE
 /* Si le menu ainsi que le menu des langues sont situés dans la même région (par exemple, tous les deux au-dessus du contenu ou tous les deux en-dessous), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
 $menuSousLeMenuLangues = TRUE; // TRUE|FALSE
 
+// Inclusion du bas de page
+$basDePage = TRUE; // TRUE|FALSE
+
 // Position de la colonne.
 /* Si `$colonneAgauche` vaut TRUE, une classe `colonneAgauche` est ajoutée au `body`, et la feuille de style par défaut place la colonne à gauche. Si la variable vaut FALSE, une classe `colonneAgaucheFalse` est ajoutée au `body` et la colonne se trouve par défaut à droite. À noter que cette option n'a aucune influence sur le flux HTML. La position de la colonne est gérée dans la feuille de style par défaut. */
 $colonneAgauche = TRUE; // TRUE|FALSE
@@ -73,10 +78,6 @@ $colonneAgauche = TRUE; // TRUE|FALSE
 // Deux colonnes
 /* Si vaut TRUE, ajoute les deux classes `deuxColonnes` et (`deuxColonnesGauche` ou `deuxColonnesGaucheFalse`) au `body`. À noter que cette option n'a pas d'influence sur le flux HTML et que Squeletml ne se sert pas par défaut de cette deuxième colonne. */
 $deuxColonnes = FALSE; // TRUE|FALSE
-
-// Choix du DTD (Définition de Type de Document)
-/* Si `$xhtmlStrict` vaut TRUE, le doctype utilisé est XHTML 1.0 Strict, sinon c'est XHTML 1.0 Transitional. Si vous ne savez pas de quoi il s'agit, laissez TRUE. Le seul intérêt de choisir FALSE serait dans le cas où vous savez que vous devez utiliser des balises non valides en XHTML 1.0 Strict. */
-$xhtmlStrict = TRUE; // TRUE|FALSE
 
 ########################################################################
 ##
@@ -106,11 +107,44 @@ $copieCourriel = FALSE; // TRUE|FALSE
 ##
 ########################################################################
 
+##
+## Général
+##
+
+// Qualité des images JPG générées par le script
+$qualiteJpg = 90; // 0-100
+
+// Hauteur des vignettes si génération automatique
+$galerieHauteurVignette = 100;
+
+##
+## Accueil des galeries
+##
+
+// Pagination des vignettes de la page d'accueil: nombre de vignettes par page (0 pour désactiver la pagination)
+$galerieVignettesParPage = 0;
+
+// S'il y a pagination, affichage des liens au-dessus des vignettes
+$galeriePaginationAuDessus = TRUE; // TRUE|FALSE
+
+// S'il y a pagination, affichage des liens au-dessous des vignettes
+$galeriePaginationAuDessous = FALSE; // TRUE|FALSE
+
+// Informations sur la galerie
+$galerieInfoAjout = TRUE; // TRUE|FALSE
+
+// S'il y a des informations sur la galerie, choix de l'emplacement de la div
+$galerieInfoEmplacement = 'haut'; // haut|bas
+
 // Fenêtre Javascript sur l'accueil de la galerie pour consulter les images
 /* Utiliser Slimbox 2 pour passer d'une image à une autre sur la page d'accueil de la galerie au lieu de naviguer d'une image à une autre en rechargeant toute la page. */
 $galerieAccueilJavascript = FALSE; // TRUE|FALSE
 
-// Choix de la navigation dans la galerie
+##
+## Page individuelle d'une oeuvre
+##
+
+// Choix de la navigation d'une oeuvre à une autre
 $galerieNavigation = 'fleches'; // fleches ou vignettes
 
 // Si la navigation est faite avec des vignettes, ajouter ou non une petite flèche au centre des vignettes (comme une sorte de tatouage numérique)
@@ -122,27 +156,6 @@ $galerieNavigationVignettesAccompagnees = TRUE; // TRUE|FALSE
 // Choix de l'emplacement de la navigation
 $galerieNavigationEmplacement = 'haut'; // haut|bas
 
-// Hauteur des vignettes si génération automatique
-$galerieHauteurVignette = 100;
-
-// Si le format original d'une image existe, est-ce que le lien vers le fichier est fait sur l'image ou dans la légende, ou les deux?
-$galerieLienOrigEmplacement = 'imageLegende'; // image|legende|imageLegende
-
-// Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
-$galerieLienOrigJavascript = FALSE; // TRUE|FALSE
-
-// Si le format original d'une image existe et que le lien n'est pas pris en charge par une fenêtre Javascript, est-ce que le lien vers le fichier force le téléchargement sans affichage dans le navigateur?
-$galerieTelechargeOrig = FALSE; // TRUE|FALSE
-
-// Pagination des vignettes: nombre de vignettes par page (0 pour désactiver la pagination)
-$galerieVignettesParPage = 0;
-
-// S'il y a pagination, affichage des liens au-dessus des vignettes
-$galeriePaginationAuDessus = TRUE; // TRUE|FALSE
-
-// S'il y a pagination, affichage des liens au-dessous des vignettes
-$galeriePaginationAuDessous = FALSE; // TRUE|FALSE
-
 // Aperçu en minivignettes du contenu de la galerie sur les pages individuelles de chaque oeuvre
 $galerieMinivignettes = TRUE; //TRUE|FALSE
 
@@ -151,12 +164,6 @@ $galerieMinivignettesEmplacement = 'haut'; // haut|bas
 
 // S'il y a des minivignettes, le nombre à afficher (0 pour un nombre illimité)
 $galerieMinivignettesNombre = 0;
-
-// Informations sur la galerie
-$galerieInfoAjout = TRUE; // TRUE|FALSE
-
-// S'il y a des informations sur la galerie, choix de l'emplacement de la div
-$galerieInfoEmplacement = 'haut'; // haut|bas
 
 // Ajout automatique d'une légende (contenu de l'attribut `alt` + taille du fichier) dans le cas où aucune légende n'a été précisée
 $galerieLegendeAutomatique = FALSE; // TRUE|FALSE
@@ -180,12 +187,18 @@ $infosExif = array (
 	"Model" => TRUE,
 	);
 
+// Si le format original d'une image existe, est-ce que le lien vers le fichier est fait sur l'image ou dans la légende, ou les deux?
+$galerieLienOrigEmplacement = 'imageLegende'; // image|legende|imageLegende
+
+// Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
+$galerieLienOrigJavascript = FALSE; // TRUE|FALSE
+
+// Si le format original d'une image existe et que le lien n'est pas pris en charge par une fenêtre Javascript, est-ce que le lien vers le fichier force le téléchargement sans affichage dans le navigateur?
+$galerieTelechargeOrig = FALSE; // TRUE|FALSE
+
 // Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
 /* Les emplacements `haut` et `bas` font référence à l'image en version grande, alors que `sousLeContenu` fait référence à la page. Par exemple, l'option `sousLeContenu` place avec la configuration par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
 $galerieLegendeEmplacement = 'sousLeContenu'; // haut|bas|sousLeContenu
-
-// Qualité des images JPG générées
-$qualiteJpg = 90; // 0-100
 
 ########################################################################
 ##
