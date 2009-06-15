@@ -365,19 +365,27 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 
 ## Galeries
 
-Petit rappel: pour créer une galerie, voici les étapes à suivre:
+Chaque galerie possède son propre identifiant unique, appelé *id*, qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'*id* vaut `galerie1`. Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible:
 
-1. Ajouter une variable `$idGalerie` au début du fichier qu'on veut utiliser comme galerie.
+- un dossier contenant les images, et présent dans `site/fichiers/galeries/`, ce qui donne pour notre exemple `site/fichiers/galeries/galerie1/`;
+
+- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/inc/`, ce qui donne pour notre exemple `site/inc/galerie-galerie1.txt`;
+
+- une page à visiter sur le site pour afficher la galerie, par exemple `ma-galerie-de-test.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'*id* de la galerie que vous voulez afficher.
+
+Concrètement, pour créer une galerie, voici les étapes à suivre:
+
+1. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie, et l'assigner avec l'identifiant voulu (`$idGalerie = "ceQuOnVeut";`).
 
 2. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
 
-3. Créer un fichier de configuration `site/inc/galerie-$idGalerie.txt`. Cette étape sera développée ci-dessous.
+3. Créer un fichier de configuration `site/inc/galerie-$idGalerie.txt`. Cette étape est développée ci-dessous.
 
 ### Fichier de configuration
 
 Chaque image d'une galerie est déclinée en au moins deux versions: vignette et grande. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version grande.
 
-Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.txt`. Vous pouvez générer automatiquement le contenu de ce fichier en utilisant le script d'aide dans la section d'administration.
+Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.txt`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main.
 
 Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `__IMG__`. Voici un exemple:
 
@@ -440,7 +448,7 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
 
-- `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté dans le bas de l'image en version grande ou directement sur l'image (selon la configuration). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien de téléchargement sera ajouté. Exemple:
+- `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté dans le bas de l'image en version grande ou directement sur l'image (selon la configuration). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
 
 		origNom=fichier1Orig.jpg
 

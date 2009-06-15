@@ -164,4 +164,131 @@ function adminNomPageEnCours($url)
 {
 	return basename($url);
 }
+
+/**
+Retourne la valeur en octets des tailles paraissant dans le `php.ini`. Ex.: 2M => 2097152. Voir <http://ca.php.net/manual/fr/ini.core.php#79564>
+*/
+function adminPhpIniOctets($nombre)
+{
+	$lettre = substr($nombre, -1);
+	$octets = substr($nombre, 0, -1);
+	switch (strtoupper($lettre))
+	{
+		case 'P':
+			$octets *= 1024;
+		case 'T':
+			$octets *= 1024;
+		case 'G':
+			$octets *= 1024;
+		case 'M':
+			$octets *= 1024;
+		case 'K':
+			$octets *= 1024;
+			break;
+	}
+	
+	return $octets;
+}
+
+/**
+Met à jour un fichier de configuration de galerie.
+Retourne TRUE s'il n'y a aucune erreur, sinon retourne FALSE.
+*/
+function adminMajConfGalerie($racine, $id, $listeAjouts)
+{
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
+	$fichierConfigChemin = $racine . '/site/inc/galerie-' . $id . '.txt';
+	if (!empty($listeAjouts))
+	{
+		$listeExistant = file_get_contents($fichierConfigChemin) or die();
+		file_put_contents($fichierConfigChemin, $listeAjouts . $listeExistant) or die();
+	}
+	
+	$galerie = construitTableauGalerie($fichierConfigChemin);
+	$galerieTemp = array ();
+	$i = 0;
+
+	foreach ($galerie as $oeuvre)
+	{
+		foreach ($oeuvre as $cle => $valeur)
+		{
+			if ($cle == 'grandeNom')
+			{
+				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur) && !in_array_multi($valeur, $galerieTemp))
+				{
+					$galerieTemp[$i][$cle] = $valeur;
+				}
+				else
+				{
+					continue; // On sort de cette oeuvre sans la prendre en note, car elle n'existe plus
+				}
+			}
+			elseif ($cle == 'vignetteNom')
+			{
+				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
+				{
+					$galerieTemp[$i][$cle] = $valeur;
+				}
+			}
+			elseif ($cle == 'origNom')
+			{
+				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
+				{
+					$galerieTemp[$i][$cle] = $valeur;
+				}
+			}
+			else
+			{
+				if (!empty($valeur))
+				{
+					$galerieTemp[$i][$cle] = $valeur;
+				}
+			}
+		}
+		
+		$i++;
+	}
+	
+	$fic = opendir($cheminGalerie) or die();
+	
+	$listeFichiers = '';
+	while($fichier = @readdir($fic))
+	{
+		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+		{
+			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) &&
+				!preg_match('/-orig\.[[:alpha:]]{3,4}$/', $fichier) &&
+				!in_array_multi($fichier, $galerieTemp))
+			{
+				array_unshift($galerieTemp, array ('grandeNom' => $fichier));
+			}
+		}
+	}
+	closedir($fic);
+	
+	$contenuConfig = '';
+	foreach ($galerieTemp as $oeuvre)
+	{
+		foreach ($oeuvre as $cle => $valeur)
+		{
+			$contenuConfig .= "$cle=$valeur\n";
+		}
+		$contenuConfig .= "__IMG__\n";
+	}
+	
+	$contenuConfig = rtrim($contenuConfig);
+	
+	file_put_contents($fichierConfigChemin, $contenuConfig) or die();
+	
+	return TRUE;
+}
+
+/**
+Retourne l'id de `body`.
+*/
+function adminBodyId()
+{
+	return str_replace('.', '-', basename($_SERVER['SCRIPT_NAME']));
+}
+
 ?>

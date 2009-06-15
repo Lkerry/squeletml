@@ -9,13 +9,10 @@ body, html, #page {
 	left: -5000px;
 }
 
-#page {
-	background-color: #FAFAFA;
-}
-
 #entete {
-	padding: 5px;
+	padding: 5px 5px 0px 5px;
 	background: url('../../fichiers/rayures.png') repeat left top;
+	border-bottom: 1px solid #f2f2f2;
 }
 
 #entete ul li {
@@ -39,6 +36,10 @@ a:hover {
 	border-bottom: 1px dotted #f2f2f2;
 }
 
+#menu a.actif {
+	font-weight: bold;
+}
+
 pre {
 	overflow: auto;
 }
@@ -49,6 +50,12 @@ pre {
 
 .erreur {
 	color: #630000;
+}
+
+/* Gestion des galeries */
+
+body#galeries-admin-php code {
+	font-weight: bold;
 }
 
 /* Porte-documents */
@@ -75,6 +82,15 @@ pre {
 
 #boiteMessages {
 	border: 1px dashed black;
+}
+
+#boiteMessages h2, .boite h2, .boite2 h3 {
+	margin-top: 0;
+}
+
+#boiteMessages h2 {
+	background: url('../fichiers/ampoule.png') no-repeat left center;
+	padding-left: 20px;
 }
 
 #boiteMessages h2, #boiteMessages h3, #boiteMessages h4, #boiteMessages h5, #boiteMessages h6 {

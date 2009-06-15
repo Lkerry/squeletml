@@ -6,6 +6,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <?php
 $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/admin.css");
+$fichiersLinkScript[] = array ("$urlRacine/admin/*" => "javascript:$urlRacine/js/squeletml.js");
 $fichiersLinkScript[] = array ("$urlRacine/admin/galeries.admin.php" => "javascript:$urlRacine/admin/js/squeletml.js");
 $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/js/wz_dragdrop.js");
 $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/inc/CodeMirror/js/codemirror.js");
@@ -13,7 +14,7 @@ $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "
 echo construitLinkScript($fichiersLinkScript, '', TRUE);
 ?>
 </head>
-<body>
+<body id="<?php echo adminBodyId(); ?>">
 <div id="ancres">
 	<?php include $racine . '/admin/inc/html.ancres.inc.php'; ?>
 </div><!-- /ancres -->
@@ -23,6 +24,7 @@ echo construitLinkScript($fichiersLinkScript, '', TRUE);
 	<div id="menu">
 		<?php include $racine . '/admin/inc/html.menu.inc.php'; ?>
 	</div><!-- /menu -->
+	<script type="text/javascript">setPage();</script>
 </div><!-- /entete -->
 
 <div id="contenu">

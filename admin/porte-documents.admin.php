@@ -121,12 +121,20 @@ if (isset($_GET['action']))
 	if ($_GET['action'] == 'modifier')
 	{
 		echo "<h3>" . T_("Insctructions de modification") . "</h3>";
-		echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), $_GET['valeur']) . "</p>";
+		if (file_exists($_GET['valeur']))
+		{
+			echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), $_GET['valeur']) . "</p>";
+		}
+		else
+		{
+			echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> n\'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisi.'), $_GET['valeur']) . "</p>";
+		}
+		
 		?>
 		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
 		<?php
 		clearstatcache();
-		if (filesize($_GET['valeur']))
+		if (file_exists($_GET['valeur']) && filesize($_GET['valeur']))
 		{
 			$fic = fopen($_GET['valeur'], 'r');
 			$contenuFichier = fread($fic, filesize($_GET['valeur']));
@@ -175,26 +183,19 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 
 	echo "<ul>\n";
 
-	if (is_writable($_POST['porteDocumentsModifierNom']))
+	if (!$fic = fopen($_POST['porteDocumentsModifierNom'], 'w'))
 	{
-		if (!$fic = fopen($_POST['porteDocumentsModifierNom'], 'w'))
-		{
-			echo "<li><p class='erreur'>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> n\'a pas pu être ouvert.'), $_POST['porteDocumentsModifierNom']) . "</p>\n$messageErreurModifier</li>\n";
-		}
-	
-		if (fwrite($fic, adminFormateTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
-		{
-			echo "<li><p class='erreur'>" . sprintf(T_('Impossible d\'écrire dans le fichier <span class="porteDocumentsNom">%1$s</span>.'), $_POST['porteDocumentsModifierNom']) . "</p>\n$messageErreurModifier</li>\n";
-		}
-	
-		echo "<li class='succes'>" . sprintf(T_('Modification du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $_POST['porteDocumentsModifierNom']) . "</li>\n";
-	
-		fclose($fic);
+		echo "<li><p class='erreur'>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> n\'a pas pu être ouvert.'), $_POST['porteDocumentsModifierNom']) . "</p>\n$messageErreurModifier</li>\n";
 	}
-	else
+
+	if (fwrite($fic, adminFormateTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
 	{
-		echo "<li><p class='erreur'>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> n\'est pas accessible en écriture.'), $_POST['porteDocumentsModifierNom']) . "</p>\n$messageErreurModifier</li>\n";
+		echo "<li><p class='erreur'>" . sprintf(T_('Impossible d\'écrire dans le fichier <span class="porteDocumentsNom">%1$s</span>.'), $_POST['porteDocumentsModifierNom']) . "</p>\n$messageErreurModifier</li>\n";
 	}
+
+	echo "<li class='succes'>" . sprintf(T_('Modification du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $_POST['porteDocumentsModifierNom']) . "</li>\n";
+
+	fclose($fic);
 
 	echo "</ul>\n";
 }

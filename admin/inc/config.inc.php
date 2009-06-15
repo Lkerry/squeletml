@@ -21,7 +21,7 @@ $langue = 'navigateur';
 ########################################################################
 
 // Taille maximale des fichiers téléchargés (en octets)
-$tailleMaxFichiers = 5000000;
+$tailleMaxFichiers = adminPhpIniOctets(ini_get('upload_max_filesize'));
 
 // Dossier racine contenant les fichiers (sans / au début ni à la fin)
 $dossierRacine = '..';
