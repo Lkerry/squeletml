@@ -347,7 +347,7 @@ if (isset($_POST['lister']))
 	closedir($fic);
 	
 	echo '<div class="boite2">' . "\n";
-	echo '<h3>' . T_("Liste des fichiers de configuration") . '</h3>' . "\n";
+	echo '<h3>' . T_("Liste des galeries") . '</h3>' . "\n";
 	echo "<ul>\n";
 	
 	if (!empty($listeFichiers))
@@ -356,7 +356,7 @@ if (isset($_POST['lister']))
 	}
 	else
 	{
-		echo '<li>' . T_("Aucun fichier") . "</li>\n";
+		echo '<li>' . T_("Aucune galerie") . "</li>\n";
 	}
 	
 	echo "</ul>\n";

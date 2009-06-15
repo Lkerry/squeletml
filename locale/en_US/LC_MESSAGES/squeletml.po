@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 00:27-0400\n"
+"POT-Creation-Date: 2009-06-15 13:28-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -314,12 +314,14 @@ msgid "Fichier de configuration:"
 msgstr ""
 
 #: admin/galeries.admin.php:350
-msgid "Liste des fichiers de configuration"
-msgstr ""
+#, fuzzy
+msgid "Liste des galeries"
+msgstr "Work %1$s of this gallery"
 
 #: admin/galeries.admin.php:359
-msgid "Aucun fichier"
-msgstr ""
+#, fuzzy
+msgid "Aucune galerie"
+msgstr "Work %1$s of this gallery"
 
 #: admin/galeries.admin.php:403
 #, php-format
@@ -1157,7 +1159,3 @@ msgid ""
 "personnaliser votre installation, <a href='admin/documentation.admin.php'>en "
 "visitant la documentation</a>.</p>"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Accueil de la galerie."
-#~ msgstr "Work %1$s of this gallery"

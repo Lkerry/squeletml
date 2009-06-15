@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-06-15 00:27-0400\n"
+"POT-Creation-Date: 2009-06-15 13:28-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -316,11 +316,11 @@ msgid "Fichier de configuration:"
 msgstr ""
 
 #: admin/galeries.admin.php:350
-msgid "Liste des fichiers de configuration"
+msgid "Liste des galeries"
 msgstr ""
 
 #: admin/galeries.admin.php:359
-msgid "Aucun fichier"
+msgid "Aucune galerie"
 msgstr ""
 
 #: admin/galeries.admin.php:403
