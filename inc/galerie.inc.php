@@ -62,7 +62,7 @@ if (isset($_GET['oeuvre']))
 		if ($id == $_GET['oeuvre'])
 		{
 			$imageExiste = TRUE;
-			// L'image existe, on peut donc écraser les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable $galerie, on donne une valeur automatiquement.
+			// L'image existe, et on écrase les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable $galerie, on donne une valeur automatiquement.
 			if (!empty($galerie[$i]['pageGrandeBaliseTitle']))
 			{
 				$baliseTitle = $galerie[$i]['pageGrandeBaliseTitle'];
@@ -318,7 +318,15 @@ if (isset($_GET['oeuvre']))
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie pour éviter le contenu dupliqué.
 	else
 	{
+		$id = htmlentities(utf8_decode($_GET['oeuvre']), ENT_QUOTES);
 		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), nomFichierGalerie()) . '</p>';
+		
+		// Ajustement des métabalises
+		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
+		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . ' | ' . $baliseTitleComplement[langue($langue)];
+		$motsCles = construitMotsCles('', $description);
+		$motsCles .= ', ' . $id;
+		$robots[1] = "noindex, follow, noarchive";
 	}
 }
 
@@ -351,7 +359,14 @@ else
 		{
 			$page = 1;
 		}
-	
+		
+		// Ajustement des métabalises
+		if (isset($page) && $page != 1)
+		{
+			$baliseTitle .= " - Page $page";
+			$description .= " - Page $page";
+		}
+		
 		$indicePremiereOeuvre = ($page - 1) * $galerieVignettesParPage;
 		$indiceDerniereOeuvre = $indicePremiereOeuvre + $galerieVignettesParPage - 1;
 		
