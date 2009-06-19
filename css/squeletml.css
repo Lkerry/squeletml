@@ -352,6 +352,14 @@ div#galerieGrandeImg img {
 	background: url('../fichiers/ombre.png') no-repeat right bottom;
 }
 
+div#galerieIconeOrig {
+	margin-bottom: 5px;
+}
+
+div#galerieIconeOrig img {
+	border: none;
+}
+
 div.galerieNavigationAccueil img, div#galerieGrandeImg img {
 	padding: 5px 10px 10px 5px;
 	border: none;

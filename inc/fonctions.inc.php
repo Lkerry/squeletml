@@ -777,7 +777,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOrigEmplacement, $galerieLienOrigJavascript)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOrigEmplacement, $galerieLienOrigJavascript, $galerieIconeOrig)
 {
 	$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 	
@@ -982,13 +982,31 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$lienOrigApres = '';
 		}
 		
+		if ($galerieIconeOrig)
+		{
+			if (file_exists($racine . '/site/fichiers/agrandir.png'))
+			{
+				$galerieIconeOrigSrc = $urlRacine . '/site/fichiers/agrandir.png';
+			}
+			else
+			{
+				$galerieIconeOrigSrc = $urlRacine . '/fichiers/agrandir.png';
+			}
+			
+			$imgLienOrig = '<div id="galerieIconeOrig">' . $lienOrigAvant . '<img src="' . $galerieIconeOrigSrc . '" alt="' . str_replace('&nbsp;', ' ', $lienOrigTrad) . '" width="22" height="22" />' . $lienOrigApres . '</div><!-- /galerieIconeOrig -->' . "\n";
+		}
+		else
+		{
+			$imgLienOrig = '';
+		}
+		
 		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousLeContenu')
 		{
-			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n";
+			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOrig;
 		}
 		elseif ($galerieLegendeEmplacement == 'bas')
 		{
-			return '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n" . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n";
+			return '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOrig . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n";
 		}
 	}
 
