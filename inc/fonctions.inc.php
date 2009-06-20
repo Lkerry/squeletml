@@ -982,7 +982,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$lienOrigApres = '';
 		}
 		
-		if ($galerieIconeOrig)
+		if ($galerieIconeOrig && isset($lienOrigHref) && !empty($lienOrigHref))
 		{
 			if (file_exists($racine . '/site/fichiers/agrandir.png'))
 			{
