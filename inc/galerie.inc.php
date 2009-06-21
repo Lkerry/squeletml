@@ -15,7 +15,7 @@ phpGettext($racine, langue($langue));
 
 // Insertion du tableau contenant la liste des oeuvres à afficher
 // Recherche `site/inc/galerie-$idGalerie.txt`, sinon inclut `inc/galerie-demo.txt`
-if (isset($idGalerie)
+if ($idGalerie
 	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/')
 	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.txt'))
 {
@@ -26,6 +26,7 @@ if (isset($idGalerie)
 else
 {
 	// Galerie démo par défaut
+	$idGalerie = 'demo';
 	$galerie = construitTableauGalerie($racine . '/inc/galerie-demo.txt');
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/demo';
 	$racineImgSrc = $racine . '/fichiers/galeries/demo';
@@ -50,14 +51,7 @@ if (isset($_GET['oeuvre']))
 	foreach($galerie as $oeuvre)
 	{
 		// On récupère l'id de chaque image
-		if (!empty($oeuvre['id']))
-		{
-			$id = $oeuvre['id'];
-		}
-		else
-		{
-			$id = $oeuvre['grandeNom'];
-		}
+		$id = idOeuvre($oeuvre);
 		
 		if ($id == $_GET['oeuvre'])
 		{
@@ -69,16 +63,20 @@ if (isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie"), $id);
+				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie %2\$s"), $id, $idGalerie);
 			}
 
 			if (!empty($galerie[$i]['pageGrandeDescription']))
 			{
 				$description = $galerie[$i]['pageGrandeDescription'];
 			}
+			elseif (!empty($galerie[$i]['legendeGrande']))
+			{
+				$description = $galerie[$i]['legendeGrande'];
+			}
 			else
 			{
-				$description = sprintf(T_("Taille maximale de l'oeuvre %1\$s de la galerie"), $id) . ' | ' . $baliseTitleComplement[langue($langue)];
+				$description = sprintf(T_("Oeuvre %1\$s en version grande, galerie %2\$s"), $id, $idGalerie) . ' | ' . $baliseTitleComplement[langue($langue)];
 			}
 			
 			if (!isset($galerie[$i]['pageGrandeMotsCles']))
@@ -318,7 +316,7 @@ if (isset($_GET['oeuvre']))
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie pour éviter le contenu dupliqué.
 	else
 	{
-		$id = htmlentities(utf8_decode($_GET['oeuvre']), ENT_QUOTES);
+		$id = nettoieTexte($_GET['oeuvre']);
 		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), nomFichierGalerie()) . '</p>';
 		
 		// Ajustement des métabalises

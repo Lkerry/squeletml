@@ -1199,6 +1199,14 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 }
 
 /**
+Retourne une chaîne pouvant être affichée sans danger à l'écran.
+*/
+function nettoieTexte($texte)
+{
+	return htmlentities(utf8_decode($texte), ENT_QUOTES);
+}
+
+/**
 Construit et retourne un tableau PHP à partir d'un fichier texte dont la syntaxe est clé=valeur.
 */
 function construitTableauGalerie($fichierTexte)
@@ -1228,6 +1236,124 @@ function construitTableauGalerie($fichierTexte)
 	}
 	
 	return $galerie;
+}
+
+/**
+Retourne l'id d'une oeuvre d'une galerie.
+*/
+function idOeuvre($oeuvre)
+{
+	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['grandeNom'];
+}
+
+/**
+Génère et retourne le contenu d'un fichier RSS pour une galerie donnée.
+*/
+function rssGalerie($racine, $urlRacine, $urlGalerie, $idGalerie, $baliseTitleComplement, $nbreItemsFlux)
+{
+	$rss = '';
+	$rss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	$rss .= '<rss version="2.0">' . "\n";
+	$rss .= "\t<channel>\n";
+
+	$rss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
+	$rss .= "\t\t<link>$urlGalerie</link>\n";
+	$rss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
+
+	$i = 0;
+	$galerie = construitTableauGalerie("$racine/site/inc/galerie-$idGalerie.txt");
+	foreach ($galerie as $oeuvre)
+	{
+		if ($i >= $nbreItemsFlux)
+		{
+			break;
+		}
+		
+		$id = idOeuvre($oeuvre);
+		$title = sprintf(T_("Oeuvre %1\$s"), $id);
+		$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['grandeNom'];
+		$urlOeuvre = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['grandeNom'];
+		$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
+		if (!empty($oeuvre['pageGrandeDescription']))
+		{
+			$description = $oeuvre['pageGrandeDescription'];
+		}
+		elseif (!empty($oeuvre['grandeLegende']))
+		{
+			$description = $oeuvre['grandeLegende'];
+		}
+		else
+		{
+			$description = $title;
+		}
+		
+		if (!empty($oeuvre['grandeLargeur']))
+		{
+			$width = $oeuvre['grandeLargeur'];
+		}
+		else
+		{
+			list($width, $height) = getimagesize($cheminOeuvre);
+		}
+		
+		if (!empty($oeuvre['grandeHauteur']))
+		{
+			$height = $oeuvre['grandeHauteur'];
+		}
+		
+		if (!empty($oeuvre['grandeAlt']))
+		{
+			$alt = $oeuvre['grandeAlt'];
+		}
+		else
+		{
+			$alt = $title;
+		}
+		
+		if (!empty($oeuvre['origNom']))
+		{
+			$urlOrig = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['origNom'];
+		}
+		else
+		{
+			$infoOrig = pathinfo($oeuvre['grandeNom']);
+			$nomOrig = basename($oeuvre['grandeNom'], '.' . $infoOrig['extension']);
+			$nomOrig .= '-orig.' . $infoOrig['extension'];
+			if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOrig"))
+			{
+				$urlOrig = "$urlRacine/site/fichiers/galeries/$idGalerie/$nomOrig";
+			}
+			else
+			{
+				$urlOrig = '';
+			}
+		}
+		
+		if (!empty($urlOrig))
+		{
+			$msgOrig = "\n<p><a href='$urlOrig'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>";
+		}
+		else
+		{
+			$msgOrig = '';
+		}
+		
+		$description = nettoieTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOrig");
+		
+		$rss .= "\t\t<item>\n";
+		$rss .= "\t\t\t<title>$title</title>\n";
+		$rss .= "\t\t\t<link>$urlGalerieOeuvre</link>\n";
+		$rss .= "\t\t\t" . '<guid isPermaLink="true">' . "$urlGalerieOeuvre</guid>\n";
+		$rss .= "\t\t\t<description>$description</description>\n";
+		$rss .= "\t\t</item>\n\n";
+		
+		$i++;
+	}
+
+	$rss .= "\t</channel>\n";
+	$rss .= '</rss>';
+	
+	return $rss;
 }
 
 /**
