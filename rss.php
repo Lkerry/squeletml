@@ -12,9 +12,44 @@ $langue[1] = $langueNavigateur;
 // Nécessaire à la traduction
 phpGettext('.', $langueNavigateur);
 
-if (isset($_GET['idGalerie']) && !empty($_GET['idGalerie']) && file_exists("$racine/site/fichiers/galeries/" . $_GET['idGalerie']) && file_exists("$racine/site/inc/galerie-" . $_GET['idGalerie'] . ".txt"))
+if (file_exists($racine . '/' . $_GET['chemin']) && $fic = fopen($racine . '/' . $_GET['chemin'], 'r'))
 {
-	echo rssGalerie($racine, $urlRacine, 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'], $_GET['idGalerie'], baliseTitleComplement($baliseTitleComplement, $langue), $nbreItemsFlux);
+	while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
+	{
+		$ligne = rtrim(fgets($fic));
+		if (preg_match('/\$rss\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $res))
+		{
+			if ($res[1] == "TRUE" || $res[1] == "true")
+			{
+				$rss = TRUE;
+			}
+			elseif ($res[1] == "FALSE" || $res[1] == "false")
+			{
+				$rss = FALSE;
+			}
+		}
+		
+		if (preg_match('/\$idGalerie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $res))
+		{
+			$idGalerie = $res[1];
+		}
+	}
+	
+	fclose($fic);
+}
+else
+{
+	header('HTTP/1.1 404 Not found');
+}
+
+if (!isset($rss))
+{
+	$rss = $galerieFluxParDefaut;
+}
+
+if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/inc/galerie-" . $idGalerie . ".txt"))
+{
+	echo rssGalerie($racine, $urlRacine, $urlRacine . '/' . $_GET['chemin'], $idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $nbreItemsFlux);
 }
 
 ?>

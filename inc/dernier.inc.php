@@ -11,6 +11,13 @@
 			</div><!-- /galerie -->
 		<?php endif; ?>
 		
+		<?php if ($rss): ?>
+			<div class="sep"></div>
+			<div id="iconeRss">
+				<?php echo iconeRss($racine, $urlRacine, $urlFlux, $idGalerie); ?>
+			</div><!-- /iconeRss -->
+		<?php endif; ?>
+		
 	</div><!-- /interieurContenu -->
 </div><!-- /contenu -->
 

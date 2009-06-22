@@ -223,6 +223,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/demo`).
 
+- `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu pour la page en question.
+
 ### Inclusion du premier fichier PHP
 
 Il suffit d'inclure le fichier `inc/premier.inc.php`.

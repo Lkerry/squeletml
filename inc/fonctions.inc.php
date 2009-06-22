@@ -1247,18 +1247,35 @@ function idOeuvre($oeuvre)
 }
 
 /**
+Retourne le code pour une icône RSS faisant un lien vers le fichier du flux en question.
+*/
+function iconeRss($racine, $urlRacine, $urlFlux, $idGalerie)
+{
+	if (file_exists($racine . '/site/fichiers/rss.png'))
+	{
+		$imgSrc = $urlRacine . '/site/fichiers/rss.png';
+	}
+	else
+	{
+		$imgSrc = $urlRacine . '/fichiers/rss.png';
+	}
+	
+	return "<a href=\"$urlFlux\"><img src=\"$imgSrc\" alt=\"" . sprintf(T_("Flux RSS de la galerie %1\$s"), $idGalerie) . "\" width=\"16\" height=\"16\" /></a>";
+}
+
+/**
 Génère et retourne le contenu d'un fichier RSS pour une galerie donnée.
 */
 function rssGalerie($racine, $urlRacine, $urlGalerie, $idGalerie, $baliseTitleComplement, $nbreItemsFlux)
 {
-	$rss = '';
-	$rss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-	$rss .= '<rss version="2.0">' . "\n";
-	$rss .= "\t<channel>\n";
+	$contenuRss = '';
+	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	$contenuRss .= '<rss version="2.0">' . "\n";
+	$contenuRss .= "\t<channel>\n";
 
-	$rss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
-	$rss .= "\t\t<link>$urlGalerie</link>\n";
-	$rss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
+	$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
+	$contenuRss .= "\t\t<link>$urlGalerie</link>\n";
+	$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
 
 	$i = 0;
 	$galerie = construitTableauGalerie("$racine/site/inc/galerie-$idGalerie.txt");
@@ -1340,20 +1357,20 @@ function rssGalerie($racine, $urlRacine, $urlGalerie, $idGalerie, $baliseTitleCo
 		
 		$description = nettoieTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOrig");
 		
-		$rss .= "\t\t<item>\n";
-		$rss .= "\t\t\t<title>$title</title>\n";
-		$rss .= "\t\t\t<link>$urlGalerieOeuvre</link>\n";
-		$rss .= "\t\t\t" . '<guid isPermaLink="true">' . "$urlGalerieOeuvre</guid>\n";
-		$rss .= "\t\t\t<description>$description</description>\n";
-		$rss .= "\t\t</item>\n\n";
+		$contenuRss .= "\t\t<item>\n";
+		$contenuRss .= "\t\t\t<title>$title</title>\n";
+		$contenuRss .= "\t\t\t<link>$urlGalerieOeuvre</link>\n";
+		$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . "$urlGalerieOeuvre</guid>\n";
+		$contenuRss .= "\t\t\t<description>$description</description>\n";
+		$contenuRss .= "\t\t</item>\n\n";
 		
 		$i++;
 	}
 
-	$rss .= "\t</channel>\n";
-	$rss .= '</rss>';
+	$contenuRss .= "\t</channel>\n";
+	$contenuRss .= '</rss>';
 	
-	return $rss;
+	return $contenuRss;
 }
 
 /**

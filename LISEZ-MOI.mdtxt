@@ -8,7 +8,7 @@ En effet, seulement deux fichiers doivent être inclus dans chaque page (un au d
 
 Aussi, un fichier de configuration permet de choisir par simple renseignement de variables le nombre et l'emplacement des colonnes, la position des menus dans le flux HTML, la présence ou non de certaines structures comme le bas de page, etc.
 
-Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour l'affichage de l'interface.
+Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour l'affichage de l'interface.
 
 ## Fonctionnalités
 
@@ -37,6 +37,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
 
   - Nombre illimité de galeries.
   - Formats d'image PNG, JPG ou GIF.
+  - Un flux RSS par galerie.
   - Pagination configurable des vignettes constituant l'accueil de la galerie.
   - Choix de la navigation entre chaque image d'une galerie:
     - Fenêtre Javascript permettant de naviguer d'une image à une autre sans rechargement de page, ou
@@ -110,6 +111,10 @@ La petite icône offrant un lien vers le format original d'une oeuvre provient d
 #### Logo de Firefox dans le module d'affiche d'un message pour Internet Explorer 6
 
 Ce logo provient du [site de Mozilla](http://www.mozilla.com/en-US/about/logo/download.html).
+
+#### Icône des flux RSS
+
+Cette icône est sous triple licence Mozilla Public License Version 1.1/GPL/LGPL, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Feed-icon.svg?uselang=fr).
 
 ### PHP gettext
 

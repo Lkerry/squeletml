@@ -11,6 +11,11 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 	include_once $fichier;
 }
 // Fin des insertions
+
+if ($idGalerie && !isset($rss))
+{
+	$rss = $galerieFluxParDefaut;
+}
 ?>
 
 <?php echo doctype($xhtmlStrict); ?>
@@ -21,9 +26,13 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 <meta name="description" content="<?php echo $description; ?>" />
 <meta name="keywords" content="<?php echo construitMotsCles($motsCles, $description); ?>" />
 <meta name="robots" content="<?php echo robots($robots); ?>" />
-<?php if ($idGalerie && $rssGalerie): ?>
-	<?php echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?idGalerie=$idGalerie\" title=\"" . sprintf(T_("Galerie %1\$s"), $idGalerie) . "\" />"; ?>
-<?php endif; ?>
+<?php
+if ($idGalerie && $rss)
+{
+	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlFlux\" title=\"" . sprintf(T_("Galerie %1\$s"), $idGalerie) . "\" />";
+}
+?>
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 <?php if (($galerieAccueilJavascript || $galerieLienOrigJavascript) && $idGalerie): ?>
 	<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>

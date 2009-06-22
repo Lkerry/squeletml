@@ -121,8 +121,8 @@ $qualiteJpg = 90; // 0-100
 // Hauteur des vignettes si génération automatique
 $galerieHauteurVignette = 100;
 
-// Syndication pour chaque galerie (flux RSS)
-$rssGalerie = TRUE; // TRUE|FALSE
+// Syndication (flux RSS) par défaut des galeries (il est possible de désactiver la syndication de galeries en particulier)
+$galerieFluxParDefaut = TRUE; // TRUE|FALSE
 
 ##
 ## Accueil des galeries
