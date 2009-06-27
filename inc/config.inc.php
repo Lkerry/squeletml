@@ -49,6 +49,9 @@ $nbreItemsFlux = 50;
 // Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
 $langue[0] = 'fr';
 
+// Activer l'option «Faire découvrir à des ami-e-s»
+$faireDecouvrir = TRUE; // TRUE|FALSE
+
 // Message pour IE6
 $messageIE6 = TRUE; // TRUE|FALSE
 
@@ -121,7 +124,7 @@ $qualiteJpg = 90; // 0-100
 // Hauteur des vignettes si génération automatique
 $galerieHauteurVignette = 100;
 
-// Syndication (flux RSS) par défaut des galeries (il est possible de désactiver la syndication de galeries en particulier)
+// Syndication (flux RSS) par défaut des galeries (il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut)
 $galerieFluxParDefaut = TRUE; // TRUE|FALSE
 
 ##

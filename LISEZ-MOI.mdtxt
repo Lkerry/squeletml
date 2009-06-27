@@ -8,7 +8,7 @@ En effet, seulement deux fichiers doivent être inclus dans chaque page (un au d
 
 Aussi, un fichier de configuration permet de choisir par simple renseignement de variables le nombre et l'emplacement des colonnes, la position des menus dans le flux HTML, la présence ou non de certaines structures comme le bas de page, etc.
 
-Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour l'affichage de l'interface.
+Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une option «Faire découvrir à des ami-e-s», une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour l'affichage de l'interface.
 
 ## Fonctionnalités
 
@@ -31,7 +31,9 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
 
 - Gestion multilingue, et structure de site (menu, bas de page, etc.) selon la langue de la page.
 
-- Ajout d'autant de formulaires de contact que désiré, et ce avec options d'antipourriel et de copie à l'expéditeur.
+- Ajout d'un nombre illimité de formulaires de contact, et ce avec options d'antipourriel et de copie à l'expéditeur.
+
+- Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une oeuvre dans une galerie, une vignette de l'oeuvre et une description (si elle existe) sont insérées dans le message.
 
 - Module de galerie photos:
 

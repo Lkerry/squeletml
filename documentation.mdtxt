@@ -170,6 +170,10 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 						<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
 							...
 						</div><!-- /menu -->
+						
+						<div id="faireDecouvrir">
+							...
+						</div><!-- /faireDecouvrir -->
 					</div><!-- /sousContenu -->
 				
 					<div id="basDePage">
@@ -224,6 +228,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/demo`).
 
 - `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu pour la page en question.
+
+- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non le lien «Faire découvrir à des ami-e-s» pour la page en question.
 
 ### Inclusion du premier fichier PHP
 
@@ -522,6 +528,30 @@ Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de 
 
 Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
 
+## «Faire découvrir à des ami-e-s»
+
+Une option «Faire découvrir à des ami-e-s» est activée par défaut. Concrètement, un lien est inséré dans le menu pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour leur faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
+
+Si la page visitée est la page individuelle d'une oeuvre dans une galerie, le modèle de message contiendra une vignette de l'oeuvre et, si possible, une description, qui est formée par une de ces informations (en ordre de priorité):
+
+- `grandeLegende`
+- `grandeAlt`
+- `vignetteAlt`
+- `pageGrandeDescription`
+- `pageGrandeBaliseTitle`
+
+Si la page visitée est autre chose qu'une page individuelle d'oeuvre, le modèle de message contiendra un lien vers la page et, si possible une description, qui est formée par une de ces informations (en ordre de priorité):
+
+- `$baliseDescription`
+- `$baliseTitle`
+
+## Syndication de contenu (flux RSS)
+
+Par défaut, chaque galerie possède son propre flux RSS, généré automatiquement.
+
+L'icône utilisée par défaut est `fichiers/rss.png`. Il est possible d'utiliser sa propre icône en créant le fichier `site/fichiers/rss.png`.
+
 ## Développement
 
 `bzr` est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).
+

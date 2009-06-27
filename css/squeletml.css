@@ -55,6 +55,12 @@ div#sousTitre p {
 	padding-top: 0;
 }
 
+#modeleMessageDecouvrir {
+	margin: 25px;
+	padding: 5px;
+	background-color: #f2f2f2;
+}
+
 #menu a.actif {
 	font-weight: bold;
 }
@@ -72,6 +78,18 @@ div#sousTitre p {
 	border: none;
 }
 
+#faireDecouvrir {
+	margin-bottom: 15px;
+}
+
+#faireDecouvrir a {
+	display: block;
+	margin-left: 3px;
+	padding-left: 22px;
+	padding-right: 3px;
+	background: url('../fichiers/enveloppe.png') no-repeat left center;
+}
+
 #basDePage {
 	text-align: center;
 	padding: 0px 5px;
@@ -79,6 +97,10 @@ div#sousTitre p {
 
 h1, h2, h3, h4, h5, h6, a {
 	color: #007070;
+}
+
+h2#formulaireFaireDecouvrir {
+	clear: both;
 }
 
 a:visited {

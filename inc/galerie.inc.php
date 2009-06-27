@@ -316,7 +316,7 @@ if (isset($_GET['oeuvre']))
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie pour éviter le contenu dupliqué.
 	else
 	{
-		$id = nettoieTexte($_GET['oeuvre']);
+		$id = securiseTexte($_GET['oeuvre']);
 		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), nomFichierGalerie()) . '</p>';
 		
 		// Ajustement des métabalises

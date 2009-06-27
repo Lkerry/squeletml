@@ -1,17 +1,22 @@
-		<?php if (isset($courrielContact) && !empty($courrielContact)): ?>
-			<?php include $racine . '/inc/contact.inc.php'; ?>
-		<?php endif; ?>
-		
 		<?php if (isset($corpsGalerie) && !empty($corpsGalerie)): ?>
 			<?php $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement); ?>
 			<?php echo $tableauCorpsGalerie['corpsGalerie']; ?>
+		<?php endif; ?>
+		
+		<?php if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir' && $faireDecouvrir): ?>
+			<?php include $racine . '/inc/faire-decouvrir.inc.php'; ?>
+		<?php endif; ?>
+		
+		<?php if ((isset($courrielContact) && !empty($courrielContact)) ||
+		$decouvrir): ?>
+			<?php include $racine . '/inc/contact.inc.php'; ?>
 		<?php endif; ?>
 		
 		<?php if ($idGalerie): ?>
 			</div><!-- /galerie -->
 		<?php endif; ?>
 		
-		<?php if ($rss): ?>
+		<?php if ($idGalerie && $rss): ?>
 			<div class="sep"></div>
 			<div id="iconeRss">
 				<?php echo iconeRss($racine, $urlRacine, $urlFlux, $idGalerie); ?>
@@ -44,6 +49,12 @@
 		</div><!-- /menu -->
 		<script type="text/javascript">setPage();</script>
 	<?php endif; ?>
+<?php endif; ?>
+
+<?php if ($faireDecouvrir): ?>
+	<div id="faireDecouvrir">
+		<?php echo '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>'; ?>
+	</div><!-- /faireDecouvrir -->
 <?php endif; ?>
 
 <?php if (!empty($tableauCorpsGalerie['texteGrande'])): ?>

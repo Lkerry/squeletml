@@ -12,44 +12,64 @@ $langue[1] = $langueNavigateur;
 // Nécessaire à la traduction
 phpGettext('.', $langueNavigateur);
 
-if (file_exists($racine . '/' . $_GET['chemin']) && $fic = fopen($racine . '/' . $_GET['chemin'], 'r'))
+if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 {
-	while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
+	if (file_exists($racine . '/' . $_GET['chemin']) && $fic = fopen($racine . '/' . $_GET['chemin'], 'r'))
 	{
-		$ligne = rtrim(fgets($fic));
-		if (preg_match('/\$rss\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $res))
+		while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
 		{
-			if ($res[1] == "TRUE" || $res[1] == "true")
+			$ligne = rtrim(fgets($fic));
+			if (preg_match('/\$rss\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $res))
 			{
-				$rss = TRUE;
+				if ($res[1] == "TRUE" || $res[1] == "true")
+				{
+					$rss = TRUE;
+				}
+				elseif ($res[1] == "FALSE" || $res[1] == "false")
+				{
+					$rss = FALSE;
+				}
 			}
-			elseif ($res[1] == "FALSE" || $res[1] == "false")
+	
+			if (preg_match('/\$idGalerie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $res))
 			{
-				$rss = FALSE;
+				$idGalerie = $res[1];
 			}
 		}
+
+		fclose($fic);
 		
-		if (preg_match('/\$idGalerie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $res))
+		// Flux de la galerie
+		if (isset($idGalerie))
 		{
-			$idGalerie = $res[1];
+			if (!isset($rss))
+			{
+				$rss = $galerieFluxParDefaut;
+			}
+	
+			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/inc/galerie-" . $idGalerie . ".txt"))
+			{
+				echo rssGalerie($racine, $urlRacine, $urlRacine . '/' . $_GET['chemin'], $idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $nbreItemsFlux);
+			}
 		}
 	}
+	else
+	{
+		header('HTTP/1.1 404 Not found');
+	}
+}
+
+elseif (isset($_GET['global']) && !empty($_GET['global']))
+{
+	if ($_GET['global'] == 'galeries')
+	{
+		//
+	}
 	
-	fclose($fic);
-}
-else
-{
-	header('HTTP/1.1 404 Not found');
-}
-
-if (!isset($rss))
-{
-	$rss = $galerieFluxParDefaut;
-}
-
-if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/inc/galerie-" . $idGalerie . ".txt"))
-{
-	echo rssGalerie($racine, $urlRacine, $urlRacine . '/' . $_GET['chemin'], $idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $nbreItemsFlux);
+	elseif ($_GET['global'] == 'site')
+	{
+		//
+	}
 }
 
 ?>

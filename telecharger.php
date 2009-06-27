@@ -1,7 +1,9 @@
 <?php
+include_once 'init.inc.php';
 
-$urlComplete = $_GET['url'];
-$nom = basename($_GET['url']);
+$chemin = $racine . '/' . $_GET['fichier'];
+$url = $urlRacine . '/' . $_GET['fichier'];
+$nom = basename($_GET['fichier']);
 
 switch (strrchr(basename($nom), '.'))
 {
@@ -30,8 +32,16 @@ switch (strrchr(basename($nom), '.'))
 		break;
 }
 
-header('Content-Type: ' . $type);
-header('Content-Disposition: attachment; filename="' . $nom . '"');
-readfile($urlComplete);
+if (file_exists($chemin) && preg_match("|^$racine/site/fichiers/galeries/[^/]+/$nom|", $chemin))
+{
+	header('Content-Type: ' . $type);
+	header('Content-Disposition: attachment; filename="' . $nom . '"');
+	header('Content-Length: ' . filesize($chemin));
+	readfile($url);
+}
+else
+{
+	header('HTTP/1.1 404 Not found');
+}
 
 ?>

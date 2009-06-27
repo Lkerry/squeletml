@@ -775,6 +775,21 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 }
 
 /**
+Retourne la légende d'une oeuvre dans le bon format.
+*/
+function grandeLegende($legende, $galerieLegendeMarkdown)
+{
+	if ($galerieLegendeMarkdown)
+	{
+		return trim(Markdown($legende));
+	}
+	else
+	{
+		return $legende;
+	}
+}
+
+/**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
 function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOrigEmplacement, $galerieLienOrigJavascript, $galerieIconeOrig)
@@ -826,11 +841,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		
 		if (!empty($galerie[$indice]['grandeLegende']))
 		{
-			if ($galerieLegendeMarkdown)
-			{
-				$galerie[$indice]['grandeLegende'] = trim(Markdown($galerie[$indice]['grandeLegende']));
-			}
-			$legende = '<div id="galerieGrandeLegende">' . $galerie[$indice]['grandeLegende'] . '</div>';
+			$legende = '<div id="galerieGrandeLegende">' . grandeLegende($galerie[$indice]['grandeLegende'], $galerieLegendeMarkdown) . '</div>';
 		}
 		elseif ($galerieLegendeAutomatique)
 		{
@@ -868,13 +879,14 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			if ($galerieTelechargeOrig && !$galerieLienOrigJavascript && ($galerieLienOrigEmplacement == 'legende' || $galerieLienOrigEmplacement == 'imageLegende'))
 			{
 				$lienOrigTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;');
-				$lienOrigHref .= $urlRacine . '/telecharger.php?url=';
+				$lienOrigHref .= $urlRacine . '/telecharger.php?fichier=';
 			}
 			else
 			{
 				$lienOrigTrad = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;');
 			}
-			$lienOrigHref .= $urlImgSrc . '/' . $origNom;
+			
+			$lienOrigHref .= preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $origNom);
 			
 			if ($galerieLienOrigJavascript && !preg_match('|\.svg$|i', $origNom))
 			{
@@ -1199,14 +1211,6 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 }
 
 /**
-Retourne une chaîne pouvant être affichée sans danger à l'écran.
-*/
-function nettoieTexte($texte)
-{
-	return htmlentities(utf8_decode($texte), ENT_QUOTES);
-}
-
-/**
 Construit et retourne un tableau PHP à partir d'un fichier texte dont la syntaxe est clé=valeur.
 */
 function construitTableauGalerie($fichierTexte)
@@ -1236,6 +1240,183 @@ function construitTableauGalerie($fichierTexte)
 	}
 	
 	return $galerie;
+}
+
+/**
+Ajoute `-vignette` au nom d'un fichier, par exemple `fichier.extension` devient `fichier-vignette.extension`.
+*/
+function nomSuffixeVignette($fichier)
+{
+	$info = pathinfo($fichier);
+	$fichierVignette = basename($fichier, '.' . $info['extension']);
+	$fichierVignette .= '-vignette.' . $info['extension'];
+	
+	return $fichierVignette;
+}
+
+/**
+Retourne le contenu de l'attribut `action` du formulaire de contact.
+*/
+function actionFormContact($decouvrir)
+{
+	$action = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+	
+	if ($decouvrir)
+	{
+		$action .= '#formulaireFaireDecouvrir';
+	}
+	
+	return $action;
+}
+
+/**
+Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Faire découvrir».
+*/
+function decouvrirSupplementPage($baliseDescription, $baliseTitle)
+{
+	$messageDecouvrirSupplement = '';
+	
+	if (isset($baliseDescription) && !empty($baliseDescription))
+	{
+		$messageDecouvrirSupplement .= $baliseDescription;
+	}
+	elseif (isset($baliseTitle) && !empty($baliseTitle))
+	{
+		$messageDecouvrirSupplement .= $baliseTitle;
+	}
+	
+	if (!empty($messageDecouvrirSupplement))
+	{
+		$messageDecouvrirSupplement = "<p style='font-style: italic;'>$messageDecouvrirSupplement</p>";
+	}
+	
+	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Consultez cette page!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . '</p>';
+	
+	return $messageDecouvrirSupplement;
+}
+
+/**
+Retourne le texte supplémentaire d'une oeuvre pour le message envoyé par le module «Faire découvrir».
+*/
+function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre)
+{
+	$messageDecouvrirSupplement = '';
+	
+	if (isset($oeuvre['vignetteNom']) && !empty($oeuvre['vignetteNom']))
+	{
+		$vignetteNom = $oeuvre['vignetteNom'];
+	}
+	else
+	{
+		$vignetteNom = nomSuffixeVignette($oeuvre['grandeNom']);
+	}
+	
+	if (isset($oeuvre['vignetteAlt']) && !empty($oeuvre['vignetteAlt']))
+	{
+		$vignetteAlt = $oeuvre['vignetteAlt'];
+	}
+	elseif (isset($oeuvre['grandeAlt']) && !empty($oeuvre['grandeAlt']))
+	{
+		$vignetteAlt = $oeuvre['grandeAlt'];
+	}
+	else
+	{
+		$vignetteAlt = '';
+	}
+	
+	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/$idGalerie/" . $vignetteNom . "' alt='$vignetteAlt' /></p>";
+	
+	if (isset($oeuvre['grandeLegende']) && !empty($oeuvre['grandeLegende']))
+	{
+		$messageDecouvrirSupplement .= grandeLegende($oeuvre['grandeLegende'], $galerieLegendeMarkdown);
+	}
+	elseif (isset($oeuvre['grandeAlt']) && !empty($oeuvre['grandeAlt']))
+	{
+		$messageDecouvrirSupplement .= grandeLegende($oeuvre['grandeAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (isset($oeuvre['vignetteAlt']) && !empty($oeuvre['vignetteAlt']))
+	{
+		$messageDecouvrirSupplement .= grandeLegende($oeuvre['vignetteAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (isset($oeuvre['pageGrandeDescription']) && !empty($oeuvre['pageGrandeDescription']))
+	{
+		$messageDecouvrirSupplement .= $oeuvre['pageGrandeDescription'];
+	}
+	elseif (isset($oeuvre['pageGrandeBaliseTitle']) && !empty($oeuvre['pageGrandeBaliseTitle']))
+	{
+		$messageDecouvrirSupplement .= $oeuvre['pageGrandeBaliseTitle'];
+	}
+	
+	$messageDecouvrirSupplement = "<div style='font-style: italic; text-align: center;'>$messageDecouvrirSupplement</div>";
+	
+	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Voyez l'oeuvre en plus grande taille!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . '</p>';
+	
+	return $messageDecouvrirSupplement;
+}
+
+/**
+Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=faireDecouvrir` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=faireDecouvrir`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
+*/
+function urlPageSansDecouvrir($retourneTableau = FALSE)
+{
+	$urlPageSansDecouvrir = array ();
+	$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+	
+	if (strstr($url, '?action=faireDecouvrir&'))
+	{
+		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir&', '?', $url);
+	}
+	elseif (preg_match('/\?action=faireDecouvrir$/', $url))
+	{
+		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir', '', $url);
+	}
+	elseif (strstr($url, '&action=faireDecouvrir'))
+	{
+		$urlPageSansDecouvrir[0] = str_replace('&action=faireDecouvrir', '', $url);
+	}
+	else
+	{
+		$urlPageSansDecouvrir[0] = $url;
+	}
+	
+	if ($retourneTableau)
+	{
+		if (strstr($url, '?'))
+		{
+			$urlPageSansDecouvrir[1] = TRUE;
+		}
+		else
+		{
+			$urlPageSansDecouvrir[1] = FALSE;
+		}
+		
+		return $urlPageSansDecouvrir;
+	}
+	else
+	{
+		return $urlPageSansDecouvrir[0];
+	}
+}
+
+/**
+Retourne l'URL de la page en cours avec la variable GET `action=faireDecouvrir`.
+*/
+function urlPageAvecDecouvrir()
+{
+	$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+	
+	if (preg_match('/(\?|&)action=faireDecouvrir/', $url))
+	{
+		return $url . '#formulaireFaireDecouvrir';
+	}
+	elseif (strstr($url, '?'))
+	{
+		return "$url&action=faireDecouvrir#formulaireFaireDecouvrir";
+	}
+	else
+	{
+		return "$url?action=faireDecouvrir#formulaireFaireDecouvrir";
+	}
 }
 
 /**
@@ -1355,7 +1536,7 @@ function rssGalerie($racine, $urlRacine, $urlGalerie, $idGalerie, $baliseTitleCo
 			$msgOrig = '';
 		}
 		
-		$description = nettoieTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOrig");
+		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOrig");
 		
 		$contenuRss .= "\t\t<item>\n";
 		$contenuRss .= "\t\t\t<title>$title</title>\n";
