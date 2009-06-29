@@ -74,20 +74,36 @@ div#sousTitre p {
 	margin-top: 15px;
 }
 
-#iconeRss img {
-	border: none;
+#iconeRss ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#iconeRss li {
+	margin: 0;
+	padding: 0;
 }
 
 #faireDecouvrir {
 	margin-bottom: 15px;
 }
 
-#faireDecouvrir a {
-	display: block;
-	margin-left: 3px;
-	padding-left: 22px;
+#faireDecouvrir a, #iconeRss a {
+/*	display: block;*/
 	padding-right: 3px;
+}
+
+#faireDecouvrir a {
+	margin-left: 3px;
+	padding-left: 23px;
 	background: url('../fichiers/enveloppe.png') no-repeat left center;
+}
+
+#iconeRss a {
+	margin-left: 5px;
+	padding-left: 21px;
+	background: url('../fichiers/rss.png') no-repeat left center;
 }
 
 #basDePage {

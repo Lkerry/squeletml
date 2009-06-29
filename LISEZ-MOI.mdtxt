@@ -39,7 +39,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
 
   - Nombre illimité de galeries.
   - Formats d'image PNG, JPG ou GIF.
-  - Un flux RSS par galerie.
+  - Un flux RSS par galerie par défaut, et un flux RSS global activable pour toutes les galeries.
   - Pagination configurable des vignettes constituant l'accueil de la galerie.
   - Choix de la navigation entre chaque image d'une galerie:
     - Fenêtre Javascript permettant de naviguer d'une image à une autre sans rechargement de page, ou
@@ -108,7 +108,11 @@ Le logo a été fait à partir de l'image `clipart/animals/lizard_guillaume_boit
 
 Les oeuvres de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
 
-La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome 2.18](http://art.gnome.org/download/themes/icon/1352/ICON-Gnome218IconTheme.tar.bz2), fichier `22x22/actions/view-fullscreen.png`, et est sous licence GPL.
+La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), fichier `22x22/actions/view-fullscreen.png`, et est sous licence GPL.
+
+#### Image utilisée pour le lien «Faire découvrir à des ami-e-s»
+
+Cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
 
 #### Logo de Firefox dans le module d'affiche d'un message pour Internet Explorer 6
 

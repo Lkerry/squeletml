@@ -227,9 +227,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/demo`).
 
-- `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu pour la page en question.
-
-- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non le lien «Faire découvrir à des ami-e-s» pour la page en question.
+- `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question.
 
 ### Inclusion du premier fichier PHP
 
@@ -547,9 +545,22 @@ Si la page visitée est autre chose qu'une page individuelle d'oeuvre, le modèl
 
 ## Syndication de contenu (flux RSS)
 
-Par défaut, chaque galerie possède son propre flux RSS, généré automatiquement.
+### Syndication par galerie
 
-L'icône utilisée par défaut est `fichiers/rss.png`. Il est possible d'utiliser sa propre icône en créant le fichier `site/fichiers/rss.png`.
+Par défaut, chaque galerie possède son propre flux RSS, généré automatiquement. Dans la configuration, il est possible de désactiver par défaut la syndication individuelle des galeries. Dans tous les cas, la variable optionnelle `$rss` peut être renseignée dans le fichier PHP de la galerie pour activer (`TRUE`) ou désactiver (`FALSE`) la syndication pour la galerie en question.
+
+### Syndication globale des galeries
+
+Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.txt` doit être créé à la main. Ce fichier doit contenir la liste des galeries du site, et ce sous la forme suivante:
+
+	idGalerie=urlGalerie
+
+Exemple pour un site de deux galeries:
+
+	mes voyages=http://www.nomDeDomaine.ext/voyages.php
+	animaux=http://www.nomDeDomaine.ext/dossier/galerie-animaux.php
+
+**Note: puisque le script ne lit que la liste du fichier `site/inc/rss-global-galeries.txt`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans `site/inc/rss-global-galeries.txt` tout simplement.**
 
 ## Développement
 

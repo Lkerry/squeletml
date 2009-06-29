@@ -8,10 +8,10 @@
 # Au besoin, changer le chemin vers la page
 ErrorDocument 404 /404.php
 
-# Décommenter la ligne ci-dessous pour inclure automatiquement le fichier init.inc.php dans tous les fichiers PHP
-<FilesMatch "\.(php)$">
-	#php_value auto_prepend_file "/var/www/serveur_local/squeletml/init.inc.php"
-</FilesMatch>
+# Décommenter les lignes ci-dessous pour inclure automatiquement le fichier init.inc.php dans tous les fichiers PHP
+#<FilesMatch "\.(php)$">
+#	php_value auto_prepend_file "/var/www/serveur_local/squeletml/init.inc.php"
+#</FilesMatch>
 
 ########################################################################
 ##
@@ -22,13 +22,13 @@ ErrorDocument 404 /404.php
 # Ne pas lister les fichiers dans un dossier sans fichier `index`
 Options -Indexes
 
-# Empêcher l'accès au fichier informant de la version en cours
-<Files version.txt>
-	Deny from all
-</Files>
-
-# Empêcher l'accès aux fichiers Markdown
-<FilesMatch "\.(mdtxt)$">
+# Empêcher l'accès aux texte, sauf le fichier `robots.txt`
+<FilesMatch "(?<!robots)\.txt$">
 	Deny from all
 </FilesMatch>
+
+# Empêcher l'accès aux fichiers Markdown
+<Files *.mdtxt>
+	Deny from all
+</Files>
 

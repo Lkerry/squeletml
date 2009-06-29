@@ -1211,7 +1211,33 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 }
 
 /**
-Construit et retourne un tableau PHP à partir d'un fichier texte dont la syntaxe est clé=valeur.
+Construit et retourne un tableau associatif à partir d'un fichier texte dont chaque ligne a la forme `clé=valeur`.
+*/
+function tableauAssociatif($fichierTexte)
+{
+	$tableau = array ();
+	
+	$fic = @fopen($fichierTexte, 'r');
+	if ($fic)
+	{
+		while (!feof($fic))
+		{
+			$ligne = rtrim(fgets($fic));
+			if (strstr($ligne, '='))
+			{
+				list($cle, $valeur) = split('=', $ligne, 2);
+				$tableau[$cle] = $valeur;
+			}
+		}
+		
+		fclose($fic);
+	}
+	
+	return $tableau;
+}
+
+/**
+Construit et retourne un tableau PHP à partir d'un fichier texte listant des images, dont chacun de leurs champs se trouve seul sur une ligne avec la syntaxe `clé=valeur`. Chaque image est séparée par une ligne ne contenant que `__IMG__`.
 */
 function construitTableauGalerie($fichierTexte)
 {
@@ -1428,50 +1454,21 @@ function idOeuvre($oeuvre)
 }
 
 /**
-Retourne le code pour une icône RSS faisant un lien vers le fichier du flux en question.
+Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
 */
-function iconeRss($racine, $urlRacine, $urlFlux, $idGalerie)
+function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
-	if (file_exists($racine . '/site/fichiers/rss.png'))
-	{
-		$imgSrc = $urlRacine . '/site/fichiers/rss.png';
-	}
-	else
-	{
-		$imgSrc = $urlRacine . '/fichiers/rss.png';
-	}
-	
-	return "<a href=\"$urlFlux\"><img src=\"$imgSrc\" alt=\"" . sprintf(T_("Flux RSS de la galerie %1\$s"), $idGalerie) . "\" width=\"16\" height=\"16\" /></a>";
-}
-
-/**
-Génère et retourne le contenu d'un fichier RSS pour une galerie donnée.
-*/
-function rssGalerie($racine, $urlRacine, $urlGalerie, $idGalerie, $baliseTitleComplement, $nbreItemsFlux)
-{
-	$contenuRss = '';
-	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-	$contenuRss .= '<rss version="2.0">' . "\n";
-	$contenuRss .= "\t<channel>\n";
-
-	$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
-	$contenuRss .= "\t\t<link>$urlGalerie</link>\n";
-	$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
-
-	$i = 0;
 	$galerie = construitTableauGalerie("$racine/site/inc/galerie-$idGalerie.txt");
+	$itemsFlux = array ();
+	
 	foreach ($galerie as $oeuvre)
 	{
-		if ($i >= $nbreItemsFlux)
-		{
-			break;
-		}
-		
 		$id = idOeuvre($oeuvre);
 		$title = sprintf(T_("Oeuvre %1\$s"), $id);
 		$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['grandeNom'];
 		$urlOeuvre = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['grandeNom'];
 		$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
+		
 		if (!empty($oeuvre['pageGrandeDescription']))
 		{
 			$description = $oeuvre['pageGrandeDescription'];
@@ -1537,21 +1534,99 @@ function rssGalerie($racine, $urlRacine, $urlGalerie, $idGalerie, $baliseTitleCo
 		}
 		
 		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOrig");
+		$pubDate = fileatime($cheminOeuvre);
 		
-		$contenuRss .= "\t\t<item>\n";
-		$contenuRss .= "\t\t\t<title>$title</title>\n";
-		$contenuRss .= "\t\t\t<link>$urlGalerieOeuvre</link>\n";
-		$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . "$urlGalerieOeuvre</guid>\n";
-		$contenuRss .= "\t\t\t<description>$description</description>\n";
-		$contenuRss .= "\t\t</item>\n\n";
-		
-		$i++;
+		$itemsFlux[] = array (
+			"title" => $title,
+			"link" => $urlGalerieOeuvre,
+			"guid" => $urlGalerieOeuvre,
+			"description" => $description,
+			"pubDate" => $pubDate,
+		);
 	}
+	
+	return $itemsFlux;
+}
 
+/**
+Retourne le tableau `$itemsFlux` trié selon la date de dernière modification et contenant au maximum le nombre d'items précisé dans la configuration.
+*/
+function rssGalerieTableauFinal($itemsFlux, $nbreItemsFlux)
+{
+	foreach ($itemsFlux as $cle => $valeur)
+	{
+		$itemsFluxTitle[$cle] = $valeur['title'];
+		$itemsFluxLink[$cle] = $valeur['link'];
+		$itemsFluxGuid[$cle] = $valeur['guid'];
+		$itemsFluxDescription[$cle] = $valeur['description'];
+		$itemsFluxPubDate[$cle] = $valeur['pubDate'];
+	}
+	
+	array_multisort($itemsFluxPubDate, SORT_DESC, $itemsFlux);
+	
+	$itemsFlux = array_slice($itemsFlux, 0, $nbreItemsFlux);
+	
+	return $itemsFlux;
+}
+
+/**
+Retourne le contenu d'un fichier RSS pour une galerie donnée, ou pour toutes les galeries si `$idGalerie` vaut FALSE.
+*/
+function rssGalerie($idGalerie, $baliseTitleComplement, $urlGalerie, $itemsFlux)
+{
+	$contenuRss = '';
+	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	$contenuRss .= '<rss version="2.0">' . "\n";
+	$contenuRss .= "\t<channel>\n";
+	
+	if ($idGalerie)
+	{
+		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
+		$contenuRss .= "\t\t<link>$urlGalerie</link>\n";
+		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
+	}
+	else
+	{
+		$contenuRss .= "\t\t<title>" . T_("Galeries") . ' | ' . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<link>$urlGalerie</link>\n";
+		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . ' | ' . $baliseTitleComplement . "</description>\n\n";
+	}
+	
+	foreach ($itemsFlux as $itemFlux)
+	{
+		$contenuRss .= "\t\t<item>\n";
+		$contenuRss .= "\t\t\t<title>" . $itemFlux['title'] . "</title>\n";
+		$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
+		$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
+		$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
+		if ($itemFlux['pubDate'])
+		{
+			$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
+		}
+		$contenuRss .= "\t\t</item>\n\n";
+	}
+	
 	$contenuRss .= "\t</channel>\n";
 	$contenuRss .= '</rss>';
 	
 	return $contenuRss;
+}
+
+/**
+Retourne le code pour un lien vers le fichier du flux RSS en question.
+*/
+function lienRss($urlFlux, $idGalerie)
+{
+	if ($idGalerie)
+	{
+		$description = sprintf(T_("RSS de la galerie %1\$s"), $idGalerie);
+	}
+	else
+	{
+		$description = T_("RSS des galeries");
+	}
+	
+	return "<a href=\"$urlFlux\">$description</a>";
 }
 
 /**

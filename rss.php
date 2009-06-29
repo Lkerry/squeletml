@@ -2,6 +2,7 @@
 include_once 'init.inc.php';
 include_once 'inc/fonctions.inc.php';
 include_once $racine . '/inc/config.inc.php';
+include_once $racine . '/inc/constantes.inc.php';
 if (file_exists($racine . '/site/inc/config.inc.php'))
 {
 	include_once $racine . '/site/inc/config.inc.php';
@@ -49,7 +50,11 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 	
 			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/inc/galerie-" . $idGalerie . ".txt"))
 			{
-				echo rssGalerie($racine, $urlRacine, $urlRacine . '/' . $_GET['chemin'], $idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $nbreItemsFlux);
+				$urlGalerie = $urlRacine . '/' . $_GET['chemin'];
+				
+				$itemsFlux = rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxGlobalUrlOeuvre);
+				$itemsFlux = rssGalerieTableauFinal($itemsFlux, $nbreItemsFlux);
+				echo rssGalerie($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $urlGalerie, $itemsFlux);
 			}
 		}
 	}
@@ -59,17 +64,34 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 	}
 }
 
-elseif (isset($_GET['global']) && !empty($_GET['global']))
+elseif (isset($_GET['global']) && $_GET['global'] == 'galeries')
 {
-	if ($_GET['global'] == 'galeries')
+	if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt"))
 	{
-		//
+		$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.txt");
+		if (!empty($galeries))
+		{
+			$itemsFlux = array ();
+			
+			foreach ($galeries as $idGalerie => $urlGalerie)
+			{
+				$itemsFlux = array_merge($itemsFlux, rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie));
+			}
+			
+			$itemsFlux = rssGalerieTableauFinal($itemsFlux, $nbreItemsFlux);
+			$idGalerie = FALSE;
+			echo rssGalerie($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux);
+		}
 	}
-	
-	elseif ($_GET['global'] == 'site')
+	else
 	{
-		//
+		header('HTTP/1.1 404 Not found');
 	}
+}
+
+elseif (isset($_GET['global']) && $_GET['global'] == 'site')
+{
+	//
 }
 
 ?>
