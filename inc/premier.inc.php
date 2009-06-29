@@ -30,7 +30,12 @@ if ($idGalerie && !isset($rss))
 if ($idGalerie && $rss)
 {
 	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']);
-	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlFlux\" title=\"" . sprintf(T_("Flux RSS de la galerie %1\$s"), $idGalerie) . "\" />";
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlFlux\" title=\"" . sprintf(T_("RSS de la galerie %1\$s"), $idGalerie) . "\" />";
+}
+
+if ($galerieFluxGlobal)
+{
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=galeries\" title=\"" . T_("RSS des galeries") . "\" />";
 }
 ?>
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
