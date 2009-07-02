@@ -1,6 +1,10 @@
 <?php
 // Début des insertions
 include_once dirname(__FILE__) . '/../init.inc.php';
+if (file_exists($racine . '/inc/devel.inc.php'))
+{
+	include_once $racine . '/inc/devel.inc.php';
+}
 include_once $racine . '/inc/fonctions.inc.php';
 if (!isset($idGalerie))
 {

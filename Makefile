@@ -44,6 +44,7 @@ bz2: menage-bz2 ChangeLog version.txt
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 	cd ../
+	rm -f $(tag)/inc/devel.inc.php
 	rm -f $(tag)/Makefile
 	rm -f $(tag)/scripts.cli.php
 	rm -rf $(tag)/src
