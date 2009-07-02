@@ -35,11 +35,13 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
 
 - Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une oeuvre dans une galerie, une vignette de l'oeuvre et une description (si elle existe) sont insérées dans le message.
 
+- Flux RSS global du site activable.
+
 - Module de galerie photos:
 
   - Nombre illimité de galeries.
   - Formats d'image PNG, JPG ou GIF.
-  - Un flux RSS par galerie par défaut, et un flux RSS global activable pour toutes les galeries.
+  - Un flux RSS par galerie par défaut, et un flux RSS global activable contenant les dernières oeuvres de toutes les galeries.
   - Pagination configurable des vignettes constituant l'accueil de la galerie.
   - Choix de la navigation entre chaque image d'une galerie:
     - Fenêtre Javascript permettant de naviguer d'une image à une autre sans rechargement de page, ou

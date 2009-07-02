@@ -55,16 +55,20 @@
 		<?php echo $tableauCorpsGalerie['texteGrande']; ?>
 	<?php endif; ?>
 
-	<?php if (($idGalerie && $rss) || $galerieFluxGlobal): ?>
+	<?php if (($idGalerie && $rss) || $galerieFluxGlobal || $siteFluxGlobal): ?>
 		<div class="sep"></div>
 		<div id="iconeRss">
 			<ul>
 				<?php if ($idGalerie && $rss): ?>
-					<li><?php echo lienRss($urlFlux, $idGalerie); ?></li>
+					<li><?php echo lienRss($urlFlux, $idGalerie, TRUE); ?></li>
+				<?php endif; ?>
+		
+				<?php if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt")): ?>
+					<li><?php echo lienRss("$urlRacine/rss.php?global=galeries", FALSE, TRUE); ?></li>
 				<?php endif; ?>
 			
-				<?php if ($galerieFluxGlobal): ?>
-					<li><?php echo lienRss("$urlRacine/rss.php?global=galeries", FALSE); ?></li>
+				<?php if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.txt")): ?>
+					<li><?php echo lienRss("$urlRacine/rss.php?global=site", FALSE, FALSE); ?></li>
 				<?php endif; ?>
 			</ul>
 		</div><!-- /iconeRss -->

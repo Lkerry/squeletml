@@ -33,9 +33,14 @@ if ($idGalerie && $rss)
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlFlux\" title=\"" . sprintf(T_("RSS de la galerie %1\$s"), $idGalerie) . "\" />";
 }
 
-if ($galerieFluxGlobal)
+if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt"))
 {
-	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=galeries\" title=\"" . T_("RSS des galeries") . "\" />";
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=galeries\" title=\"" . T_("RSS de toutes les galeries") . "\" />";
+}
+
+if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.txt"))
+{
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=pages\" title=\"" . T_("RSS global du site") . "\" />";
 }
 ?>
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>

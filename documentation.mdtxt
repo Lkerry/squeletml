@@ -551,16 +551,40 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 ### Syndication globale des galeries
 
-Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.txt` doit être créé à la main. Ce fichier doit contenir la liste des galeries du site, et ce sous la forme suivante:
+Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.txt` doit être créé à la main. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
-	idGalerie=urlGalerie
+	id de la galerie=URL relative de la galerie
 
-Exemple pour un site de deux galeries:
+L'id correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
 
-	mes voyages=http://www.nomDeDomaine.ext/voyages.php
-	animaux=http://www.nomDeDomaine.ext/dossier/galerie-animaux.php
+	mes voyages=voyages.php
+	animaux=dossier/galerie-animaux.php
+
+Les deux galeries en question sont accessibles respectivement à l'adresse:
+
+	http://www.nomDeDomaine.ext/voyages.php
+
+et:
+
+	http://www.nomDeDomaine.ext/dossier/galerie-animaux.php
 
 **Note: puisque le script ne lit que la liste du fichier `site/inc/rss-global-galeries.txt`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans `site/inc/rss-global-galeries.txt` tout simplement.**
+
+### Syndication globale du site
+
+Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.txt` doit être créé à la main. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
+
+	URL relative de la page
+
+L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
+
+	dossier1/dossier2/page.php
+
+La page en question est accessible à l'adresse suivante:
+
+	http://www.nomDeDomaine.ext/dossier1/dossier2/page.php
+
+L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.txt` composeront le flux global du site.
 
 ## Développement
 

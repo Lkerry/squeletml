@@ -1549,9 +1549,36 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 }
 
 /**
+Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
+*/
+function rssPageTableauBrut($cheminPage, $urlPage)
+{
+	$itemFlux = array ();
+	
+	preg_match('|<title>(.+)</title>.+<div id="interieurContenu">(.+)</div><!-- /interieurContenu -->|s', file_get_contents($urlPage), $res);
+	$pubDate = fileatime($cheminPage);
+	
+	$title = securiseTexte($res[1]);
+	if (empty($title))
+	{
+		$title = $urlPage;
+	}
+	
+	$itemFlux[] = array (
+		"title" => $title,
+		"link" => $urlPage,
+		"guid" => $urlPage,
+		"description" => securiseTexte($res[2]),
+		"pubDate" => $pubDate,
+	);
+	
+	return $itemFlux;
+}
+
+/**
 Retourne le tableau `$itemsFlux` trié selon la date de dernière modification et contenant au maximum le nombre d'items précisé dans la configuration.
 */
-function rssGalerieTableauFinal($itemsFlux, $nbreItemsFlux)
+function rssTableauFinal($itemsFlux, $nbreItemsFlux)
 {
 	foreach ($itemsFlux as $cle => $valeur)
 	{
@@ -1570,9 +1597,9 @@ function rssGalerieTableauFinal($itemsFlux, $nbreItemsFlux)
 }
 
 /**
-Retourne le contenu d'un fichier RSS pour une galerie donnée, ou pour toutes les galeries si `$idGalerie` vaut FALSE.
+Retourne le contenu d'un fichier RSS.
 */
-function rssGalerie($idGalerie, $baliseTitleComplement, $urlGalerie, $itemsFlux)
+function rss($idGalerie, $baliseTitleComplement, $url, $itemsFlux, $estGalerie)
 {
 	$contenuRss = '';
 	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -1581,15 +1608,24 @@ function rssGalerie($idGalerie, $baliseTitleComplement, $urlGalerie, $itemsFlux)
 	
 	if ($idGalerie)
 	{
+		// Page individuelle d'une galerie
 		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
-		$contenuRss .= "\t\t<link>$urlGalerie</link>\n";
+		$contenuRss .= "\t\t<link>$url</link>\n";
 		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
+	}
+	elseif ($estGalerie)
+	{
+		// Toutes les galeries
+		$contenuRss .= "\t\t<title>" . T_("Galeries") . ' | ' . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . ' | ' . $baliseTitleComplement . "</description>\n\n";
 	}
 	else
 	{
-		$contenuRss .= "\t\t<title>" . T_("Galeries") . ' | ' . $baliseTitleComplement . "</title>\n";
-		$contenuRss .= "\t\t<link>$urlGalerie</link>\n";
-		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . ' | ' . $baliseTitleComplement . "</description>\n\n";
+		// Tout le site
+		$contenuRss .= "\t\t<title>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</description>\n\n";
 	}
 	
 	foreach ($itemsFlux as $itemFlux)
@@ -1615,18 +1651,50 @@ function rssGalerie($idGalerie, $baliseTitleComplement, $urlGalerie, $itemsFlux)
 /**
 Retourne le code pour un lien vers le fichier du flux RSS en question.
 */
-function lienRss($urlFlux, $idGalerie)
+function lienRss($urlFlux, $idGalerie, $estGalerie)
 {
 	if ($idGalerie)
 	{
 		$description = sprintf(T_("RSS de la galerie %1\$s"), $idGalerie);
 	}
+	elseif ($estGalerie)
+	{
+		$description = T_("RSS de toutes les galeries");
+	}
 	else
 	{
-		$description = T_("RSS des galeries");
+		$description = T_("RSS global du site");
 	}
 	
 	return "<a href=\"$urlFlux\">$description</a>";
+}
+
+/**
+Vérifie si le cache d'un fichier expire.
+*/
+function cacheExpire($fichier, $dureeCache)
+{
+	if (time() - fileatime($fichier) > $dureeCache)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/**
+Vérifie si le dossier de cache existe. S'il n'existe pas, le dossier est créé, sinon rien n'est fait.
+*/
+function creeDossierCache($racine)
+{
+	if (!file_exists("$racine/site/cache"))
+	{
+		mkdir("$racine/site/cache");
+	}
+	
+	return;
 }
 
 /**

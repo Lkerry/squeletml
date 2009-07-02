@@ -42,9 +42,23 @@ $robots[0] = "index, follow, archive";
 // Encodage
 $charset = 'UTF-8';
 
-// Syndication de contenu
-/* Nombre d'items par flux */
+// Syndication globale du site
+/* La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxGlobal` vaut `TRUE`. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL. Voir la documentation pour plus de détails. */
+$siteFluxGlobal = FALSE; // TRUE|FALSE
+
+// Nombre d'items par flux RSS
 $nbreItemsFlux = 50;
+
+// Temps en secondes avant que le cache des flux RSS n'expire
+/*
+Exemples:
+- `0` équivaut à désactiver le cache;
+- `1800` équivaut à 30 minutes;
+- `3600` équivaut à 1 heure;
+- `43200` équivaut à 12 heures;
+- `86400` équivaut à 1 journée.
+*/
+$dureeCache = 0;
 
 // Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
 $langue[0] = 'fr';
