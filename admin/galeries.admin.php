@@ -339,7 +339,7 @@ if (isset($_POST['lister']))
 				$fichier = str_replace('\\', '', $fichier);
 				$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $res[1]);
 				$fichierLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
-				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("id:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=modifier&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
+				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("id:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=modifier&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
 			}
 		}
 	}

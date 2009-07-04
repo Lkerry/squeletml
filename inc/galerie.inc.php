@@ -185,11 +185,11 @@ if (isset($_GET['oeuvre']))
 		// On crée le corps de la galerie
 		if ($galerieNavigationEmplacement == 'haut')
 		{
-			$corpsGalerie .= $lienVersGalerie . $oeuvrePrecedente . $oeuvreSuivante . $oeuvreGrande;
+			$corpsGalerie .= $oeuvrePrecedente . $oeuvreSuivante . $oeuvreGrande;
 		}
 		elseif ($galerieNavigationEmplacement == 'bas')
 		{
-			$corpsGalerie .= $lienVersGalerie . $oeuvreGrande . $oeuvrePrecedente . $oeuvreSuivante;
+			$corpsGalerie .= $oeuvreGrande . $oeuvrePrecedente . $oeuvreSuivante;
 		}
 		
 		// $galerieInfo

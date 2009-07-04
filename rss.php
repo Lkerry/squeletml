@@ -64,7 +64,7 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 					$itemsFlux = rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxGlobalUrlOeuvre);
 					$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);
 					creeDossierCache($racine);
-					file_put_contents("$racine/site/cache/rss-$idGalerie.xml", rssGalerie($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $urlGalerie, $itemsFlux, TRUE));
+					file_put_contents("$racine/site/cache/rss-$idGalerie.xml", rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $urlGalerie, $itemsFlux, TRUE));
 					readfile("$racine/site/cache/rss-$idGalerie.xml");
 				}
 			}
@@ -106,7 +106,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries')
 				$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);
 				$idGalerie = FALSE;
 				creeDossierCache($racine);
-				file_put_contents("$racine/site/cache/rss-global-galeries.xml", rssGalerie($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, TRUE));
+				file_put_contents("$racine/site/cache/rss-global-galeries.xml", rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, TRUE));
 				readfile("$racine/site/cache/rss-global-galeries.xml");
 			}
 		}

@@ -36,6 +36,10 @@ a:hover {
 	border-bottom: 1px dotted #f2f2f2;
 }
 
+code {
+	font-weight: bold;
+}
+
 #menu a.actif {
 	font-weight: bold;
 }
@@ -50,12 +54,6 @@ pre {
 
 .erreur {
 	color: #630000;
-}
-
-/* Gestion des galeries */
-
-body#galeries-admin-php code {
-	font-weight: bold;
 }
 
 /* Porte-documents */
