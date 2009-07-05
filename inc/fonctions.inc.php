@@ -1298,15 +1298,15 @@ function actionFormContact($decouvrir)
 /**
 Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Faire découvrir».
 */
-function decouvrirSupplementPage($baliseDescription, $baliseTitle)
+function decouvrirSupplementPage($description, $baliseTitle)
 {
 	$messageDecouvrirSupplement = '';
 	
-	if (isset($baliseDescription) && !empty($baliseDescription))
+	if (!empty($description))
 	{
-		$messageDecouvrirSupplement .= $baliseDescription;
+		$messageDecouvrirSupplement .= $description;
 	}
-	elseif (isset($baliseTitle) && !empty($baliseTitle))
+	elseif (!empty($baliseTitle))
 	{
 		$messageDecouvrirSupplement .= $baliseTitle;
 	}
@@ -1324,7 +1324,7 @@ function decouvrirSupplementPage($baliseDescription, $baliseTitle)
 /**
 Retourne le texte supplémentaire d'une oeuvre pour le message envoyé par le module «Faire découvrir».
 */
-function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre)
+function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown)
 {
 	$messageDecouvrirSupplement = '';
 	

@@ -236,7 +236,7 @@ elseif (isset($_POST['modifsSite']))
 
 <?php
 echo '<ul>';
-if ($galerieFluxGlobal)
+if (adminFluxGlobal('galerie', $racine))
 {
 	echo '<li>' . T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieFluxGlobal = TRUE;</code>).</li>';
 }
@@ -245,7 +245,7 @@ else
 	echo '<li>' . T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieFluxGlobal = FALSE;</code>).</li>';
 }
 
-if ($siteFluxGlobal)
+if (adminFluxGlobal('site', $racine))
 {
 	echo '<li>' . T_("Le flux RSS global du site est activé") . ' (<code>$siteFluxGlobal = TRUE;</code>).</li>';
 }

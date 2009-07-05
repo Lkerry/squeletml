@@ -39,6 +39,27 @@ function adminInit($racine)
 }
 
 /**
+Retourne la valeur des variables `$galerieFluxGlobal` ou `$siteFluxGlobal`.
+*/
+function adminFluxGlobal($flux, $racine)
+{
+	include $racine . '/inc/config.inc.php';
+	if (file_exists($racine . '/site/inc/config.inc.php'))
+	{
+		include $racine . '/site/inc/config.inc.php';
+	}
+	
+	if ($flux == 'galerie')
+	{
+		return $galerieFluxGlobal;
+	}
+	elseif ($flux == 'site')
+	{
+		return $siteFluxGlobal;
+	}
+}
+
+/**
 
 */
 function adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)

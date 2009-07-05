@@ -8,6 +8,8 @@ $message = '';
 $copie = '';
 $courrielsDecouvrir = '';
 
+$messageEnvoye = FALSE;
+
 include $racine . '/inc/faire-decouvrir.inc.php';
 
 if ($decouvrir)
@@ -48,7 +50,7 @@ if (isset($_POST['envoyer']))
 		}
 	}
 	
-	if ($verifCourriel && isset($courrielsDecouvrir))
+	if ($verifCourriel && isset($courrielsDecouvrir) && !empty($courrielsDecouvrir))
 	{
 		$tableauCourrielsDecouvrir = explode(',', str_replace(' ', '', $courrielsDecouvrir));
 		$courrielsDecouvrirErreur = '';
@@ -62,7 +64,10 @@ if (isset($_POST['envoyer']))
 			}
 		}
 		
-		$msg['erreur'][] = T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier:", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier:", $i) . ' ' . substr($courrielsDecouvrirErreur, 0, -2);
+		if (!empty($courrielsDecouvrirErreur))
+		{
+			$msg['erreur'][] = T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier:", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier:", $i) . ' ' . substr($courrielsDecouvrirErreur, 0, -2);
+		}
 	}
 	
 	if (empty($message) && !$decouvrir)
@@ -91,18 +96,40 @@ if (isset($_POST['envoyer']))
 	if (empty($msg))
 	{
 		// Envoi du message
-		$entete = '';
-		$entete .= "From: $nom <$courriel>\n";
-		$entete .= "Reply-to: $courriel\n";
-
-		// Si l'internaute veut une copie, on met le courriel du ou des destinataires en copie invisible pour ne pas rendre ces adresses visibles dans l'en-tête du message
-		if ($decouvrir)
+		
+		// Adresses
+		
+		$adresseFrom = $courriel;
+		$adresseReplyTo = $courriel;
+		
+		$adresseBcc = '';
+		
+		if ($decouvrir && $copieCourriel && $copie == 'copie')
 		{
-			$entete .= "Bcc: $courrielsDecouvrir\n";
+			$adresseTo = $adresseFrom;
+			$adresseBcc = $courrielsDecouvrir;
 		}
-		elseif ($copieCourriel)
+		elseif ($decouvrir)
 		{
-			$entete .= "Bcc: $courrielContact\n";
+			$adresseTo = $courrielsDecouvrir;
+		}
+		elseif (!$decouvrir && $copieCourriel && $copie == 'copie')
+		{
+			$adresseTo = $adresseFrom;
+			$adresseBcc = $courrielContact;
+		}
+		elseif (!$decouvrir)
+		{
+			$adresseTo = $courrielContact;
+		}
+		
+		$entete = '';
+		$entete .= "From: $nom <$adresseFrom>\n";
+		$entete .= "Reply-to: $adresseReplyTo\n";
+
+		if (!empty($adresseBcc))
+		{
+			$entete .= "Bcc: $adresseBcc\n";
 		}
 		
 		$entete .= "MIME-Version: 1.0\n";
@@ -122,27 +149,21 @@ if (isset($_POST['envoyer']))
 		}
 		else
 		{
-			$corps = "Message de " . "$nom <$courriel>\n\n" . str_replace("\r", '', $message) . "\n";
+			$corps = str_replace("\r", '', $message) . "\n";
 		}
 		
-		if ($copieCourriel)
-		{
-			$courrielContact = $courriel;
-		}
-		
-		if (mail($courrielContact, $courrielObjetId . "Message de " . "$nom <$courriel>", $corps, $entete))
+		if (mail($adresseTo, $courrielObjetId . "Message de " . "$nom <$adresseFrom>", $corps, $entete))
 		{
 			$messageEnvoye = TRUE;
 			$msg['envoi'][1] = T_("Votre message a bien été envoyé.");
-			unset($nom);
-			unset($courriel);
-			unset($message);
-			unset($copieCourriel);
-			unset($courrielsDecouvrir);
+			$nom = '';
+			$courriel = '';
+			$message = '';
+			$copie = '';
+			$courrielsDecouvrir = '';
 		}
 		else
 		{
-			$messageEnvoye = FALSE;
 			$msg['envoi'][0] = T_("ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.");
 		}
 	}
@@ -204,7 +225,7 @@ if (isset($_POST['envoyer']))
 	<?php $captchaCalcul2 = rand($captchaCalculMin, $captchaCalculMax); ?>
 	<?php $captchaCalculBidon = rand($captchaCalculMin, $captchaCalculMax); ?>
 	<p><label><?php echo T_("Antipourriel:"); ?></label><br />
-	<?php printf(T_("Veuillez compléter: %1\$s ajouté à %2\$s vaut %3\$s"), $captchaCalcul1, $captchaCalcul2, "<input name='ab' type='text' size='2' maxlength='2' />"); ?></p>
+	<?php printf(T_("Veuillez compléter: %1\$s ajouté à %2\$s vaut %3\$s"), $captchaCalcul1, $captchaCalcul2, "<input name='ab' type='text' size='4' />"); ?></p>
 	<input name="a" type="hidden" value="<?php echo $captchaCalcul1; ?>" />
 	<input name="b" type="hidden" value="<?php echo $captchaCalculBidon; ?>" />
 	<?php
