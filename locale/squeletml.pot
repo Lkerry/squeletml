@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-01 21:05-0400\n"
+"POT-Creation-Date: 2009-07-04 20:33-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -82,13 +82,146 @@ msgstr ""
 msgid "Administration"
 msgstr ""
 
-#: admin/droits.admin.php:3 admin/droits.admin.php:7
-msgid "Gestion des droits d'accès"
+#: admin/rss.admin.php:3 admin/rss.admin.php:9
+msgid "Gestion des flux RSS globaux"
 msgstr ""
 
-#: admin/droits.admin.php:10 admin/galeries.admin.php:12
-#: admin/porte-documents.admin.php:51
+#: admin/rss.admin.php:12 admin/droits.admin.php:10
+#: admin/galeries.admin.php:12 admin/porte-documents.admin.php:51
 msgid "Messages d'avancement, de confirmation ou d'erreur"
+msgstr ""
+
+#: admin/rss.admin.php:41
+msgid "Liste des pages des galeries"
+msgstr ""
+
+#: admin/rss.admin.php:42
+#, php-format
+msgid ""
+"Chaque ligne est sous la forme <code>id de la galerie=URL relative de la "
+"galerie</code>. Par exemple, %1$s fait référence à une galerie dont l'id est "
+"%2$s et dont l'URL est %3$s."
+msgstr ""
+
+#: admin/rss.admin.php:50
+msgid "Le fichier est vide. Aucune galerie n'y est listée."
+msgstr ""
+
+#: admin/rss.admin.php:53
+msgid "Ajouter une galerie:"
+msgstr ""
+
+#: admin/rss.admin.php:57 admin/rss.admin.php:112
+msgid "Enregistrer mes modifications"
+msgstr ""
+
+#: admin/rss.admin.php:64 admin/rss.admin.php:119 admin/rss.admin.php:159
+#: admin/rss.admin.php:210
+#, php-format
+msgid "Impossible d'ouvrir le fichier %1$s."
+msgstr ""
+
+#: admin/rss.admin.php:69 admin/rss.admin.php:169
+#, php-format
+msgid ""
+"Aucune galerie ne peut faire partie du flux global des galeries puisque le "
+"fichier %1$s n'existe pas. <a href='%2$s'>Vous pouvez créer ce fichier</a>."
+msgstr ""
+
+#: admin/rss.admin.php:96
+msgid "Liste des pages autres que les galeries"
+msgstr ""
+
+#: admin/rss.admin.php:97
+#, php-format
+msgid ""
+"Chaque ligne est sous la forme <code>URL relative de la page</code>. Par "
+"exemple, %1$s fait référence à une page dont l'URL est %2$s."
+msgstr ""
+
+#: admin/rss.admin.php:105
+msgid "Le fichier est vide. Aucune page n'y est listée."
+msgstr ""
+
+#: admin/rss.admin.php:108
+msgid "Ajouter une page:"
+msgstr ""
+
+#: admin/rss.admin.php:124 admin/rss.admin.php:220
+#, php-format
+msgid ""
+"Aucune page ne peut faire partie du flux global du site puisque le fichier %1"
+"$s n'existe pas. <a href='%2$s'>Vous pouvez créer ce fichier</a>."
+msgstr ""
+
+#: admin/rss.admin.php:132
+msgid "Enregistrement des modifications pour les galeries"
+msgstr ""
+
+#: admin/rss.admin.php:151 admin/rss.admin.php:202
+#, php-format
+msgid ""
+"Les modifications ont été enregistrées. Voici le contenu qui a été "
+"enregistré dans le fichier %1$s:"
+msgstr ""
+
+#: admin/rss.admin.php:154 admin/rss.admin.php:163 admin/rss.admin.php:173
+#: admin/rss.admin.php:205 admin/rss.admin.php:214 admin/rss.admin.php:224
+#: admin/galeries.admin.php:493
+msgid "Sélectionner le résultat."
+msgstr ""
+
+#: admin/rss.admin.php:160 admin/rss.admin.php:170 admin/rss.admin.php:211
+#: admin/rss.admin.php:221
+msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
+msgstr ""
+
+#: admin/rss.admin.php:183
+msgid "Enregistrement des modifications pour les pages autres que les galeries"
+msgstr ""
+
+#: admin/rss.admin.php:235
+msgid "Configuration actuelle"
+msgstr ""
+
+#: admin/rss.admin.php:241
+msgid "Le flux RSS global des galeries est activé"
+msgstr ""
+
+#: admin/rss.admin.php:245
+msgid "Le flux RSS global des galeries n'est pas activé"
+msgstr ""
+
+#: admin/rss.admin.php:250
+msgid "Le flux RSS global du site est activé"
+msgstr ""
+
+#: admin/rss.admin.php:254
+msgid "Le flux RSS global du site n'est pas activé"
+msgstr ""
+
+#: admin/rss.admin.php:258
+msgid "Modifier cette configuration."
+msgstr ""
+
+#: admin/rss.admin.php:263
+msgid "Pages ajoutées aux flux globaux"
+msgstr ""
+
+#: admin/rss.admin.php:267
+msgid "Pages des galeries"
+msgstr ""
+
+#: admin/rss.admin.php:268
+msgid "Autres pages"
+msgstr ""
+
+#: admin/rss.admin.php:270
+msgid "Lister les pages"
+msgstr ""
+
+#: admin/droits.admin.php:3 admin/droits.admin.php:7
+msgid "Gestion des droits d'accès"
 msgstr ""
 
 #: admin/droits.admin.php:20 admin/droits.admin.php:30
@@ -167,11 +300,11 @@ msgstr ""
 msgid "Ajouter"
 msgstr ""
 
-#: admin/droits.admin.php:283 admin/inc/fonctions.inc.php:117
+#: admin/droits.admin.php:283 admin/inc/fonctions.inc.php:138
 msgid "Modifier"
 msgstr ""
 
-#: admin/droits.admin.php:283 admin/inc/fonctions.inc.php:126
+#: admin/droits.admin.php:283 admin/inc/fonctions.inc.php:147
 #: admin/porte-documents.admin.php:426 admin/porte-documents.admin.php:435
 #: admin/porte-documents.admin.php:439
 msgid "Supprimer"
@@ -355,10 +488,6 @@ msgstr ""
 
 #: admin/galeries.admin.php:490
 msgid "Modèle"
-msgstr ""
-
-#: admin/galeries.admin.php:493
-msgid "Sélectionner le résultat."
 msgstr ""
 
 #: admin/galeries.admin.php:529
@@ -560,7 +689,7 @@ msgstr ""
 msgid "Aller au contenu"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:125 admin/porte-documents.admin.php:115
+#: admin/inc/fonctions.inc.php:146 admin/porte-documents.admin.php:115
 #: admin/porte-documents.admin.php:426
 msgid "Renommer"
 msgstr ""
@@ -581,19 +710,23 @@ msgstr ""
 msgid "Porte-documents"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:7
-msgid "Lisez-moi"
-msgstr ""
-
 #: admin/inc/html.menu.inc.php:8
-msgid "Documentation"
-msgstr ""
-
-#: admin/inc/html.menu.inc.php:9
-msgid "Version"
+msgid "Flux RSS globaux"
 msgstr ""
 
 #: admin/inc/html.menu.inc.php:10
+msgid "Lisez-moi"
+msgstr ""
+
+#: admin/inc/html.menu.inc.php:11
+msgid "Documentation"
+msgstr ""
+
+#: admin/inc/html.menu.inc.php:12
+msgid "Version"
+msgstr ""
+
+#: admin/inc/html.menu.inc.php:13
 msgid "Retour au site"
 msgstr ""
 
@@ -1012,24 +1145,24 @@ msgstr ""
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1658 inc/premier.inc.php:33
+#: inc/fonctions.inc.php:1658 inc/premier.inc.php:37
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1662 inc/premier.inc.php:38
+#: inc/fonctions.inc.php:1662 inc/premier.inc.php:42
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1666 inc/premier.inc.php:43
+#: inc/fonctions.inc.php:1666 inc/premier.inc.php:47
 msgid "RSS global du site"
 msgstr ""
 
-#: inc/dernier.inc.php:50 inc/contact.inc.php:15
+#: inc/dernier.inc.php:50 inc/contact.inc.php:17
 msgid "Faire découvrir à des ami-e-s"
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:10 inc/contact.inc.php:182
+#: inc/faire-decouvrir.inc.php:10 inc/contact.inc.php:203
 msgid "Votre nom"
 msgstr ""
 
@@ -1047,31 +1180,31 @@ msgid ""
 "découvrir l'oeuvre %3$s, qui fait partie de la galerie %4$s."
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:59
+#: inc/faire-decouvrir.inc.php:67
 #, php-format
 msgid ""
 "%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
 "découvrir la galerie %3$s."
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:70
+#: inc/faire-decouvrir.inc.php:86
 #, php-format
 msgid ""
 "%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
 "découvrir la page %3$s."
 msgstr ""
 
-#: inc/contact.inc.php:38
+#: inc/contact.inc.php:40
 msgid "Vous n'avez pas inscrit de nom."
 msgstr ""
 
-#: inc/contact.inc.php:47
+#: inc/contact.inc.php:49
 msgid ""
 "Votre adresse courriel ne semble pas avoir une forme valide. Veuillez "
 "vérifier."
 msgstr ""
 
-#: inc/contact.inc.php:65
+#: inc/contact.inc.php:69
 msgid ""
 "L'adresse suivante ne semble pas avoir une forme valide; veuillez la "
 "vérifier:"
@@ -1081,77 +1214,77 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/contact.inc.php:70
+#: inc/contact.inc.php:75
 msgid "Vous n'avez pas écrit de message."
 msgstr ""
 
-#: inc/contact.inc.php:79
+#: inc/contact.inc.php:84
 msgid "Veuillez répondre correctement à la question antipourriel."
 msgstr ""
 
-#: inc/contact.inc.php:87
+#: inc/contact.inc.php:92
 msgid ""
 "Votre message a une forme qui le fait malheureusement classer comme du "
 "pourriel. Veuillez le modifier."
 msgstr ""
 
-#: inc/contact.inc.php:136
+#: inc/contact.inc.php:158
 msgid "Votre message a bien été envoyé."
 msgstr ""
 
-#: inc/contact.inc.php:146
+#: inc/contact.inc.php:167
 msgid "ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard."
 msgstr ""
 
-#: inc/contact.inc.php:165
+#: inc/contact.inc.php:186
 msgid "Le formulaire n'a pas été rempli correctement"
 msgstr ""
 
-#: inc/contact.inc.php:181
+#: inc/contact.inc.php:202
 msgid "Votre nom:"
 msgstr ""
 
-#: inc/contact.inc.php:184
+#: inc/contact.inc.php:205
 msgid "Votre courriel:"
 msgstr ""
 
-#: inc/contact.inc.php:188
+#: inc/contact.inc.php:209
 msgid "Les courriels de vos ami-e-s:"
 msgstr ""
 
-#: inc/contact.inc.php:189
+#: inc/contact.inc.php:210
 msgid ""
 "Pour envoyer le message à plus d'une personne, veuillez séparer les adresses "
 "par une virgule."
 msgstr ""
 
-#: inc/contact.inc.php:192
+#: inc/contact.inc.php:213
 msgid "Modèle du message qui sera envoyé à vos ami-e-s:"
 msgstr ""
 
-#: inc/contact.inc.php:196
+#: inc/contact.inc.php:217
 msgid ""
 "Optionnellement, vous pouvez ajouter ci-dessous un petit mot personnalisé:"
 msgstr ""
 
-#: inc/contact.inc.php:199
+#: inc/contact.inc.php:220
 msgid "Votre message:"
 msgstr ""
 
-#: inc/contact.inc.php:206
+#: inc/contact.inc.php:227
 msgid "Antipourriel:"
 msgstr ""
 
-#: inc/contact.inc.php:207
+#: inc/contact.inc.php:228
 #, php-format
 msgid "Veuillez compléter: %1$s ajouté à %2$s vaut %3$s"
 msgstr ""
 
-#: inc/contact.inc.php:238
+#: inc/contact.inc.php:259
 msgid "Je souhaite recevoir une copie du message"
 msgstr ""
 
-#: inc/contact.inc.php:241
+#: inc/contact.inc.php:262
 msgid "Envoyer le message"
 msgstr ""
 
