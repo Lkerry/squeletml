@@ -196,7 +196,7 @@ Pour mettre à jour Squeletml, téléchargez l'archive de la dernière version e
 
 Maintenant, collez votre précédente sélection dans l'emplacement de votre site. Vous pouvez accepter d'écraser les fichiers existants.
 
-Il s'agit probablement de la méthode la plus simple. Cependant, de vieux vieux supprimés entre deux versions de Squeletml peuvent encore être présent sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant de coller votre sélection. Prenez garde encore une fois de **ne pas supprimer le dossier `site`**.
+Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant de coller votre sélection. Prenez garde encore une fois de **ne pas supprimer le dossier `site`**.
 
 ## Créer des pages
 
@@ -315,7 +315,7 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 
 Quelques variables et constantes PHP peuvent être utilisées dans la rédaction du contenu pour faciliter l'élaboration des chemins vers les fichiers:
 
-- variable `$racine`: contient le chemin absolu sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
+- variable `$racine`: contient le chemin sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
 
 		<?php include $racine . '/fichier.inc.php'; ?>
 
@@ -339,7 +339,7 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
   - Exemple d'utilisation dans une page dont la langue est l'anglais:
 
-		<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
+			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
 
 - tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
 
@@ -364,7 +364,7 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 
 <h1>Titre de la page</h1>
 
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>
+<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>
 </code></div>
@@ -502,7 +502,7 @@ Les vignettes utilisées sont celles de l'image vers laquelle le lien pointe:
 
 - soit la vignette précisée dans le fichier de configuration (`champ vignetteNom`);
 
-- soit la vignette déduite automatiquement à partir du nom du fichier de l'imageen version grande (`grandeNom(sans extension)-vignette.extension`);
+- soit la vignette déduite automatiquement à partir du nom du fichier de l'image en version grande (`grandeNom(sans extension)-vignette.extension`);
 
 - soit la vignette générée automatiquement par le script de galerie.
 
@@ -512,7 +512,7 @@ Dans le cas où l'option `$galerieNavigationVignettesTatouage` est activée dans
 
 Les fichiers par défaut pour les flèches superposées sont `fichiers/precedent-tatouage.png` et `fichiers/suivant-tatouage.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/precedent-tatouage.png` et `site/fichiers/suivant-tatouage.png`.
 
-La vignette résultante est enregistrée dans `site/fichiers/galeries/id/tatouage/vignetteNom-sens.extension`. Il y a donc deux vignettes tatouées par image (une pour le sens «précédent» et l'autre pour le sens «suivant»).
+La vignette résultante est sauvegardée dans `site/fichiers/galeries/id/tatouage/vignetteNom-sens.extension`. Il y a donc deux vignettes tatouées par image (une pour le sens «précédent» et l'autre pour le sens «suivant»).
 
 ##### Vignettes seules accompagnées d'une flèche
 
