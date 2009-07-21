@@ -274,7 +274,7 @@ if (!$i)
 
 <p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
 
-<form action="<? echo $action; ?>#messages" method="post">
+<form action="<?php echo $action; ?>#messages" method="post">
 <div>
 <p><label><?php echo T_("Nom"); ?>:</label><br />
 <input type="text" name="nom" /></p>
