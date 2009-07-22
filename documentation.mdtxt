@@ -26,7 +26,9 @@ Ce fichier contient deux variables à renseigner:
 
 - `$accueil[]`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site. Si votre site est offert dans une seule langue, le tableau ne contiendra qu'un élément. Exemple:
 
-		$accueil['fr'] = $urlRacine;
+	<div><code type="php">
+$accueil['fr'] = $urlRacine;
+</code></div>
 
 	Vous pouvez ajouter autant de langues que vous le désirez. Seulement, prenez note que pour l'instant, Squeletml offre une traduction de son squelette prête à être utilisée pour seulement deux langues: le français et l'anglais.
 
@@ -120,69 +122,71 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 
-	Doctype XHTML 1.0 Strict
-	<html ...><!-- La langue déclarée est celle de la page en cours -->
-		<head>
-			<title>...</title>
-			Déclaration de l'encodage UTF-8
-			Métabalises (description, keywords, robots)
-			Insertion des feuilles de style et des scripts Javascript
-		</head>
-	
-		<body ...><!-- Selon le cas, diverses class pour body -->
-			<div id="page">
-			  <div id="interieurPage">
-					S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
+<div><code type="html4strict">
+Doctype XHTML 1.0 Strict
+<html ...><!-- La langue déclarée est celle de la page en cours -->
+	<head>
+		<title>...</title>
+		Déclaration de l'encodage UTF-8
+		Métabalises (description, keywords, robots)
+		Insertion des feuilles de style et des scripts Javascript
+	</head>
 
-					<div id="entete">
-						<div id="surTitre">
-							...
-						</div><!-- /surTitre -->
+	<body ...><!-- Selon le cas, diverses class pour body -->
+		<div id="page">
+		  <div id="interieurPage">
+				S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
+
+				<div id="entete">
+					<div id="surTitre">
+						...
+					</div><!-- /surTitre -->
+				
+					<div id="titre">
+						Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
+					</div><!-- /titre -->
+
+					<div id="sousTitre">
+						...
+					</div><!-- /sousTitre -->
+				</div><!-- /entete -->
+
+				<div id="ancres">
+					...
+				</div><!-- /ancres -->
+			
+				<div id="surContenu">
+					...
+				</div><!-- /surContenu -->
+			
+				<div id="contenu">
+					<div id="interieurContenu">
+						...
+					</div><!-- /interieurContenu -->
+				</div><!-- /contenu -->
+			
+				<div id="sousContenu">
+					<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+						...
+					</div><!-- /menuLangues -->
+
+					<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+						...
+					</div><!-- /menu -->
 					
-						<div id="titre">
-							Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
-						</div><!-- /titre -->
-
-						<div id="sousTitre">
-							...
-						</div><!-- /sousTitre -->
-					</div><!-- /entete -->
-
-					<div id="ancres">
+					<div id="faireDecouvrir">
 						...
-					</div><!-- /ancres -->
-				
-					<div id="surContenu">
-						...
-					</div><!-- /surContenu -->
-				
-					<div id="contenu">
-						<div id="interieurContenu">
-							...
-						</div><!-- /interieurContenu -->
-					</div><!-- /contenu -->
-				
-					<div id="sousContenu">
-						<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
-							...
-						</div><!-- /menuLangues -->
-
-						<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
-							...
-						</div><!-- /menu -->
-						
-						<div id="faireDecouvrir">
-							...
-						</div><!-- /faireDecouvrir -->
-					</div><!-- /sousContenu -->
-				
-					<div id="basDePage">
-						...
-					</div><!-- /basDePage -->
-				</div><!-- /interieurPage -->
-			</div><!-- /page -->
-		</body>
-	</html>
+					</div><!-- /faireDecouvrir -->
+				</div><!-- /sousContenu -->
+			
+				<div id="basDePage">
+					...
+				</div><!-- /basDePage -->
+			</div><!-- /interieurPage -->
+		</div><!-- /page -->
+	</body>
+</html>
+</code></div>
 
 D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`. Certaines `div` peuvent aussi être positionnées ailleurs selon la configuration, par exemple le menu.
 
@@ -237,17 +241,25 @@ Il suffit d'inclure le fichier `inc/premier.inc.php`.
 
 Ne pas oublier de vérifier le chemin d'inclusion. Par exemple, pour une page à la racine du site, ça donnera:
 
-	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+<div><code type="php">
+include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+</code></div>
 
 Pour une page dans un dossier:
 
-	include '../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+<div><code type="php">
+include '../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+</code></div>
 
 Pour une page dans un sous-dossier (dossier dans un dossier):
 
-	include '../../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+<div><code type="php">
+include '../../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+</code></div>
 
 #### Cas avec insertion automatique du fichier `init.inc.php`
+
+**Note: je n'ai pas vraiment testé à fond cette possibilité.**
 
 Le fichier `init.inc.php` contient entre autres la variable `$racine`. En faisant insérer automatiquement ce fichier dans toutes les pages, il est donc possible d'utiliser la variable `$racine` pour inclure le fichier `inc/premier.inc.php`, ce qui nous dispense de devoir modifier le chemin d'inclusion selon le dossier dans lequel la page est située.
 
@@ -258,8 +270,6 @@ Pour ce faire, ouvrir le fichier `.htaccess`, trouver la ligne contenant la dire
 	</FilesMatch>
 
 Ne pas oublier de modifier le chemin d'inclusion du fichier `init.inc.php`.
-
-**Note: je n'ai pas testé à fond cette possibilité.**
 
 ### Contenu
 
@@ -279,7 +289,9 @@ Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-
 
 3. À l'intérieur de `ma-page.php`, à l'endroit où on insère habituellement le contenu, faire appel à la fonction suivante:
 
-		<?php echo mdtxt('ma-page.php.mdtxt'); ?>
+	<div><code type="php">
+<?php echo mdtxt('ma-page.php.mdtxt'); ?>
+</code></div>
 
 ##### Fonction `mdtxtChaine()`
 
@@ -289,27 +301,33 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 
 2. À l'endoit où on insère habituellement le contenu, utiliser la fonction suivante:
 
-		<?php echo mdtxtChaine("Du texte écrit en *Markdown*."); ?>
+	<div><code type="php">
+<?php echo mdtxtChaine("Du texte écrit en *Markdown*."); ?>
+</code></div>
 
 	Même exemple, mais avec une variable:
 	
-		$chaine = "Du texte écrit en *Markdown*.";
-		<?php echo mdtxtChaine($chaine); ?>
+	<div><code type="php">
+$chaine = "Du texte écrit en *Markdown*.";
+<?php echo mdtxtChaine($chaine); ?>
+</code></div>
 
 	Autre exemple avec une variable dont le contenu est plus long:
 	
-		$chaine = <<<TEXTE
-		Du texte écrit en *Markdown*.
-	
-		Liste:
-	
-		- Item 1
-		- Item 2
-	
-		Paragraphe.
-		TEXTE;
-	
-		<?php echo mdtxtChaine($chaine); ?>
+	<div><code type="php">
+$chaine = <<<TEXTE
+Du texte écrit en *Markdown*.
+
+Liste:
+
+- Item 1
+- Item 2
+
+Paragraphe.
+TEXTE;
+
+<?php echo mdtxtChaine($chaine); ?>
+</code></div>
 
 #### Variables et constantes utiles
 
@@ -317,39 +335,55 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 - variable `$racine`: contient le chemin sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
 
-		<?php include $racine . '/fichier.inc.php'; ?>
+	<div><code type="php">
+<?php include $racine . '/fichier.inc.php'; ?>
+</code></div>
 
 - variable `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
 
-		<a href="<?php echo $urlRacine . '/admin/'; ?>">lien vers la section d'administration</a>
+	<div><code type="php">
+<a href="<?php echo $urlRacine . '/admin/'; ?>">lien vers la section d'administration</a>
+</code></div>
 
 - variable `$urlSite`: contient l'URL vers le dossier `site`. Exemple de lien vers une image:
 
-		<a href="<?php echo $urlSite; ?>/fichiers/image.jpg">lien vers une image</a>
+	<div><code type="php">
+<a href="<?php echo $urlSite; ?>/fichiers/image.jpg">lien vers une image</a>
+</code></div>
 
 - variable `$urlFichiers`: contient l'URL vers le dossier `site/fichiers`. Exemple de lien vers la même image:
 
-		<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
+	<div><code type="php">
+<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
+</code></div>
 
 - constante `ACCUEIL`: contient l'URL pointant vers l'accueil de la langue de la page.
 
   - Exemple d'utilisation dans une page dont la langue est le français:
 
-			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en français</a>
+		<div><code type="php">
+<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en français</a>
+</code></div>
 
   - Exemple d'utilisation dans une page dont la langue est l'anglais:
 
-			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
+		<div><code type="php">
+<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
+</code></div>
 
 - tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
 
-		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
+	<div><code type="php">
+<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
+</code></div>
 
 ### Inclusion du dernier fichier PHP
 
 Il suffit d'inclure le fichier `inc/dernier.inc.php`. Cette fois-ci, il n'est pas nécessaire de faire attention au chemin d'inclusion. Nous pouvons utiliser la variable `$racine`. Exemple:
 
-	<?php include $racine . '/inc/dernier.inc.php'; ?>
+<div><code type="php">
+<?php include $racine . '/inc/dernier.inc.php'; ?>
+</code></div>
 
 ### Exemple complet
 
@@ -395,86 +429,118 @@ Cette information doit se retrouver dans le fichier de configuration `site/inc/g
 
 Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `__IMG__`. Voici un exemple:
 
-	grandeNom=fichier1.jpg
-	__IMG__
-	grandeNom=fichier2.jpg
-	__IMG__
+<div><code type="ini">
+grandeNom=fichier1.jpg
+__IMG__
+grandeNom=fichier2.jpg
+__IMG__
+</code></div>
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète:
 
 - `grandeNom`: nom du fichier image en version grande. **Le seul champ obligatoire.** Exemple:
 
-		grandeNom=fichier1.jpg
+	<div><code type="ini">
+grandeNom=fichier1.jpg
+</code></div>
 
 - `id`: l'id est utilisée dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Cela permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'id n'est pas renseignée, elle sera générée automatiquement à partir du nom du fichier image. Exemple:
 
-		id=5
+	<div><code type="ini">
+id=5
+</code></div>
 
 - `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-vignette.extension`. Exemple:
 
-		vignetteNom=fichier1Petit.jpg
+	<div><code type="ini">
+vignetteNom=fichier1Petit.jpg
+</code></div>
 
 - `vignetteLargeur`: largeur de la vignette. Si `vignetteLargeur` ou `vignetteHauteur` sont renseignées, seulement la ou les informations renseignées seront affichées dans la balise `img`. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement. Exemple:
 
-		vignetteLargeur=100
+	<div><code type="ini">
+vignetteLargeur=100
+</code></div>
 
 - `vignetteHauteur`: hauteur de la vignette. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-		vignetteHauteur=150
+	<div><code type="ini">
+vignetteHauteur=150
+</code></div>
 
 - `vignetteAlt`: texte alternatif (contenu de l'attribut `alt`) de la vignette. Si vide, le contenu sera généré automatiquement. Exemple:
 
-		vignetteAlt=Chien assis sur un divan.
+	<div><code type="ini">
+vignetteAlt=Chien assis sur un divan.
+</code></div>
 
 - `grandeLargeur`: largeur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-		grandeLargeur=500
+	<div><code type="ini">
+grandeLargeur=500
+</code></div>
 
 - `grandeHauteur`: hauteur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-		grandeHauteur=750
+	<div><code type="ini">
+grandeHauteur=750
+</code></div>
 
 - `grandeAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version grande. Si vide, le contenu sera généré automatiquement. Exemple:
 
-		grandeAlt=Chien dormant sur un divan.
+	<div><code type="ini">
+grandeAlt=Chien dormant sur un divan.
+</code></div>
 
 - `grandeLegende`: commentaire qui sera affiché sous l'image en version grande. Exemple:
 
-		grandeLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
+	<div><code type="ini">
+grandeLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
+</code></div>
 
 - `pageGrandeBaliseTitle`: contenu de la balise `title` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
 
-		pageGrandeBaliseTitle=Bla bla bla
+	<div><code type="ini">
+pageGrandeBaliseTitle=Bla bla bla
+</code></div>
 
 - `pageGrandeDescription`: contenu de la métabalise `description` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
 
-		pageGrandeDescription=Bla bla bla
+	<div><code type="ini">
+pageGrandeDescription=Bla bla bla
+</code></div>
 
 - `pageGrandeMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
 
-		pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
+	<div><code type="ini">
+pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
+</code></div>
 
 - `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version grande, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
 
-		origNom=fichier1Orig.jpg
+	<div><code type="ini">
+origNom=fichier1Orig.jpg
+</code></div>
 
 Voici une entrée vide, qu'il est possible de copier/coller:
 
-	grandeNom=SEULE INFORMATION OBLIGATOIRE
-	id=
-	vignetteNom=
-	vignetteLargeur=
-	vignetteHauteur=
-	vignetteAlt=
-	grandeLargeur=
-	grandeHauteur=
-	grandeAlt=
-	grandeLegende=
-	pageGrandeBaliseTitle=
-	pageGrandeDescription=
-	pageGrandeMotsCles=
-	origNom=
-	__IMG__
+<div><code type="ini">
+grandeNom=SEULE INFORMATION OBLIGATOIRE
+id=
+vignetteNom=
+vignetteLargeur=
+vignetteHauteur=
+vignetteAlt=
+grandeLargeur=
+grandeHauteur=
+grandeAlt=
+grandeLegende=
+pageGrandeBaliseTitle=
+pageGrandeDescription=
+pageGrandeMotsCles=
+origNom=
+__IMG__
+</code></div>
 
 ### Navigation entre les oeuvres
 
@@ -553,12 +619,16 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.txt` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
-	id de la galerie=URL relative de la galerie
+<div><code type="ini">
+id de la galerie=URL relative de la galerie
+</code></div>
 
 L'id correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
 
-	mes voyages=voyages.php
-	animaux=dossier/galerie-animaux.php
+<div><code type="ini">
+mes voyages=voyages.php
+animaux=dossier/galerie-animaux.php
+</code></div>
 
 Les deux galeries en question sont accessibles respectivement à l'adresse:
 
