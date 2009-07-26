@@ -1702,6 +1702,10 @@ Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction de
 */
 function phpGettext($racine, $langue)
 {
+	if (!defined('LC_MESSAGES'))
+	{
+		define('LC_MESSAGES', 5);
+	}
 	require_once $racine . '/inc/php-gettext/gettext.inc';
 	$locale = $langue;
 	// Palliatif à un bogue sur les serveurs de Koumbit. Aucune idée du problème. On dirait que 9 fois sur 10, php-gettext passe le relais au gettext par défaut de PHP, et que si la locale est seulement 'en', elle n'existe pas sur le serveur d'hébergement, donc la traduction ne fonctionne pas.
