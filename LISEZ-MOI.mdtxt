@@ -1,8 +1,12 @@
 # Squeletml, squelette de site XHTML et PHP
 
+## Téléchargement
+
+[Lien rapide de téléchargement de Squeletml.](http://www.jpfleury.net/squeletml#attachments)
+
 ## Qu'est-ce que Squeletml?
 
-Le logiciel libre Squeletml est un squelette de site valide XHTML 1.0 Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but de réduire l'effort nécessaire pour la création et la maintenance de ce genre de site.
+Le logiciel libre Squeletml est un **squelet**te de site valide XHT**ML** 1.0 Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but de réduire l'effort nécessaire pour la création et la maintenance de ce genre de site.
 
 En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin), et ces derniers fournissent une structure de site personnalisée et traduite dans la langue de la page (si disponible): chaque page peut facilement avoir ses propres informations: balise `title`, métabalises, titre de premier niveau (`h1`), langue, etc. L'en-tête personnalisée permet d'éviter le contenu dupliqué dans les moteurs de recherche, d'avoir un site optimisé pour le référencement et d'offrir de meilleurs repères aux internautes.
 
@@ -82,6 +86,14 @@ J'ai donc écrit Squeletml dans le but de pouvoir mettre sur pied rapidement et 
 ## Documentation
 
 Voir le fichier `documentation.mdtxt` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.jpfleury.net/squeletml/documentation).
+
+## Problèmes ou suggestions
+
+Pour faire part d'un problème d'utilisation avec Squeletml ou pour proposer une fonctionnalité, il y a trois possibilités:
+
+- laisser un [commentaire sur une des pages de Squeletml](http://www.jpfleury.net/squeletml);
+- envoyer un [message à partir du formulaire de contact](http://www.jpfleury.net/contact);
+- ou faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/squeletml).
 
 ## Licence de Squeletml
 
