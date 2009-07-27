@@ -280,7 +280,7 @@ if (isset($_POST['porteDocumentsCreer']))
 
 		elseif ($fichierCreeType == 'Dossier')
 		{
-			if (mkdir($fichierCreeNom))
+			if (mkdir($fichierCreeNom, 0755, TRUE))
 			{
 				echo "<li class='succes'>" . sprintf(T_('Création du dossier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom) . "</li>\n";
 			}

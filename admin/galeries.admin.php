@@ -27,7 +27,7 @@ if (isset($_POST['ajouter']))
 	
 	if (!file_exists($cheminGalerie))
 	{
-		if (mkdir($cheminGalerie))
+		if (mkdir($cheminGalerie, 0755, TRUE))
 		{
 			$listeModifs[] = sprintf(T_('Création du dossier %1$s.'), '<code>' . $cheminGalerie . '</code>');
 		}

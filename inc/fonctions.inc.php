@@ -1691,7 +1691,7 @@ function creeDossierCache($racine)
 {
 	if (!file_exists("$racine/site/cache"))
 	{
-		mkdir("$racine/site/cache");
+		mkdir("$racine/site/cache", 0755, TRUE);
 	}
 	
 	return;
