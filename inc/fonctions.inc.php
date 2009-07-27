@@ -1225,7 +1225,7 @@ function tableauAssociatif($fichierTexte)
 			$ligne = rtrim(fgets($fic));
 			if (strstr($ligne, '='))
 			{
-				list($cle, $valeur) = split('=', $ligne, 2);
+				list($cle, $valeur) = explode('=', $ligne, 2);
 				$tableau[$cle] = $valeur;
 			}
 		}
@@ -1252,7 +1252,7 @@ function construitTableauGalerie($fichierTexte)
 			$ligne = rtrim(fgets($fic));
 			if (strstr($ligne, '='))
 			{
-				list($cle, $valeur) = split('=', $ligne, 2);
+				list($cle, $valeur) = explode('=', $ligne, 2);
 				$galerieTemp[$cle] = $valeur;
 			}
 			elseif ($ligne == '__IMG__')

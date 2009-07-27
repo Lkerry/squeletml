@@ -252,7 +252,7 @@ if ($fic3 = fopen($racine . '/.acces', 'r'))
 		$ligne = fgets($fic3);
 		if (preg_match('/^[^:]+:/', $ligne))
 		{
-			list($utilisateur, $motDePasse) = split(':', $ligne, 2);
+			list($utilisateur, $motDePasse) = explode(':', $ligne, 2);
 			echo '<li>' . $utilisateur . '</li>';
 			$i++;
 		}
