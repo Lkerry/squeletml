@@ -73,7 +73,14 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 	{
 		if ($fic2 = fopen($racine . '/.acces', 'a+'))
 		{
-			$acces = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n"; 
+			if (stristr(PHP_OS, 'win'))
+			{
+				$acces = adminFormateTexte($_POST['nom']) . ':' . adminFormateTexte($_POST['motDePasse']) . "\n";
+			}
+			else
+			{
+				$acces = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+			} 
 			
 			// On vérifie si l'utilisateur est déjà présent
 			$utilisateurAbsent = TRUE;
