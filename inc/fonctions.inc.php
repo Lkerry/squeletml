@@ -206,7 +206,7 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 					$modele = $page;
 				}
 
-				if (preg_match("/$modele/i", 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']))
+				if (preg_match("|$modele|i", 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']))
 				{
 					switch ($type)
 					{
