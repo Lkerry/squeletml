@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-07-04 20:33-0400\n"
+"POT-Creation-Date: 2009-07-27 01:57-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -231,80 +231,80 @@ msgid ""
 "assigner les bons droits et revisiter la présente page."
 msgstr ""
 
-#: admin/droits.admin.php:93
+#: admin/droits.admin.php:101
 #, php-format
 msgid "Utilisateur <em>%1$s</em> ajouté."
 msgstr ""
 
-#: admin/droits.admin.php:97
+#: admin/droits.admin.php:105
 #, php-format
 msgid "L'utilisateur <em>%1$s</em> a déjà les droits."
 msgstr ""
 
-#: admin/droits.admin.php:138
+#: admin/droits.admin.php:146
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Son mot de passe ne peut "
 "donc pas être modifié."
 msgstr ""
 
-#: admin/droits.admin.php:142
+#: admin/droits.admin.php:150
 #, php-format
 msgid "Mot de passe de l'utilisateur <em>%1$s</em> modifié."
 msgstr ""
 
-#: admin/droits.admin.php:230
+#: admin/droits.admin.php:238
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Il ne peut donc pas être "
 "supprimé."
 msgstr ""
 
-#: admin/droits.admin.php:234
+#: admin/droits.admin.php:242
 #, php-format
 msgid "Utilisateur <em>%1$s</em> supprimé."
 msgstr ""
 
-#: admin/droits.admin.php:240
+#: admin/droits.admin.php:248
 msgid "Utilisateurs"
 msgstr ""
 
-#: admin/droits.admin.php:242
+#: admin/droits.admin.php:250
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/droits.admin.php:266 admin/galeries.admin.php:687
+#: admin/droits.admin.php:274 admin/galeries.admin.php:687
 msgid "Aucun"
 msgstr ""
 
-#: admin/droits.admin.php:273
+#: admin/droits.admin.php:281
 msgid "Gestion"
 msgstr ""
 
-#: admin/droits.admin.php:275
+#: admin/droits.admin.php:283
 msgid ""
 "Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire "
 "ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur "
 "existant."
 msgstr ""
 
-#: admin/droits.admin.php:279
+#: admin/droits.admin.php:287
 msgid "Nom"
 msgstr ""
 
-#: admin/droits.admin.php:281
+#: admin/droits.admin.php:289
 msgid "Mot de passe"
 msgstr ""
 
-#: admin/droits.admin.php:283 admin/porte-documents.admin.php:458
+#: admin/droits.admin.php:291 admin/porte-documents.admin.php:458
 msgid "Ajouter"
 msgstr ""
 
-#: admin/droits.admin.php:283 admin/inc/fonctions.inc.php:138
+#: admin/droits.admin.php:291 admin/inc/fonctions.inc.php:140
 msgid "Modifier"
 msgstr ""
 
-#: admin/droits.admin.php:283 admin/inc/fonctions.inc.php:147
+#: admin/droits.admin.php:291 admin/inc/fonctions.inc.php:149
 #: admin/porte-documents.admin.php:426 admin/porte-documents.admin.php:435
 #: admin/porte-documents.admin.php:439
 msgid "Supprimer"
@@ -689,7 +689,7 @@ msgstr ""
 msgid "Aller au contenu"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:146 admin/porte-documents.admin.php:115
+#: admin/inc/fonctions.inc.php:148 admin/porte-documents.admin.php:115
 #: admin/porte-documents.admin.php:426
 msgid "Renommer"
 msgstr ""
@@ -1349,50 +1349,13 @@ msgstr ""
 msgid "<h2>Bienvenue sur votre site Squeletml</h2>"
 msgstr ""
 
-#: inc/message-accueil.inc.php:4
-msgid ""
-"<p>Le logiciel libre Squeletml est un squelette de site valide XHTML 1.0 "
-"Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-"
-"dire un site dont le corps de chaque page se trouve dans un fichier unique "
-"et dont les principaux éléments de structuration comme l'en-tête, le bas de "
-"page, etc. sont partagés entre toutes les pages. Il a pour but de réduire "
-"l'effort nécessaire pour la création et la maintenance de ce genre de site.</"
-"p>"
-msgstr ""
-
 #: inc/message-accueil.inc.php:6
-msgid ""
-"<p>En effet, seulement deux fichiers doivent être inclus dans chaque page "
-"(un au début et un à la fin), et ces derniers fournissent une structure de "
-"site personnalisée et traduite dans la langue de la page (si disponible): "
-"chaque page peut facilement avoir ses propres informations: balise "
-"<code>title</code>, métabalises, titre de premier niveau (<code>h1</code>), "
-"langue, etc. L'en-tête personnalisée permet d'éviter le contenu dupliqué "
-"dans les moteurs de recherche, d'avoir un site optimisé pour le "
-"référencement et d'offrir de meilleurs repères aux internautes.</p>"
-msgstr ""
-
-#: inc/message-accueil.inc.php:8
-msgid ""
-"<p>Aussi, un fichier de configuration permet de choisir par simple "
-"renseignement de variables le nombre et l'emplacement des colonnes, la "
-"position des menus dans le flux HTML, la présence ou non de certaines "
-"structures comme le bas de page, etc.</p>"
-msgstr ""
-
-#: inc/message-accueil.inc.php:10
-msgid ""
-"<p>Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des "
-"formulaires de contact, des galeries photo, des flux RSS, une option «Faire "
-"découvrir à des ami-e-s», une interface d'administration reproduisant "
-"sensiblement les principales actions normalement effectuées par ftp, etc. Le "
-"tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour "
-"l'affichage de l'interface.</p>"
-msgstr ""
-
-#: inc/message-accueil.inc.php:12
 msgid ""
 "<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à "
 "personnaliser votre installation, <a href='admin/documentation.admin.php'>en "
 "visitant la documentation</a>.</p>"
+msgstr ""
+
+#: inc/message-accueil.inc.php:4
+msgid "<p><a href="
 msgstr ""
