@@ -178,7 +178,7 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		// Note: auparavant, je faisais:
 		// clearstatcache();
 		// if (filesize($racine . '/.acces') == 0) {...}
-		// mais des lignes vides faisaient en sorte que la taille du fichier n'était pas à 0. Maintenant je fais simplement regarder s'il y a un : dans le fichier, ce qui signifierait qu'il y a au moins un utilisateur.
+		// mais des lignes vides faisaient en sorte que la taille du fichier n'était pas à 0. Maintenant je fais simplement regarder s'il y a un `:` dans le fichier, ce qui signifierait qu'il y a au moins un utilisateur.
 		$accesVide = TRUE;
 		if ($fic = fopen($racine . '/.acces', 'r'))
 		{

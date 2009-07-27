@@ -22,6 +22,8 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/admin/inc/config.inc.php';
 	
+	$fichiers[] = $racine . '/admin/inc/constantes.inc.php';
+	
 	$fichiers[] = $racine . '/admin/inc/pclzip/pclzip.lib.php';
 	
 	$fichiers[] = $racine . '/admin/inc/pcltar/lib/pclerror.lib.php3';
