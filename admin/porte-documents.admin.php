@@ -253,7 +253,7 @@ if (isset($_POST['porteDocumentsCreer']))
 {
 	$fichierCreeNom = $_POST['porteDocumentsFichierCreeNom'];
 
-	if (!eregi("^$dossierRacine/", $fichierCreeNom))
+	if (!preg_match("|^$dossierRacine/|i", $fichierCreeNom))
 	{
 		$fichierCreeNomTemp = "$dossierRacine/$fichierCreeNom";
 		unset($fichierCreeNom);
@@ -324,7 +324,7 @@ if (isset($_FILES['fichier']))
 
 	if ($filtreNom)
 	{
-		if (!ereg($motifNom, $nomFichier))
+		if (!preg_match("/$motifNom/", $nomFichier))
 		{
 			$erreur .= "<li class='erreur'>" . sprintf(T_('Le nom de votre fichier risque de mal s\'afficher dans une adresse html. Veuillez le renommer en n\'utilisant que les caractères suivants:<br />%1$s<br />(les espaces sont automatiquement remplacées par des caractères de soulignement _).'), $motifNom2) . "</li>\n";
 		}

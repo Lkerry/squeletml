@@ -196,7 +196,7 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 				$fichier = $res[2];
 		
 				// Si l'adresse se termine par *, accepter toutes les pages enfants possibles de cette page parent en plus de la page parent elle-même.
-				if (eregi("\*$", $page))
+				if (preg_match('/\*$/i', $page))
 				{
 					$modele = substr($page, 0, -1);
 					$modele .= ".*";
@@ -206,7 +206,7 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 					$modele = $page;
 				}
 
-				if (eregi($modele, 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']))
+				if (preg_match("/$modele/i", 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']))
 				{
 					switch ($type)
 					{
