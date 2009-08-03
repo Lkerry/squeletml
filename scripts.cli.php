@@ -35,9 +35,8 @@ if ($argv[1] == 'message-accueil')
 		while (!feof($fic))
 		{
 			$ligne = fgets($fic);
-			if (preg_match('/^## /', $ligne))
+			if ($ligne == "## Qu'est-ce que Squeletml?\n")
 			{
-				$ligne = "\n"; // On fait ignorer la première ligne. Voir la comparaison plus bas
 				do
 				{
 					if ($ligne != "\n")
