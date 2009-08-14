@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $langue; ?>" lang="<?php echo $langue; ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo langue($langue); ?>" lang="<?php echo langue($langue); ?>">
 <head>
 <title><?php echo $baliseTitle . ' | ' . T_("Administration de Squeletml"); ?></title>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
