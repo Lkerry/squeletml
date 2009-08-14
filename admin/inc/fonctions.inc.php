@@ -43,6 +43,7 @@ Retourne la valeur des variables `$galerieFluxGlobal` ou `$siteFluxGlobal`.
 */
 function adminFluxGlobal($flux, $racine)
 {
+	include dirname(__FILE__) . '/../../init.inc.php';
 	include $racine . '/inc/config.inc.php';
 	if (file_exists($racine . '/site/inc/config.inc.php'))
 	{
