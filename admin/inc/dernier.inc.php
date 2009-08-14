@@ -5,11 +5,13 @@
 
 <?php if (adminNomPageEnCours($_SERVER['PHP_SELF']) == 'porte-documents.admin.php'): ?>
 
-	<script type="text/javascript">
+	<?php if (!adminEstIE()): ?>
+		<script type="text/javascript">
 <!--
 SET_DHTML("redimensionnable"+RESIZABLE);
 //-->
-	</script>
+		</script>
+	<?php endif; ?>
 
 	<?php if ($colorationSyntaxique): ?>
 	

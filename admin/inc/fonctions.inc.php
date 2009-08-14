@@ -313,4 +313,19 @@ function adminBodyId()
 	return str_replace('.', '-', basename($_SERVER['SCRIPT_NAME']));
 }
 
+/**
+Retourne TRUE si le navigateur de l'internaute est Internet Explorer, sinon retourne FALSE.
+*/
+function adminEstIE()
+{
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE'))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
 ?>

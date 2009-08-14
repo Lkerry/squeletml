@@ -153,8 +153,17 @@ if (isset($_GET['action']))
 		{
 			$style = '';
 		}
+		
+		if (adminEstIE())
+		{
+			$imageRedimensionner = '';
+		}
+		else
+		{
+			$imageRedimensionner = '<img src="fichiers/redimensionner.png" alt="' . T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie') . '" title="' . T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie') . '" width="41" height="20" />';
+		}
 		?>
-		<div id="redimensionnable"><textarea id="code" cols="80" rows="25" <?php echo $style; ?> name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea><img src="fichiers/redimensionner.png" alt="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" title="<?php echo T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie'); ?>" width="41" height="20" /></div>
+		<div id="redimensionnable"><textarea id="code" cols="80" rows="25" <?php echo $style; ?> name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea><?php echo $imageRedimensionner; ?></div>
 		<input type="hidden" name="porteDocumentsModifierNom" value="<?php echo $_GET['valeur']; ?>" />
 		<input type="submit" value="<?php echo T_('Sauvegarder les modifications'); ?>" />
 		

@@ -8,7 +8,10 @@
 $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/admin.css");
 $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "javascript:$urlRacine/js/squeletml.js");
 $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "javascript:$urlRacine/admin/js/squeletml.js");
-$fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/js/wz_dragdrop.js");
+if (!adminEstIE())
+{
+	$fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/js/wz_dragdrop.js");
+}
 $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/inc/CodeMirror/js/codemirror.js");
 
 echo construitLinkScript($fichiersLinkScript, '', TRUE);
