@@ -1,11 +1,11 @@
 // --------------------------------------------------------------------------------
-// PclZip 2.8 - readme.txt
+// PclZip 2.8.1 - readme.txt
 // --------------------------------------------------------------------------------
-// License GNU/LGPL - March 2006
+// License GNU/LGPL - August 2009
 // Vincent Blavet - vincent@phpconcept.net
 // http://www.phpconcept.net
 // --------------------------------------------------------------------------------
-// $Id: readme.txt,v 1.57 2009/04/22 07:37:21 vblavet Exp $
+// $Id: readme.txt,v 1.58 2009/08/11 14:58:12 vblavet Exp $
 // --------------------------------------------------------------------------------
 
 
@@ -32,6 +32,11 @@
 2 - What's new
 ==============
 
+  Version 2.8.1 :
+    - Move option PCLZIP_OPT_BY_EREG to PCLZIP_OPT_BY_PREG because ereg() is
+      deprecated in PHP 5.3. When using option PCLZIP_OPT_BY_EREG, PclZip will
+      automatically replace it by PCLZIP_OPT_BY_PREG.
+  
   Version 2.8 :
     - Improve extraction of zip archive for large files by using temporary files
       This feature is working like the one defined in r2.7.
