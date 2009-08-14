@@ -64,7 +64,7 @@ Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
   - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
   - Génération automatique des vignettes ou utilisation de vignettes personnalisées.
   - Script offert pour retailler automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
-  - Ajout d'images par lot contenues dans une archive TAR (.tar, .tar.gz ou .tgz) ou ZIP (.zip).
+  - Ajout d'images par lot contenues dans une archive TAR (.tar) ou ZIP (.zip).
   - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette ou `-orig.extension` pour la version originale ou téléchargeable de l'image).
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
@@ -174,4 +174,4 @@ Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion de
 
 ### PclTar
 
-Squeletml utilise la bibliothèque PclTar (sous licence GPL) pour la gestion des archives au format TAR. L'auteur est Vincent Blavet. Pour en savoir plus sur PclTar ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>
+Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>

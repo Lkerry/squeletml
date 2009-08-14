@@ -31,11 +31,10 @@ if (isset($_POST['ajouter']))
 		{
 			$listeModifs[] = sprintf(T_('Création du dossier %1$s.'), '<code>' . $cheminGalerie . '</code>');
 		}
-		
 		else
 		{
 			unlink($_FILES['fichier']['tmp_name']);
-			echo "<p class='erreur'>" . sprintf(T_('Impossible de créer le dossier %1$s.'), '<code>' . $cheminGalerie . '</code>') . "</p>\n";
+			$listeModifs[] = "<span class='erreur'>" . sprintf(T_('Impossible de créer le dossier %1$s.'), '<code>' . $cheminGalerie . '</code>') . "</span>\n";
 			$listeModifs[] = T_('Archive supprimée.');
 		}
 	}
@@ -46,78 +45,119 @@ if (isset($_POST['ajouter']))
 		{
 			$nomArchive = basename($_FILES['fichier']['name']);
 			
-			if (preg_match('/(\.tar|\.tar\.gz|\.tgz|\.zip)$/i', $nomArchive))
+			if (preg_match('/\.zip$/i', $nomArchive))
 			{
+				$fichierEstImage = FALSE;
 				$cheminDeplacement = $cheminGaleries;
+			}
+			elseif (preg_match('/\.tar$/i', $nomArchive))
+			{
+				$fichierEstImage = FALSE;
+				$cheminDeplacement = $cheminGalerie;
 			}
 			else
 			{
+				$fichierEstImage = TRUE;
 				$cheminDeplacement = $cheminGalerie;
 			}
 			
 			if (file_exists($cheminDeplacement . '/' . $nomArchive))
 			{
 				unlink($_FILES['fichier']['tmp_name']);
-				echo '<p class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminDeplacement . '/</code>') . "</p>\n";
+				$listeModifs[] = '<span class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminDeplacement . '/</code>') . "</span>\n";
 				$listeModifs[] = T_('Le fichier que vous avez téléversé sur le serveur a été supprimé.');
 			}
 			else
 			{
 				if (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminDeplacement . '/' . $nomArchive))
 				{
-					if ($cheminDeplacement == $cheminGalerie)
+					if ($fichierEstImage)
 					{
 						$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
 					}
 					else
 					{
-						$resultatArchive = 0;
-					
-						if (preg_match('/(\.tar|\.tar\.gz|\.tgz)$/i', $nomArchive))
+						if (preg_match('/\.zip$/i', $nomArchive))
 						{
-							$resultatArchive = PclTarExtract($cheminGaleries . '/' . $nomArchive, $cheminGaleries . '/' . $_POST['id'] . '/');
-						}
-						elseif (preg_match('/\.zip$/i', $nomArchive))
-						{
+							$resultatArchive = 0;
 							$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
 							$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $_POST['id'] . '/');
-						}
-					
-						if ($resultatArchive == 0)
-						{
-							unlink($cheminGaleries . '/' . $nomArchive);
-							$listeModifs[] = T_('Archive supprimée.');
-							if (preg_match('/(\.tar|\.tar\.gz|\.tgz)$/i', $nomArchive))
+							
+							if ($resultatArchive == 0)
 							{
-								echo '<p class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s."), '<code>' . $nomArchive . '</code>') . "</p>\n";
-							}
-							elseif (preg_match('/\.zip$/i', $nomArchive))
-							{
-								echo '<p class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: "), '<code>' . $nomArchive . '</code>') . $archive->errorInfo(true) . "</p>\n";
+								unlink($cheminGaleries . '/' . $nomArchive);
+								$listeModifs[] = T_('Archive supprimée.');
+								$listeModifs[] = '<span class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: "), '<code>' . $nomArchive . '</code>') . $archive->errorInfo(true) . "</span>\n";
 							}
 							else
 							{
-								echo '<p class="erreur">' . sprintf(T_("Impossible d'utiliser l'archive %1\$s."), '<code>' . $nomArchive . '</code>') . "</p>\n";
+								foreach ($resultatArchive as $infoImage)
+								{
+									if ($infoImage['status'] == 'ok')
+									{
+										$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $_POST['id']) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+									}
+									elseif ($infoImage['status'] == 'newer_exist')
+									{
+										$listeModifs[] = '<span class="erreur">' . sprintf(T_('Un fichier %1$s existe déjà, et est plus récent que celui de l\'archive. Il n\'y a donc pas eu extraction.'), '<code>' . $infoImage['filename'] . '</code>') . "</span>\n";
+									}
+									else
+									{
+										$listeModifs[] = '<span class="erreur">' . sprintf(T_('Attention: une erreur a eu lieu avec le fichier %1$s. Vérifiez son état sur le serveur (s\'il s\'y trouve), et ajoutez-le à la main si nécessaire.'), '<code>' . $infoImage['filename'] . '</code>') . "</span>\n";
+									}
+								}
+								unlink($cheminGaleries . '/' . $nomArchive);
+								$listeModifs[] = T_('Archive supprimée.');
 							}
 						}
-						else
+						elseif (preg_match('/\.tar$/i', $nomArchive))
 						{
-							foreach ($resultatArchive as $infoImage)
+							$fichierTar = new untar($cheminGalerie . '/' . $nomArchive);
+							$listeFichiers = $fichierTar->getfilelist();
+							for ($i = 0; $i < count($listeFichiers); $i++)
 							{
-								if ($infoImage['status'] == 'ok')
+								if ($listeFichiers[$i]['filetype'] == 'directory')
 								{
-									$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . basename($infoImage['filename']) . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
-								}
-								elseif ($infoImage['status'] == 'newer_exist')
-								{
-									$listeModifs[] = sprintf(T_('Un fichier %1$s existe déjà, et est plus récent que celui de l\'archive. Il n\'y a donc pas eu extraction.'), '<code>' . $infoImage['filename'] . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+									if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
+									{
+										$listeModifs[] = "<span class='erreur'>" . sprintf(T_('Un dossier %1$s existe déjà. Il n\'a donc pas été créé.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</span>\n";
+									}
+									elseif (mkdir($cheminGalerie . '/' . $listeFichiers[$i]['filename'], 0755, TRUE))
+									{
+										$listeModifs[] = sprintf(T_('Création du dossier %1$s.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>');
+									}
+									else
+									{
+										$listeModifs[] = "<span class='erreur'>" . sprintf(T_('Impossible de créer le dossier %1$s.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</span>\n";
+									}
 								}
 								else
 								{
-									$listeModifs[] = sprintf(T_('Attention: une erreur a eu lieu avec le fichier %1$s. Vérifiez son état sur le serveur (s\'il s\'y trouve), et ajoutez-le à la main si nécessaire.'), '<code>' . $infoImage['filename'] . '</code>');
+									if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
+									{
+										$listeModifs[] = "<span class='erreur'>" . sprintf(T_('Un fichier %1$s existe déjà. Il n\'y a donc pas eu extraction.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</span>\n";
+									}
+									elseif ($fic = fopen($cheminGalerie . '/' . $listeFichiers[$i]['filename'], 'w'))
+									{
+										$donnees = $fichierTar->extract($listeFichiers[$i]['filename']);
+										if (fwrite($fic, $donnees))
+										{
+											fclose($fic);
+											$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . $listeFichiers[$i]['filename'] . '</code>', '<code>' . $cheminGalerie . '/</code>');
+										}
+										else
+										{
+											$listeModifs[] = "<span class='erreur'>" . sprintf(T_('Attention: une erreur a eu lieu avec le fichier %1$s. Vérifiez son état sur le serveur (s\'il s\'y trouve), et ajoutez-le à la main si nécessaire.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</span>\n";
+										}
+									}
+									else
+									{
+										$listeModifs[] = "<span class='erreur'>" . sprintf(T_('Impossible de créer le fichier %1$s.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</span>";
+									}
 								}
 							}
-							unlink($cheminGaleries . '/' . $nomArchive);
+							unset($fichierTar);
+							unlink($cheminGalerie . '/' . $nomArchive);
 							$listeModifs[] = T_('Archive supprimée.');
 						}
 					}
@@ -125,7 +165,7 @@ if (isset($_POST['ajouter']))
 				else
 				{
 					unlink($_FILES['fichier']['tmp_name']);
-					echo '<p class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</p>\n";
+					$listeModifs[] = '<span class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</span>\n";
 					$listeModifs[] = T_('Le fichier que vous avez téléversé sur le serveur a été supprimé.');
 				}
 			}
@@ -133,7 +173,7 @@ if (isset($_POST['ajouter']))
 		
 		if (empty($listeModifs))
 		{
-			$listeModifs[] = T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.");
+			$listeModifs[] = '<span class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</span>\n";
 		}
 	}
 	
@@ -582,7 +622,7 @@ if (isset($_POST['modeleConf']) ||
 <div class="boite">
 <h2><?php echo T_("Ajouter des images"); ?></h2>
 
-<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (.tar, .tar.gz ou .tgz) ou ZIP (.zip). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier. Prenez note que si la galerie existe déjà et qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant sur le serveur, le fichier sur le serveur sera écrasé seulement si sa date est plus ancienne que celle du fichier dans l'archive."); ?></p>
+<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (.tar) ou ZIP (.zip). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier. Prenez note que si la galerie existe déjà et qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant sur le serveur, le fichier sur le serveur sera écrasé seulement si sa date est plus ancienne que celle du fichier dans l'archive."); ?></p>
 
 <p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
 
