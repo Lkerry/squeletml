@@ -172,6 +172,6 @@ Sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>
 
 Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>
 
-### PclTar
+### Classe PHP UnTar
 
 Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>
