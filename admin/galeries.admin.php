@@ -46,13 +46,13 @@ if (isset($_POST['ajouter']))
 		{
 			$nomArchive = basename($_FILES['fichier']['name']);
 			
-			if (!preg_match('/(\.tar|\.tar\.gz|\.tgz)$/i', $nomArchive))
+			if (preg_match('/(\.tar|\.tar\.gz|\.tgz|\.zip)$/i', $nomArchive))
 			{
-				$cheminDeplacement = $cheminGalerie;
+				$cheminDeplacement = $cheminGaleries;
 			}
 			else
 			{
-				$cheminDeplacement = $cheminGaleries;
+				$cheminDeplacement = $cheminGalerie;
 			}
 			
 			if (file_exists($cheminDeplacement . '/' . $nomArchive))
