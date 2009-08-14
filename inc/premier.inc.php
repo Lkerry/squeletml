@@ -15,6 +15,10 @@ if (!isset($idGalerie))
 {
 	$idGalerie = FALSE;
 }
+if (!isset($motsCles))
+{
+	$motsCles = FALSE;
+}
 foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 {
 	include_once $fichier;

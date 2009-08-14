@@ -269,7 +269,7 @@ if (isset($_POST['porteDocumentsCreer']))
 		{
 			if (touch($fichierCreeNom))
 			{
-				echo "<li class='succes'>" . sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom) . "</li>\n";
+				echo "<li class='succes'>" . sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom) . ' <a href="porte-documents.admin.php?action=modifier&valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez le modifier.") . "</a></li>\n";
 			}
 
 			else
