@@ -274,20 +274,7 @@ if (isset($_POST['porteDocumentsCreer']))
 	echo "<ul>\n";
 	if (!file_exists($fichierCreeNom))
 	{
-		if ($fichierCreeType == 'Fichier')
-		{
-			if (touch($fichierCreeNom))
-			{
-				echo "<li class='succes'>" . sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom) . ' <a href="porte-documents.admin.php?action=modifier&valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez le modifier.") . "</a></li>\n";
-			}
-
-			else
-			{
-				echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le fichier <span class="porteDocumentsNom">%1$s</span>.'), $fichierCreeNom) . "</li>\n";
-			}
-		}
-
-		elseif ($fichierCreeType == 'Dossier')
+		if ($fichierCreeType == 'Dossier')
 		{
 			if (mkdir($fichierCreeNom, 0755, TRUE))
 			{
@@ -299,9 +286,77 @@ if (isset($_POST['porteDocumentsCreer']))
 				echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier <span class="porteDocumentsNom">%1$s</span>.'), $fichierCreeNom) . "</li>\n";
 			}
 		}
-	}
+		
+		elseif ($fichierCreeType == 'FichierVide' || $fichierCreeType == 'FichierModele')
+		{
+			$page = basename($fichierCreeNom);
+			$cheminPage = dirname($fichierCreeNom);
+			if ($cheminPage == '../.')
+			{
+				$cheminPage = '..';
+			}
+			
+			if (!file_exists($cheminPage))
+			{
+				if (!mkdir($cheminPage, 0755, TRUE))
+				{
+					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier <span class="porteDocumentsNom">%1$s</span>.'), $cheminPage) . "</li>\n";
+				}
+			}
+			
+			if (file_exists($cheminPage))
+			{
+				if (touch($fichierCreeNom))
+				{
+					echo "<li class='succes'>" . sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom) . ' <a href="porte-documents.admin.php?action=modifier&valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez le modifier.") . "</a></li>\n";
+				
+					if ($fichierCreeType == 'FichierModele')
+					{
+					
+						$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
+						$cheminInclude = dirname($cheminInclude);
+						if ($cheminInclude == '.')
+						{
+							$cheminInclude = '';
+						}
+						if (!empty($cheminInclude))
+						{
+							$cheminInclude .= '/';
+						}
 
-	elseif (file_exists($fichierCreeNom))
+						if ($fic = fopen($cheminPage . '/' . $page, 'a'))
+						{
+							$contenu = '';
+							$contenu .= '<?php' . "\n";
+							$contenu .= '$baliseTitle = "Titre (contenu de la balise `title`)";' . "\n";
+							$contenu .= '$description = "Description de la page";' . "\n";
+							$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
+							$contenu .= '?>' . "\n";
+							$contenu .= "\n";
+							$contenu .= '<h1>Titre de la page</h1>' . "\n";
+							$contenu .= "\n";
+							$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
+							$contenu .= "\n";
+							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
+							fputs($fic, $contenu);
+							fclose($fic);
+						}
+						else
+						{
+							echo "<li class='erreur'>" . sprintf(T_('Impossible d\'ajouter un modèle de page web dans le fichier %1$s.'), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>";
+						}
+					}
+				}
+			
+				else
+				{
+					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le fichier <span class="porteDocumentsNom">%1$s</span>.'), $fichierCreeNom) . "</li>\n";
+				}
+			}
+		}
+	}
+	
+	else
 	{
 		echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> existe déjà.'), $fichierCreeNom) . "</li>\n";
 	}
@@ -483,7 +538,8 @@ foreach ($liste as $valeur)
 <label><?php echo T_("Nom:"); ?></label> <input type="text" name="porteDocumentsFichierCreeNom" size="50" value="<?php echo $dossierRacine . '/'; ?>" /><br /><br />
 <label><?php echo T_("Type:"); ?></label> <select name="porteDocumentsFichierCreeType" size="1">
 <option value="Dossier"><?php echo T_("Dossier"); ?></option>
-<option value="Fichier"><?php echo T_("Fichier"); ?></option>
+<option value="FichierModele"><?php echo T_("Fichier modèle de page web"); ?></option>
+<option value="FichierVide"><?php echo T_("Fichier vide"); ?></option>
 </select><br /><br />
 <input type="submit" name="porteDocumentsCreer" value="<?php echo T_('Créer'); ?>" />
 </div></form>
