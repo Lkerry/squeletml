@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-14 16:18-0400\n"
+"POT-Creation-Date: 2009-08-14 20:32-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -296,7 +296,7 @@ msgstr ""
 msgid "Mot de passe"
 msgstr ""
 
-#: admin/droits.admin.php:291 admin/porte-documents.admin.php:458
+#: admin/droits.admin.php:291 admin/porte-documents.admin.php:522
 msgid "Ajouter"
 msgstr ""
 
@@ -305,8 +305,8 @@ msgid "Modifier"
 msgstr ""
 
 #: admin/droits.admin.php:291 admin/inc/fonctions.inc.php:148
-#: admin/porte-documents.admin.php:426 admin/porte-documents.admin.php:435
-#: admin/porte-documents.admin.php:439
+#: admin/porte-documents.admin.php:490 admin/porte-documents.admin.php:499
+#: admin/porte-documents.admin.php:503
 msgid "Supprimer"
 msgstr ""
 
@@ -556,7 +556,7 @@ msgstr ""
 msgid "Id de la galerie (si elle n'existe pas, elle sera créée):"
 msgstr ""
 
-#: admin/galeries.admin.php:636 admin/porte-documents.admin.php:447
+#: admin/galeries.admin.php:636 admin/porte-documents.admin.php:511
 msgid "Fichier:"
 msgstr ""
 
@@ -691,7 +691,7 @@ msgid "Aller au contenu"
 msgstr ""
 
 #: admin/inc/fonctions.inc.php:147 admin/porte-documents.admin.php:115
-#: admin/porte-documents.admin.php:426
+#: admin/porte-documents.admin.php:490
 msgid "Renommer"
 msgstr ""
 
@@ -828,132 +828,137 @@ msgid ""
 "sera créé avec le contenu du champ de saisi."
 msgstr ""
 
-#: admin/porte-documents.admin.php:157
+#: admin/porte-documents.admin.php:163
 msgid ""
 "Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le "
 "champ de saisie"
 msgstr ""
 
-#: admin/porte-documents.admin.php:159
+#: admin/porte-documents.admin.php:168
 msgid "Sauvegarder les modifications"
 msgstr ""
 
-#: admin/porte-documents.admin.php:163
+#: admin/porte-documents.admin.php:172
 msgid "Annuler"
 msgstr ""
 
-#: admin/porte-documents.admin.php:174
+#: admin/porte-documents.admin.php:183
 #, php-format
 msgid "Aucune modification apportée au fichier %1$s."
 msgstr ""
 
-#: admin/porte-documents.admin.php:179
+#: admin/porte-documents.admin.php:188
 msgid ""
 "Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les "
 "consulter ci-dessous, et en enregistrer une copie sur votre ordinateur."
 msgstr ""
 
-#: admin/porte-documents.admin.php:188
+#: admin/porte-documents.admin.php:197
 #, php-format
 msgid ""
 "Le fichier <span class=\"porteDocumentsNom\">%1$s</span> n'a pas pu être "
 "ouvert."
 msgstr ""
 
-#: admin/porte-documents.admin.php:193
+#: admin/porte-documents.admin.php:202
 #, php-format
 msgid ""
 "Impossible d'écrire dans le fichier <span class=\"porteDocumentsNom\">%1$s</"
 "span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:196
+#: admin/porte-documents.admin.php:205
 #, php-format
 msgid ""
 "Modification du fichier <span class=\"porteDocumentsNom\">%1$s</span> "
 "effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:223
+#: admin/porte-documents.admin.php:232
 #, php-format
 msgid ""
 "Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
 "class=\"porteDocumentsNom\">%2$s</span> effectués."
 msgstr ""
 
-#: admin/porte-documents.admin.php:228
+#: admin/porte-documents.admin.php:237
 #, php-format
 msgid ""
 "Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
 "class=\"porteDocumentsNom\">%2$s</span> impossibles."
 msgstr ""
 
-#: admin/porte-documents.admin.php:235
+#: admin/porte-documents.admin.php:244
 #, php-format
 msgid ""
 "Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
 "\"porteDocumentsNom\">%2$s</span> effectué."
 msgstr ""
 
-#: admin/porte-documents.admin.php:240
+#: admin/porte-documents.admin.php:249
 #, php-format
 msgid ""
 "Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
 "\"porteDocumentsNom\">%2$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:247
+#: admin/porte-documents.admin.php:256
 #, php-format
 msgid ""
 "<span class=\"porteDocumentsNom\">%1$s</span> n'existe pas. Renommage en "
 "<span class=\"porteDocumentsNom\">%2$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:272
-#, php-format
-msgid ""
-"Création du fichier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
-msgstr ""
-
-#: admin/porte-documents.admin.php:272
-msgid "Vous pouvez le modifier."
-msgstr ""
-
-#: admin/porte-documents.admin.php:277
-#, php-format
-msgid ""
-"Impossible de créer le fichier <span class=\"porteDocumentsNom\">%1$s</span>."
-msgstr ""
-
-#: admin/porte-documents.admin.php:285
+#: admin/porte-documents.admin.php:281
 #, php-format
 msgid ""
 "Création du dossier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:290
+#: admin/porte-documents.admin.php:286 admin/porte-documents.admin.php:303
 #, php-format
 msgid ""
 "Impossible de créer le dossier <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:297
+#: admin/porte-documents.admin.php:311
+#, php-format
+msgid ""
+"Création du fichier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
+msgstr ""
+
+#: admin/porte-documents.admin.php:311
+msgid "Vous pouvez le modifier."
+msgstr ""
+
+#: admin/porte-documents.admin.php:346
+#, php-format
+msgid "Impossible d'ajouter un modèle de page web dans le fichier %1$s."
+msgstr ""
+
+#: admin/porte-documents.admin.php:353
+#, php-format
+msgid ""
+"Impossible de créer le fichier <span class=\"porteDocumentsNom\">%1$s</span>."
+msgstr ""
+
+#: admin/porte-documents.admin.php:361
 #, php-format
 msgid "<span class=\"porteDocumentsNom\">%1$s</span> existe déjà."
 msgstr ""
 
-#: admin/porte-documents.admin.php:316
+#: admin/porte-documents.admin.php:380
 msgid ""
 "Veuillez sélectionner un bon format de fichier ou demandez à ce que "
 "l'extension de votre fichier soit ajoutée dans la liste."
 msgstr ""
 
-#: admin/porte-documents.admin.php:322
+#: admin/porte-documents.admin.php:386
 #, php-format
 msgid "Votre fichier doit faire moins de %1$s octets (%2$s Mio)."
 msgstr ""
 
-#: admin/porte-documents.admin.php:329
+#: admin/porte-documents.admin.php:393
 #, php-format
 msgid ""
 "Le nom de votre fichier risque de mal s'afficher dans une adresse html. "
@@ -962,82 +967,86 @@ msgid ""
 "soulignement _)."
 msgstr ""
 
-#: admin/porte-documents.admin.php:335
+#: admin/porte-documents.admin.php:399
 msgid "Un fichier existe déjà avec ce nom dans le dossier sélectionné."
 msgstr ""
 
-#: admin/porte-documents.admin.php:352
+#: admin/porte-documents.admin.php:416
 #, php-format
 msgid "Transfert de <span class=\"porteDocumentsNom\">%1$s</span> complété."
 msgstr ""
 
-#: admin/porte-documents.admin.php:357 admin/porte-documents.admin.php:364
+#: admin/porte-documents.admin.php:421 admin/porte-documents.admin.php:428
 #, php-format
 msgid "Erreur de transfert de <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:371
+#: admin/porte-documents.admin.php:435
 msgid "Liste des fichiers et dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:374
+#: admin/porte-documents.admin.php:438
 msgid "Affichage détaillé"
 msgstr ""
 
-#: admin/porte-documents.admin.php:384
+#: admin/porte-documents.admin.php:448
 #, php-format
 msgid "Impossible d'avoir accès au dossier %1$s"
 msgstr ""
 
-#: admin/porte-documents.admin.php:395 admin/porte-documents.admin.php:476
+#: admin/porte-documents.admin.php:459 admin/porte-documents.admin.php:540
 msgid "Dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:418
+#: admin/porte-documents.admin.php:482
 msgid "Affichage général des dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:426
+#: admin/porte-documents.admin.php:490
 msgid "Parcourir"
 msgstr ""
 
-#: admin/porte-documents.admin.php:437
+#: admin/porte-documents.admin.php:501
 msgid ""
 "Pour supprimer des fichiers, cocher la case correspondante et cliquer "
 "ensuite sur le bouton ci-dessous."
 msgstr ""
 
-#: admin/porte-documents.admin.php:444
+#: admin/porte-documents.admin.php:508
 msgid "Ajouter un fichier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:448
+#: admin/porte-documents.admin.php:512
 msgid "Dossier:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:463
+#: admin/porte-documents.admin.php:527
 msgid "Créer un fichier ou un dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:465
+#: admin/porte-documents.admin.php:529
 msgid ""
 "Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans "
 "le nom. Exemples:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:474
+#: admin/porte-documents.admin.php:538
 msgid "Nom:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:475
+#: admin/porte-documents.admin.php:539
 msgid "Type:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:477
-msgid "Fichier"
+#: admin/porte-documents.admin.php:541
+msgid "Fichier modèle de page web"
 msgstr ""
 
-#: admin/porte-documents.admin.php:479
+#: admin/porte-documents.admin.php:542
+msgid "Fichier vide"
+msgstr ""
+
+#: admin/porte-documents.admin.php:544
 msgid "Créer"
 msgstr ""
 
