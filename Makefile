@@ -4,12 +4,14 @@
 ##
 ########################################################################
 
+# Chemin vers le bureau
+bureau=`xdg-user-dir DESKTOP`
+
 # Récupère le dernier tag (qui représente la dernière version)
 tag=`bzr tags | tail -n 1 | cut -d ' ' -f 1`
 
 # Récupère le numéro de la première révision du dernier tag
 premiereRevTag=`bzr tags | tail -n 2 | head -n 1 | rev | cut -d ' ' -f 1 | rev | xargs expr 1 + `
-
 ########################################################################
 ##
 ## MÉTACIBLES
@@ -32,7 +34,7 @@ archives: menage-archives ChangeLog version.txt
 	bzr export -r tag:$(tag) $(tag)
 	mv ChangeLog $(tag)/
 	php ./scripts.cli.php mdtxt ChangeLogDerniereVersion
-	mv ChangeLogDerniereVersion.mdtxt ~/Bureau/ChangeLog-$(tag).mdtxt
+	mv ChangeLogDerniereVersion.mdtxt $(bureau)/ChangeLog-$(tag).mdtxt
 	mv ChangeLogDerniereVersion $(tag)/
 	cp version.txt $(tag)/
 	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
@@ -48,12 +50,12 @@ archives: menage-archives ChangeLog version.txt
 	rm -f $(tag)/Makefile
 	rm -f $(tag)/scripts.cli.php
 	rm -rf $(tag)/src
-	tar -jcvf $(tag).tar.bz2 $(tag)
-	zip -r $(tag) $(tag)
+	tar --bzip2 -cvf $(tag).tar.bz2 $(tag) # --bzip2 = -j
+	zip -rv $(tag).zip $(tag)
 	rm -rf $(tag)
 	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2
-	mv $(tag).tbz2 ~/Bureau/
-	mv $(tag).zip ~/Bureau/
+	mv $(tag).tbz2 $(bureau)/
+	mv $(tag).zip $(bureau)/
 
 ChangeLog: menage-ChangeLog
 	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
