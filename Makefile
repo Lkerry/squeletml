@@ -20,7 +20,7 @@ premiereRevTag=`bzr tags | tail -n 2 | head -n 1 | rev | cut -d ' ' -f 1 | rev |
 generer: message-accueil po
 
 # Crée une archive .bz2, y ajoute les fichiers qui ne sont pas versionnés mais nécessaires, supprime les fichiers versionnés mais inutiles. À faire après un bzr tag... quand une nouvelle version est sortie.
-publier: bz2
+publier: archives
 
 ########################################################################
 ##
@@ -28,7 +28,7 @@ publier: bz2
 ##
 ########################################################################
 
-bz2: menage-bz2 ChangeLog version.txt
+archives: menage-archives ChangeLog version.txt
 	bzr export -r tag:$(tag) $(tag)
 	mv ChangeLog $(tag)/
 	php ./scripts.cli.php mdtxt ChangeLogDerniereVersion
@@ -49,9 +49,11 @@ bz2: menage-bz2 ChangeLog version.txt
 	rm -f $(tag)/scripts.cli.php
 	rm -rf $(tag)/src
 	tar -jcvf $(tag).tar.bz2 $(tag)
+	zip -r $(tag) $(tag)
 	rm -rf $(tag)
 	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2
 	mv $(tag).tbz2 ~/Bureau/
+	mv $(tag).zip ~/Bureau/
 
 ChangeLog: menage-ChangeLog
 	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
@@ -60,8 +62,9 @@ ChangeLog: menage-ChangeLog
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(tag) > ChangeLog
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLogDerniereVersion
 
-menage-bz2:
+menage-archives:
 	rm -f $(tag).tbz2
+	rm -f $(tag).zip
 
 menage-ChangeLog:
 	rm -f ChangeLog
