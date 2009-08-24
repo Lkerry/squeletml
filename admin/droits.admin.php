@@ -53,8 +53,8 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 	{
 		$htaccess = '';
 		$htaccess .= "# Ajout automatique de Squeletml. Ne pas modifier.\n";
-		$htaccess .= "# Empêcher l'affichage direct des fichiers Markdown, d'administration, texte (sauf le fichier `robots.txt`) et XML.\n";
-		$htaccess .= '<FilesMatch "(\.mdtxt|\.admin\.php|(?<!robots)\.txt|\.xml)$">' . "\n";
+		$htaccess .= "# Empêcher l'affichage direct des fichiers Markdown, d'administration, texte et XML.\n";
+		$htaccess .= '<FilesMatch "\.(mdtxt|admin\.php|txt|xml)$">' . "\n";
 		$htaccess .= "\tAuthType Basic\n";
 		$htaccess .= "\tAuthName \"Zone d'identification\"\n";
 		$htaccess .= "\tAuthUserFile $racine/.acces\n";

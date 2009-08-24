@@ -22,3 +22,10 @@ ErrorDocument 404 /404.php
 # Ne pas lister les fichiers dans un dossier sans fichier `index`
 Options -Indexes
 
+# S'assurer de l'accès au fichier `robots.txt`
+<Files robots.txt>
+	Order Deny,Allow
+	Allow from all
+	Satisfy any
+</Files>
+
