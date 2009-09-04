@@ -136,15 +136,15 @@ function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossier
 			
 			if (empty($dim))
 			{
-				$lienModifier = "<a href=\"$action" . $symboleUrl . "action=modifier&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Modifier") . "</a>";
+				$lienEditer = "<a href=\"$action" . $symboleUrl . "action=editer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Éditer") . "</a>";
 			}
 			else
 			{
-				$lienModifier = 'Modifier';
+				$lienEditer = T_("Éditer");
 			}
 			
-			$liste[$dossierRacine][] = "$lienModifier
-				<span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Renommer") . "</a>
+			$liste[$dossierRacine][] = "<a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a>
+				<span class='porteDocumentsSep'>|</span> $lienEditer
 				<span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
 				<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><span class='porteDocumentsNom'>$fichier</span></a>$dim";
 		}

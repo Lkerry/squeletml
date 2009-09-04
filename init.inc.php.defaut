@@ -7,6 +7,10 @@ $urlRacine = "http://localhost/serveur_local/squeletml"; // Sans la barre finale
 $accueil['fr'] = $urlRacine;
 $accueil['en'] = $urlRacine . '/en';
 
+// Hébergement sur un serveur de Free.fr
+// Laisser la valeur par défaut à moins d'une installation sur un serveur de Free.fr
+$serveurFree = FALSE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites)

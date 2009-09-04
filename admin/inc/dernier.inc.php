@@ -15,7 +15,7 @@ SET_DHTML("redimensionnable"+RESIZABLE);
 
 	<?php if ($colorationSyntaxique): ?>
 	
-		<?php if (isset($_GET['action']) && $_GET['action'] = 'modifier' && isset($_GET['valeur']) && preg_match('|\.css$|', $_GET['valeur'])): ?>
+		<?php if (isset($_GET['action']) && $_GET['action'] = 'editer' && isset($_GET['valeur']) && preg_match('|\.css$|', $_GET['valeur'])): ?>
 		
 			<script type="text/javascript">
 			var editor = CodeMirror.fromTextArea('code', {
@@ -31,7 +31,7 @@ SET_DHTML("redimensionnable"+RESIZABLE);
 			});
 			</script>
 			
-		<?php elseif (isset($_GET['action']) && $_GET['action'] = 'modifier' && isset($_GET['valeur']) && preg_match('|\.js$|', $_GET['valeur'])): ?>
+		<?php elseif (isset($_GET['action']) && $_GET['action'] = 'editer' && isset($_GET['valeur']) && preg_match('|\.js$|', $_GET['valeur'])): ?>
 		
 			<script type="text/javascript">
 			var editor = CodeMirror.fromTextArea('code', {

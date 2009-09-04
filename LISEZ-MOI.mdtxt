@@ -16,9 +16,13 @@ Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulai
 
 ## Fonctionnalités
 
-Voici un aperçu des fonctionnalités ou des caractéristiques de Squeletml:
+Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Sans base de données.
+
+- Requiert PHP 5, et compatible PHP 5.3.
+
+- Développé sous GNU/Linux, et testé sur quelques configurations, dont Apache sous Windows et les serveurs de Free.fr.
 
 - Structure valide XHTML 1.0 Strict (si nécessaire, une option permet de passer au XHTML 1.0 Transitional).
 

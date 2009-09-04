@@ -53,13 +53,35 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 	{
 		$htaccess = '';
 		$htaccess .= "# Ajout automatique de Squeletml. Ne pas modifier.\n";
-		$htaccess .= "# Empêcher l'affichage direct des fichiers Markdown, d'administration, texte et XML.\n";
-		$htaccess .= '<FilesMatch "\.(mdtxt|admin\.php|txt|xml)$">' . "\n";
+		$htaccess .= "# Empêcher l'affichage direct du fichier des comptes d'accès et des d'administration, Markdown, texte et XML.\n";
+		
+		if ($serveurFreeFr)
+		{
+			$htaccess .= '<Files ~ "\.(acces|admin\.php|mdtxt||txt|xml)$">' . "\n";
+			
+			preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
+			
+			$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
+		}
+		else
+		{
+			$htaccess .= '<FilesMatch "\.(acces|admin\.php|mdtxt||txt|xml)$">' . "\n";
+			$htaccess .= "\tAuthUserFile $racine/.acces\n";
+		}
+		
 		$htaccess .= "\tAuthType Basic\n";
 		$htaccess .= "\tAuthName \"Zone d'identification\"\n";
-		$htaccess .= "\tAuthUserFile $racine/.acces\n";
 		$htaccess .= "\tRequire valid-user\n";
-		$htaccess .= "</FilesMatch>\n";
+		
+		if ($serveurFreeFr)
+		{
+			$htaccess .= "</Files>\n";
+		}
+		else
+		{
+			$htaccess .= "</FilesMatch>\n";
+		}
+		
 		$htaccess .= "# Fin de l'ajout automatique de Squeletml.\n";
 		
 		if ($fic = fopen($racine . '/.htaccess', 'a+'))
@@ -74,7 +96,7 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 	{
 		if ($fic2 = fopen($racine . '/.acces', 'a+'))
 		{
-			if (stristr(PHP_OS, 'win'))
+			if (stristr(PHP_OS, 'win') || $serveurFreeFr)
 			{
 				$acces = adminFormateTexte($_POST['nom']) . ':' . adminFormateTexte($_POST['motDePasse']) . "\n";
 			}
@@ -182,7 +204,7 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 			fclose($fic2);
 		}
 		
-		// S'il n'y a plus d'utilisateurs dans le fichier `.acces`, on supprime l'authentification dans le .htaccess.
+		// S'il n'y a plus d'utilisateurs dans le fichier `.acces`, on supprime ce fichier ainsi que l'authentification dans le .htaccess.
 		// Note: auparavant, je faisais:
 		// clearstatcache();
 		// if (filesize($racine . '/.acces') == 0) {...}
@@ -204,6 +226,8 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		
 		if ($accesVide)
 		{
+			unlink($racine . '/.acces');
+			
 			if ($fic2 = fopen($racine . '/.htaccess', 'r'))
 			{
 				$fichierHtaccess = array ();
@@ -253,7 +277,7 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 <?php
 
 $i = 0;
-if ($fic3 = fopen($racine . '/.acces', 'r'))
+if (file_exists($racine . '/.acces') && $fic3 = fopen($racine . '/.acces', 'r'))
 {
 	while (!feof($fic3))
 	{

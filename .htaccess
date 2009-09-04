@@ -4,6 +4,9 @@
 ##
 ########################################################################
 
+# Décommenter la ligne suivante dans le cas d'un hébergement sur un serveur de Free.fr
+#php 1
+
 # Page s'affichant à la place d'une page inexistante
 # Au besoin, changer le chemin vers la page
 ErrorDocument 404 /404.php

@@ -379,7 +379,7 @@ if (isset($_POST['lister']))
 				$fichier = str_replace('\\', '', $fichier);
 				$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $res[1]);
 				$fichierLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
-				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("id:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=modifier&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
+				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("id:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
 			}
 		}
 	}
@@ -485,7 +485,7 @@ if (isset($_POST['creerPage']))
 					echo '<div class="boite2">' . "\n";
 					echo '<h3>' . T_("Page web") . '</h3>' . "\n";
 				
-					echo '<p><a href="porte-documents.admin.php?action=modifier&valeur=' . $cheminPage . '/' . $page . '#messagesPorteDocuments">' . $trad . '</a></p>';
+					echo '<p><a href="porte-documents.admin.php?action=editer&valeur=' . $cheminPage . '/' . $page . '#messagesPorteDocuments">' . $trad . '</a></p>';
 					echo "</div><!-- /boite2 -->\n";
 				}
 			}
@@ -604,7 +604,7 @@ if (isset($_POST['modeleConf']) ||
 		$id = str_replace('\\', '', $_POST['id']);
 		$id = str_replace(array ("'", '"'), array ('%27', '%22'), $id);
 		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $id . '.txt';
-		echo '<p>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=modifier&valeur=../site/inc/' . basename($fichierConfigChemin) . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></p>' . "\n";
+		echo '<p>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . basename($fichierConfigChemin) . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></p>' . "\n";
 	}
 }
 ?>
