@@ -186,6 +186,7 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 	
 	if (!empty($fichiers))
 	{
+		$favicon = '';
 		foreach ($fichiers as $indice)
 		{
 			foreach ($indice as $page => $fichier)
@@ -211,7 +212,8 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 					switch ($type)
 					{
 						case 'favicon':
-							$balisesLinkScript .= '<link rel="shortcut icon" type="images/x-icon" href="' . $fichier . $version . '" />' . "\n";
+							// On ne conserve qu'une déclaration de favicon.
+							$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . $fichier . $version . '" />' . "\n";
 							break;
 				
 						case 'css':
@@ -237,6 +239,8 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 				}
 			}
 		}
+		
+		$balisesLinkScript .= $favicon;
 	}
 	
 	return $balisesLinkScript;
@@ -905,6 +909,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		}
 		
 		// Exif
+		$exif = '';
 		if ($ajoutExif && typeImage($infoGrandeNom['extension']) == 'jpeg' && function_exists('exif_read_data'))
 		{
 			$tableauExif = exif_read_data($racineImgSrc . '/' . $galerie[$indice]['grandeNom'], 'IFD0', 0);
@@ -917,7 +922,6 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			
 			if ($tableauExif)
 			{
-				$exif = '';
 				foreach ($infosExif as $cle => $valeur)
 				{
 					if ($valeur && isset($tableauExif[$cle]) && !empty($tableauExif[$cle]))
@@ -969,10 +973,6 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			{
 				$exif = "<div id='galerieGrandeExif'><ul>" . $exif . "</ul></div><!-- /galerieGrandeExif -->";
 			}
-		}
-		else
-		{
-			$exif = '';
 		}
 		
 		if (isset($lienOrigHref) && !empty($lienOrigHref) && ($galerieLienOrigEmplacement == 'image' || $galerieLienOrigEmplacement == 'imageLegende'))
