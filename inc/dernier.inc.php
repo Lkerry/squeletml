@@ -55,7 +55,7 @@
 		<?php echo $tableauCorpsGalerie['texteGrande']; ?>
 	<?php endif; ?>
 
-	<?php if (($idGalerie && $rss) || $galerieFluxGlobal || $siteFluxGlobal): ?>
+	<?php if (($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.txt"))): ?>
 		<div class="sep"></div>
 		<div id="iconeRss">
 			<ul>
