@@ -107,7 +107,7 @@ $deuxColonnes = FALSE; // TRUE|FALSE
 ##
 ########################################################################
 
-// Pour utiliser le formulaire de contact livré par défaut sans devoir créer une page personnalisée et y renseigner la variable `$courrielContact`, inscrire ci-dessous l'adresse courriel à utiliser, sinon laisser vide.
+// Pour utiliser le formulaire de contact livré par défaut sans devoir créer une page de contact personnalisée simplement pour y renseigner la variable `$courrielContact`, saisir ci-dessous l'adresse courriel à utiliser, sinon laisser vide.
 $courrielContactParDefaut = "";
 
 $captchaCalcul = TRUE; // TRUE|FALSE
