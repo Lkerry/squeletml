@@ -6,7 +6,7 @@ Squeletml requiert un serveur avec PHP 5, sans plus. Aucune base de données n'e
 
 ### Mise en situation
 
-On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.4`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-1.4` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-1.4`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.8`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-1.8` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-1.8`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
 
 ## Configuration
 
@@ -16,7 +16,7 @@ Deux seuls fichiers doivent obligatoirement être créés et configurés, bien q
 
 Tant que ces deux fichiers n'existent pas, la page d'accueil de votre installation de Squeletml émettra un avertissement.
 
-**Note: les personnes installant Squeletml sur un serveur de Free.fr doivent effectuer quelques manipulations supplémentaires. Voir la section**
+**Note: les personnes installant Squeletml sur un serveur de Free.fr doivent effectuer quelques manipulations supplémentaires. Voir un peu plus bas.**
 
 #### Le fichier `init.inc.php.defaut`
 
@@ -132,7 +132,9 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
   - page.fr.galerie.inc.php
   - page.fr.index.inc.php
 
-	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans `site/inc/page.fr.index.inc.php` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier par défaut.**
+	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans le dossier `site/inc/` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier `inc/page.fr.index.inc.php` par défaut.**
+	
+	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, la page d'erreur 404 affiche un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$courrielContactParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
 
 ### Divisions HTML
 
@@ -210,7 +212,7 @@ D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` 
 
 *Note: lisez tout ce qui suit avant d'effectuer une mise à jour.*
 
-Pour mettre à jour Squeletml, téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier ressemblant à `squeletml-1.4`. Ensuite, copier tout le contenu de ce dossier, à l'exception du dossier `site`, et éventuellement de ce qui suit:
+Pour mettre à jour Squeletml, téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier ressemblant à `squeletml-1.8`. Ensuite, copier tout le contenu de ce dossier, à l'exception du dossier `site`, et éventuellement de ce qui suit:
 
 - Vous avez fort probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'accès à l'administration) ou le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés.
 
@@ -242,6 +244,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 - `$robots[1]`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `config.inc.php`.
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
+
+	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$courrielContactParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$courrielContactParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
 - `$idGalerie`: un nombre ou un mot identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir plus loin), une galerie sera insérée dans la page.
 

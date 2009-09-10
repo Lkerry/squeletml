@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-04 08:10-0400\n"
+"POT-Creation-Date: 2009-09-10 16:19-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1079,13 +1079,13 @@ msgstr ""
 msgid "Créer"
 msgstr ""
 
-#: inc/fonctions.inc.php:402
+#: inc/fonctions.inc.php:406
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
 
-#: inc/fonctions.inc.php:404
+#: inc/fonctions.inc.php:408
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -1094,58 +1094,58 @@ msgid ""
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
 
-#: inc/fonctions.inc.php:406
+#: inc/fonctions.inc.php:410
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:752
+#: inc/fonctions.inc.php:756
 msgid "Légende de l'oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:839
+#: inc/fonctions.inc.php:843
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:852
+#: inc/fonctions.inc.php:856
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:881
+#: inc/fonctions.inc.php:885
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:886
+#: inc/fonctions.inc.php:890
 #, php-format
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:928
+#: inc/fonctions.inc.php:932
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:932
+#: inc/fonctions.inc.php:936
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:940
+#: inc/fonctions.inc.php:944
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:944
+#: inc/fonctions.inc.php:948
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:948
+#: inc/fonctions.inc.php:952
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:952
+#: inc/fonctions.inc.php:956
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:956
+#: inc/fonctions.inc.php:960
 msgid "Fabriquant"
 msgstr ""
 
@@ -1188,16 +1188,16 @@ msgstr ""
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1658 inc/premier.inc.php:46
+#: inc/fonctions.inc.php:1658 inc/premier.inc.php:50
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1662 inc/premier.inc.php:51
+#: inc/fonctions.inc.php:1662 inc/premier.inc.php:55
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1666 inc/premier.inc.php:56
+#: inc/fonctions.inc.php:1666 inc/premier.inc.php:60
 msgid "RSS global du site"
 msgstr ""
 

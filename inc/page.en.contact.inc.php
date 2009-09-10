@@ -2,7 +2,7 @@
 $baliseTitle = "Contact";
 $description = "Contact form";
 $langue[1] = 'en';
-$courrielContact = " ";
+$courrielContact = "@";
 include $racine . '/inc/premier.inc.php';
 ?>
 

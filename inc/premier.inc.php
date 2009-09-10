@@ -19,6 +19,10 @@ if (!isset($motsCles))
 {
 	$motsCles = FALSE;
 }
+if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
+{
+	$courrielContact = $courrielContactParDefaut;
+}
 foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 {
 	include_once $fichier;
