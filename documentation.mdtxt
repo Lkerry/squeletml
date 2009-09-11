@@ -2,7 +2,7 @@
 
 ## Installation
 
-Squeletml requiert un serveur avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il n'est donc nécessaire que de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire l'archive, et de placer les fichiers sur un serveur, par exemple par ftp.
+Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il n'est donc nécessaire que de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire l'archive, et de placer les fichiers sur un serveur, par exemple par ftp.
 
 ### Mise en situation
 
