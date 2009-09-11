@@ -9,6 +9,6 @@
 	
 	<li><a href="<?php echo $urlRacine; ?>/admin/lisez-moi.admin.php"><?php echo T_("Lisez-moi"); ?></a> | </li>
 	<li><a href="<?php echo $urlRacine; ?>/admin/documentation.admin.php"><?php echo T_("Documentation"); ?></a> | </li>
-	<li><a href="<?php echo $urlRacine; ?>/admin/version.admin.php"><?php echo T_("Version"); ?></a> | </li>
+	<li><a href="<?php echo $urlRacine; ?>/admin/index.admin.php"><?php echo T_("Version"); ?></a> | </li>
 	<li><a href="<?php echo $urlRacine; ?>/"><?php echo T_("Retour au site"); ?></a></li>
 </ul>
