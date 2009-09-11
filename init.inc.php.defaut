@@ -15,7 +15,7 @@ $accueil['en'] = $urlRacine . '/en';
 
 // Hébergement sur un serveur de Free.fr
 // Laisser la valeur par défaut à moins d'une installation sur un serveur de Free.fr
-$serveurFree = FALSE; // TRUE|FALSE
+$serveurFreeFr = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
