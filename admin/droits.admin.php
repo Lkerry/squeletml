@@ -55,9 +55,11 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		$htaccess .= "# Ajout automatique de Squeletml. Ne pas modifier.\n";
 		$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
+		$htaccessFilesModele = "(ChangeLog|ChangeLogDerniereVersion|\.acces|\.admin\.php|\.defaut|\.mdtxt|\.pc|\.txt|\.xml)$";
+		
 		if ($serveurFreeFr)
 		{
-			$htaccess .= '<Files ~ "\.(acces|admin\.php|mdtxt|pc|txt|xml)$">' . "\n";
+			$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
 			
 			preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
 			
@@ -65,7 +67,7 @@ if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['suppr
 		}
 		else
 		{
-			$htaccess .= '<FilesMatch "\.(acces|admin\.php|mdtxt|pc|txt|xml)$">' . "\n";
+			$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
 			$htaccess .= "\tAuthUserFile $racine/.acces\n";
 		}
 		
