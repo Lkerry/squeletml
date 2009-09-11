@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-10 21:14-0400\n"
+"POT-Creation-Date: 2009-09-10 22:29-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -714,7 +714,7 @@ msgid "Documentation"
 msgstr ""
 
 #: admin/inc/html.menu.inc.php:12
-msgid "Version"
+msgid "Versions"
 msgstr ""
 
 #: admin/inc/html.menu.inc.php:13
