@@ -372,7 +372,7 @@ if (isset($_POST['lister']))
 	{
 		if(!is_dir($racine . '/site/inc/' . $fichier) && $fichier != '.' && $fichier != '..')
 		{
-			if (preg_match('/^galerie-(.*)\.txt$/', $fichier, $res))
+			if (preg_match('/^galerie-(.*)\.pc$/', $fichier, $res))
 			{
 				$i++;
 				$res[1] = str_replace('\\', '', $res[1]);
@@ -436,7 +436,7 @@ if (isset($_POST['creerPage']))
 	}
 	else
 	{
-		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.txt';
+		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.pc';
 		
 		if (!file_exists($fichierConfigChemin))
 		{
@@ -520,7 +520,7 @@ $listeFichiers = '';
 					}
 				}
 				
-				$listeFichiers .= "__IMG__\n";
+				$listeFichiers .= "#IMG\n";
 			}
 		}
 	}
@@ -550,7 +550,7 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 	}
 	else
 	{
-		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.txt';
+		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.pc';
 		
 		if (file_exists($fichierConfigChemin))
 		{
@@ -599,11 +599,11 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 if (isset($_POST['modeleConf']) ||
 	(isset($_POST['conf']) && $_POST['conf'] == 'maj'))
 {
-	if (file_exists($racine . '/site/inc/galerie-' . $_POST['id'] . '.txt'))
+	if (file_exists($racine . '/site/inc/galerie-' . $_POST['id'] . '.pc'))
 	{
 		$id = str_replace('\\', '', $_POST['id']);
 		$id = str_replace(array ("'", '"'), array ('%27', '%22'), $id);
-		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $id . '.txt';
+		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $id . '.pc';
 		echo '<p>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . basename($fichierConfigChemin) . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></p>' . "\n";
 	}
 }

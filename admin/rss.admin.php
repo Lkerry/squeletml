@@ -16,7 +16,7 @@ if (isset($_POST['lister']))
 {
 	if (isset($_POST['global']) && $_POST['global'] == 'galeries')
 	{
-		$cheminFichier = "$racine/site/inc/rss-global-galeries.txt";
+		$cheminFichier = "$racine/site/inc/rss-global-galeries.pc";
 		if (file_exists($cheminFichier))
 		{
 			if ($fic = fopen($cheminFichier, 'r'))
@@ -66,13 +66,13 @@ if (isset($_POST['lister']))
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.txt#messagesPorteDocuments">');
+			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments">');
 		}
 	}
 	
 	elseif (isset($_POST['global']) && $_POST['global'] == 'site')
 	{
-		$cheminFichier = "$racine/site/inc/rss-global-site.txt";
+		$cheminFichier = "$racine/site/inc/rss-global-site.pc";
 		if (file_exists($cheminFichier))
 		{
 			if ($pages = file($cheminFichier))
@@ -121,7 +121,7 @@ if (isset($_POST['lister']))
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.txt#messagesPorteDocuments">');
+			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments">');
 		}
 	}
 }
@@ -143,7 +143,7 @@ if (isset($_POST['modifsGaleries']))
 		$i++;
 	}
 	
-	$cheminFichier = "$racine/site/inc/rss-global-galeries.txt";
+	$cheminFichier = "$racine/site/inc/rss-global-galeries.pc";
 	if (file_exists($cheminFichier))
 	{
 		if (file_put_contents($cheminFichier, $contenuFichier))
@@ -166,7 +166,7 @@ if (isset($_POST['modifsGaleries']))
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.txt#messagesPorteDocuments">');
+		echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments">');
 		echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 		echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 		echo "<ul>\n";
@@ -194,7 +194,7 @@ elseif (isset($_POST['modifsSite']))
 		$i++;
 	}
 	
-	$cheminFichier = "$racine/site/inc/rss-global-site.txt";
+	$cheminFichier = "$racine/site/inc/rss-global-site.pc";
 	if (file_exists($cheminFichier))
 	{
 		if (file_put_contents($cheminFichier, $contenuFichier))
@@ -217,7 +217,7 @@ elseif (isset($_POST['modifsSite']))
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.txt#messagesPorteDocuments">');
+		echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments">');
 		echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 		echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 		echo "<ul>\n";

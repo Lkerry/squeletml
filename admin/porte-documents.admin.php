@@ -462,52 +462,49 @@ if (isset($erreur))
 <div class="boite">
 <h2 id="fichiersEtDossiers"><?php echo T_("Liste des fichiers et dossiers"); ?></h2>
 
-<div class="boite2">
-<h3><?php echo T_("Affichage détaillé"); ?></h3>
-
 <?php
 
-if (isset($_GET['action']))
+if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 {
-	if ($_GET['action'] == 'parcourir')
+	echo '<div class="boite2">' . "\n";
+	echo '<h3>' . sprintf(T_("Contenu du dossier %1\$s"), '<span class="porteDocumentsNom">' . $_GET['valeur'] . '</span>') . "</h3>\n";
+
+	if (!is_dir($_GET['valeur']))
 	{
-		if (!is_dir($_GET['valeur']))
-		{
-			$erreur .= "<li class='erreur'>" . sprintf(T_('Impossible d\'avoir accès au dossier %1$s'), $_GET['valeur']) . "</li>\n";
-		}
+		$erreur .= "<li class='erreur'>" . sprintf(T_('Impossible d\'avoir accès au dossier %1$s'), $_GET['valeur']) . "</li>\n";
+	}
 
-		else
-		{
-			$liste = adminParcourirTout($_GET['valeur'], $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
-			ksort($liste);
+	else
+	{
+		$liste = adminParcourirTout($_GET['valeur'], $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
+		ksort($liste);
 
-			echo "<ul>\n";
-			foreach ($liste as $cle => $valeur)
+		echo "<ul>\n";
+		foreach ($liste as $cle => $valeur)
+		{
+			echo "<li class='porteDocumentsListeDossiers'>" . T_("Dossier") . " <span class='porteDocumentsNom'>$cle</span><ul>\n";
+			$cle = array();
+			foreach ($valeur as $valeur2)
 			{
-				echo "<li class='porteDocumentsListeDossiers'>" . T_("Dossier") . " <span class='porteDocumentsNom'>$cle</span><ul>\n";
-				$cle = array();
-				foreach ($valeur as $valeur2)
-				{
-					$cle[] = $valeur2;
-				}
-
-				natcasesort($cle);
-
-				foreach ($cle as $valeur3)
-				{
-					echo "<li>$valeur3</li>\n";
-				}
-				echo "</ul></li>\n";
+				$cle[] = $valeur2;
 			}
-			echo "</ul>\n";
+
+			natcasesort($cle);
+
+			foreach ($cle as $valeur3)
+			{
+				echo "<li>$valeur3</li>\n";
+			}
+			echo "</ul></li>\n";
 		}
+		echo "</ul>\n";
 	}
 }
 ?>
 </div><!-- /boite2 -->
 
 <div class="boite2">
-<h3><?php echo T_("Affichage général des dossiers"); ?></h3>
+<h3><?php echo T_("Liste des dossiers"); ?></h3>
 
 <?php
 $liste2 = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres);

@@ -48,7 +48,7 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 				$rss = $galerieFluxParDefaut;
 			}
 	
-			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/inc/galerie-" . $idGalerie . ".txt"))
+			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/inc/galerie-" . $idGalerie . ".pc"))
 			{
 				// A: le flux est activé.
 				
@@ -82,7 +82,7 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 
 elseif (isset($_GET['global']) && $_GET['global'] == 'galeries')
 {
-	if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt"))
+	if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
 	{
 		// A: le flux global pour les galeries est activé.
 		
@@ -93,7 +93,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries')
 		}
 		else
 		{
-			$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.txt");
+			$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.pc");
 			if (!empty($galeries))
 			{
 				$itemsFlux = array ();
@@ -119,7 +119,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries')
 
 elseif (isset($_GET['global']) && $_GET['global'] == 'site')
 {
-	if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.txt"))
+	if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	{
 		// A: le flux global du site est activé.
 		
@@ -130,7 +130,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site')
 		}
 		else
 		{
-			$pages = file("$racine/site/inc/rss-global-site.txt");
+			$pages = file("$racine/site/inc/rss-global-site.pc");
 			if (!empty($pages))
 			{
 				$itemsFlux = array ();
@@ -146,9 +146,9 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site')
 				}
 				
 				// On vérifie si les galeries ont leur flux global, et si oui, on les inclut dans le flux global du site
-				if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt"))
+				if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
 				{
-					$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.txt");
+					$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.pc");
 					if (!empty($galeries))
 					{
 						foreach ($galeries as $idGalerie => $urlRelativeGalerie)

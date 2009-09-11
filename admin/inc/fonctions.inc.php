@@ -219,7 +219,7 @@ Retourne TRUE s'il n'y a aucune erreur, sinon retourne FALSE.
 function adminMajConfGalerie($racine, $id, $listeAjouts)
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-	$fichierConfigChemin = $racine . '/site/inc/galerie-' . $id . '.txt';
+	$fichierConfigChemin = $racine . '/site/inc/galerie-' . $id . '.pc';
 	if (!empty($listeAjouts))
 	{
 		$listeExistant = file_get_contents($fichierConfigChemin) or die();
@@ -295,7 +295,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 		{
 			$contenuConfig .= "$cle=$valeur\n";
 		}
-		$contenuConfig .= "__IMG__\n";
+		$contenuConfig .= "#IMG\n";
 	}
 	
 	$contenuConfig = rtrim($contenuConfig);

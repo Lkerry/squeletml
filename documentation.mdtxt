@@ -429,7 +429,7 @@ Chaque galerie possède son propre identifiant unique, appelé *id*, qui peut ê
 
 - un dossier contenant les images, et présent dans `site/fichiers/galeries/`, ce qui donne pour notre exemple `site/fichiers/galeries/galerie1/`;
 
-- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/inc/`, ce qui donne pour notre exemple `site/inc/galerie-galerie1.txt`;
+- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/inc/`, ce qui donne pour notre exemple `site/inc/galerie-galerie1.pc`;
 
 - une page à visiter sur le site pour afficher la galerie, par exemple `ma-galerie-de-test.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'*id* de la galerie que vous voulez afficher.
 
@@ -439,21 +439,21 @@ Concrètement, pour créer une galerie, voici les étapes à suivre:
 
 2. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
 
-3. Créer un fichier de configuration `site/inc/galerie-$idGalerie.txt`. Cette étape est développée ci-dessous.
+3. Créer un fichier de configuration `site/inc/galerie-$idGalerie.pc`. Cette étape est développée ci-dessous.
 
 ### Fichier de configuration
 
 Chaque image d'une galerie est déclinée en au moins deux versions: vignette et grande. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version grande.
 
-Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.txt`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main.
+Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.pc`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
 
-Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `__IMG__`. Voici un exemple:
+Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `#IMG` (*note: avant la version 1.8.8, Squeletml utilisait le marqueur `__IMG__`*). Voici un exemple:
 
 <div><code type="ini">
 grandeNom=fichier1.jpg
-__IMG__
+#IMG
 grandeNom=fichier2.jpg
-__IMG__
+#IMG
 </code></div>
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète:
@@ -559,7 +559,7 @@ pageGrandeBaliseTitle=
 pageGrandeDescription=
 pageGrandeMotsCles=
 origNom=
-__IMG__
+#IMG
 </code></div>
 
 ### Navigation entre les oeuvres
@@ -637,7 +637,7 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 ### Syndication globale des galeries
 
-Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.txt` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
+Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.pc` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
 <div><code type="ini">
 id de la galerie=URL relative de la galerie
@@ -658,11 +658,11 @@ et:
 
 	$urlRacine/dossier/galerie-animaux.php
 
-**Note: puisque le script ne lit que la liste du fichier `site/inc/rss-global-galeries.txt`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans `site/inc/rss-global-galeries.txt` tout simplement.**
+**Note: puisque le script ne lit que la liste du fichier `site/inc/rss-global-galeries.pc`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans `site/inc/rss-global-galeries.pc` tout simplement.**
 
 ### Syndication globale du site
 
-Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.txt` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
+Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.pc` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
 
 	URL relative de la page
 
@@ -674,7 +674,7 @@ La page en question est accessible à l'adresse suivante:
 
 	$urlRacine/dossier1/dossier2/page.php
 
-L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.txt` composeront le flux global du site.
+L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.pc` composeront le flux global du site.
 
 ## Développement
 

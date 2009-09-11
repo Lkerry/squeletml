@@ -25,9 +25,9 @@ if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 if ($idGalerie && isset($_GET['oeuvre']))
 {
 	if (file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/')
-	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.txt'))
+	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.pc'))
 	{
-		$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $idGalerie . '.txt');
+		$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $idGalerie . '.pc');
 		$i = 0;
 		foreach($galerie as $oeuvre)
 		{
@@ -49,7 +49,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 elseif ($idGalerie && !isset($_GET['oeuvre']))
 {
 	if (file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/')
-	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.txt'))
+	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.pc'))
 	{
 		$decouvrir = TRUE;
 		if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')

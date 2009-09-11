@@ -55,7 +55,7 @@
 		<?php echo $tableauCorpsGalerie['texteGrande']; ?>
 	<?php endif; ?>
 
-	<?php if (($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.txt"))): ?>
+	<?php if (($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))): ?>
 		<div class="sep"></div>
 		<div id="iconeRss">
 			<ul>
@@ -63,11 +63,11 @@
 					<li><?php echo lienRss($urlFlux, $idGalerie, TRUE); ?></li>
 				<?php endif; ?>
 		
-				<?php if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.txt")): ?>
+				<?php if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")): ?>
 					<li><?php echo lienRss("$urlRacine/rss.php?global=galeries", FALSE, TRUE); ?></li>
 				<?php endif; ?>
 			
-				<?php if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.txt")): ?>
+				<?php if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc")): ?>
 					<li><?php echo lienRss("$urlRacine/rss.php?global=site", FALSE, FALSE); ?></li>
 				<?php endif; ?>
 			</ul>

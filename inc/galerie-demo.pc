@@ -1,19 +1,19 @@
 grandeNom=Bella_z_Milhostovskych_poli_2.jpg
 grandeLegende=Photo dans le domaine public et provenant de <a href="http://commons.wikimedia.org/wiki/Image:Bella_z_Milhostovskych_poli_2.jpg?uselang=fr">Wikimedia Commons</a>.
-__IMG__
+#IMG
 grandeNom=Cat-MaineCoon-Cookie.jpg
 grandeLegende=Photo dans le domaine public et provenant de <a href="http://commons.wikimedia.org/wiki/Image:Cat-MaineCoon-Cookie.png?uselang=fr">Wikimedia Commons</a>.
-__IMG__
+#IMG
 grandeNom=Kuko.jpg
 grandeLegende=Photo dans le domaine public et provenant de <a href="http://commons.wikimedia.org/wiki/Image:Kuko.JPG?uselang=fr">Wikimedia Commons</a>.
-__IMG__
+#IMG
 grandeNom=Mallard_duck_close-up.jpg
 grandeLegende=Photo dans le domaine public et provenant de <a href="http://commons.wikimedia.org/wiki/Image:Mallard_duck_close-up.jpg?uselang=fr">Wikimedia Commons</a>.
-__IMG__
+#IMG
 grandeNom=Tortoise3_cepolina.jpg
 grandeLegende=Photo dans le domaine public et provenant de <a href="http://commons.wikimedia.org/wiki/Image:Tortoise3_cepolina.jpg?uselang=fr">Wikimedia Commons</a>.
-__IMG__
+#IMG
 grandeNom=lucertola_architetto_fra_01.png
 origNom=lucertola_architetto_fra_01.svg
 grandeLegende=Image dans le domaine public et provenant de l'<a href="http://www.openclipart.org/">Open Clip Art Library</a>.
-__IMG__
+#IMG

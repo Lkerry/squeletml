@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-10 16:19-0400\n"
+"POT-Creation-Date: 2009-09-10 21:14-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -280,7 +280,7 @@ msgstr ""
 msgid "Mot de passe"
 msgstr ""
 
-#: admin/droits.admin.php:315 admin/porte-documents.admin.php:550
+#: admin/droits.admin.php:315 admin/porte-documents.admin.php:547
 msgid "Ajouter"
 msgstr ""
 
@@ -289,8 +289,8 @@ msgid "Modifier"
 msgstr ""
 
 #: admin/droits.admin.php:315 admin/inc/fonctions.inc.php:148
-#: admin/porte-documents.admin.php:518 admin/porte-documents.admin.php:527
-#: admin/porte-documents.admin.php:531
+#: admin/porte-documents.admin.php:515 admin/porte-documents.admin.php:524
+#: admin/porte-documents.admin.php:528
 msgid "Supprimer"
 msgstr ""
 
@@ -540,7 +540,7 @@ msgstr ""
 msgid "Id de la galerie (si elle n'existe pas, elle sera créée):"
 msgstr ""
 
-#: admin/galeries.admin.php:636 admin/porte-documents.admin.php:539
+#: admin/galeries.admin.php:636 admin/porte-documents.admin.php:536
 msgid "Fichier:"
 msgstr ""
 
@@ -678,7 +678,7 @@ msgstr ""
 msgid "Éditer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:146 admin/porte-documents.admin.php:518
+#: admin/inc/fonctions.inc.php:146 admin/porte-documents.admin.php:515
 msgid "Renommer/Déplacer"
 msgstr ""
 
@@ -1015,64 +1015,65 @@ msgstr ""
 msgid "Liste des fichiers et dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:466
-msgid "Affichage détaillé"
+#: admin/porte-documents.admin.php:470
+#, php-format
+msgid "Contenu du dossier %1$s"
 msgstr ""
 
-#: admin/porte-documents.admin.php:476
+#: admin/porte-documents.admin.php:474
 #, php-format
 msgid "Impossible d'avoir accès au dossier %1$s"
 msgstr ""
 
-#: admin/porte-documents.admin.php:487 admin/porte-documents.admin.php:568
+#: admin/porte-documents.admin.php:485 admin/porte-documents.admin.php:565
 msgid "Dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:510
-msgid "Affichage général des dossiers"
+#: admin/porte-documents.admin.php:507
+msgid "Liste des dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:529
+#: admin/porte-documents.admin.php:526
 msgid ""
 "Pour supprimer des fichiers, cocher la case correspondante et cliquer "
 "ensuite sur le bouton ci-dessous."
 msgstr ""
 
-#: admin/porte-documents.admin.php:536
+#: admin/porte-documents.admin.php:533
 msgid "Ajouter un fichier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:540
+#: admin/porte-documents.admin.php:537
 msgid "Dossier:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:555
+#: admin/porte-documents.admin.php:552
 msgid "Créer un fichier ou un dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:557
+#: admin/porte-documents.admin.php:554
 msgid ""
 "Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans "
 "le nom. Exemples:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:566
+#: admin/porte-documents.admin.php:563
 msgid "Nom:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:567
+#: admin/porte-documents.admin.php:564
 msgid "Type:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:569
+#: admin/porte-documents.admin.php:566
 msgid "Fichier modèle de page web"
 msgstr ""
 
-#: admin/porte-documents.admin.php:570
+#: admin/porte-documents.admin.php:567
 msgid "Fichier vide"
 msgstr ""
 
-#: admin/porte-documents.admin.php:572
+#: admin/porte-documents.admin.php:569
 msgid "Créer"
 msgstr ""
 
