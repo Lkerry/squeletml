@@ -210,15 +210,17 @@ D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` 
 
 ## Mise à jour de Squeletml
 
-*Note: lisez tout ce qui suit avant d'effectuer une mise à jour.*
+**Note: lisez tout ce qui suit avant d'effectuer une mise à jour.**
 
-Pour mettre à jour Squeletml, téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier ressemblant à `squeletml-1.8`. Ensuite, copier tout le contenu de ce dossier, à l'exception du dossier `site`, et éventuellement de ce qui suit:
+Pour mettre à jour Squeletml:
 
-- Vous avez fort probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'accès à l'administration) ou le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés.
+- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom ressemble à `squeletml-1.8`.
 
-Maintenant, collez votre précédente sélection dans l'emplacement de votre site. Vous pouvez accepter d'écraser les fichiers existants.
+- Ensuite, sélectionnez et copiez tout le contenu de ce dossier, à l'exception éventuellement de ce qui suit: vous avez fort probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'accès à l'administration), et peut-être le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés. Vous pouvez cependant vérifier si ces fichiers ont été modifiés dans la nouvelle version de Squeletml et, si tel est le cas, les éditer à la main pour y appliquer les changements.
 
-Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant de coller votre sélection. Prenez garde encore une fois de **ne pas supprimer le dossier `site`**.
+- Maintenant, collez votre précédente sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
+
+Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer**, en plus des fichiers `.htaccess` ou `robots.txt`, le dossier `site`, qui contient votre configuration personnalisée, et éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`).
 
 ## Créer des pages
 
