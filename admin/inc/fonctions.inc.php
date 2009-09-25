@@ -273,20 +273,28 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 	
 	$fic = opendir($cheminGalerie) or die();
 	
-	$listeFichiers = '';
+	$listeNouveauxFichiers = array ();
 	while($fichier = @readdir($fic))
 	{
 		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 		{
 			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) &&
 				!preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) &&
-				!in_array_multi($fichier, $galerieTemp))
+				!in_array_multi($fichier, $galerieTemp) &&
+				!in_array_multi($fichier, $listeNouveauxFichiers))
 			{
-				array_unshift($galerieTemp, array ('intermediaireNom' => $fichier));
+				$listeNouveauxFichiers[] = $fichier;
 			}
 		}
 	}
 	closedir($fic);
+	
+	rsort($listeNouveauxFichiers);
+	foreach ($listeNouveauxFichiers as $valeur)
+	{
+		array_unshift($galerieTemp, array ('intermediaireNom' => $valeur));
+	}
+	unset($listeNouveauxFichiers);
 	
 	$contenuConfig = '';
 	foreach ($galerieTemp as $oeuvre)
