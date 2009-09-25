@@ -252,7 +252,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 					$galerieTemp[$i][$cle] = $valeur;
 				}
 			}
-			elseif ($cle == 'origNom')
+			elseif ($cle == 'originalNom')
 			{
 				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
 				{
@@ -279,7 +279,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 		{
 			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) &&
-				!preg_match('/-orig\.[[:alpha:]]{3,4}$/', $fichier) &&
+				!preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) &&
 				!in_array_multi($fichier, $galerieTemp))
 			{
 				array_unshift($galerieTemp, array ('grandeNom' => $fichier));

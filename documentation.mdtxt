@@ -538,10 +538,10 @@ pageGrandeDescription=Bla bla bla
 pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
 </code></div>
 
-- `origNom`: nom de l'image en version originale (en tout cas normalement de taille plus importante que la version grande, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version grande, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-orig.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
+- `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version grande, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version grande, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
 
 	<div><code type="ini">
-origNom=fichier1Orig.jpg
+originalNom=fichier1Original.jpg
 </code></div>
 
 Voici une entrée vide, qu'il est possible de copier/coller:
@@ -560,7 +560,7 @@ grandeLegende=
 pageGrandeBaliseTitle=
 pageGrandeDescription=
 pageGrandeMotsCles=
-origNom=
+originalNom=
 #IMG
 </code></div>
 

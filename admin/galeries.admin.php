@@ -207,7 +207,7 @@ if (isset($_POST['retailler']))
 	{
 		$listeModifs = array ();
 		
-		if ($_POST['versionOrig'] == 'renommerOrig')
+		if ($_POST['manipulerOriginal'] == 'renommerOriginal')
 		{
 			$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
 			
@@ -216,10 +216,10 @@ if (isset($_POST['retailler']))
 				if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 				{
 					$infoFichier = pathinfo(basename($fichier));
-					if (!preg_match('/-orig\.' . $infoFichier['extension'] . '/', $fichier))
+					if (!preg_match('/-original\.' . $infoFichier['extension'] . '/', $fichier))
 					{
 						$nouveauNom = basename($fichier, '.' . $infoFichier['extension']);
-						$nouveauNom .= '-orig.' . $infoFichier['extension'];
+						$nouveauNom .= '-original.' . $infoFichier['extension'];
 						if (!file_exists($cheminGalerie . '/' . $nouveauNom) && rename($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom))
 						{
 							$listeModifs[] = sprintf(T_('Renommage de <code>%1$s</code> en <code>%2$s</code>'), $fichier, $nouveauNom) . "\n";
@@ -235,16 +235,16 @@ if (isset($_POST['retailler']))
 			closedir($fic);
 		}
 		
-		// A: les images à traiter ont la forme `nom-orig.extension`
+		// A: les images à traiter ont la forme `nom-original.extension`
 		
 		$fic2 = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
 		
 		while($fichier = @readdir($fic2))
 		{
 			$infoFichier = pathinfo(basename($fichier));
-			$nouveauNom = preg_replace('/-orig\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
+			$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
-			if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..' && preg_match('/-orig\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
+			if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..' && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
 			{
 				// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
 				$type = typeImage($infoFichier['extension']);
@@ -252,33 +252,33 @@ if (isset($_POST['retailler']))
 				switch ($type)
 				{
 					case 'gif':
-						$imageOrig = imagecreatefromgif($cheminGalerie . '/' . $fichier);
+						$imageOriginal = imagecreatefromgif($cheminGalerie . '/' . $fichier);
 						break;
 					
 					case 'jpeg':
-						$imageOrig = imagecreatefromjpeg($cheminGalerie . '/' . $fichier);
+						$imageOriginal = imagecreatefromjpeg($cheminGalerie . '/' . $fichier);
 						break;
 					
 					case 'png':
-						$imageOrig = imagecreatefrompng($cheminGalerie . '/' . $fichier);
+						$imageOriginal = imagecreatefrompng($cheminGalerie . '/' . $fichier);
 						break;
 				}
 				
-				// Calcul des dimensions de l'orig
-				$imageOrigHauteur = imagesy($imageOrig);
-				$imageOrigLargeur = imagesx($imageOrig);
+				// Calcul des dimensions de l'original
+				$imageOriginalHauteur = imagesy($imageOriginal);
+				$imageOriginalLargeur = imagesx($imageOriginal);
 				
 				// On trouve les futures dimensions de la version grande
 				$imageGrandeHauteur = $_POST['hauteur'];
-				if ($imageGrandeHauteur > $imageOrigHauteur)
+				if ($imageGrandeHauteur > $imageOriginalHauteur)
 				{
-					$imageGrandeHauteur = $imageOrigHauteur;
+					$imageGrandeHauteur = $imageOriginalHauteur;
 				}
-				$imageGrandeLargeur = ($imageGrandeHauteur / $imageOrigHauteur) * $imageOrigLargeur;
+				$imageGrandeLargeur = ($imageGrandeHauteur / $imageOriginalHauteur) * $imageOriginalLargeur;
 				if ($imageGrandeLargeur > $_POST['largeur'])
 				{
 					$imageGrandeLargeur = $_POST['largeur'];
-					$imageGrandeHauteur = ($imageGrandeLargeur / $imageOrigLargeur) * $imageOrigHauteur;
+					$imageGrandeHauteur = ($imageGrandeLargeur / $imageOriginalLargeur) * $imageOriginalHauteur;
 				}
 				
 				// On crée une image grande vide
@@ -289,8 +289,8 @@ if (isset($_POST['retailler']))
 					imagesavealpha($imageGrande, true);
 				}
 				
-				// On crée la version grande à partir de l'orig
-				imagecopyresampled($imageGrande, $imageOrig, 0, 0, 0, 0, $imageGrandeLargeur, $imageGrandeHauteur, $imageOrigLargeur, $imageOrigHauteur);
+				// On crée la version grande à partir de l'original
+				imagecopyresampled($imageGrande, $imageOriginal, 0, 0, 0, 0, $imageGrandeLargeur, $imageGrandeHauteur, $imageOriginalLargeur, $imageOriginalHauteur);
 				
 				// Netteté
 				if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
@@ -508,7 +508,7 @@ $listeFichiers = '';
 	{
 		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 		{
-			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-orig\.[[:alpha:]]{3,4}$/', $fichier))
+			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier))
 			{
 				$listeFichiers .= "grandeNom=$fichier\n";
 				
@@ -650,7 +650,7 @@ if (isset($_POST['modeleConf']) ||
 <p><label><?php echo T_("Fichier:"); ?></label><br />
 <input type="file" name="fichier" size="25"/></p>
 
-<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-orig.extension</code> sont ignorés, les autres sont considérés comme étant la version grande à afficher)."); ?></label></p>
+<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version grande à afficher)."); ?></label></p>
 
 <p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
 </div>
@@ -662,7 +662,7 @@ if (isset($_POST['modeleConf']) ||
 <div class="boite">
 <h2><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
 
-<p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version grande dans la galerie) de chaque image au format original. Aucune image au format original ne sera modifiée."); ?></p>
+<p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version grande dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
 
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>
@@ -674,15 +674,15 @@ if (isset($_POST['modeleConf']) ||
 <input type="text" name="largeur" size="4" /> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" /></p>
 
 <p><label><?php echo T_("Comment manipuler les images du dossier?"); ?></label><br />
-<input type="radio" name="versionOrig" value="orig" checked="checked" /> <?php echo T_("Le nom des images originales se termine par <code>-orig.extension</code>. Générer un fichier sans <code>-orig</code> pour chaque version grande."); ?><br />
-<input type="radio" name="versionOrig" value="renommerOrig" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-orig.extension</code> et ensuite gérérer les image en version grande sans le suffixe <code>-orig</code>."); ?></p>
+<input type="radio" name="manipulerOriginal" value="original" checked="checked" /> <?php echo T_("Le nom des images au format original se termine par <code>-original.extension</code>. Générer un fichier sans <code>-original</code> pour chaque version grande."); ?><br />
+<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code> et ensuite gérérer les image en version grande sans le suffixe <code>-original</code>."); ?></p>
 
 <p><label><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
 <input type="text" name="qualiteJpg" value="90" size="2" /></p>
 
 <p><input type="checkbox" name="actions" value="nettete" /> <label><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)"); ?></label></p>
 
-<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-orig.extension</code> sont ignorés, les autres sont considérés comme étant la version grande à afficher)."); ?></label></p>
+<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version grande à afficher)."); ?></label></p>
 
 <p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
@@ -737,7 +737,7 @@ if (isset($_POST['modeleConf']) ||
 <option value="pageGrandeBaliseTitle">pageGrandeBaliseTitle</option>
 <option value="pageGrandeDescription">pageGrandeDescription</option>
 <option value="pageGrandeMotsCles">pageGrandeMotsCles</option>
-<option value="origNom">origNom</option>
+<option value="originalNom">originalNom</option>
 </select></p>
 
 <p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>

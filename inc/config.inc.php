@@ -224,16 +224,16 @@ $infosExif = array (
 	);
 
 // Si le format original d'une image existe, est-ce que le lien vers le fichier est fait sur l'image ou dans la légende, ou les deux?
-$galerieLienOrigEmplacement = 'imageLegende'; // image|legende|imageLegende
+$galerieLienOriginalEmplacement = 'imageLegende'; // image|legende|imageLegende
 
 // Si le format original d'une image existe, est-ce qu'on ajoute une petite icône sous l'image pour le signifier?
-$galerieIconeOrig = TRUE; // TRUE|FALSE
+$galerieIconeOriginal = TRUE; // TRUE|FALSE
 
 // Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
-$galerieLienOrigJavascript = FALSE; // TRUE|FALSE
+$galerieLienOriginalJavascript = FALSE; // TRUE|FALSE
 
 // Si le format original d'une image existe et que le lien n'est pas pris en charge par une fenêtre Javascript, est-ce que le lien vers le fichier force le téléchargement sans affichage dans le navigateur?
-$galerieTelechargeOrig = FALSE; // TRUE|FALSE
+$galerieTelechargeOriginal = FALSE; // TRUE|FALSE
 
 // Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
 /* Les emplacements `haut` et `bas` font référence à l'image en version grande, alors que `sousLeContenu` fait référence à la page. Par exemple, l'option `sousLeContenu` place avec la configuration par défaut de Squeletml les informations de l'image dans la colonne de gauche. */

@@ -796,7 +796,7 @@ function grandeLegende($legende, $galerieLegendeMarkdown)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOrig, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOrigEmplacement, $galerieLienOrigJavascript, $galerieIconeOrig)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
 {
 	$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
 	
@@ -853,7 +853,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			{
 				$contenuAlt = substr($contenuAlt, 0, -1);
 			}
-			$legende = '<div id="galerieGrandeLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $origNom))) . ')</div>';
+			$legende = '<div id="galerieGrandeLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ')</div>';
 		}
 		else
 		{
@@ -861,51 +861,51 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		}
 		
 		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
-		if (!empty($galerie[$indice]['origNom']))
+		if (!empty($galerie[$indice]['originalNom']))
 		{
-			$origNom = $galerie[$indice]['origNom'];
+			$originalNom = $galerie[$indice]['originalNom'];
 		}
 		
 		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version grande de l'image.
 		else
 		{
-			$origNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
-			$origNom .= '-orig.' . $infoGrandeNom['extension'];
+			$originalNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
+			$originalNom .= '-original.' . $infoGrandeNom['extension'];
 		}
 			
-		// On vérifie maintenant si le fichier $origNom existe. S'il existe, on insère un lien vers l'image.
-		if (file_exists($racineImgSrc . '/' . $origNom))
+		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on insère un lien vers l'image.
+		if (file_exists($racineImgSrc . '/' . $originalNom))
 		{
 			// On génère des infos utilisables plus loin
-			$infoOrigNom = pathinfo($origNom);
+			$infoOriginalNom = pathinfo($originalNom);
 			
-			$lienOrigHref = '';
-			if ($galerieTelechargeOrig && !$galerieLienOrigJavascript && ($galerieLienOrigEmplacement == 'legende' || $galerieLienOrigEmplacement == 'imageLegende'))
+			$lienOriginalHref = '';
+			if ($galerieTelechargeOriginal && !$galerieLienOriginalJavascript && ($galerieLienOriginalEmplacement == 'legende' || $galerieLienOriginalEmplacement == 'imageLegende'))
 			{
-				$lienOrigTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;');
-				$lienOrigHref .= $urlRacine . '/telecharger.php?fichier=';
+				$lienOriginalTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
+				$lienOriginalHref .= $urlRacine . '/telecharger.php?fichier=';
 			}
 			else
 			{
-				$lienOrigTrad = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $origNom)) . '&nbsp;');
+				$lienOriginalTrad = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
 			}
 			
-			$lienOrigHref .= preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $origNom);
+			$lienOriginalHref .= preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
 			
-			if ($galerieLienOrigJavascript && !preg_match('|\.svg$|i', $origNom))
+			if ($galerieLienOriginalJavascript && !preg_match('|\.svg$|i', $originalNom))
 			{
-				$relOrig = ' rel="lightbox"';
+				$relOriginal = ' rel="lightbox"';
 			}
 			else
 			{
-				$relOrig = '';
+				$relOriginal = '';
 			}
 			
-			$lienOrig = '<div id="galerieLienOrig"><a href="' . $lienOrigHref . '"' . $relOrig . '>' . $lienOrigTrad . '</a></div>';
+			$lienOriginal = '<div id="galerieLienOriginal"><a href="' . $lienOriginalHref . '"' . $relOriginal . '>' . $lienOriginalTrad . '</a></div>';
 		}
 		else
 		{
-			$lienOrig = '';
+			$lienOriginal = '';
 		}
 		
 		// Exif
@@ -915,9 +915,9 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$tableauExif = exif_read_data($racineImgSrc . '/' . $galerie[$indice]['grandeNom'], 'IFD0', 0);
 			
 			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si c'est du JPG
-			if (!$tableauExif && !empty($lienOrig) && typeImage($infoOrigNom['extension']) == 'jpeg')
+			if (!$tableauExif && !empty($lienOriginal) && typeImage($infoOriginalNom['extension']) == 'jpeg')
 			{
-				$tableauExif = exif_read_data($racineImgSrc . '/' . $origNom, 'IFD0', 0);
+				$tableauExif = exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
 			}
 			
 			if ($tableauExif)
@@ -975,50 +975,50 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			}
 		}
 		
-		if (isset($lienOrigHref) && !empty($lienOrigHref) && ($galerieLienOrigEmplacement == 'image' || $galerieLienOrigEmplacement == 'imageLegende'))
+		if (isset($lienOriginalHref) && !empty($lienOriginalHref) && ($galerieLienOriginalEmplacement == 'image' || $galerieLienOriginalEmplacement == 'imageLegende'))
 		{
-			if ($galerieLienOrigJavascript && !preg_match('|\.svg$|i', $origNom))
+			if ($galerieLienOriginalJavascript && !preg_match('|\.svg$|i', $originalNom))
 			{
-				$relOrig = ' rel="lightbox"';
+				$relOriginal = ' rel="lightbox"';
 			}
 			else
 			{
-				$relOrig = '';
+				$relOriginal = '';
 			}
-			$lienOrigAvant = '<a href="' . $lienOrigHref . '"' . $relOrig . '>';
-			$lienOrigApres = '</a>';
+			$lienOriginalAvant = '<a href="' . $lienOriginalHref . '"' . $relOriginal . '>';
+			$lienOriginalApres = '</a>';
 		}
 		else
 		{
-			$lienOrigAvant = '';
-			$lienOrigApres = '';
+			$lienOriginalAvant = '';
+			$lienOriginalApres = '';
 		}
 		
-		if ($galerieIconeOrig && isset($lienOrigHref) && !empty($lienOrigHref))
+		if ($galerieIconeOriginal && isset($lienOriginalHref) && !empty($lienOriginalHref))
 		{
 			if (file_exists($racine . '/site/fichiers/agrandir.png'))
 			{
-				$galerieIconeOrigSrc = $urlRacine . '/site/fichiers/agrandir.png';
+				$galerieIconeOriginalSrc = $urlRacine . '/site/fichiers/agrandir.png';
 			}
 			else
 			{
-				$galerieIconeOrigSrc = $urlRacine . '/fichiers/agrandir.png';
+				$galerieIconeOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
 			}
 			
-			$imgLienOrig = '<div id="galerieIconeOrig">' . $lienOrigAvant . '<img src="' . $galerieIconeOrigSrc . '" alt="' . str_replace('&nbsp;', ' ', $lienOrigTrad) . '" width="22" height="22" />' . $lienOrigApres . '</div><!-- /galerieIconeOrig -->' . "\n";
+			$imgLienOriginal = '<div id="galerieIconeOriginal">' . $lienOriginalAvant . '<img src="' . $galerieIconeOriginalSrc . '" alt="' . str_replace('&nbsp;', ' ', $lienOriginalTrad) . '" width="22" height="22" />' . $lienOriginalApres . '</div><!-- /galerieIconeOriginal -->' . "\n";
 		}
 		else
 		{
-			$imgLienOrig = '';
+			$imgLienOriginal = '';
 		}
 		
 		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousLeContenu')
 		{
-			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOrig;
+			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOriginal;
 		}
 		elseif ($galerieLegendeEmplacement == 'bas')
 		{
-			return '<div id="galerieGrandeImg">' . $lienOrigAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOrigApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOrig . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOrig . "</div><!-- /galerieGrandeTexte -->\n";
+			return '<div id="galerieGrandeImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOriginal . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieGrandeTexte -->\n";
 		}
 	}
 
@@ -1505,35 +1505,35 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 			$alt = $title;
 		}
 		
-		if (!empty($oeuvre['origNom']))
+		if (!empty($oeuvre['originalNom']))
 		{
-			$urlOrig = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['origNom'];
+			$urlOriginal = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['originalNom'];
 		}
 		else
 		{
-			$infoOrig = pathinfo($oeuvre['grandeNom']);
-			$nomOrig = basename($oeuvre['grandeNom'], '.' . $infoOrig['extension']);
-			$nomOrig .= '-orig.' . $infoOrig['extension'];
-			if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOrig"))
+			$infoOriginal = pathinfo($oeuvre['grandeNom']);
+			$nomOriginal = basename($oeuvre['grandeNom'], '.' . $infoOriginal['extension']);
+			$nomOriginal .= '-original.' . $infoOriginal['extension'];
+			if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
 			{
-				$urlOrig = "$urlRacine/site/fichiers/galeries/$idGalerie/$nomOrig";
+				$urlOriginal = "$urlRacine/site/fichiers/galeries/$idGalerie/$nomOriginal";
 			}
 			else
 			{
-				$urlOrig = '';
+				$urlOriginal = '';
 			}
 		}
 		
-		if (!empty($urlOrig))
+		if (!empty($urlOriginal))
 		{
-			$msgOrig = "\n<p><a href='$urlOrig'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>";
+			$msgOriginal = "\n<p><a href='$urlOriginal'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>";
 		}
 		else
 		{
-			$msgOrig = '';
+			$msgOriginal = '';
 		}
 		
-		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOrig");
+		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
 		$pubDate = fileatime($cheminOeuvre);
 		
 		$itemsFlux[] = array (

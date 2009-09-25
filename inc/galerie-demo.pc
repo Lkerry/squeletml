@@ -14,6 +14,6 @@ grandeNom=Tortoise3_cepolina.jpg
 grandeLegende=Photo dans le domaine public et provenant de <a href="http://commons.wikimedia.org/wiki/Image:Tortoise3_cepolina.jpg?uselang=fr">Wikimedia Commons</a>.
 #IMG
 grandeNom=lucertola_architetto_fra_01.png
-origNom=lucertola_architetto_fra_01.svg
+originalNom=lucertola_architetto_fra_01.svg
 grandeLegende=Image dans le domaine public et provenant de l'<a href="http://www.openclipart.org/">Open Clip Art Library</a>.
 #IMG

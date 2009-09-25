@@ -69,7 +69,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Génération automatique des vignettes ou utilisation de vignettes personnalisées.
   - Script offert pour retailler automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
   - Ajout d'images par lot contenues dans une archive TAR (.tar) ou ZIP (.zip).
-  - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette ou `-orig.extension` pour la version originale ou téléchargeable de l'image).
+  - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette ou `-original.extension` pour la version originale ou téléchargeable de l'image).
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
 
