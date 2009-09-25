@@ -20,23 +20,18 @@ include '../init.inc.php';
 
 if (isset($_POST['lister']))
 {
-	$fic = opendir($racine . '/site/inc') or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $racine . '/site/inc') . "</p>");
+	$fic = opendir($racine . '/site/fichiers/galeries') or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $racine . '/site/fichiers/galeries') . "</p>");
 	
 	$listeFichiers = '';
 	$i = 0;
 	while($fichier = @readdir($fic))
 	{
-		if(!is_dir($racine . '/site/inc/' . $fichier) && $fichier != '.' && $fichier != '..')
+		if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
 		{
-			if (preg_match('/^galerie-(.*)\.pc$/', $fichier, $res))
-			{
-				$i++;
-				$res[1] = str_replace('\\', '', $res[1]);
-				$fichier = str_replace('\\', '', $fichier);
-				$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $res[1]);
-				$fichierLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
-				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
-			}
+			$i++;
+			$fichier = str_replace('\\', '', $fichier);
+			$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
+			$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
 		}
 	}
 	
@@ -444,7 +439,7 @@ if (isset($_POST['creerPage']))
 	}
 	else
 	{
-		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.pc';
+		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $_POST['id'] . '/config.pc';
 		
 		if (!file_exists($fichierConfigChemin))
 		{
@@ -567,7 +562,7 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 	}
 	else
 	{
-		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $_POST['id'] . '.pc';
+		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $_POST['id'] . '/config.pc';
 		
 		if (file_exists($fichierConfigChemin))
 		{
@@ -616,11 +611,11 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 if (isset($_POST['modeleConf']) ||
 	(isset($_POST['conf']) && $_POST['conf'] == 'maj'))
 {
-	if (file_exists($racine . '/site/inc/galerie-' . $_POST['id'] . '.pc'))
+	if (file_exists($racine . '/site/fichiers/galeries/' . $_POST['id'] . '/config.pc'))
 	{
 		$id = str_replace('\\', '', $_POST['id']);
 		$id = str_replace(array ("'", '"'), array ('%27', '%22'), $id);
-		$fichierConfigChemin = $racine . '/site/inc/galerie-' . $id . '.pc';
+		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
 		echo '<p>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . basename($fichierConfigChemin) . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></p>' . "\n";
 	}
 }

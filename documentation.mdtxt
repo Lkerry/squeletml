@@ -427,13 +427,13 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 
 ## Galeries
 
-Chaque galerie possède son propre identifiant unique, appelé *id*, qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'*id* vaut `galerie1`. Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible:
+Chaque galerie possède son propre identifiant unique, aussi appelé *id*, qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'identifiant vaut `galerie1`. Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible:
 
-- un dossier contenant les images, et présent dans `site/fichiers/galeries/`, ce qui donne pour notre exemple `site/fichiers/galeries/galerie1/`;
+- un dossier contenant les images, présent dans `site/fichiers/galeries/` et dont le nom correspond à l'identifiant de la galerie, ce qui donne pour notre exemple `site/fichiers/galeries/galerie1/`;
 
-- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/inc/`, ce qui donne pour notre exemple `site/inc/galerie-galerie1.pc`;
+- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/fichiers/galeries/identifiantDeLaGalerie`, ce qui donne pour notre exemple `site/fichiers/galeries/galerie1/config.pc`;
 
-- une page à visiter sur le site pour afficher la galerie, par exemple `ma-galerie-de-test.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'*id* de la galerie que vous voulez afficher.
+- une page à visiter sur le site pour afficher la galerie, par exemple `ma-galerie-de-test.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la galerie que vous voulez afficher.
 
 Concrètement, pour créer une galerie, voici les étapes à suivre:
 
@@ -441,13 +441,13 @@ Concrètement, pour créer une galerie, voici les étapes à suivre:
 
 2. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
 
-3. Créer un fichier de configuration `site/inc/galerie-$idGalerie.pc`. Cette étape est développée ci-dessous.
+3. Créer un fichier de configuration `site/fichiers/galeries/$idGalerie/config.pc`. Cette étape est développée ci-dessous.
 
 ### Fichier de configuration
 
 Chaque image d'une galerie est déclinée en au moins deux versions: vignette et intermediaire. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version intermediaire.
 
-Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.pc`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
+Cette information doit se retrouver dans le fichier de configuration `site/fichiers/galeries/$idGalerie/config.pc`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
 
 Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `#IMG` (*note: avant la version 1.8.8, Squeletml utilisait le marqueur `__IMG__`*). Voici un exemple:
 

@@ -48,7 +48,7 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 				$rss = $galerieFluxParDefaut;
 			}
 	
-			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/inc/galerie-" . $idGalerie . ".pc"))
+			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie . "/config.pc"))
 			{
 				// A: le flux est activé.
 				

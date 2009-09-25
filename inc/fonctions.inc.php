@@ -1462,7 +1462,7 @@ Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant
 */
 function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
-	$galerie = construitTableauGalerie("$racine/site/inc/galerie-$idGalerie.pc", TRUE);
+	$galerie = construitTableauGalerie("$racine/site/fichiers/galeries/$idGalerie/config.pc", TRUE);
 	$itemsFlux = array ();
 	
 	foreach ($galerie as $oeuvre)

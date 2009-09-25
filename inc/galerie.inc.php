@@ -14,12 +14,11 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 phpGettext($racine, langue($langue));
 
 // Insertion du tableau contenant la liste des oeuvres à afficher
-// Recherche `site/inc/galerie-$idGalerie.pc`, sinon inclut `inc/galerie-demo.pc`
+// Recherche `site/fichiers/galeries/$idGalerie/config.pc`, sinon inclut `fichiers/galeries/demo/config.pc`
 if ($idGalerie
-	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/')
-	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.pc'))
+	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 {
-	$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $idGalerie . '.pc', TRUE);
+	$galerie = construitTableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . $idGalerie;
 	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
 }
@@ -27,7 +26,7 @@ else
 {
 	// Galerie démo par défaut
 	$idGalerie = 'demo';
-	$galerie = construitTableauGalerie($racine . '/inc/galerie-demo.pc', TRUE);
+	$galerie = construitTableauGalerie($racine . '/fichiers/galeries/demo/config.pc', TRUE);
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/demo';
 	$racineImgSrc = $racine . '/fichiers/galeries/demo';
 }
