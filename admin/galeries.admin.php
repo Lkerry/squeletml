@@ -747,6 +747,7 @@ if (isset($_POST['modeleConf']) ||
 <option value="pageIntermediaireDescription">pageIntermediaireDescription</option>
 <option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
 <option value="originalNom">originalNom</option>
+<option value="exclure">exclure</option>
 </select></p>
 
 <p><?php echo T_("Note: les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher."); ?></p>

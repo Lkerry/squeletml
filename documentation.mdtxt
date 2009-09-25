@@ -544,6 +544,12 @@ pageIntermediaireMotsCles=photo de chien, bla bla bla, divan, photographie, chie
 originalNom=fichier1Original.jpg
 </code></div>
 
+- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est si `exclure` vaut `oui`. Exemple:
+
+	<div><code type="ini">
+exclure=oui
+</code></div>
+
 Voici une entrée vide, qu'il est possible de copier/coller:
 
 <div><code type="ini">
@@ -561,6 +567,7 @@ pageIntermediaireBaliseTitle=
 pageIntermediaireDescription=
 pageIntermediaireMotsCles=
 originalNom=
+exclure=
 #IMG
 </code></div>
 

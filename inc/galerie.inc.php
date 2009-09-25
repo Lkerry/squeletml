@@ -19,7 +19,7 @@ if ($idGalerie
 	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/')
 	&& file_exists($racine . '/site/inc/galerie-' . $idGalerie . '.pc'))
 {
-	$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $idGalerie . '.pc');
+	$galerie = construitTableauGalerie($racine . '/site/inc/galerie-' . $idGalerie . '.pc', TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . $idGalerie;
 	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
 }
@@ -27,7 +27,7 @@ else
 {
 	// Galerie démo par défaut
 	$idGalerie = 'demo';
-	$galerie = construitTableauGalerie($racine . '/inc/galerie-demo.pc');
+	$galerie = construitTableauGalerie($racine . '/inc/galerie-demo.pc', TRUE);
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/demo';
 	$racineImgSrc = $racine . '/fichiers/galeries/demo';
 }
@@ -37,6 +37,9 @@ $corpsGalerie = '';
 
 // Récupération d'informations sur la galerie
 $nombreDoeuvres = count($galerie);
+
+// Par défaut, on suppose que l'image demandée n'existe pas
+$imageExiste = FALSE;
 
 ########################################################################
 ##

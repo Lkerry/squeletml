@@ -1237,9 +1237,9 @@ function tableauAssociatif($fichierTexte)
 }
 
 /**
-Construit et retourne un tableau PHP à partir d'un fichier texte listant des images, dont chacun de leurs champs se trouve seul sur une ligne avec la syntaxe `clé=valeur`. Chaque image est séparée par une ligne ne contenant que `#IMG`.
+Construit et retourne un tableau PHP à partir d'un fichier texte listant des images, dont chacun de leurs champs se trouve seul sur une ligne avec la syntaxe `clé=valeur`. Chaque image est séparée par une ligne ne contenant que `#IMG`. Si `$exclure` vaut TRUE, ne tient pas compte des images ayant un champ `exclure=oui`.
 */
-function construitTableauGalerie($fichierTexte)
+function construitTableauGalerie($fichierTexte, $exclure = FALSE)
 {
 	$galerie = array ();
 	
@@ -1257,7 +1257,11 @@ function construitTableauGalerie($fichierTexte)
 			}
 			elseif ($ligne == '#IMG')
 			{
-				$galerie[] = $galerieTemp;
+				if (!$exclure || !(isset($galerieTemp['exclure']) && $galerieTemp['exclure'] == 'oui'))
+				{
+					$galerie[] = $galerieTemp;
+				}
+				
 				unset($galerieTemp);
 			}
 		}
@@ -1458,7 +1462,7 @@ Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant
 */
 function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
-	$galerie = construitTableauGalerie("$racine/site/inc/galerie-$idGalerie.pc");
+	$galerie = construitTableauGalerie("$racine/site/inc/galerie-$idGalerie.pc", TRUE);
 	$itemsFlux = array ();
 	
 	foreach ($galerie as $oeuvre)
