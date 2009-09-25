@@ -202,7 +202,7 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 		echo "<li><p class='erreur'>" . sprintf(T_('Impossible d\'écrire dans le fichier <span class="porteDocumentsNom">%1$s</span>.'), $_POST['porteDocumentsEditerNom']) . "</p>\n$messageErreurEditer</li>\n";
 	}
 
-	echo "<li class='succes'>" . sprintf(T_('Édition du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $_POST['porteDocumentsEditerNom']) . "</li>\n";
+	echo "<li class='succes'>" . sprintf(T_('Édition du fichier <span class="porteDocumentsNom">%1$s</span> effectuée. <a href="%2$s">Éditer de nouveau</a>.'), $_POST['porteDocumentsEditerNom'], 'porte-documents.admin.php?action=editer&valeur=' . $_POST['porteDocumentsEditerNom'] . '#messagesPorteDocuments') . "</li>\n";
 
 	fclose($fic);
 
