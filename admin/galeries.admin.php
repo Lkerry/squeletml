@@ -14,6 +14,53 @@ include '../init.inc.php';
 <?php
 ########################################################################
 ##
+## Lister les galeries existantes
+##
+########################################################################
+
+if (isset($_POST['lister']))
+{
+	$fic = opendir($racine . '/site/inc') or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $racine . '/site/inc') . "</p>");
+	
+	$listeFichiers = '';
+	$i = 0;
+	while($fichier = @readdir($fic))
+	{
+		if(!is_dir($racine . '/site/inc/' . $fichier) && $fichier != '.' && $fichier != '..')
+		{
+			if (preg_match('/^galerie-(.*)\.pc$/', $fichier, $res))
+			{
+				$i++;
+				$res[1] = str_replace('\\', '', $res[1]);
+				$fichier = str_replace('\\', '', $fichier);
+				$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $res[1]);
+				$fichierLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
+				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
+			}
+		}
+	}
+	
+	closedir($fic);
+	
+	echo '<div class="boite2">' . "\n";
+	echo '<h3>' . T_("Liste des galeries") . '</h3>' . "\n";
+	echo "<ul>\n";
+	
+	if (!empty($listeFichiers))
+	{
+		echo $listeFichiers;
+	}
+	else
+	{
+		echo '<li>' . T_("Aucune galerie") . "</li>\n";
+	}
+	
+	echo "</ul>\n";
+	echo "</div><!-- /boite2 -->\n";
+}
+
+########################################################################
+##
 ## Ajouter des images
 ##
 ########################################################################
@@ -358,53 +405,6 @@ if (isset($_POST['retailler']))
 
 ########################################################################
 ##
-## Lister les galeries existantes
-##
-########################################################################
-
-if (isset($_POST['lister']))
-{
-	$fic = opendir($racine . '/site/inc') or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $racine . '/site/inc') . "</p>");
-	
-	$listeFichiers = '';
-	$i = 0;
-	while($fichier = @readdir($fic))
-	{
-		if(!is_dir($racine . '/site/inc/' . $fichier) && $fichier != '.' && $fichier != '..')
-		{
-			if (preg_match('/^galerie-(.*)\.pc$/', $fichier, $res))
-			{
-				$i++;
-				$res[1] = str_replace('\\', '', $res[1]);
-				$fichier = str_replace('\\', '', $fichier);
-				$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $res[1]);
-				$fichierLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
-				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
-			}
-		}
-	}
-	
-	closedir($fic);
-	
-	echo '<div class="boite2">' . "\n";
-	echo '<h3>' . T_("Liste des galeries") . '</h3>' . "\n";
-	echo "<ul>\n";
-	
-	if (!empty($listeFichiers))
-	{
-		echo $listeFichiers;
-	}
-	else
-	{
-		echo '<li>' . T_("Aucune galerie") . "</li>\n";
-	}
-	
-	echo "</ul>\n";
-	echo "</div><!-- /boite2 -->\n";
-}
-
-########################################################################
-##
 ## Créer une page web de galerie
 ##
 ########################################################################
@@ -452,7 +452,7 @@ if (isset($_POST['creerPage']))
 			{
 				if (file_exists($cheminPage . '/' . $page))
 				{
-					$trad = sprintf(T_("La page web %1\$s existe déjà. Vous pouvez modifier la fichier."), '<code>' . $cheminPage . '/' . $page . '</code>');
+					$trad = sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&valeur=' . $cheminPage . '/' . $page . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . $page, 3));
 				}
 				else
 				{
@@ -472,7 +472,7 @@ if (isset($_POST['creerPage']))
 						fputs($fic, $contenu);
 						
 						fclose($fic);
-						$trad = T_('Le modèle de page a été créé. Vous pouvez modifier le fichier.');
+						$trad = sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&valeur=' . $cheminPage . '/' . $page . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . $page, 3));
 					}
 					else
 					{
@@ -485,7 +485,7 @@ if (isset($_POST['creerPage']))
 					echo '<div class="boite2">' . "\n";
 					echo '<h3>' . T_("Page web") . '</h3>' . "\n";
 				
-					echo '<p><a href="porte-documents.admin.php?action=editer&valeur=' . $cheminPage . '/' . $page . '#messagesPorteDocuments">' . $trad . '</a></p>';
+					echo '<p>' . $trad . '</p>';
 					echo "</div><!-- /boite2 -->\n";
 				}
 			}
@@ -504,27 +504,36 @@ if (isset($_POST['modeleConf']))
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $_POST['id'];
 	$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
 $listeFichiers = '';
+	$tableauFichiers = array ();
 	while($fichier = @readdir($fic))
 	{
 		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 		{
 			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier))
 			{
-				$listeFichiers .= "intermediaireNom=$fichier\n";
-				
-				if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
-				{
-					foreach ($_POST['info'] as $champ)
-					{
-						$listeFichiers .= "$champ=\n";
-					}
-				}
-				
-				$listeFichiers .= "#IMG\n";
+				$tableauFichiers[] = $fichier;
 			}
 		}
 	}
 	closedir($fic);
+	
+	sort($tableauFichiers);
+	$listeFichiers = '';
+	
+	foreach ($tableauFichiers as $cle)
+	{
+		$listeFichiers .= "intermediaireNom=$cle\n";
+		
+		if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
+		{
+			foreach ($_POST['info'] as $champ)
+			{
+				$listeFichiers .= "$champ=\n";
+			}
+		}
+		
+		$listeFichiers .= "#IMG\n";
+	}
 	
 	echo '<div class="boite2">' . "\n";
 	echo '<h3>' . T_("Modèle") .'</h3>' ."\n" ;
@@ -636,7 +645,7 @@ if (isset($_POST['modeleConf']) ||
 <div class="boite">
 <h2><?php echo T_("Ajouter des images"); ?></h2>
 
-<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (.tar) ou ZIP (.zip). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier. Prenez note que si la galerie existe déjà et qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant sur le serveur, le fichier sur le serveur sera écrasé seulement si sa date est plus ancienne que celle du fichier dans l'archive."); ?></p>
+<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (.tar) ou ZIP (.zip). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
 
 <p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
 
@@ -739,6 +748,8 @@ if (isset($_POST['modeleConf']) ||
 <option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
 <option value="originalNom">originalNom</option>
 </select></p>
+
+<p><?php echo T_("Note: les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher."); ?></p>
 
 <p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-25 10:37-0400\n"
+"POT-Creation-Date: 2009-09-25 13:12-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -85,9 +85,9 @@ msgstr ""
 #: admin/rss.admin.php:42
 #, php-format
 msgid ""
-"Chaque ligne est sous la forme <code>id de la galerie=URL relative de la "
-"galerie</code>. Par exemple, %1$s fait référence à une galerie dont l'id est "
-"%2$s et dont l'URL est %3$s."
+"Chaque ligne est sous la forme <code>identifiant de la galerie=URL relative "
+"de la galerie</code>. Par exemple, %1$s fait référence à une galerie dont "
+"l'identifiant est %2$s et dont l'URL est %3$s."
 msgstr ""
 
 #: admin/rss.admin.php:50
@@ -154,7 +154,7 @@ msgstr ""
 
 #: admin/rss.admin.php:154 admin/rss.admin.php:163 admin/rss.admin.php:173
 #: admin/rss.admin.php:205 admin/rss.admin.php:214 admin/rss.admin.php:224
-#: admin/galeries.admin.php:533
+#: admin/galeries.admin.php:542
 msgid "Sélectionner le résultat."
 msgstr ""
 
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/droits.admin.php:300 admin/galeries.admin.php:727
+#: admin/droits.admin.php:300 admin/galeries.admin.php:736
 msgid "Aucun"
 msgstr ""
 
@@ -305,148 +305,148 @@ msgstr ""
 msgid "Gestion des galeries"
 msgstr ""
 
-#: admin/galeries.admin.php:32 admin/galeries.admin.php:127
+#: admin/galeries.admin.php:23 admin/galeries.admin.php:259
+#: admin/galeries.admin.php:287 admin/galeries.admin.php:505
+#, php-format
+msgid "Erreur lors de l'ouverture du dossier %1$s."
+msgstr ""
+
+#: admin/galeries.admin.php:38
+#, php-format
+msgid "Galerie %1$s:"
+msgstr ""
+
+#: admin/galeries.admin.php:38
+msgid "identifiant:"
+msgstr ""
+
+#: admin/galeries.admin.php:38
+msgid "dossier:"
+msgstr ""
+
+#: admin/galeries.admin.php:38
+msgid "Fichier de configuration:"
+msgstr ""
+
+#: admin/galeries.admin.php:46
+msgid "Liste des galeries"
+msgstr ""
+
+#: admin/galeries.admin.php:55
+msgid "Aucune galerie"
+msgstr ""
+
+#: admin/galeries.admin.php:79 admin/galeries.admin.php:174
 #, php-format
 msgid "Création du dossier %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:37 admin/galeries.admin.php:131
+#: admin/galeries.admin.php:84 admin/galeries.admin.php:178
 #, php-format
 msgid "Impossible de créer le dossier %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:38 admin/galeries.admin.php:89
-#: admin/galeries.admin.php:110 admin/galeries.admin.php:161
+#: admin/galeries.admin.php:85 admin/galeries.admin.php:136
+#: admin/galeries.admin.php:157 admin/galeries.admin.php:208
 msgid "Archive supprimée."
 msgstr ""
 
-#: admin/galeries.admin.php:67
+#: admin/galeries.admin.php:114
 #, php-format
 msgid "Un fichier %1$s existe déjà dans le dossier %2$s."
 msgstr ""
 
-#: admin/galeries.admin.php:68 admin/galeries.admin.php:169
+#: admin/galeries.admin.php:115 admin/galeries.admin.php:216
 msgid "Le fichier que vous avez téléversé sur le serveur a été supprimé."
 msgstr ""
 
-#: admin/galeries.admin.php:76 admin/galeries.admin.php:98
-#: admin/galeries.admin.php:146
+#: admin/galeries.admin.php:123 admin/galeries.admin.php:145
+#: admin/galeries.admin.php:193
 #, php-format
 msgid "Ajout de %1$s dans le dossier %2$s."
 msgstr ""
 
-#: admin/galeries.admin.php:90
+#: admin/galeries.admin.php:137
 #, php-format
 msgid "Erreur lors de l'extraction de l'archive %1$s: "
 msgstr ""
 
-#: admin/galeries.admin.php:102
+#: admin/galeries.admin.php:149
 #, php-format
 msgid ""
 "Un fichier %1$s existe déjà, et est plus récent que celui de l'archive. Il "
 "n'y a donc pas eu extraction."
 msgstr ""
 
-#: admin/galeries.admin.php:106 admin/galeries.admin.php:150
+#: admin/galeries.admin.php:153 admin/galeries.admin.php:197
 #, php-format
 msgid ""
 "Attention: une erreur a eu lieu avec le fichier %1$s. Vérifiez son état sur "
 "le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."
 msgstr ""
 
-#: admin/galeries.admin.php:123
+#: admin/galeries.admin.php:170
 #, php-format
 msgid "Un dossier %1$s existe déjà. Il n'a donc pas été créé."
 msgstr ""
 
-#: admin/galeries.admin.php:138
+#: admin/galeries.admin.php:185
 #, php-format
 msgid "Un fichier %1$s existe déjà. Il n'y a donc pas eu extraction."
 msgstr ""
 
-#: admin/galeries.admin.php:155 admin/galeries.admin.php:479
+#: admin/galeries.admin.php:202 admin/galeries.admin.php:479
 #, php-format
 msgid "Impossible de créer le fichier %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:168
+#: admin/galeries.admin.php:215
 #, php-format
 msgid "Erreur lors du déplacement du fichier %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:176
+#: admin/galeries.admin.php:223
 msgid "Aucune image n'a été extraite. Veuillez vérifier les instructions."
 msgstr ""
 
-#: admin/galeries.admin.php:181
+#: admin/galeries.admin.php:228
 msgid "Ajout d'images"
 msgstr ""
 
-#: admin/galeries.admin.php:204 admin/galeries.admin.php:435
-#: admin/galeries.admin.php:549
+#: admin/galeries.admin.php:251 admin/galeries.admin.php:435
+#: admin/galeries.admin.php:558
 #, php-format
 msgid "La galerie %1$s n'existe pas."
 msgstr ""
 
-#: admin/galeries.admin.php:212 admin/galeries.admin.php:240
-#: admin/galeries.admin.php:367 admin/galeries.admin.php:505
-#, php-format
-msgid "Erreur lors de l'ouverture du dossier %1$s."
-msgstr ""
-
-#: admin/galeries.admin.php:225
+#: admin/galeries.admin.php:272
 #, php-format
 msgid "Renommage de <code>%1$s</code> en <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:229
+#: admin/galeries.admin.php:276
 #, php-format
 msgid "Impossible de renommer <code>%1$s</code> en <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:307 admin/galeries.admin.php:318
-#: admin/galeries.admin.php:329
+#: admin/galeries.admin.php:354 admin/galeries.admin.php:365
+#: admin/galeries.admin.php:376
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:311 admin/galeries.admin.php:322
-#: admin/galeries.admin.php:333
+#: admin/galeries.admin.php:358 admin/galeries.admin.php:369
+#: admin/galeries.admin.php:380
 #, php-format
 msgid "Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:344
+#: admin/galeries.admin.php:391
 msgid "Aucune modification."
 msgstr ""
 
-#: admin/galeries.admin.php:348
+#: admin/galeries.admin.php:395
 msgid "Retaillage des images"
-msgstr ""
-
-#: admin/galeries.admin.php:382
-#, php-format
-msgid "Galerie %1$s:"
-msgstr ""
-
-#: admin/galeries.admin.php:382
-msgid "id:"
-msgstr ""
-
-#: admin/galeries.admin.php:382
-msgid "dossier:"
-msgstr ""
-
-#: admin/galeries.admin.php:382
-msgid "Fichier de configuration:"
-msgstr ""
-
-#: admin/galeries.admin.php:390
-msgid "Liste des galeries"
-msgstr ""
-
-#: admin/galeries.admin.php:399
-msgid "Aucune galerie"
 msgstr ""
 
 #: admin/galeries.admin.php:443
@@ -463,106 +463,109 @@ msgstr ""
 
 #: admin/galeries.admin.php:455
 #, php-format
-msgid "La page web %1$s existe déjà. Vous pouvez modifier la fichier."
+msgid ""
+"La page web %1$s existe déjà. Vous pouvez <a href='%2$s'>éditer le fichier</"
+"a> ou <a href='%3$s'>visiter la page</a>."
 msgstr ""
 
 #: admin/galeries.admin.php:475
-msgid "Le modèle de page a été créé. Vous pouvez modifier le fichier."
+#, php-format
+msgid ""
+"Le modèle de page a été créé. Vous pouvez <a href='%2$s'>éditer le fichier</"
+"a> ou <a href='%3$s'>visiter la page</a>."
 msgstr ""
 
 #: admin/galeries.admin.php:486
 msgid "Page web"
 msgstr ""
 
-#: admin/galeries.admin.php:530
+#: admin/galeries.admin.php:539
 msgid "Modèle"
 msgstr ""
 
-#: admin/galeries.admin.php:569
+#: admin/galeries.admin.php:578
 #, php-format
 msgid "Mise à jour du fichier de configuration %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:573
+#: admin/galeries.admin.php:582
 #, php-format
 msgid "Création du fichier de configuration %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:578
+#: admin/galeries.admin.php:587
 #, php-format
 msgid ""
 "Erreur lors de la création ou de la mise à jour du fichier de configuration "
 "<code>%1$s</code>. Veuillez vérifier manuellement son contenu."
 msgstr ""
 
-#: admin/galeries.admin.php:582
+#: admin/galeries.admin.php:591
 msgid "Fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:585
+#: admin/galeries.admin.php:594
 msgid "Actions effectuées"
 msgstr ""
 
-#: admin/galeries.admin.php:607
+#: admin/galeries.admin.php:616
 msgid "Un fichier de configuration existe pour cette galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:607
+#: admin/galeries.admin.php:616
 msgid "Modifier le fichier."
 msgstr ""
 
-#: admin/galeries.admin.php:623
+#: admin/galeries.admin.php:632
 msgid "Lister les galeries existantes"
 msgstr ""
 
-#: admin/galeries.admin.php:625
+#: admin/galeries.admin.php:634
 msgid ""
 "Vous pouvez afficher la liste des galeries existantes. Chaque galerie dans "
 "la liste aura un lien vous permettant de modifier son fichier de "
 "configuration dans le porte-documents."
 msgstr ""
 
-#: admin/galeries.admin.php:629
+#: admin/galeries.admin.php:638
 msgid "Lister les galeries"
 msgstr ""
 
-#: admin/galeries.admin.php:637 admin/galeries.admin.php:655
+#: admin/galeries.admin.php:646 admin/galeries.admin.php:664
 msgid "Ajouter des images"
 msgstr ""
 
-#: admin/galeries.admin.php:639
+#: admin/galeries.admin.php:648
 msgid ""
 "Vous pouvez téléverser vers votre site en une seule fois plusieurs images "
 "contenues dans une archive de format TAR (.tar) ou ZIP (.zip). Veuillez "
 "créer votre archive de telle sorte que les images y soient à la racine, et "
-"non contenues dans un dossier. Prenez note que si la galerie existe déjà et "
-"qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant "
-"sur le serveur, le fichier sur le serveur sera écrasé seulement si sa date "
-"est plus ancienne que celle du fichier dans l'archive."
+"non contenues dans un dossier."
 msgstr ""
 
-#: admin/galeries.admin.php:641
+#: admin/galeries.admin.php:650
 msgid ""
 "Vous pouvez également ajouter une seule image en choisissant un fichier "
 "image au lieu d'une archive."
 msgstr ""
 
-#: admin/galeries.admin.php:643 admin/porte-documents.admin.php:27
+#: admin/galeries.admin.php:652 admin/porte-documents.admin.php:27
 #, php-format
 msgid ""
 "<strong>Taille maximale d'un transfert de fichier:</strong> %1$s octets (%2"
 "$s Mio)."
 msgstr ""
 
-#: admin/galeries.admin.php:647
-msgid "Id de la galerie (si elle n'existe pas, elle sera créée):"
+#: admin/galeries.admin.php:656
+msgid ""
+"Identifiant de la galerie (si la galerie n'existe pas, elle sera créée):"
 msgstr ""
 
-#: admin/galeries.admin.php:650 admin/porte-documents.admin.php:536
+#: admin/galeries.admin.php:659 admin/porte-documents.admin.php:536
 msgid "Fichier:"
 msgstr ""
 
-#: admin/galeries.admin.php:653 admin/galeries.admin.php:685
+#: admin/galeries.admin.php:662 admin/galeries.admin.php:694
 msgid ""
 "Créer ou mettre à jour le fichier de configuration de cette galerie avec les "
 "paramètres par défaut (les fichiers <code>-vignette.extension</code> et "
@@ -570,65 +573,65 @@ msgid ""
 "comme étant la version intermediaire à afficher)."
 msgstr ""
 
-#: admin/galeries.admin.php:663
+#: admin/galeries.admin.php:672
 msgid "Créer des images de taille intermédiaire à partir des images originales"
 msgstr ""
 
-#: admin/galeries.admin.php:665
+#: admin/galeries.admin.php:674
 msgid ""
 "Vous pouvez faire générer automatiquement une copie réduite (qui sera "
 "utilisée comme étant la version intermediaire dans la galerie) de chaque "
 "image originale. Aucune image au format original ne sera modifiée."
 msgstr ""
 
-#: admin/galeries.admin.php:669 admin/galeries.admin.php:703
-#: admin/galeries.admin.php:722
-msgid "Id de la galerie:"
+#: admin/galeries.admin.php:678 admin/galeries.admin.php:712
+#: admin/galeries.admin.php:731
+msgid "Identifiant de la galerie:"
 msgstr ""
 
-#: admin/galeries.admin.php:672
+#: admin/galeries.admin.php:681
 msgid "Taille maximale de la version intermediaire (largeur × hauteur):"
 msgstr ""
 
-#: admin/galeries.admin.php:673
+#: admin/galeries.admin.php:682
 msgid ""
 "La plus grande taille possible contenable dans les dimensions données sera "
 "utilisée. Les proportions de l'image sont conservées."
 msgstr ""
 
-#: admin/galeries.admin.php:674
+#: admin/galeries.admin.php:683
 msgid "×"
 msgstr ""
 
-#: admin/galeries.admin.php:676
+#: admin/galeries.admin.php:685
 msgid "Comment manipuler les images du dossier?"
 msgstr ""
 
-#: admin/galeries.admin.php:677
+#: admin/galeries.admin.php:686
 msgid ""
 "Le nom des images au format original se termine par <code>-original."
 "extension</code>. Générer un fichier sans <code>-original</code> pour chaque "
 "version intermediaire."
 msgstr ""
 
-#: admin/galeries.admin.php:678
+#: admin/galeries.admin.php:687
 msgid ""
 "Renommer préalablement les images du dossier en <code>nom-original."
 "extension</code> et ensuite gérérer les image en version intermediaire sans "
 "le suffixe <code>-original</code>."
 msgstr ""
 
-#: admin/galeries.admin.php:680
+#: admin/galeries.admin.php:689
 msgid "S'il y a lieu, qualité des images JPG générées (0-100):"
 msgstr ""
 
-#: admin/galeries.admin.php:683
+#: admin/galeries.admin.php:692
 msgid ""
 "Renforcer la netteté des images redimensionnées (donne de mauvais résultats "
 "pour des images PNG avec transparence)"
 msgstr ""
 
-#: admin/galeries.admin.php:687
+#: admin/galeries.admin.php:696
 msgid ""
 "Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le "
 "dossier, vous allez peut-être rencontrer une erreur de dépassement du temps "
@@ -636,37 +639,44 @@ msgid ""
 "navigateur."
 msgstr ""
 
-#: admin/galeries.admin.php:689
+#: admin/galeries.admin.php:698
 msgid "Retailler les images originales"
 msgstr ""
 
-#: admin/galeries.admin.php:697
+#: admin/galeries.admin.php:706
 msgid "Créer une page web de galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:699
+#: admin/galeries.admin.php:708
 msgid "Vous pouvez ajouter une page sur votre site pour présenter une galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:706
+#: admin/galeries.admin.php:715
 msgid "Emplacement de la page web:"
 msgstr ""
 
-#: admin/galeries.admin.php:709
+#: admin/galeries.admin.php:718
 msgid "Créer une page web"
 msgstr ""
 
-#: admin/galeries.admin.php:717
+#: admin/galeries.admin.php:726
 msgid "Afficher un modèle de fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:725
+#: admin/galeries.admin.php:734
 msgid ""
 "En plus du champ obligatoire <code>intermediaireNom</code>, ajouter des "
 "champs vides:"
 msgstr ""
 
-#: admin/galeries.admin.php:743
+#: admin/galeries.admin.php:752
+msgid ""
+"Note: les fichiers <code>-vignette.extension</code> et <code>-original."
+"extension</code> sont ignorés, les autres sont considérés comme étant la "
+"version intermediaire à afficher."
+msgstr ""
+
+#: admin/galeries.admin.php:754
 msgid "Afficher un fichier de configuration"
 msgstr ""
 
