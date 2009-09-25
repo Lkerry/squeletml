@@ -620,6 +620,20 @@ if (isset($_POST['modeleConf']) ||
 ?>
 
 <div class="boite">
+<h2><?php echo T_("Lister les galeries existantes"); ?></h2>
+
+<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Chaque galerie dans la liste aura un lien vous permettant de modifier son fichier de configuration dans le porte-documents."); ?></p>
+
+<form action="<?php echo $action; ?>#messages" method="post">
+<div>
+<p><input type="submit" name="lister" value="<?php echo T_('Lister les galeries'); ?>" /></p>
+</div>
+</form>
+</div><!-- /boite -->
+
+<!--  -->
+
+<div class="boite">
 <h2><?php echo T_("Ajouter des images"); ?></h2>
 
 <p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (.tar) ou ZIP (.zip). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier. Prenez note que si la galerie existe déjà et qu'un fichier de l'archive possède le même nom qu'un fichier déjà existant sur le serveur, le fichier sur le serveur sera écrasé seulement si sa date est plus ancienne que celle du fichier dans l'archive."); ?></p>
@@ -693,20 +707,6 @@ if (isset($_POST['modeleConf']) ||
 <?php echo $urlRacine . '/'; ?><input type="text" name="page" /></p>
 
 <p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>
-</div>
-</form>
-</div><!-- /boite -->
-
-<!--  -->
-
-<div class="boite">
-<h2><?php echo T_("Lister les galeries existantes"); ?></h2>
-
-<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Chaque galerie dans la liste aura un lien vous permettant de modifier son fichier de configuration dans le porte-documents."); ?></p>
-
-<form action="<?php echo $action; ?>#messages" method="post">
-<div>
-<p><input type="submit" name="lister" value="<?php echo T_('Lister les galeries'); ?>" /></p>
 </div>
 </form>
 </div><!-- /boite -->
