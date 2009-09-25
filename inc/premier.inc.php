@@ -61,7 +61,7 @@ if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 }
 ?>
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
-<?php if (($galerieAccueilJavascript || $galerieLienOrigJavascript) && $idGalerie): ?>
+<?php if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie): ?>
 	<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $urlRacine; ?>/inc/slimbox2/js/slimbox2.js"></script>
 	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />

@@ -324,7 +324,7 @@ div#sepGalerieMinivignettes {
 	padding-left: 15px;
 }
 
-#galerieLienOrig {
+#galerieLienOriginal {
 	margin-top: 15px;
 }
 
@@ -406,11 +406,11 @@ div#galerieGrandeImg img {
 	background: url('../fichiers/ombre.png') no-repeat right bottom;
 }
 
-div#galerieIconeOrig {
+div#galerieIconeOriginal {
 	margin-bottom: 5px;
 }
 
-div#galerieIconeOrig img {
+div#galerieIconeOriginal img {
 	border: none;
 }
 
