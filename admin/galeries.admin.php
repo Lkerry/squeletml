@@ -681,6 +681,8 @@ if (isset($_POST['modeleConf']) ||
 
 <p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermediaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
 
+<p><?php echo T_("Note: pour chaque image originale, une image en version intermediaire sans le suffixe <code>-original</code> sera créée, si un tel fichier n'existe pas déjà. Les fichiers <code>-vignette.extension</code> sont ignorés. Si <code>nom-original.extension</code> et <code>nom.extension</code> existent tous les deux, il n'y aura pas de création de version intermédiaire."); ?></p>
+
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>
 <p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
@@ -692,8 +694,7 @@ if (isset($_POST['modeleConf']) ||
 
 <p><label><?php echo T_("Comment manipuler les images du dossier?"); ?></label><br />
 <input type="radio" name="manipulerOriginal" value="original" checked="checked" /> <?php echo T_("Le nom des images au format original se termine déjà par <code>-original.extension</code>."); ?><br />
-<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code>. Les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés lors du renommage."); ?><br />
-<?php echo T_("Note: pour chaque image originale, une image en version intermediaire sans le suffixe <code>-original</code> sera créée, si un tel fichier n'existe pas déjà. Les fichiers <code>-vignette.extension</code> sont ignorés. Si <code>nom-original.extension</code> et <code>nom.extension</code> existent tous les deux, il n'y aura pas de création de version intermédiaire."); ?></p>
+<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code>. Les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés lors du renommage."); ?></p>
 
 <p><label><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
 <input type="text" name="qualiteJpg" value="90" size="2" /></p>
