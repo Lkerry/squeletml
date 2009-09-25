@@ -280,6 +280,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 		{
 			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) &&
 				!preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) &&
+				preg_match('/\.(gif|png|jpeg|jpg)$/i', $fichier) &&
 				!in_array_multi($fichier, $galerieTemp) &&
 				!in_array_multi($fichier, $listeNouveauxFichiers))
 			{
