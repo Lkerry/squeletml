@@ -205,7 +205,7 @@ $galerieMinivignettesNombre = 0;
 $galerieLegendeAutomatique = FALSE; // TRUE|FALSE
 
 // Utilisation de la syntaxe Markdown dans la légende
-/* Active la syntaxe Markdown pour le texte de la légende (contenu du champ `grandeLegende`) */
+/* Active la syntaxe Markdown pour le texte de la légende (contenu du champ `intermediaireLegende`) */
 $galerieLegendeMarkdown = FALSE; // TRUE|FALSE
 
 // Affichage d'informations Exif pour les fichiers JPG
@@ -236,7 +236,7 @@ $galerieLienOriginalJavascript = FALSE; // TRUE|FALSE
 $galerieTelechargeOriginal = FALSE; // TRUE|FALSE
 
 // Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
-/* Les emplacements `haut` et `bas` font référence à l'image en version grande, alors que `sousLeContenu` fait référence à la page. Par exemple, l'option `sousLeContenu` place avec la configuration par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
+/* Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousLeContenu` fait référence à la page. Par exemple, l'option `sousLeContenu` place avec la configuration par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
 $galerieLegendeEmplacement = 'sousLeContenu'; // haut|bas|sousLeContenu
 
 ########################################################################

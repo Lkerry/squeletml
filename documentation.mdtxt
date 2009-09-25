@@ -445,25 +445,25 @@ Concrètement, pour créer une galerie, voici les étapes à suivre:
 
 ### Fichier de configuration
 
-Chaque image d'une galerie est déclinée en au moins deux versions: vignette et grande. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version grande.
+Chaque image d'une galerie est déclinée en au moins deux versions: vignette et intermediaire. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version intermediaire.
 
 Cette information doit se retrouver dans le fichier de configuration `site/inc/galerie-$idGalerie.pc`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
 
 Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `#IMG` (*note: avant la version 1.8.8, Squeletml utilisait le marqueur `__IMG__`*). Voici un exemple:
 
 <div><code type="ini">
-grandeNom=fichier1.jpg
+intermediaireNom=fichier1.jpg
 #IMG
-grandeNom=fichier2.jpg
+intermediaireNom=fichier2.jpg
 #IMG
 </code></div>
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète:
 
-- `grandeNom`: nom du fichier image en version grande. **Le seul champ obligatoire.** Exemple:
+- `intermediaireNom`: nom du fichier image en version intermediaire. **Le seul champ obligatoire.** Exemple:
 
 	<div><code type="ini">
-grandeNom=fichier1.jpg
+intermediaireNom=fichier1.jpg
 </code></div>
 
 - `id`: l'id est utilisée dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Cela permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'id n'est pas renseignée, elle sera générée automatiquement à partir du nom du fichier image. Exemple:
@@ -472,7 +472,7 @@ grandeNom=fichier1.jpg
 id=5
 </code></div>
 
-- `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-vignette.extension`. Exemple:
+- `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version intermediaire, c'est-à-dire `intermediaireNom(sans extension)-vignette.extension`. Exemple:
 
 	<div><code type="ini">
 vignetteNom=fichier1Petit.jpg
@@ -496,49 +496,49 @@ vignetteHauteur=150
 vignetteAlt=Chien assis sur un divan.
 </code></div>
 
-- `grandeLargeur`: largeur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
+- `intermediaireLargeur`: largeur de l'image en version intermediaire. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
 	<div><code type="ini">
-grandeLargeur=500
+intermediaireLargeur=500
 </code></div>
 
-- `grandeHauteur`: hauteur de l'image en version grande. Voir `vignetteLargeur` pour plus de détails. Exemple:
+- `intermediaireHauteur`: hauteur de l'image en version intermediaire. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
 	<div><code type="ini">
-grandeHauteur=750
+intermediaireHauteur=750
 </code></div>
 
-- `grandeAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version grande. Si vide, le contenu sera généré automatiquement. Exemple:
+- `intermediaireAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version intermediaire. Si vide, le contenu sera généré automatiquement. Exemple:
 
 	<div><code type="ini">
-grandeAlt=Chien dormant sur un divan.
+intermediaireAlt=Chien dormant sur un divan.
 </code></div>
 
-- `grandeLegende`: commentaire qui sera affiché sous l'image en version grande. Exemple:
+- `intermediaireLegende`: commentaire qui sera affiché sous l'image en version intermediaire. Exemple:
 
 	<div><code type="ini">
-grandeLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
+intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
 </code></div>
 
-- `pageGrandeBaliseTitle`: contenu de la balise `title` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
+- `pageIntermediaireBaliseTitle`: contenu de la balise `title` de la page présentant l'image en version intermediaire. Laisser vide pour une génération automatique. Exemple:
 
 	<div><code type="ini">
-pageGrandeBaliseTitle=Bla bla bla
+pageIntermediaireBaliseTitle=Bla bla bla
 </code></div>
 
-- `pageGrandeDescription`: contenu de la métabalise `description` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
+- `pageIntermediaireDescription`: contenu de la métabalise `description` de la page présentant l'image en version intermediaire. Laisser vide pour une génération automatique. Exemple:
 
 	<div><code type="ini">
-pageGrandeDescription=Bla bla bla
+pageIntermediaireDescription=Bla bla bla
 </code></div>
 
-- `pageGrandeMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version grande. Laisser vide pour une génération automatique. Exemple:
+- `pageIntermediaireMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version intermediaire. Laisser vide pour une génération automatique. Exemple:
 
 	<div><code type="ini">
-pageGrandeMotsCles=photo de chien, bla bla bla, divan, photographie, chien
+pageIntermediaireMotsCles=photo de chien, bla bla bla, divan, photographie, chien
 </code></div>
 
-- `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version grande, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version grande, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version grande, c'est-à-dire `grandeNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
+- `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version intermediaire, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version intermediaire, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version intermediaire, c'est-à-dire `intermediaireNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
 
 	<div><code type="ini">
 originalNom=fichier1Original.jpg
@@ -547,19 +547,19 @@ originalNom=fichier1Original.jpg
 Voici une entrée vide, qu'il est possible de copier/coller:
 
 <div><code type="ini">
-grandeNom=SEULE INFORMATION OBLIGATOIRE
+intermediaireNom=SEULE INFORMATION OBLIGATOIRE
 id=
 vignetteNom=
 vignetteLargeur=
 vignetteHauteur=
 vignetteAlt=
-grandeLargeur=
-grandeHauteur=
-grandeAlt=
-grandeLegende=
-pageGrandeBaliseTitle=
-pageGrandeDescription=
-pageGrandeMotsCles=
+intermediaireLargeur=
+intermediaireHauteur=
+intermediaireAlt=
+intermediaireLegende=
+pageIntermediaireBaliseTitle=
+pageIntermediaireDescription=
+pageIntermediaireMotsCles=
 originalNom=
 #IMG
 </code></div>
@@ -590,7 +590,7 @@ Les vignettes utilisées sont celles de l'image vers laquelle le lien pointe:
 
 - soit la vignette précisée dans le fichier de configuration (`champ vignetteNom`);
 
-- soit la vignette déduite automatiquement à partir du nom du fichier de l'image en version grande (`grandeNom(sans extension)-vignette.extension`);
+- soit la vignette déduite automatiquement à partir du nom du fichier de l'image en version intermediaire (`intermediaireNom(sans extension)-vignette.extension`);
 
 - soit la vignette générée automatiquement par le script de galerie.
 
@@ -620,11 +620,11 @@ Une option «Faire découvrir à des ami-e-s» est activée par défaut. Concrè
 
 Si la page visitée est la page individuelle d'une oeuvre dans une galerie, le modèle de message contiendra une vignette de l'oeuvre et, si possible, une description, qui est formée par une de ces informations (en ordre de priorité):
 
-- `grandeLegende`
-- `grandeAlt`
+- `intermediaireLegende`
+- `intermediaireAlt`
 - `vignetteAlt`
-- `pageGrandeDescription`
-- `pageGrandeBaliseTitle`
+- `pageIntermediaireDescription`
+- `pageIntermediaireBaliseTitle`
 
 Si la page visitée est autre chose qu'une page individuelle d'oeuvre, le modèle de message contiendra un lien vers la page et, si possible une description, qui est formée par une de ces informations (en ordre de priorité):
 

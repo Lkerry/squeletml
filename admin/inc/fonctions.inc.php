@@ -234,7 +234,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 	{
 		foreach ($oeuvre as $cle => $valeur)
 		{
-			if ($cle == 'grandeNom')
+			if ($cle == 'intermediaireNom')
 			{
 				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur) && !in_array_multi($valeur, $galerieTemp))
 				{
@@ -282,7 +282,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 				!preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) &&
 				!in_array_multi($fichier, $galerieTemp))
 			{
-				array_unshift($galerieTemp, array ('grandeNom' => $fichier));
+				array_unshift($galerieTemp, array ('intermediaireNom' => $fichier));
 			}
 		}
 	}

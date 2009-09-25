@@ -744,20 +744,20 @@ function styleDivVideNavigation($oeuvre)
 }
 
 /**
-Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version grande, s'il y a lieu, sinon est vide.
+Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire, s'il y a lieu, sinon est vide.
 */
 function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 {
-	if (preg_match('/(<div id="galerieGrandeTexte">.+<\/div><!-- \/galerieGrandeTexte -->)/', $corpsGalerie, $res))
+	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->)/', $corpsGalerie, $res))
 	{
 		if ($galerieLegendeEmplacement == 'sousLeContenu')
 		{
-			$corpsGalerie = preg_replace('/<div id="galerieGrandeTexte">.+<\/div><!-- \/galerieGrandeTexte -->/', '', $corpsGalerie);
-			$tableauCorpsGalerie['texteGrande'] = '<div id="galerieGrandeTexteSousLeContenu"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieGrandeTexteSousLeContenu -->';
+			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->/', '', $corpsGalerie);
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteSousLeContenu"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieIntermediaireTexteSousLeContenu -->';
 		}
 		else
 		{
-			$tableauCorpsGalerie['texteGrande'] = '';
+			$tableauCorpsGalerie['texteIntermediaire'] = '';
 		}
 		
 		$tableauCorpsGalerie['corpsGalerie'] = $corpsGalerie;
@@ -766,13 +766,13 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 	else
 	{
 		$tableauCorpsGalerie['corpsGalerie'] = $corpsGalerie;
-		$tableauCorpsGalerie['texteGrande'] = '';
+		$tableauCorpsGalerie['texteIntermediaire'] = '';
 	}
 	
-	// Dans tous les cas, on supprime la div `galerieGrandeTexte` si elle est vide
-	if (preg_match('/(<div id="galerieGrandeTexte"><\/div><!-- \/galerieGrandeTexte -->)/', $tableauCorpsGalerie['corpsGalerie']))
+	// Dans tous les cas, on supprime la div `galerieIntermediaireTexte` si elle est vide
+	if (preg_match('/(<div id="galerieIntermediaireTexte"><\/div><!-- \/galerieIntermediaireTexte -->)/', $tableauCorpsGalerie['corpsGalerie']))
 	{
-		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('/<div id="galerieGrandeTexte"><\/div><!-- \/galerieGrandeTexte -->/', '', $tableauCorpsGalerie['corpsGalerie']);
+		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('/<div id="galerieIntermediaireTexte"><\/div><!-- \/galerieIntermediaireTexte -->/', '', $tableauCorpsGalerie['corpsGalerie']);
 	}
 	
 	return $tableauCorpsGalerie;
@@ -781,7 +781,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 /**
 Retourne la légende d'une oeuvre dans le bon format.
 */
-function grandeLegende($legende, $galerieLegendeMarkdown)
+function intermediaireLegende($legende, $galerieLegendeMarkdown)
 {
 	if ($galerieLegendeMarkdown)
 	{
@@ -798,35 +798,35 @@ Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
 function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
 {
-	$infoGrandeNom = pathinfo($galerie[$indice]['grandeNom']);
+	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
 	
-	if ($taille == 'grande')
+	if ($taille == 'intermediaire')
 	{
-		if (!empty($galerie[$indice]['grandeLargeur'])
-			|| !empty($galerie[$indice]['grandeHauteur']))
+		if (!empty($galerie[$indice]['intermediaireLargeur'])
+			|| !empty($galerie[$indice]['intermediaireHauteur']))
 		{
-			if (!empty($galerie[$indice]['grandeLargeur']))
+			if (!empty($galerie[$indice]['intermediaireLargeur']))
 			{
-				$width = 'width="' . $galerie[$indice]['grandeLargeur'] . '"';
+				$width = 'width="' . $galerie[$indice]['intermediaireLargeur'] . '"';
 			}
 			
-			if (!empty($galerie[$indice]['grandeHauteur']))
+			if (!empty($galerie[$indice]['intermediaireHauteur']))
 			{
-				$height = 'height="' . $galerie[$indice]['grandeHauteur'] . '"';
+				$height = 'height="' . $galerie[$indice]['intermediaireHauteur'] . '"';
 			}
 		}
 		else
 		{
-			list($larg, $haut) = getimagesize($urlImgSrc . '/' . $galerie[$indice]['grandeNom']);
+			list($larg, $haut) = getimagesize($urlImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
 			{
 				$width = 'width="' . $larg . '"';
 				$height = 'height="' . $haut . '"';
 			}
 		}
 		
-		if (!empty($galerie[$indice]['grandeAlt']))
+		if (!empty($galerie[$indice]['intermediaireAlt']))
 		{
-			$alt = 'alt="' . $galerie[$indice]['grandeAlt'] . '"';
+			$alt = 'alt="' . $galerie[$indice]['intermediaireAlt'] . '"';
 		}
 		else
 		{
@@ -837,15 +837,15 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			}
 			else
 			{
-				$id = $galerie[$indice]['grandeNom'];
+				$id = $galerie[$indice]['intermediaireNom'];
 			}
 			
 			$alt = 'alt="' . T_("Oeuvre") . ' ' . $id . '"';
 		}
 		
-		if (!empty($galerie[$indice]['grandeLegende']))
+		if (!empty($galerie[$indice]['intermediaireLegende']))
 		{
-			$legende = '<div id="galerieGrandeLegende">' . grandeLegende($galerie[$indice]['grandeLegende'], $galerieLegendeMarkdown) . '</div>';
+			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($galerie[$indice]['intermediaireLegende'], $galerieLegendeMarkdown) . '</div>';
 		}
 		elseif ($galerieLegendeAutomatique)
 		{
@@ -853,7 +853,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			{
 				$contenuAlt = substr($contenuAlt, 0, -1);
 			}
-			$legende = '<div id="galerieGrandeLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ')</div>';
+			$legende = '<div id="galerieIntermediaireLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ')</div>';
 		}
 		else
 		{
@@ -866,11 +866,11 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$originalNom = $galerie[$indice]['originalNom'];
 		}
 		
-		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version grande de l'image.
+		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
 		else
 		{
-			$originalNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
-			$originalNom .= '-original.' . $infoGrandeNom['extension'];
+			$originalNom = basename($galerie[$indice]['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
+			$originalNom .= '-original.' . $infoIntermediaireNom['extension'];
 		}
 			
 		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on insère un lien vers l'image.
@@ -910,9 +910,9 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		
 		// Exif
 		$exif = '';
-		if ($ajoutExif && typeImage($infoGrandeNom['extension']) == 'jpeg' && function_exists('exif_read_data'))
+		if ($ajoutExif && typeImage($infoIntermediaireNom['extension']) == 'jpeg' && function_exists('exif_read_data'))
 		{
-			$tableauExif = exif_read_data($racineImgSrc . '/' . $galerie[$indice]['grandeNom'], 'IFD0', 0);
+			$tableauExif = exif_read_data($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], 'IFD0', 0);
 			
 			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si c'est du JPG
 			if (!$tableauExif && !empty($lienOriginal) && typeImage($infoOriginalNom['extension']) == 'jpeg')
@@ -971,7 +971,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			
 			if (!empty($exif))
 			{
-				$exif = "<div id='galerieGrandeExif'><ul>" . $exif . "</ul></div><!-- /galerieGrandeExif -->";
+				$exif = "<div id='galerieIntermediaireExif'><ul>" . $exif . "</ul></div><!-- /galerieIntermediaireExif -->";
 			}
 		}
 		
@@ -1014,11 +1014,11 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		
 		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousLeContenu')
 		{
-			return '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieGrandeTexte -->\n" . '<div id="galerieGrandeImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOriginal;
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal;
 		}
 		elseif ($galerieLegendeEmplacement == 'bas')
 		{
-			return '<div id="galerieGrandeImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieGrandeImg -->\n" . $imgLienOriginal . '<div id="galerieGrandeTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieGrandeTexte -->\n";
+			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n";
 		}
 	}
 
@@ -1049,9 +1049,9 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			}
 			else
 			{
-				// Si le nom de la vignette n'a pas été renseigné, on génère un nom automatique selon le nom de la version grande de l'image.
-				$vignetteNom = basename($galerie[$indice]['grandeNom'], '.' . $infoGrandeNom['extension']);
-				$vignetteNom .= '-vignette.' . $infoGrandeNom['extension'];
+				// Si le nom de la vignette n'a pas été renseigné, on génère un nom automatique selon le nom de la version intermediaire de l'image.
+				$vignetteNom = basename($galerie[$indice]['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
+				$vignetteNom .= '-vignette.' . $infoIntermediaireNom['extension'];
 				
 				// On vérifie si un fichier existe avec ce nom.
 				// Si oui, on assigne une valeur à l'attribut `src`. 
@@ -1063,39 +1063,39 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 				else
 				{
 					// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
-					$type = typeImage($infoGrandeNom['extension']);
+					$type = typeImage($infoIntermediaireNom['extension']);
 					
-					// Grande image
+					// Image intermediaire
 					switch ($type)
 					{
 						case 'gif':
-							$imageGrande = imagecreatefromgif($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+							$imageIntermediaire = imagecreatefromgif($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
 							break;
 						
 						case 'jpeg':
-							$imageGrande = imagecreatefromjpeg($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
+							$imageIntermediaire = imagecreatefromjpeg($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
 							break;
 						
 						case 'png':
-							$imageGrande = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['grandeNom']);
-							imagealphablending($imageGrande, true);
-							imagesavealpha($imageGrande, true);
+							$imageIntermediaire = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
+							imagealphablending($imageIntermediaire, true);
+							imagesavealpha($imageIntermediaire, true);
 							break;
 					}
 					
-					// Dimensions de la grande image
-					$imageGrandeLargeur = imagesx($imageGrande);
-					$imageGrandeHauteur = imagesy($imageGrande);
+					// Dimensions de l'image intermediaire
+					$imageIntermediaireLargeur = imagesx($imageIntermediaire);
+					$imageIntermediaireHauteur = imagesy($imageIntermediaire);
 					
 					// On trouve les futures dimensions de la vignette
 					$imageVignetteHauteur = $galerieHauteurVignette;
-					$imageVignetteLargeur = ($imageVignetteHauteur / $imageGrandeHauteur) * $imageGrandeLargeur;
+					$imageVignetteLargeur = ($imageVignetteHauteur / $imageIntermediaireHauteur) * $imageIntermediaireLargeur;
 					
 					// On crée une vignette vide
 					$imageVignette = imagecreatetruecolor($imageVignetteLargeur, $imageVignetteHauteur);
 					
-					// On crée la vignette à partir de la grande image
-					imagecopyresampled($imageVignette, $imageGrande, 0, 0, 0, 0, $imageVignetteLargeur, $imageVignetteHauteur, $imageGrandeLargeur, $imageGrandeHauteur);
+					// On crée la vignette à partir de l'image intermediaire
+					imagecopyresampled($imageVignette, $imageIntermediaire, 0, 0, 0, 0, $imageVignetteLargeur, $imageVignetteHauteur, $imageIntermediaireLargeur, $imageIntermediaireHauteur);
 					
 					// On enregistre la vignette
 					switch ($type)
@@ -1156,7 +1156,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		}
 		else
 		{
-			$id = $galerie[$indice]['grandeNom'];
+			$id = $galerie[$indice]['intermediaireNom'];
 		}
 		
 		if (!empty($galerie[$indice]['vignetteAlt']))
@@ -1179,16 +1179,16 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
-			if (!empty($galerie[$indice]['grandeLegende']))
+			if (!empty($galerie[$indice]['intermediaireLegende']))
 			{
-				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $galerie[$indice]['grandeLegende']) . '"';
+				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $galerie[$indice]['intermediaireLegende']) . '"';
 			}
 			else
 			{
 				$title = '';
 			}
 			
-			$aHref = '<a href="' . $urlImgSrc . '/' . $galerie[$indice]['grandeNom'] . '" rel="lightbox-galerie"' . $title . '>';
+			$aHref = '<a href="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
 		}
 		else
 		{
@@ -1334,16 +1334,16 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	}
 	else
 	{
-		$vignetteNom = nomSuffixeVignette($oeuvre['grandeNom']);
+		$vignetteNom = nomSuffixeVignette($oeuvre['intermediaireNom']);
 	}
 	
 	if (isset($oeuvre['vignetteAlt']) && !empty($oeuvre['vignetteAlt']))
 	{
 		$vignetteAlt = $oeuvre['vignetteAlt'];
 	}
-	elseif (isset($oeuvre['grandeAlt']) && !empty($oeuvre['grandeAlt']))
+	elseif (isset($oeuvre['intermediaireAlt']) && !empty($oeuvre['intermediaireAlt']))
 	{
-		$vignetteAlt = $oeuvre['grandeAlt'];
+		$vignetteAlt = $oeuvre['intermediaireAlt'];
 	}
 	else
 	{
@@ -1352,25 +1352,25 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	
 	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/$idGalerie/" . $vignetteNom . "' alt='$vignetteAlt' /></p>";
 	
-	if (isset($oeuvre['grandeLegende']) && !empty($oeuvre['grandeLegende']))
+	if (isset($oeuvre['intermediaireLegende']) && !empty($oeuvre['intermediaireLegende']))
 	{
-		$messageDecouvrirSupplement .= grandeLegende($oeuvre['grandeLegende'], $galerieLegendeMarkdown);
+		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['intermediaireLegende'], $galerieLegendeMarkdown);
 	}
-	elseif (isset($oeuvre['grandeAlt']) && !empty($oeuvre['grandeAlt']))
+	elseif (isset($oeuvre['intermediaireAlt']) && !empty($oeuvre['intermediaireAlt']))
 	{
-		$messageDecouvrirSupplement .= grandeLegende($oeuvre['grandeAlt'], $galerieLegendeMarkdown);
+		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['intermediaireAlt'], $galerieLegendeMarkdown);
 	}
 	elseif (isset($oeuvre['vignetteAlt']) && !empty($oeuvre['vignetteAlt']))
 	{
-		$messageDecouvrirSupplement .= grandeLegende($oeuvre['vignetteAlt'], $galerieLegendeMarkdown);
+		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['vignetteAlt'], $galerieLegendeMarkdown);
 	}
-	elseif (isset($oeuvre['pageGrandeDescription']) && !empty($oeuvre['pageGrandeDescription']))
+	elseif (isset($oeuvre['pageIntermediaireDescription']) && !empty($oeuvre['pageIntermediaireDescription']))
 	{
-		$messageDecouvrirSupplement .= $oeuvre['pageGrandeDescription'];
+		$messageDecouvrirSupplement .= $oeuvre['pageIntermediaireDescription'];
 	}
-	elseif (isset($oeuvre['pageGrandeBaliseTitle']) && !empty($oeuvre['pageGrandeBaliseTitle']))
+	elseif (isset($oeuvre['pageIntermediaireBaliseTitle']) && !empty($oeuvre['pageIntermediaireBaliseTitle']))
 	{
-		$messageDecouvrirSupplement .= $oeuvre['pageGrandeBaliseTitle'];
+		$messageDecouvrirSupplement .= $oeuvre['pageIntermediaireBaliseTitle'];
 	}
 	
 	$messageDecouvrirSupplement = "<div style='font-style: italic; text-align: center;'>$messageDecouvrirSupplement</div>";
@@ -1450,7 +1450,7 @@ Retourne l'id d'une oeuvre d'une galerie.
 */
 function idOeuvre($oeuvre)
 {
-	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['grandeNom'];
+	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['intermediaireNom'];
 }
 
 /**
@@ -1465,40 +1465,40 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 	{
 		$id = idOeuvre($oeuvre);
 		$title = sprintf(T_("Oeuvre %1\$s"), $id);
-		$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['grandeNom'];
-		$urlOeuvre = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['grandeNom'];
+		$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
+		$urlOeuvre = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
 		$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
 		
-		if (!empty($oeuvre['pageGrandeDescription']))
+		if (!empty($oeuvre['pageIntermediaireDescription']))
 		{
-			$description = $oeuvre['pageGrandeDescription'];
+			$description = $oeuvre['pageIntermediaireDescription'];
 		}
-		elseif (!empty($oeuvre['grandeLegende']))
+		elseif (!empty($oeuvre['intermediaireLegende']))
 		{
-			$description = $oeuvre['grandeLegende'];
+			$description = $oeuvre['intermediaireLegende'];
 		}
 		else
 		{
 			$description = $title;
 		}
 		
-		if (!empty($oeuvre['grandeLargeur']))
+		if (!empty($oeuvre['intermediaireLargeur']))
 		{
-			$width = $oeuvre['grandeLargeur'];
+			$width = $oeuvre['intermediaireLargeur'];
 		}
 		else
 		{
 			list($width, $height) = getimagesize($cheminOeuvre);
 		}
 		
-		if (!empty($oeuvre['grandeHauteur']))
+		if (!empty($oeuvre['intermediaireHauteur']))
 		{
-			$height = $oeuvre['grandeHauteur'];
+			$height = $oeuvre['intermediaireHauteur'];
 		}
 		
-		if (!empty($oeuvre['grandeAlt']))
+		if (!empty($oeuvre['intermediaireAlt']))
 		{
-			$alt = $oeuvre['grandeAlt'];
+			$alt = $oeuvre['intermediaireAlt'];
 		}
 		else
 		{
@@ -1511,8 +1511,8 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		}
 		else
 		{
-			$infoOriginal = pathinfo($oeuvre['grandeNom']);
-			$nomOriginal = basename($oeuvre['grandeNom'], '.' . $infoOriginal['extension']);
+			$infoOriginal = pathinfo($oeuvre['intermediaireNom']);
+			$nomOriginal = basename($oeuvre['intermediaireNom'], '.' . $infoOriginal['extension']);
 			$nomOriginal .= '-original.' . $infoOriginal['extension'];
 			if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
 			{

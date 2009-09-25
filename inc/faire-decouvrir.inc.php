@@ -39,7 +39,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 				{
 					$decouvrirInclureContact = TRUE;
 					$messageDecouvrirSupplement = decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown);
-					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'oeuvre %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $oeuvre['grandeNom'] . '</em>', '<em>' . $idGalerie . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
+					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'oeuvre %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $oeuvre['intermediaireNom'] . '</em>', '<em>' . $idGalerie . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
 				}
 				break;
 			}

@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-25 09:53-0400\n"
+"POT-Creation-Date: 2009-09-25 10:37-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -564,7 +564,7 @@ msgid ""
 "Créer ou mettre à jour le fichier de configuration de cette galerie avec les "
 "paramètres par défaut (les fichiers <code>-vignette.extension</code> et "
 "<code>-original.extension</code> sont ignorés, les autres sont considérés "
-"comme étant la version grande à afficher)."
+"comme étant la version intermediaire à afficher)."
 msgstr ""
 
 #: admin/galeries.admin.php:663
@@ -574,8 +574,8 @@ msgstr ""
 #: admin/galeries.admin.php:665
 msgid ""
 "Vous pouvez faire générer automatiquement une copie réduite (qui sera "
-"utilisée comme étant la version grande dans la galerie) de chaque image "
-"originale. Aucune image au format original ne sera modifiée."
+"utilisée comme étant la version intermediaire dans la galerie) de chaque "
+"image originale. Aucune image au format original ne sera modifiée."
 msgstr ""
 
 #: admin/galeries.admin.php:669 admin/galeries.admin.php:703
@@ -584,7 +584,7 @@ msgid "Id de la galerie:"
 msgstr ""
 
 #: admin/galeries.admin.php:672
-msgid "Taille maximale de la version grande (largeur × hauteur):"
+msgid "Taille maximale de la version intermediaire (largeur × hauteur):"
 msgstr ""
 
 #: admin/galeries.admin.php:673
@@ -605,14 +605,14 @@ msgstr ""
 msgid ""
 "Le nom des images au format original se termine par <code>-original."
 "extension</code>. Générer un fichier sans <code>-original</code> pour chaque "
-"version grande."
+"version intermediaire."
 msgstr ""
 
 #: admin/galeries.admin.php:678
 msgid ""
 "Renommer préalablement les images du dossier en <code>nom-original."
-"extension</code> et ensuite gérérer les image en version grande sans le "
-"suffixe <code>-original</code>."
+"extension</code> et ensuite gérérer les image en version intermediaire sans "
+"le suffixe <code>-original</code>."
 msgstr ""
 
 #: admin/galeries.admin.php:680
@@ -659,8 +659,8 @@ msgstr ""
 
 #: admin/galeries.admin.php:725
 msgid ""
-"En plus du champ obligatoire <code>grandeNom</code>, ajouter des champs "
-"vides:"
+"En plus du champ obligatoire <code>intermediaireNom</code>, ajouter des "
+"champs vides:"
 msgstr ""
 
 #: admin/galeries.admin.php:743
@@ -1344,7 +1344,7 @@ msgstr ""
 
 #: inc/galerie.inc.php:79
 #, php-format
-msgid "Oeuvre %1$s en version grande, galerie %2$s"
+msgid "Oeuvre %1$s en version intermediaire, galerie %2$s"
 msgstr ""
 
 #: inc/galerie.inc.php:200

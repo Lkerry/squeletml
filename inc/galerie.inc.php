@@ -57,34 +57,34 @@ if (isset($_GET['oeuvre']))
 		{
 			$imageExiste = TRUE;
 			// L'image existe, et on écrase les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable $galerie, on donne une valeur automatiquement.
-			if (!empty($galerie[$i]['pageGrandeBaliseTitle']))
+			if (!empty($galerie[$i]['pageIntermediaireBaliseTitle']))
 			{
-				$baliseTitle = $galerie[$i]['pageGrandeBaliseTitle'];
+				$baliseTitle = $galerie[$i]['pageIntermediaireBaliseTitle'];
 			}
 			else
 			{
 				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie %2\$s"), $id, $idGalerie);
 			}
 
-			if (!empty($galerie[$i]['pageGrandeDescription']))
+			if (!empty($galerie[$i]['pageIntermediaireDescription']))
 			{
-				$description = $galerie[$i]['pageGrandeDescription'];
+				$description = $galerie[$i]['pageIntermediaireDescription'];
 			}
-			elseif (!empty($galerie[$i]['legendeGrande']))
+			elseif (!empty($galerie[$i]['legendeIntermediaire']))
 			{
-				$description = $galerie[$i]['legendeGrande'];
+				$description = $galerie[$i]['legendeIntermediaire'];
 			}
 			else
 			{
-				$description = sprintf(T_("Oeuvre %1\$s en version grande, galerie %2\$s"), $id, $idGalerie) . ' | ' . $baliseTitleComplement[langue($langue)];
+				$description = sprintf(T_("Oeuvre %1\$s en version intermediaire, galerie %2\$s"), $id, $idGalerie) . ' | ' . $baliseTitleComplement[langue($langue)];
 			}
 			
-			if (!isset($galerie[$i]['pageGrandeMotsCles']))
+			if (!isset($galerie[$i]['pageIntermediaireMotsCles']))
 			{
-				$galerie[$i]['pageGrandeMotsCles'] = '';
+				$galerie[$i]['pageIntermediaireMotsCles'] = '';
 			}
 			
-			$motsCles = construitMotsCles($galerie[$i]['pageGrandeMotsCles'], $description);
+			$motsCles = construitMotsCles($galerie[$i]['pageIntermediaireMotsCles'], $description);
 			$motsCles .= ', ' . $id;
 
 			break; // On arrête la boucle
@@ -93,11 +93,11 @@ if (isset($_GET['oeuvre']))
 		$i++;
 	}
 
-	// Si l'oeuvre existe, on affiche la grande version ainsi que le système de navigation dans la galerie . 
+	// Si l'oeuvre existe, on affiche la version intermediaire ainsi que le système de navigation dans la galerie . 
 	if ($imageExiste)
 	{
-		// On récupère le code de l'oeuvre demandée en grande version
-		$oeuvreGrande = '<div id="galerieGrande">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'grande', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
+		// On récupère le code de l'oeuvre demandée en version intermediaire
+		$oeuvreIntermediaire = '<div id="galerieIntermediaire">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'intermediaire', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
 
 		// On recherche l'oeuvre précédente pour la navigation .  Si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente
 		if (array_key_exists($i - 1, $galerie))
@@ -185,11 +185,11 @@ if (isset($_GET['oeuvre']))
 		// On crée le corps de la galerie
 		if ($galerieNavigationEmplacement == 'haut')
 		{
-			$corpsGalerie .= $oeuvrePrecedente . $oeuvreSuivante . $oeuvreGrande;
+			$corpsGalerie .= $oeuvrePrecedente . $oeuvreSuivante . $oeuvreIntermediaire;
 		}
 		elseif ($galerieNavigationEmplacement == 'bas')
 		{
-			$corpsGalerie .= $oeuvreGrande . $oeuvrePrecedente . $oeuvreSuivante;
+			$corpsGalerie .= $oeuvreIntermediaire . $oeuvrePrecedente . $oeuvreSuivante;
 		}
 		
 		// $galerieInfo

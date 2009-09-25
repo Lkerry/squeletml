@@ -268,41 +268,41 @@ if (isset($_POST['retailler']))
 				$imageOriginalHauteur = imagesy($imageOriginal);
 				$imageOriginalLargeur = imagesx($imageOriginal);
 				
-				// On trouve les futures dimensions de la version grande
-				$imageGrandeHauteur = $_POST['hauteur'];
-				if ($imageGrandeHauteur > $imageOriginalHauteur)
+				// On trouve les futures dimensions de la version intermediaire
+				$imageIntermediaireHauteur = $_POST['hauteur'];
+				if ($imageIntermediaireHauteur > $imageOriginalHauteur)
 				{
-					$imageGrandeHauteur = $imageOriginalHauteur;
+					$imageIntermediaireHauteur = $imageOriginalHauteur;
 				}
-				$imageGrandeLargeur = ($imageGrandeHauteur / $imageOriginalHauteur) * $imageOriginalLargeur;
-				if ($imageGrandeLargeur > $_POST['largeur'])
+				$imageIntermediaireLargeur = ($imageIntermediaireHauteur / $imageOriginalHauteur) * $imageOriginalLargeur;
+				if ($imageIntermediaireLargeur > $_POST['largeur'])
 				{
-					$imageGrandeLargeur = $_POST['largeur'];
-					$imageGrandeHauteur = ($imageGrandeLargeur / $imageOriginalLargeur) * $imageOriginalHauteur;
+					$imageIntermediaireLargeur = $_POST['largeur'];
+					$imageIntermediaireHauteur = ($imageIntermediaireLargeur / $imageOriginalLargeur) * $imageOriginalHauteur;
 				}
 				
-				// On crée une image grande vide
-				$imageGrande = imagecreatetruecolor($imageGrandeLargeur, $imageGrandeHauteur);
+				// On crée une image intermediaire vide
+				$imageIntermediaire = imagecreatetruecolor($imageIntermediaireLargeur, $imageIntermediaireHauteur);
 				if ($type == 'png')
 				{
-					imagealphablending($imageGrande, false);
-					imagesavealpha($imageGrande, true);
+					imagealphablending($imageIntermediaire, false);
+					imagesavealpha($imageIntermediaire, true);
 				}
 				
-				// On crée la version grande à partir de l'original
-				imagecopyresampled($imageGrande, $imageOriginal, 0, 0, 0, 0, $imageGrandeLargeur, $imageGrandeHauteur, $imageOriginalLargeur, $imageOriginalHauteur);
+				// On crée la version intermediaire à partir de l'original
+				imagecopyresampled($imageIntermediaire, $imageOriginal, 0, 0, 0, 0, $imageIntermediaireLargeur, $imageIntermediaireHauteur, $imageOriginalLargeur, $imageOriginalHauteur);
 				
 				// Netteté
 				if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
 				{
-					$imageGrande = UnsharpMask($imageGrande, '100', '1', '3');
+					$imageIntermediaire = UnsharpMask($imageIntermediaire, '100', '1', '3');
 				}
 				
-				// On enregistre la version grande
+				// On enregistre la version intermediaire
 				switch ($type)
 				{
 					case 'gif':
-						if (imagegif($imageGrande, $cheminGalerie . '/' . $nouveauNom))
+						if (imagegif($imageIntermediaire, $cheminGalerie . '/' . $nouveauNom))
 						{
 							$listeModifs[] = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
 						}
@@ -313,7 +313,7 @@ if (isset($_POST['retailler']))
 						break;
 					
 					case 'jpeg':
-						if (imagejpeg($imageGrande, $cheminGalerie . '/' . $nouveauNom, $qualiteJpg))
+						if (imagejpeg($imageIntermediaire, $cheminGalerie . '/' . $nouveauNom, $qualiteJpg))
 						{
 							$listeModifs[] = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
 						}
@@ -324,7 +324,7 @@ if (isset($_POST['retailler']))
 						break;
 					
 					case 'png':
-						if (imagepng($imageGrande, $cheminGalerie . '/' . $nouveauNom, 9))
+						if (imagepng($imageIntermediaire, $cheminGalerie . '/' . $nouveauNom, 9))
 						{
 							$listeModifs[] = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
 						}
@@ -510,7 +510,7 @@ $listeFichiers = '';
 		{
 			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier))
 			{
-				$listeFichiers .= "grandeNom=$fichier\n";
+				$listeFichiers .= "intermediaireNom=$fichier\n";
 				
 				if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
 				{
@@ -650,7 +650,7 @@ if (isset($_POST['modeleConf']) ||
 <p><label><?php echo T_("Fichier:"); ?></label><br />
 <input type="file" name="fichier" size="25"/></p>
 
-<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version grande à afficher)."); ?></label></p>
+<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
 
 <p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
 </div>
@@ -662,27 +662,27 @@ if (isset($_POST['modeleConf']) ||
 <div class="boite">
 <h2><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
 
-<p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version grande dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
+<p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermediaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
 
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>
 <p><label><?php echo T_("Id de la galerie:"); ?></label><br />
 <input type="text" name="id" /></p>
 
-<p><label><?php echo T_("Taille maximale de la version grande (largeur × hauteur):"); ?></label><br />
+<p><label><?php echo T_("Taille maximale de la version intermediaire (largeur × hauteur):"); ?></label><br />
 <?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée. Les proportions de l'image sont conservées."); ?><br />
 <input type="text" name="largeur" size="4" /> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" /></p>
 
 <p><label><?php echo T_("Comment manipuler les images du dossier?"); ?></label><br />
-<input type="radio" name="manipulerOriginal" value="original" checked="checked" /> <?php echo T_("Le nom des images au format original se termine par <code>-original.extension</code>. Générer un fichier sans <code>-original</code> pour chaque version grande."); ?><br />
-<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code> et ensuite gérérer les image en version grande sans le suffixe <code>-original</code>."); ?></p>
+<input type="radio" name="manipulerOriginal" value="original" checked="checked" /> <?php echo T_("Le nom des images au format original se termine par <code>-original.extension</code>. Générer un fichier sans <code>-original</code> pour chaque version intermediaire."); ?><br />
+<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code> et ensuite gérérer les image en version intermediaire sans le suffixe <code>-original</code>."); ?></p>
 
 <p><label><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
 <input type="text" name="qualiteJpg" value="90" size="2" /></p>
 
 <p><input type="checkbox" name="actions" value="nettete" /> <label><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)"); ?></label></p>
 
-<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version grande à afficher)."); ?></label></p>
+<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
 
 <p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
@@ -722,7 +722,7 @@ if (isset($_POST['modeleConf']) ||
 <p><label><?php echo T_("Id de la galerie:"); ?></label><br />
 <input type="text" name="id" /></p>
 
-<p><label><?php echo T_("En plus du champ obligatoire <code>grandeNom</code>, ajouter des champs vides:"); ?></label><br />
+<p><label><?php echo T_("En plus du champ obligatoire <code>intermediaireNom</code>, ajouter des champs vides:"); ?></label><br />
 <select name="info[]" multiple="multiple" size="4">
 <option value="aucun" selected="selected"><?php echo T_("Aucun"); ?></option>
 <option value="id">id</option>
@@ -730,13 +730,13 @@ if (isset($_POST['modeleConf']) ||
 <option value="vignetteLargeur">vignetteLargeur</option>
 <option value="vignetteHauteur">vignetteHauteur</option>
 <option value="vignetteAlt">vignetteAlt</option>
-<option value="grandeLargeur">grandeLargeur</option>
-<option value="grandeHauteur">grandeHauteur</option>
-<option value="grandeAlt">grandeAlt</option>
-<option value="grandeLegende">grandeLegende</option>
-<option value="pageGrandeBaliseTitle">pageGrandeBaliseTitle</option>
-<option value="pageGrandeDescription">pageGrandeDescription</option>
-<option value="pageGrandeMotsCles">pageGrandeMotsCles</option>
+<option value="intermediaireLargeur">intermediaireLargeur</option>
+<option value="intermediaireHauteur">intermediaireHauteur</option>
+<option value="intermediaireAlt">intermediaireAlt</option>
+<option value="intermediaireLegende">intermediaireLegende</option>
+<option value="pageIntermediaireBaliseTitle">pageIntermediaireBaliseTitle</option>
+<option value="pageIntermediaireDescription">pageIntermediaireDescription</option>
+<option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
 <option value="originalNom">originalNom</option>
 </select></p>
 

@@ -51,8 +51,8 @@
 		</div><!-- /faireDecouvrir -->
 	<?php endif; ?>
 
-	<?php if (!empty($tableauCorpsGalerie['texteGrande'])): ?>
-		<?php echo $tableauCorpsGalerie['texteGrande']; ?>
+	<?php if (!empty($tableauCorpsGalerie['texteIntermediaire'])): ?>
+		<?php echo $tableauCorpsGalerie['texteIntermediaire']; ?>
 	<?php endif; ?>
 
 	<?php if (($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))): ?>
