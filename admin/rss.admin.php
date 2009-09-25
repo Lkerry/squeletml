@@ -39,7 +39,7 @@ if (isset($_POST['lister']))
 				
 				echo '<div class="boite2">' . "\n";
 				echo '<h3>' . T_("Liste des pages des galeries") . '</h3>' . "\n";
-				echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>id de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie dont l'id est %2\$s et dont l'URL est %3\$s."), "<code>chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
+				echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
 	
 				if (!empty($listeGaleries))
 				{

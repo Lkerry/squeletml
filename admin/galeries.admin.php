@@ -379,7 +379,7 @@ if (isset($_POST['lister']))
 				$fichier = str_replace('\\', '', $fichier);
 				$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $res[1]);
 				$fichierLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
-				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("id:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
+				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $res[1] . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $res[1] . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . $fichierLien . '#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
 			}
 		}
 	}
@@ -644,7 +644,7 @@ if (isset($_POST['modeleConf']) ||
 
 <form action="<?php echo $action; ?>#messages" method="post" enctype="multipart/form-data">
 <div>
-<p><label><?php echo T_("Id de la galerie (si elle n'existe pas, elle sera créée):"); ?></label><br />
+<p><label><?php echo T_("Identifiant de la galerie (si la galerie n'existe pas, elle sera créée):"); ?></label><br />
 <input type="text" name="id" /></p>
 
 <p><label><?php echo T_("Fichier:"); ?></label><br />
@@ -666,7 +666,7 @@ if (isset($_POST['modeleConf']) ||
 
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>
-<p><label><?php echo T_("Id de la galerie:"); ?></label><br />
+<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 <input type="text" name="id" /></p>
 
 <p><label><?php echo T_("Taille maximale de la version intermediaire (largeur × hauteur):"); ?></label><br />
@@ -700,7 +700,7 @@ if (isset($_POST['modeleConf']) ||
 
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>
-<p><label><?php echo T_("Id de la galerie:"); ?></label><br />
+<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 <input type="text" name="id" /></p>
 
 <p><label><?php echo T_("Emplacement de la page web:"); ?></label><br />
@@ -719,7 +719,7 @@ if (isset($_POST['modeleConf']) ||
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>
 
-<p><label><?php echo T_("Id de la galerie:"); ?></label><br />
+<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 <input type="text" name="id" /></p>
 
 <p><label><?php echo T_("En plus du champ obligatoire <code>intermediaireNom</code>, ajouter des champs vides:"); ?></label><br />
