@@ -263,7 +263,11 @@ if (isset($_POST['retailler']))
 				if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 				{
 					$infoFichier = pathinfo(basename($fichier));
-					if (!preg_match('/-original\.' . $infoFichier['extension'] . '/', $fichier))
+					if (!isset($infoFichier['extension']))
+					{
+						$infoFichier['extension'] = '';
+					}
+					if (!preg_match('/-original\.' . $infoFichier['extension'] . '/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
 					{
 						$nouveauNom = basename($fichier, '.' . $infoFichier['extension']);
 						$nouveauNom .= '-original.' . $infoFichier['extension'];
@@ -289,6 +293,10 @@ if (isset($_POST['retailler']))
 		while($fichier = @readdir($fic2))
 		{
 			$infoFichier = pathinfo(basename($fichier));
+			if (!isset($infoFichier['extension']))
+			{
+				$infoFichier['extension'] = '';
+			}
 			$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
 			if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..' && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
@@ -680,11 +688,12 @@ if (isset($_POST['modeleConf']) ||
 
 <p><label><?php echo T_("Taille maximale de la version intermediaire (largeur × hauteur):"); ?></label><br />
 <?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée. Les proportions de l'image sont conservées."); ?><br />
-<input type="text" name="largeur" size="4" /> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" /></p>
+<input type="text" name="largeur" size="4" value="500" /> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" value="500" /></p>
 
 <p><label><?php echo T_("Comment manipuler les images du dossier?"); ?></label><br />
-<input type="radio" name="manipulerOriginal" value="original" checked="checked" /> <?php echo T_("Le nom des images au format original se termine par <code>-original.extension</code>. Générer un fichier sans <code>-original</code> pour chaque version intermediaire."); ?><br />
-<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code> et ensuite gérérer les image en version intermediaire sans le suffixe <code>-original</code>."); ?></p>
+<input type="radio" name="manipulerOriginal" value="original" checked="checked" /> <?php echo T_("Le nom des images au format original se termine déjà par <code>-original.extension</code>."); ?><br />
+<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code>. Les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés lors du renommage."); ?><br />
+<?php echo T_("Note: pour chaque image originale, une image en version intermediaire sans le suffixe <code>-original</code> sera créée, si un tel fichier n'existe pas déjà. Les fichiers <code>-vignette.extension</code> sont ignorés. Si <code>nom-original.extension</code> et <code>nom.extension</code> existent tous les deux, il n'y aura pas de création de version intermédiaire."); ?></p>
 
 <p><label><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
 <input type="text" name="qualiteJpg" value="90" size="2" /></p>
