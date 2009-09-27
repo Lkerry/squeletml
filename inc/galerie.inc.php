@@ -19,7 +19,7 @@ if ($idGalerie
 	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 {
 	$galerie = construitTableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
-	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . $idGalerie;
+	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie);
 	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
 }
 else

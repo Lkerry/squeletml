@@ -58,6 +58,11 @@ pre {
 
 /* Porte-documents */
 
+textarea.consulterModifications {
+	width: 95%;
+	height: 500px;
+}
+
 .porteDocumentsListeDossiers {
 	margin-bottom: 15px;
 }

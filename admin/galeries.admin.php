@@ -12,6 +12,11 @@ include '../init.inc.php';
 <h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 
 <?php
+if (isset($_POST['id']))
+{
+	$id = adminSansEchappement($_POST['id']);
+}
+
 ########################################################################
 ##
 ## Lister les galeries existantes
@@ -29,8 +34,8 @@ if (isset($_POST['lister']))
 		if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
 		{
 			$i++;
-			$fichier = str_replace('\\', '', $fichier);
-			$idLien = str_replace(array ("'", '"'), array ('%27', '%22'), $fichier);
+			$fichier = adminSansEchappement($fichier);
+			$idLien = rawurlencode($fichier);
 			$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
 		}
 	}
@@ -63,7 +68,7 @@ if (isset($_POST['lister']))
 if (isset($_POST['ajouter']))
 {
 	$cheminGaleries = $racine . '/site/fichiers/galeries';
-	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $_POST['id'];
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	
 	$listeModifs = array ();
 	
@@ -115,7 +120,7 @@ if (isset($_POST['ajouter']))
 				{
 					if ($fichierEstImage)
 					{
-						$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+						$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>');
 					}
 					else
 					{
@@ -123,7 +128,7 @@ if (isset($_POST['ajouter']))
 						{
 							$resultatArchive = 0;
 							$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
-							$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $_POST['id'] . '/');
+							$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $id . '/');
 							
 							if ($resultatArchive == 0)
 							{
@@ -137,7 +142,7 @@ if (isset($_POST['ajouter']))
 								{
 									if ($infoImage['status'] == 'ok')
 									{
-										$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $_POST['id']) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $_POST['id'] . '/</code>');
+										$listeModifs[] = sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $id) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>');
 									}
 									elseif ($infoImage['status'] == 'newer_exist')
 									{
@@ -239,11 +244,11 @@ if (isset($_POST['ajouter']))
 if (isset($_POST['retailler']))
 {
 	$qualiteJpg = intval($_POST['qualiteJpg']);
-	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $_POST['id'] . '/';
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id . '/';
 	
 	if (!file_exists($cheminGalerie))
 	{
-		echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), $_POST['id']) . "</p>";
+		echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), $id) . "</p>";
 	}
 	else
 	{
@@ -416,7 +421,6 @@ if (isset($_POST['creerPage']))
 {
 	$page = basename($_POST['page']);
 	$cheminPage = '../' . dirname($_POST['page']);
-	$id = str_replace('\\', '', $_POST['id']);
 	$idDansVar = str_replace('"', '\"', $id);
 	if ($cheminPage == '../.')
 	{
@@ -432,18 +436,18 @@ if (isset($_POST['creerPage']))
 	{
 		$cheminInclude .= '/';
 	}
-	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $_POST['id'];
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	if (!file_exists($cheminGalerie))
 	{
-		echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), $_POST['id']) . "</p>";
+		echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), $id) . "</p>";
 	}
 	else
 	{
-		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $_POST['id'] . '/config.pc';
+		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
 		
 		if (!file_exists($fichierConfigChemin))
 		{
-			echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'a pas de fichier de configuration.'), $_POST['id']) . "</p>";
+			echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'a pas de fichier de configuration.'), $id) . "</p>";
 		}
 		else
 		{
@@ -504,7 +508,7 @@ if (isset($_POST['creerPage']))
 
 if (isset($_POST['modeleConf']))
 {
-	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $_POST['id'];
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
 $listeFichiers = '';
 	$tableauFichiers = array ();
@@ -512,7 +516,7 @@ $listeFichiers = '';
 	{
 		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 		{
-			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier))
+			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
 			{
 				$tableauFichiers[] = $fichier;
 			}
@@ -555,14 +559,14 @@ $listeFichiers = '';
 
 if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 {
-	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $_POST['id'];
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	if (!file_exists($cheminGalerie))
 	{
-		echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), $_POST['id']) . "</p>";
+		echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), $id) . "</p>";
 	}
 	else
 	{
-		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $_POST['id'] . '/config.pc';
+		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
 		
 		if (file_exists($fichierConfigChemin))
 		{
@@ -573,7 +577,7 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 			$configExisteAuDepart = FALSE;
 		}
 		
-		if (adminMajConfGalerie($racine, $_POST['id'], ''))
+		if (adminMajConfGalerie($racine, $id, ''))
 		{
 			$listeModifs = array ();
 			if ($configExisteAuDepart)
@@ -611,12 +615,11 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 if (isset($_POST['modeleConf']) ||
 	(isset($_POST['conf']) && $_POST['conf'] == 'maj'))
 {
-	if (file_exists($racine . '/site/fichiers/galeries/' . $_POST['id'] . '/config.pc'))
+	if (file_exists($racine . '/site/fichiers/galeries/' . $id . '/config.pc'))
 	{
-		$id = str_replace('\\', '', $_POST['id']);
-		$id = str_replace(array ("'", '"'), array ('%27', '%22'), $id);
+		$id = rawurlencode($id);
 		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
-		echo '<p>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&valeur=../site/inc/' . basename($fichierConfigChemin) . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></p>' . "\n";
+		echo '<p>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $id . '/config.pc#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></p>' . "\n";
 	}
 }
 ?>
