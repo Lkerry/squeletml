@@ -19,6 +19,10 @@ if (!isset($motsCles))
 {
 	$motsCles = FALSE;
 }
+if (!isset($pageDerreur))
+{
+	$pageDerreur = FALSE;
+}
 if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
 {
 	$courrielContact = $courrielContactParDefaut;
@@ -28,6 +32,11 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 	include_once $fichier;
 }
 // Fin des insertions
+
+if (!galerieExiste($racine, $idGalerie))
+{
+	$idGalerie = FALSE;
+}
 
 if ($idGalerie && !isset($rss))
 {

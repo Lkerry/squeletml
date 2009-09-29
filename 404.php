@@ -2,6 +2,8 @@
 include_once 'init.inc.php';
 include_once 'inc/fonctions.inc.php';
 
+$pageDerreur = TRUE;
+
 $codeLangue = langue('navigateur');
 
 if (file_exists($racine . '/site/inc/page.' . $codeLangue . '.404.inc.php'))

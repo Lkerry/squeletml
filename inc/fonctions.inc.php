@@ -1354,7 +1354,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 		$vignetteAlt = '';
 	}
 	
-	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/$idGalerie/" . $vignetteNom . "' alt='$vignetteAlt' /></p>";
+	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>";
 	
 	if (isset($oeuvre['intermediaireLegende']) && !empty($oeuvre['intermediaireLegende']))
 	{
@@ -1787,6 +1787,27 @@ Retourne une chaîne débarrassée de ses barres obliques inveres.
 function sansEchappement($chaine)
 {
 	return stripslashes($chaine);
+}
+
+/**
+Retourne TRUE si la galerie existe, sinon retourne FALSE.
+*/
+function galerieExiste($racine, $idGalerie)
+{
+	if ($idGalerie && $idGalerie == 'démo')
+	{
+		$galerieExiste = TRUE;
+	}
+	elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+	{
+		$galerieExiste = TRUE;
+	}
+	else
+	{
+		$galerieExiste = FALSE;
+	}
+	
+	return $galerieExiste;
 }
 
 ?>

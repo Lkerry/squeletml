@@ -14,9 +14,14 @@ foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 phpGettext($racine, langue($langue));
 
 // Insertion du tableau contenant la liste des oeuvres à afficher
-// Recherche `site/fichiers/galeries/$idGalerie/config.pc`, sinon inclut `fichiers/galeries/demo/config.pc`
-if ($idGalerie
-	&& file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+if ($idGalerie && $idGalerie == 'démo')
+{
+	// Galerie démo par défaut
+	$galerie = construitTableauGalerie($racine . '/fichiers/galeries/démo/config.pc', TRUE);
+	$urlImgSrc = $urlRacine . '/fichiers/galeries/démo';
+	$racineImgSrc = $racine . '/fichiers/galeries/démo';
+}
+elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 {
 	$galerie = construitTableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie);
@@ -24,18 +29,18 @@ if ($idGalerie
 }
 else
 {
-	// Galerie démo par défaut
-	$idGalerie = 'demo';
-	$galerie = construitTableauGalerie($racine . '/fichiers/galeries/demo/config.pc', TRUE);
-	$urlImgSrc = $urlRacine . '/fichiers/galeries/demo';
-	$racineImgSrc = $racine . '/fichiers/galeries/demo';
+	$nomGalerie = $idGalerie;
+	$idGalerie = FALSE;
 }
 
 // Initialisation du corps de la galerie
 $corpsGalerie = '';
 
 // Récupération d'informations sur la galerie
-$nombreDoeuvres = count($galerie);
+if ($idGalerie)
+{
+	$nombreDoeuvres = count($galerie);
+}
 
 // Par défaut, on suppose que l'image demandée n'existe pas
 $imageExiste = FALSE;
@@ -46,7 +51,7 @@ $imageExiste = FALSE;
 ##
 ########################################################################
 
-if (isset($_GET['oeuvre']))
+if ($idGalerie && isset($_GET['oeuvre']))
 {
 	// On vérifie si l'oeuvre demandée existe. Si oui, $i va contenir la valeur de son indice dans le tableau.
 	$i = 0;
@@ -318,6 +323,7 @@ if (isset($_GET['oeuvre']))
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie pour éviter le contenu dupliqué.
 	else
 	{
+		$pageDerreur = TRUE;
 		$id = securiseTexte($_GET['oeuvre']);
 		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), nomFichierGalerie()) . '</p>';
 		
@@ -332,11 +338,11 @@ if (isset($_GET['oeuvre']))
 
 ########################################################################
 ##
-## Aucune oeuvre en particulier n'est demandée. On affiche donc la galerie.
+## Aucune oeuvre en particulier n'est demandée. On affiche donc la galerie, si elle existe.
 ##
 ########################################################################
 
-else
+elseif ($idGalerie)
 {
 	if ($galerieVignettesParPage)
 	{
@@ -468,6 +474,26 @@ else
 	{
 		$corpsGalerie .= $galerieInfo;
 	}
+}
+
+########################################################################
+##
+## Aucune oeuvre en particulier n'est demandée, et la galerie n'existe pas.
+##
+########################################################################
+
+else
+{
+	$pageDerreur = TRUE;
+	
+	$corpsGalerie .= '<p>' . T_('La galerie demandée est introuvable.') . '</p>';
+	
+	// Ajustement des métabalises
+	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);
+	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . ' | ' . $baliseTitleComplement[langue($langue)];
+	$motsCles = construitMotsCles('', $description);
+	$motsCles .= ', ' . $nomGalerie;
+	$robots[1] = "noindex, follow, noarchive";
 }
 
 ?>

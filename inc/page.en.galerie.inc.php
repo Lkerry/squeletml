@@ -2,7 +2,7 @@
 $baliseTitle = "Squeletml's demo gallery";
 $description = "Squeletml's demo gallery";
 $langue[1] = 'en';
-$idGalerie = 'demo';
+$idGalerie = 'démo';
 $rss = FALSE;
 include $racine . '/inc/premier.inc.php';
 ?>

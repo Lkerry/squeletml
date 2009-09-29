@@ -1,5 +1,5 @@
 <?php
-if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
+if (!$pageDerreur && isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 {
 	if (isset($_POST['nom']) && !empty($_POST['nom']) && isset($messageEnvoye) && !$messageEnvoye)
 	{
@@ -22,7 +22,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 	$messageDecouvrir = '';
 }
 
-if ($idGalerie && isset($_GET['oeuvre']))
+if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']))
 {
 	if (file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 	{
@@ -31,7 +31,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		foreach($galerie as $oeuvre)
 		{
 			$id = idOeuvre($oeuvre);
-			if ($id == $_GET['oeuvre'])
+			if ($id == sansEchappement($_GET['oeuvre']))
 			{
 				$decouvrir = TRUE;
 				if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
@@ -45,7 +45,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		}
 	}
 }
-elseif ($idGalerie && !isset($_GET['oeuvre']))
+elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']))
 {
 	if (file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 	{
@@ -66,7 +66,7 @@ elseif ($idGalerie && !isset($_GET['oeuvre']))
 		}
 	}
 }
-elseif (!isset($courrielContact) || empty($courrielContact))
+elseif (!$pageDerreur && (!isset($courrielContact) || empty($courrielContact)))
 {
 	$decouvrir = TRUE;
 	if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
