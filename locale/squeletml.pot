@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-25 13:12-0400\n"
+"POT-Creation-Date: 2009-09-29 13:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -74,7 +74,7 @@ msgid "Gestion des flux RSS globaux"
 msgstr ""
 
 #: admin/rss.admin.php:12 admin/droits.admin.php:10
-#: admin/galeries.admin.php:12 admin/porte-documents.admin.php:51
+#: admin/galeries.admin.php:12 admin/porte-documents.admin.php:56
 msgid "Messages d'avancement, de confirmation ou d'erreur"
 msgstr ""
 
@@ -154,7 +154,7 @@ msgstr ""
 
 #: admin/rss.admin.php:154 admin/rss.admin.php:163 admin/rss.admin.php:173
 #: admin/rss.admin.php:205 admin/rss.admin.php:214 admin/rss.admin.php:224
-#: admin/galeries.admin.php:542
+#: admin/galeries.admin.php:548
 msgid "Sélectionner le résultat."
 msgstr ""
 
@@ -260,7 +260,7 @@ msgstr ""
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/droits.admin.php:300 admin/galeries.admin.php:736
+#: admin/droits.admin.php:300 admin/galeries.admin.php:777
 msgid "Aucun"
 msgstr ""
 
@@ -283,7 +283,7 @@ msgstr ""
 msgid "Mot de passe"
 msgstr ""
 
-#: admin/droits.admin.php:317 admin/porte-documents.admin.php:547
+#: admin/droits.admin.php:317 admin/porte-documents.admin.php:588
 msgid "Ajouter"
 msgstr ""
 
@@ -292,8 +292,8 @@ msgid "Modifier"
 msgstr ""
 
 #: admin/droits.admin.php:317 admin/inc/fonctions.inc.php:148
-#: admin/porte-documents.admin.php:515 admin/porte-documents.admin.php:524
-#: admin/porte-documents.admin.php:528
+#: admin/porte-documents.admin.php:556 admin/porte-documents.admin.php:565
+#: admin/porte-documents.admin.php:569
 msgid "Supprimer"
 msgstr ""
 
@@ -305,26 +305,26 @@ msgstr ""
 msgid "Gestion des galeries"
 msgstr ""
 
-#: admin/galeries.admin.php:23 admin/galeries.admin.php:259
-#: admin/galeries.admin.php:287 admin/galeries.admin.php:505
+#: admin/galeries.admin.php:28 admin/galeries.admin.php:259
+#: admin/galeries.admin.php:291 admin/galeries.admin.php:511
 #, php-format
 msgid "Erreur lors de l'ouverture du dossier %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:38
+#: admin/galeries.admin.php:39
 #, php-format
 msgid "Galerie %1$s:"
 msgstr ""
 
-#: admin/galeries.admin.php:38
+#: admin/galeries.admin.php:39
 msgid "identifiant:"
 msgstr ""
 
-#: admin/galeries.admin.php:38
+#: admin/galeries.admin.php:39
 msgid "dossier:"
 msgstr ""
 
-#: admin/galeries.admin.php:38
+#: admin/galeries.admin.php:39
 msgid "Fichier de configuration:"
 msgstr ""
 
@@ -395,7 +395,7 @@ msgstr ""
 msgid "Un fichier %1$s existe déjà. Il n'y a donc pas eu extraction."
 msgstr ""
 
-#: admin/galeries.admin.php:202 admin/galeries.admin.php:479
+#: admin/galeries.admin.php:202 admin/galeries.admin.php:485
 #, php-format
 msgid "Impossible de créer le fichier %1$s."
 msgstr ""
@@ -413,129 +413,133 @@ msgstr ""
 msgid "Ajout d'images"
 msgstr ""
 
-#: admin/galeries.admin.php:251 admin/galeries.admin.php:435
-#: admin/galeries.admin.php:558
+#: admin/galeries.admin.php:251 admin/galeries.admin.php:441
+#: admin/galeries.admin.php:566
 #, php-format
 msgid "La galerie %1$s n'existe pas."
 msgstr ""
 
-#: admin/galeries.admin.php:272
+#: admin/galeries.admin.php:276
 #, php-format
 msgid "Renommage de <code>%1$s</code> en <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:276
+#: admin/galeries.admin.php:280
 #, php-format
 msgid "Impossible de renommer <code>%1$s</code> en <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:354 admin/galeries.admin.php:365
-#: admin/galeries.admin.php:376
+#: admin/galeries.admin.php:362 admin/galeries.admin.php:373
+#: admin/galeries.admin.php:384
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:358 admin/galeries.admin.php:369
-#: admin/galeries.admin.php:380
+#: admin/galeries.admin.php:366 admin/galeries.admin.php:377
+#: admin/galeries.admin.php:388
 #, php-format
 msgid "Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: admin/galeries.admin.php:391
+#: admin/galeries.admin.php:399
 msgid "Aucune modification."
 msgstr ""
 
-#: admin/galeries.admin.php:395
+#: admin/galeries.admin.php:403
 msgid "Retaillage des images"
 msgstr ""
 
-#: admin/galeries.admin.php:443
+#: admin/galeries.admin.php:449
 #, php-format
 msgid "La galerie %1$s n'a pas de fichier de configuration."
 msgstr ""
 
-#: admin/galeries.admin.php:449
+#: admin/galeries.admin.php:455
 #, php-format
 msgid ""
 "Le chemin %1$s vers la page à créer n'existe pas. Veuillez vous assurer que "
 "les dossiers existent."
 msgstr ""
 
-#: admin/galeries.admin.php:455
+#: admin/galeries.admin.php:461
 #, php-format
 msgid ""
 "La page web %1$s existe déjà. Vous pouvez <a href='%2$s'>éditer le fichier</"
 "a> ou <a href='%3$s'>visiter la page</a>."
 msgstr ""
 
-#: admin/galeries.admin.php:475
+#: admin/galeries.admin.php:481
 #, php-format
 msgid ""
-"Le modèle de page a été créé. Vous pouvez <a href='%2$s'>éditer le fichier</"
-"a> ou <a href='%3$s'>visiter la page</a>."
+"Le modèle de page a été créé. Vous pouvez <a href='%1$s'>éditer le fichier</"
+"a> ou <a href='%2$s'>visiter la page</a>."
 msgstr ""
 
-#: admin/galeries.admin.php:486
+#: admin/galeries.admin.php:492
 msgid "Page web"
 msgstr ""
 
-#: admin/galeries.admin.php:539
+#: admin/galeries.admin.php:545
 msgid "Modèle"
 msgstr ""
 
-#: admin/galeries.admin.php:578
+#: admin/galeries.admin.php:586
 #, php-format
 msgid "Mise à jour du fichier de configuration %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:582
+#: admin/galeries.admin.php:590
 #, php-format
 msgid "Création du fichier de configuration %1$s."
 msgstr ""
 
-#: admin/galeries.admin.php:587
+#: admin/galeries.admin.php:595
 #, php-format
 msgid ""
 "Erreur lors de la création ou de la mise à jour du fichier de configuration "
 "<code>%1$s</code>. Veuillez vérifier manuellement son contenu."
 msgstr ""
 
-#: admin/galeries.admin.php:591
+#: admin/galeries.admin.php:600 admin/galeries.admin.php:621
 msgid "Fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:594
+#: admin/galeries.admin.php:603
 msgid "Actions effectuées"
 msgstr ""
 
-#: admin/galeries.admin.php:616
+#: admin/galeries.admin.php:626 admin/porte-documents.admin.php:29
+msgid "Information"
+msgstr ""
+
+#: admin/galeries.admin.php:628
 msgid "Un fichier de configuration existe pour cette galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:616
+#: admin/galeries.admin.php:628
 msgid "Modifier le fichier."
 msgstr ""
 
-#: admin/galeries.admin.php:632
+#: admin/galeries.admin.php:651
 msgid "Lister les galeries existantes"
 msgstr ""
 
-#: admin/galeries.admin.php:634
+#: admin/galeries.admin.php:653
 msgid ""
 "Vous pouvez afficher la liste des galeries existantes. Chaque galerie dans "
 "la liste aura un lien vous permettant de modifier son fichier de "
 "configuration dans le porte-documents."
 msgstr ""
 
-#: admin/galeries.admin.php:638
+#: admin/galeries.admin.php:657
 msgid "Lister les galeries"
 msgstr ""
 
-#: admin/galeries.admin.php:646 admin/galeries.admin.php:664
+#: admin/galeries.admin.php:665 admin/galeries.admin.php:683
 msgid "Ajouter des images"
 msgstr ""
 
-#: admin/galeries.admin.php:648
+#: admin/galeries.admin.php:667
 msgid ""
 "Vous pouvez téléverser vers votre site en une seule fois plusieurs images "
 "contenues dans une archive de format TAR (.tar) ou ZIP (.zip). Veuillez "
@@ -543,29 +547,29 @@ msgid ""
 "non contenues dans un dossier."
 msgstr ""
 
-#: admin/galeries.admin.php:650
+#: admin/galeries.admin.php:669
 msgid ""
 "Vous pouvez également ajouter une seule image en choisissant un fichier "
 "image au lieu d'une archive."
 msgstr ""
 
-#: admin/galeries.admin.php:652 admin/porte-documents.admin.php:27
+#: admin/galeries.admin.php:671 admin/porte-documents.admin.php:32
 #, php-format
 msgid ""
 "<strong>Taille maximale d'un transfert de fichier:</strong> %1$s octets (%2"
 "$s Mio)."
 msgstr ""
 
-#: admin/galeries.admin.php:656
+#: admin/galeries.admin.php:675
 msgid ""
 "Identifiant de la galerie (si la galerie n'existe pas, elle sera créée):"
 msgstr ""
 
-#: admin/galeries.admin.php:659 admin/porte-documents.admin.php:536
+#: admin/galeries.admin.php:678 admin/porte-documents.admin.php:577
 msgid "Fichier:"
 msgstr ""
 
-#: admin/galeries.admin.php:662 admin/galeries.admin.php:694
+#: admin/galeries.admin.php:681 admin/galeries.admin.php:715
 msgid ""
 "Créer ou mettre à jour le fichier de configuration de cette galerie avec les "
 "paramètres par défaut (les fichiers <code>-vignette.extension</code> et "
@@ -573,65 +577,73 @@ msgid ""
 "comme étant la version intermediaire à afficher)."
 msgstr ""
 
-#: admin/galeries.admin.php:672
+#: admin/galeries.admin.php:691
 msgid "Créer des images de taille intermédiaire à partir des images originales"
 msgstr ""
 
-#: admin/galeries.admin.php:674
+#: admin/galeries.admin.php:693
 msgid ""
 "Vous pouvez faire générer automatiquement une copie réduite (qui sera "
 "utilisée comme étant la version intermediaire dans la galerie) de chaque "
 "image originale. Aucune image au format original ne sera modifiée."
 msgstr ""
 
-#: admin/galeries.admin.php:678 admin/galeries.admin.php:712
-#: admin/galeries.admin.php:731
+#: admin/galeries.admin.php:695
+msgid ""
+"Note: pour chaque image originale, une image en version intermediaire sans "
+"le suffixe <code>-original</code> sera créée, si un tel fichier n'existe pas "
+"déjà. Les fichiers <code>-vignette.extension</code> sont ignorés. Si "
+"<code>nom-original.extension</code> et <code>nom.extension</code> existent "
+"tous les deux, il n'y aura pas de création de version intermédiaire."
+msgstr ""
+
+#: admin/galeries.admin.php:699 admin/galeries.admin.php:733
+#: admin/galeries.admin.php:754 admin/galeries.admin.php:772
 msgid "Identifiant de la galerie:"
 msgstr ""
 
-#: admin/galeries.admin.php:681
+#: admin/galeries.admin.php:702
 msgid "Taille maximale de la version intermediaire (largeur × hauteur):"
 msgstr ""
 
-#: admin/galeries.admin.php:682
+#: admin/galeries.admin.php:703
 msgid ""
 "La plus grande taille possible contenable dans les dimensions données sera "
 "utilisée. Les proportions de l'image sont conservées."
 msgstr ""
 
-#: admin/galeries.admin.php:683
+#: admin/galeries.admin.php:704
 msgid "×"
 msgstr ""
 
-#: admin/galeries.admin.php:685
+#: admin/galeries.admin.php:706
 msgid "Comment manipuler les images du dossier?"
 msgstr ""
 
-#: admin/galeries.admin.php:686
-msgid ""
-"Le nom des images au format original se termine par <code>-original."
-"extension</code>. Générer un fichier sans <code>-original</code> pour chaque "
-"version intermediaire."
-msgstr ""
-
-#: admin/galeries.admin.php:687
+#: admin/galeries.admin.php:707
 msgid ""
 "Renommer préalablement les images du dossier en <code>nom-original."
-"extension</code> et ensuite gérérer les image en version intermediaire sans "
-"le suffixe <code>-original</code>."
+"extension</code>. Les fichiers <code>-vignette.extension</code> et <code>-"
+"original.extension</code> sont ignorés lors du renommage."
 msgstr ""
 
-#: admin/galeries.admin.php:689
+#: admin/galeries.admin.php:708
+msgid ""
+"Le nom des images au format original se termine déjà par <code>-original."
+"extension</code>."
+msgstr ""
+
+#: admin/galeries.admin.php:710
 msgid "S'il y a lieu, qualité des images JPG générées (0-100):"
 msgstr ""
 
-#: admin/galeries.admin.php:692
+#: admin/galeries.admin.php:713
 msgid ""
 "Renforcer la netteté des images redimensionnées (donne de mauvais résultats "
 "pour des images PNG avec transparence)"
 msgstr ""
 
-#: admin/galeries.admin.php:696
+#: admin/galeries.admin.php:717
 msgid ""
 "Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le "
 "dossier, vous allez peut-être rencontrer une erreur de dépassement du temps "
@@ -639,44 +651,60 @@ msgid ""
 "navigateur."
 msgstr ""
 
-#: admin/galeries.admin.php:698
+#: admin/galeries.admin.php:719
 msgid "Retailler les images originales"
 msgstr ""
 
-#: admin/galeries.admin.php:706
+#: admin/galeries.admin.php:727
 msgid "Créer une page web de galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:708
+#: admin/galeries.admin.php:729
 msgid "Vous pouvez ajouter une page sur votre site pour présenter une galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:715
+#: admin/galeries.admin.php:736
 msgid "Emplacement de la page web:"
 msgstr ""
 
-#: admin/galeries.admin.php:718
+#: admin/galeries.admin.php:739
 msgid "Créer une page web"
 msgstr ""
 
-#: admin/galeries.admin.php:726
+#: admin/galeries.admin.php:747
+msgid "Créer ou mettre à jour un fichier de configuration"
+msgstr ""
+
+#: admin/galeries.admin.php:749
+msgid ""
+"Crée ou met à jour le fichier de configuration de cette galerie avec les "
+"paramètres par défaut (les fichiers <code>-vignette.extension</code> et "
+"<code>-original.extension</code> sont ignorés, les autres sont considérés "
+"comme étant la version intermediaire à afficher)."
+msgstr ""
+
+#: admin/galeries.admin.php:757
+msgid "Créer ou mettre à jour"
+msgstr ""
+
+#: admin/galeries.admin.php:767
 msgid "Afficher un modèle de fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:734
+#: admin/galeries.admin.php:775
 msgid ""
 "En plus du champ obligatoire <code>intermediaireNom</code>, ajouter des "
 "champs vides:"
 msgstr ""
 
-#: admin/galeries.admin.php:752
+#: admin/galeries.admin.php:794
 msgid ""
 "Note: les fichiers <code>-vignette.extension</code> et <code>-original."
 "extension</code> sont ignorés, les autres sont considérés comme étant la "
 "version intermediaire à afficher."
 msgstr ""
 
-#: admin/galeries.admin.php:754
+#: admin/galeries.admin.php:796
 msgid "Afficher un fichier de configuration"
 msgstr ""
 
@@ -692,7 +720,7 @@ msgstr ""
 msgid "Éditer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:146 admin/porte-documents.admin.php:515
+#: admin/inc/fonctions.inc.php:146 admin/porte-documents.admin.php:556
 msgid "Renommer/Déplacer"
 msgstr ""
 
@@ -704,11 +732,11 @@ msgstr ""
 msgid "Droits d'accès"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:5 inc/fonctions.inc.php:1619
+#: admin/inc/html.menu.inc.php:5 inc/fonctions.inc.php:1623
 msgid "Galeries"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:6 admin/porte-documents.admin.php:21
+#: admin/inc/html.menu.inc.php:6 admin/porte-documents.admin.php:26
 msgid "Porte-documents"
 msgstr ""
 
@@ -764,87 +792,83 @@ msgstr ""
 msgid "Système d'exploitation: %1$s"
 msgstr ""
 
-#: admin/porte-documents.admin.php:24
-msgid "Information"
-msgstr ""
-
-#: admin/porte-documents.admin.php:28
+#: admin/porte-documents.admin.php:33
 msgid "Extensions permises:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:37
+#: admin/porte-documents.admin.php:42
 msgid ""
 "Si vous voulez télécharger un fichier avec une extension qui n'est pas dans "
 "la liste, en faire la demande à la personne administratrice de ce site, ou "
 "si vous avez les droits d'administration, éditez le fichier de configuration."
 msgstr ""
 
-#: admin/porte-documents.admin.php:43
+#: admin/porte-documents.admin.php:48
 msgid "toutes."
 msgstr ""
 
-#: admin/porte-documents.admin.php:64 admin/porte-documents.admin.php:77
+#: admin/porte-documents.admin.php:70 admin/porte-documents.admin.php:83
 #, php-format
 msgid "Suppression de <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:69
+#: admin/porte-documents.admin.php:75
 #, php-format
 msgid ""
 "Impossible de supprimer le fichier <span class=\"porteDocumentsNom\">%1$s</"
 "span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:82
+#: admin/porte-documents.admin.php:88
 #, php-format
 msgid ""
 "Impossible de supprimer le dossier <span class=\"porteDocumentsNom\">%1$s</"
 "span>. Vérifiez qu'il est vide."
 msgstr ""
 
-#: admin/porte-documents.admin.php:87
+#: admin/porte-documents.admin.php:93
 #, php-format
 msgid "<span class=\"porteDocumentsNom\">%1$s</span> n'existe pas."
 msgstr ""
 
-#: admin/porte-documents.admin.php:99
+#: admin/porte-documents.admin.php:105
 msgid "Insctructions de renommage"
 msgstr ""
 
-#: admin/porte-documents.admin.php:101
+#: admin/porte-documents.admin.php:107
 #, php-format
 msgid ""
 "Pour renommer <span class=\"porteDocumentsNom\">%1$s</span>, saisir le "
 "nouveau nom dans le champ."
 msgstr ""
 
-#: admin/porte-documents.admin.php:102
+#: admin/porte-documents.admin.php:108
 msgid "Ne pas oublier de mettre le chemin dans le nom."
 msgstr ""
 
-#: admin/porte-documents.admin.php:103
+#: admin/porte-documents.admin.php:109
 msgid "Exemples:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:109
+#: admin/porte-documents.admin.php:115
 msgid ""
 "Important: ne pas mettre de barre oblique / dans le nouveau nom du fichier. "
 "N'utiliser ce signe que pour marquer le chemin vers le fichier."
 msgstr ""
 
-#: admin/porte-documents.admin.php:113
+#: admin/porte-documents.admin.php:119
 msgid "Dupliquer le fichier (en faire une copie et renommer la copie)"
 msgstr ""
 
-#: admin/porte-documents.admin.php:115
+#: admin/porte-documents.admin.php:121
 msgid "Renommer"
 msgstr ""
 
-#: admin/porte-documents.admin.php:123
+#: admin/porte-documents.admin.php:129
 msgid "Insctructions d'édition"
 msgstr ""
 
-#: admin/porte-documents.admin.php:126
+#: admin/porte-documents.admin.php:132
 #, php-format
 msgid ""
 "Le fichier <span class=\"porteDocumentsNom\">%1$s</span> est consultable "
@@ -852,7 +876,7 @@ msgid ""
 "ensuite cliquer sur «Sauvegarder les modifications»."
 msgstr ""
 
-#: admin/porte-documents.admin.php:130
+#: admin/porte-documents.admin.php:136
 #, php-format
 msgid ""
 "Le fichier <span class=\"porteDocumentsNom\">%1$s</span> n'existe pas. "
@@ -860,150 +884,161 @@ msgid ""
 "sera créé avec le contenu du champ de saisi."
 msgstr ""
 
-#: admin/porte-documents.admin.php:163
+#: admin/porte-documents.admin.php:169
 msgid ""
 "Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le "
 "champ de saisie"
 msgstr ""
 
-#: admin/porte-documents.admin.php:168
+#: admin/porte-documents.admin.php:174
 msgid "Sauvegarder les modifications"
 msgstr ""
 
-#: admin/porte-documents.admin.php:172
+#: admin/porte-documents.admin.php:178
 msgid "Annuler"
 msgstr ""
 
-#: admin/porte-documents.admin.php:183
+#: admin/porte-documents.admin.php:191
 #, php-format
 msgid "Aucune modification apportée au fichier %1$s."
 msgstr ""
 
-#: admin/porte-documents.admin.php:188
+#: admin/porte-documents.admin.php:198
 msgid ""
 "Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les "
 "consulter ci-dessous, et en enregistrer une copie sur votre ordinateur."
 msgstr ""
 
-#: admin/porte-documents.admin.php:197
+#: admin/porte-documents.admin.php:209
 #, php-format
 msgid ""
 "Le fichier <span class=\"porteDocumentsNom\">%1$s</span> n'a pas pu être "
 "ouvert."
 msgstr ""
 
-#: admin/porte-documents.admin.php:202
+#: admin/porte-documents.admin.php:215
 #, php-format
 msgid ""
 "Impossible d'écrire dans le fichier <span class=\"porteDocumentsNom\">%1$s</"
 "span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:205
+#: admin/porte-documents.admin.php:226
 #, php-format
 msgid ""
 "Édition du fichier <span class=\"porteDocumentsNom\">%1$s</span> effectuée. "
-"<a href=\"%2$s\">Éditer de nouveau</a>."
+"<a href=\"%2$s\">Éditer à nouveau</a>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:234 admin/porte-documents.admin.php:256
+#: admin/porte-documents.admin.php:230
+#, php-format
+msgid "<a href=\"%1$s\">Tenter à nouveau d'éditer le fichier.</a>"
+msgstr ""
+
+#: admin/porte-documents.admin.php:260 admin/porte-documents.admin.php:282
 #, php-format
 msgid ""
 "Création du dossier <span class=\"porteDocumentsNom\">%1$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:242
+#: admin/porte-documents.admin.php:268
 #, php-format
 msgid ""
 "Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
 "class=\"porteDocumentsNom\">%2$s</span> effectués."
 msgstr ""
 
-#: admin/porte-documents.admin.php:246
+#: admin/porte-documents.admin.php:272
 #, php-format
 msgid ""
 "Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
 "class=\"porteDocumentsNom\">%2$s</span> impossibles."
 msgstr ""
 
-#: admin/porte-documents.admin.php:264
+#: admin/porte-documents.admin.php:290
 #, php-format
 msgid ""
 "Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
 "\"porteDocumentsNom\">%2$s</span> effectué."
 msgstr ""
 
-#: admin/porte-documents.admin.php:268
+#: admin/porte-documents.admin.php:294
 #, php-format
 msgid ""
 "Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
 "\"porteDocumentsNom\">%2$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:278
+#: admin/porte-documents.admin.php:304
 #, php-format
 msgid ""
 "<span class=\"porteDocumentsNom\">%1$s</span> n'existe pas. Renommage en "
 "<span class=\"porteDocumentsNom\">%2$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:283
+#: admin/porte-documents.admin.php:309
 #, php-format
 msgid ""
 "<span class=\"porteDocumentsNom\">%1$s</span> existe déjà. Renommage de "
 "<span class=\"porteDocumentsNom\">%2$s</span> impossible."
 msgstr ""
 
-#: admin/porte-documents.admin.php:309
+#: admin/porte-documents.admin.php:335
 #, php-format
 msgid ""
 "Création du dossier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:314 admin/porte-documents.admin.php:331
+#: admin/porte-documents.admin.php:340 admin/porte-documents.admin.php:357
 #, php-format
 msgid ""
 "Impossible de créer le dossier <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:339
+#: admin/porte-documents.admin.php:367
 #, php-format
 msgid ""
 "Création du fichier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
 msgstr ""
 
-#: admin/porte-documents.admin.php:339
-msgid "Vous pouvez l'éditer."
+#: admin/porte-documents.admin.php:371
+#, php-format
+msgid ""
+"Vous pouvez <a href=\"%1$s\">l'éditer</a> ou <a href=\"%2$s\">l'afficher</a>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:374
+#: admin/porte-documents.admin.php:403
 #, php-format
 msgid "Impossible d'ajouter un modèle de page web dans le fichier %1$s."
 msgstr ""
 
-#: admin/porte-documents.admin.php:381
+#: admin/porte-documents.admin.php:408
+msgid "Vous pouvez l'éditer."
+msgstr ""
+
+#: admin/porte-documents.admin.php:417
 #, php-format
 msgid ""
 "Impossible de créer le fichier <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:389
+#: admin/porte-documents.admin.php:425
 #, php-format
 msgid "<span class=\"porteDocumentsNom\">%1$s</span> existe déjà."
 msgstr ""
 
-#: admin/porte-documents.admin.php:408
+#: admin/porte-documents.admin.php:444
 msgid ""
 "Veuillez sélectionner un bon format de fichier ou demandez à ce que "
 "l'extension de votre fichier soit ajoutée dans la liste."
 msgstr ""
 
-#: admin/porte-documents.admin.php:414
+#: admin/porte-documents.admin.php:450
 #, php-format
 msgid "Votre fichier doit faire moins de %1$s octets (%2$s Mio)."
 msgstr ""
 
-#: admin/porte-documents.admin.php:421
+#: admin/porte-documents.admin.php:457
 #, php-format
 msgid ""
 "Le nom de votre fichier risque de mal s'afficher dans une adresse html. "
@@ -1012,83 +1047,83 @@ msgid ""
 "soulignement _)."
 msgstr ""
 
-#: admin/porte-documents.admin.php:427
+#: admin/porte-documents.admin.php:463
 msgid "Un fichier existe déjà avec ce nom dans le dossier sélectionné."
 msgstr ""
 
-#: admin/porte-documents.admin.php:444
+#: admin/porte-documents.admin.php:480
 #, php-format
 msgid "Transfert de <span class=\"porteDocumentsNom\">%1$s</span> complété."
 msgstr ""
 
-#: admin/porte-documents.admin.php:449 admin/porte-documents.admin.php:456
+#: admin/porte-documents.admin.php:485 admin/porte-documents.admin.php:492
 #, php-format
 msgid "Erreur de transfert de <span class=\"porteDocumentsNom\">%1$s</span>."
 msgstr ""
 
-#: admin/porte-documents.admin.php:463
+#: admin/porte-documents.admin.php:499
 msgid "Liste des fichiers et dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:470
+#: admin/porte-documents.admin.php:510
 #, php-format
 msgid "Contenu du dossier %1$s"
 msgstr ""
 
-#: admin/porte-documents.admin.php:474
+#: admin/porte-documents.admin.php:514
 #, php-format
 msgid "Impossible d'avoir accès au dossier %1$s"
 msgstr ""
 
-#: admin/porte-documents.admin.php:485 admin/porte-documents.admin.php:565
+#: admin/porte-documents.admin.php:525 admin/porte-documents.admin.php:607
 msgid "Dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:507
+#: admin/porte-documents.admin.php:548
 msgid "Liste des dossiers"
 msgstr ""
 
-#: admin/porte-documents.admin.php:526
+#: admin/porte-documents.admin.php:567
 msgid ""
 "Pour supprimer des fichiers, cocher la case correspondante et cliquer "
 "ensuite sur le bouton ci-dessous."
 msgstr ""
 
-#: admin/porte-documents.admin.php:533
+#: admin/porte-documents.admin.php:574
 msgid "Ajouter un fichier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:537
+#: admin/porte-documents.admin.php:578
 msgid "Dossier:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:552
+#: admin/porte-documents.admin.php:593
 msgid "Créer un fichier ou un dossier"
 msgstr ""
 
-#: admin/porte-documents.admin.php:554
+#: admin/porte-documents.admin.php:595
 msgid ""
 "Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans "
 "le nom. Exemples:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:563
+#: admin/porte-documents.admin.php:604
 msgid "Nom:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:564
+#: admin/porte-documents.admin.php:605
 msgid "Type:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:566
+#: admin/porte-documents.admin.php:608
 msgid "Fichier modèle de page web"
 msgstr ""
 
-#: admin/porte-documents.admin.php:567
+#: admin/porte-documents.admin.php:609
 msgid "Fichier vide"
 msgstr ""
 
-#: admin/porte-documents.admin.php:569
+#: admin/porte-documents.admin.php:611
 msgid "Créer"
 msgstr ""
 
@@ -1162,55 +1197,55 @@ msgstr ""
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1168 inc/fonctions.inc.php:1467
+#: inc/fonctions.inc.php:1168 inc/fonctions.inc.php:1471
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1319
+#: inc/fonctions.inc.php:1323
 msgid "Consultez cette page!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1319 inc/fonctions.inc.php:1378
+#: inc/fonctions.inc.php:1323 inc/fonctions.inc.php:1382
 msgid "En espérant qu'elle vous intéresse!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1378
+#: inc/fonctions.inc.php:1382
 msgid "Voyez l'oeuvre en plus grande taille!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1529
+#: inc/fonctions.inc.php:1533
 msgid "Lien vers l'oeuvre au format original."
 msgstr ""
 
-#: inc/fonctions.inc.php:1612
+#: inc/fonctions.inc.php:1616
 #, php-format
 msgid "Galerie %1$s | %2$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1614
+#: inc/fonctions.inc.php:1618
 #, php-format
 msgid "Derniers ajouts à la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1621
+#: inc/fonctions.inc.php:1625
 msgid "Derniers ajouts aux galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1626 inc/fonctions.inc.php:1628
+#: inc/fonctions.inc.php:1630 inc/fonctions.inc.php:1632
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1658 inc/premier.inc.php:50
+#: inc/fonctions.inc.php:1662 inc/premier.inc.php:59
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1662 inc/premier.inc.php:55
+#: inc/fonctions.inc.php:1666 inc/premier.inc.php:64
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1666 inc/premier.inc.php:60
+#: inc/fonctions.inc.php:1670 inc/premier.inc.php:69
 msgid "RSS global du site"
 msgstr ""
 
@@ -1229,21 +1264,21 @@ msgid ""
 "dessous:"
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:42
+#: inc/faire-decouvrir.inc.php:41
 #, php-format
 msgid ""
 "%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
 "découvrir l'oeuvre %3$s, qui fait partie de la galerie %4$s."
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:67
+#: inc/faire-decouvrir.inc.php:65
 #, php-format
 msgid ""
 "%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
 "découvrir la galerie %3$s."
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:86
+#: inc/faire-decouvrir.inc.php:84
 #, php-format
 msgid ""
 "%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
@@ -1344,61 +1379,70 @@ msgstr ""
 msgid "Envoyer le message"
 msgstr ""
 
-#: inc/galerie.inc.php:66
+#: inc/galerie.inc.php:73
 #, php-format
 msgid "Oeuvre %1$s de la galerie %2$s"
 msgstr ""
 
-#: inc/galerie.inc.php:79
+#: inc/galerie.inc.php:86
 #, php-format
 msgid "Oeuvre %1$s en version intermediaire, galerie %2$s"
 msgstr ""
 
-#: inc/galerie.inc.php:200
+#: inc/galerie.inc.php:207
 #, php-format
 msgid "Affichage de l'oeuvre %1$s sur un total de %2$s."
 msgstr ""
 
-#: inc/galerie.inc.php:200
+#: inc/galerie.inc.php:207
 msgid "Aller à l'accueil de la galerie."
 msgstr ""
 
-#: inc/galerie.inc.php:320
+#: inc/galerie.inc.php:328
 #, php-format
 msgid ""
 "L'oeuvre demandée est introuvable. <a href=\"%1$s\">Voir toutes les oeuvres</"
 "a>."
 msgstr ""
 
-#: inc/galerie.inc.php:323 inc/galerie.inc.php:324
+#: inc/galerie.inc.php:331 inc/galerie.inc.php:332
 #, php-format
 msgid "L'Oeuvre %1$s est introuvable"
 msgstr ""
 
-#: inc/galerie.inc.php:404
+#: inc/galerie.inc.php:412
 msgid "Page précédente"
 msgstr ""
 
-#: inc/galerie.inc.php:414
+#: inc/galerie.inc.php:422
 msgid "Page suivante"
 msgstr ""
 
-#: inc/galerie.inc.php:450
+#: inc/galerie.inc.php:458
 #, php-format
 msgid "Cette galerie contient %1$s oeuvre"
 msgid_plural "Cette galerie contient %1$s oeuvres"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:450
+#: inc/galerie.inc.php:458
 #, php-format
 msgid " (sur %1$s page)."
 msgid_plural " (sur %1$s pages)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:454
+#: inc/galerie.inc.php:462
 msgid "Voir l'accueil de la galerie."
+msgstr ""
+
+#: inc/galerie.inc.php:489
+msgid "La galerie demandée est introuvable."
+msgstr ""
+
+#: inc/galerie.inc.php:492 inc/galerie.inc.php:493
+#, php-format
+msgid "La galerie %1$s est introuvable"
 msgstr ""
 
 #: inc/message-accueil.inc.php:2
