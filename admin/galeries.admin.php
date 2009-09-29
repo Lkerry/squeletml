@@ -678,7 +678,7 @@ if ($boite2FichierConfigDebut)
 <p><label><?php echo T_("Fichier:"); ?></label><br />
 <input type="file" name="fichier" size="25"/></p>
 
-<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
+<p><input type="checkbox" name="conf" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
 
 <p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
 </div>
@@ -704,15 +704,15 @@ if ($boite2FichierConfigDebut)
 <input type="text" name="largeur" size="4" value="500" /> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" value="500" /></p>
 
 <p><label><?php echo T_("Comment manipuler les images du dossier?"); ?></label><br />
-<input type="radio" name="manipulerOriginal" value="original" checked="checked" /> <?php echo T_("Le nom des images au format original se termine déjà par <code>-original.extension</code>."); ?><br />
-<input type="radio" name="manipulerOriginal" value="renommerOriginal" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code>. Les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés lors du renommage."); ?></p>
+<input type="radio" name="manipulerOriginal" value="renommerOriginal" checked="checked" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code>. Les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés lors du renommage."); ?><br />
+<input type="radio" name="manipulerOriginal" value="original" /> <?php echo T_("Le nom des images au format original se termine déjà par <code>-original.extension</code>."); ?></p>
 
 <p><label><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
 <input type="text" name="qualiteJpg" value="90" size="2" /></p>
 
 <p><input type="checkbox" name="actions" value="nettete" /> <label><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)"); ?></label></p>
 
-<p><input type="checkbox" name="conf" value="maj" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
+<p><input type="checkbox" name="conf" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
 
 <p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
