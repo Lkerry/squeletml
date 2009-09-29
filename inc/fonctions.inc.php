@@ -817,7 +817,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		}
 		else
 		{
-			list($larg, $haut) = getimagesize($urlImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
+			list($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($galerie[$indice]['intermediaireNom']));
 			{
 				$width = 'width="' . $larg . '"';
 				$height = 'height="' . $haut . '"';
@@ -1135,7 +1135,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 				}
 				else
 				{
-					list($larg, $haut) = getimagesize($urlImgSrc . '/' . $vignetteNom);
+					list($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($vignetteNom));
 					{
 						$width = 'width="' . $larg . '"';
 						$height = 'height="' . $haut . '"';
@@ -1779,6 +1779,14 @@ function in_array_multi($recherche, $tableau)
 			}
 		}
 	}
+}
+
+/**
+Retourne une chaîne débarrassée de ses barres obliques inveres.
+*/
+function sansEchappement($chaine)
+{
+	return stripslashes($chaine);
 }
 
 ?>

@@ -337,12 +337,4 @@ function adminEstIE()
 	}
 }
 
-/**
-Retourne une chaîne débarrassée de ses barres obliques inveres.
-*/
-function adminSansEchappement($chaine)
-{
-	return stripslashes($chaine);
-}
-
 ?>

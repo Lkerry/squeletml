@@ -55,7 +55,7 @@ if (isset($_GET['oeuvre']))
 		// On récupère l'id de chaque image
 		$id = idOeuvre($oeuvre);
 		
-		if ($id == $_GET['oeuvre'])
+		if ($id == sansEchappement($_GET['oeuvre']))
 		{
 			$imageExiste = TRUE;
 			// L'image existe, et on écrase les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable $galerie, on donne une valeur automatiquement.

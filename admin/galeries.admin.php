@@ -14,7 +14,7 @@ include '../init.inc.php';
 <?php
 if (isset($_POST['id']))
 {
-	$id = adminSansEchappement($_POST['id']);
+	$id = sansEchappement($_POST['id']);
 }
 
 ########################################################################
@@ -34,7 +34,7 @@ if (isset($_POST['lister']))
 		if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
 		{
 			$i++;
-			$fichier = adminSansEchappement($fichier);
+			$fichier = sansEchappement($fichier);
 			$idLien = rawurlencode($fichier);
 			$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
 		}
@@ -90,7 +90,7 @@ if (isset($_POST['ajouter']))
 	{
 		if (isset($_FILES['fichier']))
 		{
-			$nomArchive = basename($_FILES['fichier']['name']);
+			$nomArchive = sansEchappement(basename($_FILES['fichier']['name']));
 			
 			if (preg_match('/\.zip$/i', $nomArchive))
 			{
@@ -419,9 +419,8 @@ if (isset($_POST['retailler']))
 
 if (isset($_POST['creerPage']))
 {
-	$page = basename($_POST['page']);
-	$cheminPage = '../' . dirname($_POST['page']);
-	$idDansVar = str_replace('"', '\"', $id);
+	$page = sansEchappement(basename($_POST['page']));
+	$cheminPage = '../' . sansEchappement(dirname($_POST['page']));
 	if ($cheminPage == '../.')
 	{
 		$cheminPage = '..';
@@ -459,7 +458,7 @@ if (isset($_POST['creerPage']))
 			{
 				if (file_exists($cheminPage . '/' . $page))
 				{
-					$trad = sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&valeur=' . $cheminPage . '/' . $page . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . $page, 3));
+					$trad = sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&valeur=' . rawurlencode($cheminPage . '/' . $page) . '#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3)));
 				}
 				else
 				{
@@ -467,9 +466,9 @@ if (isset($_POST['creerPage']))
 					{
 						$contenu = '';
 						$contenu .= '<?php' . "\n";
-						$contenu .= '$baliseTitle = "Galerie ' . $idDansVar . '";' . "\n";
-						$contenu .= '$description = "Galerie ' . $idDansVar . '";' . "\n";
-						$contenu .= '$idGalerie = "' . $idDansVar . '";' . "\n";
+						$contenu .= '$baliseTitle = "Galerie ' . $id . '";' . "\n";
+						$contenu .= '$description = "Galerie ' . $id . '";' . "\n";
+						$contenu .= '$idGalerie = "' . $id . '";' . "\n";
 						$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
 						$contenu .= '?>' . "\n";
 						$contenu .= "\n";
@@ -479,7 +478,7 @@ if (isset($_POST['creerPage']))
 						fputs($fic, $contenu);
 						
 						fclose($fic);
-						$trad = sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&valeur=' . $cheminPage . '/' . $page . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . $page, 3));
+						$trad = sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>éditer le fichier</a> ou <a href='%2\$s'>visiter la page</a>."), 'porte-documents.admin.php?action=editer&valeur=' . rawurlencode($cheminPage . '/' . $page) . '#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3)));
 					}
 					else
 					{
@@ -557,6 +556,8 @@ $listeFichiers = '';
 ##
 ########################################################################
 
+$boite2FichierConfigDebut = FALSE;
+
 if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
@@ -594,6 +595,7 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 			echo "<p class='erreur'>" . sprintf(T_('Erreur lors de la création ou de la mise à jour du fichier de configuration <code>%1$s</code>. Veuillez vérifier manuellement son contenu.'), $fichierConfigChemin) . "</p>";
 		}
 		
+		$boite2FichierConfigDebut = TRUE;
 		echo '<div class="boite2">' . "\n";
 		echo '<h3>' . T_("Fichier de configuration") . '</h3>' . "\n";
 		if (!empty($listeModifs))
@@ -606,21 +608,32 @@ if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 			}
 			echo "</ul>\n";
 		}
-		echo "</div><!-- /boite2 -->\n";
 	}
 }
 
 ########################################################################
 
-if (isset($_POST['modeleConf']) ||
-	(isset($_POST['conf']) && $_POST['conf'] == 'maj'))
+if ((isset($_POST['modeleConf']) || (isset($_POST['conf']) && $_POST['conf'] == 'maj')) && file_exists($racine . '/site/fichiers/galeries/' . $id . '/config.pc'))
 {
-	if (file_exists($racine . '/site/fichiers/galeries/' . $id . '/config.pc'))
+	if (!$boite2FichierConfigDebut)
 	{
-		$id = rawurlencode($id);
-		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
-		echo '<p>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $id . '/config.pc#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></p>' . "\n";
+		echo '<div class="boite2">' . "\n";
+		echo '<h3>' . T_("Fichier de configuration") . '</h3>' . "\n";
 	}
+	
+	$id = rawurlencode($id);
+	$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
+	echo '<h4>' . T_("Information") .'</h4>' ."\n" ;
+	echo "<ul>\n";
+	echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $id . '/config.pc#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></li>' . "\n";
+	echo "</ul>\n";
+}
+
+########################################################################
+
+if ($boite2FichierConfigDebut)
+{
+	echo "</div><!-- /boite2 -->\n";
 }
 ?>
 

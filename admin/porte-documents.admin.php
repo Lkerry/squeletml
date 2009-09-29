@@ -5,7 +5,7 @@ include 'inc/premier.inc.php';
 
 if (isset($_GET['valeur']))
 {
-	$getValeur = adminSansEchappement($_GET['valeur']);
+	$getValeur = sansEchappement($_GET['valeur']);
 }
 
 // Création de la variable $tableauDossiersFiltres
@@ -62,7 +62,7 @@ if (isset($_POST['telechargerSuppr']))
 	echo "<ul>\n";
 	foreach ($suppr as $valeur)
 	{
-		$valeur = adminSansEchappement($valeur);
+		$valeur = sansEchappement($valeur);
 		if (file_exists($valeur) && !is_dir($valeur))
 		{
 			if (unlink($valeur))
@@ -186,13 +186,13 @@ if (isset($_GET['action']))
 
 if (isset($_POST['porteDocumentsEditerAnnuler']))
 {
-	$porteDocumentsEditerNom = adminSansEchappement($_POST['porteDocumentsEditerNom']);
+	$porteDocumentsEditerNom = sansEchappement($_POST['porteDocumentsEditerNom']);
 	
 	echo "<p class='succes'>" . sprintf(T_('Aucune modification apportée au fichier %1$s.'), $porteDocumentsEditerNom) . "</p>";
 }
 elseif (isset($_POST['porteDocumentsContenuFichier']))
 {
-	$porteDocumentsEditerNom = adminSansEchappement($_POST['porteDocumentsEditerNom']);
+	$porteDocumentsEditerNom = sansEchappement($_POST['porteDocumentsEditerNom']);
 	
 	$messageErreurEditer = '';
 	$messageErreurEditer .= "<p class='erreur'>" . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
@@ -237,8 +237,8 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 
 if (isset($_POST['porteDocumentsNouveauNom']))
 {
-	$ancienNom = adminSansEchappement($_POST['porteDocumentsAncienNom']);
-	$nouveauNom = adminSansEchappement($_POST['porteDocumentsNouveauNom']);
+	$ancienNom = sansEchappement($_POST['porteDocumentsAncienNom']);
+	$nouveauNom = sansEchappement($_POST['porteDocumentsNouveauNom']);
 	if (isset($_POST['porteDocumentsRenommerDupliquer']) && $_POST['porteDocumentsRenommerDupliquer'] == 'dupliquer')
 	{
 		$dupliquer = TRUE;
@@ -314,7 +314,7 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 
 if (isset($_POST['porteDocumentsCreer']))
 {
-	$fichierCreeNom = adminSansEchappement($_POST['porteDocumentsFichierCreeNom']);
+	$fichierCreeNom = sansEchappement($_POST['porteDocumentsFichierCreeNom']);
 
 	if (!preg_match("|^$dossierRacine/|i", $fichierCreeNom))
 	{
@@ -362,11 +362,14 @@ if (isset($_POST['porteDocumentsCreer']))
 			{
 				if (touch($fichierCreeNom))
 				{
-					echo "<li class='succes'>" . sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom) . ' <a href="porte-documents.admin.php?action=editer&valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a></li>\n";
-				
+					// Ouverture de <li class='succes'>
+					echo "<li class='succes'>";
+					echo sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom);
+					
 					if ($fichierCreeType == 'FichierModele')
 					{
-					
+						echo sprintf(T_('Vous pouvez <a href="%1$s">l\'éditer</a> ou <a href="%2$s">l\'afficher</a>.'), 'porte-documents.admin.php?action=editer&valeur=' . $fichierCreeNom . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
+						
 						$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
 						$cheminInclude = dirname($cheminInclude);
 						if ($cheminInclude == '.')
@@ -400,6 +403,13 @@ if (isset($_POST['porteDocumentsCreer']))
 							echo "<li class='erreur'>" . sprintf(T_('Impossible d\'ajouter un modèle de page web dans le fichier %1$s.'), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>";
 						}
 					}
+					else
+					{
+						echo ' <a href="porte-documents.admin.php?action=editer&valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
+					}
+					
+					// Fermeture de <li class='succes'>
+					echo "</li>\n";
 				}
 			
 				else
@@ -420,12 +430,12 @@ if (isset($_POST['porteDocumentsCreer']))
 if (isset($_FILES['fichier']))
 {
 	$erreur = '';
-	$rep = adminSansEchappement($_POST['rep']);
-	$nomFichier = adminSansEchappement(basename($_FILES['fichier']['name']));
+	$rep = sansEchappement($_POST['rep']);
+	$nomFichier = sansEchappement(basename($_FILES['fichier']['name']));
 
 	// Affichage du motif dans le message d'erreur
 	$motifNom2 = substr($motifNom, 2, -3);
-	$motifNom2 = adminSansEchappement($motifNom2);
+	$motifNom2 = sansEchappement($motifNom2);
 
 	if ($filtreExtensions)
 	{
