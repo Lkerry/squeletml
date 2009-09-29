@@ -744,6 +744,26 @@ if ($boite2FichierConfigDebut)
 <!--  -->
 
 <div class="boite">
+<h2><?php echo T_("Créer ou mettre à jour un fichier de configuration"); ?></h2>
+
+<p><?php echo T_("Crée ou met à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></p>
+
+<form action="<?php echo $action; ?>#messages" method="post">
+<div>
+
+<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
+<input type="text" name="id" /></p>
+
+<p><input type="submit" name="majConf" value="<?php echo T_('Créer ou mettre à jour'); ?>" /></p>
+
+<input type="hidden" name="conf" value="maj" />
+</div>
+</form>
+</div><!-- /boite -->
+
+<!--  -->
+
+<div class="boite">
 <h2><?php echo T_("Afficher un modèle de fichier de configuration"); ?></h2>
 
 <form action="<?php echo $action; ?>#messages" method="post">
