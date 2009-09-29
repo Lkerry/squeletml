@@ -13,9 +13,14 @@ $langue[1] = $langueNavigateur;
 // Nécessaire à la traduction
 phpGettext('.', $langueNavigateur);
 
-if (isset($_GET['chemin']) && !empty($_GET['chemin']))
+if (isset($_GET['chemin']))
 {
-	if (file_exists($racine . '/' . $_GET['chemin']) && $fic = fopen($racine . '/' . $_GET['chemin'], 'r'))
+	$getChemin = sansEchappement($_GET['chemin']);
+}
+
+if (isset($getChemin) && !empty($getChemin))
+{
+	if (file_exists($racine . '/' . $getChemin) && $fic = fopen($racine . '/' . $getChemin, 'r'))
 	{
 		while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
 		{
@@ -59,7 +64,7 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 				}
 				else
 				{
-					$urlGalerie = $urlRacine . '/' . $_GET['chemin'];
+					$urlGalerie = $urlRacine . '/' . $getChemin;
 				
 					$itemsFlux = rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxGlobalUrlOeuvre);
 					$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);

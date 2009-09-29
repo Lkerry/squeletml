@@ -1470,7 +1470,7 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		$id = idOeuvre($oeuvre);
 		$title = sprintf(T_("Oeuvre %1\$s"), $id);
 		$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
-		$urlOeuvre = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
+		$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['intermediaireNom']);
 		$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
 		
 		if (!empty($oeuvre['pageIntermediaireDescription']))
@@ -1511,7 +1511,7 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		
 		if (!empty($oeuvre['originalNom']))
 		{
-			$urlOriginal = "$urlRacine/site/fichiers/galeries/$idGalerie/" . $oeuvre['originalNom'];
+			$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['originalNom']);
 		}
 		else
 		{
@@ -1520,7 +1520,7 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 			$nomOriginal .= '-original.' . $infoOriginal['extension'];
 			if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
 			{
-				$urlOriginal = "$urlRacine/site/fichiers/galeries/$idGalerie/$nomOriginal";
+				$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($nomOriginal);
 			}
 			else
 			{
@@ -1659,7 +1659,7 @@ function lienRss($urlFlux, $idGalerie, $estGalerie)
 {
 	if ($idGalerie)
 	{
-		$description = sprintf(T_("RSS de la galerie %1\$s"), $idGalerie);
+		$description = sprintf(T_("RSS de la galerie %1\$s"), "<em>$idGalerie</em>");
 	}
 	elseif ($estGalerie)
 	{
