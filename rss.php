@@ -63,9 +63,18 @@ if (isset($_GET['chemin']) && !empty($_GET['chemin']))
 				
 					$itemsFlux = rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxGlobalUrlOeuvre);
 					$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);
-					creeDossierCache($racine);
-					file_put_contents("$racine/site/cache/rss-$idGalerie.xml", rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $urlGalerie, $itemsFlux, TRUE));
-					readfile("$racine/site/cache/rss-$idGalerie.xml");
+					$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $urlGalerie, $itemsFlux, TRUE);
+					
+					if ($dureeCache)
+					{
+						creeDossierCache($racine);
+						file_put_contents("$racine/site/cache/rss-$idGalerie.xml", $rssAafficher);
+						readfile("$racine/site/cache/rss-$idGalerie.xml");
+					}
+					else
+					{
+						echo $rssAafficher;
+					}
 				}
 			}
 			else
@@ -105,9 +114,18 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries')
 			
 				$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);
 				$idGalerie = FALSE;
-				creeDossierCache($racine);
-				file_put_contents("$racine/site/cache/rss-global-galeries.xml", rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, TRUE));
-				readfile("$racine/site/cache/rss-global-galeries.xml");
+				$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, TRUE);
+				
+				if ($dureeCache)
+				{
+					creeDossierCache($racine);
+					file_put_contents("$racine/site/cache/rss-global-galeries.xml", $rssAafficher);
+					readfile("$racine/site/cache/rss-global-galeries.xml");
+				}
+				else
+				{
+					echo $rssAafficher;
+				}
 			}
 		}
 	}
@@ -160,9 +178,19 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site')
 				
 				$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);
 				$idGalerie = FALSE;
-				creeDossierCache($racine);
-				file_put_contents("$racine/site/cache/rss-global-site.xml", rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, FALSE));
-				readfile("$racine/site/cache/rss-global-site.xml");
+				$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, FALSE);
+				
+				if ($dureeCache)
+				{
+					creeDossierCache($racine);
+					file_put_contents("$racine/site/cache/rss-global-site.xml", $rssAafficher);
+					readfile("$racine/site/cache/rss-global-site.xml");
+				}
+				else
+				{
+					echo $rssAafficher;
+				}
+				
 			}
 		}
 	}

@@ -472,7 +472,7 @@ if (isset($_POST['creerPage']))
 						$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
 						$contenu .= '?>' . "\n";
 						$contenu .= "\n";
-						$contenu .= '<h1>Galerie ' . $id . '</h1>' . "\n";
+						$contenu .= '<h1>Galerie <em>' . $id . '</em></h1>' . "\n";
 						$contenu .= "\n";
 						$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 						fputs($fic, $contenu);
