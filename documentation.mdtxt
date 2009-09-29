@@ -138,6 +138,8 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 ### Divisions HTML
 
+*Note: la page [Aperçu de la structure d'une page de Squeletml](http://www.jpfleury.net/squeletml/structure) propose des explications accompagnées d'une capture d'écran annotée.*
+
 Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 
 <div><code type="html4strict">
@@ -426,6 +428,8 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 </code></div>
 
 ## Galeries
+
+*Note: la page [Bref tour d'horizon du module de galerie de Squeletml](http://www.jpfleury.net/squeletml/galerie) propose des explications accompagnées de captures d'écran.*
 
 Chaque galerie possède son propre identifiant unique, aussi appelé *id*, qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'identifiant vaut `galerie1`. Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible:
 

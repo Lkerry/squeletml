@@ -87,6 +87,10 @@ Squeletml n'a pas pour but d'offrir un système de gestion de contenu (SGC) avan
 
 J'ai donc écrit Squeletml dans le but de pouvoir mettre sur pied rapidement et facilement un site à priori de taille moyenne, sans devoir passer par l'étape de configuration souvent assez fastidieuse des SGC, de pouvoir modifier plusieurs aspects du site (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et de pouvoir mettre à jour le script sans trop de casse-tête et de craintes d'écraser la configuration personnalisée.
 
+## Captures d'écran
+
+Visitez la [galerie de captures d'écran de Squeletml](http://www.jpfleury.net/galeries/captures-d-ecran/squeletml).
+
 ## Documentation
 
 Voir le fichier `documentation.mdtxt` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.jpfleury.net/squeletml/documentation).
