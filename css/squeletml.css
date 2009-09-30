@@ -136,6 +136,18 @@ li {
 	margin-bottom: 5px;
 }
 
+pre, code {
+	background-color: #f2f2f2;
+}
+
+pre {
+	display: block;
+	overflow: auto;
+	padding: 5px;
+	margin: 5px 0;
+	border: 1px solid #b3b3b3;
+}
+
 .erreur, .succes {
 	border-width: 2px;
 	border-style: solid;
@@ -290,6 +302,11 @@ div#galerieInfo {
 
 div#galerieIntermediaire div#galerieIntermediaireTexte {
 	margin-bottom: 15px;
+}
+
+div.minivignetteOeuvreEnCours img {
+	border-left: 5px solid #b3b3b3 !important;
+	border-right: 5px solid #b3b3b3 !important;
 }
 
 div#sepGalerieMinivignettes {

@@ -796,7 +796,7 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $sens, $galerieHauteurVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
+function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieHauteurVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
 {
 	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
 	
@@ -1201,6 +1201,11 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		{
 			$class = '';
 		}
+		if ($minivignetteOeuvreEnCours)
+		{
+			$class .= ' minivignetteOeuvreEnCours';
+		}
+		
 		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>";
 	}
 	

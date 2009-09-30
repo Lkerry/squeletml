@@ -100,19 +100,21 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		$i++;
 	}
 
-	// Si l'oeuvre existe, on affiche la version intermediaire ainsi que le système de navigation dans la galerie . 
+	// Si l'oeuvre existe, on affiche la version intermediaire ainsi que le système de navigation dans la galerie.
 	if ($imageExiste)
 	{
+		$indiceOeuvreIntermediaireEnCours = $i;
+		
 		// On récupère le code de l'oeuvre demandée en version intermediaire
-		$oeuvreIntermediaire = '<div id="galerieIntermediaire">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'intermediaire', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
+		$oeuvreIntermediaire = '<div id="galerieIntermediaire">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'intermediaire', $i, FALSE, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
 
-		// On recherche l'oeuvre précédente pour la navigation .  Si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente
+		// On recherche l'oeuvre précédente pour la navigation. Si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente
 		if (array_key_exists($i - 1, $galerie))
 		{
 			$op = $i - 1; // $op est l'indice de l'oeuvre précédente
 
 			// On récupère le code de la vignette de l'oeuvre précédente
-			$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $op, 'precedent', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
+			$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $op, FALSE, 'precedent', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
 			
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
@@ -137,7 +139,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			$os = $i + 1;
 
 			// On récupère le code de la vignette de l'oeuvre suivante
-			$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $os, 'suivant', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
+			$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $os, FALSE, 'suivant', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
 			
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
@@ -292,9 +294,18 @@ if ($idGalerie && isset($_GET['oeuvre']))
 				}
 			}
 			
+			$minivignetteOeuvreEnCours = FALSE;
+			
 			for ($i = $indicePremiereOeuvre; $i <= $indiceDerniereOeuvre && $i < $nombreDoeuvres; $i++)
 			{
-				$corpsMinivignettes .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal);
+				if ($i == $indiceOeuvreIntermediaireEnCours)
+				{
+					$minivignetteOeuvreEnCours = TRUE;
+				}
+				
+				$corpsMinivignettes .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $i, $minivignetteOeuvreEnCours, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal);
+				
+				$minivignetteOeuvreEnCours = FALSE;
 			}
 			
 			$corpsMinivignettes .= '</div><!-- /galerieMinivignettes -->' . "\n";
@@ -434,7 +445,7 @@ elseif ($idGalerie)
 	
 	for ($i = $indicePremiereOeuvre; $i <= $indiceDerniereOeuvre && $i < $nombreDoeuvres; $i++)
 	{
-		$corpsGalerie .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, TRUE, 'vignette', $i, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal);
+		$corpsGalerie .= afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, TRUE, 'vignette', $i, FALSE, 'aucun', $galerieHauteurVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal);
 	}
 	
 	if ($galerieVignettesParPage)
