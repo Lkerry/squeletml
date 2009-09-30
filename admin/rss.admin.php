@@ -66,7 +66,7 @@ if (isset($_POST['lister']))
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments">');
+			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
 		}
 	}
 	
@@ -121,7 +121,7 @@ if (isset($_POST['lister']))
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments">');
+			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
 		}
 	}
 }
@@ -166,7 +166,7 @@ if (isset($_POST['modifsGaleries']))
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments">');
+		echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
 		echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 		echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 		echo "<ul>\n";
@@ -217,7 +217,7 @@ elseif (isset($_POST['modifsSite']))
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href='%2\$s'>Vous pouvez créer ce fichier</a>."), $cheminFichier, '<a href="porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments">');
+		echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
 		echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 		echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 		echo "<ul>\n";
