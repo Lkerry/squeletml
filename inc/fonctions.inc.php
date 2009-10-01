@@ -800,6 +800,12 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 {
 	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
 	
+	####################################################################
+	#
+	# Taille intermédiaire
+	#
+	####################################################################
+	
 	if ($taille == 'intermediaire')
 	{
 		if (!empty($galerie[$indice]['intermediaireLargeur'])
@@ -1022,6 +1028,12 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 		}
 	}
 
+	####################################################################
+	#
+	# Taille vignette
+	#
+	####################################################################
+
 	elseif ($taille == 'vignette')
 	{
 		if ($galerieNavigation == 'fleches' && $sens != 'aucun')
@@ -1059,58 +1071,68 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 				{
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
 				}
-				// Sinon, on génère une vignette avec gd
+				// Sinon, on génère une vignette avec gd ou en copiant l'image intermédiaire
 				else
 				{
-					// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
-					$type = typeImage($infoIntermediaireNom['extension']);
-					
-					// Image intermediaire
-					switch ($type)
-					{
-						case 'gif':
-							$imageIntermediaire = imagecreatefromgif($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-							break;
-						
-						case 'jpeg':
-							$imageIntermediaire = imagecreatefromjpeg($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-							break;
-						
-						case 'png':
-							$imageIntermediaire = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-							imagealphablending($imageIntermediaire, true);
-							imagesavealpha($imageIntermediaire, true);
-							break;
-					}
-					
 					// Dimensions de l'image intermediaire
-					$imageIntermediaireLargeur = imagesx($imageIntermediaire);
-					$imageIntermediaireHauteur = imagesy($imageIntermediaire);
+					list($imageIntermediaireLargeur, $imageIntermediaireHauteur) = getimagesize($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
 					
 					// On trouve les futures dimensions de la vignette
 					$imageVignetteHauteur = $galerieHauteurVignette;
 					$imageVignetteLargeur = ($imageVignetteHauteur / $imageIntermediaireHauteur) * $imageIntermediaireLargeur;
 					
-					// On crée une vignette vide
-					$imageVignette = imagecreatetruecolor($imageVignetteLargeur, $imageVignetteHauteur);
-					
-					// On crée la vignette à partir de l'image intermediaire
-					imagecopyresampled($imageVignette, $imageIntermediaire, 0, 0, 0, 0, $imageVignetteLargeur, $imageVignetteHauteur, $imageIntermediaireLargeur, $imageIntermediaireHauteur);
-					
-					// On enregistre la vignette
-					switch ($type)
+					// Si la vignette est théoriquement plus grande que l'image intermédiaire, on ne fait qu'une copie de fichier
+					if ($imageVignetteHauteur >= $imageIntermediaireHauteur || $imageVignetteLargeur >= $imageIntermediaireLargeur)
 					{
-						case 'gif':
-							imagegif($imageVignette, $racineImgSrc . '/' . $vignetteNom);
-							break;
+						copy($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom);
+					}
+					
+					// Sinon on génère une vignette avec gd
+					else
+					{
+						// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
+						$type = typeImage($infoIntermediaireNom['extension']);
+					
+						// Image intermediaire
+						switch ($type)
+						{
+							case 'gif':
+								$imageIntermediaire = imagecreatefromgif($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
+								break;
 						
-						case 'jpeg':
-							imagejpeg($imageVignette, $racineImgSrc . '/' . $vignetteNom, $qualiteJpg);
-							break;
+							case 'jpeg':
+								$imageIntermediaire = imagecreatefromjpeg($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
+								break;
 						
-						case 'png':
-							imagepng($imageVignette, $racineImgSrc . '/' . $vignetteNom, 9);
-							break;
+							case 'png':
+								$imageIntermediaire = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
+								imagealphablending($imageIntermediaire, true);
+								imagesavealpha($imageIntermediaire, true);
+								break;
+						}
+					
+						// On crée une vignette vide
+						$imageVignette = imagecreatetruecolor($imageVignetteLargeur, $imageVignetteHauteur);
+					
+						// On crée la vignette à partir de l'image intermediaire
+						imagecopyresampled($imageVignette, $imageIntermediaire, 0, 0, 0, 0, $imageVignetteLargeur, $imageVignetteHauteur, $imageIntermediaireLargeur, $imageIntermediaireHauteur);
+					
+						// On enregistre la vignette
+						switch ($type)
+						{
+							case 'gif':
+								imagegif($imageVignette, $racineImgSrc . '/' . $vignetteNom);
+								break;
+						
+							case 'jpeg':
+								imagejpeg($imageVignette, $racineImgSrc . '/' . $vignetteNom, $qualiteJpg);
+								break;
+						
+							case 'png':
+								imagepng($imageVignette, $racineImgSrc . '/' . $vignetteNom, 9);
+								break;
+						}
+
 					}
 					
 					// On assigne l'attribut `src`

@@ -700,7 +700,7 @@ if ($boite2FichierConfigDebut)
 <input type="text" name="id" /></p>
 
 <p><label><?php echo T_("Taille maximale de la version intermediaire (largeur × hauteur):"); ?></label><br />
-<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée. Les proportions de l'image sont conservées."); ?><br />
+<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Les proportions de l'image sont conservées."); ?><br />
 <input type="text" name="largeur" size="4" value="500" /> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" value="500" /></p>
 
 <p><label><?php echo T_("Comment manipuler les images du dossier?"); ?></label><br />
