@@ -1637,18 +1637,21 @@ function rss($idGalerie, $baliseTitleComplement, $url, $itemsFlux, $estGalerie)
 		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</description>\n\n";
 	}
 	
-	foreach ($itemsFlux as $itemFlux)
+	if (!empty($itemsFlux))
 	{
-		$contenuRss .= "\t\t<item>\n";
-		$contenuRss .= "\t\t\t<title>" . $itemFlux['title'] . "</title>\n";
-		$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
-		$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
-		$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
-		if ($itemFlux['pubDate'])
+		foreach ($itemsFlux as $itemFlux)
 		{
-			$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
+			$contenuRss .= "\t\t<item>\n";
+			$contenuRss .= "\t\t\t<title>" . $itemFlux['title'] . "</title>\n";
+			$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
+			$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
+			$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
+			if ($itemFlux['pubDate'])
+			{
+				$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
+			}
+			$contenuRss .= "\t\t</item>\n\n";
 		}
-		$contenuRss .= "\t\t</item>\n\n";
 	}
 	
 	$contenuRss .= "\t</channel>\n";

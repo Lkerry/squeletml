@@ -1,6 +1,6 @@
 <?php
 include 'inc/zero.inc.php';
-$baliseTitle = T_("Gestion des galeries");
+$baliseTitle = T_("Galeries");
 include 'inc/premier.inc.php';
 
 include '../init.inc.php';
@@ -36,7 +36,7 @@ if (isset($_POST['lister']))
 			$i++;
 			$fichier = sansEchappement($fichier);
 			$idLien = rawurlencode($fichier);
-			$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">' . $fichier . "</a></li></ul></li>\n";
+			$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a></li></ul></li>' . "\n";
 		}
 	}
 	

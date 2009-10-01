@@ -1,6 +1,6 @@
 <?php
 include 'inc/zero.inc.php';
-$baliseTitle = "Porte-documents";
+$baliseTitle = T_("Porte-documents");
 include 'inc/premier.inc.php';
 
 if (isset($_GET['valeur']))

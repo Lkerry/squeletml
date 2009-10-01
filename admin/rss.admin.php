@@ -1,6 +1,6 @@
 <?php
 include 'inc/zero.inc.php';
-$baliseTitle = T_("Gestion des flux RSS globaux");
+$baliseTitle = T_("Flux RSS globaux");
 include 'inc/premier.inc.php';
 
 include '../init.inc.php';
@@ -16,6 +16,12 @@ if (isset($_POST['lister']))
 {
 	if (isset($_POST['global']) && $_POST['global'] == 'galeries')
 	{
+		################################################################
+		#
+		# Pages des galeries
+		#
+		################################################################
+		
 		$cheminFichier = "$racine/site/inc/rss-global-galeries.pc";
 		if (file_exists($cheminFichier))
 		{
@@ -25,13 +31,12 @@ if (isset($_POST['lister']))
 				
 				$galeries = tableauAssociatif($cheminFichier);
 				$listeGaleries = '';
-				$i = 0;
 				if (!empty($galeries))
 				{
-					foreach ($galeries as $idGalerie => $urlRelativeGalerie)
+					foreach ($galeries as $codeLangueIdGalerie => $urlRelativeGalerie)
 					{
-						$listeGaleries .= "<input type='text' name='id$i' value='$idGalerie' />=<input type='text' name='url$i' value='$urlRelativeGalerie' /><br />\n";
-						$i++;
+						list ($codeLangue, $idGalerie) = explode(':', $codeLangueIdGalerie, 2);
+						$listeGaleries .= '<input type="text" name="langue[]" value="' . $codeLangue . '" />:<input type="text" name="id[]" value="' . $idGalerie . '" />=<input type="text" name="url[]" value="' . $urlRelativeGalerie . '" /><br />' . "\n";
 					}
 				}
 				
@@ -39,7 +44,7 @@ if (isset($_POST['lister']))
 				
 				echo '<div class="boite2">' . "\n";
 				echo '<h3>' . T_("Liste des pages des galeries") . '</h3>' . "\n";
-				echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
+				echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie en français dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>fr:chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
 	
 				if (!empty($listeGaleries))
 				{
@@ -51,8 +56,7 @@ if (isset($_POST['lister']))
 				}
 				
 				echo '<p><strong>' . T_("Ajouter une galerie:") . '</p></strong>';
-				echo "<input type='text' name='id$i' value='' />=<input type='text' name='url$i' value='' /><br />\n";
-				$i++;
+				echo '<input type="text" name="langueAjout" value="" />:<input type="text" name="idAjout" value="" />=<input type="text" name="urlAjout" value="" /><br />' . "\n";
 				
 				echo "<p><input type='submit' name='modifsGaleries' value='" . T_('Enregistrer mes modifications') . "' /></p>\n";
 				echo "</div></form>\n";
@@ -72,29 +76,39 @@ if (isset($_POST['lister']))
 	
 	elseif (isset($_POST['global']) && $_POST['global'] == 'site')
 	{
+		################################################################
+		#
+		# Autres pages
+		#
+		################################################################
+		
 		$cheminFichier = "$racine/site/inc/rss-global-site.pc";
 		if (file_exists($cheminFichier))
 		{
-			if ($pages = file($cheminFichier))
+			if (is_array($pages = file($cheminFichier)))
 			{
 				echo "<form action='$action#messages' method='post'><div>\n";
 				
 				if (!empty($pages))
 				{
 					$listePages = '';
-					$i = 0;
 					foreach ($pages as $page)
 					{
+						if (strpos($page, ':') !== FALSE)
+						{
+							list ($codeLangue, $page) = explode(':', $page, 2);
+						}
 						$page = rtrim($page);
-						$listePages .= "<input type='text' name='url$i' value='$page' /><br />\n";
-						
-						$i++;
+						if (!empty($codeLangue) && !empty($page))
+						{
+							$listePages .= '<input type="text" name="langue[]" value="' . $codeLangue . '" />:<input type="text" name="url[]" value="' . $page . '" /><br />' . "\n";
+						}
 					}
 				}
 				
 				echo '<div class="boite2">' . "\n";
 				echo '<h3>' . T_("Liste des pages autres que les galeries") . '</h3>' . "\n";
-				echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>URL relative de la page</code>. Par exemple, %1\$s fait référence à une page dont l'URL est %2\$s."), "<code>animaux/chiens.php</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
+				echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:URL relative de la page</code>. Par exemple, %1\$s fait référence à une page en français dont l'URL est %2\$s."), "<code>fr:animaux/chiens.php</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
 	
 				if (!empty($listePages))
 				{
@@ -106,8 +120,7 @@ if (isset($_POST['lister']))
 				}
 				
 				echo '<p><strong>' . T_("Ajouter une page:") . '</p></strong>';
-				echo "<input type='text' name='url$i' value='' /><br />\n";
-				$i++;
+				echo '<input type="text" name="langueAjout" value="" />:<input type="text" name="urlAjout" value="" /><br />' . "\n";
 				
 				echo "<p><input type='submit' name='modifsSite' value='" . T_('Enregistrer mes modifications') . "' /></p>\n";
 				echo "</div></form>\n";
@@ -131,22 +144,29 @@ if (isset($_POST['modifsGaleries']))
 	echo '<div class="boite2">' . "\n";
 	echo '<h3>' . T_("Enregistrement des modifications pour les galeries") .'</h3>' ."\n" ;
 	
-	$contenuFichier = '';
-	$i = 0;
-	while (isset($_POST['id' . $i]) && isset($_POST['url' . $i]))
+	$contenuFichierTableau = array ();
+	if (isset($_POST['langue']))
 	{
-		if (!empty($_POST['id' . $i]) && !empty($_POST['url' . $i]))
+		foreach ($_POST['langue'] as $cle => $postLangueValeur)
 		{
-			$contenuFichier .= $_POST['id' . $i] . '=' . $_POST['url' . $i] . "\n";
+			if (isset($postLangueValeur) && !empty($postLangueValeur) && isset($_POST['id'][$cle]) && !empty($_POST['id'][$cle]) && isset($_POST['url'][$cle]) && !empty($_POST['url'][$cle]))
+			{
+				$contenuFichierTableau[] = $postLangueValeur . ':' . sansEchappement($_POST['id'][$cle]) . '=' . sansEchappement($_POST['url'][$cle]) . "\n";
+			}
 		}
-		
-		$i++;
 	}
+	
+	if (isset($_POST['langueAjout']) && !empty($_POST['langueAjout']) && isset($_POST['idAjout']) && !empty($_POST['idAjout']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
+	{
+		array_unshift($contenuFichierTableau, $_POST['langueAjout'] . ':' . sansEchappement($_POST['idAjout']) . '=' . sansEchappement($_POST['urlAjout']) . "\n");
+	}
+	
+	$contenuFichier = implode('', $contenuFichierTableau);
 	
 	$cheminFichier = "$racine/site/inc/rss-global-galeries.pc";
 	if (file_exists($cheminFichier))
 	{
-		if (file_put_contents($cheminFichier, $contenuFichier))
+		if (file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 		{
 			echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . '</p>';
 			echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
@@ -182,22 +202,29 @@ elseif (isset($_POST['modifsSite']))
 	echo '<div class="boite2">' . "\n";
 	echo '<h3>' . T_("Enregistrement des modifications pour les pages autres que les galeries") .'</h3>' ."\n" ;
 	
-	$contenuFichier = '';
-	$i = 0;
-	while (isset($_POST['url' . $i]))
+	$contenuFichierTableau = array ();
+	if (isset($_POST['langue']))
 	{
-		if (!empty($_POST['url' . $i]))
+		foreach ($_POST['langue'] as $cle => $postLangueValeur)
 		{
-			$contenuFichier .= $_POST['url' . $i] . "\n";
+			if (isset($postLangueValeur) && !empty($postLangueValeur) && isset($_POST['url'][$cle]) && !empty($_POST['url'][$cle]))
+			{
+				$contenuFichierTableau[] = $postLangueValeur . ':' . sansEchappement($_POST['url'][$cle]) . "\n";
+			}
 		}
-		
-		$i++;
 	}
+	
+	if (isset($_POST['langueAjout']) && !empty($_POST['langueAjout']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
+	{
+		array_unshift($contenuFichierTableau, $_POST['langueAjout'] . ':' . sansEchappement($_POST['urlAjout']) . "\n");
+	}
+	
+	$contenuFichier = implode('', $contenuFichierTableau);
 	
 	$cheminFichier = "$racine/site/inc/rss-global-site.pc";
 	if (file_exists($cheminFichier))
 	{
-		if (file_put_contents($cheminFichier, $contenuFichier))
+		if (file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 		{
 			echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . '</p>';
 			echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
@@ -265,7 +292,7 @@ echo '<p><a href="porte-documents.admin.php?action=editer&valeur=../site/inc/con
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>
 <p><input type="radio" name="global" value="galeries" /> <?php echo T_("Pages des galeries"); ?><br />
-<input type="radio" name="global" value="site" /> <?php echo T_("Autres pages"); ?></p>
+<input type="radio" name="global" value="site" checked="checked" /> <?php echo T_("Pages autres que les galeries"); ?></p>
 
 <p><input type="submit" name="lister" value="<?php echo T_('Lister les pages'); ?>" /></p>
 </div>

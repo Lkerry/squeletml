@@ -1,6 +1,6 @@
 <?php
 include 'inc/zero.inc.php';
-$baliseTitle = T_("Gestion des droits d'accès");
+$baliseTitle = T_("Droits d'accès");
 include 'inc/premier.inc.php';
 ?>
 

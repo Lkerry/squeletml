@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-29 13:30-0400\n"
+"POT-Creation-Date: 2009-10-01 13:49-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -66,7 +66,11 @@ msgstr[1] ""
 msgid "Lisez-moi - Introduction à Squeletml"
 msgstr ""
 
-#: admin/rss.admin.php:3 admin/rss.admin.php:9
+#: admin/rss.admin.php:3 admin/inc/html.menu.inc.php:10
+msgid "Flux RSS globaux"
+msgstr ""
+
+#: admin/rss.admin.php:9
 msgid "Gestion des flux RSS globaux"
 msgstr ""
 
@@ -75,136 +79,141 @@ msgstr ""
 msgid "Messages d'avancement, de confirmation ou d'erreur"
 msgstr ""
 
-#: admin/rss.admin.php:41
+#: admin/rss.admin.php:46
 msgid "Liste des pages des galeries"
 msgstr ""
 
-#: admin/rss.admin.php:42
+#: admin/rss.admin.php:47
 #, php-format
 msgid ""
-"Chaque ligne est sous la forme <code>identifiant de la galerie=URL relative "
-"de la galerie</code>. Par exemple, %1$s fait référence à une galerie dont "
-"l'identifiant est %2$s et dont l'URL est %3$s."
+"Chaque ligne est sous la forme <code>code de la langue:identifiant de la "
+"galerie=URL relative de la galerie</code>. Par exemple, %1$s fait référence "
+"à une galerie en français dont l'identifiant est %2$s et dont l'URL est %3$s."
 msgstr ""
 
-#: admin/rss.admin.php:50
+#: admin/rss.admin.php:55
 msgid "Le fichier est vide. Aucune galerie n'y est listée."
 msgstr ""
 
-#: admin/rss.admin.php:53
+#: admin/rss.admin.php:58
 msgid "Ajouter une galerie:"
 msgstr ""
 
-#: admin/rss.admin.php:57 admin/rss.admin.php:112
+#: admin/rss.admin.php:61 admin/rss.admin.php:125
 msgid "Enregistrer mes modifications"
 msgstr ""
 
-#: admin/rss.admin.php:64 admin/rss.admin.php:119 admin/rss.admin.php:159
-#: admin/rss.admin.php:210
+#: admin/rss.admin.php:68 admin/rss.admin.php:132 admin/rss.admin.php:179
+#: admin/rss.admin.php:237
 #, php-format
 msgid "Impossible d'ouvrir le fichier %1$s."
 msgstr ""
 
-#: admin/rss.admin.php:69 admin/rss.admin.php:169
+#: admin/rss.admin.php:73 admin/rss.admin.php:189
 #, php-format
 msgid ""
 "Aucune galerie ne peut faire partie du flux global des galeries puisque le "
-"fichier %1$s n'existe pas. <a href='%2$s'>Vous pouvez créer ce fichier</a>."
+"fichier %1$s n'existe pas. <a href=\"%2$s\">Vous pouvez créer ce fichier</a>."
 msgstr ""
 
-#: admin/rss.admin.php:96
+#: admin/rss.admin.php:110
 msgid "Liste des pages autres que les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:97
+#: admin/rss.admin.php:111
 #, php-format
 msgid ""
-"Chaque ligne est sous la forme <code>URL relative de la page</code>. Par "
-"exemple, %1$s fait référence à une page dont l'URL est %2$s."
+"Chaque ligne est sous la forme <code>code de la langue:URL relative de la "
+"page</code>. Par exemple, %1$s fait référence à une page en français dont "
+"l'URL est %2$s."
 msgstr ""
 
-#: admin/rss.admin.php:105
+#: admin/rss.admin.php:119
 msgid "Le fichier est vide. Aucune page n'y est listée."
 msgstr ""
 
-#: admin/rss.admin.php:108
+#: admin/rss.admin.php:122
 msgid "Ajouter une page:"
 msgstr ""
 
-#: admin/rss.admin.php:124 admin/rss.admin.php:220
+#: admin/rss.admin.php:137 admin/rss.admin.php:247
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du flux global du site puisque le fichier %1"
-"$s n'existe pas. <a href='%2$s'>Vous pouvez créer ce fichier</a>."
+"$s n'existe pas. <a href=\"%2$s\">Vous pouvez créer ce fichier</a>."
 msgstr ""
 
-#: admin/rss.admin.php:132
+#: admin/rss.admin.php:145
 msgid "Enregistrement des modifications pour les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:151 admin/rss.admin.php:202
+#: admin/rss.admin.php:171 admin/rss.admin.php:229
 #, php-format
 msgid ""
 "Les modifications ont été enregistrées. Voici le contenu qui a été "
 "enregistré dans le fichier %1$s:"
 msgstr ""
 
-#: admin/rss.admin.php:154 admin/rss.admin.php:163 admin/rss.admin.php:173
-#: admin/rss.admin.php:205 admin/rss.admin.php:214 admin/rss.admin.php:224
+#: admin/rss.admin.php:174 admin/rss.admin.php:183 admin/rss.admin.php:193
+#: admin/rss.admin.php:232 admin/rss.admin.php:241 admin/rss.admin.php:251
 #: admin/galeries.admin.php:548
 msgid "Sélectionner le résultat."
 msgstr ""
 
-#: admin/rss.admin.php:160 admin/rss.admin.php:170 admin/rss.admin.php:211
-#: admin/rss.admin.php:221
+#: admin/rss.admin.php:180 admin/rss.admin.php:190 admin/rss.admin.php:238
+#: admin/rss.admin.php:248
 msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
 msgstr ""
 
-#: admin/rss.admin.php:183
+#: admin/rss.admin.php:203
 msgid "Enregistrement des modifications pour les pages autres que les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:235
+#: admin/rss.admin.php:262
 msgid "Configuration actuelle"
 msgstr ""
 
-#: admin/rss.admin.php:241
+#: admin/rss.admin.php:268
 msgid "Le flux RSS global des galeries est activé"
 msgstr ""
 
-#: admin/rss.admin.php:245
+#: admin/rss.admin.php:272
 msgid "Le flux RSS global des galeries n'est pas activé"
 msgstr ""
 
-#: admin/rss.admin.php:250
+#: admin/rss.admin.php:277
 msgid "Le flux RSS global du site est activé"
 msgstr ""
 
-#: admin/rss.admin.php:254
+#: admin/rss.admin.php:281
 msgid "Le flux RSS global du site n'est pas activé"
 msgstr ""
 
-#: admin/rss.admin.php:258
+#: admin/rss.admin.php:285
 msgid "Modifier cette configuration."
 msgstr ""
 
-#: admin/rss.admin.php:263
+#: admin/rss.admin.php:290
 msgid "Pages ajoutées aux flux globaux"
 msgstr ""
 
-#: admin/rss.admin.php:267
+#: admin/rss.admin.php:294
 msgid "Pages des galeries"
 msgstr ""
 
-#: admin/rss.admin.php:268
-msgid "Autres pages"
+#: admin/rss.admin.php:295
+msgid "Pages autres que les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:270
+#: admin/rss.admin.php:297
 msgid "Lister les pages"
 msgstr ""
 
-#: admin/droits.admin.php:3 admin/droits.admin.php:7
+#: admin/droits.admin.php:3 admin/inc/html.menu.inc.php:4
+msgid "Droits d'accès"
+msgstr ""
+
+#: admin/droits.admin.php:7
 msgid "Gestion des droits d'accès"
 msgstr ""
 
@@ -298,7 +307,12 @@ msgstr ""
 msgid "Documentation de Squeletml"
 msgstr ""
 
-#: admin/galeries.admin.php:3 admin/galeries.admin.php:9
+#: admin/galeries.admin.php:3 admin/inc/html.menu.inc.php:8
+#: inc/fonctions.inc.php:1628
+msgid "Galeries"
+msgstr ""
+
+#: admin/galeries.admin.php:9
 msgid "Gestion des galeries"
 msgstr ""
 
@@ -725,35 +739,24 @@ msgstr ""
 msgid "Options d'administration de Squeletml"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:4
-msgid "Droits d'accès"
-msgstr ""
-
-#: admin/inc/html.menu.inc.php:5 inc/fonctions.inc.php:1623
-msgid "Galeries"
-msgstr ""
-
-#: admin/inc/html.menu.inc.php:6 admin/porte-documents.admin.php:26
+#: admin/inc/html.menu.inc.php:6 admin/porte-documents.admin.php:3
+#: admin/porte-documents.admin.php:26
 msgid "Porte-documents"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:8
-msgid "Flux RSS globaux"
-msgstr ""
-
-#: admin/inc/html.menu.inc.php:10
+#: admin/inc/html.menu.inc.php:12
 msgid "Lisez-moi"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:11
+#: admin/inc/html.menu.inc.php:14
 msgid "Documentation"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:12
+#: admin/inc/html.menu.inc.php:16
 msgid "Versions"
 msgstr ""
 
-#: admin/inc/html.menu.inc.php:13
+#: admin/inc/html.menu.inc.php:18
 msgid "Retour au site"
 msgstr ""
 
@@ -1200,55 +1203,55 @@ msgstr ""
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1168 inc/fonctions.inc.php:1471
+#: inc/fonctions.inc.php:1168 inc/fonctions.inc.php:1476
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
 
-#: inc/fonctions.inc.php:1323
+#: inc/fonctions.inc.php:1328
 msgid "Consultez cette page!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1323 inc/fonctions.inc.php:1382
+#: inc/fonctions.inc.php:1328 inc/fonctions.inc.php:1387
 msgid "En espérant qu'elle vous intéresse!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1382
+#: inc/fonctions.inc.php:1387
 msgid "Voyez l'oeuvre en plus grande taille!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1533
+#: inc/fonctions.inc.php:1538
 msgid "Lien vers l'oeuvre au format original."
 msgstr ""
 
-#: inc/fonctions.inc.php:1616
+#: inc/fonctions.inc.php:1621
 #, php-format
 msgid "Galerie %1$s | %2$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1618
+#: inc/fonctions.inc.php:1623
 #, php-format
 msgid "Derniers ajouts à la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1625
+#: inc/fonctions.inc.php:1630
 msgid "Derniers ajouts aux galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1630 inc/fonctions.inc.php:1632
+#: inc/fonctions.inc.php:1635 inc/fonctions.inc.php:1637
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1662 inc/premier.inc.php:59
+#: inc/fonctions.inc.php:1670 inc/premier.inc.php:59
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1666 inc/premier.inc.php:64
+#: inc/fonctions.inc.php:1674 inc/premier.inc.php:64
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1670 inc/premier.inc.php:69
+#: inc/fonctions.inc.php:1678 inc/premier.inc.php:69
 msgid "RSS global du site"
 msgstr ""
 
@@ -1392,58 +1395,58 @@ msgstr ""
 msgid "Oeuvre %1$s en version intermediaire, galerie %2$s"
 msgstr ""
 
-#: inc/galerie.inc.php:207
+#: inc/galerie.inc.php:209
 #, php-format
 msgid "Affichage de l'oeuvre %1$s sur un total de %2$s."
 msgstr ""
 
-#: inc/galerie.inc.php:207
+#: inc/galerie.inc.php:209
 msgid "Aller à l'accueil de la galerie."
 msgstr ""
 
-#: inc/galerie.inc.php:328
+#: inc/galerie.inc.php:339
 #, php-format
 msgid ""
 "L'oeuvre demandée est introuvable. <a href=\"%1$s\">Voir toutes les oeuvres</"
 "a>."
 msgstr ""
 
-#: inc/galerie.inc.php:331 inc/galerie.inc.php:332
+#: inc/galerie.inc.php:342 inc/galerie.inc.php:343
 #, php-format
 msgid "L'Oeuvre %1$s est introuvable"
 msgstr ""
 
-#: inc/galerie.inc.php:412
+#: inc/galerie.inc.php:423
 msgid "Page précédente"
 msgstr ""
 
-#: inc/galerie.inc.php:422
+#: inc/galerie.inc.php:433
 msgid "Page suivante"
 msgstr ""
 
-#: inc/galerie.inc.php:458
+#: inc/galerie.inc.php:469
 #, php-format
 msgid "Cette galerie contient %1$s oeuvre"
 msgid_plural "Cette galerie contient %1$s oeuvres"
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:458
+#: inc/galerie.inc.php:469
 #, php-format
 msgid " (sur %1$s page)."
 msgid_plural " (sur %1$s pages)."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/galerie.inc.php:462
+#: inc/galerie.inc.php:473
 msgid "Voir l'accueil de la galerie."
 msgstr ""
 
-#: inc/galerie.inc.php:489
+#: inc/galerie.inc.php:500
 msgid "La galerie demandée est introuvable."
 msgstr ""
 
-#: inc/galerie.inc.php:492 inc/galerie.inc.php:493
+#: inc/galerie.inc.php:503 inc/galerie.inc.php:504
 #, php-format
 msgid "La galerie %1$s est introuvable"
 msgstr ""
