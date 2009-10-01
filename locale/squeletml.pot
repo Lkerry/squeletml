@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 13:49-0400\n"
+"POT-Creation-Date: 2009-10-01 17:13-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -311,7 +311,7 @@ msgid "Documentation de Squeletml"
 msgstr ""
 
 #: admin/galeries.admin.php:3 admin/inc/html.menu.inc.php:8
-#: inc/fonctions.inc.php:1628
+#: inc/fonctions.inc.php:1650
 msgid "Galeries"
 msgstr ""
 
@@ -623,7 +623,8 @@ msgstr ""
 #: admin/galeries.admin.php:703
 msgid ""
 "La plus grande taille possible contenable dans les dimensions données sera "
-"utilisée. Les proportions de l'image sont conservées."
+"utilisée, sans toutefois dépasser la taille originale. Les proportions de "
+"l'image sont conservées."
 msgstr ""
 
 #: admin/galeries.admin.php:704
@@ -1153,102 +1154,102 @@ msgstr ""
 msgid "Légende de l'oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:843
+#: inc/fonctions.inc.php:849
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:856
+#: inc/fonctions.inc.php:862
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:885
+#: inc/fonctions.inc.php:891
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:890
+#: inc/fonctions.inc.php:896
 #, php-format
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:932
+#: inc/fonctions.inc.php:938
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:936
+#: inc/fonctions.inc.php:942
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:944
+#: inc/fonctions.inc.php:950
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:948
+#: inc/fonctions.inc.php:954
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:952
+#: inc/fonctions.inc.php:958
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:956
+#: inc/fonctions.inc.php:962
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:960
+#: inc/fonctions.inc.php:966
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1168 inc/fonctions.inc.php:1476
+#: inc/fonctions.inc.php:1190 inc/fonctions.inc.php:1498
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1328
+#: inc/fonctions.inc.php:1350
 msgid "Consultez cette page!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1328 inc/fonctions.inc.php:1387
+#: inc/fonctions.inc.php:1350 inc/fonctions.inc.php:1409
 msgid "En espérant qu'elle vous intéresse!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1387
+#: inc/fonctions.inc.php:1409
 msgid "Voyez l'oeuvre en plus grande taille!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1538
+#: inc/fonctions.inc.php:1560
 msgid "Lien vers l'oeuvre au format original."
 msgstr ""
 
-#: inc/fonctions.inc.php:1621
+#: inc/fonctions.inc.php:1643
 #, php-format
 msgid "Galerie %1$s | %2$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1623
+#: inc/fonctions.inc.php:1645
 #, php-format
 msgid "Derniers ajouts à la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1630
+#: inc/fonctions.inc.php:1652
 msgid "Derniers ajouts aux galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1635 inc/fonctions.inc.php:1637
+#: inc/fonctions.inc.php:1657 inc/fonctions.inc.php:1659
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1670 inc/premier.inc.php:59
+#: inc/fonctions.inc.php:1692 inc/premier.inc.php:59
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1674 inc/premier.inc.php:64
+#: inc/fonctions.inc.php:1696 inc/premier.inc.php:64
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1678 inc/premier.inc.php:69
+#: inc/fonctions.inc.php:1700 inc/premier.inc.php:69
 msgid "RSS global du site"
 msgstr ""
 
