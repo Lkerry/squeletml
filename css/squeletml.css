@@ -197,33 +197,33 @@ body.colonneAgauche #basDePage {
 	margin: 25px 0 0 204px;
 }
 
-/* body.colonneAgaucheFalse */
+/* body.colonneAdroite */
 
-body.colonneAgaucheFalse #page {
+body.colonneAdroite #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y right top;
 }
 
-body.colonneAgaucheFalse div#titre h1, body.colonneAgaucheFalse div#titre p {
+body.colonneAdroite div#titre h1, body.colonneAdroite div#titre p {
 	margin: 0 0 0 6px;
 }
 
-body.colonneAgaucheFalse div#sousTitre {
+body.colonneAdroite div#sousTitre {
 	position: relative;
 	margin: -34px 0px 25px 90px;
 }
 
-body.colonneAgaucheFalse #contenu {
+body.colonneAdroite #contenu {
 	margin-right: 204px;
 	text-align: justify;
 }
 
-body.colonneAgaucheFalse #surContenu, body.colonneAgaucheFalse #sousContenu {
+body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
 	top: 80px;
 	right: 0;
 }
 
-body.colonneAgaucheFalse #basDePage {
+body.colonneAdroite #basDePage {
 	margin: 25px 204px 0 0px;
 }
 

@@ -91,14 +91,14 @@ $menuSousLeContenu = TRUE; // TRUE|FALSE
 $menuLanguesSousLeContenu = TRUE; // TRUE|FALSE
 
 // Le cas échéant, l'ordre d'affichage des menus
-/* Si le menu ainsi que le menu des langues sont situés dans la même région (par exemple, tous les deux au-dessus du contenu ou tous les deux en-dessous), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
+/* Si le menu ainsi que le menu des langues sont situés dans la même région (tous les deux au-dessus du contenu ou tous les deux en-dessous), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
 $menuSousLeMenuLangues = TRUE; // TRUE|FALSE
 
 // Inclusion du bas de page
 $basDePage = TRUE; // TRUE|FALSE
 
 // Position de la colonne.
-/* Si `$colonneAgauche` vaut TRUE, une classe `colonneAgauche` est ajoutée au `body`, et la feuille de style par défaut place la colonne à gauche. Si la variable vaut FALSE, une classe `colonneAgaucheFalse` est ajoutée au `body` et la colonne se trouve par défaut à droite. À noter que cette option n'a aucune influence sur le flux HTML. La position de la colonne est gérée dans la feuille de style par défaut. */
+/* Si `$colonneAgauche` vaut TRUE, une classe `colonneAgauche` est ajoutée au `body`, et la feuille de style par défaut place la colonne à gauche. Si la variable vaut FALSE, une classe `colonneAdroite` est ajoutée au `body` et la colonne se trouve par défaut à droite. À noter que cette option n'a aucune influence sur le flux HTML. La position de la colonne est gérée dans la feuille de style par défaut. */
 $colonneAgauche = TRUE; // TRUE|FALSE
 
 // Deux colonnes
