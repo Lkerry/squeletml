@@ -3,12 +3,6 @@
 			<?php echo $tableauCorpsGalerie['corpsGalerie']; ?>
 		<?php endif; ?>
 		
-		<?php
-		$decouvrir = FALSE; // Initialisation
-		$decouvrirInclureContact = FALSE; // Initialisation
-		include $racine . '/inc/faire-decouvrir.inc.php';
-		?>
-		
 		<?php if ((isset($courrielContact) && !empty($courrielContact)) ||
 		($decouvrir && $decouvrirInclureContact)): ?>
 			<?php include $racine . '/inc/contact.inc.php'; ?>
@@ -33,10 +27,8 @@
 		<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
 	<?php endif; ?>
 
-	<?php if ($faireDecouvrir && $decouvrir): ?>
-		<div id="faireDecouvrir">
-			<?php echo '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>'; ?>
-		</div><!-- /faireDecouvrir -->
+	<?php if ($faireDecouvrir && $decouvrir && $faireDecouvrirSousContenu): ?>
+		<?php include fichierPartagePremierDernier($racine, 'faire-decouvrir'); ?>
 	<?php endif; ?>
 
 	<?php if (!empty($tableauCorpsGalerie['texteIntermediaire'])): ?>

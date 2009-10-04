@@ -109,6 +109,9 @@ $menuLanguesSousContenu = TRUE; // TRUE|FALSE
 /* Si le menu principal ainsi que le menu des langues sont situés dans la même région (tous les deux en-dessous du contenu ou tous les deux au-dessus), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
 $menuSousMenuLangues = TRUE; // TRUE|FALSE
 
+// Le cas échéant, position du lien «Faire découvrir»
+$faireDecouvrirSousContenu = TRUE; // TRUE|FALSE
+
 // Le cas échéant, position des liens RSS
 $rssSousContenu = TRUE; // TRUE|FALSE
 

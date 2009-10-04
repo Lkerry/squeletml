@@ -120,6 +120,15 @@ if ($messageIE6)
 	<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
 <?php endif; ?>
 
+<?php
+$decouvrir = FALSE; // Initialisation
+$decouvrirInclureContact = FALSE; // Initialisation
+include $racine . '/inc/faire-decouvrir.inc.php';
+?>
+<?php if ($faireDecouvrir && $decouvrir && !$faireDecouvrirSousContenu): ?>
+	<?php include fichierPartagePremierDernier($racine, 'faire-decouvrir'); ?>
+<?php endif; ?>
+
 <?php if ((($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))) && (!$rssSousContenu)): ?>
 	<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
 <?php endif; ?>
