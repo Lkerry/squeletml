@@ -179,6 +179,18 @@ pre {
 
 /***********************************************************************
 **
+** Toute configuration de colonne
+**
+***********************************************************************/
+
+div#sousTitre {
+	position: relative;
+	margin-top: -34px;
+	margin-bottom: 25px;
+}
+
+/***********************************************************************
+**
 ** body.colonneAgauche
 **
 ***********************************************************************/
@@ -188,12 +200,12 @@ body.colonneAgauche #page {
 }
 
 body.colonneAgauche div#titre h1, body.colonneAgauche div#titre p {
-	margin: 0px 0px 0px 210px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 body.colonneAgauche div#sousTitre {
-	position: relative;
-	margin: -34px 0px 25px 294px;
+	margin-left: 294px;
 }
 
 body.colonneAgauche #contenu {
@@ -215,6 +227,15 @@ body.colonneAgauche #basDePage {
 **
 ***********************************************************************/
 
+body.uneColonneAgauche div#titre h1, body.uneColonneAgauche div#titre p {
+	margin-right: 0px;
+	margin-left: 210px;
+}
+
+body.uneColonneAgauche div#sousTitre {
+	margin-right: 0px;
+}
+
 body.uneColonneAgauche #surContenu, body.uneColonneAgauche #sousContenu {
 	left: 0;
 }
@@ -230,12 +251,12 @@ body.colonneAdroite #page {
 }
 
 body.colonneAdroite div#titre h1, body.colonneAdroite div#titre p {
-	margin: 0 0 0 6px;
+	margin-top: 0px;
+	margin-bottom: 0px;
 }
 
 body.colonneAdroite div#sousTitre {
-	position: relative;
-	margin: -34px 0px 25px 90px;
+	margin-right: 210px;
 }
 
 body.colonneAdroite #contenu {
@@ -258,6 +279,15 @@ body.colonneAdroite #basDePage {
 **
 ***********************************************************************/
 
+body.uneColonneAdroite div#titre h1, body.uneColonneAdroite div#titre p {
+	margin-right: 210px;
+	margin-left: 6px;
+}
+
+body.uneColonneAdroite div#sousTitre {
+	margin-left: 90px;
+}
+
 body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
 	right: 0;
 }
@@ -269,12 +299,13 @@ body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
 ***********************************************************************/
 
 body.deuxColonnes div#titre h1, body.deuxColonnes div#titre p {
-	margin: 0px 0px 0px 210px;
+	margin-right: 210px;
+	margin-left: 210px;
 }
 
 body.deuxColonnes div#sousTitre {
-	position: relative;
-	margin: -34px 0px 25px 294px;
+	margin-right: 210px;
+	margin-left: 294px;
 }
 
 body.deuxColonnes #basDePage {
