@@ -114,6 +114,11 @@ div#sousTitre p {
 	background: url('../fichiers/rss.png') no-repeat left center;
 }
 
+#surContenuSupplement, #sousContenuSupplement {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
 #basDePage {
 	text-align: center;
 	padding: 0px 5px;

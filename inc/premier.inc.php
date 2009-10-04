@@ -108,6 +108,12 @@ if ($messageIE6)
 </div><!-- /entete -->
 
 <div id="surContenu">
+<?php if (!$surContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langue) . ".sur-contenu-supplement.inc.php")): ?>
+	<div id="surContenuSupplement">
+		<?php include $racine . '/site/inc/html.' . langue($langue) . '.sur-contenu-supplement.inc.php'; ?>
+	</div><!-- /surContenuSupplement -->
+<?php endif; ?>
+
 <?php if (!$menuSousMenuLangues && !$menuSousContenu): ?>
 	<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
 <?php endif; ?>
@@ -138,6 +144,12 @@ include $racine . '/inc/faire-decouvrir.inc.php';
 
 <?php if ((($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))) && (!$rssSousContenu)): ?>
 	<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
+<?php endif; ?>
+
+<?php if ($surContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langue) . ".sur-contenu-supplement.inc.php")): ?>
+	<div id="surContenuSupplement">
+		<?php include $racine . '/site/inc/html.' . langue($langue) . '.sur-contenu-supplement.inc.php'; ?>
+	</div><!-- /surContenuSupplement -->
 <?php endif; ?>
 </div><!-- /surContenu -->
 

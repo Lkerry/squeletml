@@ -115,6 +115,14 @@ $faireDecouvrirSousContenu = TRUE; // TRUE|FALSE
 // Le cas échéant, position des liens RSS
 $rssSousContenu = TRUE; // TRUE|FALSE
 
+// Le cas échéant, position du supplément du sur-contenu
+/* S'il y a lieu,  positionner le supplément du sur-contenu à la fin de la div `surContenu`, sinon le positionner au début. */
+$surContenuSupplementFin = TRUE; // TRUE|FALSE
+
+// Le cas échéant, position du supplément du sous-contenu
+/* S'il y a lieu,  positionner le supplément du sous-contenu à la fin de la div `sousContenu`, sinon le positionner au début. */
+$sousContenuSupplementFin = TRUE; // TRUE|FALSE
+
 ##
 ## Style CSS
 ##

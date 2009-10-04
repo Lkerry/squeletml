@@ -92,7 +92,7 @@ Tous les dossiers, à part `site`, font partie de la structure officielle par d�
 
 **Toute modification apportée à la configuration doit donc être effectuée dans le dossier `site`.**
 
-Par exemple, pour modifier l'apparence du site, **ne modifiez pas** le fichier `css/style-general.css`, mais créez un fichier dans `site/css/`, par exemple `site/css/style.css`. Il faudra ensuite ajouter ce fichier dans les styles à inclure. Nous verrons comment faire un peu plus loin.
+Par exemple, pour modifier l'apparence du site, **ne modifiez pas** le fichier `css/style-general.css`, mais créez un fichier dans `site/css`, par exemple `site/css/style.css`. Il faudra ensuite ajouter ce fichier dans les styles à inclure. Nous verrons comment faire un peu plus loin.
 
 Pour ajouter des images, mettez vos fichiers dans `site/fichiers`. Pour ajouter des fichiers à inclure, créez des fichiers dans `site/inc`. Vous aurez compris, le dossier `site` recrée la structure par défaut de Squeletml, ce qui permet de pouvoir facilement personnaliser le site sans toucher aux fichiers officiels de Squeletml. La mise à jour du logiciel en sera grandement facilitée.
 
@@ -124,6 +124,11 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `html.en.menu.inc.php`.
 
 	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez personnaliser chaque division en créant un fichier de même nom dans `site/inc`. Par exemple, pour modifier le menu en français, créer un fichier `site/inc/html.fr.menu.inc.php` et modifiez son contenu comme désiré. **Ceci écrasera le fichier par défaut.** Ainsi, si `site/inc/html.fr.menu.inc.php` existe, le fichier par défaut `inc/html.fr.menu.inc.php` ne sera pas inclus.
+
+	Deux fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/inc`:
+
+  - html.fr.sur-contenu-supplement.inc.php
+  - html.fr.sous-contenu-supplement.inc.php
 
 - Les fichiers de page:
 
@@ -186,11 +191,11 @@ Doctype XHTML 1.0 Strict
 				</div><!-- /contenu -->
 			
 				<div id="sousContenu">
-					<div id="menuLangues"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+					<div id="menuLangues">
 						...
 					</div><!-- /menuLangues -->
 
-					<div id="menu"><!-- Il s'agit de l'emplacement par défaut, mais peut être configuré pour apparaître avant le contenu -->
+					<div id="menu">
 						...
 					</div><!-- /menu -->
 					
@@ -208,7 +213,7 @@ Doctype XHTML 1.0 Strict
 </html>
 </code></div>
 
-D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`. Certaines `div` peuvent aussi être positionnées ailleurs selon la configuration, par exemple le menu.
+D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`. Certaines `div` peuvent aussi être positionnées ailleurs selon la configuration, par exemple le menu. Voir les sections «Activations et inclusions» et «Contenu et ordre du flux HTML» dans le fichier de configuration.
 
 ## Mise à jour de Squeletml
 
