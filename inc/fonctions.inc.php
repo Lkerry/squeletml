@@ -376,7 +376,7 @@ function construitClassBody($estAccueil, $menuSousLeContenu, $menuLanguesSousLeC
 		}
 		else
 		{
-			$class .= 'deuxColonnesGaucheFalse ';
+			$class .= 'deuxColonnesDroite ';
 		}
 	}
 	

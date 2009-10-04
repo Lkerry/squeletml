@@ -247,32 +247,32 @@ body.deuxColonnesGauche #basDePage {
 	margin: 25px 204px 0 204px;
 }
 
-/* body.deuxColonnesGaucheFalse */
+/* body.deuxColonnesDroite */
 
-body.deuxColonnesGaucheFalse #page {
+body.deuxColonnesDroite #page {
 	padding-left: 0;
 }
 
-body.deuxColonnesGaucheFalse #interieurPage {
+body.deuxColonnesDroite #interieurPage {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
 }
 
-body.deuxColonnesGaucheFalse div#titre h1, body.deuxColonnesGaucheFalse div#titre p {
+body.deuxColonnesDroite div#titre h1, body.deuxColonnesDroite div#titre p {
 	margin: 0px 0px 0px 210px;
 }
 
-body.deuxColonnesGaucheFalse div#sousTitre {
+body.deuxColonnesDroite div#sousTitre {
 	position: relative;
 	margin: -34px 0px 25px 294px;
 }
 
-body.deuxColonnesGaucheFalse #contenu {
+body.deuxColonnesDroite #contenu {
 	margin-left: 204px;
 	margin-right: 204px;
 	text-align: justify;
 }
 
-body.deuxColonnesGaucheFalse #basDePage {
+body.deuxColonnesDroite #basDePage {
 	margin: 25px 204px 0 204px;
 }
 

@@ -102,7 +102,7 @@ $basDePage = TRUE; // TRUE|FALSE
 $colonneAgauche = TRUE; // TRUE|FALSE
 
 // Deux colonnes
-/* Si vaut TRUE, ajoute les deux classes `deuxColonnes` et (`deuxColonnesGauche` ou `deuxColonnesGaucheFalse`) au `body`. À noter que cette option n'a pas d'influence sur le flux HTML et que Squeletml ne se sert pas par défaut de cette deuxième colonne. */
+/* Si vaut TRUE, ajoute les deux classes `deuxColonnes` et (`deuxColonnesGauche` ou `deuxColonnesDroite`) au `body`. À noter que cette option n'a pas d'influence sur le flux HTML et que Squeletml ne se sert pas par défaut de cette deuxième colonne. */
 $deuxColonnes = FALSE; // TRUE|FALSE
 
 ########################################################################
