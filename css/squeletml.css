@@ -30,14 +30,24 @@ div#titre h1, div#titre p {
 	line-height: 1.2em;
 }
 
+div#titre h1 img, div#titre p img {
+	margin-right: 3px;
+}
+
 div#titre p a, div#titre p a:hover, div#titre p a:visited {
-	color: black;
+	color: #007070;
 	text-decoration: none;
 	border-bottom: none;
 }
 
 div#titre p a img {
 	border: none;
+}
+
+div#sousTitre {
+	position: relative;
+	margin-top: -34px;
+	margin-bottom: 25px;
 }
 
 div#sousTitre p {
@@ -175,18 +185,6 @@ pre {
 
 .sep {
 	clear: both;
-}
-
-/***********************************************************************
-**
-** Toute configuration de colonne
-**
-***********************************************************************/
-
-div#sousTitre {
-	position: relative;
-	margin-top: -34px;
-	margin-bottom: 25px;
 }
 
 /***********************************************************************
