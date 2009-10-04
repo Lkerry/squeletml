@@ -1,5 +1,4 @@
 		<?php if (isset($corpsGalerie) && !empty($corpsGalerie)): ?>
-			<?php $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement); ?>
 			<?php echo $tableauCorpsGalerie['corpsGalerie']; ?>
 		<?php endif; ?>
 		
@@ -31,7 +30,7 @@
 		<?php include fichierPartagePremierDernier($racine, 'faire-decouvrir'); ?>
 	<?php endif; ?>
 
-	<?php if (!empty($tableauCorpsGalerie['texteIntermediaire'])): ?>
+	<?php if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement == 'sousContenu'): ?>
 		<?php echo $tableauCorpsGalerie['texteIntermediaire']; ?>
 	<?php endif; ?>
 

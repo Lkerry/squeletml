@@ -380,7 +380,7 @@ div#sepGalerieMinivignettes {
 	margin-left: 25px;
 }
 
-#galerieIntermediaireTexteSousLeContenu {
+#galerieIntermediaireTexteHorsContenu {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
 	border-top: 1px solid #f2f2f2;
 	border-bottom: 1px solid #f2f2f2;
@@ -390,12 +390,12 @@ div#sepGalerieMinivignettes {
 	text-align: left;
 }
 
-#galerieIntermediaireTexteSousLeContenu h2 {
+#galerieIntermediaireTexteHorsContenu h2 {
 	margin-top: 0px;
 	font-size: 1.1em;
 }
 
-#galerieIntermediaireTexteSousLeContenu ul {
+#galerieIntermediaireTexteHorsContenu ul {
 	list-style-type: circle;
 	margin-top: 0px;
 	margin-left: 0px;

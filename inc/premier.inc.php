@@ -129,6 +129,13 @@ include $racine . '/inc/faire-decouvrir.inc.php';
 	<?php include fichierPartagePremierDernier($racine, 'faire-decouvrir'); ?>
 <?php endif; ?>
 
+<?php if (isset($corpsGalerie) && !empty($corpsGalerie)): ?>
+	<?php $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement); ?>
+<?php endif; ?>
+<?php if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement == 'surContenu'): ?>
+	<?php echo $tableauCorpsGalerie['texteIntermediaire']; ?>
+<?php endif; ?>
+
 <?php if ((($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))) && (!$rssSousContenu)): ?>
 	<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
 <?php endif; ?>

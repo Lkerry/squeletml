@@ -271,8 +271,8 @@ $galerieLienOriginalJavascript = FALSE; // TRUE|FALSE
 $galerieTelechargeOriginal = FALSE; // TRUE|FALSE
 
 // Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
-/* Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousContenu` fait référence à la page. Par exemple, l'option `sousContenu` place avec la configuration et le style par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
-$galerieLegendeEmplacement = 'sousContenu'; // haut|bas|sousContenu
+/* Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousContenu` et `surContenu` font référence à la page. Par exemple, l'option `sousContenu` place avec la configuration et le style par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
+$galerieLegendeEmplacement = 'sousContenu'; // haut|bas|sousContenu|surContenu
 
 ########################################################################
 ##

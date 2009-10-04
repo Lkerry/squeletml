@@ -768,10 +768,10 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->)/', $corpsGalerie, $res))
 	{
-		if ($galerieLegendeEmplacement == 'sousContenu')
+		if ($galerieLegendeEmplacement == 'sousContenu' || $galerieLegendeEmplacement == 'surContenu')
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->/', '', $corpsGalerie);
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteSousLeContenu"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieIntermediaireTexteSousLeContenu -->';
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieIntermediaireTexteHorsContenu -->';
 		}
 		else
 		{
