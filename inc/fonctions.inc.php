@@ -332,9 +332,17 @@ function lettreAuHasard($lettresExclues = '')
 }
 
 /**
+Retourne le fichier partagé entre `inc/premier.inc.php` et `inc/dernier.inc.php`.
+*/
+function fichierPartagePremierDernier($racine, $fichier)
+{
+	return $racine . '/inc/partage-premier-dernier/html.' . $fichier . '.inc.php';
+}
+
+/**
 Renvoie une liste de classes pour `body`.
 */
-function construitClassBody($estAccueil, $menuSousLeContenu, $menuLanguesSousLeContenu, $menuSousLeMenuLangues, $colonneAgauche, $deuxColonnes, $idGalerie, $stylerLiensVisitesSeulementDansContenu)
+function construitClassBody($estAccueil, $idGalerie, $menuSousContenu, $menuLanguesSousContenu, $menuSousMenuLangues, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu)
 {
 	$class = '';
 	
@@ -343,46 +351,51 @@ function construitClassBody($estAccueil, $menuSousLeContenu, $menuLanguesSousLeC
 		$class .= 'accueil ';
 	}
 	
-	if ($menuSousLeContenu)
+	if ($idGalerie)
 	{
-		$class .= 'menuSousLeContenu ';
+		$class .= 'galerie ';
 	}
 	
-	if ($menuLanguesSousLeContenu)
+	if ($menuSousContenu)
 	{
-		$class .= 'menuLanguesSousLeContenu ';
+		$class .= 'menuSousContenu ';
 	}
 	
-	if ($menuSousLeMenuLangues)
+	if ($menuLanguesSousContenu)
 	{
-		$class .= 'menuSousLeMenuLangues ';
+		$class .= 'menuLanguesSousContenu ';
 	}
 	
-	if ($colonneAgauche)
+	if ($menuSousMenuLangues)
 	{
-		$class .= 'colonneAgauche ';
-	}
-	else
-	{
-		$class .= 'colonneAdroite ';
+		$class .= 'menuSousMenuLangues ';
 	}
 	
 	if ($deuxColonnes)
 	{
-		$class .= 'deuxColonnes ';
-		if ($colonneAgauche)
+		$class .= 'deuxColonnes colonneAgauche colonneAdroite ';
+		
+		if ($deuxColonnesSousContenuAgauche)
 		{
-			$class .= 'deuxColonnesGauche ';
+			$class .= 'deuxColonnesSousContenuAgauche ';
 		}
 		else
 		{
-			$class .= 'deuxColonnesDroite ';
+			$class .= 'deuxColonnesSousContenuAdroite ';
 		}
 	}
-	
-	if ($idGalerie)
+	else
 	{
-		$class .= 'galerie ';
+		$class .= 'uneColonne ';
+		
+		if ($uneColonneAgauche)
+		{
+			$class .= 'colonneAgauche uneColonneAgauche ';
+		}
+		else
+		{
+			$class .= 'colonneAdroite uneColonneAdroite ';
+		}
 	}
 	
 	if (!$stylerLiensVisitesSeulementDansContenu)
@@ -755,7 +768,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->)/', $corpsGalerie, $res))
 	{
-		if ($galerieLegendeEmplacement == 'sousLeContenu')
+		if ($galerieLegendeEmplacement == 'sousContenu')
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->/', '', $corpsGalerie);
 			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteSousLeContenu"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieIntermediaireTexteSousLeContenu -->';
@@ -1023,7 +1036,7 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 			$imgLienOriginal = '';
 		}
 		
-		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousLeContenu')
+		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousContenu')
 		{
 			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal;
 		}

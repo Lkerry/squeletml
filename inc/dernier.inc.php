@@ -21,28 +21,16 @@
 </div><!-- /contenu -->
 
 <div id="sousContenu">
-	<?php if (!$menuSousLeMenuLangues): ?>
-		<?php if ($menuSousLeContenu): ?>
-			<div id="menu">
-				<?php include fichierMenu($racine, $langue); ?>
-			</div><!-- /menu -->
-			<script type="text/javascript">setPage();</script>
-		<?php endif; ?>
+	<?php if (!$menuSousMenuLangues && $menuSousContenu): ?>
+		<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
 	<?php endif; ?>
 
-	<?php if ($menuLanguesSousLeContenu && count($accueil) > 1): ?>
-		<div id="menuLangues">
-			<?php include fichierMenuLangues($racine, $langue); ?>
-		</div><!-- /menuLangues -->
+	<?php if (count($accueil) > 1 && $menuLanguesSousContenu): ?>
+		<?php include fichierPartagePremierDernier($racine, 'menu-langues'); ?>
 	<?php endif; ?>
 
-	<?php if ($menuSousLeMenuLangues): ?>
-		<?php if ($menuSousLeContenu): ?>
-			<div id="menu">
-				<?php include fichierMenu($racine, $langue); ?>
-			</div><!-- /menu -->
-			<script type="text/javascript">setPage();</script>
-		<?php endif; ?>
+	<?php if ($menuSousMenuLangues && $menuSousContenu): ?>
+		<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
 	<?php endif; ?>
 
 	<?php if ($faireDecouvrir && $decouvrir): ?>
@@ -55,23 +43,8 @@
 		<?php echo $tableauCorpsGalerie['texteIntermediaire']; ?>
 	<?php endif; ?>
 
-	<?php if (($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))): ?>
-		<div class="sep"></div>
-		<div id="iconeRss">
-			<ul>
-				<?php if ($idGalerie && $rss): ?>
-					<li><?php echo lienRss($urlFlux, $idGalerie, TRUE); ?></li>
-				<?php endif; ?>
-		
-				<?php if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")): ?>
-					<li><?php echo lienRss("$urlRacine/rss.php?global=galeries&langue=" . langue($langue), FALSE, TRUE); ?></li>
-				<?php endif; ?>
-			
-				<?php if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc")): ?>
-					<li><?php echo lienRss("$urlRacine/rss.php?global=site&langue=" . langue($langue), FALSE, FALSE); ?></li>
-				<?php endif; ?>
-			</ul>
-		</div><!-- /iconeRss -->
+	<?php if ((($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))) && ($rssSousContenu)): ?>
+		<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
 	<?php endif; ?>
 </div><!-- /sousContenu -->
 

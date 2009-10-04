@@ -1,8 +1,8 @@
-body.deuxColonnesGauche .galerieNavigationAccueil, body.deuxColonnesDroite .galerieNavigationAccueil {
+body.deuxColonnes .galerieNavigationAccueil, body.deuxColonnes .galerieNavigationAccueil {
 	margin-right: 204px;
 }
 
-body.deuxColonnesGauche .galerieNavigationSuivant, body.deuxColonnesDroite .galerieNavigationSuivant {
+body.deuxColonnes .galerieNavigationSuivant, body.deuxColonnes .galerieNavigationSuivant {
 	margin-right: 204px;
 }
 

@@ -152,7 +152,7 @@ Doctype XHTML 1.0 Strict
 		Insertion des feuilles de style et des scripts Javascript
 	</head>
 
-	<body ...><!-- Selon le cas, diverses class pour body -->
+	<body ...><!-- Selon le cas, diverses classes pour body -->
 		<div id="page">
 		  <div id="interieurPage">
 				S'il y a lieu, commentaire conditionnel pour Internet Explorer 6

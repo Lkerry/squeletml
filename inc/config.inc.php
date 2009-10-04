@@ -5,6 +5,10 @@
 ##
 ########################################################################
 
+##
+## En-tête HTML
+##
+
 // Choix du DTD (Définition de Type de Document)
 /* Si `$xhtmlStrict` vaut TRUE, le doctype utilisé est XHTML 1.0 Strict, sinon c'est XHTML 1.0 Transitional. Si vous ne savez pas de quoi il s'agit, laissez TRUE. Le seul intérêt de choisir FALSE serait dans le cas où vous savez que vous devez utiliser des balises non valides en XHTML 1.0 Strict. */
 $xhtmlStrict = TRUE; // TRUE|FALSE
@@ -43,8 +47,15 @@ $robots[0] = "index, follow, archive";
 // Encodage
 $charset = 'UTF-8';
 
+// Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
+$langue[0] = 'fr';
+
+##
+## Syndication de contenu (flux RSS)
+##
+
 // Syndication globale du site
-/* La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxGlobal` vaut `TRUE`. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL. Voir la documentation pour plus de détails. */
+/* La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxGlobal` vaut TRUE. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL. Voir la documentation pour plus de détails. */
 $siteFluxGlobal = FALSE; // TRUE|FALSE
 
 // Nombre d'items par flux RSS
@@ -61,49 +72,66 @@ Exemples:
 */
 $dureeCache = 0;
 
-// Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
-$langue[0] = 'fr';
+##
+## Activations et inclusions
+##
 
 // Activer l'option «Faire découvrir à des ami-e-s»
 $faireDecouvrir = TRUE; // TRUE|FALSE
 
-// Message pour IE6
+// Activer le message pour Internet Explorer 6
 $messageIE6 = TRUE; // TRUE|FALSE
 
 // Inclusion du sur-titre
 $surTitre = FALSE; // TRUE|FALSE
+
+// Inclusion du bas de page
+$basDePage = TRUE; // TRUE|FALSE
+
+##
+## Contenu et ordre du flux HTML
+##
+
+/* Note: `sousContenu` fait référence à l'insertion dans le flux HTML au-dessous du contenu (dans la div `sousContenu`), en opposition à l'insertion au-dessus du contenu (dans la div `surContenu`). */
 
 // Titre du site en en-tête
 /* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un h1 s'il s'agit de la page d'accueil, ou dans un p pour toutes les autres pages. */
 $titreSite['fr'] = "<img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" />";
 $titreSite['en'] = $titreSite['fr'];
 
-// Style des liens visités
-/* Les liens visités (`a:visited`) de tout le site ont par défaut un style différent des liens non visités. Mettre à `TRUE` pour différencier seulement les liens visités du corps des pages (div `contenu`). */
-$stylerLiensVisitesSeulementDansContenu = FALSE; // TRUE|FALSE
-
-// Position du menu
-/* Le menu peut être inséré dans le flux HTML au-dessus du contenu ou bien en-dessous. */
-$menuSousLeContenu = TRUE; // TRUE|FALSE
+// Position du menu principal
+$menuSousContenu = TRUE; // TRUE|FALSE
 
 // Le cas échéant, position du menu des langues
-/* Le menu des langues peut être inséré dans le flux HTML au-dessus du contenu ou bien en-dessous. */
-$menuLanguesSousLeContenu = TRUE; // TRUE|FALSE
+$menuLanguesSousContenu = TRUE; // TRUE|FALSE
 
 // Le cas échéant, l'ordre d'affichage des menus
-/* Si le menu ainsi que le menu des langues sont situés dans la même région (tous les deux au-dessus du contenu ou tous les deux en-dessous), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
-$menuSousLeMenuLangues = TRUE; // TRUE|FALSE
+/* Si le menu principal ainsi que le menu des langues sont situés dans la même région (tous les deux en-dessous du contenu ou tous les deux au-dessus), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
+$menuSousMenuLangues = TRUE; // TRUE|FALSE
 
-// Inclusion du bas de page
-$basDePage = TRUE; // TRUE|FALSE
+// Le cas échéant, position des liens RSS
+$rssSousContenu = TRUE; // TRUE|FALSE
 
-// Position de la colonne.
-/* Si `$colonneAgauche` vaut TRUE, une classe `colonneAgauche` est ajoutée au `body`, et la feuille de style par défaut place la colonne à gauche. Si la variable vaut FALSE, une classe `colonneAdroite` est ajoutée au `body` et la colonne se trouve par défaut à droite. À noter que cette option n'a aucune influence sur le flux HTML. La position de la colonne est gérée dans la feuille de style par défaut. */
-$colonneAgauche = TRUE; // TRUE|FALSE
+##
+## Style CSS
+##
 
-// Deux colonnes
-/* Si vaut TRUE, ajoute les deux classes `deuxColonnes` et (`deuxColonnesGauche` ou `deuxColonnesDroite`) au `body`. À noter que cette option n'a pas d'influence sur le flux HTML et que Squeletml ne se sert pas par défaut de cette deuxième colonne. */
+/* Note: les options suivantes n'ont aucune influence sur le flux HTML. */
+
+// Style des liens visités
+/* Les liens visités (`a:visited`) de tout le site ont par défaut un style différent des liens non visités. Mettre à TRUE pour différencier seulement les liens visités contenus dans le corps des pages (div `contenu`). */
+$stylerLiensVisitesSeulementDansContenu = FALSE; // TRUE|FALSE
+
+// Choisir le nombre de colonnes
+/* Si vaut TRUE, ajoute les classes `deuxColonnes`, `colonneAgauche` et `colonneAdroite` au `body`, sinon ajoute la classe `uneColonne` au `body`. À noter que Squeletml ne se sert pas par défaut de la deuxième colonne. */
 $deuxColonnes = FALSE; // TRUE|FALSE
+
+// Si `$deuxColonnes` vaut TRUE et que `$deuxColonnesSousContenuAgauche` vaut TRUE, ajoute la classe `deuxColonnesSousContenuAgauche` au `body`, sinon si `$deuxColonnes` vaut TRUE et que `$deuxColonnesSousContenuAgauche` vaut FALSE, ajoute la classe `deuxColonnesSousContenuAdroite` au `body`. Le sur-contenu va être affiché par défaut dans la colonne opposée.
+$deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
+
+// S'il y a lieu, emplacement de la colonne unique
+/* Si `$deuxColonnes` vaut FALSE et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées au `body`, sinon si `$deuxColonnes` vaut FALSE et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées au `body`. */
+$uneColonneAgauche = TRUE; // TRUE|FALSE
 
 ########################################################################
 ##
@@ -240,8 +268,8 @@ $galerieLienOriginalJavascript = FALSE; // TRUE|FALSE
 $galerieTelechargeOriginal = FALSE; // TRUE|FALSE
 
 // Emplacement de la légende, des informations Exif et du lien vers l'image originale (s'il y a lieu)
-/* Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousLeContenu` fait référence à la page. Par exemple, l'option `sousLeContenu` place avec la configuration par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
-$galerieLegendeEmplacement = 'sousLeContenu'; // haut|bas|sousLeContenu
+/* Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousContenu` fait référence à la page. Par exemple, l'option `sousContenu` place avec la configuration et le style par défaut de Squeletml les informations de l'image dans la colonne de gauche. */
+$galerieLegendeEmplacement = 'sousContenu'; // haut|bas|sousContenu
 
 ########################################################################
 ##

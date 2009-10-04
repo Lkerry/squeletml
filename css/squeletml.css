@@ -1,4 +1,8 @@
-/* Général */
+/***********************************************************************
+**
+** Général
+**
+***********************************************************************/
 
 html, body {
 	margin: 0;
@@ -70,7 +74,7 @@ div#sousTitre p {
 	list-style-image: url('../fichiers/puce.png');
 }
 
-#iconeRss {
+#fluxRss {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
 	border-top: 1px solid #f2f2f2;
 	border-bottom: 1px solid #f2f2f2;
@@ -78,13 +82,13 @@ div#sousTitre p {
 	text-align: left;
 }
 
-#iconeRss ul {
+#fluxRss ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-#iconeRss li {
+#fluxRss li {
 	margin: 0;
 	padding: 0;
 }
@@ -93,7 +97,7 @@ div#sousTitre p {
 	margin-bottom: 15px;
 }
 
-#faireDecouvrir a, #iconeRss a {
+#faireDecouvrir a, #fluxRss a {
 /*	display: block;*/
 	padding-right: 3px;
 }
@@ -104,7 +108,7 @@ div#sousTitre p {
 	background: url('../fichiers/enveloppe.png') no-repeat left center;
 }
 
-#iconeRss a {
+#fluxRss a {
 	margin-left: 5px;
 	padding-left: 21px;
 	background: url('../fichiers/rss.png') no-repeat left center;
@@ -168,7 +172,11 @@ pre {
 	clear: both;
 }
 
-/* body.colonneAgauche */
+/***********************************************************************
+**
+** body.colonneAgauche
+**
+***********************************************************************/
 
 body.colonneAgauche #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
@@ -190,14 +198,27 @@ body.colonneAgauche #contenu {
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	position: absolute;
 	top: 80px;
-	left: 0;
 }
 
 body.colonneAgauche #basDePage {
 	margin: 25px 0 0 204px;
 }
 
-/* body.colonneAdroite */
+/***********************************************************************
+**
+** body.uneColonneAgauche
+**
+***********************************************************************/
+
+body.uneColonneAgauche #surContenu, body.uneColonneAgauche #sousContenu {
+	left: 0;
+}
+
+/***********************************************************************
+**
+** body.colonneAdroite
+**
+***********************************************************************/
 
 body.colonneAdroite #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y right top;
@@ -220,63 +241,100 @@ body.colonneAdroite #contenu {
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
 	top: 80px;
-	right: 0;
 }
 
 body.colonneAdroite #basDePage {
 	margin: 25px 204px 0 0px;
 }
 
-/* body.deuxColonnesGauche */
+/***********************************************************************
+**
+** body.uneColonneAdroite
+**
+***********************************************************************/
 
-body.deuxColonnesGauche #page {
-	background: url('../fichiers/rayures-204px.png') repeat-y left top;
-	padding-right: 0;
+body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
+	right: 0;
 }
 
-body.deuxColonnesGauche #interieurPage {
-	background: url('../fichiers/rayures-204px.png') repeat-y right top;
-}
+/***********************************************************************
+**
+** body.deuxColonnes
+**
+***********************************************************************/
 
-body.deuxColonnesGauche #contenu {
-	margin-right: 204px;
-	text-align: justify;
-}
-
-body.deuxColonnesGauche #basDePage {
-	margin: 25px 204px 0 204px;
-}
-
-/* body.deuxColonnesDroite */
-
-body.deuxColonnesDroite #page {
-	padding-left: 0;
-}
-
-body.deuxColonnesDroite #interieurPage {
-	background: url('../fichiers/rayures-204px.png') repeat-y left top;
-}
-
-body.deuxColonnesDroite div#titre h1, body.deuxColonnesDroite div#titre p {
+body.deuxColonnes div#titre h1, body.deuxColonnes div#titre p {
 	margin: 0px 0px 0px 210px;
 }
 
-body.deuxColonnesDroite div#sousTitre {
+body.deuxColonnes div#sousTitre {
 	position: relative;
 	margin: -34px 0px 25px 294px;
 }
 
-body.deuxColonnesDroite #contenu {
-	margin-left: 204px;
+body.deuxColonnes #basDePage {
+	margin: 25px 204px 0 204px;
+}
+
+body.deuxColonnes #contenu {
 	margin-right: 204px;
 	text-align: justify;
 }
 
-body.deuxColonnesDroite #basDePage {
-	margin: 25px 204px 0 204px;
+/***********************************************************************
+**
+** body.deuxColonnesSousContenuAgauche
+**
+***********************************************************************/
+
+body.deuxColonnesSousContenuAgauche #page {
+	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+	padding-right: 0;
 }
 
-/* Module contact */
+body.deuxColonnesSousContenuAgauche #interieurPage {
+	background: url('../fichiers/rayures-204px.png') repeat-y right top;
+}
+
+body.deuxColonnesSousContenuAgauche #surContenu {
+	right: 0;
+}
+
+body.deuxColonnesSousContenuAgauche #sousContenu {
+	left: 0;
+}
+
+/***********************************************************************
+**
+** body.deuxColonnesSousContenuAdroite
+**
+***********************************************************************/
+
+body.deuxColonnesSousContenuAdroite #page {
+	padding-left: 0;
+}
+
+body.deuxColonnesSousContenuAdroite #interieurPage {
+	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+}
+
+body.deuxColonnesSousContenuAdroite #contenu {
+	margin-left: 204px;
+}
+
+body.deuxColonnesSousContenuAdroite #surContenu {
+	left: 0;
+}
+
+body.deuxColonnesSousContenuAdroite #sousContenu {
+	right: 0;
+}
+
+/***********************************************************************
+**
+** Module contact
+**
+***********************************************************************/
 
 #formContact label {
 	font-weight: bold;
@@ -290,7 +348,11 @@ body.deuxColonnesDroite #basDePage {
 	width: 70%;
 }
 
-/* Module galerie */
+/***********************************************************************
+**
+** Module galerie
+**
+***********************************************************************/
 
 body.galerie #page {
 	max-width: 1000px;
@@ -437,7 +499,11 @@ div.galerieNavigationAccueil img, div#galerieIntermediaireImg img {
 	margin: 10px;
 }
 
-/* Bloc message pour IE6 */
+/***********************************************************************
+**
+** Bloc message pour IE6
+**
+***********************************************************************/
 
 div#messageIE6 {
 	border: 3px solid #090;

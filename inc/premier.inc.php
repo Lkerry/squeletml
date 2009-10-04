@@ -76,7 +76,7 @@ if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 <?php endif; ?>
 </head>
-<body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $menuSousLeContenu, $menuLanguesSousLeContenu, $menuSousLeMenuLangues, $colonneAgauche, $deuxColonnes, $idGalerie, $stylerLiensVisitesSeulementDansContenu); ?>">
+<body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $menuSousContenu, $menuLanguesSousContenu, $menuSousMenuLangues, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu); ?>">
 <div id="ancres">
 	<?php include fichierAncres($racine, $langue); ?>
 </div><!-- /ancres -->
@@ -108,28 +108,20 @@ if ($messageIE6)
 </div><!-- /entete -->
 
 <div id="surContenu">
-<?php if (!$menuSousLeMenuLangues): ?>
-	<?php if (!$menuSousLeContenu): ?>
-		<div id="menu">
-			<?php include fichierMenu($racine, $langue); ?>
-		</div><!-- /menu -->
-		<script type="text/javascript">setPage();</script>
-	<?php endif; ?>
+<?php if (!$menuSousMenuLangues && !$menuSousContenu): ?>
+	<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
 <?php endif; ?>
 
-<?php if (!$menuLanguesSousLeContenu && count($accueil) > 1): ?>
-	<div id="menuLangues">
-		<?php include fichierMenuLangues($racine, $langue); ?>
-	</div><!-- /menuLangues -->
+<?php if (count($accueil) > 1 && !$menuLanguesSousContenu): ?>
+	<?php include fichierPartagePremierDernier($racine, 'menu-langues'); ?>
 <?php endif; ?>
 
-<?php if ($menuSousLeMenuLangues): ?>
-	<?php if (!$menuSousLeContenu): ?>
-		<div id="menu">
-			<?php include fichierMenu($racine, $langue); ?>
-		</div><!-- /menu -->
-		<script type="text/javascript">setPage();</script>
-	<?php endif; ?>
+<?php if ($menuSousMenuLangues && !$menuSousContenu): ?>
+	<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
+<?php endif; ?>
+
+<?php if ((($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))) && (!$rssSousContenu)): ?>
+	<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
 <?php endif; ?>
 </div><!-- /surContenu -->
 
