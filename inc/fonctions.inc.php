@@ -332,9 +332,9 @@ function lettreAuHasard($lettresExclues = '')
 }
 
 /**
-Renvoie une liste de classes.
+Renvoie une liste de classes pour `body`.
 */
-function construitClass($estAccueil, $menuSousLeContenu, $menuLanguesSousLeContenu, $menuSousLeMenuLangues, $colonneAgauche, $deuxColonnes, $idGalerie)
+function construitClassBody($estAccueil, $menuSousLeContenu, $menuLanguesSousLeContenu, $menuSousLeMenuLangues, $colonneAgauche, $deuxColonnes, $idGalerie, $stylerLiensVisitesSeulementDansContenu)
 {
 	$class = '';
 	
@@ -383,6 +383,11 @@ function construitClass($estAccueil, $menuSousLeContenu, $menuLanguesSousLeConte
 	if ($idGalerie)
 	{
 		$class .= 'galerie ';
+	}
+	
+	if (!$stylerLiensVisitesSeulementDansContenu)
+	{
+		$class .= 'liensVisitesStyles ';
 	}
 	
 	return trim($class);

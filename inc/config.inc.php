@@ -78,6 +78,10 @@ $surTitre = FALSE; // TRUE|FALSE
 $titreSite['fr'] = "<img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" />";
 $titreSite['en'] = $titreSite['fr'];
 
+// Style des liens visités
+/* Les liens visités (`a:visited`) de tout le site ont par défaut un style différent des liens non visités. Mettre à `TRUE` pour différencier seulement les liens visités du corps des pages (div `contenu`). */
+$stylerLiensVisitesSeulementDansContenu = FALSE; // TRUE|FALSE
+
 // Position du menu
 /* Le menu peut être inséré dans le flux HTML au-dessus du contenu ou bien en-dessous. */
 $menuSousLeContenu = TRUE; // TRUE|FALSE
