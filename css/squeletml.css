@@ -77,6 +77,10 @@ div#sousTitre p {
 	background-color: #f2f2f2;
 }
 
+#menuLangues, #menu, #faireDecouvrir, #galerieIntermediaireTexteHorsContenu, #fluxRss, #surContenuSupplement, #sousContenuSupplement {
+	margin-bottom: 20px;
+}
+
 #menu a.actif {
 	font-weight: bold;
 }
@@ -86,7 +90,7 @@ div#sousTitre p {
 }
 
 #fluxRss, #faireDecouvrir {
-	padding: 1px 3px;
+	padding: 0px 3px;
 	text-align: left;
 }
 
