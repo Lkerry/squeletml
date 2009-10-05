@@ -105,6 +105,8 @@ if ($messageIE6)
 	<div id="sousTitre">
 		<?php include fichierSousTitre($racine, $langue); ?>
 	</div><!-- /sousTitre -->
+	
+	<div class="sep"></div>
 </div><!-- /entete -->
 
 <div id="surContenu">

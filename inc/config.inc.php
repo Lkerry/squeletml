@@ -95,8 +95,8 @@ $basDePage = TRUE; // TRUE|FALSE
 /* Note: `sousContenu` fait référence à l'insertion dans le flux HTML au-dessous du contenu (dans la div `sousContenu`), en opposition à l'insertion au-dessus du contenu (dans la div `surContenu`). */
 
 // Titre du site en en-tête
-/* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un h1 s'il s'agit de la page d'accueil, ou dans un p pour toutes les autres pages. */
-$titreSite['fr'] = "<img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" />";
+/* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un `h1` s'il s'agit de la page d'accueil, ou dans un `p` pour toutes les autres pages. Astuce: si vous ne voulez pas trop bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 75px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site. */
+$titreSite['fr'] = "<img id=\"logo\" src=\"$urlRacine/fichiers/squeletml-logo.png\" alt=\"Squeletml\" /><span id=\"logoSupplement\"><img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" /></span>";
 $titreSite['en'] = $titreSite['fr'];
 
 // Position du menu principal

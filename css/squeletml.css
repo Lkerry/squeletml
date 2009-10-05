@@ -30,8 +30,15 @@ div#titre h1, div#titre p {
 	line-height: 1.2em;
 }
 
-div#titre h1 img, div#titre p img {
+div#titre h1 img#logo, div#titre p img#logo {
+	float: left;
 	margin-right: 3px;
+}
+
+div#titre h1 span#logoSupplement, div#titre p span#logoSupplement {
+	display: block;
+	padding-top: 22px;
+	padding-bottom: 5px;
 }
 
 div#titre p a, div#titre p a:hover, div#titre p a:visited {
@@ -42,12 +49,6 @@ div#titre p a, div#titre p a:hover, div#titre p a:visited {
 
 div#titre p a img {
 	border: none;
-}
-
-div#sousTitre {
-	position: relative;
-	margin-top: -34px;
-	margin-bottom: 25px;
 }
 
 div#sousTitre p {
@@ -62,6 +63,7 @@ div#sousTitre p {
 
 #interieurContenu {
 	padding: 0px 5px 5px 5px;
+	margin-top: 15px;
 }
 
 #contenu h1, body.accueil #interieurContenu> h2:first-child {
@@ -203,7 +205,7 @@ body.colonneAgauche div#titre h1, body.colonneAgauche div#titre p {
 }
 
 body.colonneAgauche div#sousTitre {
-	margin-left: 294px;
+	margin-left: 289px;
 }
 
 body.colonneAgauche #contenu {
@@ -283,7 +285,7 @@ body.uneColonneAdroite div#titre h1, body.uneColonneAdroite div#titre p {
 }
 
 body.uneColonneAdroite div#sousTitre {
-	margin-left: 90px;
+	margin-left: 84px;
 }
 
 body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
@@ -299,11 +301,6 @@ body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
 body.deuxColonnes div#titre h1, body.deuxColonnes div#titre p {
 	margin-right: 210px;
 	margin-left: 210px;
-}
-
-body.deuxColonnes div#sousTitre {
-	margin-right: 210px;
-	margin-left: 294px;
 }
 
 body.deuxColonnes #basDePage {
