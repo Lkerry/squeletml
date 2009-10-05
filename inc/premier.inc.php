@@ -50,7 +50,9 @@ if ($idGalerie && !isset($rss))
 <title><?php echo $baliseTitle .= ' | ' . baliseTitleComplement($baliseTitleComplement, $langue); ?></title>
 <meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
 <meta name="description" content="<?php echo $description; ?>" />
-<meta name="keywords" content="<?php echo construitMotsCles($motsCles, $description); ?>" />
+<?php if ($motsClesActives): ?>
+	<meta name="keywords" content="<?php echo construitMotsCles($motsCles, $description); ?>" />
+<?php endif; ?>
 <meta name="robots" content="<?php echo robots($robots); ?>" />
 <?php
 if ($idGalerie && $rss)

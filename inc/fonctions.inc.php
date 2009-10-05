@@ -92,7 +92,7 @@ function langueParDefaut($langue)
 }
 
 /**
-Si $motsCles est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise keywords, et retourne cette liste, sinon retourne tout simplement $motsCles.
+Si `$motsCles` est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise `keywords`, et retourne cette liste, sinon retourne tout simplement `$motsCles`.
 */
 function construitMotsCles($motsCles, $chaine)
 {

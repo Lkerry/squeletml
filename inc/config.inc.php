@@ -40,7 +40,10 @@ $versionFichiersLinkScript = 1;
 // Inclusion des feuilles de style par défaut de Squeletml (dans le dossier `css`)
 $styleSqueletmlCss = TRUE; // TRUE|FALSE
 
-// Contenu par défaut de la métabalise robots
+// Activation ou non de la métabalise `keywords`
+$motsClesActives = TRUE; // TRUE|FALSE
+
+// Contenu par défaut de la métabalise `robots`
 /* Liste de valeurs possibles: index, follow, archive, noindex, nofollow, noarchive, noodp, noydir */
 $robots[0] = "index, follow, archive";
 
