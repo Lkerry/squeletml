@@ -45,7 +45,7 @@ $motsClesActives = TRUE; // TRUE|FALSE
 
 // Contenu par défaut de la métabalise `robots`
 /* Liste de valeurs possibles: index, follow, archive, noindex, nofollow, noarchive, noodp, noydir */
-$robots[0] = "index, follow, archive";
+$robotsParDefaut = "index, follow, archive";
 
 // Encodage
 $charset = 'UTF-8';

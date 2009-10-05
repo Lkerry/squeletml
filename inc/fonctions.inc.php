@@ -412,9 +412,9 @@ function construitClassBody($estAccueil, $idGalerie, $menuSousContenu, $menuLang
 /**
 Retourne le contenu de la métabalise robots.
 */
-function robots($robots)
+function robots($robotsParDefaut, $robots)
 {
-	return isset($robots[1]) ? $robots[1] : $robots[0];
+	return $robots ? $robots : $robotsParDefaut;
 }
 
 /**

@@ -343,7 +343,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . ' | ' . $baliseTitleComplement[langue($langue)];
 		$motsCles = construitMotsCles('', $description);
 		$motsCles .= ', ' . $id;
-		$robots[1] = "noindex, follow, noarchive";
+		$robots = "noindex, follow, noarchive";
 	}
 }
 
@@ -504,7 +504,7 @@ else
 	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . ' | ' . $baliseTitleComplement[langue($langue)];
 	$motsCles = construitMotsCles('', $description);
 	$motsCles .= ', ' . $nomGalerie;
-	$robots[1] = "noindex, follow, noarchive";
+	$robots = "noindex, follow, noarchive";
 }
 
 ?>

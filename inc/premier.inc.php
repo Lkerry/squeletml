@@ -1,37 +1,55 @@
 <?php
-// Début des insertions
+########################################################################
+##
+## Insertions et initialisations
+##
+########################################################################
+
 include_once dirname(__FILE__) . '/../init.inc.php';
+
 if (file_exists($racine . '/inc/devel.inc.php'))
 {
 	include_once $racine . '/inc/devel.inc.php';
 }
+
 include_once $racine . '/inc/config.inc.php';
+
 if (file_exists($racine . '/site/inc/config.inc.php'))
 {
 	include_once $racine . '/site/inc/config.inc.php';
 }
+
 include_once $racine . '/inc/fonctions.inc.php';
+
 if (!isset($idGalerie))
 {
 	$idGalerie = FALSE;
 }
+
 if (!isset($motsCles))
 {
 	$motsCles = FALSE;
 }
+
 if (!isset($pageDerreur))
 {
 	$pageDerreur = FALSE;
 }
+
+if (!isset($robots))
+{
+	$robots = FALSE;
+}
+
 if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
 {
 	$courrielContact = $courrielContactParDefaut;
 }
+
 foreach (init($racine, langue($langue), $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }
-// Fin des insertions
 
 if (!galerieExiste($racine, $idGalerie))
 {
@@ -42,6 +60,12 @@ if ($idGalerie && !isset($rss))
 {
 	$rss = $galerieFluxParDefaut;
 }
+
+########################################################################
+##
+## Début de la structure XHTML
+##
+########################################################################
 ?>
 
 <?php echo doctype($xhtmlStrict); ?>
@@ -53,7 +77,7 @@ if ($idGalerie && !isset($rss))
 <?php if ($motsClesActives): ?>
 	<meta name="keywords" content="<?php echo construitMotsCles($motsCles, $description); ?>" />
 <?php endif; ?>
-<meta name="robots" content="<?php echo robots($robots); ?>" />
+<meta name="robots" content="<?php echo robots($robotsParDefaut, $robots); ?>" />
 <?php
 if ($idGalerie && $rss)
 {

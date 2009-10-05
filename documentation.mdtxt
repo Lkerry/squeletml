@@ -250,7 +250,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$langue[1]`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `config.inc.php`.
 
-- `$robots[1]`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `config.inc.php`.
+- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `config.inc.php`.
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
