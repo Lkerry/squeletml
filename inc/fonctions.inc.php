@@ -121,7 +121,7 @@ function construitMotsCles($motsCles, $chaine)
 				array ('', '', '', '', '', '', '', '', '', '', '', ''), $chaine);
 
 		// Remplacement des séparateurs «utiles» par des espaces
-		$chaine = str_replace(array ('/', '.', '-'), array (' ', ' ', ' '), $chaine);
+		$chaine = str_replace(array ('/', '.', '-', '\'', '’'), array (' ', ' ', ' ', ' ', ' '), $chaine);
 
 		// Compression des espaces en trop éventuelles générées par l'étape précédente
 		$chaine = str_replace(array ('  '), array (' '), $chaine);
@@ -131,6 +131,9 @@ function construitMotsCles($motsCles, $chaine)
 		
 		// Suppression des mots de trois lettres ou moins
 		$chaine = preg_replace('/(^| )[^, ]{1,3},/', '', $chaine);
+		
+		// Suppression des mots scindés lors du remplacement de l'apostrophe
+		$chaine = preg_replace('/(^| )(aujourd|presqu|entr|prud|homie|homies|homal|homale|homales|homaux),/i', '', $chaine);
 		
 		// Suppression du potentiel ', ' final avant le mélange des mots
 		if (preg_match('/, $/', $chaine))
