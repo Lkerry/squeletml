@@ -7,18 +7,15 @@
 html, body {
 	margin: 0;
 	padding: 0;
-	height: 100%;
 }
 
 #page {
-	min-height:100%;
 	max-width: 900px;
-	margin: 0px auto 0 auto;
+	margin: 0 auto;
 	border-left: 1px solid #f2f2f2;
 	border-right: 1px solid #f2f2f2;
 	padding: 0;
 	position: relative;
-	overflow: hidden;
 }
 
 #ancres {
@@ -85,12 +82,11 @@ div#sousTitre p {
 }
 
 #menu li.actif {
-	list-style-type: circle;
 	list-style-image: url('../fichiers/puce.png');
 }
 
 #fluxRss, #faireDecouvrir {
-	padding: 15px 3px;
+	padding: 1px 3px;
 	text-align: left;
 }
 
@@ -146,6 +142,10 @@ h2#formulaireFaireDecouvrir {
 a:hover {
 	text-decoration: none;
 	border-bottom: 1px dotted #f2f2f2;
+}
+
+ul {
+	list-style-type: circle;
 }
 
 li {
@@ -407,10 +407,6 @@ div#sepGalerieMinivignettes {
 }
 
 #galerieIntermediaireTexteHorsContenu {
-	background: url('../fichiers/rayures-204px.png') repeat-y left top;
-	border-top: 1px solid #f2f2f2;
-	border-bottom: 1px solid #f2f2f2;
-	
 	border-left: 3px solid #007070;
 	padding: 0 3px;
 	text-align: left;
@@ -422,7 +418,6 @@ div#sepGalerieMinivignettes {
 }
 
 #galerieIntermediaireTexteHorsContenu ul {
-	list-style-type: circle;
 	margin-top: 0px;
 	margin-left: 0px;
 	padding-top: 0px;

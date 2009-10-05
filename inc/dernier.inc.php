@@ -61,5 +61,9 @@
 	</div><!-- /interieurPage -->
 </div><!-- /page -->
 
+<script type="text/javascript">
+egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');
+</script>
+
 </body>
 </html>

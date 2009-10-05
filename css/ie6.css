@@ -2,6 +2,9 @@
 	zoom: 1; /* à cause d'un bogue avec `position: absolute` */
 	width: 770px;
 	width: expression( document.body.clientWidth > 900? "900px": "auto" );
-	height: 100%;
+}
+
+div.galerieNavigationSuivant img {
+	float: left;
 }
 

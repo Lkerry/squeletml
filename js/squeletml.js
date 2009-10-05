@@ -30,3 +30,23 @@ function setPage()
 }
 
 // FIN du code pour le lien actif dans le menu.
+
+/**
+Ajustement de la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` si `idAegaliser` n'est pas déjà aussi haut.
+*/
+function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
+{
+	if (document.getElementById(idAegaliser) && document.getElementById(idDeComparaison1) && document.getElementById(idDeComparaison2))
+	{
+		var hauteurIdAegaliser = document.getElementById(idAegaliser).offsetHeight;
+		var hauteurIdDeComparaison1 = document.getElementById(idDeComparaison1).offsetHeight + 80;
+		var hauteurIdDeComparaison2 = document.getElementById(idDeComparaison2).offsetHeight + 80;
+	
+		var hauteurMax = Math.max(hauteurIdDeComparaison1, hauteurIdDeComparaison2);
+		if (hauteurMax > hauteurIdAegaliser)
+		{
+			document.getElementById(idAegaliser).style.height = hauteurMax + "px";
+		}
+	}
+}
+
