@@ -1,7 +1,7 @@
 <?php
 $baliseTitle = "Page introuvable";
 $description = "La page demandée n'existe pas.";
-$langue[1] = 'fr';
+$langue = 'fr';
 include $racine . '/inc/premier.inc.php';
 ?>
 

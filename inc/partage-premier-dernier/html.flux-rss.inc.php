@@ -6,11 +6,11 @@
 		<?php endif; ?>
 
 		<?php if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")): ?>
-			<li><?php echo lienRss("$urlRacine/rss.php?global=galeries&langue=" . langue($langue), FALSE, TRUE); ?></li>
+			<li><?php echo lienRss("$urlRacine/rss.php?global=galeries&langue=" . langue($langueParDefaut, $langue), FALSE, TRUE); ?></li>
 		<?php endif; ?>
 	
 		<?php if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc")): ?>
-			<li><?php echo lienRss("$urlRacine/rss.php?global=site&langue=" . langue($langue), FALSE, FALSE); ?></li>
+			<li><?php echo lienRss("$urlRacine/rss.php?global=site&langue=" . langue($langueParDefaut, $langue), FALSE, FALSE); ?></li>
 		<?php endif; ?>
 	</ul>
 </div><!-- /fluxRss -->

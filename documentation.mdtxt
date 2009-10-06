@@ -248,7 +248,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`.
 
-- `$langue[1]`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `config.inc.php`.
+- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `config.inc.php`.
 
 - `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `config.inc.php`.
 

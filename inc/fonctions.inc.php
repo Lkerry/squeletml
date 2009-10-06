@@ -2,7 +2,7 @@
 /**
 Retourne un tableau contenant les fichiers à inclure.
 */
-function init($racine, $langue, $idGalerie)
+function init($racine, $idGalerie)
 {
 	$fichiers = array ();
 	
@@ -71,24 +71,16 @@ function mdtxtChaine($chaine)
 /**
 Retourne le lien vers l'accueil de la langue de la page.
 */
-function accueil($tableauAccueil, $tableauLangue)
+function accueil($tableauAccueil, $langueParDefaut, $langue)
 {
-	if (array_key_exists(langue($tableauLangue), $tableauAccueil))
+	if (array_key_exists(langue($langueParDefaut, $langue), $tableauAccueil))
 	{
-		return $tableauAccueil[langue($tableauLangue)];
+		return $tableauAccueil[langue($langueParDefaut, $langue)];
 	}
 	else
 	{
-		return $tableauAccueil[langueParDefaut($tableauLangue)];
+		return $tableauAccueil[$langueParDefaut];
 	}
-}
-
-/**
-Retourne la langue par défaut du site
-*/
-function langueParDefaut($langue)
-{
-	return $langue[0];
 }
 
 /**
@@ -418,7 +410,7 @@ function robots($robotsParDefaut, $robots)
 }
 
 /**
-Construit le message affiché à IE6. Les 4 premiers paramètres sont relatifs à l'image de Firefox qui va être affichée dans le message. le dernier précise la langue du message.
+Construit le message affiché à IE6. Les 4 paramètres sont relatifs à l'image de Firefox qui va être affichée dans le message.
 */
 function messageIE6($src, $alt, $width, $height)
 {
@@ -438,49 +430,49 @@ function messageIE6($src, $alt, $width, $height)
 /**
 Retourne le complément de la balise `title`.
 */
-function baliseTitleComplement($tableauBaliseTitleComplement, $tableauLangue)
+function baliseTitleComplement($tableauBaliseTitleComplement, $langueParDefaut, $langue)
 {
-	if (array_key_exists(langue($tableauLangue), $tableauBaliseTitleComplement))
+	if (array_key_exists(langue($langueParDefaut, $langue), $tableauBaliseTitleComplement))
 	{
-		return $tableauBaliseTitleComplement[langue($tableauLangue)];
+		return $tableauBaliseTitleComplement[langue($langueParDefaut, $langue)];
 	}
 	else
 	{
-		return $tableauBaliseTitleComplement[langueParDefaut($tableauLangue)];
+		return $tableauBaliseTitleComplement[$langueParDefaut];
 	}
 }
 
 /**
 Retourne le titre du site.
 */
-function titreSite($tableauTitreSite, $tableauLangue)
+function titreSite($tableauTitreSite, $langueParDefaut, $langue)
 {
-	if (array_key_exists(langue($tableauLangue), $tableauTitreSite))
+	if (array_key_exists(langue($langueParDefaut, $langue), $tableauTitreSite))
 	{
-		return $tableauTitreSite[langue($tableauLangue)];
+		return $tableauTitreSite[langue($langueParDefaut, $langue)];
 	}
 	else
 	{
-		return $tableauTitreSite[langueParDefaut($tableauLangue)];
+		return $tableauTitreSite[$langueParDefaut];
 	}
 }
 
 /**
 Retourne le fichier de menu des langues.
 */
-function fichierMenuLangues($racine, $tableauLangue)
+function fichierMenuLangues($racine, $langueParDefaut, $langue)
 {
-	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php'))
 	{
-		$menuLangues = $racine . '/site/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php';
+		$menuLangues = $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php';
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php'))
+	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php'))
 	{
-		$menuLangues = $racine . '/inc/html.' . langue($tableauLangue) . '.menu-langues.inc.php';
+		$menuLangues = $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php';
 	}
 	else
 	{
-		$menuLangues = $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.menu-langues.inc.php';
+		$menuLangues = $racine . '/inc/html.' . $langueParDefaut . '.menu-langues.inc.php';
 	}
 	
 	return $menuLangues;
@@ -489,19 +481,19 @@ function fichierMenuLangues($racine, $tableauLangue)
 /**
 Retourne le fichier de menu.
 */
-function fichierMenu($racine, $tableauLangue)
+function fichierMenu($racine, $langueParDefaut, $langue)
 {
-	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php'))
 	{
-		$menu = $racine . '/site/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
+		$menu = $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php';
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php'))
+	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php'))
 	{
-		$menu = $racine . '/inc/html.' . langue($tableauLangue) . '.menu.inc.php';
+		$menu = $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php';
 	}
 	else
 	{
-		$menu = $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.menu.inc.php';
+		$menu = $racine . '/inc/html.' . $langueParDefaut . '.menu.inc.php';
 	}
 	
 	return $menu;
@@ -510,76 +502,76 @@ function fichierMenu($racine, $tableauLangue)
 /**
 Inclut le sur-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sur-titre par défaut.
 */
-function fichierSurTitre($racine, $tableauLangue)
+function fichierSurTitre($racine, $langueParDefaut, $langue)
 {
-	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php'))
 	{
-		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php';
+		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php';
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php'))
+	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php'))
 	{
-		return $racine . '/inc/html.' . langue($tableauLangue) . '.sur-titre.inc.php';
+		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php';
 	}
 	else
 	{
-		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.sur-titre.inc.php';
+		return $racine . '/inc/html.' . $langueParDefaut . '.sur-titre.inc.php';
 	}
 }
 
 /**
 Inclut le sous-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sous-titre par défaut.
 */
-function fichierSousTitre($racine, $tableauLangue)
+function fichierSousTitre($racine, $langueParDefaut, $langue)
 {
-	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php'))
 	{
-		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php';
+		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php';
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php'))
+	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php'))
 	{
-		return $racine . '/inc/html.' . langue($tableauLangue) . '.sous-titre.inc.php';
+		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php';
 	}
 	else
 	{
-		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.sous-titre.inc.php';
+		return $racine . '/inc/html.' . $langueParDefaut . '.sous-titre.inc.php';
 	}
 }
 
 /**
 Inclut le fichier d'ancres personnalisé s'il existe dans `site/inc/`, sinon inclut les ancres par défaut.
 */
-function fichierAncres($racine, $tableauLangue)
+function fichierAncres($racine, $langueParDefaut, $langue)
 {
-	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.ancres.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php'))
 	{
-		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.ancres.inc.php';
+		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php';
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.ancres.inc.php'))
+	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php'))
 	{
-		return $racine . '/inc/html.' . langue($tableauLangue) . '.ancres.inc.php';
+		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php';
 	}
 	else
 	{
-		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.ancres.inc.php';
+		return $racine . '/inc/html.' . $langueParDefaut . '.ancres.inc.php';
 	}
 }
 
 /**
 Inclut le bas de page personnalisé s'il existe dans `site/inc/`, sinon inclut le base de page par défaut.
 */
-function fichierBasDePage($racine, $tableauLangue)
+function fichierBasDePage($racine, $langueParDefaut, $langue)
 {
-	if (file_exists($racine . '/site/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php'))
+	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php'))
 	{
-		return $racine . '/site/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php';
+		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php';
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php'))
+	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php'))
 	{
-		return $racine . '/inc/html.' . langue($tableauLangue) . '.bas-de-page.inc.php';
+		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php';
 	}
 	else
 	{
-		return $racine . '/inc/html.' . langueParDefaut($tableauLangue) . '.bas-de-page.inc.php';
+		return $racine . '/inc/html.' . $langueParDefaut . '.bas-de-page.inc.php';
 	}
 }
 
@@ -1779,7 +1771,7 @@ function phpGettext($racine, $langue)
 /**
 Retourne la langue de la page courante.
 */
-function langue($langue)
+function langue($langueParDefaut, $langue)
 {
 	if ($langue == 'navigateur')
 	{
@@ -1789,7 +1781,7 @@ function langue($langue)
 		return $langue;
 	}
 	
-	return isset($langue[1]) ? $langue[1] : $langue[0];
+	return $langue ? $langue : $langueParDefaut;
 }
 
 /**

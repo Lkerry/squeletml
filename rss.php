@@ -8,8 +8,8 @@ if (file_exists($racine . '/site/inc/config.inc.php'))
 	include_once $racine . '/site/inc/config.inc.php';
 }
 
-$langueNavigateur = langue('navigateur');
-$langue[1] = $langueNavigateur;
+$langueNavigateur = langue($langueParDefaut, 'navigateur');
+$langue = $langueNavigateur;
 // Nécessaire à la traduction
 phpGettext('.', $langueNavigateur);
 
@@ -75,7 +75,7 @@ if (isset($getChemin) && !empty($getChemin))
 					{
 						$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);
 					}
-					$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), $urlGalerie, $itemsFlux, TRUE);
+					$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), $urlGalerie, $itemsFlux, TRUE);
 					
 					if ($dureeCache)
 					{
@@ -134,7 +134,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			}
 			
 			$idGalerie = FALSE;
-			$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, TRUE);
+			$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), ACCUEIL, $itemsFlux, TRUE);
 			
 			if ($dureeCache)
 			{
@@ -212,7 +212,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				}
 			}
 			$idGalerie = FALSE;
-			$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langue), ACCUEIL, $itemsFlux, FALSE);
+			$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), ACCUEIL, $itemsFlux, FALSE);
 			
 			if ($dureeCache)
 			{

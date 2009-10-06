@@ -4,7 +4,7 @@ include_once 'inc/fonctions.inc.php';
 
 $pageDerreur = TRUE;
 
-$codeLangue = langue('navigateur');
+$codeLangue = langue($langueParDefaut, 'navigateur');
 
 if (file_exists($racine . '/site/inc/page.' . $codeLangue . '.404.inc.php'))
 {
@@ -21,8 +21,6 @@ else
 	{
 		include_once $racine . '/site/inc/config.inc.php';
 	}
-	
-	$langueParDefaut = $langue[0];
 	
 	if (file_exists($racine . '/site/inc/page.' . $langueParDefaut . '.404.inc.php'))
 	{

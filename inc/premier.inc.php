@@ -46,7 +46,7 @@ if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContac
 	$courrielContact = $courrielContactParDefaut;
 }
 
-foreach (init($racine, langue($langue), $idGalerie) as $fichier)
+foreach (init($racine, $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }
@@ -69,9 +69,9 @@ if ($idGalerie && !isset($rss))
 ?>
 
 <?php echo doctype($xhtmlStrict); ?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo langue($langue); ?>" lang="<?php echo langue($langue); ?>">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo langue($langueParDefaut, $langue); ?>" lang="<?php echo langue($langueParDefaut, $langue); ?>">
 <head>
-<title><?php echo $baliseTitle .= ' | ' . baliseTitleComplement($baliseTitleComplement, $langue); ?></title>
+<title><?php echo $baliseTitle .= ' | ' . baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue); ?></title>
 <meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
 <meta name="description" content="<?php echo $description; ?>" />
 <?php if ($motsClesActives): ?>
@@ -87,12 +87,12 @@ if ($idGalerie && $rss)
 
 if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
 {
-	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=galeries&langue=" . langue($langue) . "\" title=\"" . T_("RSS de toutes les galeries") . "\" />";
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=galeries&langue=" . langue($langueParDefaut, $langue) . "\" title=\"" . T_("RSS de toutes les galeries") . "\" />";
 }
 
 if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 {
-	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=pages&langue=" . langue($langue) . "\" title=\"" . T_("RSS global du site") . "\" />";
+	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=pages&langue=" . langue($langueParDefaut, $langue) . "\" title=\"" . T_("RSS global du site") . "\" />";
 }
 ?>
 <?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
@@ -104,7 +104,7 @@ if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 </head>
 <body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $menuSousContenu, $menuLanguesSousContenu, $menuSousMenuLangues, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu); ?>">
 <div id="ancres">
-	<?php include fichierAncres($racine, $langue); ?>
+	<?php include fichierAncres($racine, $langueParDefaut, $langue); ?>
 </div><!-- /ancres -->
 
 <?php
@@ -120,25 +120,25 @@ if ($messageIE6)
 <div id="entete">
 	<?php if ($surTitre): ?>
 		<div id="surTitre">
-			<?php include fichierSurTitre($racine, $langue); ?>
+			<?php include fichierSurTitre($racine, $langueParDefaut, $langue); ?>
 		</div><!-- /surTitre -->
 	<?php endif; ?>
 	
 	<div id="titre">
-		<?php echo construitNomSite(estAccueil(ACCUEIL), construitLienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, $langue))); ?>
+		<?php echo construitNomSite(estAccueil(ACCUEIL), construitLienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, $langueParDefaut, $langue))); ?>
 	</div><!-- /titre -->
 
 	<div id="sousTitre">
-		<?php include fichierSousTitre($racine, $langue); ?>
+		<?php include fichierSousTitre($racine, $langueParDefaut, $langue); ?>
 	</div><!-- /sousTitre -->
 	
 	<div class="sep"></div>
 </div><!-- /entete -->
 
 <div id="surContenu">
-<?php if (!$surContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langue) . ".sur-contenu-supplement.inc.php")): ?>
+<?php if (!$surContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langueParDefaut, $langue) . ".sur-contenu-supplement.inc.php")): ?>
 	<div id="surContenuSupplement">
-		<?php include $racine . '/site/inc/html.' . langue($langue) . '.sur-contenu-supplement.inc.php'; ?>
+		<?php include $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sur-contenu-supplement.inc.php'; ?>
 	</div><!-- /surContenuSupplement -->
 <?php endif; ?>
 
@@ -174,9 +174,9 @@ include $racine . '/inc/faire-decouvrir.inc.php';
 	<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
 <?php endif; ?>
 
-<?php if ($surContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langue) . ".sur-contenu-supplement.inc.php")): ?>
+<?php if ($surContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langueParDefaut, $langue) . ".sur-contenu-supplement.inc.php")): ?>
 	<div id="surContenuSupplement">
-		<?php include $racine . '/site/inc/html.' . langue($langue) . '.sur-contenu-supplement.inc.php'; ?>
+		<?php include $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sur-contenu-supplement.inc.php'; ?>
 	</div><!-- /surContenuSupplement -->
 <?php endif; ?>
 </div><!-- /surContenu -->

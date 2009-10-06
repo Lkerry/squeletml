@@ -1,7 +1,7 @@
 <?php
 $baliseTitle = "File not found";
 $description = "The URL you requested was not found.";
-$langue[1] = 'en';
+$langue = 'en';
 include $racine . '/inc/premier.inc.php';
 ?>
 

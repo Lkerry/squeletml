@@ -1,7 +1,7 @@
 <?php
 $baliseTitle = "Welcome to your Squeletml website";
 $description = "Squeletml's default home page";
-$langue[1] = 'en';
+$langue = 'en';
 include $racine . '/inc/premier.inc.php';
 ?>
 

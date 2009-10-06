@@ -5,13 +5,13 @@ if (!isset($idGalerie))
 {
 	$idGalerie = FALSE;
 }
-foreach (init($racine, langue($langue), $idGalerie) as $fichier)
+foreach (init($racine, $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }
 
 // Nécessaire à la traduction du module
-phpGettext($racine, langue($langue));
+phpGettext($racine, langue($langueParDefaut, $langue));
 
 // Insertion du tableau contenant la liste des oeuvres à afficher
 if ($idGalerie && $idGalerie == 'démo')
@@ -83,7 +83,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$description = sprintf(T_("Oeuvre %1\$s en version intermediaire, galerie %2\$s"), $id, $idGalerie) . ' | ' . $baliseTitleComplement[langue($langue)];
+				$description = sprintf(T_("Oeuvre %1\$s en version intermediaire, galerie %2\$s"), $id, $idGalerie) . ' | ' . $baliseTitleComplement[langue($langueParDefaut, $langue)];
 			}
 			
 			if (!isset($galerie[$i]['pageIntermediaireMotsCles']))
@@ -340,7 +340,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		
 		// Ajustement des métabalises
 		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
-		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . ' | ' . $baliseTitleComplement[langue($langue)];
+		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . ' | ' . $baliseTitleComplement[langue($langueParDefaut, $langue)];
 		$motsCles = construitMotsCles('', $description);
 		$motsCles .= ', ' . $id;
 		$robots = "noindex, follow, noarchive";
@@ -501,7 +501,7 @@ else
 	
 	// Ajustement des métabalises
 	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);
-	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . ' | ' . $baliseTitleComplement[langue($langue)];
+	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . ' | ' . $baliseTitleComplement[langue($langueParDefaut, $langue)];
 	$motsCles = construitMotsCles('', $description);
 	$motsCles .= ', ' . $nomGalerie;
 	$robots = "noindex, follow, noarchive";
