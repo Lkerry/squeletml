@@ -14,9 +14,9 @@
 </div><!-- /contenu -->
 
 <div id="sousContenu">
-	<?php if (!$sousContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langueParDefaut, $langue) . ".sous-contenu-supplement.inc.php")): ?>
+	<?php if (!$sousContenuSupplementFin && file_exists("$racine/site/inc/html." . LANGUE . ".sous-contenu-supplement.inc.php")): ?>
 		<div id="sousContenuSupplement">
-			<?php include $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sous-contenu-supplement.inc.php'; ?>
+			<?php include $racine . '/site/inc/html.' . LANGUE . '.sous-contenu-supplement.inc.php'; ?>
 		</div><!-- /sousContenuSupplement -->
 	<?php endif; ?>
 	
@@ -44,9 +44,9 @@
 		<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
 	<?php endif; ?>
 	
-	<?php if ($sousContenuSupplementFin && file_exists("$racine/site/inc/html." . langue($langueParDefaut, $langue) . ".sous-contenu-supplement.inc.php")): ?>
+	<?php if ($sousContenuSupplementFin && file_exists("$racine/site/inc/html." . LANGUE . ".sous-contenu-supplement.inc.php")): ?>
 		<div id="sousContenuSupplement">
-			<?php include $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sous-contenu-supplement.inc.php'; ?>
+			<?php include $racine . '/site/inc/html.' . LANGUE . '.sous-contenu-supplement.inc.php'; ?>
 		</div><!-- /sousContenuSupplement -->
 	<?php endif; ?>
 </div><!-- /sousContenu -->

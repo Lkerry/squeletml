@@ -400,6 +400,8 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 <a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
 </code></div>
 
+- constante `LANGUE`: contient la langue de la page en cours.
+
 - tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
 
 	<div><code type="php">

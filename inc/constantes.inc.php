@@ -5,4 +5,6 @@ if (!defined('LC_MESSAGES'))
 }
 
 define("ACCUEIL", accueil($accueil, $langueParDefaut, $langue));
+
+define("LANGUE", langue($langueParDefaut, $langue));
 ?>

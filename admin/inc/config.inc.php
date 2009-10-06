@@ -10,7 +10,7 @@
 - `$langue = 'navigateur';`, qui signifie que l'administration sera affichée dans la langue de l'internaute, si elle existe;
 - `$langue = 'codeLangue';`, où `codeLangue` correspond au choix de la langue de l'administration (si elle existe).
 Veuillez décommenter le choix voulu (un seul possible, pas les deux en même temps!): */ 
-$langue = 'navigateur';
+$langueParDefaut = 'navigateur';
 
 ########################################################################
 ##

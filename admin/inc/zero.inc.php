@@ -13,5 +13,5 @@ foreach (adminInit($racine) as $fichier)
 // Fin des insertions
 
 // Nécessaire à la traduction
-phpGettext('..', langue($langueParDefaut, $langue));
+phpGettext('..', langue($langueParDefaut, $langueParDefaut));
 ?>

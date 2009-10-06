@@ -1,6 +1,6 @@
 <?php
 // Nécessaire à la traduction du module
-phpGettext($racine, langue($langueParDefaut, $langue));
+phpGettext($racine, LANGUE);
 
 $nom = '';
 $courriel = '';
