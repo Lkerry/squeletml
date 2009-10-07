@@ -1,3 +1,3 @@
 <div id="menuLangues">
-	<?php include fichierMenuLangues($racine, $langueParDefaut, $langue); ?>
+	<?php include cheminFichierIncHtml($racine, 'menu-langues', $langueParDefaut, $langue); ?>
 </div><!-- /menuLangues -->

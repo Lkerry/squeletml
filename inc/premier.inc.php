@@ -104,7 +104,7 @@ if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 </head>
 <body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $menuSousContenu, $menuLanguesSousContenu, $menuSousMenuLangues, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu); ?>">
 <div id="ancres">
-	<?php include fichierAncres($racine, $langueParDefaut, $langue); ?>
+	<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
 </div><!-- /ancres -->
 
 <?php
@@ -120,7 +120,7 @@ if ($messageIE6)
 <div id="entete">
 	<?php if ($surTitre): ?>
 		<div id="surTitre">
-			<?php include fichierSurTitre($racine, $langueParDefaut, $langue); ?>
+			<?php include cheminFichierIncHtml($racine, 'sur-titre', $langueParDefaut, $langue); ?>
 		</div><!-- /surTitre -->
 	<?php endif; ?>
 	
@@ -129,7 +129,7 @@ if ($messageIE6)
 	</div><!-- /titre -->
 
 	<div id="sousTitre">
-		<?php include fichierSousTitre($racine, $langueParDefaut, $langue); ?>
+		<?php include cheminFichierIncHtml($racine, 'sous-titre', $langueParDefaut, $langue); ?>
 	</div><!-- /sousTitre -->
 	
 	<div class="sep"></div>

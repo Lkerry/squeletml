@@ -327,14 +327,6 @@ function lettreAuHasard($lettresExclues = '')
 }
 
 /**
-Retourne le fichier partagé entre `inc/premier.inc.php` et `inc/dernier.inc.php`.
-*/
-function fichierPartagePremierDernier($racine, $fichier)
-{
-	return $racine . '/inc/partage-premier-dernier/html.' . $fichier . '.inc.php';
-}
-
-/**
 Renvoie une liste de classes pour `body`.
 */
 function construitClassBody($estAccueil, $idGalerie, $menuSousContenu, $menuLanguesSousContenu, $menuSousMenuLangues, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu)
@@ -458,120 +450,39 @@ function titreSite($tableauTitreSite, $langueParDefaut, $langue)
 }
 
 /**
-Retourne le fichier de menu des langues.
+Retourne le fichier partagé entre `inc/premier.inc.php` et `inc/dernier.inc.php`.
 */
-function fichierMenuLangues($racine, $langueParDefaut, $langue)
+function fichierPartagePremierDernier($racine, $fichier)
 {
-	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php'))
-	{
-		$menuLangues = $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php';
-	}
-	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php'))
-	{
-		$menuLangues = $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu-langues.inc.php';
-	}
-	else
-	{
-		$menuLangues = $racine . '/inc/html.' . $langueParDefaut . '.menu-langues.inc.php';
-	}
+	return $racine . '/inc/partage-premier-dernier/html.' . $fichier . '.inc.php';
+}
+
+/**
+Retourne le chemin vers le premier fichier existant cherché dans l'ordre suivant:
+- `/RACINE/site/inc/html.LANGUE_DE_LA_PAGE.NOM.inc.php`
+- `/RACINE/inc/html.LANGUE_DE_LA_PAGE.NOM.inc.php`
+- `/RACINE/site/inc/html.LANGUE_PAR_DEFAUT.NOM.inc.php`
+- `/RACINE/inc/html.LANGUE_PAR_DEFAUT.NOM.inc.php`
+*/
+function cheminFichierIncHtml($racine, $fichier, $langueParDefaut, $langue)
+{
+	$langue = langue($langueParDefaut, $langue);
 	
-	return $menuLangues;
-}
-
-/**
-Retourne le fichier de menu.
-*/
-function fichierMenu($racine, $langueParDefaut, $langue)
-{
-	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php'))
+	if (file_exists("$racine/site/inc/html.$langue.$fichier.inc.php"))
 	{
-		$menu = $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php';
+		return "$racine/site/inc/html.$langue.$fichier.inc.php";
 	}
-	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php'))
+	elseif (file_exists("$racine/inc/html.$langue.$fichier.inc.php"))
 	{
-		$menu = $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.menu.inc.php';
+		return "$racine/inc/html.$langue.$fichier.inc.php";
+	}
+	elseif (file_exists("$racine/site/inc/html.$langueParDefaut.$fichier.inc.php"))
+	{
+		return "$racine/site/inc/html.$langueParDefaut.$fichier.inc.php";
 	}
 	else
 	{
-		$menu = $racine . '/inc/html.' . $langueParDefaut . '.menu.inc.php';
-	}
-	
-	return $menu;
-}
-
-/**
-Inclut le sur-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sur-titre par défaut.
-*/
-function fichierSurTitre($racine, $langueParDefaut, $langue)
-{
-	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php'))
-	{
-		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php';
-	}
-	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php'))
-	{
-		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sur-titre.inc.php';
-	}
-	else
-	{
-		return $racine . '/inc/html.' . $langueParDefaut . '.sur-titre.inc.php';
-	}
-}
-
-/**
-Inclut le sous-titre personnalisé s'il existe dans `site/inc/`, sinon inclut le sous-titre par défaut.
-*/
-function fichierSousTitre($racine, $langueParDefaut, $langue)
-{
-	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php'))
-	{
-		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php';
-	}
-	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php'))
-	{
-		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.sous-titre.inc.php';
-	}
-	else
-	{
-		return $racine . '/inc/html.' . $langueParDefaut . '.sous-titre.inc.php';
-	}
-}
-
-/**
-Inclut le fichier d'ancres personnalisé s'il existe dans `site/inc/`, sinon inclut les ancres par défaut.
-*/
-function fichierAncres($racine, $langueParDefaut, $langue)
-{
-	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php'))
-	{
-		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php';
-	}
-	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php'))
-	{
-		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.ancres.inc.php';
-	}
-	else
-	{
-		return $racine . '/inc/html.' . $langueParDefaut . '.ancres.inc.php';
-	}
-}
-
-/**
-Inclut le bas de page personnalisé s'il existe dans `site/inc/`, sinon inclut le base de page par défaut.
-*/
-function fichierBasDePage($racine, $langueParDefaut, $langue)
-{
-	if (file_exists($racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php'))
-	{
-		return $racine . '/site/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php';
-	}
-	elseif (file_exists($racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php'))
-	{
-		return $racine . '/inc/html.' . langue($langueParDefaut, $langue) . '.bas-de-page.inc.php';
-	}
-	else
-	{
-		return $racine . '/inc/html.' . $langueParDefaut . '.bas-de-page.inc.php';
+		return "$racine/inc/html.$langueParDefaut.$fichier.inc.php";
 	}
 }
 

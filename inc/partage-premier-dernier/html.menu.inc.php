@@ -1,5 +1,5 @@
 <div id="menu">
-	<?php include fichierMenu($racine, $langueParDefaut, $langue); ?>
+	<?php include cheminFichierIncHtml($racine, 'menu', $langueParDefaut, $langue); ?>
 </div><!-- /menu -->
 
 <script type="text/javascript">setPage();</script>

@@ -54,7 +54,7 @@
 <?php if ($basDePage): ?>
 	<div class="sep"></div>
 	<div id="basDePage">
-		<?php include fichierBasDePage($racine, $langueParDefaut, $langue); ?>
+		<?php include cheminFichierIncHtml($racine, 'bas-de-page', $langueParDefaut, $langue); ?>
 	</div><!-- /basDePage -->
 <?php endif; ?>
 
