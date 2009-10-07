@@ -95,36 +95,34 @@ $basDePage = TRUE; // TRUE|FALSE
 ## Contenu et ordre du flux HTML
 ##
 
-/* Note: `sousContenu` fait référence à l'insertion dans le flux HTML au-dessous du contenu (dans la div `sousContenu`), en opposition à l'insertion au-dessus du contenu (dans la div `surContenu`). */
-
 // Titre du site en en-tête
 /* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un `h1` s'il s'agit de la page d'accueil, ou dans un `p` pour toutes les autres pages. Astuce: si vous ne voulez pas trop bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 75px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site. */
 $titreSite['fr'] = "<img id=\"logo\" src=\"$urlRacine/fichiers/squeletml-logo.png\" alt=\"Squeletml\" /><span id=\"logoSupplement\"><img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" /></span>";
 $titreSite['en'] = $titreSite['fr'];
 
-// Position du menu principal
-$menuSousContenu = TRUE; // TRUE|FALSE
+/*
+Les divers blocs constituant les menus sont positionnables, au choix, dans les div `surContenu` ou `sousContenu`. Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux div `surContenu` ou `sousContenu` formeront une seule colonne à droite, une seule colonne à gauche, deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`, ou deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
 
-// Le cas échéant, position du menu des langues
-$menuLanguesSousContenu = TRUE; // TRUE|FALSE
+Chaque bloc se voit assigné un nombre. Un nombre impair signifie que le bloc en question sera placé dans la div `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la div `sousContenu`. À l'intérieur de chaque div, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
 
-// Le cas échéant, l'ordre d'affichage des menus
-/* Si le menu principal ainsi que le menu des langues sont situés dans la même région (tous les deux en-dessous du contenu ou tous les deux au-dessus), il est possible de choisir l'ordre dans lequel générer le flux HTML pour ces deux menus. */
-$menuSousMenuLangues = TRUE; // TRUE|FALSE
+Par exemple:
 
-// Le cas échéant, position du lien «Faire découvrir»
-$faireDecouvrirSousContenu = TRUE; // TRUE|FALSE
+	'menu-langues' => '10',
+	'flux-rss' => '2',
 
-// Le cas échéant, position des liens RSS
-$rssSousContenu = TRUE; // TRUE|FALSE
+signifie que le menu des langues ainsi que les liens RSS seront insérés dans la div `sousContenu` puisque les deux blocs ont un nombre pair, et qu'à l'intérieur de la div, les liens RSS seront insérés en premier puisqu'en ordre croissant, cela donne 2 (les liens RSS) et 10 (menu des langues).
 
-// Le cas échéant, position du supplément du sur-contenu
-/* S'il y a lieu,  positionner le supplément du sur-contenu à la fin de la div `surContenu`, sinon le positionner au début. */
-$surContenuSupplementFin = TRUE; // TRUE|FALSE
+Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut toutefois avoir en tête que chaque clé du tableau `$ordreFluxHtml` ci-dessous représente une partie du nom du fichier à insérer. Par exemple, `faire-decouvrir` fait référence au fichier `html.LANGUE.faire-decouvrir.inc.php`, présent dans le dossier personnalisé `$racine/site/inc` ou le dossier par défaut `$racine/inc`. Ainsi, un bloc personnalisé ayant une clé `heure` dans le tableau `$ordreFluxHtml` fait référence à un fichier `$racine/site/inc/html.LANGUE.heure.inc.php`.
 
-// Le cas échéant, position du supplément du sous-contenu
-/* S'il y a lieu,  positionner le supplément du sous-contenu à la fin de la div `sousContenu`, sinon le positionner au début. */
-$sousContenuSupplementFin = TRUE; // TRUE|FALSE
+Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivation d'une fonctionnalité, mais seulement avec l'odre dans lequel les blocs sont insérés dans le flux HTML dans le cas où la fonctionnalité est activée.
+*/
+$ordreFluxHtml = array (
+	'menu-langues' => '2',
+	'menu' => '4',
+	'faire-decouvrir' => '6',
+	'legende-oeuvre-galerie' => '8', // S'il y a lieu (voir `$galerieLegendeEmplacement`)
+	'flux-rss' => '10',
+	);
 
 ##
 ## Style CSS

@@ -77,8 +77,14 @@ div#sousTitre p {
 	background-color: #f2f2f2;
 }
 
-#menuLangues, #menu, #faireDecouvrir, #galerieIntermediaireTexteHorsContenu, #fluxRss, #surContenuSupplement, #sousContenuSupplement {
+.bloc {
+	margin-top: 16px;
 	margin-bottom: 20px;
+}
+
+.blocPerso {
+	padding-left: 3px;
+	padding-right: 3px;
 }
 
 #menu a.actif {
@@ -119,11 +125,6 @@ div#sousTitre p {
 	margin-left: 5px;
 	padding-left: 21px;
 	background: url('../fichiers/rss.png') no-repeat left center;
-}
-
-#surContenuSupplement, #sousContenuSupplement {
-	padding-left: 3px;
-	padding-right: 3px;
 }
 
 #basDePage {

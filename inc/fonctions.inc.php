@@ -329,7 +329,7 @@ function lettreAuHasard($lettresExclues = '')
 /**
 Renvoie une liste de classes pour `body`.
 */
-function construitClassBody($estAccueil, $idGalerie, $menuSousContenu, $menuLanguesSousContenu, $menuSousMenuLangues, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu)
+function construitClassBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu)
 {
 	$class = '';
 	
@@ -341,21 +341,6 @@ function construitClassBody($estAccueil, $idGalerie, $menuSousContenu, $menuLang
 	if ($idGalerie)
 	{
 		$class .= 'galerie ';
-	}
-	
-	if ($menuSousContenu)
-	{
-		$class .= 'menuSousContenu ';
-	}
-	
-	if ($menuLanguesSousContenu)
-	{
-		$class .= 'menuLanguesSousContenu ';
-	}
-	
-	if ($menuSousMenuLangues)
-	{
-		$class .= 'menuSousMenuLangues ';
 	}
 	
 	if ($deuxColonnes)
@@ -450,40 +435,50 @@ function titreSite($tableauTitreSite, $langueParDefaut, $langue)
 }
 
 /**
-Retourne le fichier partagé entre `inc/premier.inc.php` et `inc/dernier.inc.php`.
-*/
-function fichierPartagePremierDernier($racine, $fichier)
-{
-	return $racine . '/inc/partage-premier-dernier/html.' . $fichier . '.inc.php';
-}
+Si `$retourneChemin` vaut TRUE, retourne le chemin vers le premier fichier existant cherché dans l'ordre suivant:
 
-/**
-Retourne le chemin vers le premier fichier existant cherché dans l'ordre suivant:
 - `/RACINE/site/inc/html.LANGUE_DE_LA_PAGE.NOM.inc.php`
 - `/RACINE/inc/html.LANGUE_DE_LA_PAGE.NOM.inc.php`
 - `/RACINE/site/inc/html.LANGUE_PAR_DEFAUT.NOM.inc.php`
 - `/RACINE/inc/html.LANGUE_PAR_DEFAUT.NOM.inc.php`
+
+Si aucun fichier n'a été trouvé, retourne une chaîne vide. Si `$retourneChemin` vaut FALSE, retourne TRUE si un fichier a été trouvé, sinon retourne FALSE.
 */
-function cheminFichierIncHtml($racine, $fichier, $langueParDefaut, $langue)
+function cheminFichierIncHtml($racine, $fichier, $langueParDefaut, $langue, $retourneChemin = TRUE)
 {
 	$langue = langue($langueParDefaut, $langue);
+	$chemin = "";
 	
 	if (file_exists("$racine/site/inc/html.$langue.$fichier.inc.php"))
 	{
-		return "$racine/site/inc/html.$langue.$fichier.inc.php";
+		$chemin = "$racine/site/inc/html.$langue.$fichier.inc.php";
 	}
 	elseif (file_exists("$racine/inc/html.$langue.$fichier.inc.php"))
 	{
-		return "$racine/inc/html.$langue.$fichier.inc.php";
+		$chemin = "$racine/inc/html.$langue.$fichier.inc.php";
 	}
 	elseif (file_exists("$racine/site/inc/html.$langueParDefaut.$fichier.inc.php"))
 	{
-		return "$racine/site/inc/html.$langueParDefaut.$fichier.inc.php";
+		$chemin = "$racine/site/inc/html.$langueParDefaut.$fichier.inc.php";
 	}
-	else
+	elseif (file_exists("$racine/inc/html.$langueParDefaut.$fichier.inc.php"))
 	{
-		return "$racine/inc/html.$langueParDefaut.$fichier.inc.php";
+		$chemin = "$racine/inc/html.$langueParDefaut.$fichier.inc.php";
 	}
+	
+	if (!$retourneChemin)
+	{
+		if (!empty($chemin))
+		{
+			return TRUE;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	return $chemin;
 }
 
 /**
@@ -677,7 +672,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
 		if ($galerieLegendeEmplacement == 'sousContenu' || $galerieLegendeEmplacement == 'surContenu')
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->/', '', $corpsGalerie);
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieIntermediaireTexteHorsContenu -->';
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieIntermediaireTexteHorsContenu -->';
 		}
 		else
 		{
@@ -1762,6 +1757,37 @@ function galerieExiste($racine, $idGalerie)
 	}
 	
 	return $galerieExiste;
+}
+
+/**
+Retourne un tableau de blocs devant être insérés dans la div `surContenu` ou `sousContenu`, tout dépendamment du paramètre `$div`. L'ordre des fichiers dans le tableau correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent être insérés dans leur div.
+*/
+function blocs($ordreFluxHtml, $div)
+{
+	$ordreFluxHtmlFiltre = array ();
+	$blocsAinserer = array ();
+	
+	foreach ($ordreFluxHtml as $bloc => $nombre)
+	{
+		if ($nombre % 2)
+		{
+			// A: nombre impair
+			$ordreFluxHtmlFiltre[$bloc] = $nombre;
+		}
+	}
+	
+	if ($div == 'sousContenu')
+	{
+		$ordreFluxHtmlFiltre = array_diff($ordreFluxHtml, $ordreFluxHtmlFiltre);
+	}
+	
+	asort($ordreFluxHtmlFiltre);
+	foreach ($ordreFluxHtmlFiltre as $bloc => $nombre)
+	{
+		$blocsAinserer[] = $bloc;
+	}
+	
+	return $blocsAinserer;
 }
 
 ?>

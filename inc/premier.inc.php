@@ -102,7 +102,7 @@ if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 <?php endif; ?>
 </head>
-<body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $menuSousContenu, $menuLanguesSousContenu, $menuSousMenuLangues, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu); ?>">
+<body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu); ?>">
 <div id="ancres">
 	<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
 </div><!-- /ancres -->
@@ -136,49 +136,19 @@ if ($messageIE6)
 </div><!-- /entete -->
 
 <div id="surContenu">
-<?php if (!$surContenuSupplementFin && file_exists("$racine/site/inc/html." . LANGUE . ".sur-contenu-supplement.inc.php")): ?>
-	<div id="surContenuSupplement">
-		<?php include $racine . '/site/inc/html.' . LANGUE . '.sur-contenu-supplement.inc.php'; ?>
-	</div><!-- /surContenuSupplement -->
-<?php endif; ?>
+	<?php
+	$decouvrir = FALSE; // Initialisation
+	$decouvrirInclureContact = FALSE; // Initialisation
+	include $racine . '/inc/faire-decouvrir.inc.php';
 
-<?php if (!$menuSousMenuLangues && !$menuSousContenu): ?>
-	<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
-<?php endif; ?>
-
-<?php if (count($accueil) > 1 && !$menuLanguesSousContenu): ?>
-	<?php include fichierPartagePremierDernier($racine, 'menu-langues'); ?>
-<?php endif; ?>
-
-<?php if ($menuSousMenuLangues && !$menuSousContenu): ?>
-	<?php include fichierPartagePremierDernier($racine, 'menu'); ?>
-<?php endif; ?>
-
-<?php
-$decouvrir = FALSE; // Initialisation
-$decouvrirInclureContact = FALSE; // Initialisation
-include $racine . '/inc/faire-decouvrir.inc.php';
-?>
-<?php if ($faireDecouvrir && $decouvrir && !$faireDecouvrirSousContenu): ?>
-	<?php include fichierPartagePremierDernier($racine, 'faire-decouvrir'); ?>
-<?php endif; ?>
-
-<?php if (isset($corpsGalerie) && !empty($corpsGalerie)): ?>
-	<?php $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement); ?>
-<?php endif; ?>
-<?php if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement == 'surContenu'): ?>
-	<?php echo $tableauCorpsGalerie['texteIntermediaire']; ?>
-<?php endif; ?>
-
-<?php if ((($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))) && (!$rssSousContenu)): ?>
-	<?php include fichierPartagePremierDernier($racine, 'flux-rss'); ?>
-<?php endif; ?>
-
-<?php if ($surContenuSupplementFin && file_exists("$racine/site/inc/html." . LANGUE . ".sur-contenu-supplement.inc.php")): ?>
-	<div id="surContenuSupplement">
-		<?php include $racine . '/site/inc/html.' . LANGUE . '.sur-contenu-supplement.inc.php'; ?>
-	</div><!-- /surContenuSupplement -->
-<?php endif; ?>
+	if (isset($corpsGalerie) && !empty($corpsGalerie))
+	{
+		$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement);
+	}
+	
+	$divSurSousContenu = 'sur';
+	include $racine . '/inc/partage-premier-dernier.inc.php';
+	?>
 </div><!-- /surContenu -->
 
 <div id="contenu" class="<?php if ($stylerLiensVisitesSeulementDansContenu) echo 'liensVisitesStyles'; ?>">
