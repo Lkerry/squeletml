@@ -332,7 +332,7 @@ Renvoie une liste de classes pour `body`.
 function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc)
 {
 	$class = '';
-	$arrierePlanColonne = ucfirst($arrierePlanColonne);
+	$arrierePlanColonne = 'ArrierePlan' . ucfirst($arrierePlanColonne);
 	
 	if ($estAccueil)
 	{
@@ -405,10 +405,6 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 	if ($coinsArrondisBloc)
 	{
 		$class .= 'coinsArrondisBloc ';
-	}
-	else
-	{
-		$class .= 'sansCoinsArrondisBloc ';
 	}
 	
 	return trim($class);

@@ -146,7 +146,7 @@ $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 $uneColonneAgauche = TRUE; // TRUE|FALSE
 
 // Arrière-plan d'une colonne
-$arrierePlanColonne = "rayures"; // aucun|bordure|rayures|uni
+$arrierePlanColonne = "rayuresAvecBordure"; // aucun|bordure|rayures|rayuresAvecBordure|uni
 
 // Div `page` avec bordures
 $borduresPage = array(
@@ -155,7 +155,7 @@ $borduresPage = array(
 	);
 
 // Blocs de menu avec coins arrondis
-$coinsArrondisBloc = TRUE; // TRUE|FALSE
+$coinsArrondisBloc = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
