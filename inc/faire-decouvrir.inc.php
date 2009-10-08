@@ -26,7 +26,7 @@ if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']))
 {
 	if (file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 	{
-		$galerie = construitTableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
+		$galerie = tableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
 		$i = 0;
 		foreach($galerie as $oeuvre)
 		{

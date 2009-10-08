@@ -17,13 +17,13 @@ phpGettext($racine, LANGUE);
 if ($idGalerie && $idGalerie == 'démo')
 {
 	// Galerie démo par défaut
-	$galerie = construitTableauGalerie($racine . '/fichiers/galeries/démo/config.pc', TRUE);
+	$galerie = tableauGalerie($racine . '/fichiers/galeries/démo/config.pc', TRUE);
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/démo';
 	$racineImgSrc = $racine . '/fichiers/galeries/démo';
 }
 elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 {
-	$galerie = construitTableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
+	$galerie = tableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie);
 	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
 }
@@ -91,7 +91,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 				$galerie[$i]['pageIntermediaireMotsCles'] = '';
 			}
 			
-			$motsCles = construitMotsCles($galerie[$i]['pageIntermediaireMotsCles'], $description);
+			$motsCles = motsCles($galerie[$i]['pageIntermediaireMotsCles'], $description);
 			$motsCles .= ', ' . $id;
 
 			break; // On arrête la boucle
@@ -341,7 +341,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		// Ajustement des métabalises
 		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
 		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . ' | ' . $baliseTitleComplement[LANGUE];
-		$motsCles = construitMotsCles('', $description);
+		$motsCles = motsCles('', $description);
 		$motsCles .= ', ' . $id;
 		$robots = "noindex, follow, noarchive";
 	}
@@ -502,7 +502,7 @@ else
 	// Ajustement des métabalises
 	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);
 	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . ' | ' . $baliseTitleComplement[LANGUE];
-	$motsCles = construitMotsCles('', $description);
+	$motsCles = motsCles('', $description);
 	$motsCles .= ', ' . $nomGalerie;
 	$robots = "noindex, follow, noarchive";
 }

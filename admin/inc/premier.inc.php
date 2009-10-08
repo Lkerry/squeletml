@@ -14,7 +14,7 @@ if (!adminEstIE())
 }
 $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/inc/CodeMirror/js/codemirror.js");
 $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "favicon:$urlRacine/fichiers/puce.png");
-echo construitLinkScript($fichiersLinkScript, '', TRUE);
+echo linkScript($fichiersLinkScript, '', TRUE);
 ?>
 </head>
 <body id="<?php echo adminBodyId(); ?>">

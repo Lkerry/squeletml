@@ -1,5 +1,8 @@
 <?php
+list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($coinsArrondisBloc);
+
 $blocsAinserer = blocs($ordreFluxHtml, $divSurSousContenu . 'Contenu');
+
 if (!empty($blocsAinserer))
 {
 	foreach ($blocsAinserer as $blocAinserer)
@@ -10,14 +13,18 @@ if (!empty($blocsAinserer))
 				if (count($accueil) > 1)
 				{
 					echo '<div id="menuLangues" class="bloc">' . "\n";
-						include cheminFichierIncHtml($racine, 'menu-langues', $langueParDefaut, $langue);
+					echo $codeInterieurBlocHaut;
+					include cheminFichierIncHtml($racine, 'menu-langues', $langueParDefaut, $langue);
+					echo $codeInterieurBlocBas;
 					echo '</div><!-- /menuLangues -->' . "\n";
 				}
 				break;
 			
 			case 'menu':
 				echo '<div id="menu" class="bloc">' . "\n";
-					include cheminFichierIncHtml($racine, 'menu', $langueParDefaut, $langue);
+				echo $codeInterieurBlocHaut;
+				include cheminFichierIncHtml($racine, 'menu', $langueParDefaut, $langue);
+				echo $codeInterieurBlocBas;
 				echo '</div><!-- /menu -->' . "\n";
 				echo '<script type="text/javascript">setPage();</script>' . "\n";
 				break;
@@ -26,7 +33,9 @@ if (!empty($blocsAinserer))
 				if ($faireDecouvrir && $decouvrir)
 				{
 					echo '<div id="faireDecouvrir" class="bloc">' . "\n";
-						echo '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>';
+					echo $codeInterieurBlocHaut;
+					echo '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>';
+					echo $codeInterieurBlocBas;
 					echo '</div><!-- /faireDecouvrir -->' . "\n";
 				}
 				break;
@@ -39,10 +48,11 @@ if (!empty($blocsAinserer))
 				break;
 				
 			case 'flux-rss':
-				if ((($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))) && (!$rssSousContenu))
+				if (($idGalerie && $rss) || ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc")))
 				{
 					echo '<div class="sep"></div>' . "\n";
-					echo '<div id="fluxRss" classclass="bloc">' . "\n";
+					echo '<div id="fluxRss" class="bloc">' . "\n";
+					echo $codeInterieurBlocHaut;
 					echo "\t<ul>\n";
 					if ($idGalerie && $rss)
 					{
@@ -57,6 +67,7 @@ if (!empty($blocsAinserer))
 						echo "\t\t<li>" . lienRss("$urlRacine/rss.php?global=site&langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
 					}
 					echo "\t</ul>\n";
+					echo $codeInterieurBlocBas;
 					echo '</div><!-- /fluxRss -->' . "\n";
 				}
 				break;
@@ -64,8 +75,10 @@ if (!empty($blocsAinserer))
 			default:
 				if (cheminFichierIncHtml($racine, $blocAinserer, $langueParDefaut, $langue, FALSE))
 				{
-					echo "<div class=\"bloc blocPerso $blocAinserer\">\n";
-						include cheminFichierIncHtml($racine, $blocAinserer, $langueParDefaut, $langue);
+					echo "<div class=\"bloc $blocAinserer\">\n";
+					echo $codeInterieurBlocHaut;
+					include cheminFichierIncHtml($racine, $blocAinserer, $langueParDefaut, $langue);
+					echo $codeInterieurBlocBas;
 					echo "</div><!-- /class=$blocAinserer -->\n";
 				}
 				break;

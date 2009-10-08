@@ -149,7 +149,13 @@ $uneColonneAgauche = TRUE; // TRUE|FALSE
 $arrierePlanColonne = "rayures"; // aucun|bordure|rayures|uni
 
 // Div `page` avec bordures
-$borduresPage = TRUE; // TRUE|FALSE
+$borduresPage = array(
+	'gauche' => TRUE, // TRUE|FALSE
+	'droite' => TRUE, // TRUE|FALSE
+	);
+
+// Blocs de menu avec coins arrondis
+$coinsArrondisBloc = TRUE; // TRUE|FALSE
 
 ########################################################################
 ##

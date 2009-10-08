@@ -16,7 +16,7 @@
 <div id="sousContenu">
 	<?php
 	$divSurSousContenu = 'sous';
-	include $racine . '/inc/partage-premier-dernier.inc.php';
+	include $racine . '/inc/blocs.inc.php';
 	?>
 </div><!-- /sousContenu -->
 

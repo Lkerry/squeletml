@@ -16,8 +16,11 @@ html, body {
 	position: relative;
 }
 
-body.borduresPage #page {
+body.bordureGauchePage #page {
 	border-left: 1px solid #f2f2f2;
+}
+
+body.bordureDroitePage #page {
 	border-right: 1px solid #f2f2f2;
 }
 
@@ -62,6 +65,7 @@ div#sousTitre p {
 
 #surContenu, #sousContenu {
 	width: 204px;
+	text-align: left;
 }
 
 #interieurContenu {
@@ -80,16 +84,6 @@ div#sousTitre p {
 	background-color: #f2f2f2;
 }
 
-.bloc {
-	margin-top: 16px;
-	margin-bottom: 20px;
-}
-
-.blocPerso {
-	padding-left: 3px;
-	padding-right: 3px;
-}
-
 #menu a.actif {
 	font-weight: bold;
 }
@@ -98,19 +92,8 @@ div#sousTitre p {
 	list-style-image: url('../fichiers/puce.png');
 }
 
-#fluxRss, #faireDecouvrir {
-	padding: 0px 3px;
-	text-align: left;
-}
-
 #fluxRss ul {
 	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-#fluxRss li {
-	margin: 0;
 	padding: 0;
 }
 
@@ -157,6 +140,7 @@ ul {
 }
 
 li {
+	margin-top: 5px;
 	margin-bottom: 5px;
 }
 
@@ -170,6 +154,23 @@ pre {
 	padding: 5px;
 	margin: 5px 0;
 	border: 1px solid #b3b3b3;
+}
+
+.bloc {
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.contenuBloc {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.bloc ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
 }
 
 .erreur, .succes {
@@ -190,6 +191,37 @@ pre {
 
 .sep {
 	clear: both;
+}
+
+/* Coins arrondis */
+
+body.coinsArrondisBloc .bloc {
+	background-color: #f2f2f2;
+}
+
+div.haut-gauche {
+	background: url(../fichiers/coins/haut-gauche.gif);
+}
+
+div.haut-droit {
+	float: right;
+	background: url(../fichiers/coins/haut-droit.gif);
+}
+
+div.bas-gauche {
+	background: url(../fichiers/coins/bas-gauche.gif);
+}
+
+div.bas-droit {
+	float: right;
+	background: url(../fichiers/coins/bas-droit.gif);
+}
+
+div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
+	height: 8px;
+	width: 8px;
+	background-repeat: no-repeat;
+	font-size: 1px; /* à cause d'un bogue d'IE */
 }
 
 /***********************************************************************
@@ -266,7 +298,7 @@ body.colonneAdroiteUni #page {
 }
 
 body.colonneAdroiteBordure #page {
-	background: url('../fichiers/bordure-gauche-204px.png') repeat-y right top;
+	background: url('../fichiers/bordure-gauche-204px.gif') repeat-y right top;
 }
 
 body.colonneAdroite div#titre h1, body.colonneAdroite div#titre p {
@@ -361,7 +393,7 @@ body.deuxColonnesSousContenuAgaucheUni #interieurPage {
 }
 
 body.deuxColonnesSousContenuAgaucheBordure #interieurPage {
-	background: url('../fichiers/bordure-gauche-204px.png') repeat-y right top;
+	background: url('../fichiers/bordure-gauche-204px.gif') repeat-y right top;
 }
 
 body.deuxColonnesSousContenuAgauche #surContenu {
@@ -452,10 +484,8 @@ div#sepGalerieMinivignettes {
 	margin-left: 25px;
 }
 
-#galerieIntermediaireTexteHorsContenu {
+body.sansCoinsArrondisBloc #galerieIntermediaireTexteHorsContenu {
 	border-left: 3px solid #007070;
-	padding: 0 3px;
-	text-align: left;
 }
 
 #galerieIntermediaireTexteHorsContenu h2 {

@@ -86,7 +86,7 @@ function accueil($tableauAccueil, $langueParDefaut, $langue)
 /**
 Si `$motsCles` est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise `keywords`, et retourne cette liste, sinon retourne tout simplement `$motsCles`.
 */
-function construitMotsCles($motsCles, $chaine)
+function motsCles($motsCles, $chaine)
 {
 	if (empty($motsCles))
 	{
@@ -165,7 +165,7 @@ Construit les balises d'inclusion `link` et les balises `script` pour le javascr
 @param version un identifiant (optionnel) des versions des fichiers inclus, comme une date, un nombre...
 @return les balises `link` correctement remplies
 */
-function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
+function linkScript($fichiers, $version = '', $styleSqueletmlCss)
 {
 	$balisesLinkScript = '';
 	if (!empty($version))
@@ -244,7 +244,7 @@ function construitLinkScript($fichiers, $version = '', $styleSqueletmlCss)
 /**
 Construit un lien vers l'accueil si la page n'est pas l'accueil, sinon n'ajoute aucune balise et retourne la chaîne telle quelle.
 */
-function construitLienVersAccueil($accueil, $estAccueil, $contenu)
+function lienVersAccueil($accueil, $estAccueil, $contenu)
 {
 	if (!$estAccueil)
 	{
@@ -269,7 +269,7 @@ Sur la page d'accueil, ce sera le titre principal h1; sur les autres pages, ce s
 @param contenu le contenu à insérer dans les balises qui seront construites
 @return le contenu entouré de balises
 */
-function construitNomSite($estAccueil, $contenu)
+function nomSite($estAccueil, $contenu)
 {
 	if (!$estAccueil)
 	{
@@ -329,7 +329,7 @@ function lettreAuHasard($lettresExclues = '')
 /**
 Renvoie une liste de classes pour `body`.
 */
-function construitClassBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage)
+function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc)
 {
 	$class = '';
 	$arrierePlanColonne = ucfirst($arrierePlanColonne);
@@ -392,9 +392,23 @@ function construitClassBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonne
 		$class .= 'liensVisitesStyles ';
 	}
 	
-	if ($borduresPage)
+	if ($borduresPage['gauche'])
 	{
-		$class .= 'borduresPage ';
+		$class .= 'bordureGauchePage ';
+	}
+	
+	if ($borduresPage['droite'])
+	{
+		$class .= 'bordureDroitePage ';
+	}
+	
+	if ($coinsArrondisBloc)
+	{
+		$class .= 'coinsArrondisBloc ';
+	}
+	else
+	{
+		$class .= 'sansCoinsArrondisBloc ';
 	}
 	
 	return trim($class);
@@ -685,16 +699,40 @@ function styleDivVideNavigation($oeuvre)
 }
 
 /**
+Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une deiv de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une div de classe `bloc`).
+*/
+function codeInterieurBloc($coinsArrondisBloc)
+{
+	$codeInterieurBloc = array ();
+	$codeInterieurBloc[0] = "\n\t";
+	$codeInterieurBloc[1] = "\n\t" . '</div><!-- /class=contenuBloc -->';
+	
+	if ($coinsArrondisBloc)
+	{
+		$codeInterieurBloc[0] .= '<div class="haut-droit"></div><div class="haut-gauche"></div>';
+		$codeInterieurBloc[1] .= '<div class="bas-droit"></div><div class="bas-gauche"></div>';
+	}
+	
+	$codeInterieurBloc[0] .= '<div class="contenuBloc">' . "\n";
+	$codeInterieurBloc[1] .= "\n";
+	
+	return $codeInterieurBloc;
+}
+
+/**
 Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire, s'il y a lieu, sinon est vide.
 */
-function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement)
+function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $coinsArrondisBloc)
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->)/', $corpsGalerie, $res))
 	{
 		if ($galerieLegendeEmplacement == 'sousContenu' || $galerieLegendeEmplacement == 'surContenu')
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->/', '', $corpsGalerie);
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc"><h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . '</div><!-- /galerieIntermediaireTexteHorsContenu -->';
+			
+			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($coinsArrondisBloc);
+			
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . $codeInterieurBlocBas . '</div><!-- /galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
@@ -1207,7 +1245,7 @@ function tableauAssociatif($fichierTexte)
 /**
 Construit et retourne un tableau PHP à partir d'un fichier texte listant des images, dont chacun de leurs champs se trouve seul sur une ligne avec la syntaxe `clé=valeur`. Chaque image est séparée par une ligne ne contenant que `#IMG`. Si `$exclure` vaut TRUE, ne tient pas compte des images ayant un champ `exclure=oui`.
 */
-function construitTableauGalerie($fichierTexte, $exclure = FALSE)
+function tableauGalerie($fichierTexte, $exclure = FALSE)
 {
 	$galerie = array ();
 	
@@ -1430,7 +1468,7 @@ Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant
 */
 function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
-	$galerie = construitTableauGalerie("$racine/site/fichiers/galeries/$idGalerie/config.pc", TRUE);
+	$galerie = tableauGalerie("$racine/site/fichiers/galeries/$idGalerie/config.pc", TRUE);
 	$itemsFlux = array ();
 	
 	foreach ($galerie as $oeuvre)

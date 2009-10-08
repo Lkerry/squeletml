@@ -226,7 +226,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 		file_put_contents($fichierConfigChemin, $listeAjouts . $listeExistant) or die();
 	}
 	
-	$galerie = construitTableauGalerie($fichierConfigChemin);
+	$galerie = tableauGalerie($fichierConfigChemin);
 	$galerieTemp = array ();
 	$i = 0;
 

@@ -26,6 +26,11 @@ if (!isset($idGalerie))
 	$idGalerie = FALSE;
 }
 
+if (!isset($langue))
+{
+	$langue = FALSE;
+}
+
 if (!isset($motsCles))
 {
 	$motsCles = FALSE;
@@ -75,7 +80,7 @@ if ($idGalerie && !isset($rss))
 <meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
 <meta name="description" content="<?php echo $description; ?>" />
 <?php if ($motsClesActives): ?>
-	<meta name="keywords" content="<?php echo construitMotsCles($motsCles, $description); ?>" />
+	<meta name="keywords" content="<?php echo motsCles($motsCles, $description); ?>" />
 <?php endif; ?>
 <meta name="robots" content="<?php echo robots($robotsParDefaut, $robots); ?>" />
 <?php
@@ -95,14 +100,14 @@ if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=pages&langue=" . LANGUE . "\" title=\"" . T_("RSS global du site") . "\" />";
 }
 ?>
-<?php echo construitLinkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
+<?php echo linkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 <?php if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie): ?>
 	<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $urlRacine; ?>/inc/slimbox2/js/slimbox2.js"></script>
 	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 <?php endif; ?>
 </head>
-<body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage); ?>">
+<body class="<?php echo classesBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc); ?>">
 <div id="ancres">
 	<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
 </div><!-- /ancres -->
@@ -125,7 +130,7 @@ if ($messageIE6)
 	<?php endif; ?>
 	
 	<div id="titre">
-		<?php echo construitNomSite(estAccueil(ACCUEIL), construitLienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, $langueParDefaut, $langue))); ?>
+		<?php echo nomSite(estAccueil(ACCUEIL), lienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, $langueParDefaut, $langue))); ?>
 	</div><!-- /titre -->
 
 	<div id="sousTitre">
@@ -143,11 +148,11 @@ if ($messageIE6)
 
 	if (isset($corpsGalerie) && !empty($corpsGalerie))
 	{
-		$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement);
+		$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $coinsArrondisBloc);
 	}
 	
 	$divSurSousContenu = 'sur';
-	include $racine . '/inc/partage-premier-dernier.inc.php';
+	include $racine . '/inc/blocs.inc.php';
 	?>
 </div><!-- /surContenu -->
 
