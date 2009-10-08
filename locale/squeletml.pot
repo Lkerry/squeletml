@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-01 17:13-0400\n"
+"POT-Creation-Date: 2009-10-08 17:39-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -311,7 +311,7 @@ msgid "Documentation de Squeletml"
 msgstr ""
 
 #: admin/galeries.admin.php:3 admin/inc/html.menu.inc.php:8
-#: inc/fonctions.inc.php:1650
+#: inc/fonctions.inc.php:1625
 msgid "Galeries"
 msgstr ""
 
@@ -1131,13 +1131,13 @@ msgstr ""
 msgid "Créer"
 msgstr ""
 
-#: inc/fonctions.inc.php:406
+#: inc/fonctions.inc.php:428
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
 
-#: inc/fonctions.inc.php:408
+#: inc/fonctions.inc.php:430
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -1146,114 +1146,114 @@ msgid ""
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
 
-#: inc/fonctions.inc.php:410
+#: inc/fonctions.inc.php:432
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:756
+#: inc/fonctions.inc.php:731
 msgid "Légende de l'oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:849
+#: inc/fonctions.inc.php:824
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:862
+#: inc/fonctions.inc.php:837
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:891
+#: inc/fonctions.inc.php:866
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:896
+#: inc/fonctions.inc.php:871
 #, php-format
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:938
+#: inc/fonctions.inc.php:913
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:942
+#: inc/fonctions.inc.php:917
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:950
+#: inc/fonctions.inc.php:925
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:954
+#: inc/fonctions.inc.php:929
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:958
+#: inc/fonctions.inc.php:933
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:962
+#: inc/fonctions.inc.php:937
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:966
+#: inc/fonctions.inc.php:941
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1190 inc/fonctions.inc.php:1498
+#: inc/fonctions.inc.php:1165 inc/fonctions.inc.php:1473
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1350
+#: inc/fonctions.inc.php:1325
 msgid "Consultez cette page!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1350 inc/fonctions.inc.php:1409
+#: inc/fonctions.inc.php:1325 inc/fonctions.inc.php:1384
 msgid "En espérant qu'elle vous intéresse!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1409
+#: inc/fonctions.inc.php:1384
 msgid "Voyez l'oeuvre en plus grande taille!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1560
+#: inc/fonctions.inc.php:1535
 msgid "Lien vers l'oeuvre au format original."
 msgstr ""
 
-#: inc/fonctions.inc.php:1643
+#: inc/fonctions.inc.php:1618
 #, php-format
 msgid "Galerie %1$s | %2$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1645
+#: inc/fonctions.inc.php:1620
 #, php-format
 msgid "Derniers ajouts à la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1652
+#: inc/fonctions.inc.php:1627
 msgid "Derniers ajouts aux galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1657 inc/fonctions.inc.php:1659
+#: inc/fonctions.inc.php:1632 inc/fonctions.inc.php:1634
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1692 inc/premier.inc.php:59
+#: inc/fonctions.inc.php:1667 inc/premier.inc.php:90
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1696 inc/premier.inc.php:64
+#: inc/fonctions.inc.php:1671 inc/premier.inc.php:95
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1700 inc/premier.inc.php:69
+#: inc/fonctions.inc.php:1675 inc/premier.inc.php:100
 msgid "RSS global du site"
 msgstr ""
 
-#: inc/dernier.inc.php:50 inc/contact.inc.php:17
+#: inc/blocs.inc.php:37 inc/contact.inc.php:17
 msgid "Faire découvrir à des ami-e-s"
 msgstr ""
 
@@ -1457,17 +1457,6 @@ msgstr ""
 msgid "<h2>Qu'est-ce que Squeletml?</h2>"
 msgstr ""
 
-#: inc/message-accueil.inc.php:6
-msgid ""
-"<p>Le logiciel libre Squeletml est un squelette de site valide XHTML 1.0 "
-"Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-"
-"dire un site dont le corps de chaque page se trouve dans un fichier unique "
-"et dont les principaux éléments de structuration comme l'en-tête, le bas de "
-"page, etc. sont partagés entre toutes les pages. Il a pour but de réduire "
-"l'effort nécessaire pour la création et la maintenance de ce genre de site.</"
-"p>"
-msgstr ""
-
 #: inc/message-accueil.inc.php:8
 msgid ""
 "<p>En effet, seulement deux fichiers doivent être inclus dans chaque page "
@@ -1484,8 +1473,10 @@ msgstr ""
 msgid ""
 "<p>Aussi, un fichier de configuration permet de choisir par simple "
 "renseignement de variables le nombre et l'emplacement des colonnes, la "
-"position des menus dans le flux HTML, la présence ou non de certaines "
-"structures comme le bas de page, etc.</p>"
+"position des menus dans le flux HTML (et par conséquent leur ordre dans les "
+"colonnes), la présence ou non de certaines structures comme le bas de page, "
+"le style par défaut (blocs de menu avec coins arrondis, arrière-plan des "
+"colonnes...), etc.</p>"
 msgstr ""
 
 #: inc/message-accueil.inc.php:12
@@ -1503,4 +1494,8 @@ msgid ""
 "<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à "
 "personnaliser votre installation, <a href='admin/documentation.admin.php'>en "
 "visitant la documentation</a>.</p>"
+msgstr ""
+
+#: inc/message-accueil.inc.php:6
+msgid "<p><img src="
 msgstr ""
