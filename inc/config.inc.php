@@ -145,6 +145,12 @@ $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 /* Si `$deuxColonnes` vaut FALSE et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées au `body`, sinon si `$deuxColonnes` vaut FALSE et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées au `body`. */
 $uneColonneAgauche = TRUE; // TRUE|FALSE
 
+// Arrière-plan d'une colonne
+$arrierePlanColonne = "rayures"; // aucun|bordure|rayures|uni
+
+// Div `page` avec bordures
+$borduresPage = TRUE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## Configuration du formulaire de contact

@@ -12,10 +12,13 @@ html, body {
 #page {
 	max-width: 900px;
 	margin: 0 auto;
-	border-left: 1px solid #f2f2f2;
-	border-right: 1px solid #f2f2f2;
 	padding: 0;
 	position: relative;
+}
+
+body.borduresPage #page {
+	border-left: 1px solid #f2f2f2;
+	border-right: 1px solid #f2f2f2;
 }
 
 #ancres {
@@ -195,8 +198,16 @@ pre {
 **
 ***********************************************************************/
 
-body.colonneAgauche #page {
+body.colonneAgaucheRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+}
+
+body.colonneAgaucheUni #page {
+	background: url('../fichiers/uni-204px.png') repeat-y left top;
+}
+
+body.colonneAgaucheBordure #page {
+	background: url('../fichiers/bordure-1px.png') repeat-y 203px top;
 }
 
 body.colonneAgauche div#titre h1, body.colonneAgauche div#titre p {
@@ -246,8 +257,16 @@ body.uneColonneAgauche #surContenu, body.uneColonneAgauche #sousContenu {
 **
 ***********************************************************************/
 
-body.colonneAdroite #page {
+body.colonneAdroiteRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y right top;
+}
+
+body.colonneAdroiteUni #page {
+	background: url('../fichiers/uni-204px.png') repeat-y right top;
+}
+
+body.colonneAdroiteBordure #page {
+	background: url('../fichiers/bordure-gauche-204px.png') repeat-y right top;
 }
 
 body.colonneAdroite div#titre h1, body.colonneAdroite div#titre p {
@@ -318,13 +337,31 @@ body.deuxColonnes #contenu {
 **
 ***********************************************************************/
 
-body.deuxColonnesSousContenuAgauche #page {
+body.deuxColonnesSousContenuAgaucheRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
 	padding-right: 0;
 }
 
-body.deuxColonnesSousContenuAgauche #interieurPage {
+body.deuxColonnesSousContenuAgaucheUni #page {
+	background: url('../fichiers/uni-204px.png') repeat-y left top;
+	padding-right: 0;
+}
+
+body.deuxColonnesSousContenuAgaucheBordure #page {
+	background: url('../fichiers/bordure-1px.png') repeat-y 203px top;
+	padding-right: 0;
+}
+
+body.deuxColonnesSousContenuAgaucheRayures #interieurPage {
 	background: url('../fichiers/rayures-204px.png') repeat-y right top;
+}
+
+body.deuxColonnesSousContenuAgaucheUni #interieurPage {
+	background: url('../fichiers/uni-204px.png') repeat-y right top;
+}
+
+body.deuxColonnesSousContenuAgaucheBordure #interieurPage {
+	background: url('../fichiers/bordure-gauche-204px.png') repeat-y right top;
 }
 
 body.deuxColonnesSousContenuAgauche #surContenu {
@@ -345,8 +382,12 @@ body.deuxColonnesSousContenuAdroite #page {
 	padding-left: 0;
 }
 
-body.deuxColonnesSousContenuAdroite #interieurPage {
+body.deuxColonnesSousContenuAdroiteRayures #interieurPage {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
+}
+
+body.deuxColonnesSousContenuAdroiteUni #interieurPage {
+	background: url('../fichiers/uni-204px.png') repeat-y left top;
 }
 
 body.deuxColonnesSousContenuAdroite #contenu {

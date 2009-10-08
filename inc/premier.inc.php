@@ -102,7 +102,7 @@ if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 <?php endif; ?>
 </head>
-<body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu); ?>">
+<body class="<?php echo construitClassBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage); ?>">
 <div id="ancres">
 	<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
 </div><!-- /ancres -->

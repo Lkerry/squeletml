@@ -329,9 +329,10 @@ function lettreAuHasard($lettresExclues = '')
 /**
 Renvoie une liste de classes pour `body`.
 */
-function construitClassBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu)
+function construitClassBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage)
 {
 	$class = '';
+	$arrierePlanColonne = ucfirst($arrierePlanColonne);
 	
 	if ($estAccueil)
 	{
@@ -349,11 +350,19 @@ function construitClassBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonne
 		
 		if ($deuxColonnesSousContenuAgauche)
 		{
-			$class .= 'deuxColonnesSousContenuAgauche ';
+			$class .= "deuxColonnesSousContenuAgauche ";
+			if ($arrierePlanColonne != 'Aucun')
+			{
+				$class .= "deuxColonnesSousContenuAgauche$arrierePlanColonne ";
+			}
 		}
 		else
 		{
-			$class .= 'deuxColonnesSousContenuAdroite ';
+			$class .= "deuxColonnesSousContenuAdroite ";
+			if ($arrierePlanColonne != 'Aucun')
+			{
+				$class .= "deuxColonnesSousContenuAdroite$arrierePlanColonne ";
+			}
 		}
 	}
 	else
@@ -362,17 +371,30 @@ function construitClassBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonne
 		
 		if ($uneColonneAgauche)
 		{
-			$class .= 'colonneAgauche uneColonneAgauche ';
+			$class .= "colonneAgauche uneColonneAgauche ";
+			if ($arrierePlanColonne != 'Aucun')
+			{
+				$class .= "colonneAgauche$arrierePlanColonne ";
+			}
 		}
 		else
 		{
-			$class .= 'colonneAdroite uneColonneAdroite ';
+			$class .= "colonneAdroite uneColonneAdroite ";
+			if ($arrierePlanColonne != 'Aucun')
+			{
+				$class .= "colonneAdroite$arrierePlanColonne ";
+			}
 		}
 	}
 	
 	if (!$stylerLiensVisitesSeulementDansContenu)
 	{
 		$class .= 'liensVisitesStyles ';
+	}
+	
+	if ($borduresPage)
+	{
+		$class .= 'borduresPage ';
 	}
 	
 	return trim($class);
