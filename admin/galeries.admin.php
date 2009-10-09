@@ -301,94 +301,42 @@ if (isset($_POST['retailler']))
 			
 			if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..' && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
 			{
-				// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
-				$type = typeImage($infoFichier['extension']);
-				
-				switch ($type)
-				{
-					case 'gif':
-						$imageOriginal = imagecreatefromgif($cheminGalerie . '/' . $fichier);
-						break;
-					
-					case 'jpeg':
-						$imageOriginal = imagecreatefromjpeg($cheminGalerie . '/' . $fichier);
-						break;
-					
-					case 'png':
-						$imageOriginal = imagecreatefrompng($cheminGalerie . '/' . $fichier);
-						break;
-				}
-				
-				// Calcul des dimensions de l'original
-				$imageOriginalHauteur = imagesy($imageOriginal);
-				$imageOriginalLargeur = imagesx($imageOriginal);
-				
-				// On trouve les futures dimensions de la version intermediaire
-				$imageIntermediaireHauteur = $_POST['hauteur'];
-				if ($imageIntermediaireHauteur > $imageOriginalHauteur)
-				{
-					$imageIntermediaireHauteur = $imageOriginalHauteur;
-				}
-				$imageIntermediaireLargeur = ($imageIntermediaireHauteur / $imageOriginalHauteur) * $imageOriginalLargeur;
-				if ($imageIntermediaireLargeur > $_POST['largeur'])
-				{
-					$imageIntermediaireLargeur = $_POST['largeur'];
-					$imageIntermediaireHauteur = ($imageIntermediaireLargeur / $imageOriginalLargeur) * $imageOriginalHauteur;
-				}
-				
-				// On crée une image intermediaire vide
-				$imageIntermediaire = imagecreatetruecolor($imageIntermediaireLargeur, $imageIntermediaireHauteur);
-				if ($type == 'png' || $type == 'gif')
-				{
-					imagealphablending($imageIntermediaire, false);
-					imagesavealpha($imageIntermediaire, true);
-				}
-				
-				// On crée la version intermediaire à partir de l'original
-				imagecopyresampled($imageIntermediaire, $imageOriginal, 0, 0, 0, 0, $imageIntermediaireLargeur, $imageIntermediaireHauteur, $imageOriginalLargeur, $imageOriginalHauteur);
-				
-				// Netteté
 				if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
 				{
-					$imageIntermediaire = UnsharpMask($imageIntermediaire, '100', '1', '3');
+					$nettete = TRUE;
+				}
+				else
+				{
+					$nettete = FALSE;
 				}
 				
-				// On enregistre la version intermediaire
-				switch ($type)
+				$imageIntermediaireDimensionsVoulues = array ();
+				
+				if (isset($_POST['largeur']))
 				{
-					case 'gif':
-						if (imagegif($imageIntermediaire, $cheminGalerie . '/' . $nouveauNom))
-						{
-							$listeModifs[] = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
-						}
-						else
-						{
-							$listeModifs[] = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
-						}
-						break;
-					
-					case 'jpeg':
-						if (imagejpeg($imageIntermediaire, $cheminGalerie . '/' . $nouveauNom, $qualiteJpg))
-						{
-							$listeModifs[] = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
-						}
-						else
-						{
-							$listeModifs[] = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
-						}
-						break;
-					
-					case 'png':
-						if (imagepng($imageIntermediaire, $cheminGalerie . '/' . $nouveauNom, 9))
-						{
-							$listeModifs[] = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
-						}
-						else
-						{
-							$listeModifs[] = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nouveauNom, $fichier) . "\n";
-						}
-						break;
+					if (!empty($_POST['largeur']))
+					{
+						$imageIntermediaireDimensionsVoulues['largeur'] = $_POST['largeur'];
+					}
+					else
+					{
+						$imageIntermediaireDimensionsVoulues['largeur'] = 0;
+					}
 				}
+				
+				if (isset($_POST['hauteur']))
+				{
+					if (!empty($_POST['hauteur']))
+					{
+						$imageIntermediaireDimensionsVoulues['hauteur'] = $_POST['hauteur'];
+					}
+					else
+					{
+						$imageIntermediaireDimensionsVoulues['hauteur'] = 0;
+					}
+				}
+				
+				$listeModifs[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete);
 			}
 		}
 		
@@ -700,8 +648,8 @@ if ($boite2FichierConfigDebut)
 <input type="text" name="id" /></p>
 
 <p><label><?php echo T_("Taille maximale de la version intermediaire (largeur × hauteur):"); ?></label><br />
-<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Les proportions de l'image sont conservées."); ?><br />
-<input type="text" name="largeur" size="4" value="500" /> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" value="500" /></p>
+<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Si une seule dimension est précisée, l'autre sera calculée à partir de la dimension donnée ainsi que des dimensions de l'image source. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée."); ?><br />
+<input type="text" name="largeur" size="4" value="500" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" value="500" /> <?php echo T_("px de hauteur"); ?></p>
 
 <p><label><?php echo T_("Comment manipuler les images du dossier?"); ?></label><br />
 <input type="radio" name="manipulerOriginal" value="renommerOriginal" checked="checked" /> <?php echo T_("Renommer préalablement les images du dossier en <code>nom-original.extension</code>. Les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés lors du renommage."); ?><br />

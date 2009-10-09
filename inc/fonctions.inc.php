@@ -769,9 +769,152 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 }
 
 /**
+Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont plus grandes que celles de l'image source, il y a seulement copie et non génération. Retourne un message informant du résultat de la fonction.
+*/
+function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete)
+{
+	$infoNouvelleImage = pathinfo(basename($cheminNouvelleImage));
+	$nomNouvelleImage = $infoNouvelleImage['basename'];
+	$nomImageSource = basename($cheminImageSource);
+	
+	// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
+	$type = typeImage($infoNouvelleImage['extension']);
+	
+	switch ($type)
+	{
+		case 'gif':
+			$imageSource = imagecreatefromgif($cheminImageSource);
+			break;
+		
+		case 'jpeg':
+			$imageSource = imagecreatefromjpeg($cheminImageSource);
+			break;
+		
+		case 'png':
+			$imageSource = imagecreatefrompng($cheminImageSource);
+			break;
+	}
+	
+	// Calcul des dimensions de l'image source
+	$imageSourceHauteur = imagesy($imageSource);
+	$imageSourceLargeur = imagesx($imageSource);
+	
+	// On trouve les futures dimensions de la nouvelle image
+	if ($nouvelleImageDimensionsVoulues['hauteur'])
+	{
+		$nouvelleImageHauteur = $nouvelleImageDimensionsVoulues['hauteur'];
+		if ($nouvelleImageHauteur > $imageSourceHauteur)
+		{
+			$nouvelleImageHauteur = $imageSourceHauteur;
+		}
+		
+		$nouvelleImageLargeur = ($nouvelleImageHauteur / $imageSourceHauteur) * $imageSourceLargeur;
+		if ($nouvelleImageDimensionsVoulues['largeur'] && ($nouvelleImageLargeur > $nouvelleImageDimensionsVoulues['largeur']))
+		{
+			$nouvelleImageLargeur = $nouvelleImageDimensionsVoulues['largeur'];
+			$nouvelleImageHauteur = ($nouvelleImageLargeur / $imageSourceLargeur) * $imageSourceHauteur;
+		}
+	}
+	else
+	{
+		$nouvelleImageLargeur = $nouvelleImageDimensionsVoulues['largeur'];
+		if ($nouvelleImageLargeur > $imageSourceLargeur)
+		{
+			$nouvelleImageLargeur = $imageSourceLargeur;
+		}
+		
+		$nouvelleImageHauteur = ($nouvelleImageLargeur / $imageSourceLargeur) * $imageSourceHauteur;
+		if ($nouvelleImageDimensionsVoulues['hauteur'] && ($nouvelleImageHauteur > $nouvelleImageDimensionsVoulues['hauteur']))
+		{
+			$nouvelleImageHauteur = $nouvelleImageDimensionsVoulues['hauteur'];
+			$nouvelleImageLargeur = ($nouvelleImageHauteur / $imageSourceHauteur) * $imageSourceLargeur;
+		}
+	}
+	
+	// Si la nouvelle image est théoriquement plus grande que l'image source, on ne fait qu'une copie de fichier
+	if ($nouvelleImageHauteur >= $imageSourceHauteur || $nouvelleImageLargeur >= $imageSourceLargeur)
+	{
+		if (copy($cheminImageSource, $cheminNouvelleImage))
+		{
+			$message = sprintf(T_('Copie de <code>%1$s</code> avec le nom <code>%2$s</code>'), $nomImageSource, $nomNouvelleImage) . "\n";
+		}
+		else
+		{
+			$message = sprintf(T_('Impossible de copier <code>%1$s</code> avec le nom <code>%2$s</code>'), $nomImageSource, $nomNouvelleImage) . "\n";
+		}
+	}
+	
+	// Sinon on génère une nouvelle image avec gd
+	else
+	{
+		// On crée une nouvelle image vide
+		$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur, $nouvelleImageHauteur);
+	
+		if ($type == 'png')
+		{
+			imagealphablending($nouvelleImage, false);
+			imagesavealpha($nouvelleImage, true);
+		}
+		if ($type == 'gif')
+		{
+			$blanc = imagecolorallocate($nouvelleImage, 255, 255, 255);
+			imagefill($nouvelleImage, 0, 0, $blanc);
+		}
+		
+		// On crée la nouvelle image à partir de l'image source
+		imagecopyresampled($nouvelleImage, $imageSource, 0, 0, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
+		
+		// Netteté
+		if ($nettete)
+		{
+			$nouvelleImage = UnsharpMask($nouvelleImage, '100', '1', '3');
+		}
+		
+		// On enregistre la nouvelle image
+		switch ($type)
+		{
+			case 'gif':
+				if (imagegif($nouvelleImage, $cheminNouvelleImage))
+				{
+					$message = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				else
+				{
+					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				break;
+		
+			case 'jpeg':
+				if (imagejpeg($nouvelleImage, $cheminNouvelleImage, $qualiteJpg))
+				{
+					$message = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				else
+				{
+					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				break;
+		
+			case 'png':
+				if (imagepng($nouvelleImage, $cheminNouvelleImage, 9))
+				{
+					$message = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				else
+				{
+					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				break;
+		}
+	}
+	
+	return $message;
+}
+
+/**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieHauteurVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
+function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
 {
 	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
 	
@@ -1049,69 +1192,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				// Sinon, on génère une vignette avec gd ou en copiant l'image intermédiaire
 				else
 				{
-					// Dimensions de l'image intermediaire
-					list($imageIntermediaireLargeur, $imageIntermediaireHauteur) = getimagesize($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-					
-					// On trouve les futures dimensions de la vignette
-					$imageVignetteHauteur = $galerieHauteurVignette;
-					$imageVignetteLargeur = ($imageVignetteHauteur / $imageIntermediaireHauteur) * $imageIntermediaireLargeur;
-					
-					// Si la vignette est théoriquement plus grande que l'image intermédiaire, on ne fait qu'une copie de fichier
-					if ($imageVignetteHauteur >= $imageIntermediaireHauteur || $imageVignetteLargeur >= $imageIntermediaireLargeur)
-					{
-						copy($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom);
-					}
-					
-					// Sinon on génère une vignette avec gd
-					else
-					{
-						// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
-						$type = typeImage($infoIntermediaireNom['extension']);
-					
-						// Image intermediaire
-						switch ($type)
-						{
-							case 'gif':
-								$imageIntermediaire = imagecreatefromgif($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-								break;
-						
-							case 'jpeg':
-								$imageIntermediaire = imagecreatefromjpeg($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-								break;
-						
-							case 'png':
-								$imageIntermediaire = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-								break;
-						}
-					
-						// On crée une vignette vide
-						$imageVignette = imagecreatetruecolor($imageVignetteLargeur, $imageVignetteHauteur);
-						if ($type == 'png' || $type == 'gif')
-						{
-							imagealphablending($imageVignette, false);
-							imagesavealpha($imageVignette, true);
-						}
-						
-						// On crée la vignette à partir de l'image intermediaire
-						imagecopyresampled($imageVignette, $imageIntermediaire, 0, 0, 0, 0, $imageVignetteLargeur, $imageVignetteHauteur, $imageIntermediaireLargeur, $imageIntermediaireHauteur);
-					
-						// On enregistre la vignette
-						switch ($type)
-						{
-							case 'gif':
-								imagegif($imageVignette, $racineImgSrc . '/' . $vignetteNom);
-								break;
-						
-							case 'jpeg':
-								imagejpeg($imageVignette, $racineImgSrc . '/' . $vignetteNom, $qualiteJpg);
-								break;
-						
-							case 'png':
-								imagepng($imageVignette, $racineImgSrc . '/' . $vignetteNom, 9);
-								break;
-						}
-
-					}
+					nouvelleImage($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE);
 					
 					// On assigne l'attribut `src`
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';

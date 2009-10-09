@@ -195,8 +195,12 @@ $copieCourriel = FALSE; // TRUE|FALSE
 // Qualité des images JPG générées par le script
 $qualiteJpg = 90; // 0-100
 
-// Hauteur des vignettes si génération automatique
-$galerieHauteurVignette = 100;
+// Dimensions des vignettes si génération automatique
+/* La valeur `0` assignée à une dimension signifie que cette dernière sera calculée à partir de l'autre dimension donnée ainsi que des dimensions de l'image source. Si les deux dimensions sont données, la plus grande taille possible contenable dans ces dimensions sera utilisée, sans toutefois dépasser la taille originale. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée. */
+$galerieDimensionsVignette = array (
+	'largeur' => 0,
+	'hauteur' => 100,
+	);
 
 ##
 ## Syndication de contenu (flux RSS)
