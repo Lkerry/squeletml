@@ -771,7 +771,7 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieHauteurVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
+function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieHauteurVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
 {
 	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
 	
@@ -1081,14 +1081,17 @@ function afficheOeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie,
 						
 							case 'png':
 								$imageIntermediaire = imagecreatefrompng($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom']);
-								imagealphablending($imageIntermediaire, true);
-								imagesavealpha($imageIntermediaire, true);
 								break;
 						}
 					
 						// On crée une vignette vide
 						$imageVignette = imagecreatetruecolor($imageVignetteLargeur, $imageVignetteHauteur);
-					
+						if ($type == 'png')
+						{
+							imagealphablending($imageVignette, false);
+							imagesavealpha($imageVignette, true);
+						}
+						
 						// On crée la vignette à partir de l'image intermediaire
 						imagecopyresampled($imageVignette, $imageIntermediaire, 0, 0, 0, 0, $imageVignetteLargeur, $imageVignetteHauteur, $imageIntermediaireLargeur, $imageIntermediaireHauteur);
 					
