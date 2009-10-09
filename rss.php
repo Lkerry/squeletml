@@ -108,9 +108,9 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 		// A: le flux global pour les galeries est activé.
 		
 		// On vérifie si le flux existe en cache ou si le cache est expiré
-		if ($dureeCache && file_exists("$racine/site/cache/rss-global-galeries.xml") && !cacheExpire("$racine/site/cache/rss-global-galeries.xml", $dureeCache))
+		if ($dureeCache && file_exists("$racine/site/cache/rss-global-galeries-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-galeries-$getLangue.xml", $dureeCache))
 		{
-			readfile("$racine/site/cache/rss-global-galeries.xml");
+			readfile("$racine/site/cache/rss-global-galeries-$getLangue.xml");
 		}
 		else
 		{
@@ -139,8 +139,8 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				file_put_contents("$racine/site/cache/rss-global-galeries.xml", $rssAafficher);
-				readfile("$racine/site/cache/rss-global-galeries.xml");
+				file_put_contents("$racine/site/cache/rss-global-galeries-$getLangue.xml", $rssAafficher);
+				readfile("$racine/site/cache/rss-global-galeries-$getLangue.xml");
 			}
 			else
 			{
@@ -161,9 +161,9 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 		// A: le flux global du site est activé.
 		
 		// On vérifie si le flux existe en cache ou si le cache est expiré
-		if ($dureeCache && file_exists("$racine/site/cache/rss-global-site.xml") && !cacheExpire("$racine/site/cache/rss-global-site.xml", $dureeCache))
+		if ($dureeCache && file_exists("$racine/site/cache/rss-global-site-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-site-$getLangue.xml", $dureeCache))
 		{
-			readfile("$racine/site/cache/rss-global-site.xml");
+			readfile("$racine/site/cache/rss-global-site-$getLangue.xml");
 		}
 		else
 		{
@@ -217,8 +217,8 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				file_put_contents("$racine/site/cache/rss-global-site.xml", $rssAafficher);
-				readfile("$racine/site/cache/rss-global-site.xml");
+				file_put_contents("$racine/site/cache/rss-global-site-$getLangue.xml", $rssAafficher);
+				readfile("$racine/site/cache/rss-global-site-$getLangue.xml");
 			}
 			else
 			{

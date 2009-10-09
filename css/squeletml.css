@@ -102,14 +102,13 @@ div#sousTitre p {
 }
 
 #faireDecouvrir a {
-	margin-left: 3px;
-	padding-left: 23px;
+	padding-left: 22px;
 	background: url('../fichiers/enveloppe.png') no-repeat left center;
 }
 
 #fluxRss a {
-	margin-left: 5px;
-	padding-left: 21px;
+	margin-left: 2px;
+	padding-left: 20px;
 	background: url('../fichiers/rss.png') no-repeat left center;
 }
 
