@@ -338,7 +338,7 @@ if (isset($_POST['retailler']))
 				
 				// On crée une image intermediaire vide
 				$imageIntermediaire = imagecreatetruecolor($imageIntermediaireLargeur, $imageIntermediaireHauteur);
-				if ($type == 'png')
+				if ($type == 'png' || $type == 'gif')
 				{
 					imagealphablending($imageIntermediaire, false);
 					imagesavealpha($imageIntermediaire, true);

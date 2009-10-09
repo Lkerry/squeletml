@@ -1086,7 +1086,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 					
 						// On crée une vignette vide
 						$imageVignette = imagecreatetruecolor($imageVignetteLargeur, $imageVignetteHauteur);
-						if ($type == 'png')
+						if ($type == 'png' || $type == 'gif')
 						{
 							imagealphablending($imageVignette, false);
 							imagesavealpha($imageVignette, true);
