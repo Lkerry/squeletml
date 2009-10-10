@@ -769,9 +769,9 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 }
 
 /**
-Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont plus grandes que celles de l'image source, il y a seulement copie et non génération. Retourne un message informant du résultat de la fonction.
+Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne un message informant du résultat de la fonction.
 */
-function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete)
+function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette)
 {
 	$infoNouvelleImage = pathinfo(basename($cheminNouvelleImage));
 	$nomNouvelleImage = $infoNouvelleImage['basename'];
@@ -831,8 +831,30 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 		}
 	}
 	
-	// Si la nouvelle image est théoriquement plus grande que l'image source, on ne fait qu'une copie de fichier
-	if ($nouvelleImageHauteur >= $imageSourceHauteur || $nouvelleImageLargeur >= $imageSourceLargeur)
+	
+	$demiSupplementHauteur = 0;
+	$demiSupplementLargeur = 0;
+	
+	if ($galerieForcerDimensionsVignette)
+	{
+		if ($nouvelleImageDimensionsVoulues['hauteur'] && ($nouvelleImageHauteur < $nouvelleImageDimensionsVoulues['hauteur']))
+		{
+			$demiSupplementHauteur = ($nouvelleImageDimensionsVoulues['hauteur'] - $nouvelleImageHauteur) / 2;
+		}
+		
+		if ($nouvelleImageDimensionsVoulues['largeur'] && ($nouvelleImageLargeur < $nouvelleImageDimensionsVoulues['largeur']))
+		{
+			$demiSupplementLargeur = ($nouvelleImageDimensionsVoulues['largeur'] - $nouvelleImageLargeur) / 2;
+		}
+	}
+	
+	
+	
+	
+	
+	// Si la nouvelle image est théoriquement au moins aussi grande que l'image source, on ne fait qu'une copie de fichier
+	if ($nouvelleImageHauteur > $imageSourceHauteur || $nouvelleImageLargeur > $imageSourceLargeur)
+	#if ($nouvelleImageHauteur >= $imageSourceHauteur || $nouvelleImageLargeur >= $imageSourceLargeur)
 	{
 		if (copy($cheminImageSource, $cheminNouvelleImage))
 		{
@@ -848,21 +870,36 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 	else
 	{
 		// On crée une nouvelle image vide
-		$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur, $nouvelleImageHauteur);
+		
+		
+#		$demiSupplementLargeur = 38;
+#		$demiSupplementHauteur = 38;
+		$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur + 2 * $demiSupplementLargeur, $nouvelleImageHauteur + 2 * $demiSupplementHauteur);
+		
+		#$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur, $nouvelleImageHauteur);
 	
 		if ($type == 'png')
 		{
 			imagealphablending($nouvelleImage, false);
 			imagesavealpha($nouvelleImage, true);
 		}
-		if ($type == 'gif')
+		if ($type == 'gif' || ($galerieForcerDimensionsVignette && $type == 'jpeg'))
 		{
 			$blanc = imagecolorallocate($nouvelleImage, 255, 255, 255);
 			imagefill($nouvelleImage, 0, 0, $blanc);
 		}
 		
+		
+		if ($type == 'png')
+		{
+			$transparentColor = imagecolorallocatealpha($nouvelleImage, 200, 200, 200, 127);
+			imagefill($nouvelleImage, 0, 0, $transparentColor);
+		}
+		
+		
 		// On crée la nouvelle image à partir de l'image source
-		imagecopyresampled($nouvelleImage, $imageSource, 0, 0, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
+		imagecopyresampled($nouvelleImage, $imageSource, $demiSupplementLargeur, $demiSupplementHauteur, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
+		#imagecopyresampled($nouvelleImage, $imageSource, 0, 0, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
 		
 		// Netteté
 		if ($nettete)
@@ -914,7 +951,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
+function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
 {
 	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
 	
@@ -1192,7 +1229,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				// Sinon, on génère une vignette
 				else
 				{
-					nouvelleImage($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE);
+					nouvelleImage($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE, $galerieForcerDimensionsVignette);
 					
 					// On assigne l'attribut `src`
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';

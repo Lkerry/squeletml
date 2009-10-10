@@ -336,7 +336,7 @@ if (isset($_POST['retailler']))
 					}
 				}
 				
-				$listeModifs[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete);
+				$listeModifs[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette);
 			}
 		}
 		
