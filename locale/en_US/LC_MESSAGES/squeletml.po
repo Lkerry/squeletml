@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-09 19:52-0400\n"
+"POT-Creation-Date: 2009-10-10 10:01-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -789,6 +789,10 @@ msgstr "Work %1$s"
 #: admin/versions.admin.php:13
 #, php-format
 msgid "Système d'exploitation: %1$s"
+msgstr ""
+
+#: admin/versions.admin.php:16
+msgid "Afficher plus d'information."
 msgstr ""
 
 #: admin/porte-documents.admin.php:33

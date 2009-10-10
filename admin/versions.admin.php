@@ -13,4 +13,6 @@ include 'inc/premier.inc.php';
 	<li><?php printf(T_('Système d\'exploitation: %1$s'), PHP_OS); ?></li>
 </ul>
 
+<p><a href="phpinfo.admin.php"><?php echo T_("Afficher plus d'information."); ?></a></p>
+
 <?php include $racine . '/admin/inc/dernier.inc.php'; ?>
