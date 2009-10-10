@@ -103,6 +103,8 @@ Pour faire part d'un problème d'utilisation avec Squeletml ou pour proposer une
 - envoyer un [message à partir du formulaire de contact](http://www.jpfleury.net/contact);
 - ou faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/squeletml).
 
+N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`.
+
 ## Licence de Squeletml
 
 ### Squeletml
