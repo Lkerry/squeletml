@@ -706,7 +706,7 @@ La page en question est accessible à l'adresse suivante:
 
 	$urlRacine/dossier1/dossier2/page.php
 
-L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.pc` composeront le flux global du site.
+L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.pc` composeront le flux global du site.
 
 ## Développement
 

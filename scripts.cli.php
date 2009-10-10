@@ -8,13 +8,15 @@ if ($argv[1] == 'mdtxt')
 	$fic = fopen($fichierALire . '.mdtxt', 'w');
 	$fichier = file_get_contents($fichierALire);
 	
-	$fichier = preg_replace('/^/m', "\t", $fichier);
-	$fichier = preg_replace('/^\t=== ([^=]+) ===$/m', '- $1' . "\n", $fichier);
-	$fichier = preg_replace('/^\t([0-9]{4}(-[0-9]{2}){2})  /m', "\t" . '- $1&nbsp;&nbsp;', $fichier);
-	$fichier = preg_replace('/^\t\t\* (.+)$/m', "\t\t" . '- $1', $fichier);
+	$fichier = preg_replace('/^/m', "\t\t", $fichier);
+	$fichier = preg_replace('/^\t\t=== ([^=]+) ===$/m', '- $1' . "\n", $fichier);
+	$fichier = preg_replace('/^\t\t([0-9]{4}(-[0-9]{2}){2})  /m', "\t" . '- $1&nbsp;&nbsp;', $fichier);
+	$fichier = preg_replace('/^\t\t\t\* (.+)$/m', "\t\t" . '- $1', $fichier);
 	$fichier = preg_replace('/,\n\t\t- (?! )/m', ",  \n\t\t", $fichier);
 	$fichier = preg_replace('/\.\n\t\t- (?! )/m', ".\n\n\t\t- ", $fichier);
 	$fichier = preg_replace('/^\t$/m', '', $fichier);
+	
+	$fichier = preg_replace('/^(\t\t.+: \[[0-9]+\]) /m', '$1' . "\n\n\t\t\t", $fichier);
 	
 	// Optionnel. Supprime l'adresse courriel.
 	$fichier = preg_replace('/^(\t- [0-9]{4}(-[0-9]{2}){2}[^<]+) <[^@]+@[^>]+>/m', '$1', $fichier);

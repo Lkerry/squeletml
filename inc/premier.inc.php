@@ -63,7 +63,7 @@ if (!galerieExiste($racine, $idGalerie))
 
 if ($idGalerie && !isset($rss))
 {
-	$rss = $galerieFluxParDefaut;
+	$rss = $galerieFluxRssParDefaut;
 }
 
 ########################################################################
@@ -90,12 +90,12 @@ if ($idGalerie && $rss)
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlFlux\" title=\"" . sprintf(T_("RSS de la galerie %1\$s"), $idGalerie) . "\" />";
 }
 
-if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
+if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
 {
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=galeries&langue=" . LANGUE . "\" title=\"" . T_("RSS de toutes les galeries") . "\" />";
 }
 
-if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
+if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 {
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=pages&langue=" . LANGUE . "\" title=\"" . T_("RSS global du site") . "\" />";
 }

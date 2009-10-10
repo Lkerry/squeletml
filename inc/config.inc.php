@@ -58,11 +58,11 @@ $langueParDefaut = 'fr';
 ##
 
 // Syndication globale du site
-/* La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxGlobal` vaut TRUE. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL. Voir la documentation pour plus de détails. */
-$siteFluxGlobal = FALSE; // TRUE|FALSE
+/* La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxRssGlobal` vaut TRUE. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL. Voir la documentation pour plus de détails. */
+$siteFluxRssGlobal = FALSE; // TRUE|FALSE
 
 // Nombre d'items par flux RSS
-$nbreItemsFlux = 50;
+$nombreItemsFluxRss = 50;
 
 // Temps en secondes avant que le cache des flux RSS n'expire
 /*
@@ -73,7 +73,7 @@ Exemples:
 - `43200` équivaut à 12 heures;
 - `86400` équivaut à 1 journée.
 */
-$dureeCache = 0;
+$dureeCacheFluxRss = 0;
 
 ##
 ## Activations et inclusions
@@ -207,11 +207,11 @@ $galerieDimensionsVignette = array (
 ##
 
 // Syndication individuelle par défaut des galeries (il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut)
-$galerieFluxParDefaut = TRUE; // TRUE|FALSE
+$galerieFluxRssParDefaut = TRUE; // TRUE|FALSE
 
 // Syndication globale pour toutes les galeries
 /* La syndication globale des galeries n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant la liste des galeries et de leur URL. Voir la documentation pour plus de détails. */
-$galerieFluxGlobal = FALSE; // TRUE|FALSE
+$galerieFluxRssGlobal = FALSE; // TRUE|FALSE
 
 ##
 ## Accueil des galeries

@@ -1668,7 +1668,7 @@ function rssPageTableauBrut($cheminPage, $urlPage)
 /**
 Retourne le tableau `$itemsFlux` trié selon la date de dernière modification et contenant au maximum le nombre d'items précisé dans la configuration.
 */
-function rssTableauFinal($itemsFlux, $nbreItemsFlux)
+function rssTableauFinal($itemsFlux, $nombreItemsFluxRss)
 {
 	foreach ($itemsFlux as $cle => $valeur)
 	{
@@ -1681,7 +1681,7 @@ function rssTableauFinal($itemsFlux, $nbreItemsFlux)
 	
 	array_multisort($itemsFluxPubDate, SORT_DESC, $itemsFlux);
 	
-	$itemsFlux = array_slice($itemsFlux, 0, $nbreItemsFlux);
+	$itemsFlux = array_slice($itemsFlux, 0, $nombreItemsFluxRss);
 	
 	return $itemsFlux;
 }
@@ -1765,9 +1765,9 @@ function lienRss($urlFlux, $idGalerie, $estGalerie)
 /**
 Vérifie si le cache d'un fichier expire.
 */
-function cacheExpire($fichier, $dureeCache)
+function cacheExpire($fichier, $dureeCacheFluxRss)
 {
-	if (time() - fileatime($fichier) > $dureeCache)
+	if (time() - fileatime($fichier) > $dureeCacheFluxRss)
 	{
 		return TRUE;
 	}

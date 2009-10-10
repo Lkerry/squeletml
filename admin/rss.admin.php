@@ -265,20 +265,20 @@ elseif (isset($_POST['modifsSite']))
 echo '<ul>';
 if (adminFluxGlobal('galerie', $racine))
 {
-	echo '<li>' . T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieFluxGlobal = TRUE;</code>).</li>';
+	echo '<li>' . T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieFluxRssGlobal = TRUE;</code>).</li>';
 }
 else
 {
-	echo '<li>' . T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieFluxGlobal = FALSE;</code>).</li>';
+	echo '<li>' . T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieFluxRssGlobal = FALSE;</code>).</li>';
 }
 
 if (adminFluxGlobal('site', $racine))
 {
-	echo '<li>' . T_("Le flux RSS global du site est activé") . ' (<code>$siteFluxGlobal = TRUE;</code>).</li>';
+	echo '<li>' . T_("Le flux RSS global du site est activé") . ' (<code>$siteFluxRssGlobal = TRUE;</code>).</li>';
 }
 else
 {
-	echo '<li>' . T_("Le flux RSS global du site n'est pas activé") . ' (<code>$siteFluxGlobal = FALSE;</code>).</li>';
+	echo '<li>' . T_("Le flux RSS global du site n'est pas activé") . ' (<code>$siteFluxRssGlobal = FALSE;</code>).</li>';
 }
 echo '</ul>';
 

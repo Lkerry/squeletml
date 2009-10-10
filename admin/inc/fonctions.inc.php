@@ -39,7 +39,7 @@ function adminInit($racine)
 }
 
 /**
-Retourne la valeur des variables `$galerieFluxGlobal` ou `$siteFluxGlobal`.
+Retourne la valeur des variables `$galerieFluxRssGlobal` ou `$siteFluxRssGlobal`.
 */
 function adminFluxGlobal($flux, $racine)
 {
@@ -52,11 +52,11 @@ function adminFluxGlobal($flux, $racine)
 	
 	if ($flux == 'galerie')
 	{
-		return $galerieFluxGlobal;
+		return $galerieFluxRssGlobal;
 	}
 	elseif ($flux == 'site')
 	{
-		return $siteFluxGlobal;
+		return $siteFluxRssGlobal;
 	}
 }
 

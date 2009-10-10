@@ -54,7 +54,7 @@ if (isset($getChemin) && !empty($getChemin))
 		{
 			if (!isset($rss))
 			{
-				$rss = $galerieFluxParDefaut;
+				$rss = $galerieFluxRssParDefaut;
 			}
 	
 			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie . "/config.pc"))
@@ -62,7 +62,7 @@ if (isset($getChemin) && !empty($getChemin))
 				// A: le flux est activé.
 				
 				// On vérifie si le flux existe en cache ou si le cache est expiré
-				if ($dureeCache && file_exists("$racine/site/cache/rss-$idGalerie.xml") && !cacheExpire("$racine/site/cache/rss-$idGalerie.xml", $dureeCache))
+				if ($dureeCacheFluxRss && file_exists("$racine/site/cache/rss-$idGalerie.xml") && !cacheExpire("$racine/site/cache/rss-$idGalerie.xml", $dureeCacheFluxRss))
 				{
 					readfile("$racine/site/cache/rss-$idGalerie.xml");
 				}
@@ -70,14 +70,14 @@ if (isset($getChemin) && !empty($getChemin))
 				{
 					$urlGalerie = $urlRacine . '/' . $getChemin;
 					
-					$itemsFlux = rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxGlobalUrlOeuvre);
+					$itemsFlux = rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie);
 					if (!empty($itemsFlux))
 					{
 						$itemsFlux = rssTableauFinal($itemsFlux, $nbreItemsFlux);
 					}
 					$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), $urlGalerie, $itemsFlux, TRUE);
 					
-					if ($dureeCache)
+					if ($dureeCacheFluxRss)
 					{
 						creeDossierCache($racine);
 						file_put_contents("$racine/site/cache/rss-$idGalerie.xml", $rssAafficher);
@@ -103,12 +103,12 @@ if (isset($getChemin) && !empty($getChemin))
 
 elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLangue) && isset($accueil[$getLangue]))
 {
-	if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
+	if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
 	{
 		// A: le flux global pour les galeries est activé.
 		
 		// On vérifie si le flux existe en cache ou si le cache est expiré
-		if ($dureeCache && file_exists("$racine/site/cache/rss-global-galeries-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-galeries-$getLangue.xml", $dureeCache))
+		if ($dureeCacheFluxRss && file_exists("$racine/site/cache/rss-global-galeries-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-galeries-$getLangue.xml", $dureeCacheFluxRss))
 		{
 			readfile("$racine/site/cache/rss-global-galeries-$getLangue.xml");
 		}
@@ -136,7 +136,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			$idGalerie = FALSE;
 			$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), ACCUEIL, $itemsFlux, TRUE);
 			
-			if ($dureeCache)
+			if ($dureeCacheFluxRss)
 			{
 				creeDossierCache($racine);
 				file_put_contents("$racine/site/cache/rss-global-galeries-$getLangue.xml", $rssAafficher);
@@ -156,12 +156,12 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 
 elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue) && isset($accueil[$getLangue]))
 {
-	if ($siteFluxGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
+	if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	{
 		// A: le flux global du site est activé.
 		
 		// On vérifie si le flux existe en cache ou si le cache est expiré
-		if ($dureeCache && file_exists("$racine/site/cache/rss-global-site-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-site-$getLangue.xml", $dureeCache))
+		if ($dureeCacheFluxRss && file_exists("$racine/site/cache/rss-global-site-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-site-$getLangue.xml", $dureeCacheFluxRss))
 		{
 			readfile("$racine/site/cache/rss-global-site-$getLangue.xml");
 		}
@@ -190,7 +190,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				}
 				
 				// On vérifie si les galeries ont leur flux global, et si oui, on les inclut dans le flux global du site
-				if ($galerieFluxGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
+				if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
 				{
 					$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.pc");
 					if (!empty($galeries))
@@ -214,7 +214,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 			$idGalerie = FALSE;
 			$rssAafficher = rss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), ACCUEIL, $itemsFlux, FALSE);
 			
-			if ($dureeCache)
+			if ($dureeCacheFluxRss)
 			{
 				creeDossierCache($racine);
 				file_put_contents("$racine/site/cache/rss-global-site-$getLangue.xml", $rssAafficher);
