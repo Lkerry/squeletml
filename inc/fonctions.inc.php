@@ -1189,7 +1189,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				{
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
 				}
-				// Sinon, on génère une vignette avec gd ou en copiant l'image intermédiaire
+				// Sinon, on génère une vignette
 				else
 				{
 					nouvelleImage($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE);

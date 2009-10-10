@@ -222,8 +222,16 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 	$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
 	if (!empty($listeAjouts))
 	{
-		$listeExistant = file_get_contents($fichierConfigChemin) or die();
-		file_put_contents($fichierConfigChemin, $listeAjouts . $listeExistant) or die();
+		$listeExistant = file_get_contents($fichierConfigChemin);
+		if ($listeExistant === FALSE)
+		{
+			return FALSE;
+		}
+		
+		if (file_put_contents($fichierConfigChemin, $listeAjouts . $listeExistant) === FALSE)
+		{
+			return FALSE;
+		}
 	}
 	
 	$galerie = tableauGalerie($fichierConfigChemin);
@@ -271,7 +279,11 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 		$i++;
 	}
 	
-	$fic = opendir($cheminGalerie) or die();
+	$fic = opendir($cheminGalerie);
+	if ($fic === FALSE)
+	{
+		return FALSE;
+	}
 	
 	$listeNouveauxFichiers = array ();
 	while($fichier = @readdir($fic))
@@ -309,7 +321,10 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 	
 	$contenuConfig = rtrim($contenuConfig);
 	
-	file_put_contents($fichierConfigChemin, $contenuConfig) or die();
+	if (file_put_contents($fichierConfigChemin, $contenuConfig) === FALSE)
+	{
+		return FALSE;
+	}
 	
 	return TRUE;
 }
