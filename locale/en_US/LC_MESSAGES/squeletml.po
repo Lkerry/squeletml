@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-10 10:51-0400\n"
+"POT-Creation-Date: 2009-10-10 18:27-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -308,7 +308,7 @@ msgid "Documentation de Squeletml"
 msgstr ""
 
 #: admin/galeries.admin.php:3 admin/inc/html.menu.inc.php:8
-#: inc/fonctions.inc.php:1709
+#: inc/fonctions.inc.php:1746
 msgid "Galeries"
 msgstr ""
 
@@ -1159,124 +1159,124 @@ msgstr "Download Firefox"
 msgid "Légende de l'oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:839
+#: inc/fonctions.inc.php:861
 #, php-format
 msgid "Copie de <code>%1$s</code> avec le nom <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:843
+#: inc/fonctions.inc.php:865
 #, php-format
 msgid "Impossible de copier <code>%1$s</code> avec le nom <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:879 inc/fonctions.inc.php:890
-#: inc/fonctions.inc.php:901
+#: inc/fonctions.inc.php:916 inc/fonctions.inc.php:927
+#: inc/fonctions.inc.php:938
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:883 inc/fonctions.inc.php:894
-#: inc/fonctions.inc.php:905
+#: inc/fonctions.inc.php:920 inc/fonctions.inc.php:931
+#: inc/fonctions.inc.php:942
 #, php-format
 msgid "Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:967
+#: inc/fonctions.inc.php:1004
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:980
+#: inc/fonctions.inc.php:1017
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:1009
+#: inc/fonctions.inc.php:1046
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:1014
+#: inc/fonctions.inc.php:1051
 #, php-format
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:1056
+#: inc/fonctions.inc.php:1093
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:1060
+#: inc/fonctions.inc.php:1097
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:1068
+#: inc/fonctions.inc.php:1105
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:1072
+#: inc/fonctions.inc.php:1109
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:1076
+#: inc/fonctions.inc.php:1113
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:1080
+#: inc/fonctions.inc.php:1117
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:1084
+#: inc/fonctions.inc.php:1121
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1249 inc/fonctions.inc.php:1557
+#: inc/fonctions.inc.php:1286 inc/fonctions.inc.php:1594
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
 
-#: inc/fonctions.inc.php:1409
+#: inc/fonctions.inc.php:1446
 msgid "Consultez cette page!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1409 inc/fonctions.inc.php:1468
+#: inc/fonctions.inc.php:1446 inc/fonctions.inc.php:1505
 msgid "En espérant qu'elle vous intéresse!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1468
+#: inc/fonctions.inc.php:1505
 msgid "Voyez l'oeuvre en plus grande taille!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1619
+#: inc/fonctions.inc.php:1656
 msgid "Lien vers l'oeuvre au format original."
 msgstr ""
 
-#: inc/fonctions.inc.php:1702
+#: inc/fonctions.inc.php:1739
 #, php-format
 msgid "Galerie %1$s | %2$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1704
+#: inc/fonctions.inc.php:1741
 #, php-format
 msgid "Derniers ajouts à la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1711
+#: inc/fonctions.inc.php:1748
 msgid "Derniers ajouts aux galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1716 inc/fonctions.inc.php:1718
+#: inc/fonctions.inc.php:1753 inc/fonctions.inc.php:1755
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1751 inc/premier.inc.php:90
+#: inc/fonctions.inc.php:1788 inc/premier.inc.php:90
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1755 inc/premier.inc.php:95
+#: inc/fonctions.inc.php:1792 inc/premier.inc.php:95
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1759 inc/premier.inc.php:100
+#: inc/fonctions.inc.php:1796 inc/premier.inc.php:100
 msgid "RSS global du site"
 msgstr ""
 
