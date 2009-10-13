@@ -107,8 +107,8 @@ Chaque bloc se voit assigné un nombre. Un nombre impair signifie que le bloc en
 
 Par exemple:
 
-	'menu-langues' => '10',
-	'flux-rss' => '2',
+	'menu-langues' => 10,
+	'flux-rss' => 2,
 
 signifie que le menu des langues ainsi que les liens RSS seront insérés dans la div `sousContenu` puisque les deux blocs ont un nombre pair, et qu'à l'intérieur de la div, les liens RSS seront insérés en premier puisqu'en ordre croissant, cela donne 2 (les liens RSS) et 10 (menu des langues).
 
@@ -117,11 +117,11 @@ Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut 
 Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivation d'une fonctionnalité, mais seulement avec l'odre dans lequel les blocs sont insérés dans le flux HTML dans le cas où la fonctionnalité est activée.
 */
 $ordreFluxHtml = array (
-	'menu-langues' => '2',
-	'menu' => '4',
-	'faire-decouvrir' => '6',
-	'legende-oeuvre-galerie' => '8', // S'il y a lieu (voir `$galerieLegendeEmplacement`)
-	'flux-rss' => '10',
+	'menu-langues' => 2,
+	'menu' => 4,
+	'faire-decouvrir' => 6,
+	'legende-oeuvre-galerie' => 8, // S'il y a lieu (voir `$galerieLegendeEmplacement`)
+	'flux-rss' => 10,
 	);
 
 ##

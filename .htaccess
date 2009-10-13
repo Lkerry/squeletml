@@ -7,9 +7,13 @@
 # Décommenter la ligne suivante dans le cas d'un hébergement sur un serveur de Free.fr
 #php 1
 
-# Page s'affichant à la place d'une page inexistante. Au besoin, changer le chemin vers la page. Ex.:
-# ErrorDocument 404 http://www.monSite.ext/404.php
+# Pages d'erreur. Au besoin, changer le chemin vers la page. Ex.:
+# ErrorDocument 404 http://www.NomDeDomaine.ext/monSite/404.php
+# Note: pour l'erreur 401, il faut spécifier une URL locale. Ex.:
+# ErrorDocument 401 /monSite/401.php
+ErrorDocument 401 /401.php
 ErrorDocument 404 /404.php
+ErrorDocument 503 /maintenance.php
 
 ########################################################################
 ##
@@ -48,3 +52,12 @@ Options -Indexes
 	Satisfy any
 </Files>
 
+# Ajout automatique de Squeletml (accès admin). Ne pas modifier.
+# Empêcher l'affichage direct de certains fichiers.
+<FilesMatch "(ChangeLog|ChangeLogDerniereVersion|\.acces|\.admin\.php|\.defaut|\.mdtxt|\.pc|\.txt|\.xml)$">
+	AuthUserFile /home/jp/informatique/prog/devel/logiciels/squeletml/.acces
+	AuthType Basic
+	AuthName "Zone d'identification"
+	Require valid-user
+</FilesMatch>
+# Fin de l'ajout automatique de Squeletml (accès admin).

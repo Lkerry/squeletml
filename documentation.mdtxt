@@ -70,6 +70,8 @@ Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute 
 
 et modifiez `/404.php` par la bonne adresse URL, par exemple `http://www.nomDeDomaine.ext/404.php`.
 
+D'autres pages d'erreur sont déclarées dans le `.htaccess`, comme celle pour l'erreur 401. Au besoin, modifier dans le `.htaccess` le chemin de toutes les pages d'erreur.
+
 Ce fichier va également contenir les instructions pour protéger le dossier d'administration.
 
 #### Le fichier `inc/config.inc.php`
