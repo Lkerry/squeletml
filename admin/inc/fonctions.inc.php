@@ -352,4 +352,105 @@ function adminEstIE()
 	}
 }
 
+/**
+Retourne l'IP de l'internaute si elle a été trouvée, sinon retourne FALSE.
+*/
+function ipInternaute()
+{
+	if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+	{
+		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	}
+	elseif (isset($_SERVER['HTTP_CLIENT_IP']))
+	{
+		$ip = $_SERVER['HTTP_CLIENT_IP'];
+	}
+	elseif (isset($_SERVER['REMOTE_ADDR']))
+	{
+		$ip = $_SERVER['REMOTE_ADDR'];
+	}
+	else
+	{
+		$ip = FALSE;
+	}
+	
+	return $ip;
+}
+
+/**
+Si `$retourneMessage` vaut TRUE, retourne un message informant si la réécriture d'URL est activée ou non, sinon retourne un caractère.
+*/
+function reecritureDurl($retourneMessage)
+{
+	if (function_exists('apache_get_modules'))
+	{
+		if (in_array("mod_rewrite", apache_get_modules()))
+		{
+			$caractere = 'o';
+			$message = T_("La réécriture d'URL est activée.");
+		}
+		else
+		{
+			$caractere = 'n';
+			$message = T_("La réécriture d'URL n'est pas activée.");
+		}
+	}
+	else
+	{
+		$caractere = '?';
+		$message = T_("Impossible de savoir si la réécriture d'URL est activée.");
+	}
+	
+	if ($retourneMessage)
+	{
+		return $message;
+	}
+	else
+	{
+		return $caractere;
+	}
+}
+
+/**
+Retourne TRUE si le site est en maintenance, sinon retourne FALSE.
+*/
+function adminSiteEnMaintenance($cheminHtaccess)
+{
+	if ($fic = fopen($cheminHtaccess, 'r'))
+	{
+		while (!feof($fic))
+		{
+			$ligne = rtrim(fgets($fic));
+			if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
+			{
+				return TRUE;
+			}
+		}
+		fclose($fic);
+	}
+	
+	return FALSE;
+}
+
+/**
+Retourne l'IP ayant accès au site en maintenance, si elle existe, sinon retourne FALSE.
+*/
+function adminSiteEnMaintenanceIp($cheminHtaccess)
+{
+	if ($fic = fopen($cheminHtaccess, 'r'))
+	{
+		while (!feof($fic))
+		{
+			$ligne = rtrim(fgets($fic));
+			if (preg_match('/^\tRewriteCond %{REMOTE_ADDR} !\^(([0-9]{1,4}\\\.){3}[0-9]{1,4})/', $ligne, $resultat))
+			{
+				return str_replace('\\', '', $resultat[1]);
+			}
+		}
+		fclose($fic);
+	}
+	
+	return FALSE;
+}
+
 ?>

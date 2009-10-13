@@ -74,7 +74,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
 
   - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (avec coloration syntaxique du code en direct durant la saisie), téléversement, téléchargement...
-  - Droits accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration.
+  - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise du site en maintenance.
   - Gestion des galeries: entre autres création et mise à jour du fichier de configuration pour chaque galerie, listage de toutes les galeries existantes, génération automatique d'images de taille intermédiaire à partir des images originales, etc.
   - Gestion des flux RSS globaux.
   - Documentation: consultation de l'aide directement en local.
@@ -149,6 +149,10 @@ Ce logo provient du [site de Mozilla](http://www.mozilla.com/en-US/about/logo/do
 #### Icône des flux RSS
 
 Cette icône est sous triple licence Mozilla Public License Version 1.1/GPL/LGPL, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Feed-icon.svg?uselang=fr).
+
+#### Image de cône pour la page de maintenance
+
+Cette image provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Small-Traffic-Cone-Edited.png?uselang=fr) et est dans le domaine public.
 
 ### PHP gettext
 

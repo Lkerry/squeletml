@@ -1,7 +1,7 @@
 <p><strong><?php echo T_("Options d'administration de Squeletml"); ?></strong></p>
 
 <ul>
-	<li><a href="<?php echo $urlRacine; ?>/admin/droits.admin.php"><?php echo T_("Droits d'accès"); ?></a> | </li>
+	<li><a href="<?php echo $urlRacine; ?>/admin/acces.admin.php"><?php echo T_("Accès"); ?></a> | </li>
 	
 	<li><a href="<?php echo $urlRacine; ?>/admin/porte-documents.admin.php"><?php echo T_("Porte-documents"); ?></a> | </li>
 	

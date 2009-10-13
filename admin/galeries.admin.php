@@ -25,37 +25,50 @@ if (isset($_POST['id']))
 
 if (isset($_POST['lister']))
 {
-	$fic = opendir($racine . '/site/fichiers/galeries') or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $racine . '/site/fichiers/galeries') . "</p>");
-	
-	$listeFichiers = '';
-	$i = 0;
-	while($fichier = @readdir($fic))
+	if ($fic = opendir($racine . '/site/fichiers/galeries'))
 	{
-		if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
+		$trad = '';
+		$listeFichiers = '';
+		$i = 0;
+		while($fichier = @readdir($fic))
 		{
-			$i++;
-			$fichier = sansEchappement($fichier);
-			$idLien = rawurlencode($fichier);
-			$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a></li></ul></li>' . "\n";
+			if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
+			{
+				$i++;
+				$fichier = sansEchappement($fichier);
+				$idLien = rawurlencode($fichier);
+				$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a></li></ul></li>' . "\n";
+			}
 		}
-	}
 	
-	closedir($fic);
-	
-	echo '<div class="boite2">' . "\n";
-	echo '<h3>' . T_("Liste des galeries") . '</h3>' . "\n";
-	echo "<ul>\n";
-	
-	if (!empty($listeFichiers))
-	{
-		echo $listeFichiers;
+		closedir($fic);
 	}
 	else
 	{
-		echo '<li>' . T_("Aucune galerie") . "</li>\n";
+		$trad = "<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $racine . '/site/fichiers/galeries') . "</p>\n";
 	}
 	
-	echo "</ul>\n";
+	echo '<div class="boite2">' . "\n";
+	echo '<h3>' . T_("Liste des galeries") . '</h3>' . "\n";
+	
+	if (!empty($trad))
+	{
+		echo $trad;
+	}
+	else
+	{
+		echo "<ul>\n";
+		if (!empty($listeFichiers))
+		{
+			echo $listeFichiers;
+		}
+		else
+		{
+			echo '<li>' . T_("Aucune galerie") . "</li>\n";
+		}
+		echo "</ul>\n";
+	}
+	
 	echo "</div><!-- /boite2 -->\n";
 }
 

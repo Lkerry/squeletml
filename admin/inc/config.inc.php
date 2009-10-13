@@ -12,6 +12,9 @@
 Veuillez décommenter le choix voulu (un seul possible, pas les deux en même temps!): */ 
 $langueParDefaut = 'navigateur';
 
+// URL relative de la page de maintenance à partir de `$urlRacine/`
+$urlMaintenance = 'maintenance.php';
+
 ########################################################################
 ##
 ## Porte-documents

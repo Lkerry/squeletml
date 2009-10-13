@@ -17,15 +17,17 @@ ErrorDocument 404 /404.php
 ##
 ########################################################################
 
-# Décommenter les lignes ci-dessous pour utiliser seulement le nom de domaine avec les www, donc pour une redirection permanente de `monSite.ext` vers `www.monSite.ext`. Remplacer par le bon nom de domaine.
-#RewriteEngine on
-#RewriteCond %{HTTP_HOST} !^www\.monSite\.ext [NC]
-#RewriteRule (.*) http://www.monSite.ext/$1 [QSA,R=301,L]
+# Décommenter les lignes ci-dessous pour utiliser seulement le nom de domaine avec les www, donc pour une redirection permanente de `monSite.ext` vers `www.monSite.ext`. Remplacer par le bon nom de domaine. Le module `mod_rewrite` doit être activé.
+#<IfModule mod_rewrite.c>
+#	RewriteEngine on
+#	RewriteCond %{HTTP_HOST} !^www\.monSite\.ext [NC]
+#	RewriteRule (.*) http://www.monSite.ext/$1 [QSA,R=301,L]
+#</IfModule>
 
 # Modèle de redirection pour des pages
 #RedirectPermanent /dossier/fichier.php http://www.monSite.ext/nouveau-dossier/nouveau-fichier.php
 
-# Décommenter les lignes ci-dessous pour inclure automatiquement le fichier `init.inc.php` dans tous les fichiers PHP. NOTE: fonctionnalité non testée à fond et n'étant pas supportée officiellement.
+# Décommenter les lignes ci-dessous pour inclure automatiquement le fichier `init.inc.php` dans tous les fichiers PHP. NOTE: fonctionnalité non testée à fond et non supportée officiellement.
 #<FilesMatch "\.(php)$">
 #	php_value auto_prepend_file "/var/www/serveur_local/squeletml/init.inc.php"
 #</FilesMatch>

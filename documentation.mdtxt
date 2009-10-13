@@ -4,6 +4,8 @@
 
 Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il n'est donc nécessaire que de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire l'archive, et de placer les fichiers sur un serveur, par exemple par ftp.
 
+**Note: pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur votre serveur.**
+
 ### Mise en situation
 
 On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.8`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-1.8` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-1.8`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
@@ -38,9 +40,9 @@ Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adre
 
 #### Protéger l'administration (fichier `.acces`)
 
-Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger la section d'administration du site sans attendre. Pour ce faire, visitez la page suivante:`init.inc.php.defaut`
+Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger la section d'administration du site sans attendre. Pour ce faire, visitez la page suivante:
 
-	http://www.nomDeDomaine.ext/admin/droits.admin.php
+	http://www.nomDeDomaine.ext/admin/acces.admin.php
 
 et ajoutez un utilisateur. Les utilisateurs sont listés dans le fichier `.acces` situé à la racine de votre installation de Squeletml.
 
@@ -226,6 +228,12 @@ Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe 
 **Note: lisez tout ce qui suit avant d'effectuer une mise à jour.**
 
 Pour mettre à jour Squeletml:
+
+- Visitez la page `http://www.nomDeDomaine.ext/admin/acces.admin.php` et mettez votre site en maintenance (hors ligne). Vous pouvez ajouter votre adresse IP dans le champ prévu à cet effet pour avoir encore accès à votre site durant la maintenance.
+
+	La page de maintenance n'a pas de dépendance à des fichiers du site, à l'exception du fichier `.htaccess` de la racine, ce qui veut dire qu'en mode maintenance, vous pouvez supprimer ou déplacer tous les fichiers voulus, à l'exception de la page de maintenance et du `.htaccess`.
+
+	**Note: la réécriture d'URL doit être activée sur votre serveur pour utiliser cette fonctionnalité. Si tel n'est pas le cas, ignorez le mode maintenance et passez à l'étape suivante.**
 
 - Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom ressemble à `squeletml-1.8`.
 
