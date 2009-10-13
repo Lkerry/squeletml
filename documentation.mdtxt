@@ -134,6 +134,7 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 - Les fichiers de page:
 
+  - page.fr.401.inc.php
   - page.fr.404.inc.php
   - page.fr.contact.inc.php
   - page.fr.galerie.inc.php
@@ -141,7 +142,7 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans le dossier `site/inc/` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier `inc/page.fr.index.inc.php` par défaut.**
 	
-	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, la page d'erreur 404 affiche un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$courrielContactParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
+	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$courrielContactParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
 
 ### Divisions HTML
 
