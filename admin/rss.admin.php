@@ -70,7 +70,7 @@ if (isset($_POST['lister']))
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
+			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
 		}
 	}
 	
@@ -134,7 +134,7 @@ if (isset($_POST['lister']))
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
+			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
 		}
 	}
 }
@@ -186,7 +186,7 @@ if (isset($_POST['modifsGaleries']))
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
+		echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
 		echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 		echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 		echo "<ul>\n";
@@ -244,7 +244,7 @@ elseif (isset($_POST['modifsSite']))
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
+		echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
 		echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 		echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 		echo "<ul>\n";
@@ -263,7 +263,7 @@ elseif (isset($_POST['modifsSite']))
 
 <?php
 echo '<ul>';
-if (adminFluxGlobal('galerie', $racine))
+if (adminFluxRssGlobal('galerie', $racine))
 {
 	echo '<li>' . T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieFluxRssGlobal = TRUE;</code>).</li>';
 }
@@ -272,7 +272,7 @@ else
 	echo '<li>' . T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieFluxRssGlobal = FALSE;</code>).</li>';
 }
 
-if (adminFluxGlobal('site', $racine))
+if (adminFluxRssGlobal('site', $racine))
 {
 	echo '<li>' . T_("Le flux RSS global du site est activé") . ' (<code>$siteFluxRssGlobal = TRUE;</code>).</li>';
 }
@@ -287,7 +287,7 @@ echo '<p><a href="porte-documents.admin.php?action=editer&valeur=../site/inc/con
 </div><!-- /boite -->
 
 <div class="boite">
-<h2><?php echo T_("Pages ajoutées aux flux globaux"); ?></h2>
+<h2><?php echo T_("Pages ajoutées aux flux RSS globaux"); ?></h2>
 
 <form action="<?php echo $action; ?>#messages" method="post">
 <div>

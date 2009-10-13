@@ -1583,10 +1583,10 @@ function idOeuvre($oeuvre)
 /**
 Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
 */
-function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
+function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
 	$galerie = tableauGalerie("$racine/site/fichiers/galeries/$idGalerie/config.pc", TRUE);
-	$itemsFlux = array ();
+	$itemsFluxRss = array ();
 	
 	foreach ($galerie as $oeuvre)
 	{
@@ -1663,7 +1663,7 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
 		$pubDate = fileatime($cheminOeuvre);
 		
-		$itemsFlux[] = array (
+		$itemsFluxRss[] = array (
 			"title" => $title,
 			"link" => $urlGalerieOeuvre,
 			"guid" => $urlGalerieOeuvre,
@@ -1672,13 +1672,13 @@ function rssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		);
 	}
 	
-	return $itemsFlux;
+	return $itemsFluxRss;
 }
 
 /**
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
 */
-function rssPageTableauBrut($cheminPage, $urlPage)
+function fluxRssPageTableauBrut($cheminPage, $urlPage)
 {
 	$itemFlux = array ();
 	
@@ -1703,30 +1703,30 @@ function rssPageTableauBrut($cheminPage, $urlPage)
 }
 
 /**
-Retourne le tableau `$itemsFlux` trié selon la date de dernière modification et contenant au maximum le nombre d'items précisé dans la configuration.
+Retourne le tableau `$itemsFluxRss` trié selon la date de dernière modification et contenant au maximum le nombre d'items précisé dans la configuration.
 */
-function rssTableauFinal($itemsFlux, $nombreItemsFluxRss)
+function fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss)
 {
-	foreach ($itemsFlux as $cle => $valeur)
+	foreach ($itemsFluxRss as $cle => $valeur)
 	{
-		$itemsFluxTitle[$cle] = $valeur['title'];
-		$itemsFluxLink[$cle] = $valeur['link'];
-		$itemsFluxGuid[$cle] = $valeur['guid'];
-		$itemsFluxDescription[$cle] = $valeur['description'];
-		$itemsFluxPubDate[$cle] = $valeur['pubDate'];
+		$itemsFluxRssTitle[$cle] = $valeur['title'];
+		$itemsFluxRssLink[$cle] = $valeur['link'];
+		$itemsFluxRssGuid[$cle] = $valeur['guid'];
+		$itemsFluxRssDescription[$cle] = $valeur['description'];
+		$itemsFluxRssPubDate[$cle] = $valeur['pubDate'];
 	}
 	
-	array_multisort($itemsFluxPubDate, SORT_DESC, $itemsFlux);
+	array_multisort($itemsFluxRssPubDate, SORT_DESC, $itemsFluxRss);
 	
-	$itemsFlux = array_slice($itemsFlux, 0, $nombreItemsFluxRss);
+	$itemsFluxRss = array_slice($itemsFluxRss, 0, $nombreItemsFluxRss);
 	
-	return $itemsFlux;
+	return $itemsFluxRss;
 }
 
 /**
 Retourne le contenu d'un fichier RSS.
 */
-function rss($idGalerie, $baliseTitleComplement, $url, $itemsFlux, $estGalerie)
+function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGalerie)
 {
 	$contenuRss = '';
 	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -1755,9 +1755,9 @@ function rss($idGalerie, $baliseTitleComplement, $url, $itemsFlux, $estGalerie)
 		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</description>\n\n";
 	}
 	
-	if (!empty($itemsFlux))
+	if (!empty($itemsFluxRss))
 	{
-		foreach ($itemsFlux as $itemFlux)
+		foreach ($itemsFluxRss as $itemFlux)
 		{
 			$contenuRss .= "\t\t<item>\n";
 			$contenuRss .= "\t\t\t<title>" . $itemFlux['title'] . "</title>\n";
@@ -1781,7 +1781,7 @@ function rss($idGalerie, $baliseTitleComplement, $url, $itemsFlux, $estGalerie)
 /**
 Retourne le code pour un lien vers le fichier du flux RSS en question.
 */
-function lienRss($urlFlux, $idGalerie, $estGalerie)
+function lienFluxRss($urlFluxRss, $idGalerie, $estGalerie)
 {
 	if ($idGalerie)
 	{
@@ -1796,15 +1796,15 @@ function lienRss($urlFlux, $idGalerie, $estGalerie)
 		$description = T_("RSS global du site");
 	}
 	
-	return "<a href=\"$urlFlux\">$description</a>";
+	return "<a href=\"$urlFluxRss\">$description</a>";
 }
 
 /**
 Vérifie si le cache d'un fichier expire.
 */
-function cacheExpire($fichier, $dureeCacheFluxRss)
+function cacheExpire($fichier, $dureeCache)
 {
-	if (time() - fileatime($fichier) > $dureeCacheFluxRss)
+	if (time() - fileatime($fichier) > $dureeCache)
 	{
 		return TRUE;
 	}
@@ -1908,7 +1908,7 @@ function in_array_multi($recherche, $tableau)
 }
 
 /**
-Retourne une chaîne débarrassée de ses barres obliques inveres.
+Retourne une chaîne débarrassée de ses barres obliques inverses.
 */
 function sansEchappement($chaine)
 {

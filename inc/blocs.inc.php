@@ -56,15 +56,15 @@ if (!empty($blocsAinserer))
 					echo "\t<ul>\n";
 					if ($idGalerie && $rss)
 					{
-						echo "\t\t<li>" . lienRss($urlFlux, $idGalerie, TRUE) . "</li>\n";
+						echo "\t\t<li>" . lienFluxRss($urlFlux, $idGalerie, TRUE) . "</li>\n";
 					}
 					if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
 					{
-						echo "\t\t<li>" . lienRss("$urlRacine/rss.php?global=galeries&langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
+						echo "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=galeries&langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
 					}
 					if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 					{
-						echo "\t\t<li>" . lienRss("$urlRacine/rss.php?global=site&langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
+						echo "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=site&langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
 					}
 					echo "\t</ul>\n";
 					echo $codeInterieurBlocBas;

@@ -41,7 +41,7 @@ function adminInit($racine)
 /**
 Retourne la valeur des variables `$galerieFluxRssGlobal` ou `$siteFluxRssGlobal`.
 */
-function adminFluxGlobal($flux, $racine)
+function adminFluxRssGlobal($fluxRss, $racine)
 {
 	include dirname(__FILE__) . '/../../init.inc.php';
 	include $racine . '/inc/config.inc.php';
@@ -50,11 +50,11 @@ function adminFluxGlobal($flux, $racine)
 		include $racine . '/site/inc/config.inc.php';
 	}
 	
-	if ($flux == 'galerie')
+	if ($fluxRss == 'galerie')
 	{
 		return $galerieFluxRssGlobal;
 	}
-	elseif ($flux == 'site')
+	elseif ($fluxRss == 'site')
 	{
 		return $siteFluxRssGlobal;
 	}
