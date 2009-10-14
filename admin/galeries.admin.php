@@ -269,7 +269,7 @@ if (isset($_POST['retailler']))
 		
 		if ($_POST['manipulerOriginal'] == 'renommerOriginal')
 		{
-			$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
+			$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
 			
 			while($fichier = @readdir($fic))
 			{
@@ -301,7 +301,7 @@ if (isset($_POST['retailler']))
 		
 		// A: les images à traiter ont la forme `nom-original.extension`
 		
-		$fic2 = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
+		$fic2 = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
 		
 		while($fichier = @readdir($fic2))
 		{
@@ -370,6 +370,83 @@ if (isset($_POST['retailler']))
 		echo '</ul>' . "\n";
 		echo '</div><!-- /boite2 -->' . "\n";
 	}
+}
+
+########################################################################
+##
+## Supprimer les vignettes d'une galerie
+##
+########################################################################
+
+if (isset($_POST['supprimerVignettes']))
+{
+	// Vignettes des oeuvres
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
+	$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
+	$trad = array ();
+	while($fichier = @readdir($fic))
+	{
+		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+		{
+			if (preg_match('/-vignette\.(gif|png|jpg|jpeg)$/', $fichier))
+			{
+				if (unlink($cheminGalerie . '/' . $fichier))
+				{
+					$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
+				}
+				else
+				{
+					$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
+				}
+			}
+		}
+	}
+	closedir($fic);
+	
+	// Vignettes de navigation tatouées
+	if (isset($_POST['supprimerVignettesAvecTatouage']) && $_POST['supprimerVignettesAvecTatouage'] == 'supprimer')
+	{
+		$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
+		$fic = opendir($cheminTatouage) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminTatouage</code>") . "</p>");
+		while($fichier = @readdir($fic))
+		{
+			if(!is_dir($cheminTatouage . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+			{
+				if (preg_match('/-vignette-(precedent|suivant)\.(gif|png|jpg|jpeg)$/', $fichier))
+				{
+					if (unlink($cheminTatouage . '/' . $fichier))
+					{
+						$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+					}
+					else
+					{
+						$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+					}
+				}
+			}
+		}
+		closedir($fic);
+	}
+	
+	// Messages
+	echo '<div class="boite2">' . "\n";
+	echo '<h3>' . T_("Suppression de vignettes") .'</h3>' ."\n" ;
+	
+	if (!empty($trad))
+	{
+		echo "<ul>\n";
+		foreach ($trad as $messageSuppression)
+		{
+			echo "\t" . $messageSuppression . "\n";
+		}
+		echo "</ul>\n";
+	}
+	else
+	{
+		echo '<p>' . T_("Aucune vignette traitée.") . "</p>\n";
+	}
+	
+	echo "</div><!-- /boite2 -->\n";
 }
 
 ########################################################################
@@ -469,8 +546,8 @@ if (isset($_POST['creerPage']))
 if (isset($_POST['modeleConf']))
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-	$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), $cheminGalerie) . "</p>");
-$listeFichiers = '';
+	$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
+	$listeFichiers = '';
 	$tableauFichiers = array ();
 	while($fichier = @readdir($fic))
 	{
@@ -671,13 +748,34 @@ if ($boite2FichierConfigDebut)
 <p><label><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
 <input type="text" name="qualiteJpg" value="90" size="2" /></p>
 
-<p><input type="checkbox" name="actions" value="nettete" /> <label><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)"); ?></label></p>
+<p><input type="checkbox" name="actions" value="nettete" /> <label><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label></p>
 
 <p><input type="checkbox" name="conf" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
 
 <p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
 <p><input type="submit" name="retailler" value="<?php echo T_('Retailler les images originales'); ?>" /></p>
+</div>
+</form>
+</div><!-- /boite -->
+
+<!--  -->
+
+<div class="boite">
+<h2><?php echo T_("Supprimer les vignettes d'une galerie"); ?></h2>
+
+<p><?php echo T_("Vous pouvez supprimer les vignettes d'une galerie pour forcer leur regénération automatique. Seules les vignettes avec la forme par défaut (<code>-vignette.extension</code>) seront supprimées."); ?></p>
+
+<form action="<?php echo $action; ?>#messages" method="post">
+<div>
+<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
+<input type="text" name="id" /></p>
+
+<p><?php echo T_("Si la navigation entre les oeuvres d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationVignettesTatouage</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les oeuvres précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre."); ?></p>
+
+<p><input type="checkbox" name="supprimerVignettesAvecTatouage" value="supprimer" /> <label><?php echo T_("Supprimer également les vignettes de navigation avec tatouage."); ?></label></p>
+
+<p><input type="submit" name="supprimerVignettes" value="<?php echo T_('Supprimer les vignettes'); ?>" /></p>
 </div>
 </form>
 </div><!-- /boite -->
