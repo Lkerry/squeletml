@@ -41,7 +41,7 @@ $versionFichiersLinkScript = 1;
 $styleSqueletmlCss = TRUE; // TRUE|FALSE
 
 // Activation ou non de la métabalise `keywords`
-$motsClesActives = TRUE; // TRUE|FALSE
+$motsClesActives = FALSE; // TRUE|FALSE
 
 // Contenu par défaut de la métabalise `robots`
 /* Liste de valeurs possibles: index, follow, archive, noindex, nofollow, noarchive, noodp, noydir */
