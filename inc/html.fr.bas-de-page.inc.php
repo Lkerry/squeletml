@@ -1,1 +1,1 @@
-<p><a href="http://www.jpfleury.net/squeletml">Propulsé par Squeletml</a> | <a href="<?php echo $urlRacine; ?>/admin/">Admin</a> | <a href="#ancres">Haut</a></p>
+<p><a href="http://www.jpfleury.net/squeletml"><img src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80px-15px.png" width="80" height="15" alt="Propulsé par Squeletml" /></a> | <a href="<?php echo $urlRacine; ?>/admin/">Admin</a> | <a href="#ancres">Haut</a></p>
