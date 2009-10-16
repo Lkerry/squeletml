@@ -38,7 +38,7 @@ $accueil['fr'] = $urlRacine;
 
 Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation, par exemple `http://www.nomDeDomaine.ext/`.
 
-#### Protéger l'administration (fichier `.acces`)
+#### Protection de l'administration (fichier `.acces`)
 
 Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger la section d'administration du site sans attendre. Pour ce faire, visitez la page suivante:
 
@@ -226,6 +226,25 @@ Les sections «Activations et inclusions» et «Contenu et ordre du flux HTML» 
 
 Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style. Voici quelques exemples: ajout de coins arrondis aux blocs de menu, nombre de colonnes, emplacement d'une colonne unique, arrière-plan des colonnes, etc.
 
+## Traduction de Squeletml
+
+Il est possible de traduire Squeletml dans la langue désirée. Le principal fichier est `locale/squeletml.pot`. Il contient la plupart des phrases à traduire. Les autres fichiers sont:
+
+- `inc/html.fr.ancres.inc.php`
+- `inc/html.fr.bas-de-page.inc.php`
+- `inc/html.fr.menu.inc.php`
+- `inc/html.fr.menu-langues.inc.php`
+- `inc/html.fr.sous-titre.inc.php`
+- `inc/html.fr.sur-titre.inc.php`
+- `inc/page.fr.401.inc.php`
+- `inc/page.fr.404.inc.php`
+- `inc/page.fr.contact.inc.php`
+- `inc/page.fr.galerie.inc.php`
+- `inc/page.fr.index.inc.php`
+- `documentation.mdtxt`
+- `LISEZ-MOI.mdtxt`
+- `maintenance.php`
+
 ## Mise à jour de Squeletml
 
 **Note: lisez tout ce qui suit avant d'effectuer une mise à jour.**
@@ -246,9 +265,15 @@ Pour mettre à jour Squeletml:
 
 Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer**, en plus des fichiers `.htaccess` ou `robots.txt`, le dossier `site`, qui contient votre configuration personnalisée, et éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`).
 
-## Créer des pages
+## Création de pages
 
-Vous pouvez copier le fichier `modele.php` et le coller avec le nom désiré. Voici la structure d'une page:
+Il y a plusieurs manières de créer une page:
+
+1. Copier le fichier `modele.php` et le coller avec le nom désiré.
+2. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Fichier modèle de page web».
+3. Créer un fichier vide et reproduir la structure d'une page.
+
+Voici la structure d'une page:
 
 1. variables PHP
 2. inclusion du premier fichier PHP
@@ -321,7 +346,7 @@ Ne pas oublier de modifier le chemin d'inclusion du fichier `init.inc.php`.
 
 Mettre tout ce que vous désirez. Du texte, du code HTML, du code PHP, etc.
 
-#### Utiliser la syntaxe Markdown
+#### Utilisation de la syntaxe Markdown
 
 Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/syntaxe/). Pour ce faire, il y a deux fonctions mises à disposition:
 
@@ -649,7 +674,7 @@ Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de 
 
 Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
 
-## «Faire découvrir à des ami-e-s»
+## Lien «Faire découvrir à des ami-e-s»
 
 Une option «Faire découvrir à des ami-e-s» est activée par défaut. Concrètement, un lien est inséré dans le menu pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour leur faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
 
