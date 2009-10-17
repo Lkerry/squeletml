@@ -73,7 +73,7 @@ if (isset($getChemin) && !empty($getChemin))
 					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie);
 					if (!empty($itemsFluxRss))
 					{
-						$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nbreItemsFlux);
+						$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
 					}
 					$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), $urlGalerie, $itemsFluxRss, TRUE);
 					
@@ -129,7 +129,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 				
 				if (!empty($itemsFluxRss))
 				{
-					$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nbreItemsFlux);
+					$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
 				}
 			}
 			
@@ -174,7 +174,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				$i = 0;
 				foreach ($pages as $page)
 				{
-					if ($i < $nbreItemsFlux)
+					if ($i < $nombreItemsFluxRss)
 					{
 						if (strpos($page, ':') !== FALSE)
 						{
@@ -208,7 +208,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				
 				if (!empty($itemsFluxRss))
 				{
-					$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nbreItemsFlux);
+					$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
 				}
 			}
 			$idGalerie = FALSE;
