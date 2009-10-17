@@ -146,7 +146,7 @@ $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 $uneColonneAgauche = TRUE; // TRUE|FALSE
 
 // Arrière-plan d'une colonne
-$arrierePlanColonne = "rayuresAvecBordure"; // aucun|bordure|rayures|rayuresAvecBordure|uni
+$arrierePlanColonne = "rayuresEtBordure"; // aucun|bordure|rayures|rayuresEtBordure|fondUni
 
 // Div `page` avec bordures
 $borduresPage = array(
