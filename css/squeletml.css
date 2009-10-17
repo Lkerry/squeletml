@@ -285,33 +285,6 @@ body.deuxColonnesAvecBordure #interieurPage {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
 }
 
-/*  */
-
-/*body.deuxColonnesSousContenuAdroiteAvecRayures #page {*/
-/*	background: url('../fichiers/rayures-204px.png') repeat-y right top;*/
-/*}*/
-/*body.deuxColonnesSousContenuAdroiteAvecRayures #interieurPage {*/
-/*	background: url('../fichiers/rayures-204px.png') repeat-y left top;*/
-/*}*/
-/*body.deuxColonnesSousContenuAdroiteAvecRayuresEtBordure #page {*/
-/*	background: url('../fichiers/rayures-avec-bordure-gauche-205px.png') repeat-y right top;*/
-/*}*/
-/*body.deuxColonnesSousContenuAdroiteAvecRayuresEtBordure #interieurPage {*/
-/*	background: url('../fichiers/rayures-avec-bordure-droite-205px.png') repeat-y left top;*/
-/*}*/
-/*body.deuxColonnesSousContenuAdroiteAvecFondUni #page {*/
-/*	background: url('../fichiers/uni-204px.png') repeat-y right top;*/
-/*}*/
-/*body.deuxColonnesSousContenuAdroiteAvecFondUni #interieurPage {*/
-/*	background: url('../fichiers/uni-204px.png') repeat-y left top;*/
-/*}*/
-/*body.deuxColonnesSousContenuAdroiteAvecBordure #page {*/
-/*	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;*/
-/*}*/
-/*body.deuxColonnesSousContenuAdroiteAvecBordure #interieurPage {*/
-/*	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;*/
-/*}*/
-
 /***********************************************************************
 **
 ** body.colonneAgauche
