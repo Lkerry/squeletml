@@ -132,7 +132,7 @@ $ordreFluxHtml = array (
 
 // Style des liens visités
 /* Les liens visités (`a:visited`) de tout le site ont par défaut un style différent des liens non visités. Mettre à TRUE pour différencier seulement les liens visités contenus dans le corps des pages (div `contenu`). */
-$stylerLiensVisitesSeulementDansContenu = FALSE; // TRUE|FALSE
+$differencierLiensVisitesSeulementDansContenu = FALSE; // TRUE|FALSE
 
 // Choisir le nombre de colonnes
 /* Si vaut TRUE, ajoute les classes `deuxColonnes`, `colonneAgauche` et `colonneAdroite` au `body`, sinon ajoute la classe `uneColonne` au `body`. À noter que Squeletml ne se sert pas par défaut de la deuxième colonne. */

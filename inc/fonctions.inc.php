@@ -329,7 +329,7 @@ function lettreAuHasard($lettresExclues = '')
 /**
 Renvoie une liste de classes pour `body`.
 */
-function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc)
+function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc)
 {
 	$class = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -384,9 +384,9 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 		}
 	}
 	
-	if (!$stylerLiensVisitesSeulementDansContenu)
+	if (!$differencierLiensVisitesSeulementDansContenu)
 	{
-		$class .= 'liensVisitesStyles ';
+		$class .= 'liensVisitesDifferencies ';
 	}
 	
 	if ($borduresPage['gauche'])

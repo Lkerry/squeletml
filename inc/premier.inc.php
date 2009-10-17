@@ -107,7 +107,7 @@ if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 <?php endif; ?>
 </head>
-<body class="<?php echo classesBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc); ?>">
+<body class="<?php echo classesBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc); ?>">
 <div id="ancres">
 	<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
 </div><!-- /ancres -->
@@ -156,7 +156,7 @@ if ($messageIE6)
 	?>
 </div><!-- /surContenu -->
 
-<div id="contenu" class="<?php if ($stylerLiensVisitesSeulementDansContenu) echo 'liensVisitesStyles'; ?>">
+<div id="contenu" class="<?php if ($differencierLiensVisitesSeulementDansContenu) echo 'liensVisitesDifferencies'; ?>">
 	<div id="interieurContenu">
 		
 		<?php if ($idGalerie): ?>
