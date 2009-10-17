@@ -332,7 +332,7 @@ Renvoie une liste de classes pour `body`.
 function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $stylerLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc)
 {
 	$class = '';
-	$arrierePlanColonne = 'ArrierePlan' . ucfirst($arrierePlanColonne);
+	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
 	
 	if ($estAccueil)
 	{
@@ -348,21 +348,18 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 	{
 		$class .= 'deuxColonnes colonneAgauche colonneAdroite ';
 		
+		if ($arrierePlanColonne != 'Aucun')
+		{
+			$class .= "deuxColonnes$arrierePlanColonne ";
+		}
+		
 		if ($deuxColonnesSousContenuAgauche)
 		{
 			$class .= "deuxColonnesSousContenuAgauche ";
-			if ($arrierePlanColonne != 'Aucun')
-			{
-				$class .= "deuxColonnesSousContenuAgauche$arrierePlanColonne ";
-			}
 		}
 		else
 		{
 			$class .= "deuxColonnesSousContenuAdroite ";
-			if ($arrierePlanColonne != 'Aucun')
-			{
-				$class .= "deuxColonnesSousContenuAdroite$arrierePlanColonne ";
-			}
 		}
 	}
 	else

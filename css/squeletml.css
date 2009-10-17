@@ -230,72 +230,87 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 
 /* Arrière-plans des colonnes */
 
-body.colonneAgaucheArrierePlanRayures #page {
+body.colonneAgaucheAvecRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
 }
-body.colonneAgaucheArrierePlanRayuresAvecBordure #page {
+body.colonneAgaucheAvecRayuresEtBordure #page {
 	background: url('../fichiers/rayures-avec-bordure-droite-205px.png') repeat-y left top;
 }
-body.colonneAgaucheArrierePlanUni #page {
+body.colonneAgaucheAvecFondUni #page {
 	background: url('../fichiers/uni-204px.png') repeat-y left top;
 }
-body.colonneAgaucheArrierePlanBordure #page {
+body.colonneAgaucheAvecBordure #page {
 	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;
 }
 
 /*  */
 
-body.colonneAdroiteArrierePlanRayures #page {
+body.colonneAdroiteAvecRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y right top;
 }
-body.colonneAdroiteArrierePlanRayuresAvecBordure #page {
+body.colonneAdroiteAvecRayuresEtBordure #page {
 	background: url('../fichiers/rayures-avec-bordure-gauche-205px.png') repeat-y right top;
 }
-body.colonneAdroiteArrierePlanUni #page {
+body.colonneAdroiteAvecFondUni #page {
 	background: url('../fichiers/uni-204px.png') repeat-y right top;
 }
-body.colonneAdroiteArrierePlanBordure #page {
+body.colonneAdroiteAvecBordure #page {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
 }
 
 /*  */
 
-body.deuxColonnesSousContenuAgaucheArrierePlanRayures #page {
+body.deuxColonnesAvecRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
 }
-body.deuxColonnesSousContenuAgaucheArrierePlanRayuresAvecBordure #page {
+body.deuxColonnesAvecRayures #interieurPage {
+	background: url('../fichiers/rayures-204px.png') repeat-y right top;
+}
+body.deuxColonnesAvecRayuresEtBordure #page {
 	background: url('../fichiers/rayures-avec-bordure-droite-205px.png') repeat-y left top;
 }
-body.deuxColonnesSousContenuAgaucheArrierePlanUni #page {
+body.deuxColonnesAvecRayuresEtBordure #interieurPage {
+	background: url('../fichiers/rayures-avec-bordure-gauche-205px.png') repeat-y right top;
+}
+body.deuxColonnesAvecFondUni #page {
 	background: url('../fichiers/uni-204px.png') repeat-y left top;
 }
-body.deuxColonnesSousContenuAgaucheArrierePlanBordure #page {
+body.deuxColonnesAvecFondUni #interieurPage {
+	background: url('../fichiers/uni-204px.png') repeat-y right top;
+}
+body.deuxColonnesAvecBordure #page {
 	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;
 }
-body.deuxColonnesSousContenuAgaucheArrierePlanRayures #interieurPage {
-	background: url('../fichiers/rayures-204px.png') repeat-y right top;
-}
-body.deuxColonnesSousContenuAgaucheArrierePlanRayuresAvecBordure #interieurPage {
-	background: url('../fichiers/rayures-avec-bordure-gauche-205px.png') repeat-y right top;
-}
-body.deuxColonnesSousContenuAgaucheArrierePlanUni #interieurPage {
-	background: url('../fichiers/uni-204px.png') repeat-y right top;
-}
-body.deuxColonnesSousContenuAgaucheArrierePlanBordure #interieurPage {
+body.deuxColonnesAvecBordure #interieurPage {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
 }
 
 /*  */
 
-body.deuxColonnesSousContenuAdroiteArrierePlanRayures #interieurPage {
-	background: url('../fichiers/rayures-204px.png') repeat-y left top;
-}
-body.deuxColonnesSousContenuAdroiteArrierePlanRayuresAvecBordure #interieurPage {
-	background: url('../fichiers/rayures-avec-bordure-droite-205px.png') repeat-y left top;
-}
-body.deuxColonnesSousContenuAdroiteArrierePlanUni #interieurPage {
-	background: url('../fichiers/uni-204px.png') repeat-y left top;
-}
+/*body.deuxColonnesSousContenuAdroiteAvecRayures #page {*/
+/*	background: url('../fichiers/rayures-204px.png') repeat-y right top;*/
+/*}*/
+/*body.deuxColonnesSousContenuAdroiteAvecRayures #interieurPage {*/
+/*	background: url('../fichiers/rayures-204px.png') repeat-y left top;*/
+/*}*/
+/*body.deuxColonnesSousContenuAdroiteAvecRayuresEtBordure #page {*/
+/*	background: url('../fichiers/rayures-avec-bordure-gauche-205px.png') repeat-y right top;*/
+/*}*/
+/*body.deuxColonnesSousContenuAdroiteAvecRayuresEtBordure #interieurPage {*/
+/*	background: url('../fichiers/rayures-avec-bordure-droite-205px.png') repeat-y left top;*/
+/*}*/
+/*body.deuxColonnesSousContenuAdroiteAvecFondUni #page {*/
+/*	background: url('../fichiers/uni-204px.png') repeat-y right top;*/
+/*}*/
+/*body.deuxColonnesSousContenuAdroiteAvecFondUni #interieurPage {*/
+/*	background: url('../fichiers/uni-204px.png') repeat-y left top;*/
+/*}*/
+/*body.deuxColonnesSousContenuAdroiteAvecBordure #page {*/
+/*	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;*/
+/*}*/
+/*body.deuxColonnesSousContenuAdroiteAvecBordure #interieurPage {*/
+/*	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;*/
+/*}*/
 
 /***********************************************************************
 **
