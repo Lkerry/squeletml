@@ -29,6 +29,7 @@ $fichiersLinkScript = array ();
 $fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/squeletml.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "csslteIE7:$urlRacine/css/ie7.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "cssltIE7:$urlRacine/css/ie6.css");
+$fichiersLinkScript[] = array ("$urlRacine*" => "javascript:$urlRacine/js/phpjs.js");
 $fichiersLinkScript[] = array ("$urlRacine*" => "javascript:$urlRacine/js/squeletml.js");
 $fichiersLinkScript[] = array ("$urlRacine*" => "favicon:$urlRacine/fichiers/puce.png");
 

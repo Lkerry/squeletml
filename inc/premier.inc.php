@@ -66,14 +66,18 @@ if ($idGalerie && !isset($rss))
 	$rss = $galerieFluxRssParDefaut;
 }
 
+if (!isset($jQueryInclus))
+{
+	$jQueryInclus = FALSE;
+}
+
 ########################################################################
 ##
 ## Début de la structure XHTML
 ##
 ########################################################################
-?>
 
-<?php echo doctype($xhtmlStrict); ?>
+echo doctype($xhtmlStrict); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo LANGUE; ?>" lang="<?php echo LANGUE; ?>">
 <head>
 <title><?php echo $baliseTitle .= ' | ' . baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue); ?></title>
@@ -99,10 +103,22 @@ if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 {
 	echo "<link rel=\"alternate\" type=\"application/rss+xml\" href=\"$urlRacine/rss.php?global=pages&langue=" . LANGUE . "\" title=\"" . T_("RSS global du site") . "\" />";
 }
+
+if ($messageIE6)
+{
+	if (!$jQueryInclus)
+	{
+		echo '<script type="text/javascript" src="' . $urlRacine . '/js/jquery.min.js"></script>';
+		$jQueryInclus = TRUE;
+	}
+	echo '<script type="text/javascript" src="' . $urlRacine . '/js/jquery.cookie.js"></script>';
+}
 ?>
 <?php echo linkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
 <?php if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie): ?>
-	<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
+	<?php if (!$jQueryInclus): ?>
+		<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script><?php $jQueryInclus = TRUE; ?>
+	<?php endif; ?>
 	<script type="text/javascript" src="<?php echo $urlRacine; ?>/inc/slimbox2/js/slimbox2.js"></script>
 	<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 <?php endif; ?>
@@ -112,12 +128,15 @@ if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
 </div><!-- /ancres -->
 
-<?php
-if ($messageIE6)
-{
-	echo messageIE6($urlRacine . '/fichiers/firefox-52x52.gif', '', 52, 52);
-}
-?>
+<?php if ($messageIE6): ?>
+	<?php echo messageIE6($urlRacine . '/fichiers/firefox-52x52.gif', '', 52, 52); ?>
+	<script type="text/javascript">
+	window.onload = function()
+	{
+		boiteDeroulanteParDefaut('messageIE6', 'messageIE6titre', 'messageIE6corps');
+	};
+	</script>
+<?php endif; ?>
 
 <div id="page">
 	<div id="interieurPage">

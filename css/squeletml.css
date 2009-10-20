@@ -160,23 +160,6 @@ pre {
 	border: 1px solid #b3b3b3;
 }
 
-.bloc {
-	margin-top: 16px;
-	margin-bottom: 16px;
-}
-
-.contenuBloc {
-	padding-left: 3px;
-	padding-right: 3px;
-}
-
-.bloc ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
-	padding-top: 0px;
-	padding-bottom: 0px;
-}
-
 .erreur, .succes {
 	border-width: 2px;
 	border-style: solid;
@@ -195,6 +178,39 @@ pre {
 
 .sep {
 	clear: both;
+}
+
+/* Blocs */
+
+.bloc {
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+.contenuBloc {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+.bloc ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+/* Boîtes déroulantes */
+
+.boiteDeroulanteLien {
+	text-decoration: none !important;
+}
+
+.boiteDeroulanteSymbole {
+	font-family: monospace;
+}
+
+.masquer {
+	display: none;
 }
 
 /* Coins arrondis */
