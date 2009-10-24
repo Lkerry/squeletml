@@ -420,7 +420,7 @@ Construit le message affiché à IE6. Les 4 paramètres sont relatifs à l'image
 */
 function messageIE6($src, $alt, $width, $height)
 {
-	$message = '<!--[if lt IE 7]>' . "\n";
+	$message = '';
 	$message .= '<div id="messageIE6">' . "\n";
 	$message .= '<p id="messageIE6titre">' . T_("Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?") . '</p>' . "\n";
 	$message .= "\n";
@@ -428,7 +428,6 @@ function messageIE6($src, $alt, $width, $height)
 	$message .= "\n";
 	$message .= "<p><strong><a href=\"http://www.mozilla-europe.org/fr/\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" /></a> <a href=\"http://www.mozilla-europe.org/fr/\"><span>" . T_("Télécharger Firefox") . '</span></a></strong></p></div>' . "\n";
 	$message .= '</div>';
-	$message .= '<![endif]-->';
 	
 	return $message;
 }

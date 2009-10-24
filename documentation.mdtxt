@@ -224,7 +224,7 @@ Les sections «Activations et inclusions» et «Contenu et ordre du flux HTML» 
 
 ## Style de Squeletml
 
-Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style. Voici quelques exemples: ajout de coins arrondis aux blocs de menu, nombre de colonnes, emplacement d'une colonne unique, arrière-plan des colonnes, etc.
+Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style. Voici quelques exemples: ajout de coins arrondis aux blocs de menu, nombre de colonnes, emplacement d'une colonne unique, arrière-plan des colonnes, contenu affichable ou masquable par clic sur le titre, etc.
 
 ## Traduction de Squeletml
 

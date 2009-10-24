@@ -39,7 +39,7 @@ function setPage()
 //
 ////////////////////////////////////////////////////////////////////////
 
-function boiteDeroulanteParDefaut(conteneur, titre, corps)
+function boiteDeroulante(conteneur, titre, corps)
 {
 	var oConteneur = document.getElementById(conteneur);
 	var oTitre = document.getElementById(titre);
@@ -128,6 +128,28 @@ function boiteDeroulanteChangementDetat(conteneur, corps)
 // Divers
 //
 ////////////////////////////////////////////////////////////////////////
+
+/**
+Permet d'éviter l'écrasement d'événements se produisant lorsque plusieurs `window.onload` sont utilisés. Merci à <http://www.alsacreations.com/article/lire/565-JavaScript-organiser-son-code-en-modules.html>.
+*/
+
+function ajouteEvenementLoad(fonction)
+{
+	if (window.addEventListener)
+	{
+		window.addEventListener('load', fonction, false);
+	}
+	
+	else if (document.addEventListener)
+	{
+		document.addEventListener('load', fonction, false);
+	}
+	
+	else if (window.attachEvent)
+	{
+		window.attachEvent('onload', fonction);
+	}
+}
 
 /**
 Ajustement de la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` si `idAegaliser` n'est pas déjà aussi haut.

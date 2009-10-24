@@ -77,8 +77,14 @@ Exemples:
 $dureeCacheFluxRss = 0;
 
 ##
-## Activations et inclusions
+## Inclusions et activations
 ##
+
+// Inclusion du sur-titre
+$surTitre = FALSE; // TRUE|FALSE
+
+// Inclusion du bas de page
+$basDePage = TRUE; // TRUE|FALSE
 
 // Activer l'option «Faire découvrir à des ami-e-s»
 $faireDecouvrir = TRUE; // TRUE|FALSE
@@ -86,11 +92,73 @@ $faireDecouvrir = TRUE; // TRUE|FALSE
 // Activer le message pour Internet Explorer 6
 $messageIE6 = TRUE; // TRUE|FALSE
 
-// Inclusion du sur-titre
-$surTitre = FALSE; // TRUE|FALSE
+// Activer des boîtes déroulantes
+/* Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, et enregistre le choix d'affichage de l'internaute dans un témoin valide 30 jours. Ce contenu peut être situé n'importe où dans la page: menu, corps, bas de page... Une boîte déroulante peut être activée pour un contenu constitué d'un conteneur, d'un titre et d'un corps. La représentation générale est comme suit:
 
-// Inclusion du bas de page
-$basDePage = TRUE; // TRUE|FALSE
+<balise id="conteneur">
+<balise id="titre">...</balise>
+<balise id="corps">...</balise>
+</balise>
+
+Voici un exemple concret:
+
+1. avant application de la boîte déroulante:
+
+<div id="fruits">
+<h2 id="fruitsTitre">Fruits disponibles</h2>
+
+<div id="fruitsCorps">
+<ul>
+	<li>Fraises</li>
+	<li>Poires</li>
+	<li>Pommes</li>
+</ul>
+</div>
+</div>
+
+2. après application de la boîte déroulante avec affichage par défaut du corps:
+
+<div id="fruits">
+<h2 id="fruitsTitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[-]&nbsp;</span><span>Fruits disponibles</span></a></h2>
+
+<div id="fruitsCorps" class="afficher">
+<ul>
+	<li>Fraises</li>
+	<li>Poires</li>
+	<li>Pommes</li>
+</ul>
+</div>
+</div>
+
+3. après application de la boîte déroulante avec masquage par défaut du corps:
+
+<div id="fruits">
+<h2 id="fruitsTitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[+]&nbsp;</span><span>Fruits disponibles</span></a></h2>
+
+<div id="fruitsCorps" class="masquer">
+<ul>
+	<li>Fraises</li>
+	<li>Poires</li>
+	<li>Pommes</li>
+</ul>
+</div>
+</div>
+
+Nous constatons qu'un lien est ajouté au titre. Un clic sur le titre permet de changer l'état du corps (affiché ou masqué).
+
+Pour l'exemple précédent, la boîte déroulante peut être activée en ajoutant la ligne suivante dans le tableau `$boitesDeroulantes`:
+
+'fruits fruitsTitre fruitsCorps',
+
+La syntaxe de chaque élément de tableau est donc la suivante:
+
+'idConteneur idTitre idCorps',
+
+Comme le montre l'exemple général, le titre n'est pas à comprendre au sens sémantique. Ce n'est donc pas nécessaire de l'entourer de balises `h1`, `h2`, `h3`, `h4`, `h5` ou `h6`. Il s'agit simplement du texte qui servira à afficher ou masquer le corps.
+*/
+$boitesDeroulantes = array (
+	
+	);
 
 ##
 ## Contenu et ordre du flux HTML
