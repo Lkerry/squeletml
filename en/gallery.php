@@ -9,5 +9,4 @@ else
 {
 	include $racine . '/inc/page.en.galerie.inc.php';
 }
-
 ?>

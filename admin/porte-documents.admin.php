@@ -8,54 +8,46 @@ if (isset($_GET['valeur']))
 	$getValeur = sansEchappement($_GET['valeur']);
 }
 
-// Création de la variable $tableauDossiersFiltres
+// Création de la variable $tableauFiltresDossiers
 if ($typeFiltreDossiers == 'dossiersPermis' || $typeFiltreDossiers == 'dossiersExclus'
 	&& !empty($filtreDossiers))
 {
-	$tableauDossiersFiltres = explode('|', $filtreDossiers);
+	$tableauFiltresDossiers = explode('|', $filtreDossiers);
 }
 else
 {
-	$tableauDossiersFiltres = array ();
+	$tableauFiltresDossiers = array ();
 }
 
 // Motif à rechercher dans les noms de fichiers téléchargés
 $motifNom = "^[- \+\.\(\)_0-9a-zA-Z]*$";
-?>
 
-<h1><?php echo T_("Porte-documents"); ?></h1>
+echo '<h1>' . T_("Porte-documents") . "</h1>\n";
 
-<div class="boite">
-<h2><?php echo T_("Information"); ?></h2>
+echo '<div class="boite">' . "\n";
+echo '<h2>' . T_("Information") . "</h2>\n";
 
-<ul>
-	<li><?php printf(T_('<strong>Taille maximale d\'un transfert de fichier:</strong> %1$s octets (%2$s Mio).'), $tailleMaxFichiers, octetsVersMio($tailleMaxFichiers)); ?></li>
-	<li><strong><?php echo T_("Extensions permises:"); ?></strong>
-	<?php
-	if ($filtreExtensions)
+echo "<ul>\n";
+echo '<li>' . sprintf(T_('<strong>Taille maximale d\'un transfert de fichier:</strong> %1$s octets (%2$s Mio).'), $tailleMaxFichiers, octetsVersMio($tailleMaxFichiers)) . "</li>\n";
+echo '<li><strong>' . T_("Extensions permises:") . "</strong>\n";
+if ($filtreExtensions)
+{
+	foreach ($extensionsPermises as $ext)
 	{
-		foreach ($extensionsPermises as $ext)
-		{
-			echo "$ext ";
-		}
-		?>
-		<br /><em><?php echo T_("Si vous voulez télécharger un fichier avec une extension qui n'est pas dans la liste, en faire la demande à la personne administratrice de ce site, ou si vous avez les droits d'administration, éditez le fichier de configuration."); ?></em></li>
-		<?php
+		echo "$ext ";
 	}
+	echo '<br /><em>' . T_("Si vous voulez télécharger un fichier avec une extension qui n'est pas dans la liste, en faire la demande à la personne administratrice de ce site, ou si vous avez les droits d'administration, éditez le fichier de configuration.") . '</em></li>' . "\n";
+}
+else
+{
+	echo T_("toutes.") . '</li>';
+}
+echo "</ul>\n";
+echo "</div><!-- /class=boite -->\n";
 
-	else
-	{
-		echo T_("toutes.") . '</li>';
-	}
-	?>
-</ul>
+echo '<div id="boiteMessages" class="boite">' . "\n";
+echo '<h2 id="messagesPorteDocuments">' . T_("Messages d'avancement, de confirmation ou d'erreur") . "</h2>\n";
 
-</div><!-- /boite -->
-
-<div id="boiteMessages" class="boite">
-<h2 id="messagesPorteDocuments"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
-
-<?php
 if (isset($_POST['telechargerSuppr']))
 {
 	$suppr = $_POST['telechargerSuppr'];
@@ -69,20 +61,17 @@ if (isset($_POST['telechargerSuppr']))
 			{
 				echo "<li class='succes'>" . sprintf(T_('Suppression de <span class="porteDocumentsNom">%1$s</span> effectuée.'), $valeur) . "</li>\n";
 			}
-
 			else
 			{
 				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le fichier <span class="porteDocumentsNom">%1$s</span>.'), $valeur) . "</li>";
 			}
 		}
-
 		elseif (file_exists($valeur) && is_dir($valeur))
 		{
 			if (rmdir($valeur))
 			{
 				echo "<li class='succes'>" . sprintf(T_('Suppression de <span class="porteDocumentsNom">%1$s</span> effectuée.'), $valeur) . "</li>\n";
 			}
-
 			else
 			{
 				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le dossier <span class="porteDocumentsNom">%1$s</span>. Vérifiez qu\'il est vide.'), $valeur) . "</li>";
@@ -103,6 +92,7 @@ if (isset($_GET['action']))
 	{
 		$ancienNom = $getValeur;
 		echo "<h3>" . T_("Insctructions de renommage") . "</h3>";
+		
 		echo "<ul>\n";
 		echo "<li>" . sprintf(T_('Pour renommer <span class="porteDocumentsNom">%1$s</span>, saisir le nouveau nom dans le champ.'), $ancienNom) . "</li>";
 		echo "<li>" . T_("Ne pas oublier de mettre le chemin dans le nom.");
@@ -114,19 +104,21 @@ if (isset($_GET['action']))
 		echo "</ul></li>";
 		echo "<li>" . T_("Important: ne pas mettre de barre oblique / dans le nouveau nom du fichier. N'utiliser ce signe que pour marquer le chemin vers le fichier.") . "</li>";
 		echo "</ul>\n";
-		?>
-		<form action="<?php echo $action; ?>" method="post"><div>
-		<input type="checkbox" name="porteDocumentsRenommerDupliquer" value="dupliquer" /> <?php echo T_("Dupliquer le fichier (en faire une copie et renommer la copie)"); ?><br />
-		<input type="hidden" name="porteDocumentsAncienNom" value="<?php echo $ancienNom; ?>" /> <input type="text" name="porteDocumentsNouveauNom" value="<?php echo $ancienNom; ?>" size="50" />
-		<input type="submit" value="<?php echo T_('Renommer'); ?>" />
-		</div></form>
-		<?php
+		
+		echo "<form action='$action' method='post'>\n";
+		echo "<div>\n";
+		echo '<input type="checkbox" name="porteDocumentsRenommerDupliquer" value="dupliquer" />' . T_("Dupliquer le fichier (en faire une copie et renommer la copie)") . "<br />\n";
+		echo '<input type="hidden" name="porteDocumentsAncienNom" value="' . $ancienNom . '" /> <input type="text" name="porteDocumentsNouveauNom" value="' . $ancienNom . '" size="50" />' . "\n";
+		echo '<input type="submit" value="' . T_('Renommer') . '" />' . "\n";
+		echo "</div>\n";
+		echo "</form>\n";
 	}
-	
+
 	// Action Éditer
 	if ($_GET['action'] == 'editer')
 	{
 		echo "<h3>" . T_("Insctructions d'édition") . "</h3>";
+		
 		if (file_exists($getValeur))
 		{
 			echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), $getValeur) . "</p>";
@@ -135,10 +127,9 @@ if (isset($_GET['action']))
 		{
 			echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> n\'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisi.'), $getValeur) . "</p>";
 		}
-		
-		?>
-		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
-		<?php
+	
+		echo "<form action='$action#messagesPorteDocuments' method='post'>\n";
+		echo "<div>\n";
 		clearstatcache();
 		if (file_exists($getValeur) && filesize($getValeur))
 		{
@@ -150,7 +141,7 @@ if (isset($_GET['action']))
 		{
 			$contenuFichier = '';
 		}
-		
+	
 		if (!$colorationSyntaxique)
 		{
 			$style = 'style="width: 93%;"';
@@ -159,7 +150,7 @@ if (isset($_GET['action']))
 		{
 			$style = '';
 		}
-		
+	
 		if (adminEstIE())
 		{
 			$imageRedimensionner = '';
@@ -168,38 +159,37 @@ if (isset($_GET['action']))
 		{
 			$imageRedimensionner = '<img src="fichiers/redimensionner.png" alt="' . T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie') . '" title="' . T_('Appuyez sur Maj, cliquez sur l\'image et glissez-là pour redimensionner le champ de saisie') . '" width="41" height="20" />';
 		}
-		?>
-		<div id="redimensionnable"><textarea id="code" cols="80" rows="25" <?php echo $style; ?> name="porteDocumentsContenuFichier"><?php echo $contenuFichier; ?></textarea><?php echo $imageRedimensionner; ?></div>
-		<input type="hidden" name="porteDocumentsEditerNom" value="<?php echo $getValeur; ?>" />
-		<input type="submit" value="<?php echo T_('Sauvegarder les modifications'); ?>" />
 		
-		<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post">
-		<div>
-		<input type="submit" name="porteDocumentsEditerAnnuler" value="<?php echo T_('Annuler'); ?>" />
-		<input type="hidden" name="porteDocumentsEditerNom" value="<?php echo $getValeur; ?>" />
-		</div></form>
+		echo '<div id="redimensionnable"><textarea id="code" cols="80" rows="25" ' . $style . ' name="porteDocumentsContenuFichier">' . $contenuFichier . '</textarea>' . $imageRedimensionner . "</div>\n";
 		
-		</div></form>
-		<?php
+		echo '<input type="hidden" name="porteDocumentsEditerNom" value="' . $getValeur . '" />' . "\n";
+		echo '<input type="submit" value="' . T_('Sauvegarder les modifications') . '" />' . "\n";
+	
+		echo "<form action='$action#messagesPorteDocuments' method='post'>\n";
+		echo "<div>\n";
+		echo '<input type="submit" name="porteDocumentsEditerAnnuler" value="' . T_('Annuler') . '" />' . "\n";
+		echo '<input type="hidden" name="porteDocumentsEditerNom" value="' . $getValeur . '" />' . "\n";
+		echo "</div></form>\n";
+		echo "</div></form>\n";
 	}
 }
 
 if (isset($_POST['porteDocumentsEditerAnnuler']))
 {
 	$porteDocumentsEditerNom = sansEchappement($_POST['porteDocumentsEditerNom']);
-	
+
 	echo "<p class='succes'>" . sprintf(T_('Aucune modification apportée au fichier %1$s.'), $porteDocumentsEditerNom) . "</p>";
 }
 elseif (isset($_POST['porteDocumentsContenuFichier']))
 {
 	$porteDocumentsEditerNom = sansEchappement($_POST['porteDocumentsEditerNom']);
-	
+
 	$messageErreurEditer = '';
 	$messageErreurEditer .= "<p class='erreur'>" . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
 	$messageErreurEditer .= '<p><textarea class="consulterModifications" name="porteDocumentsContenuFichier" readonly="readonly">';
 	$messageErreurEditer .= adminFormateTexte($_POST['porteDocumentsContenuFichier']);
 	$messageErreurEditer .= "</textarea></p>\n";
-	
+
 	$messageErreurEditerAffiche = FALSE;
 
 	echo "<ul>\n";
@@ -220,7 +210,7 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 		}
 		echo "</li>\n";
 	}
-	
+
 	if (!$messageErreurEditerAffiche)
 	{
 		echo "<li class='succes'>" . sprintf(T_('Édition du fichier <span class="porteDocumentsNom">%1$s</span> effectuée. <a href="%2$s">Éditer à nouveau</a>.'), $porteDocumentsEditerNom, 'porte-documents.admin.php?action=editer&valeur=' . $porteDocumentsEditerNom . '#messagesPorteDocuments') . "</li>\n";
@@ -231,7 +221,6 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 	}
 
 	fclose($fic);
-
 	echo "</ul>\n";
 }
 
@@ -260,7 +249,7 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 					echo "<li class='erreur'>" . sprintf(T_('Création du dossier <span class="porteDocumentsNom">%1$s</span> impossible.'), dirname($nouveauNom)) . "</li>\n";
 				}
 			}
-			
+		
 			if (file_exists(dirname($nouveauNom)))
 			{
 				if (copy($ancienNom, $nouveauNom))
@@ -282,7 +271,7 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 					echo "<li class='erreur'>" . sprintf(T_('Création du dossier <span class="porteDocumentsNom">%1$s</span> impossible.'), dirname($nouveauNom)) . "</li>\n";
 				}
 			}
-			
+		
 			if (file_exists(dirname($nouveauNom)))
 			{
 				if (rename($ancienNom, $nouveauNom))
@@ -296,14 +285,14 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 			}
 		}
 	}
-
+	
 	else
 	{
 		if (!file_exists($ancienNom))
 		{
 			echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> n\'existe pas. Renommage en <span class="porteDocumentsNom">%2$s</span> impossible.'), $ancienNom, $nouveauNom) . "</li>\n";
 		}
-		
+	
 		if (file_exists($nouveauNom))
 		{
 			echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> existe déjà. Renommage de <span class="porteDocumentsNom">%2$s</span> impossible.'), $nouveauNom, $ancienNom) . "</li>\n";
@@ -340,7 +329,7 @@ if (isset($_POST['porteDocumentsCreer']))
 				echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier <span class="porteDocumentsNom">%1$s</span>.'), $fichierCreeNom) . "</li>\n";
 			}
 		}
-		
+	
 		elseif ($fichierCreeType == 'FichierVide' || $fichierCreeType == 'FichierModele')
 		{
 			$page = basename($fichierCreeNom);
@@ -349,7 +338,7 @@ if (isset($_POST['porteDocumentsCreer']))
 			{
 				$cheminPage = '..';
 			}
-			
+		
 			if (!file_exists($cheminPage))
 			{
 				if (!mkdir($cheminPage, 0755, TRUE))
@@ -357,7 +346,7 @@ if (isset($_POST['porteDocumentsCreer']))
 					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier <span class="porteDocumentsNom">%1$s</span>.'), $cheminPage) . "</li>\n";
 				}
 			}
-			
+		
 			if (file_exists($cheminPage))
 			{
 				if (touch($fichierCreeNom))
@@ -365,11 +354,11 @@ if (isset($_POST['porteDocumentsCreer']))
 					// Ouverture de <li class='succes'>
 					echo "<li class='succes'>";
 					echo sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom);
-					
+				
 					if ($fichierCreeType == 'FichierModele')
 					{
 						echo sprintf(T_('Vous pouvez <a href="%1$s">l\'éditer</a> ou <a href="%2$s">l\'afficher</a>.'), 'porte-documents.admin.php?action=editer&valeur=' . $fichierCreeNom . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
-						
+					
 						$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
 						$cheminInclude = dirname($cheminInclude);
 						if ($cheminInclude == '.')
@@ -407,11 +396,11 @@ if (isset($_POST['porteDocumentsCreer']))
 					{
 						echo ' <a href="porte-documents.admin.php?action=editer&valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
 					}
-					
+				
 					// Fermeture de <li class='succes'>
 					echo "</li>\n";
 				}
-			
+		
 				else
 				{
 					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le fichier <span class="porteDocumentsNom">%1$s</span>.'), $fichierCreeNom) . "</li>\n";
@@ -419,7 +408,7 @@ if (isset($_POST['porteDocumentsCreer']))
 			}
 		}
 	}
-	
+
 	else
 	{
 		echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> existe déjà.'), $fichierCreeNom) . "</li>\n";
@@ -465,9 +454,6 @@ if (isset($_FILES['fichier']))
 
 	if (empty($erreur))
 	{
-		/*$nomFichier = strtr($nomFichier, 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
-		$nomFichier = preg_replace('/([^.a-z0-9]+)/i', '_', $nomFichier);*/
-
 		if ($filtreNom)
 		{
 			$nomFichier = preg_replace('/ /', '_', $nomFichier);
@@ -479,7 +465,6 @@ if (isset($_FILES['fichier']))
 		{
 			echo "<p class='succes'>" . sprintf(T_('Transfert de <span class="porteDocumentsNom">%1$s</span> complété.'), $nomFichier) . "</p>";
 		}
-
 		else
 		{
 			echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de <span class="porteDocumentsNom">%1$s</span>.'), $nomFichier) . "</p>";
@@ -491,14 +476,12 @@ if (!empty($erreur))
 {
 	echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de <span class="porteDocumentsNom">%1$s</span>.'), $nomFichier) . "</p>\n\n<ul>\n", $erreur, "</ul>\n";
 }
-?>
-</div><!-- /boiteMessages -->
+echo "</div><!-- /boiteMessages -->\n";
 
-<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
-<div class="boite">
-<h2 id="fichiersEtDossiers"><?php echo T_("Liste des fichiers et dossiers"); ?></h2>
-
-<?php
+echo '<form action="' . $action . '#messagesPorteDocuments" method="post">' . "\n";
+echo "<div>\n";
+echo '<div class="boite">' . "\n";
+echo '<h2 id="fichiersEtDossiers">' . T_("Liste des fichiers et dossiers") . "</h2>\n";
 
 if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 {
@@ -506,17 +489,17 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 	{
 		$erreur = '';
 	}
+	
 	echo '<div class="boite2">' . "\n";
 	echo '<h3>' . sprintf(T_("Contenu du dossier %1\$s"), '<span class="porteDocumentsNom">' . $getValeur . '</span>') . "</h3>\n";
-
+	
 	if (!is_dir($getValeur))
 	{
 		$erreur .= "<li class='erreur'>" . sprintf(T_('Impossible d\'avoir accès au dossier %1$s'), $getValeur) . "</li>\n";
 	}
-
 	else
 	{
-		$liste = adminParcourirTout($getValeur, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
+		$liste = adminParcourirTout($getValeur, $typeFiltreDossiers, $tableauFiltresDossiers, $afficheDimensionsImages, $action, $symboleUrl);
 		ksort($liste);
 
 		echo "<ul>\n";
@@ -539,16 +522,13 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 		}
 		echo "</ul>\n";
 	}
-	
-	echo "</div><!-- /boite2 -->\n";
+	echo "</div><!-- /class=boite2 -->\n";
 }
-?>
 
-<div class="boite2">
-<h3><?php echo T_("Liste des dossiers"); ?></h3>
+echo '<div class="boite2">' . "\n";
+echo '<h3>' . T_("Liste des dossiers") . "</h3>\n";
 
-<?php
-$liste2 = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres);
+$liste2 = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 asort($liste2);
 echo "<ul>\n";
 foreach ($liste2 as $valeur)
@@ -556,60 +536,61 @@ foreach ($liste2 as $valeur)
 	echo "<li><a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a> <span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" /> <span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur#fichiersEtDossiers\"><span class='porteDocumentsNom'>$valeur</span></a></li>\n";
 }
 echo "</ul>\n";
-?>
-</div><!-- /boite2 -->
+echo "</div><!-- /class=boite2 -->\n";
+echo "</div><!-- /class=boite -->\n";
 
-</div><!-- /boite -->
+echo '<div class="boite">' . "\n";
+echo '<h2>' . T_("Supprimer") . "</h2>\n";
 
-<div class="boite">
-<h2><?php echo T_("Supprimer"); ?></h2>
+echo '<p>' . T_("Pour supprimer des fichiers, cocher la case correspondante et cliquer ensuite sur le bouton ci-dessous.") . "</p>\n";
 
-<p><?php echo T_("Pour supprimer des fichiers, cocher la case correspondante et cliquer ensuite sur le bouton ci-dessous."); ?></p>
+echo '<input type="submit" value="' . T_('Supprimer') . '" />' . "\n";
+echo "</div><!-- /class=boite -->\n";
+echo "</div>\n";
+echo "</form>\n";
 
-<input type="submit" value="<?php echo T_('Supprimer'); ?>" />
-</div><!-- /boite -->
-</div></form>
+echo '<div class="boite">' . "\n";
+echo '<h2>' . T_("Ajouter un fichier") . "</h2>\n";
 
-<div class="boite">
-<h2><?php echo T_("Ajouter un fichier"); ?></h2>
-
-<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post" enctype="multipart/form-data"><div>
-<label><?php echo T_("Fichier:"); ?></label> <input type="file" name="fichier" size="25"/><br /><br />
-<label><?php echo T_("Dossier:"); ?></label> <select name="rep" size="1">
-<?php
-$liste = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres);
+echo '<form action="' . $action . '#messagesPorteDocuments" method="post" enctype="multipart/form-data">' . "\n";
+echo "<div>\n";
+echo '<label>' . T_("Fichier:") . '</label> <input type="file" name="fichier" size="25"/><br /><br />' . "\n";
+echo '<label>' . T_("Dossier:") . '</label> <select name="rep" size="1">' . "\n";
+$liste = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 asort($liste);
 foreach ($liste as $valeur)
 {
 	echo '<option value="' . $valeur . '">' . $valeur . "</option>\n";
 }
+echo "</select><br /><br />\n";
+echo '<input type="submit" value="' . T_('Ajouter') . '" />' . "\n";
+echo "</div></form>\n";
+echo "</div><!-- /class=boite -->\n";
+
+echo '<div class="boite">' . "\n";
+echo '<h2>' . T_("Créer un fichier ou un dossier") . "</h2>\n";
+
+echo '<p>' . T_("Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans le nom. Exemples:") . "</p>\n";
+
+echo "<ul>\n";
+echo '<li><span class="porteDocumentsNom">' . $dossierRacine . "/nouveau-dossier</span></li>\n";
+echo '<li><span class="porteDocumentsNom">' . $dossierRacine . "/nouveau-fichier.txt</span></li>\n";
+echo '<li><span class="porteDocumentsNom">' . $dossierRacine . "/nouveau-dossier/nouveau-fichier.txt</span></li>\n";
+echo "</ul>\n";
+
+echo '<form action="' . $action . '#messagesPorteDocuments" method="post">' . "\n";
+echo "<div>\n";
+echo '<label>' . T_("Nom:") . '</label> <input type="text" name="porteDocumentsFichierCreeNom" size="50" value="' . $dossierRacine . '/" /><br /><br />' . "\n";
+echo '<label>' . T_("Type:") . "</label>\n";
+echo '<select name="porteDocumentsFichierCreeType" size="1">' . "\n";
+echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
+echo '<option value="FichierModele">' .  T_("Fichier modèle de page web") . "</option>\n";
+echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
+echo "</select><br /><br />\n";
+echo '<input type="submit" name="porteDocumentsCreer" value="' . T_('Créer') . '" />' . "\n";
+echo "</div>\n";
+echo "</form>\n";
+echo "</div><!-- /class=boite -->\n";
+
+include $racine . '/admin/inc/dernier.inc.php';
 ?>
-</select><br /><br />
-<input type="submit" value="<?php echo T_('Ajouter'); ?>" />
-</div></form>
-</div><!-- /boite -->
-
-<div class="boite">
-<h2><?php echo T_("Créer un fichier ou un dossier"); ?></h2>
-
-<p><?php echo T_("Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans le nom. Exemples:"); ?></p>
-
-<ul>
-	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau-dossier</span></li>
-	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau-fichier.txt</span></li>
-	<li><span class='porteDocumentsNom'><?php echo $dossierRacine; ?>/nouveau-dossier/nouveau-fichier.txt</span></li>
-</ul>
-
-<form action="<?php echo $action; ?>#messagesPorteDocuments" method="post"><div>
-<label><?php echo T_("Nom:"); ?></label> <input type="text" name="porteDocumentsFichierCreeNom" size="50" value="<?php echo $dossierRacine . '/'; ?>" /><br /><br />
-<label><?php echo T_("Type:"); ?></label>
-<select name="porteDocumentsFichierCreeType" size="1">
-<option value="Dossier"><?php echo T_("Dossier"); ?></option>
-<option value="FichierModele"><?php echo T_("Fichier modèle de page web"); ?></option>
-<option value="FichierVide"><?php echo T_("Fichier vide"); ?></option>
-</select><br /><br />
-<input type="submit" name="porteDocumentsCreer" value="<?php echo T_('Créer'); ?>" />
-</div></form>
-</div><!-- /boite -->
-
-<?php include $racine . '/admin/inc/dernier.inc.php'; ?>

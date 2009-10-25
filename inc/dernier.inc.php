@@ -11,7 +11,8 @@
 				<?php endif; ?>
 			</div><!-- /interieurContenu -->
 		</div><!-- /contenu -->
-
+		
+		<!-- ____________________ #sousContenu ____________________ -->
 		<div id="sousContenu">
 			<?php $divSurSousContenu = 'sous'; ?>
 			<?php include $racine . '/inc/blocs.inc.php'; ?>
@@ -19,6 +20,7 @@
 
 		<?php if ($basDePage): ?>
 			<div class="sep"></div>
+			<!-- ____________________ #basDePage ____________________ -->
 			<div id="basDePage">
 				<?php include cheminFichierIncHtml($racine, 'bas-de-page', $langueParDefaut, $langue); ?>
 			</div><!-- /basDePage -->
@@ -26,9 +28,7 @@
 
 			</div><!-- /interieurPage -->
 		</div><!-- /page -->
-
-		<script type="text/javascript">
-			egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');
-		</script>
+		
+		<script type="text/javascript">egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');</script>
 	</body>
 </html>

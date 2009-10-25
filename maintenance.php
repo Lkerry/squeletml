@@ -607,62 +607,61 @@ $image = "<img src=\"data:image/png;base64,$imageBase64\" width=\"200\" height=\
 header('HTTP/1.1 503 Service Temporarily Unavailable');
 header('Status: 503 Service Temporarily Unavailable');
 header("Retry-After: 3600");
-?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $langue; ?>" lang="<?php echo $langue; ?>">
-<head>
-<title><?php echo $titre; ?></title>
-<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-<meta name="robots" content="noindex, nofollow, noarchive" />
-<link rel="shortcut icon" type="images/x-icon" href="data:image/png;base64,<?php echo $faviconBase64; ?>" />
-<style type="text/css">
-img {
-	display: block;
-}
+	<head>
+		<title><?php echo $titre; ?></title>
+		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+		<meta name="robots" content="noindex, nofollow, noarchive" />
+		<link rel="shortcut icon" type="images/x-icon" href="data:image/png;base64,<?php echo $faviconBase64; ?>" />
+		<style type="text/css">
+		img {
+			display: block;
+		}
 
-div#image {
-	float: left;
-	padding-right: 30px;
-	border-right: 3px solid #424242;
-	margin-left: 63px;
-}
+		div#image {
+			float: left;
+			padding-right: 30px;
+			border-right: 3px solid #424242;
+			margin-left: 63px;
+		}
 
-h1 {
-	margin-bottom: 63px;
-	margin-left: 63px;
-}
+		h1 {
+			margin-bottom: 63px;
+			margin-left: 63px;
+		}
 
-h1, p {
-	color: #424242;
-}
+		h1, p {
+			color: #424242;
+		}
 
-p {
-	width: 200px;
-	margin-left: 326px;
-}
-</style>
-<!--[if lt IE 8]>
-	<style type="text/css">
-	img {
-		display: none;
-	}
+		p {
+			width: 200px;
+			margin-left: 326px;
+		}
+		</style>
+		<!--[if lt IE 8]>
+			<style type="text/css">
+			img {
+				display: none;
+			}
 	
-	div#image {
-		width: 200px;
-		height: 200px;
-		margin-left: 33px;
-		background-color: #FF6700;
-	}
-	</style>
-<![endif]-->
-</head>
-<body>
-<div>
-<h1><?php echo $titre; ?></h1>
+			div#image {
+				width: 200px;
+				height: 200px;
+				margin-left: 33px;
+				background-color: #FF6700;
+			}
+			</style>
+		<![endif]-->
+	</head>
+	<body>
+		<div>
+			<h1><?php echo $titre; ?></h1>
 
-<div id="image"><?php echo $image; ?></div>
+			<div id="image"><?php echo $image; ?></div>
 
-<p><?php echo $explication; ?></p>
-</div>
-</body>
+			<p><?php echo $explication; ?></p>
+		</div>
+	</body>
 </html>

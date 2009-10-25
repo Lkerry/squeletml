@@ -4,33 +4,33 @@
 //
 ////////////////////////////////////////////////////////////////////////
 
-function extractPageName(hrefString)
+function extraitUrlPage(valeurHref)
 {
-	var arr = hrefString.split('/');
-	return  (arr.length < 2) ? hrefString : arr[arr.length - 2].toLowerCase() + arr[arr.length - 1].toLowerCase();
+	var arr = valeurHref.split('/');
+	return (arr.length < 2) ? valeurHref : arr[arr.length - 2].toLowerCase() + arr[arr.length - 1].toLowerCase();
 }
 
-function setActiveMenu(arr, crtPage)
+function lienActifAjouteClasse(tab, pageCourante)
 {
-	for (var i = 0; i < arr.length; i++)
+	for (var i = 0; i < tab.length; i++)
 	{
-		if(extractPageName(arr[i].href) == crtPage)
+		if(extraitUrlPage(tab[i].href) == pageCourante)
 		{
-			if (arr[i].parentNode.tagName != "DIV")
+			if (tab[i].parentNode.tagName != 'div')
 			{
-				arr[i].className = "actif";
-				arr[i].parentNode.className = "actif";
+				tab[i].className = 'actif';
+				tab[i].parentNode.className = 'actif';
 			}
 		}
 	}
 }
 
-function setPage()
+function lienActif(id, balise)
 {
-	hrefString = document.location.href ? document.location.href : document.location;
+	valeurHref = document.location.href ? document.location.href : document.location;
 
-	if (document.getElementById("menu") != null)
-	setActiveMenu(document.getElementById("menu").getElementsByTagName("a"), extractPageName(hrefString));
+	if (document.getElementById(id) != null)
+	lienActifAjouteClasse(document.getElementById(id).getElementsByTagName(balise), extraitUrlPage(valeurHref));
 }
 
 ////////////////////////////////////////////////////////////////////////

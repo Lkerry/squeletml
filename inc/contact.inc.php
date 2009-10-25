@@ -23,6 +23,7 @@ if (isset($_POST['envoyer']))
 	$nom = securiseTexte($_POST['nom']);
 	$courriel = securiseTexte($_POST['courriel']);
 	$message = securiseTexte($_POST['message']);
+	
 	if (isset($_POST['copie']))
 	{
 		$copie = securiseTexte($_POST['copie']);
@@ -92,18 +93,14 @@ if (isset($_POST['envoyer']))
 			$msg['erreur'][] = T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel. Veuillez le modifier.");
 		}
 	}
-
+	
+	// Envoi du message
 	if (empty($msg))
 	{
-		// Envoi du message
-		
 		// Adresses
-		
 		$adresseFrom = $courriel;
 		$adresseReplyTo = $courriel;
-		
 		$adresseBcc = '';
-		
 		if ($decouvrir && $copieCourriel && $copie == 'copie')
 		{
 			$adresseTo = $adresseFrom;
@@ -197,69 +194,67 @@ if (isset($_POST['envoyer']))
 
 <!-- Affichage du formulaire -->
 <form id="formContact" method="post" action="<?php echo actionFormContact($decouvrir); ?>">
-<div id="divContact">
-
-<p><label><?php echo T_("Votre nom:"); ?></label><br />
-<input class="champInfo" name="nom" type="text" size="30" maxlength="120" value="<?php echo $nom == T_('Votre nom') ? '' : $nom; ?>" /></p>
-
-<p><label><?php echo T_("Votre courriel:"); ?></label><br />
-<input class="champInfo" name="courriel" type="text" size="30" maxlength="120" value="<?php echo $courriel; ?>" /></p>
-
-<?php if ($decouvrir): ?>
-	<p><label><?php echo T_("Les courriels de vos ami-e-s:"); ?></label><br />
-	<?php echo T_("Pour envoyer le message à plus d'une personne, veuillez séparer les adresses par une virgule."); ?><br />
-	<input class="champInfo" name="courrielsDecouvrir" type="text" size="30" maxlength="120" value="<?php echo $courrielsDecouvrir; ?>" /></p>
-	
-	<p><?php echo T_("Modèle du message qui sera envoyé à vos ami-e-s:"); ?></p>
-	<?php include $racine . '/inc/faire-decouvrir.inc.php'; ?>
-	<div id="modeleMessageDecouvrir"><?php echo $messageDecouvrir; ?></div>
-	
-	<p><?php echo T_("Optionnellement, vous pouvez ajouter ci-dessous un petit mot personnalisé:"); ?></p>
-<?php endif; ?>
-
-<p><label><?php echo T_("Votre message:"); ?></label><br />
-<textarea name="message" cols="30" rows="10" id="message"><?php echo $message; ?></textarea></p>
-
-<?php if ($captchaCalcul): ?>
-	<?php $captchaCalcul1 = rand($captchaCalculMin, $captchaCalculMax); ?>
-	<?php $captchaCalcul2 = rand($captchaCalculMin, $captchaCalculMax); ?>
-	<?php $captchaCalculBidon = rand($captchaCalculMin, $captchaCalculMax); ?>
-	<p><label><?php echo T_("Antipourriel:"); ?></label><br />
-	<?php printf(T_("Veuillez compléter: %1\$s ajouté à %2\$s vaut %3\$s"), $captchaCalcul1, $captchaCalcul2, "<input name='ab' type='text' size='4' />"); ?></p>
-	<input name="a" type="hidden" value="<?php echo $captchaCalcul1; ?>" />
-	<input name="b" type="hidden" value="<?php echo $captchaCalculBidon; ?>" />
-	<?php
-	// Ajout de input bidons dans le but de potentiellement mélanger les robots pourrielleurs
-	$nbreInput = rand(5, 10);
-	$toutesLesLettres = 'abd';
-	for ($i = 0; $i < $nbreInput; $i++)
-	{
-		$tab = "\t";
-		if ($i == 0)
-		{
-			$tab = '';
-		}
-		$lettreAuHasard = lettreAuHasard($toutesLesLettres);
-		$toutesLesLettres .= $lettreAuHasard;
-		echo $tab . '<input name="' . $lettreAuHasard . '" type="hidden" value="' . rand($captchaCalculMin, $captchaCalculMax) . '" />' . "\n";
-	}
-	?>
-	<input name="d" type="hidden" value="<?php echo $captchaCalcul2; ?>" />
-<?php endif; ?>
-
-<?php if ($copieCourriel): ?>
-	<p><input
-		name="copie"
-		type="checkbox"
-		value="copie"
-		<?php if ($copie == 'copie'): ?>
-			checked="checked"
+	<div id="divContact">
+		<p><label><?php echo T_("Votre nom:"); ?></label><br />
+		<input class="champInfo" name="nom" type="text" size="30" maxlength="120" value="<?php echo $nom == T_('Votre nom') ? '' : $nom; ?>" /></p>
+		
+		<p><label><?php echo T_("Votre courriel:"); ?></label><br />
+		<input class="champInfo" name="courriel" type="text" size="30" maxlength="120" value="<?php echo $courriel; ?>" /></p>
+		
+		<?php if ($decouvrir): ?>
+			<p><label><?php echo T_("Les courriels de vos ami-e-s:"); ?></label><br />
+			<?php echo T_("Pour envoyer le message à plus d'une personne, veuillez séparer les adresses par une virgule."); ?><br />
+			<input class="champInfo" name="courrielsDecouvrir" type="text" size="30" maxlength="120" value="<?php echo $courrielsDecouvrir; ?>" /></p>
+			
+			<p><?php echo T_("Modèle du message qui sera envoyé à vos ami-e-s:"); ?></p>
+			<?php include $racine . '/inc/faire-decouvrir.inc.php'; ?>
+			<div id="modeleMessageDecouvrir"><?php echo $messageDecouvrir; ?></div>
+			
+			<p><?php echo T_("Optionnellement, vous pouvez ajouter ci-dessous un petit mot personnalisé:"); ?></p>
 		<?php endif; ?>
-	/>
-	<?php echo T_("Je souhaite recevoir une copie du message"); ?></p>
-<?php endif; ?>
-
-<p><input name="envoyer" type="submit" value="<?php echo T_('Envoyer le message'); ?>" /></p>
-
-</div><!-- /divContact -->
+		
+		<p><label><?php echo T_("Votre message:"); ?></label><br />
+		<textarea name="message" cols="30" rows="10" id="message"><?php echo $message; ?></textarea></p>
+		
+		<?php if ($captchaCalcul): ?>
+			<?php $captchaCalcul1 = rand($captchaCalculMin, $captchaCalculMax); ?>
+			<?php $captchaCalcul2 = rand($captchaCalculMin, $captchaCalculMax); ?>
+			<?php $captchaCalculBidon = rand($captchaCalculMin, $captchaCalculMax); ?>
+			<p><label><?php echo T_("Antipourriel:"); ?></label><br />
+			<?php printf(T_("Veuillez compléter: %1\$s ajouté à %2\$s vaut %3\$s"), $captchaCalcul1, $captchaCalcul2, "<input name='ab' type='text' size='4' />"); ?></p>
+			<input name="a" type="hidden" value="<?php echo $captchaCalcul1; ?>" />
+			<input name="b" type="hidden" value="<?php echo $captchaCalculBidon; ?>" />
+			<?php
+			// Ajout de `input` bidons dans le but d'augmenter les chances de duper les robots pourrielleurs
+			$nbreInput = rand(5, 10);
+			$toutesLesLettres = 'abd';
+			for ($i = 0; $i < $nbreInput; $i++)
+			{
+				$tab = "\t";
+				if ($i == 0)
+				{
+					$tab = '';
+				}
+				$lettreAuHasard = lettreAuHasard($toutesLesLettres);
+				$toutesLesLettres .= $lettreAuHasard;
+				echo $tab . '<input name="' . $lettreAuHasard . '" type="hidden" value="' . rand($captchaCalculMin, $captchaCalculMax) . '" />' . "\n";
+			}
+			?>
+			<input name="d" type="hidden" value="<?php echo $captchaCalcul2; ?>" />
+		<?php endif; ?>
+		
+		<?php if ($copieCourriel): ?>
+			<p><input
+				name="copie"
+				type="checkbox"
+				value="copie"
+				<?php if ($copie == 'copie'): ?>
+					checked="checked"
+				<?php endif; ?>
+			/>
+			<?php echo T_("Je souhaite recevoir une copie du message"); ?></p>
+		<?php endif; ?>
+		
+		<p><input name="envoyer" type="submit" value="<?php echo T_('Envoyer le message'); ?>" /></p>
+	</div><!-- /divContact -->
 </form>

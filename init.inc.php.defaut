@@ -9,7 +9,7 @@ $accueil['en'] = $urlRacine . '/en';
 
 ########################################################################
 ##
-## C'est terminé, à moins d'utiliser un serveur de Free.fr
+## Ne pas continuer plus bas, à moins d'utiliser un serveur de Free.fr
 ##
 ########################################################################
 

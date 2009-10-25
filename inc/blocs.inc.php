@@ -1,6 +1,5 @@
 <?php
 list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($coinsArrondisBloc);
-
 $blocsAinserer = blocs($ordreFluxHtml, $divSurSousContenu . 'Contenu');
 
 if (!empty($blocsAinserer))
@@ -26,7 +25,7 @@ if (!empty($blocsAinserer))
 				include cheminFichierIncHtml($racine, 'menu', $langueParDefaut, $langue);
 				echo $codeInterieurBlocBas;
 				echo '</div><!-- /menu -->' . "\n";
-				echo '<script type="text/javascript">setPage();</script>' . "\n";
+				echo '<script type="text/javascript">lienActif("menu", "a");</script>' . "\n";
 				break;
 			
 			case 'faire-decouvrir':

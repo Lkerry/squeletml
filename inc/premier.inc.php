@@ -85,6 +85,7 @@ if (!isset($jQueryCookieInclus))
 
 echo doctype($xhtmlStrict); ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo LANGUE; ?>" lang="<?php echo LANGUE; ?>">
+	<!-- ____________________ <head> ____________________ -->
 	<head>
 		<!-- Titre -->
 		<title><?php echo $baliseTitle .= ' | ' . baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue); ?></title>
@@ -102,18 +103,15 @@ echo doctype($xhtmlStrict); ?>
 		
 		<!-- Balises `link` et `script` -->
 		<?php if ($idGalerie && $rss): ?>
-			<!-- RSS -->
 			<?php $urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']); ?>
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlFlux; ?>" title="<?php echo sprintf(T_('RSS de la galerie %1$s'), $idGalerie); ?>" />
 		<?php endif; ?>
 		
 		<?php if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")): ?>
-			<!-- RSS -->
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlRacine . '/rss.php?global=galeries&langue=' . LANGUE; ?>" title="<?php echo T_('RSS de toutes les galeries'); ?>" />
 		<?php endif; ?>
 
 		<?php if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc")): ?>
-			<!-- RSS -->
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlRacine . '/rss.php?global=pages&langue=' . LANGUE; ?>" title="<?php echo T_('RSS global du site'); ?>" />
 		<?php endif; ?>
 		
@@ -152,7 +150,7 @@ echo doctype($xhtmlStrict); ?>
 		<?php endif; ?>
 		
 		<?php if ($messageIE6): ?>
-			<!-- Message à IE6 -->
+			<!-- Message IE6 -->
 			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
 			<?php if (!$jQueryInclus): ?>
 				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
@@ -168,20 +166,25 @@ echo doctype($xhtmlStrict); ?>
 			<?php echo '<![endif]-->'; ?>
 		<?php endif; ?>
 	</head>
+	<!-- ____________________ <body> ____________________ -->
 	<body class="<?php echo classesBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc); ?>">
+		<!-- ____________________ #ancres ____________________ -->
 		<div id="ancres">
 			<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
 		</div><!-- /ancres -->
 
 		<?php if ($messageIE6): ?>
-		<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
-			<?php echo messageIE6($urlRacine . '/fichiers/firefox-52x52.gif', '', 52, 52); ?>
-		<?php echo '<![endif]-->'; ?>
+			<!-- ____________________ Message IE6 ____________________ -->
+			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
+				<?php echo messageIE6($urlRacine . '/fichiers/firefox-52x52.gif', '', 52, 52); ?>
+			<?php echo '<![endif]-->'; ?>
 		<?php endif; ?>
-
+		
+		<!-- ____________________ #page ____________________ -->
 		<div id="page">
 			<div id="interieurPage">
-
+		
+		<!-- ____________________ #entete ____________________ -->
 		<div id="entete">
 			<?php if ($surTitre): ?>
 				<div id="surTitre">
@@ -199,7 +202,8 @@ echo doctype($xhtmlStrict); ?>
 	
 			<div class="sep"></div>
 		</div><!-- /entete -->
-
+		
+		<!-- ____________________ #surContenu ____________________ -->
 		<div id="surContenu">
 			<?php $decouvrir = FALSE; // Initialisation ?>
 			<?php $decouvrirInclureContact = FALSE; // Initialisation ?>
@@ -212,7 +216,8 @@ echo doctype($xhtmlStrict); ?>
 			<?php $divSurSousContenu = 'sur'; ?>
 			<?php include $racine . '/inc/blocs.inc.php'; ?>
 		</div><!-- /surContenu -->
-
+		
+		<!-- ____________________ #contenu ____________________ -->
 		<div id="contenu" class="<?php if ($differencierLiensVisitesSeulementDansContenu) echo 'liensVisitesDifferencies'; ?>">
 			<div id="interieurContenu">
 		

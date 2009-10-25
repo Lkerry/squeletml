@@ -506,5 +506,4 @@ else
 	$motsCles .= ', ' . $nomGalerie;
 	$robots = "noindex, follow, noarchive";
 }
-
 ?>

@@ -1,3 +1,1 @@
-<?php
-header('Location: versions.admin.php');
-?>
+<?php header('Location: versions.admin.php'); ?>

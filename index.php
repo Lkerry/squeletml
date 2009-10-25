@@ -15,6 +15,7 @@ if(file_exists('init.inc.php') && file_exists('.acces'))
 else
 {
 	include_once 'inc/fonctions.inc.php';
+	
 	$langueNavigateur = langue($langueParDefaut, 'navigateur');
 	// Nécessaire à la traduction
 	phpGettext('.', $langueNavigateur);
@@ -67,5 +68,4 @@ else
 	echo '</body>' . "\n";
 	echo '</html>';
 }
-
 ?>

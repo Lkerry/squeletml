@@ -5,9 +5,7 @@
 ##
 ########################################################################
 
-##
-## En-tête HTML
-##
+/* ____________________ En-tête HTML ____________________ */
 
 // Choix du DTD (Définition de Type de Document)
 /* Si `$xhtmlStrict` vaut TRUE, le doctype utilisé est XHTML 1.0 Strict, sinon c'est XHTML 1.0 Transitional. Si vous ne savez pas de quoi il s'agit, laissez TRUE. Le seul intérêt de choisir FALSE serait dans le cas où vous savez que vous devez utiliser des balises non valides en XHTML 1.0 Strict. */
@@ -54,9 +52,7 @@ $charset = 'UTF-8';
 // Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
 $langueParDefaut = 'fr';
 
-##
-## Syndication de contenu (flux RSS)
-##
+/* ____________________ Syndication de contenu (flux RSS) ____________________ */
 
 // Syndication globale du site
 /* La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxRssGlobal` vaut TRUE. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL. Voir la documentation pour plus de détails. */
@@ -76,9 +72,7 @@ Exemples:
 */
 $dureeCacheFluxRss = 0;
 
-##
-## Inclusions et activations
-##
+/* ____________________ Inclusions et activations ____________________ */
 
 // Inclusion du sur-titre
 $surTitre = FALSE; // TRUE|FALSE
@@ -160,9 +154,7 @@ $boitesDeroulantes = array (
 	
 	);
 
-##
-## Contenu et ordre du flux HTML
-##
+/* ____________________ Contenu et ordre du flux HTML ____________________ */
 
 // Titre du site en en-tête
 /* Contenu (balises HTML permises) qui sera inséré comme titre de site dans un `h1` s'il s'agit de la page d'accueil, ou dans un `p` pour toutes les autres pages. Astuce: si vous ne voulez pas trop bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 75px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site. */
@@ -193,9 +185,7 @@ $ordreFluxHtml = array (
 	'flux-rss' => 10,
 	);
 
-##
-## Style CSS
-##
+/* ____________________ Style CSS ____________________ */
 
 /* Note: les options suivantes n'ont aucune influence sur le flux HTML. */
 
@@ -257,9 +247,7 @@ $copieCourriel = FALSE; // TRUE|FALSE
 ##
 ########################################################################
 
-##
-## Général
-##
+/* ____________________ Général ____________________ */
 
 // Qualité des images JPG générées par le script
 $qualiteJpg = 90; // 0-100
@@ -275,9 +263,7 @@ $galerieDimensionsVignette = array (
 /* En résumé: permet d'avoir des vignettes de même hauteur ou de même largeur, ou les deux. En détails: si la taille calculée pour la génération d'une vignette est plus petite que la taille voulue pour une vignette, ajoute des bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Par exemple, disons que nous avons une petite image source de 24 px × 24 px, et que la taille voulue pour une vignette est de 100 px × 100 px. Si `$galerieForcerDimensionsVignette` vaut FALSE, la vignette créée aura la même taille que l'image source (c'est-à-dire 24 px × 24 px), mais si `$galerieForcerDimensionsVignette` vaut TRUE, alors la vignette fera 100 px × 100 px, mais il y aura des marges blanches ou transparentes de 38 px autour du corps de l'image (qui se trouve donc à être centrée). Bien sûr, on ne peut forcer une dimension (largeur ou hauteur) que si la dimension voulue a été précisée dans `$galerieDimensionsVignette`. */
 $galerieForcerDimensionsVignette = TRUE; // TRUE|FALSE
 
-##
-## Syndication de contenu (flux RSS)
-##
+/* ____________________ Syndication de contenu (flux RSS) ____________________ */
 
 // Syndication individuelle par défaut des galeries (il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut)
 $galerieFluxRssParDefaut = TRUE; // TRUE|FALSE
@@ -286,9 +272,7 @@ $galerieFluxRssParDefaut = TRUE; // TRUE|FALSE
 /* La syndication globale des galeries n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant la liste des galeries et de leur URL. Voir la documentation pour plus de détails. */
 $galerieFluxRssGlobal = FALSE; // TRUE|FALSE
 
-##
-## Accueil des galeries
-##
+/* ____________________ Accueil des galeries ____________________ */
 
 // Pagination des vignettes de la page d'accueil: nombre de vignettes par page (0 pour désactiver la pagination)
 $galerieVignettesParPage = 0;
@@ -309,9 +293,7 @@ $galerieInfoEmplacement = 'haut'; // haut|bas
 /* Utiliser Slimbox 2 pour passer d'une image à une autre sur la page d'accueil de la galerie au lieu de naviguer d'une image à une autre en rechargeant toute la page. */
 $galerieAccueilJavascript = FALSE; // TRUE|FALSE
 
-##
-## Page individuelle d'une oeuvre
-##
+/* ____________________ Page individuelle d'une oeuvre ____________________ */
 
 // Choix de la navigation d'une oeuvre à une autre
 $galerieNavigation = 'fleches'; // fleches ou vignettes

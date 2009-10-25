@@ -9,5 +9,4 @@ else
 {
 	include $racine . '/inc/page.fr.contact.inc.php';
 }
-
 ?>

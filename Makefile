@@ -12,6 +12,7 @@ tag=`bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1`
 
 # Récupère le numéro de la première révision du dernier tag
 premiereRevTag=`bzr tags | sort -k2n,2n | tail -n 2 | head -n 1 | rev | cut -d ' ' -f 1 | rev | xargs expr 1 + `
+
 ########################################################################
 ##
 ## MÉTACIBLES

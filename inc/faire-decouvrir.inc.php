@@ -22,48 +22,42 @@ if (!$pageDerreur && isset($_GET['action']) && $_GET['action'] == 'faireDecouvri
 	$messageDecouvrir = '';
 }
 
-if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']))
+if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 {
-	if (file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+	$galerie = tableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
+	$i = 0;
+	foreach($galerie as $oeuvre)
 	{
-		$galerie = tableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
-		$i = 0;
-		foreach($galerie as $oeuvre)
+		$id = idOeuvre($oeuvre);
+		if ($id == sansEchappement($_GET['oeuvre']))
 		{
-			$id = idOeuvre($oeuvre);
-			if ($id == sansEchappement($_GET['oeuvre']))
+			$decouvrir = TRUE;
+			if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 			{
-				$decouvrir = TRUE;
-				if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
-				{
-					$decouvrirInclureContact = TRUE;
-					$messageDecouvrirSupplement = decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown);
-					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'oeuvre %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $oeuvre['intermediaireNom'] . '</em>', '<em>' . $idGalerie . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
-				}
-				break;
+				$decouvrirInclureContact = TRUE;
+				$messageDecouvrirSupplement = decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown);
+				$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'oeuvre %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $oeuvre['intermediaireNom'] . '</em>', '<em>' . $idGalerie . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
 			}
+			break;
 		}
 	}
 }
-elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']))
+elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
 {
-	if (file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+	$decouvrir = TRUE;
+	if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 	{
-		$decouvrir = TRUE;
-		if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
+		$decouvrirInclureContact = TRUE;
+		if (!isset($description))
 		{
-			$decouvrirInclureContact = TRUE;
-			if (!isset($description))
-			{
-				$description = '';
-			}
-			if (!isset($baliseTitle))
-			{
-				$baliseTitle = '';
-			}
-			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle);
-			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
+			$description = '';
 		}
+		if (!isset($baliseTitle))
+		{
+			$baliseTitle = '';
+		}
+		$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle);
+		$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
 	}
 }
 elseif (!$pageDerreur && (!isset($courrielContact) || empty($courrielContact)))
@@ -84,5 +78,4 @@ elseif (!$pageDerreur && (!isset($courrielContact) || empty($courrielContact)))
 		$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . urlPageSansDecouvrir() . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
 	}
 }
-
 ?>

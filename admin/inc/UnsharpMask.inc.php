@@ -162,5 +162,4 @@ function UnsharpMask($shp_img, $shp_amount, $shp_radius, $shp_threshold)	{
 	 
 	return $shp_img; 
 }
-
 ?>

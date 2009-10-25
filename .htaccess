@@ -52,12 +52,3 @@ Options -Indexes
 	Satisfy any
 </Files>
 
-# Ajout automatique de Squeletml (accès admin). Ne pas modifier.
-# Empêcher l'affichage direct de certains fichiers.
-<FilesMatch "(ChangeLog|ChangeLogDerniereVersion|\.acces|\.admin\.php|\.defaut|\.mdtxt|\.pc|\.txt|\.xml)$">
-	AuthUserFile /home/jp/informatique/prog/devel/logiciels/squeletml/.acces
-	AuthType Basic
-	AuthName "Zone d'identification"
-	Require valid-user
-</FilesMatch>
-# Fin de l'ajout automatique de Squeletml (accès admin).
