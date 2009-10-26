@@ -128,76 +128,46 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 ### Visuel
 
-#### Logo de Squeletml
+- **Logo de Squeletml**: le logo a été fait à partir de l'image `clipart/animals/lizard_guillaume_boitel_.svg` de l'[Open Clip Art Library](http://www.openclipart.org/) et de la police de caractères [*Architext*](http://www.dafont.com/FR/architext.font). Les deux sont dans le domaine public.
 
-Le logo a été fait à partir de l'image `clipart/animals/lizard_guillaume_boitel_.svg` de l'[Open Clip Art Library](http://www.openclipart.org/) et de la police de caractères [*Architext*](http://www.dafont.com/FR/architext.font). Les deux sont dans le domaine public.
+- **Bannière de Squeletml**: la bannière de 80px × 15px utilise la police de caractères [Picopixel](http://www.dafont.com/FR/micropixel.font) de Sebastian Weber. Sur le site de Dafont, la licence est précisée ainsi: «Domaine public / GNU GPL». J'ai écrit à l'auteur pour obtenir des précisions, sans réponse pour l'instant.
 
-#### Bannière de Squeletml
+- **Images utilisées dans la galerie démo**: les oeuvres de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
 
-La bannière de 80px × 15px utilise la police de caractères [Picopixel](http://www.dafont.com/FR/micropixel.font) de Sebastian Weber. Sur le site de Dafont, la licence est précisée ainsi: «Domaine public / GNU GPL». J'ai écrit à l'auteur pour obtenir des précisions, sans réponse pour l'instant.
+	La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), fichier `22x22/actions/view-fullscreen.png`, et est sous licence GPL (la version de la licence n'est pas précisée, donc n'importe quelle version peut s'appliquer).
 
-#### Images utilisées dans la galerie démo
+- **Image utilisée pour le lien «Faire découvrir à des ami-e-s»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL (la version de la licence n'est pas précisée, donc n'importe quelle version peut s'appliquer).
 
-Les oeuvres de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
+- **Logo utilisé pour représenter Firefox dans le module d'affiche d'un message pour Internet Explorer 6**: ce logo est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Deer_Park_Globe.png?uselang=fr).
 
-La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), fichier `22x22/actions/view-fullscreen.png`, et est sous licence GPL.
+- **Icône des flux RSS**: cette icône est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Feed-icon.svg?uselang=fr).
 
-#### Image utilisée pour le lien «Faire découvrir à des ami-e-s»
+- **Image de cône pour la page de maintenance**: cette image provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Small-Traffic-Cone-Edited.png?uselang=fr) et est dans le domaine public.
 
-Cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
+- **Image en cercle dans la page d'erreur 401**: cette image provient de l'[Open Clip Art Library](http://www.openclipart.org/) et est dans le domaine public.
 
-#### Logo utilisé pour représenter Firefox dans le module d'affiche d'un message pour Internet Explorer 6
+- **Image en triangle dans la page d'erreur 404**: modification d'une image provenant de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Attention_Sign.svg?uselang=fr) et étant dans le domaine public.
 
-Ce logo est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Deer_Park_Globe.png?uselang=fr).
+### Scripts externes
 
-#### Icône des flux RSS
+- **PHP gettext**: sous licence GPLv2 ou toute version ultérieure. Voir <http://savannah.nongnu.org/projects/php-gettext/>.
 
-Cette icône est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Feed-icon.svg?uselang=fr).
+- **PHP Markdown**: sous licence de style BSD. Voir <http://michelf.com/projets/php-markdown/>.
 
-#### Image de cône pour la page de maintenance
+- **Unsharp Mask for PHP**: permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>.
 
-Cette image provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Small-Traffic-Cone-Edited.png?uselang=fr) et est dans le domaine public.
+- **Drag'nDrop & DHTML Library**: sous licence LGPLv2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>.
 
-### PHP gettext
+- **CodeMirror**: sous licence BSD. Voir <http://marijn.haverbeke.nl/codemirror/>.
 
-Sous licence GPLv2 ou toute version ultérieure. Voir <http://savannah.nongnu.org/projects/php-gettext/>
+- **jQuery**: sous double licence MIT et GPL. Voir <http://jquery.com/>.
 
-### PHP Markdown
+- **jQuery Cookie plugin**: sous double licence MIT et GPL. Voir <http://plugins.jquery.com/project/cookie>.
 
-Sous licence de style BSD. Voir <http://michelf.com/projets/php-markdown/>
+- **Slimbox 2**: sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>.
 
-### Unsharp Mask for PHP
+- **PclZip**: Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>.
 
-Permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>
+- **Classe PHP UnTar**: Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>.
 
-### Drag'nDrop & DHTML Library
-
-Sous licence LGPLv2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>
-
-### CodeMirror
-
-Sous licence BSD. Voir <http://marijn.haverbeke.nl/codemirror/>
-
-### jQuery
-
-Sous double licence MIT et GPL. Voir <http://jquery.com/>
-
-### jQuery Cookie plugin
-
-Sous double licence MIT et GPL. Voir <http://plugins.jquery.com/project/cookie>
-
-### Slimbox 2
-
-Sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>
-
-### PclZip
-
-Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>
-
-### Classe PHP UnTar
-
-Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>
-
-### PHPJS
-
-Sous double licence MIT et GPL. Voir <http://phpjs.org/>
+- **PHPJS**: sous double licence MIT et GPL. Voir <http://phpjs.org/>.

@@ -5,7 +5,7 @@ $langue = 'fr';
 include $racine . '/inc/premier.inc.php';
 ?>
 
-<h1>Page introuvable</h1>
+<h1 id="titrePage404">Page introuvable</h1>
 
 <p>La page demandée n'existe pas.</p>
 

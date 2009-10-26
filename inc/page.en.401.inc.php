@@ -5,7 +5,7 @@ $langue = 'en';
 include $racine . '/inc/premier.inc.php';
 ?>
 
-<h1>Authorization Required</h1>
+<h1 id="titrePage401">Authorization Required</h1>
 
 <p>The URL you requested was not found.</p>
 

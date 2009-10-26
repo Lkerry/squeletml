@@ -180,6 +180,20 @@ pre {
 	clear: both;
 }
 
+/* Pages d'erreur */
+
+h1#titrePage401, h1#titrePage404 {
+	padding-left: 20px;
+}
+
+h1#titrePage401 {
+	background: url('../fichiers/acces-interdit.png') no-repeat left center;
+}
+
+h1#titrePage404 {
+	background: url('../fichiers/attention.png') no-repeat left center;
+}
+
 /* Blocs */
 
 .bloc {

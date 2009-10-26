@@ -5,7 +5,7 @@ $langue = 'en';
 include $racine . '/inc/premier.inc.php';
 ?>
 
-<h1>File not found</h1>
+<h1 id="titrePage404">File not found</h1>
 
 <p>The URL you requested was not found.</p>
 

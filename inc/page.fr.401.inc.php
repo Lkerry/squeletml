@@ -5,7 +5,7 @@ $langue = 'fr';
 include $racine . '/inc/premier.inc.php';
 ?>
 
-<h1>Authentification requise</h1>
+<h1 id="titrePage401">Authentification requise</h1>
 
 <p>La page demandée requiert un authentification.</p>
 
