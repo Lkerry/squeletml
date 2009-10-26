@@ -168,7 +168,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Slimbox 2**: sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>.
 
-- **Table of Contents jQuery Plugin**: sous licence MIT. Voir <http://fuelyourcoding.com/table-of-contents-jquery-plugin/>.
+- **Table of Contents jQuery Plugin**: le script original a été écrit par Doug Neiner et est sous licence MIT. Voir <http://fuelyourcoding.com/table-of-contents-jquery-plugin/>. J'ai modifié le script et ai incorporé une fraction de code provenant du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), publié sous licence GPL (sans précision de la version). Je publie le script résultant sous licence GPL version 3 ou toute version ultérieure.
 
 - **Unsharp Mask for PHP**: permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>.
 
