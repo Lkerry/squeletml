@@ -150,24 +150,27 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 ### Scripts externes
 
-- **PHP gettext**: sous licence GPL version 2 ou toute version ultérieure. Voir <http://savannah.nongnu.org/projects/php-gettext/>.
-
-- **PHP Markdown**: sous licence de style BSD. Voir <http://michelf.com/projets/php-markdown/>.
-
-- **Unsharp Mask for PHP**: permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>.
+- **CodeMirror**: sous licence BSD. Voir <http://marijn.haverbeke.nl/codemirror/>.
 
 - **Drag'nDrop & DHTML Library**: sous licence LGPL version 2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>.
-
-- **CodeMirror**: sous licence BSD. Voir <http://marijn.haverbeke.nl/codemirror/>.
 
 - **jQuery**: sous double licence MIT et GPL. Voir <http://jquery.com/>.
 
 - **jQuery Cookie plugin**: sous double licence MIT et GPL. Voir <http://plugins.jquery.com/project/cookie>.
 
-- **Slimbox 2**: sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>.
-
 - **PclZip**: Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>.
 
-- **Classe PHP UnTar**: Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>.
+- **PHP gettext**: sous licence GPL version 2 ou toute version ultérieure. Voir <http://savannah.nongnu.org/projects/php-gettext/>.
 
 - **PHPJS**: sous double licence MIT et GPL. Voir <http://phpjs.org/>.
+
+- **PHP Markdown**: sous licence de style BSD. Voir <http://michelf.com/projets/php-markdown/>.
+
+- **Slimbox 2**: sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>.
+
+- **Table of Contents jQuery Plugin**: sous licence MIT. Voir <http://fuelyourcoding.com/table-of-contents-jquery-plugin/>.
+
+- **Unsharp Mask for PHP**: permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>.
+
+- **UnTar (classe PHP)**: Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>.
+
