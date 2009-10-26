@@ -22,12 +22,12 @@
 		</div><!-- /ancres -->
 		
 		<div id="page">
-			<div id="entete">
+			<div id="enTete">
 				<div id="menu">
 					<?php include $racine . '/admin/inc/html.menu.inc.php'; ?>
 				</div><!-- /menu -->
 				<script type="text/javascript">lienActif('menu', 'a');</script>
-			</div><!-- /entete -->
+			</div><!-- /enTete -->
 			
 			<div id="contenu">
 				<div id="interieurContenu">

@@ -165,7 +165,7 @@ Doctype XHTML 1.0 Strict
 		  <div id="interieurPage">
 				S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
 
-				<div id="entete">
+				<div id="enTete">
 					<div id="surTitre">
 						...
 					</div><!-- /surTitre -->
@@ -177,7 +177,7 @@ Doctype XHTML 1.0 Strict
 					<div id="sousTitre">
 						...
 					</div><!-- /sousTitre -->
-				</div><!-- /entete -->
+				</div><!-- /enTete -->
 
 				<div id="ancres">
 					...

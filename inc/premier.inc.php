@@ -184,8 +184,8 @@ echo doctype($xhtmlStrict); ?>
 		<div id="page">
 			<div id="interieurPage">
 		
-		<!-- ____________________ #entete ____________________ -->
-		<div id="entete">
+		<!-- ____________________ #enTete ____________________ -->
+		<div id="enTete">
 			<?php if ($surTitre): ?>
 				<div id="surTitre">
 					<?php include cheminFichierIncHtml($racine, 'sur-titre', $langueParDefaut, $langue); ?>
@@ -201,7 +201,7 @@ echo doctype($xhtmlStrict); ?>
 			</div><!-- /sousTitre -->
 	
 			<div class="sep"></div>
-		</div><!-- /entete -->
+		</div><!-- /enTete -->
 		
 		<!-- ____________________ #surContenu ____________________ -->
 		<div id="surContenu">

@@ -134,9 +134,9 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Images utilisées dans la galerie démo**: les oeuvres de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
 
-	La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), fichier `22x22/actions/view-fullscreen.png`, et est sous licence GPL (la version de la licence n'est pas précisée, donc n'importe quelle version peut s'appliquer).
+	La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), fichier `22x22/actions/view-fullscreen.png`, et est sous licence GPL.
 
-- **Image utilisée pour le lien «Faire découvrir à des ami-e-s»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL (la version de la licence n'est pas précisée, donc n'importe quelle version peut s'appliquer).
+- **Image utilisée pour le lien «Faire découvrir à des ami-e-s»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
 
 - **Logo utilisé pour représenter Firefox dans le module d'affiche d'un message pour Internet Explorer 6**: ce logo est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Deer_Park_Globe.png?uselang=fr).
 
@@ -150,13 +150,13 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 ### Scripts externes
 
-- **PHP gettext**: sous licence GPLv2 ou toute version ultérieure. Voir <http://savannah.nongnu.org/projects/php-gettext/>.
+- **PHP gettext**: sous licence GPL version 2 ou toute version ultérieure. Voir <http://savannah.nongnu.org/projects/php-gettext/>.
 
 - **PHP Markdown**: sous licence de style BSD. Voir <http://michelf.com/projets/php-markdown/>.
 
 - **Unsharp Mask for PHP**: permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>.
 
-- **Drag'nDrop & DHTML Library**: sous licence LGPLv2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>.
+- **Drag'nDrop & DHTML Library**: sous licence LGPL version 2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>.
 
 - **CodeMirror**: sous licence BSD. Voir <http://marijn.haverbeke.nl/codemirror/>.
 

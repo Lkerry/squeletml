@@ -120,24 +120,24 @@ if (isset($_POST['envoyer']))
 			$adresseTo = $courrielContact;
 		}
 		
-		$entete = '';
-		$entete .= "From: $nom <$adresseFrom>\n";
-		$entete .= "Reply-to: $adresseReplyTo\n";
+		$enTete = '';
+		$enTete .= "From: $nom <$adresseFrom>\n";
+		$enTete .= "Reply-to: $adresseReplyTo\n";
 
 		if (!empty($adresseBcc))
 		{
-			$entete .= "Bcc: $adresseBcc\n";
+			$enTete .= "Bcc: $adresseBcc\n";
 		}
 		
-		$entete .= "MIME-Version: 1.0\n";
+		$enTete .= "MIME-Version: 1.0\n";
 		
 		if ($decouvrir)
 		{
-			$entete .= "Content-Type: text/html; charset=\"utf-8\"\n";
+			$enTete .= "Content-Type: text/html; charset=\"utf-8\"\n";
 		}
 		else
 		{
-			$entete .= "Content-Type: text/plain; charset=\"utf-8\"\n";
+			$enTete .= "Content-Type: text/plain; charset=\"utf-8\"\n";
 		}
 		
 		if ($decouvrir)
@@ -149,7 +149,7 @@ if (isset($_POST['envoyer']))
 			$corps = str_replace("\r", '', $message) . "\n";
 		}
 		
-		if (mail($adresseTo, $courrielObjetId . "Message de " . "$nom <$adresseFrom>", $corps, $entete))
+		if (mail($adresseTo, $courrielObjetId . "Message de " . "$nom <$adresseFrom>", $corps, $enTete))
 		{
 			$messageEnvoye = TRUE;
 			$msg['envoi'][1] = T_("Votre message a bien été envoyé.");
