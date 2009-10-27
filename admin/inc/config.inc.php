@@ -6,11 +6,8 @@
 ########################################################################
 
 // Langue par défaut de l'administration
-/* Il y a deux possibilités:
-- `$langue = 'navigateur';`, qui signifie que l'administration sera affichée dans la langue de l'internaute, si elle existe;
-- `$langue = 'codeLangue';`, où `codeLangue` correspond au choix de la langue de l'administration (si elle existe).
-Veuillez décommenter le choix voulu (un seul possible, pas les deux en même temps!): */ 
-$langueParDefaut = 'navigateur';
+/* Langue par défaut si aucune autre précision n'est apportée. Si la variable `$langue` existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction `langue()`. */
+$langueParDefaut = 'fr';
 
 // URL relative de la page de maintenance à partir de `$urlRacine/`
 $urlMaintenance = 'maintenance.php';

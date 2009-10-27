@@ -6,31 +6,31 @@
 
 function extraitUrlPage(valeurHref)
 {
-	var arr = valeurHref.split('/');
-	return (arr.length < 2) ? valeurHref : arr[arr.length - 2].toLowerCase() + arr[arr.length - 1].toLowerCase();
+	var tableauAdresse = valeurHref.split('/');
+	return (tableauAdresse.length < 2) ? valeurHref : tableauAdresse[tableauAdresse.length - 2].toLowerCase() + tableauAdresse[tableauAdresse.length - 1].toLowerCase();
 }
 
-function lienActifAjouteClasse(tab, pageCourante)
+function lienActifAjouteClasse(tableauA, urlPageCourante)
 {
-	for (var i = 0; i < tab.length; i++)
+	for (var i = 0; i < tableauA.length; i++)
 	{
-		if(extraitUrlPage(tab[i].href) == pageCourante)
+		if(extraitUrlPage(tableauA[i].href) == urlPageCourante)
 		{
-			if (tab[i].parentNode.tagName != 'div')
+			if (tableauA[i].parentNode.tagName != 'div')
 			{
-				tab[i].className = 'actif';
-				tab[i].parentNode.className = 'actif';
+				tableauA[i].className = 'actif';
+				tableauA[i].parentNode.className = 'actif';
 			}
 		}
 	}
 }
 
-function lienActif(id, balise)
+function lienActif(idConteneur)
 {
 	valeurHref = document.location.href ? document.location.href : document.location;
 
-	if (document.getElementById(id) != null)
-	lienActifAjouteClasse(document.getElementById(id).getElementsByTagName(balise), extraitUrlPage(valeurHref));
+	if (document.getElementById(idConteneur) != null)
+	lienActifAjouteClasse(document.getElementById(idConteneur).getElementsByTagName('a'), extraitUrlPage(valeurHref));
 }
 
 ////////////////////////////////////////////////////////////////////////
@@ -168,5 +168,25 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 			document.getElementById(idAegaliser).style.height = hauteurMax + "px";
 		}
 	}
+}
+
+/**
+Génère une table des matières pour la page en cours.
+*/
+function tableDesMatieres(idParent, baliseTable)
+{
+	$(document).ready(function()
+	{
+		var oPage = document.getElementById(idParent);
+		var oDiv = document.createElement('div');
+		var oUl = document.createElement(baliseTable);
+		
+		oDiv.setAttribute('id', 'tableDesMatieres');
+		oUl.setAttribute('id', 'tableDesMatieresLiens');
+		
+		oDiv.appendChild(oUl);
+		oPage.insertBefore(oDiv, oPage.firstChild);
+		$("#tableDesMatieresLiens").tableOfContents($("#" + idParent), {startLevel: 2, depth: 6});
+	})
 }
 

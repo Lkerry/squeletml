@@ -25,7 +25,7 @@ if (!empty($blocsAinserer))
 				include cheminFichierIncHtml($racine, 'menu', $langueParDefaut, $langue);
 				echo $codeInterieurBlocBas;
 				echo '</div><!-- /menu -->' . "\n";
-				echo '<script type="text/javascript">lienActif("menu", "a");</script>' . "\n";
+				echo '<script type="text/javascript">lienActif("menu");</script>' . "\n";
 				break;
 			
 			case 'faire-decouvrir':

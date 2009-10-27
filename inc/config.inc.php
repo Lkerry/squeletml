@@ -49,7 +49,8 @@ $robotsParDefaut = "index, follow, archive";
 // Encodage
 $charset = 'UTF-8';
 
-// Langue par défaut si aucune autre précision n'est apportée. Si la variable $langue existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction langue().
+// Langue par défaut
+/* Langue par défaut si aucune autre précision n'est apportée. Si la variable `$langue` existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui sera utilisée. Voir la fonction `langue()`. */
 $langueParDefaut = 'fr';
 
 /* ____________________ Syndication de contenu (flux RSS) ____________________ */

@@ -804,7 +804,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 				'ð': 'd',
 				'Ð': 'D',
 				'þ': 'th',
-				'Þ': 'TH',
+				'Þ': 'TH'
 			});
 //			text = text.toLowerCase().replace(/[^a-z0-9 -]/gi,'').replace(/ /gi,'-');
 			text = text.replace(/[^a-z0-9 -]/gi,'-').replace(/ +/gi,'-').replace(/-{2,}/gi,'-').replace(/^-/gi,'').replace(/-$/gi,'');

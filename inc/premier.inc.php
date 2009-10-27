@@ -1,26 +1,42 @@
 <?php
 ########################################################################
 ##
-## Inclusions
+## Initialisations avant inclusions
 ##
 ########################################################################
-
-include_once dirname(__FILE__) . '/../init.inc.php';
-if (file_exists($racine . '/inc/devel.inc.php'))
-{
-	include_once $racine . '/inc/devel.inc.php';
-}
-include_once $racine . '/inc/config.inc.php';
-if (file_exists($racine . '/site/inc/config.inc.php'))
-{
-	include_once $racine . '/site/inc/config.inc.php';
-}
-include_once $racine . '/inc/fonctions.inc.php';
 
 if (!isset($idGalerie))
 {
 	$idGalerie = FALSE;
 }
+
+if (!isset($langue))
+{
+	$langue = FALSE;
+}
+
+########################################################################
+##
+## Inclusions
+##
+########################################################################
+
+include_once dirname(__FILE__) . '/../init.inc.php';
+
+if (file_exists($racine . '/inc/devel.inc.php'))
+{
+	include_once $racine . '/inc/devel.inc.php';
+}
+
+include_once $racine . '/inc/config.inc.php';
+
+if (file_exists($racine . '/site/inc/config.inc.php'))
+{
+	include_once $racine . '/site/inc/config.inc.php';
+}
+
+include_once $racine . '/inc/fonctions.inc.php';
+
 foreach (init($racine, $idGalerie) as $fichier)
 {
 	include_once $fichier;
@@ -28,13 +44,28 @@ foreach (init($racine, $idGalerie) as $fichier)
 
 ########################################################################
 ##
-## Initialisations
+## Initialisations après inclusions
 ##
 ########################################################################
 
-if (!isset($langue))
+if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
 {
-	$langue = FALSE;
+	$courrielContact = $courrielContactParDefaut;
+}
+
+if (!galerieExiste($racine, $idGalerie))
+{
+	$idGalerie = FALSE;
+}
+
+if (!isset($jQueryInclus))
+{
+	$jQueryInclus = FALSE;
+}
+
+if (!isset($jQueryCookieInclus))
+{
+	$jQueryCookieInclus = FALSE;
 }
 
 if (!isset($motsCles))
@@ -52,29 +83,14 @@ if (!isset($robots))
 	$robots = FALSE;
 }
 
-if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
-{
-	$courrielContact = $courrielContactParDefaut;
-}
-
-if (!galerieExiste($racine, $idGalerie))
-{
-	$idGalerie = FALSE;
-}
-
 if ($idGalerie && !isset($rss))
 {
 	$rss = $galerieFluxRssParDefaut;
 }
 
-if (!isset($jQueryInclus))
+if (!isset($tableDesMatieres))
 {
-	$jQueryInclus = FALSE;
-}
-
-if (!isset($jQueryCookieInclus))
-{
-	$jQueryCookieInclus = FALSE;
+	$tableDesMatieres = FALSE;
 }
 
 ########################################################################
@@ -147,6 +163,19 @@ echo doctype($xhtmlStrict); ?>
 					<?php echo "\tajouteEvenementLoad(function(){boiteDeroulante('{$boiteDeroulanteId[0]}', '{$boiteDeroulanteId[1]}', '{$boiteDeroulanteId[2]}');});\n"; ?>
 				<?php endforeach; ?>
 			<?php echo "</script>\n"; ?>
+		<?php endif; ?>
+		
+		<?php if ($tableDesMatieres): ?>
+			<!-- Table des matières -->
+			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres.css" media="screen" />
+			<?php if (!$jQueryInclus): ?>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
+				<?php $jQueryInclus = TRUE; ?>
+			<?php endif; ?>
+			<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.tableofcontents.js"></script>
+			<script type="text/javascript">
+				tableDesMatieres('interieurContenu', 'ul');
+			</script>
 		<?php endif; ?>
 		
 		<?php if ($messageIE6): ?>

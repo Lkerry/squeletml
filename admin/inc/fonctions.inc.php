@@ -1,13 +1,5 @@
 <?php
 /**
-Traite une chaîne pour l'afficher sécuritairement à l'écran.
-*/
-function adminFormateTexte($texte)
-{
-	return stripslashes($texte);
-}
-
-/**
 Retourne un tableau contenant les fichiers à inclure.
 */
 function adminInit($racine)
@@ -35,7 +27,17 @@ function adminInit($racine)
 		$fichiers[] = $racine . '/site/inc/config-admin.inc.php';
 	}
 	
+	$fichiers[] = $racine . '/inc/constantes.inc.php';
+	
 	return $fichiers;
+}
+
+/**
+Traite une chaîne pour l'afficher sécuritairement à l'écran.
+*/
+function adminFormateTexte($texte)
+{
+	return stripslashes($texte);
 }
 
 /**

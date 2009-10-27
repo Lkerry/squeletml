@@ -119,12 +119,12 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 - Les fichiers de division HTML, qui sont, pour le français:
 
-  - html.fr.ancres.inc.php
-  - html.fr.bas-de-page.inc.php
-  - html.fr.menu.inc.php
-  - html.fr.menu-langues.inc.php
-  - html.fr.sous-titre.inc.php
-  - html.fr.sur-titre.inc.php
+  - `html.fr.ancres.inc.php`
+  - `html.fr.bas-de-page.inc.php`
+  - `html.fr.menu.inc.php`
+  - `html.fr.menu-langues.inc.php`
+  - `html.fr.sous-titre.inc.php`
+  - `html.fr.sur-titre.inc.php`
 
 	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `html.en.menu.inc.php`.
 
@@ -134,11 +134,11 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 - Les fichiers de page:
 
-  - page.fr.401.inc.php
-  - page.fr.404.inc.php
-  - page.fr.contact.inc.php
-  - page.fr.galerie.inc.php
-  - page.fr.index.inc.php
+  - `page.fr.401.inc.php`
+  - `page.fr.404.inc.php`
+  - `page.fr.contact.inc.php`
+  - `page.fr.galerie.inc.php`
+  - `page.fr.index.inc.php`
 
 	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans le dossier `site/inc/` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier `inc/page.fr.index.inc.php` par défaut.**
 	
@@ -303,6 +303,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/demo`).
 
 - `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question.
+
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 1 à 6 présents dans le contenu, c'est-à-dire à l'intérieur de la div `interieurContenu`. La table est ajoutée au début de cette div.
 
 ### Inclusion du premier fichier PHP
 

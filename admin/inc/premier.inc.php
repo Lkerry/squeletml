@@ -15,6 +15,20 @@
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/inc/CodeMirror/js/codemirror.js"); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "favicon:$urlRacine/fichiers/puce.png"); ?>
 		<?php echo linkScript($fichiersLinkScript, '', TRUE); ?>
+		
+		<?php if ($tableDesMatieres): ?>
+			<!-- Table des matières -->
+			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres.css" media="screen" />
+			<?php if (!$jQueryInclus): ?>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
+				<?php $jQueryInclus = TRUE; ?>
+			<?php endif; ?>
+			<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.tableofcontents.js"></script>
+			<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/phpjs.js"></script>
+			<script type="text/javascript">
+				tableDesMatieres('interieurContenu', 'ul');
+			</script>
+		<?php endif; ?>
 	</head>
 	<body id="<?php echo adminBodyId(); ?>">
 		<div id="ancres">
@@ -26,7 +40,7 @@
 				<div id="menu">
 					<?php include $racine . '/admin/inc/html.menu.inc.php'; ?>
 				</div><!-- /menu -->
-				<script type="text/javascript">lienActif('menu', 'a');</script>
+				<script type="text/javascript">lienActif('menu');</script>
 			</div><!-- /enTete -->
 			
 			<div id="contenu">

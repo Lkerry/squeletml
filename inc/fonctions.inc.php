@@ -69,21 +69,6 @@ function mdtxtChaine($chaine)
 }
 
 /**
-Retourne le lien vers l'accueil de la langue de la page.
-*/
-function accueil($tableauAccueil, $langueParDefaut, $langue)
-{
-	if (array_key_exists(langue($langueParDefaut, $langue), $tableauAccueil))
-	{
-		return $tableauAccueil[langue($langueParDefaut, $langue)];
-	}
-	else
-	{
-		return $tableauAccueil[$langueParDefaut];
-	}
-}
-
-/**
 Si `$motsCles` est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise `keywords`, et retourne cette liste, sinon retourne tout simplement `$motsCles`.
 */
 function motsCles($motsCles, $chaine)
@@ -1861,6 +1846,21 @@ function langue($langueParDefaut, $langue)
 	}
 	
 	return $langue ? $langue : $langueParDefaut;
+}
+
+/**
+Retourne le lien vers l'accueil de la langue de la page.
+*/
+function accueil($tableauAccueil, $langueParDefaut, $langue)
+{
+	if (array_key_exists(langue($langueParDefaut, $langue), $tableauAccueil))
+	{
+		return $tableauAccueil[langue($langueParDefaut, $langue)];
+	}
+	else
+	{
+		return $tableauAccueil[$langueParDefaut];
+	}
 }
 
 /**
