@@ -19,6 +19,9 @@
 		<?php if ($tableDesMatieres): ?>
 			<!-- Table des matières -->
 			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres.css" media="screen" />
+			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
+				<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres-ie6.css" media="screen" />
+			<?php echo '<![endif]-->'; ?>
 			<?php if (!$jQueryInclus): ?>
 				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
 				<?php $jQueryInclus = TRUE; ?>

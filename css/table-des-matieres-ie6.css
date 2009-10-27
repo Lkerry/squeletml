@@ -1,0 +1,8 @@
+div#tableDesMatieres {
+	width: 304px;
+}
+
+div#tableDesMatieres ul {
+	padding-left: 20px;
+	margin-left: 0px;
+}
