@@ -30,9 +30,7 @@ Ce fichier contient deux variables à renseigner:
 
 - `$accueil[]`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site. Si votre site est offert dans une seule langue, le tableau ne contiendra qu'un élément. Exemple:
 
-	<div><code type="php">
-$accueil['fr'] = $urlRacine;
-</code></div>
+		$accueil['fr'] = $urlRacine;
 
 	Vous pouvez ajouter autant de langues que vous le désirez. Seulement, prenez note que pour l'instant, Squeletml offre une traduction de son squelette prête à être utilisée pour seulement deux langues: le français et l'anglais.
 
@@ -150,71 +148,69 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 
-<div><code type="html4strict">
-Doctype XHTML 1.0 Strict
-<html ...><!-- La langue déclarée est celle de la page en cours -->
-	<head>
-		<title>...</title>
-		Déclaration de l'encodage UTF-8
-		Métabalises (description, keywords, robots)
-		Insertion des feuilles de style et des scripts Javascript
-	</head>
+	Doctype XHTML 1.0 Strict
+	<html ...><!-- La langue déclarée est celle de la page en cours -->
+		<head>
+			<title>...</title>
+			Déclaration de l'encodage UTF-8
+			Métabalises (description, keywords, robots)
+			Insertion des feuilles de style et des scripts Javascript
+		</head>
 
-	<body ...><!-- Selon le cas, diverses classes pour body -->
-		<div id="page">
-		  <div id="interieurPage">
-				S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
+		<body ...><!-- Selon le cas, diverses classes pour body -->
+			<div id="page">
+			  <div id="interieurPage">
+					S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
 
-				<div id="enTete">
-					<div id="surTitre">
-						...
-					</div><!-- /surTitre -->
+					<div id="enTete">
+						<div id="surTitre">
+							...
+						</div><!-- /surTitre -->
 				
-					<div id="titre">
-						Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
-					</div><!-- /titre -->
+						<div id="titre">
+							Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
+						</div><!-- /titre -->
 
-					<div id="sousTitre">
-						...
-					</div><!-- /sousTitre -->
-				</div><!-- /enTete -->
+						<div id="sousTitre">
+							...
+						</div><!-- /sousTitre -->
+					</div><!-- /enTete -->
 
-				<div id="ancres">
-					...
-				</div><!-- /ancres -->
-			
-				<div id="surContenu">
-					Vide par défaut
-				</div><!-- /surContenu -->
-			
-				<div id="contenu">
-					<div id="interieurContenu">
+					<div id="ancres">
 						...
-					</div><!-- /interieurContenu -->
-				</div><!-- /contenu -->
+					</div><!-- /ancres -->
 			
-				<div id="sousContenu">
-					<div id="menuLangues">
-						...
-					</div><!-- /menuLangues -->
+					<div id="surContenu">
+						Vide par défaut
+					</div><!-- /surContenu -->
+			
+					<div id="contenu">
+						<div id="interieurContenu">
+							...
+						</div><!-- /interieurContenu -->
+					</div><!-- /contenu -->
+			
+					<div id="sousContenu">
+						<div id="menuLangues">
+							...
+						</div><!-- /menuLangues -->
 
-					<div id="menu">
-						...
-					</div><!-- /menu -->
+						<div id="menu">
+							...
+						</div><!-- /menu -->
 					
-					<div id="faireDecouvrir">
-						...
-					</div><!-- /faireDecouvrir -->
-				</div><!-- /sousContenu -->
+						<div id="faireDecouvrir">
+							...
+						</div><!-- /faireDecouvrir -->
+					</div><!-- /sousContenu -->
 			
-				<div id="basDePage">
-					...
-				</div><!-- /basDePage -->
-			</div><!-- /interieurPage -->
-		</div><!-- /page -->
-	</body>
-</html>
-</code></div>
+					<div id="basDePage">
+						...
+					</div><!-- /basDePage -->
+				</div><!-- /interieurPage -->
+			</div><!-- /page -->
+		</body>
+	</html>
 
 D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`. Aussi, certaines `div` peuvent être positionnées ailleurs selon les choix effectués dans le fichier de configuration, par exemple le menu.
 
@@ -314,21 +310,15 @@ Il suffit d'inclure le fichier `inc/premier.inc.php`.
 
 Ne pas oublier de vérifier le chemin d'inclusion. Par exemple, pour une page à la racine du site, ça donnera:
 
-<div><code type="php">
-include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
-</code></div>
+	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
 
 Pour une page dans un dossier:
 
-<div><code type="php">
-include '../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
-</code></div>
+	include '../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
 
 Pour une page dans un sous-dossier (dossier dans un dossier):
 
-<div><code type="php">
-include '../../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
-</code></div>
+	include '../../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
 
 #### Cas avec insertion automatique du fichier `init.inc.php`
 
@@ -362,9 +352,7 @@ Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-
 
 3. À l'intérieur de `ma-page.php`, à l'endroit où on insère habituellement le contenu, faire appel à la fonction suivante:
 
-	<div><code type="php">
-<?php echo mdtxt('ma-page.php.mdtxt'); ?>
-</code></div>
+		<?php echo mdtxt('ma-page.php.mdtxt'); ?>
 
 ##### Fonction `mdtxtChaine()`
 
@@ -374,33 +362,31 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 
 2. À l'endoit où on insère habituellement le contenu, utiliser la fonction suivante:
 
-	<div><code type="php">
-<?php echo mdtxtChaine("Du texte écrit en *Markdown*."); ?>
-</code></div>
+		<?php echo mdtxtChaine("Du texte écrit en *Markdown*."); ?>
 
 	Même exemple, mais avec une variable:
-	
-	<div><code type="php">
-$chaine = "Du texte écrit en *Markdown*.";
-<?php echo mdtxtChaine($chaine); ?>
-</code></div>
+
+		<?php
+		$chaine = "Du texte écrit en *Markdown*.";
+		echo mdtxtChaine($chaine);
+		?>
 
 	Autre exemple avec une variable dont le contenu est plus long:
-	
-	<div><code type="php">
-$chaine = <<<TEXTE
-Du texte écrit en *Markdown*.
 
-Liste:
-
-- Item 1
-- Item 2
-
-Paragraphe.
-TEXTE;
-
-<?php echo mdtxtChaine($chaine); ?>
-</code></div>
+		<?php
+		$chaine = <<<TEXTE
+		Du texte écrit en *Markdown*.
+		
+		Liste:
+		
+		- Item 1
+		- Item 2
+		
+		Paragraphe.
+		TEXTE;
+		
+		echo mdtxtChaine($chaine);
+		?>
 
 #### Variables et constantes utiles
 
@@ -408,75 +394,57 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 - variable `$racine`: contient le chemin sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
 
-	<div><code type="php">
-<?php include $racine . '/fichier.inc.php'; ?>
-</code></div>
+		<?php include $racine . '/fichier.inc.php'; ?>
 
 - variable `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
 
-	<div><code type="php">
-<a href="<?php echo $urlRacine . '/admin/'; ?>">lien vers la section d'administration</a>
-</code></div>
+		<a href="<?php echo $urlRacine . '/admin/'; ?>">lien vers la section d'administration</a>
 
 - variable `$urlSite`: contient l'URL vers le dossier `site`. Exemple de lien vers une image:
 
-	<div><code type="php">
-<a href="<?php echo $urlSite; ?>/fichiers/image.jpg">lien vers une image</a>
-</code></div>
+		<a href="<?php echo $urlSite; ?>/fichiers/image.jpg">lien vers une image</a>
 
 - variable `$urlFichiers`: contient l'URL vers le dossier `site/fichiers`. Exemple de lien vers la même image:
 
-	<div><code type="php">
-<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
-</code></div>
+		<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
 
 - constante `ACCUEIL`: contient l'URL pointant vers l'accueil de la langue de la page.
 
   - Exemple d'utilisation dans une page dont la langue est le français:
 
-		<div><code type="php">
-<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en français</a>
-</code></div>
+			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en français</a>
 
   - Exemple d'utilisation dans une page dont la langue est l'anglais:
 
-		<div><code type="php">
-<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
-</code></div>
+			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
 
 - constante `LANGUE`: contient la langue de la page en cours (ex.: `fr`).
 
 - tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
 
-	<div><code type="php">
-<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
-</code></div>
+		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
 
 ### Inclusion du dernier fichier PHP
 
 Il suffit d'inclure le fichier `inc/dernier.inc.php`. Cette fois-ci, il n'est pas nécessaire de faire attention au chemin d'inclusion. Nous pouvons utiliser la variable `$racine`. Exemple:
 
-<div><code type="php">
-<?php include $racine . '/inc/dernier.inc.php'; ?>
-</code></div>
+	<?php include $racine . '/inc/dernier.inc.php'; ?>
 
 ### Exemple complet
 
 Voici un exemple:
 
-<div><code type="php">
-<?php
-$baliseTitle = "Titre (contenu de la balise `title`)";
-$description = "Description de la page";
-include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
-?>
+	<?php
+	$baliseTitle = "Titre (contenu de la balise `title`)";
+	$description = "Description de la page";
+	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+	?>
 
-<h1>Titre de la page</h1>
+	<h1>Titre de la page</h1>
 
-<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
+	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
 
-<?php include $racine . '/inc/dernier.inc.php'; ?>
-</code></div>
+	<?php include $racine . '/inc/dernier.inc.php'; ?>
 
 ## Galeries
 
@@ -506,125 +474,91 @@ Cette information doit se retrouver dans le fichier de configuration `site/fichi
 
 Chaque oeuvre de la galerie possède sa propre entrée dans le fichier de configuration, et chaque entrée doit se terminer par un marqueur `#IMG` (*note: avant la version 1.8.8, Squeletml utilisait le marqueur `__IMG__`*). Voici un exemple:
 
-<div><code type="ini">
-intermediaireNom=fichier1.jpg
-#IMG
-intermediaireNom=fichier2.jpg
-#IMG
-</code></div>
+	intermediaireNom=fichier1.jpg
+	#IMG
+	intermediaireNom=fichier2.jpg
+	#IMG
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète:
 
 - `intermediaireNom`: nom du fichier image en version intermediaire. **Le seul champ obligatoire.** Exemple:
 
-	<div><code type="ini">
-intermediaireNom=fichier1.jpg
-</code></div>
+		intermediaireNom=fichier1.jpg
 
 - `id`: l'id est utilisée dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Cela permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'id n'est pas renseignée, elle sera générée automatiquement à partir du nom du fichier image. Exemple:
 
-	<div><code type="ini">
-id=5
-</code></div>
+		id=5
 
 - `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version intermediaire, c'est-à-dire `intermediaireNom(sans extension)-vignette.extension`. Exemple:
 
-	<div><code type="ini">
-vignetteNom=fichier1Petit.jpg
-</code></div>
+		vignetteNom=fichier1Petit.jpg
 
 - `vignetteLargeur`: largeur de la vignette. Si `vignetteLargeur` ou `vignetteHauteur` sont renseignées, seulement la ou les informations renseignées seront affichées dans la balise `img`. Si les deux sont vides, les attributs `width` et `height` seront calculés automatiquement. Exemple:
 
-	<div><code type="ini">
-vignetteLargeur=100
-</code></div>
+		vignetteLargeur=100
 
 - `vignetteHauteur`: hauteur de la vignette. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-	<div><code type="ini">
-vignetteHauteur=150
-</code></div>
+		vignetteHauteur=150
 
 - `vignetteAlt`: texte alternatif (contenu de l'attribut `alt`) de la vignette. Si vide, le contenu sera généré automatiquement. Exemple:
 
-	<div><code type="ini">
-vignetteAlt=Chien assis sur un divan.
-</code></div>
+		vignetteAlt=Chien assis sur un divan.
 
 - `intermediaireLargeur`: largeur de l'image en version intermediaire. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-	<div><code type="ini">
-intermediaireLargeur=500
-</code></div>
+		intermediaireLargeur=500
 
 - `intermediaireHauteur`: hauteur de l'image en version intermediaire. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
-	<div><code type="ini">
-intermediaireHauteur=750
-</code></div>
+		intermediaireHauteur=750
 
 - `intermediaireAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version intermediaire. Si vide, le contenu sera généré automatiquement. Exemple:
 
-	<div><code type="ini">
-intermediaireAlt=Chien dormant sur un divan.
-</code></div>
+		intermediaireAlt=Chien dormant sur un divan.
 
 - `intermediaireLegende`: commentaire qui sera affiché sous l'image en version intermediaire. Exemple:
 
-	<div><code type="ini">
-intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
-</code></div>
+		intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
 
 - `pageIntermediaireBaliseTitle`: contenu de la balise `title` de la page présentant l'image en version intermediaire. Laisser vide pour une génération automatique. Exemple:
 
-	<div><code type="ini">
-pageIntermediaireBaliseTitle=Bla bla bla
-</code></div>
+		pageIntermediaireBaliseTitle=Bla bla bla
 
 - `pageIntermediaireDescription`: contenu de la métabalise `description` de la page présentant l'image en version intermediaire. Laisser vide pour une génération automatique. Exemple:
 
-	<div><code type="ini">
-pageIntermediaireDescription=Bla bla bla
-</code></div>
+		pageIntermediaireDescription=Bla bla bla
 
 - `pageIntermediaireMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version intermediaire. Laisser vide pour une génération automatique. Exemple:
 
-	<div><code type="ini">
-pageIntermediaireMotsCles=photo de chien, bla bla bla, divan, photographie, chien
-</code></div>
+		pageIntermediaireMotsCles=photo de chien, bla bla bla, divan, photographie, chien
 
 - `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version intermediaire, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version intermediaire, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version intermediaire, c'est-à-dire `intermediaireNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
 
-	<div><code type="ini">
-originalNom=fichier1Original.jpg
-</code></div>
+		originalNom=fichier1Original.jpg
 
 - `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est si `exclure` vaut `oui`. Exemple:
 
-	<div><code type="ini">
-exclure=oui
-</code></div>
+		exclure=oui
 
 Voici une entrée vide, qu'il est possible de copier/coller:
 
-<div><code type="ini">
-intermediaireNom=SEULE INFORMATION OBLIGATOIRE
-id=
-vignetteNom=
-vignetteLargeur=
-vignetteHauteur=
-vignetteAlt=
-intermediaireLargeur=
-intermediaireHauteur=
-intermediaireAlt=
-intermediaireLegende=
-pageIntermediaireBaliseTitle=
-pageIntermediaireDescription=
-pageIntermediaireMotsCles=
-originalNom=
-exclure=
-#IMG
-</code></div>
+	intermediaireNom=SEULE INFORMATION OBLIGATOIRE
+	id=
+	vignetteNom=
+	vignetteLargeur=
+	vignetteHauteur=
+	vignetteAlt=
+	intermediaireLargeur=
+	intermediaireHauteur=
+	intermediaireAlt=
+	intermediaireLegende=
+	pageIntermediaireBaliseTitle=
+	pageIntermediaireDescription=
+	pageIntermediaireMotsCles=
+	originalNom=
+	exclure=
+	#IMG
 
 ### Navigation entre les oeuvres
 
@@ -709,16 +643,12 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.pc` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
-<div><code type="ini">
-code de la langue:id de la galerie=URL relative de la galerie
-</code></div>
+	code de la langue:id de la galerie=URL relative de la galerie
 
 Le code de la langue précise la langue de la syndication globale. L'id correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
 
-<div><code type="ini">
-fr:mes voyages=voyages.php
-fr:animaux=dossier/galerie-animaux.php
-</code></div>
+	fr:mes voyages=voyages.php
+	fr:animaux=dossier/galerie-animaux.php
 
 Les deux galeries en question sont accessibles respectivement à l'adresse:
 
