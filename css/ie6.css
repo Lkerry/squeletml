@@ -4,6 +4,19 @@
 	width: expression( document.body.clientWidth > 900? "900px": "auto" );
 }
 
+#faireDecouvrir a {
+	background: url('../fichiers/enveloppe.png') no-repeat left 20%;
+}
+
+#fluxRss a {
+	background: url('../fichiers/rss.png') no-repeat left 20%;
+}
+
+#fluxRss ul {
+	margin-left: 0px;
+	padding-left: 0px;
+}
+
 div.galerieNavigationSuivant img {
 	float: left;
 }

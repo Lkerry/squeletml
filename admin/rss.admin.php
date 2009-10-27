@@ -261,7 +261,7 @@ include '../init.inc.php';
 	<h2><?php echo T_("Configuration actuelle"); ?></h2>
 	
 	<ul>
-		<?php if (if (adminFluxRssGlobal('galerie', $racine))): ?>
+		<?php if (adminFluxRssGlobal('galerie', $racine)): ?>
 			<li><?php echo T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieFluxRssGlobal = TRUE;</code>).'; ?></li>
 		<?php else: ?>
 			<li><?php echo T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieFluxRssGlobal = FALSE;</code>).'; ?></li>
