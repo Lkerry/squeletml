@@ -41,16 +41,29 @@ a:hover {
 	border-bottom: 1px dotted #f2f2f2;
 }
 
-code {
-	font-weight: bold;
-}
-
 #menu a.actif {
 	font-weight: bold;
 }
 
+code {
+	font-weight: bold;
+}
+
+body#documentation-admin-php code {
+	font-weight: normal;
+}
+
 pre {
+	background-color: #f2f2f2;
+}
+
+pre {
+	display: block;
 	overflow: auto;
+	padding: 5px;
+	margin: 5px 0;
+	border: 1px solid #b3b3b3;
+	white-space: pre-wrap; /* CSS 3 */ /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
 }
 
 .succes {

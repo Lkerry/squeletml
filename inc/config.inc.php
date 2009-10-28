@@ -25,6 +25,7 @@ $fichiersLinkScript[] = array ("$urlRacine/page.php*" => "css:$urlRacine/css/sty
 */
 $fichiersLinkScript = array ();
 $fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/squeletml.css");
+$fichiersLinkScript[] = array ("$urlRacine*" => "css:$urlRacine/css/extensions-proprietaires.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "csslteIE7:$urlRacine/css/ie7.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "cssltIE7:$urlRacine/css/ie6.css");
 $fichiersLinkScript[] = array ("$urlRacine*" => "javascript:$urlRacine/js/phpjs.js");

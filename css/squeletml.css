@@ -158,6 +158,7 @@ pre {
 	padding: 5px;
 	margin: 5px 0;
 	border: 1px solid #b3b3b3;
+	white-space: pre-wrap; /* CSS 3 */ /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
 }
 
 .erreur, .succes {

@@ -161,7 +161,7 @@ function linkScript($fichiers, $version = '', $styleSqueletmlCss)
 	if (!$styleSqueletmlCss)
 	{
 		// Suppression des feuilles de style par défaut
-		unset($fichiers[0], $fichiers[1], $fichiers[2]);
+		unset($fichiers[0], $fichiers[1], $fichiers[2], $fichiers[3]);
 	}
 	
 	if (!empty($fichiers))

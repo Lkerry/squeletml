@@ -1,0 +1,5 @@
+pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
+	white-space: -moz-pre-wrap !important; /* Mozilla */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: -o-pre-wrap; /* Opera 7 */
+}
