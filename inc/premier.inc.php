@@ -116,7 +116,7 @@ echo doctype($xhtmlStrict); ?>
 		
 		<meta name="description" content="<?php echo $description; ?>" />
 		
-		<?php if ($motsClesActives): ?>
+		<?php if ($motsClesInclusion): ?>
 			<meta name="keywords" content="<?php echo motsCles($motsCles, $description); ?>" />
 		<?php endif; ?>
 		
