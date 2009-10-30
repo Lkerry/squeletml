@@ -48,8 +48,8 @@ function boiteDeroulante(conteneur, titre, corps)
 	var oA = document.createElement('a');
 	var oSpan1 = document.createElement('span');
 	var oSpan2 = document.createElement('span');
-	var oTxtSpan1 = '';
-	var oTxtSpan2 = document.createTextNode($('#' + titre).html());
+	var oTexteSpan1 = '';
+	var oTexteSpan2 = document.createTextNode($('#' + titre).html());
 	var symbole = '';
 	var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur));
 	
@@ -79,11 +79,11 @@ function boiteDeroulante(conteneur, titre, corps)
 	
 	oA.href= '#';
 	oA.setAttribute('class', 'boiteDeroulanteLien');
-	oSpan2.appendChild(oTxtSpan2);
+	oSpan2.appendChild(oTexteSpan2);
 	oA.appendChild(oSpan2);
 	$('#' + titre).html(oA);
-	oTxtSpan1 = document.createTextNode('[' + symbole + ']&nbsp;');
-	oSpan1.appendChild(oTxtSpan1);
+	oTexteSpan1 = document.createTextNode('[' + symbole + ']&nbsp;');
+	oSpan1.appendChild(oTexteSpan1);
 	oSpan1.setAttribute('class', 'boiteDeroulanteSymbole');
 	$('#' + titre + '>a span:first').before(oSpan1);
 	$('#' + titre + '>a').html(html_entity_decode($('#' + titre + '>a').html()));
@@ -179,14 +179,28 @@ function tableDesMatieres(idParent, baliseTable)
 	{
 		var oPage = document.getElementById(idParent);
 		var oDiv = document.createElement('div');
+		var oH2 = document.createElement('h2');
+		var oH2Texte = '';
 		var oUl = document.createElement(baliseTable);
 		
 		oDiv.setAttribute('id', 'tableDesMatieres');
+		oH2Texte = document.createTextNode(T_('Table des matières'));
 		oUl.setAttribute('id', 'tableDesMatieresLiens');
 		
 		oDiv.appendChild(oUl);
+		oH2.appendChild(oH2Texte);
+		
 		oPage.insertBefore(oDiv, oPage.firstChild);
 		$("#tableDesMatieresLiens").tableOfContents($("#" + idParent), {startLevel: 2, depth: 6});
+		oDiv.insertBefore(oH2, oDiv.firstChild);
 	})
+}
+
+/**
+Alias identique pour le `gettext` de JSGettext à ce qui est utilisé dans Squeletml avec PHP Gettext.
+*/
+function T_(msgid)
+{
+	return gt.gettext(msgid);
 }
 

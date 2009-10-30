@@ -9,7 +9,7 @@ echo T_("<p>En effet, seulement deux fichiers doivent être inclus dans chaque p
 
 echo T_("<p>Aussi, un fichier de configuration permet de choisir, par simple renseignement de variables, le nombre et l'emplacement des colonnes, la position des menus dans le flux HTML (et par conséquent leur ordre dans les colonnes), la présence ou non de certaines structures comme le bas de page, le style par défaut (blocs de menu avec coins arrondis, arrière-plan des colonnes...), l'activation de boîtes déroulantes sur les contenus spécifiés (affichant ou masquant le corps du contenu par simple clic sur le titre, et enregistrant la préférence de l'internaute), etc.</p>");
 
-echo T_("<p>Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext pour l'affichage de l'interface.</p>");
+echo T_("<p>Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.</p>");
 
 echo T_("<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href='admin/documentation.admin.php'>en visitant la documentation</a>.</p>");
 

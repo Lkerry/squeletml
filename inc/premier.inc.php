@@ -58,6 +58,11 @@ if (!galerieExiste($racine, $idGalerie))
 	$idGalerie = FALSE;
 }
 
+if (!isset($javascriptGettextInclus))
+{
+	$javascriptGettextInclus = FALSE;
+}
+
 if (!isset($jQueryInclus))
 {
 	$jQueryInclus = FALSE;
@@ -142,6 +147,7 @@ echo doctype($xhtmlStrict); ?>
 			<?php endif; ?>
 			
 			<script type="text/javascript" src="<?php echo $urlRacine; ?>/inc/slimbox2/js/slimbox2.js"></script>
+			
 			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 		<?php endif; ?>
 		
@@ -168,14 +174,32 @@ echo doctype($xhtmlStrict); ?>
 		<?php if ($tableDesMatieres): ?>
 			<!-- Table des matières -->
 			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres.css" media="screen" />
+			
 			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
 				<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres-ie6.css" media="screen" />
 			<?php echo '<![endif]-->'; ?>
+			
+			<?php if (!$javascriptGettextInclus): ?>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/Gettext.js"></script>
+			
+				<?php $locale = locale(LANGUE); ?>
+				<?php if (file_exists($racine . '/locale/' . $locale)): ?>
+					<link type="application/x-po" rel="gettext" href="<?php echo $urlRacine; ?>/locale/<?php echo $locale; ?>/LC_MESSAGES/squeletml.po" />
+				<?php endif; ?>
+			
+				<script type="text/javascript">
+					var gt = new Gettext({'domain': 'squeletml'});
+				</script>
+				<?php $javascriptGettextInclus = TRUE; ?>
+			<?php endif; ?>
+			
 			<?php if (!$jQueryInclus): ?>
 				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
 				<?php $jQueryInclus = TRUE; ?>
 			<?php endif; ?>
+			
 			<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.tableofcontents.js"></script>
+			
 			<script type="text/javascript">
 				tableDesMatieres('interieurContenu', 'ul');
 			</script>

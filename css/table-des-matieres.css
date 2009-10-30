@@ -8,6 +8,10 @@ div#tableDesMatieres {
 	border: 1px solid #b3b3b3;
 }
 
+div#tableDesMatieres h2 {
+	margin-top: 0px;
+}
+
 div#tableDesMatieres ul {
 	list-style-type: circle;
 	padding-left: 20px;

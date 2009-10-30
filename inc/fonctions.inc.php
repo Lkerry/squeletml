@@ -1903,18 +1903,28 @@ function phpGettext($racine, $langue)
 		define('LC_MESSAGES', 5);
 	}
 	require_once $racine . '/inc/php-gettext/gettext.inc';
-	$locale = $langue;
-	// Palliatif à un bogue sur les serveurs de Koumbit. Aucune idée du problème. On dirait que 9 fois sur 10, php-gettext passe le relais au gettext par défaut de PHP, et que si la locale est seulement 'en', elle n'existe pas sur le serveur d'hébergement, donc la traduction ne fonctionne pas.
-	if ($locale == 'en')
-	{
-		$locale = 'en_US';
-	}
+	$locale = locale($langue);
 	T_setlocale(LC_MESSAGES, $locale);
 	$domain = 'squeletml';
 	T_bindtextdomain($domain, $racine . '/locale');
 	T_bind_textdomain_codeset($domain, 'UTF-8');
 	T_textdomain($domain);
 	return;
+}
+
+/**
+Retourne la locale de la page courante pour utilisation avec gettext.
+*/
+function locale($langue)
+{
+	$locale = $langue;
+	// Palliatif à un bogue sur les serveurs de Koumbit. Aucune idée du problème. On dirait que 9 fois sur 10, php-gettext passe le relais au gettext par défaut de PHP, et que si la locale est seulement 'en', elle n'existe pas sur le serveur d'hébergement, donc la traduction ne fonctionne pas.
+	if ($locale == 'en')
+	{
+		$locale = 'en_US';
+	}
+	
+	return $locale;
 }
 
 /**

@@ -55,7 +55,7 @@ archives: menage-archives ChangeLog version.txt
 	tar --bzip2 -cvf $(tag).tar.bz2 $(tag) # --bzip2 = -j
 	zip -rv $(tag).zip $(tag)
 	rm -rf $(tag)
-	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers `.tar.bz2`
+	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2
 	mv $(tag).tbz2 $(bureau)/
 	mv $(tag).zip $(bureau)/
 	cp LISEZ-MOI.mdtxt $(bureau)/LISEZ-MOI-$(tag).mdtxt
@@ -69,9 +69,6 @@ ChangeLog: menage-ChangeLog
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(tag) > ChangeLog
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLog-$(tag)
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr status -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLog-$(tag)-fichiers
-
-DOCU:
-	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr status -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLogFichiersModifies
 
 menage-archives:
 	rm -f $(tag).tbz2
@@ -111,6 +108,7 @@ po: pot
 
 pot: menage-pot
 	find ./ -iname "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
+	find ./ -iname "*.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \; # xgettext n'offre pas le Javascript dans les langages à parser, donc on déclare les fichiers .js comme étant du Perl 
 
 version.txt: menage-version.txt
 	echo $(tag) > version.txt

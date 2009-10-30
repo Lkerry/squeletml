@@ -36,6 +36,11 @@ foreach (adminInit($racine) as $fichier)
 ##
 ########################################################################
 
+if (!isset($javascriptGettextInclus))
+{
+	$javascriptGettextInclus = FALSE;
+}
+
 if (!isset($jQueryInclus))
 {
 	$jQueryInclus = FALSE;
