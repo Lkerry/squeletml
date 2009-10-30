@@ -19,10 +19,10 @@ premiereRevTag=`bzr tags | sort -k2n,2n | tail -n 2 | head -n 1 | rev | cut -d '
 ##
 ########################################################################
 
-# Met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. À faire par exemple avant le dernier commit d'une prochaine version.
+# Met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. À faire par exemple avant la dernière révision d'une prochaine version.
 generer: message-accueil po
 
-# Crée une archive .bz2, y ajoute les fichiers qui ne sont pas versionnés mais nécessaires, supprime les fichiers versionnés mais inutiles. À faire après un bzr tag... quand une nouvelle version est sortie.
+# Crée des archives .bz2 et .zip; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le ChangeLog) sur le bureau; et déplace les archives également sur le bureau. À faire après un bzr tag... pour la sortie d'une nouvelle version.
 publier: archives
 
 ########################################################################
@@ -55,7 +55,7 @@ archives: menage-archives ChangeLog version.txt
 	tar --bzip2 -cvf $(tag).tar.bz2 $(tag) # --bzip2 = -j
 	zip -rv $(tag).zip $(tag)
 	rm -rf $(tag)
-	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2
+	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers `.tar.bz2`
 	mv $(tag).tbz2 $(bureau)/
 	mv $(tag).zip $(bureau)/
 	cp LISEZ-MOI.mdtxt $(bureau)/LISEZ-MOI-$(tag).mdtxt

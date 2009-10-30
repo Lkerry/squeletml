@@ -678,5 +678,19 @@ L'inclusion des galeries dans le flux global du site dépend de la valeur de la 
 
 ## Développement
 
-`bzr` est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).
+Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).
+
+### Téléchargement de la version de développement
+
+Pour récupérer la version de développement, simnplement saisir cette commande dans une console:
+
+	bzr branch lp:squeletml
+
+### Fichier `Makefile`
+
+Les principales commandes du fichier `Makefile` sont:
+
+- `make generer`: met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main, par exemple les fichiers de langue. Est utilisé en général avant la dernière révision d'une prochaine version.
+
+- `make publier`: crée des archives `.bz2` et `.zip`; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le `ChangeLog`) sur le bureau; et déplace les archives également sur le bureau. Est utilisé après un `bzr tag...` pour la sortie d'une nouvelle version.
 
