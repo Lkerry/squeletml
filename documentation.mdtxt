@@ -424,6 +424,20 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
 
+#### Coloration de code PHP
+
+Il est possible d'utiliser une version personnalisée des fonctions `highlight_string()` et `highlight_file()` de PHP. En effet, `coloreCodePhp()` et `coloreFichierPhp()` remplacent les espaces insécables par des espaces normales et modifient les couleurs par défaut (entre autres pour améliorer le contraste des commentaires).
+
+Les deux premiers paramètres sont les mêmes que ceux des fonctions natives de PHP. De plus, un paramètre supplémentaire permet d'afficher les commentaires en noir.
+
+Exemples:
+
+	<?php coloreFichierPhp($cheminFichier); ?>
+	<?php $texte = coloreFichierPhp($cheminFichier, TRUE); ?>
+	<?php coloreCodePhp($code, FALSE, TRUE); ?>
+
+Voir la déclaration de la fonction dans le fichier `inc/fonctions.inc.php` pour plus de détails.
+
 ### Inclusion du dernier fichier PHP
 
 Il suffit d'inclure le fichier `inc/dernier.inc.php`. Cette fois-ci, il n'est pas nécessaire de faire attention au chemin d'inclusion. Nous pouvons utiliser la variable `$racine`. Exemple:
