@@ -34,9 +34,10 @@ publier: archives
 archives: menage-archives ChangeLog version.txt
 	bzr export -r tag:$(tag) $(tag)
 	mv ChangeLog $(tag)/
-	php ./scripts.cli.php mdtxt ChangeLogDerniereVersion
-	mv ChangeLogDerniereVersion.mdtxt $(bureau)/ChangeLog-$(tag).mdtxt
-	mv ChangeLogDerniereVersion $(tag)/
+	php ./scripts.cli.php mdtxt ChangeLog-$(tag)
+	mv ChangeLog-$(tag).mdtxt $(bureau)/
+	mv ChangeLog-$(tag) $(tag)/
+	mv ChangeLog-$(tag)-fichiers $(tag)/
 	cp version.txt $(tag)/
 	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
 	          # une variable de Makefile dans une commande shell $(...).
@@ -66,7 +67,11 @@ ChangeLog: menage-ChangeLog
 	# Ne pas oublier de mettre ce fichier dans le dossier de plugins de bzr,
 	# par exemple ~/.bazaar/plugins/
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(tag) > ChangeLog
-	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLogDerniereVersion
+	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLog-$(tag)
+	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr status -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLog-$(tag)-fichiers
+
+DOCU:
+	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr status -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLogFichiersModifies
 
 menage-archives:
 	rm -f $(tag).tbz2
@@ -74,7 +79,8 @@ menage-archives:
 
 menage-ChangeLog:
 	rm -f ChangeLog
-	rm -f ChangeLogDerniereVersion
+	rm -f ChangeLog-$(tag)
+	rm -f ChangeLog-$(tag)-fichiers
 
 menage-message-accueil:
 	rm -f inc/message-accueil.inc.php
