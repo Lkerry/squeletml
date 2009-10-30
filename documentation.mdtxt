@@ -466,7 +466,7 @@ Concrètement, pour créer une galerie, voici les étapes à suivre:
 
 3. Créer un fichier de configuration `site/fichiers/galeries/$idGalerie/config.pc`. Cette étape est développée ci-dessous.
 
-### Fichier de configuration
+### Fichier de configuration d'une galerie
 
 Chaque image d'une galerie est déclinée en au moins deux versions: vignette et intermediaire. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire: le nom du fichier de l'image en version intermediaire.
 

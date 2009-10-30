@@ -1,7 +1,12 @@
 #!/usr/bin/php
 <?php
 
-// ChangeLog vers Markdown
+########################################################################
+##
+## ChangeLog vers Markdown
+##
+########################################################################
+
 if ($argv[1] == 'mdtxt')
 {
 	$fichierALire = $argv[2];
@@ -25,8 +30,13 @@ if ($argv[1] == 'mdtxt')
 	fclose($fic);
 }
 
-// Message d'accueil
-if ($argv[1] == 'message-accueil')
+########################################################################
+##
+## Message d'accueil
+##
+########################################################################
+
+elseif ($argv[1] == 'message-accueil')
 {
 	include 'inc/php-markdown/markdown.php';
 	
@@ -66,6 +76,27 @@ if ($argv[1] == 'message-accueil')
 		fputs($fic, "?>");
 		fclose($fic);
 	}
+}
+
+########################################################################
+##
+## Ajout du contenu du fichier de configuration à la documentation
+##
+########################################################################
+
+elseif ($argv[1] == 'config-dans-doc')
+{
+	$cheminDocumentation = $argv[2];
+	
+	include 'init.inc.php';
+	include 'inc/fonctions.inc.php';
+	
+	// Nécessaire à la traduction
+	phpGettext('.', 'fr');
+	
+	$ajout = presentationEtContenuFichierDeConfiguration($racine);
+	
+	file_put_contents($cheminDocumentation, $ajout, FILE_APPEND);
 }
 
 ?>

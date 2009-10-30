@@ -57,6 +57,9 @@ archives: menage-archives ChangeLog version.txt
 	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2
 	mv $(tag).tbz2 $(bureau)/
 	mv $(tag).zip $(bureau)/
+	cp LISEZ-MOI.mdtxt $(bureau)/LISEZ-MOI-$(tag).mdtxt
+	cp documentation.mdtxt $(bureau)/documentation-$(tag).mdtxt
+	php ./scripts.cli.php config-dans-doc $(bureau)/documentation-$(tag).mdtxt
 
 ChangeLog: menage-ChangeLog
 	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py

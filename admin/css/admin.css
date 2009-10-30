@@ -53,8 +53,12 @@ body#documentation-admin-php code {
 	font-weight: normal;
 }
 
-pre {
+body#documentation-admin-php pre {
 	background-color: #f2f2f2;
+}
+
+body#documentation-admin-php pre#fichierDeConfiguration {
+	background-color: transparent;
 }
 
 pre {

@@ -69,6 +69,91 @@ function mdtxtChaine($chaine)
 }
 
 /**
+Personnalise la coloration syntaxique par défaut de la fonction `highlight_file()`. Voir la fonction `coloreCodePhp()`.
+*/
+function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
+{
+	$code = file_get_contents($fichier);
+	$codeColore = coloreCodePhp($code, TRUE, $commentairesEnNoir);
+	
+	if ($retourneCode)
+	{
+		return $codeColore;
+	}
+	else
+	{
+		echo $codeColore;
+		return TRUE;
+	}
+}
+
+/**
+Personnalise la coloration syntaxique par défaut de la fonction `highlight_string()`.
+
+Les couleurs sont modifiées pour tenter de refléter la coloration par défaut pour le PHP de l'éditeur de texte gedit, et pour améliorer le contraste des commentaires. En effet, par défaut la couleur utilisée pour les commentaires n'offre pas un contraste suffisant sous fond blanc (voir <http://www.britoweb.net/outils/contraste-couleurs.php>).
+
+Aussi, les espaces insécables sont remplacées par des espaces normales.
+
+Tout comme `highlight_string()`, un paramètre optionnel, s'il est défini à TRUE, permet de retourner le code au lieu de l'afficher directement.
+
+Un paramètre optionnel supplémentaire permet d'afficher les commentaires en noir. Par défaut est défini à FALSE.
+*/
+function coloreCodePhp($code, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
+{
+	$codeColore = highlight_string($code, TRUE);
+	
+	$codeColore = str_replace('&nbsp;', ' ', $codeColore);
+	$codeColore = str_replace('<br />', "\n", $codeColore);
+	
+	// Commentaires vers bleu primaire ou vers noir
+	if ($commentairesEnNoir)
+	{
+		$couleurCommentaires = '000000';
+	}
+	else
+	{
+		$couleurCommentaires = '0000FF';
+	}
+	$codeColore = str_replace('color: #FF8000', 'color: #' . $couleurCommentaires, $codeColore);
+	
+	// Variables vers à peu près bleu sarcelle
+	$codeColore = str_replace('color: #0000BB', 'color: #008A8C', $codeColore);
+	
+	// Chaînes vers magenta secondaire
+	$codeColore = str_replace('color: #DD0000', 'color: #FF00FF', $codeColore);
+	
+	// Symboles vers à peu près fraise écrasée
+	$codeColore = str_replace('color: #007700', 'color: #A52A2A', $codeColore);
+	
+	if ($retourneCode)
+	{
+		return $codeColore;
+	}
+	else
+	{
+		echo $codeColore;
+		return TRUE;
+	}
+}
+
+/**
+Retourne le code nécessaire à l'insertion du contenu du fichier de configuration dans la documentation.
+*/
+function presentationEtContenuFichierDeConfiguration($racine)
+{
+	$texte = '';
+	$texte .= "\n\n## " . T_("Annexes") . "\n\n";
+	
+	$texte .= '### ' . T_("Contenu du fichier de configuration de Squeletml") . "\n\n";
+	
+	$texte .= T_("Voici le contenu du fichier de configuration, largement commenté, et constituant ainsi un bon complément à la documentation, pour ne pas dire une seconde documentation en parallèle.") . "\n\n";
+	
+	$texte .= '<pre id="fichierDeConfiguration">' . coloreFichierPhp($racine . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
+	
+	return $texte;
+}
+
+/**
 Si `$motsCles` est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise `keywords`, et retourne cette liste, sinon retourne tout simplement `$motsCles`.
 */
 function motsCles($motsCles, $chaine)
