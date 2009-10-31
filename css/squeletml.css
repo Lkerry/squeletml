@@ -214,20 +214,6 @@ h1#titrePage404 {
 	padding-bottom: 0px;
 }
 
-/* Boîtes déroulantes */
-
-.boiteDeroulanteLien {
-	text-decoration: none !important;
-}
-
-.boiteDeroulanteSymbole {
-	font-family: monospace;
-}
-
-.masquer {
-	display: none;
-}
-
 /* Coins arrondis */
 
 body.coinsArrondisBloc .bloc {

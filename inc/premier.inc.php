@@ -48,6 +48,11 @@ foreach (init($racine, $idGalerie) as $fichier)
 ##
 ########################################################################
 
+if (!isset($boitesDeroulantes))
+{
+	$boitesDeroulantes = '';
+}
+
 if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
 {
 	$courrielContact = $courrielContactParDefaut;
@@ -96,6 +101,11 @@ if ($idGalerie && !isset($rss))
 if (!isset($tableDesMatieres))
 {
 	$tableDesMatieres = FALSE;
+}
+
+if ($tableDesMatieres)
+{
+	$boitesDeroulantes .= '|tableDesMatieres tableDesMatieresTitre tableDesMatieresLiens';
 }
 
 ########################################################################
@@ -151,8 +161,11 @@ echo doctype($xhtmlStrict); ?>
 			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
 		<?php endif; ?>
 		
-		<?php if (!empty($boitesDeroulantes)): ?>
+		<?php $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes); ?>
+		<?php if (!empty($boitesDeroulantesTableau)): ?>
 			<!-- Boîtes déroulantes -->
+			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/boites-deroulantes.css" media="screen" />
+			
 			<?php if (!$jQueryInclus): ?>
 				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
 				<?php $jQueryInclus = TRUE; ?>
@@ -164,7 +177,7 @@ echo doctype($xhtmlStrict); ?>
 			<?php endif; ?>
 			
 			<?php echo '<script type="text/javascript">' . "\n"; ?>
-				<?php foreach ($boitesDeroulantes as $boiteDeroulante): ?>
+				<?php foreach ($boitesDeroulantesTableau as $boiteDeroulante): ?>
 					<?php $boiteDeroulanteId = explode(' ', $boiteDeroulante); ?>
 					<?php echo "\tajouteEvenementLoad(function(){boiteDeroulante('{$boiteDeroulanteId[0]}', '{$boiteDeroulanteId[1]}', '{$boiteDeroulanteId[2]}');});\n"; ?>
 				<?php endforeach; ?>

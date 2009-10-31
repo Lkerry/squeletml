@@ -1,4 +1,47 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<?php
+########################################################################
+##
+## Initialisations
+##
+########################################################################
+
+if (!isset($boitesDeroulantes))
+{
+	$boitesDeroulantes = '';
+}
+
+if (!isset($javascriptGettextInclus))
+{
+	$javascriptGettextInclus = FALSE;
+}
+
+if (!isset($jQueryInclus))
+{
+	$jQueryInclus = FALSE;
+}
+
+if (!isset($jQueryCookieInclus))
+{
+	$jQueryCookieInclus = FALSE;
+}
+
+if (!isset($tableDesMatieres))
+{
+	$tableDesMatieres = FALSE;
+}
+
+if ($tableDesMatieres)
+{
+	$boitesDeroulantes .= '|tableDesMatieres tableDesMatieresTitre tableDesMatieresLiens';
+}
+
+########################################################################
+##
+## Début de la structure XHTML
+##
+########################################################################
+
+?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo LANGUE; ?>" lang="<?php echo LANGUE; ?>">
 	<head>
 		<title><?php echo $baliseTitle . ' | ' . T_("Administration de Squeletml"); ?></title>
@@ -19,6 +62,29 @@
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/inc/CodeMirror/js/codemirror.js"); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "favicon:$urlRacine/fichiers/puce.png"); ?>
 		<?php echo linkScript($fichiersLinkScript, '', TRUE); ?>
+		
+		<?php $boitesDeroulantesTableau = boitesDeroulantes('', $boitesDeroulantes); ?>
+		<?php if (!empty($boitesDeroulantesTableau)): ?>
+			<!-- Boîtes déroulantes -->
+			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/boites-deroulantes.css" media="screen" />
+			
+			<?php if (!$jQueryInclus): ?>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
+				<?php $jQueryInclus = TRUE; ?>
+			<?php endif; ?>
+			
+			<?php if (!$jQueryCookieInclus): ?>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.cookie.js"></script>
+				<?php $jQueryCookieInclus = TRUE; ?>
+			<?php endif; ?>
+			
+			<?php echo '<script type="text/javascript">' . "\n"; ?>
+				<?php foreach ($boitesDeroulantesTableau as $boiteDeroulante): ?>
+					<?php $boiteDeroulanteId = explode(' ', $boiteDeroulante); ?>
+					<?php echo "\tajouteEvenementLoad(function(){boiteDeroulante('{$boiteDeroulanteId[0]}', '{$boiteDeroulanteId[1]}', '{$boiteDeroulanteId[2]}');});\n"; ?>
+				<?php endforeach; ?>
+			<?php echo "</script>\n"; ?>
+		<?php endif; ?>
 		
 		<?php if ($tableDesMatieres): ?>
 			<!-- Table des matières -->

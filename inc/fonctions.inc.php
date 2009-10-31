@@ -2058,4 +2058,39 @@ function blocs($ordreFluxHtml, $div)
 	return $blocsAinserer;
 }
 
+/**
+Retourne un tableau dont chaque élément contient le code d'activation d'une boîte déroulante.
+*/
+function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
+{
+	$boites = '';
+	
+	if (!empty($boitesDeroulantesParDefaut))
+	{
+		$boites .= $boitesDeroulantesParDefaut . '|';
+	}
+	
+	if (!empty($boitesDeroulantes))
+	{
+		$boites .= $boitesDeroulantes;
+	}
+	
+	if (!empty($boites))
+	{
+		$boitesDeroulantesTableau = explode('|', $boites);
+		$boitesDeroulantesTableau = array_map('trim', $boitesDeroulantesTableau);
+		$elementsVides = array_keys($boitesDeroulantesTableau, '');
+		foreach ($elementsVides as $i)
+		{
+			unset($boitesDeroulantesTableau[$i]);
+		}
+	}
+	else
+	{
+		$boitesDeroulantesTableau = array();
+	}
+	
+	return $boitesDeroulantesTableau;
+}
+
 ?>

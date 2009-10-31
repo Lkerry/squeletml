@@ -1,0 +1,11 @@
+.boiteDeroulanteLien {
+	text-decoration: none !important;
+}
+
+.boiteDeroulanteSymbole {
+	font-family: monospace;
+}
+
+.masquer {
+	display: none;
+}

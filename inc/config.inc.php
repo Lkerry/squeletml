@@ -147,6 +147,8 @@ Voici un exemple concret:
 	<li>Poires</li>
 	<li>Pommes</li>
 </ul>
+
+<p>Il n'y a plus de kiwi.</p>
 </div>
 </div>
 
@@ -161,6 +163,8 @@ Voici un exemple concret:
 	<li>Poires</li>
 	<li>Pommes</li>
 </ul>
+
+<p>Il n'y a plus de kiwi.</p>
 </div>
 </div>
 
@@ -175,26 +179,34 @@ Voici un exemple concret:
 	<li>Poires</li>
 	<li>Pommes</li>
 </ul>
+
+<p>Il n'y a plus de kiwi.</p>
 </div>
 </div>
 
 Nous constatons qu'un lien est ajouté au titre. Un clic sur le titre permet de changer l'état du corps (affiché ou masqué).
 
-Dans l'exemple précédent, la boîte déroulante peut être activée en ajoutant la ligne suivante dans le tableau `$boitesDeroulantes`:
+Dans l'exemple précédent, la boîte déroulante peut être activée de deux façons:
 
-'fruits fruitsTitre fruitsCorps',
+1) en ajoutant le code suivant dans la variable `$boitesDeroulantesParDefaut`:
 
-La syntaxe de chaque élément de tableau est donc la suivante:
+  'fruits fruitsTitre fruitsCorps'
 
-'idConteneur idTitre idCorps',
+  La syntaxe de chaque boîte est donc la suivante:
+
+  'idConteneur idTitre idCorps'
+
+  En ajoutant au moins une boîte dans cette variable, chaque page de Squeletml ajoutera les scripts nécessaires aux boîtes déroulantes. Pour ajouter plusieurs boîtes, le séparateur à utiliser est `|`. Voici un exemple d'ajout de plusieurs boîtes:
+
+  $boitesDeroulantesParDefaut = 'idConteneur idTitre idCorps | idConteneur2 idTitre2 idCorps2 | idConteneur3 idTitre3 idCorps3';
+
+2) en renseignant la variable `$boitesDeroulantes` dans une page spécifique avant l'inclusion du premier fichier PHP. La syntaxe est la même que pour la variable `$boitesDeroulantesParDefaut`. Voir la documentation pour plus de détails.
 
 Comme le montre l'exemple général, le titre n'est pas à comprendre au sens sémantique. Ce n'est donc pas nécessaire de l'entourer de balises `h1`, `h2`, `h3`, `h4`, `h5` ou `h6`. Il s'agit simplement du texte qui servira à afficher ou masquer le corps.
 
 Voir la fonction Javascript `boiteDeroulante()`.
 */
-$boitesDeroulantes = array (
-	
-	);
+$boitesDeroulantesParDefaut = '';
 
 /* _______________ Contenu et ordre du flux HTML _______________ */
 

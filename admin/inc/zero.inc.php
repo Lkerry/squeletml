@@ -32,27 +32,6 @@ foreach (adminInit($racine) as $fichier)
 
 ########################################################################
 ##
-## Initialisations après inclusions
-##
-########################################################################
-
-if (!isset($javascriptGettextInclus))
-{
-	$javascriptGettextInclus = FALSE;
-}
-
-if (!isset($jQueryInclus))
-{
-	$jQueryInclus = FALSE;
-}
-
-if (!isset($tableDesMatieres))
-{
-	$tableDesMatieres = FALSE;
-}
-
-########################################################################
-##
 ## Divers
 ##
 ########################################################################
