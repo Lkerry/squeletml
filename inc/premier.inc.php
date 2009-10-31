@@ -48,6 +48,11 @@ foreach (init($racine, $idGalerie) as $fichier)
 ##
 ########################################################################
 
+if (!isset($baliseTitle))
+{
+	$baliseTitle = '';
+}
+
 if (!isset($boitesDeroulantes))
 {
 	$boitesDeroulantes = '';
@@ -56,6 +61,11 @@ if (!isset($boitesDeroulantes))
 if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
 {
 	$courrielContact = $courrielContactParDefaut;
+}
+
+if (!isset($description))
+{
+	$description = '';
 }
 
 if (!galerieExiste($racine, $idGalerie))
@@ -119,12 +129,14 @@ echo doctype($xhtmlStrict); ?>
 	<!-- ____________________ <head> ____________________ -->
 	<head>
 		<!-- Titre -->
-		<title><?php echo $baliseTitle .= ' | ' . baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue); ?></title>
+		<title><?php echo $baliseTitle = baliseTitle($baliseTitle, $baliseTitleComplement, $langueParDefaut, $langue); ?></title>
 		
 		<!-- Métabalises -->
 		<meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
 		
-		<meta name="description" content="<?php echo $description; ?>" />
+		<?php if (!empty($description)): ?>
+			<meta name="description" content="<?php echo $description; ?>" />
+		<?php endif; ?>
 		
 		<?php if ($motsClesInclusion): ?>
 			<meta name="keywords" content="<?php echo motsCles($motsCles, $description); ?>" />

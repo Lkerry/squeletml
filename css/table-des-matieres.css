@@ -10,6 +10,11 @@ div#tableDesMatieres {
 
 div#tableDesMatieres h2 {
 	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+div#tableDesMatieres ul#tableDesMatieresLiens {
+	margin-bottom: 0px;
 }
 
 div#tableDesMatieres ul {
@@ -35,4 +40,8 @@ div#tableDesMatieres ul ul ul ul ul {
 
 div#tableDesMatieres ul ul ul ul ul ul {
 	list-style-type: disc;
+}
+
+div#tableDesMatieres ul#tableDesMatieresLiens li {
+	margin-top: 5px;
 }

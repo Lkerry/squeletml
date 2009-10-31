@@ -243,7 +243,7 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 
 ## Mise à jour de Squeletml
 
-**Note: lisez tout ce qui suit avant d'effectuer une mise à jour.**
+**Note: lisez toute cette section avant d'effectuer une mise à jour.**
 
 Pour mettre à jour Squeletml:
 
@@ -280,9 +280,9 @@ Voici la structure d'une page:
 
 Voici les différentes variables optionnelles avant l'inclusion du premier fichier PHP:
 
-- `$baliseTitle`: contenu de la balise `title`.
+- `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner l'URL de la page en cours.
 
-- `$description`: contenu de la métabalise `description`.
+- `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
 - `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$motsClesInclusion` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
 
@@ -324,7 +324,7 @@ Pour une page dans un sous-dossier (dossier dans un dossier):
 
 #### Cas avec insertion automatique du fichier `init.inc.php`
 
-**Note: je n'ai pas vraiment testé à fond cette possibilité.**
+**Note: je n'ai pas vraiment testé à fond cette possibilité, et ce n'est pas supporté officiellement dans Squeletml.**
 
 Le fichier `init.inc.php` contient entre autres la variable `$racine`. En faisant insérer automatiquement ce fichier dans toutes les pages, il est donc possible d'utiliser la variable `$racine` pour inclure le fichier `inc/premier.inc.php`, ce qui nous dispense de devoir modifier le chemin d'inclusion selon le dossier dans lequel la page est située.
 
@@ -421,6 +421,10 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
 
 - constante `LANGUE`: contient la langue de la page en cours (ex.: `fr`).
+
+- constante `URL`: contient l'URL de la page en cours. Exemple:
+
+		http://www.NomDeDomaine.ext/fichier.php?a=2&b=3
 
 - tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
 

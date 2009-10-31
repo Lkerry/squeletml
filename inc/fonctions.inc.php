@@ -272,7 +272,7 @@ function linkScript($fichiers, $version = '', $styleSqueletmlCss)
 					$modele = $page;
 				}
 
-				if (preg_match("|$modele|i", 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']))
+				if (preg_match("|$modele|i", url()))
 				{
 					switch ($type)
 					{
@@ -360,10 +360,7 @@ Renvoie TRUE si la page est l'accueil, sinon renvoie FALSE.
 */
 function estAccueil($accueil)
 {
-	if ('http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/'
-		|| 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/index.php'
-		|| 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/index.html'
-		|| 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] == $accueil . '/index.htm')
+	if (url() == $accueil . '/' || url() == $accueil . '/index.php' || url() == $accueil . '/index.html' || url() == $accueil . '/index.htm')
 	{
 		return TRUE;
 	}
@@ -500,6 +497,24 @@ function messageIE6($src, $alt, $width, $height)
 	$message .= '</div>';
 	
 	return $message;
+}
+
+/**
+Retourne le complément de la balise `title`.
+*/
+function baliseTitle($baliseTitle, $baliseTitleComplement, $langueParDefaut, $langue)
+{
+	$contenubaliseTitle = '';
+	
+	if (empty($baliseTitle))
+	{
+		$baliseTitle = url();
+	}
+	
+	$contenubaliseTitle .= $baliseTitle . ' | ';
+	$contenubaliseTitle .= baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue);
+	
+	return $contenubaliseTitle;
 }
 
 /**
@@ -1478,7 +1493,7 @@ Retourne le contenu de l'attribut `action` du formulaire de contact.
 */
 function actionFormContact($decouvrir)
 {
-	$action = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+	$action = url();
 	
 	if ($decouvrir)
 	{
@@ -1574,12 +1589,44 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 }
 
 /**
+Retourne l'URL de la page courante.
+
+Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3`.
+*/
+function url()
+{
+	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'])
+	{
+		$protocole = 'https://';
+	}
+	else
+	{
+		$protocole = 'http://';
+	}
+	
+	$serveur = $_SERVER['SERVER_NAME'];
+	
+	if ($_SERVER['SERVER_PORT'] == 80)
+	{
+		$port = '';
+	}
+	else
+	{
+		$port = ':' . $_SERVER['SERVER_PORT'];
+	}
+	
+	$uri = $_SERVER['REQUEST_URI'];
+	
+	return "$protocole$serveur$port$uri";
+}
+
+/**
 Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=faireDecouvrir` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=faireDecouvrir`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
 */
 function urlPageSansDecouvrir($retourneTableau = FALSE)
 {
 	$urlPageSansDecouvrir = array ();
-	$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+	$url = url();
 	
 	if (strstr($url, '?action=faireDecouvrir&'))
 	{
@@ -1622,7 +1669,7 @@ Retourne l'URL de la page en cours avec la variable GET `action=faireDecouvrir`.
 */
 function urlPageAvecDecouvrir()
 {
-	$url = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
+	$url = url();
 	
 	if (preg_match('/(\?|&)action=faireDecouvrir/', $url))
 	{

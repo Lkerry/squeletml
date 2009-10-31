@@ -52,10 +52,7 @@ elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']) && file_exists($r
 		{
 			$description = '';
 		}
-		if (!isset($baliseTitle))
-		{
-			$baliseTitle = '';
-		}
+		
 		$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle);
 		$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
 	}
@@ -70,10 +67,7 @@ elseif (!$pageDerreur && (!isset($courrielContact) || empty($courrielContact)))
 		{
 			$description = '';
 		}
-		if (!isset($baliseTitle))
-		{
-			$baliseTitle = '';
-		}
+		
 		$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle);
 		$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . urlPageSansDecouvrir() . '</em>') . '</p>' . $messageDecouvrirSupplement . $petitMot;
 	}

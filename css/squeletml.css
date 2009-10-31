@@ -177,6 +177,18 @@ pre {
 	border-color: green;
 }
 
+.droite {
+	float: right;
+	margin-left: 5px;
+	margin-bottom: 5px;
+}
+
+.gauche {
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
 .sep {
 	clear: both;
 }
