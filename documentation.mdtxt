@@ -424,6 +424,10 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 - constante `LANGUE`: contient la langue de la page en cours (ex.: `fr`).
 
+- constante `PAGE`: contient la page en cours. Exemple:
+
+		fichier.php
+
 - constante `URL`: contient l'URL de la page en cours. Exemple:
 
 		http://www.NomDeDomaine.ext/fichier.php?a=2&b=3

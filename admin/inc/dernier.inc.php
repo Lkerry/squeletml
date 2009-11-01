@@ -2,7 +2,7 @@
 			</div><!-- /contenu -->
 		</div><!-- /page -->
 
-		<?php if (adminNomPageEnCours($_SERVER['PHP_SELF']) == 'porte-documents.admin.php'): ?>
+		<?php if (page() == 'porte-documents.admin.php'): ?>
 			<?php if (!adminEstIE()): ?>
 				<script type="text/javascript">SET_DHTML('redimensionnable' + RESIZABLE);</script>
 			<?php endif; ?>

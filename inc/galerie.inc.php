@@ -206,7 +206,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		if ($galerieInfoAjout)
 		{
 			$galerieInfo .= '<div id="galerieInfo">' . "\n";
-			$galerieInfo .= '<p>' . sprintf(T_('Affichage de l\'oeuvre %1$s sur un total de %2$s.'), $i + 1, $nombreDoeuvres) . ' <a href="' . $_SERVER['PHP_SELF'] . '">' . T_("Aller à l'accueil de la galerie.") . '</a></p>' . "\n";
+			$galerieInfo .= '<p>' . sprintf(T_('Affichage de l\'oeuvre %1$s sur un total de %2$s.'), $i + 1, $nombreDoeuvres) . ' <a href="' . url(FALSE) . '">' . T_("Aller à l'accueil de la galerie.") . '</a></p>' . "\n";
 			$galerieInfo .= '</div><!-- /galerieInfo -->' . "\n";
 		}
 		
@@ -336,7 +336,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 	{
 		$pageDerreur = TRUE;
 		$id = securiseTexte($_GET['oeuvre']);
-		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), nomFichierGalerie()) . '</p>';
+		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), url(FALSE, FALSE)) . '</p>';
 		
 		// Ajustement des métabalises
 		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
@@ -393,7 +393,7 @@ elseif ($idGalerie)
 		$pagination .= '<div class="galeriePagination">' . "\n";
 	
 		// $lien va être utilisée pour construire l'URL de la page précédente ou suivante
-		$lien = 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF'] . '?';
+		$lien = url(FALSE) . '?';
 	
 		// On récupère les variables GET pour les ajouter au lien, sauf page
 		if (!empty($_GET))
@@ -468,9 +468,9 @@ elseif ($idGalerie)
 		$galerieInfo .= '<div id="galerieInfo">' . "\n";
 		$galerieInfo .= '<p>' . sprintf(T_ngettext('Cette galerie contient %1$s oeuvre', 'Cette galerie contient %1$s oeuvres', $nombreDoeuvres), $nombreDoeuvres) . sprintf(T_ngettext(' (sur %1$s page).', ' (sur %1$s pages).', $nombreDePages), $nombreDePages);
 		
-		if (!preg_match('|' . nomFichierGalerie() . '$|', $_SERVER['PHP_SELF']))
+		if (!preg_match('|' . url(FALSE, FALSE) . '$|', url(FALSE, FALSE)))
 		{
-			$galerieInfo .= ' <a href="' . $_SERVER['PHP_SELF'] . '">' . T_("Voir l'accueil de la galerie."). '</a></p>' . "\n";
+			$galerieInfo .= ' <a href="' . url(FALSE, FALSE) . '">' . T_("Voir l'accueil de la galerie."). '</a></p>' . "\n";
 		}
 		
 		$galerieInfo .= '</div><!-- /galerieInfo -->' . "\n";

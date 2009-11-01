@@ -182,14 +182,6 @@ function adminVersionLogiciel($racine)
 }
 
 /**
-Retourne le nom de la page en cours
-*/
-function adminNomPageEnCours($url)
-{
-	return basename($url);
-}
-
-/**
 Retourne la valeur en octets des tailles paraissant dans le `php.ini`. Ex.: 2M => 2097152. Voir <http://ca.php.net/manual/fr/ini.core.php#79564>
 */
 function adminPhpIniOctets($nombre)
@@ -336,7 +328,7 @@ Retourne l'id de `body`.
 */
 function adminBodyId()
 {
-	return str_replace('.', '-', basename($_SERVER['SCRIPT_NAME']));
+	return str_replace('.', '-', page()));
 }
 
 /**

@@ -8,5 +8,7 @@ define("ACCUEIL", accueil($accueil, $langueParDefaut, $langue));
 
 define("LANGUE", langue($langueParDefaut, $langue));
 
+define("PAGE", page());
+
 define("URL", url());
 ?>

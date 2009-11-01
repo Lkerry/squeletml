@@ -595,14 +595,6 @@ function cheminFichierIncHtml($racine, $fichier, $langueParDefaut, $langue, $ret
 }
 
 /**
-Retourne le nom du fichier affichant la galerie.
-*/
-function nomFichierGalerie()
-{
-	return $_SERVER['SCRIPT_NAME'];
-}
-
-/**
 Renvoie le type d'image entre gif, jpg et png.
 */
 function typeImage($extension)
@@ -1392,7 +1384,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		else
 		{
 			
-			$aHref = '<a href="' . nomFichierGalerie() . '?oeuvre=' . $id . '">';
+			$aHref = '<a href="' . url(FALSE, FALSE) . '?oeuvre=' . $id . '">';
 		}
 		
 		// On s'assure que la variable $class existe (pour éviter un avertissement).
@@ -1589,11 +1581,13 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 }
 
 /**
-Retourne l'URL de la page courante.
+Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur.
 
-Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3`.
+Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` vaut TRUE.
+
+Fonction inspirée de <http://api.drupal.org/api/function/drupal_detect_baseurl>.
 */
-function url()
+function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
 {
 	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'])
 	{
@@ -1617,7 +1611,29 @@ function url()
 	
 	$uri = $_SERVER['REQUEST_URI'];
 	
-	return "$protocole$serveur$port$uri";
+	if (!$retourneVariablesGet)
+	{
+		$uri = preg_replace("/\?.*/", '', $uri);
+	}
+	
+	if ($retourneServeur)
+	{
+		$url = "$protocole$serveur$port$uri";
+	}
+	else
+	{
+		$url = "$uri";
+	}
+	
+	return $url;
+}
+
+/**
+Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
+*/
+function page()
+{
+	return basename(url(FALSE, FALSE));
 }
 
 /**

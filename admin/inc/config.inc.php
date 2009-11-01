@@ -51,7 +51,7 @@ $filtreNom = FALSE; // TRUE|FALSE
 $afficheDimensionsImages = TRUE; // TRUE|FALSE
 
 // Valeur de l'attribut `action` des formulaires
-$action = $_SERVER['PHP_SELF'];
+$action = $_SERVER['SCRIPT_NAME'];
 
 // Symbole variable GET
 /* Si la variable $action contient déjà une variable GET, mettre & sinon mettre ? */

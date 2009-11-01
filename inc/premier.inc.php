@@ -146,7 +146,7 @@ echo doctype($xhtmlStrict); ?>
 		
 		<!-- Balises `link` et `script` -->
 		<?php if ($idGalerie && $rss): ?>
-			<?php $urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['PHP_SELF']); ?>
+			<?php $urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', url(FALSE)); ?>
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlFlux; ?>" title="<?php echo sprintf(T_('RSS de la galerie %1$s'), $idGalerie); ?>" />
 		<?php endif; ?>
 		
