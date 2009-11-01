@@ -110,7 +110,7 @@ if ($idGalerie && !isset($rss))
 
 if (!isset($tableDesMatieres))
 {
-	$tableDesMatieres = FALSE;
+	$tableDesMatieres = $tableDesMatieresParDefaut;
 }
 
 if ($tableDesMatieres)

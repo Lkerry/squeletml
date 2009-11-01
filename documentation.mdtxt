@@ -286,9 +286,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$motsClesInclusion` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
 
-- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `config.inc.php`.
+- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `inc/config.inc.php`.
 
-- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `config.inc.php`.
+- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `inc/config.inc.php`.
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
@@ -302,7 +302,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 1 à 6 présents dans le contenu, c'est-à-dire à l'intérieur de la div `interieurContenu`. La table est ajoutée au début de cette div.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents dans le contenu, c'est-à-dire à l'intérieur de la div `interieurContenu`. La table est ajoutée au début de cette div.
+
+	La variable `$tableDesMatieresParDefaut`, déclarée dans le fichier `inc/config.inc.php`, s'applique à toutes les pages du site. Utiliser `$tableDesMatieres` pour changer la valeur par défaut pour une page spécifique.
 
 ### Inclusion du premier fichier PHP
 

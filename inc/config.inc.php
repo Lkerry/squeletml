@@ -125,6 +125,12 @@ $faireDecouvrir = TRUE; // TRUE|FALSE
 */
 $messageIE6 = TRUE; // TRUE|FALSE
 
+// Activation ou non par défaut de la table des matières
+/*
+- État de la table des matières si aucune autre précision n'est apportée. Si la variable `$tableDesMatieres` existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui est utilisée.
+*/
+$tableDesMatieresParDefaut = FALSE; // TRUE|FALSE
+
 // Activation des boîtes déroulantes
 /*
 Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, et enregistre le choix d'affichage de l'internaute dans un témoin valide 30 jours. Ce contenu peut être situé n'importe où dans la page: menu, corps, bas de page, etc. Une boîte déroulante peut être activée pour un contenu constitué d'un conteneur, d'un titre et d'un corps. La représentation générale est comme suit:
