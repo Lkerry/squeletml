@@ -106,7 +106,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		$indiceOeuvreIntermediaireEnCours = $i;
 		
 		// On récupère le code de l'oeuvre demandée en version intermediaire
-		$oeuvreIntermediaire = '<div id="galerieIntermediaire">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'intermediaire', $i, FALSE, 'aucun', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
+		$oeuvreIntermediaire = '<div id="galerieIntermediaire">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'intermediaire', $i, FALSE, 'aucun', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . "</div>\n";
 
 		// On recherche l'oeuvre précédente pour la navigation. Si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente
 		if (array_key_exists($i - 1, $galerie))
@@ -114,7 +114,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			$op = $i - 1; // $op est l'indice de l'oeuvre précédente
 
 			// On récupère le code de la vignette de l'oeuvre précédente
-			$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $op, FALSE, 'precedent', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
+			$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $op, FALSE, 'precedent', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . "</div>\n";
 			
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
@@ -139,7 +139,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			$os = $i + 1;
 
 			// On récupère le code de la vignette de l'oeuvre suivante
-			$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $os, FALSE, 'suivant', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . '</div>' . "\n";
+			$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, FALSE, 'vignette', $os, FALSE, 'suivant', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, TRUE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal) . "</div>\n";
 			
 			// Si une flèche de navigation par-dessus la vignette est souhaitée, on change l'attribut `src` de l'image
 			if ($galerieNavigationVignettesTatouage && $galerieNavigation == 'vignettes')
@@ -172,7 +172,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 				$style = '';
 			}
 			
-			$oeuvrePrecedente = '<div class="' . $class . '"' . $style . '></div>' . "\n";
+			$oeuvrePrecedente = "<div class=\"$class\"$style></div>\n";
 		}
 		
 		if (empty($oeuvreSuivante))
@@ -188,7 +188,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 				$style = '';
 			}
 			
-			$oeuvreSuivante = '<div class="' . $class . '"' . $style . '></div>' . "\n";
+			$oeuvreSuivante = "<div class=\"$class\"$style></div>\n";
 		}
 		
 		// On crée le corps de la galerie
@@ -206,7 +206,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		if ($galerieInfoAjout)
 		{
 			$galerieInfo .= '<div id="galerieInfo">' . "\n";
-			$galerieInfo .= '<p>' . sprintf(T_('Affichage de l\'oeuvre %1$s sur un total de %2$s.'), $i + 1, $nombreDoeuvres) . ' <a href="' . url(FALSE) . '">' . T_("Aller à l'accueil de la galerie.") . '</a></p>' . "\n";
+			$galerieInfo .= '<p>' . sprintf(T_('Affichage de l\'oeuvre %1$s sur un total de %2$s.'), $i + 1, $nombreDoeuvres) . ' <a href="' . url(FALSE) . '">' . T_("Aller à l'accueil de la galerie.") . "</a></p>\n";
 			$galerieInfo .= '</div><!-- /galerieInfo -->' . "\n";
 		}
 		
@@ -336,7 +336,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 	{
 		$pageDerreur = TRUE;
 		$id = securiseTexte($_GET['oeuvre']);
-		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), url(FALSE, FALSE)) . '</p>';
+		$corpsGalerie .= '<p>' . sprintf(T_('L\'oeuvre demandée est introuvable. <a href="%1$s">Voir toutes les oeuvres</a>.'), url(FALSE, FALSE)) . "</p>\n";
 		
 		// Ajustement des métabalises
 		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
@@ -470,7 +470,7 @@ elseif ($idGalerie)
 		
 		if (!preg_match('|' . url(FALSE, FALSE) . '$|', url(FALSE, FALSE)))
 		{
-			$galerieInfo .= ' <a href="' . url(FALSE, FALSE) . '">' . T_("Voir l'accueil de la galerie."). '</a></p>' . "\n";
+			$galerieInfo .= ' <a href="' . url(FALSE, FALSE) . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
 		}
 		
 		$galerieInfo .= '</div><!-- /galerieInfo -->' . "\n";
@@ -497,7 +497,7 @@ else
 {
 	$pageDerreur = TRUE;
 	
-	$corpsGalerie .= '<p>' . T_('La galerie demandée est introuvable.') . '</p>';
+	$corpsGalerie .= '<p>' . T_('La galerie demandée est introuvable.') . "</p>\n";
 	
 	// Ajustement des métabalises
 	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);

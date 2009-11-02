@@ -43,9 +43,9 @@ include '../init.inc.php';
 					fclose($fic);
 				
 					echo '<div class="boite2">' . "\n";
-					echo '<h3>' . T_("Liste des pages des galeries") . '</h3>' . "\n";
+					echo '<h3>' . T_("Liste des pages des galeries") . "</h3>\n";
 					
-					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie en français dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>fr:chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
+					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie en français dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>fr:chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
 	
 					if (!empty($listeGaleries))
 					{
@@ -66,7 +66,7 @@ include '../init.inc.php';
 				}
 				else
 				{
-					echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . '</p>';
+					echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				}
 			}
 			else
@@ -108,8 +108,8 @@ include '../init.inc.php';
 					}
 				
 					echo '<div class="boite2">' . "\n";
-					echo '<h3>' . T_("Liste des pages autres que les galeries") . '</h3>' . "\n";
-					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:URL relative de la page</code>. Par exemple, %1\$s fait référence à une page en français dont l'URL est %2\$s."), "<code>fr:animaux/chiens.php</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
+					echo '<h3>' . T_("Liste des pages autres que les galeries") . "</h3>\n";
+					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:URL relative de la page</code>. Par exemple, %1\$s fait référence à une page en français dont l'URL est %2\$s."), "<code>fr:animaux/chiens.php</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
 	
 					if (!empty($listePages))
 					{
@@ -130,7 +130,7 @@ include '../init.inc.php';
 				}
 				else
 				{
-					echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . '</p>';
+					echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				}
 			}
 			else
@@ -143,7 +143,7 @@ include '../init.inc.php';
 	if (isset($_POST['modifsGaleries']))
 	{
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Enregistrement des modifications pour les galeries") .'</h3>' ."\n" ;
+		echo '<h3>' . T_("Enregistrement des modifications pour les galeries") . "</h3>\n" ;
 	
 		$contenuFichierTableau = array ();
 		if (isset($_POST['langue']))
@@ -169,17 +169,17 @@ include '../init.inc.php';
 		{
 			if (file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . '</p>';
-				echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
+				echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
 			}
 			else
 			{
-				echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . '</p>';
-				echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
-				echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
+				echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
@@ -188,8 +188,8 @@ include '../init.inc.php';
 		else
 		{
 			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
-			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
-			echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
+			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 			echo "<ul>\n";
 			echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			echo "</ul>\n";
@@ -201,7 +201,7 @@ include '../init.inc.php';
 	elseif (isset($_POST['modifsSite']))
 	{
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Enregistrement des modifications pour les pages autres que les galeries") .'</h3>' ."\n" ;
+		echo '<h3>' . T_("Enregistrement des modifications pour les pages autres que les galeries") . "</h3>\n" ;
 	
 		$contenuFichierTableau = array ();
 		if (isset($_POST['langue']))
@@ -227,17 +227,17 @@ include '../init.inc.php';
 		{
 			if (file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . '</p>';
-				echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
+				echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
 			}
 			else
 			{
-				echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . '</p>';
-				echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
-				echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
+				echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
@@ -246,8 +246,8 @@ include '../init.inc.php';
 		else
 		{
 			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
-			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
-			echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
+			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 			echo "<ul>\n";
 			echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			echo "</ul>\n";

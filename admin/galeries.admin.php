@@ -37,7 +37,7 @@ include '../init.inc.php';
 					$i++;
 					$fichier = sansEchappement($fichier);
 					$idLien = rawurlencode($fichier);
-					$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . '<ul><li><em>' . T_("identifiant:") . '</em> ' . $fichier . '</li><li><em>' . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . '</a></li><li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a></li></ul></li>' . "\n";
+					$listeFichiers .= '<li>' . sprintf(T_('Galerie %1$s:'), $i) . "\n<ul>\n<li><em>" . T_("identifiant:") . '</em> ' . $fichier . "</li>\n<li><em>" . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . "</a></li>\n<li><em>" . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a>' . "</li>\n</ul></li>\n";
 				}
 			}
 	
@@ -49,7 +49,7 @@ include '../init.inc.php';
 		}
 	
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Liste des galeries") . '</h3>' . "\n";
+		echo '<h3>' . T_("Liste des galeries") . "</h3>\n";
 	
 		if (!empty($trad))
 		{
@@ -238,13 +238,13 @@ include '../init.inc.php';
 		}
 	
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Ajout d'images") . '</h3>' . "\n";
+		echo '<h3>' . T_("Ajout d'images") . "</h3>\n";
 		echo '<ul>' . "\n";
 		foreach ($listeModifs as $modif)
 		{
-			echo '<li>' . $modif . '</li>' . "\n";
+			echo '<li>' . $modif . "</li>\n";
 		}
-		echo '</ul>' . "\n";
+		echo "</ul>\n";
 		echo '</div><!-- /class=boite2 -->' . "\n";
 	}
 
@@ -369,7 +369,7 @@ include '../init.inc.php';
 		}
 		
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Retaillage des images") . '</h3>' . "\n";
+		echo '<h3>' . T_("Retaillage des images") . "</h3>\n";
 		
 		if (!empty($trad))
 		{
@@ -381,9 +381,9 @@ include '../init.inc.php';
 			echo '<ul>' . "\n";
 			foreach ($listeModifs as $modif)
 			{
-				echo '<li>' . $modif . '</li>' . "\n";
+				echo '<li>' . $modif . "</li>\n";
 			}
-			echo '</ul>' . "\n";
+			echo "</ul>\n";
 		}
 		
 		echo '</div><!-- /class=boite2 -->' . "\n";
@@ -411,11 +411,11 @@ include '../init.inc.php';
 					{
 						if (unlink($cheminGalerie . '/' . $fichier))
 						{
-							$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
+							$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
 						}
 						else
 						{
-							$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
+							$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
 						}
 					}
 				}
@@ -442,11 +442,11 @@ include '../init.inc.php';
 						{
 							if (unlink($cheminTatouage . '/' . $fichier))
 							{
-								$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+								$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
 							}
 							else
 							{
-								$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+								$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
 							}
 						}
 					}
@@ -461,7 +461,7 @@ include '../init.inc.php';
 	
 		// Messages
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Suppression de vignettes") .'</h3>' ."\n" ;
+		echo '<h3>' . T_("Suppression de vignettes") . "</h3>\n" ;
 	
 		if (!empty($trad))
 		{
@@ -507,7 +507,7 @@ include '../init.inc.php';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		if (!file_exists($cheminGalerie))
 		{
-			echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</p>";
+			echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</p>\n";
 		}
 		else
 		{
@@ -515,13 +515,13 @@ include '../init.inc.php';
 		
 			if (!file_exists($fichierConfigChemin))
 			{
-				echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'a pas de fichier de configuration.'), "<code>$id</code>") . "</p>";
+				echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'a pas de fichier de configuration.'), "<code>$id</code>") . "</p>\n";
 			}
 			else
 			{
 				if (!file_exists($cheminPage))
 				{
-					echo "<p class='erreur'>" . sprintf(T_('Le chemin %1$s vers la page à créer n\'existe pas. Veuillez vous assurer que les dossiers existent.'), '<code>' . $cheminPage . '</code>') . "</p>";
+					echo "<p class='erreur'>" . sprintf(T_('Le chemin %1$s vers la page à créer n\'existe pas. Veuillez vous assurer que les dossiers existent.'), '<code>' . $cheminPage . '</code>') . "</p>\n";
 				}
 				else
 				{
@@ -551,16 +551,16 @@ include '../init.inc.php';
 						}
 						else
 						{
-							echo "<p class='erreur'>" . sprintf(T_('Impossible de créer le fichier %1$s.'), '<code>' . $cheminPage . '/' . $page . '</code>') . "</p>";
+							echo "<p class='erreur'>" . sprintf(T_('Impossible de créer le fichier %1$s.'), '<code>' . $cheminPage . '/' . $page . '</code>') . "</p>\n";
 						}
 					}
 				
 					if (file_exists($cheminPage . '/' . $page))
 					{
 						echo '<div class="boite2">' . "\n";
-						echo '<h3>' . T_("Page web") . '</h3>' . "\n";
+						echo '<h3>' . T_("Page web") . "</h3>\n";
 				
-						echo '<p>' . $trad . '</p>';
+						echo '<p>' . $trad . "</p>\n";
 						echo "</div><!-- /class=boite2 -->\n";
 					}
 				}
@@ -619,7 +619,7 @@ include '../init.inc.php';
 		}
 		
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Modèle") .'</h3>' ."\n" ;
+		echo '<h3>' . T_("Modèle") . "</h3>\n" ;
 		
 		if (!empty($trad))
 		{
@@ -627,7 +627,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			echo '<pre id="listeFichiers">' . $listeFichiers . '</pre>' . "\n";
+			echo '<pre id="listeFichiers">' . $listeFichiers . "</pre>\n";
 			echo "<ul>\n";
 			echo "<li><a href=\"javascript:selectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			echo "</ul>\n";
@@ -649,7 +649,7 @@ include '../init.inc.php';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		if (!file_exists($cheminGalerie))
 		{
-			echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</p>";
+			echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</p>\n";
 		}
 		else
 		{
@@ -678,15 +678,15 @@ include '../init.inc.php';
 			}
 			else
 			{
-				echo "<p class='erreur'>" . sprintf(T_('Erreur lors de la création ou de la mise à jour du fichier de configuration %1$s. Veuillez vérifier manuellement son contenu.'), "<code>$fichierConfigChemin</code>") . "</p>";
+				echo "<p class='erreur'>" . sprintf(T_('Erreur lors de la création ou de la mise à jour du fichier de configuration %1$s. Veuillez vérifier manuellement son contenu.'), "<code>$fichierConfigChemin</code>") . "</p>\n";
 			}
 		
 			$boite2FichierConfigDebut = TRUE;
 			echo '<div class="boite2">' . "\n";
-			echo '<h3>' . T_("Fichier de configuration") . '</h3>' . "\n";
+			echo '<h3>' . T_("Fichier de configuration") . "</h3>\n";
 			if (!empty($listeModifs))
 			{
-				echo '<h4>' . T_("Actions effectuées") .'</h4>' ."\n" ;
+				echo '<h4>' . T_("Actions effectuées") . "</h4>\n" ;
 				echo "<ul>\n";
 				foreach ($listeModifs as $modif)
 				{
@@ -704,14 +704,14 @@ include '../init.inc.php';
 		if (!$boite2FichierConfigDebut)
 		{
 			echo '<div class="boite2">' . "\n";
-			echo '<h3>' . T_("Fichier de configuration") . '</h3>' . "\n";
+			echo '<h3>' . T_("Fichier de configuration") . "</h3>\n";
 		}
 	
 		$id = rawurlencode($id);
 		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
-		echo '<h4>' . T_("Information") .'</h4>' ."\n" ;
+		echo '<h4>' . T_("Information") . "</h4>\n" ;
 		echo "<ul>\n";
-		echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/config.pc#messagesPorteDocuments">' . T_("Modifier le fichier.") . '</a></li>' . "\n";
+		echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/config.pc#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
 		echo "</ul>\n";
 	}
 

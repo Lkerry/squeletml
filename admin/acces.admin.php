@@ -19,7 +19,7 @@ include 'inc/premier.inc.php';
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.htaccess</code>") . '</p>';
+		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.htaccess</code>") . "</p>\n";
 		$erreurAccesFichiers = TRUE;
 	}
 
@@ -29,7 +29,7 @@ include 'inc/premier.inc.php';
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.acces</code>") . '</p>';
+		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.acces</code>") . "</p>\n";
 		$erreurAccesFichiers = TRUE;
 	}
 	// Fin des tests
@@ -74,11 +74,11 @@ include 'inc/premier.inc.php';
 				if ($utilisateurAbsent)
 				{
 					fputs($fic2, $acces);
-					echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), securiseTexte($_POST['nom'])) . '</p>';
+					echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), securiseTexte($_POST['nom'])) . "</p>\n";
 				}
 				else
 				{
-					echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), securiseTexte($_POST['nom'])) . '</p>';
+					echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), securiseTexte($_POST['nom'])) . "</p>\n";
 				}
 		
 				fclose($fic2);
@@ -117,11 +117,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Son mot de passe ne peut donc pas être modifié.'), securiseTexte($_POST['nom'])) . '</p>';
+				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Son mot de passe ne peut donc pas être modifié.'), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 			else
 			{
-				echo '<p class="succes">' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), securiseTexte($_POST['nom'])) . '</p>';
+				echo '<p class="succes">' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 		}
 	
@@ -196,11 +196,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Il ne peut donc pas être supprimé.'), securiseTexte($_POST['nom'])) . '</p>';
+				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Il ne peut donc pas être supprimé.'), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 			else
 			{
-				echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), securiseTexte($_POST['nom'])) . '</p>';
+				echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 		}
 	
@@ -279,9 +279,9 @@ include 'inc/premier.inc.php';
 	if (!$erreurAccesFichiers && ((isset($_POST['lister'])) || (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))))
 	{
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Liste des utilisateurs") . '</h3>' . "\n";
+		echo '<h3>' . T_("Liste des utilisateurs") . "</h3>\n";
 
-		echo '<p>' . T_("Voici les utilisateurs ayant accès à l'administration:") . '</p>' . "\n";
+		echo '<p>' . T_("Voici les utilisateurs ayant accès à l'administration:") . "</p>\n" . "\n";
 
 		echo '<ul>' . "\n";
 		$i = 0;
@@ -293,7 +293,7 @@ include 'inc/premier.inc.php';
 				if (preg_match('/^[^:]+:/', $ligne))
 				{
 					list($utilisateur, $motDePasse) = explode(':', $ligne, 2);
-					echo '<li>' . $utilisateur . '</li>' . "\n";
+					echo '<li>' . $utilisateur . "</li>\n";
 					$i++;
 				}
 			}
@@ -303,9 +303,9 @@ include 'inc/premier.inc.php';
 
 		if (!$i)
 		{
-			echo '<li>' . T_("Aucun") . '</li>' . "\n";
+			echo '<li>' . T_("Aucun") . "</li>\n";
 		}
-		echo '</ul>' . "\n";
+		echo "</ul>\n";
 		echo "</div><!-- /class=boite2 -->\n";
 	}
 
@@ -318,7 +318,7 @@ include 'inc/premier.inc.php';
 	if (!$erreurAccesFichiers && isset($_POST['changerEtat']))
 	{
 		echo '<div class="boite2">' . "\n";
-		echo '<h3>' . T_("Maintenance du site") . '</h3>' . "\n";
+		echo '<h3>' . T_("Maintenance du site") . "</h3>\n";
 	
 		$maintenanceDansHtaccess = FALSE;
 		if ($fic = fopen($racine . '/.htaccess', 'r'))

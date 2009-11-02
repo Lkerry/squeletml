@@ -14,7 +14,7 @@ include $racine . '/inc/faire-decouvrir.inc.php';
 
 if ($decouvrir)
 {
-	echo '<h2 id="formulaireFaireDecouvrir">' . T_("Faire découvrir à des ami-e-s") . '</h2>';
+	echo '<h2 id="formulaireFaireDecouvrir">' . T_("Faire découvrir à des ami-e-s") . "</h2>\n";
 }
 
 // L'envoi du message est demandé
@@ -170,24 +170,24 @@ if (isset($_POST['envoyer']))
 	{
 		if (!empty($msg['envoi'][1]))
 		{
-			echo '<p class="succes">' . $msg['envoi'][1] . '</p>';
+			echo '<p class="succes">' . $msg['envoi'][1] . "</p>\n";
 		}
 		elseif (!empty($msg['envoi'][0]))
 		{
-			echo '<p class="erreur">' . $msg['envoi'][0] . '</p>';
+			echo '<p class="erreur">' . $msg['envoi'][0] . "</p>\n";
 		}
 	}
 	elseif (!empty($msg['erreur']))
 	{
-		echo '<div class="erreur">';
-		echo '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>';
-		echo '<ul>';
+		echo '<div class="erreur">' . "\n";
+		echo '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>' . "\n";
+		echo "<ul>\n";
 		foreach ($msg['erreur'] as $erreur)
 		{
-			echo "<li>$erreur</li>";
+			echo "<li>$erreur</li>\n";
 		}
-		echo '</ul>';
-		echo '</div>';
+		echo "</ul>\n";
+		echo "</div>\n";
 	}
 }
 ?>

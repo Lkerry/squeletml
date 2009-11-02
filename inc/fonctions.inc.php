@@ -489,12 +489,12 @@ function messageIE6($src, $alt, $width, $height)
 {
 	$message = '';
 	$message .= '<div id="messageIE6">' . "\n";
-	$message .= '<p id="messageIE6titre">' . T_("Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?") . '</p>' . "\n";
+	$message .= '<p id="messageIE6titre">' . T_("Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?") . "</p>\n";
 	$message .= "\n";
-	$message .= '<div id="messageIE6corps"><p>' . T_("Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, performant, sécuritaire et respectueux des standards sur lesquels le web est basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au travail, vous pouvez faire la suggestion à votre service informatique.") . '</p>' . "\n";
+	$message .= '<div id="messageIE6corps"><p>' . T_("Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, performant, sécuritaire et respectueux des standards sur lesquels le web est basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au travail, vous pouvez faire la suggestion à votre service informatique.") . "</p>\n";
 	$message .= "\n";
-	$message .= "<p><strong><a href=\"http://www.mozilla-europe.org/fr/\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" /></a> <a href=\"http://www.mozilla-europe.org/fr/\"><span>" . T_("Télécharger Firefox") . '</span></a></strong></p></div>' . "\n";
-	$message .= '</div>';
+	$message .= "<p><strong><a href=\"http://www.mozilla-europe.org/fr/\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" /></a> <a href=\"http://www.mozilla-europe.org/fr/\"><span>" . T_("Télécharger Firefox") . "</span></a></strong></p></div>\n";
+	$message .= "</div>\n";
 	
 	return $message;
 }
@@ -720,7 +720,7 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 	$altContenu = $res[1];
 	$alt = 'alt="' . $altContenu . '"';
 	
-	$img = '<div id="galerieAccompagnementVignette' . ucfirst($sens) . '"><img src="' . $urlImage . '" ' . "$alt $width $height" . ' /></div>';
+	$img = "<div id=\"galerieAccompagnementVignette" . ucfirst($sens) . "\"><img src=\"$urlImage\" $alt $width $height /></div>\n";
 	
 	// On retourne le paragraphe avec l'image de flèche en plus
 	if ($sens == 'precedent')
@@ -801,7 +801,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $coinsArro
 			
 			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($coinsArrondisBloc);
 			
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . '</h2>' . $res[1] . $codeInterieurBlocBas . '</div><!-- /galerieIntermediaireTexteHorsContenu -->' . "\n";
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $res[1] . $codeInterieurBlocBas . '</div><!-- /galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
@@ -1079,7 +1079,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		
 		if (!empty($galerie[$indice]['intermediaireLegende']))
 		{
-			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($galerie[$indice]['intermediaireLegende'], $galerieLegendeMarkdown) . '</div>';
+			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($galerie[$indice]['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
 		}
 		elseif ($galerieLegendeAutomatique)
 		{
@@ -1087,7 +1087,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 			{
 				$contenuAlt = substr($contenuAlt, 0, -1);
 			}
-			$legende = '<div id="galerieIntermediaireLegende">' . $contenuAlt . ' (' . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ')</div>';
+			$legende = "<div id=\"galerieIntermediaireLegende\">$contenuAlt (" . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ")</div>\n";
 		}
 		else
 		{
@@ -1135,7 +1135,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				$relOriginal = '';
 			}
 			
-			$lienOriginal = '<div id="galerieLienOriginal"><a href="' . $lienOriginalHref . '"' . $relOriginal . '>' . $lienOriginalTrad . '</a></div>';
+			$lienOriginal = '<div id="galerieLienOriginal"><a href="' . $lienOriginalHref . '"' . $relOriginal . '>' . $lienOriginalTrad . "</a></div>\n";
 		}
 		else
 		{
@@ -1198,14 +1198,14 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 								$exifTrad = $cle;
 								break;
 						}
-						$exif .= "<li><em>$exifTrad:</em> " . $tableauExif[$cle] . "</li>";
+						$exif .= "<li><em>$exifTrad:</em> " . $tableauExif[$cle] . "</li>\n";
 					}
 				}
 			}
 			
 			if (!empty($exif))
 			{
-				$exif = "<div id='galerieIntermediaireExif'><ul>" . $exif . "</ul></div><!-- /galerieIntermediaireExif -->";
+				$exif = "<div id='galerieIntermediaireExif'>\n<ul>\n" . $exif . "</ul>\n</div><!-- /galerieIntermediaireExif -->\n";
 			}
 		}
 		
@@ -1397,7 +1397,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 			$class .= ' minivignetteOeuvreEnCours';
 		}
 		
-		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>";
+		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>\n";
 	}
 	
 	else
@@ -1513,10 +1513,10 @@ function decouvrirSupplementPage($description, $baliseTitle)
 	
 	if (!empty($messageDecouvrirSupplement))
 	{
-		$messageDecouvrirSupplement = "<p style='font-style: italic;'>$messageDecouvrirSupplement</p>";
+		$messageDecouvrirSupplement = "<p style='font-style: italic;'>$messageDecouvrirSupplement</p>\n";
 	}
 	
-	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Consultez cette page!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . '</p>';
+	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Consultez cette page!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageDecouvrirSupplement;
 }
@@ -1550,7 +1550,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 		$vignetteAlt = '';
 	}
 	
-	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>";
+	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>\n";
 	
 	if (isset($oeuvre['intermediaireLegende']) && !empty($oeuvre['intermediaireLegende']))
 	{
@@ -1573,9 +1573,9 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 		$messageDecouvrirSupplement .= $oeuvre['pageIntermediaireBaliseTitle'];
 	}
 	
-	$messageDecouvrirSupplement = "<div style='font-style: italic; text-align: center;'>$messageDecouvrirSupplement</div>";
+	$messageDecouvrirSupplement = "<div style='font-style: italic; text-align: center;'>$messageDecouvrirSupplement</div>\n";
 	
-	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Voyez l'oeuvre en plus grande taille!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . '</p>';
+	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Voyez l'oeuvre en plus grande taille!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageDecouvrirSupplement;
 }
@@ -1782,7 +1782,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		
 		if (!empty($urlOriginal))
 		{
-			$msgOriginal = "\n<p><a href='$urlOriginal'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>";
+			$msgOriginal = "\n<p><a href='$urlOriginal'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
 		}
 		else
 		{

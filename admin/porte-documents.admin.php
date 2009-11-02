@@ -36,11 +36,11 @@ if ($filtreExtensions)
 	{
 		echo "$ext ";
 	}
-	echo '<br /><em>' . T_("Si vous voulez télécharger un fichier avec une extension qui n'est pas dans la liste, en faire la demande à la personne administratrice de ce site, ou si vous avez les droits d'administration, éditez le fichier de configuration.") . '</em></li>' . "\n";
+	echo '<br /><em>' . T_("Si vous voulez télécharger un fichier avec une extension qui n'est pas dans la liste, en faire la demande à la personne administratrice de ce site, ou si vous avez les droits d'administration, éditez le fichier de configuration.") . "</em></li>\n";
 }
 else
 {
-	echo T_("toutes.") . '</li>';
+	echo T_("toutes.") . "</li>\n";
 }
 echo "</ul>\n";
 echo "</div><!-- /class=boite -->\n";
@@ -63,7 +63,7 @@ if (isset($_POST['telechargerSuppr']))
 			}
 			else
 			{
-				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le fichier %1$s.'), "<code>$valeur</code>") . "</li>";
+				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le fichier %1$s.'), "<code>$valeur</code>") . "</li>\n";
 			}
 		}
 		elseif (file_exists($valeur) && is_dir($valeur))
@@ -74,7 +74,7 @@ if (isset($_POST['telechargerSuppr']))
 			}
 			else
 			{
-				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le dossier %1$s. Vérifiez qu\'il est vide.'), "<code>$valeur</code>") . "</li>";
+				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le dossier %1$s. Vérifiez qu\'il est vide.'), "<code>$valeur</code>") . "</li>\n";
 			}
 		}
 		elseif (!file_exists($valeur))
@@ -91,18 +91,18 @@ if (isset($_GET['action']))
 	if ($_GET['action'] == 'renommer')
 	{
 		$ancienNom = $getValeur;
-		echo "<h3>" . T_("Insctructions de renommage") . "</h3>";
+		echo "<h3>" . T_("Insctructions de renommage") . "</h3>\n";
 		
 		echo "<ul>\n";
-		echo "<li>" . sprintf(T_('Pour renommer %1$s, saisir le nouveau nom dans le champ.'), "<code>$ancienNom</code>") . "</li>";
+		echo "<li>" . sprintf(T_('Pour renommer %1$s, saisir le nouveau nom dans le champ.'), "<code>$ancienNom</code>") . "</li>\n";
 		echo "<li>" . T_("Ne pas oublier de mettre le chemin dans le nom.");
 		echo "<li>" . T_("Exemples:");
 		echo "<ul>\n";
-		echo "<li><code>$dossierRacine/nouveau-nom-dossier</code></li>";
-		echo "<li><code>$dossierRacine/nouveau-nom.txt</code></li>";
-		echo "<li><code>fichiers/nouveau-nom-dossier/nouveau-nom-fichier.txt</code>.</li>";
-		echo "</ul></li>";
-		echo "<li>" . T_("Important: ne pas mettre de barre oblique / dans le nouveau nom du fichier. N'utiliser ce signe que pour marquer le chemin vers le fichier.") . "</li>";
+		echo "<li><code>$dossierRacine/nouveau-nom-dossier</code></li>\n";
+		echo "<li><code>$dossierRacine/nouveau-nom.txt</code></li>\n";
+		echo "<li><code>fichiers/nouveau-nom-dossier/nouveau-nom-fichier.txt</code>.</li>\n";
+		echo "</ul></li>\n";
+		echo "<li>" . T_("Important: ne pas mettre de barre oblique / dans le nouveau nom du fichier. N'utiliser ce signe que pour marquer le chemin vers le fichier.") . "</li>\n";
 		echo "</ul>\n";
 		
 		echo "<form action='$action' method='post'>\n";
@@ -117,15 +117,15 @@ if (isset($_GET['action']))
 	// Action Éditer
 	if ($_GET['action'] == 'editer')
 	{
-		echo "<h3>" . T_("Insctructions d'édition") . "</h3>";
+		echo "<h3>" . T_("Insctructions d'édition") . "</h3>\n";
 		
 		if (file_exists($getValeur))
 		{
-			echo "<p>" . sprintf(T_('Le fichier %1$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), "<code>$getValeur</code>") . "</p>";
+			echo "<p>" . sprintf(T_('Le fichier %1$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), "<code>$getValeur</code>") . "</p>\n";
 		}
 		else
 		{
-			echo "<p>" . sprintf(T_('Le fichier %1$s n\'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisi.'), "<code>$getValeur</code>") . "</p>";
+			echo "<p>" . sprintf(T_('Le fichier %1$s n\'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisi.'), "<code>$getValeur</code>") . "</p>\n";
 		}
 	
 		echo "<form action='$action#messagesPorteDocuments' method='post'>\n";
@@ -178,7 +178,7 @@ if (isset($_POST['porteDocumentsEditerAnnuler']))
 {
 	$porteDocumentsEditerNom = securiseTexte($_POST['porteDocumentsEditerNom']);
 
-	echo "<p class='succes'>" . sprintf(T_('Aucune modification apportée au fichier %1$s.'), "<code>$porteDocumentsEditerNom</code>") . "</p>";
+	echo "<p class='succes'>" . sprintf(T_('Aucune modification apportée au fichier %1$s.'), "<code>$porteDocumentsEditerNom</code>") . "</p>\n";
 }
 elseif (isset($_POST['porteDocumentsContenuFichier']))
 {
@@ -389,7 +389,7 @@ if (isset($_POST['porteDocumentsCreer']))
 						}
 						else
 						{
-							echo "<li class='erreur'>" . sprintf(T_('Impossible d\'ajouter un modèle de page web dans le fichier %1$s.'), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>";
+							echo "<li class='erreur'>" . sprintf(T_('Impossible d\'ajouter un modèle de page web dans le fichier %1$s.'), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
 						}
 					}
 					else
@@ -449,7 +449,7 @@ if (isset($_FILES['fichier']))
 
 	if (file_exists($rep . '/' . $nomFichier))
 	{
-		$erreur .= "<li class='erreur'>" . T_("Un fichier existe déjà avec ce nom dans le dossier sélectionné.") . "</li>";
+		$erreur .= "<li class='erreur'>" . T_("Un fichier existe déjà avec ce nom dans le dossier sélectionné.") . "</li>\n";
 	}
 
 	if (empty($erreur))
@@ -463,11 +463,11 @@ if (isset($_FILES['fichier']))
 
 		if ($resultat == TRUE)
 		{
-			echo "<p class='succes'>" . sprintf(T_('Transfert de %1$s complété.'), "<code>$nomFichier</code>") . "</p>";
+			echo "<p class='succes'>" . sprintf(T_('Transfert de %1$s complété.'), "<code>$nomFichier</code>") . "</p>\n";
 		}
 		else
 		{
-			echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de %1$s.'), "<code>$nomFichier</code>") . "</p>";
+			echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de %1$s.'), "<code>$nomFichier</code>") . "</p>\n";
 		}
 	}
 }
