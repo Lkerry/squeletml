@@ -258,10 +258,11 @@ include '../init.inc.php';
 	{
 		$qualiteJpg = securiseTexte($_POST['qualiteJpg']);
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id . '/';
-	
+		$trad = '';
+		
 		if (!file_exists($cheminGalerie))
 		{
-			echo "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</p>";
+			$trad = "<p class='erreur'>" . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</p>\n";
 		}
 		else
 		{
@@ -269,107 +270,123 @@ include '../init.inc.php';
 		
 			if ($_POST['manipulerOriginal'] == 'renommerOriginal')
 			{
-				$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
-			
-				while($fichier = @readdir($fic))
+				if ($fic = opendir($cheminGalerie))
 				{
-					if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+					while($fichier = @readdir($fic))
 					{
-						$infoFichier = pathinfo(basename($fichier));
-						if (!isset($infoFichier['extension']))
+						if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 						{
-							$infoFichier['extension'] = '';
-						}
-						if (!preg_match('/-original\.' . $infoFichier['extension'] . '/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
-						{
-							$nouveauNom = basename($fichier, '.' . $infoFichier['extension']);
-							$nouveauNom .= '-original.' . $infoFichier['extension'];
-							if (!file_exists($cheminGalerie . '/' . $nouveauNom) && rename($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom))
+							$infoFichier = pathinfo(basename($fichier));
+							if (!isset($infoFichier['extension']))
 							{
-								$listeModifs[] = sprintf(T_('Renommage de %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "\n";
+								$infoFichier['extension'] = '';
 							}
-							else
+							if (!preg_match('/-original\.' . $infoFichier['extension'] . '/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
 							{
-								$listeModifs[] = sprintf(T_('Impossible de renommer %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "\n";
+								$nouveauNom = basename($fichier, '.' . $infoFichier['extension']);
+								$nouveauNom .= '-original.' . $infoFichier['extension'];
+								if (!file_exists($cheminGalerie . '/' . $nouveauNom) && rename($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom))
+								{
+									$listeModifs[] = sprintf(T_('Renommage de %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "\n";
+								}
+								else
+								{
+									$listeModifs[] = sprintf(T_('Impossible de renommer %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "\n";
+								}
 							}
 						}
 					}
-				}
 			
-				closedir($fic);
+					closedir($fic);
+				}
+				else
+				{
+					$trad = "<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>\n";
+				}
 			}
 		
 			// A: les images à traiter ont la forme `nom-original.extension`
 		
-			$fic2 = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
-		
-			while($fichier = @readdir($fic2))
+			if (empty($trad) && $fic2 = opendir($cheminGalerie))
 			{
-				$infoFichier = pathinfo(basename($fichier));
-				if (!isset($infoFichier['extension']))
+				while($fichier = @readdir($fic2))
 				{
-					$infoFichier['extension'] = '';
-				}
-				$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
+					$infoFichier = pathinfo(basename($fichier));
+					if (!isset($infoFichier['extension']))
+					{
+						$infoFichier['extension'] = '';
+					}
+					$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
-				if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..' && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
+					if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..' && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
+					{
+						if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
+						{
+							$nettete = TRUE;
+						}
+						else
+						{
+							$nettete = FALSE;
+						}
+				
+						$imageIntermediaireDimensionsVoulues = array ();
+				
+						if (isset($_POST['largeur']))
+						{
+							if (!empty($_POST['largeur']))
+							{
+								$imageIntermediaireDimensionsVoulues['largeur'] = securiseTexte($_POST['largeur']);
+							}
+							else
+							{
+								$imageIntermediaireDimensionsVoulues['largeur'] = 0;
+							}
+						}
+				
+						if (isset($_POST['hauteur']))
+						{
+							if (!empty($_POST['hauteur']))
+							{
+								$imageIntermediaireDimensionsVoulues['hauteur'] = securiseTexte($_POST['hauteur']);
+							}
+							else
+							{
+								$imageIntermediaireDimensionsVoulues['hauteur'] = 0;
+							}
+						}
+				
+						$listeModifs[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette);
+					}
+				}
+				
+				closedir($fic2);
+				
+				if (empty($listeModifs))
 				{
-					if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
-					{
-						$nettete = TRUE;
-					}
-					else
-					{
-						$nettete = FALSE;
-					}
-				
-					$imageIntermediaireDimensionsVoulues = array ();
-				
-					if (isset($_POST['largeur']))
-					{
-						if (!empty($_POST['largeur']))
-						{
-							$imageIntermediaireDimensionsVoulues['largeur'] = securiseTexte($_POST['largeur']);
-						}
-						else
-						{
-							$imageIntermediaireDimensionsVoulues['largeur'] = 0;
-						}
-					}
-				
-					if (isset($_POST['hauteur']))
-					{
-						if (!empty($_POST['hauteur']))
-						{
-							$imageIntermediaireDimensionsVoulues['hauteur'] = securiseTexte($_POST['hauteur']);
-						}
-						else
-						{
-							$imageIntermediaireDimensionsVoulues['hauteur'] = 0;
-						}
-					}
-				
-					$listeModifs[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette);
+					$listeModifs[] = T_("Aucune modification.");
 				}
 			}
+		}
 		
-			closedir($fic2);
+		echo '<div class="boite2">' . "\n";
+		echo '<h3>' . T_("Retaillage des images") . '</h3>' . "\n";
 		
-			if (empty($listeModifs))
-			{
-				$listeModifs[] = T_("Aucune modification.");
-			}
+		if (!empty($trad))
+		{
+			echo $trad;
+		}
 		
-			echo '<div class="boite2">' . "\n";
-			echo '<h3>' . T_("Retaillage des images") . '</h3>' . "\n";
+		if (isset($listeModifs) && !empty($listeModifs))
+		{
 			echo '<ul>' . "\n";
 			foreach ($listeModifs as $modif)
 			{
 				echo '<li>' . $modif . '</li>' . "\n";
 			}
 			echo '</ul>' . "\n";
-			echo '</div><!-- /class=boite2 -->' . "\n";
 		}
+		
+		echo '</div><!-- /class=boite2 -->' . "\n";
 	}
 
 	########################################################################
@@ -380,52 +397,66 @@ include '../init.inc.php';
 
 	if (isset($_POST['supprimerVignettes']))
 	{
+		$trad = array ();
+		
 		// Vignettes des oeuvres
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-		$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
-		$trad = array ();
-		while($fichier = @readdir($fic))
+		if ($fic = opendir($cheminGalerie))
 		{
-			if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
-			{
-				if (preg_match('/-vignette\.(gif|png|jpg|jpeg)$/', $fichier))
-				{
-					if (unlink($cheminGalerie . '/' . $fichier))
-					{
-						$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
-					}
-					else
-					{
-						$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
-					}
-				}
-			}
-		}
-		closedir($fic);
-	
-		// Vignettes de navigation tatouées
-		if (isset($_POST['supprimerVignettesAvecTatouage']) && $_POST['supprimerVignettesAvecTatouage'] == 'supprimer')
-		{
-			$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
-			$fic = opendir($cheminTatouage) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminTatouage</code>") . "</p>");
 			while($fichier = @readdir($fic))
 			{
-				if(!is_dir($cheminTatouage . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+				if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 				{
-					if (preg_match('/-vignette-(precedent|suivant)\.(gif|png|jpg|jpeg)$/', $fichier))
+					if (preg_match('/-vignette\.(gif|png|jpg|jpeg)$/', $fichier))
 					{
-						if (unlink($cheminTatouage . '/' . $fichier))
+						if (unlink($cheminGalerie . '/' . $fichier))
 						{
-							$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+							$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
 						}
 						else
 						{
-							$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+							$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . '</li>';
 						}
 					}
 				}
 			}
 			closedir($fic);
+		}
+		else
+		{
+			$trad[] = "<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>\n";
+		}
+		
+		// Vignettes de navigation tatouées
+		if (isset($_POST['supprimerVignettesAvecTatouage']) && $_POST['supprimerVignettesAvecTatouage'] == 'supprimer')
+		{
+			$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
+			
+			if ($fic = opendir($cheminTatouage))
+			{
+				while($fichier = @readdir($fic))
+				{
+					if(!is_dir($cheminTatouage . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+					{
+						if (preg_match('/-vignette-(precedent|suivant)\.(gif|png|jpg|jpeg)$/', $fichier))
+						{
+							if (unlink($cheminTatouage . '/' . $fichier))
+							{
+								$trad[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+							}
+							else
+							{
+								$trad[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . '</li>';
+							}
+						}
+					}
+				}
+				closedir($fic);
+			}
+			else
+			{
+				$trad[] = "<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminTatouage</code>") . "</p>\n";
+			}
 		}
 	
 		// Messages
@@ -545,46 +576,63 @@ include '../init.inc.php';
 
 	if (isset($_POST['modeleConf']))
 	{
+		$trad = '';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-		$fic = opendir($cheminGalerie) or die("<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>");
-		$listeFichiers = '';
-		$tableauFichiers = array ();
-		while($fichier = @readdir($fic))
+		
+		if ($fic = opendir($cheminGalerie))
 		{
-			if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+			$listeFichiers = '';
+			$tableauFichiers = array ();
+			while($fichier = @readdir($fic))
 			{
-				if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
+				if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
 				{
-					$tableauFichiers[] = $fichier;
+					if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
+					{
+						$tableauFichiers[] = $fichier;
+					}
 				}
 			}
-		}
-		closedir($fic);
+			closedir($fic);
 	
-		sort($tableauFichiers);
-		$listeFichiers = '';
+			sort($tableauFichiers);
+			$listeFichiers = '';
 	
-		foreach ($tableauFichiers as $cle)
-		{
-			$listeFichiers .= "intermediaireNom=$cle\n";
-		
-			if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
+			foreach ($tableauFichiers as $cle)
 			{
-				foreach ($_POST['info'] as $champ)
-				{
-					$listeFichiers .= securiseTexte($champ) . "=\n";
-				}
-			}
+				$listeFichiers .= "intermediaireNom=$cle\n";
 		
-			$listeFichiers .= "#IMG\n";
+				if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
+				{
+					foreach ($_POST['info'] as $champ)
+					{
+						$listeFichiers .= securiseTexte($champ) . "=\n";
+					}
+				}
+		
+				$listeFichiers .= "#IMG\n";
+			}
 		}
-	
+		else
+		{
+			$trad = "<p class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</p>\n";
+		}
+		
 		echo '<div class="boite2">' . "\n";
 		echo '<h3>' . T_("Modèle") .'</h3>' ."\n" ;
-		echo '<pre id="listeFichiers">' . $listeFichiers . '</pre>' . "\n";
-		echo "<ul>\n";
-		echo "<li><a href=\"javascript:selectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-		echo "</ul>\n";
+		
+		if (!empty($trad))
+		{
+			echo $trad;
+		}
+		else
+		{
+			echo '<pre id="listeFichiers">' . $listeFichiers . '</pre>' . "\n";
+			echo "<ul>\n";
+			echo "<li><a href=\"javascript:selectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			echo "</ul>\n";
+		}
+		
 		echo "</div><!-- /class=boite2 -->\n";
 	}
 
