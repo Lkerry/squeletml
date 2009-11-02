@@ -28,7 +28,7 @@ $dossierRacine = '..';
 $filtreExtensions = FALSE; // TRUE|FALSE
 
 // Si $filtreExtensions vaut FALSE, extensions permises pour les fichiers téléchargés
-$extensionsPermises = array ('jpg', 'jpeg', 'png', 'gif', 'svg', 'pdf', 'mdtxt', 'pc', 'txt', 'sxw', 'odt', 'ods', 'rtf', 'doc', 'xls', 'tgz', 'tbz2', 'zip', '7z', 'bz2', 'gz', 'tar', 'ogg', 'mp3', 'rm', 'wma', 'mpg', 'mpeg', 'mp4', 'avi', 'mov', 'wmv');
+$extensionsPermises = array ('jpg', 'jpeg', 'png', 'gif', 'svg', 'pdf', 'mdtxt', 'pc', 'txt', 'sxw', 'odt', 'ods', 'rtf', 'doc', 'xls', 'tgz', 'tbz2', 'zip', '7z', 'bz2', 'gz', 'tar', 'ogg', 'oga', 'ogv', 'mp3', 'rm', 'wma', 'mpg', 'mpeg', 'mp4', 'avi', 'mov', 'wmv');
 
 // Filtre des dossiers
 /* Il est possible d'appliquer un filtre à la liste de dossiers.
@@ -54,7 +54,7 @@ $afficheDimensionsImages = TRUE; // TRUE|FALSE
 $action = $_SERVER['SCRIPT_NAME'];
 
 // Symbole variable GET
-/* Si la variable $action contient déjà une variable GET, mettre & sinon mettre ? */
+/* Si la variable `$action` contient déjà une variable GET, mettre &amp; sinon mettre ? */
 $symboleUrl = '?';
 
 // Coloration syntaxique en direct durant la saisie dans le textarea. La coloration s'applique au PHP, HTML, CSS et Javascript (séparément ou entremêlés dans le même fichier).

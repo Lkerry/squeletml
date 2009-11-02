@@ -420,7 +420,7 @@ elseif ($idGalerie)
 			{
 				$lienPrecedent = substr($lien, 0, -1);
 			}
-			$pagination .= '<a href="' . $lienPrecedent . '">' . T_("Page précédente") . '</a>';
+			$pagination .= '<a href="' . rawurlencode($lienPrecedent) . '">' . T_("Page précédente") . '</a>';
 		}
 		if ($page < $nombreDePages)
 		{
@@ -430,7 +430,7 @@ elseif ($idGalerie)
 			{
 				$pagination .= ' | ';
 			}
-			$pagination .= '<a href="' . $lienSuivant . '">' . T_("Page suivante") . '</a>';
+			$pagination .= '<a href="' . rawurlencode($lienSuivant) . '">' . T_("Page suivante") . '</a>';
 		}
 	
 		$pagination .= '</div><!-- /pagination -->' . "\n";

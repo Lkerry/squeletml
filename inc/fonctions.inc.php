@@ -375,7 +375,7 @@ Traite une chaîne pour l'afficher sécuritairement à l'écran.
 */
 function securiseTexte($texte)
 {
-	return stripslashes(htmlspecialchars($texte));
+	return sansEchappement(htmlspecialchars($texte, ENT_COMPAT, 'UTF-8'));
 }
 
 /**
@@ -1598,7 +1598,7 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
 		$protocole = 'http://';
 	}
 	
-	$serveur = $_SERVER['SERVER_NAME'];
+	$serveur = securiseTexte($_SERVER['SERVER_NAME']);
 	
 	if ($_SERVER['SERVER_PORT'] == 80)
 	{
@@ -1606,10 +1606,10 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
 	}
 	else
 	{
-		$port = ':' . $_SERVER['SERVER_PORT'];
+		$port = ':' . securiseTexte($_SERVER['SERVER_PORT']);
 	}
 	
-	$uri = $_SERVER['REQUEST_URI'];
+	$uri = securiseTexte($_SERVER['REQUEST_URI']);
 	
 	if (!$retourneVariablesGet)
 	{
@@ -1997,7 +1997,7 @@ function langue($langueParDefaut, $langue)
 {
 	if ($langue == 'navigateur')
 	{
-		$langue = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		$langue = explode(',', securiseTexte($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 		$langue = strtolower(substr(chop($langue[0]), 0, 2));
 		
 		return $langue;

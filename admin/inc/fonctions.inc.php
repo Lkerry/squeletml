@@ -33,14 +33,6 @@ function adminInit($racine)
 }
 
 /**
-Traite une chaîne pour l'afficher sécuritairement à l'écran.
-*/
-function adminFormateTexte($texte)
-{
-	return stripslashes($texte);
-}
-
-/**
 Retourne la valeur des variables `$galerieFluxRssGlobal` ou `$siteFluxRssGlobal`.
 */
 function adminFluxRssGlobal($fluxRss, $racine)
@@ -138,17 +130,17 @@ function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossier
 			
 			if (empty($dim))
 			{
-				$lienEditer = "<a href=\"$action" . $symboleUrl . "action=editer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Éditer") . "</a>";
+				$lienEditer = "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Éditer") . "</a>";
 			}
 			else
 			{
 				$lienEditer = T_("Éditer");
 			}
 			
-			$liste[$dossierRacine][] = "<a href=\"$action" . $symboleUrl . "action=renommer&valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a>
+			$liste[$dossierRacine][] = "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a>
 				<span class='porteDocumentsSep'>|</span> $lienEditer
 				<span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
-				<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><span class='porteDocumentsNom'>$fichier</span></a>$dim";
+				<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><code>$fichier</code></a>$dim";
 		}
 	}
 
@@ -328,7 +320,7 @@ Retourne l'id de `body`.
 */
 function adminBodyId()
 {
-	return str_replace('.', '-', page()));
+	return str_replace('.', '-', page());
 }
 
 /**
@@ -353,15 +345,15 @@ function ipInternaute()
 {
 	if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 	{
-		$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		$ip = securiseTexte($_SERVER['HTTP_X_FORWARDED_FOR']);
 	}
 	elseif (isset($_SERVER['HTTP_CLIENT_IP']))
 	{
-		$ip = $_SERVER['HTTP_CLIENT_IP'];
+		$ip = securiseTexte($_SERVER['HTTP_CLIENT_IP']);
 	}
 	elseif (isset($_SERVER['REMOTE_ADDR']))
 	{
-		$ip = $_SERVER['REMOTE_ADDR'];
+		$ip = securiseTexte($_SERVER['REMOTE_ADDR']);
 	}
 	else
 	{

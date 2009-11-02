@@ -226,6 +226,7 @@ Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe 
 
 Il est possible de traduire Squeletml dans la langue désirée. Le principal fichier est `locale/squeletml.pot`. Il contient la plupart des phrases à traduire. Les autres fichiers sont:
 
+- `admin/versions-solo.admin.php`
 - `inc/html.fr.ancres.inc.php`
 - `inc/html.fr.bas-de-page.inc.php`
 - `inc/html.fr.menu.inc.php`

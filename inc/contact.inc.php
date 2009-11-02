@@ -26,7 +26,7 @@ if (isset($_POST['envoyer']))
 	
 	if (isset($_POST['copie']))
 	{
-		$copie = securiseTexte($_POST['copie']);
+		$copie = $_POST['copie'];
 	}
 	
 	if ($decouvrir)

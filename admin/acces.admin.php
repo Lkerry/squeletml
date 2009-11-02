@@ -11,14 +11,16 @@ include 'inc/premier.inc.php';
 
 	<?php
 	// Début des tests pour vérifier l'accessibilité des fichiers nécessaires au script
+	$erreurAccesFichiers = FALSE;
+	
 	if ($ficTest = @fopen($racine . '/.htaccess', 'a+'))
 	{
 		fclose($ficTest);
 	}
 	else
 	{
-		echo '<p>' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), $racine . '/.htaccess') . '</p>';
-		exit(1);
+		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.htaccess</code>") . '</p>';
+		$erreurAccesFichiers = TRUE;
 	}
 
 	if ($ficTest = @fopen($racine . '/.acces', 'a+'))
@@ -27,8 +29,8 @@ include 'inc/premier.inc.php';
 	}
 	else
 	{
-		echo '<p>' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), $racine . '/.acces') . '</p>';
-		exit(1);
+		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.acces</code>") . '</p>';
+		$erreurAccesFichiers = TRUE;
 	}
 	// Fin des tests
 
@@ -38,7 +40,7 @@ include 'inc/premier.inc.php';
 	##
 	########################################################################
 
-	if (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
+	if (!$erreurAccesFichiers && isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
 	{
 		echo '<div class="boite2">' . "\n";
 		echo '<h3>' . T_("Gestion des droits d'accès à l'administration") . "</h3>\n";
@@ -50,11 +52,11 @@ include 'inc/premier.inc.php';
 			{
 				if (stristr(PHP_OS, 'win') || $serveurFreeFr)
 				{
-					$acces = adminFormateTexte($_POST['nom']) . ':' . adminFormateTexte($_POST['motDePasse']) . "\n";
+					$acces = securiseTexte($_POST['nom']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
 				}
 				else
 				{
-					$acces = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+					$acces = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
 				} 
 			
 				// On vérifie si l'utilisateur est déjà présent
@@ -62,7 +64,7 @@ include 'inc/premier.inc.php';
 				while (!feof($fic2))
 				{
 					$ligne = fgets($fic2);
-					if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
 					{
 						$utilisateurAbsent = FALSE;
 						break;
@@ -72,11 +74,11 @@ include 'inc/premier.inc.php';
 				if ($utilisateurAbsent)
 				{
 					fputs($fic2, $acces);
-					echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), adminFormateTexte($_POST['nom'])) . '</p>';
+					echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), securiseTexte($_POST['nom'])) . '</p>';
 				}
 				else
 				{
-					echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), adminFormateTexte($_POST['nom'])) . '</p>';
+					echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), securiseTexte($_POST['nom'])) . '</p>';
 				}
 		
 				fclose($fic2);
@@ -95,10 +97,10 @@ include 'inc/premier.inc.php';
 				while (!feof($fic2))
 				{
 					$ligne = fgets($fic2);
-					if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
 					{
 						$utilisateurAbsent = FALSE;
-						$ligne = adminFormateTexte($_POST['nom']) . ':' . crypt(adminFormateTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+						$ligne = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
 					}
 			
 					$utilisateurs[] = $ligne;
@@ -115,11 +117,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Son mot de passe ne peut donc pas être modifié.'), adminFormateTexte($_POST['nom'])) . '</p>';
+				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Son mot de passe ne peut donc pas être modifié.'), securiseTexte($_POST['nom'])) . '</p>';
 			}
 			else
 			{
-				echo '<p class="succes">' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), adminFormateTexte($_POST['nom'])) . '</p>';
+				echo '<p class="succes">' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), securiseTexte($_POST['nom'])) . '</p>';
 			}
 		}
 	
@@ -135,7 +137,7 @@ include 'inc/premier.inc.php';
 				while (!feof($fic2))
 				{
 					$ligne = fgets($fic2);
-					if (preg_match('/^' . adminFormateTexte($_POST['nom']) . ':/', $ligne))
+					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
 					{
 						$utilisateurAbsent = FALSE;
 					}
@@ -194,11 +196,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Il ne peut donc pas être supprimé.'), adminFormateTexte($_POST['nom'])) . '</p>';
+				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Il ne peut donc pas être supprimé.'), securiseTexte($_POST['nom'])) . '</p>';
 			}
 			else
 			{
-				echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), adminFormateTexte($_POST['nom'])) . '</p>';
+				echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), securiseTexte($_POST['nom'])) . '</p>';
 			}
 		}
 	
@@ -274,7 +276,7 @@ include 'inc/premier.inc.php';
 	##
 	########################################################################
 
-	if ((isset($_POST['lister'])) || (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer'])))
+	if (!$erreurAccesFichiers && ((isset($_POST['lister'])) || (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))))
 	{
 		echo '<div class="boite2">' . "\n";
 		echo '<h3>' . T_("Liste des utilisateurs") . '</h3>' . "\n";
@@ -313,7 +315,7 @@ include 'inc/premier.inc.php';
 	##
 	########################################################################
 
-	if (isset($_POST['changerEtat']))
+	if (!$erreurAccesFichiers && isset($_POST['changerEtat']))
 	{
 		echo '<div class="boite2">' . "\n";
 		echo '<h3>' . T_("Maintenance du site") . '</h3>' . "\n";
@@ -344,7 +346,7 @@ include 'inc/premier.inc.php';
 		
 			if (!empty($_POST['ip']))
 			{
-				$ip = str_replace('.', '\.', $_POST['ip']);
+				$ip = str_replace('.', '\.', securiseTexte($_POST['ip']));
 				$htaccess .= "\tRewriteCond %{REMOTE_ADDR} !^$ip\n";
 			}
 		
@@ -380,7 +382,7 @@ include 'inc/premier.inc.php';
 							{
 								if (!empty($_POST['ip']))
 								{
-									$ip = str_replace('.', '\.', $_POST['ip']);
+									$ip = str_replace('.', '\.', securiseTexte($_POST['ip']));
 									$fichierHtaccess[] = "\tRewriteCond %{REMOTE_ADDR} !^$ip";
 								}
 							}
@@ -465,73 +467,74 @@ include 'inc/premier.inc.php';
 ##
 ########################################################################
 ?>
+<?php if (!$erreurAccesFichiers): ?>
+	<div class="boite">
+		<h2><?php echo T_("Lister les utilisateurs ayant accès à l'administration"); ?></h2>
 
-<div class="boite">
-	<h2><?php echo T_("Lister les utilisateurs ayant accès à l'administration"); ?></h2>
+		<p><?php echo T_("Vous pouvez afficher la liste des utilisateurs ayant accès à l'administration."); ?></p>
 
-	<p><?php echo T_("Vous pouvez afficher la liste des utilisateurs ayant accès à l'administration."); ?></p>
+		<form action="<?php echo $action; ?>#messages" method="post">
+			<div>
+				<p><input type="submit" name="lister" value="<?php echo T_('Lister les utilisateurs'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /class=boite -->
 
-	<form action="<?php echo $action; ?>#messages" method="post">
-		<div>
-			<p><input type="submit" name="lister" value="<?php echo T_('Lister les utilisateurs'); ?>" /></p>
-		</div>
-	</form>
-</div><!-- /class=boite -->
+	<div class="boite">
+		<h2><?php echo T_("Gérer les droits d'accès à l'administration"); ?></h2>
 
-<div class="boite">
-	<h2><?php echo T_("Gérer les droits d'accès à l'administration"); ?></h2>
+		<p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
 
-	<p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
-
-	<form action="<?php echo $action; ?>#messages" method="post">
-		<div>
-			<p><label><?php echo T_("Nom:"); ?></label><br />
-			<input type="text" name="nom" /></p>
+		<form action="<?php echo $action; ?>#messages" method="post">
+			<div>
+				<p><label><?php echo T_("Nom:"); ?></label><br />
+				<input type="text" name="nom" /></p>
 			
-			<p><label><?php echo T_("Mot de passe:"); ?></label><br />
-			<input type="password" name="motDePasse" /></p>
+				<p><label><?php echo T_("Mot de passe:"); ?></label><br />
+				<input type="password" name="motDePasse" /></p>
 			
-			<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer'); ?>" /></p>
-		</div>
-	</form>
-</div><!-- /class=boite -->
+				<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /class=boite -->
 
-<div class="boite">
-	<h2><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
+	<div class="boite">
+		<h2><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
 
-	<p><?php echo T_("Si le site est hors ligne, tous les internautes visitant une page du site seront redirigés vers la page de maintenance."); ?></p>
+		<p><?php echo T_("Si le site est hors ligne, tous les internautes visitant une page du site seront redirigés vers la page de maintenance."); ?></p>
 
-	<?php if (reecritureDurl(FALSE) == 'n'): ?>
-		<p><strong><?php echo T_("Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
-	<?php elseif (reecritureDurl(FALSE) == '?'): ?>
-		<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
-	<?php endif; ?>
+		<?php if (reecritureDurl(FALSE) == 'n'): ?>
+			<p><strong><?php echo T_("Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
+		<?php elseif (reecritureDurl(FALSE) == '?'): ?>
+			<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
+		<?php endif; ?>
 
-	<form action="<?php echo $action; ?>#messages" method="post">
-		<div>
-			<p><?php echo T_("Le site est présentement:"); ?><br />
-			<input type="radio" name="etat" value="enLigne" <?php if (!adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <?php echo T_("en ligne."); ?><br />
-			<input type="radio" name="etat" value="horsLigne" <?php if (adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <?php echo T_("en maintenance (hors ligne)."); ?> <?php if (adminSiteEnMaintenance($racine . '/.htaccess')): ?>
-				<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
-					<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
-				<?php else: ?>
-					<?php echo T_("Aucune IP n'a accès au site hors ligne."); ?>
+		<form action="<?php echo $action; ?>#messages" method="post">
+			<div>
+				<p><?php echo T_("Le site est présentement:"); ?><br />
+				<input type="radio" name="etat" value="enLigne" <?php if (!adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <?php echo T_("en ligne."); ?><br />
+				<input type="radio" name="etat" value="horsLigne" <?php if (adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <?php echo T_("en maintenance (hors ligne)."); ?> <?php if (adminSiteEnMaintenance($racine . '/.htaccess')): ?>
+					<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
+						<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
+					<?php else: ?>
+						<?php echo T_("Aucune IP n'a accès au site hors ligne."); ?>
+					<?php endif; ?>
 				<?php endif; ?>
-			<?php endif; ?>
-			</p>
+				</p>
 			
-			<p><label><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
-			<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
-			<?php if ($ip): ?>
-				<?php $valeurChampIp = $ip; ?>
-			<?php else: ?>
-				<?php $valeurChampIp = ipInternaute(); ?>
-			<?php endif; ?>
-			<input type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
+				<p><label><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
+				<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
+				<?php if ($ip): ?>
+					<?php $valeurChampIp = $ip; ?>
+				<?php else: ?>
+					<?php $valeurChampIp = ipInternaute(); ?>
+				<?php endif; ?>
+				<input type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
 			
-			<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
-		</div>
-	</form>
-</div><!-- /class=boite -->
+				<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /class=boite -->
+<?php endif; ?>
 
 <?php include $racine . '/admin/inc/dernier.inc.php'; ?>

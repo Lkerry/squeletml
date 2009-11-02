@@ -44,6 +44,7 @@ include '../init.inc.php';
 				
 					echo '<div class="boite2">' . "\n";
 					echo '<h3>' . T_("Liste des pages des galeries") . '</h3>' . "\n";
+					
 					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie en français dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>fr:chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . '</p>';
 	
 					if (!empty($listeGaleries))
@@ -70,7 +71,7 @@ include '../init.inc.php';
 			}
 			else
 			{
-				echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
+				echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
 			}
 		}
 	
@@ -134,7 +135,7 @@ include '../init.inc.php';
 			}
 			else
 			{
-				echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
+				echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
 			}
 		}
 	}
@@ -151,14 +152,14 @@ include '../init.inc.php';
 			{
 				if (isset($postLangueValeur) && !empty($postLangueValeur) && isset($_POST['id'][$cle]) && !empty($_POST['id'][$cle]) && isset($_POST['url'][$cle]) && !empty($_POST['url'][$cle]))
 				{
-					$contenuFichierTableau[] = $postLangueValeur . ':' . sansEchappement($_POST['id'][$cle]) . '=' . sansEchappement($_POST['url'][$cle]) . "\n";
+					$contenuFichierTableau[] = securiseTexte($postLangueValeur) . ':' . securiseTexte($_POST['id'][$cle]) . '=' . securiseTexte($_POST['url'][$cle]) . "\n";
 				}
 			}
 		}
 	
 		if (isset($_POST['langueAjout']) && !empty($_POST['langueAjout']) && isset($_POST['idAjout']) && !empty($_POST['idAjout']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
 		{
-			array_unshift($contenuFichierTableau, $_POST['langueAjout'] . ':' . sansEchappement($_POST['idAjout']) . '=' . sansEchappement($_POST['urlAjout']) . "\n");
+			array_unshift($contenuFichierTableau, securiseTexte($_POST['langueAjout']) . ':' . securiseTexte($_POST['idAjout']) . '=' . securiseTexte($_POST['urlAjout']) . "\n");
 		}
 	
 		$contenuFichier = implode('', $contenuFichierTableau);
@@ -186,7 +187,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
+			echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
 			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 			echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 			echo "<ul>\n";
@@ -209,14 +210,14 @@ include '../init.inc.php';
 			{
 				if (isset($postLangueValeur) && !empty($postLangueValeur) && isset($_POST['url'][$cle]) && !empty($_POST['url'][$cle]))
 				{
-					$contenuFichierTableau[] = $postLangueValeur . ':' . sansEchappement($_POST['url'][$cle]) . "\n";
+					$contenuFichierTableau[] = securiseTexte($postLangueValeur) . ':' . securiseTexte($_POST['url'][$cle]) . "\n";
 				}
 			}
 		}
 	
 		if (isset($_POST['langueAjout']) && !empty($_POST['langueAjout']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
 		{
-			array_unshift($contenuFichierTableau, $_POST['langueAjout'] . ':' . sansEchappement($_POST['urlAjout']) . "\n");
+			array_unshift($contenuFichierTableau, securiseTexte($_POST['langueAjout']) . ':' . securiseTexte($_POST['urlAjout']) . "\n");
 		}
 	
 		$contenuFichier = implode('', $contenuFichierTableau);
@@ -244,7 +245,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), $cheminFichier, 'porte-documents.admin.php?action=editer&valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
+			echo '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.pc#messagesPorteDocuments');
 			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . '</p>';
 			echo '<pre id="contenuFichier">' . $contenuFichier . '</pre>' . "\n";
 			echo "<ul>\n";
@@ -274,7 +275,7 @@ include '../init.inc.php';
 		<?php endif; ?>
 	</ul>
 
-	<p><a href="porte-documents.admin.php?action=editer&valeur=../site/inc/config.inc.php#messagesPorteDocuments"><?php echo T_("Modifier cette configuration."); ?></a></p>
+	<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messagesPorteDocuments"><?php echo T_("Modifier cette configuration."); ?></a></p>
 </div><!-- /class=boite -->
 
 <div class="boite">

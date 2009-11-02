@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-30 16:41-0400\n"
+"POT-Creation-Date: 2009-11-02 10:08-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,7 +87,7 @@ msgstr ""
 msgid "Liste des pages des galeries"
 msgstr ""
 
-#: admin/rss.admin.php:47
+#: admin/rss.admin.php:48
 #, php-format
 msgid ""
 "Chaque ligne est sous la forme <code>code de la langue:identifiant de la "
@@ -95,25 +95,25 @@ msgid ""
 "à une galerie en français dont l'identifiant est %2$s et dont l'URL est %3$s."
 msgstr ""
 
-#: admin/rss.admin.php:55
+#: admin/rss.admin.php:56
 msgid "Le fichier est vide. Aucune galerie n'y est listée."
 msgstr ""
 
-#: admin/rss.admin.php:58
+#: admin/rss.admin.php:59
 msgid "Ajouter une galerie:"
 msgstr ""
 
-#: admin/rss.admin.php:61 admin/rss.admin.php:125
+#: admin/rss.admin.php:62 admin/rss.admin.php:126
 msgid "Enregistrer mes modifications"
 msgstr ""
 
-#: admin/rss.admin.php:68 admin/rss.admin.php:132 admin/rss.admin.php:179
-#: admin/rss.admin.php:237
+#: admin/rss.admin.php:69 admin/rss.admin.php:133 admin/rss.admin.php:180
+#: admin/rss.admin.php:238
 #, php-format
 msgid "Impossible d'ouvrir le fichier %1$s."
 msgstr ""
 
-#: admin/rss.admin.php:73 admin/rss.admin.php:189
+#: admin/rss.admin.php:74 admin/rss.admin.php:190
 #, php-format
 msgid ""
 "Aucune galerie ne peut faire partie du flux RSS global des galeries puisque "
@@ -121,11 +121,11 @@ msgid ""
 "a>."
 msgstr ""
 
-#: admin/rss.admin.php:110
+#: admin/rss.admin.php:111
 msgid "Liste des pages autres que les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:111
+#: admin/rss.admin.php:112
 #, php-format
 msgid ""
 "Chaque ligne est sous la forme <code>code de la langue:URL relative de la "
@@ -133,84 +133,84 @@ msgid ""
 "l'URL est %2$s."
 msgstr ""
 
-#: admin/rss.admin.php:119
+#: admin/rss.admin.php:120
 msgid "Le fichier est vide. Aucune page n'y est listée."
 msgstr ""
 
-#: admin/rss.admin.php:122
+#: admin/rss.admin.php:123
 msgid "Ajouter une page:"
 msgstr ""
 
-#: admin/rss.admin.php:137 admin/rss.admin.php:247
+#: admin/rss.admin.php:138 admin/rss.admin.php:248
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du flux RSS global du site puisque le "
 "fichier %1$s n'existe pas. <a href=\"%2$s\">Vous pouvez créer ce fichier</a>."
 msgstr ""
 
-#: admin/rss.admin.php:145
+#: admin/rss.admin.php:146
 msgid "Enregistrement des modifications pour les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:171 admin/rss.admin.php:229
+#: admin/rss.admin.php:172 admin/rss.admin.php:230
 #, php-format
 msgid ""
 "Les modifications ont été enregistrées. Voici le contenu qui a été "
 "enregistré dans le fichier %1$s:"
 msgstr ""
 
-#: admin/rss.admin.php:174 admin/rss.admin.php:183 admin/rss.admin.php:193
-#: admin/rss.admin.php:232 admin/rss.admin.php:241 admin/rss.admin.php:251
+#: admin/rss.admin.php:175 admin/rss.admin.php:184 admin/rss.admin.php:194
+#: admin/rss.admin.php:233 admin/rss.admin.php:242 admin/rss.admin.php:252
 #: admin/galeries.admin.php:586
 msgid "Sélectionner le résultat."
 msgstr ""
 
-#: admin/rss.admin.php:180 admin/rss.admin.php:190 admin/rss.admin.php:238
-#: admin/rss.admin.php:248
+#: admin/rss.admin.php:181 admin/rss.admin.php:191 admin/rss.admin.php:239
+#: admin/rss.admin.php:249
 msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
 msgstr ""
 
-#: admin/rss.admin.php:203
+#: admin/rss.admin.php:204
 msgid "Enregistrement des modifications pour les pages autres que les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:261
+#: admin/rss.admin.php:262
 msgid "Configuration actuelle"
 msgstr ""
 
-#: admin/rss.admin.php:265
+#: admin/rss.admin.php:266
 msgid "Le flux RSS global des galeries est activé"
 msgstr ""
 
-#: admin/rss.admin.php:267
+#: admin/rss.admin.php:268
 msgid "Le flux RSS global des galeries n'est pas activé"
 msgstr ""
 
-#: admin/rss.admin.php:271
+#: admin/rss.admin.php:272
 msgid "Le flux RSS global du site est activé"
 msgstr ""
 
-#: admin/rss.admin.php:273
+#: admin/rss.admin.php:274
 msgid "Le flux RSS global du site n'est pas activé"
 msgstr ""
 
-#: admin/rss.admin.php:277
+#: admin/rss.admin.php:278
 msgid "Modifier cette configuration."
 msgstr ""
 
-#: admin/rss.admin.php:281
+#: admin/rss.admin.php:282
 msgid "Pages ajoutées aux flux RSS globaux"
 msgstr ""
 
-#: admin/rss.admin.php:285
+#: admin/rss.admin.php:286
 msgid "Pages des galeries"
 msgstr ""
 
-#: admin/rss.admin.php:286
+#: admin/rss.admin.php:287
 msgid "Pages autres que les galeries"
 msgstr ""
 
-#: admin/rss.admin.php:288
+#: admin/rss.admin.php:289
 msgid "Lister les pages"
 msgstr ""
 
@@ -219,7 +219,7 @@ msgid "Documentation de Squeletml"
 msgstr ""
 
 #: admin/galeries.admin.php:3 admin/inc/html.menu.inc.php:8
-#: inc/fonctions.inc.php:1812
+#: inc/fonctions.inc.php:1875
 msgid "Galeries"
 msgstr ""
 
@@ -265,13 +265,14 @@ msgid "Création du dossier %1$s."
 msgstr ""
 
 #: admin/galeries.admin.php:97 admin/galeries.admin.php:191
+#: admin/porte-documents.admin.php:329 admin/porte-documents.admin.php:346
 #, php-format
 msgid "Impossible de créer le dossier %1$s."
 msgstr ""
 
 #: admin/galeries.admin.php:98 admin/galeries.admin.php:149
 #: admin/galeries.admin.php:170 admin/galeries.admin.php:221
-msgid "Archive supprimée."
+msgid "Fichier %1\\$s supprimé."
 msgstr ""
 
 #: admin/galeries.admin.php:127
@@ -319,6 +320,7 @@ msgid "Un fichier %1$s existe déjà. Il n'y a donc pas eu extraction."
 msgstr ""
 
 #: admin/galeries.admin.php:215 admin/galeries.admin.php:523
+#: admin/porte-documents.admin.php:406
 #, php-format
 msgid "Impossible de créer le fichier %1$s."
 msgstr ""
@@ -344,12 +346,12 @@ msgstr ""
 
 #: admin/galeries.admin.php:289
 #, php-format
-msgid "Renommage de <code>%1$s</code> en <code>%2$s</code>"
+msgid "Renommage de %1$s en %2$s"
 msgstr ""
 
 #: admin/galeries.admin.php:293
 #, php-format
-msgid "Impossible de renommer <code>%1$s</code> en <code>%2$s</code>"
+msgid "Impossible de renommer %1$s en %2$s"
 msgstr ""
 
 #: admin/galeries.admin.php:360
@@ -425,8 +427,8 @@ msgstr ""
 #: admin/galeries.admin.php:633
 #, php-format
 msgid ""
-"Erreur lors de la création ou de la mise à jour du fichier de configuration "
-"<code>%1$s</code>. Veuillez vérifier manuellement son contenu."
+"Erreur lors de la création ou de la mise à jour du fichier de configuration %"
+"1$s. Veuillez vérifier manuellement son contenu."
 msgstr ""
 
 #: admin/galeries.admin.php:638 admin/galeries.admin.php:659
@@ -666,7 +668,7 @@ msgid ""
 "champs vides:"
 msgstr ""
 
-#: admin/galeries.admin.php:833 admin/acces.admin.php:304
+#: admin/galeries.admin.php:833 admin/acces.admin.php:306
 msgid "Aucun"
 msgstr ""
 
@@ -689,29 +691,29 @@ msgstr ""
 msgid "Aller au contenu"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:141 admin/inc/fonctions.inc.php:145
+#: admin/inc/fonctions.inc.php:133 admin/inc/fonctions.inc.php:137
 msgid "Éditer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:148 admin/porte-documents.admin.php:536
+#: admin/inc/fonctions.inc.php:140 admin/porte-documents.admin.php:536
 msgid "Renommer/Déplacer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:150 admin/porte-documents.admin.php:536
+#: admin/inc/fonctions.inc.php:142 admin/porte-documents.admin.php:536
 #: admin/porte-documents.admin.php:543 admin/porte-documents.admin.php:547
-#: admin/acces.admin.php:494
+#: admin/acces.admin.php:496
 msgid "Supprimer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:392
+#: admin/inc/fonctions.inc.php:376
 msgid "La réécriture d'URL est activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:397
+#: admin/inc/fonctions.inc.php:381
 msgid "La réécriture d'URL n'est pas activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:403
+#: admin/inc/fonctions.inc.php:387
 msgid "Impossible de savoir si la réécriture d'URL est activée."
 msgstr ""
 
@@ -744,40 +746,55 @@ msgstr ""
 msgid "Retour au site"
 msgstr ""
 
-#: admin/inc/premier.inc.php:4
+#: admin/inc/premier.inc.php:47
 msgid "Administration de Squeletml"
 msgstr ""
 
-#: admin/versions.admin.php:3
+#: admin/versions.admin.php:3 admin/versions.admin.php:7
 msgid "Version de Squeletml et autres informations"
 msgstr ""
 
-#: admin/versions.admin.php:7
-msgid "Environnement utilisé"
-msgstr ""
-
-#: admin/versions.admin.php:10
-#, php-format
-msgid "Version de Squeletml: %1$s"
-msgstr ""
-
-#: admin/versions.admin.php:11
-#, php-format
-msgid "Version de PHP: %1$s"
+#: admin/versions.admin.php:9
+msgid "Aperçu"
 msgstr ""
 
 #: admin/versions.admin.php:12
 #, php-format
-msgid "Version d'Apache: %1$s"
+msgid "Version de Squeletml: %1$s"
+msgstr ""
+
+#: admin/versions.admin.php:13
+#, php-format
+msgid "Version de PHP: %1$s"
 msgstr ""
 
 #: admin/versions.admin.php:14
 #, php-format
+msgid "Version d'Apache: %1$s"
+msgstr ""
+
+#: admin/versions.admin.php:16
+#, php-format
 msgid "Système d'exploitation: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:17
-msgid "Afficher plus d'information."
+#: admin/versions.admin.php:20
+msgid "Afficher le <code>phpinfo()</code>"
+msgstr ""
+
+#: admin/versions.admin.php:21
+msgid "Afficher la liste des fonctions internes de PHP"
+msgstr ""
+
+#: admin/versions.admin.php:25
+msgid "Fonctions internes de PHP"
+msgstr ""
+
+#: admin/versions.admin.php:29
+#, php-format
+msgid ""
+"Il y a %1$s fonctions internes réparties entre %2$s modules. En voici la "
+"liste:"
 msgstr ""
 
 #: admin/porte-documents.admin.php:32
@@ -797,26 +814,22 @@ msgstr ""
 
 #: admin/porte-documents.admin.php:62 admin/porte-documents.admin.php:73
 #, php-format
-msgid "Suppression de <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
+msgid "Suppression de %1$s effectuée."
 msgstr ""
 
 #: admin/porte-documents.admin.php:66
 #, php-format
-msgid ""
-"Impossible de supprimer le fichier <span class=\"porteDocumentsNom\">%1$s</"
-"span>."
+msgid "Impossible de supprimer le fichier %1$s."
 msgstr ""
 
 #: admin/porte-documents.admin.php:77
 #, php-format
-msgid ""
-"Impossible de supprimer le dossier <span class=\"porteDocumentsNom\">%1$s</"
-"span>. Vérifiez qu'il est vide."
+msgid "Impossible de supprimer le dossier %1$s. Vérifiez qu'il est vide."
 msgstr ""
 
 #: admin/porte-documents.admin.php:82
 #, php-format
-msgid "<span class=\"porteDocumentsNom\">%1$s</span> n'existe pas."
+msgid "%1$s n'existe pas."
 msgstr ""
 
 #: admin/porte-documents.admin.php:94
@@ -825,9 +838,7 @@ msgstr ""
 
 #: admin/porte-documents.admin.php:97
 #, php-format
-msgid ""
-"Pour renommer <span class=\"porteDocumentsNom\">%1$s</span>, saisir le "
-"nouveau nom dans le champ."
+msgid "Pour renommer %1$s, saisir le nouveau nom dans le champ."
 msgstr ""
 
 #: admin/porte-documents.admin.php:98
@@ -859,17 +870,16 @@ msgstr ""
 #: admin/porte-documents.admin.php:124
 #, php-format
 msgid ""
-"Le fichier <span class=\"porteDocumentsNom\">%1$s</span> est consultable "
-"dans le champ ci-dessous. Vous pouvez y effectuer des modifications et "
-"ensuite cliquer sur «Sauvegarder les modifications»."
+"Le fichier %1$s est consultable dans le champ ci-dessous. Vous pouvez y "
+"effectuer des modifications et ensuite cliquer sur «Sauvegarder les "
+"modifications»."
 msgstr ""
 
 #: admin/porte-documents.admin.php:128
 #, php-format
 msgid ""
-"Le fichier <span class=\"porteDocumentsNom\">%1$s</span> n'existe pas. "
-"Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier "
-"sera créé avec le contenu du champ de saisi."
+"Le fichier %1$s n'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les "
+"modifications», le fichier sera créé avec le contenu du champ de saisi."
 msgstr ""
 
 #: admin/porte-documents.admin.php:160
@@ -899,23 +909,18 @@ msgstr ""
 
 #: admin/porte-documents.admin.php:199
 #, php-format
-msgid ""
-"Le fichier <span class=\"porteDocumentsNom\">%1$s</span> n'a pas pu être "
-"ouvert."
+msgid "Le fichier %1$s n'a pas pu être ouvert."
 msgstr ""
 
 #: admin/porte-documents.admin.php:205
 #, php-format
-msgid ""
-"Impossible d'écrire dans le fichier <span class=\"porteDocumentsNom\">%1$s</"
-"span>."
+msgid "Impossible d'écrire dans le fichier %1$s."
 msgstr ""
 
 #: admin/porte-documents.admin.php:216
 #, php-format
 msgid ""
-"Édition du fichier <span class=\"porteDocumentsNom\">%1$s</span> effectuée. "
-"<a href=\"%2$s\">Éditer à nouveau</a>."
+"Édition du fichier %1$s effectuée. <a href=\"%2$s\">Éditer à nouveau</a>."
 msgstr ""
 
 #: admin/porte-documents.admin.php:220
@@ -925,68 +930,47 @@ msgstr ""
 
 #: admin/porte-documents.admin.php:249 admin/porte-documents.admin.php:271
 #, php-format
-msgid ""
-"Création du dossier <span class=\"porteDocumentsNom\">%1$s</span> impossible."
+msgid "Création du dossier %1$s impossible."
 msgstr ""
 
 #: admin/porte-documents.admin.php:257
 #, php-format
-msgid ""
-"Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
-"class=\"porteDocumentsNom\">%2$s</span> effectués."
+msgid "Copie et renommage de %1$s en %2$s effectués."
 msgstr ""
 
 #: admin/porte-documents.admin.php:261
 #, php-format
-msgid ""
-"Copie et renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span "
-"class=\"porteDocumentsNom\">%2$s</span> impossibles."
+msgid "Copie et renommage de %1$s en %2$s impossibles."
 msgstr ""
 
 #: admin/porte-documents.admin.php:279
 #, php-format
-msgid ""
-"Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
-"\"porteDocumentsNom\">%2$s</span> effectué."
+msgid "Renommage de %1$s en %2$s effectué."
 msgstr ""
 
 #: admin/porte-documents.admin.php:283
 #, php-format
-msgid ""
-"Renommage de <span class=\"porteDocumentsNom\">%1$s</span> en <span class="
-"\"porteDocumentsNom\">%2$s</span> impossible."
+msgid "Renommage de %1$s en %2$s impossible."
 msgstr ""
 
 #: admin/porte-documents.admin.php:293
 #, php-format
-msgid ""
-"<span class=\"porteDocumentsNom\">%1$s</span> n'existe pas. Renommage en "
-"<span class=\"porteDocumentsNom\">%2$s</span> impossible."
+msgid "%1$s n'existe pas. Renommage en %2$s impossible."
 msgstr ""
 
 #: admin/porte-documents.admin.php:298
 #, php-format
-msgid ""
-"<span class=\"porteDocumentsNom\">%1$s</span> existe déjà. Renommage de "
-"<span class=\"porteDocumentsNom\">%2$s</span> impossible."
+msgid "%1$s existe déjà. Renommage de %2$s impossible."
 msgstr ""
 
 #: admin/porte-documents.admin.php:324
 #, php-format
-msgid ""
-"Création du dossier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
-msgstr ""
-
-#: admin/porte-documents.admin.php:329 admin/porte-documents.admin.php:346
-#, php-format
-msgid ""
-"Impossible de créer le dossier <span class=\"porteDocumentsNom\">%1$s</span>."
+msgid "Création du dossier %1$s effectuée."
 msgstr ""
 
 #: admin/porte-documents.admin.php:356
 #, php-format
-msgid ""
-"Création du fichier <span class=\"porteDocumentsNom\">%1$s</span> effectuée."
+msgid "Création du fichier %1$s effectuée."
 msgstr ""
 
 #: admin/porte-documents.admin.php:360
@@ -1004,15 +988,9 @@ msgstr ""
 msgid "Vous pouvez l'éditer."
 msgstr ""
 
-#: admin/porte-documents.admin.php:406
-#, php-format
-msgid ""
-"Impossible de créer le fichier <span class=\"porteDocumentsNom\">%1$s</span>."
-msgstr ""
-
 #: admin/porte-documents.admin.php:414
 #, php-format
-msgid "<span class=\"porteDocumentsNom\">%1$s</span> existe déjà."
+msgid "%1$s existe déjà."
 msgstr ""
 
 #: admin/porte-documents.admin.php:433
@@ -1041,12 +1019,12 @@ msgstr ""
 
 #: admin/porte-documents.admin.php:466
 #, php-format
-msgid "Transfert de <span class=\"porteDocumentsNom\">%1$s</span> complété."
+msgid "Transfert de %1$s complété."
 msgstr ""
 
 #: admin/porte-documents.admin.php:470 admin/porte-documents.admin.php:477
 #, php-format
-msgid "Erreur de transfert de <span class=\"porteDocumentsNom\">%1$s</span>."
+msgid "Erreur de transfert de %1$s."
 msgstr ""
 
 #: admin/porte-documents.admin.php:484
@@ -1085,7 +1063,7 @@ msgstr ""
 msgid "Dossier:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:566 admin/acces.admin.php:494
+#: admin/porte-documents.admin.php:566 admin/acces.admin.php:496
 msgid "Ajouter"
 msgstr ""
 
@@ -1099,7 +1077,7 @@ msgid ""
 "le nom. Exemples:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:583 admin/acces.admin.php:488
+#: admin/porte-documents.admin.php:583 admin/acces.admin.php:490
 msgid "Nom:"
 msgstr ""
 
@@ -1123,156 +1101,156 @@ msgstr ""
 msgid "Gestion de l'accès au site et à l'administration"
 msgstr ""
 
-#: admin/acces.admin.php:20 admin/acces.admin.php:30
+#: admin/acces.admin.php:22 admin/acces.admin.php:32
 #, php-format
 msgid ""
 "Impossible d'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui "
 "assigner les bons droits et revisiter la présente page."
 msgstr ""
 
-#: admin/acces.admin.php:44
+#: admin/acces.admin.php:46
 msgid "Gestion des droits d'accès à l'administration"
 msgstr ""
 
-#: admin/acces.admin.php:75
+#: admin/acces.admin.php:77
 #, php-format
 msgid "Utilisateur <em>%1$s</em> ajouté."
 msgstr ""
 
-#: admin/acces.admin.php:79
+#: admin/acces.admin.php:81
 #, php-format
 msgid "L'utilisateur <em>%1$s</em> a déjà les droits."
 msgstr ""
 
-#: admin/acces.admin.php:118
+#: admin/acces.admin.php:120
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Son mot de passe ne peut "
 "donc pas être modifié."
 msgstr ""
 
-#: admin/acces.admin.php:122
+#: admin/acces.admin.php:124
 #, php-format
 msgid "Mot de passe de l'utilisateur <em>%1$s</em> modifié."
 msgstr ""
 
-#: admin/acces.admin.php:197
+#: admin/acces.admin.php:199
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Il ne peut donc pas être "
 "supprimé."
 msgstr ""
 
-#: admin/acces.admin.php:201
+#: admin/acces.admin.php:203
 #, php-format
 msgid "Utilisateur <em>%1$s</em> supprimé."
 msgstr ""
 
-#: admin/acces.admin.php:280
+#: admin/acces.admin.php:282
 msgid "Liste des utilisateurs"
 msgstr ""
 
-#: admin/acces.admin.php:282
+#: admin/acces.admin.php:284
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/acces.admin.php:319
+#: admin/acces.admin.php:321
 msgid "Maintenance du site"
 msgstr ""
 
-#: admin/acces.admin.php:441
+#: admin/acces.admin.php:443
 msgid "Le site est en maintenance (hors ligne)."
 msgstr ""
 
-#: admin/acces.admin.php:444 admin/acces.admin.php:516
+#: admin/acces.admin.php:446 admin/acces.admin.php:518
 #, php-format
 msgid "L'IP %1$s a accès au site hors ligne."
 msgstr ""
 
-#: admin/acces.admin.php:448 admin/acces.admin.php:518
+#: admin/acces.admin.php:450 admin/acces.admin.php:520
 msgid "Aucune IP n'a accès au site hors ligne."
 msgstr ""
 
-#: admin/acces.admin.php:453
+#: admin/acces.admin.php:455
 msgid "Le site est en ligne."
 msgstr ""
 
-#: admin/acces.admin.php:470
+#: admin/acces.admin.php:472
 msgid "Lister les utilisateurs ayant accès à l'administration"
 msgstr ""
 
-#: admin/acces.admin.php:472
+#: admin/acces.admin.php:474
 msgid ""
 "Vous pouvez afficher la liste des utilisateurs ayant accès à "
 "l'administration."
 msgstr ""
 
-#: admin/acces.admin.php:476
+#: admin/acces.admin.php:478
 msgid "Lister les utilisateurs"
 msgstr ""
 
-#: admin/acces.admin.php:482
+#: admin/acces.admin.php:484
 msgid "Gérer les droits d'accès à l'administration"
 msgstr ""
 
-#: admin/acces.admin.php:484
+#: admin/acces.admin.php:486
 msgid ""
 "Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire "
 "ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur "
 "existant."
 msgstr ""
 
-#: admin/acces.admin.php:491
+#: admin/acces.admin.php:493
 msgid "Mot de passe:"
 msgstr ""
 
-#: admin/acces.admin.php:494
+#: admin/acces.admin.php:496
 msgid "Modifier"
 msgstr ""
 
-#: admin/acces.admin.php:500
+#: admin/acces.admin.php:502
 msgid "Mettre le site hors ligne pour maintenance"
 msgstr ""
 
-#: admin/acces.admin.php:502
+#: admin/acces.admin.php:504
 msgid ""
 "Si le site est hors ligne, tous les internautes visitant une page du site "
 "seront redirigés vers la page de maintenance."
 msgstr ""
 
-#: admin/acces.admin.php:505
+#: admin/acces.admin.php:507
 msgid ""
 "Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est "
 "pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera "
 "pas."
 msgstr ""
 
-#: admin/acces.admin.php:507
+#: admin/acces.admin.php:509
 msgid ""
 "Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</"
 "code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la "
 "mise hors ligne du site ne fonctionnera pas."
 msgstr ""
 
-#: admin/acces.admin.php:512
+#: admin/acces.admin.php:514
 msgid "Le site est présentement:"
 msgstr ""
 
-#: admin/acces.admin.php:513
+#: admin/acces.admin.php:515
 msgid "en ligne."
 msgstr ""
 
-#: admin/acces.admin.php:514
+#: admin/acces.admin.php:516
 msgid "en maintenance (hors ligne)."
 msgstr ""
 
-#: admin/acces.admin.php:523
+#: admin/acces.admin.php:525
 msgid ""
 "IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour "
 "désactiver cette option):"
 msgstr ""
 
-#: admin/acces.admin.php:532
+#: admin/acces.admin.php:534
 msgid "Changer l'état du site"
 msgstr ""
 
@@ -1291,13 +1269,13 @@ msgid ""
 "seconde documentation en parallèle."
 msgstr ""
 
-#: inc/fonctions.inc.php:495
+#: inc/fonctions.inc.php:492
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 msgstr ""
 
-#: inc/fonctions.inc.php:497
+#: inc/fonctions.inc.php:494
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -1306,132 +1284,132 @@ msgid ""
 "travail, vous pouvez faire la suggestion à votre service informatique."
 msgstr ""
 
-#: inc/fonctions.inc.php:499
+#: inc/fonctions.inc.php:496
 msgid "Télécharger Firefox"
 msgstr ""
 
-#: inc/fonctions.inc.php:797
+#: inc/fonctions.inc.php:804
 msgid "Légende de l'oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:927
+#: inc/fonctions.inc.php:934
 #, php-format
 msgid "Copie de <code>%1$s</code> avec le nom <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:931
+#: inc/fonctions.inc.php:938
 #, php-format
 msgid "Impossible de copier <code>%1$s</code> avec le nom <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:982 inc/fonctions.inc.php:993
-#: inc/fonctions.inc.php:1004
+#: inc/fonctions.inc.php:989 inc/fonctions.inc.php:1000
+#: inc/fonctions.inc.php:1011
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:986 inc/fonctions.inc.php:997
-#: inc/fonctions.inc.php:1008
+#: inc/fonctions.inc.php:993 inc/fonctions.inc.php:1004
+#: inc/fonctions.inc.php:1015
 #, php-format
 msgid "Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>"
 msgstr ""
 
-#: inc/fonctions.inc.php:1070
+#: inc/fonctions.inc.php:1077
 msgid "Oeuvre"
 msgstr ""
 
-#: inc/fonctions.inc.php:1083
+#: inc/fonctions.inc.php:1090
 #, php-format
 msgid "%1$s&nbsp;Kio"
 msgstr ""
 
-#: inc/fonctions.inc.php:1112
+#: inc/fonctions.inc.php:1119
 #, php-format
 msgid "Télécharger l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:1117
+#: inc/fonctions.inc.php:1124
 #, php-format
 msgid "Afficher l'image au format original (%1$sKio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:1159
+#: inc/fonctions.inc.php:1166
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:1163
+#: inc/fonctions.inc.php:1170
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:1171
+#: inc/fonctions.inc.php:1178
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:1175
+#: inc/fonctions.inc.php:1182
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:1179
+#: inc/fonctions.inc.php:1186
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:1183
+#: inc/fonctions.inc.php:1190
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:1187
+#: inc/fonctions.inc.php:1194
 msgid "Fabriquant"
 msgstr ""
 
-#: inc/fonctions.inc.php:1352 inc/fonctions.inc.php:1660
+#: inc/fonctions.inc.php:1359 inc/fonctions.inc.php:1723
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1512
+#: inc/fonctions.inc.php:1519
 msgid "Consultez cette page!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1512 inc/fonctions.inc.php:1571
+#: inc/fonctions.inc.php:1519 inc/fonctions.inc.php:1578
 msgid "En espérant qu'elle vous intéresse!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1571
+#: inc/fonctions.inc.php:1578
 msgid "Voyez l'oeuvre en plus grande taille!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1722
+#: inc/fonctions.inc.php:1785
 msgid "Lien vers l'oeuvre au format original."
 msgstr ""
 
-#: inc/fonctions.inc.php:1805
+#: inc/fonctions.inc.php:1868
 #, php-format
 msgid "Galerie %1$s | %2$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1807
+#: inc/fonctions.inc.php:1870
 #, php-format
 msgid "Derniers ajouts à la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1814
+#: inc/fonctions.inc.php:1877
 msgid "Derniers ajouts aux galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1819 inc/fonctions.inc.php:1821
+#: inc/fonctions.inc.php:1882 inc/fonctions.inc.php:1884
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/fonctions.inc.php:1854 inc/premier.inc.php:128
+#: inc/fonctions.inc.php:1917 inc/premier.inc.php:150
 #, php-format
 msgid "RSS de la galerie %1$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:1858 inc/premier.inc.php:132
+#: inc/fonctions.inc.php:1921 inc/premier.inc.php:154
 msgid "RSS de toutes les galeries"
 msgstr ""
 
-#: inc/fonctions.inc.php:1862 inc/premier.inc.php:136
+#: inc/fonctions.inc.php:1925 inc/premier.inc.php:158
 msgid "RSS global du site"
 msgstr ""
 
@@ -1457,14 +1435,14 @@ msgid ""
 "découvrir l'oeuvre %3$s, qui fait partie de la galerie %4$s."
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:60
+#: inc/faire-decouvrir.inc.php:57
 #, php-format
 msgid ""
 "%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
 "découvrir la galerie %3$s."
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:78
+#: inc/faire-decouvrir.inc.php:72
 #, php-format
 msgid ""
 "%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
@@ -1641,15 +1619,14 @@ msgstr ""
 
 #: inc/message-accueil.inc.php:6
 msgid ""
-"<p><img src='http://www.jpfleury.net/fichiers/squeletml-logo.png' "
-"alt='Squeletml' width='75' height='75' style='float: left; margin-right: "
-"5px; margin-bottom: 5px;' />Le logiciel libre Squeletml est un squelette de "
-"site valide XHTML 1.0 Strict géré par inclusion de fichiers PHP et sans base "
-"de données, c'est-à-dire un site dont le corps de chaque page se trouve dans "
-"un fichier unique et dont les principaux éléments de structuration comme "
-"l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a "
-"pour but de réduire l'effort nécessaire pour la création et la maintenance "
-"de ce genre de site.</p>"
+"<p><img class='gauche' src='http://www.jpfleury.net/fichiers/squeletml-logo."
+"png' alt='Squeletml' width='75' height='75' />Le logiciel libre Squeletml "
+"est un squelette de site valide XHTML 1.0 Strict géré par inclusion de "
+"fichiers PHP et sans base de données, c'est-à-dire un site dont le corps de "
+"chaque page se trouve dans un fichier unique et dont les principaux éléments "
+"de structuration comme l'en-tête, le bas de page, etc. sont partagés entre "
+"toutes les pages. Il a pour but de réduire l'effort nécessaire pour la "
+"création et la maintenance de ce genre de site.</p>"
 msgstr ""
 
 #: inc/message-accueil.inc.php:8
@@ -1694,7 +1671,7 @@ msgid ""
 "visitant la documentation</a>.</p>"
 msgstr ""
 
-#: js/squeletml.js:187
+#: js/squeletml.js:188
 msgid "Table des matières"
 msgstr ""
 

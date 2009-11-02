@@ -5,7 +5,7 @@ include 'inc/premier.inc.php';
 
 if (isset($_GET['valeur']))
 {
-	$getValeur = sansEchappement($_GET['valeur']);
+	$getValeur = securiseTexte($_GET['valeur']);
 }
 
 // Création de la variable $tableauFiltresDossiers
@@ -54,32 +54,32 @@ if (isset($_POST['telechargerSuppr']))
 	echo "<ul>\n";
 	foreach ($suppr as $valeur)
 	{
-		$valeur = sansEchappement($valeur);
+		$valeur = securiseTexte($valeur);
 		if (file_exists($valeur) && !is_dir($valeur))
 		{
 			if (unlink($valeur))
 			{
-				echo "<li class='succes'>" . sprintf(T_('Suppression de <span class="porteDocumentsNom">%1$s</span> effectuée.'), $valeur) . "</li>\n";
+				echo "<li class='succes'>" . sprintf(T_('Suppression de %1$s effectuée.'), "<code>$valeur</code>") . "</li>\n";
 			}
 			else
 			{
-				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le fichier <span class="porteDocumentsNom">%1$s</span>.'), $valeur) . "</li>";
+				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le fichier %1$s.'), "<code>$valeur</code>") . "</li>";
 			}
 		}
 		elseif (file_exists($valeur) && is_dir($valeur))
 		{
 			if (rmdir($valeur))
 			{
-				echo "<li class='succes'>" . sprintf(T_('Suppression de <span class="porteDocumentsNom">%1$s</span> effectuée.'), $valeur) . "</li>\n";
+				echo "<li class='succes'>" . sprintf(T_('Suppression de %1$s effectuée.'), "<code>$valeur</code>") . "</li>\n";
 			}
 			else
 			{
-				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le dossier <span class="porteDocumentsNom">%1$s</span>. Vérifiez qu\'il est vide.'), $valeur) . "</li>";
+				echo "<li class='erreur'>" . sprintf(T_('Impossible de supprimer le dossier %1$s. Vérifiez qu\'il est vide.'), "<code>$valeur</code>") . "</li>";
 			}
 		}
 		elseif (!file_exists($valeur))
 		{
-			echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> n\'existe pas.'), $valeur) . "</li>\n";
+			echo "<li class='erreur'>" . sprintf(T_('%1$s n\'existe pas.'), "<code>$valeur</code>") . "</li>\n";
 		}
 	}
 	echo "</ul>\n";
@@ -94,13 +94,13 @@ if (isset($_GET['action']))
 		echo "<h3>" . T_("Insctructions de renommage") . "</h3>";
 		
 		echo "<ul>\n";
-		echo "<li>" . sprintf(T_('Pour renommer <span class="porteDocumentsNom">%1$s</span>, saisir le nouveau nom dans le champ.'), $ancienNom) . "</li>";
+		echo "<li>" . sprintf(T_('Pour renommer %1$s, saisir le nouveau nom dans le champ.'), "<code>$ancienNom</code>") . "</li>";
 		echo "<li>" . T_("Ne pas oublier de mettre le chemin dans le nom.");
 		echo "<li>" . T_("Exemples:");
 		echo "<ul>\n";
-		echo "<li><span class='porteDocumentsNom'>$dossierRacine/nouveau-nom-dossier</span></li>";
-		echo "<li><span class='porteDocumentsNom'>$dossierRacine/nouveau-nom.txt</span></li>";
-		echo "<li><span class='porteDocumentsNom'>fichiers/nouveau-nom-dossier/nouveau-nom-fichier.txt</span>.</li>";
+		echo "<li><code>$dossierRacine/nouveau-nom-dossier</code></li>";
+		echo "<li><code>$dossierRacine/nouveau-nom.txt</code></li>";
+		echo "<li><code>fichiers/nouveau-nom-dossier/nouveau-nom-fichier.txt</code>.</li>";
 		echo "</ul></li>";
 		echo "<li>" . T_("Important: ne pas mettre de barre oblique / dans le nouveau nom du fichier. N'utiliser ce signe que pour marquer le chemin vers le fichier.") . "</li>";
 		echo "</ul>\n";
@@ -121,11 +121,11 @@ if (isset($_GET['action']))
 		
 		if (file_exists($getValeur))
 		{
-			echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), $getValeur) . "</p>";
+			echo "<p>" . sprintf(T_('Le fichier %1$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications».'), "<code>$getValeur</code>") . "</p>";
 		}
 		else
 		{
-			echo "<p>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> n\'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisi.'), $getValeur) . "</p>";
+			echo "<p>" . sprintf(T_('Le fichier %1$s n\'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisi.'), "<code>$getValeur</code>") . "</p>";
 		}
 	
 		echo "<form action='$action#messagesPorteDocuments' method='post'>\n";
@@ -176,18 +176,18 @@ if (isset($_GET['action']))
 
 if (isset($_POST['porteDocumentsEditerAnnuler']))
 {
-	$porteDocumentsEditerNom = sansEchappement($_POST['porteDocumentsEditerNom']);
+	$porteDocumentsEditerNom = securiseTexte($_POST['porteDocumentsEditerNom']);
 
-	echo "<p class='succes'>" . sprintf(T_('Aucune modification apportée au fichier %1$s.'), $porteDocumentsEditerNom) . "</p>";
+	echo "<p class='succes'>" . sprintf(T_('Aucune modification apportée au fichier %1$s.'), "<code>$porteDocumentsEditerNom</code>") . "</p>";
 }
 elseif (isset($_POST['porteDocumentsContenuFichier']))
 {
-	$porteDocumentsEditerNom = sansEchappement($_POST['porteDocumentsEditerNom']);
+	$porteDocumentsEditerNom = securiseTexte($_POST['porteDocumentsEditerNom']);
 
 	$messageErreurEditer = '';
 	$messageErreurEditer .= "<p class='erreur'>" . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
 	$messageErreurEditer .= '<p><textarea class="consulterModifications" name="porteDocumentsContenuFichier" readonly="readonly">';
-	$messageErreurEditer .= adminFormateTexte($_POST['porteDocumentsContenuFichier']);
+	$messageErreurEditer .= securiseTexte($_POST['porteDocumentsContenuFichier']);
 	$messageErreurEditer .= "</textarea></p>\n";
 
 	$messageErreurEditerAffiche = FALSE;
@@ -196,13 +196,13 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 
 	if (!$fic = fopen($porteDocumentsEditerNom, 'w'))
 	{
-		echo "<li><p class='erreur'>" . sprintf(T_('Le fichier <span class="porteDocumentsNom">%1$s</span> n\'a pas pu être ouvert.'), $porteDocumentsEditerNom) . "</p>\n$messageErreurEditer</li>\n";
+		echo "<li><p class='erreur'>" . sprintf(T_('Le fichier %1$s n\'a pas pu être ouvert.'), "<code>$porteDocumentsEditerNom</code>") . "</p>\n$messageErreurEditer</li>\n";
 		$messageErreurEditerAffiche = TRUE;
 	}
 
-	if (fwrite($fic, adminFormateTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
+	if (fwrite($fic, securiseTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
 	{
-		echo "<li><p class='erreur'>" . sprintf(T_('Impossible d\'écrire dans le fichier <span class="porteDocumentsNom">%1$s</span>.'), $porteDocumentsEditerNom) . "</p>\n";
+		echo "<li><p class='erreur'>" . sprintf(T_('Impossible d\'écrire dans le fichier %1$s.'), "<code>$porteDocumentsEditerNom</code>") . "</p>\n";
 		if (!$messageErreurEditerAffiche)
 		{
 			echo $messageErreurEditer;
@@ -213,11 +213,11 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 
 	if (!$messageErreurEditerAffiche)
 	{
-		echo "<li class='succes'>" . sprintf(T_('Édition du fichier <span class="porteDocumentsNom">%1$s</span> effectuée. <a href="%2$s">Éditer à nouveau</a>.'), $porteDocumentsEditerNom, 'porte-documents.admin.php?action=editer&valeur=' . $porteDocumentsEditerNom . '#messagesPorteDocuments') . "</li>\n";
+		echo "<li class='succes'>" . sprintf(T_('Édition du fichier %1$s effectuée. <a href="%2$s">Éditer à nouveau</a>.'), "<code>$porteDocumentsEditerNom</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditerNom . '#messagesPorteDocuments') . "</li>\n";
 	}
 	else
 	{
-		echo "<li>" . sprintf(T_('<a href="%1$s">Tenter à nouveau d\'éditer le fichier.</a>'), 'porte-documents.admin.php?action=editer&valeur=' . $porteDocumentsEditerNom . '#messagesPorteDocuments') . "</li>\n";
+		echo "<li>" . sprintf(T_('<a href="%1$s">Tenter à nouveau d\'éditer le fichier.</a>'), 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditerNom . '#messagesPorteDocuments') . "</li>\n";
 	}
 
 	fclose($fic);
@@ -226,8 +226,8 @@ elseif (isset($_POST['porteDocumentsContenuFichier']))
 
 if (isset($_POST['porteDocumentsNouveauNom']))
 {
-	$ancienNom = sansEchappement($_POST['porteDocumentsAncienNom']);
-	$nouveauNom = sansEchappement($_POST['porteDocumentsNouveauNom']);
+	$ancienNom = securiseTexte($_POST['porteDocumentsAncienNom']);
+	$nouveauNom = securiseTexte($_POST['porteDocumentsNouveauNom']);
 	if (isset($_POST['porteDocumentsRenommerDupliquer']) && $_POST['porteDocumentsRenommerDupliquer'] == 'dupliquer')
 	{
 		$dupliquer = TRUE;
@@ -246,7 +246,7 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 			{
 				if (!mkdir(dirname($nouveauNom), 0755, TRUE))
 				{
-					echo "<li class='erreur'>" . sprintf(T_('Création du dossier <span class="porteDocumentsNom">%1$s</span> impossible.'), dirname($nouveauNom)) . "</li>\n";
+					echo "<li class='erreur'>" . sprintf(T_('Création du dossier %1$s impossible.'), '<code>' . dirname($nouveauNom) . '</code>') . "</li>\n";
 				}
 			}
 		
@@ -254,11 +254,11 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 			{
 				if (copy($ancienNom, $nouveauNom))
 				{
-					echo "<li class='succes'>" . sprintf(T_('Copie et renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> effectués.'), $ancienNom, $nouveauNom) . "</li>\n";
+					echo "<li class='succes'>" . sprintf(T_('Copie et renommage de %1$s en %2$s effectués.'), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
 				}
 				else
 				{
-					echo "<li class='erreur'>" . sprintf(T_('Copie et renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> impossibles.'), $ancienNom, $nouveauNom) . "</li>\n";
+					echo "<li class='erreur'>" . sprintf(T_('Copie et renommage de %1$s en %2$s impossibles.'), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
 				}
 			}
 		}
@@ -268,7 +268,7 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 			{
 				if (!mkdir(dirname($nouveauNom), 0755, TRUE))
 				{
-					echo "<li class='erreur'>" . sprintf(T_('Création du dossier <span class="porteDocumentsNom">%1$s</span> impossible.'), dirname($nouveauNom)) . "</li>\n";
+					echo "<li class='erreur'>" . sprintf(T_('Création du dossier %1$s impossible.'), '<code>' . dirname($nouveauNom) . '</code>') . "</li>\n";
 				}
 			}
 		
@@ -276,11 +276,11 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 			{
 				if (rename($ancienNom, $nouveauNom))
 				{
-					echo "<li class='succes'>" . sprintf(T_('Renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> effectué.'), $ancienNom, $nouveauNom) . "</li>\n";
+					echo "<li class='succes'>" . sprintf(T_('Renommage de %1$s en %2$s effectué.'), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
 				}
 				else
 				{
-					echo "<li class='erreur'>" . sprintf(T_('Renommage de <span class="porteDocumentsNom">%1$s</span> en <span class="porteDocumentsNom">%2$s</span> impossible.'), $ancienNom, $nouveauNom) . "</li>\n";
+					echo "<li class='erreur'>" . sprintf(T_('Renommage de %1$s en %2$s impossible.'), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
 				}
 			}
 		}
@@ -290,12 +290,12 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 	{
 		if (!file_exists($ancienNom))
 		{
-			echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> n\'existe pas. Renommage en <span class="porteDocumentsNom">%2$s</span> impossible.'), $ancienNom, $nouveauNom) . "</li>\n";
+			echo "<li class='erreur'>" . sprintf(T_('%1$s n\'existe pas. Renommage en %2$s impossible.'), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
 		}
 	
 		if (file_exists($nouveauNom))
 		{
-			echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> existe déjà. Renommage de <span class="porteDocumentsNom">%2$s</span> impossible.'), $nouveauNom, $ancienNom) . "</li>\n";
+			echo "<li class='erreur'>" . sprintf(T_('%1$s existe déjà. Renommage de %2$s impossible.'), "<code>$nouveauNom</code>", "<code>$ancienNom</code>") . "</li>\n";
 		}
 	}
 	echo "</ul>\n";
@@ -303,7 +303,7 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 
 if (isset($_POST['porteDocumentsCreer']))
 {
-	$fichierCreeNom = sansEchappement($_POST['porteDocumentsFichierCreeNom']);
+	$fichierCreeNom = securiseTexte($_POST['porteDocumentsFichierCreeNom']);
 
 	if (!preg_match("|^$dossierRacine/|i", $fichierCreeNom))
 	{
@@ -321,12 +321,12 @@ if (isset($_POST['porteDocumentsCreer']))
 		{
 			if (mkdir($fichierCreeNom, 0755, TRUE))
 			{
-				echo "<li class='succes'>" . sprintf(T_('Création du dossier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom) . "</li>\n";
+				echo "<li class='succes'>" . sprintf(T_('Création du dossier %1$s effectuée.'), "<code>$fichierCreeNom</code>") . "</li>\n";
 			}
 
 			else
 			{
-				echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier <span class="porteDocumentsNom">%1$s</span>.'), $fichierCreeNom) . "</li>\n";
+				echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier %1$s.'), "<code>$fichierCreeNom</code>") . "</li>\n";
 			}
 		}
 	
@@ -343,7 +343,7 @@ if (isset($_POST['porteDocumentsCreer']))
 			{
 				if (!mkdir($cheminPage, 0755, TRUE))
 				{
-					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier <span class="porteDocumentsNom">%1$s</span>.'), $cheminPage) . "</li>\n";
+					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier %1$s.'), "<code>$cheminPage</code>") . "</li>\n";
 				}
 			}
 		
@@ -353,11 +353,11 @@ if (isset($_POST['porteDocumentsCreer']))
 				{
 					// Ouverture de <li class='succes'>
 					echo "<li class='succes'>";
-					echo sprintf(T_('Création du fichier <span class="porteDocumentsNom">%1$s</span> effectuée.'), $fichierCreeNom);
+					echo sprintf(T_('Création du fichier %1$s effectuée.'), "<code>$fichierCreeNom</code>");
 				
 					if ($fichierCreeType == 'FichierModele')
 					{
-						echo sprintf(T_('Vous pouvez <a href="%1$s">l\'éditer</a> ou <a href="%2$s">l\'afficher</a>.'), 'porte-documents.admin.php?action=editer&valeur=' . $fichierCreeNom . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
+						echo sprintf(T_('Vous pouvez <a href="%1$s">l\'éditer</a> ou <a href="%2$s">l\'afficher</a>.'), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierCreeNom . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
 					
 						$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
 						$cheminInclude = dirname($cheminInclude);
@@ -394,7 +394,7 @@ if (isset($_POST['porteDocumentsCreer']))
 					}
 					else
 					{
-						echo ' <a href="porte-documents.admin.php?action=editer&valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
+						echo ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . $fichierCreeNom . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
 					}
 				
 					// Fermeture de <li class='succes'>
@@ -403,7 +403,7 @@ if (isset($_POST['porteDocumentsCreer']))
 		
 				else
 				{
-					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le fichier <span class="porteDocumentsNom">%1$s</span>.'), $fichierCreeNom) . "</li>\n";
+					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le fichier %1$s.'), "<code>$fichierCreeNom</code>") . "</li>\n";
 				}
 			}
 		}
@@ -411,7 +411,7 @@ if (isset($_POST['porteDocumentsCreer']))
 
 	else
 	{
-		echo "<li class='erreur'>" . sprintf(T_('<span class="porteDocumentsNom">%1$s</span> existe déjà.'), $fichierCreeNom) . "</li>\n";
+		echo "<li class='erreur'>" . sprintf(T_('%1$s existe déjà.'), "<code>$fichierCreeNom</code>") . "</li>\n";
 	}
 	echo "</ul>\n";
 }
@@ -419,8 +419,8 @@ if (isset($_POST['porteDocumentsCreer']))
 if (isset($_FILES['fichier']))
 {
 	$erreur = '';
-	$rep = sansEchappement($_POST['rep']);
-	$nomFichier = sansEchappement(basename($_FILES['fichier']['name']));
+	$rep = securiseTexte($_POST['rep']);
+	$nomFichier = basename(securiseTexte($_FILES['fichier']['name']));
 
 	// Affichage du motif dans le message d'erreur
 	$motifNom2 = substr($motifNom, 2, -3);
@@ -463,18 +463,18 @@ if (isset($_FILES['fichier']))
 
 		if ($resultat == TRUE)
 		{
-			echo "<p class='succes'>" . sprintf(T_('Transfert de <span class="porteDocumentsNom">%1$s</span> complété.'), $nomFichier) . "</p>";
+			echo "<p class='succes'>" . sprintf(T_('Transfert de %1$s complété.'), "<code>$nomFichier</code>") . "</p>";
 		}
 		else
 		{
-			echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de <span class="porteDocumentsNom">%1$s</span>.'), $nomFichier) . "</p>";
+			echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de %1$s.'), "<code>$nomFichier</code>") . "</p>";
 		}
 	}
 }
 
 if (!empty($erreur))
 {
-	echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de <span class="porteDocumentsNom">%1$s</span>.'), $nomFichier) . "</p>\n\n<ul>\n", $erreur, "</ul>\n";
+	echo "<p class='erreur'>" . sprintf(T_('Erreur de transfert de %1$s.'), "<code>$nomFichier</code>") . "</p>\n\n<ul>\n", $erreur, "</ul>\n";
 }
 echo "</div><!-- /boiteMessages -->\n";
 
@@ -491,7 +491,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 	}
 	
 	echo '<div class="boite2">' . "\n";
-	echo '<h3>' . sprintf(T_("Contenu du dossier %1\$s"), '<span class="porteDocumentsNom">' . $getValeur . '</span>') . "</h3>\n";
+	echo '<h3>' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$getValeur</code>") . "</h3>\n";
 	
 	if (!is_dir($getValeur))
 	{
@@ -505,7 +505,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 		echo "<ul>\n";
 		foreach ($liste as $cle => $valeur)
 		{
-			echo "<li class='porteDocumentsListeDossiers'>" . T_("Dossier") . " <span class='porteDocumentsNom'>$cle</span><ul>\n";
+			echo "<li class='porteDocumentsListeDossiers'>" . T_("Dossier") . " <code>$cle</code><ul>\n";
 			$cle = array();
 			foreach ($valeur as $valeur2)
 			{
@@ -533,7 +533,7 @@ asort($liste2);
 echo "<ul>\n";
 foreach ($liste2 as $valeur)
 {
-	echo "<li><a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a> <span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" /> <span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur#fichiersEtDossiers\"><span class='porteDocumentsNom'>$valeur</span></a></li>\n";
+	echo "<li><a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a> <span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" /> <span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur#fichiersEtDossiers\"><code>$valeur</code></a></li>\n";
 }
 echo "</ul>\n";
 echo "</div><!-- /class=boite2 -->\n";
@@ -573,9 +573,9 @@ echo '<h2>' . T_("Créer un fichier ou un dossier") . "</h2>\n";
 echo '<p>' . T_("Saisir le nom du nouveau fichier ou dossier à créer. Mettre le chemin dans le nom. Exemples:") . "</p>\n";
 
 echo "<ul>\n";
-echo '<li><span class="porteDocumentsNom">' . $dossierRacine . "/nouveau-dossier</span></li>\n";
-echo '<li><span class="porteDocumentsNom">' . $dossierRacine . "/nouveau-fichier.txt</span></li>\n";
-echo '<li><span class="porteDocumentsNom">' . $dossierRacine . "/nouveau-dossier/nouveau-fichier.txt</span></li>\n";
+echo '<li><code>' . $dossierRacine . "/nouveau-dossier</code></li>\n";
+echo '<li><code>' . $dossierRacine . "/nouveau-fichier.txt</code></li>\n";
+echo '<li><code>' . $dossierRacine . "/nouveau-dossier/nouveau-fichier.txt</code></li>\n";
 echo "</ul>\n";
 
 echo '<form action="' . $action . '#messagesPorteDocuments" method="post">' . "\n";
