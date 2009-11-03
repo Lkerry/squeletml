@@ -42,7 +42,7 @@ include 'inc/premier.inc.php';
 
 	if (!$erreurAccesFichiers && isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
 	{
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Gestion des droits d'accès à l'administration") . "</h3>\n";
 	
 		// Ajout d'un utilisateur
@@ -266,7 +266,7 @@ include 'inc/premier.inc.php';
 			}
 		}
 	
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 
 	########################################################################
@@ -277,7 +277,7 @@ include 'inc/premier.inc.php';
 
 	if (!$erreurAccesFichiers && ((isset($_POST['lister'])) || (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))))
 	{
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Liste des utilisateurs") . "</h3>\n";
 
 		echo '<p>' . T_("Voici les utilisateurs ayant accès à l'administration:") . "</p>\n" . "\n";
@@ -305,7 +305,7 @@ include 'inc/premier.inc.php';
 			echo '<li>' . T_("Aucun") . "</li>\n";
 		}
 		echo "</ul>\n";
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 
 	########################################################################
@@ -316,7 +316,7 @@ include 'inc/premier.inc.php';
 
 	if (!$erreurAccesFichiers && isset($_POST['changerEtat']))
 	{
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Maintenance du site") . "</h3>\n";
 	
 		$maintenanceDansHtaccess = FALSE;
@@ -454,7 +454,7 @@ include 'inc/premier.inc.php';
 			echo '<p>' . T_("Le site est en ligne.") . "</p>\n";
 		}
 	
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 	?>
 </div><!-- /boiteMessages -->

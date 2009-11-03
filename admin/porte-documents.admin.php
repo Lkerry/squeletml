@@ -485,7 +485,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 		$erreur = '';
 	}
 	
-	echo '<div class="boite2">' . "\n";
+	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$getValeur</code>") . "</h3>\n";
 	
 	if (!is_dir($getValeur))
@@ -517,10 +517,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 		}
 		echo "</ul>\n";
 	}
-	echo "</div><!-- /class=boite2 -->\n";
+	echo "</div><!-- /class=sousBoite -->\n";
 }
 
-echo '<div class="boite2">' . "\n";
+echo '<div class="sousBoite">' . "\n";
 echo '<h3>' . T_("Liste des dossiers") . "</h3>\n";
 
 $liste2 = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
@@ -531,7 +531,7 @@ foreach ($liste2 as $valeur)
 	echo "<li><a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a> <span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" /> <span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur#fichiersEtDossiers\"><code>$valeur</code></a></li>\n";
 }
 echo "</ul>\n";
-echo "</div><!-- /class=boite2 -->\n";
+echo "</div><!-- /class=sousBoite -->\n";
 echo "</div><!-- /class=boite -->\n";
 
 echo '<div class="boite">' . "\n";

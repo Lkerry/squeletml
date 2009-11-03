@@ -48,7 +48,7 @@ include '../init.inc.php';
 			$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$racine/site/fichiers/galeries</code>") . "</li>\n";
 		}
 	
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Liste des galeries") . "</h3>\n";
 		
 		echo "<ul>\n";
@@ -64,7 +64,7 @@ include '../init.inc.php';
 			echo '<li>' . T_("Aucune galerie") . "</li>\n";
 		}
 		echo "</ul>\n";
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 
 	########################################################################
@@ -243,7 +243,7 @@ include '../init.inc.php';
 			}
 		}
 	
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Ajout d'images") . "</h3>\n";
 		
 		echo '<ul>' . "\n";
@@ -252,7 +252,7 @@ include '../init.inc.php';
 			echo $messageScript;
 		}
 		echo "</ul>\n";
-		echo '</div><!-- /class=boite2 -->' . "\n";
+		echo '</div><!-- /class=sousBoite -->' . "\n";
 	}
 
 	########################################################################
@@ -386,7 +386,7 @@ include '../init.inc.php';
 			}
 		}
 		
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Retaillage des images") . "</h3>\n";
 		
 		echo '<ul>' . "\n";
@@ -398,7 +398,7 @@ include '../init.inc.php';
 			}
 		}
 		echo "</ul>\n";
-		echo '</div><!-- /class=boite2 -->' . "\n";
+		echo '</div><!-- /class=sousBoite -->' . "\n";
 	}
 
 	########################################################################
@@ -472,7 +472,7 @@ include '../init.inc.php';
 		}
 	
 		// Messages
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Suppression de vignettes") . "</h3>\n" ;
 		
 		echo "<ul>\n";
@@ -488,7 +488,7 @@ include '../init.inc.php';
 			echo '<li>' . T_("Aucune vignette à traiter.") . "</li>\n";
 		}
 		echo "</ul>\n";
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 
 	########################################################################
@@ -572,7 +572,7 @@ include '../init.inc.php';
 			}
 		}
 		
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Page web") . "</h3>\n";
 		
 		echo "<ul>\n";
@@ -584,7 +584,7 @@ include '../init.inc.php';
 			}
 		}
 		echo "</ul>\n";
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 
 	########################################################################
@@ -637,7 +637,7 @@ include '../init.inc.php';
 			$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
 		}
 		
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Modèle") . "</h3>\n" ;
 		
 		if (!empty($messagesScript))
@@ -657,7 +657,7 @@ include '../init.inc.php';
 			echo "</ul>\n";
 		}
 		
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 
 	########################################################################
@@ -666,7 +666,7 @@ include '../init.inc.php';
 	##
 	########################################################################
 
-	$boite2FichierConfigDebut = FALSE;
+	$sousBoiteFichierConfigDebut = FALSE;
 
 	if (isset($_POST['conf']) && $_POST['conf'] == 'maj')
 	{
@@ -705,10 +705,10 @@ include '../init.inc.php';
 				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de la création ou de la mise à jour du fichier de configuration %1$s. Veuillez vérifier manuellement son contenu.'), "<code>$fichierConfigChemin</code>") . "</li>\n";
 			}
 		
-			$boite2FichierConfigDebut = TRUE;
+			$sousBoiteFichierConfigDebut = TRUE;
 		}
 		
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Fichier de configuration") . "</h3>\n";
 		
 		if (!empty($messagesScript))
@@ -728,9 +728,9 @@ include '../init.inc.php';
 
 	if ((isset($_POST['modeleConf']) || (isset($_POST['conf']) && $_POST['conf'] == 'maj')) && file_exists($racine . '/site/fichiers/galeries/' . $id . '/config.pc'))
 	{
-		if (!$boite2FichierConfigDebut)
+		if (!$sousBoiteFichierConfigDebut)
 		{
-			echo '<div class="boite2">' . "\n";
+			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Fichier de configuration") . "</h3>\n";
 		}
 	
@@ -744,9 +744,9 @@ include '../init.inc.php';
 
 	########################################################################
 
-	if ($boite2FichierConfigDebut)
+	if ($sousBoiteFichierConfigDebut)
 	{
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 	?>
 </div><!-- /boiteMessages -->

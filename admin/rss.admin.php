@@ -42,7 +42,7 @@ include '../init.inc.php';
 				
 					fclose($fic);
 				
-					echo '<div class="boite2">' . "\n";
+					echo '<div class="sousBoite">' . "\n";
 					echo '<h3>' . T_("Liste des pages des galeries") . "</h3>\n";
 					
 					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie en français dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>fr:chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
@@ -62,7 +62,7 @@ include '../init.inc.php';
 					echo "<p><input type='submit' name='modifsGaleries' value='" . T_('Enregistrer mes modifications') . "' /></p>\n";
 					echo "</div></form>\n";
 				
-					echo "</div><!-- /class=boite2 -->\n";
+					echo "</div><!-- /class=sousBoite -->\n";
 				}
 				else
 				{
@@ -106,7 +106,7 @@ include '../init.inc.php';
 						}
 					}
 				
-					echo '<div class="boite2">' . "\n";
+					echo '<div class="sousBoite">' . "\n";
 					echo '<h3>' . T_("Liste des pages autres que les galeries") . "</h3>\n";
 					
 					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:URL relative de la page</code>. Par exemple, %1\$s fait référence à une page en français dont l'URL est %2\$s."), "<code>fr:animaux/chiens.php</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
@@ -126,7 +126,7 @@ include '../init.inc.php';
 					echo "<p><input type='submit' name='modifsSite' value='" . T_('Enregistrer mes modifications') . "' /></p>\n";
 					echo "</div></form>\n";
 				
-					echo "</div><!-- /class=boite2 -->\n";
+					echo "</div><!-- /class=sousBoite -->\n";
 				}
 				else
 				{
@@ -142,7 +142,7 @@ include '../init.inc.php';
 
 	if (isset($_POST['modifsGaleries']))
 	{
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications pour les galeries") . "</h3>\n" ;
 	
 		$contenuFichierTableau = array ();
@@ -195,11 +195,11 @@ include '../init.inc.php';
 			echo "</ul>\n";
 		}
 	
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 	elseif (isset($_POST['modifsSite']))
 	{
-		echo '<div class="boite2">' . "\n";
+		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications pour les pages autres que les galeries") . "</h3>\n" ;
 	
 		$contenuFichierTableau = array ();
@@ -252,7 +252,7 @@ include '../init.inc.php';
 			echo "</ul>\n";
 		}
 	
-		echo "</div><!-- /class=boite2 -->\n";
+		echo "</div><!-- /class=sousBoite -->\n";
 	}
 	?>
 </div><!-- /boiteMessages -->
