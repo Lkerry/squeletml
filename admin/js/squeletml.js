@@ -1,4 +1,7 @@
-function selectionneTexte(sId)
+/**
+Sélectionne le texte de l'élément fourni.
+*/
+function adminSelectionneTexte(sId)
 {
 	var myDiv = document.getElementById(sId);
 	if (window.getSelection)
@@ -26,3 +29,4 @@ function selectionneTexte(sId)
 		range.select();
 	}
 }
+

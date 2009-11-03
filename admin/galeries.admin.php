@@ -653,7 +653,7 @@ include '../init.inc.php';
 		{
 			echo '<pre id="listeFichiers">' . $listeFichiers . "</pre>\n";
 			echo "<ul>\n";
-			echo "<li><a href=\"javascript:selectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			echo "<li><a href=\"javascript:adminSelectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			echo "</ul>\n";
 		}
 		

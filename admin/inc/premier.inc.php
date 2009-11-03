@@ -50,6 +50,7 @@ if ($tableDesMatieres)
 		<meta name="robots" content="noindex, nofollow, noarchive" />
 		
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/admin.css"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/extensions-proprietaires.css"); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/ie6.css"); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/ie7.css"); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/css/extensions-proprietaires.css"); ?>

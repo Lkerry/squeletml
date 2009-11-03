@@ -4,8 +4,14 @@
 **
 ***********************************************************************/
 
-body, html, #page {
+body, html {
 	margin: 0;
+	padding: 0;
+}
+
+#page {
+	max-width: 1000px;
+	margin: 0 auto;
 	padding: 0;
 }
 
@@ -15,9 +21,15 @@ body, html, #page {
 }
 
 #enTete {
-	padding: 5px 5px 0px 5px;
+	padding: 5px 5px 0 5px;
 	background: url('../fichiers/rayures.png') repeat left top;
+	border-right: 1px solid #f2f2f2;
 	border-bottom: 1px solid #f2f2f2;
+	border-left: 1px solid #f2f2f2;
+}
+
+#enTete p {
+	margin-top: 0px;
 }
 
 #enTete ul li {
@@ -39,6 +51,10 @@ a:visited {
 a:hover {
 	text-decoration: none;
 	border-bottom: 1px dotted #f2f2f2;
+}
+
+p {
+	margin-bottom: 8px;
 }
 
 #menu a.actif {
@@ -98,11 +114,21 @@ textarea.consulterModifications {
 }
 
 .boite {
-	margin: 25px; border: 1px solid black; padding: 5px; background-color: #f2f2f2;
+	margin: 25px 0px;
+	border: 1px solid black;
+	padding: 5px;
+	background-color: #f2f2f2;
 }
 
 .sousBoite {
-	margin: 25px; border: 1px dashed black; padding: 5px; background-color: #f5f5f5;
+	margin: 25px;
+	border: 1px dashed black;
+	padding: 5px;
+	background-color: #f7f7f7;
+}
+
+.boite, .sousBoite, pre {
+	border-radius: 8px; /* CSS 3 */
 }
 
 #boiteMessages {

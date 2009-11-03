@@ -172,7 +172,7 @@ include '../init.inc.php';
 				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
-				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
 			}
 			else
@@ -181,7 +181,7 @@ include '../init.inc.php';
 				echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
-				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
 			}
 		}
@@ -191,7 +191,7 @@ include '../init.inc.php';
 			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 			echo "<ul>\n";
-			echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			echo "</ul>\n";
 		}
 	
@@ -229,7 +229,7 @@ include '../init.inc.php';
 				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
-				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
 			}
 			else
@@ -238,7 +238,7 @@ include '../init.inc.php';
 				echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
-				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
 			}
 		}
@@ -248,7 +248,7 @@ include '../init.inc.php';
 			echo '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 			echo "<ul>\n";
-			echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			echo "</ul>\n";
 		}
 	

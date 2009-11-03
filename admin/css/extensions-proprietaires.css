@@ -1,0 +1,4 @@
+.boite, .sousBoite, pre {
+	-moz-border-radius: 8px; /* Gecko */
+	-webkit-border-radius: 8px; /* Webkit */
+}
