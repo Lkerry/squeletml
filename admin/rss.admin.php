@@ -109,6 +109,7 @@ include '../init.inc.php';
 				
 					echo '<div class="boite2">' . "\n";
 					echo '<h3>' . T_("Liste des pages autres que les galeries") . "</h3>\n";
+					
 					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:URL relative de la page</code>. Par exemple, %1\$s fait référence à une page en français dont l'URL est %2\$s."), "<code>fr:animaux/chiens.php</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
 	
 					if (!empty($listePages))

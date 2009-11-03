@@ -36,7 +36,7 @@ if ($filtreExtensions)
 	{
 		echo "$ext ";
 	}
-	echo '<br /><em>' . T_("Si vous voulez télécharger un fichier avec une extension qui n'est pas dans la liste, en faire la demande à la personne administratrice de ce site, ou si vous avez les droits d'administration, éditez le fichier de configuration.") . "</em></li>\n";
+	echo "<br />\n<em>" . T_("Si vous voulez télécharger un fichier avec une extension qui n'est pas dans la liste, en faire la demande à la personne administratrice de ce site, ou si vous avez les droits d'administration, éditez le fichier de configuration.") . "</em></li>\n";
 }
 else
 {
@@ -554,7 +554,7 @@ echo '<h2>' . T_("Ajouter un fichier") . "</h2>\n";
 
 echo '<form action="' . $action . '#messagesPorteDocuments" method="post" enctype="multipart/form-data">' . "\n";
 echo "<div>\n";
-echo '<label>' . T_("Fichier:") . '</label> <input type="file" name="fichier" size="25"/><br /><br />' . "\n";
+echo '<label>' . T_("Fichier:") . '</label> <input type="file" name="fichier" size="25"/>' . "<br />\n<br />\n";
 echo '<label>' . T_("Dossier:") . '</label> <select name="rep" size="1">' . "\n";
 $liste = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 asort($liste);
@@ -562,7 +562,7 @@ foreach ($liste as $valeur)
 {
 	echo '<option value="' . $valeur . '">' . $valeur . "</option>\n";
 }
-echo "</select><br /><br />\n";
+echo "</select><br />\n<br />\n";
 echo '<input type="submit" value="' . T_('Ajouter') . '" />' . "\n";
 echo "</div></form>\n";
 echo "</div><!-- /class=boite -->\n";
@@ -580,13 +580,13 @@ echo "</ul>\n";
 
 echo '<form action="' . $action . '#messagesPorteDocuments" method="post">' . "\n";
 echo "<div>\n";
-echo '<label>' . T_("Nom:") . '</label> <input type="text" name="porteDocumentsFichierCreeNom" size="50" value="' . $dossierRacine . '/" /><br /><br />' . "\n";
+echo '<label>' . T_("Nom:") . '</label> <input type="text" name="porteDocumentsFichierCreeNom" size="50" value="' . $dossierRacine . '/" />' . "<br />\n<br />\n";
 echo '<label>' . T_("Type:") . "</label>\n";
 echo '<select name="porteDocumentsFichierCreeType" size="1">' . "\n";
 echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
 echo '<option value="FichierModele">' .  T_("Fichier modèle de page web") . "</option>\n";
 echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
-echo "</select><br /><br />\n";
+echo "</select><br />\n<br />\n";
 echo '<input type="submit" name="porteDocumentsCreer" value="' . T_('Créer') . '" />' . "\n";
 echo "</div>\n";
 echo "</form>\n";
