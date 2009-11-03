@@ -274,7 +274,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 	$listeNouveauxFichiers = array ();
 	while($fichier = @readdir($fic))
 	{
-		if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+		if(!is_dir($cheminGalerie . '/' . $fichier))
 		{
 			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) &&
 				!preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) &&

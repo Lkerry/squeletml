@@ -274,7 +274,7 @@ include '../init.inc.php';
 				{
 					while($fichier = @readdir($fic))
 					{
-						if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+						if(!is_dir($cheminGalerie . '/' . $fichier))
 						{
 							$infoFichier = pathinfo(basename($fichier));
 							if (!isset($infoFichier['extension']))
@@ -318,7 +318,7 @@ include '../init.inc.php';
 					}
 					$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
-					if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..' && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
+					if(!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
 					{
 						if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
 						{
@@ -405,7 +405,7 @@ include '../init.inc.php';
 		{
 			while($fichier = @readdir($fic))
 			{
-				if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+				if(!is_dir($cheminGalerie . '/' . $fichier))
 				{
 					if (preg_match('/-vignette\.(gif|png|jpg|jpeg)$/', $fichier))
 					{
@@ -436,7 +436,7 @@ include '../init.inc.php';
 			{
 				while($fichier = @readdir($fic))
 				{
-					if(!is_dir($cheminTatouage . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+					if(!is_dir($cheminTatouage . '/' . $fichier))
 					{
 						if (preg_match('/-vignette-(precedent|suivant)\.(gif|png|jpg|jpeg)$/', $fichier))
 						{
@@ -585,7 +585,7 @@ include '../init.inc.php';
 			$tableauFichiers = array ();
 			while($fichier = @readdir($fic))
 			{
-				if(!is_dir($cheminGalerie . '/' . $fichier) && $fichier != '.' && $fichier != '..')
+				if(!is_dir($cheminGalerie . '/' . $fichier))
 				{
 					if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
 					{
