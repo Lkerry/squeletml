@@ -28,10 +28,6 @@ body, html {
 	border-left: 1px solid #f2f2f2;
 }
 
-#enTete p {
-	margin-top: 0px;
-}
-
 #enTete ul li {
 	display: inline;
 }
@@ -127,7 +123,7 @@ textarea.consulterModifications {
 	background-color: #f7f7f7;
 }
 
-.boite, .sousBoite, pre {
+.boite, .sousBoite, pre, #tableDesMatieres {
 	border-radius: 8px; /* CSS 3 */
 }
 

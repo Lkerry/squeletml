@@ -1,4 +1,4 @@
-.boite, .sousBoite, pre {
+.boite, .sousBoite, pre, #tableDesMatieres {
 	-moz-border-radius: 8px; /* Gecko */
 	-webkit-border-radius: 8px; /* Webkit */
 }
