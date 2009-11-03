@@ -401,7 +401,7 @@ include '../init.inc.php';
 					{
 						if (unlink($cheminGalerie . '/' . $fichier))
 						{
-							$messagesScript[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
+							$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
 						}
 						else
 						{
@@ -432,7 +432,7 @@ include '../init.inc.php';
 						{
 							if (unlink($cheminTatouage . '/' . $fichier))
 							{
-								$messagesScript[] = '<li class="succes">' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
+								$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
 							}
 							else
 							{

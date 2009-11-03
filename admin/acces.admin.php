@@ -74,7 +74,7 @@ include 'inc/premier.inc.php';
 				if ($utilisateurAbsent)
 				{
 					fputs($fic2, $acces);
-					echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), securiseTexte($_POST['nom'])) . "</p>\n";
+					echo '<p>' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), securiseTexte($_POST['nom'])) . "</p>\n";
 				}
 				else
 				{
@@ -121,7 +121,7 @@ include 'inc/premier.inc.php';
 			}
 			else
 			{
-				echo '<p class="succes">' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), securiseTexte($_POST['nom'])) . "</p>\n";
+				echo '<p>' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 		}
 	
@@ -200,7 +200,7 @@ include 'inc/premier.inc.php';
 			}
 			else
 			{
-				echo '<p class="succes">' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), securiseTexte($_POST['nom'])) . "</p>\n";
+				echo '<p>' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 		}
 	

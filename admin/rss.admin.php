@@ -170,7 +170,7 @@ include '../init.inc.php';
 		{
 			if (file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
@@ -228,7 +228,7 @@ include '../init.inc.php';
 		{
 			if (file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				echo '<p class="succes">' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:selectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
