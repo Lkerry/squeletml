@@ -29,13 +29,11 @@ if ($argv[1] == 'mdtxt')
 	fwrite($fic, $fichier);
 	fclose($fic);
 }
-
 ########################################################################
 ##
 ## Message d'accueil
 ##
 ########################################################################
-
 elseif ($argv[1] == 'message-accueil')
 {
 	include 'inc/php-markdown/markdown.php';
@@ -77,13 +75,11 @@ elseif ($argv[1] == 'message-accueil')
 		fclose($fic);
 	}
 }
-
 ########################################################################
 ##
 ## Ajout du contenu du fichier de configuration à la documentation
 ##
 ########################################################################
-
 elseif ($argv[1] == 'config-dans-doc')
 {
 	$cheminDocumentation = $argv[2];

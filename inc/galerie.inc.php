@@ -121,7 +121,6 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			{
 				$oeuvrePrecedente = vignetteTatouage($oeuvrePrecedente, 'precedent', $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg);
 			}
-			
 			// Si une flèche est souhaitée à côté des vignettes, on ajoute une image
 			elseif ($galerieNavigationVignettesAccompagnees && $galerieNavigation == 'vignettes')
 			{
@@ -146,7 +145,6 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			{
 				$oeuvreSuivante = vignetteTatouage($oeuvreSuivante, 'suivant', $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg);
 			}
-			
 			// Si une flèche est souhaitée à côté des vignettes, on ajoute une image
 			elseif ($galerieNavigationVignettesAccompagnees && $galerieNavigation == 'vignettes')
 			{
@@ -262,7 +260,6 @@ if ($idGalerie && isset($_GET['oeuvre']))
 							$indicePremiereOeuvre -= $idDroite - ($nombreDoeuvres - 1);
 						}
 					}
-					
 					else
 					{
 						// A: nombre pair
@@ -330,7 +327,6 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			$corpsGalerie = $corpsGalerie . $corpsMinivignettes . $galerieInfo;
 		}
 	}
-
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie pour éviter le contenu dupliqué.
 	else
 	{
@@ -346,13 +342,11 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		$robots = "noindex, follow, noarchive";
 	}
 }
-
 ########################################################################
 ##
 ## Aucune oeuvre en particulier n'est demandée. On affiche donc la galerie, si elle existe.
 ##
 ########################################################################
-
 elseif ($idGalerie)
 {
 	if ($galerieVignettesParPage)
@@ -435,7 +429,6 @@ elseif ($idGalerie)
 	
 		$pagination .= '</div><!-- /pagination -->' . "\n";
 	}
-	
 	else
 	{
 		$nombreDePages = 1;
@@ -486,13 +479,11 @@ elseif ($idGalerie)
 		$corpsGalerie .= $galerieInfo;
 	}
 }
-
 ########################################################################
 ##
 ## Aucune oeuvre en particulier n'est demandée, et la galerie n'existe pas.
 ##
 ########################################################################
-
 else
 {
 	$pageDerreur = TRUE;

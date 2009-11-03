@@ -74,7 +74,6 @@ include '../init.inc.php';
 				echo '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments');
 			}
 		}
-	
 		elseif (isset($_POST['global']) && $_POST['global'] == 'site')
 		{
 			################################################################
@@ -198,7 +197,6 @@ include '../init.inc.php';
 	
 		echo "</div><!-- /class=boite2 -->\n";
 	}
-
 	elseif (isset($_POST['modifsSite']))
 	{
 		echo '<div class="boite2">' . "\n";

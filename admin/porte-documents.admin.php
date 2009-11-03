@@ -285,7 +285,6 @@ if (isset($_POST['porteDocumentsNouveauNom']))
 			}
 		}
 	}
-	
 	else
 	{
 		if (!file_exists($ancienNom))
@@ -323,13 +322,11 @@ if (isset($_POST['porteDocumentsCreer']))
 			{
 				echo '<li>' . sprintf(T_('Création du dossier %1$s effectuée.'), "<code>$fichierCreeNom</code>") . "</li>\n";
 			}
-
 			else
 			{
 				echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le dossier %1$s.'), "<code>$fichierCreeNom</code>") . "</li>\n";
 			}
 		}
-	
 		elseif ($fichierCreeType == 'FichierVide' || $fichierCreeType == 'FichierModele')
 		{
 			$page = basename($fichierCreeNom);
@@ -400,7 +397,6 @@ if (isset($_POST['porteDocumentsCreer']))
 					// Fermeture de <li>
 					echo "</li>\n";
 				}
-		
 				else
 				{
 					echo "<li class='erreur'>" . sprintf(T_('Impossible de créer le fichier %1$s.'), "<code>$fichierCreeNom</code>") . "</li>\n";
@@ -408,7 +404,6 @@ if (isset($_POST['porteDocumentsCreer']))
 			}
 		}
 	}
-
 	else
 	{
 		echo "<li class='erreur'>" . sprintf(T_('%1$s existe déjà.'), "<code>$fichierCreeNom</code>") . "</li>\n";

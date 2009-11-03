@@ -139,12 +139,10 @@ function ajouteEvenementLoad(fonction)
 	{
 		window.addEventListener('load', fonction, false);
 	}
-	
 	else if (document.addEventListener)
 	{
 		document.addEventListener('load', fonction, false);
 	}
-	
 	else if (window.attachEvent)
 	{
 		window.attachEvent('onload', fonction);

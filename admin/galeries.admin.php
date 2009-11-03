@@ -627,7 +627,6 @@ include '../init.inc.php';
 			}
 			echo "</ul>\n";
 		}
-		
 		else
 		{
 			echo '<pre id="listeFichiers">' . $listeFichiers . "</pre>\n";

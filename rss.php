@@ -100,7 +100,6 @@ if (isset($getChemin) && !empty($getChemin))
 		header('HTTP/1.1 404 Not found');
 	}
 }
-
 elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLangue) && isset($accueil[$getLangue]))
 {
 	if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
@@ -153,7 +152,6 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 		header('HTTP/1.1 404 Not found');
 	}
 }
-
 elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue) && isset($accueil[$getLangue]))
 {
 	if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
@@ -231,7 +229,6 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 		header('HTTP/1.1 404 Not found');
 	}
 }
-
 else
 {
 	header('HTTP/1.1 404 Not found');

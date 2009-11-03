@@ -810,7 +810,6 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $coinsArro
 		
 		$tableauCorpsGalerie['corpsGalerie'] = $corpsGalerie;
 	}
-	
 	else
 	{
 		$tableauCorpsGalerie['corpsGalerie'] = $corpsGalerie;
@@ -938,7 +937,6 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 			$message = sprintf(T_('Impossible de copier <code>%1$s</code> avec le nom <code>%2$s</code>'), $nomImageSource, $nomNouvelleImage) . "\n";
 		}
 	}
-	
 	// Sinon on génère une nouvelle image avec gd
 	else
 	{
@@ -1099,14 +1097,13 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		{
 			$originalNom = $galerie[$indice]['originalNom'];
 		}
-		
 		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
 		else
 		{
 			$originalNom = basename($galerie[$indice]['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
 			$originalNom .= '-original.' . $infoIntermediaireNom['extension'];
 		}
-			
+		
 		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on insère un lien vers l'image.
 		if (file_exists($racineImgSrc . '/' . $originalNom))
 		{
@@ -1255,13 +1252,11 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n";
 		}
 	}
-
 	####################################################################
 	#
 	# Taille vignette
 	#
 	####################################################################
-
 	elseif ($taille == 'vignette')
 	{
 		if ($galerieNavigation == 'fleches' && $sens != 'aucun')
@@ -1278,7 +1273,6 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				$src = 'src="' . $urlRacine . '/fichiers/' . $sens . '.png"';
 			}
 		}
-
 		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')
 			|| $galerieNavigation == 'vignettes')
 		{
@@ -1399,7 +1393,6 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		
 		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>\n";
 	}
-	
 	else
 	{
 		return;

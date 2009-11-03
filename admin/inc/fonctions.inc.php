@@ -86,7 +86,6 @@ function adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDos
 		{
 			$liste = array_intersect($liste, $tableauDossiersFiltres);
 		}
-
 		elseif ($typeFiltreDossiers == 'dossiersExclus')
 		{
 			$liste = array_diff($liste, $tableauDossiersFiltres);
@@ -109,7 +108,6 @@ function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossier
 		{
 			adminParcourirTout($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
 		}
-
 		elseif ($fichier != '.' && $fichier != '..')
 		{
 			if ($afficheDimensionsImages)

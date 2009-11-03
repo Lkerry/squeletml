@@ -84,7 +84,6 @@ include 'inc/premier.inc.php';
 				fclose($fic2);
 			}
 		}
-	
 		// Modification d'un utilisateur
 		elseif (isset($_POST['modifier']))
 		{
