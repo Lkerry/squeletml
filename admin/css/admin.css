@@ -5,14 +5,14 @@
 ***********************************************************************/
 
 body, html {
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 }
 
 #page {
 	max-width: 1000px;
-	margin: 0 auto;
-	padding: 0;
+	margin: 0px auto;
+	padding: 0px;
 }
 
 #ancres {
@@ -21,7 +21,7 @@ body, html {
 }
 
 #enTete {
-	padding: 5px 5px 0 5px;
+	padding: 5px 5px 0px 5px;
 	background: url('../fichiers/rayures.png') repeat left top;
 	border-right: 1px solid #f2f2f2;
 	border-bottom: 1px solid #f2f2f2;
@@ -30,7 +30,7 @@ body, html {
 }
 
 #enTete ul {
-	padding-left: 0;
+	padding-left: 0px;
 	margin-top: 0px;
 	margin-bottom: 8px;
 }
@@ -80,7 +80,7 @@ pre {
 	display: block;
 	overflow: auto;
 	padding: 5px;
-	margin: 5px 0;
+	margin: 5px 0px;
 	border: 1px solid #b3b3b3;
 	white-space: pre-wrap; /* CSS 3 */ /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
 }
@@ -139,7 +139,7 @@ textarea.consulterModifications {
 }
 
 #boiteMessages h2, .boite h2, .sousBoite h3 {
-	margin-top: 0;
+	margin-top: 0px;
 }
 
 #boiteMessages h2 {

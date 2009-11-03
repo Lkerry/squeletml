@@ -5,14 +5,14 @@
 ***********************************************************************/
 
 html, body {
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 }
 
 #page {
 	max-width: 900px;
-	margin: 0 auto;
-	padding: 0;
+	margin: 0px auto;
+	padding: 0px;
 	position: relative;
 }
 
@@ -74,8 +74,8 @@ div#sousTitre p {
 }
 
 #contenu h1, body.accueil #interieurContenu> h2:first-child {
-	margin-top: 0;
-	padding-top: 0;
+	margin-top: 0px;
+	padding-top: 0px;
 }
 
 #modeleMessageDecouvrir {
@@ -94,7 +94,7 @@ div#sousTitre p {
 
 #fluxRss ul {
 	list-style-type: none;
-	padding: 0;
+	padding: 0px;
 }
 
 #faireDecouvrir a, #fluxRss a {
@@ -156,7 +156,7 @@ pre {
 	display: block;
 	overflow: auto;
 	padding: 5px;
-	margin: 5px 0;
+	margin: 5px 0px;
 	border: 1px solid #b3b3b3;
 	white-space: pre-wrap; /* CSS 3 */ /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
 }
@@ -339,7 +339,7 @@ body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 }
 
 body.colonneAgauche #basDePage {
-	margin: 25px 0 0 204px;
+	margin: 25px 0px 0px 204px;
 }
 
 /***********************************************************************
@@ -358,7 +358,7 @@ body.uneColonneAgauche div#sousTitre {
 }
 
 body.uneColonneAgauche #surContenu, body.uneColonneAgauche #sousContenu {
-	left: 0;
+	left: 0px;
 }
 
 /***********************************************************************
@@ -387,7 +387,7 @@ body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 }
 
 body.colonneAdroite #basDePage {
-	margin: 25px 204px 0 0px;
+	margin: 25px 204px 0px 0px;
 }
 
 /***********************************************************************
@@ -406,7 +406,7 @@ body.uneColonneAdroite div#sousTitre {
 }
 
 body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
-	right: 0;
+	right: 0px;
 }
 
 /***********************************************************************
@@ -436,15 +436,15 @@ body.deuxColonnes #contenu {
 ***********************************************************************/
 
 body.deuxColonnesSousContenuAgauche #page {
-	padding-right: 0;
+	padding-right: 0px;
 }
 
 body.deuxColonnesSousContenuAgauche #surContenu {
-	right: 0;
+	right: 0px;
 }
 
 body.deuxColonnesSousContenuAgauche #sousContenu {
-	left: 0;
+	left: 0px;
 }
 
 /***********************************************************************
@@ -454,7 +454,7 @@ body.deuxColonnesSousContenuAgauche #sousContenu {
 ***********************************************************************/
 
 body.deuxColonnesSousContenuAdroite #page {
-	padding-left: 0;
+	padding-left: 0px;
 }
 
 body.deuxColonnesSousContenuAdroite #contenu {
@@ -462,11 +462,11 @@ body.deuxColonnesSousContenuAdroite #contenu {
 }
 
 body.deuxColonnesSousContenuAdroite #surContenu {
-	left: 0;
+	left: 0px;
 }
 
 body.deuxColonnesSousContenuAdroite #sousContenu {
-	right: 0;
+	right: 0px;
 }
 
 /***********************************************************************
@@ -601,7 +601,7 @@ div#galerieIntermediaireExif {
 }
 
 div#galerieIntermediaireExif ul {
-	margin-bottom: 0;
+	margin-bottom: 0px;
 }
 
 div#galerieIntermediaireExif li {
@@ -639,8 +639,8 @@ div.galerieNavigationAccueil img, div#galerieIntermediaireImg img {
 
 div#messageIE6 {
 	border: 3px solid #090;
-	margin: 0;
-	padding: 0;
+	margin: 0px;
+	padding: 0px;
 	background: #cfc;
 	color: #000;
 }

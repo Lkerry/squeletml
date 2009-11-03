@@ -4,6 +4,6 @@
 }
 
 #enTete {
-	-moz-border-radius: 0 0 8px 8px; /* Gecko */
-	-webkit-border-radius: 0 0 8px 8px; /* Webkit */
+	-moz-border-radius: 0px 0px 8px 8px; /* Gecko */
+	-webkit-border-radius: 0px 0px 8px 8px; /* Webkit */
 }
