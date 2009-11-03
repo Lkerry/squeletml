@@ -40,7 +40,7 @@ include '../init.inc.php';
 					$messagesScript[] = '<li>' . sprintf(T_('Galerie %1$s:'), $i) . "\n<ul>\n<li><em>" . T_("identifiant:") . '</em> ' . $fichier . "</li>\n<li><em>" . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . "</a></li>\n<li><em>" . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a>' . "</li>\n</ul></li>\n";
 				}
 			}
-	
+			
 			closedir($fic);
 		}
 		else
@@ -75,12 +75,23 @@ include '../init.inc.php';
 
 	if (isset($_POST['ajouter']))
 	{
+		$messagesScript = array ();
+		$aucunNomGalerie = FALSE;
+		
+		if ($id == 'nouvelleGalerie' && !empty($_POST['idNouvelleGalerie']))
+		{
+			$id = securiseTexte($_POST['idNouvelleGalerie']);
+		}
+		elseif ($id == 'nouvelleGalerie' && empty($_POST['idNouvelleGalerie']))
+		{
+			$aucunNomGalerie = TRUE;
+			$messagesScript[] = '<li class="erreur">' . T_("Vous avez choisi de créer une nouvelle galerie, mais vous n'avez pas saisi de nom pour cette dernière.") . "</li>\n";
+		}
+		
 		$cheminGaleries = $racine . '/site/fichiers/galeries';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-	
-		$messagesScript = array ();
-	
-		if (!file_exists($cheminGalerie))
+		
+		if (!$aucunNomGalerie && !file_exists($cheminGalerie))
 		{
 			if (mkdir($cheminGalerie, 0755, TRUE))
 			{
@@ -93,8 +104,8 @@ include '../init.inc.php';
 				$messagesScript[] = '<li>' . sprintf(T_('Fichier %1\$s supprimé.'), '<code>' . securiseTexte($_FILES['fichier']['tmp_name']) . '</code>') . "</li>\n";
 			}
 		}
-	
-		if (file_exists($cheminGalerie))
+		
+		if (!$aucunNomGalerie && file_exists($cheminGalerie))
 		{
 			if (isset($_FILES['fichier']))
 			{
@@ -234,6 +245,7 @@ include '../init.inc.php';
 	
 		echo '<div class="boite2">' . "\n";
 		echo '<h3>' . T_("Ajout d'images") . "</h3>\n";
+		
 		echo '<ul>' . "\n";
 		foreach ($messagesScript as $messageScript)
 		{
@@ -286,7 +298,7 @@ include '../init.inc.php';
 								}
 								else
 								{
-									$messagesScript[] = '<li>' . sprintf(T_('Impossible de renommer %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "</li>\n";
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de renommer %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "</li>\n";
 								}
 							}
 						}
@@ -350,8 +362,18 @@ include '../init.inc.php';
 								$imageIntermediaireDimensionsVoulues['hauteur'] = 0;
 							}
 						}
-				
-						$messagesScript[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette);
+						
+						$resultatNouvelleImage = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, varConf('galerieForcerDimensionsVignette'));
+						if (!$resultatNouvelleImage[1])
+						{
+							$message = '<li>' . $resultatNouvelleImage[0] . "</li>\n";
+						}
+						else
+						{
+							$message = '<li class="erreur">' . $resultatNouvelleImage[0] . "</li>\n";
+						}
+						
+						$messagesScript[] = $message;
 					}
 				}
 				
@@ -740,7 +762,7 @@ include '../init.inc.php';
 <div class="boite">
 	<h2><?php echo T_("Lister les galeries existantes"); ?></h2>
 
-	<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Chaque galerie dans la liste aura un lien vous permettant de modifier son fichier de configuration dans le porte-documents."); ?></p>
+	<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Chaque galerie aura un lien vous permettant de modifier son fichier de configuration dans le porte-documents."); ?></p>
 
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
@@ -762,8 +784,16 @@ include '../init.inc.php';
 
 	<form action="<?php echo $action; ?>#messages" method="post" enctype="multipart/form-data">
 		<div>
-			<p><label><?php echo T_("Identifiant de la galerie (si la galerie n'existe pas, elle sera créée):"); ?></label><br />
-			<input type="text" name="id" /></p>
+			<p><label><?php echo T_("Identifiant de la galerie (il est possible de créer une nouvelle galerie):"); ?></label><br />
+			<select name="id">
+				<option value="nouvelleGalerie"><?php echo T_("Nouvelle galerie:"); ?></option>
+				<?php $galeries = adminListeGaleries($racine); ?>
+				<?php if (!empty($galeries)): ?>
+					<?php foreach ($galeries as $galerie): ?>
+						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php endforeach; ?>
+				<?php endif; ?>
+			</select> <input type="text" name="idNouvelleGalerie" /></p>
 
 			<p><label><?php echo T_("Fichier:"); ?></label><br />
 			<input type="file" name="fichier" size="25"/></p>
@@ -787,8 +817,18 @@ include '../init.inc.php';
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<input type="text" name="id" /></p>
-
+			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php if (!empty($galeries)): ?>
+				<select name="id">
+					<?php foreach ($galeries as $galerie): ?>
+						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+			<?php endif; ?>
+			</p>
+			
 			<p><label><?php echo T_("Taille maximale de la version intermediaire (largeur × hauteur):"); ?></label><br />
 			<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Si une seule dimension est précisée, l'autre sera calculée à partir de la dimension donnée ainsi que des dimensions de l'image source. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée."); ?><br />
 			<input type="text" name="largeur" size="4" value="500" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" value="500" /> <?php echo T_("px de hauteur"); ?></p>
@@ -821,7 +861,17 @@ include '../init.inc.php';
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<input type="text" name="id" /></p>
+			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php if (!empty($galeries)): ?>
+				<select name="id">
+					<?php foreach ($galeries as $galerie): ?>
+						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+			<?php endif; ?>
+			</p>
 
 			<p><?php echo T_("Si la navigation entre les oeuvres d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationVignettesTatouage</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les oeuvres précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre."); ?></p>
 
@@ -842,7 +892,17 @@ include '../init.inc.php';
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<input type="text" name="id" /></p>
+			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php if (!empty($galeries)): ?>
+				<select name="id">
+					<?php foreach ($galeries as $galerie): ?>
+						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+			<?php endif; ?>
+			</p>
 
 			<p><label><?php echo T_("Emplacement de la page web:"); ?></label><br />
 			<?php echo $urlRacine . '/'; ?><input type="text" name="page" /></p>
@@ -862,7 +922,17 @@ include '../init.inc.php';
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<input type="text" name="id" /></p>
+			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php if (!empty($galeries)): ?>
+				<select name="id">
+					<?php foreach ($galeries as $galerie): ?>
+						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+			<?php endif; ?>
+			</p>
 
 			<p><input type="submit" name="majConf" value="<?php echo T_('Créer ou mettre à jour'); ?>" /></p>
 
@@ -879,25 +949,35 @@ include '../init.inc.php';
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<input type="text" name="id" /></p>
+			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php if (!empty($galeries)): ?>
+				<select name="id">
+					<?php foreach ($galeries as $galerie): ?>
+						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php endforeach; ?>
+				</select>
+			<?php else: ?>
+				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+			<?php endif; ?>
+			</p>
 
 			<p><label><?php echo T_("En plus du champ obligatoire <code>intermediaireNom</code>, ajouter des champs vides:"); ?></label><br />
 			<select name="info[]" multiple="multiple" size="4">
-			<option value="aucun" selected="selected"><?php echo T_("Aucun"); ?></option>
-			<option value="id">id</option>
-			<option value="vignetteNom">vignetteNom</option>
-			<option value="vignetteLargeur">vignetteLargeur</option>
-			<option value="vignetteHauteur">vignetteHauteur</option>
-			<option value="vignetteAlt">vignetteAlt</option>
-			<option value="intermediaireLargeur">intermediaireLargeur</option>
-			<option value="intermediaireHauteur">intermediaireHauteur</option>
-			<option value="intermediaireAlt">intermediaireAlt</option>
-			<option value="intermediaireLegende">intermediaireLegende</option>
-			<option value="pageIntermediaireBaliseTitle">pageIntermediaireBaliseTitle</option>
-			<option value="pageIntermediaireDescription">pageIntermediaireDescription</option>
-			<option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
-			<option value="originalNom">originalNom</option>
-			<option value="exclure">exclure</option>
+				<option value="aucun" selected="selected"><?php echo T_("Aucun"); ?></option>
+				<option value="id">id</option>
+				<option value="vignetteNom">vignetteNom</option>
+				<option value="vignetteLargeur">vignetteLargeur</option>
+				<option value="vignetteHauteur">vignetteHauteur</option>
+				<option value="vignetteAlt">vignetteAlt</option>
+				<option value="intermediaireLargeur">intermediaireLargeur</option>
+				<option value="intermediaireHauteur">intermediaireHauteur</option>
+				<option value="intermediaireAlt">intermediaireAlt</option>
+				<option value="intermediaireLegende">intermediaireLegende</option>
+				<option value="pageIntermediaireBaliseTitle">pageIntermediaireBaliseTitle</option>
+				<option value="pageIntermediaireDescription">pageIntermediaireDescription</option>
+				<option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
+				<option value="originalNom">originalNom</option>
+				<option value="exclure">exclure</option>
 			</select></p>
 
 			<p><?php echo T_("Note: les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher."); ?></p>

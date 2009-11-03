@@ -841,10 +841,12 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 }
 
 /**
-Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne un message informant du résultat de la fonction.
+Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne un tableau dont le premier élément contient le message informant du résultat de la fonction, et dont le second élément est un booléen valant TRUE si une erreur a eu lieu, sinon valant FALSE.
 */
 function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette)
 {
+	$erreur = FALSE;
+	
 	$infoNouvelleImage = pathinfo(basename($cheminNouvelleImage));
 	$nomNouvelleImage = $infoNouvelleImage['basename'];
 	$nomImageSource = basename($cheminImageSource);
@@ -903,7 +905,6 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 		}
 	}
 	
-	
 	$demiSupplementHauteur = 0;
 	$demiSupplementLargeur = 0;
 	
@@ -920,10 +921,6 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 		}
 	}
 	
-	
-	
-	
-	
 	// Si la nouvelle image est théoriquement au moins aussi grande que l'image source, on ne fait qu'une copie de fichier
 	if ($nouvelleImageHauteur > $imageSourceHauteur || $nouvelleImageLargeur > $imageSourceLargeur)
 	#if ($nouvelleImageHauteur >= $imageSourceHauteur || $nouvelleImageLargeur >= $imageSourceLargeur)
@@ -935,6 +932,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 		else
 		{
 			$message = sprintf(T_('Impossible de copier <code>%1$s</code> avec le nom <code>%2$s</code>'), $nomImageSource, $nomNouvelleImage) . "\n";
+			$erreur = TRUE;
 		}
 	}
 	// Sinon on génère une nouvelle image avec gd
@@ -989,6 +987,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 				else
 				{
 					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$erreur = TRUE;
 				}
 				break;
 		
@@ -1000,6 +999,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 				else
 				{
 					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$erreur = TRUE;
 				}
 				break;
 		
@@ -1011,12 +1011,43 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 				else
 				{
 					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$erreur = TRUE;
 				}
 				break;
 		}
 	}
 	
-	return $message;
+	return array ($message, $erreur);
+}
+
+/**
+Si une erreur survient, retourne FALSE, sinon retourne un tableau dont chaque élément contient le nom d'une galerie.
+*/
+function adminListeGaleries($racine)
+{
+	if ($fic = opendir($racine . '/site/fichiers/galeries'))
+	{
+		$galeries = array ();
+		
+		while($fichier = @readdir($fic))
+		{
+			if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
+			{
+				$galeries[] = sansEchappement($fichier);
+			}
+		}
+		
+		closedir($fic);
+	}
+	
+	if (isset($galeries))
+	{
+		return $galeries;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /**

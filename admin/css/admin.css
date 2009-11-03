@@ -45,14 +45,6 @@ a:hover {
 	font-weight: bold;
 }
 
-code {
-	font-weight: bold;
-}
-
-body#documentation-admin-php code {
-	font-weight: normal;
-}
-
 body#documentation-admin-php pre {
 	background-color: #f2f2f2;
 }
@@ -68,10 +60,6 @@ pre {
 	margin: 5px 0;
 	border: 1px solid #b3b3b3;
 	white-space: pre-wrap; /* CSS 3 */ /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
-}
-
-.succes {
-	color: #006400;
 }
 
 .erreur {

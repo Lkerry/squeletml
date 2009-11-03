@@ -14,6 +14,11 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/admin/inc/config.inc.php';
 	
+	if (file_exists($racine . '/site/inc/config-admin.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/config-admin.inc.php';
+	}
+	
 	$fichiers[] = $racine . '/admin/inc/constantes.inc.php';
 	
 	$fichiers[] = $racine . '/admin/inc/pclzip/pclzip.lib.php';
@@ -22,14 +27,24 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/admin/inc/UnsharpMask.inc.php';
 	
-	if (file_exists($racine . '/site/inc/config-admin.inc.php'))
-	{
-		$fichiers[] = $racine . '/site/inc/config-admin.inc.php';
-	}
-	
 	$fichiers[] = $racine . '/inc/constantes.inc.php';
 	
 	return $fichiers;
+}
+
+/**
+Retourne la valeur d'une variable du fichier de configuration `$racine/inc/config.inc.php`. le paramètre correspond au nom de la variable, par exemple 'rss' pour la variable `$rss`.
+*/
+function varConf($nomVariable)
+{
+	include dirname(__FILE__) . '/../../init.inc.php';
+	include $racine . '/inc/config.inc.php';
+	if (file_exists($racine . '/site/inc/config.inc.php'))
+	{
+		include $racine . '/site/inc/config.inc.php';
+	}
+	
+	return ${$nomVariable};
 }
 
 /**
@@ -46,11 +61,11 @@ function adminFluxRssGlobal($fluxRss, $racine)
 	
 	if ($fluxRss == 'galerie')
 	{
-		return $galerieFluxRssGlobal;
+		return varConf('galerieFluxRssGlobal');
 	}
 	elseif ($fluxRss == 'site')
 	{
-		return $siteFluxRssGlobal;
+		return varConf('siteFluxRssGlobal');
 	}
 }
 
