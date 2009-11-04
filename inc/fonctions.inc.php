@@ -927,11 +927,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 	{
 		if (copy($cheminImageSource, $cheminNouvelleImage))
 		{
-			$message = sprintf(T_('Copie de <code>%1$s</code> avec le nom <code>%2$s</code>'), $nomImageSource, $nomNouvelleImage) . "\n";
+			$message = sprintf(T_("Copie de <code>%1\$s</code> avec le nom <code>%2\$s</code>"), $nomImageSource, $nomNouvelleImage) . "\n";
 		}
 		else
 		{
-			$message = sprintf(T_('Impossible de copier <code>%1$s</code> avec le nom <code>%2$s</code>'), $nomImageSource, $nomNouvelleImage) . "\n";
+			$message = sprintf(T_("Impossible de copier <code>%1\$s</code> avec le nom <code>%2\$s</code>"), $nomImageSource, $nomNouvelleImage) . "\n";
 			$erreur = TRUE;
 		}
 	}
@@ -982,11 +982,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 			case 'gif':
 				if (imagegif($nouvelleImage, $cheminNouvelleImage))
 				{
-					$message = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$message = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$message = sprintf(T_("Impossible de créer <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				break;
@@ -994,11 +994,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 			case 'jpeg':
 				if (imagejpeg($nouvelleImage, $cheminNouvelleImage, $qualiteJpg))
 				{
-					$message = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$message = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$message = sprintf(T_("Impossible de créer <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				break;
@@ -1006,11 +1006,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 			case 'png':
 				if (imagepng($nouvelleImage, $cheminNouvelleImage, 9))
 				{
-					$message = sprintf(T_('Création de <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$message = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$message = sprintf(T_('Impossible de créer <code>%1$s</code> à partir de <code>%2$s</code>'), $nomNouvelleImage, $nomImageSource) . "\n";
+					$message = sprintf(T_("Impossible de créer <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				break;
@@ -1086,7 +1086,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 			{
 				$contenuAlt = substr($contenuAlt, 0, -1);
 			}
-			$legende = "<div id=\"galerieIntermediaireLegende\">$contenuAlt (" . sprintf(T_('%1$s&nbsp;Kio'), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ")</div>\n";
+			$legende = "<div id=\"galerieIntermediaireLegende\">$contenuAlt (" . sprintf(T_("%1\$s&nbsp;Kio"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ")</div>\n";
 		}
 		else
 		{

@@ -9,11 +9,11 @@ include 'inc/premier.inc.php';
 <h2><?php echo T_("Aperçu"); ?></h2>
 
 <ul>
-	<li><?php printf(T_('Version de Squeletml: %1$s'), adminVersionLogiciel($racine)); ?></li>
-	<li><?php printf(T_('Version de PHP: %1$s'), PHP_VERSION); ?></li>
-	<li><?php printf(T_('Version d\'Apache: %1$s'), securiseTexte($_SERVER['SERVER_SOFTWARE'])); ?></li>
+	<li><?php printf(T_("Version de Squeletml: %1\$s"), adminVersionLogiciel($racine)); ?></li>
+	<li><?php printf(T_("Version de PHP: %1\$s"), PHP_VERSION); ?></li>
+	<li><?php printf(T_("Version d'Apache: %1\$s"), securiseTexte($_SERVER['SERVER_SOFTWARE'])); ?></li>
 	<li><?php echo reecritureDurl(TRUE); ?></li>
-	<li><?php printf(T_('Système d\'exploitation: %1$s'), PHP_OS); ?></li>
+	<li><?php printf(T_("Système d'exploitation: %1\$s"), PHP_OS); ?></li>
 </ul>
 
 <ul>

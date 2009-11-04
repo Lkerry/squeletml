@@ -47,7 +47,7 @@ include '../init.inc.php';
 						$fichierDeConfiguration = '';
 					}
 					
-					$messagesScript[] = '<li>' . sprintf(T_('Galerie %1$s:'), $i) . "\n<ul>\n<li><em>" . T_("identifiant:") . '</em> ' . $fichier . "</li>\n<li><em>" . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . "</a></li>\n$fichierDeConfiguration</ul></li>\n";
+					$messagesScript[] = '<li>' . sprintf(T_("Galerie %1\$s:"), $i) . "\n<ul>\n<li><em>" . T_("identifiant:") . '</em> ' . $fichier . "</li>\n<li><em>" . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . "</a></li>\n$fichierDeConfiguration</ul></li>\n";
 				}
 			}
 			
@@ -55,7 +55,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$racine/site/fichiers/galeries</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'ouverture du dossier %1\$s."), "<code>$racine/site/fichiers/galeries</code>") . "</li>\n";
 		}
 	
 		echo '<div class="sousBoite">' . "\n";
@@ -107,13 +107,13 @@ include '../init.inc.php';
 		{
 			if (mkdir($cheminGalerie, 0755, TRUE))
 			{
-				$messagesScript[] = '<li>' . sprintf(T_('Création du dossier %1$s.'), '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+				$messagesScript[] = '<li>' . sprintf(T_("Création du dossier %1\$s."), '<code>' . $cheminGalerie . '</code>') . "</li>\n";
 			}
 			else
 			{
 				unlink($_FILES['fichier']['tmp_name']);
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de créer le dossier %1$s.'), '<code>' . $cheminGalerie . '</code>') . "</li>\n";
-				$messagesScript[] = '<li>' . sprintf(T_('Fichier %1\$s supprimé.'), '<code>' . securiseTexte($_FILES['fichier']['tmp_name']) . '</code>') . "</li>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de créer le dossier %1\$s."), '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+				$messagesScript[] = '<li>' . sprintf(T_("Fichier %1\$s supprimé."), '<code>' . securiseTexte($_FILES['fichier']['tmp_name']) . '</code>') . "</li>\n";
 			}
 		}
 		
@@ -143,7 +143,7 @@ include '../init.inc.php';
 				{
 					unlink($_FILES['fichier']['tmp_name']);
 					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminDeplacement . '/</code>') . "</li>\n";
-					$messagesScript[] = '<li>' . T_('Le fichier que vous avez téléversé sur le serveur a été supprimé.') . "</li>\n";
+					$messagesScript[] = '<li>' . T_("Le fichier que vous avez téléversé sur le serveur a été supprimé.") . "</li>\n";
 				}
 				else
 				{
@@ -151,7 +151,7 @@ include '../init.inc.php';
 					{
 						if ($fichierEstImage)
 						{
-							$messagesScript[] = '<li>' . sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>') . "</li>\n";
+							$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>') . "</li>\n";
 						}
 						else
 						{
@@ -165,7 +165,7 @@ include '../init.inc.php';
 								{
 									unlink($cheminGaleries . '/' . $nomArchive);
 									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: "), '<code>' . $nomArchive . '</code>') . $archive->errorInfo(true) . "</li>\n";
-									$messagesScript[] = '<li>' . sprintf(T_('Fichier %1\$s supprimé.'), '<code>' . $cheminGaleries . '/' . $nomArchive . '</code>') . "</li>\n";
+									$messagesScript[] = '<li>' . sprintf(T_("Fichier %1\$s supprimé."), '<code>' . $cheminGaleries . '/' . $nomArchive . '</code>') . "</li>\n";
 								}
 								else
 								{
@@ -173,19 +173,19 @@ include '../init.inc.php';
 									{
 										if ($infoImage['status'] == 'ok')
 										{
-											$messagesScript[] = '<li>' . sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $id) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>') . "</li>\n";
+											$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s."), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $id) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>') . "</li>\n";
 										}
 										elseif ($infoImage['status'] == 'newer_exist')
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_('Un fichier %1$s existe déjà, et est plus récent que celui de l\'archive. Il n\'y a donc pas eu extraction.'), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
 										}
 										else
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_('Attention: une erreur a eu lieu avec le fichier %1$s. Vérifiez son état sur le serveur (s\'il s\'y trouve), et ajoutez-le à la main si nécessaire.'), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
 										}
 									}
 									unlink($cheminGaleries . '/' . $nomArchive);
-									$messagesScript[] = '<li>' . sprintf(T_('Fichier %1\$s supprimé.'), '<code>' . $cheminGaleries . '/' . $nomArchive . '</code>') . "</li>\n";
+									$messagesScript[] = '<li>' . sprintf(T_("Fichier %1\$s supprimé."), '<code>' . $cheminGaleries . '/' . $nomArchive . '</code>') . "</li>\n";
 								}
 							}
 							elseif (preg_match('/\.tar$/i', $nomArchive))
@@ -198,22 +198,22 @@ include '../init.inc.php';
 									{
 										if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_('Un dossier %1$s existe déjà. Il n\'a donc pas été créé.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
 										}
 										elseif (mkdir($cheminGalerie . '/' . $listeFichiers[$i]['filename'], 0755, TRUE))
 										{
-											$messagesScript[] = '<li>' . sprintf(T_('Création du dossier %1$s.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+											$messagesScript[] = '<li>' . sprintf(T_("Création du dossier %1\$s."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
 										}
 										else
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de créer le dossier %1$s.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de créer le dossier %1\$s."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
 										}
 									}
 									else
 									{
 										if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_('Un fichier %1$s existe déjà. Il n\'y a donc pas eu extraction.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
 										}
 										elseif ($fic = fopen($cheminGalerie . '/' . $listeFichiers[$i]['filename'], 'w'))
 										{
@@ -221,22 +221,22 @@ include '../init.inc.php';
 											if (fwrite($fic, $donnees))
 											{
 												fclose($fic);
-												$messagesScript[] = '<li>' . sprintf(T_('Ajout de %1$s dans le dossier %2$s.'), '<code>' . $listeFichiers[$i]['filename'] . '</code>', '<code>' . $cheminGalerie . '/</code>') . "</li>\n";
+												$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s."), '<code>' . $listeFichiers[$i]['filename'] . '</code>', '<code>' . $cheminGalerie . '/</code>') . "</li>\n";
 											}
 											else
 											{
-												$messagesScript[] = '<li class="erreur">' . sprintf(T_('Attention: une erreur a eu lieu avec le fichier %1$s. Vérifiez son état sur le serveur (s\'il s\'y trouve), et ajoutez-le à la main si nécessaire.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
 											}
 										}
 										else
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de créer le fichier %1$s.'), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>";
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de créer le fichier %1\$s."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>";
 										}
 									}
 								}
 								unset($fichierTar);
 								unlink($cheminGalerie . '/' . $nomArchive);
-								$messagesScript[] = '<li>' . sprintf(T_('Fichier %1\$s supprimé.'), '<code>' . $cheminGalerie . '/' . $nomArchive . '</code>') . "</li>\n";
+								$messagesScript[] = '<li>' . sprintf(T_("Fichier %1\$s supprimé."), '<code>' . $cheminGalerie . '/' . $nomArchive . '</code>') . "</li>\n";
 							}
 						}
 					}
@@ -244,7 +244,7 @@ include '../init.inc.php';
 					{
 						unlink($_FILES['fichier']['tmp_name']);
 						$messagesScript[] = '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
-						$messagesScript[] = '<li>' . T_('Le fichier que vous avez téléversé sur le serveur a été supprimé.') . "</li>\n";
+						$messagesScript[] = '<li>' . T_("Le fichier que vous avez téléversé sur le serveur a été supprimé.") . "</li>\n";
 					}
 				}
 			}
@@ -284,7 +284,7 @@ include '../init.inc.php';
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 			$erreur = TRUE;
 		}
 		else
@@ -308,11 +308,11 @@ include '../init.inc.php';
 								$nouveauNom .= '-original.' . $infoFichier['extension'];
 								if (!file_exists($cheminGalerie . '/' . $nouveauNom) && rename($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom))
 								{
-									$messagesScript[] = '<li>' . sprintf(T_('Renommage de %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "</li>\n";
+									$messagesScript[] = '<li>' . sprintf(T_("Renommage de %1\$s en %2\$s"), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "</li>\n";
 								}
 								else
 								{
-									$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de renommer %1$s en %2$s'), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "</li>\n";
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de renommer %1\$s en %2\$s"), "<code>$fichier</code>", "<code>$nouveauNom</code>") . "</li>\n";
 								}
 							}
 						}
@@ -322,7 +322,7 @@ include '../init.inc.php';
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'ouverture du dossier %1\$s."), "<code>$cheminGalerie</code>") . "</li>\n";
 					$erreur = TRUE;
 				}
 			}
@@ -431,7 +431,7 @@ include '../init.inc.php';
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
@@ -456,11 +456,11 @@ include '../init.inc.php';
 						{
 							if (unlink($cheminGalerie . '/' . $fichier))
 							{
-								$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
+								$messagesScript[] = '<li>' . sprintf(T_("Suppression de %1\$s"), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
 							}
 							else
 							{
-								$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
+								$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de supprimer %1\$s"), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
 							}
 						}
 					}
@@ -474,22 +474,22 @@ include '../init.inc.php';
 					{
 						if (rmdir($cheminGalerie))
 						{
-							$messagesScript[] = '<li>' . sprintf(T_('Suppression du dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+							$messagesScript[] = '<li>' . sprintf(T_("Suppression du dossier vide %1\$s"), "<code>$cheminGalerie</code>") . "</li>\n";
 						}
 						else
 						{
-							$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer le dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+							$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de supprimer le dossier vide %1\$s"), "<code>$cheminGalerie</code>") . "</li>\n";
 						}
 					}
 					else
 					{
-						$messagesScript[] = '<li>' . sprintf(T_('Le dossier %1$s n\'est pas vide, il ne sera donc pas supprimé.'), "<code>$cheminGalerie</code>") . "</li>\n";
+						$messagesScript[] = '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminGalerie</code>") . "</li>\n";
 					}
 				}
 			}
 			else
 			{
-				$messagesScript[] = "<li class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
+				$messagesScript[] = "<li class='erreur'>" . sprintf(T_("Erreur lors de l'ouverture du dossier %1\$s."), "<code>$cheminGalerie</code>") . "</li>\n";
 			}
 		
 			// Vignettes de navigation tatouées
@@ -499,7 +499,7 @@ include '../init.inc.php';
 				
 				if (!file_exists($cheminTatouage))
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_('Le dossier des vignettes avec tatouage %1$s n\'existe pas.'), "<code>$cheminTatouage</code>") . "</li>\n";
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le dossier des vignettes avec tatouage %1\$s n'existe pas."), "<code>$cheminTatouage</code>") . "</li>\n";
 				}
 				elseif ($fic = opendir($cheminTatouage))
 				{
@@ -511,11 +511,11 @@ include '../init.inc.php';
 							{
 								if (unlink($cheminTatouage . '/' . $fichier))
 								{
-									$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
+									$messagesScript[] = '<li>' . sprintf(T_("Suppression de %1\$s"), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
 								}
 								else
 								{
-									$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de supprimer %1\$s"), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
 								}
 							}
 						}
@@ -527,21 +527,21 @@ include '../init.inc.php';
 					{
 						if (rmdir($cheminTatouage))
 						{
-							$messagesScript[] = '<li>' . sprintf(T_('Suppression du dossier vide %1$s'), "<code>$cheminTatouage</code>") . "</li>\n";
+							$messagesScript[] = '<li>' . sprintf(T_("Suppression du dossier vide %1\$s"), "<code>$cheminTatouage</code>") . "</li>\n";
 						}
 						else
 						{
-							$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer le dossier vide %1$s'), "<code>$cheminTatouage</code>") . "</li>\n";
+							$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de supprimer le dossier vide %1\$s"), "<code>$cheminTatouage</code>") . "</li>\n";
 						}
 					}
 					else
 					{
-						$messagesScript[] = '<li>' . sprintf(T_('Le dossier %1$s n\'est pas vide, il ne sera donc pas supprimé.'), "<code>$cheminTatouage</code>") . "</li>\n";
+						$messagesScript[] = '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminTatouage</code>") . "</li>\n";
 					}
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminTatouage</code>") . "</li>\n";
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'ouverture du dossier %1\$s."), "<code>$cheminTatouage</code>") . "</li>\n";
 				}
 			}
 		}
@@ -583,21 +583,21 @@ include '../init.inc.php';
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		elseif (file_exists($nouveauCheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s existe déjà.'), "<code>$nouvelId</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s existe déjà."), "<code>$nouvelId</code>") . "</li>\n";
 		}
 		else
 		{
 			if (rename($cheminGalerie, $nouveauCheminGalerie))
 			{
-				$messagesScript[] = '<li>' . sprintf(T_('Renommage de %1$s en %2$s effectué.'), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
+				$messagesScript[] = '<li>' . sprintf(T_("Renommage de %1\$s en %2\$s effectué."), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Renommage de %1$s en %2$s impossible.'), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
 			}
 		}
 		
@@ -645,7 +645,7 @@ include '../init.inc.php';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
@@ -653,13 +653,13 @@ include '../init.inc.php';
 		
 			if (!file_exists($fichierConfigChemin))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'a pas de fichier de configuration.'), "<code>$id</code>") . "</li>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</li>\n";
 			}
 			else
 			{
 				if (!file_exists($cheminPage))
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_('Le chemin %1$s vers la page à créer n\'existe pas. Veuillez vous assurer que les dossiers existent.'), '<code>' . $cheminPage . '</code>') . "</li>\n";
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le chemin %1\$s vers la page à créer n'existe pas. Veuillez vous assurer que les dossiers existent."), '<code>' . $cheminPage . '</code>') . "</li>\n";
 				}
 				else
 				{
@@ -689,7 +689,7 @@ include '../init.inc.php';
 						}
 						else
 						{
-							$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de créer le fichier %1$s.'), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
+							$messagesScript[] = '<li class="erreur">' . sprintf(T_("Impossible de créer le fichier %1\$s."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
 						}
 					}
 				}
@@ -727,7 +727,7 @@ include '../init.inc.php';
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
@@ -767,7 +767,7 @@ include '../init.inc.php';
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'ouverture du dossier %1\$s."), "<code>$cheminGalerie</code>") . "</li>\n";
 			}
 		}
 		
@@ -810,7 +810,7 @@ include '../init.inc.php';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
@@ -838,7 +838,7 @@ include '../init.inc.php';
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de la création ou de la mise à jour du fichier de configuration %1$s. Veuillez vérifier manuellement son contenu.'), "<code>$fichierConfigChemin</code>") . "</li>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de la création ou de la mise à jour du fichier de configuration %1\$s. Veuillez vérifier manuellement son contenu."), "<code>$fichierConfigChemin</code>") . "</li>\n";
 			}
 		
 			$sousBoiteFichierConfigDebut = TRUE;
@@ -918,7 +918,7 @@ include '../init.inc.php';
 
 	<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
 
-	<p><?php printf(T_('<strong>Taille maximale d\'un transfert de fichier:</strong> %1$s octets (%2$s Mio).'), $tailleMaxFichiers, octetsVersMio($tailleMaxFichiers)); ?></p>
+	<p><?php printf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s octets (%2\$s Mio)."), $tailleMaxFichiers, octetsVersMio($tailleMaxFichiers)); ?></p>
 
 	<form action="<?php echo $action; ?>#messages" method="post" enctype="multipart/form-data">
 		<div>

@@ -59,7 +59,7 @@ include '../init.inc.php';
 					echo '<p><strong>' . T_("Ajouter une galerie:") . '</p></strong>';
 					echo '<input type="text" name="langueAjout" value="" />:<input type="text" name="idAjout" value="" />=<input type="text" name="urlAjout" value="" /><br />' . "\n";
 				
-					echo "<p><input type='submit' name='modifsGaleries' value='" . T_('Enregistrer mes modifications') . "' /></p>\n";
+					echo "<p><input type='submit' name='modifsGaleries' value='" . T_("Enregistrer mes modifications") . "' /></p>\n";
 					echo "</div></form>\n";
 				
 					echo "</div><!-- /class=sousBoite -->\n";
@@ -123,7 +123,7 @@ include '../init.inc.php';
 					echo '<p><strong>' . T_("Ajouter une page:") . '</p></strong>';
 					echo '<input type="text" name="langueAjout" value="" />:<input type="text" name="urlAjout" value="" /><br />' . "\n";
 				
-					echo "<p><input type='submit' name='modifsSite' value='" . T_('Enregistrer mes modifications') . "' /></p>\n";
+					echo "<p><input type='submit' name='modifsSite' value='" . T_("Enregistrer mes modifications") . "' /></p>\n";
 					echo "</div></form>\n";
 				
 					echo "</div><!-- /class=sousBoite -->\n";

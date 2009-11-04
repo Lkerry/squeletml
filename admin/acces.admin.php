@@ -19,7 +19,7 @@ include 'inc/premier.inc.php';
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.htaccess</code>") . "</p>\n";
+		echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.htaccess</code>") . "</p>\n";
 		$erreurAccesFichiers = TRUE;
 	}
 
@@ -29,7 +29,7 @@ include 'inc/premier.inc.php';
 	}
 	else
 	{
-		echo '<p class="erreur">' . sprintf(T_('Impossible d\'ouvrir le fichier %1$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page.'), "<code>$racine/.acces</code>") . "</p>\n";
+		echo '<p class="erreur">' . sprintf(T_("Impossible d'ouvrir le fichier %1\$s en lecture et en écriture. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.acces</code>") . "</p>\n";
 		$erreurAccesFichiers = TRUE;
 	}
 	// Fin des tests
@@ -74,11 +74,11 @@ include 'inc/premier.inc.php';
 				if ($utilisateurAbsent)
 				{
 					fputs($fic2, $acces);
-					echo '<p>' . sprintf(T_('Utilisateur <em>%1$s</em> ajouté.'), securiseTexte($_POST['nom'])) . "</p>\n";
+					echo '<p>' . sprintf(T_("Utilisateur <em>%1\$s</em> ajouté."), securiseTexte($_POST['nom'])) . "</p>\n";
 				}
 				else
 				{
-					echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> a déjà les droits.'), securiseTexte($_POST['nom'])) . "</p>\n";
+					echo '<p class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['nom'])) . "</p>\n";
 				}
 		
 				fclose($fic2);
@@ -116,11 +116,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Son mot de passe ne peut donc pas être modifié.'), securiseTexte($_POST['nom'])) . "</p>\n";
+				echo '<p class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 			else
 			{
-				echo '<p>' . sprintf(T_('Mot de passe de l\'utilisateur <em>%1$s</em> modifié.'), securiseTexte($_POST['nom'])) . "</p>\n";
+				echo '<p>' . sprintf(T_("Mot de passe de l'utilisateur <em>%1\$s</em> modifié."), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 		}
 	
@@ -195,11 +195,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_('L\'utilisateur <em>%1$s</em> n\'a pas les droits. Il ne peut donc pas être supprimé.'), securiseTexte($_POST['nom'])) . "</p>\n";
+				echo '<p class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 			else
 			{
-				echo '<p>' . sprintf(T_('Utilisateur <em>%1$s</em> supprimé.'), securiseTexte($_POST['nom'])) . "</p>\n";
+				echo '<p>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['nom'])) . "</p>\n";
 			}
 		}
 	

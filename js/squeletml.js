@@ -183,7 +183,7 @@ function tableDesMatieres(idParent, baliseTable)
 		
 		oDiv.setAttribute('id', 'tableDesMatieres');
 		oH2.setAttribute('id', 'tableDesMatieresTitre');
-		oH2Texte = document.createTextNode(T_('Table des matières'));
+		oH2Texte = document.createTextNode(T_("Table des matières"));
 		oUl.setAttribute('id', 'tableDesMatieresLiens');
 		
 		oDiv.appendChild(oUl);
