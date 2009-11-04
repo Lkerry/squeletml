@@ -77,7 +77,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
   - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (avec coloration syntaxique du code en direct durant la saisie), téléversement, téléchargement...
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise du site en maintenance.
-  - Gestion des galeries: entre autres création et mise à jour du fichier de configuration pour chaque galerie, listage de toutes les galeries existantes, génération automatique d'images de taille intermédiaire à partir des images originales, etc.
+  - Gestion des galeries: entre autres création et mise à jour du fichier de configuration pour chaque galerie, listage de toutes les galeries existantes, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
   - Gestion des flux RSS globaux.
   - Documentation: consultation de l'aide directement en local.
 

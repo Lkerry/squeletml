@@ -27,7 +27,7 @@ include '../init.inc.php';
 	{
 		$messagesScript = array ();
 		
-		if ($fic = opendir($racine . '/site/fichiers/galeries'))
+		if ($fic = @opendir($racine . '/site/fichiers/galeries'))
 		{
 			$i = 0;
 			while($fichier = @readdir($fic))
@@ -291,7 +291,7 @@ include '../init.inc.php';
 		{
 			if ($_POST['manipulerOriginal'] == 'renommerOriginal')
 			{
-				if ($fic = opendir($cheminGalerie))
+				if ($fic = @opendir($cheminGalerie))
 				{
 					while($fichier = @readdir($fic))
 					{
@@ -329,7 +329,7 @@ include '../init.inc.php';
 		
 			// A: les images à traiter ont la forme `nom-original.extension`
 		
-			if (!$erreur && $fic2 = opendir($cheminGalerie))
+			if (!$erreur && $fic2 = @opendir($cheminGalerie))
 			{
 				while($fichier = @readdir($fic2))
 				{
@@ -435,7 +435,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			if ($fic = opendir($cheminGalerie))
+			if ($fic = @opendir($cheminGalerie))
 			{
 				while($fichier = @readdir($fic))
 				{
@@ -501,7 +501,7 @@ include '../init.inc.php';
 				{
 					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le dossier des vignettes avec tatouage %1\$s n'existe pas."), "<code>$cheminTatouage</code>") . "</li>\n";
 				}
-				elseif ($fic = opendir($cheminTatouage))
+				elseif ($fic = @opendir($cheminTatouage))
 				{
 					while($fichier = @readdir($fic))
 					{
@@ -731,7 +731,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			if ($fic = opendir($cheminGalerie))
+			if ($fic = @opendir($cheminGalerie))
 			{
 				$listeFichiers = '';
 				$tableauFichiers = array ();

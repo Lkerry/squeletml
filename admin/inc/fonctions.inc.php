@@ -75,8 +75,8 @@ function adminFluxRssGlobal($fluxRss, $racine)
 function adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)
 {
 	static $liste = array ();
-	$dossier = opendir($dossierRacine);
-	while (($fichier = readdir($dossier)) !== FALSE)
+	$dossier = @opendir($dossierRacine);
+	while (($fichier = @readdir($dossier)) !== FALSE)
 	{
 		if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
 		{
@@ -116,8 +116,8 @@ function adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDos
 function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl)
 {
 	static $liste = array ();
-	$dossier = opendir($dossierRacine);
-	while (($fichier = readdir($dossier)) !== FALSE)
+	$dossier = @opendir($dossierRacine);
+	while (($fichier = @readdir($dossier)) !== FALSE)
 	{
 		if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
 		{
@@ -278,7 +278,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 		$i++;
 	}
 	
-	$fic = opendir($cheminGalerie);
+	$fic = @opendir($cheminGalerie);
 	if ($fic === FALSE)
 	{
 		return FALSE;
@@ -333,7 +333,7 @@ Si une erreur survient, retourne FALSE, sinon retourne un tableau dont chaque é
 */
 function adminListeGaleries($racine, $strictementAvecConfig = TRUE)
 {
-	if ($fic = opendir($racine . '/site/fichiers/galeries'))
+	if ($fic = @opendir($racine . '/site/fichiers/galeries'))
 	{
 		$galeries = array ();
 		
@@ -493,9 +493,9 @@ function dossierEstVide($cheminDossier)
 	$dossierEstVide = FALSE;
 	$i = 0;
 	
-	if (is_dir($cheminDossier) && $fic = opendir($cheminDossier))
+	if (is_dir($cheminDossier) && $fic = @opendir($cheminDossier))
 	{
-		while ($fichier = readdir($fic))
+		while ($fichier = @readdir($fic))
 		{
 			if ($fichier != '.' && $fichier != '..')
 			{
