@@ -62,6 +62,7 @@ include '../init.inc.php';
 		echo '<h3>' . T_("Liste des galeries") . "</h3>\n";
 		
 		echo "<ul>\n";
+		
 		if (!empty($messagesScript))
 		{
 			foreach ($messagesScript as $messageScript)
@@ -73,6 +74,7 @@ include '../init.inc.php';
 		{
 			echo '<li>' . T_("Aucune galerie") . "</li>\n";
 		}
+		
 		echo "</ul>\n";
 		echo "</div><!-- /class=sousBoite -->\n";
 	}
@@ -257,10 +259,12 @@ include '../init.inc.php';
 		echo '<h3>' . T_("Ajout d'images") . "</h3>\n";
 		
 		echo '<ul>' . "\n";
+		
 		foreach ($messagesScript as $messageScript)
 		{
 			echo $messageScript;
 		}
+		
 		echo "</ul>\n";
 		echo '</div><!-- /class=sousBoite -->' . "\n";
 	}
@@ -399,15 +403,18 @@ include '../init.inc.php';
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Retaillage des images") . "</h3>\n";
 		
-		echo '<ul>' . "\n";
 		if (!empty($messagesScript))
 		{
+			echo '<ul>' . "\n";
+			
 			foreach ($messagesScript as $messageScript)
 			{
 				echo $messageScript;
 			}
+			
+			echo "</ul>\n";
 		}
-		echo "</ul>\n";
+		
 		echo '</div><!-- /class=sousBoite -->' . "\n";
 	}
 
@@ -461,15 +468,22 @@ include '../init.inc.php';
 				
 				closedir($fic);
 				
-				if (isset($_POST['supprimerImagesDossier']) && $_POST['supprimerImagesDossier'] == 'supprimer' && dossierEstVide($cheminGalerie))
+				if (isset($_POST['supprimerImagesDossier']) && $_POST['supprimerImagesDossier'] == 'supprimer')
 				{
-					if (rmdir($cheminGalerie))
+					if (dossierEstVide($cheminGalerie))
 					{
-						$messagesScript[] = '<li>' . sprintf(T_('Suppression du dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+						if (rmdir($cheminGalerie))
+						{
+							$messagesScript[] = '<li>' . sprintf(T_('Suppression du dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+						}
+						else
+						{
+							$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer le dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+						}
 					}
 					else
 					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer le dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+						$messagesScript[] = '<li>' . sprintf(T_('Le dossier %1$s n\'est pas vide, il ne sera donc pas supprimé.'), "<code>$cheminGalerie</code>") . "</li>\n";
 					}
 				}
 			}
@@ -520,6 +534,10 @@ include '../init.inc.php';
 							$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer le dossier vide %1$s'), "<code>$cheminTatouage</code>") . "</li>\n";
 						}
 					}
+					else
+					{
+						$messagesScript[] = '<li>' . sprintf(T_('Le dossier %1$s n\'est pas vide, il ne sera donc pas supprimé.'), "<code>$cheminTatouage</code>") . "</li>\n";
+					}
 				}
 				else
 				{
@@ -533,6 +551,7 @@ include '../init.inc.php';
 		echo '<h3>' . T_("Suppression d'images") . "</h3>\n" ;
 		
 		echo "<ul>\n";
+		
 		if (!empty($messagesScript))
 		{
 			foreach ($messagesScript as $messageScript)
@@ -544,10 +563,58 @@ include '../init.inc.php';
 		{
 			echo '<li>' . T_("Aucune image à traiter.") . "</li>\n";
 		}
+		
 		echo "</ul>\n";
 		echo "</div><!-- /class=sousBoite -->\n";
 	}
+	
+	########################################################################
+	##
+	## Renommer une galerie
+	##
+	########################################################################
 
+	if (isset($_POST['renommer']))
+	{
+		$messagesScript = array ();
+		$nouvelId = securiseTexte($_POST['idNouveauNomGalerie']);
+		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
+		$nouveauCheminGalerie = $racine . '/site/fichiers/galeries/' . $nouvelId;
+		
+		if (!file_exists($cheminGalerie))
+		{
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
+		}
+		elseif (file_exists($nouveauCheminGalerie))
+		{
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s existe déjà.'), "<code>$nouvelId</code>") . "</li>\n";
+		}
+		else
+		{
+			if (rename($cheminGalerie, $nouveauCheminGalerie))
+			{
+				$messagesScript[] = '<li>' . sprintf(T_('Renommage de %1$s en %2$s effectué.'), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
+			}
+			else
+			{
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Renommage de %1$s en %2$s impossible.'), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
+			}
+		}
+		
+		echo '<div class="sousBoite">' . "\n";
+		echo '<h3>' . T_("Renommage d'une galerie") . "</h3>\n";
+		
+		echo "<ul>\n";
+		
+		foreach ($messagesScript as $messageScript)
+		{
+			echo $messageScript;
+		}
+		
+		echo "</ul>\n";
+		echo "</div><!-- /class=sousBoite -->\n";
+	}
+	
 	########################################################################
 	##
 	## Créer une page web de galerie
@@ -632,15 +699,18 @@ include '../init.inc.php';
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Page web") . "</h3>\n";
 		
-		echo "<ul>\n";
 		if (!empty($messagesScript))
 		{
+			echo "<ul>\n";
+			
 			foreach ($messagesScript as $messageScript)
 			{
 				echo $messageScript;
 			}
+			
+			echo "</ul>\n";
 		}
-		echo "</ul>\n";
+		
 		echo "</div><!-- /class=sousBoite -->\n";
 	}
 
@@ -707,10 +777,12 @@ include '../init.inc.php';
 		if (!empty($messagesScript))
 		{
 			echo "<ul>\n";
+			
 			foreach ($messagesScript as $messageScript)
 			{
 				echo $messageScript;
 			}
+			
 			echo "</ul>\n";
 		}
 		else
@@ -780,10 +852,12 @@ include '../init.inc.php';
 			echo '<h4>' . T_("Actions effectuées") . "</h4>\n" ;
 			
 			echo "<ul>\n";
+			
 			foreach ($messagesScript as $messageScript)
 			{
 				echo $messageScript;
 			}
+			
 			echo "</ul>\n";
 		}
 	}
@@ -955,6 +1029,33 @@ include '../init.inc.php';
 			</ul>
 			
 			<p><input type="submit" name="supprimerImages" value="<?php echo T_('Supprimer les images'); ?>" /></p>
+		</div>
+	</form>
+</div><!-- /class=boite -->
+
+<!-- class=boite -->
+
+<div class="boite">
+	<h2><?php echo T_("Renommer une galerie"); ?></h2>
+
+	<p><?php echo T_("Vous pouvez renommer une galerie. S'il s'agit d'une galerie déjà utilisée sur votre site, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page web de votre galerie."); ?></p>
+
+	<form action="<?php echo $action; ?>#messages" method="post" enctype="multipart/form-data">
+		<div>
+			<p><label><?php echo T_("Identifiant actuel de la galerie et son nouvel identifiant:"); ?></label><br />
+			<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+			<?php if (!empty($galeries)): ?>
+				<select name="id">
+					<?php foreach ($galeries as $galerie): ?>
+						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php endforeach; ?>
+				</select> <input type="text" name="idNouveauNomGalerie" />
+			<?php else: ?>
+				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+			<?php endif; ?>
+			</p>
+			
+			<p><input type="submit" name="renommer" value="<?php echo T_('Renommer la galerie'); ?>" /></p>
 		</div>
 	</form>
 </div><!-- /class=boite -->
