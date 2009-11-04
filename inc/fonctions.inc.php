@@ -1021,36 +1021,6 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 }
 
 /**
-Si une erreur survient, retourne FALSE, sinon retourne un tableau dont chaque élément contient le nom d'une galerie.
-*/
-function adminListeGaleries($racine)
-{
-	if ($fic = opendir($racine . '/site/fichiers/galeries'))
-	{
-		$galeries = array ();
-		
-		while($fichier = @readdir($fic))
-		{
-			if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
-			{
-				$galeries[] = sansEchappement($fichier);
-			}
-		}
-		
-		closedir($fic);
-	}
-	
-	if (isset($galeries))
-	{
-		return $galeries;
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-/**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
 function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)

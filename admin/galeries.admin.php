@@ -32,12 +32,22 @@ include '../init.inc.php';
 			$i = 0;
 			while($fichier = @readdir($fic))
 			{
-				if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
+				if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
 				{
 					$i++;
 					$fichier = sansEchappement($fichier);
 					$idLien = rawurlencode($fichier);
-					$messagesScript[] = '<li>' . sprintf(T_('Galerie %1$s:'), $i) . "\n<ul>\n<li><em>" . T_("identifiant:") . '</em> ' . $fichier . "</li>\n<li><em>" . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . "</a></li>\n<li><em>" . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a>' . "</li>\n</ul></li>\n";
+					
+					if (file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
+					{
+						$fichierDeConfiguration = '<li><em>' . T_("Fichier de configuration:") . '</em> <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/config.pc#messagesPorteDocuments">config.pc</a>' . "</li>\n";
+					}
+					else
+					{
+						$fichierDeConfiguration = '';
+					}
+					
+					$messagesScript[] = '<li>' . sprintf(T_('Galerie %1$s:'), $i) . "\n<ul>\n<li><em>" . T_("identifiant:") . '</em> ' . $fichier . "</li>\n<li><em>" . T_("dossier:") . '</em> <a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . $fichier . "</a></li>\n$fichierDeConfiguration</ul></li>\n";
 				}
 			}
 			
@@ -403,77 +413,124 @@ include '../init.inc.php';
 
 	########################################################################
 	##
-	## Supprimer les vignettes d'une galerie
+	## Supprimer des images
 	##
 	########################################################################
 
-	if (isset($_POST['supprimerVignettes']))
+	if (isset($_POST['supprimerImages']))
 	{
 		$messagesScript = array ();
-		
-		// Vignettes des oeuvres
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-		if ($fic = opendir($cheminGalerie))
+		
+		if (!file_exists($cheminGalerie))
 		{
-			while($fichier = @readdir($fic))
-			{
-				if(!is_dir($cheminGalerie . '/' . $fichier))
-				{
-					if (preg_match('/-vignette\.(gif|png|jpg|jpeg)$/', $fichier))
-					{
-						if (unlink($cheminGalerie . '/' . $fichier))
-						{
-							$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
-						}
-						else
-						{
-							$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
-						}
-					}
-				}
-			}
-			closedir($fic);
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
-			$messagesScript[] = "<li class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
-		}
-		
-		// Vignettes de navigation tatouées
-		if (isset($_POST['supprimerVignettesAvecTatouage']) && $_POST['supprimerVignettesAvecTatouage'] == 'supprimer')
-		{
-			$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
-			
-			if ($fic = opendir($cheminTatouage))
+			if ($fic = opendir($cheminGalerie))
 			{
 				while($fichier = @readdir($fic))
 				{
-					if(!is_dir($cheminTatouage . '/' . $fichier))
+					$fichierAsupprimer = FALSE;
+					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
-						if (preg_match('/-vignette-(precedent|suivant)\.(gif|png|jpg|jpeg)$/', $fichier))
+						if (
+							(isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && preg_match('/-vignette\.(gif|png|jpg|jpeg)$/i', $fichier)) ||
+							(isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-vignette\.(gif|png|jpg|jpeg)$/i', $fichier) && $fichier != 'config.pc') ||
+							(isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier)) ||
+							(isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && $fichier == 'config.pc')
+						)
 						{
-							if (unlink($cheminTatouage . '/' . $fichier))
+							$fichierAsupprimer = TRUE;
+						}
+					
+						if ($fichierAsupprimer)
+						{
+							if (unlink($cheminGalerie . '/' . $fichier))
 							{
-								$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
+								$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
 							}
 							else
 							{
-								$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
+								$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminGalerie/$fichier</code>") . "</li>\n";
 							}
 						}
 					}
 				}
+				
 				closedir($fic);
+				
+				if (isset($_POST['supprimerImagesDossier']) && $_POST['supprimerImagesDossier'] == 'supprimer' && dossierEstVide($cheminGalerie))
+				{
+					if (rmdir($cheminGalerie))
+					{
+						$messagesScript[] = '<li>' . sprintf(T_('Suppression du dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+					}
+					else
+					{
+						$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer le dossier vide %1$s'), "<code>$cheminGalerie</code>") . "</li>\n";
+					}
+				}
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminTatouage</code>") . "</li>\n";
+				$messagesScript[] = "<li class='erreur'>" . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
+			}
+		
+			// Vignettes de navigation tatouées
+			if (isset($_POST['supprimerImagesVignettesAvecTatouage']) && $_POST['supprimerImagesVignettesAvecTatouage'] == 'supprimer')
+			{
+				$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
+				
+				if (!file_exists($cheminTatouage))
+				{
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_('Le dossier des vignettes avec tatouage %1$s n\'existe pas.'), "<code>$cheminTatouage</code>") . "</li>\n";
+				}
+				elseif ($fic = opendir($cheminTatouage))
+				{
+					while($fichier = @readdir($fic))
+					{
+						if(!is_dir($cheminTatouage . '/' . $fichier))
+						{
+							if (preg_match('/-vignette-(precedent|suivant)\.(gif|png|jpg|jpeg)$/i', $fichier))
+							{
+								if (unlink($cheminTatouage . '/' . $fichier))
+								{
+									$messagesScript[] = '<li>' . sprintf(T_('Suppression de %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
+								}
+								else
+								{
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer %1$s'), "<code>$cheminTatouage/$fichier</code>") . "</li>\n";
+								}
+							}
+						}
+					}
+					
+					closedir($fic);
+					
+					if (dossierEstVide($cheminTatouage))
+					{
+						if (rmdir($cheminTatouage))
+						{
+							$messagesScript[] = '<li>' . sprintf(T_('Suppression du dossier vide %1$s'), "<code>$cheminTatouage</code>") . "</li>\n";
+						}
+						else
+						{
+							$messagesScript[] = '<li class="erreur">' . sprintf(T_('Impossible de supprimer le dossier vide %1$s'), "<code>$cheminTatouage</code>") . "</li>\n";
+						}
+					}
+				}
+				else
+				{
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminTatouage</code>") . "</li>\n";
+				}
 			}
 		}
-	
+		
 		// Messages
 		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Suppression de vignettes") . "</h3>\n" ;
+		echo '<h3>' . T_("Suppression d'images") . "</h3>\n" ;
 		
 		echo "<ul>\n";
 		if (!empty($messagesScript))
@@ -485,7 +542,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			echo '<li>' . T_("Aucune vignette à traiter.") . "</li>\n";
+			echo '<li>' . T_("Aucune image à traiter.") . "</li>\n";
 		}
 		echo "</ul>\n";
 		echo "</div><!-- /class=sousBoite -->\n";
@@ -598,43 +655,50 @@ include '../init.inc.php';
 		$messagesScript = array ();
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		
-		if ($fic = opendir($cheminGalerie))
+		if (!file_exists($cheminGalerie))
 		{
-			$listeFichiers = '';
-			$tableauFichiers = array ();
-			while($fichier = @readdir($fic))
-			{
-				if(!is_dir($cheminGalerie . '/' . $fichier))
-				{
-					if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
-					{
-						$tableauFichiers[] = $fichier;
-					}
-				}
-			}
-			closedir($fic);
-	
-			sort($tableauFichiers);
-			$listeFichiers = '';
-	
-			foreach ($tableauFichiers as $cle)
-			{
-				$listeFichiers .= "intermediaireNom=$cle\n";
-		
-				if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
-				{
-					foreach ($_POST['info'] as $champ)
-					{
-						$listeFichiers .= securiseTexte($champ) . "=\n";
-					}
-				}
-		
-				$listeFichiers .= "#IMG\n";
-			}
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_('La galerie %1$s n\'existe pas.'), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
+			if ($fic = opendir($cheminGalerie))
+			{
+				$listeFichiers = '';
+				$tableauFichiers = array ();
+				while($fichier = @readdir($fic))
+				{
+					if(!is_dir($cheminGalerie . '/' . $fichier))
+					{
+						if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) && !preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) && preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier))
+						{
+							$tableauFichiers[] = $fichier;
+						}
+					}
+				}
+				closedir($fic);
+	
+				sort($tableauFichiers);
+				$listeFichiers = '';
+	
+				foreach ($tableauFichiers as $cle)
+				{
+					$listeFichiers .= "intermediaireNom=$cle\n";
+		
+					if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
+					{
+						foreach ($_POST['info'] as $champ)
+						{
+							$listeFichiers .= securiseTexte($champ) . "=\n";
+						}
+					}
+		
+					$listeFichiers .= "#IMG\n";
+				}
+			}
+			else
+			{
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_('Erreur lors de l\'ouverture du dossier %1$s.'), "<code>$cheminGalerie</code>") . "</li>\n";
+			}
 		}
 		
 		echo '<div class="sousBoite">' . "\n";
@@ -762,7 +826,7 @@ include '../init.inc.php';
 <div class="boite">
 	<h2><?php echo T_("Lister les galeries existantes"); ?></h2>
 
-	<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Chaque galerie aura un lien vous permettant de modifier son fichier de configuration dans le porte-documents."); ?></p>
+	<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie possède un fichier de configuration, un lien vous permettant de modifier ce dernier dans le porte-documents."); ?></p>
 
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
@@ -787,7 +851,7 @@ include '../init.inc.php';
 			<p><label><?php echo T_("Identifiant de la galerie (il est possible de créer une nouvelle galerie):"); ?></label><br />
 			<select name="id">
 				<option value="nouvelleGalerie"><?php echo T_("Nouvelle galerie:"); ?></option>
-				<?php $galeries = adminListeGaleries($racine); ?>
+				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
 				<?php if (!empty($galeries)): ?>
 					<?php foreach ($galeries as $galerie): ?>
 						<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
@@ -798,7 +862,7 @@ include '../init.inc.php';
 			<p><label><?php echo T_("Fichier:"); ?></label><br />
 			<input type="file" name="fichier" size="25"/></p>
 
-			<p><input type="checkbox" name="conf" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
+			<p><input type="checkbox" name="conf" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermédiaire à afficher)."); ?></label></p>
 
 			<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
 		</div>
@@ -810,14 +874,14 @@ include '../init.inc.php';
 <div class="boite">
 	<h2><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
 
-	<p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermediaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
+	<p><?php echo T_("Vous pouvez faire générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermédiaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
 
-	<p><?php echo T_("Note: pour chaque image originale, une image en version intermediaire sans le suffixe <code>-original</code> sera créée, si un tel fichier n'existe pas déjà. Les fichiers <code>-vignette.extension</code> sont ignorés. Si <code>nom-original.extension</code> et <code>nom.extension</code> existent tous les deux, il n'y aura pas de création de version intermédiaire."); ?></p>
+	<p><?php echo T_("Note: pour chaque image originale, une image en version intermédiaire sans le suffixe <code>-original</code> sera créée, si un tel fichier n'existe pas déjà. Les fichiers <code>-vignette.extension</code> sont ignorés. Si <code>nom-original.extension</code> et <code>nom.extension</code> existent tous les deux, il n'y aura pas de création de version intermédiaire."); ?></p>
 
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php $galeries = adminListeGaleries($racine, FALSE); ?>
 			<?php if (!empty($galeries)): ?>
 				<select name="id">
 					<?php foreach ($galeries as $galerie): ?>
@@ -829,7 +893,7 @@ include '../init.inc.php';
 			<?php endif; ?>
 			</p>
 			
-			<p><label><?php echo T_("Taille maximale de la version intermediaire (largeur × hauteur):"); ?></label><br />
+			<p><label><?php echo T_("Taille maximale de la version intermédiaire (largeur × hauteur):"); ?></label><br />
 			<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Si une seule dimension est précisée, l'autre sera calculée à partir de la dimension donnée ainsi que des dimensions de l'image source. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée."); ?><br />
 			<input type="text" name="largeur" size="4" value="500" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input type="text" name="hauteur" size="4" value="500" /> <?php echo T_("px de hauteur"); ?></p>
 
@@ -842,7 +906,7 @@ include '../init.inc.php';
 
 			<p><input type="checkbox" name="actions" value="nettete" /> <label><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label></p>
 
-			<p><input type="checkbox" name="conf" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></label></p>
+			<p><input type="checkbox" name="conf" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermédiaire à afficher)."); ?></label></p>
 
 			<p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
@@ -854,14 +918,22 @@ include '../init.inc.php';
 <!-- class=boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Supprimer les vignettes d'une galerie"); ?></h2>
-
+	<h2><?php echo T_("Supprimer des images"); ?></h2>
+	
 	<p><?php echo T_("Vous pouvez supprimer les vignettes d'une galerie pour forcer leur regénération automatique. Seules les vignettes avec la forme par défaut (<code>-vignette.extension</code>) seront supprimées."); ?></p>
-
+	
+	<p><?php echo T_("Aussi, si la navigation entre les oeuvres d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationVignettesTatouage</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les oeuvres précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre. Vous pouvez supprimer ces vignettes de navigation avec tatouage."); ?></p>
+	
+	<p><?php echo T_("Vous pouvez également supprimer les images de taille intermédiaires. Les images dont le nom ne correspond pas aux formes par défaut (<code>-original.extension</code> et <code>-vignette.extension</code>) seront supprimées."); ?></p>
+	
+	<p><?php echo T_("Enfin, vous pouvez supprimer les images originales. Seules les images originales avec la forme par défaut (<code>-original.extension</code>) seront supprimées."); ?></p>
+	
+	<p><?php echo T_("Notez qu'il est aussi possible de supprimer le fichier de configuration de la galerie ainsi que le dossier de la galerie si ce dernier est vide."); ?></p>
+	
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php $galeries = adminListeGaleries($racine, FALSE); ?>
 			<?php if (!empty($galeries)): ?>
 				<select name="id">
 					<?php foreach ($galeries as $galerie): ?>
@@ -872,12 +944,17 @@ include '../init.inc.php';
 				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 			<?php endif; ?>
 			</p>
-
-			<p><?php echo T_("Si la navigation entre les oeuvres d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationVignettesTatouage</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les oeuvres précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre."); ?></p>
-
-			<p><input type="checkbox" name="supprimerVignettesAvecTatouage" value="supprimer" /> <label><?php echo T_("Supprimer également les vignettes de navigation avec tatouage."); ?></label></p>
-
-			<p><input type="submit" name="supprimerVignettes" value="<?php echo T_('Supprimer les vignettes'); ?>" /></p>
+			
+			<ul>
+				<li><input type="checkbox" name="supprimerImagesVignettes" value="supprimer" /> <label><?php echo T_("Supprimer les vignettes."); ?></label></li>
+				<li><input type="checkbox" name="supprimerImagesVignettesAvecTatouage" value="supprimer" /> <label><?php echo T_("Supprimer les vignettes de navigation avec tatouage."); ?></label></li>
+				<li><input type="checkbox" name="supprimerImagesIntermediaires" value="supprimer" /> <label><?php echo T_("Supprimer les images intermédiaires."); ?></label></li>
+				<li><input type="checkbox" name="supprimerImagesOriginal" value="supprimer" /> <label><?php echo T_("Supprimer les images originales."); ?></label></li>
+				<li><input type="checkbox" name="supprimerImagesConfig" value="supprimer" /> <label><?php echo T_("Supprimer le fichier de configuration."); ?></label></li>
+				<li><input type="checkbox" name="supprimerImagesDossier" value="supprimer" /> <label><?php echo T_("Supprimer le dossier de la galerie s'il est vide."); ?></label></li>
+			</ul>
+			
+			<p><input type="submit" name="supprimerImages" value="<?php echo T_('Supprimer les images'); ?>" /></p>
 		</div>
 	</form>
 </div><!-- /class=boite -->
@@ -891,8 +968,8 @@ include '../init.inc.php';
 
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
-			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<?php $galeries = adminListeGaleries($racine); ?>
+			<p><label><?php echo T_("Identifiant de la galerie (possédant un fichier de configuration):"); ?></label><br />
+			<?php $galeries = adminListeGaleries($racine, TRUE); ?>
 			<?php if (!empty($galeries)): ?>
 				<select name="id">
 					<?php foreach ($galeries as $galerie): ?>
@@ -900,7 +977,7 @@ include '../init.inc.php';
 					<?php endforeach; ?>
 				</select>
 			<?php else: ?>
-				<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+				<strong><?php echo T_("Veuillez auparavant créer au moins une galerie possédant un fichier de configuration."); ?></strong>
 			<?php endif; ?>
 			</p>
 
@@ -917,12 +994,12 @@ include '../init.inc.php';
 <div class="boite">
 	<h2><?php echo T_("Créer ou mettre à jour un fichier de configuration"); ?></h2>
 
-	<p><?php echo T_("Crée ou met à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher)."); ?></p>
+	<p><?php echo T_("Crée ou met à jour le fichier de configuration de cette galerie avec les paramètres par défaut (les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermédiaire à afficher)."); ?></p>
 
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php $galeries = adminListeGaleries($racine, FALSE); ?>
 			<?php if (!empty($galeries)): ?>
 				<select name="id">
 					<?php foreach ($galeries as $galerie): ?>
@@ -949,7 +1026,7 @@ include '../init.inc.php';
 	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-			<?php $galeries = adminListeGaleries($racine); ?>
+			<?php $galeries = adminListeGaleries($racine, FALSE); ?>
 			<?php if (!empty($galeries)): ?>
 				<select name="id">
 					<?php foreach ($galeries as $galerie): ?>
@@ -980,7 +1057,7 @@ include '../init.inc.php';
 				<option value="exclure">exclure</option>
 			</select></p>
 
-			<p><?php echo T_("Note: les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermediaire à afficher."); ?></p>
+			<p><?php echo T_("Note: les fichiers <code>-vignette.extension</code> et <code>-original.extension</code> sont ignorés, les autres sont considérés comme étant la version intermédiaire à afficher."); ?></p>
 
 			<p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>
 		</div>

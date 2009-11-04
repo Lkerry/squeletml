@@ -329,6 +329,39 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 }
 
 /**
+Si une erreur survient, retourne FALSE, sinon retourne un tableau dont chaque élément contient le nom d'une galerie. Si le paramètre `$strictementAvecConfig` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration `config.pc`, sinon retourne le nom de tous les dossiers de `$racine/site/fichiers/galeries/`.
+*/
+function adminListeGaleries($racine, $strictementAvecConfig = TRUE)
+{
+	if ($fic = opendir($racine . '/site/fichiers/galeries'))
+	{
+		$galeries = array ();
+		
+		while($fichier = @readdir($fic))
+		{
+			if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
+			{
+				if (($strictementAvecConfig && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc')) || !$strictementAvecConfig)
+				{
+					$galeries[] = sansEchappement($fichier);
+				}
+			}
+		}
+		
+		closedir($fic);
+	}
+	
+	if (isset($galeries))
+	{
+		return $galeries;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/**
 Retourne l'id de `body`.
 */
 function adminBodyId()
@@ -450,6 +483,36 @@ function adminSiteEnMaintenanceIp($cheminHtaccess)
 	}
 	
 	return FALSE;
+}
+
+/**
+Retourne TRUE si le dossier est vide, sinon retourne FALSE.
+*/
+function dossierEstVide($cheminDossier)
+{
+	$dossierEstVide = FALSE;
+	$i = 0;
+	
+	if (is_dir($cheminDossier) && $fic = opendir($cheminDossier))
+	{
+		while ($fichier = readdir($fic))
+		{
+			if ($fichier != '.' && $fichier != '..')
+			{
+				$i++;
+				break;
+			}
+		}
+		
+		closedir($fic);
+		
+		if ($i == 0)
+		{
+			$dossierEstVide = TRUE;
+		}
+	}
+	
+	return $dossierEstVide;
 }
 
 ?>
