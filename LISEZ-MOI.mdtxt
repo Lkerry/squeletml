@@ -136,9 +136,11 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Images utilisées dans la galerie démo**: les oeuvres de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
 
-	La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), fichier `22x22/actions/view-fullscreen.png`, et est sous licence GPL.
+	La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
-- **Image utilisée pour le lien «Faire découvrir à des ami-e-s»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
+- **Icône utilisée pour le lien «Faire découvrir à des ami-e-s»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
+
+- **Icônes utilisées dans le porte-documents**: ces icônes proviennent du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
 - **Logo utilisé pour représenter Firefox dans le module d'affiche d'un message pour Internet Explorer 6**: ce logo est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Deer_Park_Globe.png?uselang=fr).
 
@@ -161,6 +163,8 @@ avec ce programme; si ce n'est pas le cas, consultez
 - **jQuery**: sous double licence MIT et GPL. Voir <http://jquery.com/>.
 
 - **jQuery Cookie plugin**: sous double licence MIT et GPL. Voir <http://plugins.jquery.com/project/cookie>.
+
+- **MimeDetect**: module pour Drupal sous licence GPL version 2 ou toute version ultérieure. Voir <http://drupal.org/project/mimedetect>. Je l'ai modifié pour le rendre indépendant de Drupal. J'ai également ajouté la fonction `file_get_mimetype()` provenant du fichier `includes/file.inc` de Drupal 6, sous licence GPL version 2 ou toute version ultérieure. Voir <http://api.drupal.org/api/drupal/includes--file.inc/6/source>. J'ai publié le résultat sous licence GPL version 3 ou toute version ultérieure.
 
 - **PclZip**: Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>.
 

@@ -70,31 +70,34 @@ function adminFluxRssGlobal($fluxRss, $racine)
 }
 
 /**
-
+Retourne la liste filtrée des dossiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)
+function adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)
 {
 	static $liste = array ();
-	$dossier = @opendir($dossierRacine);
-	while (($fichier = @readdir($dossier)) !== FALSE)
+	
+	if ($dossier = @opendir($dossierRacine))
 	{
-		if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
+		while (($fichier = @readdir($dossier)) !== FALSE)
 		{
-			if (!in_array($dossierRacine . '/' . $fichier, $liste))
+			if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
 			{
-				$liste[] = $dossierRacine . '/' . $fichier;
+				if (!in_array($dossierRacine . '/' . $fichier, $liste))
+				{
+					$liste[] = $dossierRacine . '/' . $fichier;
+				}
+				adminListeDossiers($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres);
 			}
-			adminParcourirDossiers($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres);
 		}
+		
+		closedir($dossier);
 	}
-
-	closedir($dossier);
-
+	
 	if (!in_array($dossierRacine, $liste))
 	{
 		$liste[] = $dossierRacine;
 	}
-
+	
 	if (!empty($tableauDossiersFiltres))
 	{
 		if ($typeFiltreDossiers == 'dossiersPermis')
@@ -106,59 +109,47 @@ function adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauDos
 			$liste = array_diff($liste, $tableauDossiersFiltres);
 		}
 	}
-
+	
 	return $liste;
 }
 
 /**
-
+Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl)
+function adminListeFichiersFormatee($urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	static $liste = array ();
-	$dossier = @opendir($dossierRacine);
-	while (($fichier = @readdir($dossier)) !== FALSE)
+	
+	if ($dossier = @opendir($dossierRacine))
 	{
-		if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
+		while (($fichier = @readdir($dossier)) !== FALSE)
 		{
-			adminParcourirTout($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $afficheDimensionsImages, $action, $symboleUrl);
-		}
-		elseif ($fichier != '.' && $fichier != '..')
-		{
-			if ($afficheDimensionsImages)
+			if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
 			{
-				if (list($larg, $haut, $type, $attr) = @getimagesize("$dossierRacine/$fichier"))
-				{
-					$dim = " (${larg}&nbsp;x&nbsp;$haut)\n";
-				}
-				else
-				{
-					$dim = '';
-				}
+				adminListeFichiersFormatee($urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 			}
-			else
+			elseif ($fichier != '.' && $fichier != '..')
 			{
-				$dim = '';
-			}
+				$lienEditer = "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>";
 			
-			if (empty($dim))
-			{
-				$lienEditer = "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Éditer") . "</a>";
-			}
-			else
-			{
-				$lienEditer = T_("Éditer");
-			}
+				$fichierMisEnForme = '';
+				$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/copier.png\" alt=\"" . T_("Renommer/Déplacer") . "\" title=\"" . T_("Renommer/Déplacer") . "\" width=\"16\" height=\"16\" /></a>\n";
+				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+				$fichierMisEnForme .= "$lienEditer\n";
+				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+				$fichierMisEnForme .= "<img src=\"$urlRacine/admin/fichiers/supprimer.png\" alt=\"" . T_("Supprimer") . "\" title=\"" . T_("Supprimer") . "\" width=\"16\" height=\"16\" /> <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />\n";
+				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+				$fichierMisEnForme .= adminInfobulle($urlRacine, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+				$fichierMisEnForme .= "<a class=\"porteDocumentsFichier\" href=\"$dossierRacine/$fichier\" title=\"" . sprintf(T_("Afficher «%1\$s»"), $fichier) . "\"><code>$fichier</code></a>\n";
 			
-			$liste[$dossierRacine][] = "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a>
-				<span class='porteDocumentsSep'>|</span> $lienEditer
-				<span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />
-				<span class='porteDocumentsSep'>|</span> <a href=\"$dossierRacine/$fichier\"><code>$fichier</code></a>$dim";
+				$liste[$dossierRacine][] = $fichierMisEnForme;
+			}
 		}
+		
+		closedir($dossier);
 	}
-
-	closedir($dossier);
-
+	
 	if (!empty($tableauDossiersFiltres))
 	{
 		if ($typeFiltreDossiers == 'dossiersExclus')
@@ -169,8 +160,68 @@ function adminParcourirTout($dossierRacine, $typeFiltreDossiers, $tableauDossier
 			}
 		}
 	}
-
+	
 	return $liste;
+}
+
+/**
+Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans le porte-documents.
+*/
+function adminInfobulle($urlRacine, $cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+{
+	$infobulle = '';
+	$fichier = basename($cheminFichier);
+	
+	if (is_dir($cheminFichier))
+	{
+		$typeMime = T_("dossier");
+	}
+	else
+	{
+		$typeMime = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	}
+	
+	$stat = stat($cheminFichier);
+	
+	if (list($larg, $haut, $type, $attr) = @getimagesize($cheminFichier))
+	{
+		$dim = "$larg px × $haut px";
+	}
+	else
+	{
+		$dim = '';
+	}
+	
+	$infobulle .= "<a class=\"porteDocumentsProprietesFichier\" href=\"#\"><img src=\"$urlRacine/admin/fichiers/proprietes.png\" alt=\"" . T_("Propriétés") . "\" width=\"16\" height=\"16\" /><span>";
+	$infobulle .= T_("<strong>Type MIME:</strong>") . ' ' . $typeMime . "<br />\n";
+	
+	if ($stat)
+	{
+		$infobulle .= sprintf(T_("<strong>Taille:</strong> %1\$s Kio (%2\$s octets)"), octetsVersKio($stat['size']), $stat['size']) . "<br />\n";
+		
+		if (!empty($dim))
+		{
+			$infobulle .= T_("<strong>Dimensions:</strong>") . ' ' . $dim . "<br />\n";
+		}
+		
+		$infobulle .= T_("<strong>Dernier accès:</strong>") . ' ' . date('Y-m-d H:i:s T', $stat['atime']) . "<br />\n";
+		$infobulle .= T_("<strong>Dernière modification:</strong>") . ' ' . date('Y-m-d H:i:s T', $stat['mtime']) . "<br />\n";
+		
+		if ($stat['uid'] != 0)
+		{
+			$infobulle .= T_("<strong>uid:</strong>") . ' ' . $stat['uid'] . "<br />\n";
+		}
+		
+		if ($stat['gid'] != 0)
+		{
+			$infobulle .= T_("<strong>gid:</strong>") . ' ' . $stat['gid'] . "<br />\n";
+		}
+	}
+	
+	$infobulle .= T_("<strong>Permissions:</strong>") . ' ' . substr(sprintf('%o', fileperms($cheminFichier)), -4);
+	$infobulle .= "</span></a>\n";
+	
+	return $infobulle;
 }
 
 /**

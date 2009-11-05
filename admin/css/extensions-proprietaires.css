@@ -1,4 +1,4 @@
-.boite, .sousBoite, pre, #tableDesMatieres {
+.boite, .sousBoite, pre, #tableDesMatieres, a.porteDocumentsProprietesFichier:hover span {
 	-moz-border-radius: 8px; /* Gecko */
 	-webkit-border-radius: 8px; /* Webkit */
 }

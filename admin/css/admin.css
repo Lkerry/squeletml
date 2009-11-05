@@ -10,7 +10,7 @@ body, html {
 }
 
 #page {
-	max-width: 1000px;
+	max-width: 950px;
 	margin: 0px auto;
 	padding: 0px;
 }
@@ -112,12 +112,22 @@ textarea.consulterModifications {
 	height: 500px;
 }
 
+a.porteDocumentsFichier {
+	text-decoration: none;
+}
+
+.porteDocumentsListe img {
+	border: none;
+	vertical-align: middle;
+}
+
 .porteDocumentsListeDossiers {
 	margin-bottom: 15px;
 }
 
 .porteDocumentsSep {
 	font-weight: bold;
+	color: #b3b3b3;
 }
 
 .boite {
@@ -164,3 +174,31 @@ textarea.consulterModifications {
 	background-color: white;
 }
 
+/* Infobulle inspirée de <http://www.alsacreations.com/astuce/lire/1-comment-contrler-et-modifier-lapparence-dune-infobullenbsp.html> */
+
+a.porteDocumentsProprietesFichier {
+	position: relative;
+	text-decoration: none;
+	color: black;
+}
+
+a.porteDocumentsProprietesFichier span {
+	display: none;
+}
+
+a.porteDocumentsProprietesFichier:hover {
+	z-index: 500;
+}
+
+a.porteDocumentsProprietesFichier:hover span {
+	display: block;
+	border: 1px solid #b3b3b3;
+	width: 425px;
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	background: #f2f2f2;
+	text-align: left;
+	color: black;
+	padding: 2px;
+}

@@ -57,29 +57,80 @@ if (isset($_POST['telechargerSuppr']))
 		$valeur = securiseTexte($valeur);
 		if (file_exists($valeur) && !is_dir($valeur))
 		{
-			if (unlink($valeur))
+			if (@unlink($valeur))
 			{
-				echo '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), "<code>$valeur</code>") . "</li>\n";
+				echo '<li>' . sprintf(T_("Suppression du fichier %1\$s effectuée."), "<code>$valeur</code>") . "</li>\n";
 			}
 			else
 			{
 				echo "<li class='erreur'>" . sprintf(T_("Impossible de supprimer le fichier %1\$s."), "<code>$valeur</code>") . "</li>\n";
 			}
 		}
-		elseif (file_exists($valeur) && is_dir($valeur))
+		elseif (file_exists($valeur) && is_dir($valeur) && basename($valeur) != '.' && basename($valeur) != '..')
 		{
-			if (rmdir($valeur))
+			if (!dossierEstVide($valeur))
 			{
-				echo '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), "<code>$valeur</code>") . "</li>\n";
+				$dossiersAtraiter = array ($valeur);
+				
+				while (!empty($dossiersAtraiter))
+				{
+					foreach ($dossiersAtraiter as $dossierAtraiter)
+					{
+						if (basename($dossierAtraiter) != '.' && basename($dossierAtraiter) != '..')
+						{
+							if ($dossier = @opendir($dossierAtraiter))
+							{
+								while (($fichier = @readdir($dossier)) !== FALSE)
+								{
+									if (!is_dir("$dossierAtraiter/$fichier"))
+									{
+										if (@unlink("$dossierAtraiter/$fichier"))
+										{
+											echo '<li>' . sprintf(T_("Suppression du fichier %1\$s effectuée."), "<code>$dossierAtraiter/$fichier</code>") . "</li>\n";
+										}
+										else
+										{
+											echo "<li class='erreur'>" . sprintf(T_("Impossible de supprimer le fichier %1\$s."), "<code>$dossierAtraiter/$fichier</code>") . "</li>\n";
+										}
+									}
+									else
+									{
+										$dossiersAtraiter[] = "$dossierAtraiter/$fichier";
+									}
+								}
+							
+								closedir($dossier);
+							
+								if (dossierEstVide($dossierAtraiter))
+								{
+									if (@rmdir($dossierAtraiter))
+									{
+										echo '<li>' . sprintf(T_("Suppression du dossier %1\$s effectuée."), "<code>$dossierAtraiter</code>") . "</li>\n";
+									}
+									else
+									{
+										echo "<li class='erreur'>" . sprintf(T_("Impossible de supprimer le dossier %1\$s."), "<code>$dossierAtraiter</code>") . "</li>\n";
+									}
+								}
+							}
+							else
+							{
+								echo "<li class='erreur'>" . sprintf(T_("Impossible d'avoir accès au dossier %1\$s."), "<code>$dossierAtraiter</code>") . "</li>\n";
+							}
+						}
+						
+						unset($dossiersAtraiter[array_search($dossierAtraiter, $dossiersAtraiter)]);
+					}
+				}
+			}
+			elseif (@rmdir($valeur))
+			{
+				echo '<li>' . sprintf(T_("Suppression du dossier %1\$s effectuée."), "<code>$valeur</code>") . "</li>\n";
 			}
 			else
 			{
-				echo "<li class='erreur'>" . sprintf(T_("Impossible de supprimer le dossier %1\$s. Vérifiez qu'il est vide."), "<code>$valeur</code>") . "</li>\n";
+				echo "<li class='erreur'>" . sprintf(T_("Impossible de supprimer le dossier %1\$s. Vérifiez entre autres que vous avez les droits."), "<code>$valeur</code>") . "</li>\n";
 			}
-		}
-		elseif (!file_exists($valeur))
-		{
-			echo "<li class='erreur'>" . sprintf(T_("%1\$s n'existe pas."), "<code>$valeur</code>") . "</li>\n";
 		}
 	}
 	echo "</ul>\n";
@@ -490,14 +541,14 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 	
 	if (!is_dir($getValeur))
 	{
-		$erreur .= "<li class='erreur'>" . sprintf(T_("Impossible d'avoir accès au dossier %1\$s"), $getValeur) . "</li>\n";
+		$erreur .= "<li class='erreur'>" . sprintf(T_("%1\$s n'est pas un dossier."), $getValeur) . "</li>\n";
 	}
 	else
 	{
-		$liste = adminParcourirTout($getValeur, $typeFiltreDossiers, $tableauFiltresDossiers, $afficheDimensionsImages, $action, $symboleUrl);
+		$liste = adminListeFichiersFormatee($urlRacine, $getValeur, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 		ksort($liste);
 
-		echo "<ul>\n";
+		echo "<ul class=\"porteDocumentsListe\">\n";
 		foreach ($liste as $cle => $valeur)
 		{
 			echo "<li class='porteDocumentsListeDossiers'>" . T_("Dossier") . " <code>$cle</code><ul>\n";
@@ -523,13 +574,24 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 echo '<div class="sousBoite">' . "\n";
 echo '<h3>' . T_("Liste des dossiers") . "</h3>\n";
 
-$liste2 = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
+$liste2 = adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 asort($liste2);
-echo "<ul>\n";
+echo "<ul class=\"porteDocumentsListe\">\n";
+
 foreach ($liste2 as $valeur)
 {
-	echo "<li><a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur#messagesPorteDocuments\">" . T_("Renommer/Déplacer") . "</a> <span class='porteDocumentsSep'>|</span> " . T_("Supprimer") . " <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" /> <span class='porteDocumentsSep'>|</span> <a href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur#fichiersEtDossiers\"><code>$valeur</code></a></li>\n";
+	$dossierMisEnForme = '';
+	$dossierMisEnForme .= "<li><a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$valeur#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/copier.png\" alt=\"" . T_("Renommer/Déplacer") . "\" title=\"" . T_("Renommer/Déplacer") . "\" width=\"16\" height=\"16\" /></a>\n";
+	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+	$dossierMisEnForme .= "<img src=\"$urlRacine/admin/fichiers/supprimer.png\" alt=\"" . T_("Supprimer") . "\" title=\"" . T_("Supprimer") . "\" width=\"16\" height=\"16\" /> <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$valeur\" />\n";
+	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+	$dossierMisEnForme .= adminInfobulle($urlRacine, $valeur, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$valeur#fichiersEtDossiers\" title=\"" . sprintf(T_("Parcourir «%1\$s»"), $valeur) . "\"><code>$valeur</code></a></li>\n";
+	
+	echo $dossierMisEnForme;
 }
+
 echo "</ul>\n";
 echo "</div><!-- /class=sousBoite -->\n";
 echo "</div><!-- /class=boite -->\n";
@@ -537,7 +599,7 @@ echo "</div><!-- /class=boite -->\n";
 echo '<div class="boite">' . "\n";
 echo '<h2>' . T_("Supprimer") . "</h2>\n";
 
-echo '<p>' . T_("Pour supprimer des fichiers, cocher la case correspondante et cliquer ensuite sur le bouton ci-dessous.") . "</p>\n";
+echo '<p>' . T_("Pour supprimer des fichiers, cocher la case correspondante et cliquer ensuite sur le bouton ci-dessous. <strong>La suppression d'un dossier amène la suppression de tout son contenu.</strong>") . "</p>\n";
 
 echo '<input type="submit" value="' . T_("Supprimer") . '" />' . "\n";
 echo "</div><!-- /class=boite -->\n";
@@ -551,7 +613,7 @@ echo '<form action="' . $action . '#messagesPorteDocuments" method="post" enctyp
 echo "<div>\n";
 echo '<label>' . T_("Fichier:") . '</label> <input type="file" name="fichier" size="25"/>' . "<br />\n<br />\n";
 echo '<label>' . T_("Dossier:") . '</label> <select name="rep" size="1">' . "\n";
-$liste = adminParcourirDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
+$liste = adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 asort($liste);
 foreach ($liste as $valeur)
 {

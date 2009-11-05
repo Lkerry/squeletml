@@ -30,6 +30,12 @@ foreach (adminInit($racine) as $fichier)
 	include_once $fichier;
 }
 
+if (page() == 'porte-documents.admin.php')
+{
+	include_once $racine . '/admin/inc/mimedetect/file.inc.php';
+	include_once $racine . '/admin/inc/mimedetect/mimedetect.inc.php';
+}
+
 ########################################################################
 ##
 ## Divers

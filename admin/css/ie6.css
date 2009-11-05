@@ -1,7 +1,11 @@
 #page {
-	width: expression( document.body.clientWidth > 1000? "1000px": "auto" );
+	width: expression( document.body.clientWidth > 950? "950px": "auto" );
 }
 
 pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
 	word-wrap: break-word; /* Internet Explorer 5.5+ */
+}
+
+a.porteDocumentsProprietesFichier:hover {
+	background: none; /* correction d'un bug IE */
 }
