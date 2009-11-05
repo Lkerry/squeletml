@@ -130,16 +130,16 @@ function adminListeFichiersFormatee($urlRacine, $dossierRacine, $typeFiltreDossi
 			}
 			elseif ($fichier != '.' && $fichier != '..')
 			{
-				$lienEditer = "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>";
-			
 				$fichierMisEnForme = '';
 				$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/copier.png\" alt=\"" . T_("Renommer/Déplacer") . "\" title=\"" . T_("Renommer/Déplacer") . "\" width=\"16\" height=\"16\" /></a>\n";
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= "$lienEditer\n";
+				$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiersAsupprimer[]\" value=\"$dossierRacine/$fichier\" /> <img src=\"$urlRacine/admin/fichiers/supprimer.png\" alt=\"" . T_("Supprimer") . "\" title=\"" . T_("Supprimer") . "\" width=\"16\" height=\"16\" />\n";
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= "<img src=\"$urlRacine/admin/fichiers/supprimer.png\" alt=\"" . T_("Supprimer") . "\" title=\"" . T_("Supprimer") . "\" width=\"16\" height=\"16\" /> <input type=\"checkbox\" name=\"telechargerSuppr[]\" value=\"$dossierRacine/$fichier\" />\n";
+				$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsPermissionsFichiers[]\" value=\"$dossierRacine/$fichier\" /> <img src=\"$urlRacine/admin/fichiers/permissions.png\" alt=\"" . T_("Modifier les permissions") . "\" title=\"" . T_("Modifier les permissions") . "\" width=\"16\" height=\"16\" />\n";
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 				$fichierMisEnForme .= adminInfobulle($urlRacine, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+				$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 				$fichierMisEnForme .= "<a class=\"porteDocumentsFichier\" href=\"$dossierRacine/$fichier\" title=\"" . sprintf(T_("Afficher «%1\$s»"), $fichier) . "\"><code>$fichier</code></a>\n";
 			
@@ -218,10 +218,18 @@ function adminInfobulle($urlRacine, $cheminFichier, $typeMimeFile, $typeMimeChem
 		}
 	}
 	
-	$infobulle .= T_("<strong>Permissions:</strong>") . ' ' . substr(sprintf('%o', fileperms($cheminFichier)), -4);
+	$infobulle .= T_("<strong>Permissions:</strong>") . ' ' . adminPermissionsFichier($cheminFichier);
 	$infobulle .= "</span></a>\n";
 	
 	return $infobulle;
+}
+
+/**
+Retourne les permissions d'un fichier. La valeur retournée est en notation octale sur quatre chiffres (ex.: 0755).
+*/
+function adminPermissionsFichier($cheminFichier)
+{
+	return substr(sprintf('%o', fileperms($cheminFichier)), -4);
 }
 
 /**
@@ -418,6 +426,32 @@ Retourne l'id de `body`.
 function adminBodyId()
 {
 	return str_replace('.', '-', page());
+}
+
+/**
+Retourne les messages à afficher dans une chaîne formatée.
+*/
+function adminMessagesScript($titre, $messagesScript)
+{
+	$messagesScriptChaine = '';
+	$messagesScriptChaine .= '<div class="sousBoite">' . "\n";
+	$messagesScriptChaine .= "<h3>$titre</h3>\n";
+	
+	if (!empty($messagesScript))
+	{
+		$messagesScriptChaine .= "<ul>\n";
+		
+		foreach ($messagesScript as $messageScript)
+		{
+			$messagesScriptChaine .= $messageScript;
+		}
+		
+		$messagesScriptChaine .= "</ul>\n";
+	}
+	
+	$messagesScriptChaine .= "</div><!-- /class=sousBoite -->\n";
+	
+	return $messagesScriptChaine;
 }
 
 /**

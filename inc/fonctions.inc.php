@@ -371,11 +371,25 @@ function estAccueil($accueil)
 }
 
 /**
-Traite une chaîne pour l'afficher sécuritairement à l'écran.
+Retourne une chaîne ou un tableau indicé (dépendamment du type de la valeur passée en paramètre) traité pour être affiché sécuritairement à l'écran.
 */
 function securiseTexte($texte)
 {
-	return sansEchappement(htmlspecialchars($texte, ENT_COMPAT, 'UTF-8'));
+	if (is_array($texte))
+	{
+		$texteSecurise = array ();
+		
+		foreach ($texte as $valeur)
+		{
+			$texteSecurise[] = securiseTexte($valeur);
+		}
+		
+		return $texteSecurise;
+	}
+	else
+	{
+		return sansEchappement(htmlspecialchars($texte, ENT_COMPAT, 'UTF-8'));
+	}
 }
 
 /**

@@ -57,26 +57,13 @@ include '../init.inc.php';
 		{
 			$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'ouverture du dossier %1\$s."), "<code>$racine/site/fichiers/galeries</code>") . "</li>\n";
 		}
-	
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Liste des galeries") . "</h3>\n";
 		
-		echo "<ul>\n";
-		
-		if (!empty($messagesScript))
+		if (empty($messagesScript))
 		{
-			foreach ($messagesScript as $messageScript)
-			{
-				echo $messageScript;
-			}
-		}
-		else
-		{
-			echo '<li>' . T_("Aucune galerie") . "</li>\n";
+			$messagesScript[] = '<li>' . T_("Aucune galerie") . "</li>\n";
 		}
 		
-		echo "</ul>\n";
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo adminMessagesScript(T_("Liste des galeries"), $messagesScript);
 	}
 
 	########################################################################
@@ -254,19 +241,8 @@ include '../init.inc.php';
 				$messagesScript[] = '<li class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</li>\n";
 			}
 		}
-	
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Ajout d'images") . "</h3>\n";
 		
-		echo '<ul>' . "\n";
-		
-		foreach ($messagesScript as $messageScript)
-		{
-			echo $messageScript;
-		}
-		
-		echo "</ul>\n";
-		echo '</div><!-- /class=sousBoite -->' . "\n";
+		echo adminMessagesScript(T_("Ajout d'images"), $messagesScript);
 	}
 
 	########################################################################
@@ -277,9 +253,9 @@ include '../init.inc.php';
 
 	if (isset($_POST['retailler']))
 	{
+		$messagesScript = array ();
 		$qualiteJpg = securiseTexte($_POST['qualiteJpg']);
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id . '/';
-		$messagesScript = array ();
 		$erreur = FALSE;
 		
 		if (!file_exists($cheminGalerie))
@@ -400,22 +376,7 @@ include '../init.inc.php';
 			}
 		}
 		
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Retaillage des images") . "</h3>\n";
-		
-		if (!empty($messagesScript))
-		{
-			echo '<ul>' . "\n";
-			
-			foreach ($messagesScript as $messageScript)
-			{
-				echo $messageScript;
-			}
-			
-			echo "</ul>\n";
-		}
-		
-		echo '</div><!-- /class=sousBoite -->' . "\n";
+		echo adminMessagesScript(T_("Retaillage des images"), $messagesScript);
 	}
 
 	########################################################################
@@ -546,26 +507,12 @@ include '../init.inc.php';
 			}
 		}
 		
-		// Messages
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Suppression d'images") . "</h3>\n" ;
-		
-		echo "<ul>\n";
-		
-		if (!empty($messagesScript))
+		if (empty($messagesScript))
 		{
-			foreach ($messagesScript as $messageScript)
-			{
-				echo $messageScript;
-			}
-		}
-		else
-		{
-			echo '<li>' . T_("Aucune image à traiter.") . "</li>\n";
+			$messagesScript[] = '<li>' . T_("Aucune image à traiter.") . "</li>\n";
 		}
 		
-		echo "</ul>\n";
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo adminMessagesScript(T_("Suppression d'images"), $messagesScript);
 	}
 	
 	########################################################################
@@ -601,18 +548,7 @@ include '../init.inc.php';
 			}
 		}
 		
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Renommage d'une galerie") . "</h3>\n";
-		
-		echo "<ul>\n";
-		
-		foreach ($messagesScript as $messageScript)
-		{
-			echo $messageScript;
-		}
-		
-		echo "</ul>\n";
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo adminMessagesScript(T_("Renommage d'une galerie"), $messagesScript);
 	}
 	
 	########################################################################
@@ -696,22 +632,7 @@ include '../init.inc.php';
 			}
 		}
 		
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Page web") . "</h3>\n";
-		
-		if (!empty($messagesScript))
-		{
-			echo "<ul>\n";
-			
-			foreach ($messagesScript as $messageScript)
-			{
-				echo $messageScript;
-			}
-			
-			echo "</ul>\n";
-		}
-		
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo adminMessagesScript(T_("Création d'une page web de galerie"), $messagesScript);
 	}
 
 	########################################################################
@@ -771,29 +692,13 @@ include '../init.inc.php';
 			}
 		}
 		
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Modèle") . "</h3>\n" ;
-		
-		if (!empty($messagesScript))
+		if (empty($messagesScript))
 		{
-			echo "<ul>\n";
-			
-			foreach ($messagesScript as $messageScript)
-			{
-				echo $messageScript;
-			}
-			
-			echo "</ul>\n";
-		}
-		else
-		{
-			echo '<pre id="listeFichiers">' . $listeFichiers . "</pre>\n";
-			echo "<ul>\n";
-			echo "<li><a href=\"javascript:adminSelectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			echo "</ul>\n";
+			$messagesScript[] = '<li><pre id="listeFichiers">' . $listeFichiers . "</pre></li>\n";
+			$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 		}
 		
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo adminMessagesScript(T_("Modèle de fichier de configuration"), $messagesScript);
 	}
 
 	########################################################################

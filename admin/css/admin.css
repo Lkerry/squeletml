@@ -116,6 +116,10 @@ a.porteDocumentsFichier {
 	text-decoration: none;
 }
 
+.porteDocumentsListe, .porteDocumentsListe ul {
+	list-style-type: none;
+}
+
 .porteDocumentsListe img {
 	border: none;
 	vertical-align: middle;

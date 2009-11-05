@@ -42,8 +42,7 @@ include 'inc/premier.inc.php';
 
 	if (!$erreurAccesFichiers && isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
 	{
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Gestion des droits d'accès à l'administration") . "</h3>\n";
+		$messagesScript = array ();
 	
 		// Ajout d'un utilisateur
 		if (isset($_POST['ajouter']))
@@ -74,11 +73,11 @@ include 'inc/premier.inc.php';
 				if ($utilisateurAbsent)
 				{
 					fputs($fic2, $acces);
-					echo '<p>' . sprintf(T_("Utilisateur <em>%1\$s</em> ajouté."), securiseTexte($_POST['nom'])) . "</p>\n";
+					$messagesScript[] = '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> ajouté."), securiseTexte($_POST['nom'])) . "</li>\n";
 				}
 				else
 				{
-					echo '<p class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['nom'])) . "</p>\n";
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['nom'])) . "</li>\n";
 				}
 		
 				fclose($fic2);
@@ -116,11 +115,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['nom'])) . "</p>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['nom'])) . "</li>\n";
 			}
 			else
 			{
-				echo '<p>' . sprintf(T_("Mot de passe de l'utilisateur <em>%1\$s</em> modifié."), securiseTexte($_POST['nom'])) . "</p>\n";
+				$messagesScript[] = '<li>' . sprintf(T_("Mot de passe de l'utilisateur <em>%1\$s</em> modifié."), securiseTexte($_POST['nom'])) . "</li>\n";
 			}
 		}
 	
@@ -195,11 +194,11 @@ include 'inc/premier.inc.php';
 		
 			if ($utilisateurAbsent)
 			{
-				echo '<p class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['nom'])) . "</p>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
 			}
 			else
 			{
-				echo '<p>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['nom'])) . "</p>\n";
+				echo '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
 			}
 		}
 	
@@ -265,8 +264,8 @@ include 'inc/premier.inc.php';
 				}
 			}
 		}
-	
-		echo "</div><!-- /class=sousBoite -->\n";
+		
+		echo adminMessagesScript(T_("Gestion des droits d'accès à l'administration"), $messagesScript);
 	}
 
 	########################################################################
@@ -316,8 +315,7 @@ include 'inc/premier.inc.php';
 
 	if (!$erreurAccesFichiers && isset($_POST['changerEtat']))
 	{
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Maintenance du site") . "</h3>\n";
+		$messagesScript = array ();
 	
 		$maintenanceDansHtaccess = FALSE;
 		if ($fic = fopen($racine . '/.htaccess', 'r'))
@@ -439,22 +437,22 @@ include 'inc/premier.inc.php';
 	
 		if (adminSiteEnMaintenance($racine . '/.htaccess'))
 		{
-			echo '<p>' . T_("Le site est en maintenance (hors ligne).") . "</p>\n";
+			$messagesScript[] = '<li>' . T_("Le site est en maintenance (hors ligne).") . "</li>\n";
 			if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'))
 			{
-				echo '<p>' . sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip) . "</p>\n";
+				$messagesScript[] = '<li>' . sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip) . "</li>\n";
 			}
 			else
 			{
-				echo '<p>' . T_("Aucune IP n'a accès au site hors ligne.") . "</p>\n";
+				$messagesScript[] = '<li>' . T_("Aucune IP n'a accès au site hors ligne.") . "</li>\n";
 			}
 		}
 		else
 		{
-			echo '<p>' . T_("Le site est en ligne.") . "</p>\n";
+			$messagesScript[] = '<li>' . T_("Le site est en ligne.") . "</li>\n";
 		}
-	
-		echo "</div><!-- /class=sousBoite -->\n";
+		
+		echo adminMessagesScript(T_("Maintenance du site"), $messagesScript);
 	}
 	?>
 </div><!-- /boiteMessages -->

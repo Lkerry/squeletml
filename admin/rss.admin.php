@@ -41,7 +41,7 @@ include '../init.inc.php';
 					}
 				
 					fclose($fic);
-				
+					
 					echo '<div class="sousBoite">' . "\n";
 					echo '<h3>' . T_("Liste des pages des galeries") . "</h3>\n";
 					
