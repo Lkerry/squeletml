@@ -389,7 +389,7 @@ if (isset($_GET['action']))
 ##
 ########################################################################
 
-if (isset($_POST['porteDocumentsEditerAnnuler']) || isset(isset($_POST['porteDocumentsEditerSauvegarder'])))
+if (isset($_POST['porteDocumentsEditerAnnuler']) || isset($_POST['porteDocumentsEditerSauvegarder']))
 {
 	$messagesScript = array ();
 	
@@ -753,7 +753,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'parcourir')
 	}
 	else
 	{
-		$listeFichiersFormatee = adminListeFichiersFormatee($urlRacine, $getValeur, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+		$listeFichiersFormatee = adminListeFichiersFormatee($racine, $urlRacine, $getValeur, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 		
 		if (!empty($listeFichiersFormatee))
 		{
@@ -799,7 +799,7 @@ foreach ($listeDossiers as $listeDossier)
 	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	$dossierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsPermissionsFichiers[]\" value=\"$listeDossier\" /> <img src=\"$urlRacine/admin/fichiers/permissions.png\" alt=\"" . T_("Modifier les permissions") . "\" title=\"" . T_("Modifier les permissions") . "\" width=\"16\" height=\"16\" />\n";
 	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-	$dossierMisEnForme .= adminInfobulle($urlRacine, $listeDossier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	$dossierMisEnForme .= adminInfobulle($racine, $urlRacine, $listeDossier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$action" . $symboleUrl . "action=parcourir&amp;valeur=$listeDossier#fichiersEtDossiers\" title=\"" . sprintf(T_("Parcourir «%1\$s»"), $listeDossier) . "\"><code>$listeDossier</code></a></li>\n";
 	

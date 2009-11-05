@@ -116,7 +116,7 @@ function adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossier
 /**
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFichiersFormatee($urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	static $liste = array ();
 	
@@ -126,7 +126,7 @@ function adminListeFichiersFormatee($urlRacine, $dossierRacine, $typeFiltreDossi
 		{
 			if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
 			{
-				adminListeFichiersFormatee($urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 			}
 			elseif ($fichier != '.' && $fichier != '..')
 			{
@@ -137,7 +137,7 @@ function adminListeFichiersFormatee($urlRacine, $dossierRacine, $typeFiltreDossi
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 				$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsPermissionsFichiers[]\" value=\"$dossierRacine/$fichier\" /> <img src=\"$urlRacine/admin/fichiers/permissions.png\" alt=\"" . T_("Modifier les permissions") . "\" title=\"" . T_("Modifier les permissions") . "\" width=\"16\" height=\"16\" />\n";
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= adminInfobulle($urlRacine, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$fichierMisEnForme .= adminInfobulle($racine, $urlRacine, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 				$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
 				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
@@ -167,7 +167,7 @@ function adminListeFichiersFormatee($urlRacine, $dossierRacine, $typeFiltreDossi
 /**
 Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans le porte-documents.
 */
-function adminInfobulle($urlRacine, $cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	$infobulle = '';
 	$fichier = basename($cheminFichier);
@@ -183,13 +183,38 @@ function adminInfobulle($urlRacine, $cheminFichier, $typeMimeFile, $typeMimeChem
 	
 	$stat = stat($cheminFichier);
 	
-	if (list($larg, $haut, $type, $attr) = @getimagesize($cheminFichier))
+	if ($typeMime == 'image/gif' || $typeMime == 'image/jpeg' || $typeMime == 'image/png')
 	{
-		$dim = "$larg px × $haut px";
+		list($larg, $haut, $type, $attr) = getimagesize($cheminFichier);
+		$dimensionsImage = "$larg px × $haut px";
+		
+		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite atteinte de 1 Mio).
+		
+		if (adminTailleCache($racine) > 1048576)
+		{
+			adminVideCache($racine);
+		}
+		
+		$cheminApercuImage = $racine . '/admin/cache/' . md5($cheminFichier) . '.' . array_pop(explode('.', $cheminFichier));;
+		
+		if (!file_exists($cheminApercuImage))
+		{
+			nouvelleImage($cheminFichier, $cheminApercuImage, array ('largeur' => 50, 'hauteur' => 50), '85', FALSE, TRUE);
+		}
+		
+		if (file_exists($cheminApercuImage))
+		{
+			list($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
+			$apercuImage = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacine . "/admin/cache/" . basename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
+		}
+		else
+		{
+			$apercuImage = FALSE;
+		}
 	}
 	else
 	{
-		$dim = '';
+		$dimensionsImage = FALSE;
 	}
 	
 	$infobulle .= "<a class=\"porteDocumentsProprietesFichier\" href=\"#\"><img src=\"$urlRacine/admin/fichiers/proprietes.png\" alt=\"" . T_("Propriétés") . "\" width=\"16\" height=\"16\" /><span>";
@@ -199,9 +224,14 @@ function adminInfobulle($urlRacine, $cheminFichier, $typeMimeFile, $typeMimeChem
 	{
 		$infobulle .= sprintf(T_("<strong>Taille:</strong> %1\$s Kio (%2\$s octets)"), octetsVersKio($stat['size']), $stat['size']) . "<br />\n";
 		
-		if (!empty($dim))
+		if ($dimensionsImage)
 		{
-			$infobulle .= T_("<strong>Dimensions:</strong>") . ' ' . $dim . "<br />\n";
+			$infobulle .= T_("<strong>Dimensions:</strong>") . ' ' . $dimensionsImage . "<br />\n";
+			
+			if ($apercuImage)
+			{
+				$infobulle .= T_("<strong>Aperçu:</strong>") . " $apercuImage<br />\n";
+			}
 		}
 		
 		$infobulle .= T_("<strong>Dernier accès:</strong>") . ' ' . date('Y-m-d H:i:s T', $stat['atime']) . "<br />\n";
@@ -222,6 +252,65 @@ function adminInfobulle($urlRacine, $cheminFichier, $typeMimeFile, $typeMimeChem
 	$infobulle .= "</span></a>\n";
 	
 	return $infobulle;
+}
+
+/**
+Retourne la taille en octets du dossier de cache de l'administration si le dossier est accessible, sinon retourne FALSE.
+*/
+function adminTailleCache($racine)
+{
+	$cheminCache = $racine . '/admin/cache';
+	$taille = 0;
+	
+	if ($dossier = @opendir($cheminCache))
+	{
+		while (($fichier = @readdir($dossier)) !== FALSE)
+		{
+			if (!is_dir($cheminCache . '/' . $fichier))
+			{
+				$taille += filesize($cheminCache . '/' . $fichier);
+			}
+		}
+		
+		closedir($dossier);
+	}
+	else
+	{
+		return FALSE;
+	}
+	
+	return $taille;
+}
+
+/**
+Vide le cache. Seuls les fichiers à la racine du dossier sont supprimés, ce qui constitue normalement tout ce qui est mis en cache par Squeletml. Retourne FALSE si une erreur survient, sinon retourne TRUE.
+*/
+function adminVideCache($racine)
+{
+	$cheminCache = $racine . '/admin/cache';
+	$sansErreur = TRUE;
+	
+	if ($dossier = @opendir($cheminCache))
+	{
+		while (($fichier = @readdir($dossier)) !== FALSE)
+		{
+			if (!is_dir($cheminCache . '/' . $fichier))
+			{
+				if (!unlink($cheminCache . '/' . $fichier))
+				{
+					$sansErreur = FALSE;
+				}
+			}
+		}
+		
+		closedir($dossier);
+	}
+	else
+	{
+		$sansErreur = FALSE;
+	}
+	
+	return $erreur;
 }
 
 /**

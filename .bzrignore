@@ -2,3 +2,5 @@
 version.txt
 .acces
 init.inc.php
+admin/cache/*
+site/fichiers/galeries

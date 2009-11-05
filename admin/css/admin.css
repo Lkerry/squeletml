@@ -206,3 +206,7 @@ a.porteDocumentsProprietesFichier:hover span {
 	color: black;
 	padding: 2px;
 }
+
+img.infobulleApercuImage {
+	border: 1px dashed #b3b3b3;
+}

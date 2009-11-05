@@ -937,7 +937,6 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 	
 	// Si la nouvelle image est théoriquement au moins aussi grande que l'image source, on ne fait qu'une copie de fichier
 	if ($nouvelleImageHauteur > $imageSourceHauteur || $nouvelleImageLargeur > $imageSourceLargeur)
-	#if ($nouvelleImageHauteur >= $imageSourceHauteur || $nouvelleImageLargeur >= $imageSourceLargeur)
 	{
 		if (copy($cheminImageSource, $cheminNouvelleImage))
 		{
@@ -953,14 +952,8 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 	else
 	{
 		// On crée une nouvelle image vide
-		
-		
-#		$demiSupplementLargeur = 38;
-#		$demiSupplementHauteur = 38;
 		$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur + 2 * $demiSupplementLargeur, $nouvelleImageHauteur + 2 * $demiSupplementHauteur);
 		
-		#$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur, $nouvelleImageHauteur);
-	
 		if ($type == 'png')
 		{
 			imagealphablending($nouvelleImage, false);
@@ -982,7 +975,6 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 		
 		// On crée la nouvelle image à partir de l'image source
 		imagecopyresampled($nouvelleImage, $imageSource, $demiSupplementLargeur, $demiSupplementHauteur, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
-		#imagecopyresampled($nouvelleImage, $imageSource, 0, 0, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
 		
 		// Netteté
 		if ($nettete)
