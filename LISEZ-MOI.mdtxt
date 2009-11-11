@@ -186,4 +186,4 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **UnTar (classe PHP)**: Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>.
 
-- La translitération du filte des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.
+- La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.
