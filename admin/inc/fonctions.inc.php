@@ -29,22 +29,36 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/inc/constantes.inc.php';
 	
+	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
+	
+	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
+	
 	return $fichiers;
 }
 
 /**
-Retourne la valeur d'une variable du fichier de configuration `$racine/inc/config.inc.php`. le paramètre correspond au nom de la variable, par exemple 'rss' pour la variable `$rss`.
+Retourne la valeur d'une variable du fichier de configuration du site (`$racine/inc/config.inc.php` | `$racine/site/inc/config.inc.php`) si `$configAdmin` vaut FALSE, sinon retourne la valeur d'une variable du fichier de configuration de l'administration (`$racine/admin/inc/config.inc.php` | `$racine/site/inc/config-admin.inc.php`). Si la variable demandée n'est pas définie ou vaut NULL, retourne FALSE. Le deuxième paramètre correspond au nom de la variable, par exemple 'rss' pour la variable `$rss`.
 */
-function varConf($nomVariable)
+function varConf($racine, $nomVariable, $configAdmin = FALSE)
 {
-	include dirname(__FILE__) . '/../../init.inc.php';
-	include $racine . '/inc/config.inc.php';
-	if (file_exists($racine . '/site/inc/config.inc.php'))
+	if ($configAdmin)
 	{
-		include $racine . '/site/inc/config.inc.php';
+		include $racine . '/admin/inc/config.inc.php';
+		if (file_exists($racine . '/site/inc/config-admin.inc.php'))
+		{
+			include $racine . '/site/inc/config-admin.inc.php';
+		}
+	}
+	else
+	{
+		include $racine . '/inc/config.inc.php';
+		if (file_exists($racine . '/site/inc/config.inc.php'))
+		{
+			include $racine . '/site/inc/config.inc.php';
+		}
 	}
 	
-	return ${$nomVariable};
+	return isset(${$nomVariable}) ? ${$nomVariable} : FALSE;
 }
 
 /**
@@ -61,11 +75,11 @@ function adminFluxRssGlobal($fluxRss, $racine)
 	
 	if ($fluxRss == 'galerie')
 	{
-		return varConf('galerieFluxRssGlobal');
+		return varConf($racine, 'galerieFluxRssGlobal');
 	}
 	elseif ($fluxRss == 'site')
 	{
-		return varConf('siteFluxRssGlobal');
+		return varConf($racine, 'siteFluxRssGlobal');
 	}
 }
 
@@ -116,34 +130,76 @@ function adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossier
 /**
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits)
 {
 	static $liste = array ();
 	
 	if ($dossier = @opendir($dossierRacine))
 	{
+		if (!empty($dossierCourant))
+		{
+			$dossierCourantDansUrl = "&amp;dossierCourant=$dossierCourant";
+		}
+		else
+		{
+			$dossierCourantDansUrl = '';
+		}
+		
 		while (($fichier = @readdir($dossier)) !== FALSE)
 		{
-			if ($fichier != '.' && $fichier != '..' && is_dir($dossierRacine . '/' . $fichier))
+			if ($fichier != '.' && $fichier != '..')
 			{
-				adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-			}
-			elseif ($fichier != '.' && $fichier != '..')
-			{
-				$fichierMisEnForme = '';
-				$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/copier.png\" alt=\"" . T_("Renommer/Déplacer") . "\" title=\"" . T_("Renommer/Déplacer") . "\" width=\"16\" height=\"16\" /></a>\n";
-				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiersAsupprimer[]\" value=\"$dossierRacine/$fichier\" /> <img src=\"$urlRacine/admin/fichiers/supprimer.png\" alt=\"" . T_("Supprimer") . "\" title=\"" . T_("Supprimer") . "\" width=\"16\" height=\"16\" />\n";
-				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsPermissionsFichiers[]\" value=\"$dossierRacine/$fichier\" /> <img src=\"$urlRacine/admin/fichiers/permissions.png\" alt=\"" . T_("Modifier les permissions") . "\" title=\"" . T_("Modifier les permissions") . "\" width=\"16\" height=\"16\" />\n";
-				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= adminInfobulle($racine, $urlRacine, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
-				$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
-				$fichierMisEnForme .= "<a class=\"porteDocumentsFichier\" href=\"$dossierRacine/$fichier\" title=\"" . sprintf(T_("Afficher «%1\$s»"), $fichier) . "\"><code>$fichier</code></a>\n";
+				if (is_dir($dossierRacine . '/' . $fichier))
+				{
+					if (dossierEstVide($dossierRacine . '/' . $fichier))
+					{
+						$liste[$dossierRacine . '/' . $fichier][] = T_("Vide.");
+					}
+					else
+					{
+						adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
+					}
+				}
+				else
+				{
+					$fichierMisEnForme = '';
+				
+					if ($porteDocumentsDroits['copier'] && $porteDocumentsDroits['deplacer'] && $porteDocumentsDroits['permissions'] && $porteDocumentsDroits['supprimer'])
+					{
+						$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$dossierRacine/$fichier\" />\n";
+				
+						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+					}
+				
+					if ($porteDocumentsDroits['telecharger'])
+					{
+						$fichierMisEnForme .= "<a href=\"$urlRacine/admin/telecharger.admin.php?fichier=$dossierRacine/$fichier\"><img src=\"$urlRacine/admin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+				
+						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+					}
+				
+					if ($porteDocumentsDroits['editer'])
+					{
+						$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					
+						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+					}
+				
+					if ($porteDocumentsDroits['renommer'])
+					{
+						$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+				
+						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+					}
+				
+					$fichierMisEnForme .= adminInfobulle($racine, $urlRacine, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				
+					$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+				
+					$fichierMisEnForme .= "<a class=\"porteDocumentsFichier\" href=\"$dossierRacine/$fichier\" title=\"" . sprintf(T_("Afficher «%1\$s»"), $fichier) . "\"><code>$fichier</code></a>\n";
 			
-				$liste[$dossierRacine][] = $fichierMisEnForme;
+					$liste[$dossierRacine][] = $fichierMisEnForme;
+				}
 			}
 		}
 		
@@ -169,6 +225,8 @@ Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans l
 */
 function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
+	clearstatcache();
+	
 	$infobulle = '';
 	$fichier = basename($cheminFichier);
 	
@@ -188,9 +246,9 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 		list($larg, $haut, $type, $attr) = getimagesize($cheminFichier);
 		$dimensionsImage = "$larg px × $haut px";
 		
-		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite atteinte de 1 Mio).
+		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite atteinte de 2 Mio).
 		
-		if (adminTailleCache($racine) > 1048576)
+		if (adminTailleCache($racine) > 2097152)
 		{
 			adminVideCache($racine);
 		}
@@ -218,7 +276,7 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 	}
 	
 	$infobulle .= "<a class=\"porteDocumentsProprietesFichier\" href=\"#\"><img src=\"$urlRacine/admin/fichiers/proprietes.png\" alt=\"" . T_("Propriétés") . "\" width=\"16\" height=\"16\" /><span>";
-	$infobulle .= T_("<strong>Type MIME:</strong>") . ' ' . $typeMime . "<br />\n";
+	$infobulle .= sprintf(T_("<strong>Type MIME:</strong> %1\$s"), $typeMime) . "<br />\n";
 	
 	if ($stat)
 	{
@@ -226,29 +284,29 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 		
 		if ($dimensionsImage)
 		{
-			$infobulle .= T_("<strong>Dimensions:</strong>") . ' ' . $dimensionsImage . "<br />\n";
+			$infobulle .= sprintf(T_("<strong>Dimensions:</strong> %1\$s"), $dimensionsImage) . "<br />\n";
 			
 			if ($apercuImage)
 			{
-				$infobulle .= T_("<strong>Aperçu:</strong>") . " $apercuImage<br />\n";
+				$infobulle .= sprintf(T_("<strong>Aperçu:</strong> %1\$s"), $apercuImage) . "<br />\n";
 			}
 		}
 		
-		$infobulle .= T_("<strong>Dernier accès:</strong>") . ' ' . date('Y-m-d H:i:s T', $stat['atime']) . "<br />\n";
-		$infobulle .= T_("<strong>Dernière modification:</strong>") . ' ' . date('Y-m-d H:i:s T', $stat['mtime']) . "<br />\n";
+		$infobulle .= sprintf(T_("<strong>Dernier accès:</strong> %1\$s"), date('Y-m-d H:i:s T', $stat['atime'])) . "<br />\n";
+		$infobulle .= sprintf(T_("<strong>Dernière modification:</strong> %1\$s"), date('Y-m-d H:i:s T', $stat['mtime'])) . "<br />\n";
 		
 		if ($stat['uid'] != 0)
 		{
-			$infobulle .= T_("<strong>uid:</strong>") . ' ' . $stat['uid'] . "<br />\n";
+			$infobulle .= sprintf(T_("<strong>uid:</strong> %1\$s"), $stat['uid']) . "<br />\n";
 		}
 		
 		if ($stat['gid'] != 0)
 		{
-			$infobulle .= T_("<strong>gid:</strong>") . ' ' . $stat['gid'] . "<br />\n";
+			$infobulle .= sprintf(T_("<strong>gid:</strong> %1\$s"), $stat['gid']) . "<br />\n";
 		}
 	}
 	
-	$infobulle .= T_("<strong>Permissions:</strong>") . ' ' . adminPermissionsFichier($cheminFichier);
+	$infobulle .= sprintf(T_("<strong>Permissions:</strong> %1\$s"), adminPermissionsFichier($cheminFichier));
 	$infobulle .= "</span></a>\n";
 	
 	return $infobulle;
@@ -296,7 +354,7 @@ function adminVideCache($racine)
 		{
 			if (!is_dir($cheminCache . '/' . $fichier))
 			{
-				if (!unlink($cheminCache . '/' . $fichier))
+				if (!@unlink($cheminCache . '/' . $fichier))
 				{
 					$sansErreur = FALSE;
 				}
@@ -314,11 +372,20 @@ function adminVideCache($racine)
 }
 
 /**
-Retourne les permissions d'un fichier. La valeur retournée est en notation octale sur quatre chiffres (ex.: 0755).
+Retourne les permissions d'un fichier. La valeur retournée est en notation octale sur trois chiffres.
 */
 function adminPermissionsFichier($cheminFichier)
 {
-	return substr(sprintf('%o', fileperms($cheminFichier)), -4);
+	clearstatcache();
+	
+	$permissions = substr(decoct(fileperms($cheminFichier)), 2);
+	
+	if (strlen($permissions) > 3)
+	{
+		$permissions = substr($permissions, -3, 3);
+	}
+	
+	return $permissions;
 }
 
 /**
@@ -326,7 +393,7 @@ Retourne la version de l'installation
 */
 function adminVersionLogiciel($racine)
 {
-	$fic = fopen($racine . '/version.txt', 'r');
+	$fic = @fopen($racine . '/version.txt', 'r');
 	$tag = fgets($fic, 20); // exemple: logiciel-1.4
 	fclose($fic);
 	$version = explode('-', $tag);
@@ -360,10 +427,9 @@ function adminPhpIniOctets($nombre)
 }
 
 /**
-Met à jour un fichier de configuration de galerie.
-Retourne TRUE s'il n'y a aucune erreur, sinon retourne FALSE.
+Met à jour un fichier de configuration de galerie. Retourne TRUE s'il n'y a aucune erreur, sinon retourne FALSE.
 */
-function adminMajConfGalerie($racine, $id, $listeAjouts)
+function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig = FALSE)
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
@@ -375,7 +441,7 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 			return FALSE;
 		}
 		
-		if (file_put_contents($fichierConfigChemin, $listeAjouts . $listeExistant) === FALSE)
+		if (@file_put_contents($fichierConfigChemin, $listeAjouts . $listeExistant) === FALSE)
 		{
 			return FALSE;
 		}
@@ -414,40 +480,42 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 					$galerieTemp[$i][$cle] = $valeur;
 				}
 			}
-			else
+			elseif (!empty($valeur))
 			{
-				if (!empty($valeur))
-				{
-					$galerieTemp[$i][$cle] = $valeur;
-				}
+				$galerieTemp[$i][$cle] = $valeur;
 			}
 		}
 		
 		$i++;
 	}
 	
-	$fic = @opendir($cheminGalerie);
-	if ($fic === FALSE)
+	$listeNouveauxFichiers = array ();
+	
+	if ($fic = @opendir($cheminGalerie))
+	{
+		while($fichier = @readdir($fic))
+		{
+			if(!is_dir($cheminGalerie . '/' . $fichier))
+			{
+				if (
+					preg_match('/\.(gif|png|jpeg|jpg)$/i', $fichier) &&
+					adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig) != 'vignette' &&
+					adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig) != 'original' &&
+					!in_array_multi($fichier, $galerieTemp) &&
+					!in_array_multi($fichier, $listeNouveauxFichiers)
+				)
+				{
+					$listeNouveauxFichiers[] = $fichier;
+				}
+			}
+		}
+		
+		closedir($fic);
+	}
+	else
 	{
 		return FALSE;
 	}
-	
-	$listeNouveauxFichiers = array ();
-	while($fichier = @readdir($fic))
-	{
-		if(!is_dir($cheminGalerie . '/' . $fichier))
-		{
-			if (!preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $fichier) &&
-				!preg_match('/-original\.[[:alpha:]]{3,4}$/', $fichier) &&
-				preg_match('/\.(gif|png|jpeg|jpg)$/i', $fichier) &&
-				!in_array_multi($fichier, $galerieTemp) &&
-				!in_array_multi($fichier, $listeNouveauxFichiers))
-			{
-				$listeNouveauxFichiers[] = $fichier;
-			}
-		}
-	}
-	closedir($fic);
 	
 	rsort($listeNouveauxFichiers);
 	foreach ($listeNouveauxFichiers as $valeur)
@@ -468,12 +536,101 @@ function adminMajConfGalerie($racine, $id, $listeAjouts)
 	
 	$contenuConfig = rtrim($contenuConfig);
 	
-	if (file_put_contents($fichierConfigChemin, $contenuConfig) === FALSE)
+	if (@file_put_contents($fichierConfigChemin, $contenuConfig) === FALSE)
 	{
 		return FALSE;
 	}
 	
 	return TRUE;
+}
+
+/**
+Retourne la version de l'image (intermediaire|vignette|original|inconnu).
+*/
+function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig = FALSE)
+{
+	$nomImage = basename($image);
+	
+	if ($analyserConfig)
+	{
+		$cheminConfig = dirname($image) . '/config.pc';
+		
+		if (file_exists($cheminConfig))
+		{
+			$galerie = tableauGalerie($cheminConfig);
+			
+			foreach ($galerie as $oeuvre)
+			{
+				if ($oeuvre['intermediaireNom'] == $nomImage)
+				{
+					return 'intermediaire';
+				}
+				elseif (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $nomImage)
+				{
+					return 'vignette';
+				}
+				elseif (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $nomImage)
+				{
+					return 'original';
+				}
+				elseif (preg_match('/(.+)-vignette(\.[[:alpha:]]{3,4})$/', $nomImage, $nomConstruit))
+				{
+					$nomConstruitIntermediaire = $nomConstruit[1] . $nomConstruit[2];
+					if ($oeuvre['intermediaireNom'] == $nomConstruitIntermediaire)
+					{
+						return 'vignette';
+					}
+				}
+				elseif (preg_match('/(.+)-original(\.[[:alpha:]]{3,4})$/', $nomImage, $nomConstruit))
+				{
+					$nomConstruitIntermediaire = $nomConstruit[1] . $nomConstruit[2];
+					if ($oeuvre['intermediaireNom'] == $nomConstruitIntermediaire)
+					{
+						return 'original';
+					}
+				}
+			}
+		}
+	}
+	
+	if ($analyserConfig && $analyserSeulementConfig)
+	{
+		return 'inconnu';
+	}
+	elseif (preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $nomImage) && preg_match('/\.(gif|png|jpeg|jpg)$/i', $nomImage))
+	{
+		if ($exclureMotifsCommeIntermediaires)
+		{
+			return 'vignette';
+		}
+		else
+		{
+			return 'intermediaire';
+		}
+	}
+	elseif (preg_match('/-original\.[[:alpha:]]{3,4}$/', $nomImage))
+	{
+		if ($exclureMotifsCommeIntermediaires)
+		{
+			return 'original';
+		}
+		elseif (preg_match('/\.(gif|png|jpeg|jpg)$/i', $nomImage))
+		{
+			return 'intermediaire';
+		}
+		else
+		{
+			return 'inconnu';
+		}
+	}
+	elseif (preg_match('/\.(gif|png|jpeg|jpg)$/i', $nomImage))
+	{
+		return 'intermediaire';
+	}
+	else
+	{
+		return 'inconnu';
+	}
 }
 
 /**
@@ -518,13 +675,17 @@ function adminBodyId()
 }
 
 /**
-Retourne les messages à afficher dans une chaîne formatée.
+Retourne les messages à afficher dans une chaîne formatée. Si le titre est vide, ne retourne qu'une liste de messages, sinon retourne une division de classe `sousBoite` contenant un titre de troisième niveau et la liste des messages.
 */
-function adminMessagesScript($titre, $messagesScript)
+function adminMessagesScript($messagesScript, $titre = '')
 {
 	$messagesScriptChaine = '';
-	$messagesScriptChaine .= '<div class="sousBoite">' . "\n";
-	$messagesScriptChaine .= "<h3>$titre</h3>\n";
+	
+	if (!empty($titre))
+	{
+		$messagesScriptChaine .= '<div class="sousBoite">' . "\n";
+		$messagesScriptChaine .= "<h3>$titre</h3>\n";
+	}
 	
 	if (!empty($messagesScript))
 	{
@@ -538,9 +699,303 @@ function adminMessagesScript($titre, $messagesScript)
 		$messagesScriptChaine .= "</ul>\n";
 	}
 	
-	$messagesScriptChaine .= "</div><!-- /class=sousBoite -->\n";
+	if (!empty($titre))
+	{
+		$messagesScriptChaine .= "</div><!-- /class=sousBoite -->\n";
+	}
 	
 	return $messagesScriptChaine;
+}
+
+/**
+Copie un dossier dans un autre et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminCopyDossier($dossierSource, $dossierDeDestination)
+{
+	$messagesScriptChaine = '';
+	
+	if (!file_exists($dossierDeDestination))
+	{
+		$messagesScriptChaine .= adminMkdir($dossierDeDestination, octdec(adminPermissionsFichier($dossierSource)), TRUE);
+	}
+	
+	if (file_exists($dossierDeDestination))
+	{
+		if ($dossier = @opendir($dossierSource))
+		{
+			while (($fichier = @readdir($dossier)) !== FALSE)
+			{
+				if ($fichier != '.' && $fichier != '..')
+				{
+					if (is_dir($dossierSource . '/' . $fichier))
+					{
+						$messagesScriptChaine .= adminCopyDossier($dossierSource . '/' . $fichier, $dossierDeDestination . '/' . $fichier);
+					}
+					else
+					{
+						$messagesScriptChaine .= adminCopy($dossierSource . '/' . $fichier, $dossierDeDestination . '/' . $fichier);
+					}
+				}
+			}
+		
+			closedir($dossier);
+		}
+		else
+		{
+			$messagesScriptChaine .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierSource</code>") . "</li>\n";
+		}
+	}
+	
+	return $messagesScriptChaine;
+}
+
+/**
+Supprime un dossier ainsi que son contenu et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminRmdirRecursif($dossierAsupprimer)
+{
+	$messagesScriptChaine = '';
+	
+	if (basename($dossierAsupprimer) != '.' && basename($dossierAsupprimer) != '..')
+	{
+		if (!dossierEstVide($dossierAsupprimer))
+		{
+			if ($dossier = @opendir($dossierAsupprimer))
+			{
+				while (($fichier = @readdir($dossier)) !== FALSE)
+				{
+					if (!is_dir("$dossierAsupprimer/$fichier"))
+					{
+						$messagesScriptChaine .= adminUnlink("$dossierAsupprimer/$fichier");
+					}
+					else
+					{
+						adminRmdirRecursif("$dossierAsupprimer/$fichier");
+					}
+				}
+				
+				closedir($dossier);
+			}
+			else
+			{
+				$messagesScriptChaine .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAtraiter</code>") . "</li>\n";
+			}
+		}
+		
+		if (dossierEstVide($dossierAsupprimer))
+		{
+			$messagesScriptChaine .= adminRmdir($dossierAsupprimer);
+		}
+	}
+	
+	return $messagesScriptChaine;
+}
+
+/**
+Modifie les permissions d'un dossier ainsi que son contenu et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminChmodRecursif($dossierAmodifier, $permissions)
+{
+	$messagesScriptChaine = '';
+	
+	if (basename($dossierAmodifier) != '.' && basename($dossierAmodifier) != '..')
+	{
+		if (dossierEstVide($dossierAmodifier))
+		{
+			$messagesScriptChaine .= adminChmod($dossierAmodifier, $permissions);
+		}
+		else
+		{
+			if ($dossier = @opendir($dossierAmodifier))
+			{
+				while (($fichier = @readdir($dossier)) !== FALSE)
+				{
+					if (!is_dir("$dossierAmodifier/$fichier"))
+					{
+						$messagesScriptChaine .= adminChmod("$dossierAmodifier/$fichier", $permissions);
+					}
+					else
+					{
+						$messagesScriptChaine .= adminChmodRecursif("$dossierAmodifier/$fichier", $permissions);
+					}
+				}
+				
+				closedir($dossier);
+			}
+			else
+			{
+				$messagesScriptChaine .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAmodifier</code>") . "</li>\n";
+			}
+		}
+	}
+	
+	return $messagesScriptChaine;
+}
+
+/**
+Simule `copy()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminCopy($fichierSource, $fichierDeDestination)
+{
+	if (@copy($fichierSource, $fichierDeDestination))
+	{
+		return '<li>' . sprintf(T_("Copie de %1\$s vers %2\$s effectuée."), "<code>$fichierSource</code>", "<code>$fichierDeDestination</code>") . "</li>\n";
+	}
+	else
+	{
+		return '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible."), "<code>$fichierSource</code>", "<code>$fichierDeDestination</code>") . "</li>\n";
+	}
+}
+
+/**
+Simule `unlink()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminUnlink($fichier)
+{
+	if (@unlink($fichier))
+	{
+		return '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), "<code>$fichier</code>") . "</li>\n";
+	}
+	else
+	{
+		return '<li class="erreur">' . sprintf(T_("Suppression de %1\$s impossible."), "<code>$fichier</code>") . "</li>\n";
+	}
+}
+
+/**
+Simule `rmdir()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminRmdir($dossier)
+{
+	if (@rmdir($dossier))
+	{
+		return '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), "<code>$dossier</code>") . "</li>\n";
+	}
+	else
+	{
+		return '<li class="erreur">' . sprintf(T_("Suppression de %1\$s impossible."), "<code>$dossier</code>") . "</li>\n";
+	}
+}
+
+/**
+Simule `chmod()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminChmod($fichier, $permissions)
+{
+	$anciennesPermissions = adminPermissionsFichier($fichier);
+	
+	if ($permissions != octdec($anciennesPermissions))
+	{
+		if (@chmod($fichier, $permissions))
+		{
+			return '<li>' . sprintf(T_("Modification des permissions de %1\$s effectuée (de %2\$s vers %3\$s)."), "<code>$fichier</code>", "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
+		}
+		else
+		{
+			return '<li class="erreur">' . sprintf(T_("Modification des permissions de %1\$s impossible (de %2\$s vers %3\$s)."), "<code>$fichier</code>", "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
+		}
+	}
+	else
+	{
+		return '<li>' . sprintf(T_("Modification des permissions de %1\$s non nécessaire (demande de %2\$s vers %3\$s)."), "<code>$fichier</code>", "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
+	}
+}
+
+/**
+Simule `rename()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`. Si `$messageDeplacement` vaut TRUE, le message retourné présente l'action effectuée comme étant un déplacement, sinon présente l'action comme étant un renommage.
+*/
+function adminRename($ancienNom, $nouveauNom, $messageDeplacement = FALSE)
+{
+	if (@rename($ancienNom, $nouveauNom))
+	{
+		if ($messageDeplacement)
+		{
+			return '<li>' . sprintf(T_("Déplacement de %1\$s vers %2\$s effectué."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+		}
+		else
+		{
+			return '<li>' . sprintf(T_("Renommage de %1\$s en %2\$s effectué."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+		}
+	}
+	else
+	{
+		if ($messageDeplacement)
+		{
+			return '<li class="erreur">' . sprintf(T_("Déplacement de %1\$s vers %2\$s impossible."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+		}
+		else
+		{
+			return '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+		}
+	}
+}
+
+/**
+Simule `mkdir()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminMkdir($fichier, $permissions, $recursivite = FALSE)
+{
+	if (@mkdir($fichier, $permissions, $recursivite))
+	{
+		return '<li>' . sprintf(T_("Création du dossier %1\$s effectuée."), "<code>$fichier</code>") . "</li>\n";
+	}
+	else
+	{
+		return '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), "<code>$fichier</code>") . "</li>\n";
+	}
+}
+
+/**
+Retourne la transcription en texte d'une erreur `$_FILES['fichier']['error']` sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function adminMessageFilesError($erreur)
+{
+	$messageErreur = '';
+	
+	// Voir <http://www.php.net/manual/fr/features.file-upload.errors.php>
+	switch ($erreur)
+	{
+		case 0:
+			$messageErreur = T_("Aucune erreur, le téléchargement est correct.");
+			break;
+			
+		case 1:
+			$messageErreur = T_("Le fichier téléchargé excède la taille de upload_max_filesize, configurée dans le php.ini.");
+			break;
+			
+		case 2:
+			$messageErreur = T_("Le fichier téléchargé excède la taille de MAX_FILE_SIZE, qui a été spécifiée dans le formulaire HTML.");
+			break;
+			
+		case 3:
+			$messageErreur = T_("Le fichier n'a été que partiellement téléchargé.");
+			break;
+			
+		case 4:
+			$messageErreur = T_("Aucun fichier n'a été téléchargé.");
+			break;
+			
+		case 6:
+			$messageErreur = T_("Un dossier temporaire est manquant.");
+			break;
+			
+		case 7:
+			$messageErreur = T_("Échec de l'écriture du fichier sur le disque.");
+			break;
+			
+		case 8:
+			$messageErreur = T_("L'envoi de fichier est arrêté par l'extension.");
+			break;
+	}
+	
+	if ($erreur)
+	{
+		return '<li class="erreur">' . $messageErreur . "</li>\n";
+	}
+	else
+	{
+		return '<li>' . $messageErreur . "</li>\n";
+	}
 }
 
 /**
@@ -622,7 +1077,7 @@ Retourne TRUE si le site est en maintenance, sinon retourne FALSE.
 */
 function adminSiteEnMaintenance($cheminHtaccess)
 {
-	if ($fic = fopen($cheminHtaccess, 'r'))
+	if ($fic = @fopen($cheminHtaccess, 'r'))
 	{
 		while (!feof($fic))
 		{
@@ -643,7 +1098,7 @@ Retourne l'IP ayant accès au site en maintenance, si elle existe, sinon retourn
 */
 function adminSiteEnMaintenanceIp($cheminHtaccess)
 {
-	if ($fic = fopen($cheminHtaccess, 'r'))
+	if ($fic = @fopen($cheminHtaccess, 'r'))
 	{
 		while (!feof($fic))
 		{

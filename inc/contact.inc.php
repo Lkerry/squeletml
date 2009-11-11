@@ -67,7 +67,7 @@ if (isset($_POST['envoyer']))
 		
 		if (!empty($courrielsDecouvrirErreur))
 		{
-			$msg['erreur'][] = T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier:", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier:", $i) . ' ' . substr($courrielsDecouvrirErreur, 0, -2);
+			$msg['erreur'][] = sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsDecouvrirErreur, 0, -2));
 		}
 	}
 	

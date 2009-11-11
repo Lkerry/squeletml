@@ -1,4 +1,4 @@
-.boite, .sousBoite, pre, #tableDesMatieres, a.porteDocumentsProprietesFichier:hover span, img.infobulleApercuImage {
+.boite, .sousBoite, pre, #tableDesMatieres, a.porteDocumentsProprietesFichier:hover span, img.infobulleApercuImage, .porteDocumentsListe li, fieldset {
 	-moz-border-radius: 8px; /* Gecko */
 	-webkit-border-radius: 8px; /* Webkit */
 }

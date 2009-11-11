@@ -39,6 +39,10 @@ if (file_exists($chemin) && preg_match("|^$racine/site/fichiers/galeries/[^/]+/$
 	header('Content-Length: ' . filesize($chemin));
 	readfile($url);
 }
+elseif (file_exists($chemin))
+{
+	header('HTTP/1.1 401 Unauthorized');
+}
 else
 {
 	header('HTTP/1.1 404 Not found');

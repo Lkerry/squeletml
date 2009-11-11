@@ -371,7 +371,7 @@ function estAccueil($accueil)
 }
 
 /**
-Retourne une chaîne ou un tableau indicé (dépendamment du type de la valeur passée en paramètre) traité pour être affiché sécuritairement à l'écran.
+Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour affichage sécuritaire à l'écran. Si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été sécurisé. Si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
 */
 function securiseTexte($texte)
 {
@@ -386,9 +386,13 @@ function securiseTexte($texte)
 		
 		return $texteSecurise;
 	}
-	else
+	elseif (is_string($texte))
 	{
 		return sansEchappement(htmlspecialchars($texte, ENT_COMPAT, 'UTF-8'));
+	}
+	else
+	{
+		return '';
 	}
 }
 
@@ -855,11 +859,12 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 }
 
 /**
-Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne un tableau dont le premier élément contient le message informant du résultat de la fonction, et dont le second élément est un booléen valant TRUE si une erreur a eu lieu, sinon valant FALSE.
+Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
 */
 function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette)
 {
 	$erreur = FALSE;
+	$messagesScriptChaine = '';
 	
 	$infoNouvelleImage = pathinfo(basename($cheminNouvelleImage));
 	$nomNouvelleImage = $infoNouvelleImage['basename'];
@@ -938,13 +943,13 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 	// Si la nouvelle image est théoriquement au moins aussi grande que l'image source, on ne fait qu'une copie de fichier
 	if ($nouvelleImageHauteur > $imageSourceHauteur || $nouvelleImageLargeur > $imageSourceLargeur)
 	{
-		if (copy($cheminImageSource, $cheminNouvelleImage))
+		if (@copy($cheminImageSource, $cheminNouvelleImage))
 		{
-			$message = sprintf(T_("Copie de <code>%1\$s</code> avec le nom <code>%2\$s</code>"), $nomImageSource, $nomNouvelleImage) . "\n";
+			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> effectuée."), $nomImageSource, $nomNouvelleImage) . "\n";
 		}
 		else
 		{
-			$message = sprintf(T_("Impossible de copier <code>%1\$s</code> avec le nom <code>%2\$s</code>"), $nomImageSource, $nomNouvelleImage) . "\n";
+			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> impossible."), $nomImageSource, $nomNouvelleImage) . "\n";
 			$erreur = TRUE;
 		}
 	}
@@ -988,11 +993,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 			case 'gif':
 				if (imagegif($nouvelleImage, $cheminNouvelleImage))
 				{
-					$message = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$message = sprintf(T_("Impossible de créer <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				break;
@@ -1000,11 +1005,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 			case 'jpeg':
 				if (imagejpeg($nouvelleImage, $cheminNouvelleImage, $qualiteJpg))
 				{
-					$message = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$message = sprintf(T_("Impossible de créer <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				break;
@@ -1012,18 +1017,27 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 			case 'png':
 				if (imagepng($nouvelleImage, $cheminNouvelleImage, 9))
 				{
-					$message = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$message = sprintf(T_("Impossible de créer <code>%1\$s</code> à partir de <code>%2\$s</code>"), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				break;
 		}
 	}
 	
-	return array ($message, $erreur);
+	if ($erreur)
+	{
+		$messagesScriptChaine = '<li class="erreur">' . $messagesScriptChaine . "</li>\n";
+	}
+	else
+	{
+		$messagesScriptChaine = '<li>' . $messagesScriptChaine . "</li>\n";
+	}
+	
+	return $messagesScriptChaine;
 }
 
 /**
@@ -1079,7 +1093,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				$id = $galerie[$indice]['intermediaireNom'];
 			}
 			
-			$alt = 'alt="' . T_("Oeuvre") . ' ' . $id . '"';
+			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
 		}
 		
 		if (!empty($galerie[$indice]['intermediaireLegende']))
@@ -1469,7 +1483,7 @@ function tableauGalerie($fichierTexte, $exclure = FALSE)
 }
 
 /**
-Ajoute `-vignette` au nom d'un fichier, par exemple `fichier.extension` devient `fichier-vignette.extension`.
+Ajoute `-vignette` au nom d'un fichier, par exemple `nom.extension` devient `nom-vignette.extension`.
 */
 function nomSuffixeVignette($fichier)
 {

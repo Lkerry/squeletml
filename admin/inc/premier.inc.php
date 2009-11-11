@@ -25,6 +25,11 @@ if (!isset($jQueryCookieInclus))
 	$jQueryCookieInclus = FALSE;
 }
 
+if (!isset($jQueryUiInclus))
+{
+	$jQueryUiInclus = FALSE;
+}
+
 if (!isset($tableDesMatieres))
 {
 	$tableDesMatieres = FALSE;
@@ -118,6 +123,28 @@ if ($tableDesMatieres)
 			
 			<script type="text/javascript">
 				tableDesMatieres('interieurContenu', 'ul');
+			</script>
+		<?php endif; ?>
+		
+		<?php if (page() == 'rss.admin.php'): ?>
+			<!-- Glisser-déposer -->
+			<?php if (!$jQueryInclus): ?>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
+				<?php $jQueryInclus = TRUE; ?>
+			<?php endif; ?>
+			
+			<?php if (!$jQueryUiInclus): ?>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/admin/js/jquery-ui/ui.core.js"></script>
+				<script type="text/javascript" src="<?php echo $urlRacine; ?>/admin/js/jquery-ui/ui.sortable.js"></script>
+				<?php $jQueryUiInclus = TRUE; ?>
+			<?php endif; ?>
+			
+			<script type="text/javascript">
+				$(function()
+				{
+					$('ul.triable').sortable();
+					$('ul.triable').disableSelection();
+				});
 			</script>
 		<?php endif; ?>
 	</head>

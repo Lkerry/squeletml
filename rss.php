@@ -24,7 +24,7 @@ if (isset($_GET['langue']))
 
 if (isset($getChemin) && !empty($getChemin))
 {
-	if (file_exists($racine . '/' . $getChemin) && $fic = fopen($racine . '/' . $getChemin, 'r'))
+	if (file_exists($racine . '/' . $getChemin) && $fic = @fopen($racine . '/' . $getChemin, 'r'))
 	{
 		while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
 		{
@@ -80,7 +80,7 @@ if (isset($getChemin) && !empty($getChemin))
 					if ($dureeCacheFluxRss)
 					{
 						creeDossierCache($racine);
-						file_put_contents("$racine/site/cache/rss-$idGalerie.xml", $rssAafficher);
+						@file_put_contents("$racine/site/cache/rss-$idGalerie.xml", $rssAafficher);
 						readfile("$racine/site/cache/rss-$idGalerie.xml");
 					}
 					else
@@ -138,7 +138,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			if ($dureeCacheFluxRss)
 			{
 				creeDossierCache($racine);
-				file_put_contents("$racine/site/cache/rss-global-galeries-$getLangue.xml", $rssAafficher);
+				@file_put_contents("$racine/site/cache/rss-global-galeries-$getLangue.xml", $rssAafficher);
 				readfile("$racine/site/cache/rss-global-galeries-$getLangue.xml");
 			}
 			else
@@ -215,7 +215,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 			if ($dureeCacheFluxRss)
 			{
 				creeDossierCache($racine);
-				file_put_contents("$racine/site/cache/rss-global-site-$getLangue.xml", $rssAafficher);
+				@file_put_contents("$racine/site/cache/rss-global-site-$getLangue.xml", $rssAafficher);
 				readfile("$racine/site/cache/rss-global-site-$getLangue.xml");
 			}
 			else

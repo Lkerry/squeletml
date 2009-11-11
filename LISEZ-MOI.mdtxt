@@ -70,7 +70,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
   - Génération automatique des vignettes ou utilisation de vignettes personnalisées.
   - Script offert pour retailler automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
-  - Ajout d'images par lot contenues dans une archive TAR (.tar) ou ZIP (.zip).
+  - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
   - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette ou `-original.extension` pour la version originale ou téléchargeable de l'image).
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
@@ -142,6 +142,8 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Icônes utilisées dans le porte-documents**: ces icônes proviennent du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
+- **Icône utilisée dans le script de gestion des flux RSS globaux**: cette icône provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
+
 - **Logo utilisé pour représenter Firefox dans le module d'affiche d'un message pour Internet Explorer 6**: ce logo est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Deer_Park_Globe.png?uselang=fr).
 
 - **Icône des flux RSS**: cette icône est sous triple licence Mozilla Public License version 1.1/GPL version 2 ou toute version ultérieure/LGPL version 2.1 ou toute version ultérieure, et provient de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Feed-icon.svg?uselang=fr).
@@ -164,6 +166,8 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **jQuery Cookie plugin**: sous double licence MIT et GPL. Voir <http://plugins.jquery.com/project/cookie>.
 
+- **jQuery UI**: sous double licence MIT et GPL. Voir <http://jqueryui.com/>.
+
 - **MimeDetect**: module pour Drupal sous licence GPL version 2 ou toute version ultérieure. Voir <http://drupal.org/project/mimedetect>. Je l'ai modifié pour le rendre indépendant de Drupal. J'ai également ajouté la fonction `file_get_mimetype()` provenant du fichier `includes/file.inc` de Drupal 6, sous licence GPL version 2 ou toute version ultérieure. Voir <http://api.drupal.org/api/drupal/includes--file.inc/6/source>. J'ai publié le résultat sous licence GPL version 3 ou toute version ultérieure.
 
 - **PclZip**: Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>.
@@ -182,3 +186,4 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **UnTar (classe PHP)**: Squeletml utilise la classe PHP UnTar (sous licence LGPL 2.1) pour la gestion des archives au format TAR. Voir <http://php-classes.sourceforge.net/>.
 
+- La translitération du filte des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.
