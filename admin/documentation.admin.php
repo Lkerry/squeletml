@@ -7,6 +7,6 @@ include 'inc/premier.inc.php';
 
 <?php echo mdtxt($racine . '/documentation.mdtxt'); ?>
 
-<?php echo mdtxtChaine(presentationEtContenuFichierDeConfiguration($racine)); ?>
+<?php echo mdtxtChaine(annexesDocumentation($racine)); ?>
 
 <?php include $racine . '/admin/inc/dernier.inc.php'; ?>

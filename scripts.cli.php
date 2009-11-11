@@ -80,7 +80,7 @@ elseif ($argv[1] == 'message-accueil')
 ## Ajout du contenu du fichier de configuration à la documentation
 ##
 ########################################################################
-elseif ($argv[1] == 'config-dans-doc')
+elseif ($argv[1] == 'annexes-doc')
 {
 	$cheminDocumentation = $argv[2];
 	
@@ -90,7 +90,7 @@ elseif ($argv[1] == 'config-dans-doc')
 	// Nécessaire à la traduction
 	phpGettext('.', 'fr');
 	
-	$ajout = presentationEtContenuFichierDeConfiguration($racine);
+	$ajout = annexesDocumentation($racine);
 	
 	file_put_contents($cheminDocumentation, $ajout, FILE_APPEND);
 }
