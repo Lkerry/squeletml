@@ -183,7 +183,7 @@ class tar
 			if ($indicator==0)
 			{
 				$contentfile=fopen($this->filelist[$x],'r');
-				$data=fread($contentfile,filesize($this->filelist[$x]));
+				$data=@fread($contentfile,filesize($this->filelist[$x]));
 				while (strlen($data)%512!=0)
 				{
 					$data.=chr(0);
