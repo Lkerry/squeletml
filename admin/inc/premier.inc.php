@@ -54,19 +54,19 @@ if ($tableDesMatieres)
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta name="robots" content="noindex, nofollow, noarchive" />
 		
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/admin.css"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/extensions-proprietaires.css"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/ie6.css"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/admin/css/ie7.css"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "css:$urlRacine/css/extensions-proprietaires.css"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "javascript:$urlRacine/js/phpjs.js"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "javascript:$urlRacine/js/squeletml.js"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "javascript:$urlRacine/admin/js/squeletml.js"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacineAdmin/css/admin.css"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacineAdmin/css/extensions-proprietaires.css"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacineAdmin/css/ie6.css"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacineAdmin/css/ie7.css"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacine/css/extensions-proprietaires.css"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "javascript:$urlRacine/js/phpjs.js"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "javascript:$urlRacine/js/squeletml.js"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "javascript:$urlRacineAdmin/js/squeletml.js"); ?>
 		<?php if (!adminEstIE()): ?>
-			<?php $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/js/wz_dragdrop.js"); ?>
+			<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/porte-documents.admin.php" => "javascript:$urlRacineAdmin/js/wz_dragdrop.js"); ?>
 		<?php endif; ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/porte-documents.admin.php" => "javascript:$urlRacine/admin/inc/CodeMirror/js/codemirror.js"); ?>
-		<?php $fichiersLinkScript[] = array ("$urlRacine/admin/*" => "favicon:$urlRacine/fichiers/puce.png"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/porte-documents.admin.php" => "javascript:$urlRacineAdmin/inc/CodeMirror/js/codemirror.js"); ?>
+		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "favicon:$urlRacine/fichiers/puce.png"); ?>
 		<?php echo linkScript($fichiersLinkScript, '', TRUE); ?>
 		
 		<?php $boitesDeroulantesTableau = boitesDeroulantes('', $boitesDeroulantes); ?>
@@ -134,8 +134,8 @@ if ($tableDesMatieres)
 			<?php endif; ?>
 			
 			<?php if (!$jQueryUiInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/admin/js/jquery-ui/ui.core.js"></script>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/admin/js/jquery-ui/ui.sortable.js"></script>
+				<script type="text/javascript" src="<?php echo $urlRacineAdmin; ?>/js/jquery-ui/ui.core.js"></script>
+				<script type="text/javascript" src="<?php echo $urlRacineAdmin; ?>/js/jquery-ui/ui.sortable.js"></script>
 				<?php $jQueryUiInclus = TRUE; ?>
 			<?php endif; ?>
 			
@@ -150,13 +150,13 @@ if ($tableDesMatieres)
 	</head>
 	<body id="<?php echo adminBodyId(); ?>">
 		<div id="ancres">
-			<?php include $racine . '/admin/inc/html.ancres.inc.php'; ?>
+			<?php include $racineAdmin . '/inc/html.ancres.inc.php'; ?>
 		</div><!-- /ancres -->
 		
 		<div id="page">
 			<div id="enTete">
 				<div id="menu">
-					<?php include $racine . '/admin/inc/html.menu.inc.php'; ?>
+					<?php include $racineAdmin . '/inc/html.menu.inc.php'; ?>
 				</div><!-- /menu -->
 				<script type="text/javascript">lienActif('menu');</script>
 			</div><!-- /enTete -->

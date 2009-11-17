@@ -14,7 +14,7 @@ if ($porteDocumentsDroits['telecharger'])
 		
 			if (is_dir($chemin))
 			{
-				$dossierDeSauvegarde = $racine . '/admin/cache';
+				$dossierDeSauvegarde = $racineAdmin . '/cache';
 				$nomArchive = $nom . '.tar';
 				$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
 		

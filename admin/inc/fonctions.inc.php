@@ -2,8 +2,10 @@
 /**
 Retourne un tableau contenant les fichiers à inclure.
 */
-function adminInit($racine)
+function adminInit($racineAdmin)
 {
+	$racine = dirname($racineAdmin);
+	
 	$fichiers = array ();
 	
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
@@ -12,22 +14,22 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
 	
-	$fichiers[] = $racine . '/admin/inc/config.inc.php';
+	$fichiers[] = $racineAdmin . '/inc/config.inc.php';
 	
 	if (file_exists($racine . '/site/inc/config-admin.inc.php'))
 	{
 		$fichiers[] = $racine . '/site/inc/config-admin.inc.php';
 	}
 	
-	$fichiers[] = $racine . '/admin/inc/constantes.inc.php';
+	$fichiers[] = $racineAdmin . '/inc/constantes.inc.php';
 	
-	$fichiers[] = $racine . '/admin/inc/pclzip/pclzip.lib.php';
+	$fichiers[] = $racineAdmin . '/inc/pclzip/pclzip.lib.php';
 	
-	$fichiers[] = $racine . '/admin/inc/tar/tar.class.php';
+	$fichiers[] = $racineAdmin . '/inc/tar/tar.class.php';
 	
-	$fichiers[] = $racine . '/admin/inc/untar/untar.class.php';
+	$fichiers[] = $racineAdmin . '/inc/untar/untar.class.php';
 	
-	$fichiers[] = $racine . '/admin/inc/UnsharpMask.inc.php';
+	$fichiers[] = $racineAdmin . '/inc/UnsharpMask.inc.php';
 	
 	$fichiers[] = $racine . '/inc/constantes.inc.php';
 	
@@ -39,15 +41,17 @@ function adminInit($racine)
 }
 
 /**
-Retourne la valeur d'une variable du fichier de configuration du site (`$racine/inc/config.inc.php` | `$racine/site/inc/config.inc.php`) si `$configAdmin` vaut FALSE, sinon retourne la valeur d'une variable du fichier de configuration de l'administration (`$racine/admin/inc/config.inc.php` | `$racine/site/inc/config-admin.inc.php`). Si la variable demandée n'est pas définie ou vaut NULL, retourne FALSE. Le deuxième paramètre correspond au nom de la variable, par exemple 'rss' pour la variable `$rss`.
+Retourne la valeur d'une variable du fichier de configuration du site (`$racine/inc/config.inc.php` | `$racine/site/inc/config.inc.php`) si `$configAdmin` vaut FALSE, sinon retourne la valeur d'une variable du fichier de configuration de l'administration (`$racineAdmin/inc/config.inc.php` | `$racine/site/inc/config-admin.inc.php`). Si la variable demandée n'est pas définie ou vaut NULL, retourne FALSE. Le deuxième paramètre correspond au nom de la variable, par exemple 'rss' pour la variable `$rss`.
 */
-function adminVarConf($racine, $nomVariable, $configAdmin = FALSE)
+function adminVarConf($racineAdmin, $nomVariable, $configAdmin = FALSE)
 {
+	$racine = dirname($racineAdmin);
+	
 	include $racine . '/init.inc.php';
 	
 	if ($configAdmin)
 	{
-		include $racine . '/admin/inc/config.inc.php';
+		include $racineAdmin . '/inc/config.inc.php';
 		if (file_exists($racine . '/site/inc/config-admin.inc.php'))
 		{
 			include $racine . '/site/inc/config-admin.inc.php';
@@ -68,8 +72,10 @@ function adminVarConf($racine, $nomVariable, $configAdmin = FALSE)
 /**
 Retourne la valeur des variables `$galerieFluxRssGlobal` ou `$siteFluxRssGlobal`.
 */
-function adminFluxRssGlobal($racine, $fluxRss)
+function adminFluxRssGlobal($racineAdmin, $fluxRss)
 {
+	$racine = dirname($racineAdmin);
+	
 	include $racine . '/init.inc.php';
 	include $racine . '/inc/config.inc.php';
 	if (file_exists($racine . '/site/inc/config.inc.php'))
@@ -79,11 +85,11 @@ function adminFluxRssGlobal($racine, $fluxRss)
 	
 	if ($fluxRss == 'galerie')
 	{
-		return adminVarConf($racine, 'galerieFluxRssGlobal');
+		return adminVarConf($racineAdmin, 'galerieFluxRssGlobal');
 	}
 	elseif ($fluxRss == 'site')
 	{
-		return adminVarConf($racine, 'siteFluxRssGlobal');
+		return adminVarConf($racineAdmin, 'siteFluxRssGlobal');
 	}
 }
 
@@ -170,8 +176,9 @@ function adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableau
 /**
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits)
+function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits)
 {
+	$racine = dirname($racineAdmin);
 	static $liste = array ();
 	
 	if ($dossier = @opendir($dossierRacine))
@@ -197,7 +204,7 @@ function adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine, $typeFi
 					}
 					else
 					{
-						adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
+						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
 					}
 				}
 				else
@@ -213,26 +220,26 @@ function adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine, $typeFi
 				
 					if ($porteDocumentsDroits['telecharger'])
 					{
-						$fichierMisEnForme .= "<a href=\"$urlRacine/admin/telecharger.admin.php?fichier=$dossierRacine/$fichier\"><img src=\"$urlRacine/admin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+						$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$dossierRacine/$fichier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 				
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 					}
 				
 					if ($porteDocumentsDroits['editer'])
 					{
-						$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+						$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=editer&amp;valeur=$dossierRacine/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
 					
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 					}
 				
 					if ($porteDocumentsDroits['renommer'])
 					{
-						$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+						$fichierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$dossierRacine/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 				
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 					}
 				
-					$fichierMisEnForme .= adminInfobulle($racine, $urlRacine, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+					$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				
 					$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 				
@@ -265,7 +272,7 @@ function adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine, $typeFi
 /**
 Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans le porte-documents.
 */
-function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	clearstatcache();
 	
@@ -290,12 +297,12 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 		
 		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite atteinte de 2 Mio).
 		
-		if (adminTailleCache($racine) > 2097152)
+		if (adminTailleCache($racineAdmin) > 2097152)
 		{
-			adminVideCache($racine);
+			adminVideCache($racineAdmin);
 		}
 		
-		$cheminApercuImage = $racine . '/admin/cache/' . md5($cheminFichier) . '.' . array_pop(explode('.', $cheminFichier));;
+		$cheminApercuImage = $racineAdmin . '/cache/' . md5($cheminFichier) . '.' . array_pop(explode('.', $cheminFichier));;
 		
 		if (!file_exists($cheminApercuImage))
 		{
@@ -305,7 +312,7 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 		if (file_exists($cheminApercuImage))
 		{
 			list ($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
-			$apercuImage = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacine . "/admin/cache/" . basename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
+			$apercuImage = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacineAdmin . "/cache/" . basename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
 		}
 		else
 		{
@@ -317,7 +324,7 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 		$dimensionsImage = FALSE;
 	}
 	
-	$infobulle .= "<a class=\"porteDocumentsProprietesFichier\" href=\"#\"><img src=\"$urlRacine/admin/fichiers/proprietes.png\" alt=\"" . T_("Propriétés") . "\" width=\"16\" height=\"16\" /><span>";
+	$infobulle .= "<a class=\"porteDocumentsProprietesFichier\" href=\"#\"><img src=\"$urlRacineAdmin/fichiers/proprietes.png\" alt=\"" . T_("Propriétés") . "\" width=\"16\" height=\"16\" /><span>";
 	$infobulle .= sprintf(T_("<strong>Type MIME:</strong> %1\$s"), $typeMime) . "<br />\n";
 	
 	if ($stat)
@@ -357,9 +364,9 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 /**
 Retourne la taille en octets du dossier de cache de l'administration si le dossier est accessible, sinon retourne FALSE.
 */
-function adminTailleCache($racine)
+function adminTailleCache($racineAdmin)
 {
-	$cheminCache = $racine . '/admin/cache';
+	$cheminCache = $racineAdmin . '/cache';
 	$taille = 0;
 	
 	if ($dossier = @opendir($cheminCache))
@@ -385,9 +392,9 @@ function adminTailleCache($racine)
 /**
 Vide le cache. Seuls les fichiers à la racine du dossier sont supprimés, ce qui constitue normalement tout ce qui est mis en cache par Squeletml. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
-function adminVideCache($racine)
+function adminVideCache($racineAdmin)
 {
-	$cheminCache = $racine . '/admin/cache';
+	$cheminCache = $racineAdmin . '/cache';
 	$sansErreur = TRUE;
 	
 	if ($dossier = @opendir($cheminCache))

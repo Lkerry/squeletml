@@ -7,6 +7,6 @@ include 'inc/premier.inc.php';
 
 <?php echo mdtxt($racine . '/documentation.mdtxt'); ?>
 
-<?php echo mdtxtChaine(annexesDocumentation($racine)); ?>
+<?php echo mdtxtChaine(annexesDocumentation($racineAdmin)); ?>
 
-<?php include $racine . '/admin/inc/dernier.inc.php'; ?>
+<?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

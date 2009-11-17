@@ -1272,4 +1272,4 @@ include '../init.inc.php';
 	</form>
 </div><!-- /class=boite -->
 
-<?php include $racine . '/admin/inc/dernier.inc.php'; ?>
+<?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

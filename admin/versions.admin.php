@@ -41,4 +41,4 @@ include 'inc/premier.inc.php';
 	</ul>
 <?php endif; ?>
 
-<?php include $racine . '/admin/inc/dernier.inc.php'; ?>
+<?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

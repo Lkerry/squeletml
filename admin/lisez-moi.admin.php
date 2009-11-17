@@ -6,5 +6,5 @@ include 'inc/premier.inc.php';
 
 echo mdtxt($racine . '/LISEZ-MOI.mdtxt');
 
-include $racine . '/admin/inc/dernier.inc.php';
+include $racineAdmin . '/inc/dernier.inc.php';
 ?>

@@ -526,7 +526,7 @@ if ($porteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['action']
 	{
 		if (file_exists($getValeur))
 		{
-			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications». <strong>Attention</strong> de ne pas modifier un fichier binaire. Ceci le corromprait."), "<code>$getValeur</code> " . adminInfobulle($racine, $urlRacine, $getValeur, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)) . "</p>\n";
+			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications». <strong>Attention</strong> de ne pas modifier un fichier binaire. Ceci le corromprait."), "<code>$getValeur</code> " . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)) . "</p>\n";
 		}
 		else
 		{
@@ -949,7 +949,7 @@ if ($porteDocumentsDroits['ajouter'] && (!$filtreTypesMime || ($filtreTypesMime 
 		if ($filtreNom)
 		{
 			$ancienNomFichier = $nomFichier;
-			$transliteration = parse_ini_file($racine . '/admin/inc/i18n-ascii.txt');
+			$transliteration = parse_ini_file($racineAdmin . '/inc/i18n-ascii.txt');
 			$nomFichier = strtr($nomFichier, $transliteration);
 			$nomFichier = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $nomFichier);
 			$nomFichier = preg_replace('/-+/', '-', $nomFichier);
@@ -1081,7 +1081,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	else
 	{
-		$listeFormateeFichiers = adminListeFormateeFichiers($racine, $urlRacine, $dossierAparcourir, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1136,19 +1136,19 @@ foreach ($listeDossiers as $listeDossier)
 	
 	if ($porteDocumentsDroits['telecharger'])
 	{
-		$dossierMisEnForme .= "<a href=\"$urlRacine/admin/telecharger.admin.php?fichier=$listeDossier\"><img src=\"$urlRacine/admin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+		$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$listeDossier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 		
 		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	}
 	
 	if ($porteDocumentsDroits['renommer'])
 	{
-		$dossierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$listeDossier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacine/admin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+		$dossierMisEnForme .= "<a href=\"$action" . $symboleUrl . "action=renommer&amp;valeur=$listeDossier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 	
 	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	}
 	
-	$dossierMisEnForme .= adminInfobulle($racine, $urlRacine, $listeDossier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	
 	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	
@@ -1305,5 +1305,5 @@ if ($porteDocumentsDroits['creer'])
 	echo "</div><!-- /class=boite -->\n";
 }
 
-include $racine . '/admin/inc/dernier.inc.php';
+include $racineAdmin . '/inc/dernier.inc.php';
 ?>

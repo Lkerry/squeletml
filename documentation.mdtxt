@@ -47,6 +47,10 @@ Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseign
 
 et ajoutez un utilisateur. Les utilisateurs sont listés dans le fichier `.acces` situé à la racine de votre installation de Squeletml.
 
+**Note: comme action optionnelle après l'installation de Squeletml, il est possible de renommer le dossier d'administration pour plus de sécurité. La variable à modifier, `$dossierAdmin`, se trouve dans le fichier `inc/config.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation, par exemple:**
+
+	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
+
 #### Actions obligatoires supplémentaires sur un serveur de Free.fr
 
 Pour une installation de Squeletml sur un serveur de Free.fr, il faut effectuer en plus les deux actions obligatoires suivantes:
@@ -85,7 +89,7 @@ Ce fichier contient beaucoup de paramètres au sujet du site. Les variables modi
 
 La structure de Squeletml est la suivante:
 
-- `admin`
+- `admin` (le cas échéant, modifier le nom du dossier d'administration)
 - `css`
 - `en`
 - `fichiers`
@@ -229,7 +233,7 @@ Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe 
 
 Il est possible de traduire Squeletml dans la langue désirée. Le principal fichier est `locale/squeletml.pot`. Il contient la plupart des phrases à traduire. Les autres fichiers sont:
 
-- `admin/versions-solo.admin.php`
+- `admin/versions-solo.admin.php` (le cas échéant, modifier le nom du dossier d'administration)
 - `inc/html.fr.ancres.inc.php`
 - `inc/html.fr.bas-de-page.inc.php`
 - `inc/html.fr.menu.inc.php`
@@ -251,7 +255,7 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 
 Pour mettre à jour Squeletml:
 
-- Visitez la page `http://www.nomDeDomaine.ext/admin/acces.admin.php` et mettez votre site en maintenance (hors ligne). Vous pouvez ajouter votre adresse IP dans le champ prévu à cet effet pour avoir encore accès à votre site durant la maintenance.
+- Visitez la page `http://www.nomDeDomaine.ext/admin/acces.admin.php` (le cas échéant, modifier le nom du dossier d'administration) et mettez votre site en maintenance (hors ligne). Vous pouvez ajouter votre adresse IP dans le champ prévu à cet effet pour avoir encore accès à votre site durant la maintenance.
 
 	La page de maintenance n'a pas de dépendance à des fichiers du site, à l'exception du fichier `.htaccess` de la racine, ce qui veut dire qu'en mode maintenance, vous pouvez supprimer ou déplacer tous les fichiers voulus, à l'exception de la page de maintenance et du `.htaccess`.
 
@@ -264,6 +268,8 @@ Pour mettre à jour Squeletml:
 - Maintenant, collez votre précédente sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
 
 Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer**, en plus des fichiers `.htaccess` ou `robots.txt`, le dossier `site`, qui contient votre configuration personnalisée, et éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`).
+
+**Note: si vous avez modifié le nom du dossier d'administration, ne pas oublier de supprimer l'ancien dossier et de renommer le nouveau.**
 
 ## Création de pages
 
@@ -406,7 +412,7 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 - variable `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
 
-		<a href="<?php echo $urlRacine . '/admin/'; ?>">lien vers la section d'administration</a>
+		<a href="<?php echo $urlRacine . '/maintenance.php'; ?>">lien vers la page de maintenance</a>
 
 - variable `$urlSite`: contient l'URL vers le dossier `site`. Exemple de lien vers une image:
 

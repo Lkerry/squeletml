@@ -83,31 +83,6 @@ $charset = 'UTF-8';
 */
 $langueParDefaut = 'fr';
 
-/* _______________ Syndication de contenu (flux RSS) _______________ */
-
-// Syndication globale du site
-/*
-- La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxRssGlobal` vaut TRUE. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL.
-- Voir la documentation pour plus de détails.
-*/
-$siteFluxRssGlobal = FALSE; // TRUE|FALSE
-
-// Nombre d'items par flux RSS
-$nombreItemsFluxRss = 50;
-
-// Expiration du cache des flux
-/*
-- Temps en secondes avant que le cache des flux n'expire.
-- Exemples:
-  - `0` équivaut à désactiver le cache
-  - `1800` équivaut à 30 minutes
-  - `3600` équivaut à 1 heure
-  - `43200` équivaut à 12 heures
-  - `86400` équivaut à 1 journée
-  - `604800` équivaut à 7 jours
-*/
-$dureeCacheFluxRss = 0;
-
 /* _______________ Inclusions et activations dans le corps _______________ */
 
 // Inclusion du sur-titre
@@ -250,6 +225,11 @@ $ordreFluxHtml = array (
 	'flux-rss' => 10,
 	);
 
+/*
+Nom du dossier contenant l'administration de Squeletml. Le dossier doit demeurer au même niveau dans la structure du site. Il n'est donc pas possible d'effectuer un déplacement.
+*/
+$dossierAdmin = 'admin';
+
 /* _______________ Style CSS _______________ */
 
 // Note: les options suivantes n'ont aucune influence sur le flux HTML.
@@ -291,6 +271,31 @@ $borduresPage = array(
 
 // Blocs de menu avec coins arrondis
 $coinsArrondisBloc = FALSE; // TRUE|FALSE
+
+/* _______________ Syndication de contenu (flux RSS) _______________ */
+
+// Syndication globale du site
+/*
+- La syndication globale du site est constituée des pages, mais également des galeries si `$galerieFluxRssGlobal` vaut TRUE. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL.
+- Voir la documentation pour plus de détails.
+*/
+$siteFluxRssGlobal = FALSE; // TRUE|FALSE
+
+// Nombre d'items par flux RSS
+$nombreItemsFluxRss = 50;
+
+// Expiration du cache des flux
+/*
+- Temps en secondes avant que le cache des flux n'expire.
+- Exemples:
+  - `0` équivaut à désactiver le cache
+  - `1800` équivaut à 30 minutes
+  - `3600` équivaut à 1 heure
+  - `43200` équivaut à 12 heures
+  - `86400` équivaut à 1 journée
+  - `604800` équivaut à 7 jours
+*/
+$dureeCacheFluxRss = 0;
 
 ########################################################################
 ##
@@ -354,21 +359,6 @@ $galerieDimensionsVignette = array (
   - Bien sûr, on ne peut forcer une dimension (largeur ou hauteur) que si la dimension voulue a été précisée dans `$galerieDimensionsVignette`.
 */
 $galerieForcerDimensionsVignette = TRUE; // TRUE|FALSE
-
-/* _______________ Syndication de contenu (flux RSS) _______________ */
-
-// Syndication individuelle par défaut des galeries
-/*
-- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rss` existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui est utilisée.
-*/
-$galerieFluxRssParDefaut = TRUE; // TRUE|FALSE
-
-// Syndication globale pour toutes les galeries
-/*
-- La syndication globale des galeries n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant la liste des galeries et de leur URL.
-- Voir la documentation pour plus de détails.
-*/
-$galerieFluxRssGlobal = FALSE; // TRUE|FALSE
 
 /* _______________ Accueil des galeries _______________ */
 
@@ -484,6 +474,21 @@ $galerieTelechargeOriginal = FALSE; // TRUE|FALSE
 */
 $galerieLegendeEmplacement = 'sousContenu'; // haut|bas|sousContenu|surContenu
 
+/* _______________ Syndication de contenu (flux RSS) _______________ */
+
+// Syndication individuelle par défaut des galeries
+/*
+- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rss` existe (par exemple déclarée dans une page), c'est la valeur de cette dernière qui est utilisée.
+*/
+$galerieFluxRssParDefaut = TRUE; // TRUE|FALSE
+
+// Syndication globale pour toutes les galeries
+/*
+- La syndication globale des galeries n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant la liste des galeries et de leur URL.
+- Voir la documentation pour plus de détails.
+*/
+$galerieFluxRssGlobal = FALSE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites)
@@ -496,8 +501,12 @@ N'a pas toujours la bonne valeur selon les serveurs. On écrase donc sa valeur p
 */
 $_SERVER['DOCUMENT_ROOT'] = $racine;
 
+// Racine de l'administration
+$racineAdmin = $racine . '/' . $dossierAdmin;
+
 // Diverses variables utiles pour les liens dans les pages
 $urlSite = $urlRacine . '/site';
 $urlFichiers = $urlRacine . '/site/fichiers';
+$urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
 
 ?>

@@ -638,4 +638,4 @@ include 'inc/premier.inc.php';
 	<?php endif; ?>
 <?php endif; ?>
 
-<?php include $racine . '/admin/inc/dernier.inc.php'; ?>
+<?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

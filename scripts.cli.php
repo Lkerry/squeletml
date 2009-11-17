@@ -90,11 +90,16 @@ elseif ($argv[1] == 'annexes-doc')
 	
 	include 'init.inc.php';
 	include 'inc/fonctions.inc.php';
+	include 'inc/config.inc.php';
+	if (file_exists('site/inc/config.inc.php'))
+	{
+		include 'site/inc/config.inc.php';
+	}
 	
 	// Nécessaire à la traduction
 	phpGettext('.', 'fr');
 	
-	$ajout = annexesDocumentation($racine);
+	$ajout = annexesDocumentation($racineAdmin);
 	
 	file_put_contents($cheminDocumentation, $ajout, FILE_APPEND);
 }

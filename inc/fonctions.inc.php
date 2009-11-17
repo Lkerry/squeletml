@@ -139,8 +139,10 @@ function coloreCodePhp($code, $retourneCode = FALSE, $commentairesEnNoir = FALSE
 /**
 Retourne le code nécessaire à l'insertion d'annexes dans la documentation.
 */
-function annexesDocumentation($racine)
+function annexesDocumentation($racineAdmin)
 {
+	$racine = dirname($racineAdmin);
+	
 	$texte = '';
 	$texte .= "\n\n## " . T_("Annexes") . "\n\n";
 	
@@ -152,7 +154,7 @@ function annexesDocumentation($racine)
 	
 	$texte .= '### ' . T_("Contenu du fichier de configuration de l'administration de Squeletml") . "\n\n";
 	
-	$texte .= '<pre id="fichierDeConfiguration">' . coloreFichierPhp($racine . '/admin/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
+	$texte .= '<pre id="fichierDeConfiguration">' . coloreFichierPhp($racineAdmin . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
 	
 	return $texte;
 }
