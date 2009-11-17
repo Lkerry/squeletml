@@ -51,6 +51,10 @@ elseif ($argv[1] == 'message-accueil')
 				{
 					if ($ligne != "\n")
 					{
+						if (preg_match('|<img |', $ligne))
+						{
+							$ligne = preg_replace('|<img [^>]+>|', '', $ligne);
+						}
 						$fichierLisezMoi[] = rtrim(Markdown($ligne));
 					}
 					$ligne = fgets($fic);

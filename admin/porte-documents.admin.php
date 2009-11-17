@@ -98,7 +98,7 @@ if ($porteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie']))
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
 		echo '<p><select name="porteDocumentsCopieChemin" size="1">' . "\n";
-		$listeDossiers = adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
+		$listeDossiers = adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 		asort($listeDossiers);
 		foreach ($listeDossiers as $valeur)
 		{
@@ -224,7 +224,7 @@ if ($porteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplacement
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
 		echo '<p><select name="porteDocumentsDeplacementChemin" size="1">' . "\n";
-		$listeDossiers = adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
+		$listeDossiers = adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 		asort($listeDossiers);
 		foreach ($listeDossiers as $valeur)
 		{
@@ -1081,7 +1081,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	else
 	{
-		$listeFichiersFormatee = adminListeFichiersFormatee($racine, $urlRacine, $dossierAparcourir, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
+		$listeFichiersFormatee = adminListeFormateeFichiers($racine, $urlRacine, $dossierAparcourir, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
 		
 		if (!empty($listeFichiersFormatee))
 		{
@@ -1118,7 +1118,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 echo '<div class="sousBoite">' . "\n";
 echo '<h3>' . T_("Liste des dossiers") . "</h3>\n";
 
-$listeDossiers = adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
+$listeDossiers = adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 asort($listeDossiers);
 echo "<ul class=\"porteDocumentsListe porteDocumentsListeDernierNiveau\">\n";
 
@@ -1133,6 +1133,13 @@ foreach ($listeDossiers as $listeDossier)
 	{
 		$dossierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$listeDossier\" />";
 	
+		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+	}
+	
+	if ($porteDocumentsDroits['telecharger'])
+	{
+		$dossierMisEnForme .= "<a href=\"$urlRacine/admin/telecharger.admin.php?fichier=$listeDossier\"><img src=\"$urlRacine/admin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+		
 		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	}
 	
@@ -1214,7 +1221,7 @@ if ($porteDocumentsDroits['ajouter'] && !$filtreTypesMime || ($filtreTypesMime &
 	
 	echo '<p><label>' . T_("Fichier:") . "</label><br />\n" . '<input type="file" name="porteDocumentsAjouterFichier" size="25"/>' . "</p>\n";
 	echo '<p><label>' . T_("Dossier:") . "</label><br />\n" . '<select name="porteDocumentsAjouterDossier" size="1">' . "\n";
-	$listeDossiers = adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
+	$listeDossiers = adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 	asort($listeDossiers);
 	foreach ($listeDossiers as $valeur)
 	{
@@ -1263,7 +1270,7 @@ if ($porteDocumentsDroits['creer'])
 	echo '<p><label>' . T_("Chemin et nom:") . "</label><br />\n";
 
 	echo '<select name="porteDocumentsCreationChemin" size="1">' . "\n";
-	$listeDossiers = adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
+	$listeDossiers = adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableauFiltresDossiers);
 	asort($listeDossiers);
 	foreach ($listeDossiers as $valeur)
 	{

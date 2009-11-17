@@ -578,9 +578,9 @@ include 'inc/premier.inc.php';
 
 		<p><?php echo T_("Si le site est hors ligne, tous les internautes visitant une page du site seront redirigés vers la page de maintenance."); ?></p>
 
-		<?php if (reecritureDurl(FALSE) == 'n'): ?>
+		<?php if (adminReecritureDurl(FALSE) == 'n'): ?>
 			<p><strong><?php echo T_("Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
-		<?php elseif (reecritureDurl(FALSE) == '?'): ?>
+		<?php elseif (adminReecritureDurl(FALSE) == '?'): ?>
 			<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
 		<?php endif; ?>
 
@@ -605,7 +605,7 @@ include 'inc/premier.inc.php';
 					<?php if ($ip): ?>
 						<?php $valeurChampIp = $ip; ?>
 					<?php else: ?>
-						<?php $valeurChampIp = ipInternaute(); ?>
+						<?php $valeurChampIp = adminIpInternaute(); ?>
 					<?php endif; ?>
 					<input type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
 				</fieldset>

@@ -23,6 +23,8 @@ function adminInit($racine)
 	
 	$fichiers[] = $racine . '/admin/inc/pclzip/pclzip.lib.php';
 	
+	$fichiers[] = $racine . '/admin/inc/tar/tar.class.php';
+	
 	$fichiers[] = $racine . '/admin/inc/untar/untar.class.php';
 	
 	$fichiers[] = $racine . '/admin/inc/UnsharpMask.inc.php';
@@ -39,8 +41,10 @@ function adminInit($racine)
 /**
 Retourne la valeur d'une variable du fichier de configuration du site (`$racine/inc/config.inc.php` | `$racine/site/inc/config.inc.php`) si `$configAdmin` vaut FALSE, sinon retourne la valeur d'une variable du fichier de configuration de l'administration (`$racine/admin/inc/config.inc.php` | `$racine/site/inc/config-admin.inc.php`). Si la variable demandée n'est pas définie ou vaut NULL, retourne FALSE. Le deuxième paramètre correspond au nom de la variable, par exemple 'rss' pour la variable `$rss`.
 */
-function varConf($racine, $nomVariable, $configAdmin = FALSE)
+function adminVarConf($racine, $nomVariable, $configAdmin = FALSE)
 {
+	include $racine . '/init.inc.php';
+	
 	if ($configAdmin)
 	{
 		include $racine . '/admin/inc/config.inc.php';
@@ -64,9 +68,9 @@ function varConf($racine, $nomVariable, $configAdmin = FALSE)
 /**
 Retourne la valeur des variables `$galerieFluxRssGlobal` ou `$siteFluxRssGlobal`.
 */
-function adminFluxRssGlobal($fluxRss, $racine)
+function adminFluxRssGlobal($racine, $fluxRss)
 {
-	include dirname(__FILE__) . '/../../init.inc.php';
+	include $racine . '/init.inc.php';
 	include $racine . '/inc/config.inc.php';
 	if (file_exists($racine . '/site/inc/config.inc.php'))
 	{
@@ -75,18 +79,52 @@ function adminFluxRssGlobal($fluxRss, $racine)
 	
 	if ($fluxRss == 'galerie')
 	{
-		return varConf($racine, 'galerieFluxRssGlobal');
+		return adminVarConf($racine, 'galerieFluxRssGlobal');
 	}
 	elseif ($fluxRss == 'site')
 	{
-		return varConf($racine, 'siteFluxRssGlobal');
+		return adminVarConf($racine, 'siteFluxRssGlobal');
 	}
+}
+
+/**
+Retourne sous forme de tableau la liste des dossiers et fichiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Les dossiers ou fichiers impossibles d'accès sont pas retournés.
+*/
+function adminListeFichiers($dossier)
+{
+	static $liste = array ();
+	
+	if (is_dir($dossier) && $fic = @opendir($dossier))
+	{
+		$liste[] = $dossier;
+		
+		while (($fichier = @readdir($fic)) !== FALSE)
+		{
+			if ($fichier != '.' && $fichier != '..')
+			{
+				if (is_dir($dossier . '/' . $fichier))
+				{
+					adminListeFichiers($dossier . '/' . $fichier);
+				}
+				else
+				{
+					$liste[] = $dossier . '/' . $fichier;
+				}
+			}
+		}
+		
+		closedir($fic);
+	}
+	
+	natcasesort($liste);
+	
+	return $liste;
 }
 
 /**
 Retourne la liste filtrée des dossiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)
+function adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres)
 {
 	static $liste = array ();
 	
@@ -100,7 +138,7 @@ function adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossier
 				{
 					$liste[] = $dossierRacine . '/' . $fichier;
 				}
-				adminListeDossiers($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres);
+				adminListeFiltreeDossiers($dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres);
 			}
 		}
 		
@@ -130,7 +168,7 @@ function adminListeDossiers($dossierRacine, $typeFiltreDossiers, $tableauDossier
 /**
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits)
+function adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits)
 {
 	static $liste = array ();
 	
@@ -151,13 +189,13 @@ function adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine, $typeFi
 			{
 				if (is_dir($dossierRacine . '/' . $fichier))
 				{
-					if (dossierEstVide($dossierRacine . '/' . $fichier))
+					if (adminDossierEstVide($dossierRacine . '/' . $fichier))
 					{
 						$liste[$dossierRacine . '/' . $fichier][] = T_("Vide.");
 					}
 					else
 					{
-						adminListeFichiersFormatee($racine, $urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
+						adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
 					}
 				}
 				else
@@ -368,7 +406,7 @@ function adminVideCache($racine)
 		$sansErreur = FALSE;
 	}
 	
-	return $erreur;
+	return $sansErreur;
 }
 
 /**
@@ -517,7 +555,8 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 		return FALSE;
 	}
 	
-	rsort($listeNouveauxFichiers);
+	natcasesort($listeNouveauxFichiers);
+	$listeNouveauxFichiers = array_reverse($listeNouveauxFichiers);
 	foreach ($listeNouveauxFichiers as $valeur)
 	{
 		array_unshift($galerieTemp, array ('intermediaireNom' => $valeur));
@@ -758,7 +797,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 	
 	if (basename($dossierAsupprimer) != '.' && basename($dossierAsupprimer) != '..')
 	{
-		if (!dossierEstVide($dossierAsupprimer))
+		if (!adminDossierEstVide($dossierAsupprimer))
 		{
 			if ($dossier = @opendir($dossierAsupprimer))
 			{
@@ -782,7 +821,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 			}
 		}
 		
-		if (dossierEstVide($dossierAsupprimer))
+		if (adminDossierEstVide($dossierAsupprimer))
 		{
 			$messagesScriptChaine .= adminRmdir($dossierAsupprimer);
 		}
@@ -800,7 +839,7 @@ function adminChmodRecursif($dossierAmodifier, $permissions)
 	
 	if (basename($dossierAmodifier) != '.' && basename($dossierAmodifier) != '..')
 	{
-		if (dossierEstVide($dossierAmodifier))
+		if (adminDossierEstVide($dossierAmodifier))
 		{
 			$messagesScriptChaine .= adminChmod($dossierAmodifier, $permissions);
 		}
@@ -1016,7 +1055,7 @@ function adminEstIE()
 /**
 Retourne l'IP de l'internaute si elle a été trouvée, sinon retourne FALSE.
 */
-function ipInternaute()
+function adminIpInternaute()
 {
 	if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 	{
@@ -1041,7 +1080,7 @@ function ipInternaute()
 /**
 Si `$retourneMessage` vaut TRUE, retourne un message informant si la réécriture d'URL est activée ou non, sinon retourne un caractère.
 */
-function reecritureDurl($retourneMessage)
+function adminReecritureDurl($retourneMessage)
 {
 	if (function_exists('apache_get_modules'))
 	{
@@ -1117,7 +1156,7 @@ function adminSiteEnMaintenanceIp($cheminHtaccess)
 /**
 Retourne TRUE si le dossier est vide, sinon retourne FALSE.
 */
-function dossierEstVide($cheminDossier)
+function adminDossierEstVide($cheminDossier)
 {
 	$dossierEstVide = FALSE;
 	$i = 0;

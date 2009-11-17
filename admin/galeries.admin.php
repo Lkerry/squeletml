@@ -146,6 +146,10 @@ include '../init.inc.php';
 					{
 						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminDeplacement . '/</code>') . "</li>\n";
 					}
+					elseif (!function_exists('gzopen') && preg_match('/\.zip$/i', $nomArchive))
+					{
+						$messagesScript[] = '<li class="erreur">' . T_("Les archives au format <code>ZIP</code> ne sont pas supportées.") . "</li>\n";
+					}
 					else
 					{
 						if (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminDeplacement . '/' . $nomArchive))
@@ -508,7 +512,7 @@ include '../init.inc.php';
 				
 				if (isset($_POST['supprimerImagesDossier']) && $_POST['supprimerImagesDossier'] == 'supprimer')
 				{
-					if (dossierEstVide($cheminGalerie))
+					if (adminDossierEstVide($cheminGalerie))
 					{
 						$messagesScript[] = adminRmdir($cheminGalerie);
 					}
@@ -547,7 +551,7 @@ include '../init.inc.php';
 					
 					closedir($fic);
 					
-					if (dossierEstVide($cheminTatouage))
+					if (adminDossierEstVide($cheminTatouage))
 					{
 						$messagesScript[] = adminRmdir($cheminTatouage);
 					}
@@ -744,7 +748,7 @@ include '../init.inc.php';
 				}
 				closedir($fic);
 				
-				sort($tableauFichiers);
+				natcasesort($tableauFichiers);
 				$listeFichiers = '';
 				
 				foreach ($tableauFichiers as $cle)
@@ -917,9 +921,13 @@ include '../init.inc.php';
 
 <div class="boite">
 	<h2><?php echo T_("Ajouter des images"); ?></h2>
-
-	<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>) ou ZIP (<code>.zip</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
-
+	
+	<?php if (function_exists('gzopen')): ?>
+		<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>) ou ZIP (<code>.zip</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
+	<?php else: ?>
+		<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
+	<?php endif; ?>
+	
 	<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
 
 	<p><?php printf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichiers), $tailleMaxFichiers); ?></p>
