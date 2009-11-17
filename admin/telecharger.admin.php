@@ -1,115 +1,85 @@
 <?php
 include 'inc/zero.inc.php';
 
-$chemin = $_GET['fichier'];
-$nom = basename($chemin);
-
-if (file_exists($chemin))
+if ($porteDocumentsDroits['telecharger'])
 {
-	if (chdir(dirname($chemin)))
+	$chemin = $_GET['fichier'];
+	$nom = basename($chemin);
+
+	if (file_exists($chemin))
 	{
-		$chemin = $nom;
-		
-		if (is_dir($chemin))
+		if (chdir(dirname($chemin)))
 		{
-			$dossierDeSauvegarde = $racine . '/admin/cache';
-			$nomArchive = $nom . '.tar';
-			$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
+			$chemin = $nom;
 		
-			$archive = new tar($cheminArchive);
-		
-			$listeFichiers = adminListeFichiers($chemin);
-		
-			foreach ($listeFichiers as $fichier)
+			if (is_dir($chemin))
 			{
-				$archive->add($fichier);
-			}
+				$dossierDeSauvegarde = $racine . '/admin/cache';
+				$nomArchive = $nom . '.tar';
+				$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
 		
-			$resultatArchive = $archive->write();
+				$archive = new tar($cheminArchive);
 		
-			if ($resultatArchive)
-			{
-				$contentType = 'application/x-tar';
-			
-				if (function_exists('gzopen'))
+				$listeFichiers = adminListeFichiers($chemin);
+		
+				foreach ($listeFichiers as $fichier)
 				{
-					// Merci à <http://ca.php.net/manual/fr/function.gzwrite.php#34955>
-					function gzcompressfile($source)
+					$archive->add($fichier);
+				}
+		
+				$resultatArchive = $archive->write();
+		
+				if ($resultatArchive)
+				{
+					$contentType = 'application/x-tar';
+					
+					if (function_exists('gzopen') && adminGz($dossierDeSauvegarde . '/' . $nomArchive) !== FALSE)
 					{
-						$dest = $source . '.gz';
-						$error = FALSE;
-						if ($fp_out = gzopen($dest, 'wb9'))
-						{
-							if ($fp_in = fopen($source, 'rb'))
-							{
-								while (!feof($fp_in))
-								{
-									gzwrite($fp_out, fread($fp_in, 1024 * 512));
-								}
-								fclose($fp_in);
-							}
-							else
-							{
-								$error = TRUE;
-							}
-							gzclose($fp_out);
-						}
-						else
-						{
-							$error = TRUE;
-						}
-						if ($error)
-						{
-							return FALSE;
-						}
-						else
-						{
-							return $dest;
-						}
-					}
-				
-					if (gzcompressfile($dossierDeSauvegarde . '/' . $nomArchive) !== FALSE)
-					{
+						@unlink($cheminArchive);
 						$nomArchive = $nomArchive . '.gz';
 						$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
 						$contentType = 'application/x-gtar';
 					}
+					
+					header('Content-Type: ' . $contentType);
+					header('Content-Disposition: attachment; filename="' . $nomArchive . '"');
+					header('Content-Length: ' . filesize($cheminArchive));
+					readfile($cheminArchive);
+					@unlink($cheminArchive);
 				}
-			
-				header('Content-Type: ' . $contentType);
-				header('Content-Disposition: attachment; filename="' . $nomArchive . '"');
-				header('Content-Length: ' . filesize($cheminArchive));
-				readfile($cheminArchive);
-				@unlink($cheminArchive);
-			}
 		
-			if (!$resultatArchive)
+				if (!$resultatArchive)
+				{
+					header('HTTP/1.1 500 Internal Server Error');
+				}
+			}
+			else
 			{
-				header('HTTP/1.1 500 Internal Server Error');
+				$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	
+				if ($typeMime == 'application/octet-stream')
+				{
+					$typeMime = 'application/force-download';
+				}
+		
+				header('Content-Type: ' . $typeMime);
+				header('Content-Disposition: attachment; filename="' . $nom . '"');
+				header('Content-Length: ' . filesize($chemin));
+				readfile($chemin);
 			}
 		}
 		else
 		{
-			$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-	
-			if ($typeMime == 'application/octet-stream')
-			{
-				$typeMime = 'application/force-download';
-			}
-		
-			header('Content-Type: ' . $typeMime);
-			header('Content-Disposition: attachment; filename="' . $nom . '"');
-			header('Content-Length: ' . filesize($chemin));
-			readfile($chemin);
+			header('HTTP/1.1 500 Internal Server Error');
 		}
 	}
 	else
 	{
-		header('HTTP/1.1 500 Internal Server Error');
+		header('HTTP/1.1 404 Not found');
 	}
 }
 else
 {
-	header('HTTP/1.1 404 Not found');
+	header('HTTP/1.1 401 Unauthorized');
 }
 ?>

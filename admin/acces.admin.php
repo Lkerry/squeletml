@@ -626,6 +626,16 @@ include 'inc/premier.inc.php';
 			</div>
 		</form>
 	</div><!-- /class=boite -->
+	
+	<?php if ($porteDocumentsDroits['telecharger']): ?>
+		<div class="boite">
+			<h2><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
+		
+			<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
+		
+			<p><a href="telecharger.admin.php?fichier=<?php echo $racine; ?>"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
+		</div><!-- /class=boite -->
+	<?php endif; ?>
 <?php endif; ?>
 
 <?php include $racine . '/admin/inc/dernier.inc.php'; ?>

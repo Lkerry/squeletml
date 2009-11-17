@@ -1187,4 +1187,44 @@ function adminDossierEstVide($cheminDossier)
 	return $dossierEstVide;
 }
 
+/**
+Compresse (gzip) un fichier. Merci à <http://ca.php.net/manual/fr/function.gzwrite.php#34955>.
+*/
+function adminGz($fichierSource)
+{
+	$fichierCompresse = $fichierSource . '.gz';
+	$erreur = FALSE;
+	
+	if ($ficDest = gzopen($fichierCompresse, 'wb9'))
+	{
+		if ($ficSource = fopen($fichierSource, 'rb'))
+		{
+			while (!feof($ficSource))
+			{
+				gzwrite($ficDest, fread($ficSource, 1024 * 512));
+			}
+			
+			fclose($ficSource);
+		}
+		else
+		{
+			$erreur = TRUE;
+		}
+		
+		gzclose($ficDest);
+	}
+	else
+	{
+		$erreur = TRUE;
+	}
+	
+	if ($erreur)
+	{
+		return FALSE;
+	}
+	else
+	{
+		return $fichierCompresse;
+	}
+}
 ?>
