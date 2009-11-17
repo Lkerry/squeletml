@@ -162,6 +162,8 @@ function adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableau
 		}
 	}
 	
+	natcasesort($liste);
+	
 	return $liste;
 }
 
@@ -254,6 +256,8 @@ function adminListeFormateeFichiers($racine, $urlRacine, $dossierRacine, $typeFi
 			}
 		}
 	}
+	
+	ksort($liste);
 	
 	return $liste;
 }
