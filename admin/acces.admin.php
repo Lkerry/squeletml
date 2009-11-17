@@ -330,18 +330,30 @@ include 'inc/premier.inc.php';
 		{
 			if ($fic3 = @fopen($racine . '/.acces', 'r'))
 			{
+				$listeUtilisateurs = array ();
+				
 				while (!feof($fic3))
 				{
 					$ligne = fgets($fic3);
 					if (preg_match('/^[^:]+:/', $ligne))
 					{
-						list ($utilisateur, $motDePasse) = explode(':', $ligne, 2);
-						echo '<li>' . $utilisateur . "</li>\n";
+						list ($utilisateur) = explode(':', $ligne);
+						$listeUtilisateurs[] = $utilisateur;
 						$i++;
 					}
 				}
-
+				
 				fclose($fic3);
+				
+				if (!empty($listeUtilisateurs))
+				{
+					natcasesort($listeUtilisateurs);
+					
+					foreach ($listeUtilisateurs as $utilisateur)
+					{
+						echo '<li>' . $utilisateur . "</li>\n";
+					}
+				}
 			}
 			else
 			{
