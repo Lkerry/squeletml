@@ -335,7 +335,7 @@ include 'inc/premier.inc.php';
 					$ligne = fgets($fic3);
 					if (preg_match('/^[^:]+:/', $ligne))
 					{
-						list($utilisateur, $motDePasse) = explode(':', $ligne, 2);
+						list ($utilisateur, $motDePasse) = explode(':', $ligne, 2);
 						echo '<li>' . $utilisateur . "</li>\n";
 						$i++;
 					}

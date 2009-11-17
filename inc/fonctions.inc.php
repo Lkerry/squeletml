@@ -733,7 +733,7 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 		$urlImage = $urlRacine . '/fichiers/' . $sens . '-accompagnee.png';
 	}
 	
-	list($larg, $haut) = getimagesize($cheminImage);
+	list ($larg, $haut) = getimagesize($cheminImage);
 	{
 		$width = 'width="' . $larg . '"';
 		$height = 'height="' . $haut . '"';
@@ -1074,7 +1074,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		}
 		else
 		{
-			list($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($galerie[$indice]['intermediaireNom']));
+			list ($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($galerie[$indice]['intermediaireNom']));
 			{
 				$width = 'width="' . $larg . '"';
 				$height = 'height="' . $haut . '"';
@@ -1345,7 +1345,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				}
 				else
 				{
-					list($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($vignetteNom));
+					list ($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($vignetteNom));
 					{
 						$width = 'width="' . $larg . '"';
 						$height = 'height="' . $haut . '"';
@@ -1439,7 +1439,7 @@ function tableauAssociatif($fichierTexte)
 			$ligne = rtrim(fgets($fic));
 			if (strstr($ligne, '='))
 			{
-				list($cle, $valeur) = explode('=', $ligne, 2);
+				list ($cle, $valeur) = explode('=', $ligne, 2);
 				$tableau[$cle] = $valeur;
 			}
 		}
@@ -1466,7 +1466,7 @@ function tableauGalerie($fichierTexte, $exclure = FALSE)
 			$ligne = rtrim(fgets($fic));
 			if (strstr($ligne, '='))
 			{
-				list($cle, $valeur) = explode('=', $ligne, 2);
+				list ($cle, $valeur) = explode('=', $ligne, 2);
 				$galerieTemp[$cle] = $valeur;
 			}
 			elseif ($ligne == '#IMG')
@@ -1762,7 +1762,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		}
 		else
 		{
-			list($width, $height) = getimagesize($cheminOeuvre);
+			list ($width, $height) = getimagesize($cheminOeuvre);
 		}
 		
 		if (!empty($oeuvre['intermediaireHauteur']))

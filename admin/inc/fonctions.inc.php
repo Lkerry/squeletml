@@ -285,7 +285,7 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 	
 	if ($typeMime == 'image/gif' || $typeMime == 'image/jpeg' || $typeMime == 'image/png')
 	{
-		list($larg, $haut, $type, $attr) = getimagesize($cheminFichier);
+		list ($larg, $haut, $type, $attr) = getimagesize($cheminFichier);
 		$dimensionsImage = "$larg px × $haut px";
 		
 		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite atteinte de 2 Mio).
@@ -304,7 +304,7 @@ function adminInfobulle($racine, $urlRacine, $cheminFichier, $typeMimeFile, $typ
 		
 		if (file_exists($cheminApercuImage))
 		{
-			list($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
+			list ($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
 			$apercuImage = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacine . "/admin/cache/" . basename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
 		}
 		else
