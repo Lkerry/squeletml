@@ -54,6 +54,7 @@ if ($tableDesMatieres)
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
 		<meta name="robots" content="noindex, nofollow, noarchive" />
 		
+		<?php $fichiersLinkScript = array (); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacineAdmin/css/admin.css"); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacineAdmin/css/extensions-proprietaires.css"); ?>
 		<?php $fichiersLinkScript[] = array ("$urlRacineAdmin/*" => "css:$urlRacineAdmin/css/ie6.css"); ?>

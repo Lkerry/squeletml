@@ -1024,9 +1024,9 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $infosOeuvre, $galerieNavigation, $estAccueil, $taille, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
-	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
+	$infoIntermediaireNom = pathinfo($infosOeuvre['intermediaireNom']);
 	$typeMime = mimedetect_mime(array ('filepath' => $racineImgSrc . '/' . $infoIntermediaireNom, 'filename' => $infoIntermediaireNom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	
 	####################################################################
@@ -1037,50 +1037,50 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 	
 	if ($taille == 'intermediaire')
 	{
-		if (!empty($galerie[$indice]['intermediaireLargeur'])
-			|| !empty($galerie[$indice]['intermediaireHauteur']))
+		if (!empty($infosOeuvre['intermediaireLargeur'])
+			|| !empty($infosOeuvre['intermediaireHauteur']))
 		{
-			if (!empty($galerie[$indice]['intermediaireLargeur']))
+			if (!empty($infosOeuvre['intermediaireLargeur']))
 			{
-				$width = 'width="' . $galerie[$indice]['intermediaireLargeur'] . '"';
+				$width = 'width="' . $infosOeuvre['intermediaireLargeur'] . '"';
 			}
 			
-			if (!empty($galerie[$indice]['intermediaireHauteur']))
+			if (!empty($infosOeuvre['intermediaireHauteur']))
 			{
-				$height = 'height="' . $galerie[$indice]['intermediaireHauteur'] . '"';
+				$height = 'height="' . $infosOeuvre['intermediaireHauteur'] . '"';
 			}
 		}
 		else
 		{
-			list ($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($galerie[$indice]['intermediaireNom']));
+			list ($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($infosOeuvre['intermediaireNom']));
 			{
 				$width = 'width="' . $larg . '"';
 				$height = 'height="' . $haut . '"';
 			}
 		}
 		
-		if (!empty($galerie[$indice]['intermediaireAlt']))
+		if (!empty($infosOeuvre['intermediaireAlt']))
 		{
-			$alt = 'alt="' . $galerie[$indice]['intermediaireAlt'] . '"';
+			$alt = 'alt="' . $infosOeuvre['intermediaireAlt'] . '"';
 		}
 		else
 		{
 			// On récupère l'id de l'image
-			if (!empty($galerie[$indice]['id']))
+			if (!empty($infosOeuvre['id']))
 			{
-				$id = $galerie[$indice]['id'];
+				$id = $infosOeuvre['id'];
 			}
 			else
 			{
-				$id = $galerie[$indice]['intermediaireNom'];
+				$id = $infosOeuvre['intermediaireNom'];
 			}
 			
 			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
 		}
 		
-		if (!empty($galerie[$indice]['intermediaireLegende']))
+		if (!empty($infosOeuvre['intermediaireLegende']))
 		{
-			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($galerie[$indice]['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
+			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
 		}
 		elseif ($galerieLegendeAutomatique)
 		{
@@ -1096,14 +1096,14 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		}
 		
 		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
-		if (!empty($galerie[$indice]['originalNom']))
+		if (!empty($infosOeuvre['originalNom']))
 		{
-			$originalNom = $galerie[$indice]['originalNom'];
+			$originalNom = $infosOeuvre['originalNom'];
 		}
 		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
 		else
 		{
-			$originalNom = basename($galerie[$indice]['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
+			$originalNom = basename($infosOeuvre['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
 			$originalNom .= '-original.' . $infoIntermediaireNom['extension'];
 		}
 		
@@ -1147,7 +1147,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		
 		if ($ajoutExif && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
 		{
-			$tableauExif = exif_read_data($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], 'IFD0', 0);
+			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], 'IFD0', 0);
 			
 			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si c'est du JPG
 			if (!$tableauExif && !empty($lienOriginal) && $typeMime == 'image/jpeg')
@@ -1249,11 +1249,11 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		
 		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousContenu')
 		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal;
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal;
 		}
 		elseif ($galerieLegendeEmplacement == 'bas')
 		{
-			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n";
+			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n";
 		}
 	}
 	####################################################################
@@ -1281,14 +1281,14 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 			|| $galerieNavigation == 'vignettes')
 		{
 			// Si le nom de la vignette a été renseigné, on prend pour acquis que le fichier existe avec ce nom. On assigne donc une valeur à l'attribut `src`.
-			if (!empty($galerie[$indice]['vignetteNom']))
+			if (!empty($infosOeuvre['vignetteNom']))
 			{
-				$src = 'src="' . $urlImgSrc . '/' . $galerie[$indice]['vignetteNom'] . '"';
+				$src = 'src="' . $urlImgSrc . '/' . $infosOeuvre['vignetteNom'] . '"';
 			}
 			else
 			{
 				// Si le nom de la vignette n'a pas été renseigné, on génère un nom automatique selon le nom de la version intermediaire de l'image.
-				$vignetteNom = basename($galerie[$indice]['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
+				$vignetteNom = basename($infosOeuvre['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
 				$vignetteNom .= '-vignette.' . $infoIntermediaireNom['extension'];
 				
 				// On vérifie si un fichier existe avec ce nom.
@@ -1300,7 +1300,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				// Sinon, on génère une vignette
 				else
 				{
-					nouvelleImage($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE, $galerieForcerDimensionsVignette, $typeMime);
+					nouvelleImage($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE, $galerieForcerDimensionsVignette, $typeMime);
 					
 					// On assigne l'attribut `src`
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
@@ -1309,17 +1309,17 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 			
 			if ($vignetteAvecDimensions)
 			{
-				if (!empty($galerie[$indice]['vignetteLargeur'])
-					|| !empty($galerie[$indice]['vignetteHauteur']))
+				if (!empty($infosOeuvre['vignetteLargeur'])
+					|| !empty($infosOeuvre['vignetteHauteur']))
 				{
-					if (!empty($galerie[$indice]['vignetteLargeur']))
+					if (!empty($infosOeuvre['vignetteLargeur']))
 					{
-						$width = 'width="' . $galerie[$indice]['vignetteLargeur'] . '"';
+						$width = 'width="' . $infosOeuvre['vignetteLargeur'] . '"';
 					}
 				
-					if (!empty($galerie[$indice]['vignetteHauteur']))
+					if (!empty($infosOeuvre['vignetteHauteur']))
 					{
-						$height = 'height="' . $galerie[$indice]['vignetteHauteur'] . '"';
+						$height = 'height="' . $infosOeuvre['vignetteHauteur'] . '"';
 					}
 				}
 				else
@@ -1339,18 +1339,18 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		}
 		
 		// On récupère l'id de l'image
-		if (!empty($galerie[$indice]['id']))
+		if (!empty($infosOeuvre['id']))
 		{
-			$id = $galerie[$indice]['id'];
+			$id = $infosOeuvre['id'];
 		}
 		else
 		{
-			$id = $galerie[$indice]['intermediaireNom'];
+			$id = $infosOeuvre['intermediaireNom'];
 		}
 		
-		if (!empty($galerie[$indice]['vignetteAlt']))
+		if (!empty($infosOeuvre['vignetteAlt']))
 		{
-			$alt = 'alt="' . $galerie[$indice]['vignetteAlt'] . '"';
+			$alt = 'alt="' . $infosOeuvre['vignetteAlt'] . '"';
 		}
 		else
 		{
@@ -1368,16 +1368,16 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
-			if (!empty($galerie[$indice]['intermediaireLegende']))
+			if (!empty($infosOeuvre['intermediaireLegende']))
 			{
-				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $galerie[$indice]['intermediaireLegende']) . '"';
+				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $infosOeuvre['intermediaireLegende']) . '"';
 			}
 			else
 			{
 				$title = '';
 			}
 			
-			$aHref = '<a href="' . $urlImgSrc . '/' . $galerie[$indice]['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
+			$aHref = '<a href="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
 		}
 		else
 		{
@@ -1430,39 +1430,45 @@ function tableauAssociatif($fichierTexte)
 }
 
 /**
-Construit et retourne un tableau PHP à partir d'un fichier texte listant des images, dont chacun de leurs champs se trouve seul sur une ligne avec la syntaxe `clé=valeur`. Chaque image est séparée par une ligne ne contenant que `#IMG`. Si `$exclure` vaut TRUE, ne tient pas compte des images ayant un champ `exclure=oui`.
+Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui`. Par exemple, le fichier `.ini` suivant:
+
+[image1.png]
+id=1
+vignetteNom=image1Mini.png
+
+devient:
+
+$galerie = array (
+	array (
+	'intermediaireNom' => 'image1.png',
+	'id' => 1,
+	'vignetteNom' => 'image1Mini.png',
+	),
+);
+
+Retourne le tableau final si le fichier de configuration est accessible en lecture, sinon retourne FALSE.
 */
-function tableauGalerie($fichierTexte, $exclure = FALSE)
+function tableauGalerie($cheminConfig, $exclure = FALSE)
 {
-	$galerie = array ();
-	
-	$fic = @fopen($fichierTexte, 'r');
-	if ($fic)
+	if ($galerieIni = parse_ini_file($cheminConfig, TRUE))
 	{
-		$galerieTemp = array ();
-		while (!feof($fic))
+		$galerie = array ();
+		
+		foreach ($galerieIni as $oeuvre => $infos)
 		{
-			$ligne = rtrim(fgets($fic));
-			if (strstr($ligne, '='))
+			if (!$exclure || !(isset($infos['exclure']) && $infos['exclure'] == 'oui'))
 			{
-				list ($cle, $valeur) = explode('=', $ligne, 2);
-				$galerieTemp[$cle] = $valeur;
-			}
-			elseif ($ligne == '#IMG')
-			{
-				if (!$exclure || !(isset($galerieTemp['exclure']) && $galerieTemp['exclure'] == 'oui'))
-				{
-					$galerie[] = $galerieTemp;
-				}
-				
-				unset($galerieTemp);
+				$infos['intermediaireNom'] = $oeuvre;
+				$galerie[] = $infos;
 			}
 		}
 		
-		fclose($fic);
+		return $galerie;
 	}
-	
-	return $galerie;
+	else
+	{
+		return FALSE;
+	}
 }
 
 /**

@@ -57,9 +57,9 @@ if (isset($getChemin) && !empty($getChemin))
 				$rss = $galerieFluxRssParDefaut;
 			}
 			
-			$fichierConfigChemin = adminCheminConfigGalerie($racine, $idGalerie);
+			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $idGalerie);
 			
-			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && $fichierConfigChemin !== FALSE)
+			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && $cheminConfigGalerie !== FALSE)
 			{
 				// A: le flux RSS est activé.
 				

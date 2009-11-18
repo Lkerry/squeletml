@@ -500,61 +500,66 @@ Met à jour un fichier de configuration de galerie. Retourne TRUE s'il n'y a auc
 function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-	$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
+	$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
+	
 	if (!empty($listeAjouts))
 	{
-		$listeExistant = file_get_contents($fichierConfigChemin);
+		$listeExistant = file_get_contents($cheminConfigGalerie);
 		if ($listeExistant === FALSE)
 		{
 			return FALSE;
 		}
 		
-		if (@file_put_contents($fichierConfigChemin, $listeAjouts . $listeExistant) === FALSE)
+		if (@file_put_contents($cheminConfigGalerie, $listeAjouts . $listeExistant) === FALSE)
 		{
 			return FALSE;
 		}
 	}
 	
-	$galerie = tableauGalerie($fichierConfigChemin);
 	$galerieTemp = array ();
-	$i = 0;
-
-	foreach ($galerie as $oeuvre)
+	
+	if ($cheminConfigGalerie !== FALSE)
 	{
-		foreach ($oeuvre as $cle => $valeur)
+		$galerie = tableauGalerie($cheminConfigGalerie);
+		$i = 0;
+
+		foreach ($galerie as $oeuvre)
 		{
-			if ($cle == 'intermediaireNom')
+			foreach ($oeuvre as $cle => $valeur)
 			{
-				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur) && !in_array_multi($valeur, $galerieTemp))
+				if ($cle == 'intermediaireNom')
+				{
+					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur) && !in_array_multi($valeur, $galerieTemp))
+					{
+						$galerieTemp[$i][$cle] = $valeur;
+					}
+					else
+					{
+						continue; // On sort de cette oeuvre sans la prendre en note, car elle n'existe plus
+					}
+				}
+				elseif ($cle == 'vignetteNom')
+				{
+					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
+					{
+						$galerieTemp[$i][$cle] = $valeur;
+					}
+				}
+				elseif ($cle == 'originalNom')
+				{
+					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
+					{
+						$galerieTemp[$i][$cle] = $valeur;
+					}
+				}
+				elseif (!empty($valeur))
 				{
 					$galerieTemp[$i][$cle] = $valeur;
 				}
-				else
-				{
-					continue; // On sort de cette oeuvre sans la prendre en note, car elle n'existe plus
-				}
 			}
-			elseif ($cle == 'vignetteNom')
-			{
-				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
-				{
-					$galerieTemp[$i][$cle] = $valeur;
-				}
-			}
-			elseif ($cle == 'originalNom')
-			{
-				if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
-				{
-					$galerieTemp[$i][$cle] = $valeur;
-				}
-			}
-			elseif (!empty($valeur))
-			{
-				$galerieTemp[$i][$cle] = $valeur;
-			}
-		}
 		
-		$i++;
+			$i++;
+		}
 	}
 	
 	$listeNouveauxFichiers = array ();
@@ -600,16 +605,29 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	$contenuConfig = '';
 	foreach ($galerieTemp as $oeuvre)
 	{
+		$contenuConfigTemp = '';
 		foreach ($oeuvre as $cle => $valeur)
 		{
-			$contenuConfig .= "$cle=$valeur\n";
+			if ($cle == 'intermediaireNom')
+			{
+				$contenuConfig .= "[$valeur]\n";
+			}
+			else
+			{
+				$contenuConfigTemp .= "$cle=$valeur\n";
+			}
 		}
-		$contenuConfig .= "#IMG\n";
+		$contenuConfig .= "$contenuConfigTemp\n";
 	}
 	
 	$contenuConfig = rtrim($contenuConfig);
 	
-	if (@file_put_contents($fichierConfigChemin, $contenuConfig) === FALSE)
+	if ($cheminConfigGalerie === FALSE)
+	{
+		$cheminConfigGalerie = $racine . '/site/fichiers/galeries/' . $id . '/config.ini.txt';
+	}
+	
+	if (@file_put_contents($cheminConfigGalerie, $contenuConfig) === FALSE)
 	{
 		return FALSE;
 	}
@@ -630,6 +648,33 @@ function adminImageValide($typeMime)
 	{
 		return FALSE;
 	}
+}
+
+/**
+Retourne TRUE si l'image est déclarée dans le fichier de configuration, sinon retourne FALSE.
+*/
+function adminImageEstDeclaree($fichier, $galerie)
+{
+	if (isset($galerie[$fichier]))
+	{
+		return TRUE;
+	}
+	else
+	{
+		foreach ($galerie as $oeuvre)
+		{
+			if (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $fichier)
+			{
+				return TRUE;
+			}
+			elseif (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $fichier)
+			{
+				return TRUE;
+			}
+		}
+	}
+	
+	return FALSE;
 }
 
 /**

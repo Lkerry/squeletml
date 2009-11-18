@@ -317,7 +317,7 @@ include '../init.inc.php';
 							if ($renommer && $analyserConfig)
 							{
 								$galerie = tableauGalerie(adminCheminConfigGalerie($racine, basename($cheminGalerie)));
-								if (in_array_multi($fichier, $galerie))
+								if (adminImageEstDeclaree($fichier, $galerie))
 								{
 									$renommer = FALSE;
 								}
@@ -357,7 +357,7 @@ include '../init.inc.php';
 						if ($analyserConfig)
 						{
 							$galerie = tableauGalerie(adminCheminConfigGalerie($racine, basename($cheminGalerie)));
-							if (in_array_multi($fichier, $galerie))
+							if (adminImageEstDeclaree($fichier, $galerie))
 							{
 								$aTraiter = FALSE;
 							}
@@ -645,9 +645,9 @@ include '../init.inc.php';
 		}
 		else
 		{
-			$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
+			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
 		
-			if (!file_exists($fichierConfigChemin))
+			if (!file_exists($cheminConfigGalerie))
 			{
 				$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</li>\n";
 			}
@@ -763,7 +763,7 @@ include '../init.inc.php';
 				
 				foreach ($tableauFichiers as $cle)
 				{
-					$listeFichiers .= "intermediaireNom=$cle\n";
+					$listeFichiers .= "[$cle]\n";
 					
 					if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
 					{
@@ -773,7 +773,7 @@ include '../init.inc.php';
 						}
 					}
 					
-					$listeFichiers .= "#IMG\n";
+					$listeFichiers .= "\n";
 				}
 				
 				if (!empty($listeFichiers))
@@ -825,9 +825,9 @@ include '../init.inc.php';
 				$exclureMotifsCommeIntermediaires = FALSE;
 			}
 			
-			$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
+			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
 		
-			if (file_exists($fichierConfigChemin))
+			if (file_exists($cheminConfigGalerie))
 			{
 				$configExisteAuDepart = TRUE;
 			}
@@ -835,21 +835,21 @@ include '../init.inc.php';
 			{
 				$configExisteAuDepart = FALSE;
 			}
-		
+			
 			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance))
 			{
 				if ($configExisteAuDepart)
 				{
-					$messagesScript[] = '<li>' . sprintf(T_("Mise à jour du fichier de configuration %1\$s effectuée."), '<code>' . $fichierConfigChemin . '</code>') . "</li>\n";
+					$messagesScript[] = '<li>' . sprintf(T_("Mise à jour du fichier de configuration %1\$s effectuée."), '<code>' . $cheminConfigGalerie . '</code>') . "</li>\n";
 				}
 				else
 				{
-					$messagesScript[] = '<li>' . sprintf(T_("Création du fichier de configuration %1\$s effectuée."), '<code>' . $fichierConfigChemin . '</code>') . "</li>\n";
+					$messagesScript[] = '<li>' . sprintf(T_("Création du fichier de configuration %1\$s effectuée."), '<code>' . $cheminConfigGalerie . '</code>') . "</li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de la création ou de la mise à jour du fichier de configuration %1\$s. Veuillez vérifier manuellement son contenu."), "<code>$fichierConfigChemin</code>") . "</li>\n";
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de la création ou de la mise à jour du fichier de configuration %1\$s. Veuillez vérifier manuellement son contenu."), "<code>$cheminConfigGalerie</code>") . "</li>\n";
 			}
 		}
 		
@@ -871,9 +871,7 @@ include '../init.inc.php';
 		echo "</ul>\n";
 	}
 	
-	$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
-	
-	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && $cheminConfigGalerie !== FALSE))
+	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && adminCheminConfigGalerie($racine, $id) !== FALSE)
 	{
 		if (!$sousBoiteFichierConfigDebut)
 		{
@@ -883,13 +881,13 @@ include '../init.inc.php';
 		}
 	
 		$id = rawurlencode($id);
-		$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
+		$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
 		echo '<h4>' . T_("Information") . "</h4>\n" ;
 		
 		echo "<ul>\n";
 		if ($porteDocumentsDroits['editer'])
 		{
-			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . basename($fichierConfigChemin) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
+			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . basename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
 		}
 		else
 		{
@@ -1253,7 +1251,7 @@ include '../init.inc.php';
 				<?php endif; ?>
 				</p>
 
-				<p><label><?php echo T_("En plus du champ obligatoire <code>intermediaireNom</code>, ajouter des champs vides:"); ?></label><br />
+				<p><label><?php echo T_("Pour chaque image intermédiaire, ajouter des paramètres vides:"); ?></label><br />
 				<select name="info[]" multiple="multiple" size="4">
 					<option value="aucun" selected="selected"><?php echo T_("Aucun"); ?></option>
 					<option value="id">id</option>
