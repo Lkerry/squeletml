@@ -1,40 +1,24 @@
 <?php
 include_once 'init.inc.php';
+include_once $racine . '/inc/config.inc.php';
+if (file_exists($racine . '/site/inc/config.inc.php'))
+{
+	include_once $racine . '/site/inc/config.inc.php';
+}
 
 $chemin = $racine . '/' . $_GET['fichier'];
 $url = $urlRacine . '/' . $_GET['fichier'];
 $nom = basename($_GET['fichier']);
+$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 
-switch (strrchr(basename($nom), '.'))
+if ($typeMime == 'application/octet-stream')
 {
-	case '.png':
-		$type = 'image/png';
-		break;
-	
-	case '.gif':
-		$type = 'image/gif';
-		break;
-	
-	case '.jpeg':
-		$type = 'image/jpeg';
-		break;
-	
-	case '.jpg':
-		$type = 'image/jpeg';
-		break;
-	
-	case '.svg':
-		$type = 'image/svg+xml';
-		break;
-	
-	default:
-		$type = 'application/force-download';
-		break;
+	$typeMime = 'application/force-download';
 }
 
 if (file_exists($chemin) && preg_match("|^$racine/site/fichiers/galeries/[^/]+/$nom|", $chemin))
 {
-	header('Content-Type: ' . $type);
+	header('Content-Type: ' . $typeMime);
 	header('Content-Disposition: attachment; filename="' . $nom . '"');
 	header('Content-Length: ' . filesize($chemin));
 	readfile($url);

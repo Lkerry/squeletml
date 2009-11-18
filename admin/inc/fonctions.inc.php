@@ -306,7 +306,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $typeMime
 		
 		if (!file_exists($cheminApercuImage))
 		{
-			nouvelleImage($cheminFichier, $cheminApercuImage, array ('largeur' => 50, 'hauteur' => 50), '85', FALSE, TRUE);
+			nouvelleImage($cheminFichier, $cheminApercuImage, array ('largeur' => 50, 'hauteur' => 50), '85', FALSE, TRUE, $typeMime);
 		}
 		
 		if (file_exists($cheminApercuImage))
@@ -478,7 +478,7 @@ function adminPhpIniOctets($nombre)
 /**
 Met à jour un fichier de configuration de galerie. Retourne TRUE s'il n'y a aucune erreur, sinon retourne FALSE.
 */
-function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig = FALSE)
+function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
@@ -546,10 +546,14 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 		{
 			if(!is_dir($cheminGalerie . '/' . $fichier))
 			{
+				$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				
+				$versionImage = adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
+				
 				if (
-					preg_match('/\.(gif|png|jpeg|jpg)$/i', $fichier) &&
-					adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig) != 'vignette' &&
-					adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig) != 'original' &&
+					adminImageValide($typeMime) &&
+					$versionImage != 'vignette' &&
+					$versionImage != 'original' &&
 					!in_array_multi($fichier, $galerieTemp) &&
 					!in_array_multi($fichier, $listeNouveauxFichiers)
 				)
@@ -595,9 +599,24 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 }
 
 /**
+Retourne TRUE si l'image est affichable par une galerie de Squeletml, sinon retourne FALSE.
+*/
+function adminImageValide($typeMime)
+{
+	if ($typeMime == 'image/gif' || $typeMime == 'image/jpeg' || $typeMime == 'image/png')
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/**
 Retourne la version de l'image (intermediaire|vignette|original|inconnu).
 */
-function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig = FALSE)
+function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime)
 {
 	$nomImage = basename($image);
 	
@@ -623,7 +642,7 @@ function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermedi
 				{
 					return 'original';
 				}
-				elseif (preg_match('/(.+)-vignette(\.[[:alpha:]]{3,4})$/', $nomImage, $nomConstruit))
+				elseif (preg_match('/(.+)-vignette(\.[^\.]+)$/', $nomImage, $nomConstruit))
 				{
 					$nomConstruitIntermediaire = $nomConstruit[1] . $nomConstruit[2];
 					if ($oeuvre['intermediaireNom'] == $nomConstruitIntermediaire)
@@ -631,7 +650,7 @@ function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermedi
 						return 'vignette';
 					}
 				}
-				elseif (preg_match('/(.+)-original(\.[[:alpha:]]{3,4})$/', $nomImage, $nomConstruit))
+				elseif (preg_match('/(.+)-original(\.[^\.]+)$/', $nomImage, $nomConstruit))
 				{
 					$nomConstruitIntermediaire = $nomConstruit[1] . $nomConstruit[2];
 					if ($oeuvre['intermediaireNom'] == $nomConstruitIntermediaire)
@@ -647,7 +666,7 @@ function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermedi
 	{
 		return 'inconnu';
 	}
-	elseif (preg_match('/-vignette\.[[:alpha:]]{3,4}$/', $nomImage) && preg_match('/\.(gif|png|jpeg|jpg)$/i', $nomImage))
+	elseif (preg_match('/-vignette\.[^\.]+$/', $nomImage) && adminImageValide($typeMime))
 	{
 		if ($exclureMotifsCommeIntermediaires)
 		{
@@ -658,13 +677,13 @@ function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermedi
 			return 'intermediaire';
 		}
 	}
-	elseif (preg_match('/-original\.[[:alpha:]]{3,4}$/', $nomImage))
+	elseif (preg_match('/-original\.[^\.]+$/', $nomImage))
 	{
 		if ($exclureMotifsCommeIntermediaires)
 		{
 			return 'original';
 		}
-		elseif (preg_match('/\.(gif|png|jpeg|jpg)$/i', $nomImage))
+		elseif (adminImageValide($typeMime))
 		{
 			return 'intermediaire';
 		}
@@ -673,7 +692,7 @@ function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermedi
 			return 'inconnu';
 		}
 	}
-	elseif (preg_match('/\.(gif|png|jpeg|jpg)$/i', $nomImage))
+	elseif (adminImageValide($typeMime))
 	{
 		return 'intermediaire';
 	}

@@ -120,123 +120,110 @@ include '../init.inc.php';
 				$messagesScript[] = adminMkdir($cheminGalerie, octdec(755), TRUE);
 			}
 			
-			if (file_exists($cheminGalerie))
+			if (file_exists($cheminGalerie) && isset($_FILES['fichier']))
 			{
-				if (isset($_FILES['fichier']))
+				$nomArchive = basename(securiseTexte($_FILES['fichier']['name']));
+				
+				if (file_exists($cheminGaleries . '/' . $nomArchive))
 				{
-					$nomArchive = basename(securiseTexte($_FILES['fichier']['name']));
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '</code>') . "</li>\n";
+				}
+				elseif (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGaleries . '/' . $nomArchive))
+				{
+					$typeMime = mimedetect_mime(array ('filepath' => $cheminGaleries . '/' . $nomArchive, 'filename' => $nomArchive), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 					
-					if (preg_match('/\.zip$/i', $nomArchive))
+					if ($typeMime != 'application/zip' && $typeMime != 'application/x-tar')
 					{
-						$fichierEstImage = FALSE;
-						$cheminDeplacement = $cheminGaleries;
+						if (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomArchive))
+						{
+							$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+						}
+						else
+						{
+							$messagesScript[] = '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
+						}
 					}
-					elseif (preg_match('/\.tar$/i', $nomArchive))
-					{
-						$fichierEstImage = FALSE;
-						$cheminDeplacement = $cheminGalerie;
-					}
-					else
-					{
-						$fichierEstImage = TRUE;
-						$cheminDeplacement = $cheminGalerie;
-					}
-			
-					if (file_exists($cheminDeplacement . '/' . $nomArchive))
-					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminDeplacement . '/</code>') . "</li>\n";
-					}
-					elseif (!function_exists('gzopen') && preg_match('/\.zip$/i', $nomArchive))
+					elseif ($typeMime == 'application/zip' && !function_exists('gzopen'))
 					{
 						$messagesScript[] = '<li class="erreur">' . T_("Les archives au format <code>ZIP</code> ne sont pas supportées.") . "</li>\n";
 					}
-					else
+					elseif ($typeMime == 'application/zip')
 					{
-						if (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminDeplacement . '/' . $nomArchive))
+						$resultatArchive = 0;
+						$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
+						$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $id . '/');
+				
+						if ($resultatArchive == 0)
 						{
-							if ($fichierEstImage)
+							$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: %2\$s"), '<code>' . $nomArchive . '</code>', $archive->errorInfo(true)) . "</li>\n";
+							$messagesScript[] = adminUnlink($cheminGaleries . '/' . $nomArchive);
+						}
+						else
+						{
+							foreach ($resultatArchive as $infoImage)
 							{
-								$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>') . "</li>\n";
-							}
-							else
-							{
-								if (preg_match('/\.zip$/i', $nomArchive))
+								if ($infoImage['status'] == 'ok')
 								{
-									$resultatArchive = 0;
-									$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
-									$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $id . '/');
-							
-									if ($resultatArchive == 0)
+									$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $id) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+								}
+								elseif ($infoImage['status'] == 'newer_exist')
+								{
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
+								}
+								else
+								{
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
+								}
+							}
+							$messagesScript[] =adminUnlink($cheminGaleries . '/' . $nomArchive);
+						}
+					}
+					elseif ($typeMime == 'application/x-tar')
+					{
+						if (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomArchive))
+						{
+							$fichierTar = new untar($cheminGalerie . '/' . $nomArchive);
+							$listeFichiers = $fichierTar->getfilelist();
+							for ($i = 0; $i < count($listeFichiers); $i++)
+							{
+								if ($listeFichiers[$i]['filetype'] == 'directory')
+								{
+									if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
 									{
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: %2\$s"), '<code>' . $nomArchive . '</code>', $archive->errorInfo(true)) . "</li>\n";
-										$messagesScript[] = adminUnlink($cheminGaleries . '/' . $nomArchive);
+										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
 									}
 									else
 									{
-										foreach ($resultatArchive as $infoImage)
-										{
-											if ($infoImage['status'] == 'ok')
-											{
-												$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $id) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $id . '/</code>') . "</li>\n";
-											}
-											elseif ($infoImage['status'] == 'newer_exist')
-											{
-												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
-											}
-											else
-											{
-												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
-											}
-										}
-										$messagesScript[] =adminUnlink($cheminGaleries . '/' . $nomArchive);
+										$messagesScript[] = adminMkdir($cheminGalerie . '/' . $listeFichiers[$i]['filename'], octdec(755), TRUE);
 									}
 								}
-								elseif (preg_match('/\.tar$/i', $nomArchive))
+								else
 								{
-									$fichierTar = new untar($cheminGalerie . '/' . $nomArchive);
-									$listeFichiers = $fichierTar->getfilelist();
-									for ($i = 0; $i < count($listeFichiers); $i++)
+									if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
 									{
-										if ($listeFichiers[$i]['filetype'] == 'directory')
+										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+									}
+									elseif ($fic = @fopen($cheminGalerie . '/' . $listeFichiers[$i]['filename'], 'w'))
+									{
+										$donnees = $fichierTar->extract($listeFichiers[$i]['filename']);
+										if (fwrite($fic, $donnees))
 										{
-											if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
-											{
-												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
-											}
-											else
-											{
-												$messagesScript[] = adminMkdir($cheminGalerie . '/' . $listeFichiers[$i]['filename'], octdec(755), TRUE);
-											}
+											fclose($fic);
+											$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $listeFichiers[$i]['filename'] . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
 										}
 										else
 										{
-											if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
-											{
-												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
-											}
-											elseif ($fic = @fopen($cheminGalerie . '/' . $listeFichiers[$i]['filename'], 'w'))
-											{
-												$donnees = $fichierTar->extract($listeFichiers[$i]['filename']);
-												if (fwrite($fic, $donnees))
-												{
-													fclose($fic);
-													$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $listeFichiers[$i]['filename'] . '</code>', '<code>' . $cheminGalerie . '/</code>') . "</li>\n";
-												}
-												else
-												{
-													$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
-												}
-											}
-											else
-											{
-												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>";
-											}
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
 										}
 									}
-									unset($fichierTar);
-									$messagesScript[] = adminUnlink($cheminGalerie . '/' . $nomArchive);
+									else
+									{
+										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>";
+									}
 								}
 							}
+							unset($fichierTar);
+							$messagesScript[] = adminUnlink($cheminGalerie . '/' . $nomArchive);
 						}
 						else
 						{
@@ -244,10 +231,9 @@ include '../init.inc.php';
 						}
 					}
 				}
-		
-				if (empty($messagesScript))
+				else
 				{
-					$messagesScript[] = '<li class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</li>\n";
+					$messagesScript[] = '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
 				}
 			}
 		}
@@ -255,6 +241,11 @@ include '../init.inc.php';
 		if (file_exists($_FILES['fichier']['tmp_name']))
 		{
 			@unlink($_FILES['fichier']['tmp_name']);
+		}
+		
+		if (empty($messagesScript))
+		{
+			$messagesScript[] = '<li class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</li>\n";
 		}
 		
 		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
@@ -314,10 +305,10 @@ include '../init.inc.php';
 							}
 							
 							$renommer = FALSE;
-							if (
-								($renommerTout || (!preg_match('/-original\.' . $infoFichier['extension'] . '/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '/', $fichier))) &&
-								preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier)
-							)
+							
+							$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							
+							if (($renommerTout || (!preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '$/', $fichier))) && adminImageValide($typeMime))
 							{
 								$renommer = TRUE;
 							}
@@ -380,7 +371,7 @@ include '../init.inc.php';
 							}
 							$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
-							if(!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\..{3,4}$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
+							if(!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
 							{
 								if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
 								{
@@ -416,8 +407,10 @@ include '../init.inc.php';
 										$imageIntermediaireDimensionsVoulues['hauteur'] = 0;
 									}
 								}
-						
-								$messagesScript[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, FALSE);
+								
+								$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+								
+								$messagesScript[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, FALSE, $typeMime);
 							}
 						}
 					}
@@ -491,10 +484,14 @@ include '../init.inc.php';
 					$fichierAsupprimer = FALSE;
 					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
+						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						
+						$versionImage = adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
+						
 						if (
-							(isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig) == 'vignette') ||
-							(isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig) == 'intermediaire') ||
-							(isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig) == 'original') ||
+							(isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && $versionImage == 'vignette') ||
+							(isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && $versionImage == 'intermediaire') ||
+							(isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && $versionImage == 'original') ||
 							(isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && $fichier == 'config.pc')
 						)
 						{
@@ -542,7 +539,15 @@ include '../init.inc.php';
 					{
 						if(!is_dir($cheminTatouage . '/' . $fichier))
 						{
-							if (preg_match('/-vignette-(precedent|suivant)\.(gif|png|jpg|jpeg)$/i', $fichier))
+							$infoFichier = pathinfo(basename($fichier));
+							if (!isset($infoFichier['extension']))
+							{
+								$infoFichier['extension'] = '';
+							}
+							
+							$typeMime = mimedetect_mime(array ('filepath' => $cheminTatouage . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							
+							if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
 							{
 								$messagesScript[] = adminUnlink($cheminTatouage . '/' . $fichier);
 							}
@@ -740,7 +745,11 @@ include '../init.inc.php';
 				{
 					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
-						if (preg_match('/\.(gif|png|jpg|jpeg)$/i', $fichier) && adminVersionImage($cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires) != 'vignette' && adminVersionImage($cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires) != 'original')
+						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						
+						$versionImage = adminVersionImage($cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires, FALSE, $typeMime);
+						
+						if (adminImageValide($typeMime) && $versionImage != 'vignette' && $versionImage != 'original')
 						{
 							$tableauFichiers[] = $fichier;
 						}
@@ -826,7 +835,7 @@ include '../init.inc.php';
 				$configExisteAuDepart = FALSE;
 			}
 		
-			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires))
+			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance))
 			{
 				if ($configExisteAuDepart)
 				{

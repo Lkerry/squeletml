@@ -619,30 +619,9 @@ function cheminFichierIncHtml($racine, $fichier, $langueParDefaut, $langue, $ret
 }
 
 /**
-Renvoie le type d'image entre gif, jpg et png.
-*/
-function typeImage($extension)
-{
-	if (strtolower($extension) == 'gif')
-	{
-		$type = 'gif';
-	}
-	elseif (strtolower($extension) == 'jpg' || strtolower($extension) == 'jpeg')
-	{
-		$type = 'jpeg';
-	}
-	elseif (strtolower($extension) == 'png')
-	{
-		$type = 'png';
-	}
-	
-	return $type;
-}
-
-/**
 Modifie la source de la vignette pour la remplacer par une vignette tatouée d'une flèche de navigation.
 */
-function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg)
+function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	preg_match('/src="([^"]+)"/', $paragraphe, $res);
 	$srcContenu = $res[1];
@@ -659,10 +638,10 @@ function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc
 	{
 		if (!file_exists($racineImgSrc . '/tatouage'))
 		{
-			mkdir($racineImgSrc . '/tatouage');
+			@mkdir($racineImgSrc . '/tatouage');
 		}
 	
-		copy($racineImgSrc . '/' . $nomImgSrcContenu, $racineImgSrc . '/tatouage/' . $vignetteNom);
+		@copy($racineImgSrc . '/' . $nomImgSrcContenu, $racineImgSrc . '/tatouage/' . $vignetteNom);
 		
 		if (file_exists($racine . '/site/fichiers/' . $sens . '-tatouage.png'))
 		{
@@ -672,20 +651,20 @@ function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc
 		{
 			$imgSrc = imagecreatefrompng($racine . '/fichiers/' . $sens . '-tatouage.png');
 		}
-	
-		$infoVignette = pathinfo($racineImgSrc . '/tatouage/' . $vignetteNom);
-		$type = typeImage($infoVignette['extension']);
-		switch ($type)
+		
+		$typeMime = mimedetect_mime(array ('filepath' => $racineImgSrc . '/tatouage/' . $vignetteNom, 'filename' => $vignetteNom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+		
+		switch ($typeMime)
 		{
-			case 'gif':
+			case 'image/gif':
 				$imgDest = imagecreatefromgif($racineImgSrc . '/tatouage/' . $vignetteNom);
 				break;
 	
-			case 'jpeg':
+			case 'image/jpeg':
 				$imgDest = imagecreatefromjpeg($racineImgSrc . '/tatouage/' . $vignetteNom);
 				break;
 		
-			case 'png':
+			case 'image/png':
 				$imgDest = imagecreatefrompng($racineImgSrc . '/tatouage/' . $vignetteNom);
 				imagealphablending($imgDest, true);
 				imagesavealpha($imgDest, true);
@@ -699,17 +678,17 @@ function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc
 	
 		imagecopy($imgDest, $imgSrc, ($largDest / 2) - ($largSrc / 2), ($hautDest / 2) - ($hautSrc / 2), 0, 0, $largSrc, $hautSrc);
 	
-		switch ($type)
+		switch ($typeMime)
 		{
-			case 'gif':
+			case 'image/gif':
 				imagegif($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
 				break;
 	
-			case 'jpeg':
+			case 'image/jpeg':
 				imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, $qualiteJpg);
 				break;
 		
-			case 'png':
+			case 'image/png':
 				imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 9);
 				break;
 		}
@@ -867,29 +846,25 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 /**
 Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
 */
-function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette)
+function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette, $typeMime)
 {
 	$erreur = FALSE;
 	$messagesScriptChaine = '';
-	
-	$infoNouvelleImage = pathinfo(basename($cheminNouvelleImage));
-	$nomNouvelleImage = $infoNouvelleImage['basename'];
+	$nomNouvelleImage = basename($cheminNouvelleImage);
 	$nomImageSource = basename($cheminImageSource);
 	
-	// On trouve le type de l'image dans le but d'utiliser la bonne fonction php
-	$type = typeImage($infoNouvelleImage['extension']);
-	
-	switch ($type)
+	// On vérifie le type MIME de l'image dans le but d'utiliser la bonne fonction PHP
+	switch ($typeMime)
 	{
-		case 'gif':
+		case 'image/gif':
 			$imageSource = imagecreatefromgif($cheminImageSource);
 			break;
 		
-		case 'jpeg':
+		case 'image/jpeg':
 			$imageSource = imagecreatefromjpeg($cheminImageSource);
 			break;
 		
-		case 'png':
+		case 'image/png':
 			$imageSource = imagecreatefrompng($cheminImageSource);
 			break;
 	}
@@ -965,19 +940,19 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 		// On crée une nouvelle image vide
 		$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur + 2 * $demiSupplementLargeur, $nouvelleImageHauteur + 2 * $demiSupplementHauteur);
 		
-		if ($type == 'png')
+		if ($typeMime == 'image/png')
 		{
 			imagealphablending($nouvelleImage, false);
 			imagesavealpha($nouvelleImage, true);
 		}
-		if ($type == 'gif' || ($galerieForcerDimensionsVignette && $type == 'jpeg'))
+		if ($typeMime == 'image/gif' || ($galerieForcerDimensionsVignette && $typeMime == 'image/jpeg'))
 		{
 			$blanc = imagecolorallocate($nouvelleImage, 255, 255, 255);
 			imagefill($nouvelleImage, 0, 0, $blanc);
 		}
 		
 		
-		if ($type == 'png')
+		if ($typeMime == 'image/png')
 		{
 			$transparentColor = imagecolorallocatealpha($nouvelleImage, 200, 200, 200, 127);
 			imagefill($nouvelleImage, 0, 0, $transparentColor);
@@ -994,9 +969,9 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 		}
 		
 		// On enregistre la nouvelle image
-		switch ($type)
+		switch ($typeMime)
 		{
-			case 'gif':
+			case 'image/gif':
 				if (imagegif($nouvelleImage, $cheminNouvelleImage))
 				{
 					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
@@ -1008,7 +983,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 				}
 				break;
 		
-			case 'jpeg':
+			case 'image/jpeg':
 				if (imagejpeg($nouvelleImage, $cheminNouvelleImage, $qualiteJpg))
 				{
 					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
@@ -1020,7 +995,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 				}
 				break;
 		
-			case 'png':
+			case 'image/png':
 				if (imagepng($nouvelleImage, $cheminNouvelleImage, 9))
 				{
 					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
@@ -1049,9 +1024,10 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 /**
 Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
-function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal)
+function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galerieNavigation, $estAccueil, $taille, $indice, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	$infoIntermediaireNom = pathinfo($galerie[$indice]['intermediaireNom']);
+	$typeMime = mimedetect_mime(array ('filepath' => $racineImgSrc . '/' . $infoIntermediaireNom, 'filename' => $infoIntermediaireNom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	
 	####################################################################
 	#
@@ -1168,12 +1144,13 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 		
 		// Exif
 		$exif = '';
-		if ($ajoutExif && typeImage($infoIntermediaireNom['extension']) == 'jpeg' && function_exists('exif_read_data'))
+		
+		if ($ajoutExif && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
 		{
 			$tableauExif = exif_read_data($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], 'IFD0', 0);
 			
 			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si c'est du JPG
-			if (!$tableauExif && !empty($lienOriginal) && typeImage($infoOriginalNom['extension']) == 'jpeg')
+			if (!$tableauExif && !empty($lienOriginal) && $typeMime == 'image/jpeg')
 			{
 				$tableauExif = exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
 			}
@@ -1323,7 +1300,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $galerie, $galer
 				// Sinon, on génère une vignette
 				else
 				{
-					nouvelleImage($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE, $galerieForcerDimensionsVignette);
+					nouvelleImage($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE, $galerieForcerDimensionsVignette, $typeMime);
 					
 					// On assigne l'attribut `src`
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
@@ -1970,7 +1947,7 @@ function creeDossierCache($racine)
 {
 	if (!file_exists("$racine/site/cache"))
 	{
-		mkdir("$racine/site/cache", 0755, TRUE);
+		@mkdir("$racine/site/cache", 0755, TRUE);
 	}
 	
 	return;
