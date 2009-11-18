@@ -37,12 +37,13 @@ include '../init.inc.php';
 					$i++;
 					$fichier = sansEchappement($fichier);
 					$idLien = rawurlencode($fichier);
+					$cheminConfigGalerie = adminCheminConfigGalerie($racine, $fichier);
 					
-					if (file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc'))
+					if ($cheminConfigGalerie !== FALSE)
 					{
 						if ($porteDocumentsDroits['editer'])
 						{
-							$fichierDeConfiguration = '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/config.pc&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messagesPorteDocuments">' . T_("Modifier le fichier de configuration") . "</a></li>\n";
+							$fichierDeConfiguration = '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . basename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messagesPorteDocuments">' . T_("Modifier le fichier de configuration") . "</a></li>\n";
 						}
 						else
 						{
@@ -315,7 +316,7 @@ include '../init.inc.php';
 							
 							if ($renommer && $analyserConfig)
 							{
-								$galerie = tableauGalerie($cheminGalerie . '/config.pc');
+								$galerie = tableauGalerie(adminCheminConfigGalerie($racine, basename($cheminGalerie)));
 								if (in_array_multi($fichier, $galerie))
 								{
 									$renommer = FALSE;
@@ -355,7 +356,7 @@ include '../init.inc.php';
 						
 						if ($analyserConfig)
 						{
-							$galerie = tableauGalerie($cheminGalerie . '/config.pc');
+							$galerie = tableauGalerie(adminCheminConfigGalerie($racine, basename($cheminGalerie)));
 							if (in_array_multi($fichier, $galerie))
 							{
 								$aTraiter = FALSE;
@@ -486,13 +487,13 @@ include '../init.inc.php';
 					{
 						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 						
-						$versionImage = adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
+						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 						
 						if (
 							(isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && $versionImage == 'vignette') ||
 							(isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && $versionImage == 'intermediaire') ||
 							(isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && $versionImage == 'original') ||
-							(isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && $fichier == 'config.pc')
+							(isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && ($fichier == 'config.ini.txt' || $fichier == 'config.ini'))
 						)
 						{
 							$fichierAsupprimer = TRUE;
@@ -644,7 +645,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
+			$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
 		
 			if (!file_exists($fichierConfigChemin))
 			{
@@ -747,7 +748,7 @@ include '../init.inc.php';
 					{
 						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 						
-						$versionImage = adminVersionImage($cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires, FALSE, $typeMime);
+						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires, FALSE, $typeMime);
 						
 						if (adminImageValide($typeMime) && $versionImage != 'vignette' && $versionImage != 'original')
 						{
@@ -824,7 +825,7 @@ include '../init.inc.php';
 				$exclureMotifsCommeIntermediaires = FALSE;
 			}
 			
-			$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
+			$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
 		
 			if (file_exists($fichierConfigChemin))
 			{
@@ -870,7 +871,9 @@ include '../init.inc.php';
 		echo "</ul>\n";
 	}
 	
-	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && file_exists($racine . '/site/fichiers/galeries/' . $id . '/config.pc'))
+	$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
+	
+	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && $cheminConfigGalerie !== FALSE))
 	{
 		if (!$sousBoiteFichierConfigDebut)
 		{
@@ -880,13 +883,13 @@ include '../init.inc.php';
 		}
 	
 		$id = rawurlencode($id);
-		$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
+		$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
 		echo '<h4>' . T_("Information") . "</h4>\n" ;
 		
 		echo "<ul>\n";
 		if ($porteDocumentsDroits['editer'])
 		{
-			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/config.pc&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
+			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . basename($fichierConfigChemin) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
 		}
 		else
 		{

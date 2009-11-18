@@ -22,9 +22,11 @@ if (!$pageDerreur && isset($_GET['action']) && $_GET['action'] == 'faireDecouvri
 	$messageDecouvrir = '';
 }
 
-if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+$cheminConfigGalerie = adminCheminConfigGalerie($racine, $idGalerie);
+
+if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']) && $cheminConfigGalerie !== FALSE)
 {
-	$galerie = tableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
+	$galerie = tableauGalerie($cheminConfigGalerie, TRUE);
 	$i = 0;
 	foreach($galerie as $oeuvre)
 	{
@@ -42,7 +44,7 @@ if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']) && file_exists($racine
 		}
 	}
 }
-elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']) && $cheminConfigGalerie !== FALSE)
 {
 	$decouvrir = TRUE;
 	if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')

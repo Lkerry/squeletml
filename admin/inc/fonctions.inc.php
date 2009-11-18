@@ -476,12 +476,31 @@ function adminPhpIniOctets($nombre)
 }
 
 /**
+Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fichier de configuration n'a été trouvé, retourne FALSE.
+*/
+function adminCheminConfigGalerie($racine, $idGalerie)
+{
+	if ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt'))
+	{
+		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt';
+	}
+	elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini'))
+	{
+		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini';
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/**
 Met à jour un fichier de configuration de galerie. Retourne TRUE s'il n'y a aucune erreur, sinon retourne FALSE.
 */
 function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-	$fichierConfigChemin = $racine . '/site/fichiers/galeries/' . $id . '/config.pc';
+	$fichierConfigChemin = adminCheminConfigGalerie($racine, $id);
 	if (!empty($listeAjouts))
 	{
 		$listeExistant = file_get_contents($fichierConfigChemin);
@@ -548,7 +567,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 			{
 				$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				
-				$versionImage = adminVersionImage($cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
+				$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 				
 				if (
 					adminImageValide($typeMime) &&
@@ -616,13 +635,13 @@ function adminImageValide($typeMime)
 /**
 Retourne la version de l'image (intermediaire|vignette|original|inconnu).
 */
-function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime)
+function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime)
 {
 	$nomImage = basename($image);
 	
 	if ($analyserConfig)
 	{
-		$cheminConfig = dirname($image) . '/config.pc';
+		$cheminConfig = adminCheminConfigGalerie($racine, basename(dirname($image)));
 		
 		if (file_exists($cheminConfig))
 		{
@@ -703,7 +722,7 @@ function adminVersionImage($image, $analyserConfig, $exclureMotifsCommeIntermedi
 }
 
 /**
-Si une erreur survient, retourne FALSE, sinon retourne un tableau dont chaque élément contient le nom d'une galerie. Si le paramètre `$strictementAvecConfig` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration `config.pc`, sinon retourne le nom de tous les dossiers de `$racine/site/fichiers/galeries/`.
+Si une erreur survient, retourne FALSE, sinon retourne un tableau dont chaque élément contient le nom d'une galerie. Si le paramètre `$strictementAvecConfig` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration, sinon retourne le nom de tous les dossiers de `$racine/site/fichiers/galeries/`.
 */
 function adminListeGaleries($racine, $strictementAvecConfig = TRUE)
 {
@@ -715,7 +734,7 @@ function adminListeGaleries($racine, $strictementAvecConfig = TRUE)
 		{
 			if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
 			{
-				if (($strictementAvecConfig && file_exists($racine . '/site/fichiers/galeries/' . $fichier . '/config.pc')) || !$strictementAvecConfig)
+				if (($strictementAvecConfig && adminCheminConfigGalerie($racine, $fichier) !== FALSE) || !$strictementAvecConfig)
 				{
 					$galeries[] = sansEchappement($fichier);
 				}

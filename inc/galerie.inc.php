@@ -17,13 +17,13 @@ phpGettext($racine, LANGUE);
 if ($idGalerie && $idGalerie == 'démo')
 {
 	// Galerie démo par défaut
-	$galerie = tableauGalerie($racine . '/fichiers/galeries/démo/config.pc', TRUE);
+	$galerie = tableauGalerie($racine . '/fichiers/galeries/démo/config.ini.txt', TRUE);
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/démo';
 	$racineImgSrc = $racine . '/fichiers/galeries/démo';
 }
-elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+elseif ($idGalerie && adminCheminConfigGalerie($racine, $idGalerie) !== FALSE)
 {
-	$galerie = tableauGalerie($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc', TRUE);
+	$galerie = tableauGalerie(adminCheminConfigGalerie($racine, $idGalerie), TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie);
 	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
 }

@@ -1711,7 +1711,7 @@ Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant
 */
 function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
-	$galerie = tableauGalerie("$racine/site/fichiers/galeries/$idGalerie/config.pc", TRUE);
+	$galerie = tableauGalerie(adminCheminConfigGalerie($racine, $idGalerie), TRUE);
 	$itemsFluxRss = array ();
 	
 	foreach ($galerie as $oeuvre)
@@ -2071,11 +2071,13 @@ Retourne TRUE si la galerie existe, sinon retourne FALSE.
 */
 function galerieExiste($racine, $idGalerie)
 {
+	$cheminConfigGalerie = adminCheminConfigGalerie($racine, $idGalerie);
+	
 	if ($idGalerie && $idGalerie == 'démo')
 	{
 		$galerieExiste = TRUE;
 	}
-	elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.pc'))
+	elseif ($idGalerie && $cheminConfigGalerie !== FALSE)
 	{
 		$galerieExiste = TRUE;
 	}
