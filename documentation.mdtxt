@@ -512,7 +512,7 @@ Chaque oeuvre de la galerie possède sa propre section dans le fichier de config
 
 	`[intermediaireNom]`
 
-Il s'agit de la seule information obligatoire pour une oeuvre dans le fichier de configuration. Voici un exemple:
+Voici un exemple:
 
 	[fichier1.jpg]
 	[fichier2.jpg]

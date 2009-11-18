@@ -97,7 +97,7 @@ $typesMimePermis['html|htm|shtml'] = 'text/html';
 $typesMimePermis['xhtml|xht'] = 'application/xhtml+xml';
 $typesMimePermis['xml|xsl'] = 'application/xml';
 $typesMimePermis['css'] = 'text/css';
-$typesMimePermis['asc|txt|text|pot'] = 'text/plain';
+$typesMimePermis['asc|txt|text|pot|ini'] = 'text/plain';
 
 $typesMimePermis['odb'] = 'application/vnd.oasis.opendocument.database';
 $typesMimePermis['odp'] = 'application/vnd.oasis.opendocument.presentation';
