@@ -614,6 +614,30 @@ include '../init.inc.php';
 	
 	########################################################################
 	##
+	## Sauvegarder une galerie
+	##
+	########################################################################
+
+	if ($porteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
+	{
+		$messagesScript = array ();
+		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
+		
+		if (!file_exists($cheminGalerie))
+		{
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+		}
+		else
+		{
+			$messagesScript[] = '<li><a href="telecharger.admin.php?fichier=' . $cheminGalerie . '">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), "<code>$id</code>") . "</a></li>\n";
+		}
+		
+		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		echo adminMessagesScript($messagesScript, T_("Sauvegarde d'une galerie"));
+	}
+	
+	########################################################################
+	##
 	## Créer une page web de galerie
 	##
 	########################################################################
@@ -1131,7 +1155,7 @@ include '../init.inc.php';
 
 	<p><?php echo T_("Vous pouvez renommer une galerie. S'il s'agit d'une galerie déjà utilisée sur votre site, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page web de votre galerie."); ?></p>
 
-	<form action="<?php echo $action; ?>#messages" method="post" enctype="multipart/form-data">
+	<form action="<?php echo $action; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
@@ -1154,6 +1178,39 @@ include '../init.inc.php';
 		</div>
 	</form>
 </div><!-- /class=boite -->
+
+<?php if ($porteDocumentsDroits['telecharger']): ?>
+	<!-- class=boite -->
+
+	<div class="boite">
+		<h2><?php echo T_("Sauvegarder une galerie"); ?></h2>
+
+		<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
+
+		<form action="<?php echo $action; ?>#messages" method="post">
+			<div>
+				<fieldset>
+					<legend><?php echo T_("Options"); ?></legend>
+				
+					<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
+					<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+					<?php if (!empty($galeries)): ?>
+						<select name="id">
+							<?php foreach ($galeries as $galerie): ?>
+								<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+							<?php endforeach; ?>
+						</select>
+					<?php else: ?>
+						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+					<?php endif; ?>
+					</p>
+				</fieldset>
+			
+				<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /class=boite -->
+<?php endif; ?>
 
 <!-- class=boite -->
 
