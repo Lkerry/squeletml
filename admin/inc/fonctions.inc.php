@@ -1,5 +1,20 @@
 <?php
 /**
+Retourne TRUE si le type MIME passé en paramètre est permis, sinon retourne FALSE.
+*/
+function adminTypeMimePermis($typeMime, $filtreTypesMime, $typesMimePermis)
+{
+	if ($filtreTypesMime && array_search($typeMime, $typesMimePermis) === FALSE)
+	{
+		return FALSE;
+	}
+	else
+	{
+		return TRUE;
+	}
+}
+
+/**
 Retourne un tableau contenant les fichiers à inclure.
 */
 function adminInit($racineAdmin)

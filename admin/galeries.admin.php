@@ -133,7 +133,11 @@ include '../init.inc.php';
 				{
 					$typeMime = mimedetect_mime(array ('filepath' => $cheminGaleries . '/' . $nomArchive, 'filename' => $nomArchive), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 					
-					if ($typeMime != 'application/zip' && $typeMime != 'application/x-tar')
+					if (!adminTypeMimePermis($typeMime, $filtreTypesMime, $typesMimePermis))
+					{
+						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomArchive</code>", "<code>$typeMime</code>") . "</li>\n";
+					}
+					elseif ($typeMime != 'application/zip' && $typeMime != 'application/x-tar')
 					{
 						if (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomArchive))
 						{
@@ -157,26 +161,37 @@ include '../init.inc.php';
 						if ($resultatArchive == 0)
 						{
 							$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: %2\$s"), '<code>' . $nomArchive . '</code>', $archive->errorInfo(true)) . "</li>\n";
-							$messagesScript[] = adminUnlink($cheminGaleries . '/' . $nomArchive);
 						}
 						else
 						{
 							foreach ($resultatArchive as $infoImage)
 							{
+								$nomFichier = basename($infoImage['filename']);
+								$cheminFichier = $cheminGaleries . '/' . $id . '/' . $nomFichier;
+								
 								if ($infoImage['status'] == 'ok')
 								{
-									$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . substr($infoImage['filename'], strlen($cheminGaleries . '/' . $id) + 1) . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+									$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+									
+									if (!adminTypeMimePermis($typeMimeFichier, $filtreTypesMime, $typesMimePermis))
+									{
+										@unlink($cheminFichier);
+										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
+									}
+									else
+									{
+										$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+									}
 								}
 								elseif ($infoImage['status'] == 'newer_exist')
 								{
-									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 								}
 								else
 								{
-									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $infoImage['filename'] . '</code>') . "</li>\n";
+									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 								}
 							}
-							$messagesScript[] =adminUnlink($cheminGaleries . '/' . $nomArchive);
 						}
 					}
 					elseif ($typeMime == 'application/x-tar')
@@ -187,44 +202,60 @@ include '../init.inc.php';
 							$listeFichiers = $fichierTar->getfilelist();
 							for ($i = 0; $i < count($listeFichiers); $i++)
 							{
+								$nomFichier = $listeFichiers[$i]['filename'];
+								$cheminFichier = $cheminGalerie . '/' . $nomFichier;
+								
 								if ($listeFichiers[$i]['filetype'] == 'directory')
 								{
-									if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
+									if (file_exists($cheminFichier))
 									{
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $nomFichier . '</code>') . "</li>\n";
 									}
 									else
 									{
-										$messagesScript[] = adminMkdir($cheminGalerie . '/' . $listeFichiers[$i]['filename'], octdec(755), TRUE);
+										$messagesScript[] = adminMkdir($cheminFichier, octdec(755), TRUE);
 									}
 								}
 								else
 								{
-									if (file_exists($cheminGalerie . '/' . $listeFichiers[$i]['filename']))
+									if (file_exists($cheminFichier))
 									{
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 									}
-									elseif ($fic = @fopen($cheminGalerie . '/' . $listeFichiers[$i]['filename'], 'w'))
+									elseif ($fic = @fopen($cheminFichier, 'w'))
 									{
-										$donnees = $fichierTar->extract($listeFichiers[$i]['filename']);
+										$donnees = $fichierTar->extract($nomFichier);
+										
 										if (fwrite($fic, $donnees))
 										{
 											fclose($fic);
-											$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $listeFichiers[$i]['filename'] . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+											
+											$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+											
+											if (!adminTypeMimePermis($typeMimeFichier, $filtreTypesMime, $typesMimePermis))
+											{
+												@unlink($cheminFichier);
+												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
+											}
+											else
+											{
+												$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+											}
 										}
 										else
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>\n";
+											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 										}
 									}
 									else
 									{
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminGalerie . '/' . $listeFichiers[$i]['filename'] . '</code>') . "</li>";
+										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>";
 									}
 								}
 							}
+							
 							unset($fichierTar);
-							$messagesScript[] = adminUnlink($cheminGalerie . '/' . $nomArchive);
+							@unlink($cheminGalerie . '/' . $nomArchive);
 						}
 						else
 						{
@@ -242,6 +273,11 @@ include '../init.inc.php';
 		if (file_exists($_FILES['fichier']['tmp_name']))
 		{
 			@unlink($_FILES['fichier']['tmp_name']);
+		}
+		
+		if (file_exists($cheminGaleries . '/' . $nomArchive))
+		{
+			@unlink($cheminGaleries . '/' . $nomArchive);
 		}
 		
 		if (empty($messagesScript))

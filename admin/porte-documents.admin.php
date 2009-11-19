@@ -971,9 +971,9 @@ if ($porteDocumentsDroits['ajouter'] && (!$filtreTypesMime || ($filtreTypesMime 
 			{
 				$typeMime = mimedetect_mime(array ('filepath' => $dossier . '/' . $nomFichier, 'filename' => $nomFichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				
-				if ($filtreTypesMime && array_search($typeMime, $typesMimePermis) === FALSE)
+				if (!adminTypeMimePermis($typeMime, $filtreTypesMime, $typesMimePermis))
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, et il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomFichier</code>", "<code>$typeMime</code>") . "</li>\n";
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomFichier</code>", "<code>$typeMime</code>") . "</li>\n";
 					@unlink($dossier . '/' . $nomFichier);
 				}
 				else
