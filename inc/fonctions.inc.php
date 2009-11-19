@@ -626,9 +626,7 @@ function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc
 	preg_match('/src="([^"]+)"/', $paragraphe, $res);
 	$srcContenu = $res[1];
 	$nomImgSrcContenu = basename($srcContenu);
-	$infoImgSrcContenu = pathinfo($nomImgSrcContenu);
-	$vignetteNom = basename($nomImgSrcContenu, '.' . $infoImgSrcContenu['extension']);
-	$vignetteNom .= '-' . $sens . '.' . $infoImgSrcContenu['extension'];
+	$vignetteNom = nomSuffixe($nomImgSrcContenu, '-' . $sens);
 	
 	if (file_exists($racineImgSrc . '/tatouage/' . $vignetteNom))
 	{
@@ -1026,8 +1024,7 @@ Construit et retourne le code pour afficher une oeuvre dans la galerie.
 */
 function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $infosOeuvre, $galerieNavigation, $estAccueil, $taille, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
-	$infoIntermediaireNom = pathinfo($infosOeuvre['intermediaireNom']);
-	$typeMime = mimedetect_mime(array ('filepath' => $racineImgSrc . '/' . $infoIntermediaireNom, 'filename' => $infoIntermediaireNom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	$typeMime = mimedetect_mime(array ('filepath' => $racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], 'filename' => $infosOeuvre['intermediaireNom']), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	
 	####################################################################
 	#
@@ -1103,16 +1100,12 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $infosOeuvre, $g
 		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
 		else
 		{
-			$originalNom = basename($infosOeuvre['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
-			$originalNom .= '-original.' . $infoIntermediaireNom['extension'];
+			$originalNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-original');
 		}
 		
 		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on insère un lien vers l'image.
 		if (file_exists($racineImgSrc . '/' . $originalNom))
 		{
-			// On génère des infos utilisables plus loin
-			$infoOriginalNom = pathinfo($originalNom);
-			
 			$lienOriginalHref = '';
 			if ($galerieTelechargeOriginal && !$galerieLienOriginalJavascript && ($galerieLienOriginalEmplacement == 'legende' || $galerieLienOriginalEmplacement == 'imageLegende'))
 			{
@@ -1288,8 +1281,7 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $infosOeuvre, $g
 			else
 			{
 				// Si le nom de la vignette n'a pas été renseigné, on génère un nom automatique selon le nom de la version intermediaire de l'image.
-				$vignetteNom = basename($infosOeuvre['intermediaireNom'], '.' . $infoIntermediaireNom['extension']);
-				$vignetteNom .= '-vignette.' . $infoIntermediaireNom['extension'];
+				$vignetteNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-vignette');
 				
 				// On vérifie si un fichier existe avec ce nom.
 				// Si oui, on assigne une valeur à l'attribut `src`. 
@@ -1472,15 +1464,15 @@ function tableauGalerie($cheminConfig, $exclure = FALSE)
 }
 
 /**
-Ajoute `-vignette` au nom d'un fichier, par exemple `nom.extension` devient `nom-vignette.extension`.
+Ajoute `$suffixe` au nom d'un fichier, juste avant l'extension. Par exemple `nom.extension` devient `nom$suffixe.extension`.
 */
-function nomSuffixeVignette($fichier)
+function nomSuffixe($nomFichier, $suffixe)
 {
-	$info = pathinfo($fichier);
-	$fichierVignette = basename($fichier, '.' . $info['extension']);
-	$fichierVignette .= '-vignette.' . $info['extension'];
+	$infoFichier = pathinfo($nomFichier);
+	$nomFichierAvecSuffixe = basename($nomFichier, '.' . $infoFichier['extension']);
+	$nomFichierAvecSuffixe .= $suffixe . '.' . $infoFichier['extension'];
 	
-	return $fichierVignette;
+	return $nomFichierAvecSuffixe;
 }
 
 /**
@@ -1537,7 +1529,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	}
 	else
 	{
-		$vignetteNom = nomSuffixeVignette($oeuvre['intermediaireNom']);
+		$vignetteNom = nomSuffixe($oeuvre['intermediaireNom'], '-vignette');
 	}
 	
 	if (isset($oeuvre['vignetteAlt']) && !empty($oeuvre['vignetteAlt']))
@@ -1770,9 +1762,8 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		}
 		else
 		{
-			$infoOriginal = pathinfo($oeuvre['intermediaireNom']);
-			$nomOriginal = basename($oeuvre['intermediaireNom'], '.' . $infoOriginal['extension']);
-			$nomOriginal .= '-original.' . $infoOriginal['extension'];
+			$nomOriginal = nomSuffixe($oeuvre['intermediaireNom'], '-original');
+			
 			if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
 			{
 				$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($nomOriginal);
@@ -2038,30 +2029,6 @@ Conversion des octets en Mio.
 function octetsVersMio($octets)
 {
 	return number_format($octets / 1048576, 1, ',', '');
-}
-
-/**
-Fonction `in_array()` multidimensionel.
-*/
-function in_array_multi($recherche, $tableau)
-{
-	foreach ($tableau as $pos => $val)
-	{
-		if (is_array($val))
-		{
-			if (in_array_multi($recherche, $val))
-			{
-				return 1;
-			}
-		}
-		else
-		{
-			if ($val == $recherche)
-			{
-				return 1;
-			}
-		}
-	}
 }
 
 /**

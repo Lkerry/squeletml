@@ -325,8 +325,8 @@ include '../init.inc.php';
 							
 							if ($renommer)
 							{
-								$nouveauNom = basename($fichier, '.' . $infoFichier['extension']);
-								$nouveauNom .= '-original.' . $infoFichier['extension'];
+								$nouveauNom = nomSuffixe($fichier, '-original');
+								
 								if (!file_exists($cheminGalerie . '/' . $nouveauNom))
 								{
 									$messagesScript[] = adminRename($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom);
@@ -767,9 +767,9 @@ include '../init.inc.php';
 					
 					if (isset($_POST['info']) && $_POST['info'][0] != 'aucun')
 					{
-						foreach ($_POST['info'] as $champ)
+						foreach ($_POST['info'] as $parametre)
 						{
-							$listeFichiers .= securiseTexte($champ) . "=\n";
+							$listeFichiers .= securiseTexte($parametre) . "=\n";
 						}
 					}
 					
@@ -1018,7 +1018,7 @@ include '../init.inc.php';
 					
 					<li><input type="checkbox" name="retaillerNePasRenommerMotifs" value="nePasRenommerMotifs" checked="checked" /> <label><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
 					
-					<li><input type="checkbox" name="retaillerAnalyserConfig" value="analyserConfig" checked="checked" /> <label><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du retaillage les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente dans un des champs <code>intermediaireNom</code>, <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
+					<li><input type="checkbox" name="retaillerAnalyserConfig" value="analyserConfig" checked="checked" /> <label><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du retaillage les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme valeur d'un des paramètres <code>intermediaireNom</code>, <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
 				</ul>
 				
 				<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
@@ -1050,7 +1050,7 @@ include '../init.inc.php';
 	<p><?php echo T_("La liste des images potentiellement supprimables peut être générée de trois manières différentes:"); ?></p>
 	
 	<ul>
-		<li><?php echo T_("seulement par analyse du fichier de configuration, s'il existe. Les images intermédiaires sont les images déclarées dans le champ <code>intermediaireNom</code>. Les vignettes sont les images déclarées dans le champ <code>vignetteNom</code>, ou les fichiers dont le nom satisfait le motif <code>nom-vignette.extension</code> (à moins que ces derniers soient déclarés dans le fichier de configuration comme étant une version différente) et pour lesquels une image intermédiaire sans le motif <code>-vignette</code> existe. Les fichiers au format original sont ceux déclarés dans le champ <code>originalNom</code>, ou les fichiers dont le nom satisfait le motif <code>nom-original.extension</code> (à moins d'une délcaration différente dans le fichier de configuration) et pour lesquels une image intermédiaire sans le motif <code>-original</code> existe;"); ?></li>
+		<li><?php echo T_("seulement par analyse du fichier de configuration, s'il existe. Les images intermédiaires sont les images déclarées par le paramètre <code>intermediaireNom</code>. Les vignettes sont les images déclarées par le paramètre <code>vignetteNom</code>, ou les fichiers dont le nom satisfait le motif <code>nom-vignette.extension</code> (à moins que ces derniers soient déclarés dans le fichier de configuration comme étant une version différente) et pour lesquels une image intermédiaire sans le motif <code>-vignette</code> existe. Les fichiers au format original sont ceux déclarés par le paramètre <code>originalNom</code>, ou les fichiers dont le nom satisfait le motif <code>nom-original.extension</code> (à moins d'une délcaration différente dans le fichier de configuration) et pour lesquels une image intermédiaire sans le motif <code>-original</code> existe;"); ?></li>
 		
 		<li><?php echo T_("par reconnaissance d'un motif dans le nom des fichiers. Le fichier de configuration n'est pas analysé. Les vignettes sont les images dont le nom satisfait le motif <code>nom-vignette.extension</code>. Les fichiers au format original sont ceux dont le nom satisfait le motif <code>nom-original.extension</code>. Les images intermédiaires sont les images dont le nom ne satisfait aucun motif (<code>nom-vignette.extension</code> ou <code>nom-original.extension</code>)."); ?></li>
 		

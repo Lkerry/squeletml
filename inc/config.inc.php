@@ -431,7 +431,7 @@ $galerieLegendeAutomatique = FALSE; // TRUE|FALSE
 
 // Utilisation de la syntaxe Markdown dans la légende
 /*
-- Active la syntaxe Markdown pour le texte de la légende (contenu du champ `intermediaireLegende`).
+- Active la syntaxe Markdown pour le texte de la légende (valeur du paramètre `intermediaireLegende`).
 */
 $galerieLegendeMarkdown = FALSE; // TRUE|FALSE
 

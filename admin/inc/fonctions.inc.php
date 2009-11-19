@@ -529,7 +529,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 			{
 				if ($cle == 'intermediaireNom')
 				{
-					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur) && !in_array_multi($valeur, $galerieTemp))
+					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur) && !adminImageEstDeclaree($valeur, $galerieTemp, 'intermediaire'))
 					{
 						$galerieTemp[$i][$cle] = $valeur;
 					}
@@ -578,8 +578,8 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 					adminImageValide($typeMime) &&
 					$versionImage != 'vignette' &&
 					$versionImage != 'original' &&
-					!in_array_multi($fichier, $galerieTemp) &&
-					!in_array_multi($fichier, $listeNouveauxFichiers)
+					!adminImageEstDeclaree($fichier, $galerieTemp, 'intermediaire') &&
+					!adminImageEstDeclaree($fichier, $listeNouveauxFichiers, 'intermediaire')
 				)
 				{
 					$listeNouveauxFichiers[] = $fichier;
@@ -653,24 +653,21 @@ function adminImageValide($typeMime)
 /**
 Retourne TRUE si l'image est déclarée dans le fichier de configuration, sinon retourne FALSE.
 */
-function adminImageEstDeclaree($fichier, $galerie)
+function adminImageEstDeclaree($fichier, $galerie, $versionAchercher = FALSE)
 {
-	if (isset($galerie[$fichier]))
+	foreach ($galerie as $oeuvre)
 	{
-		return TRUE;
-	}
-	else
-	{
-		foreach ($galerie as $oeuvre)
+		if ((!$versionAchercher || $versionAchercher = 'intermediaire') && (isset($oeuvre['intermediaireNom']) && $oeuvre['intermediaireNom'] == $fichier))
 		{
-			if (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $fichier)
-			{
-				return TRUE;
-			}
-			elseif (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $fichier)
-			{
-				return TRUE;
-			}
+			return TRUE;
+		}
+		elseif ((!$versionAchercher || $versionAchercher = 'vignette') && (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $fichier))
+		{
+			return TRUE;
+		}
+		elseif ((!$versionAchercher || $versionAchercher = 'original') && (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $fichier))
+		{
+			return TRUE;
 		}
 	}
 	

@@ -637,7 +637,7 @@ Il est possible de choisir l'emplacement des vignettes (haut ou bas).
 
 Les vignettes utilisées sont celles de l'image vers laquelle le lien pointe:
 
-- soit la vignette précisée dans le fichier de configuration (`champ vignetteNom`);
+- soit la vignette précisée dans le fichier de configuration (paramètre `vignetteNom`);
 
 - soit la vignette déduite automatiquement à partir du nom du fichier de l'image en version intermédiaire (`intermediaireNom(sans extension)-vignette.extension`);
 
