@@ -47,7 +47,7 @@ if (!empty($blocsAinserer))
 				break;
 				
 			case 'flux-rss':
-				if (($idGalerie && $rss) || ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")) || ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc")))
+				if (($idGalerie && $rss) || ($galerieFluxRssGlobal && adminCheminConfigFluxRssGlobalGaleries($racine)) || ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc")))
 				{
 					echo '<div class="sep"></div>' . "\n";
 					echo '<div id="fluxRss" class="bloc">' . "\n";
@@ -57,7 +57,7 @@ if (!empty($blocsAinserer))
 					{
 						echo "\t\t<li>" . lienFluxRss($urlFlux, $idGalerie, TRUE) . "</li>\n";
 					}
-					if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
+					if ($galerieFluxRssGlobal && adminCheminConfigFluxRssGlobalGaleries($racine))
 					{
 						echo "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=galeries&langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
 					}

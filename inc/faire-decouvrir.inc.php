@@ -24,7 +24,7 @@ if (!$pageDerreur && isset($_GET['action']) && $_GET['action'] == 'faireDecouvri
 
 $cheminConfigGalerie = adminCheminConfigGalerie($racine, $idGalerie);
 
-if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']) && $cheminConfigGalerie !== FALSE)
+if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']) && $cheminConfigGalerie)
 {
 	$galerie = tableauGalerie($cheminConfigGalerie, TRUE);
 	$i = 0;
@@ -44,7 +44,7 @@ if (!$pageDerreur && $idGalerie && isset($_GET['oeuvre']) && $cheminConfigGaleri
 		}
 	}
 }
-elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']) && $cheminConfigGalerie !== FALSE)
+elseif (!$pageDerreur && $idGalerie && !isset($_GET['oeuvre']) && $cheminConfigGalerie)
 {
 	$decouvrir = TRUE;
 	if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')

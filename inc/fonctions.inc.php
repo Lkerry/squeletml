@@ -1438,11 +1438,11 @@ $galerie = array (
 	),
 );
 
-Retourne le tableau final si le fichier de configuration est accessible en lecture, sinon retourne FALSE.
+Retourne le tableau final si le fichier de configuration existe et est accessible en lecture, sinon retourne FALSE.
 */
-function tableauGalerie($cheminConfig, $exclure = FALSE)
+function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 {
-	if ($galerieIni = parse_ini_file($cheminConfig, TRUE))
+	if ($cheminConfigGalerie && $galerieIni = parse_ini_file($cheminConfigGalerie, TRUE))
 	{
 		$galerie = array ();
 		
@@ -2044,13 +2044,11 @@ Retourne TRUE si la galerie existe, sinon retourne FALSE.
 */
 function galerieExiste($racine, $idGalerie)
 {
-	$cheminConfigGalerie = adminCheminConfigGalerie($racine, $idGalerie);
-	
 	if ($idGalerie && $idGalerie == 'démo')
 	{
 		$galerieExiste = TRUE;
 	}
-	elseif ($idGalerie && $cheminConfigGalerie !== FALSE)
+	elseif ($idGalerie && adminCheminConfigGalerie($racine, $idGalerie))
 	{
 		$galerieExiste = TRUE;
 	}

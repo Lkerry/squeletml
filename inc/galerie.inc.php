@@ -21,7 +21,7 @@ if ($idGalerie && $idGalerie == 'démo')
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/démo';
 	$racineImgSrc = $racine . '/fichiers/galeries/démo';
 }
-elseif ($idGalerie && adminCheminConfigGalerie($racine, $idGalerie) !== FALSE)
+elseif ($idGalerie && adminCheminConfigGalerie($racine, $idGalerie))
 {
 	$galerie = tableauGalerie(adminCheminConfigGalerie($racine, $idGalerie), TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie);

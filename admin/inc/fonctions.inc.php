@@ -491,9 +491,32 @@ function adminPhpIniOctets($nombre)
 }
 
 /**
-Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fichier de configuration n'a été trouvé, retourne FALSE.
+Retourne le chemin vers le fichier de configuration du flux RSS global des galeries. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function adminCheminConfigGalerie($racine, $idGalerie)
+function adminCheminConfigFluxRssGlobalGaleries($racine, $retourneCheminParDefaut = FALSE)
+{
+	if (file_exists($racine . '/site/inc/rss-global-galeries.ini.txt'))
+	{
+		return $racine . '/site/inc/rss-global-galeries.ini.txt';
+	}
+	elseif (file_exists($racine . '/site/inc/rss-global-galeries.ini'))
+	{
+		return $racine . '/site/inc/rss-global-galeries.ini';
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return $racine . '/site/inc/rss-global-galeries.ini.txt';
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/**
+Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function adminCheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut = FALSE)
 {
 	if ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt'))
 	{
@@ -502,6 +525,10 @@ function adminCheminConfigGalerie($racine, $idGalerie)
 	elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini'))
 	{
 		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini';
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt';
 	}
 	else
 	{
@@ -519,10 +546,19 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	if (!empty($listeAjouts))
 	{
-		$listeExistant = file_get_contents($cheminConfigGalerie);
-		if ($listeExistant === FALSE)
+		if ($cheminConfigGalerie)
 		{
-			return FALSE;
+			$listeExistant = file_get_contents($cheminConfigGalerie);
+			
+			if ($listeExistant === FALSE)
+			{
+				return FALSE;
+			}
+		}
+		else
+		{
+			$listeExistant = '';
+			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id, TRUE);
 		}
 		
 		if (@file_put_contents($cheminConfigGalerie, $listeAjouts . $listeExistant) === FALSE)
@@ -533,7 +569,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	$galerieTemp = array ();
 	
-	if ($cheminConfigGalerie !== FALSE)
+	if ($cheminConfigGalerie)
 	{
 		$galerie = tableauGalerie($cheminConfigGalerie);
 		$i = 0;
@@ -637,9 +673,9 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	$contenuConfig = rtrim($contenuConfig);
 	
-	if ($cheminConfigGalerie === FALSE)
+	if (!$cheminConfigGalerie)
 	{
-		$cheminConfigGalerie = $racine . '/site/fichiers/galeries/' . $id . '/config.ini.txt';
+		$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id, TRUE);
 	}
 	
 	if (@file_put_contents($cheminConfigGalerie, $contenuConfig) === FALSE)
@@ -670,19 +706,22 @@ Retourne TRUE si l'image est déclarée dans le fichier de configuration, sinon 
 */
 function adminImageEstDeclaree($fichier, $galerie, $versionAchercher = FALSE)
 {
-	foreach ($galerie as $oeuvre)
+	if ($galerie)
 	{
-		if ((!$versionAchercher || $versionAchercher = 'intermediaire') && (isset($oeuvre['intermediaireNom']) && $oeuvre['intermediaireNom'] == $fichier))
+		foreach ($galerie as $oeuvre)
 		{
-			return TRUE;
-		}
-		elseif ((!$versionAchercher || $versionAchercher = 'vignette') && (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $fichier))
-		{
-			return TRUE;
-		}
-		elseif ((!$versionAchercher || $versionAchercher = 'original') && (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $fichier))
-		{
-			return TRUE;
+			if ((!$versionAchercher || $versionAchercher = 'intermediaire') && (isset($oeuvre['intermediaireNom']) && $oeuvre['intermediaireNom'] == $fichier))
+			{
+				return TRUE;
+			}
+			elseif ((!$versionAchercher || $versionAchercher = 'vignette') && (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $fichier))
+			{
+				return TRUE;
+			}
+			elseif ((!$versionAchercher || $versionAchercher = 'original') && (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $fichier))
+			{
+				return TRUE;
+			}
 		}
 	}
 	
@@ -698,11 +737,11 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 	
 	if ($analyserConfig)
 	{
-		$cheminConfig = adminCheminConfigGalerie($racine, basename(dirname($image)));
+		$cheminConfigGalerie = adminCheminConfigGalerie($racine, basename(dirname($image)));
 		
-		if (file_exists($cheminConfig))
+		if ($cheminConfigGalerie)
 		{
-			$galerie = tableauGalerie($cheminConfig);
+			$galerie = tableauGalerie($cheminConfigGalerie);
 			
 			foreach ($galerie as $oeuvre)
 			{
@@ -791,7 +830,7 @@ function adminListeGaleries($racine, $strictementAvecConfig = TRUE)
 		{
 			if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
 			{
-				if (($strictementAvecConfig && adminCheminConfigGalerie($racine, $fichier) !== FALSE) || !$strictementAvecConfig)
+				if (($strictementAvecConfig && adminCheminConfigGalerie($racine, $fichier)) || !$strictementAvecConfig)
 				{
 					$galeries[] = sansEchappement($fichier);
 				}

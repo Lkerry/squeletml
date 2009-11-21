@@ -150,7 +150,7 @@ echo doctype($xhtmlStrict); ?>
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlFlux; ?>" title="<?php echo sprintf(T_('RSS de la galerie %1$s'), $idGalerie); ?>" />
 		<?php endif; ?>
 		
-		<?php if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc")): ?>
+		<?php if ($galerieFluxRssGlobal && adminCheminConfigFluxRssGlobalGaleries($racine)): ?>
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlRacine . '/rss.php?global=galeries&langue=' . LANGUE; ?>" title="<?php echo T_('RSS de toutes les galeries'); ?>" />
 		<?php endif; ?>
 

@@ -39,7 +39,7 @@ include '../init.inc.php';
 					$idLien = rawurlencode($fichier);
 					$cheminConfigGalerie = adminCheminConfigGalerie($racine, $fichier);
 					
-					if ($cheminConfigGalerie !== FALSE)
+					if ($cheminConfigGalerie)
 					{
 						if ($porteDocumentsDroits['editer'])
 						{
@@ -353,6 +353,7 @@ include '../init.inc.php';
 							if ($renommer && $analyserConfig)
 							{
 								$galerie = tableauGalerie(adminCheminConfigGalerie($racine, basename($cheminGalerie)));
+								
 								if (adminImageEstDeclaree($fichier, $galerie))
 								{
 									$renommer = FALSE;
@@ -707,7 +708,7 @@ include '../init.inc.php';
 		{
 			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
 		
-			if (!file_exists($cheminConfigGalerie))
+			if (!$cheminConfigGalerie)
 			{
 				$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</li>\n";
 			}
@@ -887,13 +888,14 @@ include '../init.inc.php';
 			
 			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
 		
-			if (file_exists($cheminConfigGalerie))
+			if ($cheminConfigGalerie)
 			{
 				$configExisteAuDepart = TRUE;
 			}
 			else
 			{
 				$configExisteAuDepart = FALSE;
+				$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id, TRUE);
 			}
 			
 			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance))
@@ -931,7 +933,7 @@ include '../init.inc.php';
 		echo "</ul>\n";
 	}
 	
-	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && adminCheminConfigGalerie($racine, $id) !== FALSE)
+	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && adminCheminConfigGalerie($racine, $id))
 	{
 		if (!$sousBoiteFichierConfigDebut)
 		{

@@ -23,13 +23,15 @@ include '../init.inc.php';
 			################################################################
 			
 			$messagesScript = array ();
-			$cheminFichier = "$racine/site/inc/rss-global-galeries.pc";
+			$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine);
 			
-			if (!file_exists($cheminFichier))
+			if (!$cheminFichier)
 			{
+				$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine, TRUE);
+				
 				if ($porteDocumentsDroits['creer'])
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments') . "</li>\n";
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</li>\n";
 				}
 				else
 				{
@@ -105,7 +107,7 @@ include '../init.inc.php';
 			$messagesScript = array ();
 			$cheminFichier = "$racine/site/inc/rss-global-site.pc";
 			
-			if (!file_exists($cheminFichier))
+			if (!$cheminFichier)
 			{
 				if ($porteDocumentsDroits['creer'])
 				{
@@ -207,8 +209,9 @@ include '../init.inc.php';
 	
 		$contenuFichier = implode('', $contenuFichierTableau);
 	
-		$cheminFichier = "$racine/site/inc/rss-global-galeries.pc";
-		if (file_exists($cheminFichier))
+		$cheminConfigFluxRssGlobalGaleries = adminCheminConfigFluxRssGlobalGaleries($racine);
+		
+		if ($cheminConfigFluxRssGlobalGaleries !== FALSE)
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
@@ -235,7 +238,7 @@ include '../init.inc.php';
 			$messagesScript[] = '<li>';
 			if ($porteDocumentsDroits['creer'])
 			{
-				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.pc#messagesPorteDocuments') . "</p>\n";
+				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</p>\n";
 			}
 			else
 			{

@@ -57,9 +57,7 @@ if (isset($getChemin) && !empty($getChemin))
 				$rss = $galerieFluxRssParDefaut;
 			}
 			
-			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $idGalerie);
-			
-			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && $cheminConfigGalerie !== FALSE)
+			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && adminCheminConfigGalerie($racine, $idGalerie))
 			{
 				// A: le flux RSS est activé.
 				
@@ -104,7 +102,9 @@ if (isset($getChemin) && !empty($getChemin))
 }
 elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLangue) && isset($accueil[$getLangue]))
 {
-	if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
+	$cheminConfigFluxRssGlobalGaleries = adminCheminConfigFluxRssGlobalGaleries($racine);
+	
+	if ($galerieFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 	{
 		// A: le flux RSS global pour les galeries est activé.
 		
@@ -115,7 +115,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 		}
 		else
 		{
-			$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.pc");
+			$galeries = tableauAssociatif($cheminConfigFluxRssGlobalGaleries);
 			$itemsFluxRss = array ();
 			if (!empty($galeries))
 			{
@@ -156,6 +156,8 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 }
 elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue) && isset($accueil[$getLangue]))
 {
+	$cheminConfigFluxRssGlobalGaleries = adminCheminConfigFluxRssGlobalGaleries($racine);
+	
 	if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
 	{
 		// A: le flux RSS global du site est activé.
@@ -190,9 +192,9 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				}
 				
 				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site
-				if ($galerieFluxRssGlobal && file_exists("$racine/site/inc/rss-global-galeries.pc"))
+				if ($galerieFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 				{
-					$galeries = tableauAssociatif("$racine/site/inc/rss-global-galeries.pc");
+					$galeries = tableauAssociatif($cheminConfigFluxRssGlobalGaleries);
 					if (!empty($galeries))
 					{
 						foreach ($galeries as $codeLangueIdGalerie => $urlRelativeGalerie)

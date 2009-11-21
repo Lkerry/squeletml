@@ -694,7 +694,7 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 #### Syndication globale des galeries
 
-Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.pc` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
+Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
 	code de la langue:id de la galerie=URL relative de la galerie
 
@@ -711,7 +711,7 @@ et:
 
 	$urlRacine/dossier/galerie-animaux.php
 
-**Note: puisque le script ne lit que la liste du fichier `site/inc/rss-global-galeries.pc`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans `site/inc/rss-global-galeries.pc` tout simplement.**
+**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
 #### Syndication globale du site
 
@@ -747,3 +747,4 @@ Les principales commandes du fichier `Makefile` sont:
 
 - `make publier`: crée des archives `.bz2` et `.zip`; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le `ChangeLog`) sur le bureau; et déplace les archives également sur le bureau. Est utilisé après un `bzr tag...` pour la sortie d'une nouvelle version.
 
+- `make ini`:
