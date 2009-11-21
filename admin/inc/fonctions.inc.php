@@ -514,6 +514,29 @@ function adminCheminConfigFluxRssGlobalGaleries($racine, $retourneCheminParDefau
 }
 
 /**
+Retourne le chemin vers le fichier de configuration du flux RSS global des pages autres que les galeries. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function adminCheminConfigFluxRssGlobalSite($racine, $retourneCheminParDefaut = FALSE)
+{
+	if (file_exists($racine . '/site/inc/rss-global-site.ini.txt'))
+	{
+		return $racine . '/site/inc/rss-global-site.ini.txt';
+	}
+	elseif (file_exists($racine . '/site/inc/rss-global-site.ini'))
+	{
+		return $racine . '/site/inc/rss-global-site.ini';
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return $racine . '/site/inc/rss-global-site.ini.txt';
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/**
 Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function adminCheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut = FALSE)

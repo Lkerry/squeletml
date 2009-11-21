@@ -158,7 +158,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 {
 	$cheminConfigFluxRssGlobalGaleries = adminCheminConfigFluxRssGlobalGaleries($racine);
 	
-	if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc"))
+	if ($siteFluxRssGlobal && adminCheminConfigFluxRssGlobalSite($racine))
 	{
 		// A: le flux RSS global du site est activé.
 		
@@ -169,7 +169,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 		}
 		else
 		{
-			$pages = file("$racine/site/inc/rss-global-site.pc");
+			$pages = file(adminCheminConfigFluxRssGlobalSite($racine));
 			$itemsFluxRss = array ();
 			if (!empty($pages))
 			{

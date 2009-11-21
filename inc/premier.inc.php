@@ -154,7 +154,7 @@ echo doctype($xhtmlStrict); ?>
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlRacine . '/rss.php?global=galeries&langue=' . LANGUE; ?>" title="<?php echo T_('RSS de toutes les galeries'); ?>" />
 		<?php endif; ?>
 
-		<?php if ($siteFluxRssGlobal && file_exists("$racine/site/inc/rss-global-site.pc")): ?>
+		<?php if ($siteFluxRssGlobal && adminCheminConfigFluxRssGlobalSite($racine)): ?>
 			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlRacine . '/rss.php?global=pages&langue=' . LANGUE; ?>" title="<?php echo T_('RSS global du site'); ?>" />
 		<?php endif; ?>
 		

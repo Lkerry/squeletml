@@ -715,7 +715,7 @@ et:
 
 #### Syndication globale du site
 
-Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.pc` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
+Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
 
 	code de la langue:URL relative de la page
 
@@ -727,7 +727,7 @@ La page en question est accessible à l'adresse suivante:
 
 	$urlRacine/dossier1/dossier2/page.php
 
-L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.pc` composeront le flux global du site.
+L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` composeront le flux global du site.
 
 ## Développement
 
