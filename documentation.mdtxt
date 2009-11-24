@@ -360,9 +360,9 @@ Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-
 
 Écrire le contenu en Markdown dans un fichier. Ensuite, faire appel à cette fonction dans la page du site. Exemple:
 
-1. Création du fichier `ma-page.php.mdtxt`, et rédaction du contenu en Markdown dans ce fichier.
+1. Création du fichier Markdown, par exemple `ma-page.php.mdtxt`, et rédaction du contenu en Markdown dans ce fichier.
 
-2. Création de la page `ma-page.php`, comme n'importe quelle autre page du site. On suppose dans cet exemple que le fichier `ma-page.php.mdtxt` et la page `ma-page.php` sont dans le même dossier (ce n'est pas obligatoire).
+2. Création de la page PHP, par exemple `ma-page.php`, comme n'importe quelle autre page du site. On suppose dans cet exemple que le fichier `ma-page.php.mdtxt` et la page `ma-page.php` sont dans le même dossier (ce n'est pas obligatoire).
 
 3. À l'intérieur de `ma-page.php`, à l'endroit où on insère habituellement le contenu, faire appel à la fonction suivante:
 

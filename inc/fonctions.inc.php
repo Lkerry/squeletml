@@ -19,6 +19,8 @@ function init($racine, $idGalerie)
 		$fichiers[] = $racine . '/site/inc/config.inc.php';
 	}
 	
+	$fichiers[] = $racine . '/admin/inc/fonctions.inc.php';
+	
 	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
 	{
 		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';

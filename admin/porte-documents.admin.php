@@ -804,18 +804,27 @@ if ($porteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
 	}
 	else
 	{
+		$fichierAcreerType = $_POST['porteDocumentsCreationType'];
+		
 		$fichierAcreerNom = securiseTexte($_POST['porteDocumentsCreationChemin']) . '/' . securiseTexte($_POST['porteDocumentsCreationNom']);
-
+		
 		if (!preg_match("|^$dossierRacine/|i", $fichierAcreerNom))
 		{
 			$fichierAcreerNom = "$dossierRacine/$fichierAcreerNom";
 		}
 		
-		$fichierAcreerType = $_POST['porteDocumentsCreationType'];
+		if ($fichierAcreerType == 'FichierModeleMarkdown')
+		{
+			$fichierMarkdownAcreerNom = $fichierAcreerNom . '.mdtxt';
+		}
 		
 		if (file_exists($fichierAcreerNom))
 		{
 			$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà."), "<code>$fichierAcreerNom</code>") . "</li>\n";
+		}
+		elseif ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierMarkdownAcreerNom))
+		{
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
 		}
 		else
 		{
@@ -823,7 +832,7 @@ if ($porteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
 			{
 				$messagesScript[] = adminMkdir($fichierAcreerNom, octdec(755), TRUE);
 			}
-			elseif ($fichierAcreerType == 'FichierVide' || $fichierAcreerType == 'FichierModele')
+			elseif ($fichierAcreerType == 'FichierVide' || $fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 			{
 				$page = basename($fichierAcreerNom);
 				$cheminPage = dirname($fichierAcreerNom);
@@ -841,11 +850,9 @@ if ($porteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
 				{
 					if (@touch($fichierAcreerNom))
 					{
-						// Ouverture de <li>
-						$messagesScript[] = "<li>";
+						$messagesScript[] = "<li>"; // Ouverture de <li>
 						$messagesScript[] = sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierAcreerNom</code>");
-				
-						if ($fichierAcreerType == 'FichierModele')
+						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 						{
 							if ($porteDocumentsDroits['editer'])
 							{
@@ -855,7 +862,43 @@ if ($porteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
 							{
 								$messagesScript[] = sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
 							}
-							
+						}
+						elseif ($porteDocumentsDroits['editer'])
+						{
+							$messagesScript[] = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
+						}
+						$messagesScript[] = "</li>\n"; // Fermeture de <li>
+					}
+					else
+					{
+						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierAcreerNom</code>") . "</li>\n";
+					}
+					
+					if ($fichierAcreerType == 'FichierModeleMarkdown' && @touch($fichierMarkdownAcreerNom))
+					{
+						$messagesScript[] = "<li>"; // Ouverture de <li>
+						$messagesScript[] = sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierMarkdownAcreerNom</code>");
+						if ($porteDocumentsDroits['editer'])
+						{
+							$messagesScript[] = sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+						}
+						else
+						{
+							$messagesScript[] = sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+						}
+					}
+					else
+					{
+						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
+					}
+					
+					if (
+						($fichierAcreerType != 'FichierModeleMarkdown' && file_exists($fichierAcreerNom)) ||
+						($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierAcreerNom) && file_exists($fichierMarkdownAcreerNom))
+					)
+					{
+						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
+						{
 							$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
 							$cheminInclude = dirname($cheminInclude);
 							if ($cheminInclude == '.')
@@ -876,9 +919,18 @@ if ($porteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
 								$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
 								$contenu .= '?>' . "\n";
 								$contenu .= "\n";
-								$contenu .= '<h1>Titre de la page</h1>' . "\n";
-								$contenu .= "\n";
-								$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
+								
+								if ($fichierAcreerType == 'FichierModeleHtml')
+								{
+									$contenu .= '<h1>Titre de la page</h1>' . "\n";
+									$contenu .= "\n";
+									$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
+								}
+								elseif ($fichierAcreerType == 'FichierModeleMarkdown')
+								{
+									$contenu .= '<?php echo mdtxt("' . basename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
+								}
+								
 								$contenu .= "\n";
 								$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 								fputs($fic, $contenu);
@@ -888,18 +940,21 @@ if ($porteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
 							{
 								$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
 							}
+							
+							if ($fic = @fopen($cheminPage . '/' . "$page.mdtxt", 'a'))
+							{
+								$contenu = '';
+								$contenu .= '# Titre de la page' . "\n";
+								$contenu .= "\n";
+								$contenu .= "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.";
+								fputs($fic, $contenu);
+								fclose($fic);
+							}
+							else
+							{
+								$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec syntaxe Markdown dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . "$page.mdtxt" . '</code>') . "</li>\n";
+							}
 						}
-						elseif ($porteDocumentsDroits['editer'])
-						{
-							$messagesScript[] = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
-						}
-						
-						// Fermeture de <li>
-						$messagesScript[] = "</li>\n";
-					}
-					else
-					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierAcreerNom</code>") . "</li>\n";
 					}
 				}
 			}
@@ -1288,8 +1343,9 @@ if ($porteDocumentsDroits['creer'])
 	echo '<p><label>' . T_("Type:") . "</label><br />\n";
 	echo '<select name="porteDocumentsCreationType" size="1">' . "\n";
 	echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
-	echo '<option value="FichierModele">' .  T_("Fichier modèle de page web") . "</option>\n";
 	echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
+	echo '<option value="FichierModeleHtml">' .  T_("Fichier modèle HTML de page web") . "</option>\n";
+	echo '<option value="FichierModeleMarkdown">' .  T_("Fichier modèle HTML de page web avec syntaxe Markdown") . "</option>\n";
 	echo "</select></p>\n";
 	echo "</fieldset>\n";
 	
