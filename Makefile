@@ -4,6 +4,9 @@
 ##
 ########################################################################
 
+# Chemin vers le dossier local de définition des languages pour GtkSourceView
+languageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+
 # Chemin vers le bureau
 bureau=`xdg-user-dir DESKTOP`
 
@@ -70,6 +73,10 @@ ChangeLog: menage-ChangeLog
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLog-$(tag)
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr status -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLog-$(tag)-fichiers
 
+ini: menage-ini
+	mkdir -p $(languageSpecs)/
+	cp src/ini-squeletml/ini-squeletml.lang $(languageSpecs)/
+
 menage-archives:
 	rm -f $(tag).tbz2
 	rm -f $(tag).zip
@@ -78,6 +85,9 @@ menage-ChangeLog:
 	rm -f ChangeLog
 	rm -f ChangeLog-$(tag)
 	rm -f ChangeLog-$(tag)-fichiers
+
+menage-ini:
+	rm -f $(languageSpecs)/ini-squeletml.lang
 
 menage-message-accueil:
 	rm -f inc/message-accueil.inc.php

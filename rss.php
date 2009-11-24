@@ -115,16 +115,18 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 		}
 		else
 		{
-			$galeries = tableauAssociatif($cheminConfigFluxRssGlobalGaleries);
+			$galeries = parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
 			$itemsFluxRss = array ();
-			if (!empty($galeries))
+			if ($galeries !== FALSE && !empty($galeries))
 			{
-				foreach ($galeries as $codeLangueIdGalerie => $urlRelativeGalerie)
+				foreach ($galeries as $codeLangue)
 				{
-					list ($codeLangue, $idGalerie) = explode(':', $codeLangueIdGalerie, 2);
 					if ($codeLangue == $getLangue)
 					{
-						$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
+						foreach ($codeLangue as $idGalerie => $urlRelativeGalerie)
+						{
+							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
+						}
 					}
 				}
 				
@@ -169,22 +171,18 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 		}
 		else
 		{
-			$pages = file(adminCheminConfigFluxRssGlobalSite($racine));
+			$pages = parse_ini_file(adminCheminConfigFluxRssGlobalSite($racine));
 			$itemsFluxRss = array ();
-			if (!empty($pages))
+			if ($pages !== FALSE && !empty($pages))
 			{
 				$i = 0;
-				foreach ($pages as $page)
+				foreach ($pages as $codeLangue)
 				{
-					if ($i < $nombreItemsFluxRss)
+					if ($codeLangue == $getLangue && $i < $nombreItemsFluxRss)
 					{
-						if (strpos($page, ':') !== FALSE)
+						foreach ($codeLangue['pages'] as $page)
 						{
-							list ($codeLangue, $page) = explode(':', $page, 2);
-						}
-						$page = rtrim($page);
-						if ($codeLangue == $getLangue)
-						{
+							$page = rtrim($page);
 							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page))));
 						}
 					}
@@ -194,15 +192,17 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site
 				if ($galerieFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 				{
-					$galeries = tableauAssociatif($cheminConfigFluxRssGlobalGaleries);
-					if (!empty($galeries))
+					$galeries = parse_ini_file($cheminConfigFluxRssGlobalGaleries);
+					if ($galeries !== FALSE && !empty($galeries))
 					{
-						foreach ($galeries as $codeLangueIdGalerie => $urlRelativeGalerie)
+						foreach ($galeries as $codeLangue)
 						{
-							list ($codeLangue, $idGalerie) = explode(':', $codeLangueIdGalerie, 2);
 							if ($codeLangue == $getLangue)
 							{
-								$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
+								foreach ($codeLangue as $idGalerie => $urlRelativeGalerie)
+								{
+									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
+								}
 							}
 						}
 					}

@@ -95,8 +95,12 @@ body#galeries-admin-php fieldset ul, body#rss-admin-php fieldset ul {
 	padding-left: 0px;
 }
 
-body#galeries-admin-php fieldset ul ul {
+body#galeries-admin-php fieldset ul ul, body#rss-admin-php fieldset ul ul {
 	padding-left: 20px;
+}
+
+body#rss-admin-php fieldset li.langue {
+	margin-bottom: 40px;
 }
 
 legend {

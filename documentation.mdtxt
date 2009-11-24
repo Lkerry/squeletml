@@ -696,12 +696,14 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
-	code de la langue:id de la galerie=URL relative de la galerie
+	[code de la langue]
+	id de la galerie=URL relative de la galerie
 
 Le code de la langue précise la langue de la syndication globale. L'id correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
 
-	fr:mes voyages=voyages.php
-	fr:animaux=dossier/galerie-animaux.php
+	[fr]
+	mes voyages=voyages.php
+	animaux=dossier/galerie-animaux.php
 
 Les deux galeries en question sont accessibles respectivement à l'adresse:
 
@@ -713,21 +715,32 @@ et:
 
 **Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
+*Note 2: avant la version 1.9.2, le fichier de configuration n'était pas un fichier `.ini`. La langue n'était pas une section du fichier de configuration, mais était déclarée sur chaque ligne, sous la forme `code de la langue:identifiant de la galerie=URL relative de la galerie`.*
+
 #### Syndication globale du site
 
 Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
 
-	code de la langue:URL relative de la page
+	[code de la langue]
+	pages[]=URL relative de la page
 
 Le code de la langue précise la langue de la syndication globale. L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
 
-	fr:dossier1/dossier2/page.php
+	[fr]
+	pages[]=dossier1/dossier2/page.php
+	pages[]=autrePage.php
 
-La page en question est accessible à l'adresse suivante:
+Les deux pages en question sont accessibles respectivement à l'adresse:
 
 	$urlRacine/dossier1/dossier2/page.php
 
+et:
+
+	$urlRacine/autrePage.php
+
 L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` composeront le flux global du site.
+
+*Note: avant la version 1.9.2, le fichier de configuration n'était pas un fichier `.ini`. La langue n'était pas une section du fichier de configuration, mais était déclarée sur chaque ligne, sous la forme `code de la langue:URL relative de la page`.*
 
 ## Développement
 
@@ -747,4 +760,12 @@ Les principales commandes du fichier `Makefile` sont:
 
 - `make publier`: crée des archives `.bz2` et `.zip`; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le `ChangeLog`) sur le bureau; et déplace les archives également sur le bureau. Est utilisé après un `bzr tag...` pour la sortie d'une nouvelle version.
 
-- `make ini`:
+- `make ini`: installe pour l'utilisateur courant la coloration syntaxique dans l'éditeur de texte gedit (sous GNU/Linux) pour les fichiers de configuration utilisés par Squeletml (configuration des galeries et des flux RSS globaux). Ces fichiers sont au format `.ini`. Contrairement à la coloration par défaut dans gedit, celle installée par `make ini` ne colore pas de délimiteurs de caractères (habituellement les guillemets et les apostrophes), ce qui évite par exemple qu'une apostrophe présente dans la valeur d'un paramètre, comme ceci:
+
+		parametre=Lorem ipsum l'orem
+
+	colore (sans raison) tout le texte qui suit.
+
+	Pour utiliser la coloration, démarrer ou redémarrer gedit et ouvrir un fichier de configuration. Si l'extension du fichier est `.ini.txt`, la coloration s'activera automatiquement, sinon aller dans le menu *Affichage > Mode de coloration > Autres* et choisir *.ini Squeletml*.
+
+	La désinstallation de la coloration se fait grâce à la commande `make menage-ini`.

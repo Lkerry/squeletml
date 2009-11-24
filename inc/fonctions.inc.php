@@ -1442,7 +1442,7 @@ Retourne le tableau final si le fichier de configuration existe et est accessibl
 */
 function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 {
-	if ($cheminConfigGalerie && $galerieIni = parse_ini_file($cheminConfigGalerie, TRUE))
+	if ($cheminConfigGalerie && ($galerieIni = parse_ini_file($cheminConfigGalerie, TRUE)) !== FALSE)
 	{
 		$galerie = array ();
 		

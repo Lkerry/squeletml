@@ -16,11 +16,11 @@ include '../init.inc.php';
 	{
 		if (isset($_POST['global']) && $_POST['global'] == 'galeries')
 		{
-			################################################################
+			###############################################################
 			#
 			# Pages des galeries
 			#
-			################################################################
+			###############################################################
 			
 			$messagesScript = array ();
 			$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine);
@@ -40,35 +40,49 @@ include '../init.inc.php';
 			}
 			else
 			{
-				if ($fic = @fopen($cheminFichier, 'r'))
+				if (($galeries = parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 				{
 					echo "<form action='$action#messages' method='post'>\n";
 					echo "<div>\n";
 					
-					$galeries = tableauAssociatif($cheminFichier);
 					$listeGaleries = '';
 					if (!empty($galeries))
 					{
-						foreach ($galeries as $codeLangueIdGalerie => $urlRelativeGalerie)
+						$i = 0;
+						foreach ($galeries as $codeLangue => $langueInfos)
 						{
-							list ($codeLangue, $idGalerie) = explode(':', $codeLangueIdGalerie, 2);
-							$listeGaleries .= '<li><input type="text" name="langue[]" value="' . $codeLangue . '" />:<input type="text" name="id[]" value="' . $idGalerie . '" />=<input type="text" name="url[]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
+							$listeGaleries .= '<li class="langue"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+							$listeGaleries .= "<ul class=\"triable\">\n";
+							foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
+							{
+								$listeGaleries .= '<li><input type="text" name="id[' . $i . '][]" value="' . $idGalerie . '" />=<input type="text" name="url[' . $i . '][]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
+							}
+							$listeGaleries .= "</ul></li>\n";
+							
+							$i++;
 						}
 					}
-				
-					fclose($fic);
 					
 					echo '<div class="sousBoite">' . "\n";
 					echo '<h3>' . T_("Liste des pages des galeries") . "</h3>\n";
 					
-					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:identifiant de la galerie=URL relative de la galerie</code>. Par exemple, %1\$s fait référence à une galerie en français dont l'identifiant est %2\$s et dont l'URL est %3\$s."), "<code>fr:chiens=animaux/chiens.php</code>", "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
+					echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>' . T_("identifiant de la galerie") . '=' . T_("URL relative de la galerie") . '</code>') . "</p>\n";
+					
+					echo "<ul>\n";
+					echo "<li>fr\n";
+					echo "<ul>\n";
+					echo "<li>chiens=animaux/chiens.php</li>\n";
+					echo "</ul></li>\n";
+					echo "</ul>\n";
+					
+					echo '<p>' . sprintf(T_("Cet exemple fait référence à une galerie en français dont l'identifiant est %1\$s et dont l'URL est %2\$s."), "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
 					
 					echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 					
 					echo "<fieldset>\n";
 					echo '<legend>' . T_("Options") . "</legend>\n";
 					
-					echo "<ul class=\"triable\">\n";
+					echo "<ul>\n";
 					if (!empty($listeGaleries))
 					{
 						echo $listeGaleries;
@@ -79,8 +93,14 @@ include '../init.inc.php';
 					}
 					echo "</ul>\n";
 					
-					echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong><br />\n";
-					echo '<input type="text" name="langueAjout" value="" />:<input type="text" name="idAjout" value="" />=<input type="text" name="urlAjout" value="" /></p>' . "\n";
+					echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong></p>\n";
+					
+					echo "<ul>\n";
+					echo '<li><input type="text" name="langueAjout" value="" />';
+					echo "<ul>\n";
+					echo '<li><input type="text" name="idAjout" value="" />=<input type="text" name="urlAjout" value="" /></li>' . "\n";
+					echo "</ul></li>\n";
+					echo "</ul>\n";
 					echo "</fieldset>\n";
 					
 					echo "<p><input type='submit' name='modifsGaleries' value='" . T_("Enregistrer les modifications") . "' /></p>\n";
@@ -98,11 +118,11 @@ include '../init.inc.php';
 		}
 		elseif (isset($_POST['global']) && $_POST['global'] == 'site')
 		{
-			################################################################
+			###############################################################
 			#
 			# Autres pages
 			#
-			################################################################
+			###############################################################
 			
 			$messagesScript = array ();
 			$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine);
@@ -122,7 +142,7 @@ include '../init.inc.php';
 			}
 			else
 			{
-				if (is_array($pages = file($cheminFichier)))
+				if (($pages = parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 				{
 					echo "<form action='$action#messages' method='post'>\n";
 					echo "<div>\n";
@@ -130,31 +150,43 @@ include '../init.inc.php';
 					if (!empty($pages))
 					{
 						$listePages = '';
-						foreach ($pages as $page)
+						$i = 0;
+						
+						foreach ($pages as $codeLangue => $langueInfos)
 						{
-							if (strpos($page, ':') !== FALSE)
+							$listePages .= '<li class="langue"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+							$listePages .= "<ul class=\"triable\">\n";
+							foreach ($langueInfos['pages'] as $page)
 							{
-								list ($codeLangue, $page) = explode(':', $page, 2);
+								$page = rtrim($page);
+								$listePages .= '<li>pages[]=<input type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
 							}
-							$page = rtrim($page);
-							if (!empty($codeLangue) && !empty($page))
-							{
-								$listePages .= '<li><input type="text" name="langue[]" value="' . $codeLangue . '" />:<input type="text" name="url[]" value="' . $page . '" /></li>' . "\n";
-							}
+							$listePages .= "</ul></li>\n";
+							
+							$i++;
 						}
 					}
 				
 					echo '<div class="sousBoite">' . "\n";
 					echo '<h3>' . T_("Liste des pages autres que les galeries") . "</h3>\n";
 					
-					echo '<p>' . sprintf(T_("Chaque ligne est sous la forme <code>code de la langue:URL relative de la page</code>. Par exemple, %1\$s fait référence à une page en français dont l'URL est %2\$s."), "<code>fr:animaux/chiens.php</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
+					echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>') . "</p>\n";
+					
+					echo "<ul>\n";
+					echo "<li>fr\n";
+					echo "<ul>\n";
+					echo "<li>pages[]=animaux/chiens.php</li>\n";
+					echo "</ul></li>\n";
+					echo "</ul>\n";
+					
+					echo '<p>' . sprintf(T_("Cet exemple fait référence à une page en français dont l'URL est %1\$s."), "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
 					
 					echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 					
 					echo "<fieldset>\n";
 					echo '<legend>' . T_("Options") . "</legend>\n";
 					
-					echo "<ul class=\"triable\">\n";
+					echo "<ul>\n";
 					if (!empty($listePages))
 					{
 						echo $listePages;
@@ -165,8 +197,14 @@ include '../init.inc.php';
 					}
 					echo "</ul>\n";
 					
-					echo '<p><strong>' . T_("Ajouter une page:") . "</strong><br />\n";
-					echo '<input type="text" name="langueAjout" value="" />:<input type="text" name="urlAjout" value="" /></p>' . "\n";
+					echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
+					
+					echo "<ul>\n";
+					echo '<li><input type="text" name="langueAjout" value="" />';
+					echo "<ul>\n";
+					echo '<li>pages[]=<input type="text" name="urlAjout" value="" /></li>' . "\n";
+					echo "</ul></li>\n";
+					echo "</ul>\n";
 					echo "</fieldset>\n";
 					
 					echo "<p><input type='submit' name='modifsSite' value='" . T_("Enregistrer les modifications") . "' /></p>\n";
@@ -184,33 +222,62 @@ include '../init.inc.php';
 			echo adminMessagesScript($messagesScript);
 		}
 	}
-
+	
 	if (isset($_POST['modifsGaleries']))
 	{
 		$messagesScript = array ();
 		
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications pour les galeries") . "</h3>\n" ;
-	
+		
 		$contenuFichierTableau = array ();
 		if (isset($_POST['langue']))
 		{
 			foreach ($_POST['langue'] as $cle => $postLangueValeur)
 			{
-				if (isset($postLangueValeur) && !empty($postLangueValeur) && isset($_POST['id'][$cle]) && !empty($_POST['id'][$cle]) && isset($_POST['url'][$cle]) && !empty($_POST['url'][$cle]))
+				$postLangueValeur = securiseTexte($postLangueValeur);
+				
+				if (!empty($postLangueValeur) && !empty($_POST['id'][$cle]) && !empty($_POST['url'][$cle]))
 				{
-					$contenuFichierTableau[] = securiseTexte($postLangueValeur) . ':' . securiseTexte($_POST['id'][$cle]) . '=' . securiseTexte($_POST['url'][$cle]) . "\n";
+					$contenuFichierTableau[$postLangueValeur] = array ();
+					
+					foreach ($_POST['id'][$cle] as $cle2 => $idGalerie)
+					{
+						if (!empty($idGalerie) && !empty($_POST['url'][$cle][$cle2]))
+						{
+							$contenuFichierTableau[$postLangueValeur][] = securiseTexte($idGalerie) . '=' . securiseTexte($_POST['url'][$cle][$cle2]) . "\n";
+						}
+					}
 				}
 			}
 		}
-	
-		if (isset($_POST['langueAjout']) && !empty($_POST['langueAjout']) && isset($_POST['idAjout']) && !empty($_POST['idAjout']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
+		
+		if (!empty($_POST['langueAjout']) && !empty($_POST['idAjout']) && !empty($_POST['urlAjout']))
 		{
-			array_unshift($contenuFichierTableau, securiseTexte($_POST['langueAjout']) . ':' . securiseTexte($_POST['idAjout']) . '=' . securiseTexte($_POST['urlAjout']) . "\n");
+			$langueAjout = securiseTexte($_POST['langueAjout']);
+			
+			if (!isset($contenuFichierTableau[$langueAjout]))
+			{
+				$contenuFichierTableau[$langueAjout] = array ();
+			}
+			
+			array_unshift($contenuFichierTableau[$langueAjout], securiseTexte($_POST['idAjout']) . '=' . securiseTexte($_POST['urlAjout']) . "\n");
 		}
-	
-		$contenuFichier = implode('', $contenuFichierTableau);
-	
+		
+		$contenuFichier = '';
+		foreach ($contenuFichierTableau as $codeLangue => $langueInfos)
+		{
+			if (!empty($langueInfos))
+			{
+				$contenuFichier .= "[$codeLangue]\n";
+				foreach ($langueInfos as $ligne)
+				{
+					$contenuFichier .= $ligne;
+				}
+				$contenuFichier .= "\n";
+			}
+		}
+		
 		$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine);
 		
 		if ($cheminFichier)
@@ -271,20 +338,47 @@ include '../init.inc.php';
 		{
 			foreach ($_POST['langue'] as $cle => $postLangueValeur)
 			{
-				if (isset($postLangueValeur) && !empty($postLangueValeur) && isset($_POST['url'][$cle]) && !empty($_POST['url'][$cle]))
+				if (!empty($postLangueValeur) && !empty($_POST['url'][$cle]))
 				{
-					$contenuFichierTableau[] = securiseTexte($postLangueValeur) . ':' . securiseTexte($_POST['url'][$cle]) . "\n";
+					$contenuFichierTableau[$postLangueValeur] = array ();
+					
+					foreach ($_POST['url'][$cle] as $page)
+					{
+						if (!empty($page))
+						{
+							$contenuFichierTableau[$postLangueValeur][] = 'pages[]=' . securiseTexte($page) . "\n";
+						}
+					}
 				}
 			}
 		}
-	
-		if (isset($_POST['langueAjout']) && !empty($_POST['langueAjout']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
+		
+		if (!empty($_POST['langueAjout']) && !empty($_POST['urlAjout']))
 		{
-			array_unshift($contenuFichierTableau, securiseTexte($_POST['langueAjout']) . ':' . securiseTexte($_POST['urlAjout']) . "\n");
+			$langueAjout = securiseTexte($_POST['langueAjout']);
+			
+			if (!isset($contenuFichierTableau[$langueAjout]))
+			{
+				$contenuFichierTableau[$langueAjout] = array ();
+			}
+			
+			array_unshift($contenuFichierTableau[$langueAjout], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
 		}
-	
-		$contenuFichier = implode('', $contenuFichierTableau);
-	
+		
+		$contenuFichier = '';
+		foreach ($contenuFichierTableau as $codeLangue => $langueInfos)
+		{
+			if (!empty($langueInfos))
+			{
+				$contenuFichier .= "[$codeLangue]\n";
+				foreach ($langueInfos as $ligne)
+				{
+					$contenuFichier .= $ligne;
+				}
+				$contenuFichier .= "\n";
+			}
+		}
+		
 		$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine);
 		
 		if ($cheminFichier)
