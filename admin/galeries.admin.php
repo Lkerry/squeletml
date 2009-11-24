@@ -1363,6 +1363,7 @@ include '../init.inc.php';
 					<option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
 					<option value="originalNom">originalNom</option>
 					<option value="exclure">exclure</option>
+					<option value="commentaire">commentaire</option>
 				</select></p>
 			</fieldset>
 			

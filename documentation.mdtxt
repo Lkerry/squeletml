@@ -575,6 +575,10 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		exclure=oui
 
+- `commentaire`: n'est pas utilisé par Squeletml pour l'affichage de l'oeuvre. Il s'agit d'un paramètre utile pour ajouter des notes personnelles quand on modifie le fichier de configuration dans un éditeur de texte sans passer par la section d'administration de Squeletml. Exemple:
+
+		commentaire=Photographie à 50% de sa taille originale.
+
 Voici un exemple pour une galerie de deux images:
 
 	[fichier1.jpg]
@@ -601,6 +605,7 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	pageIntermediaireMotsCles=
 	originalNom=
 	exclure=
+	commentaire=
 
 *Note: avant la version 1.9.2, le fichier de configuration n'était pas un fichier `.ini`. Chaque oeuvre était déclarée par le champ `intermediaireNom`, qui était la seule information obligatoire, et se terminait par un marqueur `#IMG` ou, avant la version 1.8.8, par `__IMG__`. Voici un exemple:*
 
