@@ -15,6 +15,9 @@ $langueParDefaut = 'fr';
 // URL relative de la page de maintenance à partir de `$urlRacine/`
 $urlMaintenance = 'maintenance.php';
 
+// Taille du dossier de cache en octets
+$adminTailleCache = '2097152';
+
 ########################################################################
 ##
 ## Porte-documents

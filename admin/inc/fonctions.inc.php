@@ -191,7 +191,7 @@ function adminListeFiltreeDossiers($dossierRacine, $typeFiltreDossiers, $tableau
 /**
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits)
+function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacine, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits)
 {
 	$racine = dirname($racineAdmin);
 	static $liste = array ();
@@ -219,7 +219,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacin
 					}
 					else
 					{
-						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
+						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacine . '/' . $fichier, $typeFiltreDossiers, $tableauDossiersFiltres, $action, $symboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
 					}
 				}
 				else
@@ -254,7 +254,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacin
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 					}
 				
-					$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierRacine/$fichier", $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+					$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierRacine/$fichier", TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				
 					$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 				
@@ -287,7 +287,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierRacin
 /**
 Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans le porte-documents.
 */
-function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	clearstatcache();
 	
@@ -305,14 +305,21 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $typeMime
 	
 	$stat = stat($cheminFichier);
 	
-	if ($typeMime == 'image/gif' || $typeMime == 'image/jpeg' || $typeMime == 'image/png')
+	if (@getimagesize($cheminFichier) !== FALSE)
 	{
-		list ($larg, $haut, $type, $attr) = getimagesize($cheminFichier);
+		list ($larg, $haut, $type, $attr) = @getimagesize($cheminFichier);
 		$dimensionsImage = "$larg px × $haut px";
+	}
+	else
+	{
+		$dimensionsImage = FALSE;
+	}
+	
+	if ($apercu && ($typeMime == 'image/gif' || $typeMime == 'image/jpeg' || $typeMime == 'image/png'))
+	{
+		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite dépassée).
 		
-		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite atteinte de 2 Mio).
-		
-		if (adminTailleCache($racineAdmin) > 2097152)
+		if (adminTailleCache($racineAdmin) > $adminTailleCache)
 		{
 			adminVideCache($racineAdmin);
 		}
@@ -327,16 +334,8 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $typeMime
 		if (file_exists($cheminApercuImage))
 		{
 			list ($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
-			$apercuImage = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacineAdmin . "/cache/" . basename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
+			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacineAdmin . "/cache/" . basename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
 		}
-		else
-		{
-			$apercuImage = FALSE;
-		}
-	}
-	else
-	{
-		$dimensionsImage = FALSE;
 	}
 	
 	$infobulle .= "<a class=\"porteDocumentsProprietesFichier\" href=\"#\"><img src=\"$urlRacineAdmin/fichiers/proprietes.png\" alt=\"" . T_("Propriétés") . "\" width=\"16\" height=\"16\" /><span>";
@@ -349,11 +348,11 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $typeMime
 		if ($dimensionsImage)
 		{
 			$infobulle .= sprintf(T_("<strong>Dimensions:</strong> %1\$s"), $dimensionsImage) . "<br />\n";
-			
-			if ($apercuImage)
-			{
-				$infobulle .= sprintf(T_("<strong>Aperçu:</strong> %1\$s"), $apercuImage) . "<br />\n";
-			}
+		}
+		
+		if ($apercu)
+		{
+			$infobulle .= sprintf(T_("<strong>Aperçu:</strong> %1\$s"), $apercu) . "<br />\n";
 		}
 		
 		$infobulle .= sprintf(T_("<strong>Dernier accès:</strong> %1\$s"), date('Y-m-d H:i:s T', $stat['atime'])) . "<br />\n";

@@ -112,6 +112,17 @@ li {
 	margin-bottom: 5px;
 }
 
+.galerieMinivignettes img {
+	float: left;
+	height: 35px;
+	border: 1px dashed #b3b3b3;
+	margin: 2px;
+}
+
+.sepGalerieMinivignettes {
+	clear: both;
+}
+
 .erreur, .erreur code {
 	color: #630000;
 }
@@ -252,7 +263,7 @@ a.porteDocumentsProprietesFichier:hover span {
 }
 
 a.porteDocumentsProprietesFichier img {
-	border: none;
+/*	border: none;*/
 }
 
 img.infobulleApercuImage {

@@ -57,7 +57,57 @@ include '../init.inc.php';
 					
 					$parcoursDossier = '<li><a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . T_("Parcourir le dossier") . "</a></li>\n";
 					
-					$apercu = '';
+					if ($cheminConfigGalerie)
+					{
+						$galerie = tableauGalerie(adminCheminConfigGalerie($racine, $fichier), TRUE);
+						$nombreDoeuvres = count($galerie);
+						$corpsMinivignettes = '';
+						
+						for ($j = 0; $j <= ($nombreDoeuvres - 1) && $j < $nombreDoeuvres; $j++)
+						{
+							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, $galerie[$j], $galerieNavigation, FALSE, 'vignette', FALSE, 'aucun', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
+							$minivignette = $resultat[1];
+							
+							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $galerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$config = '';
+							foreach ($galerie[$j] as $parametre => $valeur)
+							{
+								if ($parametre == 'intermediaireNom')
+								{
+									$sectionConfig = "[$valeur]<br />\n";
+								}
+								else
+								{
+									$config .= "$parametre=$valeur<br />\n";
+								}
+							}
+							$config = "<br />\n<strong>" . T_("Configuration:") . "</strong><br />\n" . $sectionConfig . $config;
+							$infobulle = str_replace('</span>', $config . '</span>', $infobulle);
+							
+							$minivignette = preg_replace('|(<img[^>]+/>)|', $minivignette, $infobulle);
+							
+							$corpsMinivignettes .= $minivignette;
+						}
+						
+						if (!empty($corpsMinivignettes))
+						{
+							$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
+							
+							$corpsMinivignettes .= '</div><!-- /class=galerieMinivignettes -->' . "\n";
+							$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+							
+							$apercu = "<li>" . sprintf(T_("Aperçu: %1\$s"), $corpsMinivignettes) . "</li>\n";
+						}
+						else
+						{
+							$apercu = '';
+						}
+					}
+					else
+					{
+						$apercu = '';
+					}
 					
 					$messagesScript[] = '<li>' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
 					$messagesScript[] = "<ul>\n";

@@ -526,7 +526,7 @@ if ($porteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['action']
 	{
 		if (file_exists($getValeur))
 		{
-			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications». <strong>Attention</strong> de ne pas modifier un fichier binaire. Ceci le corromprait."), "<code>$getValeur</code> " . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)) . "</p>\n";
+			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications». <strong>Attention</strong> de ne pas modifier un fichier binaire. Ceci le corromprait."), "<code>$getValeur</code> " . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)) . "</p>\n";
 		}
 		else
 		{
@@ -1136,7 +1136,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	else
 	{
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $dossierCourant, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir, $typeFiltreDossiers, $tableauFiltresDossiers, $action, $symboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $porteDocumentsDroits);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1203,7 +1203,7 @@ foreach ($listeDossiers as $listeDossier)
 	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	}
 	
-	$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	
 	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	
