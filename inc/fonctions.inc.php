@@ -1396,32 +1396,6 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $infosOeuvre, $g
 }
 
 /**
-Construit et retourne un tableau associatif à partir d'un fichier texte dont chaque ligne a la forme `clé=valeur`.
-*/
-function tableauAssociatif($fichierTexte)
-{
-	$tableau = array ();
-	
-	$fic = @fopen($fichierTexte, 'r');
-	if ($fic)
-	{
-		while (!feof($fic))
-		{
-			$ligne = rtrim(fgets($fic));
-			if (strstr($ligne, '='))
-			{
-				list ($cle, $valeur) = explode('=', $ligne, 2);
-				$tableau[$cle] = $valeur;
-			}
-		}
-		
-		fclose($fic);
-	}
-	
-	return $tableau;
-}
-
-/**
 Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui`. Par exemple, le fichier `.ini` suivant:
 
 [image1.png]
