@@ -165,6 +165,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 		$fichiersAcopier = securiseTexte($_POST['porteDocumentsFichiers']);
 		$fichiersAcopier = adminEmplacementsPermis($fichiersAcopier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
 		$fichiersAcopier = adminEmplacementsModifiables($fichiersAcopier, $adminDossierRacine);
+		$fichiersAcopier = adminTriParProfondeur($fichiersAcopier);
 		
 		foreach ($fichiersAcopier as $fichierAcopier)
 		{
@@ -297,6 +298,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 		$fichiersAdeplacer = securiseTexte($_POST['porteDocumentsFichiers']);
 		$fichiersAdeplacer = adminEmplacementsPermis($fichiersAdeplacer, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
 		$fichiersAdeplacer = adminEmplacementsModifiables($fichiersAdeplacer, $adminDossierRacine);
+		$fichiersAdeplacer = adminTriParProfondeur($fichiersAdeplacer);
 		$cheminDeDeplacement = securiseTexte($_POST['porteDocumentsDeplacementChemin']);
 	
 		foreach ($fichiersAdeplacer as $fichierAdeplacer)
@@ -389,6 +391,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 		$fichiersAsupprimer = securiseTexte($_POST['porteDocumentsFichiers']);
 		$fichiersAsupprimer = adminEmplacementsPermis($fichiersAsupprimer, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
 		$fichiersAsupprimer = adminEmplacementsModifiables($fichiersAsupprimer, $adminDossierRacine);
+		$fichiersAsupprimer = adminTriParProfondeur($fichiersAsupprimer);
 		
 		foreach ($fichiersAsupprimer as $fichierAsupprimer)
 		{
@@ -493,6 +496,7 @@ if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPer
 		$fichiersAmodifier = securiseTexte($_POST['porteDocumentsFichiers']);
 		$fichiersAmodifier = adminEmplacementsPermis($fichiersAmodifier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
 		$fichiersAmodifier = adminEmplacementsModifiables($fichiersAmodifier, $adminDossierRacine);
+		$fichiersAmodifier = adminTriParProfondeur($fichiersAmodifier);
 		$permissions = octdec($_POST['porteDocumentsPermissionsValeur']);
 		
 		if (isset($_POST['porteDocumentsPermissionsRecursives']) && $_POST['porteDocumentsPermissionsRecursives'] == 'permissionsRecursives')
@@ -548,7 +552,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 	}
 	elseif (!adminEmplacementPermis($getValeur, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas un emplacement gérable par le porte-documents."), "<code>$getValeur</code>") . "</li>\n";
+		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$getValeur</code>") . "</li>\n";
 	}
 	else
 	{
@@ -640,7 +644,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 	}
 	elseif (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas un emplacement gérable par le porte-documents."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
+		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 	}
 	else
 	{
@@ -701,7 +705,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 	
 	if (!adminEmplacementPermis($ancienNom, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
+		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementModifiable($ancienNom, $adminDossierRacine))
 	{
@@ -799,7 +803,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 	}
 	elseif (!adminEmplacementPermis($ancienNom, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
+		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($nouveauNom, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
@@ -886,7 +890,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 		}
 		elseif (!adminEmplacementPermis($fichierAcreerNom, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas un emplacement gérable par le porte-documents."), "<code>$fichierAcreerNom</code>") . "</li>\n";
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$fichierAcreerNom</code>") . "</li>\n";
 		}
 		else
 		{
@@ -1199,6 +1203,10 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	elseif (!is_dir($dossierAparcourir))
 	{
 		echo '<p class="erreur">' . sprintf(T_("%1\$s n'est pas un dossier."), "<code>$dossierAparcourir</code>") . "</p>\n";
+	}
+	elseif (!adminEmplacementPermis($dossierAparcourir, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	{
+		echo '<p class="erreur">' . sprintf(T_("L'emplacement %1\$s n'est pas gérable par le porte-documents."), "<code>$dossierAparcourir</code>") . "</p>\n";
 	}
 	else
 	{

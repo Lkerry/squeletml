@@ -1,11 +1,63 @@
 <?php
 /**
+Retourne le tableau trié en ordre décroissant selon le nombre de dossiers parents du fichier. Par exemple, la liste suivante:
+
+../site/fichiers/documents
+../site/fichiers/galeries/galerie
+../site/fichiers/images
+../css
+../js
+
+sera retournée ainsi:
+
+../site/fichiers/galeries/galerie
+../site/fichiers/images
+../site/fichiers/documents
+../js
+../css
+*/
+function adminTriParProfondeur($tableauFichiers)
+{
+	$tableauFichiersTemp = array ();
+	
+	foreach ($tableauFichiers as $cheminFichier)
+	{
+		$profondeur = substr_count($cheminFichier, '/');
+		$tableauFichiersTemp[$profondeur][] = $cheminFichier;
+	}
+	
+	krsort($tableauFichiersTemp);
+	
+	$tableauFichiers = array ();
+	
+	foreach ($tableauFichiersTemp as $profondeur)
+	{
+		natcasesort($profondeur);
+		$profondeur = array_reverse($profondeur);
+		
+		foreach ($profondeur as $cheminFichier)
+		{
+			$tableauFichiers[] = $cheminFichier;
+		}
+	}
+	
+	return $tableauFichiers;
+}
+
+/**
 Retourne TRUE s'il est permis de gérer l'emplacement du fichier passé en paramètre, sinon retourne FALSE.
 */
 function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
 {
 	$adminDossierRacine = realpath($adminDossierRacine);
-	$cheminFichier = realpath($cheminFichier);
+	
+	$cheminTestFichier = $cheminFichier;
+	do
+	{
+		$chemin = realpath($cheminTestFichier);
+	} while ($chemin === FALSE && $cheminTestFichier = dirname($cheminTestFichier));
+	
+	$cheminFichier = $chemin;
 	
 	if (is_dir($cheminFichier))
 	{
