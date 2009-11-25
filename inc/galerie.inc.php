@@ -212,7 +212,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		$corpsMinivignettes = '';
 		if ($galerieMinivignettes)
 		{
-			$corpsMinivignettes .= '<div id="sepGalerieMinivignettes"></div>' . "\n";
+			$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
 			$corpsMinivignettes .= '<div id="galerieMinivignettes">' . "\n";
 			
 			// Calcul des minivignettes à afficher
@@ -306,7 +306,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 			}
 			
 			$corpsMinivignettes .= '</div><!-- /galerieMinivignettes -->' . "\n";
-			$corpsMinivignettes .= '<div id="sepGalerieMinivignettes"></div>' . "\n";
+			$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
 		}
 		
 		// Variable `$corpsGalerie` finale

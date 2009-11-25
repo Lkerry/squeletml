@@ -44,6 +44,6 @@ foreach (adminInit($racineAdmin) as $fichier)
 ########################################################################
 
 // Nécessaire à la traduction
-phpGettext('..', langue($langueParDefaut, $langueParDefaut));
+phpGettext('..', langue($adminLangueParDefaut, $adminLangueParDefaut));
 
 ?>

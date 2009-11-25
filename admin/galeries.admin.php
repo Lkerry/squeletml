@@ -41,7 +41,7 @@ include '../init.inc.php';
 					
 					if ($cheminConfigGalerie)
 					{
-						if ($porteDocumentsDroits['editer'])
+						if ($adminPorteDocumentsDroits['editer'])
 						{
 							$fichierDeConfiguration = '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . basename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messagesPorteDocuments">' . T_("Modifier le fichier de configuration") . "</a></li>\n";
 						}
@@ -65,11 +65,11 @@ include '../init.inc.php';
 						
 						for ($j = 0; $j <= ($nombreDoeuvres - 1) && $j < $nombreDoeuvres; $j++)
 						{
-							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, $galerie[$j], $galerieNavigation, FALSE, 'vignette', FALSE, 'aucun', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, $galerie[$j], $galerieNavigation, FALSE, 'vignette', FALSE, 'aucun', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 							$minivignette = $resultat[1];
 							
-							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $galerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $galerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 							$config = '';
 							foreach ($galerie[$j] as $parametre => $valeur)
 							{
@@ -181,9 +181,9 @@ include '../init.inc.php';
 				}
 				elseif (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGaleries . '/' . $nomArchive))
 				{
-					$typeMime = mimedetect_mime(array ('filepath' => $cheminGaleries . '/' . $nomArchive, 'filename' => $nomArchive), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+					$typeMime = mimedetect_mime(array ('filepath' => $cheminGaleries . '/' . $nomArchive, 'filename' => $nomArchive), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 					
-					if (!adminTypeMimePermis($typeMime, $filtreTypesMime, $typesMimePermis))
+					if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 					{
 						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomArchive</code>", "<code>$typeMime</code>") . "</li>\n";
 					}
@@ -221,9 +221,9 @@ include '../init.inc.php';
 								
 								if ($infoImage['status'] == 'ok')
 								{
-									$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+									$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 									
-									if (!adminTypeMimePermis($typeMimeFichier, $filtreTypesMime, $typesMimePermis))
+									if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 									{
 										@unlink($cheminFichier);
 										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
@@ -280,9 +280,9 @@ include '../init.inc.php';
 										{
 											fclose($fic);
 											
-											$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+											$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 											
-											if (!adminTypeMimePermis($typeMimeFichier, $filtreTypesMime, $typesMimePermis))
+											if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 											{
 												@unlink($cheminFichier);
 												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
@@ -393,7 +393,7 @@ include '../init.inc.php';
 							
 							$renommer = FALSE;
 							
-							$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 							
 							if (($renommerTout || (!preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '$/', $fichier))) && adminImageValide($typeMime))
 							{
@@ -496,7 +496,7 @@ include '../init.inc.php';
 									}
 								}
 								
-								$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+								$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 								
 								$messagesScript[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, FALSE, $typeMime);
 							}
@@ -572,7 +572,7 @@ include '../init.inc.php';
 					$fichierAsupprimer = FALSE;
 					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
-						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 						
 						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 						
@@ -633,7 +633,7 @@ include '../init.inc.php';
 								$infoFichier['extension'] = '';
 							}
 							
-							$typeMime = mimedetect_mime(array ('filepath' => $cheminTatouage . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$typeMime = mimedetect_mime(array ('filepath' => $cheminTatouage . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 							
 							if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
 							{
@@ -705,7 +705,7 @@ include '../init.inc.php';
 	##
 	########################################################################
 
-	if ($porteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
+	if ($adminPorteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
 	{
 		$messagesScript = array ();
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
@@ -773,7 +773,7 @@ include '../init.inc.php';
 				{
 					if (file_exists($cheminPage . '/' . $page))
 					{
-						if ($porteDocumentsDroits['editer'])
+						if ($adminPorteDocumentsDroits['editer'])
 						{
 							$messagesScript[] = '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 						}
@@ -801,7 +801,7 @@ include '../init.inc.php';
 						
 							fclose($fic);
 							
-							if ($porteDocumentsDroits['editer'])
+							if ($adminPorteDocumentsDroits['editer'])
 							{
 								$messagesScript[] = '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>éditer le fichier</a> ou <a href='%2\$s'>visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant' . rawurlencode(dirname($cheminPage . '/' . $page)) . '=#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 							}
@@ -857,7 +857,7 @@ include '../init.inc.php';
 				{
 					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
-						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 						
 						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires, FALSE, $typeMime);
 						
@@ -948,7 +948,7 @@ include '../init.inc.php';
 				$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id, TRUE);
 			}
 			
-			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance))
+			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance))
 			{
 				if ($configExisteAuDepart)
 				{
@@ -997,7 +997,7 @@ include '../init.inc.php';
 		echo '<h4>' . T_("Information") . "</h4>\n" ;
 		
 		echo "<ul>\n";
-		if ($porteDocumentsDroits['editer'])
+		if ($adminPorteDocumentsDroits['editer'])
 		{
 			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . basename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
 		}
@@ -1026,9 +1026,9 @@ include '../init.inc.php';
 <div class="boite">
 	<h2><?php echo T_("Lister les galeries existantes"); ?></h2>
 	
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
-			<?php if ($porteDocumentsDroits['editer']): ?>
+			<?php if ($adminPorteDocumentsDroits['editer']): ?>
 				<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie a un fichier de configuration, un lien vous permettra de modifier ce dernier dans le porte-documents."); ?></p>
 			<?php else: ?>
 				<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes, qu'elles aient ou non un fichier de configuration."); ?></p>
@@ -1052,9 +1052,9 @@ include '../init.inc.php';
 	
 	<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
 
-	<p><?php printf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichiers), $tailleMaxFichiers); ?></p>
+	<p><?php printf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s Mio (%2\$s octets)."), octetsVersMio($adminTailleMaxFichiers), $adminTailleMaxFichiers); ?></p>
 
-	<form action="<?php echo $action; ?>#messages" method="post" enctype="multipart/form-data">
+	<form action="<?php echo $adminAction; ?>#messages" method="post" enctype="multipart/form-data">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
@@ -1097,7 +1097,7 @@ include '../init.inc.php';
 
 	<p><?php echo T_("Vous pouvez générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermédiaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
 
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
@@ -1177,7 +1177,7 @@ include '../init.inc.php';
 	
 	<p><?php echo T_("Il est aussi possible de supprimer le fichier de configuration de la galerie ainsi que le dossier de la galerie si ce dernier est vide."); ?></p>
 	
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
@@ -1243,7 +1243,7 @@ include '../init.inc.php';
 
 	<p><?php echo T_("Vous pouvez renommer une galerie. S'il s'agit d'une galerie déjà utilisée sur votre site, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page web de votre galerie."); ?></p>
 
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
@@ -1267,7 +1267,7 @@ include '../init.inc.php';
 	</form>
 </div><!-- /class=boite -->
 
-<?php if ($porteDocumentsDroits['telecharger']): ?>
+<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
 	<!-- class=boite -->
 
 	<div class="boite">
@@ -1275,7 +1275,7 @@ include '../init.inc.php';
 
 		<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
 
-		<form action="<?php echo $action; ?>#messages" method="post">
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
@@ -1307,7 +1307,7 @@ include '../init.inc.php';
 
 	<p><?php echo T_("Vous pouvez ajouter une page sur votre site pour présenter une galerie."); ?></p>
 
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
@@ -1341,7 +1341,7 @@ include '../init.inc.php';
 
 	<p><?php echo T_("Crée ou met à jour le fichier de configuration de cette galerie."); ?></p>
 
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
@@ -1378,7 +1378,7 @@ include '../init.inc.php';
 <div class="boite">
 	<h2><?php echo T_("Afficher un modèle de fichier de configuration"); ?></h2>
 
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>

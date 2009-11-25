@@ -413,11 +413,11 @@ include 'inc/premier.inc.php';
 				$htaccess .= "\tRewriteCond %{REMOTE_ADDR} !^$ip\n";
 			}
 		
-			preg_match('|^[a-z]+://' . $_SERVER['SERVER_NAME'] . '(/.+)|i', $urlRacine . '/' . $urlMaintenance, $resultat);
-			$urlMaintenanceDansHtaccess = $resultat[1];
+			preg_match('|^[a-z]+://' . $_SERVER['SERVER_NAME'] . '(/.+)|i', $urlRacine . '/' . $adminUrlMaintenance, $resultat);
+			$adminUrlMaintenanceDansHtaccess = $resultat[1];
 		
-			$htaccess .= "\tRewriteCond %{REQUEST_URI} !$urlMaintenanceDansHtaccess$\n";
-			$htaccess .= "\tRewriteRule .* $urlMaintenanceDansHtaccess [L]\n";
+			$htaccess .= "\tRewriteCond %{REQUEST_URI} !$adminUrlMaintenanceDansHtaccess$\n";
+			$htaccess .= "\tRewriteRule .* $adminUrlMaintenanceDansHtaccess [L]\n";
 			$htaccess .= "</IfModule>\n";
 			$htaccess .= "# Fin de l'ajout automatique de Squeletml (maintenance).\n";
 	
@@ -556,7 +556,7 @@ include 'inc/premier.inc.php';
 
 		<p><?php echo T_("Vous pouvez afficher la liste des utilisateurs ayant accès à l'administration."); ?></p>
 
-		<form action="<?php echo $action; ?>#messages" method="post">
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
 				<p><input type="submit" name="lister" value="<?php echo T_('Lister les utilisateurs'); ?>" /></p>
 			</div>
@@ -568,7 +568,7 @@ include 'inc/premier.inc.php';
 
 		<p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
 
-		<form action="<?php echo $action; ?>#messages" method="post">
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
@@ -596,7 +596,7 @@ include 'inc/premier.inc.php';
 			<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
 		<?php endif; ?>
 
-		<form action="<?php echo $action; ?>#messages" method="post">
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
@@ -627,7 +627,7 @@ include 'inc/premier.inc.php';
 		</form>
 	</div><!-- /class=boite -->
 	
-	<?php if ($porteDocumentsDroits['telecharger']): ?>
+	<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
 		<div class="boite">
 			<h2><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
 		

@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 
-if ($porteDocumentsDroits['telecharger'])
+if ($adminPorteDocumentsDroits['telecharger'])
 {
 	$chemin = $_GET['fichier'];
 	$nom = basename($chemin);
@@ -55,7 +55,7 @@ if ($porteDocumentsDroits['telecharger'])
 			}
 			else
 			{
-				$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
 	
 				if ($typeMime == 'application/octet-stream')
 				{

@@ -7,7 +7,7 @@
 				<script type="text/javascript">SET_DHTML('redimensionnable' + RESIZABLE);</script>
 			<?php endif; ?>
 
-			<?php if ($colorationSyntaxique): ?>
+			<?php if ($adminColorationSyntaxique): ?>
 				<?php if (isset($_GET['action']) && $_GET['action'] = 'editer' && isset($_GET['valeur']) && preg_match('|\.css$|', $_GET['valeur'])): ?>
 					<script type="text/javascript">
 						var editor = CodeMirror.fromTextArea('code', {

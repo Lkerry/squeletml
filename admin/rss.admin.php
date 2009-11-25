@@ -29,7 +29,7 @@ include '../init.inc.php';
 			{
 				$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine, TRUE);
 				
-				if ($porteDocumentsDroits['creer'])
+				if ($adminPorteDocumentsDroits['creer'])
 				{
 					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</li>\n";
 				}
@@ -42,7 +42,7 @@ include '../init.inc.php';
 			{
 				if (($galeries = parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 				{
-					echo "<form action='$action#messages' method='post'>\n";
+					echo "<form action='$adminAction#messages' method='post'>\n";
 					echo "<div>\n";
 					
 					$listeGaleries = '';
@@ -131,7 +131,7 @@ include '../init.inc.php';
 			{
 				$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine, TRUE);
 				
-				if ($porteDocumentsDroits['creer'])
+				if ($adminPorteDocumentsDroits['creer'])
 				{
 					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.ini.txt#messagesPorteDocuments') . "</li>\n";
 				}
@@ -144,7 +144,7 @@ include '../init.inc.php';
 			{
 				if (($pages = parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 				{
-					echo "<form action='$action#messages' method='post'>\n";
+					echo "<form action='$adminAction#messages' method='post'>\n";
 					echo "<div>\n";
 				
 					if (!empty($pages))
@@ -307,7 +307,7 @@ include '../init.inc.php';
 			$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine, TRUE);
 			$messagesScript[] = '<li>';
 			
-			if ($porteDocumentsDroits['creer'])
+			if ($adminPorteDocumentsDroits['creer'])
 			{
 				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</p>\n";
 			}
@@ -408,7 +408,7 @@ include '../init.inc.php';
 			$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine, TRUE);
 			$messagesScript[] = '<li>';
 			
-			if ($porteDocumentsDroits['creer'])
+			if ($adminPorteDocumentsDroits['creer'])
 			{
 				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.ini.txt#messagesPorteDocuments') . "</p>\n";
 			}
@@ -447,7 +447,7 @@ include '../init.inc.php';
 		<?php endif; ?>
 	</ul>
 	
-	<?php if ($porteDocumentsDroits['editer']): ?>
+	<?php if ($adminPorteDocumentsDroits['editer']): ?>
 		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messagesPorteDocuments"><?php echo T_("Modifier cette configuration."); ?></a></p>
 	<?php endif; ?>
 </div><!-- /class=boite -->
@@ -455,7 +455,7 @@ include '../init.inc.php';
 <div class="boite">
 	<h2><?php echo T_("Pages ajoutées aux flux RSS globaux"); ?></h2>
 
-	<form action="<?php echo $action; ?>#messages" method="post">
+	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>

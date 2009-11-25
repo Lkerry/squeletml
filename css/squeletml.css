@@ -510,7 +510,7 @@ div.minivignetteOeuvreEnCours img {
 	border-right: 5px solid #b3b3b3 !important;
 }
 
-div#sepGalerieMinivignettes {
+div.sepGalerieMinivignettes {
 	clear: both;
 	margin-bottom: 15px;
 }
