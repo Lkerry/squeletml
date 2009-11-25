@@ -41,21 +41,21 @@ $adminDossierRacine = '..';
 // Filtre des dossiers
 /*
 - Il est possible d'appliquer un filtre à la liste de dossiers.
-- Pour ne préciser que les dossiers à lister, mettre 'dossiersPermis'
+- Pour ne préciser que les dossiers à prendre en compte, mettre 'dossiersPermis'
 - Pour ne préciser que les dossiers à exclure, mettre 'dossiersExclus'
 - Pour ne pas appliquer de filtre, laisser la variable vide, c'est-à-dire:
   $adminTypeFiltreDossiers = '';
 */
 $adminTypeFiltreDossiers = 'dossiersExclus';
 
-// Préciser les dossiers à prendre en considération dans le filtre
+// Préciser les dossiers à prendre en compte dans le filtre
 /*
 - Si la variable `$adminTypeFiltreDossiers` est vide, aucun filtre ne sera appliqué.
 - Lister les dossiers en les séparant par une barre verticale | (ne pas mettre d'espace).
 - Exemple:
   $adminFiltreDossiers = 'rep|rep2|rep3/sous-rep4';
 */
-$adminFiltreDossiers = '../.bzr|../.bzr/branch|../.bzr/branch-lock|../.bzr/checkout|../.bzr/checkout/lock|../.bzr/branch/lock|../.bzr/repository|../.bzr/repository/indices|../.bzr/repository/lock|../.bzr/repository/obsolete_packs|../.bzr/repository/packs|../.bzr/repository/upload';
+$adminFiltreDossiers = '../.bzr';
 
 /* _______________ Ajout de fichiers _______________ */
 
