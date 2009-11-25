@@ -754,6 +754,10 @@ include '../init.inc.php';
 		{
 			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
+		elseif (!adminEmplacementPermis($cheminPage, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+		{
+			$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la création d'une page web de galerie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminPage</code>") . "</li>\n";
+		}
 		else
 		{
 			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
