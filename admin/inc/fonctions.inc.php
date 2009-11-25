@@ -68,6 +68,39 @@ function adminEmplacementsPermis($tableauFichiers, $adminTypeFiltreDossiers, $ta
 }
 
 /**
+Retourne TRUE s'il est permis de modifier l'emplacement du fichier passé en paramètre, sinon retourne FALSE.
+*/
+function adminEmplacementModifiable($cheminFichier, $adminDossierRacine)
+{
+	if (is_dir($cheminFichier) && ($cheminFichier == $adminDossierRacine || $cheminFichier == '.' || $cheminFichier == '..' || preg_match('|/\.{1,2}$|', $cheminFichier)))
+	{
+		return FALSE;
+	}
+	else
+	{
+		return TRUE;
+	}
+}
+
+/**
+Retourne le tableau ne contenant que les emplacements modifiables.
+*/
+function adminEmplacementsModifiables($tableauFichiers, $adminDossierRacine)
+{
+	$tableauFichiersFiltre = array ();
+	
+	foreach ($tableauFichiers as $cheminFichier)
+	{
+		if (adminEmplacementModifiable($cheminFichier, $adminDossierRacine))
+		{
+			$tableauFichiersFiltre[] = $cheminFichier;
+		}
+	}
+	
+	return $tableauFichiersFiltre;
+}
+
+/**
 Retourne TRUE si le type MIME passé en paramètre est permis, sinon retourne FALSE.
 */
 function adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis)
