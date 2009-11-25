@@ -35,7 +35,14 @@ $adminSymboleUrl = '?';
 
 /* _______________ Liste des fichiers et dossiers _______________ */
 
-// Dossier racine contenant les fichiers (sans / au début ni à la fin)
+// Dossier racine contenant les fichiers (sans / à la fin)
+/*
+- Le chemin peut être absolu ou bien relatif à partir du dossier racine de l'administration (valeur de `$racineAdmin`).
+- Exemple de dossier absolu:
+  $adminDossierRacine = '/var/www/squeletml/site';
+- Exemple de dossier relatif:
+  $adminDossierRacine = '../site';
+*/
 $adminDossierRacine = '..';
 
 // Filtre des dossiers
@@ -51,9 +58,10 @@ $adminTypeFiltreDossiers = 'dossiersExclus';
 // Préciser les dossiers à prendre en compte dans le filtre
 /*
 - Si la variable `$adminTypeFiltreDossiers` est vide, aucun filtre ne sera appliqué.
+- Le chemin peut être absolu ou bien relatif à partir du dossier racine de l'administration (valeur de `$racineAdmin`).
 - Lister les dossiers en les séparant par une barre verticale | (ne pas mettre d'espace).
 - Exemple:
-  $adminFiltreDossiers = 'rep|rep2|rep3/sous-rep4';
+  $adminFiltreDossiers = '../rep|../rep2|../rep3/sous-rep4';
 */
 $adminFiltreDossiers = '../.bzr';
 
