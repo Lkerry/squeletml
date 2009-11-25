@@ -47,7 +47,7 @@ Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseign
 
 et ajoutez un utilisateur. Les utilisateurs sont listés dans le fichier `.acces` situé à la racine de votre installation de Squeletml.
 
-**Note: comme action optionnelle après l'installation de Squeletml, il est possible de renommer le dossier d'administration pour plus de sécurité. La variable à modifier, `$dossierAdmin`, se trouve dans le fichier `inc/config.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation, par exemple:**
+**Note: comme action optionnelle après l'installation de Squeletml, il est possible de renommer le dossier d'administration pour plus de sécurité. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `inc/config.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation, par exemple:**
 
 	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
 

@@ -56,59 +56,6 @@ function adminInit($racineAdmin)
 }
 
 /**
-Retourne la valeur d'une variable du fichier de configuration du site (`$racine/inc/config.inc.php` | `$racine/site/inc/config.inc.php`) si `$configAdmin` vaut FALSE, sinon retourne la valeur d'une variable du fichier de configuration de l'administration (`$racineAdmin/inc/config.inc.php` | `$racine/site/inc/config-admin.inc.php`). Si la variable demandée n'est pas définie ou vaut NULL, retourne FALSE. Le deuxième paramètre correspond au nom de la variable, par exemple 'rss' pour la variable `$rss`.
-*/
-function adminVarConf($racineAdmin, $nomVariable, $configAdmin = FALSE)
-{
-	$racine = dirname($racineAdmin);
-	
-	include $racine . '/init.inc.php';
-	
-	if ($configAdmin)
-	{
-		include $racineAdmin . '/inc/config.inc.php';
-		if (file_exists($racine . '/site/inc/config-admin.inc.php'))
-		{
-			include $racine . '/site/inc/config-admin.inc.php';
-		}
-	}
-	else
-	{
-		include $racine . '/inc/config.inc.php';
-		if (file_exists($racine . '/site/inc/config.inc.php'))
-		{
-			include $racine . '/site/inc/config.inc.php';
-		}
-	}
-	
-	return isset(${$nomVariable}) ? ${$nomVariable} : FALSE;
-}
-
-/**
-Retourne la valeur des variables `$galerieFluxRssGlobal` ou `$siteFluxRssGlobal`.
-*/
-function adminFluxRssGlobal($racineAdmin, $fluxRss)
-{
-	$racine = dirname($racineAdmin);
-	
-	include $racine . '/init.inc.php';
-	include $racine . '/inc/config.inc.php';
-	if (file_exists($racine . '/site/inc/config.inc.php'))
-	{
-		include $racine . '/site/inc/config.inc.php';
-	}
-	
-	if ($fluxRss == 'galerie')
-	{
-		return adminVarConf($racineAdmin, 'galerieFluxRssGlobal');
-	}
-	elseif ($fluxRss == 'site')
-	{
-		return adminVarConf($racineAdmin, 'siteFluxRssGlobal');
-	}
-}
-
-/**
 Retourne sous forme de tableau la liste des dossiers et fichiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Les dossiers ou fichiers impossibles d'accès sont pas retournés.
 */
 function adminListeFichiers($dossier)

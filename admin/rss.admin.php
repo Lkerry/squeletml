@@ -434,13 +434,13 @@ include '../init.inc.php';
 	<h2><?php echo T_("Configuration actuelle"); ?></h2>
 	
 	<ul>
-		<?php if (adminFluxRssGlobal($racineAdmin, 'galerie')): ?>
+		<?php if ($galerieFluxRssGlobal): ?>
 			<li><?php echo T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieFluxRssGlobal = TRUE;</code>).'; ?></li>
 		<?php else: ?>
 			<li><?php echo T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieFluxRssGlobal = FALSE;</code>).'; ?></li>
 		<?php endif; ?>
 		
-		<?php if (adminFluxRssGlobal($racineAdmin, 'site')): ?>
+		<?php if ($siteFluxRssGlobal): ?>
 			<li><?php echo T_("Le flux RSS global du site est activé") . ' (<code>$siteFluxRssGlobal = TRUE;</code>).'; ?></li>
 		<?php else: ?>
 			<li><?php echo T_("Le flux RSS global du site n'est pas activé") . ' (<code>$siteFluxRssGlobal = FALSE;</code>).'; ?></li>
