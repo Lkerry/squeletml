@@ -12,7 +12,7 @@ En effet, seulement deux fichiers doivent être inclus dans chaque page (un au d
 
 Aussi, un fichier de configuration permet de choisir, par simple renseignement de variables, le nombre et l'emplacement des colonnes, la position des menus dans le flux HTML (et par conséquent leur ordre dans les colonnes), la présence ou non de certaines structures comme le bas de page, le style par défaut (blocs de menu avec coins arrondis, arrière-plan des colonnes...), l'activation de boîtes déroulantes sur les contenus spécifiés (affichant ou masquant le corps du contenu par simple clic sur le titre, et enregistrant la préférence de l'internaute), etc.
 
-Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant sensiblement les principales actions normalement effectuées par ftp, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
+Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
 
 ## Fonctionnalités et caractéristiques
 
@@ -73,7 +73,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
   - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette ou `-original.extension` pour la version originale ou téléchargeable de l'image).
 
-- Section d'administration offrant des fonctionnalités utiles sans devoir passer par le ftp:
+- Section d'administration offrant des fonctionnalités utiles sans devoir passer par FTP:
 
   - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (avec coloration syntaxique du code en direct durant la saisie), téléversement, téléchargement...
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise du site en maintenance.
@@ -99,11 +99,12 @@ Voir le fichier `documentation.mdtxt` dans l'archive du logiciel, ou bien visite
 
 ## Problèmes ou suggestions
 
-Pour faire part d'un problème d'utilisation avec Squeletml ou pour proposer une fonctionnalité, il y a trois possibilités:
+Pour faire part d'un problème d'utilisation avec Squeletml, proposer une fonctionnalité ou poser une question, il y a quatre possibilités:
 
 - laisser un [commentaire sur une des pages de Squeletml](http://www.jpfleury.net/squeletml);
 - envoyer un [message à partir du formulaire de contact](http://www.jpfleury.net/contact);
-- ou faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/squeletml).
+- faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/squeletml);
+- ou poser une [question sur Launchpad](https://answers.launchpad.net/squeletml).
 
 N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`.
 

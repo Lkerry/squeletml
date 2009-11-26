@@ -76,7 +76,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeF
 	{
 		foreach ($tableauFiltresDossiers as $dossierFiltre)
 		{
-			if ($adminTypeFiltreDossiers == 'dossiersPermis' && preg_match("|^$dossierFiltre(/.+)?$|", $emplacement))
+			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement))
 			{
 				return TRUE;
 			}
