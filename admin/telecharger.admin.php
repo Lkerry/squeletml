@@ -11,7 +11,7 @@ else
 	$tableauFiltresDossiers = array ();
 }
 
-if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['fichier'], $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['fichier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 {
 	$chemin = $_GET['fichier'];
 	$nom = superBasename($chemin);

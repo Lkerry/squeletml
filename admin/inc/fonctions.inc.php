@@ -47,9 +47,9 @@ function adminTriParProfondeur($tableauFichiers)
 /**
 Retourne TRUE s'il est permis de gérer l'emplacement du fichier passé en paramètre, sinon retourne FALSE.
 */
-function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
+function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
 {
-	$adminDossierRacine = realpath($adminDossierRacine);
+	$adminDossierRacinePorteDocuments = realpath($adminDossierRacinePorteDocuments);
 	
 	$cheminTestFichier = $cheminFichier;
 	do
@@ -68,7 +68,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeF
 		$emplacement = dirname($cheminFichier);
 	}
 	
-	if ($emplacement == $adminDossierRacine || empty($adminTypeFiltreDossiers))
+	if ($emplacement == $adminDossierRacinePorteDocuments || empty($adminTypeFiltreDossiers))
 	{
 		return TRUE;
 	}
@@ -88,7 +88,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeF
 		
 		foreach ($tableauFiltresDossiers as $dossierFiltre)
 		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement) || !preg_match("|^$adminDossierRacine(/.+)?$|", $emplacement))
+			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $emplacement))
 			{
 				$aAjouter = FALSE;
 				break;
@@ -107,13 +107,13 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeF
 /**
 Retourne le tableau ne contenant que les emplacements gérables.
 */
-function adminEmplacementsPermis($tableauFichiers, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
+function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
 {
 	$tableauFichiersFiltre = array ();
 	
 	foreach ($tableauFichiers as $cheminFichier)
 	{
-		if (adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+		if (adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 		{
 			$tableauFichiersFiltre[] = $cheminFichier;
 		}
@@ -125,12 +125,12 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacine, $adminTy
 /**
 Retourne TRUE s'il est permis de modifier l'emplacement du fichier passé en paramètre, sinon retourne FALSE.
 */
-function adminEmplacementModifiable($cheminFichier, $adminDossierRacine)
+function adminEmplacementModifiable($cheminFichier, $adminDossierRacinePorteDocuments)
 {
-	$adminDossierRacine = realpath($adminDossierRacine);
+	$adminDossierRacinePorteDocuments = realpath($adminDossierRacinePorteDocuments);
 	$cheminFichier = realpath($cheminFichier);
 	
-	if (is_dir($cheminFichier) && ($cheminFichier == $adminDossierRacine || $cheminFichier == '.' || $cheminFichier == '..' || preg_match('|/\.{1,2}$|', $cheminFichier) || !preg_match("|^$adminDossierRacine(/.+)?$|", $cheminFichier)))
+	if (is_dir($cheminFichier) && ($cheminFichier == $adminDossierRacinePorteDocuments || $cheminFichier == '.' || $cheminFichier == '..' || preg_match('|/\.{1,2}$|', $cheminFichier) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $cheminFichier)))
 	{
 		return FALSE;
 	}
@@ -143,13 +143,13 @@ function adminEmplacementModifiable($cheminFichier, $adminDossierRacine)
 /**
 Retourne le tableau ne contenant que les emplacements modifiables.
 */
-function adminEmplacementsModifiables($tableauFichiers, $adminDossierRacine)
+function adminEmplacementsModifiables($tableauFichiers, $adminDossierRacinePorteDocuments)
 {
 	$tableauFichiersFiltre = array ();
 	
 	foreach ($tableauFichiers as $cheminFichier)
 	{
-		if (adminEmplacementModifiable($cheminFichier, $adminDossierRacine))
+		if (adminEmplacementModifiable($cheminFichier, $adminDossierRacinePorteDocuments))
 		{
 			$tableauFichiersFiltre[] = $cheminFichier;
 		}
@@ -251,11 +251,11 @@ function adminListeFichiers($dossier)
 /**
 Retourne la liste filtrée des dossiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
+function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
 {
 	static $liste = array ();
 	
-	if (adminEmplacementPermis($dossierAlister, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	if (adminEmplacementPermis($dossierAlister, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
 		if (!in_array($dossierAlister, $liste))
 		{
@@ -268,11 +268,11 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacine, $adminT
 			{
 				if ($fichier != '.' && $fichier != '..' && is_dir($dossierAlister . '/' . $fichier))
 				{
-					if (!in_array($dossierAlister . '/' . $fichier, $liste) && adminEmplacementPermis($dossierAlister . '/' . $fichier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+					if (!in_array($dossierAlister . '/' . $fichier, $liste) && adminEmplacementPermis($dossierAlister . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 					{
 						$liste[] = $dossierAlister . '/' . $fichier;
 					}
-					adminListeFiltreeDossiers($dossierAlister . '/' . $fichier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+					adminListeFiltreeDossiers($dossierAlister . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
 				}
 			}
 		
@@ -291,12 +291,12 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacine, $adminT
 /**
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance, $adminPorteDocumentsDroits)
+function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance, $adminPorteDocumentsDroits)
 {
 	$racine = dirname($racineAdmin);
 	static $liste = array ();
 	
-	if (adminEmplacementPermis($dossierAparcourir, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers) && $dossier = @opendir($dossierAparcourir))
+	if (adminEmplacementPermis($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers) && $dossier = @opendir($dossierAparcourir))
 	{
 		if (!empty($dossierCourant))
 		{
@@ -309,7 +309,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparc
 		
 		while (($fichier = @readdir($dossier)) !== FALSE)
 		{
-			if ($fichier != '.' && $fichier != '..' && adminEmplacementPermis($dossierAparcourir . '/' . $fichier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+			if ($fichier != '.' && $fichier != '..' && adminEmplacementPermis($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 			{
 				if (is_dir($dossierAparcourir . '/' . $fichier))
 				{
@@ -319,7 +319,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparc
 					}
 					else
 					{
-						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir . '/' . $fichier, $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance, $adminPorteDocumentsDroits);
+						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance, $adminPorteDocumentsDroits);
 					}
 				}
 				else

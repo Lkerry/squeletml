@@ -39,11 +39,11 @@ $adminSymboleUrl = '?';
 /*
 - Le chemin peut être absolu ou bien relatif à partir du dossier racine de l'administration (valeur de `$racineAdmin`).
 - Exemple de dossier absolu:
-  $adminDossierRacine = '/var/www/squeletml/site';
+  $adminDossierRacinePorteDocuments = '/var/www/squeletml/site';
 - Exemple de dossier relatif:
-  $adminDossierRacine = '../site';
+  $adminDossierRacinePorteDocuments = '../site';
 */
-$adminDossierRacine = '..';
+$adminDossierRacinePorteDocuments = '..';
 
 // Filtre des dossiers
 /*
