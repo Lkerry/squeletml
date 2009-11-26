@@ -68,7 +68,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeF
 		$emplacement = dirname($cheminFichier);
 	}
 	
-	if (empty($adminTypeFiltreDossiers))
+	if ($emplacement == $adminDossierRacine || empty($adminTypeFiltreDossiers))
 	{
 		return TRUE;
 	}

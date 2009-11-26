@@ -2008,6 +2008,21 @@ function octetsVersMio($octets)
 }
 
 /**
+Simule la fonction `basename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
+*/
+function superBasename($chemin, $suffixe = '')
+{
+	$chemin = preg_replace('|^.+[\\/]|', '', $chemin);
+	
+	if ($suffixe)
+	{
+		$chemin = preg_replace('|' . preg_quote($suffixe) . '$|', '', $chemin);
+	}
+	
+	return $chemin;
+}
+
+/**
 Retourne une chaîne débarrassée de ses barres obliques inverses.
 */
 function sansEchappement($chaine)
