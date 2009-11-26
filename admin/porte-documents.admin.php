@@ -180,6 +180,10 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 			{
 				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Copie de %2\$s impossible."), "<code>$fichierDeDestination</code>", "<code>$fichierSource</code>") . "</li>\n";
 			}
+			elseif (preg_match("|^$fichierSource/|", $fichierDeDestination))
+			{
+				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), "<code>$fichierSource</code>", "<code>$fichierDeDestination</code>") . "</li>\n";
+			}
 			elseif (!is_dir($fichierAcopier))
 			{
 				$messagesScript[] = adminCopy($fichierSource, $fichierDeDestination);
@@ -824,16 +828,17 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 		{
 			if ($copie)
 			{
-				if (basename($ancienNom) != '.' && basename($ancienNom) != '..')
+				if (preg_match("|^$ancienNom/|", $nouveauNom))
 				{
-					if (!is_dir($ancienNom))
-					{
-						$messagesScript[] = adminCopy($ancienNom, $nouveauNom);
-					}
-					else
-					{
-						$messagesScript[] = adminCopyDossier($ancienNom, $nouveauNom);
-					}
+					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+				}
+				elseif (is_dir($ancienNom))
+				{
+					$messagesScript[] = adminCopyDossier($ancienNom, $nouveauNom);
+				}
+				else
+				{
+					$messagesScript[] = adminCopy($ancienNom, $nouveauNom);
 				}
 			}
 			else
