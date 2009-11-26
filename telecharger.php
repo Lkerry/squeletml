@@ -8,7 +8,7 @@ if (file_exists($racine . '/site/inc/config.inc.php'))
 
 $chemin = $racine . '/' . $_GET['fichier'];
 $url = $urlRacine . '/' . $_GET['fichier'];
-$nom = basename($_GET['fichier']);
+$nom = superBasename($_GET['fichier']);
 $typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 
 if ($typeMime == 'application/octet-stream')

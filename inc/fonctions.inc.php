@@ -627,7 +627,7 @@ function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc
 {
 	preg_match('/src="([^"]+)"/', $paragraphe, $res);
 	$srcContenu = $res[1];
-	$nomImgSrcContenu = basename($srcContenu);
+	$nomImgSrcContenu = superBasename($srcContenu);
 	$vignetteNom = nomSuffixe($nomImgSrcContenu, '-' . $sens);
 	
 	if (file_exists($racineImgSrc . '/tatouage/' . $vignetteNom))
@@ -850,8 +850,8 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageD
 {
 	$erreur = FALSE;
 	$messagesScriptChaine = '';
-	$nomNouvelleImage = basename($cheminNouvelleImage);
-	$nomImageSource = basename($cheminImageSource);
+	$nomNouvelleImage = superBasename($cheminNouvelleImage);
+	$nomImageSource = superBasename($cheminImageSource);
 	
 	// On vérifie le type MIME de l'image dans le but d'utiliser la bonne fonction PHP
 	switch ($typeMime)
@@ -1445,7 +1445,7 @@ Ajoute `$suffixe` au nom d'un fichier, juste avant l'extension. Par exemple `nom
 function nomSuffixe($nomFichier, $suffixe)
 {
 	$infoFichier = pathinfo($nomFichier);
-	$nomFichierAvecSuffixe = basename($nomFichier, '.' . $infoFichier['extension']);
+	$nomFichierAvecSuffixe = superBasename($nomFichier, '.' . $infoFichier['extension']);
 	$nomFichierAvecSuffixe .= $suffixe . '.' . $infoFichier['extension'];
 	
 	return $nomFichierAvecSuffixe;
@@ -1604,7 +1604,7 @@ Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://
 */
 function page()
 {
-	return basename(url(FALSE, FALSE));
+	return superBasename(url(FALSE, FALSE));
 }
 
 /**
@@ -2008,7 +2008,7 @@ function octetsVersMio($octets)
 }
 
 /**
-Simule la fonction `basename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
+Simule la fonction `superBasename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
 */
 function superBasename($chemin, $suffixe = '')
 {

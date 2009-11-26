@@ -384,7 +384,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 	clearstatcache();
 	
 	$infobulle = '';
-	$fichier = basename($cheminFichier);
+	$fichier = superBasename($cheminFichier);
 	
 	if (is_dir($cheminFichier))
 	{
@@ -426,7 +426,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		if (file_exists($cheminApercuImage))
 		{
 			list ($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
-			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacineAdmin . "/cache/" . basename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
+			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacineAdmin . "/cache/" . superBasename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
 		}
 	}
 	
@@ -847,11 +847,11 @@ Retourne la version de l'image (intermediaire|vignette|original|inconnu).
 */
 function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime)
 {
-	$nomImage = basename($image);
+	$nomImage = superBasename($image);
 	
 	if ($analyserConfig)
 	{
-		$cheminConfigGalerie = adminCheminConfigGalerie($racine, basename(dirname($image)));
+		$cheminConfigGalerie = adminCheminConfigGalerie($racine, superBasename(dirname($image)));
 		
 		if ($cheminConfigGalerie)
 		{
@@ -1054,7 +1054,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 {
 	$messagesScriptChaine = '';
 	
-	if (basename($dossierAsupprimer) != '.' && basename($dossierAsupprimer) != '..')
+	if (superBasename($dossierAsupprimer) != '.' && superBasename($dossierAsupprimer) != '..')
 	{
 		if (!adminDossierEstVide($dossierAsupprimer))
 		{
@@ -1096,7 +1096,7 @@ function adminChmodRecursif($dossierAmodifier, $permissions)
 {
 	$messagesScriptChaine = '';
 	
-	if (basename($dossierAmodifier) != '.' && basename($dossierAmodifier) != '..')
+	if (superBasename($dossierAmodifier) != '.' && superBasename($dossierAmodifier) != '..')
 	{
 		if (adminDossierEstVide($dossierAmodifier))
 		{

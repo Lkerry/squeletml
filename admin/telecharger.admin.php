@@ -14,7 +14,7 @@ else
 if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['fichier'], $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 {
 	$chemin = $_GET['fichier'];
-	$nom = basename($chemin);
+	$nom = superBasename($chemin);
 
 	if (file_exists($chemin))
 	{

@@ -14,7 +14,7 @@ include '../init.inc.php';
 	<?php
 	if (isset($_POST['id']))
 	{
-		$id = securiseTexte(basename($_POST['id']));
+		$id = securiseTexte(superBasename($_POST['id']));
 	}
 
 	########################################################################
@@ -43,7 +43,7 @@ include '../init.inc.php';
 					{
 						if ($adminPorteDocumentsDroits['editer'])
 						{
-							$fichierDeConfiguration = '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . basename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messagesPorteDocuments">' . T_("Modifier le fichier de configuration") . "</a></li>\n";
+							$fichierDeConfiguration = '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messagesPorteDocuments">' . T_("Modifier le fichier de configuration") . "</a></li>\n";
 						}
 						else
 						{
@@ -160,7 +160,7 @@ include '../init.inc.php';
 		{
 			if ($id == 'nouvelleGalerie')
 			{
-				$id = securiseTexte(basename($_POST['idNouvelleGalerie']));
+				$id = securiseTexte(superBasename($_POST['idNouvelleGalerie']));
 			}
 			
 			$cheminGaleries = $racine . '/site/fichiers/galeries';
@@ -173,7 +173,7 @@ include '../init.inc.php';
 			
 			if (file_exists($cheminGalerie) && isset($_FILES['fichier']))
 			{
-				$nomArchive = basename(securiseTexte($_FILES['fichier']['name']));
+				$nomArchive = superBasename(securiseTexte($_FILES['fichier']['name']));
 				
 				if (file_exists($cheminGaleries . '/' . $nomArchive))
 				{
@@ -216,7 +216,7 @@ include '../init.inc.php';
 						{
 							foreach ($resultatArchive as $infoImage)
 							{
-								$nomFichier = basename($infoImage['filename']);
+								$nomFichier = superBasename($infoImage['filename']);
 								$cheminFichier = $cheminGaleries . '/' . $id . '/' . $nomFichier;
 								
 								if ($infoImage['status'] == 'ok')
@@ -385,7 +385,7 @@ include '../init.inc.php';
 					{
 						if(!is_dir($cheminGalerie . '/' . $fichier))
 						{
-							$infoFichier = pathinfo(basename($fichier));
+							$infoFichier = pathinfo(superBasename($fichier));
 							if (!isset($infoFichier['extension']))
 							{
 								$infoFichier['extension'] = '';
@@ -402,7 +402,7 @@ include '../init.inc.php';
 							
 							if ($renommer && $analyserConfig)
 							{
-								$galerie = tableauGalerie(adminCheminConfigGalerie($racine, basename($cheminGalerie)));
+								$galerie = tableauGalerie(adminCheminConfigGalerie($racine, superBasename($cheminGalerie)));
 								
 								if (adminImageEstDeclaree($fichier, $galerie))
 								{
@@ -443,7 +443,7 @@ include '../init.inc.php';
 						
 						if ($analyserConfig)
 						{
-							$galerie = tableauGalerie(adminCheminConfigGalerie($racine, basename($cheminGalerie)));
+							$galerie = tableauGalerie(adminCheminConfigGalerie($racine, superBasename($cheminGalerie)));
 							if (adminImageEstDeclaree($fichier, $galerie))
 							{
 								$aTraiter = FALSE;
@@ -452,7 +452,7 @@ include '../init.inc.php';
 						
 						if ($aTraiter)
 						{
-							$infoFichier = pathinfo(basename($fichier));
+							$infoFichier = pathinfo(superBasename($fichier));
 							if (!isset($infoFichier['extension']))
 							{
 								$infoFichier['extension'] = '';
@@ -627,7 +627,7 @@ include '../init.inc.php';
 					{
 						if(!is_dir($cheminTatouage . '/' . $fichier))
 						{
-							$infoFichier = pathinfo(basename($fichier));
+							$infoFichier = pathinfo(superBasename($fichier));
 							if (!isset($infoFichier['extension']))
 							{
 								$infoFichier['extension'] = '';
@@ -732,7 +732,7 @@ include '../init.inc.php';
 	if (isset($_POST['creerPage']))
 	{
 		$messagesScript = array ();
-		$page = basename(securiseTexte($_POST['page']));
+		$page = superBasename(securiseTexte($_POST['page']));
 		$cheminPage = '../' . dirname(securiseTexte($_POST['page']));
 		if ($cheminPage == '../.')
 		{
@@ -1003,7 +1003,7 @@ include '../init.inc.php';
 		echo "<ul>\n";
 		if ($adminPorteDocumentsDroits['editer'])
 		{
-			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . basename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
+			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
 		}
 		else
 		{

@@ -170,7 +170,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 		foreach ($fichiersAcopier as $fichierAcopier)
 		{
 			$fichierSource = $fichierAcopier;
-			$fichierDeDestination = $cheminDeCopie . '/' . basename($fichierAcopier);
+			$fichierDeDestination = $cheminDeCopie . '/' . superBasename($fichierAcopier);
 		
 			if (!file_exists($fichierSource))
 			{
@@ -308,7 +308,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 		foreach ($fichiersAdeplacer as $fichierAdeplacer)
 		{
 			$ancienChemin = $fichierAdeplacer;
-			$nouveauChemin = $cheminDeDeplacement . '/' . basename($fichierAdeplacer);
+			$nouveauChemin = $cheminDeDeplacement . '/' . superBasename($fichierAdeplacer);
 			
 			if (!file_exists($ancienChemin))
 			{
@@ -407,7 +407,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 			{
 				$messagesScript[] = adminUnlink($fichierAsupprimer);
 			}
-			elseif (basename($fichierAsupprimer) != '.' && basename($fichierAsupprimer) != '..')
+			elseif (superBasename($fichierAsupprimer) != '.' && superBasename($fichierAsupprimer) != '..')
 			{
 				$messagesScript[] = adminRmdirRecursif($fichierAsupprimer);
 			}
@@ -518,7 +518,7 @@ if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPer
 			{
 				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Modification des permissions impossible."), "<code>$fichierAmodifier</code>") . "</li>\n";
 			}
-			elseif (basename($fichierAmodifier) != '.' && basename($fichierAmodifier) != '..')
+			elseif (superBasename($fichierAmodifier) != '.' && superBasename($fichierAmodifier) != '..')
 			{
 				if (!is_dir($fichierAmodifier) || $recursivite == FALSE)
 				{
@@ -745,7 +745,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 		}
 		else
 		{
-			echo '<p>' . dirname($ancienNom) . '/<input type="text" name="porteDocumentsNouveauNom" value="' . basename($ancienNom) . '" size="50" />' . "</p>\n";
+			echo '<p>' . dirname($ancienNom) . '/<input type="text" name="porteDocumentsNouveauNom" value="' . superBasename($ancienNom) . '" size="50" />' . "</p>\n";
 		}
 	
 		echo "</fieldset>\n";
@@ -777,7 +777,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 	}
 	else
 	{
-		$nouveauNom = securiseTexte(dirname($_POST['porteDocumentsAncienNom']) . '/' . basename($_POST['porteDocumentsNouveauNom']));
+		$nouveauNom = securiseTexte(dirname($_POST['porteDocumentsAncienNom']) . '/' . superBasename($_POST['porteDocumentsNouveauNom']));
 	}
 	
 	if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsRenommageCopie']) && $_POST['porteDocumentsRenommageCopie'] == 'copie')
@@ -905,7 +905,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 			}
 			elseif ($fichierAcreerType == 'FichierVide' || $fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 			{
-				$page = basename($fichierAcreerNom);
+				$page = superBasename($fichierAcreerNom);
 				$cheminPage = dirname($fichierAcreerNom);
 				if ($cheminPage == '../.')
 				{
@@ -999,7 +999,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 								}
 								elseif ($fichierAcreerType == 'FichierModeleMarkdown')
 								{
-									$contenu .= '<?php echo mdtxt("' . basename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
+									$contenu .= '<?php echo mdtxt("' . superBasename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
 								}
 								
 								$contenu .= "\n";
@@ -1068,8 +1068,8 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	else
 	{
 		$dossier = securiseTexte($_POST['porteDocumentsAjouterDossier']);
-		$nomFichier = basename(securiseTexte($_FILES['porteDocumentsAjouterFichier']['name']));
-		$nouveauNomFichier = basename(securiseTexte($_POST['porteDocumentsAjouterNom']));
+		$nomFichier = superBasename(securiseTexte($_FILES['porteDocumentsAjouterFichier']['name']));
+		$nouveauNomFichier = superBasename(securiseTexte($_POST['porteDocumentsAjouterNom']));
 		
 		if (!empty($nouveauNomFichier))
 		{
