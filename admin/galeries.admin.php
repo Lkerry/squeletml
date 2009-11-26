@@ -567,9 +567,10 @@ include '../init.inc.php';
 			
 			if ($fic = @opendir($cheminGalerie))
 			{
+				$configAsupprimer = FALSE;
+				
 				while($fichier = @readdir($fic))
 				{
-					$fichierAsupprimer = FALSE;
 					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
 						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
@@ -580,20 +581,69 @@ include '../init.inc.php';
 							(isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && $versionImage == 'vignette') ||
 							(isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && $versionImage == 'intermediaire') ||
 							(isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && $versionImage == 'original') ||
-							(isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && ($fichier == 'config.ini.txt' || $fichier == 'config.ini'))
 						)
 						{
-							$fichierAsupprimer = TRUE;
-						}
-					
-						if ($fichierAsupprimer)
-						{
 							$messagesScript[] = adminUnlink($cheminGalerie . '/' . $fichier);
+						}
+						elseif (isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && ($fichier == 'config.ini.txt' || $fichier == 'config.ini'))
+						{
+							$configAsupprimer = $cheminGalerie . '/' . $fichier;
 						}
 					}
 				}
 				
 				closedir($fic);
+				
+				if ($configAsupprimer !== FALSE)
+				{
+					$messagesScript[] = adminUnlink($configAsupprimer);
+				}
+				
+				if (isset($_POST['supprimerImagesVignettesAvecTatouage']) && $_POST['supprimerImagesVignettesAvecTatouage'] == 'supprimer')
+				{
+					$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
+				
+					if (!file_exists($cheminTatouage))
+					{
+						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le dossier des vignettes avec tatouage %1\$s n'existe pas."), "<code>$cheminTatouage</code>") . "</li>\n";
+					}
+					elseif ($fic = @opendir($cheminTatouage))
+					{
+						while($fichier = @readdir($fic))
+						{
+							if(!is_dir($cheminTatouage . '/' . $fichier))
+							{
+								$infoFichier = pathinfo(superBasename($fichier));
+								if (!isset($infoFichier['extension']))
+								{
+									$infoFichier['extension'] = '';
+								}
+							
+								$typeMime = mimedetect_mime(array ('filepath' => $cheminTatouage . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
+							
+								if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
+								{
+									$messagesScript[] = adminUnlink($cheminTatouage . '/' . $fichier);
+								}
+							}
+						}
+					
+						closedir($fic);
+					
+						if (adminDossierEstVide($cheminTatouage))
+						{
+							$messagesScript[] = adminRmdir($cheminTatouage);
+						}
+						else
+						{
+							$messagesScript[] = '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminTatouage</code>") . "</li>\n";
+						}
+					}
+					else
+					{
+						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminTatouage</code>") . "</li>\n";
+					}
+				}
 				
 				if (isset($_POST['supprimerImagesDossier']) && $_POST['supprimerImagesDossier'] == 'supprimer')
 				{
@@ -610,53 +660,6 @@ include '../init.inc.php';
 			else
 			{
 				$messagesScript[] = "<li class='erreur'>" . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
-			}
-		
-			// Vignettes de navigation tatouées
-			if (isset($_POST['supprimerImagesVignettesAvecTatouage']) && $_POST['supprimerImagesVignettesAvecTatouage'] == 'supprimer')
-			{
-				$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
-				
-				if (!file_exists($cheminTatouage))
-				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le dossier des vignettes avec tatouage %1\$s n'existe pas."), "<code>$cheminTatouage</code>") . "</li>\n";
-				}
-				elseif ($fic = @opendir($cheminTatouage))
-				{
-					while($fichier = @readdir($fic))
-					{
-						if(!is_dir($cheminTatouage . '/' . $fichier))
-						{
-							$infoFichier = pathinfo(superBasename($fichier));
-							if (!isset($infoFichier['extension']))
-							{
-								$infoFichier['extension'] = '';
-							}
-							
-							$typeMime = mimedetect_mime(array ('filepath' => $cheminTatouage . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
-							
-							if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
-							{
-								$messagesScript[] = adminUnlink($cheminTatouage . '/' . $fichier);
-							}
-						}
-					}
-					
-					closedir($fic);
-					
-					if (adminDossierEstVide($cheminTatouage))
-					{
-						$messagesScript[] = adminRmdir($cheminTatouage);
-					}
-					else
-					{
-						$messagesScript[] = '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminTatouage</code>") . "</li>\n";
-					}
-				}
-				else
-				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminTatouage</code>") . "</li>\n";
-				}
 			}
 		}
 		
