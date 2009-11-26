@@ -48,7 +48,7 @@ $adminDossierRacine = '..';
 // Filtre des dossiers
 /*
 - Il est possible d'appliquer un filtre à la liste de dossiers.
-- Pour ne préciser que les dossiers à prendre en compte, mettre 'dossiersPermis'
+- Pour ne préciser que les dossiers à prendre en compte, mettre 'dossiersInclus'
 - Pour ne préciser que les dossiers à exclure, mettre 'dossiersExclus'
 - Pour ne pas appliquer de filtre, laisser la variable vide, c'est-à-dire:
   $adminTypeFiltreDossiers = '';

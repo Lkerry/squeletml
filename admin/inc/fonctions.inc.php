@@ -72,7 +72,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacine, $adminTypeF
 	{
 		return TRUE;
 	}
-	elseif ($adminTypeFiltreDossiers == 'dossiersPermis')
+	elseif ($adminTypeFiltreDossiers == 'dossiersInclus')
 	{
 		foreach ($tableauFiltresDossiers as $dossierFiltre)
 		{
