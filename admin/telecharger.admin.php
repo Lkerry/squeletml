@@ -1,7 +1,17 @@
 <?php
 include 'inc/zero.inc.php';
 
-if ($adminPorteDocumentsDroits['telecharger'])
+if (!empty($adminFiltreDossiers))
+{
+	$tableauFiltresDossiers = explode('|', $adminFiltreDossiers);
+	$tableauFiltresDossiers = array_map('realpath', $tableauFiltresDossiers);
+}
+else
+{
+	$tableauFiltresDossiers = array ();
+}
+
+if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['fichier'], $adminDossierRacine, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 {
 	$chemin = $_GET['fichier'];
 	$nom = basename($chemin);
