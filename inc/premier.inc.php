@@ -63,6 +63,11 @@ if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContac
 	$courrielContact = $courrielContactParDefaut;
 }
 
+if (!isset($cssBoiteDeroulanteInclus))
+{
+	$cssBoiteDeroulanteInclus = FALSE;
+}
+
 if (!isset($description))
 {
 	$description = '';
@@ -176,7 +181,10 @@ echo doctype($xhtmlStrict); ?>
 		<?php $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes); ?>
 		<?php if (!empty($boitesDeroulantesTableau)): ?>
 			<!-- Boîtes déroulantes -->
-			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/boites-deroulantes.css" media="screen" />
+			<?php if (!$cssBoiteDeroulanteInclus): ?>
+				<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/boites-deroulantes.css" media="screen" />
+				<?php $cssBoiteDeroulanteInclus = TRUE; ?>
+			<?php endif; ?>
 			
 			<?php if (!$jQueryInclus): ?>
 				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
@@ -233,6 +241,10 @@ echo doctype($xhtmlStrict); ?>
 		<?php if ($messageIE6): ?>
 			<!-- Message IE6 -->
 			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
+			<?php if (!$cssBoiteDeroulanteInclus): ?>
+				<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/boites-deroulantes.css" media="screen" />
+			<?php endif; ?>
+			
 			<?php if (!$jQueryInclus): ?>
 				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
 			<?php endif; ?>
