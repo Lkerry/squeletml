@@ -65,7 +65,7 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 			}
 			else
 			{
-				$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
+				$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	
 				if ($typeMime == 'application/octet-stream')
 				{

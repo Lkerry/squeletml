@@ -9,3 +9,7 @@ pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-display
 a.porteDocumentsProprietesFichier:hover {
 	background: none; /* correction d'un bug IE */
 }
+
+fieldset {
+	padding: 5px;
+}

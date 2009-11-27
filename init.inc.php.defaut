@@ -1,4 +1,10 @@
 <?php
+########################################################################
+##
+## Obligatoire
+##
+########################################################################
+
 // URL racine de l'installation de Squeletml
 $urlRacine = "http://localhost/serveur_local/squeletml"; // Sans la barre finale /
 
@@ -9,7 +15,18 @@ $accueil['en'] = $urlRacine . '/en';
 
 ########################################################################
 ##
-## Ne pas continuer plus bas, à moins d'utiliser un serveur de Free.fr
+## Optionnel
+##
+########################################################################
+
+/*
+Nom du dossier contenant l'administration de Squeletml. Le dossier doit demeurer au même niveau dans la structure du site. Il n'est donc pas possible d'effectuer un déplacement.
+*/
+$dossierAdmin = 'admin';
+
+########################################################################
+##
+## Pour serveur de Free.fr seulement
 ##
 ########################################################################
 
@@ -27,5 +44,8 @@ $serveurFreeFr = FALSE; // TRUE|FALSE
 #$racine = $_SERVER['DOCUMENT_ROOT'];
 #$racine = '/var/www/serveur_local/squeletml'; // Sans la barre finale /
 $racine = dirname(__FILE__);
+
+// Racine de l'administration
+$racineAdmin = $racine . '/' . $dossierAdmin;
 
 ?>

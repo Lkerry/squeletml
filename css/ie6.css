@@ -5,16 +5,20 @@
 }
 
 #faireDecouvrir a {
-	background: url('../fichiers/enveloppe.png') no-repeat left 20%;
+	background: url('../fichiers/enveloppe.gif') no-repeat left 20%;
 }
 
 #fluxRss a {
-	background: url('../fichiers/rss.png') no-repeat left 20%;
+	background: url('../fichiers/rss.gif') no-repeat left 20%;
 }
 
 #fluxRss ul {
 	margin-left: 0px;
 	padding-left: 0px;
+}
+
+#menu li.actif {
+	list-style-image: url('../fichiers/puce.gif');
 }
 
 div.galerieNavigationSuivant img {

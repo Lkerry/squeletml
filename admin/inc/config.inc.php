@@ -77,19 +77,7 @@ $adminTailleMaxFichiers = adminPhpIniOctets(ini_get('upload_max_filesize'));
 $adminFiltreNom = FALSE; // TRUE|FALSE
 
 // Filtre du type Mime
-$adminFiltreTypesMime = FALSE; // TRUE|FALSE
-
-// Détection du type MIME
-/*
-- La détection du type MIME se fait selon la disponibilité des outils suivants, en ordre de priorité:
-  - `Fileinfo` de PHP;
-  - commande `file` si la variable `$adminTypeMimeFile` vaut TRUE;
-  - tableau personnalisé de correspondance entre une extension et son type MIME si la variable `$adminTypeMimeCorrespondance` n'est pas vide. Exemple: `array ('rmi' => 'audio/midi');`.
-  - tableau par défaut de correspondance entre une extension et son type MIME de la fonction `file_get_mimetype()`.
-*/
-$adminTypeMimeFile = FALSE; // TRUE|FALSE
-$adminTypeMimeCheminFile = '/usr/bin/file';
-$adminTypeMimeCorrespondance = array ();
+$adminFiltreTypesMime = TRUE; // TRUE|FALSE
 
 // Si `$adminFiltreTypesMime` vaut TRUE, types MIME permis pour les fichiers téléchargés
 /*

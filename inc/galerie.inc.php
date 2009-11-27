@@ -5,7 +5,7 @@ if (!isset($idGalerie))
 {
 	$idGalerie = FALSE;
 }
-foreach (init($racine, $idGalerie) as $fichier)
+foreach (init($racine, $racineAdmin, $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }

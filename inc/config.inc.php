@@ -225,10 +225,17 @@ $ordreFluxHtml = array (
 	'flux-rss' => 10,
 	);
 
+// Détection du type MIME
 /*
-Nom du dossier contenant l'administration de Squeletml. Le dossier doit demeurer au même niveau dans la structure du site. Il n'est donc pas possible d'effectuer un déplacement.
+- La détection du type MIME se fait selon la disponibilité des outils suivants, en ordre de priorité:
+  - `Fileinfo` de PHP;
+  - commande `file` si la variable `$typeMimeFile` vaut TRUE;
+  - tableau personnalisé de correspondance entre une extension et son type MIME si la variable `$typeMimeCorrespondance` n'est pas vide. Exemple: `array ('rmi' => 'audio/midi');`.
+  - tableau par défaut de correspondance entre une extension et son type MIME de la fonction `file_get_mimetype()`.
 */
-$dossierAdmin = 'admin';
+$typeMimeFile = FALSE; // TRUE|FALSE
+$typeMimeCheminFile = '/usr/bin/file';
+$typeMimeCorrespondance = array ();
 
 /* _______________ Style CSS _______________ */
 
@@ -500,9 +507,6 @@ $galerieFluxRssGlobal = FALSE; // TRUE|FALSE
 N'a pas toujours la bonne valeur selon les serveurs. On écrase donc sa valeur par défaut.
 */
 $_SERVER['DOCUMENT_ROOT'] = $racine;
-
-// Racine de l'administration
-$racineAdmin = $racine . '/' . $dossierAdmin;
 
 // Diverses variables utiles pour les liens dans les pages
 $urlSite = $urlRacine . '/site';

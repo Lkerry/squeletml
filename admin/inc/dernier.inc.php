@@ -19,7 +19,7 @@
 							indentUnit: 4,
 							tabMode: "shift",
 							height: "93%",
-							iframeClass: "editeur",
+							iframeClass: "editeur"
 						});
 					</script>
 				<?php elseif (isset($_GET['action']) && $_GET['action'] = 'editer' && isset($_GET['valeur']) && preg_match('|\.js$|', $_GET['valeur'])): ?>
@@ -33,7 +33,7 @@
 							indentUnit: 4,
 							tabMode: "shift",
 							height: "93%",
-							iframeClass: "editeur",
+							iframeClass: "editeur"
 						});
 					</script>
 				<?php else: ?>
@@ -47,7 +47,7 @@
 							indentUnit: 4,
 							tabMode: "shift",
 							height: "93%",
-							iframeClass: "editeur",
+							iframeClass: "editeur"
 						});
 					</script>
 				<?php endif; ?>

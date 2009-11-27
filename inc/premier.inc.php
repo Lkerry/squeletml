@@ -37,7 +37,7 @@ if (file_exists($racine . '/site/inc/config.inc.php'))
 
 include_once $racine . '/inc/fonctions.inc.php';
 
-foreach (init($racine, $idGalerie) as $fichier)
+foreach (init($racine, $racineAdmin, $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }
@@ -257,7 +257,7 @@ echo doctype($xhtmlStrict); ?>
 		<?php if ($messageIE6): ?>
 			<!-- ____________________ Message IE6 ____________________ -->
 			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
-				<?php echo messageIE6($urlRacine . '/fichiers/firefox-52x52.gif', '', 52, 52); ?>
+				<?php echo messageIE6($urlRacine . '/fichiers/firefox-52x52.png', '', 52, 52); ?>
 			<?php echo '<![endif]-->'; ?>
 		<?php endif; ?>
 		

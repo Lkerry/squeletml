@@ -2,7 +2,7 @@
 /**
 Retourne un tableau contenant les fichiers à inclure.
 */
-function init($racine, $idGalerie)
+function init($racine, $racineAdmin, $idGalerie)
 {
 	$fichiers = array ();
 	
@@ -10,8 +10,12 @@ function init($racine, $idGalerie)
 	
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
 	
+	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
+	
+	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
+	
 	$fichiers[] = $racine . '/inc/config.inc.php';
-
+	
 	$fichiers[] = $racine . '/inc/constantes.inc.php';
 	
 	if (file_exists($racine . '/site/inc/config.inc.php'))
@@ -19,7 +23,7 @@ function init($racine, $idGalerie)
 		$fichiers[] = $racine . '/site/inc/config.inc.php';
 	}
 	
-	$fichiers[] = $racine . '/admin/inc/fonctions.inc.php';
+	$fichiers[] = $racineAdmin . '/inc/fonctions.inc.php';
 	
 	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
 	{

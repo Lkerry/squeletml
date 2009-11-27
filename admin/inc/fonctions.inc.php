@@ -291,7 +291,7 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 /**
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance, $adminPorteDocumentsDroits)
+function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminPorteDocumentsDroits)
 {
 	$racine = dirname($racineAdmin);
 	static $liste = array ();
@@ -319,7 +319,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparc
 					}
 					else
 					{
-						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance, $adminPorteDocumentsDroits);
+						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminPorteDocumentsDroits);
 					}
 				}
 				else
@@ -354,7 +354,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparc
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 					}
 				
-					$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierAparcourir/$fichier", TRUE, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
+					$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierAparcourir/$fichier", TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				
 					$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 				
@@ -379,7 +379,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $dossierAparc
 /**
 Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans le porte-documents.
 */
-function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, $adminTailleCache, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance)
+function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	clearstatcache();
 	
@@ -392,7 +392,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 	}
 	else
 	{
-		$typeMime = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
+		$typeMime = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	}
 	
 	$stat = stat($cheminFichier);
@@ -653,7 +653,7 @@ function adminCheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut 
 /**
 Met à jour un fichier de configuration de galerie. Retourne TRUE s'il n'y a aucune erreur, sinon retourne FALSE.
 */
-function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance)
+function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
@@ -735,7 +735,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 		{
 			if(!is_dir($cheminGalerie . '/' . $fichier))
 			{
-				$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $adminTypeMimeFile, $adminTypeMimeCheminFile, $adminTypeMimeCorrespondance);
+				$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				
 				$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 				
