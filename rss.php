@@ -115,7 +115,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 		}
 		else
 		{
-			$galeries = parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
+			$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
 			$itemsFluxRss = array ();
 			if ($galeries !== FALSE && !empty($galeries))
 			{
@@ -171,7 +171,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 		}
 		else
 		{
-			$pages = parse_ini_file(adminCheminConfigFluxRssGlobalSite($racine));
+			$pages = super_parse_ini_file(adminCheminConfigFluxRssGlobalSite($racine));
 			$itemsFluxRss = array ();
 			if ($pages !== FALSE && !empty($pages))
 			{
@@ -192,7 +192,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site
 				if ($galerieFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 				{
-					$galeries = parse_ini_file($cheminConfigFluxRssGlobalGaleries);
+					$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries);
 					if ($galeries !== FALSE && !empty($galeries))
 					{
 						foreach ($galeries as $codeLangue)

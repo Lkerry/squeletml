@@ -1402,48 +1402,6 @@ function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $infosOeuvre, $g
 }
 
 /**
-Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui`. Par exemple, le fichier `.ini` suivant:
-
-[image1.png]
-id=1
-vignetteNom=image1Mini.png
-
-devient:
-
-$galerie = array (
-	array (
-	'intermediaireNom' => 'image1.png',
-	'id' => 1,
-	'vignetteNom' => 'image1Mini.png',
-	),
-);
-
-Retourne le tableau final si le fichier de configuration existe et est accessible en lecture, sinon retourne FALSE.
-*/
-function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
-{
-	if ($cheminConfigGalerie && ($galerieIni = parse_ini_file($cheminConfigGalerie, TRUE)) !== FALSE)
-	{
-		$galerie = array ();
-		
-		foreach ($galerieIni as $oeuvre => $infos)
-		{
-			if (!$exclure || !(isset($infos['exclure']) && $infos['exclure'] == 'oui'))
-			{
-				$infos['intermediaireNom'] = $oeuvre;
-				$galerie[] = $infos;
-			}
-		}
-		
-		return $galerie;
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-/**
 Ajoute `$suffixe` au nom d'un fichier, juste avant l'extension. Par exemple `nom.extension` devient `nom$suffixe.extension`.
 */
 function nomSuffixe($nomFichier, $suffixe)
@@ -2119,6 +2077,95 @@ function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
 	}
 	
 	return $boitesDeroulantesTableau;
+}
+
+/**
+Simule en partie la fonction `parse_ini_file()`, en essayant de contourner certaines limitations concernant les caractères créant des erreurs dans les valeurs non délimitées par des guillemets.
+*/
+function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
+{
+	$tableau = array ();
+	
+	if ($fic = @fopen($cheminFichier, 'r'))
+	{
+		$ajouterDansSection = FALSE;
+		
+		while (!feof($fic))
+		{
+			$ligne = rtrim(fgets($fic));
+			
+			if (preg_match('/^\s*\[([^\]]+)\]\s*$/', $ligne, $resultat) && $creerSections)
+			{
+				$cle = $resultat[1];
+				$tableau[$cle] = array ();
+				$ajouterDansSection = $cle;
+			}
+			elseif (preg_match('/^\s*([^=]+)=(.*)\s*$/', $ligne, $resultat))
+			{
+				$parametre = $resultat[1];
+				$valeur = $resultat[2];
+				
+				if ($ajouterDansSection !== FALSE)
+				{
+					$tableau[$ajouterDansSection][$parametre] = $valeur;
+				}
+				else
+				{
+					$tableau[$parametre] = $valeur;
+				}
+			}
+		}
+		
+		fclose($fic);
+	}
+	else
+	{
+		return FALSE;
+	}
+	
+	return $tableau;
+}
+
+/**
+Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui`. Par exemple, le fichier `.ini` suivant:
+
+[image1.png]
+id=1
+vignetteNom=image1Mini.png
+
+devient:
+
+$galerie = array (
+	array (
+	'intermediaireNom' => 'image1.png',
+	'id' => 1,
+	'vignetteNom' => 'image1Mini.png',
+	),
+);
+
+Retourne le tableau final si le fichier de configuration existe et est accessible en lecture, sinon retourne FALSE.
+*/
+function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
+{
+	if ($cheminConfigGalerie && ($galerieIni = super_parse_ini_file($cheminConfigGalerie, TRUE)) !== FALSE)
+	{
+		$galerie = array ();
+		
+		foreach ($galerieIni as $oeuvre => $infos)
+		{
+			if (!$exclure || !(isset($infos['exclure']) && $infos['exclure'] == 'oui'))
+			{
+				$infos['intermediaireNom'] = $oeuvre;
+				$galerie[] = $infos;
+			}
+		}
+		
+		return $galerie;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 ?>

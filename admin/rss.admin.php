@@ -40,7 +40,7 @@ include '../init.inc.php';
 			}
 			else
 			{
-				if (($galeries = parse_ini_file($cheminFichier, TRUE)) !== FALSE)
+				if (($galeries = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 				{
 					echo "<form action='$adminAction#messages' method='post'>\n";
 					echo "<div>\n";
@@ -142,7 +142,7 @@ include '../init.inc.php';
 			}
 			else
 			{
-				if (($pages = parse_ini_file($cheminFichier, TRUE)) !== FALSE)
+				if (($pages = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 				{
 					echo "<form action='$adminAction#messages' method='post'>\n";
 					echo "<div>\n";
