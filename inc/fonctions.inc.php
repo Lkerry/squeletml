@@ -2100,18 +2100,21 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 				$tableau[$cle] = array ();
 				$ajouterDansSection = $cle;
 			}
-			elseif (preg_match('/^\s*([^=]+)=(.*)\s*$/', $ligne, $resultat))
+			elseif (preg_match('/^([^=]+)=(.*)$/', $ligne, $resultat))
 			{
-				$parametre = $resultat[1];
-				$valeur = $resultat[2];
+				$parametre = trim($resultat[1]);
+				$valeur = trim($resultat[2]);
 				
-				if ($ajouterDansSection !== FALSE)
+				if (!empty($parametre))
 				{
-					$tableau[$ajouterDansSection][$parametre] = $valeur;
-				}
-				else
-				{
-					$tableau[$parametre] = $valeur;
+					if ($ajouterDansSection !== FALSE)
+					{
+						$tableau[$ajouterDansSection][$parametre] = $valeur;
+					}
+					else
+					{
+						$tableau[$parametre] = $valeur;
+					}
 				}
 			}
 		}

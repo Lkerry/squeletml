@@ -32,8 +32,7 @@ ce programme; si ce n'est pas le cas, consultez
 		<context id="ini-squeletml">
 			<include>
 				<context id="section" style-ref="section">
-					<start>^\[</start>
-					<end>\]$</end>
+					<match>^\s*\[[^\]]+\]\s*$</match>
 				</context>
 				
 				<context id="parametre">
