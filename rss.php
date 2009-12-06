@@ -1,22 +1,25 @@
 <?php
 include_once 'init.inc.php';
-include_once 'inc/fonctions.inc.php';
-include_once $racine . '/inc/config.inc.php';
-include_once $racine . '/inc/constantes.inc.php';
-if (file_exists($racine . '/site/inc/config.inc.php'))
+include_once $racine . '/inc/fonctions.inc.php';
+
+foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {
-	include_once $racine . '/site/inc/config.inc.php';
+	include_once $cheminFichier;
 }
 
-$langueNavigateur = langue($langueParDefaut, 'navigateur');
-$langue = $langueNavigateur;
-// Nécessaire à la traduction
-phpGettext('.', $langueNavigateur);
+include_once $racine . '/inc/constantes.inc.php';
+
+$codeLangue = langue($langueParDefaut, 'navigateur');
+$langue = $codeLangue;
+
+// Nécessaire à la traduction.
+phpGettext('.', $codeLangue);
 
 if (isset($_GET['chemin']))
 {
 	$getChemin = sansEchappement($_GET['chemin']);
 }
+
 if (isset($_GET['langue']))
 {
 	$getLangue = sansEchappement($_GET['langue']);
@@ -29,39 +32,40 @@ if (isset($getChemin) && !empty($getChemin))
 		while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
 		{
 			$ligne = rtrim(fgets($fic));
-			if (preg_match('/\$rss\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $res))
+			
+			if (preg_match('/\$rss\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $resultat))
 			{
-				if ($res[1] == "TRUE" || $res[1] == "true")
+				if ($resultat[1] == "TRUE" || $resultat[1] == "true")
 				{
 					$rss = TRUE;
 				}
-				elseif ($res[1] == "FALSE" || $res[1] == "false")
+				elseif ($resultat[1] == "FALSE" || $resultat[1] == "false")
 				{
 					$rss = FALSE;
 				}
 			}
 	
-			if (preg_match('/\$idGalerie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $res))
+			if (preg_match('/\$idGalerie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $resultat))
 			{
-				$idGalerie = $res[1];
+				$idGalerie = $resultat[1];
 			}
 		}
 
 		fclose($fic);
 		
-		// Flux RSS de la galerie
+		// Flux RSS de la galerie.
 		if (isset($idGalerie))
 		{
 			if (!isset($rss))
 			{
-				$rss = $galerieFluxRssParDefaut;
+				$rss = $galerieActiverFluxRssParDefaut;
 			}
 			
-			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && adminCheminConfigGalerie($racine, $idGalerie))
+			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && cheminConfigGalerie($racine, $idGalerie))
 			{
 				// A: le flux RSS est activé.
 				
-				// On vérifie si le flux RSS existe en cache ou si le cache est expiré
+				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 				if ($dureeCacheFluxRss && file_exists("$racine/site/cache/rss-$idGalerie.xml") && !cacheExpire("$racine/site/cache/rss-$idGalerie.xml", $dureeCacheFluxRss))
 				{
 					readfile("$racine/site/cache/rss-$idGalerie.xml");
@@ -69,13 +73,14 @@ if (isset($getChemin) && !empty($getChemin))
 				else
 				{
 					$urlGalerie = $urlRacine . '/' . $getChemin;
-					
 					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie);
+					
 					if (!empty($itemsFluxRss))
 					{
 						$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
 					}
-					$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), $urlGalerie, $itemsFluxRss, TRUE);
+					
+					$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), $urlGalerie, $itemsFluxRss, TRUE);
 					
 					if ($dureeCacheFluxRss)
 					{
@@ -102,13 +107,13 @@ if (isset($getChemin) && !empty($getChemin))
 }
 elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLangue) && isset($accueil[$getLangue]))
 {
-	$cheminConfigFluxRssGlobalGaleries = adminCheminConfigFluxRssGlobalGaleries($racine);
+	$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
 	
-	if ($galerieFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
+	if ($galerieActiverFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 	{
 		// A: le flux RSS global pour les galeries est activé.
 		
-		// On vérifie si le flux RSS existe en cache ou si le cache est expiré
+		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		if ($dureeCacheFluxRss && file_exists("$racine/site/cache/rss-global-galeries-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-galeries-$getLangue.xml", $dureeCacheFluxRss))
 		{
 			readfile("$racine/site/cache/rss-global-galeries-$getLangue.xml");
@@ -117,6 +122,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 		{
 			$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
 			$itemsFluxRss = array ();
+			
 			if ($galeries !== FALSE && !empty($galeries))
 			{
 				foreach ($galeries as $codeLangue)
@@ -137,7 +143,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			}
 			
 			$idGalerie = FALSE;
-			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), ACCUEIL, $itemsFluxRss, TRUE);
+			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, TRUE);
 			
 			if ($dureeCacheFluxRss)
 			{
@@ -158,24 +164,26 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 }
 elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue) && isset($accueil[$getLangue]))
 {
-	$cheminConfigFluxRssGlobalGaleries = adminCheminConfigFluxRssGlobalGaleries($racine);
+	$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
 	
-	if ($siteFluxRssGlobal && adminCheminConfigFluxRssGlobalSite($racine))
+	if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 	{
 		// A: le flux RSS global du site est activé.
 		
-		// On vérifie si le flux RSS existe en cache ou si le cache est expiré
+		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		if ($dureeCacheFluxRss && file_exists("$racine/site/cache/rss-global-site-$getLangue.xml") && !cacheExpire("$racine/site/cache/rss-global-site-$getLangue.xml", $dureeCacheFluxRss))
 		{
 			readfile("$racine/site/cache/rss-global-site-$getLangue.xml");
 		}
 		else
 		{
-			$pages = super_parse_ini_file(adminCheminConfigFluxRssGlobalSite($racine));
+			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'));
 			$itemsFluxRss = array ();
+			
 			if ($pages !== FALSE && !empty($pages))
 			{
 				$i = 0;
+				
 				foreach ($pages as $codeLangue)
 				{
 					if ($codeLangue == $getLangue && $i < $nombreItemsFluxRss)
@@ -186,13 +194,15 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page))));
 						}
 					}
+					
 					$i++;
 				}
 				
-				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site
-				if ($galerieFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
+				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site.
+				if ($galerieActiverFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 				{
 					$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries);
+					
 					if ($galeries !== FALSE && !empty($galeries))
 					{
 						foreach ($galeries as $codeLangue)
@@ -213,8 +223,9 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 					$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
 				}
 			}
+			
 			$idGalerie = FALSE;
-			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue), ACCUEIL, $itemsFluxRss, FALSE);
+			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, FALSE);
 			
 			if ($dureeCacheFluxRss)
 			{
@@ -237,5 +248,4 @@ else
 {
 	header('HTTP/1.1 404 Not found');
 }
-
 ?>

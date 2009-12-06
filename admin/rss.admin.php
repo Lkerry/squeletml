@@ -1,9 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Flux RSS globaux");
-include 'inc/premier.inc.php';
-
-include '../init.inc.php';
+include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
 <h1><?php echo T_("Gestion des flux RSS globaux"); ?></h1>
@@ -14,20 +12,20 @@ include '../init.inc.php';
 	<?php
 	if (isset($_POST['lister']))
 	{
+		##################################################################
+		#
+		# Pages des galeries.
+		#
+		##################################################################
+		
 		if (isset($_POST['global']) && $_POST['global'] == 'galeries')
 		{
-			###############################################################
-			#
-			# Pages des galeries
-			#
-			###############################################################
-			
 			$messagesScript = array ();
-			$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine);
+			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
 			
 			if (!$cheminFichier)
 			{
-				$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine, TRUE);
+				$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
 				
 				if ($adminPorteDocumentsDroits['creer'])
 				{
@@ -44,21 +42,23 @@ include '../init.inc.php';
 				{
 					echo "<form action='$adminAction#messages' method='post'>\n";
 					echo "<div>\n";
-					
 					$listeGaleries = '';
+					
 					if (!empty($galeries))
 					{
 						$i = 0;
+						
 						foreach ($galeries as $codeLangue => $langueInfos)
 						{
 							$listeGaleries .= '<li class="langue"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
 							$listeGaleries .= "<ul class=\"triable\">\n";
+							
 							foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 							{
 								$listeGaleries .= '<li><input type="text" name="id[' . $i . '][]" value="' . $idGalerie . '" />=<input type="text" name="url[' . $i . '][]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
 							}
-							$listeGaleries .= "</ul></li>\n";
 							
+							$listeGaleries .= "</ul></li>\n";
 							$i++;
 						}
 					}
@@ -83,6 +83,7 @@ include '../init.inc.php';
 					echo '<legend>' . T_("Options") . "</legend>\n";
 					
 					echo "<ul>\n";
+					
 					if (!empty($listeGaleries))
 					{
 						echo $listeGaleries;
@@ -91,6 +92,7 @@ include '../init.inc.php';
 					{
 						echo '<li>' . T_("Le fichier est vide. Aucune galerie n'y est listée.") . "</li>\n";
 					}
+					
 					echo "</ul>\n";
 					
 					echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong></p>\n";
@@ -106,7 +108,7 @@ include '../init.inc.php';
 					echo "<p><input type='submit' name='modifsGaleries' value='" . T_("Enregistrer les modifications") . "' /></p>\n";
 					echo "</div>\n";
 					echo "</form>\n";
-					echo "</div><!-- /class=sousBoite -->\n";
+					echo "</div><!-- /.sousBoite -->\n";
 				}
 				else
 				{
@@ -116,20 +118,19 @@ include '../init.inc.php';
 			
 			echo adminMessagesScript($messagesScript);
 		}
+		##################################################################
+		#
+		# Autres pages
+		#
+		##################################################################
 		elseif (isset($_POST['global']) && $_POST['global'] == 'site')
 		{
-			###############################################################
-			#
-			# Autres pages
-			#
-			###############################################################
-			
 			$messagesScript = array ();
-			$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine);
+			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
 			
 			if (!$cheminFichier)
 			{
-				$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine, TRUE);
+				$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
 				
 				if ($adminPorteDocumentsDroits['creer'])
 				{
@@ -156,13 +157,14 @@ include '../init.inc.php';
 						{
 							$listePages .= '<li class="langue"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
 							$listePages .= "<ul class=\"triable\">\n";
+							
 							foreach ($langueInfos['pages'] as $page)
 							{
 								$page = rtrim($page);
 								$listePages .= '<li>pages[]=<input type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
 							}
-							$listePages .= "</ul></li>\n";
 							
+							$listePages .= "</ul></li>\n";
 							$i++;
 						}
 					}
@@ -187,6 +189,7 @@ include '../init.inc.php';
 					echo '<legend>' . T_("Options") . "</legend>\n";
 					
 					echo "<ul>\n";
+					
 					if (!empty($listePages))
 					{
 						echo $listePages;
@@ -195,6 +198,7 @@ include '../init.inc.php';
 					{
 						echo '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
 					}
+					
 					echo "</ul>\n";
 					
 					echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
@@ -211,7 +215,7 @@ include '../init.inc.php';
 					
 					echo "</div>\n";
 					echo "</form>\n";
-					echo "</div><!-- /class=sousBoite -->\n";
+					echo "</div><!-- /.sousBoite -->\n";
 				}
 				else
 				{
@@ -226,11 +230,11 @@ include '../init.inc.php';
 	if (isset($_POST['modifsGaleries']))
 	{
 		$messagesScript = array ();
-		
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications pour les galeries") . "</h3>\n" ;
 		
 		$contenuFichierTableau = array ();
+		
 		if (isset($_POST['langue']))
 		{
 			foreach ($_POST['langue'] as $cle => $postLangueValeur)
@@ -265,27 +269,32 @@ include '../init.inc.php';
 		}
 		
 		$contenuFichier = '';
+		
 		foreach ($contenuFichierTableau as $codeLangue => $langueInfos)
 		{
 			if (!empty($langueInfos))
 			{
 				$contenuFichier .= "[$codeLangue]\n";
+				
 				foreach ($langueInfos as $ligne)
 				{
 					$contenuFichier .= $ligne;
 				}
+				
 				$contenuFichier .= "\n";
 			}
 		}
 		
-		$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine);
+		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
 		
 		if ($cheminFichier)
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
 				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+				
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
@@ -304,7 +313,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			$cheminFichier = adminCheminConfigFluxRssGlobalGaleries($racine, TRUE);
+			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
 			$messagesScript[] = '<li>';
 			
 			if ($adminPorteDocumentsDroits['creer'])
@@ -315,8 +324,11 @@ include '../init.inc.php';
 			{
 				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
 			}
+			
 			$messagesScript[] = '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			
 			$messagesScript[] = '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+			
 			$messagesScript[] = "<ul>\n";
 			$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			$messagesScript[] = "</ul>\n";
@@ -324,16 +336,16 @@ include '../init.inc.php';
 		}
 		
 		echo adminMessagesScript($messagesScript);
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo "</div><!-- /.sousBoite -->\n";
 	}
 	elseif (isset($_POST['modifsSite']))
 	{
 		$messagesScript = array ();
-		
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications pour les pages autres que les galeries") . "</h3>\n" ;
 	
 		$contenuFichierTableau = array ();
+		
 		if (isset($_POST['langue']))
 		{
 			foreach ($_POST['langue'] as $cle => $postLangueValeur)
@@ -366,27 +378,32 @@ include '../init.inc.php';
 		}
 		
 		$contenuFichier = '';
+		
 		foreach ($contenuFichierTableau as $codeLangue => $langueInfos)
 		{
 			if (!empty($langueInfos))
 			{
 				$contenuFichier .= "[$codeLangue]\n";
+				
 				foreach ($langueInfos as $ligne)
 				{
 					$contenuFichier .= $ligne;
 				}
+				
 				$contenuFichier .= "\n";
 			}
 		}
 		
-		$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine);
+		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
 		
 		if ($cheminFichier)
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
 				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				
 				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+				
 				echo "<ul>\n";
 				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				echo "</ul>\n";
@@ -405,7 +422,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			$cheminFichier = adminCheminConfigFluxRssGlobalSite($racine, TRUE);
+			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
 			$messagesScript[] = '<li>';
 			
 			if ($adminPorteDocumentsDroits['creer'])
@@ -416,8 +433,11 @@ include '../init.inc.php';
 			{
 				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
 			}
+			
 			$messagesScript[] = '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			
 			$messagesScript[] = '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+			
 			$messagesScript[] = "<ul>\n";
 			$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			$messagesScript[] = "</ul>\n";
@@ -425,32 +445,32 @@ include '../init.inc.php';
 		}
 		
 		echo adminMessagesScript($messagesScript);
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo "</div><!-- /.sousBoite -->\n";
 	}
 	?>
-</div><!-- /boiteMessages -->
+</div><!-- /#boiteMessages -->
 
 <div class="boite">
 	<h2><?php echo T_("Configuration actuelle"); ?></h2>
 	
 	<ul>
-		<?php if ($galerieFluxRssGlobal): ?>
-			<li><?php echo T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieFluxRssGlobal = TRUE;</code>).'; ?></li>
+		<?php if ($galerieActiverFluxRssGlobal): ?>
+			<li><?php echo T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
 		<?php else: ?>
-			<li><?php echo T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieFluxRssGlobal = FALSE;</code>).'; ?></li>
+			<li><?php echo T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
 		<?php endif; ?>
 		
-		<?php if ($siteFluxRssGlobal): ?>
-			<li><?php echo T_("Le flux RSS global du site est activé") . ' (<code>$siteFluxRssGlobal = TRUE;</code>).'; ?></li>
+		<?php if ($activerFluxRssGlobalSite): ?>
+			<li><?php echo T_("Le flux RSS global du site est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
 		<?php else: ?>
-			<li><?php echo T_("Le flux RSS global du site n'est pas activé") . ' (<code>$siteFluxRssGlobal = FALSE;</code>).'; ?></li>
+			<li><?php echo T_("Le flux RSS global du site n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
 		<?php endif; ?>
 	</ul>
 	
 	<?php if ($adminPorteDocumentsDroits['editer']): ?>
 		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messagesPorteDocuments"><?php echo T_("Modifier cette configuration."); ?></a></p>
 	<?php endif; ?>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Pages ajoutées aux flux RSS globaux"); ?></h2>
@@ -470,6 +490,6 @@ include '../init.inc.php';
 			<p><input type="submit" name="lister" value="<?php echo T_('Lister les pages'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
 <?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

@@ -37,4 +37,3 @@ générale GNU pour plus de détails.
 Vous devriez avoir reçu une copie de la Licence publique générale GNU avec
 ce programme; si ce n'est pas le cas, consultez
 <http://www.gnu.org/licenses/>.
-

@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Version de Squeletml et autres informations");
-include 'inc/premier.inc.php';
+include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
 <h1><?php echo T_("Version de Squeletml et autres informations"); ?></h1>
@@ -9,7 +9,7 @@ include 'inc/premier.inc.php';
 <h2><?php echo T_("Aperçu"); ?></h2>
 
 <ul>
-	<li><?php printf(T_("Version de Squeletml: %1\$s"), adminVersionLogiciel($racine)); ?></li>
+	<li><?php printf(T_("Version de Squeletml: %1\$s"), adminVersionSqueletml($racine)); ?></li>
 	<li><?php printf(T_("Version de PHP: %1\$s"), PHP_VERSION); ?></li>
 	<li><?php printf(T_("Version d'Apache: %1\$s"), securiseTexte($_SERVER['SERVER_SOFTWARE'])); ?></li>
 	<li><?php echo adminReecritureDurl(TRUE); ?></li>
@@ -26,6 +26,7 @@ include 'inc/premier.inc.php';
 	
 	<?php $fonctions = get_defined_functions(); ?>
 	<?php $modules = get_loaded_extensions(); ?>
+	
 	<p><?php printf(T_("Il y a %1\$s fonctions internes réparties entre %2\$s modules. En voici la liste:"), count($fonctions['internal']), count($modules)); ?></p>
 	
 	<ul>
@@ -33,6 +34,7 @@ include 'inc/premier.inc.php';
 			<li><h3><?php echo $module; ?></h3>
 			<ul>
 				<?php $fonctionsModule = get_extension_funcs($module); ?>
+				
 				<?php foreach($fonctionsModule as $fonctionModule): ?>
 					<li><?php echo $fonctionModule; ?></li>
 				<?php endforeach; ?>

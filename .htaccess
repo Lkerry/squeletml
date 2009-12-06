@@ -1,15 +1,15 @@
 ########################################################################
 ##
-## Possiblement configurable
+## Possiblement configurable.
 ##
 ########################################################################
 
-# Décommenter la ligne suivante dans le cas d'un hébergement sur un serveur de Free.fr
+# Décommenter la ligne suivante dans le cas d'un hébergement sur un serveur de Free.fr.
 #php 1
 
-# Pages d'erreur. Au besoin, changer le chemin vers la page. Ex.:
+# Pages d'erreur. Au besoin, changer le chemin vers la page. Exemple:
 # ErrorDocument 404 http://www.NomDeDomaine.ext/monSite/404.php
-# Note: pour l'erreur 401, il faut spécifier une URL locale. Ex.:
+# Note: pour l'erreur 401, il faut spécifier une URL locale. Exemple:
 # ErrorDocument 401 /monSite/401.php
 ErrorDocument 401 /401.php
 ErrorDocument 404 /404.php
@@ -17,7 +17,7 @@ ErrorDocument 503 /maintenance.php
 
 ########################################################################
 ##
-## Suggestions
+## Suggestions.
 ##
 ########################################################################
 
@@ -28,7 +28,7 @@ ErrorDocument 503 /maintenance.php
 #	RewriteRule (.*) http://www.monSite.ext/$1 [QSA,R=301,L]
 #</IfModule>
 
-# Modèle de redirection pour des pages
+# Modèle de redirection de pages.
 #RedirectPermanent /dossier/fichier.php http://www.monSite.ext/nouveau-dossier/nouveau-fichier.php
 
 # Décommenter les lignes ci-dessous pour inclure automatiquement le fichier `init.inc.php` dans tous les fichiers PHP. NOTE: fonctionnalité non testée à fond et non supportée officiellement.
@@ -38,14 +38,53 @@ ErrorDocument 503 /maintenance.php
 
 ########################################################################
 ##
-## NORMALEMENT, CE QUI SUIT NE DEVRAIT PAS ÊTRE MODIFIÉ
+## NORMALEMENT, CE QUI SUIT NE DEVRAIT PAS ÊTRE MODIFIÉ.
 ##
 ########################################################################
 
-# Ne pas lister les fichiers dans un dossier sans fichier `index`
+# Ne pas lister les fichiers dans un dossier sans fichier `index`.
 Options -Indexes
 
-# S'assurer de l'accès au fichier `robots.txt`
+# Activer la compression des données envoyées si Apache le permet:
+# pour Apache 1:
+<IfModule mod_gzip.c>
+	mod_gzip_on Yes
+	mod_gzip_dechunk Yes
+	mod_gzip_keep_workfiles No
+	mod_gzip_minimum_file_size 500
+	mod_gzip_maximum_file_size 500000
+	mod_gzip_maximum_inmem_size 60000
+	mod_gzip_item_include mime ^application/javascript$
+	mod_gzip_item_include mime ^application/rss+xml$
+	mod_gzip_item_include mime ^application/xhtml+xml$
+	mod_gzip_item_include mime ^application/x-httpd-php
+	mod_gzip_item_include mime ^application/x-javascript$
+	mod_gzip_item_include mime ^application/xml$
+	mod_gzip_item_include mime ^httpd/unix-directory$
+	mod_gzip_item_exclude mime ^image/
+	mod_gzip_item_include mime ^text/css$
+	mod_gzip_item_include mime ^text/html$
+	mod_gzip_item_include mime ^text/javascript$
+	mod_gzip_item_include mime ^text/plain$
+	mod_gzip_item_include mime ^text/x-gettext-translation$
+	mod_gzip_item_include mime ^text/xml$
+	mod_gzip_item_exclude reqheader "User-Agent: .*Mozilla/4\..*\["
+	mod_gzip_send_vary On
+</IfModule>
+# pour Apache 2:
+<IfModule mod_deflate.c>
+	SetOutputFilter DEFLATE
+	AddOutputFilterByType DEFLATE application/javascript application/rss+xml application/xhtml+xml application/x-httpd-php application/x-javascript application/xml httpd/unix-directory image/svg+xml text/css text/html text/javascript text/plain text/x-gettext-translation text/xml
+	BrowserMatch ^Mozilla/4 gzip-only-text/html
+	BrowserMatch ^Mozilla/4\.0[678] no-gzip
+	BrowserMatch \bMSI[E] !no-gzip !gzip-only-text/html
+	SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+	<IfModule mod_headers.c>
+		Header append Vary User-Agent env=!dont-vary
+	</IfModule>
+</IfModule>
+
+# S'assurer de l'accès au fichier `robots.txt`.
 <Files robots.txt>
 	Order Deny,Allow
 	Allow from all

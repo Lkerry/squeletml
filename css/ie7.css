@@ -1,11 +1,3 @@
-body.deuxColonnes .galerieNavigationAccueil, body.deuxColonnes .galerieNavigationAccueil {
-	margin-right: 204px;
-}
-
-body.deuxColonnes .galerieNavigationSuivant, body.deuxColonnes .galerieNavigationSuivant {
-	margin-right: 204px;
-}
-
 #galerieMinivignettes {
 	margin-bottom: 0px;
 }
@@ -14,6 +6,14 @@ div#galerieAccompagnementVignetteSuivant img {
 	clear: both;
 }
 
-pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
-	word-wrap: break-word; /* Internet Explorer 5.5+ */
+body.deuxColonnes .galerieNavigationAccueil, body.deuxColonnes .galerieNavigationAccueil {
+	margin-right: 204px;
+}
+
+body.deuxColonnes .galerieNavigationSuivant, body.deuxColonnes .galerieNavigationSuivant {
+	margin-right: 204px;
+}
+
+pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+	word-wrap: break-word; /* Internet Explorer 5.5+. */
 }

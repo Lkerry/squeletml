@@ -69,7 +69,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Choix de l'emplacement de la légende et des données Exif (au-dessus ou au-dessous de l'image, ou dans une colonne du site).
   - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
   - Génération automatique des vignettes ou utilisation de vignettes personnalisées.
-  - Script offert pour retailler automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
+  - Script offert pour redimensionner automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
   - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
   - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette ou `-original.extension` pour la version originale ou téléchargeable de l'image).
 
@@ -106,7 +106,7 @@ Pour faire part d'un problème d'utilisation avec Squeletml, proposer une foncti
 - faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/squeletml);
 - ou poser une [question sur Launchpad](https://answers.launchpad.net/squeletml).
 
-N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`.
+N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`. (S'il y a lieu, modifier le nom du dossier d'administration.)
 
 ## Licence de Squeletml
 
@@ -173,7 +173,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **PclZip**: Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>.
 
-- **PHP gettext**: sous licence GPL version 2 ou toute version ultérieure. Voir <http://savannah.nongnu.org/projects/php-gettext/>.
+- **PHP gettext**: sous licence GPL version 2 ou toute version ultérieure. Voir <https://launchpad.net/php-gettext/>.
 
 - **PHPJS**: sous double licence MIT et GPL. Voir <http://phpjs.org/>.
 

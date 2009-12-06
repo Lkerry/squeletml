@@ -1,6 +1,6 @@
 <?php
+
 /*
-Fonction UnsharpMask(). Voir http://vikjavev.no/computing/ump.php?id=306
 
 New: 
 - In version 2.1 (February 26 2007) Tom Bishop has done some important speed enhancements.

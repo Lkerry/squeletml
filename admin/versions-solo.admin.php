@@ -41,6 +41,8 @@ else
 		
 		<p><?php echo $explicationSite; ?></p>
 		
+		<h2><?php echo $titreApercu; ?></h2>
+		
 		<?php
 		$fic = fopen('../version.txt', 'r');
 		$tag = fgets($fic, 20); // exemple: logiciel-1.4
@@ -48,8 +50,6 @@ else
 		$version = explode('-', $tag);
 		$versionSqueletml = trim($version[1]);
 		?>
-		
-		<h2><?php echo $titreApercu; ?></h2>
 		
 		<ul>
 			<li><?php echo $versionSqueletml; ?> <?php echo $versionSqueletml; ?></li>
@@ -79,6 +79,7 @@ else
 			
 			<?php $fonctions = get_defined_functions(); ?>
 			<?php $modules = get_loaded_extensions(); ?>
+			
 			<ul>
 				<li><?php echo $nombreFonctions; ?> <?php echo count($fonctions['internal']); ?></li>
 				<li><?php echo $nombreFonctions; ?> <?php echo count($modules); ?></li>
@@ -89,6 +90,7 @@ else
 					<li><h3><?php echo $module; ?></h3>
 					<ul>
 						<?php $fonctionsModule = get_extension_funcs($module); ?>
+						
 						<?php foreach($fonctionsModule as $fonctionModule): ?>
 							<li><?php echo $fonctionModule; ?></li>
 						<?php endforeach; ?>

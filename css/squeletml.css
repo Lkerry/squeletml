@@ -1,8 +1,12 @@
 /***********************************************************************
 **
-** Général
+** Général.
 **
 ***********************************************************************/
+
+html {
+	overflow-y: scroll;
+}
 
 html, body {
 	margin: 0px;
@@ -158,14 +162,12 @@ pre {
 	padding: 5px;
 	margin: 5px 0px;
 	border: 1px solid #b3b3b3;
-	white-space: pre-wrap; /* CSS 3 */ /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
+	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
 .erreur, .succes {
 	border-width: 2px;
 	border-style: solid;
-	font-weight: bold;
-	font-size: 1.1em;
 	padding: 10px;
 }
 
@@ -175,6 +177,16 @@ pre {
 
 .succes {
 	border-color: green;
+}
+
+.erreur p {
+	margin-top: 0px;
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+.erreur ul {
+	margin-bottom: 0px;
 }
 
 .droite {
@@ -190,10 +202,10 @@ pre {
 }
 
 .sep {
-	clear: both;
+	overflow: hidden;
 }
 
-/* Pages d'erreur */
+/* Pages d'erreur. */
 
 h1#titrePage401, h1#titrePage404 {
 	padding-left: 20px;
@@ -207,12 +219,18 @@ h1#titrePage404 {
 	background: url('../fichiers/attention.png') no-repeat left center;
 }
 
-/* Blocs */
+/* Blocs. */
 
-.bloc {
-	margin-top: 16px;
-	margin-bottom: 16px;
-}
+	/* Tous les blocs. */
+	.bloc {
+		margin-top: 24px;
+		margin-bottom: 0px;
+	}
+	
+	/* Particularité pour les blocs de menu par défaut. */
+	#menu, #menuLangues {
+		margin-top: 20px;
+	}
 
 .contenuBloc {
 	padding-left: 3px;
@@ -226,7 +244,7 @@ h1#titrePage404 {
 	padding-bottom: 0px;
 }
 
-/* Coins arrondis */
+/* Coins arrondis. */
 
 body.coinsArrondisBloc .bloc {
 	background-color: #f2f2f2;
@@ -254,10 +272,32 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 	height: 8px;
 	width: 8px;
 	background-repeat: no-repeat;
-	font-size: 1px; /* à cause d'un bogue d'IE */
+	font-size: 1px; /* À cause d'un bogue d'IE. */
 }
 
-/* Arrière-plans des colonnes */
+/***********************************************************************
+**
+** Arrière-plans des colonnes.
+**
+***********************************************************************/
+
+/*
+Note: il y a beaucoup de classes CSS ci-dessous pour la gestion des arrière-plans. Ceci est pour conserver une compatibilité avec IE6. En effet, malheureusement, ce navigateur ne gère pas les classes multiples dans les sélecteurs d'une feuille de style.
+
+Par exemple, on peut normalement faire référence dans une feuille de style à la div suivante:
+
+	<div class="deuxColonnes sousContenuAgauche avecRayures">
+	...
+	</div>
+
+en utilisant le sélecteur qui suit:
+
+	div.deuxColonnes.sousContenuAgauche.avecRayures {...}
+
+ce qui permet de diminuer le nombre de classes à créer. Cependant, IE6 ne reconnaît que la dernière classe d'un sélecteur contenant une chaîne de classes...
+*/
+
+/* Général. */
 
 body.colonneAgaucheAvecRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
@@ -272,7 +312,7 @@ body.colonneAgaucheAvecBordure #page {
 	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;
 }
 
-/*  */
+/* */
 
 body.colonneAdroiteAvecRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y right top;
@@ -287,7 +327,7 @@ body.colonneAdroiteAvecBordure #page {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
 }
 
-/*  */
+/* */
 
 body.deuxColonnesAvecRayures #page {
 	background: url('../fichiers/rayures-204px.png') repeat-y left top;
@@ -314,11 +354,7 @@ body.deuxColonnesAvecBordure #interieurPage {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
 }
 
-/***********************************************************************
-**
-** body.colonneAgauche
-**
-***********************************************************************/
+/* body.colonneAgauche */
 
 body.colonneAgauche div#titre h1, body.colonneAgauche div#titre p {
 	margin-top: 0px;
@@ -342,11 +378,7 @@ body.colonneAgauche #basDePage {
 	margin: 25px 0px 0px 204px;
 }
 
-/***********************************************************************
-**
-** body.uneColonneAgauche
-**
-***********************************************************************/
+/* body.uneColonneAgauche */
 
 body.uneColonneAgauche div#titre h1, body.uneColonneAgauche div#titre p {
 	margin-right: 0px;
@@ -361,11 +393,7 @@ body.uneColonneAgauche #surContenu, body.uneColonneAgauche #sousContenu {
 	left: 0px;
 }
 
-/***********************************************************************
-**
-** body.colonneAdroite
-**
-***********************************************************************/
+/* body.colonneAdroite */
 
 body.colonneAdroite div#titre h1, body.colonneAdroite div#titre p {
 	margin-top: 0px;
@@ -390,11 +418,7 @@ body.colonneAdroite #basDePage {
 	margin: 25px 204px 0px 0px;
 }
 
-/***********************************************************************
-**
-** body.uneColonneAdroite
-**
-***********************************************************************/
+/* body.uneColonneAdroite */
 
 body.uneColonneAdroite div#titre h1, body.uneColonneAdroite div#titre p {
 	margin-right: 210px;
@@ -409,11 +433,7 @@ body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
 	right: 0px;
 }
 
-/***********************************************************************
-**
-** body.deuxColonnes
-**
-***********************************************************************/
+/* body.deuxColonnes */
 
 body.deuxColonnes div#titre h1, body.deuxColonnes div#titre p {
 	margin-right: 210px;
@@ -429,11 +449,7 @@ body.deuxColonnes #contenu {
 	text-align: justify;
 }
 
-/***********************************************************************
-**
-** body.deuxColonnesSousContenuAgauche
-**
-***********************************************************************/
+/* body.deuxColonnesSousContenuAgauche */
 
 body.deuxColonnesSousContenuAgauche #page {
 	padding-right: 0px;
@@ -447,11 +463,7 @@ body.deuxColonnesSousContenuAgauche #sousContenu {
 	left: 0px;
 }
 
-/***********************************************************************
-**
-** body.deuxColonnesSousContenuAdroite
-**
-***********************************************************************/
+/* body.deuxColonnesSousContenuAdroite */
 
 body.deuxColonnesSousContenuAdroite #page {
 	padding-left: 0px;
@@ -471,7 +483,7 @@ body.deuxColonnesSousContenuAdroite #sousContenu {
 
 /***********************************************************************
 **
-** Module contact
+** Module contact.
 **
 ***********************************************************************/
 
@@ -489,7 +501,7 @@ body.deuxColonnesSousContenuAdroite #sousContenu {
 
 /***********************************************************************
 **
-** Module galerie
+** Module galerie.
 **
 ***********************************************************************/
 
@@ -508,11 +520,6 @@ div#galerieIntermediaire div#galerieIntermediaireTexte {
 div.minivignetteOeuvreEnCours img {
 	border-left: 5px solid #b3b3b3 !important;
 	border-right: 5px solid #b3b3b3 !important;
-}
-
-div.sepGalerieMinivignettes {
-	clear: both;
-	margin-bottom: 15px;
 }
 
 #galerieIntermediaireTexte ul {
@@ -633,11 +640,11 @@ div.galerieNavigationAccueil img, div#galerieIntermediaireImg img {
 
 /***********************************************************************
 **
-** Bloc message pour IE6
+** Bloc message pour IE6.
 **
 ***********************************************************************/
 
-div#messageIE6 {
+div#messageIe6 {
 	border: 3px solid #090;
 	margin: 0px;
 	padding: 0px;
@@ -645,20 +652,19 @@ div#messageIE6 {
 	color: #000;
 }
 
-div#messageIE6 p {
+div#messageIe6 p {
 	margin: 10px;
 }
 
-div#messageIE6 p img, div#messageIE6 p span {
+div#messageIe6 p img, div#messageIe6 p span {
 	vertical-align: middle;
 	display: inline-block; 
 }
 
-div#messageIE6 p img {
+div#messageIe6 p img {
 	border: none;
 }
 
-div#messageIE6 p a {
+div#messageIe6 p a {
 	color: #006;
 }
-

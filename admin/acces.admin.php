@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Accès");
-include 'inc/premier.inc.php';
+include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
 <h1><?php echo T_("Gestion de l'accès au site et à l'administration"); ?></h1>
@@ -10,7 +10,7 @@ include 'inc/premier.inc.php';
 	<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 
 	<?php
-	// Début des tests pour vérifier l'accessibilité des fichiers nécessaires au script
+	// Début des tests pour vérifier l'accessibilité des fichiers nécessaires au script.
 	$messagesScript = array ();
 	$erreurAccesFichiers = FALSE;
 	
@@ -35,11 +35,11 @@ include 'inc/premier.inc.php';
 	}
 	
 	echo adminMessagesScript($messagesScript);
-	// Fin des tests
+	// Fin des tests.
 
 	########################################################################
 	##
-	## Gérer les droits d'accès à l'administration
+	## Gestion des droits d'accès à l'administration.
 	##
 	########################################################################
 
@@ -51,7 +51,7 @@ include 'inc/premier.inc.php';
 		{
 			$messagesScript[] = '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
 		}
-		// Ajout d'un utilisateur
+		// Ajout d'un utilisateur.
 		elseif (isset($_POST['ajouter']))
 		{
 			if ($fic2 = @fopen($racine . '/.acces', 'a+'))
@@ -65,11 +65,13 @@ include 'inc/premier.inc.php';
 					$acces = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
 				} 
 			
-				// On vérifie si l'utilisateur est déjà présent
+				// On vérifie si l'utilisateur est déjà présent.
 				$utilisateurAbsent = TRUE;
+				
 				while (!feof($fic2))
 				{
 					$ligne = fgets($fic2);
+					
 					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
 					{
 						$utilisateurAbsent = FALSE;
@@ -94,18 +96,20 @@ include 'inc/premier.inc.php';
 				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
 			}
 		}
-		// Modification d'un utilisateur
+		// Modification d'un utilisateur.
 		elseif (isset($_POST['modifier']))
 		{
 			if ($fic2 = @fopen($racine . '/.acces', 'r'))
 			{
 				$utilisateurs = array ();
-				// On vérifie si l'utilisateur est déjà présent
+				
+				// On vérifie si l'utilisateur est déjà présent.
 				$utilisateurAbsent = TRUE;
-		
+				
 				while (!feof($fic2))
 				{
 					$ligne = fgets($fic2);
+					
 					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
 					{
 						$utilisateurAbsent = FALSE;
@@ -142,18 +146,20 @@ include 'inc/premier.inc.php';
 			}
 		}
 	
-		// Suppression d'un utilisateur
+		// Suppression d'un utilisateur.
 		elseif (isset($_POST['supprimer']))
 		{
 			if ($fic2 = @fopen($racine . '/.acces', 'r'))
 			{
 				$utilisateurs = array ();
-				// On vérifie si l'utilisateur est déjà présent
+				
+				// On vérifie si l'utilisateur est déjà présent.
 				$utilisateurAbsent = TRUE;
 		
 				while (!feof($fic2))
 				{
 					$ligne = fgets($fic2);
+					
 					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
 					{
 						$utilisateurAbsent = FALSE;
@@ -181,11 +187,13 @@ include 'inc/premier.inc.php';
 				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
 			}
 		
-			// S'il n'y a plus d'utilisateur dans le fichier `.acces`, on supprime ce fichier ainsi que l'authentification dans le .htaccess.
-			/* Note: auparavant, je faisais:
-			clearstatcache();
-			if (filesize($racine . '/.acces') == 0) {...}
-			mais des lignes vides faisaient en sorte que la taille du fichier n'était pas à 0. Maintenant je fais simplement regarder s'il y a un `:` dans le fichier, ce qui signifierait qu'il y a au moins un utilisateur. */
+			// S'il n'y a plus d'utilisateur dans le fichier `.acces`, on supprime ce fichier ainsi que l'authentification dans le `.htaccess`.
+			/*
+			Note: auparavant, je faisais:
+				clearstatcache();
+				if (filesize($racine . '/.acces') == 0) {...}
+			mais des lignes vides faisaient en sorte que la taille du fichier n'était pas à 0. Maintenant je fais simplement regarder s'il y a un `:` dans le fichier, ce qui signifierait qu'il y a au moins un utilisateur.
+			*/
 			if (strpos(file_get_contents($racine . '/.acces'), ':') === FALSE)
 			{
 				$messagesScript[] = adminUnlink($racine . '/.acces');
@@ -193,9 +201,11 @@ include 'inc/premier.inc.php';
 				if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
 				{
 					$fichierHtaccess = array ();
+					
 					while (!feof($fic2))
 					{
 						$ligne = rtrim(fgets($fic2));
+						
 						if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
 						{
 							while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(accès admin\)./', $ligne))
@@ -237,15 +247,17 @@ include 'inc/premier.inc.php';
 			}
 		}
 	
-		// Lien vers `.acces` à partir de `.htaccess`
+		// Lien vers `.acces` à partir de `.htaccess`.
 		if (file_exists($racine . '/.acces') && strpos(file_get_contents($racine . '/.acces'), ':') !== FALSE)
 		{
 			$lienAccesDansHtaccess = FALSE;
+			
 			if ($fic = @fopen($racine . '/.htaccess', 'r'))
 			{
 				while (!feof($fic))
 				{
 					$ligne = rtrim(fgets($fic));
+					
 					if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
 					{
 						$lienAccesDansHtaccess = TRUE;
@@ -265,7 +277,7 @@ include 'inc/premier.inc.php';
 				$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 				$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
-				$htaccessFilesModele = "(ChangeLog|ChangeLogDerniereVersion|\.acces|\.admin\.php|\.defaut|\.mdtxt|\.pc|\.txt|\.xml)$";
+				$htaccessFilesModele = "(ChangeLog|ChangeLogDerniereVersion|\.acces|\.admin\.php|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
 		
 				if ($serveurFreeFr)
 				{
@@ -313,7 +325,7 @@ include 'inc/premier.inc.php';
 
 	########################################################################
 	##
-	## Lister les utilisateurs
+	## Listage des utilisateurs.
 	##
 	########################################################################
 
@@ -326,6 +338,7 @@ include 'inc/premier.inc.php';
 
 		echo '<ul>' . "\n";
 		$i = 0;
+		
 		if (file_exists($racine . '/.acces'))
 		{
 			if ($fic3 = @fopen($racine . '/.acces', 'r'))
@@ -335,6 +348,7 @@ include 'inc/premier.inc.php';
 				while (!feof($fic3))
 				{
 					$ligne = fgets($fic3);
+					
 					if (preg_match('/^[^:]+:/', $ligne))
 					{
 						list ($utilisateur) = explode(':', $ligne);
@@ -365,26 +379,28 @@ include 'inc/premier.inc.php';
 		{
 			echo '<li>' . T_("Aucun") . "</li>\n";
 		}
+		
 		echo "</ul>\n";
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo "</div><!-- /.sousBoite -->\n";
 	}
 
 	########################################################################
 	##
-	## Mettre le site hors ligne pour maintenance
+	## Mise hors ligne du site pour maintenance.
 	##
 	########################################################################
 
 	if (!$erreurAccesFichiers && isset($_POST['changerEtat']))
 	{
 		$messagesScript = array ();
-	
 		$maintenanceDansHtaccess = FALSE;
+		
 		if ($fic = @fopen($racine . '/.htaccess', 'r'))
 		{
 			while (!feof($fic))
 			{
 				$ligne = rtrim(fgets($fic));
+				
 				if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
 				{
 					$maintenanceDansHtaccess = TRUE;
@@ -436,15 +452,19 @@ include 'inc/premier.inc.php';
 			if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
 			{
 				$fichierHtaccess = array ();
+				
 				while (!feof($fic2))
 				{
 					$ligne = rtrim(fgets($fic2));
+					
 					if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
 					{
 						$fichierHtaccess[] = $ligne;
+						
 						while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
 						{
 							$ligne = rtrim(fgets($fic2));
+							
 							if (preg_match('/^\tRewriteCond %{REMOTE_ADDR} !\^(([0-9]{1,4}\\\.){3}[0-9]{1,4})/', $ligne))
 							{
 								if (!empty($_POST['ip']))
@@ -487,9 +507,11 @@ include 'inc/premier.inc.php';
 			if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
 			{
 				$fichierHtaccess = array ();
+				
 				while (!feof($fic2))
 				{
 					$ligne = rtrim(fgets($fic2));
+					
 					if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
 					{
 						while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
@@ -524,6 +546,7 @@ include 'inc/premier.inc.php';
 		if (adminSiteEnMaintenance($racine . '/.htaccess'))
 		{
 			$messagesScript[] = '<li>' . T_("Le site est en maintenance (hors ligne).") . "</li>\n";
+			
 			if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'))
 			{
 				$messagesScript[] = '<li>' . sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip) . "</li>\n";
@@ -541,12 +564,12 @@ include 'inc/premier.inc.php';
 		echo adminMessagesScript($messagesScript, T_("Maintenance du site"));
 	}
 	?>
-</div><!-- /boiteMessages -->
+</div><!-- /#boiteMessages -->
 
 <?php
 ########################################################################
 ##
-## Formulaires
+## Formulaires.
 ##
 ########################################################################
 ?>
@@ -561,7 +584,7 @@ include 'inc/premier.inc.php';
 				<p><input type="submit" name="lister" value="<?php echo T_('Lister les utilisateurs'); ?>" /></p>
 			</div>
 		</form>
-	</div><!-- /class=boite -->
+	</div><!-- /.boite -->
 
 	<div class="boite">
 		<h2><?php echo T_("Gérer les droits d'accès à l'administration"); ?></h2>
@@ -583,7 +606,7 @@ include 'inc/premier.inc.php';
 				<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer'); ?>" /></p>
 			</div>
 		</form>
-	</div><!-- /class=boite -->
+	</div><!-- /.boite -->
 
 	<div class="boite">
 		<h2><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
@@ -614,18 +637,20 @@ include 'inc/premier.inc.php';
 			
 					<p><label><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
 					<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
+					
 					<?php if ($ip): ?>
 						<?php $valeurChampIp = $ip; ?>
 					<?php else: ?>
 						<?php $valeurChampIp = adminIpInternaute(); ?>
 					<?php endif; ?>
+					
 					<input type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
 				</fieldset>
 				
 				<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
 			</div>
 		</form>
-	</div><!-- /class=boite -->
+	</div><!-- /.boite -->
 	
 	<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
 		<div class="boite">
@@ -634,7 +659,7 @@ include 'inc/premier.inc.php';
 			<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
 		
 			<p><a href="telecharger.admin.php?fichier=<?php echo $racine; ?>"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
-		</div><!-- /class=boite -->
+		</div><!-- /.boite -->
 	<?php endif; ?>
 <?php endif; ?>
 

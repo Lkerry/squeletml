@@ -1,9 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Galeries");
-include 'inc/premier.inc.php';
-
-include '../init.inc.php';
+include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
 <h1><?php echo T_("Gestion des galeries"); ?></h1>
@@ -19,7 +17,7 @@ include '../init.inc.php';
 
 	########################################################################
 	##
-	## Lister les galeries existantes
+	## Listage des galeries existantes.
 	##
 	########################################################################
 
@@ -30,6 +28,7 @@ include '../init.inc.php';
 		if ($fic = @opendir($racine . '/site/fichiers/galeries'))
 		{
 			$i = 0;
+			
 			while($fichier = @readdir($fic))
 			{
 				if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
@@ -37,7 +36,7 @@ include '../init.inc.php';
 					$i++;
 					$fichier = sansEchappement($fichier);
 					$idLien = rawurlencode($fichier);
-					$cheminConfigGalerie = adminCheminConfigGalerie($racine, $fichier);
+					$cheminConfigGalerie = cheminConfigGalerie($racine, $fichier);
 					
 					if ($cheminConfigGalerie)
 					{
@@ -59,18 +58,19 @@ include '../init.inc.php';
 					
 					if ($cheminConfigGalerie)
 					{
-						$galerie = tableauGalerie(adminCheminConfigGalerie($racine, $fichier), TRUE);
+						$galerie = tableauGalerie(cheminConfigGalerie($racine, $fichier), TRUE);
 						$nombreDoeuvres = count($galerie);
 						$corpsMinivignettes = '';
 						
 						for ($j = 0; $j <= ($nombreDoeuvres - 1) && $j < $nombreDoeuvres; $j++)
 						{
-							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, $galerie[$j], $galerieNavigation, FALSE, 'vignette', FALSE, 'aucun', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, FALSE, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$typeMime = typeMime($racineImgSrc . '/' . $galerie[$j]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $galerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
 							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 							$minivignette = $resultat[1];
-							
 							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $galerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 							$config = '';
+							
 							foreach ($galerie[$j] as $parametre => $valeur)
 							{
 								if ($parametre == 'intermediaireNom')
@@ -82,21 +82,17 @@ include '../init.inc.php';
 									$config .= "$parametre=$valeur<br />\n";
 								}
 							}
+							
 							$config = "<br />\n<strong>" . T_("Configuration:") . "</strong><br />\n" . $sectionConfig . $config;
 							$infobulle = str_replace('</span>', $config . '</span>', $infobulle);
-							
 							$minivignette = preg_replace('|(<img[^>]+/>)|', $minivignette, $infobulle);
-							
 							$corpsMinivignettes .= $minivignette;
 						}
 						
 						if (!empty($corpsMinivignettes))
 						{
-							$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
-							
-							$corpsMinivignettes .= '</div><!-- /class=galerieMinivignettes -->' . "\n";
-							$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-							
+							$corpsMinivignettes = '<div class="galerieMinivignettes sep">' . "\n" . $corpsMinivignettes;
+							$corpsMinivignettes .= '</div><!-- /.galerieMinivignettes -->' . "\n";
 							$apercu = "<li>" . sprintf(T_("Aperçu: %1\$s"), $corpsMinivignettes) . "</li>\n";
 						}
 						else
@@ -136,7 +132,7 @@ include '../init.inc.php';
 
 	########################################################################
 	##
-	## Ajouter des images
+	## Ajout d'images.
 	##
 	########################################################################
 
@@ -181,7 +177,7 @@ include '../init.inc.php';
 				}
 				elseif (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGaleries . '/' . $nomArchive))
 				{
-					$typeMime = mimedetect_mime(array ('filepath' => $cheminGaleries . '/' . $nomArchive, 'filename' => $nomArchive), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+					$typeMime = typeMime($cheminGaleries . '/' . $nomArchive, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 					
 					if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 					{
@@ -221,7 +217,7 @@ include '../init.inc.php';
 								
 								if ($infoImage['status'] == 'ok')
 								{
-									$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+									$typeMimeFichier = typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 									
 									if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 									{
@@ -250,6 +246,7 @@ include '../init.inc.php';
 						{
 							$fichierTar = new untar($cheminGalerie . '/' . $nomArchive);
 							$listeFichiers = $fichierTar->getfilelist();
+							
 							for ($i = 0; $i < count($listeFichiers); $i++)
 							{
 								$nomFichier = $listeFichiers[$i]['filename'];
@@ -279,8 +276,7 @@ include '../init.inc.php';
 										if (fwrite($fic, $donnees))
 										{
 											fclose($fic);
-											
-											$typeMimeFichier = mimedetect_mime(array ('filepath' => $cheminFichier, 'filename' => $nomFichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+											$typeMimeFichier = typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 											
 											if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 											{
@@ -341,11 +337,11 @@ include '../init.inc.php';
 
 	########################################################################
 	##
-	## Retailler les images originales
+	## Redimensionnement des images originales.
 	##
 	########################################################################
 
-	if (isset($_POST['retailler']))
+	if (isset($_POST['redimensionner']))
 	{
 		$messagesScript = array ();
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
@@ -358,8 +354,9 @@ include '../init.inc.php';
 		}
 		else
 		{
-			$qualiteJpg = securiseTexte($_POST['qualiteJpg']);
-			if ($_POST['retaillerAnalyserConfig'] == 'analyserConfig')
+			$galerieQualiteJpg = securiseTexte($_POST['qualiteJpg']);
+			
+			if ($_POST['redimensionnerAnalyserConfig'] == 'analyserConfig')
 			{
 				$analyserConfig = TRUE;
 			}
@@ -368,9 +365,9 @@ include '../init.inc.php';
 				$analyserConfig = FALSE;
 			}
 			
-			if (isset($_POST['retaillerRenommer']) && $_POST['retaillerRenommer'] == 'renommer')
+			if (isset($_POST['redimensionnerRenommer']) && $_POST['redimensionnerRenommer'] == 'renommer')
 			{
-				if (isset($_POST['retaillerNePasRenommerMotifs']) && $_POST['retaillerNePasRenommerMotifs'] == 'nePasRenommerMotifs')
+				if (isset($_POST['redimensionnerNePasRenommerMotifs']) && $_POST['redimensionnerNePasRenommerMotifs'] == 'nePasRenommerMotifs')
 				{
 					$renommerTout = FALSE;
 				}
@@ -386,14 +383,14 @@ include '../init.inc.php';
 						if(!is_dir($cheminGalerie . '/' . $fichier))
 						{
 							$infoFichier = pathinfo(superBasename($fichier));
+							
 							if (!isset($infoFichier['extension']))
 							{
 								$infoFichier['extension'] = '';
 							}
 							
 							$renommer = FALSE;
-							
-							$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 							
 							if (($renommerTout || (!preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '$/', $fichier))) && adminImageValide($typeMime))
 							{
@@ -402,7 +399,7 @@ include '../init.inc.php';
 							
 							if ($renommer && $analyserConfig)
 							{
-								$galerie = tableauGalerie(adminCheminConfigGalerie($racine, superBasename($cheminGalerie)));
+								$galerie = tableauGalerie(cheminConfigGalerie($racine, superBasename($cheminGalerie)));
 								
 								if (adminImageEstDeclaree($fichier, $galerie))
 								{
@@ -431,7 +428,7 @@ include '../init.inc.php';
 				}
 			}
 		
-			// A: les images à traiter ont la forme `nom-original.extension`
+			// A: les images à traiter ont la forme `nom-original.extension`.
 		
 			if (!$erreur)
 			{
@@ -443,7 +440,8 @@ include '../init.inc.php';
 						
 						if ($analyserConfig)
 						{
-							$galerie = tableauGalerie(adminCheminConfigGalerie($racine, superBasename($cheminGalerie)));
+							$galerie = tableauGalerie(cheminConfigGalerie($racine, superBasename($cheminGalerie)));
+							
 							if (adminImageEstDeclaree($fichier, $galerie))
 							{
 								$aTraiter = FALSE;
@@ -453,10 +451,12 @@ include '../init.inc.php';
 						if ($aTraiter)
 						{
 							$infoFichier = pathinfo(superBasename($fichier));
+							
 							if (!isset($infoFichier['extension']))
 							{
 								$infoFichier['extension'] = '';
 							}
+							
 							$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
 							if(!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
@@ -496,9 +496,8 @@ include '../init.inc.php';
 									}
 								}
 								
-								$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-								
-								$messagesScript[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $imageIntermediaireDimensionsVoulues, $qualiteJpg, $nettete, FALSE, $typeMime);
+								$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+								$messagesScript[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $typeMime, $imageIntermediaireDimensionsVoulues, FALSE, $galerieQualiteJpg, $nettete);
 							}
 						}
 					}
@@ -518,12 +517,12 @@ include '../init.inc.php';
 		}
 		
 		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
-		echo adminMessagesScript($messagesScript, T_("Retaillage des images"));
+		echo adminMessagesScript($messagesScript, T_("Redimensionnement des images"));
 	}
 
 	########################################################################
 	##
-	## Supprimer des images
+	## Suppression d'images.
 	##
 	########################################################################
 
@@ -573,15 +572,10 @@ include '../init.inc.php';
 				{
 					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
-						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-						
+						$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 						
-						if (
-							(isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && $versionImage == 'vignette') ||
-							(isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && $versionImage == 'intermediaire') ||
-							(isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && $versionImage == 'original')
-						)
+						if ((isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && $versionImage == 'vignette') || (isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && $versionImage == 'intermediaire') || (isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && $versionImage == 'original'))
 						{
 							$messagesScript[] = adminUnlink($cheminGalerie . '/' . $fichier);
 						}
@@ -614,12 +608,13 @@ include '../init.inc.php';
 							if(!is_dir($cheminTatouage . '/' . $fichier))
 							{
 								$infoFichier = pathinfo(superBasename($fichier));
+								
 								if (!isset($infoFichier['extension']))
 								{
 									$infoFichier['extension'] = '';
 								}
 							
-								$typeMime = mimedetect_mime(array ('filepath' => $cheminTatouage . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+								$typeMime = typeMime($cheminTatouage . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 							
 								if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
 								{
@@ -674,7 +669,7 @@ include '../init.inc.php';
 	
 	########################################################################
 	##
-	## Renommer une galerie
+	## Renommage d'une galerie.
 	##
 	########################################################################
 
@@ -704,7 +699,7 @@ include '../init.inc.php';
 	
 	########################################################################
 	##
-	## Sauvegarder une galerie
+	## Sauvegarde d'une galerie.
 	##
 	########################################################################
 
@@ -728,7 +723,7 @@ include '../init.inc.php';
 	
 	########################################################################
 	##
-	## Créer une page web de galerie
+	## Création d'une page web de galerie.
 	##
 	########################################################################
 
@@ -737,20 +732,25 @@ include '../init.inc.php';
 		$messagesScript = array ();
 		$page = superBasename(securiseTexte($_POST['page']));
 		$cheminPage = '../' . dirname(securiseTexte($_POST['page']));
+		
 		if ($cheminPage == '../.')
 		{
 			$cheminPage = '..';
 		}
+		
 		$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
 		$cheminInclude = dirname($cheminInclude);
+		
 		if ($cheminInclude == '.')
 		{
 			$cheminInclude = '';
 		}
+		
 		if (!empty($cheminInclude))
 		{
 			$cheminInclude .= '/';
 		}
+		
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		
 		if (!file_exists($cheminGalerie))
@@ -763,7 +763,7 @@ include '../init.inc.php';
 		}
 		else
 		{
-			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $id);
 		
 			if (!$cheminConfigGalerie)
 			{
@@ -805,7 +805,6 @@ include '../init.inc.php';
 							$contenu .= "\n";
 							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 							fputs($fic, $contenu);
-						
 							fclose($fic);
 							
 							if ($adminPorteDocumentsDroits['editer'])
@@ -832,7 +831,7 @@ include '../init.inc.php';
 
 	########################################################################
 	##
-	## Afficher un modèle de fichier de configuration
+	## Affichage d'un modèle de fichier de configuration.
 	##
 	########################################################################
 
@@ -860,12 +859,12 @@ include '../init.inc.php';
 			{
 				$listeFichiers = '';
 				$tableauFichiers = array ();
+				
 				while($fichier = @readdir($fic))
 				{
 					if(!is_dir($cheminGalerie . '/' . $fichier))
 					{
-						$typeMime = mimedetect_mime(array ('filepath' => $cheminGalerie . '/' . $fichier, 'filename' => $fichier), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-						
+						$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires, FALSE, $typeMime);
 						
 						if (adminImageValide($typeMime) && $versionImage != 'vignette' && $versionImage != 'original')
@@ -874,8 +873,8 @@ include '../init.inc.php';
 						}
 					}
 				}
-				closedir($fic);
 				
+				closedir($fic);
 				natcasesort($tableauFichiers);
 				$listeFichiers = '';
 				
@@ -917,7 +916,7 @@ include '../init.inc.php';
 
 	########################################################################
 	##
-	## Créer ou mettre à jour le fichier de configuration
+	## Création ou mise à jour d'un fichier de configuration.
 	##
 	########################################################################
 
@@ -943,7 +942,7 @@ include '../init.inc.php';
 				$exclureMotifsCommeIntermediaires = FALSE;
 			}
 			
-			$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $id);
 		
 			if ($cheminConfigGalerie)
 			{
@@ -952,7 +951,7 @@ include '../init.inc.php';
 			else
 			{
 				$configExisteAuDepart = FALSE;
-				$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id, TRUE);
+				$cheminConfigGalerie = cheminConfigGalerie($racine, $id, TRUE);
 			}
 			
 			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance))
@@ -990,7 +989,7 @@ include '../init.inc.php';
 		echo "</ul>\n";
 	}
 	
-	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && adminCheminConfigGalerie($racine, $id))
+	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && cheminConfigGalerie($racine, $id))
 	{
 		if (!$sousBoiteFichierConfigDebut)
 		{
@@ -1000,10 +999,11 @@ include '../init.inc.php';
 		}
 	
 		$id = rawurlencode($id);
-		$cheminConfigGalerie = adminCheminConfigGalerie($racine, $id);
+		$cheminConfigGalerie = cheminConfigGalerie($racine, $id);
 		echo '<h4>' . T_("Information") . "</h4>\n" ;
 		
 		echo "<ul>\n";
+		
 		if ($adminPorteDocumentsDroits['editer'])
 		{
 			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messagesPorteDocuments">' . T_("Modifier le fichier.") . "</a></li>\n";
@@ -1012,20 +1012,21 @@ include '../init.inc.php';
 		{
 			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . "</li>\n";
 		}
+		
 		echo "</ul>\n";
 	}
 	
 	if ($sousBoiteFichierConfigDebut)
 	{
-		echo "</div><!-- /class=sousBoite -->\n";
+		echo "</div><!-- /.sousBoite -->\n";
 	}
 	?>
-</div><!-- /boiteMessages -->
+</div><!-- /#boiteMessages -->
 
 <?php
 ########################################################################
 ##
-## Formulaires
+## Formulaires.
 ##
 ########################################################################
 ?>
@@ -1044,9 +1045,9 @@ include '../init.inc.php';
 			<p><input type="submit" name="lister" value="<?php echo T_('Lister les galeries'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
-<!-- class=boite -->
+<!-- .boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Ajouter des images"); ?></h2>
@@ -1070,6 +1071,7 @@ include '../init.inc.php';
 				<select name="id">
 					<option value="nouvelleGalerie"><?php echo T_("Nouvelle galerie:"); ?></option>
 					<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+					
 					<?php if (!empty($galeries)): ?>
 						<?php foreach ($galeries as $galerie): ?>
 							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
@@ -1095,9 +1097,9 @@ include '../init.inc.php';
 			<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
-<!-- class=boite -->
+<!-- .boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
@@ -1111,6 +1113,7 @@ include '../init.inc.php';
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				
 				<?php if (!empty($galeries)): ?>
 					<select name="id">
 						<?php foreach ($galeries as $galerie): ?>
@@ -1131,13 +1134,13 @@ include '../init.inc.php';
 
 				<p><input type="checkbox" name="actions" value="nettete" /> <label><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label></p>
 				
-				<p><?php echo T_("La liste des images originales retaillables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
+				<p><?php echo T_("La liste des images originales redimensionnables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
 				<ul>
-					<li><input type="checkbox" name="retaillerRenommer" value="renommer" checked="checked" /> <label><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
+					<li><input type="checkbox" name="redimensionnerRenommer" value="renommer" checked="checked" /> <label><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
 					
-					<li><input type="checkbox" name="retaillerNePasRenommerMotifs" value="nePasRenommerMotifs" checked="checked" /> <label><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
+					<li><input type="checkbox" name="redimensionnerNePasRenommerMotifs" value="nePasRenommerMotifs" checked="checked" /> <label><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
 					
-					<li><input type="checkbox" name="retaillerAnalyserConfig" value="analyserConfig" checked="checked" /> <label><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du retaillage les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme valeur d'un des paramètres <code>intermediaireNom</code>, <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
+					<li><input type="checkbox" name="redimensionnerAnalyserConfig" value="analyserConfig" checked="checked" /> <label><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme valeur d'un des paramètres <code>intermediaireNom</code>, <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
 				</ul>
 				
 				<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
@@ -1156,12 +1159,12 @@ include '../init.inc.php';
 
 			<p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
-			<p><input type="submit" name="retailler" value="<?php echo T_('Retailler les images originales'); ?>" /></p>
+			<p><input type="submit" name="redimensionner" value="<?php echo T_('redimensionner les images originales'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
-<!-- class=boite -->
+<!-- .boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Supprimer des images"); ?></h2>
@@ -1178,7 +1181,7 @@ include '../init.inc.php';
 	
 	<p><?php echo T_("Tout d'abord, vous pouvez supprimer les vignettes d'une galerie pour forcer leur regénération automatique."); ?></p>
 	
-	<p><?php echo T_("Aussi, si la navigation entre les oeuvres d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationVignettesTatouage</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les oeuvres précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre. Vous pouvez supprimer ces vignettes de navigation avec tatouage."); ?></p>
+	<p><?php echo T_("Aussi, si la navigation entre les oeuvres d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationTatouerVignettes</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les oeuvres précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre. Vous pouvez supprimer ces vignettes de navigation avec tatouage."); ?></p>
 	
 	<p><?php echo T_("Vous pouvez également supprimer les images de taille intermédiaires ou au format original."); ?></p>
 	
@@ -1191,6 +1194,7 @@ include '../init.inc.php';
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				
 				<?php if (!empty($galeries)): ?>
 					<select name="id">
 						<?php foreach ($galeries as $galerie): ?>
@@ -1241,9 +1245,9 @@ include '../init.inc.php';
 			<p><input type="submit" name="supprimerImages" value="<?php echo T_('Supprimer les images'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
-<!-- class=boite -->
+<!-- .boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Renommer une galerie"); ?></h2>
@@ -1257,6 +1261,7 @@ include '../init.inc.php';
 				
 				<p><label><?php echo T_("Identifiant actuel de la galerie et son nouvel identifiant:"); ?></label><br />
 				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				
 				<?php if (!empty($galeries)): ?>
 					<select name="id">
 						<?php foreach ($galeries as $galerie): ?>
@@ -1272,10 +1277,10 @@ include '../init.inc.php';
 			<p><input type="submit" name="renommer" value="<?php echo T_('Renommer la galerie'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
 <?php if ($adminPorteDocumentsDroits['telecharger']): ?>
-	<!-- class=boite -->
+	<!-- .boite -->
 
 	<div class="boite">
 		<h2><?php echo T_("Sauvegarder une galerie"); ?></h2>
@@ -1289,6 +1294,7 @@ include '../init.inc.php';
 				
 					<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 					<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+					
 					<?php if (!empty($galeries)): ?>
 						<select name="id">
 							<?php foreach ($galeries as $galerie): ?>
@@ -1304,10 +1310,10 @@ include '../init.inc.php';
 				<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>" /></p>
 			</div>
 		</form>
-	</div><!-- /class=boite -->
+	</div><!-- /.boite -->
 <?php endif; ?>
 
-<!-- class=boite -->
+<!-- .boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Créer une page web de galerie"); ?></h2>
@@ -1321,6 +1327,7 @@ include '../init.inc.php';
 				
 				<p><label><?php echo T_("Identifiant de la galerie (ayant un fichier de configuration):"); ?></label><br />
 				<?php $galeries = adminListeGaleries($racine, TRUE); ?>
+				
 				<?php if (!empty($galeries)): ?>
 					<select name="id">
 						<?php foreach ($galeries as $galerie): ?>
@@ -1339,9 +1346,9 @@ include '../init.inc.php';
 			<p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
-<!-- class=boite -->
+<!-- .boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Créer ou mettre à jour un fichier de configuration"); ?></h2>
@@ -1355,6 +1362,7 @@ include '../init.inc.php';
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				
 				<?php if (!empty($galeries)): ?>
 					<select name="id">
 						<?php foreach ($galeries as $galerie): ?>
@@ -1378,9 +1386,9 @@ include '../init.inc.php';
 			<input type="hidden" name="config" value="maj" />
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
-<!-- class=boite -->
+<!-- .boite -->
 
 <div class="boite">
 	<h2><?php echo T_("Afficher un modèle de fichier de configuration"); ?></h2>
@@ -1392,6 +1400,7 @@ include '../init.inc.php';
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				
 				<?php if (!empty($galeries)): ?>
 					<select name="id">
 						<?php foreach ($galeries as $galerie): ?>
@@ -1433,6 +1442,6 @@ include '../init.inc.php';
 			<p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>
 		</div>
 	</form>
-</div><!-- /class=boite -->
+</div><!-- /.boite -->
 
 <?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

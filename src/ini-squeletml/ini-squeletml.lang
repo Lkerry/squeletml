@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
+# .ini Squeletml
+
+## Description
+
+Coloration syntaxique des fichiers de configuration de Squeletml. Ces fichiers sont au format `.ini`, mais contrairement à la coloration par défaut dans gedit pour ce format de fichier, la présente coloration syntaxique ne colore pas de délimiteurs de caractères (habituellement les guillemets et les apostrophes), ce qui évite par exemple qu'une apostrophe présente dans la valeur d'un paramètre, comme ceci:
+
+		parametre=Lorem ipsum l'orem
+
+	colore (sans raison) tout le texte qui suit.
+
+## Licence
+
 Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
 Copyright © Jean-Philippe Fleury, 2009.
 

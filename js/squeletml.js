@@ -1,138 +1,12 @@
-////////////////////////////////////////////////////////////////////////
-//
-// Fonctions pour le lien actif dans le menu. Merci à <http://www.richnetapps.com/automatically_highlight_current_page_in/>
-//
-////////////////////////////////////////////////////////////////////////
-
-function extraitUrlPage(valeurHref)
-{
-	var tableauAdresse = valeurHref.split('/');
-	return (tableauAdresse.length < 2) ? valeurHref : tableauAdresse[tableauAdresse.length - 2].toLowerCase() + tableauAdresse[tableauAdresse.length - 1].toLowerCase();
-}
-
-function lienActifAjouteClasse(tableauA, urlPageCourante)
-{
-	for (var i = 0; i < tableauA.length; i++)
-	{
-		if(extraitUrlPage(tableauA[i].href) == urlPageCourante)
-		{
-			if (tableauA[i].parentNode.tagName != 'div')
-			{
-				tableauA[i].className = 'actif';
-				tableauA[i].parentNode.className = 'actif';
-			}
-		}
-	}
-}
-
-function lienActif(idConteneur)
-{
-	valeurHref = document.location.href ? document.location.href : document.location;
-
-	if (document.getElementById(idConteneur) != null)
-	lienActifAjouteClasse(document.getElementById(idConteneur).getElementsByTagName('a'), extraitUrlPage(valeurHref));
-}
-
-////////////////////////////////////////////////////////////////////////
-//
-// Fonctions pour les boîtes déroulantes. Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>
-//
-////////////////////////////////////////////////////////////////////////
-
-function boiteDeroulante(conteneur, titre, corps)
-{
-	var oConteneur = document.getElementById(conteneur);
-	var oTitre = document.getElementById(titre);
-	var oCorps = document.getElementById(corps);
-	
-	var oA = document.createElement('a');
-	var oSpan1 = document.createElement('span');
-	var oSpan2 = document.createElement('span');
-	var oTexteSpan1 = '';
-	var oTexteSpan2 = document.createTextNode($('#' + titre).html());
-	var symbole = '';
-	var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur));
-	
-	switch(temoinBoiteDeroulante)
-	{
-		case 'masquer':
-			oCorps.className = 'masquer';
-			symbole = '+';
-			break;
-			
-		case 'afficher':
-			oCorps.className = 'afficher';
-			symbole = '-';
-			break;
-			
-		default:
-			if(oCorps.className != 'masquer')
-			{
-				oCorps.className = 'afficher';
-				symbole = '-';
-			}
-			else
-			{
-				symbole = '+';
-			}
-	}
-	
-	oA.href= '#';
-	oA.setAttribute('class', 'boiteDeroulanteLien');
-	oSpan2.appendChild(oTexteSpan2);
-	oA.appendChild(oSpan2);
-	$('#' + titre).html(oA);
-	oTexteSpan1 = document.createTextNode('[' + symbole + ']&nbsp;');
-	oSpan1.appendChild(oTexteSpan1);
-	oSpan1.setAttribute('class', 'boiteDeroulanteSymbole');
-	$('#' + titre + '>a span:first').before(oSpan1);
-	$('#' + titre + '>a').html(html_entity_decode($('#' + titre + '>a').html()));
-	oA.onclick = function()
-	{
-		boiteDeroulanteChangementDetat(conteneur, corps);
-		
-		if (oCorps.className == 'masquer')
-		{
-			symbole = '+';
-		}
-		else
-		{
-			symbole = '-';
-		}
-		
-		$('#' + titre + '>a span:first').html(html_entity_decode('[' + symbole + ']&nbsp;'));
-		
-		return false;
-	};
-}
-
-function boiteDeroulanteChangementDetat(conteneur, corps)
-{
-	var oCorps = document.getElementById(corps);
-	var symbole = '';
-	
-	if (oCorps.className == 'masquer')
-	{
-		oCorps.className = 'afficher';
-		$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur), 'afficher', { expires: 30, path: '/' });
-	}
-	else
-	{
-		oCorps.className = 'masquer';
-		$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur), 'masquer', { expires: 30, path: '/' });
-	}
-}
-
-////////////////////////////////////////////////////////////////////////
-//
-// Divers
-//
-////////////////////////////////////////////////////////////////////////
+/***********************************************************************
+**
+** Général.
+**
+***********************************************************************/
 
 /**
 Permet d'éviter l'écrasement d'événements se produisant lorsque plusieurs `window.onload` sont utilisés. Merci à <http://www.alsacreations.com/article/lire/565-JavaScript-organiser-son-code-en-modules.html>.
 */
-
 function ajouteEvenementLoad(fonction)
 {
 	if (window.addEventListener)
@@ -154,18 +28,30 @@ Ajustement de la hauteur de `idAegaliser` pour la plus grande entre celle de `id
 */
 function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 {
-	if (document.getElementById(idAegaliser) && document.getElementById(idDeComparaison1) && document.getElementById(idDeComparaison2))
-	{
-		var hauteurIdAegaliser = document.getElementById(idAegaliser).offsetHeight;
-		var hauteurIdDeComparaison1 = document.getElementById(idDeComparaison1).offsetHeight + 80;
-		var hauteurIdDeComparaison2 = document.getElementById(idDeComparaison2).offsetHeight + 80;
+	var oIdAegaliser = document.getElementById(idAegaliser);
+	var oIdDeComparaison1 = document.getElementById(idDeComparaison1);
+	var oIdDeComparaison2 = document.getElementById(idDeComparaison2);
 	
+	if (oIdAegaliser && oIdDeComparaison1 && oIdDeComparaison2)
+	{
+		var hauteurIdAegaliser = oIdAegaliser.offsetHeight;
+		var hauteurIdDeComparaison1 = oIdDeComparaison1.offsetHeight + 80;
+		var hauteurIdDeComparaison2 = oIdDeComparaison2.offsetHeight + 80;
 		var hauteurMax = Math.max(hauteurIdDeComparaison1, hauteurIdDeComparaison2);
+		
 		if (hauteurMax > hauteurIdAegaliser)
 		{
-			document.getElementById(idAegaliser).style.height = hauteurMax + "px";
+			oIdAegaliser.style.height = hauteurMax + "px";
 		}
 	}
+}
+
+/**
+Alias identique pour le `gettext` de JSGettext à ce qui est utilisé dans Squeletml avec PHP Gettext.
+*/
+function T_(msgid)
+{
+	return gt.gettext(msgid);
 }
 
 /**
@@ -182,24 +68,164 @@ function tableDesMatieres(idParent, baliseTable)
 		var oUl = document.createElement(baliseTable);
 		
 		oDiv.setAttribute('id', 'tableDesMatieres');
-		oH2.setAttribute('id', 'tableDesMatieresTitre');
+		oH2.setAttribute('id', 'tableDesMatieresBdTitre');
+		oH2.setAttribute('class', 'bDtitre');
 		oH2Texte = document.createTextNode(T_("Table des matières"));
-		oUl.setAttribute('id', 'tableDesMatieresLiens');
+		oUl.setAttribute('id', 'tableDesMatieresBdCorps');
 		
 		oDiv.appendChild(oUl);
 		oH2.appendChild(oH2Texte);
 		
 		oPage.insertBefore(oDiv, oPage.firstChild);
-		$("#tableDesMatieresLiens").tableOfContents($("#" + idParent), {startLevel: 2, depth: 6});
+		$('#tableDesMatieresBdCorps').tableOfContents(oPage, {startLevel: 2, depth: 6});
 		oDiv.insertBefore(oH2, oDiv.firstChild);
 	})
 }
 
-/**
-Alias identique pour le `gettext` de JSGettext à ce qui est utilisé dans Squeletml avec PHP Gettext.
-*/
-function T_(msgid)
+/***********************************************************************
+**
+** Fonctions pour les boîtes déroulantes. Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>.
+**
+***********************************************************************/
+
+function boiteDeroulante(conteneur)
 {
-	return gt.gettext(msgid);
+	var oConteneur = document.getElementById(conteneur);
+	
+	if (conteneur == 'tableDesMatieres')
+	{
+		var cheminTitre = '#tableDesMatieresBdTitre';
+		var cheminCorps = '#tableDesMatieresBdCorps';
+	}
+	else
+	{
+		var cheminTitre = '#' + conteneur + ' .bDtitre';
+		var cheminCorps = '#' + conteneur + ' .bDcorps';
+	}
+	
+	var oTitre = $(cheminTitre).get(0);
+	var oCorps = $(cheminCorps).get(0);
+	var oA = document.createElement('a');
+	var oSpan1 = document.createElement('span');
+	var oSpan2 = document.createElement('span');
+	var oTexteSpan1 = '';
+	var oTexteSpan2 = document.createTextNode($(oTitre).html());
+	var symbole = '';
+	var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur));
+	
+	switch(temoinBoiteDeroulante)
+	{
+		case 'masquer':
+			$(oCorps).removeClass('afficher').addClass('masquer');
+			symbole = '+';
+			break;
+			
+		case 'afficher':
+			$(oCorps).removeClass('masquer').addClass('afficher');
+			symbole = '-';
+			break;
+			
+		default:
+			if (!$(oCorps).hasClass('masquer'))
+			{
+				$(oCorps).removeClass('masquer').addClass('afficher');
+				symbole = '-';
+			}
+			else
+			{
+				symbole = '+';
+			}
+	}
+	
+	oA.href= '#';
+	oA.setAttribute('class', 'boiteDeroulanteLien');
+	oSpan2.appendChild(oTexteSpan2);
+	oA.appendChild(oSpan2);
+	$(oTitre).html(oA);
+	oTexteSpan1 = document.createTextNode('[' + symbole + ']&nbsp;');
+	oSpan1.appendChild(oTexteSpan1);
+	oSpan1.setAttribute('class', 'boiteDeroulanteSymbole');
+	$(cheminTitre + '>a span:first').before(oSpan1);
+	$(cheminTitre + '>a').html(html_entity_decode($(cheminTitre + '>a').html()));
+	oA.onclick = function()
+	{
+		boiteDeroulanteChangementDetat(conteneur);
+		
+		if ($(oCorps).hasClass('masquer'))
+		{
+			symbole = '+';
+		}
+		else
+		{
+			symbole = '-';
+		}
+		
+		$(cheminTitre + '>a span:first').html(html_entity_decode('[' + symbole + ']&nbsp;'));
+		
+		return false;
+	};
 }
 
+function boiteDeroulanteChangementDetat(conteneur)
+{
+	if (conteneur == 'tableDesMatieres')
+	{
+		var cheminCorps = '#tableDesMatieresBdCorps';
+	}
+	else
+	{
+		var cheminCorps = '#' + conteneur + ' .bDcorps';
+	}
+	
+	var oCorps = $(cheminCorps).get(0);
+	var symbole = '';
+	
+	if ($(oCorps).hasClass('masquer'))
+	{
+		$(oCorps).removeClass('masquer').addClass('afficher');
+		$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur), 'afficher', { expires: 30, path: '/' });
+	}
+	else
+	{
+		$(oCorps).removeClass('afficher').addClass('masquer');
+		$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur), 'masquer', { expires: 30, path: '/' });
+	}
+}
+
+/***********************************************************************
+**
+** Fonctions pour le lien actif dans le menu. Merci à <http://www.richnetapps.com/automatically_highlight_current_page_in/>.
+**
+***********************************************************************/
+
+function extraitUrlPage(valeurHref)
+{
+	var tableauAdresse = valeurHref.split('/');
+	
+	return (tableauAdresse.length < 2) ? valeurHref : tableauAdresse[tableauAdresse.length - 2].toLowerCase() + tableauAdresse[tableauAdresse.length - 1].toLowerCase();
+}
+
+function lienActifAjouteClasse(tableauA, urlPageCourante)
+{
+	for (var i = 0; i < tableauA.length; i++)
+	{
+		if(extraitUrlPage(tableauA[i].href) == urlPageCourante)
+		{
+			if (tableauA[i].parentNode.tagName != 'div')
+			{
+				tableauA[i].className = 'actif';
+				tableauA[i].parentNode.className = 'actif';
+			}
+		}
+	}
+}
+
+function lienActif(idConteneur)
+{
+	valeurHref = document.location.href ? document.location.href : document.location;
+	
+	if (document.getElementById(idConteneur) != null)
+	{
+		lienActifAjouteClasse(document.getElementById(idConteneur).getElementsByTagName('a'), extraitUrlPage(valeurHref));
+	}
+}

@@ -9,6 +9,6 @@ include $racine . '/inc/premier.inc.php';
 
 <p>The URL you requested was not found.</p>
 
-<p>You can <?php echo lienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), "visit the home page"); ?>.</p>
+<p>You can <?php echo lienAccueil(ACCUEIL, estAccueil(ACCUEIL), "visit the home page"); ?>.</p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

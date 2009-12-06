@@ -27,7 +27,7 @@ Tant que ces deux fichiers n'existent pas, la page d'accueil de votre installati
 
 Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouvez le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml. Copiez-le et coller-le sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
 
-Ce fichier contient deux variables à renseigner:
+Ce fichier contient deux variables obligatoires à renseigner:
 
 - `$urlRacine`: il s'agit de l'adresse URL vers votre installation de Squeletml. Par exemple, `http://www.nomDeDomaine.ext/monSiteSqueletml` ou `http://www.nomDeDomaine.ext`.
 
@@ -39,6 +39,10 @@ Ce fichier contient deux variables à renseigner:
 
 Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation, par exemple `http://www.nomDeDomaine.ext/`.
 
+**Note: il est possible de renommer le dossier d'administration pour plus de sécurité. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `init.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation, par exemple:**
+
+	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
+
 #### Protection de l'administration (fichier `.acces`)
 
 Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger la section d'administration du site sans attendre. Pour ce faire, visitez la page suivante:
@@ -46,10 +50,6 @@ Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseign
 	http://www.nomDeDomaine.ext/admin/acces.admin.php
 
 et ajoutez un utilisateur. Les utilisateurs sont listés dans le fichier `.acces` situé à la racine de votre installation de Squeletml.
-
-**Note: comme action optionnelle après l'installation de Squeletml, il est possible de renommer le dossier d'administration pour plus de sécurité. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `inc/config.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation, par exemple:**
-
-	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
 
 #### Actions obligatoires supplémentaires sur un serveur de Free.fr
 
@@ -122,32 +122,39 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 - `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
 
+- Les fichiers de la structure XHTML générale de la page:
+
+  - `page-premier.inc.php`
+  - `page-dernier.inc.php`
+
 - Les fichiers de division HTML, qui sont, pour le français:
 
-  - `html.fr.ancres.inc.php`
-  - `html.fr.bas-de-page.inc.php`
-  - `html.fr.menu.inc.php`
-  - `html.fr.menu-langues.inc.php`
-  - `html.fr.sous-titre.inc.php`
-  - `html.fr.sur-titre.inc.php`
+  - `fr/html.ancres.inc.php`
+  - `fr/html.bas-de-page.inc.php`
+  - `fr/html.menu.inc.php`
+  - `fr/html.menu-langues.inc.php`
+  - `fr/html.sous-titre.inc.php`
+  - `fr/html.sur-titre.inc.php`
 
-	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `html.en.menu.inc.php`.
+	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `en/html.menu.inc.php`.
 
-	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez personnaliser chaque division en créant un fichier de même nom dans `site/inc`. Par exemple, pour modifier le menu en français, créer un fichier `site/inc/html.fr.menu.inc.php` et modifiez son contenu comme désiré. **Ceci écrasera le fichier par défaut.** Ainsi, si `site/inc/html.fr.menu.inc.php` existe, le fichier par défaut `inc/html.fr.menu.inc.php` ne sera pas inclus.
+	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez personnaliser chaque division en créant un fichier de même nom dans `site/inc`. Par exemple, pour modifier le menu en français, créer un fichier `site/inc/fr/html.menu.inc.php` et modifiez son contenu comme désiré. **Ceci écrasera le fichier par défaut.** Ainsi, si `site/inc/fr/html.menu.inc.php` existe, le fichier par défaut `inc/fr/html.menu.inc.php` ne sera pas inclus.
 
 	Certains fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/inc`. Voir la section «Divisions HTML».
 
 - Les fichiers de page:
 
-  - `page.fr.401.inc.php`
-  - `page.fr.404.inc.php`
-  - `page.fr.contact.inc.php`
-  - `page.fr.galerie.inc.php`
-  - `page.fr.index.inc.php`
+  - `fr/page.401.inc.php`
+  - `fr/page.404.inc.php`
+  - `fr/page.contact.inc.php`
+  - `fr/page.galerie.inc.php`
+  - `fr/page.index.inc.php`
 
-	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système de contenu inclus.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `page.fr.index.inc.php` dans le dossier `site/inc/` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier `inc/page.fr.index.inc.php` par défaut.**
+	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `en/page.index.inc.php`.
+
+	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système d'inclusion.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `fr/page.index.inc.php` dans le dossier `site/inc/` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier `inc/fr/page.index.inc.php` par défaut.**
 	
-	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$courrielContactParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
+	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$contactCourrielParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
 
 ### Divisions HTML
 
@@ -172,50 +179,50 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 					<div id="enTete">
 						<div id="surTitre">
 							...
-						</div><!-- /surTitre -->
+						</div><!-- /#surTitre -->
 				
 						<div id="titre">
 							Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
-						</div><!-- /titre -->
+						</div><!-- /#titre -->
 
 						<div id="sousTitre">
 							...
-						</div><!-- /sousTitre -->
-					</div><!-- /enTete -->
+						</div><!-- /#sousTitre -->
+					</div><!-- /#enTete -->
 
 					<div id="ancres">
 						...
-					</div><!-- /ancres -->
+					</div><!-- /#ancres -->
 			
 					<div id="surContenu">
 						Vide par défaut
-					</div><!-- /surContenu -->
+					</div><!-- /#surContenu -->
 			
 					<div id="contenu">
 						<div id="interieurContenu">
 							...
-						</div><!-- /interieurContenu -->
-					</div><!-- /contenu -->
+						</div><!-- /#interieurContenu -->
+					</div><!-- /#contenu -->
 			
 					<div id="sousContenu">
 						<div id="menuLangues">
 							...
-						</div><!-- /menuLangues -->
+						</div><!-- /#menuLangues -->
 
 						<div id="menu">
 							...
-						</div><!-- /menu -->
+						</div><!-- /#menu -->
 					
 						<div id="faireDecouvrir">
 							...
-						</div><!-- /faireDecouvrir -->
-					</div><!-- /sousContenu -->
+						</div><!-- /#faireDecouvrir -->
+					</div><!-- /#sousContenu -->
 			
 					<div id="basDePage">
 						...
-					</div><!-- /basDePage -->
-				</div><!-- /interieurPage -->
-			</div><!-- /page -->
+					</div><!-- /#basDePage -->
+				</div><!-- /#interieurPage -->
+			</div><!-- /#page -->
 		</body>
 	</html>
 
@@ -234,17 +241,17 @@ Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe 
 Il est possible de traduire Squeletml dans la langue désirée. Le principal fichier est `locale/squeletml.pot`. Il contient la plupart des phrases à traduire. Les autres fichiers sont:
 
 - `admin/versions-solo.admin.php` (le cas échéant, modifier le nom du dossier d'administration)
-- `inc/html.fr.ancres.inc.php`
-- `inc/html.fr.bas-de-page.inc.php`
-- `inc/html.fr.menu.inc.php`
-- `inc/html.fr.menu-langues.inc.php`
-- `inc/html.fr.sous-titre.inc.php`
-- `inc/html.fr.sur-titre.inc.php`
-- `inc/page.fr.401.inc.php`
-- `inc/page.fr.404.inc.php`
-- `inc/page.fr.contact.inc.php`
-- `inc/page.fr.galerie.inc.php`
-- `inc/page.fr.index.inc.php`
+- `inc/fr/html.ancres.inc.php`
+- `inc/fr/html.bas-de-page.inc.php`
+- `inc/fr/html.menu.inc.php`
+- `inc/fr/html.menu-langues.inc.php`
+- `inc/fr/html.sous-titre.inc.php`
+- `inc/fr/html.sur-titre.inc.php`
+- `inc/fr/page.401.inc.php`
+- `inc/fr/page.404.inc.php`
+- `inc/fr/page.contact.inc.php`
+- `inc/fr/page.galerie.inc.php`
+- `inc/fr/page.index.inc.php`
 - `documentation.mdtxt`
 - `LISEZ-MOI.mdtxt`
 - `maintenance.php`
@@ -294,7 +301,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
-- `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$motsClesInclusion` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
+- `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$inclureMotsCles` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
 
 - `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `inc/config.inc.php`.
 
@@ -302,19 +309,19 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
-	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$courrielContactParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$courrielContactParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
+	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
 - `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration `inc/config.inc.php` pour une description détaillée de la syntaxe à utiliser.
 
 - `$idGalerie`: un nombre ou un mot identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir plus loin), une galerie sera insérée dans la page.
 
-	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, une galerie par défaut de démonstration sera affichée (`fichiers/galeries/demo`).
+	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, un message d'erreur informe de l'inexistence de la galerie.
 
 - `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question.
 
 - `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents dans le contenu, c'est-à-dire à l'intérieur de la div `interieurContenu`. La table est ajoutée au début de cette div.
 
-	La variable `$tableDesMatieresParDefaut`, déclarée dans le fichier `inc/config.inc.php`, s'applique à toutes les pages du site. Utiliser `$tableDesMatieres` pour changer la valeur par défaut pour une page spécifique.
+	La variable `$afficherTableDesMatieresParDefaut`, déclarée dans le fichier `inc/config.inc.php`, s'applique à toutes les pages du site. Utiliser `$tableDesMatieres` pour changer la valeur par défaut pour une page spécifique.
 
 ### Inclusion du premier fichier PHP
 
@@ -496,7 +503,7 @@ Chaque galerie possède son propre identifiant unique, aussi appelé *id*, qui p
 
 Concrètement, pour créer une galerie, voici les étapes à suivre:
 
-1. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie, et l'assigner avec l'identifiant voulu (`$idGalerie = "ceQuOnVeut";`).
+1. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie, et l'assigner avec l'identifiant voulu (`$idGalerie = "ce qu'on veut";`).
 
 2. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
 
@@ -607,17 +614,6 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	exclure=
 	commentaire=
 
-*Note: avant la version 1.9.2, le fichier de configuration n'était pas un fichier `.ini`. Chaque oeuvre était déclarée par le champ `intermediaireNom`, qui était la seule information obligatoire, et se terminait par un marqueur `#IMG` ou, avant la version 1.8.8, par `__IMG__`. Voici un exemple:*
-
-	intermediaireNom=image1.png
-	id=1
-	originalNom=image1.xcf
-	#IMG
-	intermediaireNom=image2.png
-	id=2
-	originalNom=image2.xcf
-	#IMG
-
 ### Navigation entre les oeuvres
 
 Il y a six méthodes possibles pour naviguer entre les oeuvres:
@@ -650,7 +646,7 @@ Les vignettes utilisées sont celles de l'image vers laquelle le lien pointe:
 
 ##### Vignettes tatouées d'une flèche
 
-Dans le cas où l'option `$galerieNavigationVignettesTatouage` est activée dans le fichier de configuration, une vignette personnalisée est générée par le script (à partir de la vignette de l'image) sur laquelle une flèche est superposée au centre.
+Dans le cas où l'option `$galerieNavigationTatouerVignettes` est activée dans le fichier de configuration, une vignette personnalisée est générée par le script (à partir de la vignette de l'image) sur laquelle une flèche est superposée au centre.
 
 Les fichiers par défaut pour les flèches superposées sont `fichiers/precedent-tatouage.png` et `fichiers/suivant-tatouage.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/precedent-tatouage.png` et `site/fichiers/suivant-tatouage.png`.
 
@@ -720,8 +716,6 @@ et:
 
 **Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
-*Note 2: avant la version 1.9.2, le fichier de configuration n'était pas un fichier `.ini`. La langue n'était pas une section du fichier de configuration, mais était déclarée sur chaque ligne, sous la forme `code de la langue:identifiant de la galerie=URL relative de la galerie`.*
-
 #### Syndication globale du site
 
 Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
@@ -743,9 +737,7 @@ et:
 
 	$urlRacine/autrePage.php
 
-L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` composeront le flux global du site.
-
-*Note: avant la version 1.9.2, le fichier de configuration n'était pas un fichier `.ini`. La langue n'était pas une section du fichier de configuration, mais était déclarée sur chaque ligne, sous la forme `code de la langue:URL relative de la page`.*
+L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieActiverFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` composeront le flux global du site.
 
 ## Développement
 

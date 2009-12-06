@@ -1,8 +1,12 @@
 /***********************************************************************
 **
-** Général
+** Général.
 **
 ***********************************************************************/
+
+html {
+	overflow-y: scroll;
+}
 
 body, html {
 	margin: 0px;
@@ -81,7 +85,7 @@ pre {
 	padding: 5px;
 	margin: 5px 0px;
 	border: 1px solid #b3b3b3;
-	white-space: pre-wrap; /* CSS 3 */ /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
+	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
 fieldset {
@@ -119,8 +123,8 @@ li {
 	margin: 2px;
 }
 
-.sepGalerieMinivignettes {
-	clear: both;
+.sep {
+	overflow: hidden;
 }
 
 .erreur, .erreur code {
@@ -146,17 +150,61 @@ ul.triable li {
 
 /***********************************************************************
 **
-** Porte-documents
+** Porte-documents.
 **
 ***********************************************************************/
+
+#boiteMessages {
+	border: 1px dashed #b3b3b3;
+}
+
+#boiteMessages h2, .boite h2, .sousBoite h3 {
+	margin-top: 0px;
+}
+
+#boiteMessages h2 {
+	background: url('../fichiers/ampoule.png') no-repeat left center;
+	padding-left: 20px;
+}
+
+#boiteMessages h2, #boiteMessages h3, #boiteMessages h4, #boiteMessages h5, #boiteMessages h6 {
+	color: black;
+}
+
+#redimensionnable {
+	width: 95%;
+	height: 500px;
+	border: 1px solid black;
+	padding: 3px;
+	background-color: white;
+}
+
+a.porteDocumentsFichier {
+	text-decoration: none;
+}
 
 textarea.consulterModifications {
 	width: 95%;
 	height: 500px;
 }
 
-a.porteDocumentsFichier {
-	text-decoration: none;
+.boite {
+	margin: 25px 0px;
+	border: 1px solid #b3b3b3;
+	padding: 5px;
+	background-color: #f2f2f2;
+}
+
+.sousBoite {
+	margin: 25px;
+	border: 1px dashed #b3b3b3;
+	padding: 5px;
+	background-color: #f7f7f7;
+}
+
+.editeur {
+	padding-bottom: 10px;
+	overflow-y: scroll;
 }
 
 .porteDocumentsListe {
@@ -189,51 +237,7 @@ a.porteDocumentsFichier {
 	color: #b3b3b3;
 }
 
-.boite {
-	margin: 25px 0px;
-	border: 1px solid #b3b3b3;
-	padding: 5px;
-	background-color: #f2f2f2;
-}
-
-.sousBoite {
-	margin: 25px;
-	border: 1px dashed #b3b3b3;
-	padding: 5px;
-	background-color: #f7f7f7;
-}
-
-#boiteMessages {
-	border: 1px dashed #b3b3b3;
-}
-
-#boiteMessages h2, .boite h2, .sousBoite h3 {
-	margin-top: 0px;
-}
-
-#boiteMessages h2 {
-	background: url('../fichiers/ampoule.png') no-repeat left center;
-	padding-left: 20px;
-}
-
-#boiteMessages h2, #boiteMessages h3, #boiteMessages h4, #boiteMessages h5, #boiteMessages h6 {
-	color: black;
-}
-
-.editeur {
-	padding-bottom: 10px;
-	overflow-y: scroll;
-}
-
-#redimensionnable {
-	width: 95%;
-	height: 500px;
-	border: 1px solid black;
-	padding: 3px;
-	background-color: white;
-}
-
-/* Infobulle inspirée de <http://www.alsacreations.com/astuce/lire/1-comment-contrler-et-modifier-lapparence-dune-infobullenbsp.html> */
+/* Infobulle. Inspirée de <http://www.alsacreations.com/astuce/lire/1-comment-contrler-et-modifier-lapparence-dune-infobullenbsp.html>. */
 
 a.porteDocumentsProprietesFichier {
 	position: relative;

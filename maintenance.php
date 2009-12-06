@@ -602,7 +602,7 @@ jx67tv/qfzqHt/7Of4fTm6fZqcKaU/hL3/Nu+y/v/qHv+r/wO/6Tv4Irp3p875nvQxQAJnjuR38M
 cXKcHCfHyXFy3OT4/wFdYK4hOD7w2QAAAABJRU5ErkJggg==
 IMAGE;
 
-$image = "<img src=\"data:image/png;base64,$imageBase64\" width=\"200\" height=\"200\" alt=\"\" />";
+$baliseImage = "<img src=\"data:image/png;base64,$imageBase64\" width=\"200\" height=\"200\" alt=\"\" />";
 
 header('HTTP/1.1 503 Service Temporarily Unavailable');
 header('Status: 503 Service Temporarily Unavailable');
@@ -659,7 +659,7 @@ header("Retry-After: 3600");
 		<div>
 			<h1><?php echo $titre; ?></h1>
 
-			<div id="image"><?php echo $image; ?></div>
+			<div id="image"><?php echo $baliseImage; ?></div>
 
 			<p><?php echo $explication; ?></p>
 		</div>

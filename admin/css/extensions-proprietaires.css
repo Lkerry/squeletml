@@ -1,9 +1,9 @@
-.boite, .sousBoite, pre, #tableDesMatieres, a.porteDocumentsProprietesFichier:hover span, img.infobulleApercuImage, .galerieMinivignettes img, .porteDocumentsListe li, fieldset {
-	-moz-border-radius: 8px; /* Gecko */
-	-webkit-border-radius: 8px; /* Webkit */
+#tableDesMatieres, a.porteDocumentsProprietesFichier:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
+	-moz-border-radius: 8px; /* Gecko. */
+	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 #enTete {
-	-moz-border-radius: 0px 0px 8px 8px; /* Gecko */
-	-webkit-border-radius: 0px 0px 8px 8px; /* Webkit */
+	-moz-border-radius: 0px 0px 8px 8px; /* Gecko. */
+	-webkit-border-radius: 0px 0px 8px 8px; /* Webkit. */
 }

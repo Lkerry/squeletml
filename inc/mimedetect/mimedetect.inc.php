@@ -11,8 +11,7 @@
 /**
  * Detect File Mime Type.
  *
- * @param $file Un tableau associatif contenant le chemin complet du fichier
- *   (`$file['filepath']`) ainsi que son nom (`$file['filename']`). The
+ * @param $file Une chaîne contenant le chemin complet du fichier. The
  *   filepath property is used to locate the file and if the mime detection
  *   fails, the mimetype property is returned.
  * @param $mimedetect_enable_file_binary Un booléen déterminant si la commande
@@ -25,6 +24,8 @@
  */
 function mimedetect_mime($file, $mimedetect_enable_file_binary = FALSE, $mimedetect_file_binary = '/usr/bin/file', $mapping = NULL) {
   $path_mimedetect = dirname(__FILE__);
+  $filepath = $file;
+  $filename = superBasename($filepath);
   
   // An additional array of mimetypes not included in file_get_mimetype().
   static $additional_mimes = array(
@@ -48,7 +49,7 @@ function mimedetect_mime($file, $mimedetect_enable_file_binary = FALSE, $mimedet
   if (extension_loaded('fileinfo')) {
     static $finfo = FALSE;
     if ($finfo || $finfo = @finfo_open(FILEINFO_MIME, $magic_file)) {
-      $mime = finfo_file($finfo, realpath($file['filepath']));
+      $mime = finfo_file($finfo, realpath($filepath));
     }
   }
 
@@ -60,7 +61,7 @@ function mimedetect_mime($file, $mimedetect_enable_file_binary = FALSE, $mimedet
     // On OSX the -i switch is -I, so if we use the long flags everyone is
     // happy. I checked back to version 3.41 and it still supports the long
     // names but if you run into problems you can use " -bi ".
-    $command = $filebin .' --brief --mime --magic-file='. escapeshellarg($magic_file) .' '. escapeshellarg($file['filepath']);
+    $command = $filebin .' --brief --mime --magic-file='. escapeshellarg($magic_file) .' '. escapeshellarg($filepath);
     $mime = trim(exec($command));
     // with text we often get charset like 'text/plain; charset=us-ascii'
     $mime = split(';', $mime);
@@ -74,10 +75,10 @@ function mimedetect_mime($file, $mimedetect_enable_file_binary = FALSE, $mimedet
   // it should be played.
   if (!$mime || $mime == 'application/octet-stream') {
     // Try core's mime mapping first...
-    $mime = file_get_mimetype($file['filename'], $mapping);
+    $mime = file_get_mimetype($filename, $mapping);
     // ...and if that doesn't turn up anything try our additional mappings.
     if ($mime == 'application/octet-stream') {
-      $mime = file_get_mimetype($file['filename'], $additional_mimes);
+      $mime = file_get_mimetype($filename, $additional_mimes);
     }
   }
 

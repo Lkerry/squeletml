@@ -25,6 +25,10 @@ div.galerieNavigationSuivant img {
 	float: left;
 }
 
-pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html> */
-	word-wrap: break-word; /* Internet Explorer 5.5+ */
+pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+	word-wrap: break-word; /* Internet Explorer 5.5+. */
+}
+
+.sep {
+	height: 1%;
 }

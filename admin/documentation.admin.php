@@ -2,7 +2,7 @@
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Documentation de Squeletml");
 $tableDesMatieres = TRUE;
-include 'inc/premier.inc.php';
+include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
 <?php echo mdtxt($racine . '/documentation.mdtxt'); ?>

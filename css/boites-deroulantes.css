@@ -1,5 +1,6 @@
-.boiteDeroulanteLien {
+.bDtitre a {
 	text-decoration: none !important;
+	color: inherit;
 }
 
 .boiteDeroulanteSymbole {

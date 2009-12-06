@@ -9,6 +9,6 @@ include $racine . '/inc/premier.inc.php';
 
 <p>La page demandée requiert un authentification.</p>
 
-<p>Voulez-vous <?php echo lienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), "retourner à la page d'accueil"); ?>?</p>
+<p>Voulez-vous <?php echo lienAccueil(ACCUEIL, estAccueil(ACCUEIL), "retourner à la page d'accueil"); ?>?</p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

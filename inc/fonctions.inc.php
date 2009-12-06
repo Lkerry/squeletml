@@ -1,154 +1,41 @@
 <?php
 /**
-Retourne un tableau contenant les fichiers à inclure.
+Retourne le lien vers l'accueil de la langue de la page. Si le lien n'a pas été trouvé, retourne une chaîne vide.
 */
-function init($racine, $racineAdmin, $idGalerie)
+function accueil($accueil, $langues)
 {
-	$fichiers = array ();
-	
-	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
-	
-	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
-	
-	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
-	
-	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
-	
-	$fichiers[] = $racine . '/inc/config.inc.php';
-	
-	$fichiers[] = $racine . '/inc/constantes.inc.php';
-	
-	if (file_exists($racine . '/site/inc/config.inc.php'))
+	foreach ($langues as $langue)
 	{
-		$fichiers[] = $racine . '/site/inc/config.inc.php';
+		if (!empty($langue) && array_key_exists($langue, $accueil))
+		{
+			return $accueil[$langue];
+		}
 	}
 	
-	$fichiers[] = $racineAdmin . '/inc/fonctions.inc.php';
-	
-	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
-	{
-		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
-	}
-	
-	if (file_exists($racine . '/site/inc/constantes.inc.php'))
-	{
-		$fichiers[] = $racine . '/site/inc/constantes.inc.php';
-	}
-	
-	if ($idGalerie)
-	{
-		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important d'insérer avant premier.inc.php, pour permettre la modification des balises de l'en-tête
-	}
-	
-	return $fichiers;
+	return '';
 }
 
 /**
-Retourne le bon DTD (Définition de Type de Document).
+Retourne le contenu de l'attribut `action` du formulaire de contact.
 */
-function doctype($xhtmlStrict)
+function actionFormContact($decouvrir)
 {
-	if ($xhtmlStrict)
+	$action = url();
+	
+	if ($decouvrir)
 	{
-		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
+		$action .= '#formulaireFaireDecouvrir';
 	}
-	else
-	{
-		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
-	}
+	
+	return $action;
 }
 
 /**
-Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
-*/
-function mdtxt($fichier)
-{
-	return Markdown(file_get_contents($fichier));
-}
-
-/**
-Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaîne convertie en HTML.
-*/
-function mdtxtChaine($chaine)
-{
-	return Markdown($chaine);
-}
-
-/**
-Personnalise la coloration syntaxique par défaut de la fonction `highlight_file()`. Voir la fonction `coloreCodePhp()`.
-*/
-function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
-{
-	$code = file_get_contents($fichier);
-	$codeColore = coloreCodePhp($code, TRUE, $commentairesEnNoir);
-	
-	if ($retourneCode)
-	{
-		return $codeColore;
-	}
-	else
-	{
-		echo $codeColore;
-		return TRUE;
-	}
-}
-
-/**
-Personnalise la coloration syntaxique par défaut de la fonction `highlight_string()`.
-
-Les couleurs sont modifiées pour tenter de refléter la coloration par défaut pour le PHP de l'éditeur de texte gedit, et pour améliorer le contraste des commentaires. En effet, par défaut la couleur utilisée pour les commentaires n'offre pas un contraste suffisant sous fond blanc (voir <http://www.britoweb.net/outils/contraste-couleurs.php>).
-
-Aussi, les espaces insécables sont remplacées par des espaces normales.
-
-Tout comme `highlight_string()`, un paramètre optionnel, s'il est défini à TRUE, permet de retourner le code au lieu de l'afficher directement.
-
-Un paramètre optionnel supplémentaire permet d'afficher les commentaires en noir. Par défaut est défini à FALSE.
-*/
-function coloreCodePhp($code, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
-{
-	$codeColore = highlight_string($code, TRUE);
-	
-	$codeColore = str_replace('&nbsp;', ' ', $codeColore);
-	$codeColore = str_replace('<br />', "\n", $codeColore);
-	
-	// Commentaires vers bleu primaire ou vers noir
-	if ($commentairesEnNoir)
-	{
-		$couleurCommentaires = '000000';
-	}
-	else
-	{
-		$couleurCommentaires = '0000FF';
-	}
-	$codeColore = str_replace('color: #FF8000', 'color: #' . $couleurCommentaires, $codeColore);
-	
-	// Variables vers à peu près bleu sarcelle
-	$codeColore = str_replace('color: #0000BB', 'color: #008A8C', $codeColore);
-	
-	// Chaînes vers magenta secondaire
-	$codeColore = str_replace('color: #DD0000', 'color: #FF00FF', $codeColore);
-	
-	// Symboles vers à peu près fraise écrasée
-	$codeColore = str_replace('color: #007700', 'color: #A52A2A', $codeColore);
-	
-	if ($retourneCode)
-	{
-		return $codeColore;
-	}
-	else
-	{
-		echo $codeColore;
-		return TRUE;
-	}
-}
-
-/**
-Retourne le code nécessaire à l'insertion d'annexes dans la documentation.
+Retourne les annexes de la documentation.
 */
 function annexesDocumentation($racineAdmin)
 {
 	$racine = dirname($racineAdmin);
-	
 	$texte = '';
 	$texte .= "\n\n## " . T_("Annexes") . "\n\n";
 	
@@ -166,213 +53,113 @@ function annexesDocumentation($racineAdmin)
 }
 
 /**
-Si `$motsCles` est vide, génère à partir d'une chaîne fournie une liste de mots-clés utilisables par la métabalise `keywords`, et retourne cette liste, sinon retourne tout simplement `$motsCles`.
+Retourne le complément de la balise `title`.
 */
-function motsCles($motsCles, $chaine)
+function baliseTitle($baliseTitle, $baliseTitleComplement, $langues)
 {
-	if (empty($motsCles))
+	$contenuBaliseTitle = '';
+	
+	if (empty($baliseTitle))
 	{
-		$chaine = trim($chaine);
+		$baliseTitle = url();
+	}
+	
+	$contenuBaliseTitle .= $baliseTitle . ' | ';
+	$contenuBaliseTitle .= baliseTitleComplement($baliseTitleComplement, $langues);
+	
+	return $contenuBaliseTitle;
+}
 
-		// Suppression des caractères inutiles
-		$chaine = str_replace(
-				array (
-					'(',
-					')',
-					'!',
-					'?',
-					'+',
-					'...',
-					'"',
-					'«',
-					'»',
-					'[',
-					']',
-					':',
-					'&quot;',
-					','
-				),
-				array ('', '', '', '', '', '', '', '', '', '', '', ''), $chaine);
-
-		// Remplacement des séparateurs «utiles» par des espaces
-		$chaine = str_replace(array ('/', '.', '-', '\'', '’'), array (' ', ' ', ' ', ' ', ' '), $chaine);
-
-		// Compression des espaces en trop éventuelles générées par l'étape précédente
-		$chaine = str_replace(array ('  '), array (' '), $chaine);
-
-		// Remplacement des espaces par des virgules
-		$chaine = str_replace(' ', ', ', $chaine);
-		
-		// Suppression des mots de trois lettres ou moins
-		$chaine = preg_replace('/(^| )[^, ]{1,3},/', '', $chaine);
-		
-		// Suppression des mots scindés lors du remplacement de l'apostrophe
-		$chaine = preg_replace('/(^| )(aujourd|presqu|entr|prud|homie|homies|homal|homale|homales|homaux),/i', '', $chaine);
-		
-		// Suppression du potentiel ', ' final avant le mélange des mots
-		if (preg_match('/, $/', $chaine))
+/**
+Retourne le complément de la balise `title`. Si aucun complément, n'a été trouvé, retourne une chaîne vide.
+*/
+function baliseTitleComplement($tableauBaliseTitleComplement, $langues)
+{
+	foreach ($langues as $langue)
+	{
+		if (array_key_exists($langue, $tableauBaliseTitleComplement))
 		{
-			$chaine = trim(substr($chaine, 0, -2));
+			return $tableauBaliseTitleComplement[$langue];
 		}
-		
-		// Mélanger l'ordre des mots
-		$tableauChaine = explode(', ', $chaine);
-		shuffle($tableauChaine);
-		$chaine = '';
-		foreach ($tableauChaine as $mot)
+	}
+	
+	return '';
+}
+
+/**
+Retourne un tableau de blocs devant être insérés dans la div `surContenu` ou `sousContenu`, tout dépendamment du paramètre `$div`. L'ordre des fichiers dans le tableau correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent être insérés dans leur div.
+*/
+function blocs($ordreBlocsDansFluxHtml, $div)
+{
+	$ordreBlocsDansFluxHtmlFiltre = array ();
+	$blocsAinserer = array ();
+	
+	foreach ($ordreBlocsDansFluxHtml as $bloc => $nombre)
+	{
+		if ($nombre % 2)
 		{
-			$chaine .= $mot . ', ';
+			// A: nombre impair.
+			$ordreBlocsDansFluxHtmlFiltre[$bloc] = $nombre;
 		}
+	}
+	
+	if ($div == 'sousContenu')
+	{
+		$ordreBlocsDansFluxHtmlFiltre = array_diff($ordreBlocsDansFluxHtml, $ordreBlocsDansFluxHtmlFiltre);
+	}
+	
+	asort($ordreBlocsDansFluxHtmlFiltre);
+	
+	foreach ($ordreBlocsDansFluxHtmlFiltre as $bloc => $nombre)
+	{
+		$blocsAinserer[] = $bloc;
+	}
+	
+	return $blocsAinserer;
+}
+
+/**
+Retourne un tableau dont chaque élément contient le code d'activation d'une boîte déroulante.
+*/
+function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
+{
+	$boites = '';
+	
+	if (!empty($boitesDeroulantesParDefaut))
+	{
+		$boites .= $boitesDeroulantesParDefaut . '|';
+	}
+	
+	if (!empty($boitesDeroulantes))
+	{
+		$boites .= $boitesDeroulantes;
+	}
+	
+	if (!empty($boites))
+	{
+		$boitesDeroulantesTableau = explode('|', $boites);
+		$boitesDeroulantesTableau = array_map('trim', $boitesDeroulantesTableau);
+		$elementsVides = array_keys($boitesDeroulantesTableau, '');
 		
-		// Resuppression du ', ' final
-		$chaine = trim(substr($chaine, 0, -2));
-		
-		// Tout en minuscule
-		$chaine = strtolower($chaine);
-		
-		return $chaine;
+		foreach ($elementsVides as $i)
+		{
+			unset($boitesDeroulantesTableau[$i]);
+		}
 	}
 	else
 	{
-		return $motsCles;
+		$boitesDeroulantesTableau = array();
 	}
+	
+	return $boitesDeroulantesTableau;
 }
 
 /**
-Construit les balises d'inclusion `link` et les balises `script` pour le javascript.
-@param fichiers un tableau dont la syntaxe est:
-	$fichiers[] = array ("URL" => "TYPE:fichier à inclure");
-	ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants
-	Les types possibles sont: css, cssltIE7, cssIE7, csslteIE7, javascript, favicon
-@param version un identifiant (optionnel) des versions des fichiers inclus, comme une date, un nombre...
-@return les balises `link` correctement remplies
+Vérifie si le cache d'un fichier expire.
 */
-function linkScript($fichiers, $version = '', $styleSqueletmlCss)
+function cacheExpire($fichier, $dureeCache)
 {
-	$balisesLinkScript = '';
-	if (!empty($version))
-	{
-		$version = '?' . $version;
-	}
-	
-	if (!$styleSqueletmlCss)
-	{
-		// Suppression des feuilles de style par défaut
-		unset($fichiers[0], $fichiers[1], $fichiers[2], $fichiers[3]);
-	}
-	
-	if (!empty($fichiers))
-	{
-		$favicon = '';
-		foreach ($fichiers as $indice)
-		{
-			foreach ($indice as $page => $fichier)
-			{
-				// Récupérer le type
-				preg_match('/^([^:]+):(.+)/', $fichier, $res);
-				$type = $res[1];
-				$fichier = $res[2];
-		
-				// Si l'adresse se termine par *, accepter toutes les pages enfants possibles de cette page parent en plus de la page parent elle-même.
-				if (preg_match('/\*$/i', $page))
-				{
-					$modele = substr($page, 0, -1);
-					$modele .= ".*";
-				}
-				else
-				{
-					$modele = $page;
-				}
-
-				if (preg_match("|$modele|i", url()))
-				{
-					switch ($type)
-					{
-						case 'favicon':
-							// On ne conserve qu'une déclaration de favicon.
-							$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . $fichier . $version . '" />' . "\n";
-							break;
-				
-						case 'css':
-							$balisesLinkScript .= '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n";
-							break;
-				
-						case 'cssltIE7':
-							$balisesLinkScript .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
-							break;
-					
-						case 'cssIE7':
-							$balisesLinkScript .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
-							break;
-							
-						case 'csslteIE7':
-							$balisesLinkScript .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
-							break;
-				
-						case 'javascript':
-							$balisesLinkScript .= '<script type="text/javascript" src="' . $fichier . $version . '"></script>' . "\n";
-							break;
-					}
-				}
-			}
-		}
-		
-		$balisesLinkScript .= $favicon;
-	}
-	
-	return $balisesLinkScript;
-}
-
-/**
-Construit un lien vers l'accueil si la page n'est pas l'accueil, sinon n'ajoute aucune balise et retourne la chaîne telle quelle.
-*/
-function lienVersAccueil($accueil, $estAccueil, $contenu)
-{
-	if (!$estAccueil)
-	{
-		$aOuvrant = '<a href="' . $accueil . '/">';
-		$aFermant = '</a>';
-	}
-	else
-	{
-		$aOuvrant = '';
-		$aFermant = '';
-	}
-	
-	return $aOuvrant . $contenu . $aFermant;
-}
-
-/**
-Construit la phrase de description du site dans le haut des pages.
-
-Sur la page d'accueil, ce sera le titre principal h1; sur les autres pages, ce sera un paragraphe p.
-
-@param estAccueil informe si on se trouve sur l'accueil du site ou non
-@param contenu le contenu à insérer dans les balises qui seront construites
-@return le contenu entouré de balises
-*/
-function nomSite($estAccueil, $contenu)
-{
-	if (!$estAccueil)
-	{
-		$baliseOuvrante = '<p>';
-		$baliseFermante = '</p>';
-	}
-	else
-	{
-		$baliseOuvrante = '<h1>';
-		$baliseFermante = '</h1>';
-	}
-	
-	return $baliseOuvrante . $contenu . $baliseFermante . "\n";
-}
-
-/**
-Renvoie TRUE si la page est l'accueil, sinon renvoie FALSE.
-*/
-function estAccueil($accueil)
-{
-	if (url() == $accueil . '/' || url() == $accueil . '/index.php' || url() == $accueil . '/index.html' || url() == $accueil . '/index.htm')
+	if (time() - fileatime($fichier) > $dureeCache)
 	{
 		return TRUE;
 	}
@@ -383,50 +170,108 @@ function estAccueil($accueil)
 }
 
 /**
-Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour affichage sécuritaire à l'écran. Si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été sécurisé. Si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
+Retourne le chemin vers le fichier de configuration du flux RSS global des galeries ou des pages autres que les galeries, selon le nom passé en paramètre. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function securiseTexte($texte)
+function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FALSE)
 {
-	if (is_array($texte))
+	if (file_exists("$racine/site/inc/rss-global-$nom.ini.txt"))
 	{
-		$texteSecurise = array ();
-		
-		foreach ($texte as $valeur)
-		{
-			$texteSecurise[] = securiseTexte($valeur);
-		}
-		
-		return $texteSecurise;
+		return "$racine/site/inc/rss-global-$nom.ini.txt";
 	}
-	elseif (is_string($texte))
+	elseif (file_exists("$racine/site/inc/rss-global-$nom.ini"))
 	{
-		return sansEchappement(htmlspecialchars($texte, ENT_COMPAT, 'UTF-8'));
+		return "$racine/site/inc/rss-global-$nom.ini";
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return "$racine/site/inc/rss-global-$nom.ini.txt";
 	}
 	else
 	{
-		return '';
+		return FALSE;
 	}
 }
 
 /**
-Renvoie une lettre au hasard (a-zA-Z). Optionnellement, préciser des lettres à ne pas renvoyer.
+Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function lettreAuHasard($lettresExclues = '')
+function cheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut = FALSE)
 {
-	$lettres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-	
-	do
+	if ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt'))
 	{
-		$lettre = $lettres[rand(0, 51)];
-	} while (substr_count($lettresExclues, $lettre));
-	
-	return $lettre;
+		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt';
+	}
+	elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini'))
+	{
+		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini';
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt';
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /**
-Renvoie une liste de classes pour `body`.
+Retourne le chemin vers le fichier `(site/)xhtml/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide.
 */
-function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc)
+function cheminXhtml($racine, $nom)
+{
+	if (file_exists("$racine/site/xhtml/$nom.inc.php"))
+	{
+		return "$racine/site/xhtml/$nom.inc.php";
+	}
+	elseif (file_exists("$racine/xhtml/$nom.inc.php"))
+	{
+		return "$racine/xhtml/$nom.inc.php";
+	}
+	
+	return '';
+}
+
+/**
+Si `$retourneChemin` vaut TRUE, retourne le chemin vers le fichier `(site/)xhtml/$langue/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide. Si `$retourneChemin` vaut FALSE, retourne TRUE si un fichier a été trouvé, sinon retourne FALSE.
+*/
+function cheminXhtmlLangue($racine, $langues, $nom, $retourneChemin = TRUE)
+{
+	foreach ($langues as $langue)
+	{
+		if (file_exists("$racine/site/xhtml/$langue/$nom.inc.php"))
+		{
+			return $retourneChemin ? "$racine/site/xhtml/$langue/$nom.inc.php" : TRUE;
+		}
+		elseif (file_exists("$racine/xhtml/$langue/$nom.inc.php"))
+		{
+			return $retourneChemin ? "$racine/xhtml/$langue/$nom.inc.php" : TRUE;
+		}
+	}
+	
+	return $retourneChemin ? '' : FALSE;
+}
+
+/**
+Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)inc/$nom.inc.php` demandé.
+*/
+function cheminsInc($racine, $nom)
+{
+	$fichiers = array ();
+	$fichiers[] = "$racine/inc/$nom.inc.php";
+	
+	if (file_exists("$racine/site/inc/$nom.inc.php"))
+	{
+		$fichiers[] = "$racine/site/inc/$nom.inc.php";
+	}
+	
+	return $fichiers;
+}
+
+/**
+Retourne une liste de classes pour `body`.
+*/
+function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage, $blocsArrondis)
 {
 	$class = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -466,6 +311,7 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 		if ($uneColonneAgauche)
 		{
 			$class .= "colonneAgauche uneColonneAgauche ";
+			
 			if ($arrierePlanColonne != 'Aucun')
 			{
 				$class .= "colonneAgauche$arrierePlanColonne ";
@@ -474,6 +320,7 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 		else
 		{
 			$class .= "colonneAdroite uneColonneAdroite ";
+			
 			if ($arrierePlanColonne != 'Aucun')
 			{
 				$class .= "colonneAdroite$arrierePlanColonne ";
@@ -481,7 +328,7 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 		}
 	}
 	
-	if (!$differencierLiensVisitesSeulementDansContenu)
+	if ($differencierLiensVisitesHorsContenu)
 	{
 		$class .= 'liensVisitesDifferencies ';
 	}
@@ -496,7 +343,7 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 		$class .= 'bordureDroitePage ';
 	}
 	
-	if ($coinsArrondisBloc)
+	if ($blocsArrondis)
 	{
 		$class .= 'coinsArrondisBloc ';
 	}
@@ -505,285 +352,15 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 }
 
 /**
-Retourne le contenu de la métabalise robots.
+Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une div de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une div de classe `bloc`).
 */
-function robots($robotsParDefaut, $robots)
-{
-	return $robots ? $robots : $robotsParDefaut;
-}
-
-/**
-Construit le message affiché à IE6. Les 4 paramètres sont relatifs à l'image de Firefox qui va être affichée dans le message.
-*/
-function messageIE6($src, $alt, $width, $height)
-{
-	$message = '';
-	$message .= '<div id="messageIE6">' . "\n";
-	$message .= '<p id="messageIE6titre">' . T_("Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?") . "</p>\n";
-	$message .= "\n";
-	$message .= '<div id="messageIE6corps"><p>' . T_("Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, performant, sécuritaire et respectueux des standards sur lesquels le web est basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au travail, vous pouvez faire la suggestion à votre service informatique.") . "</p>\n";
-	$message .= "\n";
-	$message .= "<p><strong><a href=\"http://www.mozilla-europe.org/fr/\"><img src=\"$src\" alt=\"$alt\" width=\"$width\" height=\"$height\" /></a> <a href=\"http://www.mozilla-europe.org/fr/\"><span>" . T_("Télécharger Firefox") . "</span></a></strong></p></div>\n";
-	$message .= "</div>\n";
-	
-	return $message;
-}
-
-/**
-Retourne le complément de la balise `title`.
-*/
-function baliseTitle($baliseTitle, $baliseTitleComplement, $langueParDefaut, $langue)
-{
-	$contenubaliseTitle = '';
-	
-	if (empty($baliseTitle))
-	{
-		$baliseTitle = url();
-	}
-	
-	$contenubaliseTitle .= $baliseTitle . ' | ';
-	$contenubaliseTitle .= baliseTitleComplement($baliseTitleComplement, $langueParDefaut, $langue);
-	
-	return $contenubaliseTitle;
-}
-
-/**
-Retourne le complément de la balise `title`.
-*/
-function baliseTitleComplement($tableauBaliseTitleComplement, $langueParDefaut, $langue)
-{
-	if (array_key_exists(langue($langueParDefaut, $langue), $tableauBaliseTitleComplement))
-	{
-		return $tableauBaliseTitleComplement[langue($langueParDefaut, $langue)];
-	}
-	else
-	{
-		return $tableauBaliseTitleComplement[$langueParDefaut];
-	}
-}
-
-/**
-Retourne le titre du site.
-*/
-function titreSite($tableauTitreSite, $langueParDefaut, $langue)
-{
-	if (array_key_exists(langue($langueParDefaut, $langue), $tableauTitreSite))
-	{
-		return $tableauTitreSite[langue($langueParDefaut, $langue)];
-	}
-	else
-	{
-		return $tableauTitreSite[$langueParDefaut];
-	}
-}
-
-/**
-Si `$retourneChemin` vaut TRUE, retourne le chemin vers le premier fichier existant cherché dans l'ordre suivant:
-
-- `/RACINE/site/inc/html.LANGUE_DE_LA_PAGE.NOM.inc.php`
-- `/RACINE/inc/html.LANGUE_DE_LA_PAGE.NOM.inc.php`
-- `/RACINE/site/inc/html.LANGUE_PAR_DEFAUT.NOM.inc.php`
-- `/RACINE/inc/html.LANGUE_PAR_DEFAUT.NOM.inc.php`
-
-Si aucun fichier n'a été trouvé, retourne une chaîne vide. Si `$retourneChemin` vaut FALSE, retourne TRUE si un fichier a été trouvé, sinon retourne FALSE.
-*/
-function cheminFichierIncHtml($racine, $fichier, $langueParDefaut, $langue, $retourneChemin = TRUE)
-{
-	$langue = langue($langueParDefaut, $langue);
-	$chemin = "";
-	
-	if (file_exists("$racine/site/inc/html.$langue.$fichier.inc.php"))
-	{
-		$chemin = "$racine/site/inc/html.$langue.$fichier.inc.php";
-	}
-	elseif (file_exists("$racine/inc/html.$langue.$fichier.inc.php"))
-	{
-		$chemin = "$racine/inc/html.$langue.$fichier.inc.php";
-	}
-	elseif (file_exists("$racine/site/inc/html.$langueParDefaut.$fichier.inc.php"))
-	{
-		$chemin = "$racine/site/inc/html.$langueParDefaut.$fichier.inc.php";
-	}
-	elseif (file_exists("$racine/inc/html.$langueParDefaut.$fichier.inc.php"))
-	{
-		$chemin = "$racine/inc/html.$langueParDefaut.$fichier.inc.php";
-	}
-	
-	if (!$retourneChemin)
-	{
-		if (!empty($chemin))
-		{
-			return TRUE;
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
-	
-	return $chemin;
-}
-
-/**
-Modifie la source de la vignette pour la remplacer par une vignette tatouée d'une flèche de navigation.
-*/
-function vignetteTatouage($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $qualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
-{
-	preg_match('/src="([^"]+)"/', $paragraphe, $res);
-	$srcContenu = $res[1];
-	$nomImgSrcContenu = superBasename($srcContenu);
-	$vignetteNom = nomSuffixe($nomImgSrcContenu, '-' . $sens);
-	
-	if (file_exists($racineImgSrc . '/tatouage/' . $vignetteNom))
-	{
-		$srcContenu = $urlImgSrc . '/tatouage/' . $vignetteNom;
-	}
-	else
-	{
-		if (!file_exists($racineImgSrc . '/tatouage'))
-		{
-			@mkdir($racineImgSrc . '/tatouage');
-		}
-	
-		@copy($racineImgSrc . '/' . $nomImgSrcContenu, $racineImgSrc . '/tatouage/' . $vignetteNom);
-		
-		if (file_exists($racine . '/site/fichiers/' . $sens . '-tatouage.png'))
-		{
-			$imgSrc = imagecreatefrompng($racine . '/site/fichiers/' . $sens . '-tatouage.png');
-		}
-		else
-		{
-			$imgSrc = imagecreatefrompng($racine . '/fichiers/' . $sens . '-tatouage.png');
-		}
-		
-		$typeMime = mimedetect_mime(array ('filepath' => $racineImgSrc . '/tatouage/' . $vignetteNom, 'filename' => $vignetteNom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-		
-		switch ($typeMime)
-		{
-			case 'image/gif':
-				$imgDest = imagecreatefromgif($racineImgSrc . '/tatouage/' . $vignetteNom);
-				break;
-	
-			case 'image/jpeg':
-				$imgDest = imagecreatefromjpeg($racineImgSrc . '/tatouage/' . $vignetteNom);
-				break;
-		
-			case 'image/png':
-				$imgDest = imagecreatefrompng($racineImgSrc . '/tatouage/' . $vignetteNom);
-				imagealphablending($imgDest, true);
-				imagesavealpha($imgDest, true);
-				break;
-		}
-	
-		$largSrc = imagesx($imgSrc);
-		$hautSrc = imagesy($imgSrc);
-		$largDest = imagesx($imgDest);
-		$hautDest = imagesy($imgDest);
-	
-		imagecopy($imgDest, $imgSrc, ($largDest / 2) - ($largSrc / 2), ($hautDest / 2) - ($hautSrc / 2), 0, 0, $largSrc, $hautSrc);
-	
-		switch ($typeMime)
-		{
-			case 'image/gif':
-				imagegif($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
-				break;
-	
-			case 'image/jpeg':
-				imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, $qualiteJpg);
-				break;
-		
-			case 'image/png':
-				imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 9);
-				break;
-		}
-	}
-	
-	// On retourne le paragraphe avec l'attribut `src` modifié
-	return preg_replace('/src="[^"]+"/', 'src="' . $urlImgSrc . '/tatouage/' . $vignetteNom . '"', $paragraphe);
-}
-
-/**
-Ajoute une deuxième image (flèche) à la navigation par vignettes.
-*/
-function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
-{
-	if (file_exists($racine . '/site/fichiers/' . $sens . '-accompagnee.png'))
-	{
-		$cheminImage = $racine . '/site/fichiers/' . $sens . '-accompagnee.png';
-		$urlImage = $urlRacine . '/site/fichiers/' . $sens . '-accompagnee.png';
-	}
-	else
-	{
-		$cheminImage = $racine . '/fichiers/' . $sens . '-accompagnee.png';
-		$urlImage = $urlRacine . '/fichiers/' . $sens . '-accompagnee.png';
-	}
-	
-	list ($larg, $haut) = getimagesize($cheminImage);
-	{
-		$width = 'width="' . $larg . '"';
-		$height = 'height="' . $haut . '"';
-	}
-	preg_match('/alt="([^"]+)"/', $paragraphe, $res);
-	$altContenu = $res[1];
-	$alt = 'alt="' . $altContenu . '"';
-	
-	$img = "<div id=\"galerieAccompagnementVignette" . ucfirst($sens) . "\"><img src=\"$urlImage\" $alt $width $height /></div>\n";
-	
-	// On retourne le paragraphe avec l'image de flèche en plus
-	if ($sens == 'precedent')
-	{
-		return preg_replace('/(<img [^>]+>)/', '\1' . $img, $paragraphe);
-	}
-	elseif ($sens == 'suivant')
-	{
-		return preg_replace('/(<img [^>]+>)/', '\1' . $img, $paragraphe);
-	}
-}
-
-/**
-Génère l'attribut `style` pour les div vide simulant la présence d'une flèche ou d'une vignette de navigation dans la galerie.
-*/
-function styleDivVideNavigation($oeuvre)
-{
-	$width = '';
-	$height = '';
-	
-	if (!empty($oeuvre))
-	{
-		preg_match('/width="(\d+)"/', $oeuvre, $resWidth);
-		preg_match('/height="(\d+)"/', $oeuvre, $resHeight);
-		if (!empty($resWidth[1]))
-		{
-			$width = $resWidth[1];
-		}
-		if (!empty($resHeight[1]))
-		{
-			$height = $resHeight[1];
-		}
-	}
-	
-	if (empty($width) && empty($height))
-	{
-		$style = '';
-	}
-	else
-	{
-		$style = ' style="width: ' . $width . 'px; height: ' . $height . 'px;"';
-	}
-	
-	return $style;
-}
-
-/**
-Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une deiv de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une div de classe `bloc`).
-*/
-function codeInterieurBloc($coinsArrondisBloc)
+function codeInterieurBloc($blocsArrondis)
 {
 	$codeInterieurBloc = array ();
 	$codeInterieurBloc[0] = "\n\t";
-	$codeInterieurBloc[1] = "\n\t" . '</div><!-- /class=contenuBloc -->';
+	$codeInterieurBloc[1] = "\n\t" . '</div><!-- /.contenuBloc -->';
 	
-	if ($coinsArrondisBloc)
+	if ($blocsArrondis)
 	{
 		$codeInterieurBloc[0] .= '<div class="haut-droit"></div><div class="haut-gauche"></div>';
 		$codeInterieurBloc[1] .= '<div class="bas-droit"></div><div class="bas-gauche"></div>';
@@ -796,19 +373,91 @@ function codeInterieurBloc($coinsArrondisBloc)
 }
 
 /**
-Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire, s'il y a lieu, sinon est vide.
+Personnalise la coloration syntaxique par défaut de la fonction `highlight_string()`.
+
+La coloration est modifiée dans le but d'améliorer le contraste des commentaires. En effet, par défaut, la couleur utilisée pour les commentaires n'offre pas un contraste suffisant sous fond blanc (voir <http://www.britoweb.net/outils/contraste-couleurs.php>).
+
+Les autres couleurs sont également modifiées et inspirées de la coloration par défaut pour le PHP de l'éditeur de texte gedit (<http://projects.gnome.org/gedit/>).
+
+Aussi, les espaces insécables sont remplacées par des espaces normales.
+
+Tout comme `highlight_string()`, un paramètre optionnel, s'il est défini à TRUE, permet de retourner le code au lieu de l'afficher directement.
+
+Un paramètre optionnel supplémentaire permet d'afficher les commentaires en noir. Par défaut est défini à FALSE.
 */
-function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $coinsArrondisBloc)
+function coloreCodePhp($code, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
 {
-	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->)/s', $corpsGalerie, $res))
+	$codeColore = highlight_string($code, TRUE);
+	$codeColore = str_replace('&nbsp;', ' ', $codeColore);
+	$codeColore = str_replace('<br />', "\n", $codeColore);
+	
+	// Commentaires vers bleu primaire ou vers noir.
+	if ($commentairesEnNoir)
+	{
+		$couleurCommentaires = '000000';
+	}
+	else
+	{
+		$couleurCommentaires = '0000FF';
+	}
+	
+	$codeColore = str_replace('color: #FF8000', 'color: #' . $couleurCommentaires, $codeColore);
+	
+	// Variables vers à peu près bleu sarcelle.
+	$codeColore = str_replace('color: #0000BB', 'color: #008A8C', $codeColore);
+	
+	// Chaînes vers magenta secondaire.
+	$codeColore = str_replace('color: #DD0000', 'color: #FF00FF', $codeColore);
+	
+	// Symboles vers à peu près fraise écrasée.
+	$codeColore = str_replace('color: #007700', 'color: #A52A2A', $codeColore);
+	
+	if ($retourneCode)
+	{
+		return $codeColore;
+	}
+	else
+	{
+		echo $codeColore;
+		
+		return TRUE;
+	}
+}
+
+/**
+Personnalise la coloration syntaxique par défaut de la fonction `highlight_file()`. Voir la fonction `coloreCodePhp()`.
+*/
+function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
+{
+	$code = file_get_contents($fichier);
+	$codeColore = coloreCodePhp($code, TRUE, $commentairesEnNoir);
+	
+	if ($retourneCode)
+	{
+		return $codeColore;
+	}
+	else
+	{
+		echo $codeColore;
+		
+		return TRUE;
+	}
+}
+
+/**
+Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire s'il y a lieu, sinon est vide.
+*/
+function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondis)
+{
+	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $res))
 	{
 		if ($galerieLegendeEmplacement == 'sousContenu' || $galerieLegendeEmplacement == 'surContenu')
 		{
-			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/galerieIntermediaireTexte -->/s', '', $corpsGalerie);
+			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
 			
-			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($coinsArrondisBloc);
+			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondis);
 			
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $res[1] . $codeInterieurBlocBas . '</div><!-- /galerieIntermediaireTexteHorsContenu -->' . "\n";
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $res[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
@@ -823,635 +472,35 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $coinsArro
 		$tableauCorpsGalerie['texteIntermediaire'] = '';
 	}
 	
-	// Dans tous les cas, on supprime la div `galerieIntermediaireTexte` si elle est vide
-	if (preg_match('/(<div id="galerieIntermediaireTexte"><\/div><!-- \/galerieIntermediaireTexte -->)/', $tableauCorpsGalerie['corpsGalerie']))
+	// Dans tous les cas, on supprime la div `galerieIntermediaireTexte` si elle est vide.
+	if (preg_match('/(<div id="galerieIntermediaireTexte"><\/div><!-- \/#galerieIntermediaireTexte -->)/', $tableauCorpsGalerie['corpsGalerie']))
 	{
-		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('/<div id="galerieIntermediaireTexte"><\/div><!-- \/galerieIntermediaireTexte -->/', '', $tableauCorpsGalerie['corpsGalerie']);
+		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('/<div id="galerieIntermediaireTexte"><\/div><!-- \/#galerieIntermediaireTexte -->/', '', $tableauCorpsGalerie['corpsGalerie']);
 	}
 	
 	return $tableauCorpsGalerie;
 }
 
 /**
-Retourne la légende d'une oeuvre dans le bon format.
+Vérifie si le dossier de cache existe. S'il n'existe pas, le dossier est créé, sinon rien n'est fait. Retourne TRUE si le dossier existe ou si la création a été effectuée avec succès, sinon retourne FALSE.
 */
-function intermediaireLegende($legende, $galerieLegendeMarkdown)
+function creeDossierCache($racine)
 {
-	if ($galerieLegendeMarkdown)
+	if (!file_exists("$racine/site/cache"))
 	{
-		return trim(Markdown($legende));
-	}
-	else
-	{
-		return $legende;
-	}
-}
-
-/**
-Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
-*/
-function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $nouvelleImageDimensionsVoulues, $qualiteJpg, $nettete, $galerieForcerDimensionsVignette, $typeMime)
-{
-	$erreur = FALSE;
-	$messagesScriptChaine = '';
-	$nomNouvelleImage = superBasename($cheminNouvelleImage);
-	$nomImageSource = superBasename($cheminImageSource);
-	
-	// On vérifie le type MIME de l'image dans le but d'utiliser la bonne fonction PHP
-	switch ($typeMime)
-	{
-		case 'image/gif':
-			$imageSource = imagecreatefromgif($cheminImageSource);
-			break;
-		
-		case 'image/jpeg':
-			$imageSource = imagecreatefromjpeg($cheminImageSource);
-			break;
-		
-		case 'image/png':
-			$imageSource = imagecreatefrompng($cheminImageSource);
-			break;
-	}
-	
-	// Calcul des dimensions de l'image source
-	$imageSourceHauteur = imagesy($imageSource);
-	$imageSourceLargeur = imagesx($imageSource);
-	
-	// On trouve les futures dimensions de la nouvelle image
-	if ($nouvelleImageDimensionsVoulues['hauteur'])
-	{
-		$nouvelleImageHauteur = $nouvelleImageDimensionsVoulues['hauteur'];
-		if ($nouvelleImageHauteur > $imageSourceHauteur)
+		if (@mkdir("$racine/site/cache", 0755, TRUE))
 		{
-			$nouvelleImageHauteur = $imageSourceHauteur;
+			return TRUE;
 		}
-		
-		$nouvelleImageLargeur = ($nouvelleImageHauteur / $imageSourceHauteur) * $imageSourceLargeur;
-		if ($nouvelleImageDimensionsVoulues['largeur'] && ($nouvelleImageLargeur > $nouvelleImageDimensionsVoulues['largeur']))
+		else
 		{
-			$nouvelleImageLargeur = $nouvelleImageDimensionsVoulues['largeur'];
-			$nouvelleImageHauteur = ($nouvelleImageLargeur / $imageSourceLargeur) * $imageSourceHauteur;
+			return FALSE;
 		}
 	}
 	else
 	{
-		$nouvelleImageLargeur = $nouvelleImageDimensionsVoulues['largeur'];
-		if ($nouvelleImageLargeur > $imageSourceLargeur)
-		{
-			$nouvelleImageLargeur = $imageSourceLargeur;
-		}
-		
-		$nouvelleImageHauteur = ($nouvelleImageLargeur / $imageSourceLargeur) * $imageSourceHauteur;
-		if ($nouvelleImageDimensionsVoulues['hauteur'] && ($nouvelleImageHauteur > $nouvelleImageDimensionsVoulues['hauteur']))
-		{
-			$nouvelleImageHauteur = $nouvelleImageDimensionsVoulues['hauteur'];
-			$nouvelleImageLargeur = ($nouvelleImageHauteur / $imageSourceHauteur) * $imageSourceLargeur;
-		}
+		return TRUE;
 	}
-	
-	$demiSupplementHauteur = 0;
-	$demiSupplementLargeur = 0;
-	
-	if ($galerieForcerDimensionsVignette)
-	{
-		if ($nouvelleImageDimensionsVoulues['hauteur'] && ($nouvelleImageHauteur < $nouvelleImageDimensionsVoulues['hauteur']))
-		{
-			$demiSupplementHauteur = ($nouvelleImageDimensionsVoulues['hauteur'] - $nouvelleImageHauteur) / 2;
-		}
-		
-		if ($nouvelleImageDimensionsVoulues['largeur'] && ($nouvelleImageLargeur < $nouvelleImageDimensionsVoulues['largeur']))
-		{
-			$demiSupplementLargeur = ($nouvelleImageDimensionsVoulues['largeur'] - $nouvelleImageLargeur) / 2;
-		}
-	}
-	
-	// Si la nouvelle image est théoriquement au moins aussi grande que l'image source, on ne fait qu'une copie de fichier
-	if ($nouvelleImageHauteur > $imageSourceHauteur || $nouvelleImageLargeur > $imageSourceLargeur)
-	{
-		if (@copy($cheminImageSource, $cheminNouvelleImage))
-		{
-			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> effectuée."), $nomImageSource, $nomNouvelleImage) . "\n";
-		}
-		else
-		{
-			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> impossible."), $nomImageSource, $nomNouvelleImage) . "\n";
-			$erreur = TRUE;
-		}
-	}
-	// Sinon on génère une nouvelle image avec gd
-	else
-	{
-		// On crée une nouvelle image vide
-		$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur + 2 * $demiSupplementLargeur, $nouvelleImageHauteur + 2 * $demiSupplementHauteur);
-		
-		if ($typeMime == 'image/png')
-		{
-			imagealphablending($nouvelleImage, false);
-			imagesavealpha($nouvelleImage, true);
-		}
-		if ($typeMime == 'image/gif' || ($galerieForcerDimensionsVignette && $typeMime == 'image/jpeg'))
-		{
-			$blanc = imagecolorallocate($nouvelleImage, 255, 255, 255);
-			imagefill($nouvelleImage, 0, 0, $blanc);
-		}
-		
-		
-		if ($typeMime == 'image/png')
-		{
-			$transparentColor = imagecolorallocatealpha($nouvelleImage, 200, 200, 200, 127);
-			imagefill($nouvelleImage, 0, 0, $transparentColor);
-		}
-		
-		
-		// On crée la nouvelle image à partir de l'image source
-		imagecopyresampled($nouvelleImage, $imageSource, $demiSupplementLargeur, $demiSupplementHauteur, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
-		
-		// Netteté
-		if ($nettete)
-		{
-			$nouvelleImage = UnsharpMask($nouvelleImage, '100', '1', '3');
-		}
-		
-		// On enregistre la nouvelle image
-		switch ($typeMime)
-		{
-			case 'image/gif':
-				if (imagegif($nouvelleImage, $cheminNouvelleImage))
-				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
-				}
-				else
-				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
-					$erreur = TRUE;
-				}
-				break;
-		
-			case 'image/jpeg':
-				if (imagejpeg($nouvelleImage, $cheminNouvelleImage, $qualiteJpg))
-				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
-				}
-				else
-				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
-					$erreur = TRUE;
-				}
-				break;
-		
-			case 'image/png':
-				if (imagepng($nouvelleImage, $cheminNouvelleImage, 9))
-				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
-				}
-				else
-				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
-					$erreur = TRUE;
-				}
-				break;
-		}
-	}
-	
-	if ($erreur)
-	{
-		$messagesScriptChaine = '<li class="erreur">' . $messagesScriptChaine . "</li>\n";
-	}
-	else
-	{
-		$messagesScriptChaine = '<li>' . $messagesScriptChaine . "</li>\n";
-	}
-	
-	return $messagesScriptChaine;
-}
-
-/**
-Construit et retourne le code pour afficher une oeuvre dans la galerie.
-*/
-function oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, $infosOeuvre, $galerieNavigation, $estAccueil, $taille, $minivignetteOeuvreEnCours, $sens, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieTelechargeOriginal, $vignetteAvecDimensions, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $qualiteJpg, $ajoutExif, $infosExif, $galerieLegendeMarkdown, $galerieAccueilJavascript, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieIconeOriginal, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
-{
-	$typeMime = mimedetect_mime(array ('filepath' => $racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], 'filename' => $infosOeuvre['intermediaireNom']), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-	
-	####################################################################
-	#
-	# Taille intermédiaire
-	#
-	####################################################################
-	
-	if ($taille == 'intermediaire')
-	{
-		if (!empty($infosOeuvre['intermediaireLargeur'])
-			|| !empty($infosOeuvre['intermediaireHauteur']))
-		{
-			if (!empty($infosOeuvre['intermediaireLargeur']))
-			{
-				$width = 'width="' . $infosOeuvre['intermediaireLargeur'] . '"';
-			}
-			
-			if (!empty($infosOeuvre['intermediaireHauteur']))
-			{
-				$height = 'height="' . $infosOeuvre['intermediaireHauteur'] . '"';
-			}
-		}
-		else
-		{
-			list ($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($infosOeuvre['intermediaireNom']));
-			{
-				$width = 'width="' . $larg . '"';
-				$height = 'height="' . $haut . '"';
-			}
-		}
-		
-		if (!empty($infosOeuvre['intermediaireAlt']))
-		{
-			$alt = 'alt="' . $infosOeuvre['intermediaireAlt'] . '"';
-		}
-		else
-		{
-			// On récupère l'id de l'image
-			if (!empty($infosOeuvre['id']))
-			{
-				$id = $infosOeuvre['id'];
-			}
-			else
-			{
-				$id = $infosOeuvre['intermediaireNom'];
-			}
-			
-			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
-		}
-		
-		if (!empty($infosOeuvre['intermediaireLegende']))
-		{
-			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
-		}
-		elseif ($galerieLegendeAutomatique)
-		{
-			if ($contenuAlt = str_replace('alt="', '', $alt))
-			{
-				$contenuAlt = substr($contenuAlt, 0, -1);
-			}
-			$legende = "<div id=\"galerieIntermediaireLegende\">$contenuAlt (" . sprintf(T_("%1\$s&nbsp;Kio"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ")</div>\n";
-		}
-		else
-		{
-			$legende = '';
-		}
-		
-		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
-		if (!empty($infosOeuvre['originalNom']))
-		{
-			$originalNom = $infosOeuvre['originalNom'];
-		}
-		// Si le nom de l'image au format original n'a pas été renseigné, on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
-		else
-		{
-			$originalNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-original');
-		}
-		
-		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on insère un lien vers l'image.
-		if (file_exists($racineImgSrc . '/' . $originalNom))
-		{
-			$lienOriginalHref = '';
-			if ($galerieTelechargeOriginal && !$galerieLienOriginalJavascript && ($galerieLienOriginalEmplacement == 'legende' || $galerieLienOriginalEmplacement == 'imageLegende'))
-			{
-				$lienOriginalTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
-				$lienOriginalHref .= $urlRacine . '/telecharger.php?fichier=';
-			}
-			else
-			{
-				$lienOriginalTrad = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
-			}
-			
-			$lienOriginalHref .= preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
-			
-			if ($galerieLienOriginalJavascript && !preg_match('|\.svg$|i', $originalNom))
-			{
-				$relOriginal = ' rel="lightbox"';
-			}
-			else
-			{
-				$relOriginal = '';
-			}
-			
-			$lienOriginal = '<div id="galerieLienOriginal"><a href="' . $lienOriginalHref . '"' . $relOriginal . '>' . $lienOriginalTrad . "</a></div>\n";
-		}
-		else
-		{
-			$lienOriginal = '';
-		}
-		
-		// Exif
-		$exif = '';
-		
-		if ($ajoutExif && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
-		{
-			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], 'IFD0', 0);
-			
-			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si c'est du JPG
-			if (!$tableauExif && !empty($lienOriginal) && $typeMime == 'image/jpeg')
-			{
-				$tableauExif = exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
-			}
-			
-			if ($tableauExif)
-			{
-				foreach ($infosExif as $cle => $valeur)
-				{
-					if ($valeur && isset($tableauExif[$cle]) && !empty($tableauExif[$cle]))
-					{
-						switch ($cle)
-						{
-							case 'Model':
-								$exifTrad = T_("Modèle d'appareil photo");
-								break;
-							
-							case 'DateTime':
-								$exifTrad = T_("Date et heure");
-								if (preg_match('/^\d{4}:\d{2}:\d{2} /', $tableauExif[$cle]))
-								{
-									$tableauExif[$cle] = preg_replace('/(\d{4}):(\d{2}):(\d{2}) /', '$1-$2-$3 ', $tableauExif[$cle]);
-								}
-								break;
-							
-							case 'ExposureTime':
-								$exifTrad = T_("Durée d'exposition");
-								break;
-							
-							case 'ISOSpeedRatings':
-								$exifTrad = T_("Sensibilité ISO");
-								break;
-							
-							case 'FNumber':
-								$exifTrad = T_("Ouverture");
-								break;
-							
-							case 'FocalLength':
-								$exifTrad = T_("Distance focale");
-								break;
-							
-							case 'Make':
-								$exifTrad = T_("Fabriquant");
-								break;
-							
-							default:
-								$exifTrad = $cle;
-								break;
-						}
-						$exif .= "<li><em>$exifTrad:</em> " . $tableauExif[$cle] . "</li>\n";
-					}
-				}
-			}
-			
-			if (!empty($exif))
-			{
-				$exif = "<div id='galerieIntermediaireExif'>\n<ul>\n" . $exif . "</ul>\n</div><!-- /galerieIntermediaireExif -->\n";
-			}
-		}
-		
-		if (isset($lienOriginalHref) && !empty($lienOriginalHref) && ($galerieLienOriginalEmplacement == 'image' || $galerieLienOriginalEmplacement == 'imageLegende'))
-		{
-			if ($galerieLienOriginalJavascript && !preg_match('|\.svg$|i', $originalNom))
-			{
-				$relOriginal = ' rel="lightbox"';
-			}
-			else
-			{
-				$relOriginal = '';
-			}
-			$lienOriginalAvant = '<a href="' . $lienOriginalHref . '"' . $relOriginal . '>';
-			$lienOriginalApres = '</a>';
-		}
-		else
-		{
-			$lienOriginalAvant = '';
-			$lienOriginalApres = '';
-		}
-		
-		if ($galerieIconeOriginal && isset($lienOriginalHref) && !empty($lienOriginalHref))
-		{
-			if (file_exists($racine . '/site/fichiers/agrandir.png'))
-			{
-				$galerieIconeOriginalSrc = $urlRacine . '/site/fichiers/agrandir.png';
-			}
-			else
-			{
-				$galerieIconeOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
-			}
-			
-			$imgLienOriginal = '<div id="galerieIconeOriginal">' . $lienOriginalAvant . '<img src="' . $galerieIconeOriginalSrc . '" alt="' . str_replace('&nbsp;', ' ', $lienOriginalTrad) . '" width="22" height="22" />' . $lienOriginalApres . '</div><!-- /galerieIconeOriginal -->' . "\n";
-		}
-		else
-		{
-			$imgLienOriginal = '';
-		}
-		
-		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousContenu')
-		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal;
-		}
-		elseif ($galerieLegendeEmplacement == 'bas')
-		{
-			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /galerieIntermediaireTexte -->\n";
-		}
-	}
-	####################################################################
-	#
-	# Taille vignette
-	#
-	####################################################################
-	elseif ($taille == 'vignette')
-	{
-		if ($galerieNavigation == 'fleches' && $sens != 'aucun')
-		{
-			$class = ' galerieFleche';
-			$width = 'width="80"';
-			$height = 'height="80"';
-			if (file_exists($racine . '/site/fichiers/' . $sens . '.png'))
-			{
-				$src = 'src="' . $urlRacine . '/site/fichiers/' . $sens . '.png"';
-			}
-			else
-			{
-				$src = 'src="' . $urlRacine . '/fichiers/' . $sens . '.png"';
-			}
-		}
-		elseif (($galerieNavigation == 'fleches' && $sens == 'aucun')
-			|| $galerieNavigation == 'vignettes')
-		{
-			// Si le nom de la vignette a été renseigné, on prend pour acquis que le fichier existe avec ce nom. On assigne donc une valeur à l'attribut `src`.
-			if (!empty($infosOeuvre['vignetteNom']))
-			{
-				$src = 'src="' . $urlImgSrc . '/' . $infosOeuvre['vignetteNom'] . '"';
-			}
-			else
-			{
-				// Si le nom de la vignette n'a pas été renseigné, on génère un nom automatique selon le nom de la version intermediaire de l'image.
-				$vignetteNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-vignette');
-				
-				// On vérifie si un fichier existe avec ce nom.
-				// Si oui, on assigne une valeur à l'attribut `src`. 
-				if (file_exists($racineImgSrc . '/' . $vignetteNom))
-				{
-					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
-				}
-				// Sinon, on génère une vignette
-				else
-				{
-					nouvelleImage($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $galerieDimensionsVignette, $qualiteJpg, FALSE, $galerieForcerDimensionsVignette, $typeMime);
-					
-					// On assigne l'attribut `src`
-					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
-				}
-			}
-			
-			if ($vignetteAvecDimensions)
-			{
-				if (!empty($infosOeuvre['vignetteLargeur'])
-					|| !empty($infosOeuvre['vignetteHauteur']))
-				{
-					if (!empty($infosOeuvre['vignetteLargeur']))
-					{
-						$width = 'width="' . $infosOeuvre['vignetteLargeur'] . '"';
-					}
-				
-					if (!empty($infosOeuvre['vignetteHauteur']))
-					{
-						$height = 'height="' . $infosOeuvre['vignetteHauteur'] . '"';
-					}
-				}
-				else
-				{
-					list ($larg, $haut) = getimagesize($urlImgSrc . '/' . rawurlencode($vignetteNom));
-					{
-						$width = 'width="' . $larg . '"';
-						$height = 'height="' . $haut . '"';
-					}
-				}
-			}
-			else
-			{
-				$width = '';
-				$height = '';
-			}
-		}
-		
-		// On récupère l'id de l'image
-		if (!empty($infosOeuvre['id']))
-		{
-			$id = $infosOeuvre['id'];
-		}
-		else
-		{
-			$id = $infosOeuvre['intermediaireNom'];
-		}
-		
-		if (!empty($infosOeuvre['vignetteAlt']))
-		{
-			$alt = 'alt="' . $infosOeuvre['vignetteAlt'] . '"';
-		}
-		else
-		{
-			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
-		}
-		
-		if ($estAccueil)
-		{
-			$classAccueil = 'Accueil ';
-		}
-		else
-		{
-			$classAccueil = ' ';
-		}
-		
-		if ($estAccueil && $galerieAccueilJavascript)
-		{
-			if (!empty($infosOeuvre['intermediaireLegende']))
-			{
-				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $infosOeuvre['intermediaireLegende']) . '"';
-			}
-			else
-			{
-				$title = '';
-			}
-			
-			$aHref = '<a href="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
-		}
-		else
-		{
-			
-			$aHref = '<a href="' . url(FALSE, FALSE) . '?oeuvre=' . $id . '">';
-		}
-		
-		// On s'assure que la variable $class existe (pour éviter un avertissement).
-		if (!isset($class))
-		{
-			$class = '';
-		}
-		if ($minivignetteOeuvreEnCours)
-		{
-			$class .= ' minivignetteOeuvreEnCours';
-		}
-		
-		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>\n";
-	}
-	else
-	{
-		return;
-	}
-}
-
-/**
-Ajoute `$suffixe` au nom d'un fichier, juste avant l'extension. Par exemple `nom.extension` devient `nom$suffixe.extension`.
-*/
-function nomSuffixe($nomFichier, $suffixe)
-{
-	$infoFichier = pathinfo($nomFichier);
-	$nomFichierAvecSuffixe = superBasename($nomFichier, '.' . $infoFichier['extension']);
-	$nomFichierAvecSuffixe .= $suffixe . '.' . $infoFichier['extension'];
-	
-	return $nomFichierAvecSuffixe;
-}
-
-/**
-Retourne le contenu de l'attribut `action` du formulaire de contact.
-*/
-function actionFormContact($decouvrir)
-{
-	$action = url();
-	
-	if ($decouvrir)
-	{
-		$action .= '#formulaireFaireDecouvrir';
-	}
-	
-	return $action;
-}
-
-/**
-Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Faire découvrir».
-*/
-function decouvrirSupplementPage($description, $baliseTitle)
-{
-	$messageDecouvrirSupplement = '';
-	
-	if (!empty($description))
-	{
-		$messageDecouvrirSupplement .= $description;
-	}
-	elseif (!empty($baliseTitle))
-	{
-		$messageDecouvrirSupplement .= $baliseTitle;
-	}
-	
-	if (!empty($messageDecouvrirSupplement))
-	{
-		$messageDecouvrirSupplement = "<p style='font-style: italic;'>$messageDecouvrirSupplement</p>\n";
-	}
-	
-	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Consultez cette page!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
-	
-	return $messageDecouvrirSupplement;
 }
 
 /**
@@ -1507,147 +556,131 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	}
 	
 	$messageDecouvrirSupplement = "<div style='font-style: italic; text-align: center;'>$messageDecouvrirSupplement</div>\n";
-	
 	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Voyez l'oeuvre en plus grande taille!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageDecouvrirSupplement;
 }
 
 /**
-Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur.
-
-Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` vaut TRUE.
-
-Fonction inspirée de <http://api.drupal.org/api/function/drupal_detect_baseurl>.
+Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Faire découvrir».
 */
-function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
+function decouvrirSupplementPage($description, $baliseTitle)
 {
-	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'])
+	$messageDecouvrirSupplement = '';
+	
+	if (!empty($description))
 	{
-		$protocole = 'https://';
+		$messageDecouvrirSupplement .= $description;
 	}
-	else
+	elseif (!empty($baliseTitle))
 	{
-		$protocole = 'http://';
+		$messageDecouvrirSupplement .= $baliseTitle;
 	}
 	
-	$serveur = securiseTexte($_SERVER['SERVER_NAME']);
-	
-	if ($_SERVER['SERVER_PORT'] == 80)
+	if (!empty($messageDecouvrirSupplement))
 	{
-		$port = '';
-	}
-	else
-	{
-		$port = ':' . securiseTexte($_SERVER['SERVER_PORT']);
+		$messageDecouvrirSupplement = "<p style='font-style: italic;'>$messageDecouvrirSupplement</p>\n";
 	}
 	
-	$uri = securiseTexte($_SERVER['REQUEST_URI']);
+	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Consultez cette page!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
-	if (!$retourneVariablesGet)
-	{
-		$uri = preg_replace("/\?.*/", '', $uri);
-	}
-	
-	if ($retourneServeur)
-	{
-		$url = "$protocole$serveur$port$uri";
-	}
-	else
-	{
-		$url = "$uri";
-	}
-	
-	return $url;
+	return $messageDecouvrirSupplement;
 }
 
 /**
-Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
+Retourne le DTD (Définition de Type de Document) de la page.
 */
-function page()
+function doctype($xhtmlStrict)
 {
-	return superBasename(url(FALSE, FALSE));
-}
-
-/**
-Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=faireDecouvrir` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=faireDecouvrir`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
-*/
-function urlPageSansDecouvrir($retourneTableau = FALSE)
-{
-	$urlPageSansDecouvrir = array ();
-	$url = url();
-	
-	if (strstr($url, '?action=faireDecouvrir&'))
+	if ($xhtmlStrict)
 	{
-		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir&', '?', $url);
-	}
-	elseif (preg_match('/\?action=faireDecouvrir$/', $url))
-	{
-		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir', '', $url);
-	}
-	elseif (strstr($url, '&action=faireDecouvrir'))
-	{
-		$urlPageSansDecouvrir[0] = str_replace('&action=faireDecouvrir', '', $url);
+		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
 	}
 	else
 	{
-		$urlPageSansDecouvrir[0] = $url;
+		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
 	}
-	
-	if ($retourneTableau)
+}
+
+/**
+Retourne TRUE si la page est l'accueil, sinon retourne FALSE.
+*/
+function estAccueil($accueil)
+{
+	if (url() == $accueil . '/' || url() == $accueil . '/index.php' || url() == $accueil . '/index.html' || url() == $accueil . '/index.htm')
 	{
-		if (strstr($url, '?'))
-		{
-			$urlPageSansDecouvrir[1] = TRUE;
-		}
-		else
-		{
-			$urlPageSansDecouvrir[1] = FALSE;
-		}
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/**
+Retourne le contenu d'un fichier RSS.
+*/
+function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGalerie)
+{
+	$contenuRss = '';
+	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	$contenuRss .= '<rss version="2.0">' . "\n";
+	$contenuRss .= "\t<channel>\n";
+	
+	// Page individuelle d'une galerie.
+	if ($idGalerie)
+	{
+		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
+		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
+	}
+	// Toutes les galeries.
+	elseif ($estGalerie)
+	{
 		
-		return $urlPageSansDecouvrir;
+		$contenuRss .= "\t\t<title>" . T_("Galeries") . ' | ' . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . ' | ' . $baliseTitleComplement . "</description>\n\n";
 	}
+	// Tout le site.
 	else
 	{
-		return $urlPageSansDecouvrir[0];
+		$contenuRss .= "\t\t<title>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</description>\n\n";
 	}
-}
-
-/**
-Retourne l'URL de la page en cours avec la variable GET `action=faireDecouvrir`.
-*/
-function urlPageAvecDecouvrir()
-{
-	$url = url();
 	
-	if (preg_match('/(\?|&)action=faireDecouvrir/', $url))
+	if (!empty($itemsFluxRss))
 	{
-		return $url . '#formulaireFaireDecouvrir';
+		foreach ($itemsFluxRss as $itemFlux)
+		{
+			$contenuRss .= "\t\t<item>\n";
+			$contenuRss .= "\t\t\t<title>" . $itemFlux['title'] . "</title>\n";
+			$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
+			$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
+			$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
+			
+			if ($itemFlux['pubDate'])
+			{
+				$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
+			}
+			
+			$contenuRss .= "\t\t</item>\n\n";
+		}
 	}
-	elseif (strstr($url, '?'))
-	{
-		return "$url&action=faireDecouvrir#formulaireFaireDecouvrir";
-	}
-	else
-	{
-		return "$url?action=faireDecouvrir#formulaireFaireDecouvrir";
-	}
+	
+	$contenuRss .= "\t</channel>\n";
+	$contenuRss .= '</rss>';
+	
+	return $contenuRss;
 }
 
 /**
-Retourne l'id d'une oeuvre d'une galerie.
-*/
-function idOeuvre($oeuvre)
-{
-	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['intermediaireNom'];
-}
-
-/**
-Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
+Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
 function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
-	$galerie = tableauGalerie(adminCheminConfigGalerie($racine, $idGalerie), TRUE);
+	$galerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
 	$itemsFluxRss = array ();
 	
 	foreach ($galerie as $oeuvre)
@@ -1723,7 +756,6 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		
 		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
 		$pubDate = fileatime($cheminOeuvre);
-		
 		$itemsFluxRss[] = array (
 			"title" => $title,
 			"link" => $urlGalerieOeuvre,
@@ -1743,10 +775,10 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage)
 {
 	$itemFlux = array ();
 	
-	preg_match('|<title>(.+)</title>.+<div id="interieurContenu">(.+)</div><!-- /interieurContenu -->|s', file_get_contents($urlPage), $res);
+	preg_match('|<title>(.+)</title>.+<div id="interieurContenu">(.+)</div><!-- /#interieurContenu -->|s', file_get_contents($urlPage), $res);
 	$pubDate = fileatime($cheminPage);
-	
 	$title = securiseTexte($res[1]);
+	
 	if (empty($title))
 	{
 		$title = $urlPage;
@@ -1778,69 +810,168 @@ function fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss)
 	}
 	
 	array_multisort($itemsFluxRssPubDate, SORT_DESC, $itemsFluxRss);
-	
 	$itemsFluxRss = array_slice($itemsFluxRss, 0, $nombreItemsFluxRss);
 	
 	return $itemsFluxRss;
 }
 
 /**
-Retourne le contenu d'un fichier RSS.
+Retourne TRUE si la galerie existe, sinon retourne FALSE.
 */
-function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGalerie)
+function galerieExiste($racine, $idGalerie)
 {
-	$contenuRss = '';
-	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-	$contenuRss .= '<rss version="2.0">' . "\n";
-	$contenuRss .= "\t<channel>\n";
-	
-	if ($idGalerie)
+	if ($idGalerie && $idGalerie == 'démo')
 	{
-		// Page individuelle d'une galerie
-		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
-		$contenuRss .= "\t\t<link>$url</link>\n";
-		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
+		return TRUE;
 	}
-	elseif ($estGalerie)
+	elseif ($idGalerie && cheminConfigGalerie($racine, $idGalerie))
 	{
-		// Toutes les galeries
-		$contenuRss .= "\t\t<title>" . T_("Galeries") . ' | ' . $baliseTitleComplement . "</title>\n";
-		$contenuRss .= "\t\t<link>$url</link>\n";
-		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . ' | ' . $baliseTitleComplement . "</description>\n\n";
+		return TRUE;
 	}
 	else
 	{
-		// Tout le site
-		$contenuRss .= "\t\t<title>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</title>\n";
-		$contenuRss .= "\t\t<link>$url</link>\n";
-		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</description>\n\n";
+		return FALSE;
 	}
-	
-	if (!empty($itemsFluxRss))
-	{
-		foreach ($itemsFluxRss as $itemFlux)
-		{
-			$contenuRss .= "\t\t<item>\n";
-			$contenuRss .= "\t\t\t<title>" . $itemFlux['title'] . "</title>\n";
-			$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
-			$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
-			$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
-			if ($itemFlux['pubDate'])
-			{
-				$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
-			}
-			$contenuRss .= "\t\t</item>\n\n";
-		}
-	}
-	
-	$contenuRss .= "\t</channel>\n";
-	$contenuRss .= '</rss>';
-	
-	return $contenuRss;
 }
 
 /**
-Retourne le code pour un lien vers le fichier du flux RSS en question.
+Retourne l'`id` d'une oeuvre d'une galerie.
+*/
+function idOeuvre($oeuvre)
+{
+	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['intermediaireNom'];
+}
+
+/**
+Retourne un tableau associatif dont les valeurs sont le premier paramètre de la fonction, et les clés sont tous les paramètres à partir du deuxième.
+
+Cette fonction est intéressante couplée à la fonction `extract()` pour initialiser une liste de variables sans écraser celles qui sont déjà initalisées. Par exemple:
+
+	init(FALSE, 'var1', 'var2', 'var3');
+
+va retourner le tableau suivant:
+
+	array ('var1' => FALSE, 'var2' => FALSE, 'var3' => FALSE)
+
+En récupérant ce tableau comme premier paramètre de la fonction `extract()`, et en précisant grâce au deuxième paramètre de ne pas écraser les collisions, nous obtenons une initialisation des variables qui n'existent pas encore. Par exemple:
+
+	extract(init(FALSE, 'var1', 'var2', 'var3'), EXTR_SKIP);
+
+est équivalent à ceci:
+
+	if (!array_key_exists('var1', get_defined_vars()))
+	{
+		$var1 = FALSE;
+	}
+	
+	if (!array_key_exists('var2', get_defined_vars()))
+	{
+		$var2 = FALSE;
+	}
+	
+	if (!array_key_exists('var3', get_defined_vars()))
+	{
+		$var3 = FALSE;
+	}
+
+Note: dans l'exemple ci-dessus, la fonction `array_key_exists()` est utilisée, car `isset()` retourne FALSE dans le cas où la variable existe mais est définie à NULL. La fonction `is_null()` ne permet pas non plus de différencier une variable définie à NULL d'une variable non existante, car TRUE est quand même retourné quand la variable n'existe pas.
+*/
+function init($valeurDinitialisation)
+{
+	$arguments = func_get_args();
+	$nombreArguments = func_num_args();
+	$tableau = array ();
+	
+	for ($i = 1; $i < $nombreArguments; $i++)
+	{
+		$tableau[$arguments[$i]] = $valeurDinitialisation;
+	}
+	
+	return $tableau;
+}
+
+/**
+Retourne un tableau contenant les fichiers à inclure au début du script.
+*/
+function aInclureDebut($racine, $idGalerie)
+{
+	$fichiers = array ();
+	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
+	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	
+	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
+	}
+	
+	foreach (cheminsInc($racine, 'config') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	foreach (cheminsInc($racine, 'constantes') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	if ($idGalerie)
+	{
+		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important de l'insérer avant `inc/premier.inc.php`, pour permettre la modification des balises de l'en-tête.
+	}
+	
+	return $fichiers;
+}
+
+/**
+Retourne la légende d'une oeuvre dans le bon format.
+*/
+function intermediaireLegende($legende, $galerieLegendeMarkdown)
+{
+	if ($galerieLegendeMarkdown)
+	{
+		return trim(Markdown($legende));
+	}
+	else
+	{
+		return $legende;
+	}
+}
+
+/**
+Retourne la langue de la page courante.
+*/
+function langue($langueParDefaut, $langue)
+{
+	if ($langue == 'navigateur')
+	{
+		$langue = explode(',', securiseTexte($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+		$langue = strtolower(substr(chop($langue[0]), 0, 2));
+		
+		return $langue;
+	}
+	
+	return $langue ? $langue : $langueParDefaut;
+}
+
+/**
+Retourne une lettre (a-zA-Z) au hasard. Optionnellement, il est possible de préciser des lettres à exclure.
+*/
+function lettreAuHasard($lettresExclues = '')
+{
+	$lettres = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	
+	do
+	{
+		$lettre = $lettres[rand(0, 51)];
+	} while (substr_count($lettresExclues, $lettre));
+	
+	return $lettre;
+}
+
+/**
+Retourne le lien vers le fichier du flux RSS demandé.
 */
 function lienFluxRss($urlFluxRss, $idGalerie, $estGalerie)
 {
@@ -1861,50 +992,200 @@ function lienFluxRss($urlFluxRss, $idGalerie, $estGalerie)
 }
 
 /**
-Vérifie si le cache d'un fichier expire.
+Si la page en cours n'est pas l'accueil, construit un lien vers l'accueil et rend cliquable la chaîne passée en paramètre, sinon n'ajoute aucune balise et retourne la chaîne telle quelle.
 */
-function cacheExpire($fichier, $dureeCache)
+function lienAccueil($accueil, $estAccueil, $contenu)
 {
-	if (time() - fileatime($fichier) > $dureeCache)
+	$aOuvrant = '';
+	$aFermant = '';
+	
+	if (!$estAccueil)
 	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-/**
-Vérifie si le dossier de cache existe. S'il n'existe pas, le dossier est créé, sinon rien n'est fait.
-*/
-function creeDossierCache($racine)
-{
-	if (!file_exists("$racine/site/cache"))
-	{
-		@mkdir("$racine/site/cache", 0755, TRUE);
+		$aOuvrant = '<a href="' . $accueil . '/">';
+		$aFermant = '</a>';
 	}
 	
-	return;
+	return $aOuvrant . $contenu . $aFermant;
 }
 
 /**
-Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des pages.
+Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
 */
-function phpGettext($racine, $langue)
+function linkScript($balisesBrutes, $version = '')
 {
-	if (!defined('LC_MESSAGES'))
+	$balisesBrutesAinclure = linkScriptAinclure($balisesBrutes);
+	$balisesFormatees = '';
+	$favicon = '';
+	
+	if (!empty($version))
 	{
-		define('LC_MESSAGES', 5);
+		$version = '?' . $version;
 	}
-	require_once $racine . '/inc/php-gettext/gettext.inc';
-	$locale = locale($langue);
-	T_setlocale(LC_MESSAGES, $locale);
-	$domain = 'squeletml';
-	T_bindtextdomain($domain, $racine . '/locale');
-	T_bind_textdomain_codeset($domain, 'UTF-8');
-	T_textdomain($domain);
-	return;
+	
+	foreach ($balisesBrutesAinclure as $fichierBrut)
+	{
+		// On récupère les infos.
+		list ($type, $fichier) = explode('#', $fichierBrut, 2);
+		
+		if ($type == 'rss' && strpos($fichier, '#'))
+		{
+			list ($fichier, $title) = explode('#', $fichier, 2);
+		}
+		else
+		{
+			$title = '';
+		}
+		
+		switch ($type)
+		{
+			case 'favicon':
+				// On ne conserve qu'une déclaration de favicon.
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . $fichier . $version . '" />' . "\n";
+				break;
+	
+			case 'css':
+				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n";
+				break;
+	
+			case 'cssltIE7':
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				break;
+		
+			case 'cssIE7':
+				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'csslteIE7':
+				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $version . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				break;
+	
+			case 'js':
+				$balisesFormatees .= '<script type="text/javascript" src="' . $fichier . $version . '"></script>' . "\n";
+				break;
+				
+			case 'jsDirect':
+				$balisesFormatees .= '<script type="text/javascript">' . $fichier . '</script>' . "\n";
+				break;
+				
+			case 'jsDirectltIE7':
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript">' . $fichier . '</script>' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'jsltIE7':
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . $fichier . $version . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'rss':
+				if (!empty($title))
+				{
+					$title = ' title="' . $title . '"';
+				}
+				
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . $fichier . $version . '"' . $title . ' />' . "\n";
+				break;
+				
+			case 'po':
+				$balisesFormatees .= '<link type="application/x-po" rel="gettext" href="' . $fichier . $version . '" />' . "\n";
+				break;
+		}
+	}
+	
+	$balisesFormatees .= $favicon;
+	
+	return $balisesFormatees;
+}
+
+/**
+Retourne les déclarations d'inclusion des balises `link` et `script` sans les doublons ni les balises à inclure dans des pages autres que celle en cours. L'analyse prend en compte les URL incluses dans d'autres URL. Par exemple, si le tableau contient ceci:
+
+	"a/*#js#fichier.js"
+	"a/b/c#js#fichier.js"
+
+la deuxième ligne sera considérée comme étant un doublon de la première puisque `a/b/c` constitue une page enfant de `a/`.
+
+Aussi, la partie «URL» des déclarations n'est pas retournée. Par exemple, ce qui suit:
+
+	"a/*#js#fichier.js"
+
+serait retourné ainsi:
+
+	"js#fichier.js"
+*/
+function linkScriptAinclure($balisesBrutes)
+{
+	$balisesBrutesAinclure = array ();
+	
+	foreach ($balisesBrutes as $baliseBrute)
+	{
+		// On récupère les infos.
+		list ($url, $type, $fichier) = explode('#', $baliseBrute, 3);
+		
+		if ($type == 'rss' && strpos($fichier, '#'))
+		{
+			list ($fichier, $title) = explode('#', $fichier, 2);
+		}
+		else
+		{
+			$title = '';
+		}
+		
+		// Si l'adresse se termine par *, accepter toutes les pages enfants possibles de cette page parent en plus de la page parent elle-même.
+		if (preg_match('/\*$/', $url))
+		{
+			$motif = substr($url, 0, -1);
+			$motif .= '.*';
+		}
+		else
+		{
+			$motif = $url;
+		}
+		
+		// On vérifie si la balise brute est à inclure pour la page en cours.
+		if (preg_match("#^$motif$#", url()))
+		{
+			$doublon = FALSE;
+			$i = 0;
+			
+			// On vérifie si la balise constitue un doublon.
+			foreach ($balisesBrutesAinclure as $baliseBruteAinclure)
+			{
+				// On récupère les infos de la balise de comparaison.
+				list ($urlAinclure, $typeAinclure, $fichierAinclure) = explode('#', $baliseBruteAinclure, 3);
+				
+				if ($typeAinclure == 'rss' && strpos($fichierAinclure, '#'))
+				{
+					list ($fichierAinclure) = explode('#', $fichierAinclure, 2);
+				}
+				
+				if ($fichier == $fichierAinclure)
+				{
+					$doublon = TRUE;
+					
+					if (preg_match('/IE7$/', $typeAinclure))
+					{
+						$balisesBrutesAinclure[$i] = $baliseBrute;
+					}
+					
+					break;
+				}
+				
+				$i++;
+			}
+			
+			if (!$doublon)
+			{
+				$balisesBrutesAinclure[] = $baliseBrute;
+			}
+		}
+	}
+	
+	for ($i = 0; $i < count($balisesBrutesAinclure); $i++)
+	{
+		list ($url, $type, $fichier) = explode('#', $balisesBrutesAinclure[$i], 3);
+		$balisesBrutesAinclure[$i] = "$type#$fichier";
+	}
+	
+	return $balisesBrutesAinclure;
 }
 
 /**
@@ -1913,6 +1194,7 @@ Retourne la locale de la page courante pour utilisation avec gettext.
 function locale($langue)
 {
 	$locale = $langue;
+	
 	// Palliatif à un bogue sur les serveurs de Koumbit. Aucune idée du problème. On dirait que 9 fois sur 10, php-gettext passe le relais au gettext par défaut de PHP, et que si la locale est seulement 'en', elle n'existe pas sur le serveur d'hébergement, donc la traduction ne fonctionne pas.
 	if ($locale == 'en')
 	{
@@ -1923,34 +1205,332 @@ function locale($langue)
 }
 
 /**
-Retourne la langue de la page courante.
+Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
-function langue($langueParDefaut, $langue)
+function mdtxt($fichier)
 {
-	if ($langue == 'navigateur')
-	{
-		$langue = explode(',', securiseTexte($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-		$langue = strtolower(substr(chop($langue[0]), 0, 2));
-		
-		return $langue;
-	}
-	
-	return $langue ? $langue : $langueParDefaut;
+	return Markdown(file_get_contents($fichier));
 }
 
 /**
-Retourne le lien vers l'accueil de la langue de la page.
+Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaîne convertie en HTML.
 */
-function accueil($tableauAccueil, $langueParDefaut, $langue)
+function mdtxtChaine($chaine)
 {
-	if (array_key_exists(langue($langueParDefaut, $langue), $tableauAccueil))
+	return Markdown($chaine);
+}
+
+/**
+Construit le message affiché à Internet Explorer 6.
+*/
+function messageIe6($urlRacine)
+{
+	$message = '';
+	$message .= "<!--[if lt IE 7]>\n";
+	$message .= '<div id="messageIe6">' . "\n";
+	$message .= '<p class="bDtitre">' . T_("Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?") . "</p>\n";
+	$message .= "\n";
+	$message .= '<div class="bDcorps"><p>' . T_("Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, performant, sécuritaire et respectueux des standards sur lesquels le web est basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au travail, vous pouvez faire la suggestion à votre service informatique.") . "</p>\n";
+	$message .= "\n";
+	$message .= "<p><strong><a href=\"http://www.firefox.com/\"><img src=\"$urlRacine/fichiers/firefox-52x52.png\" alt=\"\" width=\"52\" height=\"52\" /></a> <a href=\"http://www.mozilla-europe.org/fr/\"><span>" . T_("Télécharger Firefox") . "</span></a></strong></p></div>\n";
+	$message .= "</div>\n";
+	$message .= "<![endif]-->\n";
+	
+	return $message;
+}
+
+/**
+Si `$motsCles` est vide, génère à partir d'une chaîne fournie en paramètre une liste de mots-clés utilisables par la métabalise `keywords`, et retourne cette liste, sinon retourne tout simplement `$motsCles`. Si `$melanger` vaut TRUE, change aléatoirement l'ordre des mots avant le retour.
+*/
+function motsCles($motsCles, $chaine, $melanger = FALSE)
+{
+	if (empty($motsCles))
 	{
-		return $tableauAccueil[langue($langueParDefaut, $langue)];
+		$chaine = trim($chaine);
+		
+		// Suppression des caractères inutiles.
+		$chaine = str_replace(
+				array (
+					'(',
+					')',
+					'!',
+					'?',
+					'+',
+					'...',
+					'"',
+					'«',
+					'»',
+					'[',
+					']',
+					':',
+					'&quot;',
+					','
+				),
+				array ('', '', '', '', '', '', '', '', '', '', '', ''), $chaine);
+
+		// Remplacement des séparateurs «utiles» par des espaces.
+		$chaine = str_replace(array ('/', '.', '-', '\'', '’'), array (' ', ' ', ' ', ' ', ' '), $chaine);
+
+		// Compression des espaces en trop éventuelles générées par l'étape précédente.
+		$chaine = str_replace(array ('  '), array (' '), $chaine);
+
+		// Remplacement des espaces par des virgules.
+		$chaine = str_replace(' ', ', ', $chaine);
+		
+		// Suppression des mots de trois lettres ou moins.
+		$chaine = preg_replace('/(^| )[^, ]{1,3},/', '', $chaine);
+		
+		// Suppression des mots scindés lors du remplacement de l'apostrophe.
+		$chaine = preg_replace('/(^| )(aujourd|presqu|entr|prud|homie|homies|homal|homale|homales|homaux),/i', '', $chaine);
+		
+		// Suppression du potentiel ', ' final avant le mélange des mots.
+		if (preg_match('/, $/', $chaine))
+		{
+			$chaine = trim(substr($chaine, 0, -2));
+		}
+		
+		$tableauChaine = explode(', ', $chaine);
+		
+		// Mélange de l'ordre des mots.
+		if ($melanger)
+		{
+			shuffle($tableauChaine);
+		}
+		
+		$chaine = '';
+		
+		foreach ($tableauChaine as $mot)
+		{
+			$chaine .= $mot . ', ';
+		}
+		
+		// Resuppression du ', ' final.
+		$chaine = trim(substr($chaine, 0, -2));
+		
+		// Tout en minuscule.
+		$chaine = strtolower($chaine);
+		
+		return $chaine;
 	}
 	else
 	{
-		return $tableauAccueil[$langueParDefaut];
+		return $motsCles;
 	}
+}
+
+/**
+Retourne la phrase de description du site dans le haut des pages. Sur la page d'accueil, ce sera le titre principal `h1`; sur les autres pages, ce sera un paragraphe `p`.
+*/
+function nomSite($estAccueil, $contenu)
+{
+	if (!$estAccueil)
+	{
+		$baliseOuvrante = '<p>';
+		$baliseFermante = '</p>';
+	}
+	else
+	{
+		$baliseOuvrante = '<h1>';
+		$baliseFermante = '</h1>';
+	}
+	
+	return $baliseOuvrante . $contenu . $baliseFermante . "\n";
+}
+
+/**
+Ajoute `$suffixe` au nom d'un fichier, juste avant l'extension. Par exemple `nom.extension` devient `nom$suffixe.extension`.
+*/
+function nomSuffixe($nomFichier, $suffixe)
+{
+	$infoFichier = pathinfo($nomFichier);
+	$nomFichierAvecSuffixe = superBasename($nomFichier, '.' . $infoFichier['extension']);
+	$nomFichierAvecSuffixe .= $suffixe . '.' . $infoFichier['extension'];
+	
+	return $nomFichierAvecSuffixe;
+}
+
+/**
+Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+*/
+function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouvelleImageDimensionsVoulues, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $nettete)
+{
+	$erreur = FALSE;
+	$messagesScriptChaine = '';
+	$nomNouvelleImage = superBasename($cheminNouvelleImage);
+	$nomImageSource = superBasename($cheminImageSource);
+	
+	// On vérifie le type MIME de l'image dans le but d'utiliser la bonne fonction PHP.
+	switch ($typeMime)
+	{
+		case 'image/gif':
+			$imageSource = imagecreatefromgif($cheminImageSource);
+			break;
+		
+		case 'image/jpeg':
+			$imageSource = imagecreatefromjpeg($cheminImageSource);
+			break;
+		
+		case 'image/png':
+			$imageSource = imagecreatefrompng($cheminImageSource);
+			break;
+	}
+	
+	// Calcul des dimensions de l'image source.
+	$imageSourceHauteur = imagesy($imageSource);
+	$imageSourceLargeur = imagesx($imageSource);
+	
+	// On trouve les futures dimensions de la nouvelle image.
+	if ($nouvelleImageDimensionsVoulues['hauteur'])
+	{
+		$nouvelleImageHauteur = $nouvelleImageDimensionsVoulues['hauteur'];
+		
+		if ($nouvelleImageHauteur > $imageSourceHauteur)
+		{
+			$nouvelleImageHauteur = $imageSourceHauteur;
+		}
+		
+		$nouvelleImageLargeur = ($nouvelleImageHauteur / $imageSourceHauteur) * $imageSourceLargeur;
+		
+		if ($nouvelleImageDimensionsVoulues['largeur'] && ($nouvelleImageLargeur > $nouvelleImageDimensionsVoulues['largeur']))
+		{
+			$nouvelleImageLargeur = $nouvelleImageDimensionsVoulues['largeur'];
+			$nouvelleImageHauteur = ($nouvelleImageLargeur / $imageSourceLargeur) * $imageSourceHauteur;
+		}
+	}
+	else
+	{
+		$nouvelleImageLargeur = $nouvelleImageDimensionsVoulues['largeur'];
+		
+		if ($nouvelleImageLargeur > $imageSourceLargeur)
+		{
+			$nouvelleImageLargeur = $imageSourceLargeur;
+		}
+		
+		$nouvelleImageHauteur = ($nouvelleImageLargeur / $imageSourceLargeur) * $imageSourceHauteur;
+		
+		if ($nouvelleImageDimensionsVoulues['hauteur'] && ($nouvelleImageHauteur > $nouvelleImageDimensionsVoulues['hauteur']))
+		{
+			$nouvelleImageHauteur = $nouvelleImageDimensionsVoulues['hauteur'];
+			$nouvelleImageLargeur = ($nouvelleImageHauteur / $imageSourceHauteur) * $imageSourceLargeur;
+		}
+	}
+	
+	$demiSupplementHauteur = 0;
+	$demiSupplementLargeur = 0;
+	
+	if ($galerieForcerDimensionsVignette)
+	{
+		if ($nouvelleImageDimensionsVoulues['hauteur'] && ($nouvelleImageHauteur < $nouvelleImageDimensionsVoulues['hauteur']))
+		{
+			$demiSupplementHauteur = ($nouvelleImageDimensionsVoulues['hauteur'] - $nouvelleImageHauteur) / 2;
+		}
+		
+		if ($nouvelleImageDimensionsVoulues['largeur'] && ($nouvelleImageLargeur < $nouvelleImageDimensionsVoulues['largeur']))
+		{
+			$demiSupplementLargeur = ($nouvelleImageDimensionsVoulues['largeur'] - $nouvelleImageLargeur) / 2;
+		}
+	}
+	
+	// Si la nouvelle image est théoriquement au moins aussi grande que l'image source, on ne fait qu'une copie de fichier.
+	if ($nouvelleImageHauteur > $imageSourceHauteur || $nouvelleImageLargeur > $imageSourceLargeur)
+	{
+		if (@copy($cheminImageSource, $cheminNouvelleImage))
+		{
+			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> effectuée."), $nomImageSource, $nomNouvelleImage) . "\n";
+		}
+		else
+		{
+			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> impossible."), $nomImageSource, $nomNouvelleImage) . "\n";
+			$erreur = TRUE;
+		}
+	}
+	// Sinon on génère une nouvelle image avec gd.
+	else
+	{
+		// On crée une nouvelle image vide.
+		$nouvelleImage = imagecreatetruecolor($nouvelleImageLargeur + 2 * $demiSupplementLargeur, $nouvelleImageHauteur + 2 * $demiSupplementHauteur);
+		
+		if ($typeMime == 'image/png')
+		{
+			imagealphablending($nouvelleImage, false);
+			imagesavealpha($nouvelleImage, true);
+		}
+		
+		if ($typeMime == 'image/gif' || ($galerieForcerDimensionsVignette && $typeMime == 'image/jpeg'))
+		{
+			$blanc = imagecolorallocate($nouvelleImage, 255, 255, 255);
+			imagefill($nouvelleImage, 0, 0, $blanc);
+		}
+		
+		if ($typeMime == 'image/png')
+		{
+			$transparentColor = imagecolorallocatealpha($nouvelleImage, 200, 200, 200, 127);
+			imagefill($nouvelleImage, 0, 0, $transparentColor);
+		}
+		
+		// On crée la nouvelle image à partir de l'image source.
+		imagecopyresampled($nouvelleImage, $imageSource, $demiSupplementLargeur, $demiSupplementHauteur, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
+		
+		// Netteté demandée.
+		if ($nettete)
+		{
+			$nouvelleImage = UnsharpMask($nouvelleImage, '100', '1', '3');
+		}
+		
+		// On enregistre la nouvelle image.
+		switch ($typeMime)
+		{
+			case 'image/gif':
+				if (imagegif($nouvelleImage, $cheminNouvelleImage))
+				{
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				else
+				{
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$erreur = TRUE;
+				}
+				
+				break;
+		
+			case 'image/jpeg':
+				if (imagejpeg($nouvelleImage, $cheminNouvelleImage, $galerieQualiteJpg))
+				{
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				else
+				{
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$erreur = TRUE;
+				}
+				
+				break;
+		
+			case 'image/png':
+				if (imagepng($nouvelleImage, $cheminNouvelleImage, 9))
+				{
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
+				}
+				else
+				{
+					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$erreur = TRUE;
+				}
+				
+				break;
+		}
+	}
+	
+	if ($erreur)
+	{
+		$messagesScriptChaine = '<li class="erreur">' . $messagesScriptChaine . "</li>\n";
+	}
+	else
+	{
+		$messagesScriptChaine = '<li>' . $messagesScriptChaine . "</li>\n";
+	}
+	
+	return $messagesScriptChaine;
 }
 
 /**
@@ -1970,6 +1550,497 @@ function octetsVersMio($octets)
 }
 
 /**
+Construit et retourne le code pour afficher une oeuvre dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
+*/
+function oeuvre(
+	// Infos sur les chemins et les URL.
+	$racine, $urlRacine, $racineImgSrc, $urlImgSrc, $estAccueil,
+	
+	// Infos sur l'image à générer.
+	$infosOeuvre, $typeMime, $taille, $sens, $galerieQualiteJpg,
+	
+	// Exif.
+	$galerieExifAjout, $galerieExifInfos,
+	
+	// Légende.
+	$galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown,
+	
+	// Lien vers l'oeuvre originale.
+	$galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger,
+	
+	// Navigation.
+	$galerieAccueilJavascript, $galerieNavigation,
+	
+	// Vignettes.
+	$galerieDimensionsVignette, $galerieForcerDimensionsVignette, $vignetteAvecDimensions, $minivignetteOeuvreEnCours
+)
+{
+	####################################################################
+	#
+	# Taille intermédiaire.
+	#
+	####################################################################
+	
+	if ($taille == 'intermediaire')
+	{
+		if (!empty($infosOeuvre['intermediaireLargeur']) || !empty($infosOeuvre['intermediaireHauteur']))
+		{
+			if (!empty($infosOeuvre['intermediaireLargeur']))
+			{
+				$width = 'width="' . $infosOeuvre['intermediaireLargeur'] . '"';
+			}
+			
+			if (!empty($infosOeuvre['intermediaireHauteur']))
+			{
+				$height = 'height="' . $infosOeuvre['intermediaireHauteur'] . '"';
+			}
+		}
+		else
+		{
+			list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $infosOeuvre['intermediaireNom']);
+			{
+				$width = 'width="' . $larg . '"';
+				$height = 'height="' . $haut . '"';
+			}
+		}
+		
+		if (!empty($infosOeuvre['intermediaireAlt']))
+		{
+			$alt = 'alt="' . $infosOeuvre['intermediaireAlt'] . '"';
+		}
+		else
+		{
+			$id = idOeuvre($infosOeuvre);
+			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
+		}
+		
+		if (!empty($infosOeuvre['intermediaireLegende']))
+		{
+			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
+		}
+		elseif ($galerieLegendeAutomatique)
+		{
+			if ($contenuAlt = str_replace('alt="', '', $alt))
+			{
+				$contenuAlt = substr($contenuAlt, 0, -1);
+			}
+			
+			$legende = "<div id=\"galerieIntermediaireLegende\">$contenuAlt (" . sprintf(T_("%1\$s&nbsp;Kio"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ")</div>\n";
+		}
+		else
+		{
+			$legende = '';
+		}
+		
+		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
+		if (!empty($infosOeuvre['originalNom']))
+		{
+			$originalNom = $infosOeuvre['originalNom'];
+		}
+		// Sinon on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
+		else
+		{
+			$originalNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-original');
+		}
+		
+		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on insère un lien vers l'image.
+		if (file_exists($racineImgSrc . '/' . $originalNom))
+		{
+			$lienOriginalHref = '';
+			
+			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript && ($galerieLienOriginalEmplacement == 'legende' || $galerieLienOriginalEmplacement == 'imageLegende'))
+			{
+				$lienOriginalTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
+				$lienOriginalHref .= $urlRacine . '/telecharger.php?fichier=';
+			}
+			else
+			{
+				$lienOriginalTrad = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
+			}
+			
+			$lienOriginalHref .= preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
+			
+			if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
+			{
+				$relOriginal = ' rel="lightbox"';
+			}
+			else
+			{
+				$relOriginal = '';
+			}
+			
+			$lienOriginal = '<div id="galerieLienOriginal"><a href="' . $lienOriginalHref . '"' . $relOriginal . '>' . $lienOriginalTrad . "</a></div>\n";
+		}
+		else
+		{
+			$lienOriginal = '';
+		}
+		
+		// Exif.
+		$exif = '';
+		
+		if ($galerieExifAjout && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
+		{
+			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], 'IFD0', 0);
+			
+			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
+			if (!$tableauExif && !empty($lienOriginal) && $typeMime == 'image/jpeg')
+			{
+				$tableauExif = exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
+			}
+			
+			if ($tableauExif)
+			{
+				foreach ($galerieExifInfos as $cle => $valeur)
+				{
+					if ($valeur && isset($tableauExif[$cle]) && !empty($tableauExif[$cle]))
+					{
+						switch ($cle)
+						{
+							case 'Model':
+								$exifTrad = T_("Modèle d'appareil photo");
+								break;
+							
+							case 'DateTime':
+								$exifTrad = T_("Date et heure");
+								
+								if (preg_match('/^\d{4}:\d{2}:\d{2} /', $tableauExif[$cle]))
+								{
+									$tableauExif[$cle] = preg_replace('/(\d{4}):(\d{2}):(\d{2}) /', '$1-$2-$3 ', $tableauExif[$cle]);
+								}
+								
+								break;
+							
+							case 'ExposureTime':
+								$exifTrad = T_("Durée d'exposition");
+								break;
+							
+							case 'ISOSpeedRatings':
+								$exifTrad = T_("Sensibilité ISO");
+								break;
+							
+							case 'FNumber':
+								$exifTrad = T_("Ouverture");
+								break;
+							
+							case 'FocalLength':
+								$exifTrad = T_("Distance focale");
+								break;
+							
+							case 'Make':
+								$exifTrad = T_("Fabriquant");
+								break;
+							
+							default:
+								$exifTrad = $cle;
+								break;
+						}
+						
+						$exif .= "<li><em>$exifTrad:</em> " . $tableauExif[$cle] . "</li>\n";
+					}
+				}
+			}
+			
+			if (!empty($exif))
+			{
+				$exif = "<div id='galerieIntermediaireExif'>\n<ul>\n" . $exif . "</ul>\n</div><!-- /#galerieIntermediaireExif -->\n";
+			}
+		}
+		
+		if (isset($lienOriginalHref) && !empty($lienOriginalHref) && ($galerieLienOriginalEmplacement == 'image' || $galerieLienOriginalEmplacement == 'imageLegende'))
+		{
+			if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
+			{
+				$relOriginal = ' rel="lightbox"';
+			}
+			else
+			{
+				$relOriginal = '';
+			}
+			
+			$lienOriginalAvant = '<a href="' . $lienOriginalHref . '"' . $relOriginal . '>';
+			$lienOriginalApres = '</a>';
+		}
+		else
+		{
+			$lienOriginalAvant = '';
+			$lienOriginalApres = '';
+		}
+		
+		if ($galerieLienOriginalIcone && isset($lienOriginalHref) && !empty($lienOriginalHref))
+		{
+			if (file_exists($racine . '/site/fichiers/agrandir.png'))
+			{
+				$galerieLienOriginalIconeSrc = $urlRacine . '/site/fichiers/agrandir.png';
+			}
+			else
+			{
+				$galerieLienOriginalIconeSrc = $urlRacine . '/fichiers/agrandir.png';
+			}
+			
+			$imgLienOriginal = '<div id="galerieIconeOriginal">' . $lienOriginalAvant . '<img src="' . $galerieLienOriginalIconeSrc . '" alt="' . str_replace('&nbsp;', ' ', $lienOriginalTrad) . '" width="22" height="22" />' . $lienOriginalApres . '</div><!-- /#galerieIconeOriginal -->' . "\n";
+		}
+		else
+		{
+			$imgLienOriginal = '';
+		}
+		
+		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousContenu')
+		{
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal;
+		}
+		elseif ($galerieLegendeEmplacement == 'bas')
+		{
+			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n";
+		}
+	}
+	####################################################################
+	#
+	# Taille vignette.
+	#
+	####################################################################
+	elseif ($taille == 'vignette')
+	{
+		if ($galerieNavigation == 'fleches' && ($sens == 'precedent' || $sens == 'suivant'))
+		{
+			$class = ' galerieFleche';
+			$width = 'width="80"';
+			$height = 'height="80"';
+			
+			if (file_exists($racine . '/site/fichiers/' . $sens . '.png'))
+			{
+				$src = 'src="' . $urlRacine . '/site/fichiers/' . $sens . '.png"';
+			}
+			else
+			{
+				$src = 'src="' . $urlRacine . '/fichiers/' . $sens . '.png"';
+			}
+		}
+		elseif (($galerieNavigation == 'fleches' && empty($sens)) || $galerieNavigation == 'vignettes')
+		{
+			// Si le nom de la vignette a été renseigné, on prend pour acquis que le fichier existe avec ce nom. On assigne donc une valeur à l'attribut `src`.
+			if (!empty($infosOeuvre['vignetteNom']))
+			{
+				$src = 'src="' . $urlImgSrc . '/' . $infosOeuvre['vignetteNom'] . '"';
+			}
+			// Sinon on génère un nom automatique selon le nom de la version intermediaire de l'image.
+			else
+			{
+				$vignetteNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-vignette');
+				
+				// On vérifie si un fichier existe avec ce nom.
+				// Si oui, on assigne une valeur à l'attribut `src`.
+				if (file_exists($racineImgSrc . '/' . $vignetteNom))
+				{
+					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
+				}
+				// Sinon on génère une vignette.
+				else
+				{
+					nouvelleImage($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, FALSE);
+					
+					// On assigne l'attribut `src`.
+					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
+				}
+			}
+			
+			if ($vignetteAvecDimensions)
+			{
+				if (!empty($infosOeuvre['vignetteLargeur']) || !empty($infosOeuvre['vignetteHauteur']))
+				{
+					if (!empty($infosOeuvre['vignetteLargeur']))
+					{
+						$width = 'width="' . $infosOeuvre['vignetteLargeur'] . '"';
+					}
+				
+					if (!empty($infosOeuvre['vignetteHauteur']))
+					{
+						$height = 'height="' . $infosOeuvre['vignetteHauteur'] . '"';
+					}
+				}
+				else
+				{
+					list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $vignetteNom);
+					{
+						$width = 'width="' . $larg . '"';
+						$height = 'height="' . $haut . '"';
+					}
+				}
+			}
+			else
+			{
+				$width = '';
+				$height = '';
+			}
+		}
+		
+		$id = idOeuvre($infosOeuvre);
+		
+		if (!empty($infosOeuvre['vignetteAlt']))
+		{
+			$alt = 'alt="' . $infosOeuvre['vignetteAlt'] . '"';
+		}
+		else
+		{
+			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
+		}
+		
+		if ($estAccueil)
+		{
+			$classAccueil = 'Accueil ';
+		}
+		else
+		{
+			$classAccueil = ' ';
+		}
+		
+		if ($estAccueil && $galerieAccueilJavascript)
+		{
+			if (!empty($infosOeuvre['intermediaireLegende']))
+			{
+				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $infosOeuvre['intermediaireLegende']) . '"';
+			}
+			else
+			{
+				$title = '';
+			}
+			
+			$aHref = '<a href="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
+		}
+		else
+		{
+			
+			$aHref = '<a href="' . url(FALSE, FALSE) . '?oeuvre=' . $id . '">';
+		}
+		
+		// On s'assure que la variable `$class` existe (pour éviter un avertissement).
+		if (!isset($class))
+		{
+			$class = '';
+		}
+		
+		if ($minivignetteOeuvreEnCours)
+		{
+			$class .= ' minivignetteOeuvreEnCours';
+		}
+		
+		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>\n";
+	}
+	else
+	{
+		return '';
+	}
+}
+
+/**
+Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
+*/
+function page()
+{
+	return superBasename(url(FALSE, FALSE));
+}
+
+/**
+Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des pages. Retourne TRUE.
+*/
+function phpGettext($racine, $langue)
+{
+	if (!defined('LC_MESSAGES'))
+	{
+		define('LC_MESSAGES', 5);
+	}
+	
+	include_once $racine . '/inc/php-gettext/gettext.inc';
+	
+	$locale = locale($langue);
+	T_setlocale(LC_MESSAGES, $locale);
+	$domain = 'squeletml';
+	T_bindtextdomain($domain, $racine . '/locale');
+	T_bind_textdomain_codeset($domain, 'UTF-8');
+	T_textdomain($domain);
+	
+	return TRUE;
+}
+
+/**
+Retourne le contenu de la métabalise `robots`.
+*/
+function robots($robotsParDefaut, $robots)
+{
+	return $robots ? $robots : $robotsParDefaut;
+}
+
+/**
+Retourne une chaîne débarrassée de ses barres obliques inverses.
+*/
+function sansEchappement($chaine)
+{
+	return stripslashes($chaine);
+}
+
+/**
+Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour un affichage sécuritaire à l'écran, sinon si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été sécurisé, sinon si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
+*/
+function securiseTexte($texte)
+{
+	if (is_array($texte))
+	{
+		$texteSecurise = array ();
+		
+		foreach ($texte as $valeur)
+		{
+			$texteSecurise[] = securiseTexte($valeur);
+		}
+		
+		return $texteSecurise;
+	}
+	elseif (is_string($texte))
+	{
+		return sansEchappement(htmlspecialchars($texte, ENT_COMPAT, 'UTF-8'));
+	}
+	else
+	{
+		return '';
+	}
+}
+
+/**
+Génère l'attribut `style` pour les div vide simulant la présence d'une flèche ou d'une vignette de navigation dans la galerie.
+*/
+function styleDivVideNavigation($oeuvre)
+{
+	$width = '';
+	$height = '';
+	
+	if (!empty($oeuvre))
+	{
+		preg_match('/width="(\d+)"/', $oeuvre, $resWidth);
+		preg_match('/height="(\d+)"/', $oeuvre, $resHeight);
+		
+		if (!empty($resWidth[1]))
+		{
+			$width = $resWidth[1];
+		}
+		
+		if (!empty($resHeight[1]))
+		{
+			$height = $resHeight[1];
+		}
+	}
+	
+	if (empty($width) && empty($height))
+	{
+		$style = '';
+	}
+	else
+	{
+		$style = ' style="width: ' . $width . 'px; height: ' . $height . 'px;"';
+	}
+	
+	return $style;
+}
+
+/**
 Simule la fonction `superBasename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
 */
 function superBasename($chemin, $suffixe = '')
@@ -1985,102 +2056,9 @@ function superBasename($chemin, $suffixe = '')
 }
 
 /**
-Retourne une chaîne débarrassée de ses barres obliques inverses.
-*/
-function sansEchappement($chaine)
-{
-	return stripslashes($chaine);
-}
+Simule en partie la fonction `parse_ini_file()`, en essayant de contourner certaines limitations concernant les caractères créant des erreurs dans les valeurs non délimitées par des guillemets. Par exemple, peut traiter sans erreur le paramètre suivant:
 
-/**
-Retourne TRUE si la galerie existe, sinon retourne FALSE.
-*/
-function galerieExiste($racine, $idGalerie)
-{
-	if ($idGalerie && $idGalerie == 'démo')
-	{
-		$galerieExiste = TRUE;
-	}
-	elseif ($idGalerie && adminCheminConfigGalerie($racine, $idGalerie))
-	{
-		$galerieExiste = TRUE;
-	}
-	else
-	{
-		$galerieExiste = FALSE;
-	}
-	
-	return $galerieExiste;
-}
-
-/**
-Retourne un tableau de blocs devant être insérés dans la div `surContenu` ou `sousContenu`, tout dépendamment du paramètre `$div`. L'ordre des fichiers dans le tableau correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent être insérés dans leur div.
-*/
-function blocs($ordreFluxHtml, $div)
-{
-	$ordreFluxHtmlFiltre = array ();
-	$blocsAinserer = array ();
-	
-	foreach ($ordreFluxHtml as $bloc => $nombre)
-	{
-		if ($nombre % 2)
-		{
-			// A: nombre impair
-			$ordreFluxHtmlFiltre[$bloc] = $nombre;
-		}
-	}
-	
-	if ($div == 'sousContenu')
-	{
-		$ordreFluxHtmlFiltre = array_diff($ordreFluxHtml, $ordreFluxHtmlFiltre);
-	}
-	
-	asort($ordreFluxHtmlFiltre);
-	foreach ($ordreFluxHtmlFiltre as $bloc => $nombre)
-	{
-		$blocsAinserer[] = $bloc;
-	}
-	
-	return $blocsAinserer;
-}
-
-/**
-Retourne un tableau dont chaque élément contient le code d'activation d'une boîte déroulante.
-*/
-function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
-{
-	$boites = '';
-	
-	if (!empty($boitesDeroulantesParDefaut))
-	{
-		$boites .= $boitesDeroulantesParDefaut . '|';
-	}
-	
-	if (!empty($boitesDeroulantes))
-	{
-		$boites .= $boitesDeroulantes;
-	}
-	
-	if (!empty($boites))
-	{
-		$boitesDeroulantesTableau = explode('|', $boites);
-		$boitesDeroulantesTableau = array_map('trim', $boitesDeroulantesTableau);
-		$elementsVides = array_keys($boitesDeroulantesTableau, '');
-		foreach ($elementsVides as $i)
-		{
-			unset($boitesDeroulantesTableau[$i]);
-		}
-	}
-	else
-	{
-		$boitesDeroulantesTableau = array();
-	}
-	
-	return $boitesDeroulantesTableau;
-}
-
-/**
-Simule en partie la fonction `parse_ini_file()`, en essayant de contourner certaines limitations concernant les caractères créant des erreurs dans les valeurs non délimitées par des guillemets.
+	lien=<a href="page.php">lien</a>
 */
 function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 {
@@ -2107,13 +2085,37 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 				
 				if (!empty($parametre))
 				{
-					if ($ajouterDansSection !== FALSE)
+					if (preg_match('/\[\]$/', $parametre))
 					{
-						$tableau[$ajouterDansSection][$parametre] = $valeur;
+						$parametre = substr($parametre, 0, -2);
+						$parametreTableau = TRUE;
 					}
 					else
 					{
-						$tableau[$parametre] = $valeur;
+						$parametreTableau = FALSE;
+					}
+					
+					if ($ajouterDansSection !== FALSE)
+					{
+						if ($parametreTableau)
+						{
+							$tableau[$ajouterDansSection][$parametre][] = $valeur;
+						}
+						else
+						{
+							$tableau[$ajouterDansSection][$parametre] = $valeur;
+						}
+					}
+					else
+					{
+						if ($parametreTableau)
+						{
+							$tableau[$parametre][] = $valeur;
+						}
+						else
+						{
+							$tableau[$parametre] = $valeur;
+						}
 					}
 				}
 			}
@@ -2130,21 +2132,31 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 }
 
 /**
+Supprime l'inclusion des feuilles de style par défaut de Squeletml.
+*/
+function supprimeInclusionCssParDefaut(&$fichiers)
+{
+	unset($fichiers[0], $fichiers[1], $fichiers[2], $fichiers[3]);
+	
+	return;
+}
+
+/**
 Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui`. Par exemple, le fichier `.ini` suivant:
 
-[image1.png]
-id=1
-vignetteNom=image1Mini.png
+	[image1.png]
+	id=1
+	vignetteNom=image1Mini.png
 
 devient:
 
-$galerie = array (
-	array (
-	'intermediaireNom' => 'image1.png',
-	'id' => 1,
-	'vignetteNom' => 'image1Mini.png',
-	),
-);
+	$galerie = array (
+		array (
+		'intermediaireNom' => 'image1.png',
+		'id' => 1,
+		'vignetteNom' => 'image1Mini.png',
+		),
+	);
 
 Retourne le tableau final si le fichier de configuration existe et est accessible en lecture, sinon retourne FALSE.
 */
@@ -2171,4 +2183,253 @@ function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 	}
 }
 
+/**
+Retourne le titre du site. Si le titre n'a pas été trouvé, retourne une chaîne vide.
+*/
+function titreSite($tableauTitreSite, $langues)
+{
+	foreach ($langues as $langue)
+	{
+		if (array_key_exists($langue, $tableauTitreSite))
+		{
+			return $tableauTitreSite[$langue];
+		}
+	}
+	
+	return '';
+}
+
+/**
+Retourne le type MIME du fichier. Il s'agit d'un alias de la fonction `mimedetect_mime()`.
+*/
+function typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+{
+	return mimedetect_mime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+}
+
+/**
+Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur.
+
+Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` et `$retourneServeur` vallent TRUE.
+
+Fonction inspirée de <http://api.drupal.org/api/function/drupal_detect_baseurl>.
+*/
+function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
+{
+	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'])
+	{
+		$protocole = 'https://';
+	}
+	else
+	{
+		$protocole = 'http://';
+	}
+	
+	$serveur = securiseTexte($_SERVER['SERVER_NAME']);
+	
+	if ($_SERVER['SERVER_PORT'] == 80)
+	{
+		$port = '';
+	}
+	else
+	{
+		$port = ':' . securiseTexte($_SERVER['SERVER_PORT']);
+	}
+	
+	$uri = securiseTexte($_SERVER['REQUEST_URI']);
+	
+	if (!$retourneVariablesGet)
+	{
+		$uri = preg_replace("/\?.*/", '', $uri);
+	}
+	
+	if ($retourneServeur)
+	{
+		$url = "$protocole$serveur$port$uri";
+	}
+	else
+	{
+		$url = "$uri";
+	}
+	
+	return $url;
+}
+
+/**
+Retourne l'URL de la page en cours avec la variable GET `action=faireDecouvrir`.
+*/
+function urlPageAvecDecouvrir()
+{
+	$url = url();
+	
+	if (preg_match('/(\?|&)action=faireDecouvrir/', $url))
+	{
+		return $url . '#formulaireFaireDecouvrir';
+	}
+	elseif (strstr($url, '?'))
+	{
+		return "$url&action=faireDecouvrir#formulaireFaireDecouvrir";
+	}
+	else
+	{
+		return "$url?action=faireDecouvrir#formulaireFaireDecouvrir";
+	}
+}
+
+/**
+Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=faireDecouvrir` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=faireDecouvrir`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
+*/
+function urlPageSansDecouvrir($retourneTableau = FALSE)
+{
+	$urlPageSansDecouvrir = array ();
+	$url = url();
+	
+	if (strstr($url, '?action=faireDecouvrir&'))
+	{
+		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir&', '?', $url);
+	}
+	elseif (preg_match('/\?action=faireDecouvrir$/', $url))
+	{
+		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir', '', $url);
+	}
+	elseif (strstr($url, '&action=faireDecouvrir'))
+	{
+		$urlPageSansDecouvrir[0] = str_replace('&action=faireDecouvrir', '', $url);
+	}
+	else
+	{
+		$urlPageSansDecouvrir[0] = $url;
+	}
+	
+	if ($retourneTableau)
+	{
+		if (strstr($url, '?'))
+		{
+			$urlPageSansDecouvrir[1] = TRUE;
+		}
+		else
+		{
+			$urlPageSansDecouvrir[1] = FALSE;
+		}
+		
+		return $urlPageSansDecouvrir;
+	}
+	else
+	{
+		return $urlPageSansDecouvrir[0];
+	}
+}
+
+/**
+Ajoute une deuxième image (une flèche par défaut) à la navigation par vignettes.
+*/
+function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
+{
+	if (file_exists($racine . '/site/fichiers/' . $sens . '-accompagnee.png'))
+	{
+		$cheminImage = $racine . '/site/fichiers/' . $sens . '-accompagnee.png';
+		$urlImage = $urlRacine . '/site/fichiers/' . $sens . '-accompagnee.png';
+	}
+	else
+	{
+		$cheminImage = $racine . '/fichiers/' . $sens . '-accompagnee.png';
+		$urlImage = $urlRacine . '/fichiers/' . $sens . '-accompagnee.png';
+	}
+	
+	list ($larg, $haut) = getimagesize($cheminImage);
+	$width = 'width="' . $larg . '"';
+	$height = 'height="' . $haut . '"';
+	preg_match('/alt="([^"]+)"/', $paragraphe, $res);
+	$altContenu = $res[1];
+	$alt = 'alt="' . $altContenu . '"';
+	$img = "<div id=\"galerieAccompagnementVignette" . ucfirst($sens) . "\"><img src=\"$urlImage\" $alt $width $height /></div>\n";
+	
+	// On retourne le paragraphe avec l'image en plus.
+	if ($sens == 'precedent')
+	{
+		return preg_replace('/(<img [^>]+>)/', '\1' . $img, $paragraphe);
+	}
+	elseif ($sens == 'suivant')
+	{
+		return preg_replace('/(<img [^>]+>)/', '\1' . $img, $paragraphe);
+	}
+}
+
+/**
+Modifie la source de la vignette pour la remplacer par une vignette tatouée d'une autre image (une flèche de navigation par défaut).
+*/
+function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+{
+	preg_match('/src="([^"]+)"/', $paragraphe, $res);
+	$srcContenu = $res[1];
+	$nomImgSrcContenu = superBasename($srcContenu);
+	$vignetteNom = nomSuffixe($nomImgSrcContenu, '-' . $sens);
+	
+	if (file_exists($racineImgSrc . '/tatouage/' . $vignetteNom))
+	{
+		$srcContenu = $urlImgSrc . '/tatouage/' . $vignetteNom;
+	}
+	else
+	{
+		if (!file_exists($racineImgSrc . '/tatouage'))
+		{
+			@mkdir($racineImgSrc . '/tatouage');
+		}
+	
+		@copy($racineImgSrc . '/' . $nomImgSrcContenu, $racineImgSrc . '/tatouage/' . $vignetteNom);
+		
+		if (file_exists($racine . '/site/fichiers/' . $sens . '-tatouage.png'))
+		{
+			$imgSrc = imagecreatefrompng($racine . '/site/fichiers/' . $sens . '-tatouage.png');
+		}
+		else
+		{
+			$imgSrc = imagecreatefrompng($racine . '/fichiers/' . $sens . '-tatouage.png');
+		}
+		
+		$typeMime = typeMime($racineImgSrc . '/tatouage/' . $vignetteNom, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+		
+		switch ($typeMime)
+		{
+			case 'image/gif':
+				$imgDest = imagecreatefromgif($racineImgSrc . '/tatouage/' . $vignetteNom);
+				break;
+	
+			case 'image/jpeg':
+				$imgDest = imagecreatefromjpeg($racineImgSrc . '/tatouage/' . $vignetteNom);
+				break;
+		
+			case 'image/png':
+				$imgDest = imagecreatefrompng($racineImgSrc . '/tatouage/' . $vignetteNom);
+				imagealphablending($imgDest, true);
+				imagesavealpha($imgDest, true);
+				break;
+		}
+	
+		$largSrc = imagesx($imgSrc);
+		$hautSrc = imagesy($imgSrc);
+		$largDest = imagesx($imgDest);
+		$hautDest = imagesy($imgDest);
+	
+		imagecopy($imgDest, $imgSrc, ($largDest / 2) - ($largSrc / 2), ($hautDest / 2) - ($hautSrc / 2), 0, 0, $largSrc, $hautSrc);
+	
+		switch ($typeMime)
+		{
+			case 'image/gif':
+				imagegif($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
+				break;
+	
+			case 'image/jpeg':
+				imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, $galerieQualiteJpg);
+				break;
+		
+			case 'image/png':
+				imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 9);
+				break;
+		}
+	}
+	
+	// On retourne le paragraphe avec l'attribut `src` modifié.
+	return preg_replace('/src="[^"]+"/', 'src="' . $urlImgSrc . '/tatouage/' . $vignetteNom . '"', $paragraphe);
+}
 ?>

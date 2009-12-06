@@ -1,34 +1,64 @@
-				<?php if (isset($corpsGalerie) && !empty($corpsGalerie)): ?>
-					<?php echo $tableauCorpsGalerie['corpsGalerie']; ?>
-				<?php endif; ?>
-		
-				<?php if ((isset($courrielContact) && !empty($courrielContact)) || ($decouvrir && $decouvrirInclureContact)): ?>
-					<?php include $racine . '/inc/contact.inc.php'; ?>
-				<?php endif; ?>
-		
-				<?php if ($idGalerie): ?>
-					</div><!-- /galerie -->
-				<?php endif; ?>
-			</div><!-- /interieurContenu -->
-		</div><!-- /contenu -->
-		
-		<!-- ____________________ #sousContenu ____________________ -->
-		<div id="sousContenu">
-			<?php $divSurSousContenu = 'sous'; ?>
-			<?php include $racine . '/inc/blocs.inc.php'; ?>
-		</div><!-- /sousContenu -->
+<?php
+/*
+Ce fichier gère l'inclusion des fichiers et l'initialisation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.dernier.inc.php`.
 
-		<?php if ($basDePage): ?>
-			<div class="sep"></div>
-			<!-- ____________________ #basDePage ____________________ -->
-			<div id="basDePage">
-				<?php include cheminFichierIncHtml($racine, 'bas-de-page', $langueParDefaut, $langue); ?>
-			</div><!-- /basDePage -->
-		<?php endif; ?>
+Étapes dans ce fichier:
 
-			</div><!-- /interieurPage -->
-		</div><!-- /page -->
-		
-		<script type="text/javascript">egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');</script>
-	</body>
-</html>
+1. Initialisations.
+2. Inclusions.
+3. Inclusion de code XHTML.
+*/
+
+########################################################################
+##
+## Initialisations et inclusions.
+##
+########################################################################
+
+// Initialisations.
+
+$cheminBasDePage = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'bas-de-page');
+
+if ((isset($courrielContact) && !empty($courrielContact)) || ($decouvrir && $decouvrirInclureContact))
+{
+	$inclureContact = TRUE;
+}
+else
+{
+	$inclureContact = FALSE;
+}
+
+$divSurSousContenu = 'sous';
+
+if (isset($corpsGalerie) && !empty($corpsGalerie))
+{
+	$galerie = $tableauCorpsGalerie['corpsGalerie'];
+	$afficherGalerie = TRUE;
+}
+else
+{
+	$afficherGalerie = FALSE;
+}
+
+$linkScriptFin = linkScript($balisesLinkScriptFinales);
+
+// Inclusions.
+
+include $racine . '/inc/blocs.inc.php';
+include_once $racine . '/inc/contact.inc.php';
+
+// Traitement personnalisé optionnel.
+
+if (file_exists($racine . '/site/inc/dernier.inc.php'))
+{
+	include_once $racine . '/site/inc/dernier.inc.php';
+}
+
+########################################################################
+##
+## Code XHTML 2 de 2.
+##
+########################################################################
+
+include_once cheminXhtml($racine, 'page.dernier');
+?>

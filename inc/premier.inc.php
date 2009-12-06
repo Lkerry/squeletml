@@ -1,25 +1,29 @@
 <?php
-########################################################################
-##
-## Initialisations avant inclusions
-##
-########################################################################
+/*
+Ce fichier gère l'inclusion des fichiers et l'initialisation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.premier.inc.php`.
 
-if (!isset($idGalerie))
-{
-	$idGalerie = FALSE;
-}
+Étapes dans ce fichier:
 
-if (!isset($langue))
-{
-	$langue = FALSE;
-}
+1. Première série d'initialisations.
+2. Première série d'inclusions.
+3. Deuxième série d'initialisations.
+4. Deuxième série d'inclusions.
+5. Ajouts dans `$balisesLinkScript`.
+6. Traitement personnalisé optionnel.
+7. Inclusion de code XHTML.
+*/
 
 ########################################################################
 ##
-## Inclusions
+## Initialisations et inclusions.
 ##
 ########################################################################
+
+// Initialisations 1 de 2.
+
+extract(init(FALSE, 'idGalerie', 'langue'), EXTR_SKIP);
+
+// Inclusions 1 de 2.
 
 include_once dirname(__FILE__) . '/../init.inc.php';
 
@@ -28,292 +32,207 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 	include_once $racine . '/inc/devel.inc.php';
 }
 
-include_once $racine . '/inc/config.inc.php';
-
-if (file_exists($racine . '/site/inc/config.inc.php'))
-{
-	include_once $racine . '/site/inc/config.inc.php';
-}
-
 include_once $racine . '/inc/fonctions.inc.php';
 
-foreach (init($racine, $racineAdmin, $idGalerie) as $fichier)
+foreach (aInclureDebut($racine, $idGalerie) as $fichier)
 {
 	include_once $fichier;
 }
 
-########################################################################
-##
-## Initialisations après inclusions
-##
-########################################################################
+// Initialisations 2 de 2.
 
-if (!isset($baliseTitle))
+extract(init('', 'baliseTitle', 'boitesDeroulantes', 'description', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);
+
+$baliseTitle = baliseTitle($baliseTitle, $baliseTitleComplement, array ($langue, $langueParDefaut));
+
+$boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
+
+$cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'ancres');
+
+$cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
+
+$cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sous-titre');
+
+$cheminSurTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sur-titre');
+
+$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage, $blocsArrondis);
+
+if (!empty($classesBody))
 {
-	$baliseTitle = '';
+	$classesBody = ' class="' . $classesBody . '"';
 }
 
-if (!isset($boitesDeroulantes))
+if (!$differencierLiensVisitesHorsContenu)
 {
-	$boitesDeroulantes = '';
+	$classesContenu = ' class="liensVisitesDifferencies"';
+}
+else
+{
+	$classesContenu = '';
 }
 
-if (isset($courrielContact) && $courrielContact == '@' && !empty($courrielContactParDefaut))
+if (isset($courrielContact) && $courrielContact == '@' && !empty($contactCourrielParDefaut))
 {
-	$courrielContact = $courrielContactParDefaut;
+	$courrielContact = $contactCourrielParDefaut;
 }
 
-if (!isset($cssBoiteDeroulanteInclus))
-{
-	$cssBoiteDeroulanteInclus = FALSE;
-}
+$divSurSousContenu = 'sur';
 
-if (!isset($description))
-{
-	$description = '';
-}
+$doctype = doctype($xhtmlStrict);
 
 if (!galerieExiste($racine, $idGalerie))
 {
 	$idGalerie = FALSE;
 }
 
-if (!isset($javascriptGettextInclus))
+if ($afficherMessageIe6)
 {
-	$javascriptGettextInclus = FALSE;
+	$messageIe6 = messageIe6($urlRacine);
 }
 
-if (!isset($jQueryInclus))
+if ($inclureMotsCles)
 {
-	$jQueryInclus = FALSE;
+	$motsCles = motsCles($motsCles, $description);
 }
 
-if (!isset($jQueryCookieInclus))
-{
-	$jQueryCookieInclus = FALSE;
-}
+$nomSite = nomSite(estAccueil(ACCUEIL), lienAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, array ($langue, $langueParDefaut))));
 
-if (!isset($motsCles))
-{
-	$motsCles = FALSE;
-}
-
-if (!isset($pageDerreur))
-{
-	$pageDerreur = FALSE;
-}
-
-if (!isset($robots))
-{
-	$robots = FALSE;
-}
+$robots = robots($robotsParDefaut, $robots);
 
 if ($idGalerie && !isset($rss))
 {
-	$rss = $galerieFluxRssParDefaut;
+	$rss = $galerieActiverFluxRssParDefaut;
+}
+
+if (isset($corpsGalerie) && !empty($corpsGalerie))
+{
+	$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondis);
 }
 
 if (!isset($tableDesMatieres))
 {
-	$tableDesMatieres = $tableDesMatieresParDefaut;
+	$tableDesMatieres = $afficherTableDesMatieresParDefaut;
 }
 
 if ($tableDesMatieres)
 {
-	$boitesDeroulantes .= '|tableDesMatieres tableDesMatieresTitre tableDesMatieresLiens';
+	$boitesDeroulantes .= '|tableDesMatieres';
+	$locale = locale(LANGUE);
+}
+
+// Inclusions 2 de 2.
+
+include $racine . '/inc/blocs.inc.php';
+
+########################################################################
+##
+## Ajouts dans `$balisesLinkScript`.
+##
+########################################################################
+
+// Boîtes déroulantes.
+
+if (!empty($boitesDeroulantesTableau))
+{
+	$balisesLinkScript[] = url(FALSE) . "css#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = url(FALSE) . "js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = url(FALSE) . "js#$urlRacine/js/jquery.cookie.js";
+	$jsDirect = '';
+	
+	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
+	{
+		$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
+	}
+	
+	$balisesLinkScript[] = url(FALSE) . "jsDirect#$jsDirect";
+}
+
+// Flux RSS.
+
+if ($idGalerie && $rss)
+{
+	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', url(FALSE));
+	$balisesLinkScript[] = url(FALSE) . "rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
+}
+
+if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
+{
+	$urlFlux = $urlRacine . '/rss.php?global=galeries&langue=' . LANGUE;
+	$balisesLinkScript[] = url(FALSE) . "rss#$urlFlux#" . T_('RSS de toutes les galeries');
+}
+
+if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
+{
+	$urlFlux = $urlRacine . '/rss.php?global=pages&langue=' . LANGUE;
+	$balisesLinkScript[] = url(FALSE) . "rss#$urlFlux#" . T_('RSS global du site');
+}
+
+// Slimbox2.
+
+if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie)
+{
+	$balisesLinkScript[] = url(FALSE) . "js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = url(FALSE) . "js#$urlRacine/js/slimbox2/js/slimbox2.js";
+	$balisesLinkScript[] = url(FALSE) . "css#$urlRacine/js/slimbox2/css/slimbox2.css";
+}
+
+// Table des matières.
+
+if ($tableDesMatieres)
+{
+	$balisesLinkScript[] = url(FALSE) . "css#$urlRacine/css/table-des-matieres.css";
+	$balisesLinkScript[] = url(FALSE) . "cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
+	
+	$balisesLinkScript[] = url(FALSE) . "js#$urlRacine/js/Gettext/lib/Gettext.js";
+	
+	if (file_exists($racine . '/locale/' . $locale))
+	{
+		$balisesLinkScript[] = url(FALSE) . "po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
+	}
+	
+	$balisesLinkScript[] = url(FALSE) . "jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
+	
+	$balisesLinkScript[] = url(FALSE) . "js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = url(FALSE) . "js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
+	$balisesLinkScript[] = url(FALSE) . "jsDirect#tableDesMatieres('interieurContenu', 'ul');";
+}
+
+// Message pour IE6.
+
+if ($afficherMessageIe6)
+{
+	$balisesLinkScript[] = url(FALSE) . "cssltIE7#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = url(FALSE) . "jsltIE7#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = url(FALSE) . "jsltIE7#$urlRacine/js/jquery.cookie.js";
+	$balisesLinkScript[] = url(FALSE) . "jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('messageIe6');});";
+}
+
+// Variable finale.
+
+if (!$inclureCssParDefaut)
+{
+	supprimeInclusionCssParDefaut($balisesLinkScript);
+}
+
+$linkScript = linkScript($balisesLinkScript, $versionFichiersLinkScript);
+
+########################################################################
+##
+## Traitement personnalisé optionnel.
+##
+########################################################################
+
+if (file_exists($racine . '/site/inc/premier.inc.php'))
+{
+	include_once $racine . '/site/inc/premier.inc.php';
 }
 
 ########################################################################
 ##
-## Début de la structure XHTML
+## Code XHTML 1 de 2.
 ##
 ########################################################################
 
-echo doctype($xhtmlStrict); ?>
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo LANGUE; ?>" lang="<?php echo LANGUE; ?>">
-	<!-- ____________________ <head> ____________________ -->
-	<head>
-		<!-- Titre -->
-		<title><?php echo $baliseTitle = baliseTitle($baliseTitle, $baliseTitleComplement, $langueParDefaut, $langue); ?></title>
-		
-		<!-- Métabalises -->
-		<meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
-		
-		<?php if (!empty($description)): ?>
-			<meta name="description" content="<?php echo $description; ?>" />
-		<?php endif; ?>
-		
-		<?php if ($motsClesInclusion): ?>
-			<meta name="keywords" content="<?php echo motsCles($motsCles, $description); ?>" />
-		<?php endif; ?>
-		
-		<meta name="robots" content="<?php echo robots($robotsParDefaut, $robots); ?>" />
-		
-		<!-- Balises `link` et `script` -->
-		<?php if ($idGalerie && $rss): ?>
-			<?php $urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', url(FALSE)); ?>
-			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlFlux; ?>" title="<?php echo sprintf(T_('RSS de la galerie %1$s'), $idGalerie); ?>" />
-		<?php endif; ?>
-		
-		<?php if ($galerieFluxRssGlobal && adminCheminConfigFluxRssGlobalGaleries($racine)): ?>
-			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlRacine . '/rss.php?global=galeries&langue=' . LANGUE; ?>" title="<?php echo T_('RSS de toutes les galeries'); ?>" />
-		<?php endif; ?>
-
-		<?php if ($siteFluxRssGlobal && adminCheminConfigFluxRssGlobalSite($racine)): ?>
-			<link rel="alternate" type="application/rss+xml" href="<?php echo $urlRacine . '/rss.php?global=pages&langue=' . LANGUE; ?>" title="<?php echo T_('RSS global du site'); ?>" />
-		<?php endif; ?>
-		
-		<!-- Ajouts réalisés par la fonction `linkScript` -->
-		<?php echo linkScript($fichiersLinkScript, $versionFichiersLinkScript, $styleSqueletmlCss); ?>
-		
-		<?php if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie): ?>
-			<!-- Slimbox 2 pour les galeries -->
-			<?php if (!$jQueryInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
-				<?php $jQueryInclus = TRUE; ?>
-			<?php endif; ?>
-			
-			<script type="text/javascript" src="<?php echo $urlRacine; ?>/inc/slimbox2/js/slimbox2.js"></script>
-			
-			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/inc/slimbox2/css/slimbox2.css" media="screen" />
-		<?php endif; ?>
-		
-		<?php $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes); ?>
-		<?php if (!empty($boitesDeroulantesTableau)): ?>
-			<!-- Boîtes déroulantes -->
-			<?php if (!$cssBoiteDeroulanteInclus): ?>
-				<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/boites-deroulantes.css" media="screen" />
-				<?php $cssBoiteDeroulanteInclus = TRUE; ?>
-			<?php endif; ?>
-			
-			<?php if (!$jQueryInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
-				<?php $jQueryInclus = TRUE; ?>
-			<?php endif; ?>
-			
-			<?php if (!$jQueryCookieInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.cookie.js"></script>
-				<?php $jQueryCookieInclus = TRUE; ?>
-			<?php endif; ?>
-			
-			<?php echo '<script type="text/javascript">' . "\n"; ?>
-				<?php foreach ($boitesDeroulantesTableau as $boiteDeroulante): ?>
-					<?php $boiteDeroulanteId = explode(' ', $boiteDeroulante); ?>
-					<?php echo "\tajouteEvenementLoad(function(){boiteDeroulante('{$boiteDeroulanteId[0]}', '{$boiteDeroulanteId[1]}', '{$boiteDeroulanteId[2]}');});\n"; ?>
-				<?php endforeach; ?>
-			<?php echo "</script>\n"; ?>
-		<?php endif; ?>
-		
-		<?php if ($tableDesMatieres): ?>
-			<!-- Table des matières -->
-			<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres.css" media="screen" />
-			
-			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
-				<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/table-des-matieres-ie6.css" media="screen" />
-			<?php echo '<![endif]-->'; ?>
-			
-			<?php if (!$javascriptGettextInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/Gettext.js"></script>
-			
-				<?php $locale = locale(LANGUE); ?>
-				<?php if (file_exists($racine . '/locale/' . $locale)): ?>
-					<link type="application/x-po" rel="gettext" href="<?php echo $urlRacine; ?>/locale/<?php echo $locale; ?>/LC_MESSAGES/squeletml.po" />
-				<?php endif; ?>
-			
-				<script type="text/javascript">
-					var gt = new Gettext({'domain': 'squeletml'});
-				</script>
-				<?php $javascriptGettextInclus = TRUE; ?>
-			<?php endif; ?>
-			
-			<?php if (!$jQueryInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
-				<?php $jQueryInclus = TRUE; ?>
-			<?php endif; ?>
-			
-			<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.tableofcontents.js"></script>
-			
-			<script type="text/javascript">
-				tableDesMatieres('interieurContenu', 'ul');
-			</script>
-		<?php endif; ?>
-		
-		<?php if ($messageIE6): ?>
-			<!-- Message IE6 -->
-			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
-			<?php if (!$cssBoiteDeroulanteInclus): ?>
-				<link type="text/css" rel="stylesheet" href="<?php echo $urlRacine; ?>/css/boites-deroulantes.css" media="screen" />
-			<?php endif; ?>
-			
-			<?php if (!$jQueryInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.min.js"></script>
-			<?php endif; ?>
-			
-			<?php if (!$jQueryCookieInclus): ?>
-				<script type="text/javascript" src="<?php echo $urlRacine; ?>/js/jquery.cookie.js"></script>
-			<?php endif; ?>
-			
-			<script type="text/javascript">
-				ajouteEvenementLoad(function(){boiteDeroulante('messageIE6', 'messageIE6titre', 'messageIE6corps');});
-			</script>
-			<?php echo '<![endif]-->'; ?>
-		<?php endif; ?>
-	</head>
-	<!-- ____________________ <body> ____________________ -->
-	<body class="<?php echo classesBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesSeulementDansContenu, $arrierePlanColonne, $borduresPage, $coinsArrondisBloc); ?>">
-		<!-- ____________________ #ancres ____________________ -->
-		<div id="ancres">
-			<?php include cheminFichierIncHtml($racine, 'ancres', $langueParDefaut, $langue); ?>
-		</div><!-- /ancres -->
-
-		<?php if ($messageIE6): ?>
-			<!-- ____________________ Message IE6 ____________________ -->
-			<?php echo '<!--[if lt IE 7]>' . "\n"; ?>
-				<?php echo messageIE6($urlRacine . '/fichiers/firefox-52x52.png', '', 52, 52); ?>
-			<?php echo '<![endif]-->'; ?>
-		<?php endif; ?>
-		
-		<!-- ____________________ #page ____________________ -->
-		<div id="page">
-			<div id="interieurPage">
-		
-		<!-- ____________________ #enTete ____________________ -->
-		<div id="enTete">
-			<?php if ($surTitre): ?>
-				<div id="surTitre">
-					<?php include cheminFichierIncHtml($racine, 'sur-titre', $langueParDefaut, $langue); ?>
-				</div><!-- /surTitre -->
-			<?php endif; ?>
-	
-			<div id="titre">
-				<?php echo nomSite(estAccueil(ACCUEIL), lienVersAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, $langueParDefaut, $langue))); ?>
-			</div><!-- /titre -->
-
-			<div id="sousTitre">
-				<?php include cheminFichierIncHtml($racine, 'sous-titre', $langueParDefaut, $langue); ?>
-			</div><!-- /sousTitre -->
-	
-			<div class="sep"></div>
-		</div><!-- /enTete -->
-		
-		<!-- ____________________ #surContenu ____________________ -->
-		<div id="surContenu">
-			<?php $decouvrir = FALSE; // Initialisation ?>
-			<?php $decouvrirInclureContact = FALSE; // Initialisation ?>
-			<?php include $racine . '/inc/faire-decouvrir.inc.php'; ?>
-	
-			<?php if (isset($corpsGalerie) && !empty($corpsGalerie)): ?>
-				<?php $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $coinsArrondisBloc); ?>
-			<?php endif; ?>
-	
-			<?php $divSurSousContenu = 'sur'; ?>
-			<?php include $racine . '/inc/blocs.inc.php'; ?>
-		</div><!-- /surContenu -->
-		
-		<!-- ____________________ #contenu ____________________ -->
-		<div id="contenu" class="<?php if ($differencierLiensVisitesSeulementDansContenu) echo 'liensVisitesDifferencies'; ?>">
-			<div id="interieurContenu">
-		
-				<?php if ($idGalerie): ?>
-					<div id="galerie">
-				<?php endif; ?>
+include_once cheminXhtml($racine, 'page.premier');
+?>

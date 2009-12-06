@@ -1,6 +1,15 @@
 <?php
-list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($coinsArrondisBloc);
-$blocsAinserer = blocs($ordreFluxHtml, $divSurSousContenu . 'Contenu');
+/**
+Ce fichier construit le code des blocs. Après son inclusion, la variable `$blocs` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
+*/
+
+// Vérification de l'état du module «Faire découvrir».
+include $racine . '/inc/faire-decouvrir.inc.php';
+
+list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondis);
+$blocsAinserer = blocs($ordreBlocsDansFluxHtml, $divSurSousContenu . 'Contenu');
+
+$blocs = '';
 
 if (!empty($blocsAinserer))
 {
@@ -11,75 +20,98 @@ if (!empty($blocsAinserer))
 			case 'menu-langues':
 				if (count($accueil) > 1)
 				{
-					echo '<div id="menuLangues" class="bloc">' . "\n";
-					echo $codeInterieurBlocHaut;
-					include cheminFichierIncHtml($racine, 'menu-langues', $langueParDefaut, $langue);
-					echo $codeInterieurBlocBas;
-					echo '</div><!-- /menuLangues -->' . "\n";
+					$blocs .= '<div id="menuLangues" class="bloc">' . "\n";
+					$blocs .= $codeInterieurBlocHaut;
+					
+					ob_start();
+					include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-langues');
+					$blocs .= ob_get_contents();
+					ob_end_clean();
+					
+					$blocs .= $codeInterieurBlocBas;
+					$blocs .= '</div><!-- /#menuLangues -->' . "\n";
 				}
+				
 				break;
 			
 			case 'menu':
-				echo '<div id="menu" class="bloc">' . "\n";
-				echo $codeInterieurBlocHaut;
-				include cheminFichierIncHtml($racine, 'menu', $langueParDefaut, $langue);
-				echo $codeInterieurBlocBas;
-				echo '</div><!-- /menu -->' . "\n";
-				echo '<script type="text/javascript">lienActif("menu");</script>' . "\n";
+				$blocs .= '<div id="menu" class="bloc">' . "\n";
+				$blocs .= $codeInterieurBlocHaut;
+				
+				ob_start();
+				include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu');
+				$blocs .= ob_get_contents();
+				ob_end_clean();
+				
+				$blocs .= $codeInterieurBlocBas;
+				$blocs .= '</div><!-- /#menu -->' . "\n";
+				$blocs .= '<script type="text/javascript">lienActif("menu");</script>' . "\n";
 				break;
 			
 			case 'faire-decouvrir':
-				if ($faireDecouvrir && $decouvrir)
+				if ($activerFaireDecouvrir && $decouvrir)
 				{
-					echo '<div id="faireDecouvrir" class="bloc">' . "\n";
-					echo $codeInterieurBlocHaut;
-					echo '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>';
-					echo $codeInterieurBlocBas;
-					echo '</div><!-- /faireDecouvrir -->' . "\n";
+					$blocs .= '<div id="faireDecouvrir" class="bloc">' . "\n";
+					$blocs .= $codeInterieurBlocHaut;
+					$blocs .= '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>';
+					$blocs .= $codeInterieurBlocBas;
+					$blocs .= '</div><!-- /#faireDecouvrir -->' . "\n";
 				}
+				
 				break;
 				
 			case 'legende-oeuvre-galerie':
 				if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement == $divSurSousContenu . 'Contenu')
 				{
-					echo $tableauCorpsGalerie['texteIntermediaire'];
+					$blocs .= $tableauCorpsGalerie['texteIntermediaire'];
 				}
+				
 				break;
 				
 			case 'flux-rss':
-				if (($idGalerie && $rss) || ($galerieFluxRssGlobal && adminCheminConfigFluxRssGlobalGaleries($racine)) || ($siteFluxRssGlobal && adminCheminConfigFluxRssGlobalSite($racine)))
+				if (($idGalerie && $rss) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
 				{
-					echo '<div class="sep"></div>' . "\n";
-					echo '<div id="fluxRss" class="bloc">' . "\n";
-					echo $codeInterieurBlocHaut;
-					echo "\t<ul>\n";
+					$blocs .= '<div id="fluxRss" class="bloc">' . "\n";
+					$blocs .= $codeInterieurBlocHaut;
+					$blocs .= "\t<ul>\n";
+					
 					if ($idGalerie && $rss)
 					{
-						echo "\t\t<li>" . lienFluxRss($urlFlux, $idGalerie, TRUE) . "</li>\n";
+						$blocs .= "\t\t<li>" . lienFluxRss($urlFlux, $idGalerie, TRUE) . "</li>\n";
 					}
-					if ($galerieFluxRssGlobal && adminCheminConfigFluxRssGlobalGaleries($racine))
+					
+					if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 					{
-						echo "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=galeries&langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
+						$blocs .= "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=galeries&langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
 					}
-					if ($siteFluxRssGlobal && adminCheminConfigFluxRssGlobalSite($racine))
+					
+					if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 					{
-						echo "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=site&langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
+						$blocs .= "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=site&langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
 					}
-					echo "\t</ul>\n";
-					echo $codeInterieurBlocBas;
-					echo '</div><!-- /fluxRss -->' . "\n";
+					
+					$blocs .= "\t</ul>\n";
+					$blocs .= $codeInterieurBlocBas;
+					$blocs .= '</div><!-- /#fluxRss -->' . "\n";
 				}
+				
 				break;
 				
 			default:
-				if (cheminFichierIncHtml($racine, $blocAinserer, $langueParDefaut, $langue, FALSE))
+				if (cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
 				{
-					echo "<div class=\"bloc $blocAinserer\">\n";
-					echo $codeInterieurBlocHaut;
-					include cheminFichierIncHtml($racine, $blocAinserer, $langueParDefaut, $langue);
-					echo $codeInterieurBlocBas;
-					echo "</div><!-- /class=$blocAinserer -->\n";
+					$blocs .= "<div class=\"bloc $blocAinserer\">\n";
+					$blocs .= $codeInterieurBlocHaut;
+					
+					ob_start();
+					include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer);
+					$blocs .= ob_get_contents();
+					ob_end_clean();
+					
+					$blocs .= $codeInterieurBlocBas;
+					$blocs .= "</div><!-- /.$blocAinserer -->\n";
 				}
+				
 				break;
 		}
 	}

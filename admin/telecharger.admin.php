@@ -27,9 +27,7 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 				$dossierDeSauvegarde = $racineAdmin . '/cache';
 				$nomArchive = $nom . '.tar';
 				$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
-		
 				$archive = new tar($cheminArchive);
-		
 				$listeFichiers = adminListeFichiers($chemin);
 		
 				foreach ($listeFichiers as $fichier)
@@ -65,7 +63,7 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 			}
 			else
 			{
-				$typeMime = mimedetect_mime(array ('filepath' => $chemin, 'filename' => $nom), $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$typeMime = typeMime($chemin, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 	
 				if ($typeMime == 'application/octet-stream')
 				{
