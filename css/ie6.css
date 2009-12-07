@@ -1,5 +1,5 @@
 #page {
-	zoom: 1; /* à cause d'un bogue avec `position: absolute` */
+	zoom: 1; /* À cause d'un bogue avec `position: absolute`. */
 	width: 770px;
 	width: expression( document.body.clientWidth > 900? "900px": "auto" );
 }
@@ -23,10 +23,6 @@
 
 div.galerieNavigationSuivant img {
 	float: left;
-}
-
-pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
-	word-wrap: break-word; /* Internet Explorer 5.5+. */
 }
 
 .sep {

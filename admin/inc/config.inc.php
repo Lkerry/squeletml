@@ -49,7 +49,7 @@ $adminLangueParDefaut = 'fr';
 */
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/admin.css";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/extensions-proprietaires.css";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#cssIE7#$urlRacineAdmin/css/ie7.css";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacine/css/extensions-proprietaires.css";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/phpjs.js";

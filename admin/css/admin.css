@@ -31,6 +31,7 @@ body, html {
 	border-bottom: 1px solid #f2f2f2;
 	border-left: 1px solid #f2f2f2;
 	text-align: center;
+	border-radius: 0px 0px 8px 8px; /* CSS 3. */
 }
 
 #enTete ul {
@@ -45,6 +46,10 @@ body, html {
 
 #contenu {
 	margin: 5px;
+}
+
+#tableDesMatieres, a.porteDocumentsProprietesFichier:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
+	border-radius: 8px; /* CSS 3. */
 }
 
 h1, h2, h3, h4, h5, h6, a {
