@@ -223,22 +223,22 @@ if ($nom == T_('Votre nom'))
 
 if ($contactActiverCaptchaCalcul)
 {
-	$contactActiverCaptchaCalcul1 = rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
-	$contactActiverCaptchaCalcul2 = rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
-	$contactActiverCaptchaCalculBidon = rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
+	$contactActiverCaptchaCalcul1 = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
+	$contactActiverCaptchaCalcul2 = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
+	$contactActiverCaptchaCalculBidon = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
 	$inputHidden = '';
 	$inputHidden .= '<input name="a" type="hidden" value="' . $contactActiverCaptchaCalcul1 . '" />' . "\n";
 	$inputHidden .= '<input name="b" type="hidden" value="' . $contactActiverCaptchaCalculBidon . '" />' . "\n";
 	
 	// Ajout de quelques `input` bidons pour augmenter les chances de duper les robots pourrielleurs.
-	$nbreInput = rand(5, 10);
+	$nbreInput = mt_rand(5, 10);
 	$toutesLesLettres = 'abd';
 	
 	for ($i = 0; $i < $nbreInput; $i++)
 	{
 		$lettreAuHasard = lettreAuHasard($toutesLesLettres);
 		$toutesLesLettres .= $lettreAuHasard;
-		$inputHidden .= '<input name="' . $lettreAuHasard . '" type="hidden" value="' . rand($contactCaptchaCalculMin, $contactCaptchaCalculMax) . '" />' . "\n";
+		$inputHidden .= '<input name="' . $lettreAuHasard . '" type="hidden" value="' . mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax) . '" />' . "\n";
 	}
 	
 	$inputHidden .= '<input name="d" type="hidden" value="' . $contactActiverCaptchaCalcul2 . '" />' . "\n";

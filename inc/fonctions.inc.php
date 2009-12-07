@@ -964,7 +964,7 @@ function lettreAuHasard($lettresExclues = '')
 	
 	do
 	{
-		$lettre = $lettres[rand(0, 51)];
+		$lettre = $lettres[mt_rand(0, 51)];
 	} while (substr_count($lettresExclues, $lettre));
 	
 	return $lettre;
