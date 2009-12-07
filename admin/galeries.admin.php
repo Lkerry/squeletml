@@ -23,7 +23,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['lister']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		
 		if ($fic = @opendir($racine . '/site/fichiers/galeries'))
 		{
@@ -105,13 +105,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$apercu = '';
 					}
 					
-					$messagesScript[] = '<li>' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
-					$messagesScript[] = "<ul>\n";
-					$messagesScript[] = "<li>" . sprintf(T_("Identifiant: %1\$s"), $fichier) . "</li>\n";
-					$messagesScript[] = $fichierDeConfiguration;
-					$messagesScript[] = $parcoursDossier;
-					$messagesScript[] = $apercu;
-					$messagesScript[] = "</ul></li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
+					$messagesScript .= "<ul>\n";
+					$messagesScript .= "<li>" . sprintf(T_("Identifiant: %1\$s"), $fichier) . "</li>\n";
+					$messagesScript .= $fichierDeConfiguration;
+					$messagesScript .= $parcoursDossier;
+					$messagesScript .= $apercu;
+					$messagesScript .= "</ul></li>\n";
 				}
 			}
 			
@@ -119,12 +119,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$racine/site/fichiers/galeries</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$racine/site/fichiers/galeries</code>") . "</li>\n";
 		}
 		
 		if (empty($messagesScript))
 		{
-			$messagesScript[] = '<li>' . T_("Aucune galerie.") . "</li>\n";
+			$messagesScript .= '<li>' . T_("Aucune galerie.") . "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript, T_("Liste des galeries"));
@@ -138,19 +138,19 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['ajouter']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		
 		if ($id == 'nouvelleGalerie' && empty($_POST['idNouvelleGalerie']))
 		{
-			$messagesScript[] = '<li class="erreur">' . T_("Vous avez choisi de créer une nouvelle galerie, mais vous n'avez pas saisi de nom pour cette dernière.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Vous avez choisi de créer une nouvelle galerie, mais vous n'avez pas saisi de nom pour cette dernière.") . "</li>\n";
 		}
 		elseif (empty($_FILES['fichier']['name']))
 		{
-			$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
 		}
 		elseif ($_FILES['fichier']['error'])
 		{
-			$messagesScript[] = adminMessageFilesError($_FILES['fichier']['error']);
+			$messagesScript .= adminMessageFilesError($_FILES['fichier']['error']);
 		}
 		else
 		{
@@ -164,7 +164,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (!file_exists($cheminGalerie))
 			{
-				$messagesScript[] = adminMkdir($cheminGalerie, octdec(755), TRUE);
+				$messagesScript .= adminMkdir($cheminGalerie, octdec(755), TRUE);
 			}
 			
 			if (file_exists($cheminGalerie) && isset($_FILES['fichier']))
@@ -173,7 +173,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if (file_exists($cheminGaleries . '/' . $nomArchive))
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '</code>') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGaleries . '</code>') . "</li>\n";
 				}
 				elseif (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGaleries . '/' . $nomArchive))
 				{
@@ -181,22 +181,22 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomArchive</code>", "<code>$typeMime</code>") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomArchive</code>", "<code>$typeMime</code>") . "</li>\n";
 					}
 					elseif ($typeMime != 'application/zip' && $typeMime != 'application/x-tar')
 					{
 						if (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomArchive))
 						{
-							$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
 						}
 						else
 						{
-							$messagesScript[] = '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
 						}
 					}
 					elseif ($typeMime == 'application/zip' && !function_exists('gzopen'))
 					{
-						$messagesScript[] = '<li class="erreur">' . T_("Les archives au format <code>ZIP</code> ne sont pas supportées.") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . T_("Les archives au format <code>ZIP</code> ne sont pas supportées.") . "</li>\n";
 					}
 					elseif ($typeMime == 'application/zip')
 					{
@@ -206,7 +206,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 						if ($resultatArchive == 0)
 						{
-							$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: %2\$s"), '<code>' . $nomArchive . '</code>', $archive->errorInfo(true)) . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: %2\$s"), '<code>' . $nomArchive . '</code>', $archive->errorInfo(true)) . "</li>\n";
 						}
 						else
 						{
@@ -222,20 +222,20 @@ include $racineAdmin . '/inc/premier.inc.php';
 									if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 									{
 										@unlink($cheminFichier);
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
+										$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
 									}
 									else
 									{
-										$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+										$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
 									}
 								}
 								elseif ($infoImage['status'] == 'newer_exist')
 								{
-									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 								}
 								else
 								{
-									$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 								}
 							}
 						}
@@ -256,18 +256,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 								{
 									if (file_exists($cheminFichier))
 									{
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $nomFichier . '</code>') . "</li>\n";
+										$messagesScript .= '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $nomFichier . '</code>') . "</li>\n";
 									}
 									else
 									{
-										$messagesScript[] = adminMkdir($cheminFichier, octdec(755), TRUE);
+										$messagesScript .= adminMkdir($cheminFichier, octdec(755), TRUE);
 									}
 								}
 								else
 								{
 									if (file_exists($cheminFichier))
 									{
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+										$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 									}
 									elseif ($fic = @fopen($cheminFichier, 'w'))
 									{
@@ -281,21 +281,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 											if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 											{
 												@unlink($cheminFichier);
-												$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
+												$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
 											}
 											else
 											{
-												$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
 											}
 										}
 										else
 										{
-											$messagesScript[] = '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+											$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 										}
 									}
 									else
 									{
-										$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>";
+										$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>";
 									}
 								}
 							}
@@ -305,13 +305,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						}
 						else
 						{
-							$messagesScript[] = '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
 						}
 					}
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
 				}
 			}
 		}
@@ -328,7 +328,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (empty($messagesScript))
 		{
-			$messagesScript[] = '<li class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</li>\n";
 		}
 		
 		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
@@ -343,13 +343,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['redimensionner']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		$erreur = FALSE;
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 			$erreur = TRUE;
 		}
 		else
@@ -413,7 +413,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								
 								if (!file_exists($cheminGalerie . '/' . $nouveauNom))
 								{
-									$messagesScript[] = adminRename($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom);
+									$messagesScript .= adminRename($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom);
 								}
 							}
 						}
@@ -423,7 +423,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
 					$erreur = TRUE;
 				}
 			}
@@ -497,7 +497,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								}
 								
 								$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-								$messagesScript[] = nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $typeMime, $imageIntermediaireDimensionsVoulues, FALSE, $galerieQualiteJpg, $nettete);
+								$messagesScript .= nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $typeMime, $imageIntermediaireDimensionsVoulues, FALSE, $galerieQualiteJpg, $nettete);
 							}
 						}
 					}
@@ -506,12 +506,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 					if (empty($messagesScript))
 					{
-						$messagesScript[] = '<li>' . T_("Aucune modification.") . "</li>\n";
+						$messagesScript .= '<li>' . T_("Aucune modification.") . "</li>\n";
 					}
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
 				}
 			}
 		}
@@ -528,20 +528,20 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['supprimerImages']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		elseif (empty($_POST['listeAsupprimer']))
 		{
-			$messagesScript[] = '<li class="erreur">' . T_("La manière de générer la liste des fichiers à supprimer n'a pas été spécifiée.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("La manière de générer la liste des fichiers à supprimer n'a pas été spécifiée.") . "</li>\n";
 		}
 		elseif ($_POST['listeAsupprimer'] != 'config' && $_POST['listeAsupprimer'] != 'motifs' && $_POST['listeAsupprimer'] != 'sansMotif')
 		{
-			$messagesScript[] = '<li class="erreur">' . T_("La manière spécifiée de générer la liste des fichiers à supprimer n'est pas valide.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("La manière spécifiée de générer la liste des fichiers à supprimer n'est pas valide.") . "</li>\n";
 		}
 		else
 		{
@@ -577,7 +577,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if ((isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && $versionImage == 'vignette') || (isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && $versionImage == 'intermediaire') || (isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && $versionImage == 'original'))
 						{
-							$messagesScript[] = adminUnlink($cheminGalerie . '/' . $fichier);
+							$messagesScript .= adminUnlink($cheminGalerie . '/' . $fichier);
 						}
 						elseif (isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && ($fichier == 'config.ini.txt' || $fichier == 'config.ini'))
 						{
@@ -590,7 +590,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if ($configAsupprimer !== FALSE)
 				{
-					$messagesScript[] = adminUnlink($configAsupprimer);
+					$messagesScript .= adminUnlink($configAsupprimer);
 				}
 				
 				if (isset($_POST['supprimerImagesVignettesAvecTatouage']) && $_POST['supprimerImagesVignettesAvecTatouage'] == 'supprimer')
@@ -599,7 +599,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 					if (!file_exists($cheminTatouage))
 					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le dossier des vignettes avec tatouage %1\$s n'existe pas."), "<code>$cheminTatouage</code>") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le dossier des vignettes avec tatouage %1\$s n'existe pas."), "<code>$cheminTatouage</code>") . "</li>\n";
 					}
 					elseif ($fic = @opendir($cheminTatouage))
 					{
@@ -618,7 +618,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 								if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
 								{
-									$messagesScript[] = adminUnlink($cheminTatouage . '/' . $fichier);
+									$messagesScript .= adminUnlink($cheminTatouage . '/' . $fichier);
 								}
 							}
 						}
@@ -627,16 +627,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 						if (adminDossierEstVide($cheminTatouage))
 						{
-							$messagesScript[] = adminRmdir($cheminTatouage);
+							$messagesScript .= adminRmdir($cheminTatouage);
 						}
 						else
 						{
-							$messagesScript[] = '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminTatouage</code>") . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminTatouage</code>") . "</li>\n";
 						}
 					}
 					else
 					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminTatouage</code>") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminTatouage</code>") . "</li>\n";
 					}
 				}
 				
@@ -644,23 +644,23 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (adminDossierEstVide($cheminGalerie))
 					{
-						$messagesScript[] = adminRmdir($cheminGalerie);
+						$messagesScript .= adminRmdir($cheminGalerie);
 					}
 					else
 					{
-						$messagesScript[] = '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminGalerie</code>") . "</li>\n";
+						$messagesScript .= '<li>' . sprintf(T_("Le dossier %1\$s n'est pas vide, il ne sera donc pas supprimé."), "<code>$cheminGalerie</code>") . "</li>\n";
 					}
 				}
 			}
 			else
 			{
-				$messagesScript[] = "<li class='erreur'>" . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
+				$messagesScript .= "<li class='erreur'>" . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
 			}
 		}
 		
 		if (empty($messagesScript))
 		{
-			$messagesScript[] = '<li>' . T_("Aucune image à traiter.") . "</li>\n";
+			$messagesScript .= '<li>' . T_("Aucune image à traiter.") . "</li>\n";
 		}
 		
 		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
@@ -675,22 +675,22 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['renommer']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		$nouvelId = securiseTexte($_POST['idNouveauNomGalerie']);
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		$nouveauCheminGalerie = $racine . '/site/fichiers/galeries/' . $nouvelId;
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		elseif (file_exists($nouveauCheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s existe déjà."), "<code>$nouvelId</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s existe déjà."), "<code>$nouvelId</code>") . "</li>\n";
 		}
 		else
 		{
-			$messagesScript[] = adminRename($cheminGalerie, $nouveauCheminGalerie);
+			$messagesScript .= adminRename($cheminGalerie, $nouveauCheminGalerie);
 		}
 		
 		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
@@ -705,16 +705,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if ($adminPorteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
-			$messagesScript[] = '<li><a href="telecharger.admin.php?fichier=' . $cheminGalerie . '">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), "<code>$id</code>") . "</a></li>\n";
+			$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . $cheminGalerie . '">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), "<code>$id</code>") . "</a></li>\n";
 		}
 		
 		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
@@ -729,7 +729,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['creerPage']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		$page = superBasename(securiseTexte($_POST['page']));
 		$cheminPage = '../' . dirname(securiseTexte($_POST['page']));
 		
@@ -755,11 +755,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		elseif (!adminEmplacementPermis($cheminPage, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la création d'une page web de galerie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminPage</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la création d'une page web de galerie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminPage</code>") . "</li>\n";
 		}
 		else
 		{
@@ -767,13 +767,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			if (!$cheminConfigGalerie)
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</li>\n";
 			}
 			else
 			{
 				if (!file_exists($cheminPage))
 				{
-					$messagesScript[] = adminMkdir($cheminPage, octdec(0755), TRUE);
+					$messagesScript .= adminMkdir($cheminPage, octdec(0755), TRUE);
 				}
 				
 				if (file_exists($cheminPage))
@@ -782,11 +782,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						if ($adminPorteDocumentsDroits['editer'])
 						{
-							$messagesScript[] = '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 						}
 						else
 						{
-							$messagesScript[] = '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 						}
 					}
 					else
@@ -809,16 +809,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 							if ($adminPorteDocumentsDroits['editer'])
 							{
-								$messagesScript[] = '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>éditer le fichier</a> ou <a href='%2\$s'>visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant' . rawurlencode(dirname($cheminPage . '/' . $page)) . '=#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+								$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>éditer le fichier</a> ou <a href='%2\$s'>visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant' . rawurlencode(dirname($cheminPage . '/' . $page)) . '=#messagesPorteDocuments', $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 							}
 							else
 							{
-								$messagesScript[] = '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>visiter la page</a>."), $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+								$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>visiter la page</a>."), $urlRacine . '/' . rawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 							}
 						}
 						else
 						{
-							$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
 						}
 					}
 				}
@@ -837,12 +837,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['modeleConf']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
@@ -895,19 +895,19 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if (!empty($listeFichiers))
 				{
-					$messagesScript[] = '<li><pre id="listeFichiers">' . $listeFichiers . "</pre></li>\n";
-					$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+					$messagesScript .= '<li><pre id="listeFichiers">' . $listeFichiers . "</pre></li>\n";
+					$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('listeFichiers');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
 			}
 		}
 		
 		if (empty($messagesScript))
 		{
-			$messagesScript[] = '<li>' . T_("Aucune image dans la galerie.") . "</li>\n";
+			$messagesScript .= '<li>' . T_("Aucune image dans la galerie.") . "</li>\n";
 		}
 		
 		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
@@ -924,12 +924,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	if (isset($_POST['config']) && $_POST['config'] == 'maj')
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 		
 		if (!file_exists($cheminGalerie))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
 		else
 		{
@@ -958,16 +958,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if ($configExisteAuDepart)
 				{
-					$messagesScript[] = '<li>' . sprintf(T_("Mise à jour du fichier de configuration %1\$s effectuée."), '<code>' . $cheminConfigGalerie . '</code>') . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Mise à jour du fichier de configuration %1\$s effectuée."), '<code>' . $cheminConfigGalerie . '</code>') . "</li>\n";
 				}
 				else
 				{
-					$messagesScript[] = '<li>' . sprintf(T_("Création du fichier de configuration %1\$s effectuée."), '<code>' . $cheminConfigGalerie . '</code>') . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Création du fichier de configuration %1\$s effectuée."), '<code>' . $cheminConfigGalerie . '</code>') . "</li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Erreur lors de la création ou de la mise à jour du fichier de configuration %1\$s. Veuillez vérifier manuellement son contenu."), "<code>$cheminConfigGalerie</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de la création ou de la mise à jour du fichier de configuration %1\$s. Veuillez vérifier manuellement son contenu."), "<code>$cheminConfigGalerie</code>") . "</li>\n";
 			}
 		}
 		
@@ -980,12 +980,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo '<h4>' . T_("Actions effectuées") . "</h4>\n" ;
 		
 		echo "<ul>\n";
-		
-		foreach ($messagesScript as $messageScript)
-		{
-			echo $messageScript;
-		}
-		
+		echo $messagesScript;
 		echo "</ul>\n";
 	}
 	

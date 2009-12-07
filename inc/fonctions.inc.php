@@ -1350,12 +1350,12 @@ function nomSuffixe($nomFichier, $suffixe)
 }
 
 /**
-Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouvelleImageDimensionsVoulues, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $nettete)
 {
 	$erreur = FALSE;
-	$messagesScriptChaine = '';
+	$messagesScript = '';
 	$nomNouvelleImage = superBasename($cheminNouvelleImage);
 	$nomImageSource = superBasename($cheminImageSource);
 	
@@ -1436,11 +1436,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 	{
 		if (@copy($cheminImageSource, $cheminNouvelleImage))
 		{
-			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> effectuée."), $nomImageSource, $nomNouvelleImage) . "\n";
+			$messagesScript = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> effectuée."), $nomImageSource, $nomNouvelleImage) . "\n";
 		}
 		else
 		{
-			$messagesScriptChaine = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> impossible."), $nomImageSource, $nomNouvelleImage) . "\n";
+			$messagesScript = sprintf(T_("Copie de <code>%1\$s</code> sous le nom <code>%2\$s</code> impossible."), $nomImageSource, $nomNouvelleImage) . "\n";
 			$erreur = TRUE;
 		}
 	}
@@ -1483,11 +1483,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 			case 'image/gif':
 				if (imagegif($nouvelleImage, $cheminNouvelleImage))
 				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScript = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScript = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				
@@ -1496,11 +1496,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 			case 'image/jpeg':
 				if (imagejpeg($nouvelleImage, $cheminNouvelleImage, $galerieQualiteJpg))
 				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScript = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScript = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				
@@ -1509,11 +1509,11 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 			case 'image/png':
 				if (imagepng($nouvelleImage, $cheminNouvelleImage, 9))
 				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScript = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> effectuée."), $nomNouvelleImage, $nomImageSource) . "\n";
 				}
 				else
 				{
-					$messagesScriptChaine = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
+					$messagesScript = sprintf(T_("Création de <code>%1\$s</code> à partir de <code>%2\$s</code> impossible."), $nomNouvelleImage, $nomImageSource) . "\n";
 					$erreur = TRUE;
 				}
 				
@@ -1523,14 +1523,14 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 	
 	if ($erreur)
 	{
-		$messagesScriptChaine = '<li class="erreur">' . $messagesScriptChaine . "</li>\n";
+		$messagesScript = '<li class="erreur">' . $messagesScript . "</li>\n";
 	}
 	else
 	{
-		$messagesScriptChaine = '<li>' . $messagesScriptChaine . "</li>\n";
+		$messagesScript = '<li>' . $messagesScript . "</li>\n";
 	}
 	
-	return $messagesScriptChaine;
+	return $messagesScript;
 }
 
 /**

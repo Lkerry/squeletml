@@ -29,7 +29,7 @@ if (isset($_POST['envoyer']))
 	$nom = securiseTexte($_POST['nom']);
 	$courriel = securiseTexte($_POST['courriel']);
 	$message = securiseTexte($_POST['message']);
-	$messagesScript = array ();
+	$messagesScript = '';
 	$erreur = FALSE;
 	
 	if (isset($_POST['copie']))
@@ -44,7 +44,7 @@ if (isset($_POST['envoyer']))
 	
 	if (empty($nom))
 	{
-		$messagesScript[] = '<li>' . T_("Vous n'avez pas inscrit de nom.") . "</li>\n";
+		$messagesScript .= '<li>' . T_("Vous n'avez pas inscrit de nom.") . "</li>\n";
 	}
 
 	if ($contactVerifierCourriel)
@@ -53,7 +53,7 @@ if (isset($_POST['envoyer']))
 
 		if (!preg_match($motifCourriel, $courriel))
 		{
-			$messagesScript[] = '<li>' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
+			$messagesScript .= '<li>' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
 		}
 	}
 	
@@ -74,13 +74,13 @@ if (isset($_POST['envoyer']))
 		
 		if (!empty($courrielsDecouvrirErreur))
 		{
-			$messagesScript[] = '<li>' . sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsDecouvrirErreur, 0, -2)) . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsDecouvrirErreur, 0, -2)) . "</li>\n";
 		}
 	}
 	
 	if (empty($message) && !$decouvrir)
 	{
-		$messagesScript[] = '<li>' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
+		$messagesScript .= '<li>' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
 	}
 
 	if ($contactActiverCaptchaCalcul)
@@ -90,7 +90,7 @@ if (isset($_POST['envoyer']))
 		
 		if ($abSomme != $ab)
 		{
-			$messagesScript[] = '<li>' . T_("Veuillez répondre correctement à la question antipourriel.") . "</li>\n";
+			$messagesScript .= '<li>' . T_("Veuillez répondre correctement à la question antipourriel.") . "</li>\n";
 		}
 	}
 
@@ -98,7 +98,7 @@ if (isset($_POST['envoyer']))
 	{
 		if (substr_count($message, 'http') > $contactCaptchaLiensNombre)
 		{
-			$messagesScript[] = '<li>' . T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel à cause de ses liens trop nombreux. Veuillez le modifier.") . "</li>\n";
+			$messagesScript .= '<li>' . T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel à cause de ses liens trop nombreux. Veuillez le modifier.") . "</li>\n";
 		}
 	}
 	
@@ -163,7 +163,7 @@ if (isset($_POST['envoyer']))
 		if (mail($adresseTo, $contactCourrielIdentifiantObjet . "Message de " . "$nom <$adresseFrom>", $corps, $enTete))
 		{
 			$messageEnvoye = TRUE;
-			$messagesScript[] = '<p class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";
+			$messagesScript .= '<p class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";
 			$nom = '';
 			$courriel = '';
 			$message = '';
@@ -172,7 +172,7 @@ if (isset($_POST['envoyer']))
 		}
 		else
 		{
-			$messagesScript[] = '<p class="erreur">' . T_("ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.") . "</p>\n";
+			$messagesScript .= '<p class="erreur">' . T_("ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.") . "</p>\n";
 		}
 	}
 
@@ -182,12 +182,7 @@ if (isset($_POST['envoyer']))
 		$contact .= '<div class="erreur">' . "\n";
 		$contact .= '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>' . "\n";
 		$contact .= "<ul>\n";
-		
-		foreach ($messagesScript as $messageScript)
-		{
-			$contact .= $messageScript;
-		}
-		
+		$contact .= $messagesScript;
 		$contact .= "</ul>\n";
 		$contact .= "</div><!-- /.erreur -->\n";
 	}

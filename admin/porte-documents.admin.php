@@ -66,14 +66,14 @@ echo '<h2 id="messagesPorteDocuments">' . T_("Messages d'avancement, de confirma
 
 if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . T_("Copie de fichiers") . "</h3>\n";
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour la copie.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour la copie.") . "</li>\n";
 	}
 	else
 	{
@@ -138,28 +138,28 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie'])
 
 if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieConfirmation']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	$cheminDeCopie = securiseTexte($_POST['porteDocumentsCopieChemin']);
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour la copie.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour la copie.") . "</li>\n";
 	}
 	elseif (empty($cheminDeCopie))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun emplacement sélectionné pour la copie.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun emplacement sélectionné pour la copie.") . "</li>\n";
 	}
 	elseif (!file_exists($cheminDeCopie))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'existe pas."), "<code>$cheminDeCopie</code>\n") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'existe pas."), "<code>$cheminDeCopie</code>\n") . "</li>\n";
 	}
 	elseif (!is_dir($cheminDeCopie))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'est pas un dossier."), "<code>$cheminDeCopie</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'est pas un dossier."), "<code>$cheminDeCopie</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($cheminDeCopie, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminDeCopie</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminDeCopie</code>") . "</li>\n";
 	}
 	else
 	{
@@ -175,23 +175,23 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 		
 			if (!file_exists($fichierSource))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Copie vers %2\$s impossible."), "<code>$fichierSource</code>", "<code>$cheminDeCopie</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Copie vers %2\$s impossible."), "<code>$fichierSource</code>", "<code>$cheminDeCopie</code>") . "</li>\n";
 			}
 			elseif (file_exists($fichierDeDestination))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Copie de %2\$s impossible."), "<code>$fichierDeDestination</code>", "<code>$fichierSource</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Copie de %2\$s impossible."), "<code>$fichierDeDestination</code>", "<code>$fichierSource</code>") . "</li>\n";
 			}
 			elseif (preg_match("|^$fichierSource/|", $fichierDeDestination))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), "<code>$fichierSource</code>", "<code>$fichierDeDestination</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), "<code>$fichierSource</code>", "<code>$fichierDeDestination</code>") . "</li>\n";
 			}
 			elseif (!is_dir($fichierAcopier))
 			{
-				$messagesScript[] = adminCopy($fichierSource, $fichierDeDestination);
+				$messagesScript .= adminCopy($fichierSource, $fichierDeDestination);
 			}
 			elseif ($fichierSource != '.' && $fichierSource != '..')
 			{
-				$messagesScript[] = adminCopyDossier($fichierSource, $fichierDeDestination);
+				$messagesScript .= adminCopyDossier($fichierSource, $fichierDeDestination);
 			}
 		}
 	}
@@ -209,14 +209,14 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 
 if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplacement']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . T_("Déplacement de fichiers") . "</h3>\n";
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour le déplacement.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour le déplacement.") . "</li>\n";
 	}
 	else
 	{
@@ -280,27 +280,27 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 
 if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplacementConfirmation']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour le déplacement.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour le déplacement.") . "</li>\n";
 	}
 	elseif (empty($_POST['porteDocumentsDeplacementChemin']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun emplacement sélectionné pour le déplacement.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun emplacement sélectionné pour le déplacement.") . "</li>\n";
 	}
 	elseif (!file_exists($_POST['porteDocumentsDeplacementChemin']))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'existe pas."), "<code>" . securiseTexte($_POST['porteDocumentsDeplacementChemin']) . "</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'existe pas."), "<code>" . securiseTexte($_POST['porteDocumentsDeplacementChemin']) . "</code>") . "</li>\n";
 	}
 	elseif (!is_dir($_POST['porteDocumentsDeplacementChemin']))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'est pas un dossier."), "<code>" . securiseTexte($_POST['porteDocumentsDeplacementChemin']) . "</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'est pas un dossier."), "<code>" . securiseTexte($_POST['porteDocumentsDeplacementChemin']) . "</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($_POST['porteDocumentsDeplacementChemin'], $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'est pas gérable par le porte-documents."), "<code>" . securiseTexte($_POST['porteDocumentsDeplacementChemin']) . "</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'est pas gérable par le porte-documents."), "<code>" . securiseTexte($_POST['porteDocumentsDeplacementChemin']) . "</code>") . "</li>\n";
 	}
 	else
 	{
@@ -317,15 +317,15 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 			
 			if (!file_exists($ancienChemin))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Déplacement vers %2\$s impossible."), "<code>$ancienChemin</code>", "<code>$nouveauChemin</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Déplacement vers %2\$s impossible."), "<code>$ancienChemin</code>", "<code>$nouveauChemin</code>") . "</li>\n";
 			}
 			elseif (file_exists($nouveauChemin))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Déplacement de %2\$s impossible."), "<code>$nouveauChemin</code>", "<code>$ancienChemin</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Déplacement de %2\$s impossible."), "<code>$nouveauChemin</code>", "<code>$ancienChemin</code>") . "</li>\n";
 			}
 			else
 			{
-				$messagesScript[] = adminRename($ancienChemin, $nouveauChemin, TRUE);
+				$messagesScript .= adminRename($ancienChemin, $nouveauChemin, TRUE);
 			}
 		}
 	}
@@ -343,14 +343,14 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 
 if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppression']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . T_("Suppression de fichiers") . "</h3>\n";
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour la suppression.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour la suppression.") . "</li>\n";
 	}
 	else
 	{
@@ -392,11 +392,11 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 
 if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppressionConfirmation']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour la suppression.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour la suppression.") . "</li>\n";
 	}
 	else
 	{
@@ -409,15 +409,15 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 		{
 			if (!file_exists($fichierAsupprimer))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Suppression impossible."), "<code>$fichierAsupprimer</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Suppression impossible."), "<code>$fichierAsupprimer</code>") . "</li>\n";
 			}
 			elseif (!is_dir($fichierAsupprimer))
 			{
-				$messagesScript[] = adminUnlink($fichierAsupprimer);
+				$messagesScript .= adminUnlink($fichierAsupprimer);
 			}
 			elseif (superBasename($fichierAsupprimer) != '.' && superBasename($fichierAsupprimer) != '..')
 			{
-				$messagesScript[] = adminRmdirRecursif($fichierAsupprimer);
+				$messagesScript .= adminRmdirRecursif($fichierAsupprimer);
 			}
 		}
 	}
@@ -435,14 +435,14 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 
 if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPermissions']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . T_("Modification des permissions") . "</h3>\n";
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour la modification des permissions.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour la modification des permissions.") . "</li>\n";
 	}
 	else
 	{
@@ -492,19 +492,19 @@ if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPer
 
 if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPermissionsConfirmation']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	if (empty($_POST['porteDocumentsFichiers']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier sélectionné pour la modification des permissions.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier sélectionné pour la modification des permissions.") . "</li>\n";
 	}
 	elseif (empty($_POST['porteDocumentsPermissionsValeur']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucune permission spécifiée.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucune permission spécifiée.") . "</li>\n";
 	}
 	elseif (!preg_match('/^[0-7]{3}$/', $_POST['porteDocumentsPermissionsValeur']))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Les permissions spécifiées (%1\$s) ne sont pas valides."), "<code>" . securiseTexte($_POST['porteDocumentsPermissionsValeur']) . "</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Les permissions spécifiées (%1\$s) ne sont pas valides."), "<code>" . securiseTexte($_POST['porteDocumentsPermissionsValeur']) . "</code>") . "</li>\n";
 	}
 	else
 	{
@@ -527,17 +527,17 @@ if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPer
 		{
 			if (!file_exists($fichierAmodifier))
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Modification des permissions impossible."), "<code>$fichierAmodifier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Modification des permissions impossible."), "<code>$fichierAmodifier</code>") . "</li>\n";
 			}
 			elseif (superBasename($fichierAmodifier) != '.' && superBasename($fichierAmodifier) != '..')
 			{
 				if (!is_dir($fichierAmodifier) || $recursivite == FALSE)
 				{
-					$messagesScript[] = adminChmod($fichierAmodifier, $permissions);
+					$messagesScript .= adminChmod($fichierAmodifier, $permissions);
 				}
 				else
 				{
-					$messagesScript[] = adminChmodRecursif($fichierAmodifier, $permissions);
+					$messagesScript .= adminChmodRecursif($fichierAmodifier, $permissions);
 				}
 			}
 		}
@@ -556,18 +556,18 @@ if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPer
 
 if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['action'] == 'editer')
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . T_("Édition d'un fichier") . "</h3>\n";
 	
 	if (!file_exists($getValeur) && !$adminPorteDocumentsDroits['creer'])
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$getValeur</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$getValeur</code>") . "</li>\n";
 	}
 	else
 	{
@@ -641,9 +641,9 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 
 if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionAnnulation']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	$porteDocumentsEditionNom = securiseTexte($_POST['porteDocumentsEditionNom']);
-	$messagesScript[] = '<li>' . sprintf(T_("Aucune modification apportée au fichier %1\$s."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
+	$messagesScript .= '<li>' . sprintf(T_("Aucune modification apportée au fichier %1\$s."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 	
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
 }
@@ -652,16 +652,16 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionA
 
 if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionSauvegarder']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	$porteDocumentsEditionNom = securiseTexte($_POST['porteDocumentsEditionNom']);
 	
 	if (!file_exists($porteDocumentsEditionNom) && !$adminPorteDocumentsDroits['creer'])
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 	}
 	else
 	{
@@ -674,30 +674,30 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 
 		if (!$fic = @fopen($porteDocumentsEditionNom, 'w'))
 		{
-			$messagesScript[] = "<li><p class='erreur'>" . sprintf(T_("Le fichier %1\$s n'a pas pu être ouvert."), "<code>$porteDocumentsEditionNom</code>") . "</p>\n$messageErreurEdition</li>\n";
+			$messagesScript .= "<li><p class='erreur'>" . sprintf(T_("Le fichier %1\$s n'a pas pu être ouvert."), "<code>$porteDocumentsEditionNom</code>") . "</p>\n$messageErreurEdition</li>\n";
 			$messageErreurEditionAffiche = TRUE;
 		}
 
 		if (@fwrite($fic, securiseTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
 		{
-			$messagesScript[] = "<li><p class='erreur'>" . sprintf(T_("Écriture dans le fichier %1\$s impossible."), "<code>$porteDocumentsEditionNom</code>") . "</p>\n";
+			$messagesScript .= "<li><p class='erreur'>" . sprintf(T_("Écriture dans le fichier %1\$s impossible."), "<code>$porteDocumentsEditionNom</code>") . "</p>\n";
 			
 			if (!$messageErreurEditionAffiche)
 			{
-				$messagesScript[] = $messageErreurEdition;
+				$messagesScript .= $messageErreurEdition;
 				$messageErreurEditionAffiche = TRUE;
 			}
 			
-			$messagesScript[] = "</li>\n";
+			$messagesScript .= "</li>\n";
 		}
 
 		if (!$messageErreurEditionAffiche)
 		{
-			$messagesScript[] = '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée. <a href=\"%2\$s\">Éditer à nouveau.</a>"), "<code>$porteDocumentsEditionNom</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditionNom . $dossierCourantDansUrl . '#messagesPorteDocuments') . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée. <a href=\"%2\$s\">Éditer à nouveau.</a>"), "<code>$porteDocumentsEditionNom</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditionNom . $dossierCourantDansUrl . '#messagesPorteDocuments') . "</li>\n";
 		}
 		else
 		{
-			$messagesScript[] = '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditionNom . $dossierCourantDansUrl . '#messagesPorteDocuments') . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditionNom . $dossierCourantDansUrl . '#messagesPorteDocuments') . "</li>\n";
 		}
 
 		fclose($fic);
@@ -716,18 +716,18 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 
 if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['action'] == 'renommer')
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	$ancienNom = $getValeur;
 	
 	echo '<h3>' . T_("Renommage d'un fichier") . "</h3>\n";
 	
 	if (!adminEmplacementPermis($ancienNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementModifiable($ancienNom, $adminDossierRacinePorteDocuments))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Il n'est pas possible d'effectuer cette action sur le dossier %1\$s."), "<code>$ancienNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Il n'est pas possible d'effectuer cette action sur le dossier %1\$s."), "<code>$ancienNom</code>") . "</li>\n";
 	}
 	else
 	{
@@ -782,7 +782,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 
 if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenommage']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	$ancienNom = securiseTexte($_POST['porteDocumentsAncienNom']);
 	
 	if ($adminPorteDocumentsDroits['deplacer'])
@@ -805,37 +805,37 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 	
 	if (empty($ancienNom))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier à renommer spécifié.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier à renommer spécifié.") . "</li>\n";
 	}
 	elseif (!file_exists($ancienNom))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Renommage en %2\$s impossible."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s n'existe pas. Renommage en %2\$s impossible."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
 	}
 	elseif (empty($nouveauNom))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun nouveau nom spécifié.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun nouveau nom spécifié.") . "</li>\n";
 	}
 	elseif (file_exists($nouveauNom))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Renommage de %2\$s impossible."), "<code>$nouveauNom</code>", "<code>$ancienNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Renommage de %2\$s impossible."), "<code>$nouveauNom</code>", "<code>$ancienNom</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($ancienNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($nouveauNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement de %1\$s n'est pas gérable par le porte-documents."), "<code>$nouveauNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement de %1\$s n'est pas gérable par le porte-documents."), "<code>$nouveauNom</code>") . "</li>\n";
 	}
 	elseif (!adminEmplacementModifiable($ancienNom, $adminDossierRacinePorteDocuments))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Il n'est pas possible d'effectuer cette action sur le dossier %1\$s."), "<code>$ancienNom</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Il n'est pas possible d'effectuer cette action sur le dossier %1\$s."), "<code>$ancienNom</code>") . "</li>\n";
 	}
 	else
 	{
 		if (!file_exists(dirname($nouveauNom)))
 		{
-			$messagesScript[] = adminMkdir(dirname($nouveauNom), octdec(755), TRUE);
+			$messagesScript .= adminMkdir(dirname($nouveauNom), octdec(755), TRUE);
 		}
 		
 		if (file_exists(dirname($nouveauNom)))
@@ -844,20 +844,20 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 			{
 				if (preg_match("|^$ancienNom/|", $nouveauNom))
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
 				}
 				elseif (is_dir($ancienNom))
 				{
-					$messagesScript[] = adminCopyDossier($ancienNom, $nouveauNom);
+					$messagesScript .= adminCopyDossier($ancienNom, $nouveauNom);
 				}
 				else
 				{
-					$messagesScript[] = adminCopy($ancienNom, $nouveauNom);
+					$messagesScript .= adminCopy($ancienNom, $nouveauNom);
 				}
 			}
 			else
 			{
-				$messagesScript[] = adminRename($ancienNom, $nouveauNom);
+				$messagesScript .= adminRename($ancienNom, $nouveauNom);
 			}
 		}
 	}
@@ -873,15 +873,15 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 
 if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	if (empty($_POST['porteDocumentsCreationChemin']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun chemin spécifié.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun chemin spécifié.") . "</li>\n";
 	}
 	elseif (empty($_POST['porteDocumentsCreationNom']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
 	}
 	else
 	{
@@ -900,21 +900,21 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 		
 		if (file_exists($fichierAcreerNom))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà."), "<code>$fichierAcreerNom</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà."), "<code>$fichierAcreerNom</code>") . "</li>\n";
 		}
 		elseif ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierMarkdownAcreerNom))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("%1\$s existe déjà."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
 		}
 		elseif (!adminEmplacementPermis($fichierAcreerNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$fichierAcreerNom</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$fichierAcreerNom</code>") . "</li>\n";
 		}
 		else
 		{
 			if ($fichierAcreerType == 'Dossier')
 			{
-				$messagesScript[] = adminMkdir($fichierAcreerNom, octdec(755), TRUE);
+				$messagesScript .= adminMkdir($fichierAcreerNom, octdec(755), TRUE);
 			}
 			elseif ($fichierAcreerType == 'FichierVide' || $fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 			{
@@ -928,58 +928,58 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 				
 				if (!file_exists($cheminPage))
 				{
-					$messagesScript[] = adminMkdir($cheminPage, octdec(755), TRUE);
+					$messagesScript .= adminMkdir($cheminPage, octdec(755), TRUE);
 				}
 				
 				if (file_exists($cheminPage))
 				{
 					if (@touch($fichierAcreerNom))
 					{
-						$messagesScript[] = "<li>"; // Ouverture de `<li>`.
-						$messagesScript[] = sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierAcreerNom</code>");
+						$messagesScript .= "<li>"; // Ouverture de `<li>`.
+						$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierAcreerNom</code>");
 						
 						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 						{
 							if ($adminPorteDocumentsDroits['editer'])
 							{
-								$messagesScript[] = sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
+								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
 							}
 							else
 							{
-								$messagesScript[] = sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
+								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
 							}
 						}
 						elseif ($adminPorteDocumentsDroits['editer'])
 						{
-							$messagesScript[] = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
+							$messagesScript .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments">' . T_("Vous pouvez l'éditer.") . "</a>";
 						}
 						
-						$messagesScript[] = "</li>\n"; // Fermeture de `<li>`.
+						$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
 					}
 					else
 					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierAcreerNom</code>") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierAcreerNom</code>") . "</li>\n";
 					}
 					
 					if ($fichierAcreerType == 'FichierModeleMarkdown' && @touch($fichierMarkdownAcreerNom))
 					{
-						$messagesScript[] = "<li>"; // Ouverture de `<li>`.
-						$messagesScript[] = sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierMarkdownAcreerNom</code>");
+						$messagesScript .= "<li>"; // Ouverture de `<li>`.
+						$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierMarkdownAcreerNom</code>");
 						
 						if ($adminPorteDocumentsDroits['editer'])
 						{
-							$messagesScript[] = sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
 						}
 						else
 						{
-							$messagesScript[] = sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
 						}
 						
-						$messagesScript[] = "</li>\n"; // Fermeture de `<li>`.
+						$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
 					}
 					else
 					{
-						$messagesScript[] = '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
 					}
 					
 					if (($fichierAcreerType != 'FichierModeleMarkdown' && file_exists($fichierAcreerNom)) || ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierAcreerNom) && file_exists($fichierMarkdownAcreerNom)))
@@ -1027,7 +1027,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							}
 							else
 							{
-								$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
 							}
 							
 							if ($fic = @fopen($cheminPage . '/' . "$page.mdtxt", 'a'))
@@ -1041,7 +1041,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							}
 							else
 							{
-								$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec syntaxe Markdown dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . "$page.mdtxt" . '</code>') . "</li>\n";
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec syntaxe Markdown dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . "$page.mdtxt" . '</code>') . "</li>\n";
 							}
 						}
 					}
@@ -1061,27 +1061,27 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 
 if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis))) && isset($_POST['porteDocumentsAjouter']))
 {
-	$messagesScript = array ();
+	$messagesScript = '';
 	
 	if (empty($_FILES['porteDocumentsAjouterFichier']['name']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
 	}
 	elseif (file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && filesize($_FILES['porteDocumentsAjouterFichier']['tmp_name']) > $adminTailleMaxFichiers)
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le fichier doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($adminTailleMaxFichiers), $adminTailleMaxFichiers) . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($adminTailleMaxFichiers), $adminTailleMaxFichiers) . "</li>\n";
 	}
 	elseif (empty($_POST['porteDocumentsAjouterDossier']))
 	{
-		$messagesScript[] = '<li class="erreur">' . T_("Aucun dossier spécifié.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Aucun dossier spécifié.") . "</li>\n";
 	}
 	elseif (!adminEmplacementPermis($_POST['porteDocumentsAjouterDossier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 	{
-		$messagesScript[] = '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour l'ajout (%1\$s) n'est pas gérable par le porte-documents."), "<code>" . securiseTexte($_POST['porteDocumentsAjouterDossier']) . "</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour l'ajout (%1\$s) n'est pas gérable par le porte-documents."), "<code>" . securiseTexte($_POST['porteDocumentsAjouterDossier']) . "</code>") . "</li>\n";
 	}
 	elseif ($_FILES['porteDocumentsAjouterFichier']['error'])
 	{
-		$messagesScript[] = adminMessageFilesError($_FILES['porteDocumentsAjouterFichier']['error']);
+		$messagesScript .= adminMessageFilesError($_FILES['porteDocumentsAjouterFichier']['error']);
 	}
 	else
 	{
@@ -1105,13 +1105,13 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 			
 			if ($nomFichier != $ancienNomFichier)
 			{
-				$messagesScript[] = '<li>' . sprintf(T_("Filtre du nom de fichier activé: renommage de %1\$s en %2\$s effectué."), "<code>$ancienNomFichier</code>", "<code>$nomFichier</code>") . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Filtre du nom de fichier activé: renommage de %1\$s en %2\$s effectué."), "<code>$ancienNomFichier</code>", "<code>$nomFichier</code>") . "</li>\n";
 			}
 		}
 		
 		if (file_exists($dossier . '/' . $nomFichier))
 		{
-			$messagesScript[] = '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), "<code>$nomFichier</code>", "<code>$dossier</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), "<code>$nomFichier</code>", "<code>$dossier</code>") . "</li>\n";
 		}
 		else
 		{
@@ -1121,17 +1121,17 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 				
 				if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomFichier</code>", "<code>$typeMime</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), "<code>$nomFichier</code>", "<code>$typeMime</code>") . "</li>\n";
 					@unlink($dossier . '/' . $nomFichier);
 				}
 				else
 				{
-					$messagesScript[] = '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), "<code>$nomFichier</code>", "<code>$dossier</code>") . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), "<code>$nomFichier</code>", "<code>$dossier</code>") . "</li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), "<code>$nomFichier</code>", "<code>$dossier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), "<code>$nomFichier</code>", "<code>$dossier</code>") . "</li>\n";
 			}
 		}
 	}

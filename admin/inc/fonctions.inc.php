@@ -80,7 +80,7 @@ function adminCheminXhtml($racineAdmin, $nom)
 }
 
 /**
-Simule `chmod()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Simule `chmod()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminChmod($fichier, $permissions)
 {
@@ -104,17 +104,17 @@ function adminChmod($fichier, $permissions)
 }
 
 /**
-Modifie les permissions d'un dossier ainsi que son contenu et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Modifie les permissions d'un dossier ainsi que son contenu et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminChmodRecursif($dossierAmodifier, $permissions)
 {
-	$messagesScriptChaine = '';
+	$messagesScript = '';
 	
 	if (superBasename($dossierAmodifier) != '.' && superBasename($dossierAmodifier) != '..')
 	{
 		if (adminDossierEstVide($dossierAmodifier))
 		{
-			$messagesScriptChaine .= adminChmod($dossierAmodifier, $permissions);
+			$messagesScript .= adminChmod($dossierAmodifier, $permissions);
 		}
 		else
 		{
@@ -124,11 +124,11 @@ function adminChmodRecursif($dossierAmodifier, $permissions)
 				{
 					if (!is_dir("$dossierAmodifier/$fichier"))
 					{
-						$messagesScriptChaine .= adminChmod("$dossierAmodifier/$fichier", $permissions);
+						$messagesScript .= adminChmod("$dossierAmodifier/$fichier", $permissions);
 					}
 					else
 					{
-						$messagesScriptChaine .= adminChmodRecursif("$dossierAmodifier/$fichier", $permissions);
+						$messagesScript .= adminChmodRecursif("$dossierAmodifier/$fichier", $permissions);
 					}
 				}
 				
@@ -136,16 +136,16 @@ function adminChmodRecursif($dossierAmodifier, $permissions)
 			}
 			else
 			{
-				$messagesScriptChaine .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAmodifier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAmodifier</code>") . "</li>\n";
 			}
 		}
 	}
 	
-	return $messagesScriptChaine;
+	return $messagesScript;
 }
 
 /**
-Simule `copy()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Simule `copy()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminCopy($fichierSource, $fichierDeDestination)
 {
@@ -160,15 +160,15 @@ function adminCopy($fichierSource, $fichierDeDestination)
 }
 
 /**
-Copie un dossier dans un autre et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Copie un dossier dans un autre et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminCopyDossier($dossierSource, $dossierDeDestination)
 {
-	$messagesScriptChaine = '';
+	$messagesScript = '';
 	
 	if (!file_exists($dossierDeDestination))
 	{
-		$messagesScriptChaine .= adminMkdir($dossierDeDestination, octdec(adminPermissionsFichier($dossierSource)), TRUE);
+		$messagesScript .= adminMkdir($dossierDeDestination, octdec(adminPermissionsFichier($dossierSource)), TRUE);
 	}
 	
 	if (file_exists($dossierDeDestination))
@@ -181,11 +181,11 @@ function adminCopyDossier($dossierSource, $dossierDeDestination)
 				{
 					if (is_dir($dossierSource . '/' . $fichier))
 					{
-						$messagesScriptChaine .= adminCopyDossier($dossierSource . '/' . $fichier, $dossierDeDestination . '/' . $fichier);
+						$messagesScript .= adminCopyDossier($dossierSource . '/' . $fichier, $dossierDeDestination . '/' . $fichier);
 					}
 					else
 					{
-						$messagesScriptChaine .= adminCopy($dossierSource . '/' . $fichier, $dossierDeDestination . '/' . $fichier);
+						$messagesScript .= adminCopy($dossierSource . '/' . $fichier, $dossierDeDestination . '/' . $fichier);
 					}
 				}
 			}
@@ -194,11 +194,11 @@ function adminCopyDossier($dossierSource, $dossierDeDestination)
 		}
 		else
 		{
-			$messagesScriptChaine .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierSource</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierSource</code>") . "</li>\n";
 		}
 	}
 	
-	return $messagesScriptChaine;
+	return $messagesScript;
 }
 
 /**
@@ -897,7 +897,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 }
 
 /**
-Retourne la transcription en texte d'une erreur `$_FILES['fichier']['error']` sous forme de message correspondant à un élément de `$messagesScript`.
+Retourne la transcription en texte d'une erreur `$_FILES['fichier']['error']` sous forme de message concaténable dans `$messagesScript`.
 */
 function adminMessageFilesError($erreur)
 {
@@ -955,36 +955,31 @@ Retourne les messages à afficher dans une chaîne formatée. Si le titre est vi
 */
 function adminMessagesScript($messagesScript, $titre = '')
 {
-	$messagesScriptChaine = '';
+	$messagesScriptFinaux = '';
 	
 	if (!empty($titre))
 	{
-		$messagesScriptChaine .= '<div class="sousBoite">' . "\n";
-		$messagesScriptChaine .= "<h3>$titre</h3>\n";
+		$messagesScriptFinaux .= '<div class="sousBoite">' . "\n";
+		$messagesScriptFinaux .= "<h3>$titre</h3>\n";
 	}
 	
 	if (!empty($messagesScript))
 	{
-		$messagesScriptChaine .= "<ul>\n";
-		
-		foreach ($messagesScript as $messageScript)
-		{
-			$messagesScriptChaine .= $messageScript;
-		}
-		
-		$messagesScriptChaine .= "</ul>\n";
+		$messagesScriptFinaux .= "<ul>\n";
+		$messagesScriptFinaux .= $messageScript;
+		$messagesScriptFinaux .= "</ul>\n";
 	}
 	
 	if (!empty($titre))
 	{
-		$messagesScriptChaine .= "</div><!-- /.sousBoite -->\n";
+		$messagesScriptFinaux .= "</div><!-- /.sousBoite -->\n";
 	}
 	
-	return $messagesScriptChaine;
+	return $messagesScriptFinaux;
 }
 
 /**
-Simule `mkdir()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Simule `mkdir()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 {
@@ -1084,7 +1079,7 @@ function adminReecritureDurl($retourneMessage)
 }
 
 /**
-Simule `rename()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`. Si `$messageDeplacement` vaut TRUE, le message retourné présente l'action effectuée comme étant un déplacement, sinon présente l'action comme étant un renommage.
+Simule `rename()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`. Si `$messageDeplacement` vaut TRUE, le message retourné présente l'action effectuée comme étant un déplacement, sinon présente l'action comme étant un renommage.
 */
 function adminRename($ancienNom, $nouveauNom, $messageDeplacement = FALSE)
 {
@@ -1113,7 +1108,7 @@ function adminRename($ancienNom, $nouveauNom, $messageDeplacement = FALSE)
 }
 
 /**
-Simule `rmdir()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Simule `rmdir()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminRmdir($dossier)
 {
@@ -1128,11 +1123,11 @@ function adminRmdir($dossier)
 }
 
 /**
-Supprime un dossier ainsi que son contenu et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Supprime un dossier ainsi que son contenu et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminRmdirRecursif($dossierAsupprimer)
 {
-	$messagesScriptChaine = '';
+	$messagesScript = '';
 	
 	if (superBasename($dossierAsupprimer) != '.' && superBasename($dossierAsupprimer) != '..')
 	{
@@ -1144,7 +1139,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 				{
 					if (!is_dir("$dossierAsupprimer/$fichier"))
 					{
-						$messagesScriptChaine .= adminUnlink("$dossierAsupprimer/$fichier");
+						$messagesScript .= adminUnlink("$dossierAsupprimer/$fichier");
 					}
 					else
 					{
@@ -1156,17 +1151,17 @@ function adminRmdirRecursif($dossierAsupprimer)
 			}
 			else
 			{
-				$messagesScriptChaine .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAtraiter</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAtraiter</code>") . "</li>\n";
 			}
 		}
 		
 		if (adminDossierEstVide($dossierAsupprimer))
 		{
-			$messagesScriptChaine .= adminRmdir($dossierAsupprimer);
+			$messagesScript .= adminRmdir($dossierAsupprimer);
 		}
 	}
 	
-	return $messagesScriptChaine;
+	return $messagesScript;
 }
 
 /**
@@ -1304,7 +1299,7 @@ function adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePe
 }
 
 /**
-Simule `unlink()` et retourne le résultat sous forme de message correspondant à un élément de `$messagesScript`.
+Simule `unlink()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminUnlink($fichier)
 {

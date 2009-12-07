@@ -20,7 +20,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (isset($_POST['global']) && $_POST['global'] == 'galeries')
 		{
-			$messagesScript = array ();
+			$messagesScript = '';
 			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
 			
 			if (!$cheminFichier)
@@ -29,11 +29,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if ($adminPorteDocumentsDroits['creer'])
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</li>\n";
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
 			else
@@ -112,7 +112,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 				}
 			}
 			
@@ -125,7 +125,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		##################################################################
 		elseif (isset($_POST['global']) && $_POST['global'] == 'site')
 		{
-			$messagesScript = array ();
+			$messagesScript = '';
 			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
 			
 			if (!$cheminFichier)
@@ -134,11 +134,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if ($adminPorteDocumentsDroits['creer'])
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.ini.txt#messagesPorteDocuments') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.ini.txt#messagesPorteDocuments') . "</li>\n";
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
 			else
@@ -219,7 +219,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript[] = '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 				}
 			}
 			
@@ -229,7 +229,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	if (isset($_POST['modifsGaleries']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications pour les galeries") . "</h3>\n" ;
 		
@@ -301,38 +301,38 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$messagesScript[] = '<li>';
-				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-				$messagesScript[] = '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-				$messagesScript[] = '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-				$messagesScript[] = "<ul>\n";
-				$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				$messagesScript[] = "</ul>\n";
-				$messagesScript[] = "</li>\n";
+				$messagesScript .= '<li>';
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+				$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+				$messagesScript .= "<ul>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "</ul>\n";
+				$messagesScript .= "</li>\n";
 			}
 		}
 		else
 		{
 			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
-			$messagesScript[] = '<li>';
+			$messagesScript .= '<li>';
 			
 			if ($adminPorteDocumentsDroits['creer'])
 			{
-				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</p>\n";
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-galeries.ini.txt#messagesPorteDocuments') . "</p>\n";
 			}
 			else
 			{
-				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
 			}
 			
-			$messagesScript[] = '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			
-			$messagesScript[] = '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 			
-			$messagesScript[] = "<ul>\n";
-			$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			$messagesScript[] = "</ul>\n";
-			$messagesScript[] = "</li>\n";
+			$messagesScript .= "<ul>\n";
+			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			$messagesScript .= "</ul>\n";
+			$messagesScript .= "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript);
@@ -340,7 +340,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	}
 	elseif (isset($_POST['modifsSite']))
 	{
-		$messagesScript = array ();
+		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications pour les pages autres que les galeries") . "</h3>\n" ;
 	
@@ -411,37 +411,37 @@ include $racineAdmin . '/inc/premier.inc.php';
 			else
 			{
 				$messagesScript = '<li>';
-				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-				$messagesScript[] = '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-				$messagesScript[] = '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-				$messagesScript[] = "<ul>\n";
-				$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				$messagesScript[] = "</ul>\n";
-				$messagesScript[] = "</li>\n";
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+				$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+				$messagesScript .= "<ul>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "</ul>\n";
+				$messagesScript .= "</li>\n";
 			}
 		}
 		else
 		{
 			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
-			$messagesScript[] = '<li>';
+			$messagesScript .= '<li>';
 			
 			if ($adminPorteDocumentsDroits['creer'])
 			{
-				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.ini.txt#messagesPorteDocuments') . "</p>\n";
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-global-site.ini.txt#messagesPorteDocuments') . "</p>\n";
 			}
 			else
 			{
-				$messagesScript[] = '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
 			}
 			
-			$messagesScript[] = '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			
-			$messagesScript[] = '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 			
-			$messagesScript[] = "<ul>\n";
-			$messagesScript[] = "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			$messagesScript[] = "</ul>\n";
-			$messagesScript[] = "</li>\n";
+			$messagesScript .= "<ul>\n";
+			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			$messagesScript .= "</ul>\n";
+			$messagesScript .= "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript);
