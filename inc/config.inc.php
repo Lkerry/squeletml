@@ -38,7 +38,7 @@ $baliseTitleComplement['en'] = "Squeletml website";
 */
 $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
 $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
-$balisesLinkScript[] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
+$balisesLinkScript[] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie7.css";
 $balisesLinkScript[] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
 $balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/phpjs.js";
 $balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
