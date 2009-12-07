@@ -165,11 +165,11 @@ if (isset($_POST['envoyer']))
 		
 		if ($decouvrir)
 		{
-			$corps = str_replace("\r", '', $messageDecouvrir) . "\n";
+			$corps = str_replace(array("\r\n", "\r"), "\n", $messageDecouvrir) . "\n";
 		}
 		else
 		{
-			$corps = str_replace("\r", '', $message) . "\n";
+			$corps = str_replace(array("\r\n", "\r"), "\n", $message) . "\n";
 		}
 		
 		// Traitement personnalisé optionnel.
