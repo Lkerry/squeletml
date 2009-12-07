@@ -30,7 +30,7 @@ if (isset($_POST['envoyer']))
 	$courriel = securiseTexte($_POST['courriel']);
 	$message = securiseTexte($_POST['message']);
 	$messagesScript = '';
-	$erreur = FALSE;
+	$erreurFormulaire = FALSE;
 	
 	if (isset($_POST['copie']))
 	{
@@ -44,6 +44,7 @@ if (isset($_POST['envoyer']))
 	
 	if (empty($nom))
 	{
+		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li>' . T_("Vous n'avez pas inscrit de nom.") . "</li>\n";
 	}
 
@@ -53,6 +54,7 @@ if (isset($_POST['envoyer']))
 
 		if (!preg_match($motifCourriel, $courriel))
 		{
+			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li>' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
 		}
 	}
@@ -74,12 +76,14 @@ if (isset($_POST['envoyer']))
 		
 		if (!empty($courrielsDecouvrirErreur))
 		{
+			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li>' . sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsDecouvrirErreur, 0, -2)) . "</li>\n";
 		}
 	}
 	
 	if (empty($message) && !$decouvrir)
 	{
+		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li>' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
 	}
 
@@ -90,6 +94,7 @@ if (isset($_POST['envoyer']))
 		
 		if ($abSomme != $ab)
 		{
+			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li>' . T_("Veuillez répondre correctement à la question antipourriel.") . "</li>\n";
 		}
 	}
@@ -98,6 +103,7 @@ if (isset($_POST['envoyer']))
 	{
 		if (substr_count($message, 'http') > $contactCaptchaLiensNombre)
 		{
+			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li>' . T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel à cause de ses liens trop nombreux. Veuillez le modifier.") . "</li>\n";
 		}
 	}
@@ -109,7 +115,7 @@ if (isset($_POST['envoyer']))
 	}
 	
 	// Envoi du message.
-	if (empty($messagesScript))
+	if (!$erreurFormulaire)
 	{
 		// Adresses.
 		$adresseFrom = $courriel;
@@ -189,14 +195,19 @@ if (isset($_POST['envoyer']))
 	}
 
 	// Messages de confirmation ou d'erreur.
-	if (!empty($messagesScript))
+	if ($erreurFormulaire)
 	{
 		$contact .= '<div class="erreur">' . "\n";
 		$contact .= '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>' . "\n";
+		
 		$contact .= "<ul>\n";
 		$contact .= $messagesScript;
 		$contact .= "</ul>\n";
 		$contact .= "</div><!-- /.erreur -->\n";
+	}
+	elseif (!empty($messagesScript))
+	{
+		$contact .= $messagesScript;
 	}
 }
 
