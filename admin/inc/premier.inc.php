@@ -47,7 +47,7 @@ $locale = locale(LANGUE);
 
 if (!adminEstIe())
 {
-	$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php#js#$urlRacineAdmin/js/wz_dragdrop/wz_dragdrop.js";
+	$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#js#$urlRacineAdmin/js/wz_dragdrop/wz_dragdrop.js";
 }
 
 // Boîtes déroulantes.

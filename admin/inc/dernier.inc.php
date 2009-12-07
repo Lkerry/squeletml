@@ -7,7 +7,7 @@
 
 if (!adminEstIe())
 {
-	$adminBalisesLinkScriptFinales[] = "$urlRacineAdmin/porte-documents.admin.php#jsDirect#SET_DHTML('redimensionnable' + RESIZABLE);";
+	$adminBalisesLinkScriptFinales[] = "$urlRacineAdmin/porte-documents.admin.php*#jsDirect#SET_DHTML('redimensionnable' + RESIZABLE);";
 }
 
 if ($adminColorationSyntaxique)
@@ -27,7 +27,7 @@ if ($adminColorationSyntaxique)
 				iframeClass: "editeur"
 			});
 JS;
-		$adminBalisesLinkScriptFinales[] = "$urlRacine/porte-documents.admin.php#jsDirect#$jsDirect";
+		$adminBalisesLinkScriptFinales[] = "$urlRacineAdmin/porte-documents.admin.php*#jsDirect#$jsDirect";
 	}
 	elseif (isset($_GET['action']) && $_GET['action'] = 'editer' && isset($_GET['valeur']) && preg_match('|\.js$|', $_GET['valeur']))
 	{
@@ -44,7 +44,7 @@ JS;
 				iframeClass: "editeur"
 			});
 JS;
-		$adminBalisesLinkScriptFinales[] = "$urlRacine/porte-documents.admin.php#jsDirect#$jsDirect";
+		$adminBalisesLinkScriptFinales[] = "$urlRacineAdmin/porte-documents.admin.php*#jsDirect#$jsDirect";
 	}
 	else
 	{
@@ -61,7 +61,7 @@ JS;
 				iframeClass: "editeur"
 			});
 JS;
-		$adminBalisesLinkScriptFinales[] = "$urlRacine/porte-documents.admin.php#jsDirect#$jsDirect";
+		$adminBalisesLinkScriptFinales[] = "$urlRacineAdmin/porte-documents.admin.php*#jsDirect#$jsDirect";
 	}
 }
 

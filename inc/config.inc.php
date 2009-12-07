@@ -36,13 +36,13 @@ $baliseTitleComplement['en'] = "Squeletml website";
   $balisesLinkScript[] = "$urlRacine/page.php*#css#$urlRacine/site/css/style-general.css";
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScript[] = "$urlRacine*#css#$urlRacine/css/squeletml.css";
-$balisesLinkScript[] = "$urlRacine*#css#$urlRacine/css/extensions-proprietaires.css";
-$balisesLinkScript[] = "$urlRacine*#csslteIE7#$urlRacine/css/ie7.css";
-$balisesLinkScript[] = "$urlRacine*#cssltIE7#$urlRacine/css/ie6.css";
-$balisesLinkScript[] = "$urlRacine*#js#$urlRacine/js/phpjs.js";
-$balisesLinkScript[] = "$urlRacine*#js#$urlRacine/js/squeletml.js";
-$balisesLinkScript[] = "$urlRacine*#favicon#$urlRacine/fichiers/puce.png";
+$balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
+$balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
+$balisesLinkScript[] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
+$balisesLinkScript[] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
+$balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/phpjs.js";
+$balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
+$balisesLinkScript[] = "$urlRacine/*#favicon#$urlRacine/fichiers/puce.png";
 
 // Version des fichiers déclarés dans le tableau `$balisesLinkScript`.
 /*
@@ -194,7 +194,7 @@ $boitesDeroulantesParDefaut = '';
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScriptFinales[] = "$urlRacine*#jsDirect#egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');";
+$balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');";
 
 /* _______________ Contenu et ordre du flux HTML. _______________ */
 

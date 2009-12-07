@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-12-06 17:06-0500\n"
+"POT-Creation-Date: 2009-12-06 20:20-0500\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -1517,7 +1517,7 @@ msgstr ""
 #: admin/porte-documents.admin.php:613
 msgid ""
 "Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le "
-"champ de saisie"
+"champ de saisie."
 msgstr ""
 
 #: admin/porte-documents.admin.php:619
