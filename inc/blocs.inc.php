@@ -82,12 +82,12 @@ if (!empty($blocsAinserer))
 					
 					if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 					{
-						$blocs .= "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=galeries&langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
+						$blocs .= "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=galeries&amp;langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
 					}
 					
 					if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 					{
-						$blocs .= "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=site&langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
+						$blocs .= "\t\t<li>" . lienFluxRss("$urlRacine/rss.php?global=site&amp;langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
 					}
 					
 					$blocs .= "\t</ul>\n";

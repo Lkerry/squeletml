@@ -158,13 +158,13 @@ if ($idGalerie && $rss)
 
 if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 {
-	$urlFlux = $urlRacine . '/rss.php?global=galeries&langue=' . LANGUE;
+	$urlFlux = $urlRacine . '/rss.php?global=galeries&amp;langue=' . LANGUE;
 	$balisesLinkScript[] = url(FALSE) . "#rss#$urlFlux#" . T_('RSS de toutes les galeries');
 }
 
 if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 {
-	$urlFlux = $urlRacine . '/rss.php?global=pages&langue=' . LANGUE;
+	$urlFlux = $urlRacine . '/rss.php?global=pages&amp;langue=' . LANGUE;
 	$balisesLinkScript[] = url(FALSE) . "#rss#$urlFlux#" . T_('RSS global du site');
 }
 

@@ -2262,13 +2262,13 @@ function urlPageAvecDecouvrir()
 {
 	$url = url();
 	
-	if (preg_match('/(\?|&)action=faireDecouvrir/', $url))
+	if (preg_match('/(\?|&amp;)action=faireDecouvrir/', $url))
 	{
 		return $url . '#formulaireFaireDecouvrir';
 	}
 	elseif (strstr($url, '?'))
 	{
-		return "$url&action=faireDecouvrir#formulaireFaireDecouvrir";
+		return "$url&amp;action=faireDecouvrir#formulaireFaireDecouvrir";
 	}
 	else
 	{
@@ -2284,17 +2284,17 @@ function urlPageSansDecouvrir($retourneTableau = FALSE)
 	$urlPageSansDecouvrir = array ();
 	$url = url();
 	
-	if (strstr($url, '?action=faireDecouvrir&'))
+	if (strstr($url, '?action=faireDecouvrir&amp;'))
 	{
-		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir&', '?', $url);
+		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir&amp;', '?', $url);
 	}
 	elseif (preg_match('/\?action=faireDecouvrir$/', $url))
 	{
 		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir', '', $url);
 	}
-	elseif (strstr($url, '&action=faireDecouvrir'))
+	elseif (strstr($url, '&amp;action=faireDecouvrir'))
 	{
-		$urlPageSansDecouvrir[0] = str_replace('&action=faireDecouvrir', '', $url);
+		$urlPageSansDecouvrir[0] = str_replace('&amp;action=faireDecouvrir', '', $url);
 	}
 	else
 	{
