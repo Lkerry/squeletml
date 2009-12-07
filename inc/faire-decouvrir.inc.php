@@ -94,4 +94,10 @@ if (!$estPageDerreur)
 		}
 	}
 }
+
+// Traitement personnalisé optionnel.
+if (file_exists($racine . '/site/inc/faire-decouvrir.inc.php'))
+{
+	include_once $racine . '/site/inc/faire-decouvrir.inc.php';
+}
 ?>

@@ -102,6 +102,12 @@ if (isset($_POST['envoyer']))
 		}
 	}
 	
+	// Traitement personnalisé optionnel.
+	if (file_exists($racine . '/site/inc/contact.inc.php'))
+	{
+		include_once $racine . '/site/inc/contact.inc.php';
+	}
+	
 	// Envoi du message.
 	if (empty($messagesScript))
 	{
@@ -158,6 +164,12 @@ if (isset($_POST['envoyer']))
 		else
 		{
 			$corps = str_replace("\r", '', $message) . "\n";
+		}
+		
+		// Traitement personnalisé optionnel.
+		if (file_exists($racine . '/site/inc/contact.inc.php'))
+		{
+			include_once $racine . '/site/inc/contact.inc.php';
 		}
 		
 		if (mail($adresseTo, $contactCourrielIdentifiantObjet . "Message de " . "$nom <$adresseFrom>", $corps, $enTete))
@@ -219,6 +231,12 @@ if ($contactActiverCaptchaCalcul)
 	}
 	
 	$inputHidden .= '<input name="d" type="hidden" value="' . $contactActiverCaptchaCalcul2 . '" />' . "\n";
+}
+
+// Traitement personnalisé optionnel.
+if (file_exists($racine . '/site/inc/contact.inc.php'))
+{
+	include_once $racine . '/site/inc/contact.inc.php';
 }
 
 ob_start();

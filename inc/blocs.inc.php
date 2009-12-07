@@ -116,4 +116,10 @@ if (!empty($blocsAinserer))
 		}
 	}
 }
+
+// Traitement personnalisé optionnel.
+if (file_exists($racine . '/site/inc/blocs.inc.php'))
+{
+	include_once $racine . '/site/inc/blocs.inc.php';
+}
 ?>

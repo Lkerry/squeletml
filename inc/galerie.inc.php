@@ -510,4 +510,10 @@ else
 	$motsCles .= ', ' . $nomGalerie;
 	$robots = "noindex, follow, noarchive";
 }
+
+// Traitement personnalisé optionnel.
+if (file_exists($racine . '/site/inc/galerie.inc.php'))
+{
+	include_once $racine . '/site/inc/galerie.inc.php';
+}
 ?>
