@@ -1,9 +1,9 @@
 /**
 Sélectionne le texte de l'élément fourni.
 */
-function adminSelectionneTexte(sId)
+function adminSelectionneTexte(conteneur)
 {
-	var myDiv = document.getElementById(sId);
+	var oConteneur = document.getElementById(conteneur);
 	
 	if (window.getSelection)
 	{
@@ -12,24 +12,24 @@ function adminSelectionneTexte(sId)
 		/* Safari. */
 		if (selection.setBaseAndExtent)
 		{
-			selection.setBaseAndExtent(myDiv, 0, myDiv, 1);
+			selection.setBaseAndExtent(oConteneur, 0, oConteneur, 1);
 		}
 		/* Firefox, Opera. */
 		else
 		{
-			var range = document.createRange();
+			var plage = document.createRange();
 			
-			range.selectNodeContents(myDiv);
+			plage.selectNodeContents(oConteneur);
 			selection.removeAllRanges();
-			selection.addRange(range);
+			selection.addRange(plage);
 		}
 	}
 	/* IE. */
 	else
 	{
-		var range = document.body.createTextRange();
+		var plage = document.body.createTextRange();
 		
-		range.moveToElementText(myDiv);
-		range.select();
+		plage.moveToElementText(oConteneur);
+		plage.select();
 	}
 }
