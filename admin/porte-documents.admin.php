@@ -2,6 +2,29 @@
 /* _______________ Inclusions et initialisations. _______________ */
 
 include 'inc/zero.inc.php';
+
+// Jeton utilisé pour vérifier la provenance d'un formulaire complété d'édition de fichier.
+if (
+	$adminPorteDocumentsDroits['editer'] &&
+	(
+		(isset($_GET['action']) && $_GET['action'] == 'editer') ||
+		isset($_POST['porteDocumentsEditionAnnulation']) || isset($_POST['porteDocumentsEditionSauvegarder'])
+	)
+)
+{
+	session_start();
+	
+	if (!isset($_SESSION['jeton']))
+	{
+		$_SESSION['jeton'] = md5(uniqid(mt_rand(), TRUE));
+		
+		if (isset($_GET['valeur']))
+		{
+			$_SESSION['jeton'] .= md5($_GET['valeur']);
+		}
+	}
+}
+
 $baliseTitle = T_("Porte-documents");
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
@@ -580,7 +603,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 			echo '<p>' . sprintf(T_("Le fichier %1\$s n'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisie (qui peut être vide)."), "<code>$getValeur</code>") . "</p>\n";
 		}
 		
-		echo "<form action='$adminAction#messagesPorteDocuments' method='post'>\n";
+		echo "<form action='" . adminAjouteGet($adminAction, securiseTexte(SID)) . "#messagesPorteDocuments' method='post'>\n";
 		echo "<div>\n";
 		clearstatcache();
 		
@@ -616,6 +639,8 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 		echo '<div id="redimensionnable"><textarea id="code" cols="80" rows="25" ' . $style . ' name="porteDocumentsContenuFichier">' . $contenuFichier . '</textarea>' . $imageRedimensionner . "</div>\n";
 	
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . $getValeur . '" />' . "\n";
+		echo '<input type="hidden" name="porteDocumentsEditionJeton" value="' . $_SESSION['jeton'] . '" />' . "\n";
+		
 		echo '<p><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
 		
 		echo "<form action='$adminAction#messagesPorteDocuments' method='post'>\n";
@@ -645,6 +670,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionA
 	$porteDocumentsEditionNom = securiseTexte($_POST['porteDocumentsEditionNom']);
 	$messagesScript .= '<li>' . sprintf(T_("Aucune modification apportée au fichier %1\$s."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 	
+	adminDetruitSession();
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
 }
 
@@ -667,42 +693,46 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 	{
 		$messageErreurEdition = '';
 		$messageErreurEdition .= '<p class="erreur">' . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
-		$messageErreurEdition .= '<p><textarea class="consulterModifications" name="porteDocumentsContenuFichier" readonly="readonly">';
-		$messageErreurEdition .= securiseTexte($_POST['porteDocumentsContenuFichier']);
-		$messageErreurEdition .= "</textarea></p>\n";
-		$messageErreurEditionAffiche = FALSE;
-
-		if (!$fic = @fopen($porteDocumentsEditionNom, 'w'))
+		
+		$messageErreurEdition .= '<p><pre id="porteDocumentsContenuFichier" class="consulterModifications">' . securiseTexte($_POST['porteDocumentsContenuFichier']) . "</pre></p>\n";
+		
+		$messageErreurEdition .= "<p><a href=\"javascript:adminSelectionneTexte('porteDocumentsContenuFichier');\">" . T_("Sélectionner le contenu.") . "</a></p>\n";
+		
+		$messageErreurEditionAafficher = FALSE;
+		
+		if ($_POST['porteDocumentsEditionJeton'] != $_SESSION['jeton'])
 		{
-			$messagesScript .= "<li><p class='erreur'>" . sprintf(T_("Le fichier %1\$s n'a pas pu être ouvert."), "<code>$porteDocumentsEditionNom</code>") . "</p>\n$messageErreurEdition</li>\n";
-			$messageErreurEditionAffiche = TRUE;
+			$messageErreurEditionAafficher = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La demande de modification du fichier %1\$s ne peut aboutir. Il peut y avoir deux raisons à ce problème:\n<ul>\n<li>votre session a expiré. Dans ce cas, copiez le contenu qui devait être sauvegardé et tentez à nouveau d'éditer le fichier;</li>\n<li>la demande ne provient pas du serveur hébergeant le porte-documents. Vérifiez dans ce cas que vous n'êtes pas la cible d'une attaque de type <acronym lang='en' title='Cross-site request forgery'>CSRF</acronym> (<a href='http://fr.wikipedia.org/wiki/CSRF'>voir la définition de «<acronym lang='en'>CSRF</acronym>» sur Wikipédia</a>). Vérifiez entre autre que le contenu qui allait être sauvegardé ne renferme pas de code malicieux.</li>\n</ul>\n"), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 		}
-
-		if (@fwrite($fic, securiseTexte($_POST['porteDocumentsContenuFichier'])) === FALSE)
+		elseif ($fic = @fopen($porteDocumentsEditionNom, 'w'))
 		{
-			$messagesScript .= "<li><p class='erreur'>" . sprintf(T_("Écriture dans le fichier %1\$s impossible."), "<code>$porteDocumentsEditionNom</code>") . "</p>\n";
-			
-			if (!$messageErreurEditionAffiche)
+			if (@fwrite($fic, sansEchappement($_POST['porteDocumentsContenuFichier'])) !== FALSE)
 			{
-				$messagesScript .= $messageErreurEdition;
-				$messageErreurEditionAffiche = TRUE;
+				$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée. <a href=\"%2\$s\">Éditer à nouveau.</a>"), "<code>$porteDocumentsEditionNom</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditionNom . $dossierCourantDansUrl . '#messagesPorteDocuments') . "</li>\n";
+			}
+			else
+			{
+				$messageErreurEditionAafficher = FALSE;
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Écriture dans le fichier %1\$s impossible."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 			}
 			
-			$messagesScript .= "</li>\n";
-		}
-
-		if (!$messageErreurEditionAffiche)
-		{
-			$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée. <a href=\"%2\$s\">Éditer à nouveau.</a>"), "<code>$porteDocumentsEditionNom</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditionNom . $dossierCourantDansUrl . '#messagesPorteDocuments') . "</li>\n";
+			fclose($fic);
 		}
 		else
 		{
+			$messageErreurEditionAafficher = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'a pas pu être ouvert."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
+		}
+		
+		if ($messageErreurEditionAafficher)
+		{
+			$messagesScript .= '<li>' . $messageErreurEdition . "</li>\n";
 			$messagesScript .= '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . $porteDocumentsEditionNom . $dossierCourantDansUrl . '#messagesPorteDocuments') . "</li>\n";
 		}
-
-		fclose($fic);
 	}
 	
+	adminDetruitSession();
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
 }
 

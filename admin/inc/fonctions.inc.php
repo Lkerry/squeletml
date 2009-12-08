@@ -34,6 +34,28 @@ function adminAinclureDebut($racineAdmin)
 }
 
 /**
+Ajoute la variable GET à l'adresse fournie, et retourne le résultat. `$get` doit être sous la forme `cle=valeur`. Dans l'adresse de retour, `$get` est la première variable GET.
+*/
+function adminAjouteGet($adresse, $get)
+{
+	$nouvelleAdresse = $adresse;
+	
+	if (!empty($get))
+	{
+		if (strpos($nouvelleAdresse, '?'))
+		{
+			$nouvelleAdresse = str_replace("?$get&amp;", '?', $nouvelleAdresse);
+		}
+		else
+		{
+			$nouvelleAdresse .= "?$get";
+		}
+	}
+	
+	return $nouvelleAdresse;
+}
+
+/**
 Retourne l'`id` de `body`.
 */
 function adminBodyId()
@@ -199,6 +221,16 @@ function adminCopyDossier($dossierSource, $dossierDeDestination)
 	}
 	
 	return $messagesScript;
+}
+
+/**
+Détruit une session, et retourne le résultat de `session_destroy()`.
+*/
+function adminDetruitSession()
+{
+	$_SESSION = array();
+	
+	return session_destroy();
 }
 
 /**
@@ -966,7 +998,7 @@ function adminMessagesScript($messagesScript, $titre = '')
 	if (!empty($messagesScript))
 	{
 		$messagesScriptFinaux .= "<ul>\n";
-		$messagesScriptFinaux .= $messageScript;
+		$messagesScriptFinaux .= $messagesScript;
 		$messagesScriptFinaux .= "</ul>\n";
 	}
 	

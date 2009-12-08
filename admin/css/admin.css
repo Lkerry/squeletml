@@ -188,7 +188,7 @@ a.porteDocumentsFichier {
 	text-decoration: none;
 }
 
-textarea.consulterModifications {
+pre.consulterModifications {
 	width: 95%;
 	height: 500px;
 }
