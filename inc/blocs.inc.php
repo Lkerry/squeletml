@@ -6,9 +6,7 @@ Ce fichier construit le code des blocs. Après son inclusion, la variable `$bloc
 // Vérification de l'état du module «Faire découvrir».
 include $racine . '/inc/faire-decouvrir.inc.php';
 
-list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondis);
-$blocsAinserer = blocs($ordreBlocsDansFluxHtml, $divSurSousContenu . 'Contenu');
-
+$blocsAinserer = blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $divSurSousContenu . 'Contenu');
 $blocs = '';
 
 if (!empty($blocsAinserer))
@@ -18,9 +16,20 @@ if (!empty($blocsAinserer))
 		switch ($blocAinserer)
 		{
 			case 'menu-langues':
+				list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+				if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+				{
+					$classeBlocArrondi = ' blocArrondi';
+				}
+				else
+				{
+					$classeBlocArrondi = '';
+				}
+				
 				if (count($accueil) > 1)
 				{
-					$blocs .= '<div id="menuLangues" class="bloc">' . "\n";
+					$blocs .= '<div id="menuLangues" class="bloc' . $classeBlocArrondi . '">' . "\n";
 					$blocs .= $codeInterieurBlocHaut;
 					
 					ob_start();
@@ -35,7 +44,18 @@ if (!empty($blocsAinserer))
 				break;
 			
 			case 'menu':
-				$blocs .= '<div id="menu" class="bloc">' . "\n";
+				list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+				if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+				{
+					$classeBlocArrondi = ' blocArrondi';
+				}
+				else
+				{
+					$classeBlocArrondi = '';
+				}
+				
+				$blocs .= '<div id="menu" class="bloc' . $classeBlocArrondi . '">' . "\n";
 				$blocs .= $codeInterieurBlocHaut;
 				
 				ob_start();
@@ -49,9 +69,20 @@ if (!empty($blocsAinserer))
 				break;
 			
 			case 'faire-decouvrir':
+				list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+				if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+				{
+					$classeBlocArrondi = ' blocArrondi';
+				}
+				else
+				{
+					$classeBlocArrondi = '';
+				}
+				
 				if ($activerFaireDecouvrir && $decouvrir)
 				{
-					$blocs .= '<div id="faireDecouvrir" class="bloc">' . "\n";
+					$blocs .= '<div id="faireDecouvrir" class="bloc' . $classeBlocArrondi . '">' . "\n";
 					$blocs .= $codeInterieurBlocHaut;
 					$blocs .= '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>';
 					$blocs .= $codeInterieurBlocBas;
@@ -71,7 +102,18 @@ if (!empty($blocsAinserer))
 			case 'flux-rss':
 				if (($idGalerie && $rss) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
 				{
-					$blocs .= '<div id="fluxRss" class="bloc">' . "\n";
+					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+					
+					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+					{
+						$classeBlocArrondi = ' blocArrondi';
+					}
+					else
+					{
+						$classeBlocArrondi = '';
+					}
+					
+					$blocs .= '<div id="fluxRss" class="bloc' . $classeBlocArrondi . '">' . "\n";
 					$blocs .= $codeInterieurBlocHaut;
 					$blocs .= "\t<ul>\n";
 					
@@ -100,7 +142,18 @@ if (!empty($blocsAinserer))
 			default:
 				if (cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
 				{
-					$blocs .= "<div class=\"bloc $blocAinserer\">\n";
+					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+					
+					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+					{
+						$classeBlocArrondi = ' blocArrondi';
+					}
+					else
+					{
+						$classeBlocArrondi = '';
+					}
+					
+					$blocs .= "<div class=\"bloc$classeBlocArrondi $blocAinserer\">\n";
 					$blocs .= $codeInterieurBlocHaut;
 					
 					ob_start();

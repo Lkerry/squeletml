@@ -56,7 +56,7 @@ $cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut),
 
 $cheminSurTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sur-titre');
 
-$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage, $blocsArrondis);
+$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage, $blocsArrondisParDefaut);
 
 if (!empty($classesBody))
 {
@@ -107,7 +107,7 @@ if ($idGalerie && !isset($rss))
 
 if (isset($corpsGalerie) && !empty($corpsGalerie))
 {
-	$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondis);
+	$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
 }
 
 if (!isset($tableDesMatieres))

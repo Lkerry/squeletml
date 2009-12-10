@@ -211,14 +211,14 @@ $titreSite['en'] = $titreSite['fr'];
 /*
 Les divers blocs constituant les menus sont positionnables, au choix, dans les div `surContenu` ou `sousContenu`. Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux div `surContenu` et `sousContenu` formeront une seule colonne à droite, une seule colonne à gauche, deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`, ou deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
 
-Chaque bloc se voit assigné un nombre. Un nombre impair signifie que le bloc en question sera placé dans la div `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la div `sousContenu`. À l'intérieur de chaque div, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
+Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Un nombre impair signifie que le bloc en question sera placé dans la div `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la div `sousContenu`. À l'intérieur de chaque div, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
 
 Par exemple:
 
-	'menu-langues' => 10,
-	'flux-rss' => 2,
+	'menu-langues' => array (10, 10, 4),
+	'flux-rss' => array (2, 2, 6),
 
-signifie que le menu des langues ainsi que les liens RSS seront insérés dans la div `sousContenu` puisque les deux blocs ont un nombre pair, et qu'à l'intérieur de la div, les liens RSS seront insérés en premier puisqu'en ordre croissant, nous obtenons 2 (les liens RSS) et 10 (menu des langues).
+signifie que le menu des langues ainsi que les liens RSS seront insérés dans la div `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre pair pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la div, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 2 (les liens RSS) et 10 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 4 (le menu des langues) et 6 (les liens RSS).
 
 Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut toutefois avoir en tête que chaque clé du tableau `$ordreBlocsDansFluxHtml` ci-dessous représente une partie du nom du fichier à insérer. Par exemple, `faire-decouvrir` fait référence au fichier `LANGUE/html.faire-decouvrir.inc.php`, présent dans le dossier personnalisé `$racine/site/inc` ou le dossier par défaut `$racine/inc`. Ainsi, un bloc personnalisé ayant une clé `heure` dans le tableau `$ordreBlocsDansFluxHtml` fait référence à un fichier `$racine/site/inc/LANGUE/html.heure.inc.php`.
 
@@ -227,12 +227,12 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 Voir la fonction `blocs()`.
 */
 $ordreBlocsDansFluxHtml = array (
-	'menu-langues' => 2,
-	'menu' => 4,
-	'faire-decouvrir' => 6,
-	'legende-oeuvre-galerie' => 8, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-	'flux-rss' => 10,
-	);
+	'menu-langues' => array (1, 2, 1),
+	'menu' => array (1, 2, 2),
+	'faire-decouvrir' => array (4, 4, 4),
+	'legende-oeuvre-galerie' => array (6, 6, 6), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+	'flux-rss' => array (8, 8, 8),
+);
 
 // Détection du type MIME.
 /*
@@ -259,35 +259,48 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 
 // Nombre de colonnes.
 /*
-- Si vaut TRUE, ajoute à la balise `body` les classes `deuxColonnes`, `colonneAgauche` et `colonneAdroite`, sinon ajoute la classe `uneColonne`.
-- À noter que Squeletml ne se sert pas par défaut de la deuxième colonne.
+- Si vaut 2, ajoute à la balise `body` les classes `deuxColonnes`, `colonneAgauche` et `colonneAdroite`, sinon si vaut 1, ajoute la classe `uneColonne`, sinon si vaut 0, ajoute la classe `aucuneColonne`.
+
 */
-$deuxColonnes = FALSE; // TRUE|FALSE
+$nombreDeColonnes = 0; // 0|1|2
 
 // Emplacement du sous-contenu lorsqu'il y a deux colonnes.
 /*
-- Si `$deuxColonnes` et `$deuxColonnesSousContenuAgauche` valent TRUE, ajoute la classe `deuxColonnesSousContenuAgauche` au `body`, sinon si `$deuxColonnes` vaut TRUE et que `$deuxColonnesSousContenuAgauche` vaut FALSE, ajoute la classe `deuxColonnesSousContenuAdroite` au `body`.
+- Si `$nombreDeColonnes` vaut 2 et si `$deuxColonnesSousContenuAgauche` vaut TRUE, ajoute la classe `deuxColonnesSousContenuAgauche` au `body`, sinon si `$nombreDeColonnes` vaut 2 et que `$deuxColonnesSousContenuAgauche` vaut FALSE, ajoute la classe `deuxColonnesSousContenuAdroite` au `body`.
 - Le sur-contenu va être affiché par défaut dans la colonne opposée.
 */
 $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 
 // S'il y a lieu, emplacement de la colonne unique.
 /*
-- Si `$deuxColonnes` vaut FALSE et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées au `body`, sinon si `$deuxColonnes` vaut FALSE et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées au `body`.
+- Si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées au `body`, sinon si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées au `body`.
 */
 $uneColonneAgauche = TRUE; // TRUE|FALSE
 
-// Arrière-plan d'une colonne.
+// S'il y a lieu, arrière-plan d'une colonne.
 $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
 
 // Div `page` avec bordures.
 $borduresPage = array(
 	'gauche' => TRUE, // TRUE|FALSE
 	'droite' => TRUE, // TRUE|FALSE
-	);
+);
 
-// Blocs de menu avec coins arrondis.
-$blocsArrondis = FALSE; // TRUE|FALSE
+// Blocs de menu avec coins arrondis par défaut.
+$blocsArrondisParDefaut = FALSE; // TRUE|FALSE
+
+/*
+Il est possible de modifier la configuration par défaut des blocs arrondis pour un bloc en particulier selon le nombre de colonnes. Par exemple, la ligne suivante:
+
+	'menu' => array (TRUE, FALSE, FALSE),
+
+précise que le bloc de menu principal devra avoir des coins arrondis lorsqu'il n'y a pas de colonne, mais ne devra pas en avoir lorsqu'il y en a une ou deux. Nous pouvons donc dégager la syntaxe générale suivante:
+
+	'bloc' => array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes),
+*/
+$blocsArrondisSpecifiques = array (
+	'menu' => array (TRUE, FALSE, FALSE),
+);
 
 /* _______________ Syndication de contenu (flux RSS). _______________ */
 
@@ -367,7 +380,7 @@ $galerieQualiteJpg = 90; // 0-100
 $galerieDimensionsVignette = array (
 	'largeur' => 100,
 	'hauteur' => 100,
-	);
+);
 
 // Taille forcée pour une vignette.
 /*
@@ -471,7 +484,7 @@ $galerieExifInfos = array (
 	'ISOSpeedRatings' => TRUE,
 	'Make' => TRUE,
 	'Model' => TRUE,
-	);
+);
 
 // Si le format original d'une image existe, est-ce que le lien vers le fichier est fait sur l'image ou dans la légende, ou les deux?
 $galerieLienOriginalEmplacement = 'imageLegende'; // image|legende|imageLegende
@@ -487,10 +500,11 @@ $galerieLienOriginalTelecharger = FALSE; // TRUE|FALSE
 
 // S'il y a lieu, emplacement de la légende, des informations Exif et du lien vers l'image originale.
 /*
-- Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousContenu` et `surContenu` font référence à la page.
-- Par exemple, l'option `sousContenu` place avec la configuration et le style par défaut de Squeletml les informations de l'image dans la colonne de gauche.
+- Les choix possibles sont: haut, bas, sousContenu, surContenu.
+- Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousContenu` et `surContenu` font référence à la page. Par exemple, l'option `sousContenu` place avec la configuration et le style par défaut de Squeletml les informations de l'image dans la colonne de gauche.
+- Les trois emplacements à préciser sont respectivement lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux.
 */
-$galerieLegendeEmplacement = 'sousContenu'; // haut|bas|sousContenu|surContenu
+$galerieLegendeEmplacement = array ('bas', 'sousContenu', 'sousContenu');
 
 /* _______________ Syndication de contenu (flux RSS). _______________ */
 

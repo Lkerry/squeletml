@@ -86,15 +86,35 @@ function baliseTitleComplement($tableauBaliseTitleComplement, $langues)
 	return '';
 }
 
+/*
+Returne TRUE si le bloc a des coins arrondis, sinon retourne FALSE.
+*/
+function blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
+{
+	if ((isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) || $blocsArrondisParDefaut)
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
 /**
 Retourne un tableau de blocs devant être insérés dans la div `surContenu` ou `sousContenu`, tout dépendamment du paramètre `$div`. L'ordre des fichiers dans le tableau correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent être insérés dans leur div.
 */
-function blocs($ordreBlocsDansFluxHtml, $div)
+function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $div)
 {
 	$ordreBlocsDansFluxHtmlFiltre = array ();
 	$blocsAinserer = array ();
 	
-	foreach ($ordreBlocsDansFluxHtml as $bloc => $nombre)
+	foreach ($ordreBlocsDansFluxHtml as $bloc => $nombres)
+	{
+		$ordreBlocsDansFluxHtmlSelonColonnes[$bloc] = $nombres[$nombreDeColonnes];
+	}
+	
+	foreach ($ordreBlocsDansFluxHtmlSelonColonnes as $bloc => $nombre)
 	{
 		if ($nombre % 2)
 		{
@@ -105,7 +125,7 @@ function blocs($ordreBlocsDansFluxHtml, $div)
 	
 	if ($div == 'sousContenu')
 	{
-		$ordreBlocsDansFluxHtmlFiltre = array_diff($ordreBlocsDansFluxHtml, $ordreBlocsDansFluxHtmlFiltre);
+		$ordreBlocsDansFluxHtmlFiltre = array_diff($ordreBlocsDansFluxHtmlSelonColonnes, $ordreBlocsDansFluxHtmlFiltre);
 	}
 	
 	asort($ordreBlocsDansFluxHtmlFiltre);
@@ -271,7 +291,7 @@ function cheminsInc($racine, $nom)
 /**
 Retourne une liste de classes pour `body`.
 */
-function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousContenuAgauche, $uneColonneAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage, $blocsArrondis)
+function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage)
 {
 	$class = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -284,9 +304,14 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 	if ($idGalerie)
 	{
 		$class .= 'galerie ';
+		
+		if ($nombreDeColonnes == 0)
+		{
+			$class .= 'galerieAucuneColonne ';
+		}
 	}
 	
-	if ($deuxColonnes)
+	if ($nombreDeColonnes == 2)
 	{
 		$class .= 'deuxColonnes colonneAgauche colonneAdroite ';
 		
@@ -304,7 +329,7 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 			$class .= "deuxColonnesSousContenuAdroite ";
 		}
 	}
-	else
+	elseif ($nombreDeColonnes == 1)
 	{
 		$class .= 'uneColonne ';
 		
@@ -327,6 +352,10 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 			}
 		}
 	}
+	elseif ($nombreDeColonnes == 0)
+	{
+		$class .= "aucuneColonne ";
+	}
 	
 	if ($differencierLiensVisitesHorsContenu)
 	{
@@ -343,24 +372,19 @@ function classesBody($estAccueil, $idGalerie, $deuxColonnes, $deuxColonnesSousCo
 		$class .= 'bordureDroitePage ';
 	}
 	
-	if ($blocsArrondis)
-	{
-		$class .= 'coinsArrondisBloc ';
-	}
-	
 	return trim($class);
 }
 
 /**
 Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une div de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une div de classe `bloc`).
 */
-function codeInterieurBloc($blocsArrondis)
+function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
 {
 	$codeInterieurBloc = array ();
 	$codeInterieurBloc[0] = "\n\t";
 	$codeInterieurBloc[1] = "\n\t" . '</div><!-- /.contenuBloc -->';
 	
-	if ($blocsArrondis)
+	if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes))
 	{
 		$codeInterieurBloc[0] .= '<div class="haut-droit"></div><div class="haut-gauche"></div>';
 		$codeInterieurBloc[1] .= '<div class="bas-droit"></div><div class="bas-gauche"></div>';
@@ -447,7 +471,7 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 /**
 Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire s'il y a lieu, sinon est vide.
 */
-function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondis)
+function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $res))
 	{
@@ -455,9 +479,18 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArro
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
 			
-			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondis);
+			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-oeuvre-galerie', $nombreDeColonnes);
 			
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $res[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
+			if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-oeuvre-galerie', $nombreDeColonnes))
+			{
+				$classeBlocArrondi = ' blocArrondi';
+			}
+			else
+			{
+				$classeBlocArrondi = '';
+			}
+			
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc' . $classeBlocArrondi . '">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $res[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
