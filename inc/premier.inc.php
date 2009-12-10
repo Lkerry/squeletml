@@ -195,7 +195,7 @@ if ($tableDesMatieres)
 	
 	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.min.js";
 	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
-	$balisesLinkScript[] = url(FALSE) . "#jsDirect#tableDesMatieres('interieurContenu', 'ul');";
+	$balisesLinkScript[] = url(FALSE) . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 
 // Message pour IE6.

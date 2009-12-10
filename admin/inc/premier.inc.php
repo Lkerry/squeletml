@@ -85,7 +85,7 @@ if ($tableDesMatieres)
 	
 	$adminBalisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.min.js";
 	$adminBalisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
-	$adminBalisesLinkScript[] = url(FALSE) . "#jsDirect#tableDesMatieres('interieurContenu', 'ul');";
+	$adminBalisesLinkScript[] = url(FALSE) . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 
 // Variable finale.

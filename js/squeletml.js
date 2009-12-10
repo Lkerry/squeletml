@@ -57,28 +57,29 @@ function T_(msgid)
 /**
 Génère une table des matières pour la page en cours.
 */
-function tableDesMatieres(idParent, baliseTable)
+function tableDesMatieres(idParent, baliseTable, baliseTitre)
 {
 	$(document).ready(function()
 	{
-		var oPage = document.getElementById(idParent);
-		var oDiv = document.createElement('div');
-		var oH2 = document.createElement('h2');
-		var oH2Texte = '';
-		var oUl = document.createElement(baliseTable);
+		var oParent = document.getElementById(idParent);
+		var oConteneur = document.createElement('div');
+		var oTitre = document.createElement(baliseTitre);
+		var oTitreTexte = '';
+		var oTable = document.createElement(baliseTable);
 		
-		oDiv.setAttribute('id', 'tableDesMatieres');
-		oH2.setAttribute('id', 'tableDesMatieresBdTitre');
-		oH2.setAttribute('class', 'bDtitre');
-		oH2Texte = document.createTextNode(T_("Table des matières"));
-		oUl.setAttribute('id', 'tableDesMatieresBdCorps');
+		oConteneur.setAttribute('id', 'tableDesMatieres');
+		oTitre.setAttribute('id', 'tableDesMatieresBdTitre');
+		oTitre.setAttribute('class', 'bDtitre');
+		oTitreTexte = document.createTextNode(T_("Table des matières"));
+		oTable.setAttribute('id', 'tableDesMatieresBdCorps');
+		oTable.setAttribute('class', 'bDcorps');
 		
-		oDiv.appendChild(oUl);
-		oH2.appendChild(oH2Texte);
+		oConteneur.appendChild(oTable);
+		oTitre.appendChild(oTitreTexte);
 		
-		oPage.insertBefore(oDiv, oPage.firstChild);
-		$('#tableDesMatieresBdCorps').tableOfContents(oPage, {startLevel: 2, depth: 6});
-		oDiv.insertBefore(oH2, oDiv.firstChild);
+		oParent.insertBefore(oConteneur, oParent.firstChild);
+		$('#tableDesMatieresBdCorps').tableOfContents(oParent, {startLevel: 2, depth: 6});
+		oConteneur.insertBefore(oTitre, oConteneur.firstChild);
 	})
 }
 

@@ -13,10 +13,6 @@ div#tableDesMatieres h2 {
 	margin-bottom: 0px;
 }
 
-div#tableDesMatieres ul.bDcorps {
-	margin-bottom: 0px;
-}
-
 div#tableDesMatieres ul {
 	list-style-type: circle;
 	padding-left: 20px;
@@ -42,6 +38,7 @@ div#tableDesMatieres ul ul ul ul ul ul {
 	list-style-type: disc;
 }
 
-div#tableDesMatieres ul.bDcorps li {
+ul#tableDesMatieresBdCorps li {
 	margin-top: 5px;
+	margin-bottom: 0px;
 }

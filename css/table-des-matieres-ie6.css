@@ -2,6 +2,11 @@ div#tableDesMatieres {
 	width: 304px;
 }
 
+#tableDesMatieresBdTitre a {
+	text-decoration: none !important;
+	color: expression(this.parentNode.currentStyle.color); /* Palliatif à `inherit`. */
+}
+
 div#tableDesMatieres ul {
 	padding-left: 20px;
 	margin-left: 0px;
