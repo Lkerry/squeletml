@@ -20,14 +20,6 @@ html, body {
 	position: relative;
 }
 
-body.bordureGauchePage #page {
-	border-left: 1px solid #f2f2f2;
-}
-
-body.bordureDroitePage #page {
-	border-right: 1px solid #f2f2f2;
-}
-
 #ancres {
 	position: absolute;
 	left: -5000px;
@@ -82,38 +74,12 @@ div#sousTitre p {
 	padding-top: 0px;
 }
 
-#modeleMessageDecouvrir {
-	margin: 25px;
-	padding: 5px;
-	background-color: #f2f2f2;
-}
-
 #menu a.actif {
 	font-weight: bold;
 }
 
 #menu li.actif {
 	list-style-image: url('../fichiers/puce.png');
-}
-
-#fluxRss ul {
-	list-style-type: none;
-	padding: 0px;
-}
-
-#faireDecouvrir a, #fluxRss a {
-	padding-right: 3px;
-}
-
-#faireDecouvrir a {
-	padding-left: 22px;
-	background: url('../fichiers/enveloppe.png') no-repeat left center;
-}
-
-#fluxRss a {
-	margin-left: 1px;
-	padding-left: 19px;
-	background: url('../fichiers/rss.png') no-repeat left center;
 }
 
 #basDePage {
@@ -128,10 +94,6 @@ div#sousTitre p {
 
 h1, h2, h3, h4, h5, h6, a, a:visited {
 	color: #007070;
-}
-
-h2#formulaireFaireDecouvrir {
-	clear: both;
 }
 
 .liensVisitesDifferencies a:visited {
@@ -205,7 +167,61 @@ pre {
 	overflow: hidden;
 }
 
-/* Pages d'erreur. */
+/***********************************************************************
+**
+** Bordures de la page.
+**
+***********************************************************************/
+
+body.bordureGauchePage #page {
+	border-left: 1px solid #f2f2f2;
+}
+
+body.bordureDroitePage #page {
+	border-right: 1px solid #f2f2f2;
+}
+
+/***********************************************************************
+**
+** Module «Faire découvrir» et flux RSS.
+**
+***********************************************************************/
+
+#modeleMessageDecouvrir {
+	margin: 25px;
+	padding: 5px;
+	background-color: #f2f2f2;
+}
+
+#fluxRss ul {
+	list-style-type: none;
+	padding: 0px;
+}
+
+#faireDecouvrir a, #fluxRss a {
+	padding-right: 3px;
+}
+
+#faireDecouvrir a {
+	padding-left: 22px;
+	background: url('../fichiers/enveloppe.png') no-repeat left center;
+}
+
+#fluxRss a {
+	margin-left: 1px;
+	padding-left: 19px;
+	background: url('../fichiers/rss.png') no-repeat left center;
+}
+
+h2#formulaireFaireDecouvrir {
+	clear: both;
+}
+
+/***********************************************************************
+**
+** Pages d'erreur.
+**
+***********************************************************************/
 
 h1#titrePage401, h1#titrePage404 {
 	padding-left: 20px;
@@ -219,18 +235,20 @@ h1#titrePage404 {
 	background: url('../fichiers/attention.png') no-repeat left center;
 }
 
-/* Blocs. */
+/***********************************************************************
+**
+** Blocs
+**
+***********************************************************************/
 
-	/* Tous les blocs. */
-	.bloc {
-		margin-top: 24px;
-		margin-bottom: 0px;
-	}
-	
-	/* Particularité pour les blocs de menu par défaut. */
-	#menu, #menuLangues {
-		margin-top: 20px;
-	}
+.bloc {
+	margin-top: 24px;
+	margin-bottom: 0px;
+}
+
+#menu, #menuLangues {/* Particularité des blocs de menu par défaut. */
+	margin-top: 20px;
+}
 
 .contenuBloc {
 	padding-left: 3px;
@@ -539,7 +557,29 @@ body.aucuneColonne #menu li {
 
 /***********************************************************************
 **
-** Module contact.
+** En-tête pleine largeur.
+**
+***********************************************************************/
+
+body.enTetePleineLargeur div#enTete {
+	background-color: white;
+	padding-bottom: 1px;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+body.enTetePleineLargeur div#titre h1, body.enTetePleineLargeur div#titre p {
+	padding: 0px;
+	margin: 0px 0px 0px 4px;
+}
+
+body.enTetePleineLargeur div#sousTitre {
+	margin: 0px 0px 0px 79px;
+	padding: 0px;
+}
+
+/***********************************************************************
+**
+** Contact.
 **
 ***********************************************************************/
 
@@ -557,7 +597,7 @@ body.aucuneColonne #menu li {
 
 /***********************************************************************
 **
-** Module galerie.
+** Galerie.
 **
 ***********************************************************************/
 
@@ -700,7 +740,7 @@ div.galerieNavigationAccueil img, div#galerieIntermediaireImg img {
 
 /***********************************************************************
 **
-** Bloc message pour IE6.
+** Message pour IE6.
 **
 ***********************************************************************/
 

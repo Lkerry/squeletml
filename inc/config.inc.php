@@ -286,6 +286,12 @@ $borduresPage = array(
 	'droite' => TRUE, // TRUE|FALSE
 );
 
+// S'il y a au moins une colonne, étendre l'en-tête sur toute la largeur du site.
+/*
+- Par défaut, l'en-tête ne s'étend que sur la largeur du contenu, excluant la largeur de la ou des colonnes. Mettre à TRUE pour l'étendre sur toute la page.
+*/ 
+$enTetePleineLargeur = FALSE; // TRUE|FALSE
+
 // Blocs de menu avec coins arrondis par défaut.
 $blocsArrondisParDefaut = FALSE; // TRUE|FALSE
 

@@ -56,7 +56,7 @@ $cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut),
 
 $cheminSurTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sur-titre');
 
-$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage, $blocsArrondisParDefaut);
+$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu);
 
 if (!empty($classesBody))
 {

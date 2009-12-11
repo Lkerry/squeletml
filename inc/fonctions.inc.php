@@ -291,7 +291,7 @@ function cheminsInc($racine, $nom)
 /**
 Retourne une liste de classes pour `body`.
 */
-function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $differencierLiensVisitesHorsContenu, $arrierePlanColonne, $borduresPage)
+function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu)
 {
 	$class = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -357,11 +357,6 @@ function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgau
 		$class .= "aucuneColonne ";
 	}
 	
-	if ($differencierLiensVisitesHorsContenu)
-	{
-		$class .= 'liensVisitesDifferencies ';
-	}
-	
 	if ($borduresPage['gauche'])
 	{
 		$class .= 'bordureGauchePage ';
@@ -370,6 +365,16 @@ function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgau
 	if ($borduresPage['droite'])
 	{
 		$class .= 'bordureDroitePage ';
+	}
+	
+	if ($enTetePleineLargeur && ($nombreDeColonnes == 1 || $nombreDeColonnes == 2))
+	{
+		$class .= 'enTetePleineLargeur ';
+	}
+	
+	if ($differencierLiensVisitesHorsContenu)
+	{
+		$class .= 'liensVisitesDifferencies ';
 	}
 	
 	return trim($class);
