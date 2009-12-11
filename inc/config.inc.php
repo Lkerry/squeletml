@@ -227,11 +227,11 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 Voir la fonction `blocs()`.
 */
 $ordreBlocsDansFluxHtml = array (
-	'menu-langues' => array (1, 2, 1),
-	'menu' => array (1, 2, 2),
-	'faire-decouvrir' => array (4, 4, 4),
-	'legende-oeuvre-galerie' => array (6, 6, 6), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-	'flux-rss' => array (8, 8, 8),
+	'menu-langues' => array (2, 2, 1),
+	'menu' => array (1, 4, 4),
+	'faire-decouvrir' => array (6, 6, 6),
+	'legende-oeuvre-galerie' => array (8, 8, 8), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+	'flux-rss' => array (10, 10, 10),
 );
 
 // Détection du type MIME.
@@ -262,7 +262,7 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Si vaut 2, ajoute à la balise `body` les classes `deuxColonnes`, `colonneAgauche` et `colonneAdroite`, sinon si vaut 1, ajoute la classe `uneColonne`, sinon si vaut 0, ajoute la classe `aucuneColonne`.
 
 */
-$nombreDeColonnes = 0; // 0|1|2
+$nombreDeColonnes = 1; // 0|1|2
 
 // Emplacement du sous-contenu lorsqu'il y a deux colonnes.
 /*
