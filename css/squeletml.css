@@ -483,6 +483,62 @@ body.deuxColonnesSousContenuAdroite #sousContenu {
 
 /***********************************************************************
 **
+** Aucune colonne.
+**
+***********************************************************************/
+
+body.aucuneColonne #page {
+	max-width: 750px;
+}
+
+body.aucuneColonne div#titre h1, body.aucuneColonne div#titre p {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-left: 5px;
+}
+
+body.aucuneColonne #contenu {
+	border-bottom: 1px solid #f2f2f2;
+}
+
+body.aucuneColonne #surContenu, body.aucuneColonne #sousContenu {
+	width: auto;
+}
+
+body.aucuneColonne #surContenu {
+	margin-bottom: 10px;
+}
+
+body.aucuneColonne #menuLangues {
+	position: absolute;
+	top: 0px;
+	left: 630px;
+	margin-top: 0px;
+	text-align: right;
+}
+
+body.aucuneColonne #menuLangues ul {
+	list-style-type: none;
+}
+
+body.aucuneColonne #menu {
+	margin-top: 10px;
+}
+
+body.aucuneColonne #menu ul {
+	margin: 0px;
+	padding: 0px;
+	list-style-type: none;
+	text-align: center;
+}
+
+body.aucuneColonne #menu li {
+	display: inline;
+	margin-right: 20px;
+}
+
+/***********************************************************************
+**
 ** Module contact.
 **
 ***********************************************************************/
@@ -507,6 +563,10 @@ body.deuxColonnesSousContenuAdroite #sousContenu {
 
 body.galerie #page {
 	max-width: 1000px;
+}
+
+body.galerieAucuneColonne #page {
+	max-width: 750px;
 }
 
 div#galerieInfo {
@@ -668,73 +728,3 @@ div#messageIe6 p img {
 div#messageIe6 p a {
 	color: #006;
 }
-
-/* ******************* */
-
-body.aucuneColonne #page {
-	max-width: 750px;
-}
-
-body.aucuneColonne #contenu {
-	border-bottom: 1px solid #f2f2f2;
-}
-
-body.aucuneColonne #surContenu, body.aucuneColonne #sousContenu {
-	width: auto;
-}
-
-body.aucuneColonne #surContenu {
-	margin-bottom: 10px;
-}
-
-body.galerieAucuneColonne #page {
-	max-width: 850px;
-}
-
-body.aucuneColonne #menu ul {
-	margin: 0px;
-	padding: 0px;
-	list-style-type: none;
-	text-align: center;
-}
-
-body.aucuneColonne #menu li {
-	display: inline;
-}
-
-body.aucuneColonne #menuLangues {
-	position: absolute;
-	top: 0px;
-	left: 630px;
-	text-align: right;
-}
-
-body.aucuneColonne #menuLangues li {
-	list-style-type: none;
-}
-
-
-
-
-
-
-
-
-body.aucuneColonne div#titre h1, body.aucuneColonne div#titre p {
-	margin-top: 0px;
-	margin-bottom: 0px;
-	padding-left: 5px;
-}
-
-body.aucuneColonne #menu {
-	margin-top: 10px;
-}
-
-body.aucuneColonne #menuLangues {
-	margin-top: 0px;
-}
-
-
-
-
-

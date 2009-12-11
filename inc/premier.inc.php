@@ -107,7 +107,7 @@ if ($idGalerie && !isset($rss))
 
 if (isset($corpsGalerie) && !empty($corpsGalerie))
 {
-	$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
+	$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
 }
 
 if (!isset($tableDesMatieres))

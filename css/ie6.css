@@ -1,7 +1,15 @@
 #page {
 	zoom: 1; /* À cause d'un bogue avec `position: absolute`. */
-	width: 770px;
+	width: 750px;
 	width: expression( document.body.clientWidth > 900? "900px": "auto" );
+}
+
+body.aucuneColonne #page {
+	width: expression( document.body.clientWidth > 750? "750px": "auto" );
+}
+
+body.aucuneColonne #menuLangues {
+	left: 650px;
 }
 
 #faireDecouvrir a {

@@ -471,11 +471,11 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 /**
 Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire s'il y a lieu, sinon est vide.
 */
-function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
+function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $res))
 	{
-		if ($galerieLegendeEmplacement == 'sousContenu' || $galerieLegendeEmplacement == 'surContenu')
+		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'sousContenu' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'surContenu')
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
 			
@@ -1586,8 +1586,8 @@ function octetsVersMio($octets)
 Construit et retourne le code pour afficher une oeuvre dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
 */
 function oeuvre(
-	// Infos sur les chemins et les URL.
-	$racine, $urlRacine, $racineImgSrc, $urlImgSrc, $estAccueil,
+	// Infos sur le site.
+	$racine, $urlRacine, $racineImgSrc, $urlImgSrc, $estAccueil, $nombreDeColonnes,
 	
 	// Infos sur l'image à générer.
 	$infosOeuvre, $typeMime, $taille, $sens, $galerieQualiteJpg,
@@ -1818,11 +1818,11 @@ function oeuvre(
 			$imgLienOriginal = '';
 		}
 		
-		if ($galerieLegendeEmplacement == 'haut' || $galerieLegendeEmplacement == 'sousContenu')
+		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'sousContenu')
 		{
 			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal;
 		}
-		elseif ($galerieLegendeEmplacement == 'bas')
+		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
 		{
 			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n";
 		}
