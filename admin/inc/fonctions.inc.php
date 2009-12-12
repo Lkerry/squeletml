@@ -11,6 +11,7 @@ function adminAinclureDebut($racineAdmin)
 	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
 	$fichiers[] = $racineAdmin . '/inc/pclzip/pclzip.lib.php';
 	$fichiers[] = $racineAdmin . '/inc/tar/tar.class.php';
 	$fichiers[] = $racineAdmin . '/inc/untar/untar.class.php';

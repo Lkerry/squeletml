@@ -31,6 +31,41 @@ function actionFormContact($decouvrir)
 }
 
 /*
+Retourne un tableau contenant les fichiers à inclure au début du script.
+*/
+function aInclureDebut($racine, $idGalerie)
+{
+	$fichiers = array ();
+	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
+	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
+	
+	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
+	}
+	
+	foreach (cheminsInc($racine, 'config') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	foreach (cheminsInc($racine, 'constantes') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	if ($idGalerie)
+	{
+		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important de l'insérer avant `inc/premier.inc.php`, pour permettre la modification des balises de l'en-tête.
+	}
+	
+	return $fichiers;
+}
+
+/*
 Retourne les annexes de la documentation.
 */
 function annexesDocumentation($racineAdmin)
@@ -929,40 +964,6 @@ function init($valeurDinitialisation)
 }
 
 /*
-Retourne un tableau contenant les fichiers à inclure au début du script.
-*/
-function aInclureDebut($racine, $idGalerie)
-{
-	$fichiers = array ();
-	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
-	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
-	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
-	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
-	
-	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
-	{
-		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
-	}
-	
-	foreach (cheminsInc($racine, 'config') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	foreach (cheminsInc($racine, 'constantes') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	if ($idGalerie)
-	{
-		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important de l'insérer avant `inc/premier.inc.php`, pour permettre la modification des balises de l'en-tête.
-	}
-	
-	return $fichiers;
-}
-
-/*
 Retourne la légende d'une oeuvre dans le bon format.
 */
 function intermediaireLegende($legende, $galerieLegendeMarkdown)
@@ -1006,6 +1007,54 @@ function lettreAuHasard($lettresExclues = '')
 	} while (substr_count($lettresExclues, $lettre));
 	
 	return $lettre;
+}
+
+/*
+Ajoute la classe `actif` à tous les liens (balises `a`) du code passé en paramètre et pointant vers la page en cours ainsi qu'à un parent (s'il existe) spécifié avec le paramètre optionnel `$parent`, qui doit être le nom d'une balise (par exemple `li`). Si `$inclureGet` vaut FALSE, les variables GET ne sont pas prises en considération dans la comparaison des adresses. Retourne le code résultant.
+*/
+function lienActif($code, $inclureGet = TRUE, $parent = '')
+{
+	$url = url($inclureGet);
+	$html = str_get_html($code);
+	
+	foreach ($html->find('a') as $a)
+	{
+		if ($a->href == $url)
+		{
+			$class = 'actif';
+			
+			if (!empty($a->class))
+			{
+				$class .= ' ' . $a->class;
+			}
+			
+			$a->class = $class;
+			
+			if (!empty($parent))
+			{
+				$aParent = $a->parent();
+			
+				while ($aParent->tag != $parent && $aParent->tag != 'root' && $aParent->tag != NULL)
+				{
+					$aParent = $aParent->parent();
+				}
+			
+				if ($aParent->tag == $parent)
+				{
+					$class = 'actif';
+				
+					if (!empty($aParent->class))
+					{
+						$class .= ' ' . $aParent->class;
+					}
+				
+					$aParent->class = $class;
+				}
+			}
+		}
+	}
+	
+	return $html;
 }
 
 /*

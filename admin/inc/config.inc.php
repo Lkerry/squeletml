@@ -57,7 +57,6 @@ $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#js#$urlRacineAdmin/inc/CodeMirror/js/codemirror.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#favicon#$urlRacine/fichiers/puce.png";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#jsDirect#ajouteEvenementLoad(function(){lienActif('menu');});";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacine/js/jquery.min.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";

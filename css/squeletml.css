@@ -82,6 +82,10 @@ div#sousTitre p {
 	list-style-image: url('../fichiers/puce.png');
 }
 
+#menu li.actif li {
+	list-style-image: none;
+}
+
 #basDePage {
 	text-align: center;
 	padding: 0px 5px;

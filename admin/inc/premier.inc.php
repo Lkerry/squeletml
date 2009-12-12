@@ -24,9 +24,7 @@ if ($tableDesMatieres)
 
 $boitesDeroulantesTableau = boitesDeroulantes('', $boitesDeroulantes);
 
-$cheminAncres = $racineAdmin . '/xhtml/ancres.inc.php';
-
-$cheminMenu = $racineAdmin . '/xhtml/menu.inc.php';
+$cheminAncres = adminCheminXhtml($racineAdmin, 'ancres');
 
 $doctype = doctype($adminXhtmlStrict);
 
@@ -38,6 +36,13 @@ if (!empty($idBody))
 }
 
 $locale = locale(LANGUE);
+
+// Menu.
+ob_start();
+include_once adminCheminXhtml($racineAdmin, 'menu');
+$menu = ob_get_contents();
+ob_end_clean();
+$menu = lienActif($menu, FALSE);
 
 ########################################################################
 ##

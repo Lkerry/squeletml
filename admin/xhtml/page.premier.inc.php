@@ -25,7 +25,7 @@
 			<!-- ____________________ #enTete ____________________ -->
 			<div id="enTete">
 				<div id="menu">
-					<?php include_once $cheminMenu; ?>
+					<?php echo $menu; ?>
 				</div><!-- /#menu -->
 			</div><!-- /#enTete -->
 			

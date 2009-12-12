@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 Ce fichier construit le code des blocs. Après son inclusion, la variable `$blocs` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
 */
 
@@ -60,12 +60,12 @@ if (!empty($blocsAinserer))
 				
 				ob_start();
 				include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu');
-				$blocs .= ob_get_contents();
+				$blocMenu = ob_get_contents();
 				ob_end_clean();
 				
+				$blocs .= lienActif($blocMenu, FALSE, 'li');
 				$blocs .= $codeInterieurBlocBas;
 				$blocs .= '</div><!-- /#menu -->' . "\n";
-				$blocs .= '<script type="text/javascript">lienActif("menu");</script>' . "\n";
 				break;
 			
 			case 'faire-decouvrir':
