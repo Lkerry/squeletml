@@ -4,7 +4,7 @@
 **
 ***********************************************************************/
 
-/**
+/*
 Permet d'éviter l'écrasement d'événements se produisant lorsque plusieurs `window.onload` sont utilisés. Merci à <http://www.alsacreations.com/article/lire/565-JavaScript-organiser-son-code-en-modules.html>.
 */
 function ajouteEvenementLoad(fonction)
@@ -23,7 +23,7 @@ function ajouteEvenementLoad(fonction)
 	}
 }
 
-/**
+/*
 Ajustement de la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` si `idAegaliser` n'est pas déjà aussi haut.
 */
 function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
@@ -46,7 +46,7 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 	}
 }
 
-/**
+/*
 Alias identique pour le `gettext` de JSGettext à ce qui est utilisé dans Squeletml avec PHP Gettext.
 */
 function T_(msgid)
@@ -54,7 +54,7 @@ function T_(msgid)
 	return gt.gettext(msgid);
 }
 
-/**
+/*
 Génère une table des matières pour la page en cours.
 */
 function tableDesMatieres(idParent, baliseTable, baliseTitre)
@@ -190,43 +190,5 @@ function boiteDeroulanteChangementDetat(conteneur)
 	{
 		$(oCorps).removeClass('afficher').addClass('masquer');
 		$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur), 'masquer', { expires: 30, path: '/' });
-	}
-}
-
-/***********************************************************************
-**
-** Fonctions pour le lien actif dans le menu. Merci à <http://www.richnetapps.com/automatically_highlight_current_page_in/>.
-**
-***********************************************************************/
-
-function extraitUrlPage(valeurHref)
-{
-	var tableauAdresse = valeurHref.split('/');
-	
-	return (tableauAdresse.length < 2) ? valeurHref : tableauAdresse[tableauAdresse.length - 2].toLowerCase() + tableauAdresse[tableauAdresse.length - 1].toLowerCase();
-}
-
-function lienActifAjouteClasse(tableauA, urlPageCourante)
-{
-	for (var i = 0; i < tableauA.length; i++)
-	{
-		if(extraitUrlPage(tableauA[i].href) == urlPageCourante)
-		{
-			if (tableauA[i].parentNode.tagName != 'div')
-			{
-				tableauA[i].className = 'actif';
-				tableauA[i].parentNode.className = 'actif';
-			}
-		}
-	}
-}
-
-function lienActif(idConteneur)
-{
-	valeurHref = document.location.href ? document.location.href : document.location;
-	
-	if (document.getElementById(idConteneur) != null)
-	{
-		lienActifAjouteClasse(document.getElementById(idConteneur).getElementsByTagName('a'), extraitUrlPage(valeurHref));
 	}
 }

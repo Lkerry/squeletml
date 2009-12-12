@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 Retourne un tableau contenant les fichiers à inclure au début du script.
 */
 function adminAinclureDebut($racineAdmin)
@@ -33,7 +33,7 @@ function adminAinclureDebut($racineAdmin)
 	return $fichiers;
 }
 
-/**
+/*
 Ajoute la variable GET à l'adresse fournie, et retourne le résultat. `$get` doit être sous la forme `cle=valeur`. Dans l'adresse de retour, `$get` est la première variable GET.
 */
 function adminAjouteGet($adresse, $get)
@@ -55,7 +55,7 @@ function adminAjouteGet($adresse, $get)
 	return $nouvelleAdresse;
 }
 
-/**
+/*
 Retourne l'`id` de `body`.
 */
 function adminBodyId()
@@ -63,7 +63,7 @@ function adminBodyId()
 	return str_replace('.', '-', page());
 }
 
-/**
+/*
 Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)basename($racineAdmin)/inc/$nom.inc.php` demandé.
 */
 function adminCheminsInc($racineAdmin, $nom)
@@ -81,7 +81,7 @@ function adminCheminsInc($racineAdmin, $nom)
 	return $fichiers;
 }
 
-/**
+/*
 Retourne le chemin vers le fichier `(site/)basename($racineAdmin)/xhtml/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide.
 */
 function adminCheminXhtml($racineAdmin, $nom)
@@ -101,7 +101,7 @@ function adminCheminXhtml($racineAdmin, $nom)
 	return '';
 }
 
-/**
+/*
 Simule `chmod()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminChmod($fichier, $permissions)
@@ -125,7 +125,7 @@ function adminChmod($fichier, $permissions)
 	}
 }
 
-/**
+/*
 Modifie les permissions d'un dossier ainsi que son contenu et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminChmodRecursif($dossierAmodifier, $permissions)
@@ -166,7 +166,7 @@ function adminChmodRecursif($dossierAmodifier, $permissions)
 	return $messagesScript;
 }
 
-/**
+/*
 Simule `copy()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminCopy($fichierSource, $fichierDeDestination)
@@ -181,7 +181,7 @@ function adminCopy($fichierSource, $fichierDeDestination)
 	}
 }
 
-/**
+/*
 Copie un dossier dans un autre et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminCopyDossier($dossierSource, $dossierDeDestination)
@@ -223,7 +223,7 @@ function adminCopyDossier($dossierSource, $dossierDeDestination)
 	return $messagesScript;
 }
 
-/**
+/*
 Détruit une session, et retourne le résultat de `session_destroy()`.
 */
 function adminDetruitSession()
@@ -233,7 +233,7 @@ function adminDetruitSession()
 	return session_destroy();
 }
 
-/**
+/*
 Retourne TRUE si le dossier est vide, sinon retourne FALSE.
 */
 function adminDossierEstVide($cheminDossier)
@@ -263,7 +263,7 @@ function adminDossierEstVide($cheminDossier)
 	return $dossierEstVide;
 }
 
-/**
+/*
 Retourne TRUE s'il est permis de modifier l'emplacement du fichier passé en paramètre, sinon retourne FALSE.
 */
 function adminEmplacementModifiable($cheminFichier, $adminDossierRacinePorteDocuments)
@@ -281,7 +281,7 @@ function adminEmplacementModifiable($cheminFichier, $adminDossierRacinePorteDocu
 	}
 }
 
-/**
+/*
 Retourne TRUE s'il est permis de gérer l'emplacement du fichier passé en paramètre, sinon retourne FALSE.
 */
 function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
@@ -341,7 +341,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocument
 	return FALSE;
 }
 
-/**
+/*
 Retourne le tableau d'emplacements vidé des emplacements non modifiables.
 */
 function adminEmplacementsModifiables($tableauFichiers, $adminDossierRacinePorteDocuments)
@@ -359,7 +359,7 @@ function adminEmplacementsModifiables($tableauFichiers, $adminDossierRacinePorte
 	return $tableauFichiersFiltre;
 }
 
-/**
+/*
 Retourne le tableau d'emplacements vidé des emplacements non gérables.
 */
 function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
@@ -377,7 +377,7 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 	return $tableauFichiersFiltre;
 }
 
-/**
+/*
 Retourne TRUE si le navigateur de l'internaute est Internet Explorer, sinon retourne FALSE.
 */
 function adminEstIe()
@@ -392,7 +392,7 @@ function adminEstIe()
 	}
 }
 
-/**
+/*
 Compresse (gzip) un fichier et retourne le chemin vers le fichier compressé. Si une erreur survient, retourne FALSE. Merci à <http://ca.php.net/manual/fr/function.gzwrite.php#34955>.
 */
 function adminGz($fichierSource)
@@ -433,7 +433,7 @@ function adminGz($fichierSource)
 	}
 }
 
-/**
+/*
 Retourne TRUE si l'image est déclarée dans le fichier de configuration, sinon retourne FALSE.
 */
 function adminImageEstDeclaree($fichier, $galerie, $versionAchercher = FALSE)
@@ -460,7 +460,7 @@ function adminImageEstDeclaree($fichier, $galerie, $versionAchercher = FALSE)
 	return FALSE;
 }
 
-/**
+/*
 Retourne TRUE si l'image est affichable par une galerie de Squeletml, sinon retourne FALSE.
 */
 function adminImageValide($typeMime)
@@ -475,7 +475,7 @@ function adminImageValide($typeMime)
 	}
 }
 
-/**
+/*
 Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans le porte-documents.
 */
 function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
@@ -566,7 +566,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 	return $infobulle;
 }
 
-/**
+/*
 Retourne l'IP de l'internaute si elle a été trouvée, sinon retourne FALSE.
 */
 function adminIpInternaute()
@@ -591,7 +591,7 @@ function adminIpInternaute()
 	return $ip;
 }
 
-/**
+/*
 Retourne sous forme de tableau la liste des dossiers et fichiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Les dossiers ou fichiers dont l'accès a échoué ne sont pas retournés.
 */
 function adminListeFichiers($dossier)
@@ -625,7 +625,7 @@ function adminListeFichiers($dossier)
 	return $liste;
 }
 
-/**
+/*
 Retourne la liste filtrée des dossiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
 function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers)
@@ -666,7 +666,7 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 	return $liste;
 }
 
-/**
+/*
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient s'il ya lieu les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
 function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierAparcourir, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
@@ -747,7 +747,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 	return $liste;
 }
 
-/**
+/*
 Retourne un tableau dont chaque élément contient le nom d'une galerie. Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration, sinon retourne le nom de tous les dossiers de `$racine/site/fichiers/galeries/`. Si une erreur survient, retourne FALSE.
 */
 function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
@@ -780,7 +780,7 @@ function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 	}
 }
 
-/**
+/*
 Met à jour le fichier de configuration d'une galerie. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
 function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
@@ -928,7 +928,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	return TRUE;
 }
 
-/**
+/*
 Retourne la transcription en texte d'une erreur `$_FILES['fichier']['error']` sous forme de message concaténable dans `$messagesScript`.
 */
 function adminMessageFilesError($erreur)
@@ -982,7 +982,7 @@ function adminMessageFilesError($erreur)
 	}
 }
 
-/**
+/*
 Retourne les messages à afficher dans une chaîne formatée. Si le titre est vide, ne retourne qu'une liste de messages, sinon retourne une division de classe `sousBoite` contenant un titre de troisième niveau et la liste des messages.
 */
 function adminMessagesScript($messagesScript, $titre = '')
@@ -1010,7 +1010,7 @@ function adminMessagesScript($messagesScript, $titre = '')
 	return $messagesScriptFinaux;
 }
 
-/**
+/*
 Simule `mkdir()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminMkdir($fichier, $permissions, $recursivite = FALSE)
@@ -1025,7 +1025,7 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 	}
 }
 
-/**
+/*
 Retourne les permissions d'un fichier. La valeur retournée est en notation octale sur trois chiffres.
 */
 function adminPermissionsFichier($cheminFichier)
@@ -1042,7 +1042,7 @@ function adminPermissionsFichier($cheminFichier)
 	return $permissions;
 }
 
-/**
+/*
 Retourne la valeur en octets des tailles déclarées dans le `php.ini`. Ex.:
 
 	2M => 2097152
@@ -1076,7 +1076,7 @@ function adminPhpIniOctets($nombre)
 	return $octets;
 }
 
-/**
+/*
 Retourne un message informant si la réécriture d'URL est activée. Si `$retourneMessage` vaut TRUE, retourne une phrase complète, sinon retourne un seul caractère (`o` pour *oui*, `n` pour *non* ou `?` pour *impossible de le déterminer*).
 */
 function adminReecritureDurl($retourneMessage)
@@ -1110,7 +1110,7 @@ function adminReecritureDurl($retourneMessage)
 	}
 }
 
-/**
+/*
 Simule `rename()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`. Si `$messageDeplacement` vaut TRUE, le message retourné présente l'action effectuée comme étant un déplacement, sinon présente l'action comme étant un renommage.
 */
 function adminRename($ancienNom, $nouveauNom, $messageDeplacement = FALSE)
@@ -1139,7 +1139,7 @@ function adminRename($ancienNom, $nouveauNom, $messageDeplacement = FALSE)
 	}
 }
 
-/**
+/*
 Simule `rmdir()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminRmdir($dossier)
@@ -1154,7 +1154,7 @@ function adminRmdir($dossier)
 	}
 }
 
-/**
+/*
 Supprime un dossier ainsi que son contenu et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminRmdirRecursif($dossierAsupprimer)
@@ -1196,7 +1196,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 	return $messagesScript;
 }
 
-/**
+/*
 Retourne TRUE si le site est en maintenance, sinon retourne FALSE.
 */
 function adminSiteEnMaintenance($cheminHtaccess)
@@ -1219,7 +1219,7 @@ function adminSiteEnMaintenance($cheminHtaccess)
 	return FALSE;
 }
 
-/**
+/*
 Retourne l'IP ayant accès au site en maintenance, si elle existe, sinon retourne FALSE.
 */
 function adminSiteEnMaintenanceIp($cheminHtaccess)
@@ -1242,7 +1242,7 @@ function adminSiteEnMaintenanceIp($cheminHtaccess)
 	return FALSE;
 }
 
-/**
+/*
 Retourne la taille en octets du dossier de cache de l'administration si le dossier est accessible, sinon retourne FALSE.
 */
 function adminTailleCache($racineAdmin)
@@ -1270,7 +1270,7 @@ function adminTailleCache($racineAdmin)
 	return $taille;
 }
 
-/**
+/*
 Retourne le tableau d'emplacements trié en ordre décroissant selon la profondeur (nombre de dossiers parents) du fichier et, pour une même profondeur, en ordre décroissant selon le nom. Par exemple, la liste suivante:
 
 	../site/fichiers/documents
@@ -1315,7 +1315,7 @@ function adminTriParProfondeur($tableauFichiers)
 	return $tableauFichiers;
 }
 
-/**
+/*
 Retourne TRUE si le type MIME passé en paramètre est permis, sinon retourne FALSE.
 */
 function adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis)
@@ -1330,7 +1330,7 @@ function adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePe
 	}
 }
 
-/**
+/*
 Simule `unlink()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminUnlink($fichier)
@@ -1345,7 +1345,7 @@ function adminUnlink($fichier)
 	}
 }
 
-/**
+/*
 Retourne la version de l'image (intermediaire|vignette|original|inconnu).
 */
 function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime)
@@ -1436,7 +1436,7 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 	}
 }
 
-/**
+/*
 Retourne la version de Squeletml.
 */
 function adminVersionSqueletml($racine)
@@ -1449,7 +1449,7 @@ function adminVersionSqueletml($racine)
 	return trim($version[1]);
 }
 
-/**
+/*
 Vide le cache. Seuls les fichiers à la racine du dossier sont supprimés, ce qui constitue tout ce qui est mis en cache par Squeletml. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
 function adminVideCache($racineAdmin)

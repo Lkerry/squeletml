@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 Retourne le lien vers l'accueil de la langue de la page. Si le lien n'a pas été trouvé, retourne une chaîne vide.
 */
 function accueil($accueil, $langues)
@@ -15,7 +15,7 @@ function accueil($accueil, $langues)
 	return '';
 }
 
-/**
+/*
 Retourne le contenu de l'attribut `action` du formulaire de contact.
 */
 function actionFormContact($decouvrir)
@@ -30,7 +30,7 @@ function actionFormContact($decouvrir)
 	return $action;
 }
 
-/**
+/*
 Retourne les annexes de la documentation.
 */
 function annexesDocumentation($racineAdmin)
@@ -52,7 +52,7 @@ function annexesDocumentation($racineAdmin)
 	return $texte;
 }
 
-/**
+/*
 Retourne le complément de la balise `title`.
 */
 function baliseTitle($baliseTitle, $baliseTitleComplement, $langues)
@@ -70,7 +70,7 @@ function baliseTitle($baliseTitle, $baliseTitleComplement, $langues)
 	return $contenuBaliseTitle;
 }
 
-/**
+/*
 Retourne le complément de la balise `title`. Si aucun complément, n'a été trouvé, retourne une chaîne vide.
 */
 function baliseTitleComplement($tableauBaliseTitleComplement, $langues)
@@ -101,7 +101,7 @@ function blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, 
 	}
 }
 
-/**
+/*
 Retourne un tableau de blocs devant être insérés dans la div `surContenu` ou `sousContenu`, tout dépendamment du paramètre `$div`. L'ordre des fichiers dans le tableau correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent être insérés dans leur div.
 */
 function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $div)
@@ -138,7 +138,7 @@ function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $div)
 	return $blocsAinserer;
 }
 
-/**
+/*
 Retourne un tableau dont chaque élément contient le code d'activation d'une boîte déroulante.
 */
 function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
@@ -174,7 +174,7 @@ function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
 	return $boitesDeroulantesTableau;
 }
 
-/**
+/*
 Vérifie si le cache d'un fichier expire.
 */
 function cacheExpire($fichier, $dureeCache)
@@ -189,7 +189,7 @@ function cacheExpire($fichier, $dureeCache)
 	}
 }
 
-/**
+/*
 Retourne le chemin vers le fichier de configuration du flux RSS global des galeries ou des pages autres que les galeries, selon le nom passé en paramètre. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FALSE)
@@ -212,7 +212,7 @@ function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FAL
 	}
 }
 
-/**
+/*
 Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut = FALSE)
@@ -235,7 +235,7 @@ function cheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut = FAL
 	}
 }
 
-/**
+/*
 Retourne le chemin vers le fichier `(site/)xhtml/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide.
 */
 function cheminXhtml($racine, $nom)
@@ -252,7 +252,7 @@ function cheminXhtml($racine, $nom)
 	return '';
 }
 
-/**
+/*
 Si `$retourneChemin` vaut TRUE, retourne le chemin vers le fichier `(site/)xhtml/$langue/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide. Si `$retourneChemin` vaut FALSE, retourne TRUE si un fichier a été trouvé, sinon retourne FALSE.
 */
 function cheminXhtmlLangue($racine, $langues, $nom, $retourneChemin = TRUE)
@@ -272,7 +272,7 @@ function cheminXhtmlLangue($racine, $langues, $nom, $retourneChemin = TRUE)
 	return $retourneChemin ? '' : FALSE;
 }
 
-/**
+/*
 Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)inc/$nom.inc.php` demandé.
 */
 function cheminsInc($racine, $nom)
@@ -288,7 +288,7 @@ function cheminsInc($racine, $nom)
 	return $fichiers;
 }
 
-/**
+/*
 Retourne une liste de classes pour `body`.
 */
 function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu)
@@ -380,7 +380,7 @@ function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgau
 	return trim($class);
 }
 
-/**
+/*
 Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une div de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une div de classe `bloc`).
 */
 function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
@@ -401,7 +401,7 @@ function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $
 	return $codeInterieurBloc;
 }
 
-/**
+/*
 Personnalise la coloration syntaxique par défaut de la fonction `highlight_string()`.
 
 La coloration est modifiée dans le but d'améliorer le contraste des commentaires. En effet, par défaut, la couleur utilisée pour les commentaires n'offre pas un contraste suffisant sous fond blanc (voir <http://www.britoweb.net/outils/contraste-couleurs.php>).
@@ -453,7 +453,7 @@ function coloreCodePhp($code, $retourneCode = FALSE, $commentairesEnNoir = FALSE
 	}
 }
 
-/**
+/*
 Personnalise la coloration syntaxique par défaut de la fonction `highlight_file()`. Voir la fonction `coloreCodePhp()`.
 */
 function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
@@ -473,7 +473,7 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 	}
 }
 
-/**
+/*
 Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire s'il y a lieu, sinon est vide.
 */
 function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
@@ -519,7 +519,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 	return $tableauCorpsGalerie;
 }
 
-/**
+/*
 Vérifie si le dossier de cache existe. S'il n'existe pas, le dossier est créé, sinon rien n'est fait. Retourne TRUE si le dossier existe ou si la création a été effectuée avec succès, sinon retourne FALSE.
 */
 function creeDossierCache($racine)
@@ -541,7 +541,7 @@ function creeDossierCache($racine)
 	}
 }
 
-/**
+/*
 Retourne le texte supplémentaire d'une oeuvre pour le message envoyé par le module «Faire découvrir».
 */
 function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown)
@@ -599,7 +599,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	return $messageDecouvrirSupplement;
 }
 
-/**
+/*
 Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Faire découvrir».
 */
 function decouvrirSupplementPage($description, $baliseTitle)
@@ -625,7 +625,7 @@ function decouvrirSupplementPage($description, $baliseTitle)
 	return $messageDecouvrirSupplement;
 }
 
-/**
+/*
 Retourne le DTD (Définition de Type de Document) de la page.
 */
 function doctype($xhtmlStrict)
@@ -640,7 +640,7 @@ function doctype($xhtmlStrict)
 	}
 }
 
-/**
+/*
 Retourne TRUE si la page est l'accueil, sinon retourne FALSE.
 */
 function estAccueil($accueil)
@@ -655,7 +655,7 @@ function estAccueil($accueil)
 	}
 }
 
-/**
+/*
 Retourne le contenu d'un fichier RSS.
 */
 function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGalerie)
@@ -713,7 +713,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 	return $contenuRss;
 }
 
-/**
+/*
 Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
 function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
@@ -806,7 +806,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 	return $itemsFluxRss;
 }
 
-/**
+/*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
 */
 function fluxRssPageTableauBrut($cheminPage, $urlPage)
@@ -833,7 +833,7 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage)
 	return $itemFlux;
 }
 
-/**
+/*
 Retourne le tableau `$itemsFluxRss` trié selon la date de dernière modification et contenant au maximum le nombre d'items précisé dans la configuration.
 */
 function fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss)
@@ -853,7 +853,7 @@ function fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss)
 	return $itemsFluxRss;
 }
 
-/**
+/*
 Retourne TRUE si la galerie existe, sinon retourne FALSE.
 */
 function galerieExiste($racine, $idGalerie)
@@ -872,7 +872,7 @@ function galerieExiste($racine, $idGalerie)
 	}
 }
 
-/**
+/*
 Retourne l'`id` d'une oeuvre d'une galerie.
 */
 function idOeuvre($oeuvre)
@@ -880,7 +880,7 @@ function idOeuvre($oeuvre)
 	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['intermediaireNom'];
 }
 
-/**
+/*
 Retourne un tableau associatif dont les valeurs sont le premier paramètre de la fonction, et les clés sont tous les paramètres à partir du deuxième.
 
 Cette fonction est intéressante couplée à la fonction `extract()` pour initialiser une liste de variables sans écraser celles qui sont déjà initalisées. Par exemple:
@@ -928,7 +928,7 @@ function init($valeurDinitialisation)
 	return $tableau;
 }
 
-/**
+/*
 Retourne un tableau contenant les fichiers à inclure au début du script.
 */
 function aInclureDebut($racine, $idGalerie)
@@ -962,7 +962,7 @@ function aInclureDebut($racine, $idGalerie)
 	return $fichiers;
 }
 
-/**
+/*
 Retourne la légende d'une oeuvre dans le bon format.
 */
 function intermediaireLegende($legende, $galerieLegendeMarkdown)
@@ -977,7 +977,7 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 	}
 }
 
-/**
+/*
 Retourne la langue de la page courante.
 */
 function langue($langueParDefaut, $langue)
@@ -993,7 +993,7 @@ function langue($langueParDefaut, $langue)
 	return $langue ? $langue : $langueParDefaut;
 }
 
-/**
+/*
 Retourne une lettre (a-zA-Z) au hasard. Optionnellement, il est possible de préciser des lettres à exclure.
 */
 function lettreAuHasard($lettresExclues = '')
@@ -1008,7 +1008,7 @@ function lettreAuHasard($lettresExclues = '')
 	return $lettre;
 }
 
-/**
+/*
 Retourne le lien vers le fichier du flux RSS demandé.
 */
 function lienFluxRss($urlFluxRss, $idGalerie, $estGalerie)
@@ -1029,7 +1029,7 @@ function lienFluxRss($urlFluxRss, $idGalerie, $estGalerie)
 	return "<a href=\"$urlFluxRss\">$description</a>";
 }
 
-/**
+/*
 Si la page en cours n'est pas l'accueil, construit un lien vers l'accueil et rend cliquable la chaîne passée en paramètre, sinon n'ajoute aucune balise et retourne la chaîne telle quelle.
 */
 function lienAccueil($accueil, $estAccueil, $contenu)
@@ -1046,7 +1046,7 @@ function lienAccueil($accueil, $estAccueil, $contenu)
 	return $aOuvrant . $contenu . $aFermant;
 }
 
-/**
+/*
 Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
 */
 function linkScript($balisesBrutes, $version = '')
@@ -1133,7 +1133,7 @@ function linkScript($balisesBrutes, $version = '')
 	return $balisesFormatees;
 }
 
-/**
+/*
 Retourne les déclarations d'inclusion des balises `link` et `script` sans les doublons ni les balises à inclure dans des pages autres que celle en cours. L'analyse prend en compte les URL incluses dans d'autres URL. Par exemple, si le tableau contient ceci:
 
 	"a/*#js#fichier.js"
@@ -1226,7 +1226,7 @@ function linkScriptAinclure($balisesBrutes)
 	return $balisesBrutesAinclure;
 }
 
-/**
+/*
 Retourne la locale de la page courante pour utilisation avec gettext.
 */
 function locale($langue)
@@ -1242,7 +1242,7 @@ function locale($langue)
 	return $locale;
 }
 
-/**
+/*
 Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
 function mdtxt($fichier)
@@ -1250,7 +1250,7 @@ function mdtxt($fichier)
 	return Markdown(file_get_contents($fichier));
 }
 
-/**
+/*
 Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaîne convertie en HTML.
 */
 function mdtxtChaine($chaine)
@@ -1258,7 +1258,7 @@ function mdtxtChaine($chaine)
 	return Markdown($chaine);
 }
 
-/**
+/*
 Construit le message affiché à Internet Explorer 6.
 */
 function messageIe6($urlRacine)
@@ -1277,7 +1277,7 @@ function messageIe6($urlRacine)
 	return $message;
 }
 
-/**
+/*
 Si `$motsCles` est vide, génère à partir d'une chaîne fournie en paramètre une liste de mots-clés utilisables par la métabalise `keywords`, et retourne cette liste, sinon retourne tout simplement `$motsCles`. Si `$melanger` vaut TRUE, change aléatoirement l'ordre des mots avant le retour.
 */
 function motsCles($motsCles, $chaine, $melanger = FALSE)
@@ -1356,7 +1356,7 @@ function motsCles($motsCles, $chaine, $melanger = FALSE)
 	}
 }
 
-/**
+/*
 Retourne la phrase de description du site dans le haut des pages. Sur la page d'accueil, ce sera le titre principal `h1`; sur les autres pages, ce sera un paragraphe `p`.
 */
 function nomSite($estAccueil, $contenu)
@@ -1375,7 +1375,7 @@ function nomSite($estAccueil, $contenu)
 	return $baliseOuvrante . $contenu . $baliseFermante . "\n";
 }
 
-/**
+/*
 Ajoute `$suffixe` au nom d'un fichier, juste avant l'extension. Par exemple `nom.extension` devient `nom$suffixe.extension`.
 */
 function nomSuffixe($nomFichier, $suffixe)
@@ -1387,7 +1387,7 @@ function nomSuffixe($nomFichier, $suffixe)
 	return $nomFichierAvecSuffixe;
 }
 
-/**
+/*
 Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouvelleImageDimensionsVoulues, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $nettete)
@@ -1571,7 +1571,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 	return $messagesScript;
 }
 
-/**
+/*
 Conversion des octets en Kio.
 */
 function octetsVersKio($octets)
@@ -1579,7 +1579,7 @@ function octetsVersKio($octets)
 	return number_format($octets / 1024, 1, ',', '');
 }
 
-/**
+/*
 Conversion des octets en Mio.
 */
 function octetsVersMio($octets)
@@ -1587,7 +1587,7 @@ function octetsVersMio($octets)
 	return number_format($octets / 1048576, 1, ',', '');
 }
 
-/**
+/*
 Construit et retourne le code pour afficher une oeuvre dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
 */
 function oeuvre(
@@ -1970,7 +1970,7 @@ function oeuvre(
 	}
 }
 
-/**
+/*
 Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
 */
 function page()
@@ -1978,7 +1978,7 @@ function page()
 	return superBasename(url(FALSE, FALSE));
 }
 
-/**
+/*
 Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des pages. Retourne TRUE.
 */
 function phpGettext($racine, $langue)
@@ -2000,7 +2000,7 @@ function phpGettext($racine, $langue)
 	return TRUE;
 }
 
-/**
+/*
 Retourne le contenu de la métabalise `robots`.
 */
 function robots($robotsParDefaut, $robots)
@@ -2008,7 +2008,7 @@ function robots($robotsParDefaut, $robots)
 	return $robots ? $robots : $robotsParDefaut;
 }
 
-/**
+/*
 Retourne une chaîne débarrassée de ses barres obliques inverses.
 */
 function sansEchappement($chaine)
@@ -2016,7 +2016,7 @@ function sansEchappement($chaine)
 	return stripslashes($chaine);
 }
 
-/**
+/*
 Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour un affichage sécuritaire à l'écran, sinon si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été sécurisé, sinon si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
 */
 function securiseTexte($texte)
@@ -2042,7 +2042,7 @@ function securiseTexte($texte)
 	}
 }
 
-/**
+/*
 Génère l'attribut `style` pour les div vide simulant la présence d'une flèche ou d'une vignette de navigation dans la galerie.
 */
 function styleDivVideNavigation($oeuvre)
@@ -2078,7 +2078,7 @@ function styleDivVideNavigation($oeuvre)
 	return $style;
 }
 
-/**
+/*
 Simule la fonction `superBasename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
 */
 function superBasename($chemin, $suffixe = '')
@@ -2093,7 +2093,7 @@ function superBasename($chemin, $suffixe = '')
 	return $chemin;
 }
 
-/**
+/*
 Simule en partie la fonction `parse_ini_file()`, en essayant de contourner certaines limitations concernant les caractères créant des erreurs dans les valeurs non délimitées par des guillemets. Par exemple, peut traiter sans erreur le paramètre suivant:
 
 	lien=<a href="page.php">lien</a>
@@ -2169,7 +2169,7 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 	return $tableau;
 }
 
-/**
+/*
 Supprime l'inclusion des feuilles de style par défaut de Squeletml.
 */
 function supprimeInclusionCssParDefaut(&$fichiers)
@@ -2179,7 +2179,7 @@ function supprimeInclusionCssParDefaut(&$fichiers)
 	return;
 }
 
-/**
+/*
 Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui`. Par exemple, le fichier `.ini` suivant:
 
 	[image1.png]
@@ -2221,7 +2221,7 @@ function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 	}
 }
 
-/**
+/*
 Retourne le titre du site. Si le titre n'a pas été trouvé, retourne une chaîne vide.
 */
 function titreSite($tableauTitreSite, $langues)
@@ -2237,7 +2237,7 @@ function titreSite($tableauTitreSite, $langues)
 	return '';
 }
 
-/**
+/*
 Retourne le type MIME du fichier. Il s'agit d'un alias de la fonction `mimedetect_mime()`.
 */
 function typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
@@ -2245,7 +2245,7 @@ function typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeC
 	return mimedetect_mime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 }
 
-/**
+/*
 Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur.
 
 Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` et `$retourneServeur` vallent TRUE.
@@ -2293,7 +2293,7 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
 	return $url;
 }
 
-/**
+/*
 Retourne l'URL de la page en cours avec la variable GET `action=faireDecouvrir`.
 */
 function urlPageAvecDecouvrir()
@@ -2314,7 +2314,7 @@ function urlPageAvecDecouvrir()
 	}
 }
 
-/**
+/*
 Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=faireDecouvrir` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=faireDecouvrir`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
 */
 function urlPageSansDecouvrir($retourneTableau = FALSE)
@@ -2358,7 +2358,7 @@ function urlPageSansDecouvrir($retourneTableau = FALSE)
 	}
 }
 
-/**
+/*
 Ajoute une deuxième image (une flèche par défaut) à la navigation par vignettes.
 */
 function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
@@ -2393,7 +2393,7 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 	}
 }
 
-/**
+/*
 Modifie la source de la vignette pour la remplacer par une vignette tatouée d'une autre image (une flèche de navigation par défaut).
 */
 function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)

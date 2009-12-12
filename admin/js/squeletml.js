@@ -1,4 +1,4 @@
-/**
+/*
 Sélectionne le texte de l'élément fourni.
 */
 function adminSelectionneTexte(conteneur)

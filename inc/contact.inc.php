@@ -1,5 +1,5 @@
 <?php
-/**
+/*
 Ce fichier construit et analyse le formulaire de contact. Après son inclusion, la variable `$contact` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
 */
 
