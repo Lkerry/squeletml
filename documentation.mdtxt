@@ -299,23 +299,30 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner l'URL de la page en cours.
 
-- `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
+- `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration `inc/config.inc.php` pour une description détaillée de la syntaxe à utiliser.
 
-- `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$inclureMotsCles` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
+- `$classesBody`: permet d'ajouter des classes à la balise `body`. Voici deux exemples:
 
-- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `inc/config.inc.php`.
+		$classesBody = 'maClasse1';
+		$classesBody = 'maClasse1 maClasse2';
 
-- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `inc/config.inc.php`.
+- `$classesContenu`: permet d'ajouter des classes à la div `contenu`. Voir `$classesBody` pour des exemples d'utilisation.
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
 	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
-- `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration `inc/config.inc.php` pour une description détaillée de la syntaxe à utiliser.
+- `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
 - `$idGalerie`: un nombre ou un mot identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir plus loin), une galerie sera insérée dans la page.
 
 	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, un message d'erreur informe de l'inexistence de la galerie.
+
+- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `inc/config.inc.php`.
+
+- `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$inclureMotsCles` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
+
+- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `inc/config.inc.php`.
 
 - `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question.
 

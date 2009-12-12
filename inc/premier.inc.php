@@ -41,7 +41,7 @@ foreach (aInclureDebut($racine, $idGalerie) as $fichier)
 
 // Initialisations 2 de 2.
 
-extract(init('', 'baliseTitle', 'boitesDeroulantes', 'description', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'description', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);
 
 $baliseTitle = baliseTitle($baliseTitle, $baliseTitleComplement, array ($langue, $langueParDefaut));
@@ -56,20 +56,18 @@ $cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut),
 
 $cheminSurTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sur-titre');
 
-$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu);
+$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $classesBody);
 
 if (!empty($classesBody))
 {
 	$classesBody = ' class="' . $classesBody . '"';
 }
 
-if (!$differencierLiensVisitesHorsContenu)
+$classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
+
+if (!empty($classesContenu))
 {
-	$classesContenu = ' class="liensVisitesDifferencies"';
-}
-else
-{
-	$classesContenu = '';
+	$classesContenu = ' class="' . $classesContenu . '"';
 }
 
 if (isset($courrielContact) && $courrielContact == '@' && !empty($contactCourrielParDefaut))

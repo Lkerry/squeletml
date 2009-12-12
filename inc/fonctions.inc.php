@@ -326,7 +326,7 @@ function cheminsInc($racine, $nom)
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu)
+function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $classesBody)
 {
 	$class = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -410,6 +410,31 @@ function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgau
 	if ($differencierLiensVisitesHorsContenu)
 	{
 		$class .= 'liensVisitesDifferencies ';
+	}
+	
+	if (!empty($classesBody))
+	{
+		$class .= trim($classesBody);
+	}
+	
+	return trim($class);
+}
+
+/*
+Retourne une liste de classes pour la div `contenu`.
+*/
+function classesContenu($differencierLiensVisitesHorsContenu, $classesContenu)
+{
+	$class = '';
+	
+	if (!$differencierLiensVisitesHorsContenu)
+	{
+		$class = 'liensVisitesDifferencies ';
+	}
+	
+	if (!empty($classesContenu))
+	{
+		$class .= trim($classesContenu);
 	}
 	
 	return trim($class);
