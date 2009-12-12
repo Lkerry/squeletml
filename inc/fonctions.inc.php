@@ -1433,6 +1433,14 @@ function motsCles($motsCles, $chaine, $melanger = FALSE)
 }
 
 /*
+Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
+*/
+function nomPage()
+{
+	return superBasename(url(FALSE, FALSE));
+}
+
+/*
 Retourne la phrase de description du site dans le haut des pages. Sur la page d'accueil, ce sera le titre principal `h1`; sur les autres pages, ce sera un paragraphe `p`.
 */
 function nomSite($estAccueil, $contenu)
@@ -2044,14 +2052,6 @@ function oeuvre(
 	{
 		return '';
 	}
-}
-
-/*
-Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
-*/
-function nomPage()
-{
-	return superBasename(url(FALSE, FALSE));
 }
 
 /*
