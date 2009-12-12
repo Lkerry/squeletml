@@ -705,7 +705,9 @@ Retourne TRUE si la page est l'accueil, sinon retourne FALSE.
 */
 function estAccueil($accueil)
 {
-	if (url() == $accueil . '/' || url() == $accueil . '/index.php' || url() == $accueil . '/index.html' || url() == $accueil . '/index.htm')
+	$url = url();
+	
+	if ($url == $accueil . '/' || $url == $accueil . '/index.php' || $url == $accueil . '/index.html' || $url == $accueil . '/index.htm')
 	{
 		return TRUE;
 	}
@@ -2047,7 +2049,7 @@ function oeuvre(
 /*
 Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
 */
-function page()
+function nomPage()
 {
 	return superBasename(url(FALSE, FALSE));
 }

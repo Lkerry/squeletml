@@ -23,11 +23,8 @@ if ($tableDesMatieres)
 }
 
 $boitesDeroulantesTableau = boitesDeroulantes('', $boitesDeroulantes);
-
 $cheminAncres = adminCheminXhtml($racineAdmin, 'ancres');
-
 $doctype = doctype($adminXhtmlStrict);
-
 $idBody = adminBodyId();
 
 if (!empty($idBody))
@@ -44,6 +41,9 @@ $menu = ob_get_contents();
 ob_end_clean();
 $menu = lienActif($menu, FALSE);
 
+$url = url();
+$urlSansGet = url(FALSE);
+
 ########################################################################
 ##
 ## Ajouts dans `$adminBalisesLinkScript`.
@@ -59,9 +59,9 @@ if (!adminEstIe())
 
 if (!empty($boitesDeroulantesTableau))
 {
-	$adminBalisesLinkScript[] = url(FALSE) . "#css#$urlRacine/css/boites-deroulantes.css";
-	$adminBalisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.min.js";
-	$adminBalisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.cookie.js";
+	$adminBalisesLinkScript[] = $urlSansGet . "#css#$urlRacine/css/boites-deroulantes.css";
+	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.min.js";
+	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.cookie.js";
 	$jsDirect = '';
 	
 	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
@@ -69,28 +69,28 @@ if (!empty($boitesDeroulantesTableau))
 		$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
 	}
 	
-	$adminBalisesLinkScript[] = url(FALSE) . "#jsDirect#$jsDirect";
+	$adminBalisesLinkScript[] = $urlSansGet . "#jsDirect#$jsDirect";
 }
 
 // Table des matières.
 
 if ($tableDesMatieres)
 {
-	$adminBalisesLinkScript[] = url(FALSE) . "#css#$urlRacine/css/table-des-matieres.css";
-	$adminBalisesLinkScript[] = url(FALSE) . "#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
+	$adminBalisesLinkScript[] = $urlSansGet . "#css#$urlRacine/css/table-des-matieres.css";
+	$adminBalisesLinkScript[] = $urlSansGet . "#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	
-	$adminBalisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/Gettext/lib/Gettext.js";
+	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/Gettext/lib/Gettext.js";
 	
 	if (file_exists($racine . '/locale/' . $locale))
 	{
-		$adminBalisesLinkScript[] = url(FALSE) . "#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
+		$adminBalisesLinkScript[] = $urlSansGet . "#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
 	}
 	
-	$adminBalisesLinkScript[] = url(FALSE) . "#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
+	$adminBalisesLinkScript[] = $urlSansGet . "#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
 	
-	$adminBalisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.min.js";
-	$adminBalisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
-	$adminBalisesLinkScript[] = url(FALSE) . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
+	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.min.js";
+	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
+	$adminBalisesLinkScript[] = $urlSansGet . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 
 // Variable finale.

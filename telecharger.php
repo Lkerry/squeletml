@@ -7,7 +7,7 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 }
 
 $chemin = $racine . '/' . $_GET['fichier'];
-$url = $urlRacine . '/' . $_GET['fichier'];
+$urlFichier = $urlRacine . '/' . $_GET['fichier'];
 $nom = superBasename($_GET['fichier']);
 $typeMime = typeMime($chemin, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 
@@ -21,7 +21,7 @@ if (file_exists($chemin) && preg_match("|^$racine/site/fichiers/galeries/[^/]+/$
 	header('Content-Type: ' . $typeMime);
 	header('Content-Disposition: attachment; filename="' . $nom . '"');
 	header('Content-Length: ' . filesize($chemin));
-	readfile($url);
+	readfile($urlFichier);
 }
 elseif (file_exists($chemin))
 {

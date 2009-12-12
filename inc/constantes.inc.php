@@ -6,6 +6,4 @@ if (!defined('LC_MESSAGES'))
 
 define('ACCUEIL', accueil($accueil, array ($langue, $langueParDefaut)));
 define('LANGUE', langue($langueParDefaut, $langue));
-define('PAGE', page());
-define('URL', url());
 ?>

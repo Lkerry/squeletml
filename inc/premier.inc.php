@@ -43,19 +43,12 @@ foreach (aInclureDebut($racine, $idGalerie) as $fichier)
 
 extract(init('', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'description', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);
-
 $baliseTitle = baliseTitle($baliseTitle, $baliseTitleComplement, array ($langue, $langueParDefaut));
-
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
-
 $cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'ancres');
-
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
-
 $cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sous-titre');
-
 $cheminSurTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sur-titre');
-
 $classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $classesBody);
 
 if (!empty($classesBody))
@@ -76,7 +69,6 @@ if (isset($courrielContact) && $courrielContact == '@' && !empty($contactCourrie
 }
 
 $divSurSousContenu = 'sur';
-
 $doctype = doctype($xhtmlStrict);
 
 if (!galerieExiste($racine, $idGalerie))
@@ -95,7 +87,7 @@ if ($inclureMotsCles)
 }
 
 $nomSite = nomSite(estAccueil(ACCUEIL), lienAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, array ($langue, $langueParDefaut))));
-
+$nomPage = nomPage();
 $robots = robots($robotsParDefaut, $robots);
 
 if ($idGalerie && !isset($rss))
@@ -119,6 +111,13 @@ if ($tableDesMatieres)
 	$locale = locale(LANGUE);
 }
 
+$url = url();
+$urlFichiers = $urlRacine . '/site/fichiers';
+$urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
+$urlSansGet = url(FALSE);
+$urlSansGetSansServeur = url(FALSE, FALSE);
+$urlSite = $urlRacine . '/site';
+
 // Inclusions 2 de 2.
 
 include $racine . '/inc/blocs.inc.php';
@@ -133,9 +132,9 @@ include $racine . '/inc/blocs.inc.php';
 
 if (!empty($boitesDeroulantesTableau))
 {
-	$balisesLinkScript[] = url(FALSE) . "#css#$urlRacine/css/boites-deroulantes.css";
-	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.cookie.js";
+	$balisesLinkScript[] = $urlSansGet . "#css#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.cookie.js";
 	$jsDirect = '';
 	
 	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
@@ -143,67 +142,67 @@ if (!empty($boitesDeroulantesTableau))
 		$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
 	}
 	
-	$balisesLinkScript[] = url(FALSE) . "#jsDirect#$jsDirect";
+	$balisesLinkScript[] = $urlSansGet . "#jsDirect#$jsDirect";
 }
 
 // Flux RSS.
 
 if ($idGalerie && $rss)
 {
-	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', url(FALSE));
-	$balisesLinkScript[] = url(FALSE) . "#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
+	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
+	$balisesLinkScript[] = $urlSansGet . "#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
 }
 
 if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 {
 	$urlFlux = $urlRacine . '/rss.php?global=galeries&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = url(FALSE) . "#rss#$urlFlux#" . T_('RSS de toutes les galeries');
+	$balisesLinkScript[] = $urlSansGet . "#rss#$urlFlux#" . T_('RSS de toutes les galeries');
 }
 
 if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 {
 	$urlFlux = $urlRacine . '/rss.php?global=pages&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = url(FALSE) . "#rss#$urlFlux#" . T_('RSS global du site');
+	$balisesLinkScript[] = $urlSansGet . "#rss#$urlFlux#" . T_('RSS global du site');
 }
 
 // Slimbox2.
 
 if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie)
 {
-	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/slimbox2/js/slimbox2.js";
-	$balisesLinkScript[] = url(FALSE) . "#css#$urlRacine/js/slimbox2/css/slimbox2.css";
+	$balisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/slimbox2/js/slimbox2.js";
+	$balisesLinkScript[] = $urlSansGet . "#css#$urlRacine/js/slimbox2/css/slimbox2.css";
 }
 
 // Table des matières.
 
 if ($tableDesMatieres)
 {
-	$balisesLinkScript[] = url(FALSE) . "#css#$urlRacine/css/table-des-matieres.css";
-	$balisesLinkScript[] = url(FALSE) . "#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
+	$balisesLinkScript[] = $urlSansGet . "#css#$urlRacine/css/table-des-matieres.css";
+	$balisesLinkScript[] = $urlSansGet . "#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	
-	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/Gettext/lib/Gettext.js";
+	$balisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/Gettext/lib/Gettext.js";
 	
 	if (file_exists($racine . '/locale/' . $locale))
 	{
-		$balisesLinkScript[] = url(FALSE) . "#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
+		$balisesLinkScript[] = $urlSansGet . "#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
 	}
 	
-	$balisesLinkScript[] = url(FALSE) . "#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
+	$balisesLinkScript[] = $urlSansGet . "#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
 	
-	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = url(FALSE) . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
-	$balisesLinkScript[] = url(FALSE) . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
+	$balisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
+	$balisesLinkScript[] = $urlSansGet . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 
 // Message pour IE6.
 
 if ($afficherMessageIe6)
 {
-	$balisesLinkScript[] = url(FALSE) . "#cssltIE7#$urlRacine/css/boites-deroulantes.css";
-	$balisesLinkScript[] = url(FALSE) . "#jsltIE7#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = url(FALSE) . "#jsltIE7#$urlRacine/js/jquery.cookie.js";
-	$balisesLinkScript[] = url(FALSE) . "#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('messageIe6');});";
+	$balisesLinkScript[] = $urlSansGet . "#cssltIE7#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = $urlSansGet . "#jsltIE7#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = $urlSansGet . "#jsltIE7#$urlRacine/js/jquery.cookie.js";
+	$balisesLinkScript[] = $urlSansGet . "#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('messageIe6');});";
 }
 
 // Variable finale.

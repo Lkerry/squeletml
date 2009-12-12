@@ -420,6 +420,8 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 
 Quelques variables et constantes PHP peuvent être utilisées dans la rédaction du contenu pour faciliter l'élaboration des chemins vers les fichiers:
 
+##### Variables
+
 - variable `$racine`: contient le chemin sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
 
 		<?php include $racine . '/fichier.inc.php'; ?>
@@ -436,6 +438,20 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 		<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
 
+- variable `$url`: contient l'URL de la page en cours. Exemple:
+
+		http://www.NomDeDomaine.ext/fichier.php?a=2&b=3
+
+- variable `$nomPage`: contient le nom de la page en cours. Exemple:
+
+		fichier.php
+
+- tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
+
+		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
+
+##### Constantes
+
 - constante `ACCUEIL`: contient l'URL pointant vers l'accueil de la langue de la page.
 
   - Exemple d'utilisation dans une page dont la langue est le français:
@@ -447,18 +463,6 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
 
 - constante `LANGUE`: contient la langue de la page en cours (ex.: `fr`).
-
-- constante `PAGE`: contient la page en cours. Exemple:
-
-		fichier.php
-
-- constante `URL`: contient l'URL de la page en cours. Exemple:
-
-		http://www.NomDeDomaine.ext/fichier.php?a=2&b=3
-
-- tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
-
-		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
 
 #### Coloration de code PHP
 

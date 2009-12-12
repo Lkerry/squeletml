@@ -61,7 +61,7 @@ Retourne l'`id` de `body`.
 */
 function adminBodyId()
 {
-	return str_replace('.', '-', page());
+	return str_replace('.', '-', nomPage());
 }
 
 /*

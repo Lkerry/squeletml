@@ -538,22 +538,4 @@ $galerieActiverFluxRssParDefaut = TRUE; // TRUE|FALSE
 - Voir la documentation pour plus de détails.
 */
 $galerieActiverFluxRssGlobal = FALSE; // TRUE|FALSE
-
-########################################################################
-##
-## NE PAS MODIFIER CE QUI SUIT (à moins de savoir ce que vous faites).
-##
-########################################################################
-
-// `DOCUMENT_ROOT`.
-/*
-- N'a pas toujours la bonne valeur selon les serveurs. On écrase donc sa valeur par défaut.
-*/
-$_SERVER['DOCUMENT_ROOT'] = $racine;
-
-// Diverses variables utiles pour les liens dans les pages.
-$urlSite = $urlRacine . '/site';
-$urlFichiers = $urlRacine . '/site/fichiers';
-$urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
-
 ?>

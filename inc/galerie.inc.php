@@ -204,7 +204,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 		if ($galerieInfoAjout)
 		{
 			$galerieInfo .= '<div id="galerieInfo">' . "\n";
-			$galerieInfo .= '<p>' . sprintf(T_("Affichage de l'oeuvre %1\$s sur un total de %2\$s."), $indice + 1, $nombreDoeuvres) . ' <a href="' . url(FALSE) . '">' . T_("Aller à l'accueil de la galerie.") . "</a></p>\n";
+			$galerieInfo .= '<p>' . sprintf(T_("Affichage de l'oeuvre %1\$s sur un total de %2\$s."), $indice + 1, $nombreDoeuvres) . ' <a href="' . $urlSansGet . '">' . T_("Aller à l'accueil de la galerie.") . "</a></p>\n";
 			$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
 		}
 		
@@ -338,7 +338,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 	{
 		$estPageDerreur = TRUE;
 		$id = securiseTexte($_GET['oeuvre']);
-		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre demandée est introuvable. <a href=\"%1\$s\">Voir toutes les oeuvres</a>."), url(FALSE, FALSE)) . "</p>\n";
+		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre demandée est introuvable. <a href=\"%1\$s\">Voir toutes les oeuvres</a>."), $urlSansGetSansServeur) . "</p>\n";
 		
 		// Ajustement des métabalises.
 		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
@@ -395,7 +395,7 @@ elseif ($idGalerie)
 		$pagination .= '<div class="galeriePagination">' . "\n";
 	
 		// `$lien` va être utilisée pour construire l'URL de la page précédente ou suivante.
-		$lien = url(FALSE) . '?';
+		$lien = $urlSansGet . '?';
 	
 		// On récupère les variables GET pour les ajouter au lien, sauf `page`.
 		if (!empty($_GET))
@@ -475,9 +475,9 @@ elseif ($idGalerie)
 		$galerieInfo .= '<div id="galerieInfo">' . "\n";
 		$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s oeuvre", "Cette galerie contient %1\$s oeuvres", $nombreDoeuvres), $nombreDoeuvres) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
 		
-		if (!preg_match('|' . url(FALSE, FALSE) . '$|', url(FALSE, FALSE)))
+		if (!preg_match('|' . $urlSansGetSansServeur . '$|', $urlSansGetSansServeur))
 		{
-			$galerieInfo .= ' <a href="' . url(FALSE, FALSE) . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
+			$galerieInfo .= ' <a href="' . $urlSansGetSansServeur . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
 		}
 		
 		$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";

@@ -15,6 +15,8 @@ if (!isset($langue))
 	$langue = FALSE;
 }
 
+$urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
+
 // Inclusions 2 de 2.
 
 include_once $racineAdmin . '/inc/fonctions.inc.php';
