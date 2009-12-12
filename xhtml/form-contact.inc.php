@@ -23,10 +23,19 @@
 		<p><label><?php echo T_("Votre message:"); ?></label><br />
 		<textarea name="message" cols="30" rows="10" id="message"><?php echo $message; ?></textarea></p>
 		
-		<p><label><?php echo T_("Antipourriel:"); ?></label><br />
-	<?php printf(T_("Veuillez compléter: %1\$s ajouté à %2\$s vaut %3\$s"), $contactActiverCaptchaCalcul1, $contactActiverCaptchaCalcul2, "<input name='ab' type='text' size='4' />"); ?></p>
-		
-		<?php echo $inputHidden; ?>
+		<?php if ($contactActiverCaptchaCalcul): ?>
+			<p><label><?php echo T_("Antipourriel:"); ?></label><br />
+				
+				<?php if ($contactCaptchaCalculInverse): ?>
+					<?php printf(T_("Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1\$s (plusieurs réponses possibles):"), $contactCaptchaCalculUn); ?>
+					<?php printf(T_("%1\$s et %2\$s"), "<input name='r' type='text' size='4' />", "<input name='s' type='text' size='4' />"); ?>
+				<?php else: ?>
+					<?php printf(T_("Veuillez compléter: %1\$s ajouté à %2\$s vaut %3\$s"), $contactCaptchaCalculUn, $contactCaptchaCalculDeux, "<input name='r' type='text' size='4' />"); ?>
+				<?php endif; ?>
+			</p>
+			
+			<?php echo $inputHidden; ?>
+		<?php endif; ?>
 		
 		<?php if ($contactCopieCourriel): ?>
 			<p><input

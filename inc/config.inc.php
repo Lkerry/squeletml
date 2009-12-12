@@ -340,22 +340,13 @@ $dureeCacheFluxRss = 0;
 ##
 ########################################################################
 
+/* _______________ Général. _______________ */
+
 // Contact par défaut.
 /*
 - Pour utiliser le formulaire de contact livré par défaut sans devoir créer une page de contact personnalisée simplement pour y renseigner la variable `$courrielContact`, saisir ci-dessous l'adresse courriel à utiliser, sinon laisser vide.
 */
 $contactCourrielParDefaut = '';
-
-// Antipourriel.
-/*
-- Il est possible d'ajouter un champ de calcul mathématique et de limiter le nombre de liens dans le corps d'un message.
-*/
-$contactActiverCaptchaCalcul = TRUE; // TRUE|FALSE
-$contactCaptchaCalculMin = 0;
-$contactCaptchaCalculMax = 10;
-
-$contactActiverCaptchaLiens = FALSE; // TRUE|FALSE
-$contactCaptchaLiensNombre = 5; // Nombre de liens max dans un message
 
 // Vérification de la forme du courriel.
 $contactVerifierCourriel = TRUE; // TRUE|FALSE
@@ -365,6 +356,27 @@ $contactCourrielIdentifiantObjet = '[Contact] ';
 
 // Ajout dans le formulaire d'une option d'envoi d'une copie à l'expéditeur.
 $contactCopieCourriel = FALSE; // TRUE|FALSE
+
+/* _______________ Antipourriel. _______________ */
+
+// Ajout d'un champ de calcul mathématique.
+$contactActiverCaptchaCalcul = TRUE; // TRUE|FALSE
+$contactCaptchaCalculMin = 2;
+$contactCaptchaCalculMax = 10;
+
+// Si `$contactActiverCaptchaCalcul` vaut TRUE, inversion des termes de l'addition et du résultat.
+/*
+- Par défaut, le calcul se présente ainsi:
+  c = ? + ?
+  Bien sûr, il peut y avoir plusieurs réponses possibles.
+- Mettre à FALSE pour anuler l'inversion et obtenir ceci:
+  a + b = ?
+*/
+$contactCaptchaCalculInverse = TRUE; // TRUE|FALSE;
+
+// Limitation du nombre de liens dans le corps d'un message.
+$contactActiverCaptchaLiens = FALSE; // TRUE|FALSE
+$contactCaptchaLiensNombre = 5; // Nombre de liens max dans un message
 
 ########################################################################
 ##

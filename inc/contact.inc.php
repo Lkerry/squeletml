@@ -89,10 +89,18 @@ if (isset($_POST['envoyer']))
 
 	if ($contactActiverCaptchaCalcul)
 	{
-		$ab = securiseTexte($_POST['ab']);
-		$abSomme = $_POST['a'] + $_POST['d'];
+		if ($contactCaptchaCalculInverse)
+		{
+			$resultat = $_POST['u'];
+			$sommeUnDeux = $_POST['r'] + $_POST['s'];
+		}
+		else
+		{
+			$resultat = $_POST['r'];
+			$sommeUnDeux = $_POST['u'] + $_POST['d'];
+		}
 		
-		if ($abSomme != $ab)
+		if ($sommeUnDeux != $resultat)
 		{
 			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li>' . T_("Veuillez répondre correctement à la question antipourriel.") . "</li>\n";
@@ -223,25 +231,23 @@ if ($nom == T_('Votre nom'))
 
 if ($contactActiverCaptchaCalcul)
 {
-	$contactActiverCaptchaCalcul1 = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
-	$contactActiverCaptchaCalcul2 = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
-	$contactActiverCaptchaCalculBidon = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
+	$contactCaptchaCalculUn = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
+	$contactCaptchaCalculDeux = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
 	$inputHidden = '';
-	$inputHidden .= '<input name="a" type="hidden" value="' . $contactActiverCaptchaCalcul1 . '" />' . "\n";
-	$inputHidden .= '<input name="b" type="hidden" value="' . $contactActiverCaptchaCalculBidon . '" />' . "\n";
+	$inputHidden .= '<input name="u" type="hidden" value="' . $contactCaptchaCalculUn . '" />' . "\n";
 	
 	// Ajout de quelques `input` bidons pour augmenter les chances de duper les robots pourrielleurs.
 	$nbreInput = mt_rand(5, 10);
-	$toutesLesLettres = 'abd';
+	$lettresExcluses = 'drsu';
 	
 	for ($i = 0; $i < $nbreInput; $i++)
 	{
-		$lettreAuHasard = lettreAuHasard($toutesLesLettres);
-		$toutesLesLettres .= $lettreAuHasard;
+		$lettreAuHasard = lettreAuHasard($lettresExcluses);
+		$lettresExcluses .= $lettreAuHasard;
 		$inputHidden .= '<input name="' . $lettreAuHasard . '" type="hidden" value="' . mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax) . '" />' . "\n";
 	}
 	
-	$inputHidden .= '<input name="d" type="hidden" value="' . $contactActiverCaptchaCalcul2 . '" />' . "\n";
+	$inputHidden .= '<input name="d" type="hidden" value="' . $contactCaptchaCalculDeux . '" />' . "\n";
 }
 
 // Traitement personnalisé optionnel.
