@@ -1,5 +1,7 @@
 #!/usr/bin/php
 <?php
+error_reporting(E_ALL);
+
 ########################################################################
 ##
 ## ChangeLog vers Markdown.
