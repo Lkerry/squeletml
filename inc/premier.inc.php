@@ -1,12 +1,12 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'initialisation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.premier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.premier.inc.php`.
 
 Étapes dans ce fichier:
 
-1. Première série d'initialisations.
+1. Première série d'affectations.
 2. Première série d'inclusions.
-3. Deuxième série d'initialisations.
+3. Deuxième série d'affectations.
 4. Deuxième série d'inclusions.
 5. Ajouts dans `$balisesLinkScript`.
 6. Traitement personnalisé optionnel.
@@ -15,11 +15,11 @@ Ce fichier gère l'inclusion des fichiers et l'initialisation des variables néc
 
 ########################################################################
 ##
-## Initialisations et inclusions.
+## Affectations et inclusions.
 ##
 ########################################################################
 
-// Initialisations 1 de 2.
+// Affectations 1 de 2.
 
 extract(init(FALSE, 'idGalerie', 'langue'), EXTR_SKIP);
 
@@ -39,7 +39,7 @@ foreach (aInclureDebut($racine, $idGalerie) as $fichier)
 	include_once $fichier;
 }
 
-// Initialisations 2 de 2.
+// Affectations 2 de 2.
 
 extract(init('', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'description', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);

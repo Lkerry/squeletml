@@ -2,16 +2,16 @@
 
 ## Installation
 
-Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il n'est donc nécessaire que de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire l'archive, et de placer les fichiers sur un serveur, par exemple par ftp.
+Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il est donc seulement nécessaire de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire cette archive et de placer les fichiers sur un serveur, par exemple par ftp.
 
 **Notes:**
 
-- pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur votre serveur;
-- pour ajouter des images dans la galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
+- pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur;
+- pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
 
 ### Mise en situation
 
-On extrait l'archive, ce qui crée par exemple le dossier `squeletml-1.8`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-1.8` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-1.8`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+On extrait l'archive, ce qui crée par exemple le dossier `squeletml-2.0`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-2.0` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-2.0`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
 
 ## Configuration
 
@@ -35,17 +35,21 @@ Ce fichier contient deux variables obligatoires à renseigner:
 
 		$accueil['fr'] = $urlRacine;
 
-	Vous pouvez ajouter autant de langues que vous le désirez. Seulement, prenez note que pour l'instant, Squeletml offre une traduction de son squelette prête à être utilisée pour seulement deux langues: le français et l'anglais.
+	Vous pouvez ajouter autant de langues que vous le désirez, dans la mesure où cette langue est offerte par défaut avec Squeletml ou que vous en effectuiez la traduction. Le français est la langue par défaut. Ainsi, l'interface de Squeletml sera toujours disponible à 100% dans cette langue. Pour l'instant, une traduction partielle en anglais accompagne Squeletml.
 
 Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation, par exemple `http://www.nomDeDomaine.ext/`.
 
-**Note: il est possible de renommer le dossier d'administration pour plus de sécurité. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `init.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation, par exemple:**
+**Note: il est possible de renommer le dossier d'administration pour plus de sécurité, qui est par défaut `admin`. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `init.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation. Par exemple, modifier ceci:**
+
+	http://www.nomDeDomaine.ext/admin/acces.admin.php
+
+pour:
 
 	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
 
 #### Protection de l'administration (fichier `.acces`)
 
-Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger la section d'administration du site sans attendre. Pour ce faire, visitez la page suivante:
+Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger sans attendre la section d'administration du site. Pour ce faire, visitez la page suivante:
 
 	http://www.nomDeDomaine.ext/admin/acces.admin.php
 
@@ -83,11 +87,11 @@ Ce fichier va également contenir les instructions pour protéger le dossier d'a
 
 Ce fichier contient beaucoup de paramètres au sujet du site. Les variables modifiables sont en général documentées directement dans le fichier de configuration. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml. Vous serez ensuite en mesure de modifier des paramètres de votre site.
 
-## Structure de Squeletml
+## Architecture de Squeletml
 
 ### Dossiers
 
-La structure de Squeletml est la suivante:
+L'arborescence de Squeletml est la suivante:
 
 - `admin` (le cas échéant, modifier le nom du dossier d'administration)
 - `css`
@@ -97,10 +101,11 @@ La structure de Squeletml est la suivante:
 - `js`
 - `locale`
 - **`site`**
+- `xhtml`
 
 Tous les dossiers, à part `site`, font partie de la structure officielle par défaut de Squeletml, et les fichiers y étant contenus ne doivent pas être modifiés, sous peine de perdre les modifications lors d'une mise à jour de Squeletml.
 
-**Toute modification apportée à la configuration doit donc être effectuée dans le dossier `site`.**
+**Toute modification apportée à la configuration par défaut doit donc être effectuée dans le dossier `site`.**
 
 Par exemple, pour modifier l'apparence du site, **ne modifiez pas** le fichier `css/style-general.css`, mais créez un fichier dans `site/css`, par exemple `site/css/style.css`. Il faudra ensuite ajouter ce fichier dans les styles à inclure. Nous verrons comment faire un peu plus loin.
 
@@ -108,41 +113,66 @@ Pour ajouter des images, mettez vos fichiers dans `site/fichiers`. Pour ajouter 
 
 #### Le dossier `inc`
 
-Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il s'agit autant de la configuration que de la structure HTML (en-tête, menu, etc.). La plupart des fichiers peuvent être personnalisés en créant un fichier de même nom dans `site/inc`, et Squeletml reconnaîtra automatiquement le fichier personnel. Voici la liste des fichiers de `inc` que vous pouvez personnaliser dans votre dossier `site/inc`:
+Le dossier `inc` contient tous les scripts déclarant et affectant les variables qui seront utilisées pour construire la structure XHTML. Aucun fichier de ce dossier ne génère un affichage vers le navigateur. Il y a donc une séparation dans Squeletml entre les fichiers d'analyse et ceux contenant le contenu envoyé au navigateur.
 
-- `config.inc.php`: fichier important, contenant presque toute la configuration du site, autant pour le formulaire de contact, les galeries photos, le titre du site, etc. Pour modifier une variable de ce fichier, créer un fichier de même nom dans `site/inc`, ce qui donne:
+Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier de même nom dans `site/inc`, et Squeletml reconnaîtra automatiquement le fichier personnel:
 
-		site/inc/config.inc.php
+- `blocs.inc.php`: construit le code XHTML des blocs (menu des langues, menu principal, liens vers les flux RSS, etc.) pour une région spécifique (`surContenu` ou `sousContenu`). Après son inclusion, la variable `$blocs` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/blocs.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-	et y réassigner les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
-
-	*Note: il est également possible de personnaliser la configuration de la section d'administration. Pour ce faire, créez un fichier `site/inc/config-admin.inc.php`*, et ajoutez-y les variables que vous voulez modifier.
+- `config.inc.php`: contient presque toute la configuration du site, autant pour le formulaire de contact, les galeries photos, le titre du site, etc. Pour modifier une variable de ce fichier, créer le fichier `site/inc/config.inc.php` et y réaffecter les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
 
 - `constantes.inc.php`: contient les constantes PHP utilisées dans Squeletml. Vous pouvez ajouter vos propres constantes en créant le fichier `site/inc/constantes.inc.php`. S'il existe, ce fichier sera inséré après celui par défaut.
 
+- `contact.inc.php`: construit et analyse le formulaire de contact. Après son inclusion, la variable `$contact` est prête à être utilisée et contient les messages (d'erreur ou de confirmation) affichés à l'internaute et le formulaire en tant que tel. Il est possible d'interagir avec ce script en créant le fichier `site/inc/contact.inc.php`, qui sera inséré à différentes étapes du script:
+
+  - juste après l'analyse des champs par défaut du formulaire, ce qui permet entre autres d'avoir des champs personnalisés et d'utiliser son propre script d'analyse de ces champs. Les variables utiles lors d'une analyse personnalisée sont `$erreurFormulaire`, qui annule l'envoi du message si elle vaut `TRUE`, et `$messagesScript`, qui contient les explications affichées après le traitement du formulaire.
+
+  - juste avant l'envoi du message, ce qui permet de modifier le corps du message, l'objet, etc.
+
+  - à la fin du fichier par défaut.
+
+- `dernier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Vous pouvez créer le fichier `site/inc/dernier.inc.php`, qui sera inséré à la fin de celui par défaut.
+
+- `faire-decouvrir.inc.php`: crée les variables nécessaires à l'incorporation au formulaire de contact du module «Faire découvrir». Vous pouvez modifier ces variables en créant le fichier `site/inc/faire-decouvrir.inc.php`, qui sera inséré à la fin de celui par défaut.
+
 - `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
 
-- Les fichiers de la structure XHTML générale de la page:
+- `galerie.inc.php`: génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une oeuvre. Vous pouvez modifier ces variables en créant le fichier `site/inc/galerie.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-  - `page-premier.inc.php`
-  - `page-dernier.inc.php`
+- `premier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Vous pouvez créer le fichier `site/inc/premier.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-- Les fichiers de division HTML, qui sont, pour le français:
+**Note: le principe de personnalisation des fichiers du dossier `inc` est applicable également à la section d'administration. La structure répliquée à l'intérieur du dossier `site` doit être contenue dans un dossier de même nom que celui de l'administration, qui est `admin` par défaut. Par exemple, pour modifier des variables du fichier de configuration `admin/inc/config.inc.php`, créer le fichier `site/admin/inc/config.inc.php`.**
 
-  - `fr/html.ancres.inc.php`
-  - `fr/html.bas-de-page.inc.php`
-  - `fr/html.menu.inc.php`
-  - `fr/html.menu-langues.inc.php`
-  - `fr/html.sous-titre.inc.php`
-  - `fr/html.sur-titre.inc.php`
+#### Le dossier `xhtml`
 
-	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `en/html.menu.inc.php`.
+Le dossier `xhtml` contient tous les fichiers contenant la structure XHTML envoyée au navigateur. Autrement dit, les variables nécessaires à la construction d'une page ont été déclarées et affectées par les scripts du dossier `inc`, et elles setont utilisées dans les fichiers du dossier `xhtml`.
 
-	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez personnaliser chaque division en créant un fichier de même nom dans `site/inc`. Par exemple, pour modifier le menu en français, créer un fichier `site/inc/fr/html.menu.inc.php` et modifiez son contenu comme désiré. **Ceci écrasera le fichier par défaut.** Ainsi, si `site/inc/fr/html.menu.inc.php` existe, le fichier par défaut `inc/fr/html.menu.inc.php` ne sera pas inclus.
+La plupart des fichiers du dossier `xhtml` peuvent être personnalisés en créant un fichier de même nom dans `site/xhtml`, et Squeletml reconnaîtra automatiquement le fichier personnel.
 
-	Certains fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/inc`. Voir la section «Divisions HTML».
+Pour commencer, il y a les fichiers de la structure XHTML générale de la page:
 
-- Les fichiers de page:
+- `form-contact.inc.php`: modèle du formulaire de contact. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/form-contact.inc.php`, qui sera utilisé à la place du modèle par défaut.
+
+- `page.dernier.inc.php`: modèle de page suivant le contenu ajouté directement par l'utilisateur. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/page.dernier.inc.php`, qui sera utilisé à la place du modèle par défaut.
+
+- `page.premier.inc.php`: modèle de page précédant le contenu ajouté directement par l'utilisateur. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/page.premier.inc.php`, qui sera utilisé à la place du modèle par défaut.
+
+Ensuite, il y a les fichiers de division XHTML, qui sont, pour le français:
+
+- `fr/ancres.inc.php`
+- `fr/bas-de-page.inc.php`
+- `fr/menu.inc.php`
+- `fr/menu-langues.inc.php`
+- `fr/sous-titre.inc.php`
+- `fr/sur-titre.inc.php`
+
+	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `en/menu.inc.php`.
+
+	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez utiliser vos propres divisions en créant un fichier de même nom dans `site/xhtml`. Par exemple, pour modifier le menu en français, créer un fichier `site/xhtml/fr/menu.inc.php`, qui sera inséré à la place de la division par défaut.
+
+	Certains fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/xhtml`. Voir la section «Divisions XHTML».
+
+Il y a enfin les fichiers des pages par défaut:
 
   - `fr/page.401.inc.php`
   - `fr/page.404.inc.php`
@@ -152,106 +182,148 @@ Le dossier `inc` contient tous les fichiers inclus dans chaque page du site. Il 
 
 	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `en/page.index.inc.php`.
 
-	**Il s'agit des pages livrées par défaut par Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système d'inclusion.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `fr/page.index.inc.php` dans le dossier `site/inc/` et modifier son contenu. **Le fichier personnalisé sera inclus à la place du fichier `inc/fr/page.index.inc.php` par défaut.**
-	
+	**Il s'agit des pages livrées par défaut avec Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système d'inclusion.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `site/xhtml/fr/page.index.inc.php`, qui sera inclus à la place du fichier par défaut.
+
 	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$contactCourrielParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
 
-### Divisions HTML
+### Structure XHTML par défaut
 
 *Note: la page [Aperçu de la structure d'une page de Squeletml](http://www.jpfleury.net/squeletml/structure) propose des explications accompagnées d'une capture d'écran annotée.*
 
 Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 
-	Doctype XHTML 1.0 Strict
-	<html ...><!-- La langue déclarée est celle de la page en cours -->
+	Doctype XHTML 1.0 Strict..
+	<html ...><!-- Langue de la page en cours. -->
+		<!-- ____________________ <head> ____________________ -->
 		<head>
+			<!-- Titre. -->
 			<title>...</title>
-			Déclaration de l'encodage UTF-8
-			Métabalises (description, keywords, robots)
-			Insertion des feuilles de style et des scripts Javascript
+			
+			<!-- Métabalises. -->
+			Encodage UTF-8.
+			Description.
+			Robots.
+			
+			<!-- Balises `link` et `script`. -->
+			Feuilles de style et scripts Javascript.
 		</head>
-
-		<body ...><!-- Selon le cas, diverses classes pour body -->
+		<!-- ____________________ <body> ____________________ -->
+		<body class="...">
+			<!-- ____________________ #ancres ____________________ -->
+			<div id="ancres">
+				...
+			</div><!-- /#ancres -->
+			
+			<!-- ____________________ Message pour IE6. ____________________ -->
+			<!--[if lt IE 7]>
+				<div id="messageIe6">
+					...
+				</div><!-- /#messageIe6 -->
+			<![endif]-->
+			
+			<!-- ____________________ #page ____________________ -->
 			<div id="page">
 			  <div id="interieurPage">
-					S'il y a lieu, commentaire conditionnel pour Internet Explorer 6
-
+			  	<!-- ____________________ #enTete ____________________ -->
 					<div id="enTete">
-						<div id="surTitre">
-							...
-						</div><!-- /#surTitre -->
-				
 						<div id="titre">
-							Titre du site dans un h1 s'il s'agit de la page d'accueil, sinon dans un p
+							Titre du site dans un `h1` s'il s'agit de la page d'accueil, sinon dans un `p`.
 						</div><!-- /#titre -->
-
+						
 						<div id="sousTitre">
 							...
 						</div><!-- /#sousTitre -->
 					</div><!-- /#enTete -->
-
-					<div id="ancres">
-						...
-					</div><!-- /#ancres -->
-			
+					
+					<!-- ____________________ #surContenu ____________________ -->
 					<div id="surContenu">
-						Vide par défaut
+						Vide par défaut.
 					</div><!-- /#surContenu -->
-			
-					<div id="contenu">
+					
+					<!-- ____________________ #contenu ____________________ -->
+					<div id="contenu" class="...">
 						<div id="interieurContenu">
-							...
+							Contenu entré directement par l'utilisateur.
 						</div><!-- /#interieurContenu -->
 					</div><!-- /#contenu -->
-			
+					
+					<!-- ____________________ #sousContenu ____________________ -->
 					<div id="sousContenu">
-						<div id="menuLangues">
+						<div id="menuLangues" class="bloc">
 							...
 						</div><!-- /#menuLangues -->
-
-						<div id="menu">
+						
+						<div id="menu" class="bloc">
 							...
 						</div><!-- /#menu -->
-					
-						<div id="faireDecouvrir">
+						
+						<div id="faireDecouvrir" class="bloc">
 							...
 						</div><!-- /#faireDecouvrir -->
+						
+						<div id="fluxRss" class="bloc">
+							...
+						</div><!-- /#fluxRss -->
 					</div><!-- /#sousContenu -->
-			
+					
+					<!-- ____________________ #basDePage ____________________ -->
 					<div id="basDePage">
 						...
 					</div><!-- /#basDePage -->
 				</div><!-- /#interieurPage -->
 			</div><!-- /#page -->
+			
+			Balises `script` finales.
 		</body>
 	</html>
 
-D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">`. Aussi, certaines `div` peuvent être positionnées ailleurs selon les choix effectués dans le fichier de configuration, par exemple le menu.
+D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">` lorsque nous visitons la page d'une galerie. Aussi, certaines `div` peuvent être positionnées ailleurs selon les choix effectués dans le fichier de configuration, par exemple le menu. Enfin, il est possible d'utiliser son propre modèle de page, comme expliqué à la section *Le dossier `xhtml`*.
 
-#### Nombre de colonnes et contenu de celles-ci
+#### Nombre de colonnes et blocs de contenu
 
-Les sections «Activations et inclusions» et «Contenu et ordre du flux HTML» du fichier de configuration contiennent des commentaires explicatifs. Tout ne sera pas repris ici, mais en résumé, il est possible de choisir le nombre de colonnes ainsi que l'ordre de leur contenu. Le principe est le suivant: plusieurs blocs de menu existent par défaut, comme le menu des langues, le menu principal, les liens RSS, etc. Il est possible également d'ajouter ses propres blocs. Chaque bloc peut être positionné dans une des deux div suivantes (et dans l'ordre voulu à l'intérieur d'une même div): `surContenu` ou `sousContenu`. Ensuite, selon le style affecté (voir la section «Style CSS» du fichier de configuration), les div vont remplir une ou deux colonnes. Les possibilités sont: une seule colonne à droite, une seule colonne à gauche, deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`, ou deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
+Les sections «Style CSS» et «Contenu et ordre du flux HTML» du fichier de configuration contiennent beaucoup commentaires explicatifs. Tout ne sera pas repris ici, mais en résumé, il est possible de choisir le nombre de colonnes ainsi que l'ordre de leur contenu. Le principe est le suivant: plusieurs blocs de contenu existent par défaut, comme le menu des langues, le menu principal, les liens vers les flux RSS, etc. Il est possible également d'ajouter ses propres blocs.
+
+Chaque bloc peut être positionné dans une des deux div suivantes (et dans l'ordre voulu à l'intérieur d'une même div): `surContenu` ou `sousContenu`. Ensuite, selon le style affecté (voir la section «Style CSS» du fichier de configuration), les div vont être positionnées dans la page pour remplir la ou les colonnes, ou bien, s'il n'y a pas de colonne, le dessus ou le dessous du contenu. Les possibilités sont donc:
+
+- aucune colonne, les blocs étant positionnés au-dessus ou au-dessous du contenu selon leur configuration;
+- une seule colonne à gauche;
+- une seule colonne à droite;
+- deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`;
+- deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
+
+Il est bon de rappeler qu'un modèle de page personnalisé peut être utilisé (voir la section Le dossier `xhtml`), et que les blocs peuvent alors être affichés ailleurs selon le modèle utilisé.
 
 ## Style de Squeletml
 
-Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style. Voici quelques exemples: ajout de coins arrondis aux blocs de menu, nombre de colonnes, emplacement d'une colonne unique, arrière-plan des colonnes, contenu affichable ou masquable par clic sur le titre, etc.
+Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Il est même possible de ne pas inclure les feuilles par défaut et partir de zéro. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style ou modifier le modèle de page (voir la section *Dossiers*). L'utilisation du fichier de configuration pour modifier le style n'est pas du tout une obligation, mais une aide supplémentaire si besoin il y a.
+
+Voici quelques exemples:
+
+- ajout de coins arrondis aux blocs de contenu;
+- nombre de colonnes;
+- emplacement d'une colonne unique;
+- arrière-plan d'une colonne;
+contenu affichable ou masquable par un clic sur le titre;
+- ajout d'une classe `actif` aux liens pointant vers la page en cours dans les blocs de contenu;
+-limite de la profondeur d'une liste dans les blocs de contenu (classe `masquer` ajoutée aux sous-listes inactives);
+- etc.
 
 ## Traduction de Squeletml
 
 Il est possible de traduire Squeletml dans la langue désirée. Le principal fichier est `locale/squeletml.pot`. Il contient la plupart des phrases à traduire. Les autres fichiers sont:
 
 - `admin/versions-solo.admin.php` (le cas échéant, modifier le nom du dossier d'administration)
-- `inc/fr/html.ancres.inc.php`
-- `inc/fr/html.bas-de-page.inc.php`
-- `inc/fr/html.menu.inc.php`
-- `inc/fr/html.menu-langues.inc.php`
-- `inc/fr/html.sous-titre.inc.php`
-- `inc/fr/html.sur-titre.inc.php`
-- `inc/fr/page.401.inc.php`
-- `inc/fr/page.404.inc.php`
-- `inc/fr/page.contact.inc.php`
-- `inc/fr/page.galerie.inc.php`
-- `inc/fr/page.index.inc.php`
+- `xhtml/fr/ancres.inc.php`
+- `xhtml/fr/bas-de-page.inc.php`
+- `xhtml/fr/menu.inc.php`
+- `xhtml/fr/menu-langues.inc.php`
+- `xhtml/fr/sous-titre.inc.php`
+- `xhtml/fr/sur-titre.inc.php`
+- `xhtml/fr/page.401.inc.php`
+- `xhtml/fr/page.404.inc.php`
+- `xhtml/fr/page.contact.inc.php`
+- `xhtml/fr/page.galerie.inc.php`
+- `xhtml/fr/page.index.inc.php`
 - `documentation.mdtxt`
 - `LISEZ-MOI.mdtxt`
 - `maintenance.php`
@@ -262,19 +334,19 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 
 Pour mettre à jour Squeletml:
 
-- Visitez la page `http://www.nomDeDomaine.ext/admin/acces.admin.php` (le cas échéant, modifier le nom du dossier d'administration) et mettez votre site en maintenance (hors ligne). Vous pouvez ajouter votre adresse IP dans le champ prévu à cet effet pour avoir encore accès à votre site durant la maintenance.
+- Visitez la page `http://www.nomDeDomaine.ext/admin/acces.admin.php` et mettez votre site en maintenance (hors ligne). Vous pouvez ajouter votre adresse IP dans le champ prévu à cet effet pour avoir encore accès à votre site durant la maintenance.
 
-	La page de maintenance n'a pas de dépendance à des fichiers du site, à l'exception du fichier `.htaccess` de la racine, ce qui veut dire qu'en mode maintenance, vous pouvez supprimer ou déplacer tous les fichiers voulus, à l'exception de la page de maintenance et du `.htaccess`.
+	La page de maintenance n'a pas de dépendance à des fichiers du site, à l'exception du fichier `.htaccess` de la racine, ce qui veut dire qu'en mode maintenance, vous pouvez supprimer ou déplacer tous les fichiers voulus, à l'exception de `maintenance.php` et `.htaccess`.
 
 	**Note: la réécriture d'URL doit être activée sur votre serveur pour utiliser cette fonctionnalité. Si tel n'est pas le cas, ignorez le mode maintenance et passez à l'étape suivante.**
 
-- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom ressemble à `squeletml-1.8`.
+- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom ressemble à `squeletml-2.0`.
 
 - Ensuite, sélectionnez et copiez tout le contenu de ce dossier, à l'exception éventuellement de ce qui suit: vous avez fort probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'accès à l'administration), et peut-être le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés. Vous pouvez cependant vérifier si ces fichiers ont été modifiés dans la nouvelle version de Squeletml et, si tel est le cas, les éditer à la main pour y appliquer les changements.
 
 - Maintenant, collez votre précédente sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
 
-Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer**, en plus des fichiers `.htaccess` ou `robots.txt`, le dossier `site`, qui contient votre configuration personnalisée, et éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`).
+Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer**, en plus des fichiers `.htaccess` ou `robots.txt`, le dossier `site`, qui contient votre configuration personnalisée, éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`) ainsi que les pages que vous avez vous-même ajoutées.
 
 **Note: si vous avez modifié le nom du dossier d'administration, ne pas oublier de supprimer l'ancien dossier et de renommer le nouveau.**
 
@@ -282,11 +354,11 @@ Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichie
 
 Il y a plusieurs manières de créer une page:
 
-1. Copier le fichier `modele.php` et le coller avec le nom désiré.
-2. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Fichier modèle de page web».
-3. Créer un fichier vide et reproduir la structure d'une page.
+1. Créer un fichier vide et reproduir la structure d'une page.
+2. Copier le fichier `modele.php` et le coller avec le nom désiré.
+3. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Fichier modèle de page web» ou «Fichier modèle HTML de page web avec syntaxe Markdown».
 
-Voici la structure d'une page:
+Voici l'anatomie d'une page:
 
 1. variables PHP
 2. inclusion du premier fichier PHP
@@ -299,14 +371,13 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner l'URL de la page en cours.
 
-- `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration `inc/config.inc.php` pour une description détaillée de la syntaxe à utiliser.
+- `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration pour une description détaillée de la syntaxe à utiliser.
 
-- `$classesBody`: permet d'ajouter des classes à la balise `body`. Voici deux exemples:
+- `$classesBody`: permet d'ajouter des classes à la balise `body`. Voici un exemple:
 
-		$classesBody = 'maClasse1';
 		$classesBody = 'maClasse1 maClasse2';
 
-- `$classesContenu`: permet d'ajouter des classes à la div `contenu`. Voir `$classesBody` pour des exemples d'utilisation.
+- `$classesContenu`: permet d'ajouter des classes à la div `contenu`. Voir `$classesBody` pour un exemple d'utilisation.
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
@@ -314,21 +385,21 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
-- `$idGalerie`: un nombre ou un mot identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir plus loin), une galerie sera insérée dans la page.
+- `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir la section *Galeries*), une galerie sera insérée dans la page.
 
-	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si le dossier n'existe pas, un message d'erreur informe de l'inexistence de la galerie.
+	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
 
-- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier `inc/config.inc.php`.
+- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier de configuration.
 
 - `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$inclureMotsCles` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
 
-- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier `inc/config.inc.php`.
+- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier de configuration.
 
-- `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question.
+- `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents dans le contenu, c'est-à-dire à l'intérieur de la div `interieurContenu`. La table est ajoutée au début de cette div.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la div `interieurContenu`. La table est ajoutée au début de cette div.
 
-	La variable `$afficherTableDesMatieresParDefaut`, déclarée dans le fichier `inc/config.inc.php`, s'applique à toutes les pages du site. Utiliser `$tableDesMatieres` pour changer la valeur par défaut pour une page spécifique.
+	La variable `$afficherTableDesMatieresParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$tableDesMatieres` pour changer la valeur par défaut pour une page spécifique.
 
 ### Inclusion du premier fichier PHP
 
@@ -338,19 +409,21 @@ Il suffit d'inclure le fichier `inc/premier.inc.php`.
 
 Ne pas oublier de vérifier le chemin d'inclusion. Par exemple, pour une page à la racine du site, ça donnera:
 
-	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+	include 'inc/premier.inc.php';
 
 Pour une page dans un dossier:
 
-	include '../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+	include '../inc/premier.inc.php';
 
-Pour une page dans un sous-dossier (dossier dans un dossier):
+Pour une page dans un sous-dossier (dossier d'un dossier):
 
-	include '../../inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
+	include '../../inc/premier.inc.php';
+
+**Note: si la page est créée à partir du porte-documents dans la section d'administration, le bon chemin d'inclusion est automatiquement inséré.**
 
 #### Cas avec insertion automatique du fichier `init.inc.php`
 
-**Note: je n'ai pas vraiment testé à fond cette possibilité, et ce n'est pas supporté officiellement dans Squeletml.**
+**Note: je n'ai pas testé cette possibilité, et ce n'est pas supporté officiellement dans Squeletml.**
 
 Le fichier `init.inc.php` contient entre autres la variable `$racine`. En faisant insérer automatiquement ce fichier dans toutes les pages, il est donc possible d'utiliser la variable `$racine` pour inclure le fichier `inc/premier.inc.php`, ce qui nous dispense de devoir modifier le chemin d'inclusion selon le dossier dans lequel la page est située.
 
@@ -374,13 +447,15 @@ Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-
 
 Écrire le contenu en Markdown dans un fichier. Ensuite, faire appel à cette fonction dans la page du site. Exemple:
 
-1. Création du fichier Markdown, par exemple `ma-page.php.mdtxt`, et rédaction du contenu en Markdown dans ce fichier.
+1. Création du fichier Markdown, par exemple `ma-page.php.mdtxt`.
 
 2. Création de la page PHP, par exemple `ma-page.php`, comme n'importe quelle autre page du site. On suppose dans cet exemple que le fichier `ma-page.php.mdtxt` et la page `ma-page.php` sont dans le même dossier (ce n'est pas obligatoire).
 
 3. À l'intérieur de `ma-page.php`, à l'endroit où on insère habituellement le contenu, faire appel à la fonction suivante:
 
 		<?php echo mdtxt('ma-page.php.mdtxt'); ?>
+
+**Note: si la page a été créée dans le porte-documents de la section d'administration avec le type «Fichier modèle HTML de page web avec syntaxe Markdown», tout ceci est effectué automatiquement.**
 
 ##### Fonction `mdtxtChaine()`
 
@@ -418,41 +493,41 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 
 #### Variables et constantes utiles
 
-Quelques variables et constantes PHP peuvent être utilisées dans la rédaction du contenu pour faciliter l'élaboration des chemins vers les fichiers:
+Quelques variables et constantes PHP peuvent être utilisées dans la rédaction du contenu pour faciliter l'élaboration des chemins vers certains fichiers:
 
 ##### Variables
 
-- variable `$racine`: contient le chemin sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
-
-		<?php include $racine . '/fichier.inc.php'; ?>
-
-- variable `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
-
-		<a href="<?php echo $urlRacine . '/maintenance.php'; ?>">lien vers la page de maintenance</a>
-
-- variable `$urlSite`: contient l'URL vers le dossier `site`. Exemple de lien vers une image:
-
-		<a href="<?php echo $urlSite; ?>/fichiers/image.jpg">lien vers une image</a>
-
-- variable `$urlFichiers`: contient l'URL vers le dossier `site/fichiers`. Exemple de lien vers la même image:
-
-		<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
-
-- variable `$url`: contient l'URL de la page en cours. Exemple:
-
-		http://www.NomDeDomaine.ext/fichier.php?a=2&b=3
-
-- variable `$nomPage`: contient le nom de la page en cours. Exemple:
-
-		fichier.php
-
-- tableau `$accueil`: permet d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
+- `$accueil`: tableau permettant d'utiliser un lien vers l'accueil de n'importe quelle langue. Par exemple, dans une page en français:
 
 		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
 
+- `$racine`: contient le chemin sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
+
+		<?php include $racine . '/fichier.inc.php'; ?>
+
+- `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
+
+		<a href="<?php echo $urlRacine . '/maintenance.php'; ?>">lien vers la page de maintenance</a>
+
+- `$urlSite`: contient l'URL vers le dossier `site`. Exemple de lien vers une image:
+
+		<a href="<?php echo $urlSite; ?>/fichiers/image.jpg">lien vers une image</a>
+
+- `$urlFichiers`: contient l'URL vers le dossier `site/fichiers`. Exemple de lien vers la même image:
+
+		<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
+
+- `$url`: contient l'URL de la page en cours. Exemple de valeur:
+
+		http://www.NomDeDomaine.ext/fichier.php?a=2&b=3
+
+- `$nomPage`: contient le nom de la page en cours. Exemple de valeur:
+
+		fichier.php
+
 ##### Constantes
 
-- constante `ACCUEIL`: contient l'URL pointant vers l'accueil de la langue de la page.
+- `ACCUEIL`: contient l'URL pointant vers l'accueil de la langue de la page.
 
   - Exemple d'utilisation dans une page dont la langue est le français:
 
@@ -462,7 +537,9 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
 
-- constante `LANGUE`: contient la langue de la page en cours (ex.: `fr`).
+- `LANGUE`: contient la langue de la page en cours. Exemple de valeur:
+
+		`fr`
 
 #### Coloration de code PHP
 
@@ -486,18 +563,18 @@ Il suffit d'inclure le fichier `inc/dernier.inc.php`. Cette fois-ci, il n'est pa
 
 ### Exemple complet
 
-Voici un exemple:
+Voici un exemple minimal:
 
 	<?php
 	$baliseTitle = "Titre (contenu de la balise `title`)";
 	$description = "Description de la page";
 	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
 	?>
-
+	
 	<h1>Titre de la page</h1>
-
+	
 	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</p>
-
+	
 	<?php include $racine . '/inc/dernier.inc.php'; ?>
 
 ## Galeries
@@ -520,9 +597,11 @@ Concrètement, pour créer une galerie, voici les étapes à suivre:
 
 3. Créer un fichier de configuration `site/fichiers/galeries/$idGalerie/config.ini.txt` ou `site/fichiers/galeries/$idGalerie/config.ini`. Cette étape est développée ci-dessous.
 
+**Note: toutes ces étapes peuvent être réalisées facilement dans la section d'administration.**
+
 ### Fichier de configuration d'une galerie
 
-Chaque image d'une galerie est déclinée en au moins deux versions: vignette et intermédiaire. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src (nom du fichier)`) de la balise `img`. En fait, une seule information est obligatoire dans le fichier de configuration: le nom du fichier de l'image en version intermédiaire.
+Chaque image d'une galerie est déclinée en au moins deux versions: vignette et intermédiaire. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src`) de la balise `img`. En fait, **une seule information est obligatoire dans le fichier de configuration: le nom du fichier de l'image en version intermédiaire.**
 
 Cette information doit se retrouver dans le fichier de configuration `site/fichiers/galeries/$idGalerie/config.ini.txt` ou `site/fichiers/galeries/$idGalerie/config.ini`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
 
@@ -537,7 +616,7 @@ Voici un exemple:
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète des paramètres possibles:
 
-- `id`: l'id est utilisée dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Cela permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'id n'est pas renseignée, elle sera générée automatiquement à partir du nom du fichier image. Exemple:
+- `id`: utilisé dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Ceci permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du nom du fichier image. Exemple:
 
 		id=5
 
@@ -583,13 +662,13 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 - `pageIntermediaireMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version intermédiaire. Laisser vide pour une génération automatique. Exemple:
 
-		pageIntermediaireMotsCles=photo de chien, bla bla bla, divan, photographie, chien
+		pageIntermediaireMotsCles=photographie, chien, bla bla bla, divan, photo
 
 - `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version intermédiaire, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version intermédiaire, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version intermédiaire, c'est-à-dire `intermediaireNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
 
 		originalNom=fichier1Original.jpg
 
-- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est si `exclure` vaut `oui`. Exemple:
+- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
 
 		exclure=oui
 
@@ -627,7 +706,7 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 
 ### Navigation entre les oeuvres
 
-Il y a six méthodes possibles pour naviguer entre les oeuvres:
+Il y a six méthodes possibles pour naviguer entre les oeuvres. La méthode à utiliser est paramétrable dans le fichier de configuration du site.
 
 #### Fenêtre Javascript
 
@@ -671,13 +750,13 @@ Les fichiers par défaut pour les flèches accompagnant les vignettes sont `fich
 
 #### Minivignettes
 
-Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de la galerie, composé de minivignettes des oeuvres de la galerie. Chaque minivignette est cliquable. Par défaut, la hauteur d'une minivignette est de 35 px. Ceci peut être modifié par CSS.
+Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de la galerie, composé de minivignettes des oeuvres de la galerie. Chaque minivignette est cliquable. Par défaut, la hauteur d'une minivignette est de 35 pixels. Ceci peut être modifié par CSS.
 
 Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
 
 ## Lien «Faire découvrir à des ami-e-s»
 
-Une option «Faire découvrir à des ami-e-s» est activée par défaut. Concrètement, un lien est inséré dans le menu pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour leur faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
+Une option «Faire découvrir à des ami-e-s» est activée par défaut. Concrètement, un lien est inséré dans le menu pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
 
 Si la page visitée est la page individuelle d'une oeuvre dans une galerie, le modèle de message contiendra une vignette de l'oeuvre et, si possible, une description, qui est formée par une de ces informations (en ordre de priorité):
 
@@ -711,7 +790,7 @@ Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé.
 	[code de la langue]
 	id de la galerie=URL relative de la galerie
 
-Le code de la langue précise la langue de la syndication globale. L'id correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
+Le code de la langue précise la langue de la syndication globale. L'`id` correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
 
 	[fr]
 	mes voyages=voyages.php
@@ -764,11 +843,11 @@ Pour récupérer la version de développement, simnplement saisir cette commande
 
 Les principales commandes du fichier `Makefile` sont:
 
-- `make generer`: met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main, par exemple les fichiers de langue. Est utilisé en général avant la dernière révision d'une prochaine version.
+- `make generer`: met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main, par exemple les fichiers de langue. Est utilisée en général avant la dernière révision d'une prochaine version.
 
-- `make publier`: crée des archives `.bz2` et `.zip`; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le `ChangeLog`) sur le bureau; et déplace les archives également sur le bureau. Est utilisé après un `bzr tag...` pour la sortie d'une nouvelle version.
+- `make publier`: crée des archives `.bz2` et `.zip`; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le `ChangeLog`) sur le bureau; et déplace les archives également sur le bureau. Est utilisée après un `bzr tag...` pour la sortie d'une nouvelle version.
 
-- `make ini`: installe pour l'utilisateur courant la coloration syntaxique dans l'éditeur de texte gedit (sous GNU/Linux) pour les fichiers de configuration utilisés par Squeletml (configuration des galeries et des flux RSS globaux). Ces fichiers sont au format `.ini`. Contrairement à la coloration par défaut dans gedit, celle installée par `make ini` ne colore pas de délimiteurs de caractères (habituellement les guillemets et les apostrophes), ce qui évite par exemple qu'une apostrophe présente dans la valeur d'un paramètre, comme ceci:
+- `make ini`: installe pour l'utilisateur courant la coloration syntaxique dans l'[éditeur de texte gedit](http://gedit.org/) (sous GNU/Linux) pour les fichiers de configuration utilisés par Squeletml (configuration des galeries et des flux RSS globaux). Ces fichiers sont au format `.ini`. Contrairement à la coloration par défaut dans gedit, celle installée par `make ini` ne colore pas de délimiteurs de caractères (habituellement les guillemets et les apostrophes), ce qui évite par exemple qu'une apostrophe présente dans la valeur d'un paramètre, comme ceci:
 
 		parametre=Lorem ipsum l'orem
 

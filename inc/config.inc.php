@@ -86,7 +86,55 @@ $charset = 'UTF-8';
 */
 $langueParDefaut = 'fr';
 
-/* _______________ Inclusions dans le corps. _______________ */
+/* _______________ Contenu et ordre du flux HTML. _______________ */
+
+// Titre du site en en-tête.
+/*
+- Contenu (balises HTML permises) qui sera inséré comme titre de site dans un `h1` sur la page d'accueil, et dans un `p` sur toutes les autres pages.
+- Astuce: si vous ne voulez pas bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 75px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site.
+*/
+$titreSite['fr'] = "<img id=\"logo\" src=\"$urlRacine/fichiers/squeletml-logo.png\" alt=\"Squeletml\" /><span id=\"logoSupplement\"><img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" /></span>";
+$titreSite['en'] = $titreSite['fr'];
+
+// Ordre des blocs constituant les menus.
+/*
+Les divers blocs constituant les menus sont positionnables, au choix, dans les div `surContenu` ou `sousContenu`. Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux div `surContenu` et `sousContenu` formeront une seule colonne à droite, une seule colonne à gauche, deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`, ou deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
+
+Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Un nombre impair signifie que le bloc en question sera placé dans la div `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la div `sousContenu`. À l'intérieur de chaque div, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
+
+Par exemple:
+
+	'menu-langues' => array (10, 10, 4),
+	'flux-rss' => array (2, 2, 6),
+
+signifie que le menu des langues ainsi que les liens RSS seront insérés dans la div `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre pair pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la div, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 2 (les liens RSS) et 10 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 4 (le menu des langues) et 6 (les liens RSS).
+
+Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut toutefois avoir en tête que chaque clé du tableau `$ordreBlocsDansFluxHtml` ci-dessous représente une partie du nom du fichier à insérer. Par exemple, `faire-decouvrir` fait référence au fichier `LANGUE/html.faire-decouvrir.inc.php`, présent dans le dossier personnalisé `$racine/site/inc` ou le dossier par défaut `$racine/inc`. Ainsi, un bloc personnalisé ayant une clé `heure` dans le tableau `$ordreBlocsDansFluxHtml` fait référence à un fichier `$racine/site/inc/LANGUE/html.heure.inc.php`.
+
+Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivation d'une fonctionnalité, mais seulement avec l'odre dans lequel les blocs sont insérés dans le flux HTML dans le cas où la fonctionnalité est activée.
+
+Voir la fonction `blocs()`.
+*/
+$ordreBlocsDansFluxHtml = array (
+	'menu-langues' => array (2, 2, 1),
+	'menu' => array (1, 4, 4),
+	'faire-decouvrir' => array (6, 6, 6),
+	'legende-oeuvre-galerie' => array (8, 8, 8), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+	'flux-rss' => array (10, 10, 10),
+);
+
+// Détection du type MIME.
+/*
+- La détection du type MIME se fait selon la disponibilité des outils suivants, en ordre de priorité:
+  - `Fileinfo` de PHP;
+  - commande `file` si la variable `$typeMimeFile` vaut TRUE;
+  - tableau personnalisé de correspondance entre une extension et son type MIME si la variable `$typeMimeCorrespondance` n'est pas vide. Exemple:
+    array ('rmi' => 'audio/midi');
+  - tableau par défaut de correspondance entre une extension et son type MIME de la fonction `file_get_mimetype()`.
+*/
+$typeMimeFile = FALSE; // TRUE|FALSE
+$typeMimeCheminFile = '/usr/bin/file';
+$typeMimeCorrespondance = array ();
 
 // Inclusion du sur-titre.
 $inclureSurTitre = FALSE; // TRUE|FALSE
@@ -196,56 +244,6 @@ $boitesDeroulantesParDefaut = '';
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');";
-
-/* _______________ Contenu et ordre du flux HTML. _______________ */
-
-// Titre du site en en-tête.
-/*
-- Contenu (balises HTML permises) qui sera inséré comme titre de site dans un `h1` sur la page d'accueil, et dans un `p` sur toutes les autres pages.
-- Astuce: si vous ne voulez pas bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 75px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site.
-*/
-$titreSite['fr'] = "<img id=\"logo\" src=\"$urlRacine/fichiers/squeletml-logo.png\" alt=\"Squeletml\" /><span id=\"logoSupplement\"><img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" /></span>";
-$titreSite['en'] = $titreSite['fr'];
-
-// Ordre des blocs constituant les menus.
-/*
-Les divers blocs constituant les menus sont positionnables, au choix, dans les div `surContenu` ou `sousContenu`. Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux div `surContenu` et `sousContenu` formeront une seule colonne à droite, une seule colonne à gauche, deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`, ou deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
-
-Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Un nombre impair signifie que le bloc en question sera placé dans la div `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la div `sousContenu`. À l'intérieur de chaque div, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
-
-Par exemple:
-
-	'menu-langues' => array (10, 10, 4),
-	'flux-rss' => array (2, 2, 6),
-
-signifie que le menu des langues ainsi que les liens RSS seront insérés dans la div `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre pair pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la div, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 2 (les liens RSS) et 10 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 4 (le menu des langues) et 6 (les liens RSS).
-
-Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut toutefois avoir en tête que chaque clé du tableau `$ordreBlocsDansFluxHtml` ci-dessous représente une partie du nom du fichier à insérer. Par exemple, `faire-decouvrir` fait référence au fichier `LANGUE/html.faire-decouvrir.inc.php`, présent dans le dossier personnalisé `$racine/site/inc` ou le dossier par défaut `$racine/inc`. Ainsi, un bloc personnalisé ayant une clé `heure` dans le tableau `$ordreBlocsDansFluxHtml` fait référence à un fichier `$racine/site/inc/LANGUE/html.heure.inc.php`.
-
-Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivation d'une fonctionnalité, mais seulement avec l'odre dans lequel les blocs sont insérés dans le flux HTML dans le cas où la fonctionnalité est activée.
-
-Voir la fonction `blocs()`.
-*/
-$ordreBlocsDansFluxHtml = array (
-	'menu-langues' => array (2, 2, 1),
-	'menu' => array (1, 4, 4),
-	'faire-decouvrir' => array (6, 6, 6),
-	'legende-oeuvre-galerie' => array (8, 8, 8), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-	'flux-rss' => array (10, 10, 10),
-);
-
-// Détection du type MIME.
-/*
-- La détection du type MIME se fait selon la disponibilité des outils suivants, en ordre de priorité:
-  - `Fileinfo` de PHP;
-  - commande `file` si la variable `$typeMimeFile` vaut TRUE;
-  - tableau personnalisé de correspondance entre une extension et son type MIME si la variable `$typeMimeCorrespondance` n'est pas vide. Exemple:
-    array ('rmi' => 'audio/midi');
-  - tableau par défaut de correspondance entre une extension et son type MIME de la fonction `file_get_mimetype()`.
-*/
-$typeMimeFile = FALSE; // TRUE|FALSE
-$typeMimeCheminFile = '/usr/bin/file';
-$typeMimeCorrespondance = array ();
 
 /* _______________ Style CSS. _______________ */
 

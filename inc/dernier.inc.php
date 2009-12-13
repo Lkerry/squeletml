@@ -1,21 +1,21 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'initialisation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.dernier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.dernier.inc.php`.
 
 Étapes dans ce fichier:
 
-1. Initialisations.
+1. Affectations.
 2. Inclusions.
 3. Inclusion de code XHTML.
 */
 
 ########################################################################
 ##
-## Initialisations et inclusions.
+## Affectations et inclusions.
 ##
 ########################################################################
 
-// Initialisations.
+// Affectations.
 
 $cheminBasDePage = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'bas-de-page');
 

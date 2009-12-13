@@ -1,5 +1,5 @@
 <?php
-/* _______________ Inclusions et initialisations. _______________ */
+/* _______________ Inclusions et affectations. _______________ */
 
 include 'inc/zero.inc.php';
 

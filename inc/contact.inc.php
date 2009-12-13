@@ -6,7 +6,7 @@ Ce fichier construit et analyse le formulaire de contact. Après son inclusion, 
 // Nécessaire à la traduction.
 phpGettext($racine, LANGUE);
 
-// Initialisations.
+// Affectations.
 $nom = '';
 $courriel = '';
 $message = '';
@@ -180,13 +180,15 @@ if (isset($_POST['envoyer']))
 			$corps = str_replace(array("\r\n", "\r"), "\n", $message) . "\n";
 		}
 		
+		$objet = $contactCourrielIdentifiantObjet . "Message de " . "$nom <$adresseFrom>";
+		
 		// Traitement personnalisé optionnel.
 		if (file_exists($racine . '/site/inc/contact.inc.php'))
 		{
 			include_once $racine . '/site/inc/contact.inc.php';
 		}
 		
-		if (mail($adresseTo, $contactCourrielIdentifiantObjet . "Message de " . "$nom <$adresseFrom>", $corps, $enTete))
+		if (mail($adresseTo, $objet, $corps, $enTete))
 		{
 			$messageEnvoye = TRUE;
 			$messagesScript .= '<p class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";
@@ -250,14 +252,14 @@ if ($contactActiverCaptchaCalcul)
 	$inputHidden .= '<input name="d" type="hidden" value="' . $contactCaptchaCalculDeux . '" />' . "\n";
 }
 
+ob_start();
+include_once cheminXhtml($racine, 'form-contact');
+$contact .= ob_get_contents();
+ob_end_clean();
+
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/contact.inc.php'))
 {
 	include_once $racine . '/site/inc/contact.inc.php';
 }
-
-ob_start();
-include_once cheminXhtml($racine, 'form-contact');
-$contact .= ob_get_contents();
-ob_end_clean();
 ?>

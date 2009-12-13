@@ -8,7 +8,7 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 	include_once $racine . '/inc/devel.inc.php';
 }
 
-// Initialisations.
+// Affectations.
 
 if (!isset($langue))
 {
@@ -29,4 +29,10 @@ foreach (adminAinclureDebut($racineAdmin) as $fichier)
 
 // Nécessaire à la traduction.
 phpGettext('..', langue($adminLangueParDefaut, $adminLangueParDefaut));
+
+// Traitement personnalisé optionnel.
+if (file_exists("$racine/site/$dossierAdmin/inc/zero.inc.php"))
+{
+	include_once "$racine/site/$dossierAdmin/inc/zero.inc.php";
+}
 ?>
