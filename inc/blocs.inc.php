@@ -34,9 +34,20 @@ if (!empty($blocsAinserer))
 					
 					ob_start();
 					include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-langues');
-					$blocs .= ob_get_contents();
+					$bloc = ob_get_contents();
 					ob_end_clean();
 					
+					if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+					{
+						$bloc = langueActive($bloc, LANGUE, $accueil);
+					}
+					
+					if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+					{
+						$bloc = limiteProfondeurListe($bloc);
+					}
+					
+					$blocs .= $bloc;
 					$blocs .= $codeInterieurBlocBas;
 					$blocs .= '</div><!-- /#menuLangues -->' . "\n";
 				}
@@ -60,10 +71,20 @@ if (!empty($blocsAinserer))
 				
 				ob_start();
 				include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu');
-				$blocMenu = ob_get_contents();
+				$bloc = ob_get_contents();
 				ob_end_clean();
 				
-				$blocs .= lienActif($blocMenu, FALSE, 'li');
+				if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+				{
+					$bloc = lienActif($bloc, FALSE, 'li');
+				}
+				
+				if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+				{
+					$bloc = limiteProfondeurListe($bloc);
+				}
+				
+				$blocs .= $bloc;
 				$blocs .= $codeInterieurBlocBas;
 				$blocs .= '</div><!-- /#menu -->' . "\n";
 				break;
@@ -94,7 +115,19 @@ if (!empty($blocsAinserer))
 			case 'legende-oeuvre-galerie':
 				if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement[$nombreDeColonnes] == $divSurSousContenu . 'Contenu')
 				{
-					$blocs .= $tableauCorpsGalerie['texteIntermediaire'];
+					$bloc = $tableauCorpsGalerie['texteIntermediaire'];
+					
+					if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+					{
+						$bloc = lienActif($bloc, FALSE, 'li');
+					}
+					
+					if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+					{
+						$bloc = limiteProfondeurListe($bloc);
+					}
+					
+					$blocs .= $bloc;
 				}
 				
 				break;
@@ -158,9 +191,20 @@ if (!empty($blocsAinserer))
 					
 					ob_start();
 					include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer);
-					$blocs .= ob_get_contents();
+					$bloc = ob_get_contents();
 					ob_end_clean();
 					
+					if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+					{
+						$bloc = lienActif($bloc, FALSE, 'li');
+					}
+					
+					if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+					{
+						$bloc = limiteProfondeurListe($bloc);
+					}
+					
+					$blocs .= $bloc;
 					$blocs .= $codeInterieurBlocBas;
 					$blocs .= "</div><!-- /.$blocAinserer -->\n";
 				}

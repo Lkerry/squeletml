@@ -6,6 +6,10 @@ Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'u
 // Nécessaire à la traduction.
 phpGettext($racine, LANGUE);
 
+// URL.
+$urlSansGet = url(FALSE);
+$urlSansGetSansServeur = url(FALSE, FALSE);
+
 // Liste des oeuvres à afficher.
 if ($idGalerie && $idGalerie == 'démo')
 {

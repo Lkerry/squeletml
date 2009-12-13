@@ -257,6 +257,78 @@ $typeMimeCorrespondance = array ();
 */
 $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 
+// Détection des liens actifs dans les blocs.
+/*
+- Si la détection est activée pour un bloc, ajoute la classe `actif` à tous les liens (balises `a`) de ce bloc et pointant vers la page en cours ainsi qu'au `li` contenant ce lien. Avec la feuille de style par défaut, le résultat est un lien actif en gras et un `li` marqué d'une petite puce spéciale.
+- Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier de configuration pour connaître la syntaxe des clés du tableau (par exemple `menu-langues`).
+- Voir la fonction `lienActif()`.
+*/
+$liensActifsBlocs = array (
+	'menu-langues' => TRUE,
+	'menu' => TRUE,
+	'faire-decouvrir' => NULL, // Ne s'applique pas.
+	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+	'flux-rss' => NULL, // Ne s'applique pas.
+);
+
+// Limite de la profondeur d'une liste dans un bloc.
+/*
+Pour chaque bloc, préciser par TRUE ou FALSE si la profondeur d'une liste y étant présente doit être limitée. Aucun texte n'est supprimé, mais une classe `masquer` est ajoutée aux sous-listes inactives, détectées et marquées par la fonction `lienActif()`, ce qui signifie qu'un bloc pour lequel la détection des liens actifs n'aura pas été activée dans la variable `$liensActifsBlocs` (dans ce fichier de configuration) ne pourra pas avoir de limite de profondeur.
+
+Par exemple, si la page en cours est `page2.1.php`, une liste comme celle-ci:
+
+	Lien page1
+		Lien page1.1
+			Lien page1.1.1
+				Lien page1.1.1.1
+				Lien page1.1.1.2
+			Lien page1.1.2
+				Lien page1.1.2.1
+				Lien page1.1.2.2
+		Lien page1.2
+			Lien page1.2.1
+				Lien page1.2.1.1
+				Lien page1.2.1.2
+			Lien page1.2.2
+				Lien page1.2.2.1
+				Lien page1.2.2.2
+	Lien page2
+		Lien page2.1
+			Lien page2.1.1
+				Lien page2.1.1.1
+				Lien page2.1.1.2
+			Lien page2.1.2
+				Lien page2.1.2.1
+				Lien page2.1.2.2
+		Lien page2.2
+			Lien page2.2.1
+				Lien page2.2.1.1
+				Lien page2.2.1.2
+			Lien page2.2.2
+				Lien page2.2.2.1
+				Lien page2.2.2.2
+
+sera visible ainsi:
+
+	Lien page1
+	Lien page2
+		Lien page2.1
+			Lien page2.1.1
+			Lien page2.1.2
+		Lien page2.2
+
+Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier de configuration pour connaître la syntaxe des clés du tableau (par exemple `menu-langues`).
+
+Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
+*/
+$limiterProfondeurListesBlocs = array (
+	'menu-langues' => FALSE,
+	'menu' => TRUE,
+	'faire-decouvrir' => NULL, // Ne s'applique pas.
+	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+	'flux-rss' => NULL, // Ne s'applique pas.
+);
+
 // Nombre de colonnes.
 /*
 - Si vaut 2, ajoute à la balise `body` les classes `deuxColonnes`, `colonneAgauche` et `colonneAdroite`, sinon si vaut 1, ajoute la classe `uneColonne`, sinon si vaut 0, ajoute la classe `aucuneColonne`.

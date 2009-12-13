@@ -114,8 +114,12 @@ if ($tableDesMatieres)
 $url = url();
 $urlFichiers = $urlRacine . '/site/fichiers';
 $urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
-$urlSansGet = url(FALSE);
-$urlSansGetSansServeur = url(FALSE, FALSE);
+
+if (!isset($urlSansGet))
+{
+	$urlSansGet = url(FALSE);
+}
+
 $urlSite = $urlRacine . '/site';
 
 // Inclusions 2 de 2.

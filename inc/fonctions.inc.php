@@ -1022,6 +1022,58 @@ function langue($langueParDefaut, $langue)
 }
 
 /*
+S'il y a lieu, ajoute la classe `actif` au lien vers l'accueil dans la langue en cours ainsi qu'au `li` contenant le lien. Retourne le code résultant.
+*/
+function langueActive($codeMenuLangues, $langue, $accueil)
+{
+	if (array_key_exists($langue, $accueil))
+	{
+		$url = $accueil[$langue] . '/';
+		$html = str_get_html($codeMenuLangues);
+	
+		foreach ($html->find('a') as $a)
+		{
+			if ($a->href == $url)
+			{
+				$class = 'actif';
+			
+				if (!empty($a->class))
+				{
+					$class .= ' ' . $a->class;
+				}
+			
+				$a->class = $class;
+			
+				$aParent = $a->parent();
+		
+				while ($aParent->tag != 'li' && $aParent->tag != 'root' && $aParent->tag != NULL)
+				{
+					$aParent = $aParent->parent();
+				}
+		
+				if ($aParent->tag == 'li')
+				{
+					$class = 'actif';
+			
+					if (!empty($aParent->class))
+					{
+						$class .= ' ' . $aParent->class;
+					}
+			
+					$aParent->class = $class;
+				}
+			}
+		}
+	
+		return $html;
+	}
+	else
+	{
+		return $codeMenuLangues;
+	}
+}
+
+/*
 Retourne une lettre (a-zA-Z) au hasard. Optionnellement, il est possible de préciser des lettres à exclure.
 */
 function lettreAuHasard($lettresExclues = '')
@@ -1081,7 +1133,7 @@ function lienActif($code, $inclureGet = TRUE, $parent = '')
 		}
 	}
 	
-	return $html;
+	return $html->__toString();
 }
 
 /*
@@ -1120,6 +1172,147 @@ function lienAccueil($accueil, $estAccueil, $contenu)
 	}
 	
 	return $aOuvrant . $contenu . $aFermant;
+}
+
+/*
+Limite la profondeur affichée d'une liste en masquant les sous-listes inactives. Retourne le code résultant.
+
+Plus précisément, aucun texte n'est supprimé, mais une classe `masquer` est ajoutée aux balises `ul` appropriées. Cette classe correspond à un sélecteur dans la feuille de style par défaut.
+
+Par exemple, disons que la page en cours est `page3.1.php`. La liste suivante:
+
+	<ul>
+		<li><a href="page1.php">Lien 1</a></li>
+		<li><a href="page2.php">Lien 2</a></li>
+		<li class="parent"><a href="page3.php">Lien 3</a>
+		<ul>
+			<li class="parent actif"><a href="page3.1.php" class="actif">Lien 3.1</a>
+			<ul>
+				<li class="parent"><a href="page3.1.1.php">Lien 3.1.1</a>
+				<ul>
+					<li><a href="page3.1.1.1.php">Lien 3.1.1.1</a></li>
+					<li><a href="page3.1.1.2.php">Lien 3.1.1.2</a></li>
+					<li><a href="page3.1.1.3.php">Lien 3.1.1.3</a></li>
+				</ul></li>
+				<li><a href="page3.1.2.php">Lien 3.1.2</a></li>
+			</ul></li>
+			<li class="parent"><a href="page3.2.php">Lien 3.2</a>
+			<ul>
+				<li><a href="page3.2.1.php">Lien 3.2.1</a></li>
+				<li><a href="page3.2.2.php">Lien 3.2.2</a></li>
+			</ul></li>
+			<li><a href="page3.3.php">Lien 3.3</a></li>
+		</ul></li>
+		<li><a href="page4.php">Lien 4</a></li>
+		<li><a href="page5.php">Lien 5</a></li>
+	</ul>
+
+sera retournée ainsi:
+
+	<ul>
+		<li><a href="page1.php">Lien 1</a></li>
+		<li><a href="page2.php">Lien 2</a></li>
+		<li class="parent"><a href="page3.php">Lien 3</a>
+		<ul>
+			<li class="parent actif"><a href="page3.1.php" class="actif">Lien 3.1</a>
+			<ul>
+				<li class="parent"><a href="page3.1.1.php">Lien 3.1.1</a>
+				<ul class="masquer">
+					<li><a href="page3.1.1.1.php">Lien 3.1.1.1</a></li>
+					<li><a href="page3.1.1.2.php">Lien 3.1.1.2</a></li>
+					<li><a href="page3.1.1.3.php">Lien 3.1.1.3</a></li>
+				</ul></li>
+				<li><a href="page3.1.2.php">Lien 3.1.2</a></li>
+			</ul></li>
+			<li class="parent"><a href="page3.2.php">Lien 3.2</a>
+			<ul class="masquer">
+				<li><a href="page3.2.1.php">Lien 3.2.1</a></li>
+				<li><a href="page3.2.2.php">Lien 3.2.2</a></li>
+			</ul></li>
+			<li><a href="page3.3.php">Lien 3.3</a></li>
+		</ul></li>
+		<li><a href="page4.php">Lien 4</a></li>
+		<li><a href="page5.php">Lien 5</a></li>
+	</ul>
+
+ce qui signifie que la liste apparaîtra ainsi avec le style par défaut:
+
+	* Lien 1
+	* Lien 2
+	* Lien 3
+		o Lien 3.1
+			+ Lien 3.1.1
+			+ Lien 3.1.2
+		o Lien 3.2
+		o Lien 3.3
+	* Lien 4
+	* Lien 5
+
+Le code passé en paramètre doit avoir été traité par la fonction `lienActif()` ou avoir subi une modification équivalente pour que la détection des sous-listes inactives réussisse.
+*/
+function limiteProfondeurListe($code)
+{
+	$html = str_get_html($code);
+	
+	foreach ($html->find('li') as $li)
+	{
+		$liAvecUl = FALSE;
+		
+		foreach ($li->find('ul') as $ul)
+		{
+			$liAvecUl = TRUE;
+			$ulParent = $ul->parent();
+			
+			while ($ulParent->tag != 'li' && $ulParent->tag != 'root' && $ulParent->tag != NULL)
+			{
+				$ulParent = $ulParent->parent();
+			}
+		
+			if ($ulParent->tag == 'li' && preg_match('|\bactif\b|', $ulParent->class))
+			{
+				$ulParentActif = TRUE;
+			}
+			else
+			{
+				$ulParentActif = FALSE;
+			}
+			
+			if (!count($ul->find('li.actif')) && !$ulParentActif)
+			{
+				$class = 'masquer';
+				
+				if (!empty($ul->class))
+				{
+					if (preg_match('|\bmasquer\b|', $ul->class))
+					{
+						$class = '';
+					}
+					else
+					{
+						$class .= ' ';
+					}
+					
+					$class .= $ul->class;
+				}
+				
+				$ul->class = $class;
+			}
+		}
+		
+		if ($liAvecUl)
+		{
+			$class = 'parent';
+			
+			if (!empty($li->class))
+			{
+				$class .= ' ' . $li->class;
+			}
+			
+			$li->class = $class;
+		}
+	}
+	
+	return $html->__toString();
 }
 
 /*

@@ -74,18 +74,6 @@ div#sousTitre p {
 	padding-top: 0px;
 }
 
-#menu a.actif {
-	font-weight: bold;
-}
-
-#menu li.actif {
-	list-style-image: url('../fichiers/puce.png');
-}
-
-#menu li.actif li {
-	list-style-image: none;
-}
-
 #basDePage {
 	text-align: center;
 	padding: 0px 5px;
@@ -131,6 +119,22 @@ pre {
 	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
+a.actif {
+	font-weight: bold;
+}
+
+li.actif {
+	list-style-image: url('../fichiers/puce.png');
+}
+
+li.actif li {
+	list-style-image: none;
+}
+
+li.parent {
+	list-style-type: disc;
+}
+
 .erreur, .succes {
 	border-width: 2px;
 	border-style: solid;
@@ -165,6 +169,10 @@ pre {
 	float: left;
 	margin-right: 5px;
 	margin-bottom: 5px;
+}
+
+.masquer {
+	display: none;
 }
 
 .sep {

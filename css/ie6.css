@@ -25,12 +25,12 @@ body.aucuneColonne #menuLangues {
 	padding-left: 0px;
 }
 
-#menu li.actif {
-	list-style-image: url('../fichiers/puce.gif');
-}
-
 div.galerieNavigationSuivant img {
 	float: left;
+}
+
+li.actif {
+	list-style-image: url('../fichiers/puce.gif');
 }
 
 .sep {
