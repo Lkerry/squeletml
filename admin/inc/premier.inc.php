@@ -41,8 +41,11 @@ $menu = ob_get_contents();
 ob_end_clean();
 $menu = lienActif($menu, FALSE);
 
+$nomPage = nomPage();
 $url = url();
+$urlFichiers = $urlRacine . '/site/fichiers';
 $urlSansGet = url(FALSE);
+$urlSite = $urlRacine . '/site';
 
 ########################################################################
 ##
