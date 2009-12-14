@@ -119,7 +119,7 @@ if (isset($_POST['envoyer']))
 	// Traitement personnalisé optionnel.
 	if (file_exists($racine . '/site/inc/contact.inc.php'))
 	{
-		include_once $racine . '/site/inc/contact.inc.php';
+		include $racine . '/site/inc/contact.inc.php';
 	}
 	
 	// Envoi du message.
@@ -185,7 +185,7 @@ if (isset($_POST['envoyer']))
 		// Traitement personnalisé optionnel.
 		if (file_exists($racine . '/site/inc/contact.inc.php'))
 		{
-			include_once $racine . '/site/inc/contact.inc.php';
+			include $racine . '/site/inc/contact.inc.php';
 		}
 		
 		if (mail($adresseTo, $objet, $corps, $enTete))
@@ -260,6 +260,6 @@ ob_end_clean();
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/contact.inc.php'))
 {
-	include_once $racine . '/site/inc/contact.inc.php';
+	include $racine . '/site/inc/contact.inc.php';
 }
 ?>

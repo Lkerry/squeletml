@@ -76,6 +76,10 @@ body#documentation-admin-php pre {
 	background-color: #f2f2f2;
 }
 
+body#documentation-admin-php em code {
+	color: #E30000;
+}
+
 body#documentation-admin-php pre#fichierDeConfiguration {
 	background-color: transparent;
 }

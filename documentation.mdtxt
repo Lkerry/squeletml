@@ -170,7 +170,7 @@ Ensuite, il y a les fichiers de division XHTML, qui sont, pour le français:
 
 	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez utiliser vos propres divisions en créant un fichier de même nom dans `site/xhtml`. Par exemple, pour modifier le menu en français, créer un fichier `site/xhtml/fr/menu.inc.php`, qui sera inséré à la place de la division par défaut.
 
-	Certains fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/xhtml`. Voir la section «Divisions XHTML».
+	Certains fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/xhtml`. Voir la section «Structure XHTML par défaut».
 
 Il y a enfin les fichiers des pages par défaut:
 
@@ -292,6 +292,48 @@ Chaque bloc peut être positionné dans une des deux `div` suivantes (et dans l'
 - deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
 
 Il est bon de rappeler qu'un modèle de page personnalisé peut être utilisé (voir la section Le dossier `xhtml`), et que les blocs peuvent alors être affichés ailleurs selon le modèle utilisé.
+
+### Schéma des inclusions lors de la construction d'une page
+
+*Note: le schéma doit se lire ainsi:*
+
+- `fichier`: le fichier existe et il sera inséré;
+- *`fichier`*: le fichier sera inséré seulement s'il existe;
+- *`fichier1`* **||** *`fichier2`*: une seule insertion au maximum aura lieu, le premier fichier existant, vérifié de gauche à droite, sera inséré.
+
+----
+
+Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers principaux et pour lesquels une personnalisation est possible sont listés.
+
+- `inc/premier.inc.php`
+	- `inc/fonctions.inc.php`
+	- *`site/inc/fonctions.inc.php`*
+	- `inc/config.inc.php`
+	- *`site/inc/config.inc.php`*
+	- `inc/constantes.inc.php`
+	- *`site/inc/constantes.inc.php`*
+	- Si `$idGalerie`: `inc/galerie.inc.php`
+		- *`site/inc/galerie.inc.php`*
+	- `inc/blocs.inc.php`
+		- `inc/faire-decouvrir.inc.php`
+			- *`site/inc/faire-decouvrir.inc.php`*
+		- Inclusions selon les blocs configurés. Exemple pour le menu des langues:  
+		*`site/xhtml/$langueDeLaPage/menu-langues.inc.php`* **||** *`xhtml/$langueDeLaPage/menu-langues.inc.php`* **||** *`site/xhtml/$langueParDefaut/menu-langues.inc.php`* **||** *`xhtml/$langueParDefaut/menu-langues.inc.php`*
+		- *`site/inc/blocs.inc.php`*
+	- *`site/inc/premier.inc.php`*
+	- *`site/xhtml/page.premier.inc.php`* **||** `xhtml/page.premier.inc.php`
+- Contenu de la page
+- `inc/dernier.inc.php`
+	- `inc/blocs.inc.php` (voir les détails plus haut)
+	- `inc/contact.inc.php`
+		- `inc/faire-decouvrir.inc.php` (voir les détails plus haut)
+		- *`site/inc/contact.inc.php`* après le traitement des champs par défaut
+		- *`site/inc/contact.inc.php`* avant l'envoi du message
+		- `inc/faire-decouvrir.inc.php` (voir les détails plus haut)
+		- *`site/xhtml/form-contact.inc.php`* **||** `xhtml/form-contact.inc.php`
+		- *`site/inc/contact.inc.php`* à la fin du fichier
+	- *`site/inc/dernier.inc.php`*
+	- *`site/xhtml/page.dernier.inc.php`* **||** `xhtml/page.dernier.inc.php`
 
 ## Style de Squeletml
 
