@@ -6,3 +6,7 @@
 .boiteDeroulanteSymbole {
 	font-family: monospace;
 }
+
+.masquer {
+	display: none;
+}
