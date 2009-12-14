@@ -1,5 +1,5 @@
 <?php
-/* _______________ Inclusions et affectations. _______________ */
+/* ____________________ Inclusions et affectations. ____________________ */
 
 include 'inc/zero.inc.php';
 
@@ -72,7 +72,7 @@ else
 	$dossierCourantDansUrl = '';
 }
 
-/* _______________ Début de l'affichage du porte-documents. _______________ */
+/* ____________________ Début de l'affichage du porte-documents. ____________________ */
 
 echo '<h1>' . T_("Porte-documents") . "</h1>\n";
 
@@ -85,7 +85,7 @@ echo '<h2 id="messagesPorteDocuments">' . T_("Messages d'avancement, de confirma
 ##
 ########################################################################
 
-/* _______________ Confirmation. _______________ */
+/* ____________________ Confirmation. ____________________ */
 
 if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie']))
 {
@@ -157,7 +157,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie'])
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
-/* _______________ Mise en action. _______________ */
+/* ____________________ Mise en action. ____________________ */
 
 if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieConfirmation']))
 {
@@ -228,7 +228,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 ##
 ########################################################################
 
-/* _______________ Confirmation. _______________ */
+/* ____________________ Confirmation. ____________________ */
 
 if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplacement']))
 {
@@ -299,7 +299,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
-/* _______________ Mise en action. _______________ */
+/* ____________________ Mise en action. ____________________ */
 
 if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplacementConfirmation']))
 {
@@ -362,7 +362,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 ##
 ########################################################################
 
-/* _______________ Confirmation. _______________ */
+/* ____________________ Confirmation. ____________________ */
 
 if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppression']))
 {
@@ -411,7 +411,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
-/* _______________ Mise en action. _______________ */
+/* ____________________ Mise en action. ____________________ */
 
 if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppressionConfirmation']))
 {
@@ -454,9 +454,9 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 ##
 ########################################################################
 
-/* _______________ Confirmation. _______________ */
+/* ____________________ Confirmation. ____________________ */
 
-if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPermissions']))
+if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDocumentsPermissions']))
 {
 	$messagesScript = '';
 	
@@ -511,9 +511,9 @@ if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPer
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
-/* _______________ Mise en action. _______________ */
+/* ____________________ Mise en action. ____________________ */
 
-if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPermissionsConfirmation']))
+if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDocumentsPermissionsConfirmation']))
 {
 	$messagesScript = '';
 	
@@ -575,7 +575,7 @@ if ($adminPorteDocumentsDroits['permissions'] && isset($_POST['porteDocumentsPer
 ##
 ########################################################################
 
-/* _______________ Formulaire d'édition. _______________ */
+/* ____________________ Formulaire d'édition. ____________________ */
 
 if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['action'] == 'editer')
 {
@@ -662,7 +662,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
-/* _______________ Annulation d'édition. _______________ */
+/* ____________________ Annulation d'édition. ____________________ */
 
 if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionAnnulation']))
 {
@@ -674,7 +674,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionA
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
 }
 
-/* _______________ Sauvegarde des modifications. _______________ */
+/* ____________________ Sauvegarde des modifications. ____________________ */
 
 if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionSauvegarder']))
 {
@@ -742,7 +742,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 ##
 ########################################################################
 
-/* _______________ Formulaire de renommage. _______________ */
+/* ____________________ Formulaire de renommage. ____________________ */
 
 if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['action'] == 'renommer')
 {
@@ -808,7 +808,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 	echo adminMessagesScript($messagesScript);
 }
 
-/* _______________ Mise en action. _______________ */
+/* ____________________ Mise en action. ____________________ */
 
 if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenommage']))
 {
@@ -1193,7 +1193,7 @@ if (!empty($dossierCourant))
 echo '<div class="boite">' . "\n";
 echo '<h2 id="fichiersEtDossiers">' . T_("Liste des fichiers et dossiers") . "</h2>\n";
 
-if ($adminPorteDocumentsDroits['ajouter'] && $adminPorteDocumentsDroits['creer'] && $adminPorteDocumentsDroits['copier'] && $adminPorteDocumentsDroits['deplacer'] && $adminPorteDocumentsDroits['permissions'] && $adminPorteDocumentsDroits['supprimer'])
+if ($adminPorteDocumentsDroits['ajouter'] && $adminPorteDocumentsDroits['creer'] && $adminPorteDocumentsDroits['copier'] && $adminPorteDocumentsDroits['deplacer'] && $adminPorteDocumentsDroits['modifier-permissions'] && $adminPorteDocumentsDroits['supprimer'])
 {
 	$afficherBoiteActions = TRUE;
 	$boiteActions = '';
@@ -1220,7 +1220,7 @@ if ($adminPorteDocumentsDroits['ajouter'] && $adminPorteDocumentsDroits['creer']
 		$boiteActions .= ' <input type="submit" name="porteDocumentsDeplacement" value="' . T_("Déplacer") . '" /> |';
 	}
 	
-	if ($adminPorteDocumentsDroits['permissions'])
+	if ($adminPorteDocumentsDroits['modifier-permissions'])
 	{
 		$boiteActions .= ' <input type="submit" name="porteDocumentsPermissions" value="' . T_("Permissions") . '" /> |';
 	}
@@ -1239,7 +1239,7 @@ if ($afficherBoiteActions)
 	echo $boiteActions;
 }
 
-/* _______________ Parcours d'un dossier. _______________ */
+/* ____________________ Parcours d'un dossier. ____________________ */
 
 if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossierCourant))
 {
@@ -1305,7 +1305,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
-/* _______________ Listage des dossiers. _______________ */
+/* ____________________ Listage des dossiers. ____________________ */
 
 echo '<div class="sousBoite">' . "\n";
 echo '<h3>' . T_("Liste des dossiers") . "</h3>\n";
@@ -1321,7 +1321,7 @@ foreach ($listeDossiers as $listeDossier)
 	$dossierMisEnForme = '';
 	$dossierMisEnForme .= "<li class=\"$classe\">";
 	
-	if ($adminPorteDocumentsDroits['copier'] && $adminPorteDocumentsDroits['deplacer'] && $adminPorteDocumentsDroits['permissions'] && $adminPorteDocumentsDroits['supprimer'])
+	if ($adminPorteDocumentsDroits['copier'] && $adminPorteDocumentsDroits['deplacer'] && $adminPorteDocumentsDroits['modifier-permissions'] && $adminPorteDocumentsDroits['supprimer'])
 	{
 		if (adminEmplacementModifiable($listeDossier, $adminDossierRacinePorteDocuments))
 		{
@@ -1375,7 +1375,7 @@ echo "</div><!-- /.boite -->\n";
 echo "</div>\n";
 echo "</form>\n";
 
-/* _______________ Ajout. _______________ */
+/* ____________________ Ajout. ____________________ */
 
 if ($adminPorteDocumentsDroits['ajouter'] && !$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis)))
 {
@@ -1459,7 +1459,7 @@ if ($adminPorteDocumentsDroits['ajouter'] && !$adminFiltreTypesMime || ($adminFi
 	echo "</div><!-- /.boite -->\n";
 }
 
-/* _______________ Création. _______________ */
+/* ____________________ Création. ____________________ */
 
 if ($adminPorteDocumentsDroits['creer'])
 {

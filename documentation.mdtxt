@@ -283,7 +283,7 @@ D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` 
 
 Les sections «Style CSS» et «Contenu et ordre du flux HTML» du fichier de configuration contiennent beaucoup commentaires explicatifs. Tout ne sera pas repris ici, mais en résumé, il est possible de choisir le nombre de colonnes ainsi que l'ordre de leur contenu. Le principe est le suivant: plusieurs blocs de contenu existent par défaut, comme le menu des langues, le menu principal, les liens vers les flux RSS, etc. Il est possible également d'ajouter ses propres blocs.
 
-Chaque bloc peut être positionné dans une des deux div suivantes (et dans l'ordre voulu à l'intérieur d'une même div): `surContenu` ou `sousContenu`. Ensuite, selon le style affecté (voir la section «Style CSS» du fichier de configuration), les div vont être positionnées dans la page pour remplir la ou les colonnes, ou bien, s'il n'y a pas de colonne, le dessus ou le dessous du contenu. Les possibilités sont donc:
+Chaque bloc peut être positionné dans une des deux `div` suivantes (et dans l'ordre voulu à l'intérieur d'une même `div`): `surContenu` ou `sousContenu`. Ensuite, selon le style affecté (voir la section «Style CSS» du fichier de configuration), les `div` vont être positionnées dans la page pour remplir la ou les colonnes, ou bien, s'il n'y a pas de colonne, le dessus ou le dessous du contenu. Les possibilités sont donc:
 
 - aucune colonne, les blocs étant positionnés au-dessus ou au-dessous du contenu selon leur configuration;
 - une seule colonne à gauche;
@@ -377,7 +377,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 		$classesBody = 'maClasse1 maClasse2';
 
-- `$classesContenu`: permet d'ajouter des classes à la div `contenu`. Voir `$classesBody` pour un exemple d'utilisation.
+- `$classesContenu`: permet d'ajouter des classes à la `div` `contenu`. Voir `$classesBody` pour un exemple d'utilisation.
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
@@ -397,7 +397,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la div `interieurContenu`. La table est ajoutée au début de cette div.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` `interieurContenu`. La table est ajoutée au début de cette `div`.
 
 	La variable `$afficherTableDesMatieresParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$tableDesMatieres` pour changer la valeur par défaut pour une page spécifique.
 

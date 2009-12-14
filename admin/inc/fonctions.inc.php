@@ -705,7 +705,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 				{
 					$fichierMisEnForme = '';
 				
-					if ($adminPorteDocumentsDroits['copier'] && $adminPorteDocumentsDroits['deplacer'] && $adminPorteDocumentsDroits['permissions'] && $adminPorteDocumentsDroits['supprimer'])
+					if ($adminPorteDocumentsDroits['copier'] && $adminPorteDocumentsDroits['deplacer'] && $adminPorteDocumentsDroits['modifier-permissions'] && $adminPorteDocumentsDroits['supprimer'])
 					{
 						$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$dossierAparcourir/$fichier\" />\n";
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";

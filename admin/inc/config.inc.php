@@ -11,19 +11,22 @@ $adminUrlMaintenance = 'maintenance.php';
 // Taille en octets du dossier de cache.
 /*
 - Exemples:
-  - `524288` équivaut à 500 Kio;
+  - `102400` équivaut à 100 Kio;
+  - `512000` équivaut à 500 Kio;
   - `1048576` équivaut à 1 Mio;
   - `2097152` équivaut à 2 Mio;
   - `5242880` équivaut à 5 Mio;
-  - `10485760` équivaut à 10 Mio.
+  - `10485760` équivaut à 10 Mio;
+  - `26214400` équivaut à 25 Mio;
+  - `52428800` équivaut à 50 Mio;
 */
 $adminTailleCache = '2097152';
 
-/* _______________ En-tête HTML. _______________ */
+/* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).
 /*
-- Voir les explications pour la variable `$xhtmlStrict` dans le fichier de configuration du site.
+- Voir les explications de la variable `$xhtmlStrict` dans le fichier de configuration du site.
 */
 $adminXhtmlStrict = TRUE; // TRUE|FALSE
 
@@ -32,7 +35,7 @@ $adminCharset = 'UTF-8';
 
 // Contenu par défaut de la métabalise `robots`.
 /*
-- Voir les explications pour la variable `$robotsParDefaut` dans le fichier de configuration du site.
+- Voir les explications de la variable `$robotsParDefaut` dans le fichier de configuration du site.
 */
 $adminRobots = 'noindex, nofollow, noarchive';
 
@@ -45,7 +48,7 @@ $adminLangueParDefaut = 'fr';
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
-- Voir les explications pour la variable `$balisesLinkScript` dans le fichier de configuration du site.
+- Voir les explications de la variable `$balisesLinkScript` dans le fichier de configuration du site.
 */
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/admin.css";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/extensions-proprietaires.css";
@@ -84,7 +87,7 @@ $adminAction = $_SERVER['SCRIPT_NAME'];
 */
 $adminSymboleUrl = '?';
 
-/* _______________ Liste des fichiers et dossiers. _______________ */
+/* ____________________ Liste des fichiers et dossiers. ____________________ */
 
 // Dossier racine contenant les fichiers (sans / à la fin).
 /*
@@ -106,7 +109,7 @@ $adminDossierRacinePorteDocuments = '..';
 */
 $adminTypeFiltreDossiers = 'dossiersExclus';
 
-// Préciser les dossiers à prendre en compte dans le filtre.
+// Dossiers à prendre en compte dans le filtre.
 /*
 - Si la variable `$adminTypeFiltreDossiers` est vide, aucun filtre ne sera appliqué.
 - Le chemin peut être absolu ou bien relatif à partir du dossier racine de l'administration (valeur de `$racineAdmin`).
@@ -116,7 +119,7 @@ $adminTypeFiltreDossiers = 'dossiersExclus';
 */
 $adminFiltreDossiers = '../.bzr';
 
-/* _______________ Ajout de fichiers. _______________ */
+/* ____________________ Ajout de fichiers. ____________________ */
 
 // Taille maximale des fichiers ajoutés (en octets).
 $adminTailleMaxFichiers = adminPhpIniOctets(ini_get('upload_max_filesize'));
@@ -182,7 +185,7 @@ $adminTypesMimePermis['wma'] = 'audio/x-ms-wma';
 $adminTypesMimePermis['wmv'] = 'video/x-ms-wmv';
 $adminTypesMimePermis['qt|mov'] = 'video/quicktime';
 
-/* _______________ Actions sur les fichiers. _______________ */
+/* ____________________ Actions sur les fichiers. ____________________ */
 
 // Actions à activer dans le porte-documents.
 /*
@@ -194,7 +197,7 @@ $adminPorteDocumentsDroits = array (
 	'creer' => TRUE,
 	'deplacer' => TRUE,
 	'editer' => TRUE,
-	'permissions' => TRUE,
+	'modifier-permissions' => TRUE,
 	'renommer' => TRUE,
 	'supprimer' => TRUE,
 	'telecharger' => TRUE,

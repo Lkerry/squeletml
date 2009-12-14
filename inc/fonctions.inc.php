@@ -2443,7 +2443,10 @@ Supprime l'inclusion des feuilles de style par défaut de Squeletml.
 */
 function supprimeInclusionCssParDefaut(&$fichiers)
 {
-	unset($fichiers[0], $fichiers[1], $fichiers[2], $fichiers[3]);
+	for ($i = 0; $i < 5; $i++)
+	{
+		unset($fichiers[$i]);
+	}
 	
 	return;
 }

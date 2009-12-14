@@ -5,7 +5,7 @@
 ##
 ########################################################################
 
-/* _______________ En-tête HTML. _______________ */
+/* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).
 /*
@@ -30,10 +30,9 @@ $baliseTitleComplement['en'] = "Squeletml website";
   $balisesLinkScript[] = "URL#TYPE#fichier à inclure#contenu de l'attribut `title`";
   Le contenu de l'attribut `title` est optionnel, et est utilisé seulement pour le type rss.
 - Ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants.
-- Dans le fichier de configuration personnalisé, ajouter tout simplement des éléments au tableau `$balisesLinkScript`.
-- Exemples:
+- Dans le fichier de configuration personnalisé, ajouter tout simplement des éléments au tableau `$balisesLinkScript`, par exemple:
+  $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/site/css/style-general.css";
   $balisesLinkScript[] = "$urlRacine/page.php#css#$urlRacine/site/css/style-page.css";
-  $balisesLinkScript[] = "$urlRacine/page.php*#css#$urlRacine/site/css/style-general.css";
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
@@ -86,7 +85,7 @@ $charset = 'UTF-8';
 */
 $langueParDefaut = 'fr';
 
-/* _______________ Contenu et ordre du flux HTML. _______________ */
+/* ____________________ Contenu et ordre du flux HTML. ____________________ */
 
 // Titre du site en en-tête.
 /*
@@ -98,18 +97,24 @@ $titreSite['en'] = $titreSite['fr'];
 
 // Ordre des blocs constituant les menus.
 /*
-Les divers blocs constituant les menus sont positionnables, au choix, dans les div `surContenu` ou `sousContenu`. Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux div `surContenu` et `sousContenu` formeront une seule colonne à droite, une seule colonne à gauche, deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`, ou deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
+Les divers blocs constituant les menus sont positionnables, au choix, dans les `div` `surContenu` ou `sousContenu`. Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux `div` `surContenu` et `sousContenu` formeront:
 
-Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Un nombre impair signifie que le bloc en question sera placé dans la div `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la div `sousContenu`. À l'intérieur de chaque div, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
+- une seule colonne à gauche;
+- une seule colonne à droite;
+- deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`;
+- deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`;
+- aucune colonne, les blocs étant positionnés au-dessus ou au-dessous du contenu selon la `div` dans laquelle ils ont été assignés.
+
+Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Un nombre impair signifie que le bloc en question sera placé dans la `div` `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la `div` `sousContenu`. À l'intérieur de chaque `div`, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
 
 Par exemple:
 
 	'menu-langues' => array (10, 10, 4),
 	'flux-rss' => array (2, 2, 6),
 
-signifie que le menu des langues ainsi que les liens RSS seront insérés dans la div `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre pair pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la div, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 2 (les liens RSS) et 10 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 4 (le menu des langues) et 6 (les liens RSS).
+signifie que le menu des langues ainsi que les liens RSS seront insérés dans la `div` `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre pair pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la `div`, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 2 (les liens RSS) et 10 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 4 (le menu des langues) et 6 (les liens RSS).
 
-Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut toutefois avoir en tête que chaque clé du tableau `$ordreBlocsDansFluxHtml` ci-dessous représente une partie du nom du fichier à insérer. Par exemple, `faire-decouvrir` fait référence au fichier `LANGUE/html.faire-decouvrir.inc.php`, présent dans le dossier personnalisé `$racine/site/inc` ou le dossier par défaut `$racine/inc`. Ainsi, un bloc personnalisé ayant une clé `heure` dans le tableau `$ordreBlocsDansFluxHtml` fait référence à un fichier `$racine/site/inc/LANGUE/html.heure.inc.php`.
+Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut toutefois avoir en tête que chaque clé ajoutée dans le tableau `$ordreBlocsDansFluxHtml` doit représenter une partie du nom du fichier à insérer. Par exemple, un bloc personnalisé ayant une clé `heure` dans le tableau `$ordreBlocsDansFluxHtml` fera référence à un fichier `$racine/site/xhtml/LANGUE/heure.inc.php`.
 
 Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivation d'une fonctionnalité, mais seulement avec l'odre dans lequel les blocs sont insérés dans le flux HTML dans le cas où la fonctionnalité est activée.
 
@@ -125,11 +130,11 @@ $ordreBlocsDansFluxHtml = array (
 
 // Détection du type MIME.
 /*
-- La détection du type MIME se fait selon la disponibilité des outils suivants, en ordre de priorité:
+- La détection du type MIME se fait par un des outils suivants, selon leur disponibilité (en ordre de priorité):
   - `Fileinfo` de PHP;
   - commande `file` si la variable `$typeMimeFile` vaut TRUE;
   - tableau personnalisé de correspondance entre une extension et son type MIME si la variable `$typeMimeCorrespondance` n'est pas vide. Exemple:
-    array ('rmi' => 'audio/midi');
+    $typeMimeCorrespondance = array ('rmi' => 'audio/midi');
   - tableau par défaut de correspondance entre une extension et son type MIME de la fonction `file_get_mimetype()`.
 */
 $typeMimeFile = FALSE; // TRUE|FALSE
@@ -147,6 +152,7 @@ $activerFaireDecouvrir = TRUE; // TRUE|FALSE
 
 // Affichage du message pour Internet Explorer 6.
 /*
+- Message invitant l'internaute à télécharger un navigateur moderne.
 - Voir la fonction `messageIe6()`.
 */
 $afficherMessageIe6 = TRUE; // TRUE|FALSE
@@ -159,78 +165,78 @@ $afficherTableDesMatieresParDefaut = FALSE; // TRUE|FALSE
 
 // Activation de boîtes déroulantes par défaut.
 /*
-Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, et enregistre le choix d'affichage de l'internaute dans un témoin valide durant 30 jours. Ce contenu peut être situé n'importe où dans la page: menu, corps, bas de page, etc. Une boîte déroulante peut être activée seulement pour un contenu constitué d'un conteneur, d'un titre et d'un corps. La représentation générale est la suivante:
+Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, et enregistre, si possible, le choix d'affichage de l'internaute dans un témoin valide durant 30 jours. Ce contenu peut être situé n'importe où dans la page: menu, corps, bas de page, etc. Une boîte déroulante peut être activée seulement pour un contenu constitué d'un conteneur, d'un titre et d'un corps. La représentation générale est la suivante:
 
-<balise id="conteneur">
-<balise class="bDtitre">...</balise>
-<balise class="bDcorps">...</balise>
-</balise>
+	<balise id="conteneur">
+		<balise class="bDtitre">...</balise>
+		<balise class="bDcorps">...</balise>
+	</balise>
 
 Voici un exemple concret:
 
 1. avant application de la boîte déroulante:
 
-<div id="fruits">
-<h2 class="bDtitre">Fruits disponibles</h2>
-
-<div class="bDcorps">
-<ul>
-	<li>Fraises</li>
-	<li>Poires</li>
-	<li>Pommes</li>
-</ul>
-
-<p>Il n'y a plus de kiwi.</p>
-</div>
-</div>
+	<div id="fruits">
+		<h2 class="bDtitre">Fruits disponibles</h2>
+		
+		<div class="bDcorps">
+			<ul>
+				<li>Fraises</li>
+				<li>Poires</li>
+				<li>Pommes</li>
+			</ul>
+			
+			<p>Il n'y a plus de kiwi.</p>
+		</div>
+	</div>
 
 2. après application de la boîte déroulante avec affichage par défaut du corps:
 
-<div id="fruits">
-<h2 class="bDtitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[-]&nbsp;</span><span>Fruits disponibles</span></a></h2>
-
-<div class="bDcorps" class="afficher">
-<ul>
-	<li>Fraises</li>
-	<li>Poires</li>
-	<li>Pommes</li>
-</ul>
-
-<p>Il n'y a plus de kiwi.</p>
-</div>
-</div>
+	<div id="fruits">
+		<h2 class="bDtitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[-]&nbsp;</span><span>Fruits disponibles</span></a></h2>
+		
+		<div class="bDcorps" class="afficher">
+			<ul>
+				<li>Fraises</li>
+				<li>Poires</li>
+				<li>Pommes</li>
+			</ul>
+			
+			<p>Il n'y a plus de kiwi.</p>
+		</div>
+	</div>
 
 3. après application de la boîte déroulante avec masquage par défaut du corps:
 
-<div id="fruits">
-<h2 class="bDtitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[+]&nbsp;</span><span>Fruits disponibles</span></a></h2>
-
-<div class="bDcorps" class="masquer">
-<ul>
-	<li>Fraises</li>
-	<li>Poires</li>
-	<li>Pommes</li>
-</ul>
-
-<p>Il n'y a plus de kiwi.</p>
-</div>
-</div>
+	<div id="fruits">
+		<h2 class="bDtitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[+]&nbsp;</span><span>Fruits disponibles</span></a></h2>
+		
+		<div class="bDcorps" class="masquer">
+			<ul>
+				<li>Fraises</li>
+				<li>Poires</li>
+				<li>Pommes</li>
+			</ul>
+			
+			<p>Il n'y a plus de kiwi.</p>
+		</div>
+	</div>
 
 Nous constatons qu'un lien est ajouté au titre. Un clic sur le titre permet de changer l'état du corps (affiché ou masqué).
 
 Dans l'exemple précédent, la boîte déroulante peut être activée de deux façons:
 
-1) en ajoutant `fruits` dans la variable `$boitesDeroulantesParDefaut`.
+1. en ajoutant `fruits` dans la variable `$boitesDeroulantesParDefaut`.
 
-  La syntaxe de chaque boîte est donc la suivante:
+	La syntaxe de chaque boîte est donc la suivante:
 
-  'idConteneur'
+		'idConteneur'
 
-  En ajoutant au moins une boîte dans cette variable, chaque page de Squeletml ajoutera les scripts nécessaires aux boîtes déroulantes. Pour ajouter plusieurs boîtes, le séparateur à utiliser est `|`. Voici un exemple d'ajout de plusieurs boîtes:
+	En ajoutant au moins une boîte dans cette variable, chaque page de Squeletml ajoutera les scripts nécessaires aux boîtes déroulantes. Pour ajouter plusieurs boîtes, le séparateur à utiliser est `|`. Voici un exemple d'ajout de plusieurs boîtes:
 
-  $boitesDeroulantesParDefaut = 'idConteneur1 | idConteneur2 | idConteneur3';
+		$boitesDeroulantesParDefaut = 'idConteneur1 | idConteneur2 | idConteneur3';
 
-2) en renseignant la variable `$boitesDeroulantes` dans une page spécifique avant l'inclusion du premier fichier PHP (la syntaxe est la même que pour la variable `$boitesDeroulantesParDefaut`). Voir la documentation pour plus de détails.
+2. en renseignant la variable `$boitesDeroulantes` dans une page spécifique avant l'inclusion du premier fichier PHP (la syntaxe est la même que pour la variable `$boitesDeroulantesParDefaut`). Voir la documentation pour plus de détails.
 
 Comme le montre l'exemple général, le titre n'est pas à comprendre au sens sémantique. Ce n'est donc pas nécessaire de l'entourer de balises `h1`, `h2`, `h3`, `h4`, `h5` ou `h6`. Il s'agit simplement du texte qui servira à afficher ou masquer le corps.
 
@@ -245,13 +251,13 @@ $boitesDeroulantesParDefaut = '';
 */
 $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');";
 
-/* _______________ Style CSS. _______________ */
+/* ____________________ Style CSS. ____________________ */
 
-// Note: les options suivantes n'ont aucune influence sur le flux HTML.
+// Note: les options suivantes n'ont aucune influence sur le flux HTML. Il s'agit simplement d'un outil optionnel mais utile pour modifier le style du site sans devoir bidouiller dans les feuilles CSS. En aucun cas ces options sont obligatoires à la stylisation du site.
 
 // Style des liens visités.
 /*
-- Les liens visités (`a:visited`) de tout le site ont par défaut un style différent des liens non visités. Mettre à FALSE pour différencier seulement les liens visités contenus dans le corps des pages (div `contenu`).
+- Les liens visités (`a:visited`) de tout le site (menus y compris) ont par défaut un style différent des liens non visités. Mettre à FALSE pour différencier seulement les liens visités contenus dans le corps des pages (`div` `contenu`).
 */
 $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 
@@ -271,7 +277,7 @@ $liensActifsBlocs = array (
 
 // Limite de la profondeur d'une liste dans un bloc.
 /*
-Pour chaque bloc, préciser par TRUE ou FALSE si la profondeur d'une liste y étant présente doit être limitée. Aucun texte n'est supprimé, mais une classe `masquer` est ajoutée aux sous-listes inactives, détectées et marquées par la fonction `lienActif()`, ce qui signifie qu'un bloc pour lequel la détection des liens actifs n'aura pas été activée dans la variable `$liensActifsBlocs` (dans ce fichier de configuration) ne pourra pas avoir de limite de profondeur.
+Pour chaque bloc, préciser par TRUE ou FALSE si la profondeur d'une liste y étant présente doit être limitée. Aucun texte n'est supprimé, mais une classe `masquer` est ajoutée aux sous-listes inactives identifiées auparavant par la fonction `lienActif()`, ce qui signifie qu'un bloc pour lequel la détection des liens actifs n'aura pas été activée dans la variable `$liensActifsBlocs` (dans ce fichier de configuration) ne pourra pas avoir de limite de profondeur.
 
 Par exemple, si la page en cours est `page2.1.php`, une liste comme celle-ci:
 
@@ -336,14 +342,14 @@ $nombreDeColonnes = 1; // 0|1|2
 
 // Emplacement du sous-contenu lorsqu'il y a deux colonnes.
 /*
-- Si `$nombreDeColonnes` vaut 2 et si `$deuxColonnesSousContenuAgauche` vaut TRUE, ajoute la classe `deuxColonnesSousContenuAgauche` au `body`, sinon si `$nombreDeColonnes` vaut 2 et que `$deuxColonnesSousContenuAgauche` vaut FALSE, ajoute la classe `deuxColonnesSousContenuAdroite` au `body`.
+- Si `$nombreDeColonnes` vaut 2 et si `$deuxColonnesSousContenuAgauche` vaut TRUE, ajoute la classe `deuxColonnesSousContenuAgauche` à `body`, sinon si `$nombreDeColonnes` vaut 2 et que `$deuxColonnesSousContenuAgauche` vaut FALSE, ajoute la classe `deuxColonnesSousContenuAdroite` à `body`.
 - Le sur-contenu va être affiché par défaut dans la colonne opposée.
 */
 $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 
 // S'il y a lieu, emplacement de la colonne unique.
 /*
-- Si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées au `body`, sinon si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées au `body`.
+- Si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées à `body`, sinon si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées à `body`.
 */
 $uneColonneAgauche = TRUE; // TRUE|FALSE
 
@@ -362,9 +368,10 @@ $borduresPage = array(
 */ 
 $enTetePleineLargeur = FALSE; // TRUE|FALSE
 
-// Blocs de menu avec coins arrondis par défaut.
+// Blocs de contenu avec coins arrondis par défaut.
 $blocsArrondisParDefaut = FALSE; // TRUE|FALSE
 
+// Blocs de contenu spécifiques avec coins arrondis.
 /*
 Il est possible de modifier la configuration par défaut des blocs arrondis pour un bloc en particulier selon le nombre de colonnes. Par exemple, la ligne suivante:
 
@@ -378,7 +385,7 @@ $blocsArrondisSpecifiques = array (
 	'menu' => array (TRUE, FALSE, FALSE),
 );
 
-/* _______________ Syndication de contenu (flux RSS). _______________ */
+/* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
 // Syndication globale du site.
 /*
@@ -387,7 +394,7 @@ $blocsArrondisSpecifiques = array (
 */
 $activerFluxRssGlobalSite = FALSE; // TRUE|FALSE
 
-// Nombre d'items par flux RSS.
+// Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 50;
 
 // Expiration du cache des flux.
@@ -399,7 +406,8 @@ $nombreItemsFluxRss = 50;
   - `3600` équivaut à 1 heure;
   - `28800` équivaut à 8 heures;
   - `43200` équivaut à 12 heures;
-  - `86400` équivaut à 1 journée;
+  - `86400` équivaut à 1 jour;
+  - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
 */
 $dureeCacheFluxRss = 0;
@@ -410,7 +418,7 @@ $dureeCacheFluxRss = 0;
 ##
 ########################################################################
 
-/* _______________ Général. _______________ */
+/* ____________________ Général. ____________________ */
 
 // Contact par défaut.
 /*
@@ -427,7 +435,7 @@ $contactCourrielIdentifiantObjet = '[Contact] ';
 // Ajout dans le formulaire d'une option d'envoi d'une copie à l'expéditeur.
 $contactCopieCourriel = FALSE; // TRUE|FALSE
 
-/* _______________ Antipourriel. _______________ */
+/* ____________________ Antipourriel. ____________________ */
 
 // Ajout d'un champ de calcul mathématique.
 $contactActiverCaptchaCalcul = TRUE; // TRUE|FALSE
@@ -436,17 +444,17 @@ $contactCaptchaCalculMax = 10;
 
 // Si `$contactActiverCaptchaCalcul` vaut TRUE, inversion des termes de l'addition et du résultat.
 /*
-- Par défaut, le calcul se présente ainsi:
+- Par défaut (TRUE), le calcul se présente ainsi:
   c = ? + ?
   Bien sûr, il peut y avoir plusieurs réponses possibles.
-- Mettre à FALSE pour anuler l'inversion et obtenir ceci:
+- Mettre à FALSE pour annuler l'inversion et obtenir ceci:
   a + b = ?
 */
 $contactCaptchaCalculInverse = TRUE; // TRUE|FALSE;
 
 // Limitation du nombre de liens dans le corps d'un message.
 $contactActiverCaptchaLiens = FALSE; // TRUE|FALSE
-$contactCaptchaLiensNombre = 5; // Nombre de liens max dans un message
+$contactCaptchaLiensNombre = 5; // Nombre maximal de liens dans un message
 
 ########################################################################
 ##
@@ -454,7 +462,7 @@ $contactCaptchaLiensNombre = 5; // Nombre de liens max dans un message
 ##
 ########################################################################
 
-/* _______________ Général. _______________ */
+/* ____________________ Général. ____________________ */
 
 // Qualité des images JPG générées par le script.
 $galerieQualiteJpg = 90; // 0-100
@@ -479,7 +487,7 @@ $galerieDimensionsVignette = array (
 */
 $galerieForcerDimensionsVignette = TRUE; // TRUE|FALSE
 
-/* _______________ Accueil d'une galerie. _______________ */
+/* ____________________ Accueil d'une galerie. ____________________ */
 
 // Pagination des vignettes de la page d'accueil.
 /*
@@ -505,7 +513,7 @@ $galerieInfoEmplacement = 'haut'; // haut|bas
 */
 $galerieAccueilJavascript = FALSE; // TRUE|FALSE
 
-/* _______________ Page individuelle d'une oeuvre. _______________ */
+/* ____________________ Page individuelle d'une oeuvre. ____________________ */
 
 // Choix de la navigation entre les oeuvres.
 $galerieNavigation = 'fleches'; // fleches|vignettes
@@ -594,7 +602,7 @@ $galerieLienOriginalTelecharger = FALSE; // TRUE|FALSE
 */
 $galerieLegendeEmplacement = array ('bas', 'sousContenu', 'sousContenu');
 
-/* _______________ Syndication de contenu (flux RSS). _______________ */
+/* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
 // Syndication individuelle par défaut des galeries.
 /*
