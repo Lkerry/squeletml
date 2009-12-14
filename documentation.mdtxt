@@ -636,6 +636,10 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		vignetteAlt=Chien assis sur un divan.
 
+- `vignetteAttributTitle`: texte affiché dans une infobulle au survol de l'image par la souris. Exemple:
+
+		vignetteAttributTitle=Chien assis sur un divan.
+
 - `intermediaireLargeur`: largeur de l'image en version intermédiaire. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
 		intermediaireLargeur=500
@@ -647,6 +651,10 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 - `intermediaireAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version intermédiaire. Si vide, le contenu sera généré automatiquement. Exemple:
 
 		intermediaireAlt=Chien dormant sur un divan.
+
+- `intermediaireAttributTitle`: texte affiché dans une infobulle au survol de l'image par la souris. Exemple:
+
+		intermediaireAttributTitle=Chien dormant sur un divan.
 
 - `intermediaireLegende`: commentaire qui sera affiché sous l'image en version intermédiaire. Exemple:
 

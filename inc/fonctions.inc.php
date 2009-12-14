@@ -1929,6 +1929,15 @@ function oeuvre(
 			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
 		}
 		
+		if (!empty($infosOeuvre['intermediaireAttributTitle']))
+		{
+			$attributTitle = 'title="' . $infosOeuvre['intermediaireAttributTitle'] . '"';
+		}
+		else
+		{
+			$attributTitle = '';
+		}
+		
 		if (!empty($infosOeuvre['intermediaireLegende']))
 		{
 			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
@@ -2102,11 +2111,11 @@ function oeuvre(
 		
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'sousContenu')
 		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal;
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal;
 		}
 		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
 		{
-			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n";
+			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n";
 		}
 	}
 	####################################################################
@@ -2200,6 +2209,15 @@ function oeuvre(
 			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
 		}
 		
+		if (!empty($infosOeuvre['vignetteAttributTitle']))
+		{
+			$attributTitle = 'title="' . $infosOeuvre['vignetteAttributTitle'] . '"';
+		}
+		else
+		{
+			$attributTitle = '';
+		}
+		
 		if ($estAccueil)
 		{
 			$classAccueil = 'Accueil ';
@@ -2239,7 +2257,7 @@ function oeuvre(
 			$class .= ' minivignetteOeuvreEnCours';
 		}
 		
-		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt /></a></div>\n";
+		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt $attributTitle /></a></div>\n";
 	}
 	else
 	{

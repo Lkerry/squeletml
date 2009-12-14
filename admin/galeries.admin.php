@@ -1415,9 +1415,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<option value="vignetteLargeur">vignetteLargeur</option>
 					<option value="vignetteHauteur">vignetteHauteur</option>
 					<option value="vignetteAlt">vignetteAlt</option>
+					<option value="vignetteAttributTitle">vignetteAttributTitle</option>
 					<option value="intermediaireLargeur">intermediaireLargeur</option>
 					<option value="intermediaireHauteur">intermediaireHauteur</option>
 					<option value="intermediaireAlt">intermediaireAlt</option>
+					<option value="intermediaireAttributTitle">intermediaireAttributTitle</option>
 					<option value="intermediaireLegende">intermediaireLegende</option>
 					<option value="pageIntermediaireBaliseTitle">pageIntermediaireBaliseTitle</option>
 					<option value="pageIntermediaireDescription">pageIntermediaireDescription</option>
