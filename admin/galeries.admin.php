@@ -1027,7 +1027,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
 <div class="boite">
-	<h2><?php echo T_("Lister les galeries existantes"); ?></h2>
+	<h2 id="lister"><?php echo T_("Lister les galeries existantes"); ?></h2>
 	
 	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
@@ -1045,7 +1045,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <!-- .boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Ajouter des images"); ?></h2>
+	<h2 id="ajouter"><?php echo T_("Ajouter des images"); ?></h2>
 	
 	<?php if (function_exists('gzopen')): ?>
 		<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>) ou ZIP (<code>.zip</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
@@ -1097,7 +1097,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <!-- .boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
+	<h2 id="redimensionner"><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
 
 	<p><?php echo T_("Vous pouvez générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermédiaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
 
@@ -1162,7 +1162,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <!-- .boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Supprimer des images"); ?></h2>
+	<h2 id="supprimer"><?php echo T_("Supprimer des images"); ?></h2>
 	
 	<p><?php echo T_("La liste des images potentiellement supprimables peut être générée de trois manières différentes:"); ?></p>
 	
@@ -1245,7 +1245,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <!-- .boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Renommer une galerie"); ?></h2>
+	<h2 id="renommer"><?php echo T_("Renommer une galerie"); ?></h2>
 
 	<p><?php echo T_("Vous pouvez renommer une galerie. S'il s'agit d'une galerie déjà utilisée sur votre site, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page web de votre galerie."); ?></p>
 
@@ -1278,7 +1278,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<!-- .boite -->
 
 	<div class="boite">
-		<h2><?php echo T_("Sauvegarder une galerie"); ?></h2>
+		<h2 id="sauvegarder"><?php echo T_("Sauvegarder une galerie"); ?></h2>
 
 		<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
 
@@ -1311,7 +1311,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <!-- .boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Créer une page web de galerie"); ?></h2>
+	<h2 id="pageWeb"><?php echo T_("Créer une page web de galerie"); ?></h2>
 
 	<p><?php echo T_("Vous pouvez ajouter une page sur votre site pour présenter une galerie."); ?></p>
 
@@ -1346,7 +1346,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <!-- .boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Créer ou mettre à jour un fichier de configuration"); ?></h2>
+	<h2 id="config"><?php echo T_("Créer ou mettre à jour un fichier de configuration"); ?></h2>
 
 	<p><?php echo T_("Crée ou met à jour le fichier de configuration de cette galerie."); ?></p>
 
@@ -1386,7 +1386,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <!-- .boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Afficher un modèle de fichier de configuration"); ?></h2>
+	<h2 id="modele"><?php echo T_("Afficher un modèle de fichier de configuration"); ?></h2>
 
 	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>

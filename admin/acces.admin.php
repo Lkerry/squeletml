@@ -575,7 +575,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 ?>
 <?php if (!$erreurAccesFichiers): ?>
 	<div class="boite">
-		<h2><?php echo T_("Lister les utilisateurs ayant accès à l'administration"); ?></h2>
+		<h2 id="utilisateurs"><?php echo T_("Lister les utilisateurs ayant accès à l'administration"); ?></h2>
 
 		<p><?php echo T_("Vous pouvez afficher la liste des utilisateurs ayant accès à l'administration."); ?></p>
 
@@ -587,7 +587,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	</div><!-- /.boite -->
 
 	<div class="boite">
-		<h2><?php echo T_("Gérer les droits d'accès à l'administration"); ?></h2>
+		<h2 id="droits"><?php echo T_("Gérer les droits d'accès à l'administration"); ?></h2>
 
 		<p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
 
@@ -609,7 +609,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	</div><!-- /.boite -->
 
 	<div class="boite">
-		<h2><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
+		<h2 id="maintenance"><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
 
 		<p><?php echo T_("Si le site est hors ligne, tous les internautes visitant une page du site seront redirigés vers la page de maintenance."); ?></p>
 
@@ -654,7 +654,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
 		<div class="boite">
-			<h2><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
+			<h2 id="sauvegarde"><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
 		
 			<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
 		

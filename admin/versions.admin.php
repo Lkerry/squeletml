@@ -6,7 +6,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 <h1><?php echo T_("Version de Squeletml et autres informations"); ?></h1>
 
-<h2><?php echo T_("Aperçu"); ?></h2>
+<h2 id="apercu"><?php echo T_("Aperçu"); ?></h2>
 
 <ul>
 	<li><?php printf(T_("Version de Squeletml: %1\$s"), adminVersionSqueletml($racine)); ?></li>
@@ -22,7 +22,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 </ul>
 
 <?php if (isset($_GET['action']) && $_GET['action'] == 'fonctions'): ?>
-	<h2><?php echo T_("Fonctions internes de PHP"); ?></h2>
+	<h2 id="fonctions"><?php echo T_("Fonctions internes de PHP"); ?></h2>
 	
 	<?php $fonctions = get_defined_functions(); ?>
 	<?php $modules = get_loaded_extensions(); ?>

@@ -109,8 +109,11 @@ function boiteDeroulante(conteneur)
 	var oA = document.createElement('a');
 	var oSpan1 = document.createElement('span');
 	var oSpan2 = document.createElement('span');
+	var oSpan3 = document.createElement('span');
 	var oTexteSpan1 = '';
-	var oTexteSpan2 = document.createTextNode($(oTitre).html());
+	var oTexteSpan1fin = '';
+	var oTexteSpan2 = '';
+	var oTexteSpan3 = document.createTextNode($(oTitre).html());
 	var symbole = '';
 	var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur));
 	
@@ -140,12 +143,18 @@ function boiteDeroulante(conteneur)
 	
 	oA.href= '#';
 	oA.setAttribute('class', 'boiteDeroulanteLien');
-	oSpan2.appendChild(oTexteSpan2);
-	oA.appendChild(oSpan2);
+	oSpan3.appendChild(oTexteSpan3);
+	oA.appendChild(oSpan3);
 	$(oTitre).html(oA);
-	oTexteSpan1 = document.createTextNode('[' + symbole + ']&nbsp;');
+	oTexteSpan1 = document.createTextNode('[');
+	oTexteSpan1fin = document.createTextNode(']&nbsp;');
+	oTexteSpan2 = document.createTextNode(symbole);
+	oSpan2.appendChild(oTexteSpan2);
+	oSpan2.setAttribute('class', 'boiteDeroulanteVisuelSymbole');
 	oSpan1.appendChild(oTexteSpan1);
-	oSpan1.setAttribute('class', 'boiteDeroulanteSymbole');
+	oSpan1.appendChild(oSpan2);
+	oSpan1.appendChild(oTexteSpan1fin);
+	oSpan1.setAttribute('class', 'boiteDeroulanteVisuel');
 	$(cheminTitre + '>a span:first').before(oSpan1);
 	$(cheminTitre + '>a').html(html_entity_decode($(cheminTitre + '>a').html()));
 	oA.onclick = function()
@@ -161,7 +170,7 @@ function boiteDeroulante(conteneur)
 			symbole = '-';
 		}
 		
-		$(cheminTitre + '>a span:first').html(html_entity_decode('[' + symbole + ']&nbsp;'));
+		$(cheminTitre + '>a span.boiteDeroulanteVisuelSymbole').html(symbole);
 		
 		return false;
 	};

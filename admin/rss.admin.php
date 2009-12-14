@@ -451,7 +451,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 </div><!-- /#boiteMessages -->
 
 <div class="boite">
-	<h2><?php echo T_("Configuration actuelle"); ?></h2>
+	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
 	
 	<ul>
 		<?php if ($galerieActiverFluxRssGlobal): ?>
@@ -473,7 +473,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 </div><!-- /.boite -->
 
 <div class="boite">
-	<h2><?php echo T_("Pages ajoutées aux flux RSS globaux"); ?></h2>
+	<h2 id="choixTypePages"><?php echo T_("Pages ajoutées aux flux RSS globaux"); ?></h2>
 
 	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>

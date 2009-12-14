@@ -22,6 +22,12 @@ $adminUrlMaintenance = 'maintenance.php';
 */
 $adminTailleCache = '2097152';
 
+// Activation de boîtes déroulantes par défaut.
+/*
+- Voir les explications de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration du site.
+*/
+$adminBoitesDeroulantesParDefaut = 'enTete';
+
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).

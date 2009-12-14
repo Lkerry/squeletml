@@ -1253,7 +1253,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	
 	echo '<div class="sousBoite">' . "\n";
-	echo '<h3>' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$dossierAparcourir</code>") . "</h3>\n";
+	echo '<h3 id="contenuDossier">' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$dossierAparcourir</code>") . "</h3>\n";
 	
 	if (!file_exists($dossierAparcourir))
 	{
@@ -1308,7 +1308,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 /* ____________________ Listage des dossiers. ____________________ */
 
 echo '<div class="sousBoite">' . "\n";
-echo '<h3>' . T_("Liste des dossiers") . "</h3>\n";
+echo '<h3 id="listeDossiers">' . T_("Liste des dossiers") . "</h3>\n";
 
 $listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
 

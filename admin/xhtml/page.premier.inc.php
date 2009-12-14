@@ -27,6 +27,10 @@
 				<div id="menu">
 					<?php echo $menu; ?>
 				</div><!-- /#menu -->
+				
+				<div id="raccourcis">
+					<?php include_once $cheminRaccourcis; ?>
+				</div><!-- /#raccourcis -->
 			</div><!-- /#enTete -->
 			
 			<!-- ____________________ #contenu ____________________ -->

@@ -13,5 +13,7 @@
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/versions.admin.php"><?php echo T_("Versions"); ?></a> | </li>
 	
-	<li><a href="<?php echo $urlRacine; ?>/"><?php echo T_("Retour au site"); ?></a></li>
+	<li><a href="<?php echo $urlRacine; ?>/"><?php echo T_("Site"); ?></a> | </li>
+	
+	<li class="bDtitre" title="<?php echo T_('Raccourcis'); ?>"></li>
 </ul>

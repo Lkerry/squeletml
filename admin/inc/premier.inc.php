@@ -22,8 +22,9 @@ if ($tableDesMatieres)
 	$boitesDeroulantes .= '|tableDesMatieres';
 }
 
-$boitesDeroulantesTableau = boitesDeroulantes('', $boitesDeroulantes);
+$boitesDeroulantesTableau = boitesDeroulantes($adminBoitesDeroulantesParDefaut, $boitesDeroulantes);
 $cheminAncres = adminCheminXhtml($racineAdmin, 'ancres');
+$cheminRaccourcis = adminCheminXhtml($racineAdmin, 'raccourcis');
 $doctype = doctype($adminXhtmlStrict);
 $idBody = adminBodyId();
 
