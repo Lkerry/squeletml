@@ -77,6 +77,9 @@ ini: menage-ini
 	mkdir -p $(languageSpecs)/
 	cp src/ini-squeletml/ini-squeletml.lang $(languageSpecs)/
 
+lp:
+	bzr push lp:~jpfle/squeletml/trunk
+
 menage-archives:
 	rm -f $(tag).tbz2
 	rm -f $(tag).zip
