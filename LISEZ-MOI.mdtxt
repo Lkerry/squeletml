@@ -8,9 +8,9 @@
 
 <img class='gauche' src='http://www.jpfleury.net/fichiers/squeletml-logo.png' alt='Squeletml' width='75' height='75' />Le logiciel libre Squeletml est un squelette de site valide XHTML 1.0 Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but de réduire l'effort nécessaire pour la création et la maintenance de ce genre de site.
 
-En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin), et ces derniers fournissent une structure de site personnalisée et traduite dans la langue de la page (si disponible). Chaque page peut facilement avoir ses propres informations: balise `title`, métabalises, titre de premier niveau (`h1`), langue, table des matières, etc. L'en-tête personnalisée permet d'offrir de meilleurs repères aux internautes, d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement.
+En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin), et ces derniers fournissent une structure de site personnalisée et traduite dans la langue de la page (si disponible). Chaque page peut facilement avoir ses propres informations: langue, balise `title`, métabalises, feuilles de style, scripts Javascript, titre de premier niveau (`h1`), table des matières, etc. L'en-tête personnalisée permet d'offrir de meilleurs repères aux internautes, d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement.
 
-Aussi, un fichier de configuration permet de choisir, par simple renseignement de variables, le nombre et l'emplacement des colonnes, la position des menus dans le flux HTML (et par conséquent leur ordre dans les colonnes), la présence ou non de certaines structures comme le bas de page, le style par défaut (blocs de contenu avec coins arrondis, arrière-plan des colonnes...), l'activation de boîtes déroulantes sur les contenus spécifiés (affichant ou masquant le corps du contenu par simple clic sur le titre, et enregistrant la préférence de l'internaute), etc.
+Aussi, un fichier de configuration permet de paramétrer, par simple affectation de variables, le flux HTML ainsi que plusieurs aspets visuels sans devoir bidouiller dans les feuilles de style CSS ou le modèle de page. Bien sûr, il est également possible d'utiliser ses propres styles ou modèle de page.
 
 Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
 
@@ -22,20 +22,20 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Requiert Apache et PHP 5, et compatible PHP 5.3.
 
-- Développé sous GNU/Linux, et testé sur quelques configurations, comme sous Windows et les serveurs de Free.fr.
+- Développé sous GNU/Linux, et testé sur quelques configurations de serveur, comme sous Windows et les serveurs de Free.fr.
 
-- Structure valide XHTML 1.0 Strict (si nécessaire, une option permet de passer au XHTML 1.0 Transitional).
+- Structure valide XHTML 1.0 Strict (si nécessaire, il est possible de passer au XHTML 1.0 Transitional ou tout simplement d'utiliser sa propre structure de page).
 
 - Utilisation possible de la [syntaxe Markdown](http://michelf.com/projets/php-markdown/) pour le texte des pages.
 
 - Fichier de configuration offrant une syntaxe simple pour:
 
   - insérer des fichiers CSS ou Javascipt dans l'ent-ête de certaines pages en particulier, ou bien pour toutes les pages du site;
-  - choisir diverses structures et styles possibles pour le site (nombre de colonnes, emplacement des menus, ajout de blocs de menu personnalisés, boîtes déroulantes, etc.).
+  - choisir diverses structures et styles possibles pour le site: nombre de colonnes et arrière-plan, position des blocs de contenu (comme les menus) dans le flux HTML (et par conséquent leur ordre dans les colonnes), présence ou non de certaines structures comme le bas de page, ajout de blocs de contenu personnalisés, blocs avec coins arrondis, activation de boîtes déroulantes sur les contenus spécifiés (affichant ou masquant le corps du contenu par simple clic sur le titre, et enregistrant la préférence de l'internaute), etc.
 
-- Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue de la page.
+- Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue de la page ou le type de page (texte, galerie, formulaire de contact, etc.).
 
-- Personnalisation de l'en-tête pour chaque page: balise `title`, métabalises `description`, `keywords`, `robots`, langue de la page, etc.
+- Personnalisation de l'en-tête pour chaque page: balise `title`, métabalises, langue de la page, etc.
 
 - Possibilité de générer automatiquement une table des matières pour la page en cours.
 
@@ -43,7 +43,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Ajout d'un nombre illimité de formulaires de contact, et ce avec options d'antipourriel et de copie à l'expéditeur.
 
-- Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une oeuvre dans une galerie, une vignette de l'oeuvre et une description (si elle existe) sont insérées dans le message.
+- Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une oeuvre dans une galerie, une vignette de l'oeuvre et une description (si cette dernière existe) sont insérées dans le message.
 
 - Syndication de contenu (flux RSS):
 
@@ -51,7 +51,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Un flux RSS global activable pour chaque langue du site.
   - Mise en cache possible des flux RSS, et choix de la durée de validité du cache.
 
-- Module de galerie photos:
+- Galeries photos:
 
   - Nombre illimité de galeries.
   - Formats d'image PNG, JPG ou GIF.
@@ -67,7 +67,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Syntaxe Markdown en option pour les légendes.
   - Affichage par défaut des données Exif des images au format JPG.
   - Choix de l'emplacement de la légende et des données Exif (au-dessus ou au-dessous de l'image, ou dans une colonne du site).
-  - Réordonnement d'une image dans une galerie sans modifier l'URL de cette image.
+  - Réordonnement d'une image dans une galerie sans modification de l'URL de cette image.
   - Génération automatique des vignettes ou utilisation de vignettes personnalisées.
   - Script offert pour redimensionner automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
   - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
@@ -76,7 +76,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par FTP:
 
   - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (avec coloration syntaxique du code en direct durant la saisie), téléversement, téléchargement...
-  - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise du site en maintenance.
+  - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise en maintenance du site.
   - Gestion des galeries: entre autres création et mise à jour du fichier de configuration pour chaque galerie, listage de toutes les galeries existantes, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
   - Gestion des flux RSS globaux.
   - Documentation: consultation de l'aide directement en local.
@@ -87,7 +87,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 Squeletml n'a pas pour but d'offrir un système de gestion de contenu (SGC) avancé (par exemple comme [Drupal](http://www.drupalfr.org/)), mais tente d'optimiser le plus possible un site créé *à l'ancienne* ;-), dont chaque page représente un *vrai* fichier sur le serveur. Cependant, le fonctionnement de Squeletml est indéniablement inspiré de celui de SGC comme Drupal.
 
-J'ai donc écrit Squeletml dans le but de pouvoir mettre sur pied rapidement et facilement un site à priori de taille moyenne, sans devoir passer par l'étape de configuration souvent assez fastidieuse des SGC, de pouvoir modifier plusieurs aspects du site (par exemple l'emplacement du menu) à partir d'un simple fichier de configuration, et de pouvoir mettre à jour le script sans trop de casse-tête et de craintes d'écraser la configuration personnalisée.
+Squeletml a donc été écrit dans le but de pouvoir mettre sur pied rapidement et facilement un site à priori de taille moyenne, sans devoir passer par l'étape de configuration souvent assez fastidieuse des SGC, de pouvoir modifier plusieurs aspects du site à partir d'un simple fichier de configuration, et de pouvoir mettre à jour le script sans trop de casse-tête et de craintes d'écraser la configuration personnalisée.
 
 ## Captures d'écran
 
