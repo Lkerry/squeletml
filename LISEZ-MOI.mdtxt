@@ -10,7 +10,7 @@
 
 En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin), et ces derniers fournissent une structure de site personnalisée et traduite dans la langue de la page (si disponible). Chaque page peut facilement avoir ses propres informations: langue, balise `title`, métabalises, feuilles de style, scripts Javascript, titre de premier niveau (`h1`), table des matières, etc. L'en-tête personnalisée permet d'offrir de meilleurs repères aux internautes, d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement.
 
-Aussi, un fichier de configuration permet de paramétrer, par simple affectation de variables, le flux HTML ainsi que plusieurs aspets visuels sans devoir bidouiller dans les feuilles de style CSS ou le modèle de page. Bien sûr, il est également possible d'utiliser ses propres styles ou modèle de page.
+Aussi, un fichier de configuration permet de paramétrer, par simple affectation de variables, le flux HTML ainsi que plusieurs aspets visuels sans devoir bidouiller dans les feuilles de style CSS ou la structure de page. Bien sûr, il est également possible d'utiliser ses propres styles ou structure de page.
 
 Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
 
@@ -33,13 +33,13 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - insérer des fichiers CSS ou Javascipt dans l'ent-ête de certaines pages en particulier, ou bien pour toutes les pages du site;
   - choisir diverses structures et styles possibles pour le site: nombre de colonnes et arrière-plan, position des blocs de contenu (comme les menus) dans le flux HTML (et par conséquent leur ordre dans les colonnes), présence ou non de certaines structures comme le bas de page, ajout de blocs de contenu personnalisés, blocs avec coins arrondis, activation de boîtes déroulantes sur les contenus spécifiés (affichant ou masquant le corps du contenu par simple clic sur le titre, et enregistrant la préférence de l'internaute), etc.
 
-- Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue de la page ou le type de page (texte, galerie, formulaire de contact, etc.).
+- Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue ou le type de la page (texte, galerie, formulaire de contact, etc.).
 
-- Personnalisation de l'en-tête pour chaque page: balise `title`, métabalises, langue de la page, etc.
+- Personnalisation de l'en-tête pour chaque page: balise `title`, métabalises, langue, etc.
+
+- Gestion multilingue, et structure de site (menus, bas de page, etc.) selon la langue de la page.
 
 - Possibilité de générer automatiquement une table des matières pour la page en cours.
-
-- Gestion multilingue, et structure de site (menu, bas de page, etc.) selon la langue de la page.
 
 - Ajout d'un nombre illimité de formulaires de contact, et ce avec options d'antipourriel et de copie à l'expéditeur.
 
@@ -56,14 +56,12 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Nombre illimité de galeries.
   - Formats d'image PNG, JPG ou GIF.
   - Pagination configurable des vignettes constituant l'accueil de la galerie.
-  - Choix de la navigation entre chaque image d'une galerie:
+  - Choix de la navigation (et de son emplacement) entre chaque image d'une galerie:
     - avec une fenêtre Javascript permettant de naviguer d'une image à une autre sans rechargement de page, ou
     - avec des flèches, ou
-    - avec les vignettes des images précédente et suivante (possibilité d'ajouter automatiquement une image par-dessus les vignettes, par exemple une flèche au centre), ou
-    - avec des vignettes et des miniflèches (donc deux fichiers par lien «précédent» et deux fichiers par lien «suivant»), ou
+    - avec les vignettes des images précédente et suivante (possibilité de tatouer ou d'accompagner les vignettes de miniflèches), ou
     - à l'aide d'un aperçu de toutes les images de la galerie grâce à des minivignettes.
-  - Choix de l'emplacement de la navigation dans le cas d'une navigation avec rechargement de la page (donc tous les types de navigation sauf la fenêtre Javascript).
-  - Information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique de ces informations, évitant ainsi le contenu dupliqué d'une manière ou d'une autre.
+  - Information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique, évitant ainsi le contenu dupliqué d'une manière ou d'une autre.
   - Syntaxe Markdown en option pour les légendes.
   - Affichage par défaut des données Exif des images au format JPG.
   - Choix de l'emplacement de la légende et des données Exif (au-dessus ou au-dessous de l'image, ou dans une colonne du site).
@@ -71,17 +69,17 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Génération automatique des vignettes ou utilisation de vignettes personnalisées.
   - Script offert pour redimensionner automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
   - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
-  - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette ou `-original.extension` pour la version originale ou téléchargeable de l'image).
+  - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette).
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par FTP:
 
-  - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (avec coloration syntaxique du code en direct durant la saisie), téléversement, téléchargement...
+  - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (avec coloration syntaxique du code en direct durant la saisie), ajout, téléchargement...
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise en maintenance du site.
-  - Gestion des galeries: entre autres création et mise à jour du fichier de configuration pour chaque galerie, listage de toutes les galeries existantes, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
+  - Gestion des galeries: listage de toutes les galeries existantes, création et mise à jour du fichier de configuration pour chaque galerie, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
   - Gestion des flux RSS globaux.
   - Documentation: consultation de l'aide directement en local.
 
-- Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox. Squeletml fonctionne avec Internet Explorer 6, mais il est clairement optimisé pour les navigateurs modernes.
+- Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox. Squeletml fonctionne avec Internet Explorer 6, mais il est clairement optimisé pour les navigateurs modernes (testé sur plusieurs navigateurs).
 
 - Mise à jour rapide: la configuration personnalisée d'un site se trouve dans un dossier qui ne sera pas écrasé lors d'une mise à jour de Squeletml.
 
