@@ -45,7 +45,6 @@ $menu = lienActif($menu, FALSE);
 $nomPage = nomPage();
 $url = url();
 $urlFichiers = $urlRacine . '/site/fichiers';
-$urlSansGet = url(FALSE);
 $urlSite = $urlRacine . '/site';
 
 ########################################################################
@@ -63,9 +62,9 @@ if (!adminEstIe())
 
 if (!empty($boitesDeroulantesTableau))
 {
-	$adminBalisesLinkScript[] = $urlSansGet . "#css#$urlRacine/css/boites-deroulantes.css";
-	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.min.js";
-	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.cookie.js";
+	$adminBalisesLinkScript[] = $url . "#css#$urlRacine/css/boites-deroulantes.css";
+	$adminBalisesLinkScript[] = $url . "#js#$urlRacine/js/jquery.min.js";
+	$adminBalisesLinkScript[] = $url . "#js#$urlRacine/js/jquery.cookie.js";
 	$jsDirect = '';
 	
 	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
@@ -73,28 +72,28 @@ if (!empty($boitesDeroulantesTableau))
 		$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
 	}
 	
-	$adminBalisesLinkScript[] = $urlSansGet . "#jsDirect#$jsDirect";
+	$adminBalisesLinkScript[] = $url . "#jsDirect#$jsDirect";
 }
 
 // Table des matières.
 
 if ($tableDesMatieres)
 {
-	$adminBalisesLinkScript[] = $urlSansGet . "#css#$urlRacine/css/table-des-matieres.css";
-	$adminBalisesLinkScript[] = $urlSansGet . "#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
+	$adminBalisesLinkScript[] = $url . "#css#$urlRacine/css/table-des-matieres.css";
+	$adminBalisesLinkScript[] = $url . "#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	
-	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/Gettext/lib/Gettext.js";
+	$adminBalisesLinkScript[] = $url . "#js#$urlRacine/js/Gettext/lib/Gettext.js";
 	
 	if (file_exists($racine . '/locale/' . $locale))
 	{
-		$adminBalisesLinkScript[] = $urlSansGet . "#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
+		$adminBalisesLinkScript[] = $url . "#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
 	}
 	
-	$adminBalisesLinkScript[] = $urlSansGet . "#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
+	$adminBalisesLinkScript[] = $url . "#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
 	
-	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery.min.js";
-	$adminBalisesLinkScript[] = $urlSansGet . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
-	$adminBalisesLinkScript[] = $urlSansGet . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
+	$adminBalisesLinkScript[] = $url . "#js#$urlRacine/js/jquery.min.js";
+	$adminBalisesLinkScript[] = $url . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
+	$adminBalisesLinkScript[] = $url . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 
 // Variable finale.

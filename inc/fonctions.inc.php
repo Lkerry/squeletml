@@ -1426,6 +1426,7 @@ function linkScriptAinclure($balisesBrutes)
 	{
 		// On récupère les infos.
 		list ($url, $type, $fichier) = explode('#', $baliseBrute, 3);
+		$url = preg_quote($url);
 		
 		if ($type == 'rss' && strpos($fichier, '#'))
 		{
@@ -1439,7 +1440,7 @@ function linkScriptAinclure($balisesBrutes)
 		// Si l'adresse se termine par *, accepter toutes les pages enfants possibles de cette page parent en plus de la page parent elle-même.
 		if (preg_match('/\*$/', $url))
 		{
-			$motif = substr($url, 0, -1);
+			$motif = substr($url, 0, -2); // -2 à cause de `preg_quote()` retournant `\*`.
 			$motif .= '.*';
 		}
 		else

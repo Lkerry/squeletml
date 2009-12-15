@@ -8,7 +8,6 @@ phpGettext($racine, LANGUE);
 
 // URL.
 $urlSansGet = url(FALSE);
-$urlSansGetSansServeur = url(FALSE, FALSE);
 
 // Liste des oeuvres à afficher.
 if ($idGalerie && $idGalerie == 'démo')
@@ -342,7 +341,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 	{
 		$estPageDerreur = TRUE;
 		$id = securiseTexte($_GET['oeuvre']);
-		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre demandée est introuvable. <a href=\"%1\$s\">Voir toutes les oeuvres</a>."), $urlSansGetSansServeur) . "</p>\n";
+		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre demandée est introuvable. <a href=\"%1\$s\">Voir toutes les oeuvres</a>."), $urlSansGet) . "</p>\n";
 		
 		// Ajustement des métabalises.
 		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
@@ -479,9 +478,9 @@ elseif ($idGalerie)
 		$galerieInfo .= '<div id="galerieInfo">' . "\n";
 		$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s oeuvre", "Cette galerie contient %1\$s oeuvres", $nombreDoeuvres), $nombreDoeuvres) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
 		
-		if (!preg_match('|' . $urlSansGetSansServeur . '$|', $urlSansGetSansServeur))
+		if ($url != $urlSansGet)
 		{
-			$galerieInfo .= ' <a href="' . $urlSansGetSansServeur . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
+			$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
 		}
 		
 		$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";

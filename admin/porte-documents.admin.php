@@ -48,6 +48,10 @@ if (isset($_GET['valeur']))
 {
 	$getValeur = securiseTexte($_GET['valeur']);
 }
+else
+{
+	$getValeur = '';
+}
 
 if (isset($_GET['dossierCourant']))
 {
