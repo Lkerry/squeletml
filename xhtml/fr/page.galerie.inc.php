@@ -3,7 +3,7 @@ $baliseTitle = "Galerie démo de Squeletml";
 $description = "Galerie démo de Squeletml";
 $langue = 'fr';
 $idGalerie = 'démo';
-$rss = FALSE;
+$rssGalerie = FALSE;
 include $racine . '/inc/premier.inc.php';
 ?>
 

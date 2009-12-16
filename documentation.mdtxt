@@ -437,7 +437,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier de configuration.
 
-- `$rss`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la **galerie** en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration.
+- `$rssGalerie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la galerie en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration.
 
 - `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` `interieurContenu`. La table est ajoutée au début de cette `div`.
 
@@ -827,7 +827,7 @@ Si la page visitée est autre chose qu'une page individuelle d'oeuvre, le modèl
 
 #### Syndication par galerie
 
-Par défaut, chaque galerie possède son propre flux RSS, généré automatiquement. Dans la configuration, il est possible de désactiver par défaut la syndication individuelle des galeries. Dans tous les cas, la variable optionnelle `$rss` peut être renseignée dans le fichier PHP de la galerie pour activer (`TRUE`) ou désactiver (`FALSE`) la syndication pour la galerie en question.
+Par défaut, chaque galerie possède son propre flux RSS, généré automatiquement. Dans la configuration, il est possible de désactiver par défaut la syndication individuelle des galeries. Dans tous les cas, la variable optionnelle `$rssGalerie` peut être renseignée dans le fichier PHP de la galerie pour activer (`TRUE`) ou désactiver (`FALSE`) la syndication pour la galerie en question.
 
 ### Syndication globale
 
@@ -854,7 +854,7 @@ et:
 
 	$urlRacine/dossier/galerie-animaux.php
 
-**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rss = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
+**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
 #### Syndication globale du site
 

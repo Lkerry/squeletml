@@ -606,7 +606,7 @@ $galerieLegendeEmplacement = array ('bas', 'sousContenu', 'sousContenu');
 
 // Syndication individuelle par défaut des galeries.
 /*
-- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rss` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssGalerie` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
 */
 $galerieActiverFluxRssParDefaut = TRUE; // TRUE|FALSE
 

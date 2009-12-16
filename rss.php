@@ -32,15 +32,15 @@ if (isset($getChemin) && !empty($getChemin))
 		{
 			$ligne = rtrim(fgets($fic));
 			
-			if (preg_match('/\$rss\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $resultat))
+			if (preg_match('/\$rssGalerie\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $resultat))
 			{
 				if ($resultat[1] == "TRUE" || $resultat[1] == "true")
 				{
-					$rss = TRUE;
+					$rssGalerie = TRUE;
 				}
 				elseif ($resultat[1] == "FALSE" || $resultat[1] == "false")
 				{
-					$rss = FALSE;
+					$rssGalerie = FALSE;
 				}
 			}
 	
@@ -55,12 +55,12 @@ if (isset($getChemin) && !empty($getChemin))
 		// Flux RSS de la galerie.
 		if (isset($idGalerie))
 		{
-			if (!isset($rss))
+			if (!isset($rssGalerie))
 			{
-				$rss = $galerieActiverFluxRssParDefaut;
+				$rssGalerie = $galerieActiverFluxRssParDefaut;
 			}
 			
-			if ($rss && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && cheminConfigGalerie($racine, $idGalerie))
+			if ($rssGalerie && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && cheminConfigGalerie($racine, $idGalerie))
 			{
 				// A: le flux RSS est activé.
 				

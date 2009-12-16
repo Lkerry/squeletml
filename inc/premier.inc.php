@@ -90,9 +90,9 @@ $nomSite = nomSite(estAccueil(ACCUEIL), lienAccueil(ACCUEIL, estAccueil(ACCUEIL)
 $nomPage = nomPage();
 $robots = robots($robotsParDefaut, $robots);
 
-if ($idGalerie && !isset($rss))
+if ($idGalerie && !isset($rssGalerie))
 {
-	$rss = $galerieActiverFluxRssParDefaut;
+	$rssGalerie = $galerieActiverFluxRssParDefaut;
 }
 
 if (isset($corpsGalerie) && !empty($corpsGalerie))
@@ -151,7 +151,7 @@ if (!empty($boitesDeroulantesTableau))
 
 // Flux RSS.
 
-if ($idGalerie && $rss)
+if ($idGalerie && $rssGalerie)
 {
 	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);

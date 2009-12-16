@@ -133,7 +133,7 @@ if (!empty($blocsAinserer))
 				break;
 				
 			case 'flux-rss':
-				if (($idGalerie && $rss) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
+				if (($idGalerie && $rssGalerie) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
 				{
 					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 					
@@ -150,7 +150,7 @@ if (!empty($blocsAinserer))
 					$blocs .= $codeInterieurBlocHaut;
 					$blocs .= "\t<ul>\n";
 					
-					if ($idGalerie && $rss)
+					if ($idGalerie && $rssGalerie)
 					{
 						$blocs .= "\t\t<li>" . lienFluxRss($urlFlux, $idGalerie, TRUE) . "</li>\n";
 					}
