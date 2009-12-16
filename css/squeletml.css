@@ -185,6 +185,12 @@ li.parent {
 	overflow: hidden;
 }
 
+.video {
+	text-align: center;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
 /***********************************************************************
 **
 ** Bordures de la page.

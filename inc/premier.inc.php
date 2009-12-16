@@ -194,7 +194,7 @@ if ($tableDesMatieres)
 	
 	$balisesLinkScript[] = "$url#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
 	
-	$balisesLinkScript[] = $url"$url#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
 	$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
