@@ -64,7 +64,6 @@ $adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacine/css/extensions-pro
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/phpjs.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#js#$urlRacineAdmin/inc/CodeMirror/js/codemirror.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#favicon#$urlRacine/fichiers/puce.png";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacine/js/jquery.min.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
@@ -209,9 +208,13 @@ $adminPorteDocumentsDroits = array (
 	'telecharger' => TRUE,
 );
 
-// Si `$adminPorteDocumentsDroits['edition']` vaut TRUE, activer la coloration syntaxique en direct durant la saisie dans le `textarea`.
+// Si `$adminPorteDocumentsDroits['edition']` vaut TRUE, activer une aide lors de l'édition.
 /*
-- La coloration s'applique au PHP, HTML, CSS et Javascript (séparément ou entremêlés dans le même fichier).
+- Il y a deux possibilités:
+  - activer la coloration en direct du **code** à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie dans le `textarea`. La coloration s'applique alors au code PHP, HTML, CSS et Javascript (séparément ou entremêlés dans le même fichier);
+  - activer l'ajout d'une barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor), qui permet également de visualiser un aperçu du code HTML.
+- Pour désactiver l'aide, laisser vide, c'est-à-dire:
+  $adminAideEdition = '';
 */
-$adminColorationSyntaxique = TRUE; // TRUE|FALSE
+$adminAideEdition = 'BUEditor'; // CodeMirror|BUEditor
 ?>

@@ -136,9 +136,9 @@ include $racine . '/inc/blocs.inc.php';
 
 if (!empty($boitesDeroulantesTableau))
 {
-	$balisesLinkScript[] = $url . "#css#$urlRacine/css/boites-deroulantes.css";
-	$balisesLinkScript[] = $url . "#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = $url . "#js#$urlRacine/js/jquery.cookie.js";
+	$balisesLinkScript[] = "$url#css#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.cookie.js";
 	$jsDirect = '';
 	
 	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
@@ -146,7 +146,7 @@ if (!empty($boitesDeroulantesTableau))
 		$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
 	}
 	
-	$balisesLinkScript[] = $url . "#jsDirect#$jsDirect";
+	$balisesLinkScript[] = "$url#jsDirect#$jsDirect";
 }
 
 // Flux RSS.
@@ -154,59 +154,59 @@ if (!empty($boitesDeroulantesTableau))
 if ($idGalerie && $rss)
 {
 	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
-	$balisesLinkScript[] = $url . "#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
 }
 
 if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 {
 	$urlFlux = $urlRacine . '/rss.php?global=galeries&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = $url . "#rss#$urlFlux#" . T_('RSS de toutes les galeries');
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('RSS de toutes les galeries');
 }
 
 if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 {
 	$urlFlux = $urlRacine . '/rss.php?global=pages&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = $url . "#rss#$urlFlux#" . T_('RSS global du site');
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('RSS global du site');
 }
 
 // Slimbox2.
 
 if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie)
 {
-	$balisesLinkScript[] = $url . "#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = $url . "#js#$urlRacine/js/slimbox2/js/slimbox2.js";
-	$balisesLinkScript[] = $url . "#css#$urlRacine/js/slimbox2/css/slimbox2.css";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/slimbox2/js/slimbox2.js";
+	$balisesLinkScript[] = "$url#css#$urlRacine/js/slimbox2/css/slimbox2.css";
 }
 
 // Table des matières.
 
 if ($tableDesMatieres)
 {
-	$balisesLinkScript[] = $url . "#css#$urlRacine/css/table-des-matieres.css";
-	$balisesLinkScript[] = $url . "#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
+	$balisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
+	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	
-	$balisesLinkScript[] = $url . "#js#$urlRacine/js/Gettext/lib/Gettext.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/Gettext/lib/Gettext.js";
 	
 	if (file_exists($racine . '/locale/' . $locale))
 	{
-		$balisesLinkScript[] = $url . "#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
+		$balisesLinkScript[] = "$url#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
 	}
 	
-	$balisesLinkScript[] = $url . "#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
+	$balisesLinkScript[] = "$url#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
 	
-	$balisesLinkScript[] = $url . "#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = $url . "#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
-	$balisesLinkScript[] = $url . "#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
+	$balisesLinkScript[] = $url"$url#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
+	$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 
 // Message pour IE6.
 
 if ($afficherMessageIe6)
 {
-	$balisesLinkScript[] = $url . "#cssltIE7#$urlRacine/css/boites-deroulantes.css";
-	$balisesLinkScript[] = $url . "#jsltIE7#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = $url . "#jsltIE7#$urlRacine/js/jquery.cookie.js";
-	$balisesLinkScript[] = $url . "#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('messageIe6');});";
+	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery.cookie.js";
+	$balisesLinkScript[] = "$url#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('messageIe6');});";
 }
 
 // Variable finale.

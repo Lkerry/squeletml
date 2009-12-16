@@ -93,7 +93,7 @@ menage-ini:
 	rm -f $(languageSpecs)/ini-squeletml.lang
 
 menage-message-accueil:
-	rm -f inc/message-accueil-par-defaut.inc.php
+	rm -f xhtml/message-accueil-par-defaut.inc.php
 
 menage-pot:
 	rm -f locale/squeletml.pot

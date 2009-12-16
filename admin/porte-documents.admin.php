@@ -622,25 +622,34 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 			$contenuFichier = '';
 		}
 
-		if (!$adminColorationSyntaxique)
+		if ($adminAideEdition != 'CodeMirror' && $adminAideEdition != 'BUEditor')
 		{
-			$style = 'style="width: 93%;"';
+			$styleTextarea = 'style="width: 93%;"';
 		}
 		else
 		{
-			$style = '';
+			$styleTextarea = '';
 		}
-
-		if (adminEstIe())
+		
+		if ($adminAideEdition == 'BUEditor')
 		{
-			$imageRedimensionner = '';
+			$classTextarea = 'class="editor-textarea"';
 		}
 		else
+		{
+			$classTextarea = '';
+		}
+		
+		if (!adminEstIe() && $adminAideEdition != 'BUEditor')
 		{
 			$imageRedimensionner = '<img src="fichiers/redimensionner.png" alt="' . T_("Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le champ de saisie.") . '" title="' . T_("Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le champ de saisie.") . '" width="41" height="20" />';
 		}
-	
-		echo '<div id="redimensionnable"><textarea id="code" cols="80" rows="25" ' . $style . ' name="porteDocumentsContenuFichier">' . $contenuFichier . '</textarea>' . $imageRedimensionner . "</div>\n";
+		else
+		{
+			$imageRedimensionner = '';
+		}
+		
+		echo '<div id="redimensionnable"><textarea id="code" ' . $classTextarea . ' cols="80" rows="25" ' . $styleTextarea . ' name="porteDocumentsContenuFichier">' . $contenuFichier . '</textarea>' . $imageRedimensionner . "</div>\n";
 	
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . $getValeur . '" />' . "\n";
 		echo '<input type="hidden" name="porteDocumentsEditionJeton" value="' . $_SESSION['jeton'] . '" />' . "\n";

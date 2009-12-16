@@ -70,7 +70,7 @@ elseif ($argv[1] == 'message-accueil')
 		fclose($fic);
 	}
 	
-	if ($fic = fopen('inc/message-accueil-par-defaut.inc.php', 'w'))
+	if ($fic = fopen('xhtml/message-accueil-par-defaut.inc.php', 'w'))
 	{
 		fputs($fic, "<?php\n");
 		

@@ -1371,11 +1371,12 @@ function linkScript($balisesBrutes, $version = '')
 				break;
 				
 			case 'jsDirect':
-				$balisesFormatees .= '<script type="text/javascript">' . $fichier . '</script>' . "\n";
+				$balisesFormatees .= "<script type=\"text/javascript\">\n//<![CDATA[\n
+$fichier\n//]]>\n</script>\n";
 				break;
 				
 			case 'jsDirectltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript">' . $fichier . '</script>' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= "<!--[if lt IE 7]>\n<script type=\"text/javascript\">\n//<![CDATA[\n$fichier\n//]]>\n</script>\n<![endif]-->\n";
 				break;
 				
 			case 'jsltIE7':
