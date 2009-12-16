@@ -622,7 +622,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 			$contenuFichier = '';
 		}
 
-		if ($adminAideEdition != 'CodeMirror' && $adminAideEdition != 'BUEditor')
+		if ($adminAideEdition != 'BUEditor' && $adminAideEdition != 'CodeMirror')
 		{
 			$styleTextarea = 'style="width: 93%;"';
 		}

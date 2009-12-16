@@ -77,11 +77,7 @@ if (!empty($boitesDeroulantesTableau))
 
 // Aide lors de l'édition.
 
-if ($adminAideEdition == 'CodeMirror')
-{
-	$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#js#$urlRacineAdmin/js/CodeMirror/js/codemirror.js";
-}
-elseif ($adminAideEdition == 'BUEditor')
+if ($adminAideEdition == 'BUEditor')
 {
 	$adminBalisesLinkScript[] = "$url#css#$urlRacineAdmin/js/bueditor/bueditor.css";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacineAdmin/js/bueditor/bueditor.js";
@@ -179,6 +175,10 @@ elseif ($adminAideEdition == 'BUEditor')
 	
 	$jsDirect .= "];\n";
 	$adminBalisesLinkScript[] = "$url#jsDirect#$jsDirect";
+}
+elseif ($adminAideEdition == 'CodeMirror')
+{
+	$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#js#$urlRacineAdmin/js/CodeMirror/js/codemirror.js";
 }
 
 // Table des matières.
