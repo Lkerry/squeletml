@@ -9,11 +9,10 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 
 include_once $racine . '/inc/constantes.inc.php';
 
-$codeLangue = langue($langueParDefaut, 'navigateur');
-$langue = $codeLangue;
+$langue = langue($langueParDefaut, 'navigateur');
 
 // Nécessaire à la traduction.
-phpGettext('.', $codeLangue);
+phpGettext('.', $langue);
 
 if (isset($_GET['chemin']))
 {
@@ -125,11 +124,11 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			
 			if ($galeries !== FALSE && !empty($galeries))
 			{
-				foreach ($galeries as $codeLangue)
+				foreach ($galeries as $codeLangue => $langueInfos)
 				{
 					if ($codeLangue == $getLangue)
 					{
-						foreach ($codeLangue as $idGalerie => $urlRelativeGalerie)
+						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 						{
 							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
 						}
@@ -177,18 +176,18 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 		}
 		else
 		{
-			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'));
+			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
 			$itemsFluxRss = array ();
 			
 			if ($pages !== FALSE && !empty($pages))
 			{
 				$i = 0;
 				
-				foreach ($pages as $codeLangue)
+				foreach ($pages as $codeLangue => $langueInfos)
 				{
 					if ($codeLangue == $getLangue && $i < $nombreItemsFluxRss)
 					{
-						foreach ($codeLangue['pages'] as $page)
+						foreach ($langueInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
 							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page))));
@@ -201,15 +200,15 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site.
 				if ($galerieActiverFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 				{
-					$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries);
+					$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
 					
 					if ($galeries !== FALSE && !empty($galeries))
 					{
-						foreach ($galeries as $codeLangue)
+						foreach ($galeries as $codeLangue => $langueInfos)
 						{
 							if ($codeLangue == $getLangue)
 							{
-								foreach ($codeLangue as $idGalerie => $urlRelativeGalerie)
+								foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 								{
 									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
 								}

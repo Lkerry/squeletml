@@ -14,13 +14,23 @@ include $racineAdmin . '/inc/premier.inc.php';
 	{
 		$id = securiseTexte(superBasename($_POST['id']));
 	}
-
+	
+	if (!empty($adminFiltreDossiers))
+	{
+		$tableauFiltresDossiers = explode('|', $adminFiltreDossiers);
+		$tableauFiltresDossiers = array_map('realpath', $tableauFiltresDossiers);
+	}
+	else
+	{
+		$tableauFiltresDossiers = array ();
+	}
+	
 	########################################################################
 	##
 	## Listage des galeries existantes.
 	##
 	########################################################################
-
+	
 	if (isset($_POST['lister']))
 	{
 		$messagesScript = '';
@@ -331,7 +341,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= '<li class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</li>\n";
 		}
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		echo adminMessagesScript($messagesScript, T_("Ajout d'images"));
 	}
 
@@ -516,7 +526,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		echo adminMessagesScript($messagesScript, T_("Redimensionnement des images"));
 	}
 
@@ -663,7 +673,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= '<li>' . T_("Aucune image à traiter.") . "</li>\n";
 		}
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		echo adminMessagesScript($messagesScript, T_("Suppression d'images"));
 	}
 	
@@ -693,7 +703,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= adminRename($cheminGalerie, $nouveauCheminGalerie);
 		}
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		echo adminMessagesScript($messagesScript, T_("Renommage d'une galerie"));
 	}
 	
@@ -717,7 +727,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . $cheminGalerie . '">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), "<code>$id</code>") . "</a></li>\n";
 		}
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		echo adminMessagesScript($messagesScript, T_("Sauvegarde d'une galerie"));
 	}
 	
@@ -825,7 +835,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		echo adminMessagesScript($messagesScript, T_("Création d'une page web de galerie"));
 	}
 
@@ -910,7 +920,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= '<li>' . T_("Aucune image dans la galerie.") . "</li>\n";
 		}
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		echo adminMessagesScript($messagesScript, T_("Modèle de fichier de configuration"));
 	}
 
@@ -975,7 +985,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Fichier de configuration") . "</h3>\n";
 		
-		array_unshift($messagesScript, '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n");
+		$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 		
 		echo '<h4>' . T_("Actions effectuées") . "</h4>\n" ;
 		
