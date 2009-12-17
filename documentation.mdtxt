@@ -427,6 +427,13 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
+- `$extrait`: extrait de la page en cours, inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureExtrait` du fichier de configuration vaut TRUE.
+
+	Si `$extrait` vaut exactement `interne` (`$extrait = "interne";`), le commentaire HTML inséré sera donc `<!-- EXTRAIT: interne -->`, ce qui signifiera à Squeletml d'utiliser comme extrait tout le texte situé entre l'ouverture de la div `interieurContenu` et le commentaire `<!-- /extrait -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'extrait valide. Exemple:
+
+		<div id="interieurContenu">
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada<!-- /extrait --> et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam.</p>
+
 - `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir la section *Galeries*), une galerie sera insérée dans la page.
 
 	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.

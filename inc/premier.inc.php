@@ -41,7 +41,7 @@ foreach (aInclureDebut($racine, $idGalerie) as $fichier)
 
 // Affectations 2 de 2.
 
-extract(init('', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'description', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'description', 'extrait', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);
 $baliseTitle = baliseTitle($baliseTitle, $baliseTitleComplement, array ($langue, $langueParDefaut));
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
@@ -70,6 +70,11 @@ if (isset($courrielContact) && $courrielContact == '@' && !empty($contactCourrie
 
 $divSurSousContenu = 'sur';
 $doctype = doctype($xhtmlStrict);
+
+if (!empty($extrait))
+{
+	$extrait = "<!-- EXTRAIT: $extrait -->";
+}
 
 if (!galerieExiste($racine, $idGalerie))
 {

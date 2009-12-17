@@ -538,7 +538,7 @@ Retourne un tableau de deux éléments: le premier contient le corps de la galer
 */
 function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
 {
-	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $res))
+	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $resultat))
 	{
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'sousContenu' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'surContenu')
 		{
@@ -555,7 +555,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 				$classeBlocArrondi = '';
 			}
 			
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc' . $classeBlocArrondi . '">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $res[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc' . $classeBlocArrondi . '">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $resultat[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
@@ -871,25 +871,47 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
 */
-function fluxRssPageTableauBrut($cheminPage, $urlPage)
+function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureExtrait, $extraitDescriptionParDefaut)
 {
 	$itemFlux = array ();
+	$oHtmlPage = str_get_html(file_get_contents($urlPage));
+	$description = $oHtmlPage->find('div#interieurContenu', 0)->__toString();
 	
-	preg_match('|<title>(.+)</title>.+<div id="interieurContenu">(.+)</div><!-- /#interieurContenu -->|s', file_get_contents($urlPage), $res);
-	$pubDate = fileatime($cheminPage);
-	$title = securiseTexte($res[1]);
+	if ($inclureExtrait)
+	{
+		if (preg_match('|<!-- EXTRAIT: (.+?) -->|s', $description, $resultatExtrait))
+		{
+			if ($resultatExtrait[1] == 'interne')
+			{
+				if (preg_match('|^(.+?)<!-- ?/extrait ?-->|s', $description, $resultatInterne))
+				{
+					$description = ($resultatInterne[1]);
+				}
+			}
+			else
+			{
+				$description = $resultatExtrait[1];
+			}
+		}
+		elseif ($extraitDescriptionParDefaut && $metaDescription = $oHtmlPage->find('meta[name=description]', 0)->content)
+		{
+			$description = $metaDescription;
+		}
+	}
+	
+	$title = securiseTexte($oHtmlPage->find('title', 0)->innertext);
 	
 	if (empty($title))
 	{
-		$title = $urlPage;
+		$title = securiseTexte($oHtmlPage->find('h1', 0)->innertext);
 	}
 	
 	$itemFlux[] = array (
 		"title" => $title,
 		"link" => $urlPage,
 		"guid" => $urlPage,
-		"description" => securiseTexte($res[2]),
-		"pubDate" => $pubDate,
+		"description" => securiseTexte($description),
+		"pubDate" => fileatime($cheminPage),
 	);
 	
 	return $itemFlux;
@@ -2341,17 +2363,17 @@ function styleDivVideNavigation($oeuvre)
 	
 	if (!empty($oeuvre))
 	{
-		preg_match('/width="(\d+)"/', $oeuvre, $resWidth);
-		preg_match('/height="(\d+)"/', $oeuvre, $resHeight);
+		preg_match('/width="(\d+)"/', $oeuvre, $resultatWidth);
+		preg_match('/height="(\d+)"/', $oeuvre, $resultatHeight);
 		
-		if (!empty($resWidth[1]))
+		if (!empty($resultatWidth[1]))
 		{
-			$width = $resWidth[1];
+			$width = $resultatWidth[1];
 		}
 		
-		if (!empty($resHeight[1]))
+		if (!empty($resultatHeight[1]))
 		{
-			$height = $resHeight[1];
+			$height = $resultatHeight[1];
 		}
 	}
 	
@@ -2669,8 +2691,8 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 	list ($larg, $haut) = getimagesize($cheminImage);
 	$width = 'width="' . $larg . '"';
 	$height = 'height="' . $haut . '"';
-	preg_match('/alt="([^"]+)"/', $paragraphe, $res);
-	$altContenu = $res[1];
+	preg_match('/alt="([^"]+)"/', $paragraphe, $resultat);
+	$altContenu = $resultat[1];
 	$alt = 'alt="' . $altContenu . '"';
 	$img = "<div id=\"galerieAccompagnementVignette" . ucfirst($sens) . "\"><img src=\"$urlImage\" $alt $width $height /></div>\n";
 	
@@ -2690,8 +2712,8 @@ Modifie la source de la vignette pour la remplacer par une vignette tatouée d'u
 */
 function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
-	preg_match('/src="([^"]+)"/', $paragraphe, $res);
-	$srcContenu = $res[1];
+	preg_match('/src="([^"]+)"/', $paragraphe, $resultat);
+	$srcContenu = $resultat[1];
 	$nomImgSrcContenu = superBasename($srcContenu);
 	$vignetteNom = nomSuffixe($nomImgSrcContenu, '-' . $sens);
 	
