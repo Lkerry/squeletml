@@ -63,8 +63,8 @@ if (!adminEstIe() && $adminAideEdition != 'BUEditor')
 if (!empty($boitesDeroulantesTableau))
 {
 	$adminBalisesLinkScript[] = "$url#css#$urlRacine/css/boites-deroulantes.css";
-	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
-	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery.cookie.js";
+	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
+	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.cookie.js";
 	$jsDirect = '';
 	
 	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
@@ -197,8 +197,8 @@ if ($tableDesMatieres)
 	
 	$adminBalisesLinkScript[] = "$url#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
 	
-	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
-	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
+	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
+	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
 	$adminBalisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 

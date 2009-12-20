@@ -161,6 +161,8 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Drag'nDrop & DHTML Library**: sous licence LGPL version 2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>.
 
+- **\_filter\_htmlcorrector**: fonction de Drupal, sous licence GPL version ou toute version ultérieure. Voir <http://api.drupal.org/api/function/_filter_htmlcorrector/6>.
+
 - **JavaScript Gettext**: sous licence LGPL version 2 ou toute version ultérieure. Voir <http://jsgettext.berlios.de/>.
 
 - **jQuery**: sous double licence MIT et GPL. Voir <http://jquery.com/>.

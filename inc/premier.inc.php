@@ -142,8 +142,8 @@ include $racine . '/inc/blocs.inc.php';
 if (!empty($boitesDeroulantesTableau))
 {
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/boites-deroulantes.css";
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.cookie.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.cookie.js";
 	$jsDirect = '';
 	
 	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
@@ -178,7 +178,7 @@ if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 
 if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie)
 {
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/slimbox2/js/slimbox2.js";
 	$balisesLinkScript[] = "$url#css#$urlRacine/js/slimbox2/css/slimbox2.css";
 }
@@ -199,8 +199,8 @@ if ($tableDesMatieres)
 	
 	$balisesLinkScript[] = "$url#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
 	
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery-tableofcontents/jquery.tableofcontents.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
 	$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', 'ul', 'h2');";
 }
 
@@ -209,8 +209,8 @@ if ($tableDesMatieres)
 if ($afficherMessageIe6)
 {
 	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/boites-deroulantes.css";
-	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery.min.js";
-	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery.cookie.js";
+	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.min.js";
+	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.cookie.js";
 	$balisesLinkScript[] = "$url#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('messageIe6');});";
 }
 
