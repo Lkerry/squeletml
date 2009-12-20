@@ -40,7 +40,7 @@ $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires
 $balisesLinkScript[] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
 $balisesLinkScript[] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
 $balisesLinkScript[] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
-$balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/phpjs.js";
+$balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/php.js/php.min.js";
 $balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
 $balisesLinkScript[] = "$urlRacine/*#favicon#$urlRacine/fichiers/puce.png";
 
