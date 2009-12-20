@@ -869,48 +869,93 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 }
 
 /*
-Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
+Retourne le code HTML sans les commentaires.
 */
-function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureExtrait, $extraitDescriptionParDefaut)
+function supprimeCommentairesHtml($html)
 {
-	$itemFlux = array ();
-	$oHtmlPage = str_get_html(file_get_contents($urlPage));
-	$description = $oHtmlPage->find('div#interieurContenu', 0)->__toString();
+	$dom = str_get_dom($html);
 	
-	if ($inclureExtrait)
+	foreach ($dom->find('comment') as $commentaire)
 	{
-		if (preg_match('|<!-- EXTRAIT: (.+?) -->|s', $description, $resultatExtrait))
-		{
-			if ($resultatExtrait[1] == 'interne')
-			{
-				if (preg_match('|^(.+?)<!-- ?/extrait ?-->|s', $description, $resultatInterne))
-				{
-					$description = ($resultatInterne[1]);
-				}
-			}
-			else
-			{
-				$description = $resultatExtrait[1];
-			}
-		}
-		elseif ($extraitDescriptionParDefaut && $metaDescription = $oHtmlPage->find('meta[name=description]', 0)->content)
-		{
-			$description = $metaDescription;
-		}
+		$commentaire->outertext = '';
 	}
 	
-	$title = securiseTexte($oHtmlPage->find('title', 0)->innertext);
+	$htmlFiltre = $dom->save();
+	$dom->clear();
+	unset($dom);
+	
+	return $htmlFiltre;
+}
+
+/*
+S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
+*/
+function corrigeHtml($html)
+{
+	return _filter_htmlcorrector($html);
+}
+
+/*
+Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
+*/
+function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
+{
+	$itemFlux = array ();
+	$dom = str_get_html(file_get_contents($urlPage));
+	$title = securiseTexte($dom->find('title', 0)->innertext);
 	
 	if (empty($title))
 	{
-		$title = securiseTexte($oHtmlPage->find('h1', 0)->innertext);
+		$title = securiseTexte($dom->find('h1', 0)->innertext);
 	}
 	
+	if (empty($title))
+	{
+		$title = $urlPage;
+	}
+	
+	$description = $dom->find('div#interieurContenu', 0)->innertext;
+	$apercuInterne = FALSE;
+	
+	if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $description, $resultatApercu))
+	{
+		if ($resultatApercu[1] == 'interne')
+		{
+			if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $description, $resultatInterne))
+			{
+				$apercuInterne = TRUE;
+				$description = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1] . ' [...]')) . "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), "<em>$title</em>") . "</a></p>\n";
+			}
+		}
+		elseif ($resultatApercu[1] == 'description')
+		{
+			$metaDescription = $dom->find('meta[name=description]', 0)->content;
+			
+			if (!empty($metaDescription))
+			{
+				$description = $metaDescription;
+			}
+		}
+		else
+		{
+			$description = $resultatApercu[1];
+		}
+	}
+	
+	$dom->clear();
+	unset($dom);
+	
+	if (!$apercuInterne)
+	{
+		$description = supprimeCommentairesHtml($description);
+	}
+	
+	$description = securiseTexte($description);
 	$itemFlux[] = array (
 		"title" => $title,
 		"link" => $urlPage,
 		"guid" => $urlPage,
-		"description" => securiseTexte($description),
+		"description" => $description,
 		"pubDate" => fileatime($cheminPage),
 	);
 	
@@ -1113,12 +1158,12 @@ function lettreAuHasard($lettresExclues = '')
 /*
 Ajoute la classe `actif` à tous les liens (balises `a`) du code passé en paramètre et pointant vers la page en cours ainsi qu'à un parent (s'il existe) spécifié avec le paramètre optionnel `$parent`, qui doit être le nom d'une balise (par exemple `li`). Si `$inclureGet` vaut FALSE, les variables GET ne sont pas prises en considération dans la comparaison des adresses. Retourne le code résultant.
 */
-function lienActif($code, $inclureGet = TRUE, $parent = '')
+function lienActif($html, $inclureGet = TRUE, $parent = '')
 {
 	$url = url($inclureGet);
-	$html = str_get_html($code);
+	$dom = str_get_html($html);
 	
-	foreach ($html->find('a') as $a)
+	foreach ($dom->find('a') as $a)
 	{
 		if ($a->href == $url)
 		{
@@ -1155,7 +1200,11 @@ function lienActif($code, $inclureGet = TRUE, $parent = '')
 		}
 	}
 	
-	return $html->__toString();
+	$htmlFiltre = $dom->save();
+	$dom->clear();
+	unset($dom);
+	
+	return $htmlFiltre;
 }
 
 /*
@@ -1272,11 +1321,11 @@ ce qui signifie que la liste apparaîtra ainsi avec le style par défaut:
 
 Le code passé en paramètre doit avoir été traité par la fonction `lienActif()` ou avoir subi une modification équivalente pour que la détection des sous-listes inactives réussisse.
 */
-function limiteProfondeurListe($code)
+function limiteProfondeurListe($html)
 {
-	$html = str_get_html($code);
+	$dom = str_get_html($html);
 	
-	foreach ($html->find('li') as $li)
+	foreach ($dom->find('li') as $li)
 	{
 		$liAvecUl = FALSE;
 		
@@ -1334,7 +1383,9 @@ function limiteProfondeurListe($code)
 		}
 	}
 	
-	return $html->__toString();
+	$htmlFiltre = $dom->save();
+	$dom->clear();
+	unset($dom);
 }
 
 /*

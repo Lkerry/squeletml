@@ -9,6 +9,8 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 
 include_once $racine . '/inc/constantes.inc.php';
 include_once $racine . '/inc/simplehtmldom/simple_html_dom.php';
+include_once $racine . '/inc/filter_htmlcorrector/common.inc.php';
+include_once $racine . '/inc/filter_htmlcorrector/filter.inc.php';
 
 $langue = langue($langueParDefaut, 'navigateur');
 
@@ -191,7 +193,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 						foreach ($langueInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page)), $inclureExtrait, $extraitDescriptionParDefaut));
+							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page)), $inclureApercu));
 						}
 					}
 					

@@ -251,20 +251,13 @@ $boitesDeroulantesParDefaut = '';
 */
 $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');";
 
-// Inclusion de l'extrait d'une page.
+// Inclusion de l'aperçu d'une page.
 /*
-- L'extrait d'une page (s'il existe et n'est pas vide, et si `$inclureExtrait` vaut TRUE) est inséré en tant que commentaire HTML au début de la div `interieurContenu` et est utilisé par certains scripts comme celui de construction des flux RSS.
-- Le but de mettre `$inclureExtrait` à FALSE est que les scripts qui utilisent normalement l'extrait de page sauteront alors l'étape de sa recherche, ce qui sauvera du temps et des ressources.
-- Voir les explications de la variable `$extrait` dans la documentation pour plus de détails.
+- L'aperçu d'une page (s'il existe et n'est pas vide, et si `$inclureApercu` vaut TRUE) est inséré en tant que commentaire HTML au début de la div `interieurContenu` et est utilisé par certains scripts comme celui de construction des flux RSS.
+- Le but de mettre `$inclureApercu` à FALSE est que les scripts qui utilisent normalement l'aperçu d'une page sauteront alors l'étape de sa recherche, ce qui sauvera du temps et des ressources.
+- Voir les explications de la variable `$apercu` dans la documentation pour plus de détails.
 */
-$inclureExtrait = TRUE; // TRUE|FALSE
-
-// Si `$inclureExtrait` vaut TRUE, utilisation par défaut du contenu de la métabalise `description` comme extrait.
-/*
-- Il est toujours possible de préciser un extrait différent avec la variable `$extrait`.
-- Voir les explications de la variable `$extrait` dans la documentation pour plus de détails.
-*/
-$extraitDescriptionParDefaut = TRUE; // TRUE|FALSE
+$inclureApercu = FALSE; // TRUE|FALSE
 
 /* ____________________ Style CSS. ____________________ */
 

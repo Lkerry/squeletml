@@ -61,8 +61,8 @@
 				<!-- ____________________ #contenu ____________________ -->
 				<div id="contenu"<?php echo $classesContenu; ?>>
 					<div id="interieurContenu">
-						<?php if ($inclureExtrait): ?>
-							<?php echo $extrait; ?>
+						<?php if ($inclureApercu): ?>
+							<?php echo $apercu; ?>
 						<?php endif; ?>
 						
 						<?php if ($idGalerie): ?>
