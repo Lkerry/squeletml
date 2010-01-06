@@ -44,15 +44,21 @@ else
 		<h2><?php echo $titreApercu; ?></h2>
 		
 		<?php
-		$fic = fopen('../version.txt', 'r');
-		$tag = fgets($fic, 20); // exemple: logiciel-1.4
-		fclose($fic);
-		$version = explode('-', $tag);
-		$versionSqueletml = trim($version[1]);
+		$version = @file_get_contents('../version.txt');
+		$version = explode('-', $version);
+		
+		if (isset($version[1]))
+		{
+			$version = trim($version[1]);
+		}
+		else
+		{
+			$version = '';
+		}
 		?>
 		
 		<ul>
-			<li><?php echo $versionSqueletml; ?> <?php echo $versionSqueletml; ?></li>
+			<li><?php echo $versionSqueletml; ?> <?php echo $version; ?></li>
 			<li><?php echo $versionPph; ?> <?php echo PHP_VERSION; ?></li>
 			<li><?php echo $versionApache; ?> <?php echo htmlspecialchars($_SERVER['SERVER_SOFTWARE'], ENT_COMPAT, 'UTF-8'); ?></li>
 			<li>

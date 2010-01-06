@@ -2,6 +2,9 @@
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Version de Squeletml et autres informations");
 include $racineAdmin . '/inc/premier.inc.php';
+
+$versionActuelleSqueletml = adminVersionSqueletml('actuelle', $racine . '/version.txt');
+$derniereVersionSqueletml = adminVersionSqueletml('derniere', URL_DERNIERE_VERSION_SQUELETML);
 ?>
 
 <h1><?php echo T_("Version de Squeletml et autres informations"); ?></h1>
@@ -9,7 +12,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 <h2 id="apercu"><?php echo T_("Aperçu"); ?></h2>
 
 <ul>
-	<li><?php printf(T_("Version de Squeletml: %1\$s"), adminVersionSqueletml($racine)); ?></li>
+	<li>
+		<?php printf(T_("Version de Squeletml: %1\$s"), $versionActuelleSqueletml); ?>
+		
+		<?php if ($derniereVersionSqueletml > $versionActuelleSqueletml): ?>
+			<?php printf(T_("(<a href=\"%1\$s\">la version %2\$s est disponible</a>)"), URL_SQUELETML, $derniereVersionSqueletml); ?>
+		<?php elseif ($derniereVersionSqueletml == $versionActuelleSqueletml): ?>
+			<?php echo T_("(il s'agit de la dernière version publiée)"); ?>
+		<?php else: ?>
+			<?php printf(T_("(impossible de vérifier si une version plus récente a été publiée; <a href=\"%1\$s\">vérifier manuellement</a>)"), URL_SQUELETML); ?>
+		<?php endif; ?>
+	</li>
 	<li><?php printf(T_("Version de PHP: %1\$s"), PHP_VERSION); ?></li>
 	<li><?php printf(T_("Version d'Apache: %1\$s"), securiseTexte($_SERVER['SERVER_SOFTWARE'])); ?></li>
 	<li><?php echo adminReecritureDurl(TRUE); ?></li>

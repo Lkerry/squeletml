@@ -63,6 +63,7 @@ archives: menage-archives ChangeLog version.txt
 	mv $(tag).zip $(bureau)/
 	cp LISEZ-MOI.mdtxt $(bureau)/LISEZ-MOI-$(tag).mdtxt
 	cp documentation.mdtxt $(bureau)/documentation-$(tag).mdtxt
+	cp version.txt $(bureau)/derniere-version-squeletml.txt
 	php ./scripts.cli.php annexes-doc $(bureau)/documentation-$(tag).mdtxt
 
 ChangeLog: menage-ChangeLog

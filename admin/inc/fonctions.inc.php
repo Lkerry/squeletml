@@ -1438,16 +1438,23 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 }
 
 /*
-Retourne la version de Squeletml.
+Retourne la version demandée de Squeletml.
 */
-function adminVersionSqueletml($racine)
+function adminVersionSqueletml($versionDemandee, $adresse)
 {
-	$fic = @fopen($racine . '/version.txt', 'r');
-	$tag = fgets($fic, 20); // Exemple: logiciel-1.8
-	fclose($fic);
-	$version = explode('-', $tag);
+	$version = @file_get_contents($adresse);
+	$version = explode('-', $version);
 	
-	return trim($version[1]);
+	if (isset($version[1]))
+	{
+		$version = trim($version[1]);
+	}
+	else
+	{
+		$version = '';
+	}
+	
+	return $version;
 }
 
 /*
