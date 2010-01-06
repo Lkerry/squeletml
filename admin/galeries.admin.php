@@ -39,9 +39,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$i = 0;
 			
-			while($fichier = @readdir($fic))
+			while ($fichier = @readdir($fic))
 			{
-				if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
+				if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
 				{
 					$i++;
 					$fichier = sansEchappement($fichier);
@@ -388,9 +388,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if ($fic = @opendir($cheminGalerie))
 				{
-					while($fichier = @readdir($fic))
+					while ($fichier = @readdir($fic))
 					{
-						if(!is_dir($cheminGalerie . '/' . $fichier))
+						if (!is_dir($cheminGalerie . '/' . $fichier))
 						{
 							$infoFichier = pathinfo(superBasename($fichier));
 							
@@ -444,7 +444,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if ($fic2 = @opendir($cheminGalerie))
 				{
-					while($fichier = @readdir($fic2))
+					while ($fichier = @readdir($fic2))
 					{
 						$aTraiter = TRUE;
 						
@@ -469,7 +469,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 							$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
-							if(!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
+							if (!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
 							{
 								if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
 								{
@@ -578,9 +578,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$configAsupprimer = FALSE;
 				
-				while($fichier = @readdir($fic))
+				while ($fichier = @readdir($fic))
 				{
-					if(!is_dir($cheminGalerie . '/' . $fichier))
+					if (!is_dir($cheminGalerie . '/' . $fichier))
 					{
 						$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
@@ -613,9 +613,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					elseif ($fic = @opendir($cheminTatouage))
 					{
-						while($fichier = @readdir($fic))
+						while ($fichier = @readdir($fic))
 						{
-							if(!is_dir($cheminTatouage . '/' . $fichier))
+							if (!is_dir($cheminTatouage . '/' . $fichier))
 							{
 								$infoFichier = pathinfo(superBasename($fichier));
 								
@@ -870,9 +870,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$listeFichiers = '';
 				$tableauFichiers = array ();
 				
-				while($fichier = @readdir($fic))
+				while ($fichier = @readdir($fic))
 				{
-					if(!is_dir($cheminGalerie . '/' . $fichier))
+					if (!is_dir($cheminGalerie . '/' . $fichier))
 					{
 						$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires, FALSE, $typeMime);

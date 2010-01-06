@@ -757,9 +757,9 @@ function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 	{
 		$galeries = array ();
 		
-		while($fichier = @readdir($fic))
+		while ($fichier = @readdir($fic))
 		{
-			if(is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
+			if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
 			{
 				if (($avecConfigSeulement && cheminConfigGalerie($racine, $fichier)) || !$avecConfigSeulement)
 				{
@@ -862,9 +862,9 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	if ($fic = @opendir($cheminGalerie))
 	{
-		while($fichier = @readdir($fic))
+		while ($fichier = @readdir($fic))
 		{
-			if(!is_dir($cheminGalerie . '/' . $fichier))
+			if (!is_dir($cheminGalerie . '/' . $fichier))
 			{
 				$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
