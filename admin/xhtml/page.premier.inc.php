@@ -9,6 +9,8 @@
 		
 		<meta name="robots" content="<?php echo $adminRobots; ?>" />
 		
+		<meta name="generator" content="Squeletml" />
+		
 		<!-- Balises `link` et `script`. -->
 		<?php echo $linkScript; ?>
 	</head>

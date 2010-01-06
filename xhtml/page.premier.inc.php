@@ -17,6 +17,8 @@
 		
 		<meta name="robots" content="<?php echo $robots; ?>" />
 		
+		<meta name="generator" content="Squeletml" />
+		
 		<!-- Balises `link` et `script`. -->
 		<?php echo $linkScript; ?>
 	</head>
