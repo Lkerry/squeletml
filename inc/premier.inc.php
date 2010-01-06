@@ -68,7 +68,7 @@ if (isset($courrielContact) && $courrielContact == '@' && !empty($contactCourrie
 	$courrielContact = $contactCourrielParDefaut;
 }
 
-$divSurSousContenu = 'sur';
+$premierOuDernier = 'premier';
 $doctype = doctype($xhtmlStrict);
 
 if (!empty($apercu))
@@ -79,6 +79,11 @@ if (!empty($apercu))
 if (!galerieExiste($racine, $idGalerie))
 {
 	$idGalerie = FALSE;
+}
+
+if (!isset($licence))
+{
+	$licence = $licenceParDefaut;
 }
 
 if ($afficherMessageIe6)
@@ -112,11 +117,15 @@ if (!isset($tableDesMatieres))
 
 if ($tableDesMatieres)
 {
-	$boitesDeroulantes .= '|tableDesMatieres';
+	$boitesDeroulantes .= ' tableDesMatieres';
 	$locale = locale(LANGUE);
 }
 
-$url = url();
+if (!isset($url))
+{
+	$url = url();
+}
+
 $urlFichiers = $urlRacine . '/site/fichiers';
 $urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
 

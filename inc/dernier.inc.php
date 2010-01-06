@@ -28,7 +28,7 @@ else
 	$inclureContact = FALSE;
 }
 
-$divSurSousContenu = 'sous';
+$premierOuDernier = 'dernier';
 
 if (isset($corpsGalerie) && !empty($corpsGalerie))
 {

@@ -95,9 +95,18 @@ $langueParDefaut = 'fr';
 $titreSite['fr'] = "<img id=\"logo\" src=\"$urlRacine/fichiers/squeletml-logo.png\" alt=\"Squeletml\" /><span id=\"logoSupplement\"><img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" /></span>";
 $titreSite['en'] = $titreSite['fr'];
 
-// Ordre des blocs constituant les menus.
+// Ordre et région des blocs constituant les menus.
 /*
-Les divers blocs constituant les menus sont positionnables, au choix, dans les `div` `surContenu` ou `sousContenu`. Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux `div` `surContenu` et `sousContenu` formeront:
+Les divers blocs constituant les menus sont positionnables, au choix, dans les régions suivantes:
+
+- `div` `enTete`;
+- `div` `surContenu`;
+- `div` `debutInterieurContenu`;
+- `div` `finInterieurContenu`;
+- `div` `sousContenu`;
+- `div` `basDePage`.
+
+Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. Ensuite, selon le style CSS utilisé, les deux `div` `surContenu` et `sousContenu` formeront:
 
 - une seule colonne à gauche;
 - une seule colonne à droite;
@@ -105,14 +114,23 @@ Les divers blocs constituant les menus sont positionnables, au choix, dans les `
 - deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`;
 - aucune colonne, les blocs étant positionnés au-dessus ou au-dessous du contenu selon la `div` dans laquelle ils ont été assignés.
 
-Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Un nombre impair signifie que le bloc en question sera placé dans la `div` `surContenu`, alors qu'un nombre pair signifie que le bloc sera placé dans la `div` `sousContenu`. À l'intérieur de chaque `div`, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant liés.
+Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Selon la centaine à laquelle le nombre appartient, le bloc sera placé dans une région en particulier:
+
+- un nombre entre 100 et 199 signifie que le bloc en question sera placé dans la `div` `enTete`;
+- un nombre entre 200 et 299 signifie que le bloc en question sera placé dans la `div` `surContenu`;
+- un nombre entre 300 et 399 signifie que le bloc en question sera placé dans la `div` `debutInterieurContenu`;
+- un nombre entre 400 et 499 signifie que le bloc en question sera placé dans la `div` `finInterieurContenu`;
+- un nombre entre 500 et 599 signifie que le bloc en question sera placé dans la `div` `sousContenu`;
+- un nombre entre 600 et 699 signifie que le bloc en question sera placé dans la `div` `basDePage`;
+
+À l'intérieur d'une même région, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant assignés.
 
 Par exemple:
 
-	'menu-langues' => array (10, 10, 4),
-	'flux-rss' => array (2, 2, 6),
+	'menu-langues' => array (510, 510, 504),
+	'flux-rss' => array (502, 502, 506),
 
-signifie que le menu des langues ainsi que les liens RSS seront insérés dans la `div` `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre pair pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la `div`, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 2 (les liens RSS) et 10 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 4 (le menu des langues) et 6 (les liens RSS).
+signifie que le menu des langues ainsi que les liens RSS seront insérés dans la `div` `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre compris entre 500 et 599 pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la `div`, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 502 (les liens RSS) et 510 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 504 (le menu des langues) et 506 (les liens RSS).
 
 Il est possible d'insérer un nombre illimité de blocs personnalisés. Il faut toutefois avoir en tête que chaque clé ajoutée dans le tableau `$ordreBlocsDansFluxHtml` doit représenter une partie du nom du fichier à insérer. Par exemple, un bloc personnalisé ayant une clé `heure` dans le tableau `$ordreBlocsDansFluxHtml` fera référence à un fichier `$racine/site/xhtml/LANGUE/heure.inc.php`.
 
@@ -121,11 +139,12 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 Voir la fonction `blocs()`.
 */
 $ordreBlocsDansFluxHtml = array (
-	'menu-langues' => array (2, 2, 1),
-	'menu' => array (1, 4, 4),
-	'faire-decouvrir' => array (6, 6, 6),
-	'legende-oeuvre-galerie' => array (8, 8, 8), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-	'flux-rss' => array (10, 10, 10),
+	'menu-langues' => array (500, 500, 200),
+	'menu' => array (200, 501, 500),
+	'faire-decouvrir' => array (501, 502, 501),
+	'legende-oeuvre-galerie' => array (502, 503, 502), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+	'flux-rss' => array (503, 504, 503),
+	'licence' => array (400, 400, 400),
 );
 
 // Détection du type MIME.
@@ -156,6 +175,14 @@ $activerFaireDecouvrir = TRUE; // TRUE|FALSE
 - Voir la fonction `messageIe6()`.
 */
 $afficherMessageIe6 = TRUE; // TRUE|FALSE
+
+// Licence par défaut pour tout le site.
+/*
+- Licence à déclarer pour chaque page du site. Si la variable `$licence` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- Plusieurs licences peuvent être déclarées, chacune devant être séparée par une espace.
+- Voir la fonction `licence()` pour connaître les choix possibles.
+*/
+$licenceParDefaut = '';
 
 // Affichage par défaut de la table des matières.
 /*
@@ -232,9 +259,9 @@ Dans l'exemple précédent, la boîte déroulante peut être activée de deux fa
 
 		'idConteneur'
 
-	En ajoutant au moins une boîte dans cette variable, chaque page de Squeletml ajoutera les scripts nécessaires aux boîtes déroulantes. Pour ajouter plusieurs boîtes, le séparateur à utiliser est `|`. Voici un exemple d'ajout de plusieurs boîtes:
+	En ajoutant au moins une boîte dans cette variable, chaque page de Squeletml ajoutera les scripts nécessaires aux boîtes déroulantes. Pour ajouter plusieurs boîtes, le séparateur à utiliser est une espace. Voici un exemple d'ajout de plusieurs boîtes:
 
-		$boitesDeroulantesParDefaut = 'idConteneur1 | idConteneur2 | idConteneur3';
+		$boitesDeroulantesParDefaut = 'idConteneur1 idConteneur2 idConteneur3';
 
 2. en renseignant la variable `$boitesDeroulantes` dans une page spécifique avant l'inclusion du premier fichier PHP (la syntaxe est la même que pour la variable `$boitesDeroulantesParDefaut`). Voir la documentation pour plus de détails.
 
@@ -281,6 +308,7 @@ $liensActifsBlocs = array (
 	'faire-decouvrir' => NULL, // Ne s'applique pas.
 	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => NULL, // Ne s'applique pas.
+	'licence' => NULL, // Ne s'applique pas.
 );
 
 // Limite de la profondeur d'une liste dans un bloc.
@@ -339,6 +367,7 @@ $limiterProfondeurListesBlocs = array (
 	'faire-decouvrir' => NULL, // Ne s'applique pas.
 	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => NULL, // Ne s'applique pas.
+	'licence' => NULL, // Ne s'applique pas.
 );
 
 // Nombre de colonnes.
@@ -391,6 +420,7 @@ précise que le bloc de menu principal devra avoir des coins arrondis lorsqu'il 
 */
 $blocsArrondisSpecifiques = array (
 	'menu' => array (TRUE, FALSE, FALSE),
+	'licence' => array (TRUE, TRUE, TRUE),
 );
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
@@ -602,13 +632,14 @@ $galerieLienOriginalJavascript = FALSE; // TRUE|FALSE
 // Si le format original d'une image existe et que le lien n'est pas pris en charge par une fenêtre Javascript, est-ce que le lien vers le fichier force le téléchargement sans affichage dans le navigateur?
 $galerieLienOriginalTelecharger = FALSE; // TRUE|FALSE
 
-// S'il y a lieu, emplacement de la légende, des informations Exif et du lien vers l'image originale.
+// S'il y a lieu, emplacement de la légende.
 /*
-- Les choix possibles sont: haut, bas, sousContenu, surContenu.
-- Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `sousContenu` et `surContenu` font référence à la page. Par exemple, l'option `sousContenu` place avec la configuration et le style par défaut de Squeletml les informations de l'image dans la colonne de gauche.
+- La légende comprend les informations Exif et le lien vers l'image originale.
+- Les choix possibles sont: haut, bas, bloc.
+- Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `bloc` transforme la légende en bloc positionnable comme n'importe quel autre bloc de contenu à l'aide de la variable `$ordreBlocsDansFluxHtml`.
 - Les trois emplacements à préciser sont respectivement lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux.
 */
-$galerieLegendeEmplacement = array ('bas', 'sousContenu', 'sousContenu');
+$galerieLegendeEmplacement = array ('bas', 'bloc', 'bloc');
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 

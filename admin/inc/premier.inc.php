@@ -19,7 +19,7 @@ if (!isset($tableDesMatieres))
 
 if ($tableDesMatieres)
 {
-	$boitesDeroulantes .= '|tableDesMatieres';
+	$boitesDeroulantes .= ' tableDesMatieres';
 }
 
 $boitesDeroulantesTableau = boitesDeroulantes($adminBoitesDeroulantesParDefaut, $boitesDeroulantes);

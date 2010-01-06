@@ -81,6 +81,8 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox. Squeletml fonctionne avec Internet Explorer 6, mais il est clairement optimisé pour les navigateurs modernes (testé sur plusieurs navigateurs).
 
+- Choix possible d'une ou de plusieurs licences pour tout le site ou selon chaque page.
+
 - Mise à jour rapide: la configuration personnalisée d'un site se trouve dans un dossier qui ne sera pas écrasé lors d'une mise à jour de Squeletml.
 
 Squeletml n'a pas pour but d'offrir un système de gestion de contenu (SGC) avancé (par exemple comme [Drupal](http://www.drupalfr.org/)), mais tente d'optimiser le plus possible un site créé *à l'ancienne* ;-), dont chaque page représente un *vrai* fichier sur le serveur. Cependant, le fonctionnement de Squeletml est indéniablement inspiré de celui de SGC comme Drupal.
@@ -131,7 +133,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Logo de Squeletml**: le logo a été fait à partir de l'image `clipart/animals/lizard_guillaume_boitel_.svg` de l'[Open Clip Art Library](http://www.openclipart.org/) et de la police de caractères [*Architext*](http://www.dafont.com/FR/architext.font). Les deux sont dans le domaine public.
 
-- **Bannière de Squeletml**: la bannière de 80px × 15px utilise la police de caractères [Picopixel](http://www.dafont.com/FR/micropixel.font) de Sebastian Weber. Sur le site de Dafont, la licence est précisée ainsi: «Domaine public / GNU GPL». J'ai écrit à l'auteur pour obtenir des précisions, sans réponse pour l'instant.
+- **Bannières**: les bannières de 80px × 15px de Squeletml et des licences utilisent la police de caractères [Picopixel](http://www.dafont.com/FR/micropixel.font) de Sebastian Weber. Sur le site de Dafont, la licence est précisée ainsi: «Domaine public / GNU GPL». J'ai écrit à l'auteur pour obtenir des précisions, sans réponse pour l'instant. Les bannières des licences Copyleft utilisent également une image de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Copyleft.svg?uselang=fr) dans le domaine public. La bannière du domaine public utilise également une image de [Wikimedia Commons](http://fr.wikipedia.org/wiki/Fichier:PD-icon.svg) dans le domaine public.
 
 - **Images utilisées dans la galerie démo**: les oeuvres de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
 

@@ -1,1 +1,1 @@
-<p><a href="http://www.jpfleury.net/squeletml"><img src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80px-15px.png" width="80" height="15" alt="Powered by Squeletml" /></a> | <a href="<?php echo $urlRacineAdmin . '/'; ?>">Admin</a> | <a href="#ancres">Top</a></p>
+<p><a href="http://www.jpfleury.net/squeletml"><img src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80x15.png" width="80" height="15" alt="Powered by Squeletml" /></a> | <a href="<?php echo $urlRacineAdmin . '/'; ?>">Admin</a> | <a href="#ancres">Top</a></p>

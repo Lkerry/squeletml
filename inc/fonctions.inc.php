@@ -137,40 +137,33 @@ function blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, 
 }
 
 /*
-Retourne un tableau de blocs devant être insérés dans la div `surContenu` ou `sousContenu`, tout dépendamment du paramètre `$div`. L'ordre des fichiers dans le tableau correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent être insérés dans leur div.
+Retourne un tableau de régions dont chacune est un tableau contenant la liste des blocs à insérer. Si `$premierOuDernier` vaut `premier`, seules les régions situées avant le contenu de l'utilisateur (régions 100, 200 et 300) seront prises en considération, sinon si `$premierOuDernier` vaut `dernier`, seules les régions situées après le contenu de l'utilisateur (régions 400, 500 et 600) seront analysées. L'ordre des blocs dans une région correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent y apparaître.
 */
-function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $div)
+function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier)
 {
+	$ordreBlocsDansFluxHtmlSelonColonnes = array ();
 	$ordreBlocsDansFluxHtmlFiltre = array ();
-	$blocsAinserer = array ();
 	
 	foreach ($ordreBlocsDansFluxHtml as $bloc => $nombres)
 	{
 		$ordreBlocsDansFluxHtmlSelonColonnes[$bloc] = $nombres[$nombreDeColonnes];
 	}
 	
+	asort($ordreBlocsDansFluxHtmlSelonColonnes);
+	
 	foreach ($ordreBlocsDansFluxHtmlSelonColonnes as $bloc => $nombre)
 	{
-		if ($nombre % 2)
+		$region = floor($nombre / 100) * 100; // Ex.: 580 devient 500.
+		
+		if (($premierOuDernier == 'premier' && $region >= 100 && $region <= 300) || ($premierOuDernier == 'dernier' && $region >= 400 && $region <= 600))
 		{
-			// A: nombre impair.
-			$ordreBlocsDansFluxHtmlFiltre[$bloc] = $nombre;
+			$ordreBlocsDansFluxHtmlFiltre[$region][] = $bloc;
 		}
-	}
-	
-	if ($div == 'sousContenu')
-	{
-		$ordreBlocsDansFluxHtmlFiltre = array_diff($ordreBlocsDansFluxHtmlSelonColonnes, $ordreBlocsDansFluxHtmlFiltre);
 	}
 	
 	asort($ordreBlocsDansFluxHtmlFiltre);
 	
-	foreach ($ordreBlocsDansFluxHtmlFiltre as $bloc => $nombre)
-	{
-		$blocsAinserer[] = $bloc;
-	}
-	
-	return $blocsAinserer;
+	return $ordreBlocsDansFluxHtmlFiltre;
 }
 
 /*
@@ -182,7 +175,7 @@ function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
 	
 	if (!empty($boitesDeroulantesParDefaut))
 	{
-		$boites .= $boitesDeroulantesParDefaut . '|';
+		$boites .= $boitesDeroulantesParDefaut . ' ';
 	}
 	
 	if (!empty($boitesDeroulantes))
@@ -192,7 +185,7 @@ function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
 	
 	if (!empty($boites))
 	{
-		$boitesDeroulantesTableau = explode('|', $boites);
+		$boitesDeroulantesTableau = explode(' ', $boites);
 		$boitesDeroulantesTableau = array_map('trim', $boitesDeroulantesTableau);
 		$elementsVides = array_keys($boitesDeroulantesTableau, '');
 		
@@ -540,7 +533,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $resultat))
 	{
-		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'sousContenu' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'surContenu')
+		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
 			
@@ -1156,6 +1149,143 @@ function lettreAuHasard($lettresExclues = '')
 }
 
 /*
+Retourne le code HTML informant de la licence choisie. Le paramètre `$choixLicence` prend une des valeurs suivantes:
+
+  - `art-libre` pour la licence Art Libre;
+
+  - `cc-by` pour un contrat Creative Commons Paternité 3.0 Générique;
+
+  - `cc-by-sa` pour un contrat Creative Commons Paternité – Partage des conditions initiales à l'identique 3.0 Générique;
+
+  - `cc-by-nd` pour un contrat Creative Commons Paternité – Pas de modification 3.0 Générique;
+
+  - `cc-by-nc` pour un contrat Creative Commons Paternité – Pas d'utilisation commerciale 3.0 Générique;
+
+  - `cc-by-nc-sa` pour un contrat Creative Commons Paternité – Pas d'utilisation commerciale – Partage des conditions initiales à l'identique 3.0 Générique;
+
+  - `cc-by-nc-nd` pour un contrat Creative Commons Paternité – Pas d'utilisation commerciale – Pas de modification 3.0 Générique;
+
+  - `dp` pour le domaine public;
+
+  - `gplv2` pour la licence publique générale de GNU, version 2;
+
+  - `gplv2+` pour la licence publique générale de GNU, version 2 ou toute version ultérieure;
+
+  - `gplv3` pour la licence publique générale de GNU, version 3;
+
+  - `gplv3+` pour la licence publique générale de GNU, version 3 ou toute version ultérieure;
+
+  - `agplv3` pour la licence publique générale GNU Affero, version 3;
+
+  - `agplv3+` pour la licence publique générale GNU Affero, version 3 ou toute version ultérieure;
+
+  - `lgplv2.1` pour la licence publique générale amoindrie de GNU, version 2.1;
+
+  - `lgplv2.1+` pour la licence publique générale amoindrie de GNU, version 2.1 ou toute version ultérieure;
+
+  - `lgplv3` pour la licence publique générale amoindrie de GNU, version 3;
+
+  - `lgplv3+` pour la licence publique générale amoindrie de GNU, version 3 ou toute version ultérieure;
+
+  - `bsd` pour la licence BSD modifiée;
+
+  - `mit` pour la licence MIT.
+
+Si le choix n'est pas valide, une chaîne vide est retournée.
+*/
+function licence($urlRacine, $choixLicence)
+{
+	switch ($choixLicence)
+	{
+		case 'art-libre':
+			$licence = sprintf(T_("<a href=\"http://artlibre.org/licence/lal\"><img %1\$s alt=\"Licence Art Libre\" /></a> Mis à disposition sous la <a href=\"http://artlibre.org/licence/lal\">licence Art Libre</a>."), "src=\"$urlRacine/fichiers/licence-art-libre-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'cc-by':
+			$licence = sprintf(T_("<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by/3.0/80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'cc-by-sa':
+			$licence = sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Partage des conditions initiales à l'identique 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-sa/3.0/80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'cc-by-nd':
+			$licence = sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas de modification 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nd/3.0/80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'cc-by-nc':
+			$licence = sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas d'utilisation commerciale 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'cc-by-nc-sa':
+			$licence = sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas d'utilisation commerciale – Partage des conditions initiales à l'identique 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'cc-by-nc-nd':
+			$licence = sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas d'utilisation commerciale – Pas de modification 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc-nd/3.0/80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'dp':
+			$licence = sprintf(T_("<a href=\"http://creativecommons.org/licenses/publicdomain/deed.fr\"><img %1\$s alt=\"Domaine public\" /></a> Mis à disposition dans le <a href=\"http://creativecommons.org/licenses/publicdomain/deed.fr\">domaine public</a>."), "src=\"$urlRacine/fichiers/domaine-public-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'gplv2':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/gpl-2.0.html\"><img %1\$s alt=\"Licence publique générale de GNU, version 2\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl-2.0.html\">licence publique générale de GNU, version 2</a>."), "src=\"$urlRacine/fichiers/licence-gnu-gpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'gplv2+':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1\$s alt=\"Licence publique générale de GNU, version 2 ou toute version ultérieure\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html\">licence publique générale de GNU, version 2 ou toute version ultérieure</a>."), "src=\"$urlRacine/fichiers/licence-gnu-gpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'gplv3':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\"><img %1\$s alt=\"Licence publique générale de GNU, version 3\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl-3.0.html\">licence publique générale de GNU, version 3</a>."), "src=\"$urlRacine/fichiers/licence-gnu-gpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'gplv3+':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1\$s alt=\"Licence publique générale de GNU, version 3 ou toute version ultérieure\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html\">licence publique générale de GNU, version 3 ou toute version ultérieure</a>."), "src=\"$urlRacine/fichiers/licence-gnu-gpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'agplv3':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\"><img %1\$s alt=\"Licence publique générale GNU Affero, version 3\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\">licence publique générale GNU Affero, version 3</a>."), "src=\"$urlRacine/fichiers/licence-gnu-agpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'agplv3+':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/agpl.html\"><img %1\$s alt=\"Licence publique générale GNU Affero, version 3 ou toute version ultérieure\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/agpl.html\">licence publique générale GNU Affero, version 3 ou toute version ultérieure</a>."), "src=\"$urlRacine/fichiers/licence-gnu-agpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'lgplv2.1':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\"><img %1\$s alt=\"Licence publique générale amoindrie de GNU, version 2.1\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\">licence publique générale amoindrie de GNU, version 2.1</a>."), "src=\"$urlRacine/fichiers/licence-gnu-lgpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'lgplv2.1+':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1\$s alt=\"Licence publique générale amoindrie de GNU, version 2.1 ou toute version ultérieure\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl.html\">licence publique générale amoindrie de GNU, version 2.1 ou toute version ultérieure</a>."), "src=\"$urlRacine/fichiers/licence-gnu-lgpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'lgplv3':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\"><img %1\$s alt=\"Licence publique générale amoindrie de GNU, version 3\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\">licence publique générale amoindrie de GNU, version 3</a>."), "src=\"$urlRacine/fichiers/licence-gnu-lgpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'lgplv3+':
+			$licence = sprintf(T_("<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1\$s alt=\"Licence publique générale amoindrie de GNU, version 3 ou toute version ultérieure\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl.html\">licence publique générale amoindrie de GNU, version 3 ou toute version ultérieure</a>."), "src=\"$urlRacine/fichiers/licence-gnu-lgpl-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'bsd':
+			$licence = sprintf(T_("<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence\"><img %1\$s alt=\"Licence BSD modifiée\" /></a> Mis à disposition sous la <a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence\">licence BSD modifiée</a>."), "src=\"$urlRacine/fichiers/licence-bsd-modifiee-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'mit':
+			$licence = sprintf(T_("<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1\$s alt=\"Licence MIT\" /></a> Mis à disposition sous la <a href=\"http://www.opensource.org/licenses/mit-license.php\">licence MIT</a>."), "src=\"$urlRacine/fichiers/licence-mit-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		default:
+			$licence = '';
+			break;
+	}
+	
+	return $licence;
+}
+
+/*
 Ajoute la classe `actif` à tous les liens (balises `a`) du code passé en paramètre et pointant vers la page en cours ainsi qu'à un parent (s'il existe) spécifié avec le paramètre optionnel `$parent`, qui doit être le nom d'une balise (par exemple `li`). Si `$inclureGet` vaut FALSE, les variables GET ne sont pas prises en considération dans la comparaison des adresses. Retourne le code résultant.
 */
 function lienActif($html, $inclureGet = TRUE, $parent = '')
@@ -1386,6 +1516,8 @@ function limiteProfondeurListe($html)
 	$htmlFiltre = $dom->save();
 	$dom->clear();
 	unset($dom);
+	
+	return $htmlFiltre;
 }
 
 /*
@@ -2184,7 +2316,7 @@ function oeuvre(
 			$imgLienOriginal = '';
 		}
 		
-		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'sousContenu')
+		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
 			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal;
 		}

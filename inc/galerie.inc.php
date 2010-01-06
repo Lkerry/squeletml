@@ -7,6 +7,7 @@ Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'u
 phpGettext($racine, LANGUE);
 
 // URL.
+$url = url();
 $urlSansGet = url(FALSE);
 
 // Liste des oeuvres à afficher.
