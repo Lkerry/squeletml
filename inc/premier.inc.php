@@ -4,13 +4,14 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 Étapes dans ce fichier:
 
-1. Première série d'affectations.
-2. Première série d'inclusions.
-3. Deuxième série d'affectations.
-4. Deuxième série d'inclusions.
-5. Ajouts dans `$balisesLinkScript`.
-6. Traitement personnalisé optionnel.
-7. Inclusion de code XHTML.
+1. Première série d'inclusions.
+2. Première série d'affectations.
+3. Deuxième série d'inclusions.
+4. Deuxième série d'affectations.
+5. Troisième série d'inclusions.
+6. Ajouts dans `$balisesLinkScript`.
+7. Traitement personnalisé optionnel.
+8. Inclusion de code XHTML.
 */
 
 ########################################################################
@@ -19,11 +20,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 ##
 ########################################################################
 
-// Affectations 1 de 2.
-
-extract(init(FALSE, 'idGalerie', 'langue'), EXTR_SKIP);
-
-// Inclusions 1 de 2.
+// Inclusions 1 de 3.
 
 include_once dirname(__FILE__) . '/../init.inc.php';
 
@@ -33,6 +30,12 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 }
 
 include_once $racine . '/inc/fonctions.inc.php';
+
+// Affectations 1 de 2.
+
+extract(init('', 'idGalerie', 'langue'), EXTR_SKIP);
+
+// Inclusions 2 de 3.
 
 foreach (aInclureDebut($racine, $idGalerie) as $fichier)
 {
@@ -78,7 +81,7 @@ if (!empty($apercu))
 
 if (!galerieExiste($racine, $idGalerie))
 {
-	$idGalerie = FALSE;
+	$idGalerie = '';
 }
 
 if (!isset($licence))
@@ -100,7 +103,7 @@ $nomSite = nomSite(estAccueil(ACCUEIL), lienAccueil(ACCUEIL, estAccueil(ACCUEIL)
 $nomPage = nomPage();
 $robots = robots($robotsParDefaut, $robots);
 
-if ($idGalerie && !isset($rssGalerie))
+if (!empty($idGalerie) && !isset($rssGalerie))
 {
 	$rssGalerie = $galerieActiverFluxRssParDefaut;
 }
@@ -136,7 +139,7 @@ if (!isset($urlSansGet))
 
 $urlSite = $urlRacine . '/site';
 
-// Inclusions 2 de 2.
+// Inclusions 3 de 3.
 
 include $racine . '/inc/blocs.inc.php';
 
@@ -165,7 +168,7 @@ if (!empty($boitesDeroulantesTableau))
 
 // Flux RSS.
 
-if ($idGalerie && $rssGalerie)
+if (!empty($idGalerie) && $rssGalerie)
 {
 	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
@@ -185,7 +188,7 @@ if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 
 // Slimbox2.
 
-if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && $idGalerie)
+if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && !empty($idGalerie))
 {
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/slimbox2/js/slimbox2.js";

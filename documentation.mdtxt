@@ -322,7 +322,7 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 	- *`site/inc/config.inc.php`*
 	- `inc/constantes.inc.php`
 	- *`site/inc/constantes.inc.php`*
-	- Si `$idGalerie`: `inc/galerie.inc.php`
+	- Si `$idGalerie` n'est pas vide: `inc/galerie.inc.php`
 		- *`site/inc/galerie.inc.php`*
 	- `inc/blocs.inc.php`
 		- `inc/faire-decouvrir.inc.php`
@@ -446,9 +446,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
 
-- `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable vaut `FALSE`, mais si elle vaut autre chose, et si le fichier de configuration existe pour cet `id` (voir la section *Galeries*), une galerie sera insérée dans la page.
+- `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section *Galeries*), une galerie sera insérée dans la page.
 
-	Par exemple, si nous avons `$idGalerie = 1;`, Squeletml va rechercher le dossier `site/fichiers/galeries/1`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
+	Par exemple, si nous avons `$idGalerie = "mes-voyages";`, Squeletml va rechercher le dossier `site/fichiers/galeries/mes-voyages`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
 
 - `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier de configuration.
 

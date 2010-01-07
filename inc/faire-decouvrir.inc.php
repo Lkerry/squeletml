@@ -35,7 +35,7 @@ if (!$estPageDerreur)
 
 	$cheminConfigGalerie = cheminConfigGalerie($racine, $idGalerie);
 
-	if ($idGalerie && isset($_GET['oeuvre']) && $cheminConfigGalerie)
+	if (!empty($idGalerie) && isset($_GET['oeuvre']) && $cheminConfigGalerie)
 	{
 		$galerie = tableauGalerie($cheminConfigGalerie, TRUE);
 		$i = 0;
@@ -59,7 +59,7 @@ if (!$estPageDerreur)
 			}
 		}
 	}
-	elseif ($idGalerie && !isset($_GET['oeuvre']) && $cheminConfigGalerie)
+	elseif (!empty($idGalerie) && !isset($_GET['oeuvre']) && $cheminConfigGalerie)
 	{
 		$decouvrir = TRUE;
 	

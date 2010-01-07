@@ -11,14 +11,14 @@ $url = url();
 $urlSansGet = url(FALSE);
 
 // Liste des oeuvres à afficher.
-if ($idGalerie && $idGalerie == 'démo')
+if ($idGalerie == 'démo')
 {
 	// Galerie démo par défaut.
 	$galerie = tableauGalerie($racine . '/fichiers/galeries/démo/config.ini.txt', TRUE);
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/démo';
 	$racineImgSrc = $racine . '/fichiers/galeries/démo';
 }
-elseif ($idGalerie && cheminConfigGalerie($racine, $idGalerie))
+elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerie))
 {
 	$galerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie);
@@ -27,14 +27,14 @@ elseif ($idGalerie && cheminConfigGalerie($racine, $idGalerie))
 else
 {
 	$nomGalerie = $idGalerie;
-	$idGalerie = FALSE;
+	$idGalerie = '';
 }
 
 // Initialisation du corps de la galerie.
 $corpsGalerie = '';
 
 // Nombre d'oeuvres dans la galerie.
-if ($idGalerie)
+if (!empty($idGalerie))
 {
 	$nombreDoeuvres = count($galerie);
 }
@@ -48,7 +48,7 @@ $imageExiste = FALSE;
 ##
 ########################################################################
 
-if ($idGalerie && isset($_GET['oeuvre']))
+if (!empty($idGalerie) && isset($_GET['oeuvre']))
 {
 	// On vérifie si l'oeuvre demandée existe. Si oui, `$indice` contient la valeur de son indice dans le tableau de la galerie.
 	
@@ -357,7 +357,7 @@ if ($idGalerie && isset($_GET['oeuvre']))
 ## Aucune oeuvre en particulier n'est demandée. On affiche donc la galerie, si elle existe.
 ##
 ########################################################################
-elseif ($idGalerie)
+elseif (!empty($idGalerie))
 {
 	if ($galerieVignettesParPage)
 	{

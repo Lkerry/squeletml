@@ -144,7 +144,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 				}
 			}
 			
-			$idGalerie = FALSE;
+			$idGalerie = '';
 			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, TRUE);
 			
 			if ($dureeCacheFluxRss)
@@ -226,7 +226,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				}
 			}
 			
-			$idGalerie = FALSE;
+			$idGalerie = '';
 			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, FALSE);
 			
 			if ($dureeCacheFluxRss)

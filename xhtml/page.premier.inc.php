@@ -73,6 +73,6 @@
 							<?php echo $blocs[300]; ?>
 						</div><!-- /#debutInterieurContenu -->
 						
-						<?php if ($idGalerie): ?>
+						<?php if (!empty($idGalerie)): ?>
 							<div id="galerie" class="sep">
 						<?php endif; ?>

@@ -12,7 +12,7 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 
 if (!isset($langue))
 {
-	$langue = FALSE;
+	$langue = '';
 }
 
 $urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;

@@ -6,7 +6,7 @@
 							<?php echo $contact; ?>
 						<?php endif; ?>
 						
-						<?php if ($idGalerie): ?>
+						<?php if (!empty($idGalerie)): ?>
 							</div><!-- /#galerie -->
 						<?php endif; ?>
 						

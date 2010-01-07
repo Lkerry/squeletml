@@ -57,7 +57,7 @@ function aInclureDebut($racine, $idGalerie)
 		$fichiers[] = $fichier;
 	}
 	
-	if ($idGalerie)
+	if (!empty($idGalerie))
 	{
 		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important de l'insérer avant `inc/premier.inc.php`, pour permettre la modification des balises de l'en-tête.
 	}
@@ -218,6 +218,14 @@ function cacheExpire($fichier, $dureeCache)
 }
 
 /*
+
+*/
+function categorie($pages)
+{
+	//
+}
+
+/*
 Retourne le chemin vers le fichier de configuration du flux RSS global des galeries ou des pages autres que les galeries, selon le nom passé en paramètre. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FALSE)
@@ -245,11 +253,11 @@ Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fich
 */
 function cheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut = FALSE)
 {
-	if ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt'))
+	if (!empty($idGalerie) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt'))
 	{
 		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt';
 	}
-	elseif ($idGalerie && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini'))
+	elseif (!empty($idGalerie) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini'))
 	{
 		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini';
 	}
@@ -329,7 +337,7 @@ function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgau
 		$class .= 'accueil ';
 	}
 	
-	if ($idGalerie)
+	if (!empty($idGalerie))
 	{
 		$class .= 'galerie ';
 		
@@ -721,7 +729,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 	$contenuRss .= "\t<channel>\n";
 	
 	// Page individuelle d'une galerie.
-	if ($idGalerie)
+	if (!empty($idGalerie))
 	{
 		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
 		$contenuRss .= "\t\t<link>$url</link>\n";
@@ -980,11 +988,11 @@ Retourne TRUE si la galerie existe, sinon retourne FALSE.
 */
 function galerieExiste($racine, $idGalerie)
 {
-	if ($idGalerie && $idGalerie == 'démo')
+	if ($idGalerie == 'démo')
 	{
 		return TRUE;
 	}
-	elseif ($idGalerie && cheminConfigGalerie($racine, $idGalerie))
+	elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerie))
 	{
 		return TRUE;
 	}
@@ -1342,7 +1350,7 @@ Retourne le lien vers le fichier du flux RSS demandé.
 */
 function lienFluxRss($urlFluxRss, $idGalerie, $estGalerie)
 {
-	if ($idGalerie)
+	if (!empty($idGalerie))
 	{
 		$description = sprintf(T_("RSS de la galerie %1\$s"), "<em>$idGalerie</em>");
 	}
