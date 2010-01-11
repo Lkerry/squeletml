@@ -112,10 +112,6 @@ body#galeries-admin-php fieldset ul ul, body#rss-admin-php fieldset ul ul {
 	padding-left: 20px;
 }
 
-body#rss-admin-php fieldset li.langue {
-	margin-bottom: 40px;
-}
-
 legend {
 	font-weight: bold;
 }
@@ -123,6 +119,10 @@ legend {
 li {
 	margin-top: 5px;
 	margin-bottom: 5px;
+}
+
+li.liParent {
+	margin-bottom: 40px;
 }
 
 .galerieMinivignettes img {

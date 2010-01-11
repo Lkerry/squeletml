@@ -205,9 +205,9 @@ function cacheExpire($fichier, $dureeCache)
 }
 
 /*
-Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE.
+Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function cheminConfigCategories($racine)
+function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 {
 	if (file_exists("$racine/site/inc/categories.ini.txt"))
 	{
@@ -216,6 +216,10 @@ function cheminConfigCategories($racine)
 	elseif (file_exists("$racine/site/inc/categories.ini"))
 	{
 		return "$racine/site/inc/categories.ini";
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return "$racine/site/inc/categories.ini.txt";
 	}
 	else
 	{

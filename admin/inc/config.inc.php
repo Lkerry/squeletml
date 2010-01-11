@@ -65,9 +65,9 @@ $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/php.js/php.min.j
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
 $adminBalisesLinkScript[] = "$urlRacineAdmin/*#favicon#$urlRacine/fichiers/puce.png";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
 $jsDirect = <<<JS
 	$(function()
 	{
@@ -75,7 +75,11 @@ $jsDirect = <<<JS
 		$('ul.triable').disableSelection();
 	});
 JS;
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php#jsDirect#$jsDirect";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
 
 ########################################################################
 ##
