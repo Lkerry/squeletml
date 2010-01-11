@@ -2,12 +2,16 @@
 							<?php echo $galerie; ?>
 						<?php endif; ?>
 						
+						<?php if (!empty($idGalerie)): ?>
+							</div><!-- /#galerie -->
+						<?php endif; ?>
+						
 						<?php if ($inclureContact): ?>
 							<?php echo $contact; ?>
 						<?php endif; ?>
 						
-						<?php if (!empty($idGalerie)): ?>
-							</div><!-- /#galerie -->
+						<?php if (!empty($idCategorie)): ?>
+							<?php echo $categorie; ?>
 						<?php endif; ?>
 						
 						<div id="finInterieurContenu">

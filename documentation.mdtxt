@@ -301,7 +301,7 @@ Selon le style affecté (voir la section «Style CSS» du fichier de configurati
 - deux colonnes dont celle de gauche est remplie par les blocs de `surContenu` et celle de droite par les blocs de `sousContenu`;
 - deux colonnes dont celle de gauche est remplie par les blocs de `sousContenu` et celle de droite par les blocs de `surContenu`.
 
-Il est bon de rappeler qu'un modèle de page personnalisé peut être utilisé (voir la section Le dossier `xhtml`), et que les blocs peuvent alors être affichés ailleurs selon le modèle utilisé.
+Il est bon de rappeler qu'un modèle de page personnalisé peut être utilisé (voir la section «Le dossier `xhtml`»), et que les blocs peuvent alors être affichés ailleurs selon le modèle utilisé.
 
 ### Schéma des inclusions lors de la construction d'une page
 
@@ -322,6 +322,8 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 	- *`site/inc/config.inc.php`*
 	- `inc/constantes.inc.php`
 	- *`site/inc/constantes.inc.php`*
+	- Si `$idCategorie` n'est pas vide: `inc/categorie.inc.php`
+		- *`site/inc/categorie.inc.php`*
 	- Si `$idGalerie` n'est pas vide: `inc/galerie.inc.php`
 		- *`site/inc/galerie.inc.php`*
 	- `inc/blocs.inc.php`
@@ -347,7 +349,7 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 
 ## Style de Squeletml
 
-Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Il est même possible de ne pas inclure les feuilles par défaut et partir de zéro. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style ou modifier le modèle de page (voir la section *Dossiers*). L'utilisation du fichier de configuration pour modifier le style n'est pas du tout une obligation, mais une aide supplémentaire si besoin il y a.
+Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Il est même possible de ne pas inclure les feuilles par défaut et partir de zéro. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style ou modifier le modèle de page (voir la section «Dossiers»). L'utilisation du fichier de configuration pour modifier le style n'est pas du tout une obligation, mais une aide supplémentaire si besoin il y a.
 
 Voici quelques exemples:
 
@@ -421,6 +423,17 @@ Voici l'anatomie d'une page:
 
 Voici les différentes variables optionnelles avant l'inclusion du premier fichier PHP:
 
+- `$apercu`: aperçu de la page en cours, inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration vaut TRUE.
+
+	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la div `interieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
+
+		<div id="interieurContenu">
+			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada<!-- /aperçu --> et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam.</p>
+
+	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
+
+- `$auteur`: nom ou noms à inclure dans la métabalise `author`, si différents du nom ou des noms par défaut déclarés dans le fichier de configuration. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie.
+
 - `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner l'URL de la page en cours.
 
 - `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration pour une description détaillée de la syntaxe à utiliser.
@@ -435,18 +448,15 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
+- `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie.
+
+- `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie.
+
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
-- `$apercu`: aperçu de la page en cours, inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration vaut TRUE.
+- `$idCategorie`: un nombre, un mot ou une phrase identifiant la catégorie à chercher pour afficher la liste des articles en faisant partie. Voir la section «Catégories».
 
-	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la div `interieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
-
-		<div id="interieurContenu">
-			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada<!-- /aperçu --> et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam.</p>
-
-	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
-
-- `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section *Galeries*), une galerie sera insérée dans la page.
+- `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section «Galeries»), une galerie sera insérée dans la page.
 
 	Par exemple, si nous avons `$idGalerie = "mes-voyages";`, Squeletml va rechercher le dossier `site/fichiers/galeries/mes-voyages`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
 

@@ -76,7 +76,7 @@ if (!$estPageDerreur)
 			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 		}
 	}
-	elseif ((!isset($courrielContact) || empty($courrielContact)))
+	elseif (empty($courrielContact))
 	{
 		$decouvrir = TRUE;
 	

@@ -16,12 +16,11 @@ $xhtmlStrict = TRUE; // TRUE|FALSE
 
 // Complément de la balise `title` selon la langue.
 /*
-- Le contenu de la balise `title` est généré ainsi:
-  Balise `title` unique à chaque page | Complément
+- Le complément de la balise `title` est ajouté à la suite du contenu principal de la balise `title`.
 - Voir la fonction `baliseTitleComplement()`.
 */
-$baliseTitleComplement['fr'] = "Site Squeletml";
-$baliseTitleComplement['en'] = "Squeletml website";
+$tableauBaliseTitleComplement['fr'] = " | Site Squeletml";
+$tableauBaliseTitleComplement['en'] = " | Squeletml website";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
@@ -84,6 +83,13 @@ $charset = 'UTF-8';
 - Voir la fonction `langue()`.
 */
 $langueParDefaut = 'fr';
+
+// Auteur par défaut.
+/*
+- Auteur par défaut si aucune autre précision n'est apportée. Si la variable `$auteur` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- L'auteur est inséré en tant que métabalise `author`. Cette information est également utilisée lors du listage des articles faisant partie d'une catégorie.
+*/
+$auteurParDefaut = '';
 
 /* ____________________ Contenu et ordre du flux HTML. ____________________ */
 
@@ -285,6 +291,12 @@ $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#egaliseHauteur('interieurPa
 - Voir les explications de la variable `$apercu` dans la documentation pour plus de détails.
 */
 $inclureApercu = FALSE; // TRUE|FALSE
+
+// Pagination de la liste des articles faisant partie d'une catégorie.
+/*
+- Nombre d'articles par page (0 pour désactiver la pagination).
+*/
+$articlesParPage = 10;
 
 /* ____________________ Style CSS. ____________________ */
 

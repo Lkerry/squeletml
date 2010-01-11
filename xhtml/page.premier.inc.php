@@ -2,7 +2,7 @@
 	<!-- ____________________ <head> ____________________ -->
 	<head>
 		<!-- Titre. -->
-		<title><?php echo $baliseTitle; ?></title>
+		<title><?php echo $baliseTitle . $baliseTitleComplement; ?></title>
 		
 		<!-- Métabalises. -->
 		<meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
@@ -18,6 +18,18 @@
 		<meta name="robots" content="<?php echo $robots; ?>" />
 		
 		<meta name="generator" content="Squeletml" />
+		
+		<?php if (!empty($auteur)): ?>
+			<meta name="author" content="<?php echo $auteur; ?>" />
+		<?php endif; ?>
+		
+		<?php if (!empty($dateCreation)): ?>
+			<meta name="date-creation-yyyymmdd" content="<?php echo $dateCreation; ?>" />
+		<?php endif; ?>
+		
+		<?php if (!empty($dateRevision)): ?>
+			<meta name="date-revision-yyyymmdd" content="<?php echo $dateRevision; ?>" />
+		<?php endif; ?>
 		
 		<!-- Balises `link` et `script`. -->
 		<?php echo $linkScript; ?>

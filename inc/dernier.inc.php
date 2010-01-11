@@ -19,7 +19,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 $cheminBasDePage = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'bas-de-page');
 
-if ((isset($courrielContact) && !empty($courrielContact)) || ($decouvrir && $decouvrirInclureContact))
+if (!empty($courrielContact) || ($decouvrir && $decouvrirInclureContact))
 {
 	$inclureContact = TRUE;
 }
@@ -30,7 +30,7 @@ else
 
 $premierOuDernier = 'dernier';
 
-if (isset($corpsGalerie) && !empty($corpsGalerie))
+if (isset($tableauCorpsGalerie['corpsGalerie']) && !empty($tableauCorpsGalerie['corpsGalerie']))
 {
 	$galerie = $tableauCorpsGalerie['corpsGalerie'];
 	$afficherGalerie = TRUE;

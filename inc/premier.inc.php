@@ -33,20 +33,27 @@ include_once $racine . '/inc/fonctions.inc.php';
 
 // Affectations 1 de 2.
 
-extract(init('', 'idGalerie', 'langue'), EXTR_SKIP);
+extract(init('', 'langue'), EXTR_SKIP);
 
 // Inclusions 2 de 3.
 
-foreach (aInclureDebut($racine, $idGalerie) as $fichier)
+foreach (aInclureDebut($racine) as $fichier)
 {
 	include_once $fichier;
 }
 
 // Affectations 2 de 2.
 
-extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'description', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);
-$baliseTitle = baliseTitle($baliseTitle, $baliseTitleComplement, array ($langue, $langueParDefaut));
+
+if (!isset($auteur))
+{
+	$auteur = $auteurParDefaut;
+}
+
+$baliseTitle = baliseTitle($baliseTitle, array ($langue, $langueParDefaut));
+$baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut));
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 $cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
@@ -66,7 +73,7 @@ if (!empty($classesContenu))
 	$classesContenu = ' class="' . $classesContenu . '"';
 }
 
-if (isset($courrielContact) && $courrielContact == '@' && !empty($contactCourrielParDefaut))
+if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 {
 	$courrielContact = $contactCourrielParDefaut;
 }
@@ -77,11 +84,6 @@ $doctype = doctype($xhtmlStrict);
 if (!empty($apercu))
 {
 	$apercu = "<!-- APERÇU: $apercu -->";
-}
-
-if (!galerieExiste($racine, $idGalerie))
-{
-	$idGalerie = '';
 }
 
 if (!isset($licence))
@@ -103,14 +105,9 @@ $nomSite = nomSite(estAccueil(ACCUEIL), lienAccueil(ACCUEIL, estAccueil(ACCUEIL)
 $nomPage = nomPage();
 $robots = robots($robotsParDefaut, $robots);
 
-if (!empty($idGalerie) && !isset($rssGalerie))
+if (!isset($rssGalerie))
 {
 	$rssGalerie = $galerieActiverFluxRssParDefaut;
-}
-
-if (isset($corpsGalerie) && !empty($corpsGalerie))
-{
-	$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
 }
 
 if (!isset($tableDesMatieres))
@@ -124,22 +121,23 @@ if ($tableDesMatieres)
 	$locale = locale(LANGUE);
 }
 
-if (!isset($url))
-{
-	$url = url();
-}
-
+$url = url();
 $urlFichiers = $urlRacine . '/site/fichiers';
 $urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
-
-if (!isset($urlSansGet))
-{
-	$urlSansGet = url(FALSE);
-}
-
+$urlSansGet = url(FALSE);
 $urlSite = $urlRacine . '/site';
 
 // Inclusions 3 de 3.
+
+if (!empty($idCategorie))
+{
+	include_once $racine . '/inc/categorie.inc.php';
+}
+
+if (!empty($idGalerie))
+{
+	include_once $racine . '/inc/galerie.inc.php';
+}
 
 include $racine . '/inc/blocs.inc.php';
 

@@ -12,6 +12,10 @@ body.aucuneColonne #menuLangues {
 	left: 650px;
 }
 
+.titreApercu a:visited {
+	color: expression(this.parentNode.currentStyle.color); /* Palliatif à `inherit`. */
+}
+
 #faireDecouvrir a {
 	background: url('../fichiers/enveloppe.gif') no-repeat left 20%;
 }

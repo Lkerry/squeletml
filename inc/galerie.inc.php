@@ -6,10 +6,6 @@ Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'u
 // Nécessaire à la traduction.
 phpGettext($racine, LANGUE);
 
-// URL.
-$url = url();
-$urlSansGet = url(FALSE);
-
 // Liste des oeuvres à afficher.
 if ($idGalerie == 'démo')
 {
@@ -86,16 +82,20 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$description = sprintf(T_("Oeuvre %1\$s en version intermediaire, galerie %2\$s"), $id, $idGalerie) . ' | ' . $baliseTitleComplement[LANGUE];
+				$description = sprintf(T_("Oeuvre %1\$s en version intermediaire, galerie %2\$s"), $id, $idGalerie) . $baliseTitleComplement;
 			}
 			
-			if (!isset($galerie[$indice]['pageIntermediaireMotsCles']))
+			if ($inclureMotsCles)
 			{
-				$galerie[$indice]['pageIntermediaireMotsCles'] = '';
+				if (!isset($galerie[$indice]['pageIntermediaireMotsCles']))
+				{
+					$galerie[$indice]['pageIntermediaireMotsCles'] = '';
+				}
+			
+				$motsCles = motsCles($galerie[$indice]['pageIntermediaireMotsCles'], $description);
+				$motsCles .= ', ' . $id;
 			}
 			
-			$motsCles = motsCles($galerie[$indice]['pageIntermediaireMotsCles'], $description);
-			$motsCles .= ', ' . $id;
 			break; // On arrête la recherche de l'image, car elle a été trouvée.
 		}
 		
@@ -346,7 +346,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 		
 		// Ajustement des métabalises.
 		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
-		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . ' | ' . $baliseTitleComplement[LANGUE];
+		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . $baliseTitleComplement;
 		$motsCles = motsCles('', $description);
 		$motsCles .= ', ' . $id;
 		$robots = "noindex, follow, noarchive";
@@ -361,96 +361,18 @@ elseif (!empty($idGalerie))
 {
 	if ($galerieVignettesParPage)
 	{
-		// Calcul de la pagination.
-		
-		$nombreDePages = ceil($nombreDoeuvres / $galerieVignettesParPage);
-	
-		if (isset($_GET['page']))
-		{
-			$page = intval($_GET['page']);
-			
-			if ($page > $nombreDePages)
-			{
-				$page = $nombreDePages;
-			}
-			elseif ($page < 1)
-			{
-				$page = 1;
-			}
-		}
-		else
-		{
-			$page = 1;
-		}
-		
-		// Ajustement des métabalises.
-		if (isset($page) && $page != 1)
-		{
-			$baliseTitle .= " - Page $page";
-			$description .= " - Page $page";
-		}
-		
-		$indicePremiereOeuvre = ($page - 1) * $galerieVignettesParPage;
-		$indiceDerniereOeuvre = $indicePremiereOeuvre + $galerieVignettesParPage - 1;
-		
-		// Construction de la pagination.
-		
-		$pagination = '';
-		$pagination .= '<div class="galeriePagination">' . "\n";
-	
-		// `$lien` va être utilisée pour construire l'URL de la page précédente ou suivante.
-		$lien = $urlSansGet . '?';
-	
-		// On récupère les variables GET pour les ajouter au lien, sauf `page`.
-		if (!empty($_GET))
-		{
-			foreach ($_GET as $cle => $valeur)
-			{
-				if ($cle != 'page')
-				{
-					$lien .= $cle . '=' . $valeur . '&';
-				}
-			}
-		}
-	
-		if ($page > 1)
-		{
-			$numeroPagePrecedent = $page - 1;
-			
-			// Si la page précédente n'est pas la première, on y fait tout simplement un lien.
-			if ($numeroPagePrecedent != 1)
-			{
-				$lienPrecedent = $lien . 'page=' . $numeroPagePrecedent;
-			}
-			// Sinon on n'ajoute pas de variable GET `page` et on supprime le dernier caractère (`&` ou `?`).
-			else
-			{
-				$lienPrecedent = substr($lien, 0, -1);
-			}
-			
-			$pagination .= '<a href="' . rawurlencode($lienPrecedent) . '">' . T_("Page précédente") . '</a>';
-		}
-		
-		if ($page < $nombreDePages)
-		{
-			$numeroPageSuivant = $page + 1;
-			$lienSuivant = $lien . 'page=' . $numeroPageSuivant;
-			
-			if (isset($lienPrecedent))
-			{
-				$pagination .= ' | ';
-			}
-			
-			$pagination .= '<a href="' . rawurlencode($lienSuivant) . '">' . T_("Page suivante") . '</a>';
-		}
-	
-		$pagination .= '</div><!-- /#pagination -->' . "\n";
+		$pagination = pagination($nombreDoeuvres, $galerieVignettesParPage, $urlSansGet, $baliseTitle, $description);
+		$indicePremiereOeuvre = $pagination['indicePremierElement'];
+		$indiceDerniereOeuvre = $pagination['indiceDernierElement'];
+		$baliseTitle = $pagination['baliseTitle'];
+		$description = $pagination['description'];
+		$pagination = $pagination['pagination'];
 	}
 	else
 	{
 		$nombreDePages = 1;
 		$indicePremiereOeuvre = 0;
-		$indiceDerniereOeuvre = count($galerie) - 1;
+		$indiceDerniereOeuvre = $nombreDoeuvres - 1;
 	}
 	
 	for ($indice = $indicePremiereOeuvre; $indice <= $indiceDerniereOeuvre && $indice < $nombreDoeuvres; $indice++)
@@ -509,11 +431,18 @@ else
 	
 	// Ajustement des métabalises.
 	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);
-	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . ' | ' . $baliseTitleComplement[LANGUE];
-	$motsCles = motsCles('', $description);
-	$motsCles .= ', ' . $nomGalerie;
+	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . $baliseTitleComplement;
+	
+	if ($inclureMotsCles)
+	{
+		$motsCles = motsCles('', $description);
+		$motsCles .= ', ' . $nomGalerie;
+	}
+	
 	$robots = "noindex, follow, noarchive";
 }
+
+$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
 
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/galerie.inc.php'))

@@ -33,7 +33,7 @@ function actionFormContact($decouvrir)
 /*
 Retourne un tableau contenant les fichiers à inclure au début du script.
 */
-function aInclureDebut($racine, $idGalerie)
+function aInclureDebut($racine)
 {
 	$fichiers = array ();
 	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
@@ -41,6 +41,8 @@ function aInclureDebut($racine, $idGalerie)
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
 	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
 	
 	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
 	{
@@ -55,11 +57,6 @@ function aInclureDebut($racine, $idGalerie)
 	foreach (cheminsInc($racine, 'constantes') as $fichier)
 	{
 		$fichiers[] = $fichier;
-	}
-	
-	if (!empty($idGalerie))
-	{
-		$fichiers[] = $racine . '/inc/galerie.inc.php'; // Important de l'insérer avant `inc/premier.inc.php`, pour permettre la modification des balises de l'en-tête.
 	}
 	
 	return $fichiers;
@@ -88,21 +85,11 @@ function annexesDocumentation($racineAdmin)
 }
 
 /*
-Retourne le complément de la balise `title`.
+Retourne le contenu de la balise `title`.
 */
-function baliseTitle($baliseTitle, $baliseTitleComplement, $langues)
+function baliseTitle($baliseTitle, $langues)
 {
-	$contenuBaliseTitle = '';
-	
-	if (empty($baliseTitle))
-	{
-		$baliseTitle = url();
-	}
-	
-	$contenuBaliseTitle .= $baliseTitle . ' | ';
-	$contenuBaliseTitle .= baliseTitleComplement($baliseTitleComplement, $langues);
-	
-	return $contenuBaliseTitle;
+	return empty($baliseTitle) ? url() : $baliseTitle;
 }
 
 /*
@@ -218,11 +205,22 @@ function cacheExpire($fichier, $dureeCache)
 }
 
 /*
-
+Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE.
 */
-function categorie($pages)
+function cheminConfigCategories($racine)
 {
-	//
+	if (file_exists("$racine/site/inc/categories.ini.txt"))
+	{
+		return "$racine/site/inc/categories.ini.txt";
+	}
+	elseif (file_exists("$racine/site/inc/categories.ini"))
+	{
+		return "$racine/site/inc/categories.ini";
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /*
@@ -535,6 +533,14 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 }
 
 /*
+S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
+*/
+function corrigeHtml($html)
+{
+	return _filter_htmlcorrector($html);
+}
+
+/*
 Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire s'il y a lieu, sinon est vide.
 */
 function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
@@ -731,7 +737,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 	// Page individuelle d'une galerie.
 	if (!empty($idGalerie))
 	{
-		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s | %2\$s"), $idGalerie, $baliseTitleComplement) . "</title>\n";
+		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s"), $idGalerie . $baliseTitleComplement) . "</title>\n";
 		$contenuRss .= "\t\t<link>$url</link>\n";
 		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
 	}
@@ -739,16 +745,16 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 	elseif ($estGalerie)
 	{
 		
-		$contenuRss .= "\t\t<title>" . T_("Galeries") . ' | ' . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<title>" . T_("Galeries") . $baliseTitleComplement . "</title>\n";
 		$contenuRss .= "\t\t<link>$url</link>\n";
-		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . ' | ' . $baliseTitleComplement . "</description>\n\n";
+		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . $baliseTitleComplement . "</description>\n\n";
 	}
 	// Tout le site.
 	else
 	{
-		$contenuRss .= "\t\t<title>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<title>" . T_("Dernières publications") . $baliseTitleComplement . "</title>\n";
 		$contenuRss .= "\t\t<link>$url</link>\n";
-		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . ' | ' . $baliseTitleComplement . "</description>\n\n";
+		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . $baliseTitleComplement . "</description>\n\n";
 	}
 	
 	if (!empty($itemsFluxRss))
@@ -870,94 +876,37 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 }
 
 /*
-Retourne le code HTML sans les commentaires.
-*/
-function supprimeCommentairesHtml($html)
-{
-	$dom = str_get_dom($html);
-	
-	foreach ($dom->find('comment') as $commentaire)
-	{
-		$commentaire->outertext = '';
-	}
-	
-	$htmlFiltre = $dom->save();
-	$dom->clear();
-	unset($dom);
-	
-	return $htmlFiltre;
-}
-
-/*
-S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
-*/
-function corrigeHtml($html)
-{
-	return _filter_htmlcorrector($html);
-}
-
-/*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
 */
 function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 {
 	$itemFlux = array ();
-	$dom = str_get_html(file_get_contents($urlPage));
-	$title = securiseTexte($dom->find('title', 0)->innertext);
+	$infosPage = securiseTexte(infosPage($urlPage, $inclureApercu));
 	
-	if (empty($title))
+	if (!empty($infosPage['dateCreation']))
 	{
-		$title = securiseTexte($dom->find('h1', 0)->innertext);
+		$date = $infosPage['dateCreation'];
+	}
+	elseif (!empty($infosPage['dateRevision']))
+	{
+		$date = $infosPage['dateRevision'];
+	}
+	else
+	{
+		$date = fileatime($cheminPage);
 	}
 	
-	if (empty($title))
+	if (!$infosPage['descriptionComplete'])
 	{
-		$title = $urlPage;
+		$infosPage['description'] .= securiseTexte("<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n");
 	}
 	
-	$description = $dom->find('div#interieurContenu', 0)->innertext;
-	$apercuInterne = FALSE;
-	
-	if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $description, $resultatApercu))
-	{
-		if ($resultatApercu[1] == 'interne')
-		{
-			if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $description, $resultatInterne))
-			{
-				$apercuInterne = TRUE;
-				$description = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1] . ' [...]')) . "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), "<em>$title</em>") . "</a></p>\n";
-			}
-		}
-		elseif ($resultatApercu[1] == 'description')
-		{
-			$metaDescription = $dom->find('meta[name=description]', 0)->content;
-			
-			if (!empty($metaDescription))
-			{
-				$description = $metaDescription;
-			}
-		}
-		else
-		{
-			$description = $resultatApercu[1];
-		}
-	}
-	
-	$dom->clear();
-	unset($dom);
-	
-	if (!$apercuInterne)
-	{
-		$description = supprimeCommentairesHtml($description);
-	}
-	
-	$description = securiseTexte($description);
 	$itemFlux[] = array (
-		"title" => $title,
+		"title" => $infosPage['titre'],
 		"link" => $urlPage,
 		"guid" => $urlPage,
-		"description" => $description,
-		"pubDate" => fileatime($cheminPage),
+		"description" => $infosPage['description'],
+		"pubDate" => $date,
 	);
 	
 	return $itemFlux;
@@ -984,30 +933,140 @@ function fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
-Retourne TRUE si la galerie existe, sinon retourne FALSE.
-*/
-function galerieExiste($racine, $idGalerie)
-{
-	if ($idGalerie == 'démo')
-	{
-		return TRUE;
-	}
-	elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerie))
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-/*
 Retourne l'`id` d'une oeuvre d'une galerie.
 */
 function idOeuvre($oeuvre)
 {
 	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['intermediaireNom'];
+}
+
+/*
+Retourne un tableau d'informations au sujet de la page demandée. Le tableau contient les informations suivantes:
+
+  - `$infosPage['titre']`: titre de la page. Prend comme valeur la première information trouvée parmi les suivantes:
+    - contenu de la premère balise `h1`;
+    - contenu de la balise `title`;
+    - URL de la page.
+  - `$infosPage['description']`: description de la page. Par défaut, vaut tout le contenu de la `div` `interieurContenu`, la première balise `h1` en moins. Selon les valeurs de `$inclureApercu` et `$apercu` pour la page demandée, la description peut correspondre à un extrait de la page ou au contenu de la métabalise `description`;
+  - `$infosPage['descriptionComplete']`: vaut TRUE si la description n'est pas seulement un aperçu et correspond au texte en entier (`div` `interieurContenu`), sinon vaut FALSE;
+  - `$infosPage['auteur']`: vaut le contenu de la métabalise `author`, si elle existe;
+  - `$infosPage['dateCreation']`: vaut le contenu de la métabalise `date-creation-yyyymmdd`, si elle existe;
+  - `$infosPage['dateRevision']`: vaut le contenu de la métabalise `date-revision-yyyymmdd`, si elle existe.
+*/
+function infosPage($urlPage, $inclureApercu)
+{
+	$infosPage = array ();
+	$dom = str_get_html(file_get_contents($urlPage));
+	
+	// Titre.
+	
+	if ($titre = $dom->find('h1'))
+	{
+		$infosPage['titre'] = $titre[0]->innertext;
+	}
+	else
+	{
+		$infosPage['titre'] = '';
+	}
+	
+	if (empty($infosPage['titre']) && $dom->find('title'))
+	{
+		$infosPage['titre'] = $titre[0]->innertext;
+	}
+	
+	unset($titre);
+	
+	if (empty($infosPage['titre']))
+	{
+		$infosPage['titre'] = $urlPage;
+	}
+	
+	// Description.
+	
+	if ($description = $dom->find('div#interieurContenu'))
+	{
+		if ($h1 = $description[0]->find('h1'))
+		{
+			$h1[0]->outertext = '';
+		}
+		
+		$infosPage['description'] = $description[0]->innertext;
+		unset($description);
+	}
+	else
+	{
+		$infosPage['description'] = '';
+	}
+	
+	$apercuInterne = FALSE;
+	$infosPage['descriptionComplete'] = TRUE;
+	
+	if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['description'], $resultatApercu))
+	{
+		if ($resultatApercu[1] == 'interne')
+		{
+			if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $infosPage['description'], $resultatInterne))
+			{
+				$apercuInterne = TRUE;
+				$infosPage['descriptionComplete'] = FALSE;
+				$infosPage['description'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]));
+			}
+		}
+		elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
+		{
+			$infosPage['descriptionComplete'] = FALSE;
+			$infosPage['description'] = $description[0]->content;
+			unset($description);
+		}
+		else
+		{
+			$infosPage['descriptionComplete'] = FALSE;
+			$infosPage['description'] = $resultatApercu[1];
+		}
+	}
+	
+	if (!$apercuInterne)
+	{
+		$infosPage['description'] = supprimeCommentairesHtml($infosPage['description']);
+	}
+	
+	// Auteur.
+	if ($auteur = $dom->find('meta[name=author]'))
+	{
+		$infosPage['auteur'] = $auteur[0]->content;
+		unset($auteur);
+	}
+	else
+	{
+		$infosPage['auteur'] = '';
+	}
+	
+	// Dates.
+	
+	if ($dateCreation = $dom->find('meta[name=date-creation-yyyymmdd]'))
+	{
+		$infosPage['dateCreation'] = $dateCreation[0]->content;
+		unset($dateCreation);
+	}
+	else
+	{
+		$infosPage['dateCreation'] = '';
+	}
+	
+	if ($dateRevision = $dom->find('meta[name=date-revision-yyyymmdd]'))
+	{
+		$infosPage['dateRevision'] = $dateRevision[0]->content;
+		unset($dateRevision);
+	}
+	else
+	{
+		$infosPage['dateRevision'] = '';
+	}
+	
+	$dom->clear();
+	unset($dom);
+	
+	return $infosPage;
 }
 
 /*
@@ -1086,7 +1145,7 @@ function langue($langueParDefaut, $langue)
 		return $langue;
 	}
 	
-	return $langue ? $langue : $langueParDefaut;
+	return !empty($langue) ? $langue : $langueParDefaut;
 }
 
 /*
@@ -2481,6 +2540,108 @@ function oeuvre(
 }
 
 /*
+Construit le code HTML pour afficher une pagination, et retourne un tableau contenant les informations suivantes:
+
+  - `$pagination['pagination']`: code HTML de la pagination;
+  - `$pagination['indicePremierElement']`: indice du premier élément de la page en cours;
+  - `$pagination['indiceDernierElement']`: indice du dernier élément de la page en cours;
+  - `$pagination['baliseTitle']`: contenu de la balise `title` modifié pour prendre en compte la pagination;
+  - `$pagination['description']`: contenu de la métabalise `description` modifié pour prendre en compte la pagination.
+*/
+function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
+{
+	$pagination = array ();
+	$pagination['pagination'] = '';
+	$pagination['indicePremierElement'] = 0;
+	$pagination['indiceDernierElement'] = 0;
+	$pagination['baliseTitle'] = $baliseTitle;
+	$pagination['description'] = $description;
+	$nombreDePages = ceil($nombreElements / $elementsParPage);
+
+	if (isset($_GET['page']))
+	{
+		$page = intval($_GET['page']);
+		
+		if ($page > $nombreDePages)
+		{
+			$page = $nombreDePages;
+		}
+		elseif ($page < 1)
+		{
+			$page = 1;
+		}
+	}
+	else
+	{
+		$page = 1;
+	}
+	
+	// Ajustement des métabalises.
+	if (isset($page) && $page != 1)
+	{
+		$pagination['baliseTitle'] .= " - Page $page";
+		$pagination['description'] .= " - Page $page";
+	}
+	
+	$pagination['indicePremierElement'] = ($page - 1) * $elementsParPage;
+	$pagination['indiceDernierElement'] = $pagination['indicePremierElement'] + $elementsParPage - 1;
+	
+	// Construction de la pagination.
+	
+	$pagination['pagination'] .= '<div class="pagination">' . "\n";
+
+	// `$lien` va être utilisée pour construire l'URL de la page précédente ou suivante.
+	$lien = $urlSansGet . '?';
+
+	// On récupère les variables GET pour les ajouter au lien, sauf `page`.
+	if (!empty($_GET))
+	{
+		foreach ($_GET as $cle => $valeur)
+		{
+			if ($cle != 'page')
+			{
+				$lien .= $cle . '=' . $valeur . '&';
+			}
+		}
+	}
+
+	if ($page > 1)
+	{
+		$numeroPagePrecedent = $page - 1;
+		
+		// Si la page précédente n'est pas la première, on y fait tout simplement un lien.
+		if ($numeroPagePrecedent != 1)
+		{
+			$lienPrecedent = $lien . 'page=' . $numeroPagePrecedent;
+		}
+		// Sinon on n'ajoute pas de variable GET `page` et on supprime le dernier caractère (`&` ou `?`).
+		else
+		{
+			$lienPrecedent = substr($lien, 0, -1);
+		}
+		
+		$pagination['pagination'] .= '<a href="' . rawurlencode($lienPrecedent) . '">' . T_("Page précédente") . '</a>';
+	}
+	
+	if ($page < $nombreDePages)
+	{
+		$numeroPageSuivant = $page + 1;
+		$lienSuivant = $lien . 'page=' . $numeroPageSuivant;
+		
+		if (isset($lienPrecedent))
+		{
+			$pagination['pagination'] .= ' | ';
+		}
+		
+		$pagination['pagination'] .= '<a href="' . rawurlencode($lienSuivant) . '">' . T_("Page suivante") . '</a>';
+	}
+
+	$pagination['pagination'] .= '</div><!-- /.pagination -->' . "\n";
+	
+	return $pagination;
+}
+
+/*
 Inclut tout ce qu'il faut pour utiliser php-gettext comme outil de traduction des pages. Retourne TRUE.
 */
 function phpGettext($racine, $langue)
@@ -2669,6 +2830,25 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 	}
 	
 	return $tableau;
+}
+
+/*
+Retourne le code HTML sans les commentaires.
+*/
+function supprimeCommentairesHtml($html)
+{
+	$dom = str_get_dom($html);
+	
+	foreach ($dom->find('comment') as $commentaire)
+	{
+		$commentaire->outertext = '';
+	}
+	
+	$htmlFiltre = $dom->save();
+	$dom->clear();
+	unset($dom);
+	
+	return $htmlFiltre;
 }
 
 /*

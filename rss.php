@@ -82,7 +82,7 @@ if (isset($getChemin) && !empty($getChemin))
 						$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
 					}
 					
-					$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), $urlGalerie, $itemsFluxRss, TRUE);
+					$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), $urlGalerie, $itemsFluxRss, TRUE);
 					
 					if ($dureeCacheFluxRss)
 					{
@@ -145,7 +145,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			}
 			
 			$idGalerie = '';
-			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, TRUE);
+			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, TRUE);
 			
 			if ($dureeCacheFluxRss)
 			{
@@ -227,7 +227,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 			}
 			
 			$idGalerie = '';
-			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($baliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, FALSE);
+			$rssAafficher = fluxRss($idGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), ACCUEIL, $itemsFluxRss, FALSE);
 			
 			if ($dureeCacheFluxRss)
 			{
