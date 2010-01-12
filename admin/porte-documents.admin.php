@@ -1004,25 +1004,28 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 						$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierAcreerNom</code>") . "</li>\n";
 					}
 					
-					if ($fichierAcreerType == 'FichierModeleMarkdown' && @touch($fichierMarkdownAcreerNom))
+					if ($fichierAcreerType == 'FichierModeleMarkdown')
 					{
-						$messagesScript .= "<li>"; // Ouverture de `<li>`.
-						$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierMarkdownAcreerNom</code>");
-						
-						if ($adminPorteDocumentsDroits['editer'])
+						if (@touch($fichierMarkdownAcreerNom))
 						{
-							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+							$messagesScript .= "<li>"; // Ouverture de `<li>`.
+							$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierMarkdownAcreerNom</code>");
+						
+							if ($adminPorteDocumentsDroits['editer'])
+							{
+								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messagesPorteDocuments', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+							}
+							else
+							{
+								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+							}
+						
+							$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
 						}
 						else
 						{
-							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
 						}
-						
-						$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
-					}
-					else
-					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
 					}
 					
 					if (($fichierAcreerType != 'FichierModeleMarkdown' && file_exists($fichierAcreerNom)) || ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierAcreerNom) && file_exists($fichierMarkdownAcreerNom)))
