@@ -5,6 +5,11 @@
 ##
 ########################################################################
 
+if (!isset($adminBalisesLinkScriptFinales))
+{
+	$adminBalisesLinkScriptFinales = array ();
+}
+
 $baliseTitle .= ' | ' . T_("Administration de Squeletml");
 
 if (!isset($boitesDeroulantes))
