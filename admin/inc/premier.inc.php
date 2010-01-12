@@ -122,6 +122,8 @@ if ($adminAideEdition == 'BUEditor')
 	
 	$jsDirect .= "['" . T_("Liste ordonnée") . "', \"js: eDefSelProcessLines('<ol>\\\\n', '  <li>', '</li>', '\\\\n</ol>');\", 'ol.png', 'O'],\n";
 	
+	$jsDirect .= "['" . T_("Fin de l\'aperçu") . "', '<!-- /aperçu -->', 'teaserbr.png', 'T'],\n";
+	
 	$jsDirect .= "['" . T_("Titre de premier niveau") . "', '<h1>%TEXT%</h1>', 'h1', ''],\n";
 	
 	$jsDirect .= "['" . T_("Titre de deuxième niveau") . "', '<h2>%TEXT%</h2>', 'h2', ''],\n";

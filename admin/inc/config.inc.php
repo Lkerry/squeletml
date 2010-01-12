@@ -220,5 +220,5 @@ $adminPorteDocumentsDroits = array (
 - Pour désactiver l'aide, laisser vide, c'est-à-dire:
   $adminAideEdition = '';
 */
-$adminAideEdition = 'BUEditor'; // BUEditor|CodeMirror
+$adminAideEdition = 'CodeMirror'; // BUEditor|CodeMirror
 ?>
