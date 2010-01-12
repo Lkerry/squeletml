@@ -193,7 +193,12 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 						foreach ($langueInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page)), $inclureApercu));
+							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page)), $inclureApercu);
+							
+							if (!empty($fluxRssPageTableauBrut))
+							{
+								$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+							}
 						}
 					}
 					

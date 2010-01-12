@@ -880,38 +880,41 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 }
 
 /*
-Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS.
+Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 */
 function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 {
 	$itemFlux = array ();
 	$infosPage = securiseTexte(infosPage($urlPage, $inclureApercu));
 	
-	if (!empty($infosPage['dateCreation']))
+	if (!empty($infosPage))
 	{
-		$date = $infosPage['dateCreation'];
-	}
-	elseif (!empty($infosPage['dateRevision']))
-	{
-		$date = $infosPage['dateRevision'];
-	}
-	else
-	{
-		$date = fileatime($cheminPage);
-	}
+		if (!empty($infosPage['dateCreation']))
+		{
+			$date = $infosPage['dateCreation'];
+		}
+		elseif (!empty($infosPage['dateRevision']))
+		{
+			$date = $infosPage['dateRevision'];
+		}
+		else
+		{
+			$date = fileatime($cheminPage);
+		}
 	
-	if (!$infosPage['descriptionComplete'])
-	{
-		$infosPage['description'] .= securiseTexte("<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n");
-	}
+		if (!$infosPage['descriptionComplete'])
+		{
+			$infosPage['description'] .= securiseTexte("<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n");
+		}
 	
-	$itemFlux[] = array (
-		"title" => $infosPage['titre'],
-		"link" => $urlPage,
-		"guid" => $urlPage,
-		"description" => $infosPage['description'],
-		"pubDate" => $date,
-	);
+		$itemFlux[] = array (
+			"title" => $infosPage['titre'],
+			"link" => $urlPage,
+			"guid" => $urlPage,
+			"description" => $infosPage['description'],
+			"pubDate" => $date,
+		);
+	}
 	
 	return $itemFlux;
 }
@@ -956,119 +959,126 @@ Retourne un tableau d'informations au sujet de la page demandée. Le tableau con
   - `$infosPage['auteur']`: vaut le contenu de la métabalise `author`, si elle existe;
   - `$infosPage['dateCreation']`: vaut le contenu de la métabalise `date-creation-yyyymmdd`, si elle existe;
   - `$infosPage['dateRevision']`: vaut le contenu de la métabalise `date-revision-yyyymmdd`, si elle existe.
+
+Si la page demandée n'est pas accessible, retourne un tableau vide.
 */
 function infosPage($urlPage, $inclureApercu)
 {
 	$infosPage = array ();
-	$dom = str_get_html(file_get_contents($urlPage));
+	$html = @file_get_contents($urlPage);
 	
-	// Titre.
-	
-	if ($titre = $dom->find('h1'))
+	if ($html !== FALSE)
 	{
-		$infosPage['titre'] = $titre[0]->innertext;
-	}
-	else
-	{
-		$infosPage['titre'] = '';
-	}
+		$dom = str_get_html($html);
 	
-	if (empty($infosPage['titre']) && $dom->find('title'))
-	{
-		$infosPage['titre'] = $titre[0]->innertext;
-	}
+		// Titre.
 	
-	unset($titre);
-	
-	if (empty($infosPage['titre']))
-	{
-		$infosPage['titre'] = $urlPage;
-	}
-	
-	// Description.
-	
-	if ($description = $dom->find('div#interieurContenu'))
-	{
-		if ($h1 = $description[0]->find('h1'))
+		if ($titre = $dom->find('h1'))
 		{
-			$h1[0]->outertext = '';
+			$infosPage['titre'] = $titre[0]->innertext;
 		}
-		
-		$infosPage['description'] = $description[0]->innertext;
-		unset($description);
-	}
-	else
-	{
-		$infosPage['description'] = '';
-	}
-	
-	$apercuInterne = FALSE;
-	$infosPage['descriptionComplete'] = TRUE;
-	
-	if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['description'], $resultatApercu))
-	{
-		if ($resultatApercu[1] == 'interne')
+		else
 		{
-			if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $infosPage['description'], $resultatInterne))
+			$infosPage['titre'] = '';
+		}
+	
+		if (empty($infosPage['titre']) && $dom->find('title'))
+		{
+			$infosPage['titre'] = $titre[0]->innertext;
+		}
+	
+		unset($titre);
+	
+		if (empty($infosPage['titre']))
+		{
+			$infosPage['titre'] = $urlPage;
+		}
+	
+		// Description.
+	
+		if ($description = $dom->find('div#interieurContenu'))
+		{
+			if ($h1 = $description[0]->find('h1'))
 			{
-				$apercuInterne = TRUE;
-				$infosPage['descriptionComplete'] = FALSE;
-				$infosPage['description'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]));
+				$h1[0]->outertext = '';
 			}
-		}
-		elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
-		{
-			$infosPage['descriptionComplete'] = FALSE;
-			$infosPage['description'] = $description[0]->content;
+		
+			$infosPage['description'] = $description[0]->innertext;
 			unset($description);
 		}
 		else
 		{
-			$infosPage['descriptionComplete'] = FALSE;
-			$infosPage['description'] = $resultatApercu[1];
+			$infosPage['description'] = '';
 		}
-	}
 	
-	if (!$apercuInterne)
-	{
-		$infosPage['description'] = supprimeCommentairesHtml($infosPage['description']);
-	}
+		$apercuInterne = FALSE;
+		$infosPage['descriptionComplete'] = TRUE;
 	
-	// Auteur.
-	if ($auteur = $dom->find('meta[name=author]'))
-	{
-		$infosPage['auteur'] = $auteur[0]->content;
-		unset($auteur);
-	}
-	else
-	{
-		$infosPage['auteur'] = '';
-	}
+		if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['description'], $resultatApercu))
+		{
+			if ($resultatApercu[1] == 'interne')
+			{
+				if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $infosPage['description'], $resultatInterne))
+				{
+					$apercuInterne = TRUE;
+					$infosPage['descriptionComplete'] = FALSE;
+					$infosPage['description'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]));
+				}
+			}
+			elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
+			{
+				$infosPage['descriptionComplete'] = FALSE;
+				$infosPage['description'] = $description[0]->content;
+				unset($description);
+			}
+			else
+			{
+				$infosPage['descriptionComplete'] = FALSE;
+				$infosPage['description'] = $resultatApercu[1];
+			}
+		}
 	
-	// Dates.
+		if (!$apercuInterne)
+		{
+			$infosPage['description'] = supprimeCommentairesHtml($infosPage['description']);
+		}
 	
-	if ($dateCreation = $dom->find('meta[name=date-creation-yyyymmdd]'))
-	{
-		$infosPage['dateCreation'] = $dateCreation[0]->content;
-		unset($dateCreation);
-	}
-	else
-	{
-		$infosPage['dateCreation'] = '';
-	}
+		// Auteur.
+		if ($auteur = $dom->find('meta[name=author]'))
+		{
+			$infosPage['auteur'] = $auteur[0]->content;
+			unset($auteur);
+		}
+		else
+		{
+			$infosPage['auteur'] = '';
+		}
 	
-	if ($dateRevision = $dom->find('meta[name=date-revision-yyyymmdd]'))
-	{
-		$infosPage['dateRevision'] = $dateRevision[0]->content;
-		unset($dateRevision);
-	}
-	else
-	{
-		$infosPage['dateRevision'] = '';
-	}
+		// Dates.
 	
-	$dom->clear();
-	unset($dom);
+		if ($dateCreation = $dom->find('meta[name=date-creation-yyyymmdd]'))
+		{
+			$infosPage['dateCreation'] = $dateCreation[0]->content;
+			unset($dateCreation);
+		}
+		else
+		{
+			$infosPage['dateCreation'] = '';
+		}
+	
+		if ($dateRevision = $dom->find('meta[name=date-revision-yyyymmdd]'))
+		{
+			$infosPage['dateRevision'] = $dateRevision[0]->content;
+			unset($dateRevision);
+		}
+		else
+		{
+			$infosPage['dateRevision'] = '';
+		}
+	
+		$dom->clear();
+		unset($dom);
+	}
 	
 	return $infosPage;
 }
