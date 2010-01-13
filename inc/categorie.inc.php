@@ -60,11 +60,23 @@ if (!empty($idCategorie))
 	if ($articlesParPage)
 	{
 		$pagination = pagination($nombreArticles, $articlesParPage, $urlSansGet, $baliseTitle, $description);
-		$indicePremierArticle = $pagination['indicePremierElement'];
-		$indiceDernierArticle = $pagination['indiceDernierElement'];
-		$baliseTitle = $pagination['baliseTitle'];
-		$description = $pagination['description'];
-		$pagination = $pagination['pagination'];
+		
+		if ($pagination['estPageDerreur'])
+		{
+			$estPageDerreur = TRUE;
+		}
+		else
+		{
+			$indicePremierArticle = $pagination['indicePremierElement'];
+			$indiceDernierArticle = $pagination['indiceDernierElement'];
+			$baliseTitle = $pagination['baliseTitle'];
+			$description = $pagination['description'];
+			$pagination = $pagination['pagination'];
+		}
+	}
+	elseif (isset($_GET['page']) && $_GET['page'] != 1)
+	{
+		$estPageDerreur = TRUE;
 	}
 	else
 	{
@@ -73,87 +85,104 @@ if (!empty($idCategorie))
 		$indiceDernierArticle = $nombreArticles - 1;
 	}
 	
-	// On vérifie si la catégorie existe en cache ou si le cache est expiré.
-	if ($dureeCache && file_exists("$racine/site/cache/$urlMd5") && !cacheExpire("$racine/site/cache/$urlMd5", $dureeCache))
+	if ($estPageDerreur)
 	{
-		$categorie .= file_get_contents("$racine/site/cache/$urlMd5");
+		$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
+		
+		// Ajustement des métabalises.
+		$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
+		$description = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page'])) . $baliseTitleComplement;
+		
+		if ($inclureMotsCles)
+		{
+			$motsCles = motsCles('', $description);
+		}
+		
+		$robots = "noindex, follow, noarchive";
 	}
 	else
 	{
-		for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
+		// On vérifie si la catégorie existe en cache ou si le cache est expiré.
+		if ($dureeCache && file_exists("$racine/site/cache/$urlMd5") && !cacheExpire("$racine/site/cache/$urlMd5", $dureeCache))
 		{
-			$adresse = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
-			$infosPage = infosPage($adresse, $inclureApercu);
-		
-			if (!empty($infosPage))
+			$categorie .= file_get_contents("$racine/site/cache/$urlMd5");
+		}
+		else
+		{
+			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 			{
-				$categorie .= "<div class=\"apercu\">\n";
-				$baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut));
+				$adresse = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
+				$infosPage = infosPage($adresse, $inclureApercu);
 		
-				if (!empty($baliseTitleComplement))
+				if (!empty($infosPage))
 				{
-					$infosPage['titre'] = preg_replace('/' . preg_quote($baliseTitleComplement) . '$/', '', $infosPage['titre']);
-				}
+					$categorie .= "<div class=\"apercu\">\n";
 		
-				$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-		
-				if (!empty($infosPage['auteur']) || !empty($infosPage['dateCreation']) || !empty($infosPage['dateRevision']))
-				{
-					$infosApercu = TRUE;
-					$categorie .= "<div class=\"infosApercu\">\n";
-				}
-				else
-				{
-					$infosApercu = FALSE;
-				}
-		
-				if (!empty($infosPage['auteur']))
-				{
-					if (!empty($infosPage['dateCreation']))
+					if (!empty($baliseTitleComplement))
 					{
-						$categorie .= sprintf(T_("Écrit par %1\$s le %2\$s."), $infosPage['auteur'], $infosPage['dateCreation']) . "\n";
+						$infosPage['titre'] = preg_replace('/' . preg_quote($baliseTitleComplement) . '$/', '', $infosPage['titre']);
+					}
+		
+					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
+		
+					if (!empty($infosPage['auteur']) || !empty($infosPage['dateCreation']) || !empty($infosPage['dateRevision']))
+					{
+						$infosApercu = TRUE;
+						$categorie .= "<div class=\"infosApercu\">\n";
 					}
 					else
 					{
-						$categorie .= sprintf(T_("Écrit par %1\$s."), $infosPage['auteur']) . "\n";
+						$infosApercu = FALSE;
 					}
-				}
-				elseif (!empty($infosPage['dateCreation']))
-				{
-					$categorie .= sprintf(T_("Écrit le %1\$s."), $infosPage['dateCreation']) . "\n";
-				}
 		
-				if (!empty($infosPage['dateRevision']))
-				{
-					$categorie .= sprintf(T_("Dernière révision le %1\$s."), $infosPage['dateRevision']) . "\n";
+					if (!empty($infosPage['auteur']))
+					{
+						if (!empty($infosPage['dateCreation']))
+						{
+							$categorie .= sprintf(T_("Écrit par %1\$s le %2\$s."), $infosPage['auteur'], $infosPage['dateCreation']) . "\n";
+						}
+						else
+						{
+							$categorie .= sprintf(T_("Écrit par %1\$s."), $infosPage['auteur']) . "\n";
+						}
+					}
+					elseif (!empty($infosPage['dateCreation']))
+					{
+						$categorie .= sprintf(T_("Écrit le %1\$s."), $infosPage['dateCreation']) . "\n";
+					}
+		
+					if (!empty($infosPage['dateRevision']))
+					{
+						$categorie .= sprintf(T_("Dernière révision le %1\$s."), $infosPage['dateRevision']) . "\n";
+					}
+		
+					if ($infosApercu)
+					{
+						$categorie .= "</div><!-- /.infosApercu -->\n";
+					}
+		
+					$categorie .= "<div class=\"descriptionApercu\">\n";
+					$categorie .= $infosPage['description'] . "\n";
+					$categorie .= "</div><!-- /.descriptionApercu -->\n";
+		
+					if (!$infosPage['descriptionComplete'])
+					{
+						$categorie .= "<div class=\"lienApercu\">\n";
+						$categorie .= sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em>') . "\n";
+						$categorie .= "</div><!-- /.lienApercu -->\n";
+					}
+		
+					$categorie .= "</div><!-- /.apercu -->\n";
 				}
-		
-				if ($infosApercu)
-				{
-					$categorie .= "</div><!-- /.infosApercu -->\n";
-				}
-		
-				$categorie .= "<div class=\"descriptionApercu\">\n";
-				$categorie .= $infosPage['description'] . "\n";
-				$categorie .= "</div><!-- /.descriptionApercu -->\n";
-		
-				if (!$infosPage['descriptionComplete'])
-				{
-					$categorie .= "<div class=\"lienApercu\">\n";
-					$categorie .= sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em>') . "\n";
-					$categorie .= "</div><!-- /.lienApercu -->\n";
-				}
-		
-				$categorie .= "</div><!-- /.apercu -->\n";
 			}
-		}
 		
-		$categorie .= $pagination;
+			$categorie .= $pagination;
 		
-		if ($dureeCache)
-		{
-			creeDossierCache($racine);
-			@file_put_contents("$racine/site/cache/$urlMd5", $categorie);
+			if ($dureeCache)
+			{
+				creeDossierCache($racine);
+				@file_put_contents("$racine/site/cache/$urlMd5", $categorie);
+			}
 		}
 	}
 }
@@ -165,11 +194,11 @@ if (!empty($idCategorie))
 else
 {
 	$estPageDerreur = TRUE;
-	$categorie .= '<p>' . T_("La catégorie demandée est introuvable.") . "</p>\n";
+	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), "<em>$nomCategorie</em>") . "</p>\n";
 	
 	// Ajustement des métabalises.
 	$baliseTitle = sprintf(T_("La catégorie %1\$s est introuvable"), "<em>$nomCategorie</em>");
-	$description = sprintf(T_("La catégorie %1\$s est introuvable"), "<em>$nomCategorie</em>") . $baliseTitleComplement[LANGUE];
+	$description = sprintf(T_("La catégorie %1\$s est introuvable"), "<em>$nomCategorie</em>") . $baliseTitleComplement;
 	
 	if ($inclureMotsCles)
 	{

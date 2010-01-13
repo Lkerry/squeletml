@@ -2560,7 +2560,8 @@ Construit le code HTML pour afficher une pagination, et retourne un tableau cont
   - `$pagination['indicePremierElement']`: indice du premier élément de la page en cours;
   - `$pagination['indiceDernierElement']`: indice du dernier élément de la page en cours;
   - `$pagination['baliseTitle']`: contenu de la balise `title` modifié pour prendre en compte la pagination;
-  - `$pagination['description']`: contenu de la métabalise `description` modifié pour prendre en compte la pagination.
+  - `$pagination['description']`: contenu de la métabalise `description` modifié pour prendre en compte la pagination;
+  - `$pagination['estPageDerreur']`: informe si la page demandée par la variable GET `page` existe. Vaut TRUE si la page n'existe pas.
 */
 function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
 {
@@ -2570,6 +2571,7 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 	$pagination['indiceDernierElement'] = 0;
 	$pagination['baliseTitle'] = $baliseTitle;
 	$pagination['description'] = $description;
+	$pagination['estPageDerreur'] = FALSE;
 	$nombreDePages = ceil($nombreElements / $elementsParPage);
 
 	if (isset($_GET['page']))
@@ -2578,10 +2580,12 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 		
 		if ($page > $nombreDePages)
 		{
+			$pagination['estPageDerreur'] = TRUE;
 			$page = $nombreDePages;
 		}
 		elseif ($page < 1)
 		{
+			$pagination['estPageDerreur'] = TRUE;
 			$page = 1;
 		}
 	}

@@ -342,11 +342,11 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 	{
 		$estPageDerreur = TRUE;
 		$id = securiseTexte($_GET['oeuvre']);
-		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre demandée est introuvable. <a href=\"%1\$s\">Voir toutes les oeuvres</a>."), $urlSansGet) . "</p>\n";
+		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les oeuvres</a>."), $id, $urlSansGet) . "</p>\n";
 		
 		// Ajustement des métabalises.
-		$baliseTitle = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id);
-		$description = sprintf(T_("L'Oeuvre %1\$s est introuvable"), $id) . $baliseTitleComplement;
+		$baliseTitle = sprintf(T_("L'oeuvre %1\$s est introuvable"), $id);
+		$description = sprintf(T_("L'oeuvre %1\$s est introuvable"), $id) . $baliseTitleComplement;
 		$motsCles = motsCles('', $description);
 		$motsCles .= ', ' . $id;
 		$robots = "noindex, follow, noarchive";
@@ -362,11 +362,23 @@ elseif (!empty($idGalerie))
 	if ($galerieVignettesParPage)
 	{
 		$pagination = pagination($nombreDoeuvres, $galerieVignettesParPage, $urlSansGet, $baliseTitle, $description);
-		$indicePremiereOeuvre = $pagination['indicePremierElement'];
-		$indiceDerniereOeuvre = $pagination['indiceDernierElement'];
-		$baliseTitle = $pagination['baliseTitle'];
-		$description = $pagination['description'];
-		$pagination = $pagination['pagination'];
+		
+		if ($pagination['estPageDerreur'])
+		{
+			$estPageDerreur = TRUE;
+		}
+		else
+		{
+			$indicePremiereOeuvre = $pagination['indicePremierElement'];
+			$indiceDerniereOeuvre = $pagination['indiceDernierElement'];
+			$baliseTitle = $pagination['baliseTitle'];
+			$description = $pagination['description'];
+			$pagination = $pagination['pagination'];
+		}
+	}
+	elseif (isset($_GET['page']) && $_GET['page'] != 1)
+	{
+		$estPageDerreur = TRUE;
 	}
 	else
 	{
@@ -375,48 +387,66 @@ elseif (!empty($idGalerie))
 		$indiceDerniereOeuvre = $nombreDoeuvres - 1;
 	}
 	
-	for ($indice = $indicePremiereOeuvre; $indice <= $indiceDerniereOeuvre && $indice < $nombreDoeuvres; $indice++)
+	if ($estPageDerreur)
 	{
-		$typeMime = typeMime($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-		$corpsGalerie .= oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $galerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
-	}
-	
-	if ($galerieVignettesParPage)
-	{
-		if ($galeriePagination['au-dessus'])
+		$corpsGalerie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
+		
+		// Ajustement des métabalises.
+		$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
+		$description = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page'])) . $baliseTitleComplement;
+		
+		if ($inclureMotsCles)
 		{
-			$corpsGalerie = $pagination . $corpsGalerie;
+			$motsCles = motsCles('', $description);
 		}
 		
-		if ($galeriePagination['au-dessous'])
+		$robots = "noindex, follow, noarchive";
+	}
+	else
+	{
+		for ($indice = $indicePremiereOeuvre; $indice <= $indiceDerniereOeuvre && $indice < $nombreDoeuvres; $indice++)
 		{
-			$corpsGalerie .= $pagination;
+			$typeMime = typeMime($racineImgSrc . '/' . $galerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			$corpsGalerie .= oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $galerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 		}
-	}
 	
-	$galerieInfo = '';
-	
-	if ($galerieInfoAjout)
-	{
-		$galerieInfo .= '<div id="galerieInfo">' . "\n";
-		$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s oeuvre", "Cette galerie contient %1\$s oeuvres", $nombreDoeuvres), $nombreDoeuvres) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
-		
-		if ($url != $urlSansGet)
+		if ($galerieVignettesParPage)
 		{
-			$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
-		}
+			if ($galeriePagination['au-dessus'])
+			{
+				$corpsGalerie = $pagination . $corpsGalerie;
+			}
 		
-		$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
-	}
+			if ($galeriePagination['au-dessous'])
+			{
+				$corpsGalerie .= $pagination;
+			}
+		}
 	
-	// Variable `$corpsGalerie` finale.
-	if ($galerieInfoEmplacement == 'haut')
-	{
-		$corpsGalerie = $galerieInfo . $corpsGalerie;
-	}
-	elseif ($galerieInfoEmplacement == 'bas')
-	{
-		$corpsGalerie .= $galerieInfo;
+		$galerieInfo = '';
+	
+		if ($galerieInfoAjout)
+		{
+			$galerieInfo .= '<div id="galerieInfo">' . "\n";
+			$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s oeuvre", "Cette galerie contient %1\$s oeuvres", $nombreDoeuvres), $nombreDoeuvres) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
+		
+			if ($url != $urlSansGet)
+			{
+				$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
+			}
+		
+			$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
+		}
+	
+		// Variable `$corpsGalerie` finale.
+		if ($galerieInfoEmplacement == 'haut')
+		{
+			$corpsGalerie = $galerieInfo . $corpsGalerie;
+		}
+		elseif ($galerieInfoEmplacement == 'bas')
+		{
+			$corpsGalerie .= $galerieInfo;
+		}
 	}
 }
 ########################################################################
@@ -427,7 +457,7 @@ elseif (!empty($idGalerie))
 else
 {
 	$estPageDerreur = TRUE;
-	$corpsGalerie .= '<p>' . T_("La galerie demandée est introuvable.") . "</p>\n";
+	$corpsGalerie .= '<p>' . sprintf(T_("La galerie %1\$s est introuvable."), $nomGalerie) . "</p>\n";
 	
 	// Ajustement des métabalises.
 	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);

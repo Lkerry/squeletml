@@ -9,9 +9,11 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 3. Deuxième série d'inclusions.
 4. Deuxième série d'affectations.
 5. Troisième série d'inclusions.
-6. Ajouts dans `$balisesLinkScript`.
-7. Traitement personnalisé optionnel.
-8. Inclusion de code XHTML.
+6. Troisième série d'affectations.
+7. Ajouts dans `$balisesLinkScript`.
+8. Traitement personnalisé optionnel.
+9. En-têtes HTTP.
+10. Inclusion de code XHTML.
 */
 
 ########################################################################
@@ -31,7 +33,7 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 
 include_once $racine . '/inc/fonctions.inc.php';
 
-// Affectations 1 de 2.
+// Affectations 1 de 3.
 
 extract(init('', 'langue'), EXTR_SKIP);
 
@@ -42,10 +44,15 @@ foreach (aInclureDebut($racine) as $fichier)
 	include_once $fichier;
 }
 
-// Affectations 2 de 2.
+// Affectations 2 de 3.
 
-extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);
+
+if (!empty($apercu))
+{
+	$apercu = "<!-- APERÇU: $apercu -->";
+}
 
 if (!isset($auteur))
 {
@@ -78,13 +85,7 @@ if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 	$courrielContact = $contactCourrielParDefaut;
 }
 
-$premierOuDernier = 'premier';
 $doctype = doctype($xhtmlStrict);
-
-if (!empty($apercu))
-{
-	$apercu = "<!-- APERÇU: $apercu -->";
-}
 
 if (!isset($licence))
 {
@@ -103,6 +104,7 @@ if ($inclureMotsCles)
 
 $nomSite = nomSite(estAccueil(ACCUEIL), lienAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, array ($langue, $langueParDefaut))));
 $nomPage = nomPage();
+$premierOuDernier = 'premier';
 $robots = robots($robotsParDefaut, $robots);
 
 if (!isset($rssGalerie))
@@ -140,6 +142,13 @@ if (!empty($idGalerie))
 }
 
 include $racine . '/inc/blocs.inc.php';
+
+// Affectations 3 de 3.
+
+if ($estPageDerreur)
+{
+	$enTetesHttp .= "header('HTTP/1.1 404 Not found');";
+}
 
 ########################################################################
 ##
@@ -242,6 +251,17 @@ $linkScript = linkScript($balisesLinkScript, $versionFichiersLinkScript);
 if (file_exists($racine . '/site/inc/premier.inc.php'))
 {
 	include_once $racine . '/site/inc/premier.inc.php';
+}
+
+########################################################################
+##
+## En-têtes HTTP.
+##
+########################################################################
+
+if (!empty($enTetesHttp))
+{
+	eval($enTetesHttp);
 }
 
 ########################################################################
