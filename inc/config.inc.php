@@ -298,6 +298,21 @@ $inclureApercu = FALSE; // TRUE|FALSE
 */
 $articlesParPage = 10;
 
+// Expiration du cache.
+/*
+- Temps en secondes avant que le cache (des flux RSS et des catégories) n'expire.
+- Exemples:
+  - `0` équivaut à désactiver le cache;
+  - `1800` équivaut à 30 minutes;
+  - `3600` équivaut à 1 heure;
+  - `28800` équivaut à 8 heures;
+  - `43200` équivaut à 12 heures;
+  - `86400` équivaut à 1 jour;
+  - `259200` équivaut à 3 jours;
+  - `604800` équivaut à 7 jours.
+*/
+$dureeCache = 0;
+
 /* ____________________ Style CSS. ____________________ */
 
 // Note: les options suivantes n'ont aucune influence sur le flux HTML. Il s'agit simplement d'un outil optionnel mais utile pour modifier le style du site sans devoir bidouiller dans les feuilles CSS. En aucun cas ces options sont obligatoires à la stylisation du site.
@@ -446,21 +461,6 @@ $activerFluxRssGlobalSite = FALSE; // TRUE|FALSE
 
 // Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 50;
-
-// Expiration du cache des flux.
-/*
-- Temps en secondes avant que le cache des flux n'expire.
-- Exemples:
-  - `0` équivaut à désactiver le cache;
-  - `1800` équivaut à 30 minutes;
-  - `3600` équivaut à 1 heure;
-  - `28800` équivaut à 8 heures;
-  - `43200` équivaut à 12 heures;
-  - `86400` équivaut à 1 jour;
-  - `259200` équivaut à 3 jours;
-  - `604800` équivaut à 7 jours.
-*/
-$dureeCacheFluxRss = 0;
 
 ########################################################################
 ##
