@@ -1002,7 +1002,17 @@ function infosPage($urlPage, $inclureApercu)
 			{
 				$h1[0]->outertext = '';
 			}
-		
+			
+			if ($debutInterieurContenu = $description[0]->find('div#debutInterieurContenu'))
+			{
+				$debutInterieurContenu[0]->outertext = '';
+			}
+			
+			if ($finInterieurContenu = $description[0]->find('div#finInterieurContenu'))
+			{
+				$finInterieurContenu[0]->outertext = '';
+			}
+			
 			$infosPage['description'] = $description[0]->innertext;
 			unset($description);
 		}
