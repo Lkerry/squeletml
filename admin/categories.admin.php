@@ -37,11 +37,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 				if (!empty($categories))
 				{
+					$listeCategories = array ();
 					$listePages = '';
 					$i = 0;
 					
 					foreach ($categories as $categorie => $categorieInfos)
 					{
+						$listeCategories[] = $categorie;
 						$listePages .= '<li class="liParent"><input type="text" name="cat[' . $i . ']" value="' . $categorie . '" />';
 						$listePages .= "<ul class=\"triable\">\n";
 						
@@ -92,17 +94,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
 				
-				echo '<p>' . T_("Pour ajouter une page à plus d'une catégorie, séparer les catégories par un carré (<em>#</em>). Exemple:") . "</p>\n";
+				echo '<p>' . T_("Il est possible d'ajouter une page à plus d'une catégorie. Il est aussi possible de créer une catégorie. Pour ce faire, ajouter «Nouvelle catégorie» à votre sélection et saisir le nom dans le champ. Pour créer plus d'une catégorie, séparer les noms par un carré (exemple: <code>animaux#chiens</code>).") . "</p>\n";
 				
 				echo "<ul>\n";
-				echo "<li>animaux#chiens\n";
-				echo "<ul>\n";
-				echo "<li>pages[]=animaux/chiens.php</li>\n";
-				echo "</ul></li>\n";
-				echo "</ul>\n";
+				echo '<li><select name="catAjoutSelect[]" multiple="multiple">' . "\n";
+				echo '<option value="nouvelleCategorie">' . T_("Nouvelle catégorie:") . "</option>\n";
 				
-				echo "<ul>\n";
-				echo '<li><input type="text" name="catAjout" value="" />';
+				if (!empty($listeCategories))
+				{
+					foreach ($listeCategories as $c)
+					{
+						echo '<option value="' . $c . '">' . $c . "</option>\n";
+					}
+				}
+				
+				echo '</select> <input type="text" name="catAjoutInput" value="" />' . "\n";
 				echo "<ul>\n";
 				echo '<li>pages[]=<input type="text" name="urlAjout" value="" /></li>' . "\n";
 				echo "</ul></li>\n";
@@ -151,18 +157,33 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		if (!empty($_POST['catAjout']) && !empty($_POST['urlAjout']))
+		if (isset($_POST['catAjoutSelect']) && !empty($_POST['catAjoutSelect']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
 		{
-			$catsAjout = explode('#', securiseTexte($_POST['catAjout']));
+			$catAjout = array ();
 			
-			foreach ($catsAjout as $catAjout)
+			foreach ($_POST['catAjoutSelect'] as $catAjoutSelect)
 			{
-				if (!isset($contenuFichierTableau[$catAjout]))
+				if ($catAjoutSelect == 'nouvelleCategorie')
 				{
-					$contenuFichierTableau[$catAjout] = array ();
+					if (isset($_POST['catAjoutInput']) && !empty($_POST['catAjoutInput']))
+					{
+						$catAjout = array_merge($catAjout, explode('#', securiseTexte($_POST['catAjoutInput'])));
+					}
+				}
+				else
+				{
+					$catAjout[] = securiseTexte($catAjoutSelect);
+				}
+			}
+			
+			foreach ($catAjout as $c)
+			{
+				if (!isset($contenuFichierTableau[$c]))
+				{
+					$contenuFichierTableau[$c] = array ();
 				}
 				
-				array_unshift($contenuFichierTableau[$catAjout], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
+				array_unshift($contenuFichierTableau[$c], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
 			}
 		}
 		
