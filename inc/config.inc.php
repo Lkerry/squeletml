@@ -300,7 +300,7 @@ $articlesParPage = 10;
 
 // Expiration du cache.
 /*
-- Temps en secondes avant que le cache (des flux RSS et des catégories) n'expire.
+- Temps en secondes avant que le cache n'expire.
 - Exemples:
   - `0` équivaut à désactiver le cache;
   - `1800` équivaut à 30 minutes;
@@ -310,6 +310,7 @@ $articlesParPage = 10;
   - `86400` équivaut à 1 jour;
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
+- Lorsqu'il est activé, le système de cache est utilisé pour les flux RSS, les catégories et les galeries.
 */
 $dureeCache = 0;
 

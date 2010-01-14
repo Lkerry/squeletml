@@ -914,6 +914,15 @@ et:
 
 L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieActiverFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` composeront le flux global du site.
 
+## Cache
+
+Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, si la variable `$dureeCache` du fichier de configuration du site vaut plus de 0, le cache sera activé, et ce pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une oeuvre) et des catégories ainsi que pour les flux RSS.
+
+Pour donner un ordre de grandeur, voici quelques tests non scientifiques réalisés sur un Pentium III (800 MHz):
+
+- affichage complet de pages d'une catégorie (10 articles par page): 3,3 secondes sans cache; 0,3 seconde avec cache (amélioration d'environ 90%);
+- affichage complet de pages individuelles d'une oeuvre dans une galerie: 0,37 seconde sans cache; 0,31 seconde avec cache (amélioration d'environ 15%).
+
 ## Développement
 
 Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).

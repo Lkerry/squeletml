@@ -6,10 +6,10 @@ Ce fichier construit et analyse la liste des articles faisant partie de la caté
 // Nécessaire à la traduction.
 phpGettext($racine, LANGUE);
 
-// URL pour le cache.
+// Nom pour le cache.
 if ($dureeCache)
 {
-	$urlMd5 = md5($url);
+	$nomFichierCache = 'categorie-' . md5($idCategorie) . '.html';
 }
 
 // Liste des articles à afficher.
@@ -103,9 +103,9 @@ if (!empty($idCategorie))
 	else
 	{
 		// On vérifie si la catégorie existe en cache ou si le cache est expiré.
-		if ($dureeCache && file_exists("$racine/site/cache/$urlMd5") && !cacheExpire("$racine/site/cache/$urlMd5", $dureeCache))
+		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
 		{
-			$categorie .= file_get_contents("$racine/site/cache/$urlMd5");
+			$categorie .= file_get_contents("$racine/site/cache/$nomFichierCache");
 		}
 		else
 		{
@@ -181,7 +181,7 @@ if (!empty($idCategorie))
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$urlMd5", $categorie);
+				@file_put_contents("$racine/site/cache/$nomFichierCache", $categorie);
 			}
 		}
 	}
