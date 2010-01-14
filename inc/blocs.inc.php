@@ -161,7 +161,7 @@ if (!empty($blocsAinserer))
 					
 						if ($idGalerie && $rssGalerie)
 						{
-							$blocs[$region] .= "<li>" . lienFluxRss($urlFlux, $idGalerie, TRUE) . "</li>\n";
+							$blocs[$region] .= "<li>" . lienFluxRss("$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', $urlSansGet), $idGalerie, TRUE) . "</li>\n";
 						}
 					
 						if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))

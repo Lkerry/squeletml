@@ -68,20 +68,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if ($cheminConfigGalerie)
 					{
-						$galerie = tableauGalerie(cheminConfigGalerie($racine, $fichier), TRUE);
-						$nombreDoeuvres = count($galerie);
+						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $fichier), TRUE);
+						$racineImgSrc = $racine . '/site/fichiers/galeries/' . $fichier;
+						$nombreDoeuvres = count($tableauGalerie);
 						$corpsMinivignettes = '';
 						
 						for ($j = 0; $j <= ($nombreDoeuvres - 1) && $j < $nombreDoeuvres; $j++)
 						{
-							$typeMime = typeMime($racineImgSrc . '/' . $galerie[$j]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $galerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
+							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$j]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
 							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 							$minivignette = $resultat[1];
-							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $galerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $tableauGalerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 							$config = '';
 							
-							foreach ($galerie[$j] as $parametre => $valeur)
+							foreach ($tableauGalerie[$j] as $parametre => $valeur)
 							{
 								if ($parametre == 'intermediaireNom')
 								{
@@ -409,9 +410,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 							if ($renommer && $analyserConfig)
 							{
-								$galerie = tableauGalerie(cheminConfigGalerie($racine, superBasename($cheminGalerie)));
+								$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, superBasename($cheminGalerie)));
 								
-								if (adminImageEstDeclaree($fichier, $galerie))
+								if (adminImageEstDeclaree($fichier, $tableauGalerie))
 								{
 									$renommer = FALSE;
 								}
@@ -450,9 +451,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if ($analyserConfig)
 						{
-							$galerie = tableauGalerie(cheminConfigGalerie($racine, superBasename($cheminGalerie)));
+							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, superBasename($cheminGalerie)));
 							
-							if (adminImageEstDeclaree($fichier, $galerie))
+							if (adminImageEstDeclaree($fichier, $tableauGalerie))
 							{
 								$aTraiter = FALSE;
 							}
@@ -1075,11 +1076,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<p><label><?php echo T_("Identifiant de la galerie (il est possible de créer une nouvelle galerie):"); ?></label><br />
 				<select name="id">
 					<option value="nouvelleGalerie"><?php echo T_("Nouvelle galerie:"); ?></option>
-					<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+					<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 					
-					<?php if (!empty($galeries)): ?>
-						<?php foreach ($galeries as $galerie): ?>
-							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+					<?php if (!empty($listeGaleries)): ?>
+						<?php foreach ($listeGaleries as $listeGalerie): ?>
+							<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 						<?php endforeach; ?>
 					<?php endif; ?>
 				</select> <input type="text" name="idNouvelleGalerie" /></p>
@@ -1117,12 +1118,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 				
-				<?php if (!empty($galeries)): ?>
+				<?php if (!empty($listeGaleries)): ?>
 					<select name="id">
-						<?php foreach ($galeries as $galerie): ?>
-							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+						<?php foreach ($listeGaleries as $listeGalerie): ?>
+							<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 						<?php endforeach; ?>
 					</select>
 				<?php else: ?>
@@ -1198,12 +1199,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 				
-				<?php if (!empty($galeries)): ?>
+				<?php if (!empty($listeGaleries)): ?>
 					<select name="id">
-						<?php foreach ($galeries as $galerie): ?>
-							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+						<?php foreach ($listeGaleries as $listeGalerie): ?>
+							<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 						<?php endforeach; ?>
 					</select>
 				<?php else: ?>
@@ -1265,12 +1266,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<p><label><?php echo T_("Identifiant actuel de la galerie et son nouvel identifiant:"); ?></label><br />
-				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 				
-				<?php if (!empty($galeries)): ?>
+				<?php if (!empty($listeGaleries)): ?>
 					<select name="id">
-						<?php foreach ($galeries as $galerie): ?>
-							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+						<?php foreach ($listeGaleries as $listeGalerie): ?>
+							<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 						<?php endforeach; ?>
 					</select> <input type="text" name="idNouveauNomGalerie" />
 				<?php else: ?>
@@ -1298,12 +1299,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 				
 					<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-					<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+					<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 					
-					<?php if (!empty($galeries)): ?>
+					<?php if (!empty($listeGaleries)): ?>
 						<select name="id">
-							<?php foreach ($galeries as $galerie): ?>
-								<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+							<?php foreach ($listeGaleries as $listeGalerie): ?>
+								<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 							<?php endforeach; ?>
 						</select>
 					<?php else: ?>
@@ -1331,12 +1332,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<p><label><?php echo T_("Identifiant de la galerie (ayant un fichier de configuration):"); ?></label><br />
-				<?php $galeries = adminListeGaleries($racine, TRUE); ?>
+				<?php $listeGaleries = adminListeGaleries($racine, TRUE); ?>
 				
-				<?php if (!empty($galeries)): ?>
+				<?php if (!empty($listeGaleries)): ?>
 					<select name="id">
-						<?php foreach ($galeries as $galerie): ?>
-							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+						<?php foreach ($listeGaleries as $listeGalerie): ?>
+							<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 						<?php endforeach; ?>
 					</select>
 				<?php else: ?>
@@ -1366,12 +1367,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 				
-				<?php if (!empty($galeries)): ?>
+				<?php if (!empty($listeGaleries)): ?>
 					<select name="id">
-						<?php foreach ($galeries as $galerie): ?>
-							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+						<?php foreach ($listeGaleries as $listeGalerie): ?>
+							<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 						<?php endforeach; ?>
 					</select>
 				<?php else: ?>
@@ -1404,12 +1405,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<p><label><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-				<?php $galeries = adminListeGaleries($racine, FALSE); ?>
+				<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 				
-				<?php if (!empty($galeries)): ?>
+				<?php if (!empty($listeGaleries)): ?>
 					<select name="id">
-						<?php foreach ($galeries as $galerie): ?>
-							<option value="<?php echo $galerie; ?>"><?php echo $galerie; ?></option>
+						<?php foreach ($listeGaleries as $listeGalerie): ?>
+							<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 						<?php endforeach; ?>
 					</select>
 				<?php else: ?>

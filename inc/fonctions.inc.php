@@ -743,7 +743,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 	{
 		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s"), $idGalerie . $baliseTitleComplement) . "</title>\n";
 		$contenuRss .= "\t\t<link>$url</link>\n";
-		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie %1\$s"), $idGalerie) . "</description>\n\n";
+		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie «%1\$s»"), $idGalerie) . "</description>\n\n";
 	}
 	// Toutes les galeries.
 	elseif ($estGalerie)
@@ -791,10 +791,10 @@ Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant
 */
 function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 {
-	$galerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
+	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
 	$itemsFluxRss = array ();
 	
-	foreach ($galerie as $oeuvre)
+	foreach ($tableauGalerie as $oeuvre)
 	{
 		$id = idOeuvre($oeuvre);
 		$title = sprintf(T_("Oeuvre %1\$s"), $id);
@@ -2901,7 +2901,7 @@ Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaq
 
 devient:
 
-	$galerie = array (
+	$tableauGalerie = array (
 		array (
 		'intermediaireNom' => 'image1.png',
 		'id' => 1,
@@ -2915,18 +2915,18 @@ function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 {
 	if ($cheminConfigGalerie && ($galerieIni = super_parse_ini_file($cheminConfigGalerie, TRUE)) !== FALSE)
 	{
-		$galerie = array ();
+		$tableauGalerie = array ();
 		
 		foreach ($galerieIni as $oeuvre => $infos)
 		{
 			if (!$exclure || !(isset($infos['exclure']) && $infos['exclure'] == 'oui'))
 			{
 				$infos['intermediaireNom'] = $oeuvre;
-				$galerie[] = $infos;
+				$tableauGalerie[] = $infos;
 			}
 		}
 		
-		return $galerie;
+		return $tableauGalerie;
 	}
 	else
 	{

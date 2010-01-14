@@ -437,11 +437,11 @@ function adminGz($fichierSource)
 /*
 Retourne TRUE si l'image est déclarée dans le fichier de configuration, sinon retourne FALSE.
 */
-function adminImageEstDeclaree($fichier, $galerie, $versionAchercher = FALSE)
+function adminImageEstDeclaree($fichier, $tableauGalerie, $versionAchercher = FALSE)
 {
-	if ($galerie)
+	if ($tableauGalerie)
 	{
-		foreach ($galerie as $oeuvre)
+		foreach ($tableauGalerie as $oeuvre)
 		{
 			if ((!$versionAchercher || $versionAchercher = 'intermediaire') && (isset($oeuvre['intermediaireNom']) && $oeuvre['intermediaireNom'] == $fichier))
 			{
@@ -816,10 +816,10 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	if ($cheminConfigGalerie)
 	{
-		$galerie = tableauGalerie($cheminConfigGalerie);
+		$tableauGalerie = tableauGalerie($cheminConfigGalerie);
 		$i = 0;
 
-		foreach ($galerie as $oeuvre)
+		foreach ($tableauGalerie as $oeuvre)
 		{
 			foreach ($oeuvre as $cle => $valeur)
 			{
@@ -1359,9 +1359,9 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 		
 		if ($cheminConfigGalerie)
 		{
-			$galerie = tableauGalerie($cheminConfigGalerie);
+			$tableauGalerie = tableauGalerie($cheminConfigGalerie);
 			
-			foreach ($galerie as $oeuvre)
+			foreach ($tableauGalerie as $oeuvre)
 			{
 				if ($oeuvre['intermediaireNom'] == $nomImage)
 				{

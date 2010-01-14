@@ -37,10 +37,10 @@ if (!$estPageDerreur)
 
 	if (!empty($idGalerie) && isset($_GET['oeuvre']) && $cheminConfigGalerie)
 	{
-		$galerie = tableauGalerie($cheminConfigGalerie, TRUE);
+		$tableauGalerie = tableauGalerie($cheminConfigGalerie, TRUE);
 		$i = 0;
 	
-		foreach($galerie as $oeuvre)
+		foreach($tableauGalerie as $oeuvre)
 		{
 			$id = idOeuvre($oeuvre);
 		
