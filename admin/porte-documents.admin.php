@@ -1047,10 +1047,112 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 
 							if ($fic = @fopen($cheminPage . '/' . $page, 'a'))
 							{
+								if (isset($_POST['porteDocumentsCreationVar']))
+								{
+									$fichierAcreerVar = securiseTexte($_POST['porteDocumentsCreationVar']);
+								}
+								else
+								{
+									$fichierAcreerVar = array ();
+								}
+								
 								$contenu = '';
 								$contenu .= '<?php' . "\n";
-								$contenu .= '$baliseTitle = "Titre (contenu de la balise `title`)";' . "\n";
-								$contenu .= '$description = "Description de la page";' . "\n";
+								
+								foreach ($fichierAcreerVar as $var)
+								{
+									switch ($var)
+									{
+										case 'apercu':
+											$contenu .= '$apercu = "";' . "\n";
+											break;
+											
+										case 'auteur':
+											$contenu .= '$auteur = ' . var_export($auteurParDefaut, TRUE) . ";\n";
+											break;
+											
+										case 'baliseTitle':
+											$contenu .= '$baliseTitle = "Titre (contenu de la balise `title`)";' . "\n";
+											break;
+											
+										case 'boitesDeroulantes':
+											$contenu .= '$boitesDeroulantes = "";' . "\n";
+											break;
+											
+										case 'classesBody':
+											$contenu .= '$classesBody = "";' . "\n";
+											break;
+											
+										case 'classesContenu':
+											$contenu .= '$classesContenu = "";' . "\n";
+											break;
+											
+										case 'courrielContact':
+											$contenu .= '$courrielContact = "@";' . "\n";
+											break;
+											
+										case 'dateCreation':
+											$contenu .= '$dateCreation = "' . date('Y-m-d') . '";' . "\n";
+											break;
+											
+										case 'dateRevision':
+											$contenu .= '$dateRevision = "' . date('Y-m-d') . '";' . "\n";
+											break;
+											
+										case 'description':
+											$contenu .= '$description = "Description de la page";' . "\n";
+											break;
+											
+										case 'idCategorie':
+											$contenu .= '$idCategorie = "";' . "\n";
+											break;
+											
+										case 'idGalerie':
+											$contenu .= '$idGalerie = "";' . "\n";
+											break;
+											
+										case 'langue':
+											$contenu .= '$langue = ' . var_export($langueParDefaut, TRUE) . ";\n";
+											break;
+											
+										case 'licence':
+											$contenu .= '$licence = ' . var_export($licenceParDefaut, TRUE) . ";\n";
+											break;
+											
+										case 'motsCles':
+											$contenu .= '$motsCles = "";' . "\n";
+											break;
+											
+										case 'robots':
+											$contenu .= '$robots = ' . var_export($robotsParDefaut, TRUE) . ";\n";
+											break;
+											
+										case 'rssGalerie':
+											if ($galerieActiverFluxRssParDefaut)
+											{
+												$contenu .= '$rssGalerie = FALSE;' . "\n";
+											}
+											else
+											{
+												$contenu .= '$rssGalerie = TRUE;' . "\n";
+											}
+											
+											break;
+											
+										case 'tableDesMatieres':
+											if ($afficherTableDesMatieresParDefaut)
+											{
+												$contenu .= '$tableDesMatieres = FALSE;' . "\n";
+											}
+											else
+											{
+												$contenu .= '$tableDesMatieres = TRUE;' . "\n";
+											}
+											
+											break;
+									}
+								}
+								
 								$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
 								$contenu .= '?>' . "\n";
 								$contenu .= "\n";
@@ -1517,6 +1619,28 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
 	echo '<option value="FichierModeleHtml">' .  T_("Fichier modèle HTML de page web") . "</option>\n";
 	echo '<option value="FichierModeleMarkdown">' .  T_("Fichier modèle HTML de page web avec syntaxe Markdown") . "</option>\n";
+	echo "</select></p>\n";
+	
+	echo '<p><label>' . T_("Si le type est une page modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
+	echo '<select name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
+	echo '<option value="apercu">$apercu</option>' . "\n";
+	echo '<option value="auteur">$auteur</option>' . "\n";
+	echo '<option value="baliseTitle" selected="selected">$baliseTitle</option>' . "\n";
+	echo '<option value="boitesDeroulantes">$boitesDeroulantes</option>' . "\n";
+	echo '<option value="classesBody">$classesBody</option>' . "\n";
+	echo '<option value="classesContenu">$classesContenu</option>' . "\n";
+	echo '<option value="courrielContact">$courrielContact</option>' . "\n";
+	echo '<option value="dateCreation">$dateCreation</option>' . "\n";
+	echo '<option value="dateRevision">$dateRevision</option>' . "\n";
+	echo '<option value="description" selected="selected">$description</option>' . "\n";
+	echo '<option value="idCategorie">$idCategorie</option>' . "\n";
+	echo '<option value="idGalerie">$idGalerie</option>' . "\n";
+	echo '<option value="langue">$langue</option>' . "\n";
+	echo '<option value="licence">$licence</option>' . "\n";
+	echo '<option value="motsCles">$motsCles</option>' . "\n";
+	echo '<option value="robots">$robots</option>' . "\n";
+	echo '<option value="rssGalerie">$rssGalerie</option>' . "\n";
+	echo '<option value="tableDesMatieres">$tableDesMatieres</option>' . "\n";
 	echo "</select></p>\n";
 	echo "</fieldset>\n";
 	
