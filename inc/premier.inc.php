@@ -240,7 +240,7 @@ if (!$inclureCssParDefaut)
 	supprimeInclusionCssParDefaut($balisesLinkScript);
 }
 
-$linkScript = linkScript($balisesLinkScript, $versionFichiersLinkScript);
+$linkScript = linkScript($balisesLinkScript, $versionParDefautLinkScript);
 
 ########################################################################
 ##

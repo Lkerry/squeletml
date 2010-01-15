@@ -43,16 +43,15 @@ $balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/php.js/php.min.js";
 $balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
 $balisesLinkScript[] = "$urlRacine/*#favicon#$urlRacine/fichiers/puce.png";
 
-// Version des fichiers déclarés dans le tableau `$balisesLinkScript`.
+// Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`.
 /*
 - La version est ajoutée à la suite du nom des fichiers en tant que variable GET.
-- Pratique quand un fichier a été modifié et qu'on veut forcer son retéléchargement.
 - Laisser vide pour désactiver l'ajout de version.
-- Exemple de sortie HTML lorsque `$versionFichiersLinkScript` vaut `1`:
+- Exemple de sortie HTML lorsque `$versionParDefautLinkScript` vaut `1`:
   <script type="text/javascript" src="/js/squeletml.js?1"></script>
 - Voir la fonction `linkScript()`.
 */
-$versionFichiersLinkScript = '';
+$versionParDefautLinkScript = '';
 
 // Inclusion des feuilles de style par défaut de Squeletml (dossier `css`).
 /*
