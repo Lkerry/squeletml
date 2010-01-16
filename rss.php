@@ -27,7 +27,7 @@ if (isset($_GET['langue']))
 	$getLangue = sansEchappement($_GET['langue']);
 }
 
-if (isset($getChemin) && !empty($getChemin))
+if (!empty($getChemin))
 {
 	if (file_exists($racine . '/' . $getChemin) && $fic = @fopen($racine . '/' . $getChemin, 'r'))
 	{
@@ -63,7 +63,7 @@ if (isset($getChemin) && !empty($getChemin))
 				$rssGalerie = $galerieActiverFluxRssParDefaut;
 			}
 			
-			if ($rssGalerie && isset($idGalerie) && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && cheminConfigGalerie($racine, $idGalerie))
+			if ($rssGalerie && !empty($idGalerie) && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && cheminConfigGalerie($racine, $idGalerie))
 			{
 				// A: le flux RSS est activé.
 				
@@ -131,7 +131,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 			$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
 			$itemsFluxRss = array ();
 			
-			if ($galeries !== FALSE && !empty($galeries))
+			if (!empty($galeries))
 			{
 				foreach ($galeries as $codeLangue => $langueInfos)
 				{
@@ -191,7 +191,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
 			$itemsFluxRss = array ();
 			
-			if ($pages !== FALSE && !empty($pages))
+			if (!empty($pages))
 			{
 				$i = 0;
 				
@@ -219,7 +219,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 				{
 					$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
 					
-					if ($galeries !== FALSE && !empty($galeries))
+					if (!empty($galeries))
 					{
 						foreach ($galeries as $codeLangue => $langueInfos)
 						{

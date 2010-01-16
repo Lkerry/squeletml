@@ -619,7 +619,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 {
 	$messageDecouvrirSupplement = '';
 	
-	if (isset($oeuvre['vignetteNom']) && !empty($oeuvre['vignetteNom']))
+	if (!empty($oeuvre['vignetteNom']))
 	{
 		$vignetteNom = $oeuvre['vignetteNom'];
 	}
@@ -628,11 +628,11 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 		$vignetteNom = nomSuffixe($oeuvre['intermediaireNom'], '-vignette');
 	}
 	
-	if (isset($oeuvre['vignetteAlt']) && !empty($oeuvre['vignetteAlt']))
+	if (!empty($oeuvre['vignetteAlt']))
 	{
 		$vignetteAlt = $oeuvre['vignetteAlt'];
 	}
-	elseif (isset($oeuvre['intermediaireAlt']) && !empty($oeuvre['intermediaireAlt']))
+	elseif (!empty($oeuvre['intermediaireAlt']))
 	{
 		$vignetteAlt = $oeuvre['intermediaireAlt'];
 	}
@@ -643,23 +643,23 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	
 	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>\n";
 	
-	if (isset($oeuvre['intermediaireLegende']) && !empty($oeuvre['intermediaireLegende']))
+	if (!empty($oeuvre['intermediaireLegende']))
 	{
 		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['intermediaireLegende'], $galerieLegendeMarkdown);
 	}
-	elseif (isset($oeuvre['intermediaireAlt']) && !empty($oeuvre['intermediaireAlt']))
+	elseif (!empty($oeuvre['intermediaireAlt']))
 	{
 		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['intermediaireAlt'], $galerieLegendeMarkdown);
 	}
-	elseif (isset($oeuvre['vignetteAlt']) && !empty($oeuvre['vignetteAlt']))
+	elseif (!empty($oeuvre['vignetteAlt']))
 	{
 		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['vignetteAlt'], $galerieLegendeMarkdown);
 	}
-	elseif (isset($oeuvre['pageIntermediaireDescription']) && !empty($oeuvre['pageIntermediaireDescription']))
+	elseif (!empty($oeuvre['pageIntermediaireDescription']))
 	{
 		$messageDecouvrirSupplement .= $oeuvre['pageIntermediaireDescription'];
 	}
-	elseif (isset($oeuvre['pageIntermediaireBaliseTitle']) && !empty($oeuvre['pageIntermediaireBaliseTitle']))
+	elseif (!empty($oeuvre['pageIntermediaireBaliseTitle']))
 	{
 		$messageDecouvrirSupplement .= $oeuvre['pageIntermediaireBaliseTitle'];
 	}
@@ -2315,7 +2315,7 @@ function oeuvre(
 			{
 				foreach ($galerieExifInfos as $cle => $valeur)
 				{
-					if ($valeur && isset($tableauExif[$cle]) && !empty($tableauExif[$cle]))
+					if ($valeur && !empty($tableauExif[$cle]))
 					{
 						switch ($cle)
 						{
@@ -2369,7 +2369,7 @@ function oeuvre(
 			}
 		}
 		
-		if (isset($lienOriginalHref) && !empty($lienOriginalHref) && ($galerieLienOriginalEmplacement == 'image' || $galerieLienOriginalEmplacement == 'imageLegende'))
+		if (!empty($lienOriginalHref) && ($galerieLienOriginalEmplacement == 'image' || $galerieLienOriginalEmplacement == 'imageLegende'))
 		{
 			if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
 			{
@@ -2389,7 +2389,7 @@ function oeuvre(
 			$lienOriginalApres = '';
 		}
 		
-		if ($galerieLienOriginalIcone && isset($lienOriginalHref) && !empty($lienOriginalHref))
+		if ($galerieLienOriginalIcone && !empty($lienOriginalHref))
 		{
 			if (file_exists($racine . '/site/fichiers/agrandir.png'))
 			{

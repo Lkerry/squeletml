@@ -157,7 +157,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		if (isset($_POST['catAjoutSelect']) && !empty($_POST['catAjoutSelect']) && isset($_POST['urlAjout']) && !empty($_POST['urlAjout']))
+		if (!empty($_POST['catAjoutSelect']) && !empty($_POST['urlAjout']))
 		{
 			$catAjout = array ();
 			
@@ -165,7 +165,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if ($catAjoutSelect == 'nouvelleCategorie')
 				{
-					if (isset($_POST['catAjoutInput']) && !empty($_POST['catAjoutInput']))
+					if (!empty($_POST['catAjoutInput']))
 					{
 						$catAjout = array_merge($catAjout, explode('#', securiseTexte($_POST['catAjoutInput'])));
 					}

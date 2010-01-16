@@ -12,7 +12,7 @@ if (!$estPageDerreur)
 	
 	if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 	{
-		if (isset($_POST['nom']) && !empty($_POST['nom']) && !$messageEnvoye)
+		if (!empty($_POST['nom']) && !$messageEnvoye)
 		{
 			$nom = securiseTexte($_POST['nom']);
 		}
@@ -21,7 +21,7 @@ if (!$estPageDerreur)
 			$nom = T_("Votre nom");
 		}
 
-		if (isset($_POST['message']) && !empty($_POST['message']) && !$messageEnvoye)
+		if (!empty($_POST['message']) && !$messageEnvoye)
 		{
 			$petitMot = '<p>' . sprintf(T_("Aussi, %1\$s vous a écrit un petit mot personnalisé, que vous pouvez lire ci-dessous:"), '<em>' . $nom . '</em>') . '</p><div style="margin-left: 25px;">' . nl2br(securiseTexte($_POST['message'])) . "</div>\n";
 		}

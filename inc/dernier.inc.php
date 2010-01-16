@@ -30,7 +30,7 @@ else
 
 $premierOuDernier = 'dernier';
 
-if (isset($tableauCorpsGalerie['corpsGalerie']) && !empty($tableauCorpsGalerie['corpsGalerie']))
+if (!empty($tableauCorpsGalerie['corpsGalerie']))
 {
 	$galerie = $tableauCorpsGalerie['corpsGalerie'];
 	$afficherGalerie = TRUE;

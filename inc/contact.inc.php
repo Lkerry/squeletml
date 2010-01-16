@@ -59,7 +59,7 @@ if (isset($_POST['envoyer']))
 		}
 	}
 	
-	if ($contactVerifierCourriel && isset($courrielsDecouvrir) && !empty($courrielsDecouvrir))
+	if ($contactVerifierCourriel && !empty($courrielsDecouvrir))
 	{
 		$tableauCourrielsDecouvrir = explode(',', str_replace(' ', '', $courrielsDecouvrir));
 		$courrielsDecouvrirErreur = '';
