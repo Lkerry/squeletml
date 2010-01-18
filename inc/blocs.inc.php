@@ -222,6 +222,31 @@ if (!empty($blocsAinserer))
 				
 					break;
 				
+				case 'auteur-et-dates':
+					$bloc = auteurEtDates($auteur, $dateCreation, $dateRevision);
+					
+					if (!empty($bloc))
+					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+				
+						$blocs[$region] .= '<div id="auteur-et-dates" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= $bloc;
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#auteur-et-dates -->' . "\n";
+					}
+				
+					break;
+				
 				default:
 					if (cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
 					{

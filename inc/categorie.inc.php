@@ -124,43 +124,15 @@ if (!empty($idCategorie))
 					}
 		
 					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-		
-					if (!empty($infosPage['auteur']) || !empty($infosPage['dateCreation']) || !empty($infosPage['dateRevision']))
+					$auteurEtDates = auteurEtDates($infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision']);
+					
+					if (!empty($auteurEtDates))
 					{
-						$infosApercu = TRUE;
-						$categorie .= "<div class=\"infosApercu\">\n";
+						$categorie .= "<div class=\"auteurEtDatesApercu\">\n";
+						$categorie .= $auteurEtDates;
+						$categorie .= "</div><!-- /.auteurEtDatesApercu -->\n";
 					}
-					else
-					{
-						$infosApercu = FALSE;
-					}
-		
-					if (!empty($infosPage['auteur']))
-					{
-						if (!empty($infosPage['dateCreation']))
-						{
-							$categorie .= sprintf(T_("Écrit par %1\$s le %2\$s."), $infosPage['auteur'], $infosPage['dateCreation']) . "\n";
-						}
-						else
-						{
-							$categorie .= sprintf(T_("Écrit par %1\$s."), $infosPage['auteur']) . "\n";
-						}
-					}
-					elseif (!empty($infosPage['dateCreation']))
-					{
-						$categorie .= sprintf(T_("Écrit le %1\$s."), $infosPage['dateCreation']) . "\n";
-					}
-		
-					if (!empty($infosPage['dateRevision']))
-					{
-						$categorie .= sprintf(T_("Dernière révision le %1\$s."), $infosPage['dateRevision']) . "\n";
-					}
-		
-					if ($infosApercu)
-					{
-						$categorie .= "</div><!-- /.infosApercu -->\n";
-					}
-		
+					
 					$categorie .= "<div class=\"descriptionApercu\">\n";
 					$categorie .= $infosPage['description'] . "\n";
 					$categorie .= "</div><!-- /.descriptionApercu -->\n";

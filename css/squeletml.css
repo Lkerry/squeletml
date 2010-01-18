@@ -74,6 +74,10 @@ div#sousTitre p {
 	padding-top: 0px;
 }
 
+div#auteur-et-dates {
+	font-style: italic;
+}
+
 #basDePage {
 	text-align: center;
 	padding: 0px 5px;
@@ -135,7 +139,7 @@ li.parent {
 	list-style-type: disc;
 }
 
-div.pagination {
+.pagination {
 	margin-top: 25px;
 	margin-bottom: 25px;
 	text-align: center;
@@ -230,7 +234,7 @@ body.bordureDroitePage #page {
 	color: inherit;
 }
 
-.infosApercu {
+.auteurEtDatesApercu {
 	font-style: italic;
 	margin-bottom: 10px;
 }

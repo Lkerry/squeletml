@@ -85,6 +85,37 @@ function annexesDocumentation($racineAdmin)
 }
 
 /*
+Retourne les informations sur l'auteur et les dates de création et de révision. Si aucune information n'est présente, retourne une chaine vide.
+*/
+function auteurEtDates($auteur, $dateCreation, $dateRevision)
+{
+	$auteurEtDates = '';
+	
+	if (!empty($auteur))
+	{
+		if (!empty($dateCreation))
+		{
+			$auteurEtDates .= sprintf(T_("Écrit par %1\$s le %2\$s."), $auteur, $dateCreation) . "\n";
+		}
+		else
+		{
+			$auteurEtDates .= sprintf(T_("Écrit par %1\$s."), $auteur) . "\n";
+		}
+	}
+	elseif (!empty($dateCreation))
+	{
+		$auteurEtDates .= sprintf(T_("Écrit le %1\$s."), $dateCreation) . "\n";
+	}
+	
+	if (!empty($dateRevision))
+	{
+		$auteurEtDates .= sprintf(T_("Dernière révision le %1\$s."), $dateRevision) . "\n";
+	}
+	
+	return $auteurEtDates;
+}
+
+/*
 Retourne le contenu de la balise `title`.
 */
 function baliseTitle($baliseTitle, $langues)

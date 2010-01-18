@@ -142,7 +142,8 @@ $ordreBlocsDansFluxHtml = array (
 	'faire-decouvrir' => array (501, 502, 501),
 	'legende-oeuvre-galerie' => array (502, 503, 502), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => array (503, 504, 503),
-	'licence' => array (400, 400, 400),
+	'auteur-et-dates' => array (400, 400, 400),
+	'licence' => array (401, 401, 401),
 );
 
 // Détection du type MIME.
@@ -335,6 +336,7 @@ $liensActifsBlocs = array (
 	'faire-decouvrir' => NULL, // Ne s'applique pas.
 	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => NULL, // Ne s'applique pas.
+	'auteur-et-dates' => NULL, // Ne s'applique pas.
 	'licence' => NULL, // Ne s'applique pas.
 );
 
@@ -394,6 +396,7 @@ $limiterProfondeurListesBlocs = array (
 	'faire-decouvrir' => NULL, // Ne s'applique pas.
 	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => NULL, // Ne s'applique pas.
+	'auteur-et-dates' => NULL, // Ne s'applique pas.
 	'licence' => NULL, // Ne s'applique pas.
 );
 
