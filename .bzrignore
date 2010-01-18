@@ -5,3 +5,4 @@ init.inc.php
 admin/cache/*
 site/fichiers/galeries
 site/inc/*
+site/cache/*
