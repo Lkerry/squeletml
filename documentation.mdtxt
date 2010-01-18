@@ -753,6 +753,12 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		originalNom=fichier1Original.jpg
 
+- `auteurAjout`: auteur de l'ajout de l'oeuvre dans la galerie. Exemple:
+
+		auteurAjout=Moi
+
+	S'il existe et n'est pas vide, ce champ est utilisé dans les flux RSS.
+
 - `dateAjout`: date d'ajout de l'oeuvre dans la galerie, sous la forme `Y-m-d H:i` ([voir la fonction PHP `date()`](http://php.net/manual/function.date.php)). Exemple:
 
 		dateAjout=2010-01-17 20:05
@@ -792,6 +798,8 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	pageIntermediaireDescription=
 	pageIntermediaireMotsCles=
 	originalNom=
+	auteurAjout=
+	dateAjout=
 	exclure=
 	commentaire=
 

@@ -1436,6 +1436,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<option value="pageIntermediaireDescription">pageIntermediaireDescription</option>
 					<option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
 					<option value="originalNom">originalNom</option>
+					<option value="auteurAjout">auteurAjout</option>
 					<option value="dateAjout">dateAjout</option>
 					<option value="exclure">exclure</option>
 					<option value="commentaire">commentaire</option>

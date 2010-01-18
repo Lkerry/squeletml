@@ -735,7 +735,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 {
 	$contenuRss = '';
 	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-	$contenuRss .= '<rss version="2.0">' . "\n";
+	$contenuRss .= '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">' . "\n";
 	$contenuRss .= "\t<channel>\n";
 	
 	// Page individuelle d'une galerie.
@@ -770,6 +770,12 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 			$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
 			$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
 			$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
+			
+			if (!empty($itemFlux['auteur']))
+			{
+				$contenuRss .= "\t\t\t<dc:creator>" . $itemFlux['auteur'] . "</dc:creator>\n";
+			}
+			
 			$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
 			$contenuRss .= "\t\t</item>\n\n";
 		}
@@ -784,7 +790,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 /*
 Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
-function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
+function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut)
 {
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
 	$itemsFluxRss = array ();
@@ -860,6 +866,19 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 			$msgOriginal = '';
 		}
 		
+		if (!empty($oeuvre['auteurAjout']))
+		{
+			$auteur = $oeuvre['auteurAjout'];
+		}
+		elseif ($galerieFluxRssAuteurEstAuteurParDefaut)
+		{
+			$auteur = $auteurParDefaut;
+		}
+		else
+		{
+			$auteur = '';
+		}
+		
 		if (!empty($oeuvre['dateAjout']))
 		{
 			$pubDate = $oeuvre['dateAjout'];
@@ -876,6 +895,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 			"link" => $urlGalerieOeuvre,
 			"guid" => $urlGalerieOeuvre,
 			"description" => $description,
+			"auteur" => $auteur,
 			"pubDate" => $pubDate,
 		);
 	}
@@ -910,12 +930,13 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 		{
 			$infosPage['description'] .= securiseTexte("<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n");
 		}
-	
+		
 		$itemFlux[] = array (
 			"title" => $infosPage['titre'],
 			"link" => $urlPage,
 			"guid" => $urlPage,
 			"description" => $infosPage['description'],
+			"auteur" => $infosPage['auteur'],
 			"pubDate" => $date,
 		);
 	}
@@ -930,10 +951,6 @@ function fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss)
 {
 	foreach ($itemsFluxRss as $cle => $valeur)
 	{
-		$itemsFluxRssTitle[$cle] = $valeur['title'];
-		$itemsFluxRssLink[$cle] = $valeur['link'];
-		$itemsFluxRssGuid[$cle] = $valeur['guid'];
-		$itemsFluxRssDescription[$cle] = $valeur['description'];
 		$itemsFluxRssPubDate[$cle] = $valeur['pubDate'];
 	}
 	

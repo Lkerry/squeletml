@@ -78,7 +78,7 @@ if (!empty($getChemin))
 				else
 				{
 					$urlGalerie = $urlRacine . '/' . $getChemin;
-					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie);
+					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut);
 					
 					if (!empty($itemsFluxRss))
 					{
@@ -139,7 +139,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'galeries' && isset($getLan
 					{
 						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 						{
-							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
+							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut));
 						}
 					}
 				}
@@ -227,7 +227,7 @@ elseif (isset($_GET['global']) && $_GET['global'] == 'site' && isset($getLangue)
 							{
 								foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 								{
-									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie));
+									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut));
 								}
 							}
 						}

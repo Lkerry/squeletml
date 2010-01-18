@@ -83,13 +83,6 @@ $charset = 'UTF-8';
 */
 $langueParDefaut = 'fr';
 
-// Auteur par défaut.
-/*
-- Auteur par défaut si aucune autre précision n'est apportée. Si la variable `$auteur` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
-- L'auteur est inséré en tant que métabalise `author`. Cette information est également utilisée lors du listage des articles faisant partie d'une catégorie.
-*/
-$auteurParDefaut = '';
-
 /* ____________________ Contenu et ordre du flux HTML. ____________________ */
 
 // Titre du site en en-tête.
@@ -180,6 +173,13 @@ $activerFaireDecouvrir = TRUE; // TRUE|FALSE
 - Voir la fonction `messageIe6()`.
 */
 $afficherMessageIe6 = TRUE; // TRUE|FALSE
+
+// Auteur par défaut.
+/*
+- Auteur par défaut si aucune autre précision n'est apportée. Si la variable `$auteur` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- L'auteur est inséré en tant que métabalise `author`. Cette information est également utilisée lors du listage des articles faisant partie d'une catégorie ainsi que dans les flux RSS.
+*/
+$auteurParDefaut = '';
 
 // Licence par défaut pour tout le site.
 /*
@@ -667,4 +667,10 @@ $galerieActiverFluxRssParDefaut = TRUE; // TRUE|FALSE
 - Voir la documentation pour plus de détails.
 */
 $galerieActiverFluxRssGlobal = FALSE; // TRUE|FALSE
+
+// Auteur par défaut à afficher dans la syndication.
+/*
+- Si `$galerieFluxRssAuteurEstAuteurParDefaut` vaut TRUE, l'auteur affiché dans les flux RSS pour une oeuvre donnée est la valeur de `$auteurParDefaut` (voir ce présent fichier de configuration). Dans tous les cas, si le champ `auteurAjout` est précisé pour l'oeuvre donnée dans le fichier de configuration de la galerie en question, c'est la valeur de ce dernier qui est utilisée.
+*/
+$galerieFluxRssAuteurEstAuteurParDefaut = TRUE; // TRUE|FALSE
 ?>
