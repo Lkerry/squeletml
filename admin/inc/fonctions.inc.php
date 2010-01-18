@@ -886,9 +886,11 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	natcasesort($listeNouveauxFichiers);
 	$listeNouveauxFichiers = array_reverse($listeNouveauxFichiers);
 	
+	$dateAjout = date('Y-m-d H:i');
+	
 	foreach ($listeNouveauxFichiers as $valeur)
 	{
-		array_unshift($galerieTemp, array ('intermediaireNom' => $valeur));
+		array_unshift($galerieTemp, array ('intermediaireNom' => $valeur, 'dateAjout' => $dateAjout));
 	}
 	
 	unset($listeNouveauxFichiers);

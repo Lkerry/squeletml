@@ -448,9 +448,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
-- `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie.
+- `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le classement des items des flux RSS.
 
-- `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie.
+- `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
@@ -752,6 +752,12 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 - `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version intermédiaire, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version intermédiaire, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version intermédiaire, c'est-à-dire `intermediaireNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
 
 		originalNom=fichier1Original.jpg
+
+- `dateAjout`: date d'ajout de l'oeuvre dans la galerie, sous la forme `Y-m-d H:i` ([voir la fonction PHP `date()`](http://php.net/manual/function.date.php)). Exemple:
+
+		dateAjout=2010-01-17 20:05
+
+	Cette information est ajoutée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. La date d'ajout est utilisée dans les flux RSS pour classer les oeuvres. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `fileatime()`]().
 
 - `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
 

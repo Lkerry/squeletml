@@ -770,12 +770,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 			$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
 			$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
 			$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
-			
-			if ($itemFlux['pubDate'])
-			{
-				$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
-			}
-			
+			$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
 			$contenuRss .= "\t\t</item>\n\n";
 		}
 	}
@@ -863,6 +858,15 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie)
 		else
 		{
 			$msgOriginal = '';
+		}
+		
+		if (!empty($oeuvre['dateAjout']))
+		{
+			$pubDate = $oeuvre['dateAjout'];
+		}
+		else
+		{
+			$pubDate = date('Y-m-d H:i', fileatime($cheminOeuvre));
 		}
 		
 		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
@@ -2423,9 +2427,11 @@ function oeuvre(
 	####################################################################
 	elseif ($taille == 'vignette')
 	{
+		$class = '';
+		
 		if ($galerieNavigation == 'fleches' && ($sens == 'precedent' || $sens == 'suivant'))
 		{
-			$class = ' galerieFleche';
+			$class .= ' galerieFleche';
 			$width = 'width="80"';
 			$height = 'height="80"';
 			
@@ -2542,12 +2548,6 @@ function oeuvre(
 		{
 			
 			$aHref = '<a href="' . url(FALSE, FALSE) . '?oeuvre=' . $id . '">';
-		}
-		
-		// On s'assure que la variable `$class` existe (pour éviter un avertissement).
-		if (!isset($class))
-		{
-			$class = '';
 		}
 		
 		if ($minivignetteOeuvreEnCours)
