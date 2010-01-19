@@ -142,7 +142,7 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'flux-rss':
-					if (($idGalerie && $rssGalerie) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
+					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
 					{
 						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 					
@@ -159,19 +159,24 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocHaut;
 						$blocs[$region] .= "<ul>\n";
 					
-						if ($idGalerie && $rssGalerie)
+						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocs[$region] .= "<li>" . lienFluxRss("$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', $urlSansGet), $idGalerie, TRUE) . "</li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet) . '">' . sprintf(T_("RSS de la galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
-					
+						
+						if (!empty($idCategorie) && $rssCategorie)
+						{
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet) . '">' . sprintf(T_("RSS de la catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+						}
+						
 						if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 						{
-							$blocs[$region] .= "<li>" . lienFluxRss("$urlRacine/rss.php?global=galeries&amp;langue=" . LANGUE, FALSE, TRUE) . "</li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galeries&amp;langue=" . LANGUE . '">' . T_("RSS de toutes les galeries") . "</a></li>\n";
 						}
 					
 						if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 						{
-							$blocs[$region] .= "<li>" . lienFluxRss("$urlRacine/rss.php?global=site&amp;langue=" . LANGUE, FALSE, FALSE) . "</li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=site&amp;langue=" . LANGUE . '">' . T_("RSS global du site") . "</a></li>\n";
 						}
 					
 						$blocs[$region] .= "</ul>\n";

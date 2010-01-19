@@ -225,7 +225,7 @@ Vérifie si le cache d'un fichier expire.
 */
 function cacheExpire($fichier, $dureeCache)
 {
-	if (time() - fileatime($fichier) > $dureeCache)
+	if (time() - filemtime($fichier) > $dureeCache)
 	{
 		return TRUE;
 	}
@@ -263,17 +263,17 @@ Retourne le chemin vers le fichier de configuration du flux RSS global des galer
 */
 function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FALSE)
 {
-	if (file_exists("$racine/site/inc/rss-global-$nom.ini.txt"))
+	if (file_exists("$racine/site/inc/rss-$nom.ini.txt"))
 	{
-		return "$racine/site/inc/rss-global-$nom.ini.txt";
+		return "$racine/site/inc/rss-$nom.ini.txt";
 	}
-	elseif (file_exists("$racine/site/inc/rss-global-$nom.ini"))
+	elseif (file_exists("$racine/site/inc/rss-$nom.ini"))
 	{
-		return "$racine/site/inc/rss-global-$nom.ini";
+		return "$racine/site/inc/rss-$nom.ini";
 	}
 	elseif ($retourneCheminParDefaut)
 	{
-		return "$racine/site/inc/rss-global-$nom.ini.txt";
+		return "$racine/site/inc/rss-$nom.ini.txt";
 	}
 	else
 	{
@@ -762,7 +762,7 @@ function estAccueil($accueil)
 /*
 Retourne le contenu d'un fichier RSS.
 */
-function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGalerie)
+function fluxRss($type, $itemsFluxRss, $url, $baliseTitleComplement, $idGalerie, $idCategorie)
 {
 	$contenuRss = '';
 	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -770,14 +770,21 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 	$contenuRss .= "\t<channel>\n";
 	
 	// Page individuelle d'une galerie.
-	if (!empty($idGalerie))
+	if ($type == 'galerie')
 	{
 		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s"), $idGalerie . $baliseTitleComplement) . "</title>\n";
 		$contenuRss .= "\t\t<link>$url</link>\n";
 		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie «%1\$s»"), $idGalerie) . "</description>\n\n";
 	}
+	// Catégorie.
+	elseif ($type == 'categorie')
+	{
+		$contenuRss .= "\t\t<title>" . sprintf(T_("Dernières publications dans la catégorie «%1\$s»"), $idCategorie) . $baliseTitleComplement . "</title>\n";
+		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<description>" . sprintf(T_("Dernières publications dans la catégorie «%1\$s»"), $idCategorie) . $baliseTitleComplement . "</description>\n\n";
+	}
 	// Toutes les galeries.
-	elseif ($estGalerie)
+	elseif ($type == 'galeries')
 	{
 		
 		$contenuRss .= "\t\t<title>" . T_("Galeries") . $baliseTitleComplement . "</title>\n";
@@ -785,7 +792,7 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . $baliseTitleComplement . "</description>\n\n";
 	}
 	// Tout le site.
-	else
+	elseif ($type == 'site')
 	{
 		$contenuRss .= "\t\t<title>" . T_("Dernières publications") . $baliseTitleComplement . "</title>\n";
 		$contenuRss .= "\t\t<link>$url</link>\n";
@@ -802,9 +809,9 @@ function fluxRss($idGalerie, $baliseTitleComplement, $url, $itemsFluxRss, $estGa
 			$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
 			$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
 			
-			if (!empty($itemFlux['auteur']))
+			if (!empty($itemFlux['dccreator']))
 			{
-				$contenuRss .= "\t\t\t<dc:creator>" . $itemFlux['auteur'] . "</dc:creator>\n";
+				$contenuRss .= "\t\t\t<dc:creator>" . $itemFlux['dccreator'] . "</dc:creator>\n";
 			}
 			
 			$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
@@ -826,109 +833,112 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
 	$itemsFluxRss = array ();
 	
-	foreach ($tableauGalerie as $oeuvre)
+	if ($tableauGalerie !== FALSE)
 	{
-		$id = idOeuvre($oeuvre);
-		$title = sprintf(T_("Oeuvre %1\$s"), $id);
-		$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
-		$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['intermediaireNom']);
-		$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
+		foreach ($tableauGalerie as $oeuvre)
+		{
+			$id = idOeuvre($oeuvre);
+			$title = sprintf(T_("Oeuvre %1\$s"), $id);
+			$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
+			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['intermediaireNom']);
+			$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
 		
-		if (!empty($oeuvre['pageIntermediaireDescription']))
-		{
-			$description = $oeuvre['pageIntermediaireDescription'];
-		}
-		elseif (!empty($oeuvre['intermediaireLegende']))
-		{
-			$description = $oeuvre['intermediaireLegende'];
-		}
-		else
-		{
-			$description = $title;
-		}
-		
-		if (!empty($oeuvre['intermediaireLargeur']))
-		{
-			$width = $oeuvre['intermediaireLargeur'];
-		}
-		else
-		{
-			list ($width, $height) = getimagesize($cheminOeuvre);
-		}
-		
-		if (!empty($oeuvre['intermediaireHauteur']))
-		{
-			$height = $oeuvre['intermediaireHauteur'];
-		}
-		
-		if (!empty($oeuvre['intermediaireAlt']))
-		{
-			$alt = $oeuvre['intermediaireAlt'];
-		}
-		else
-		{
-			$alt = $title;
-		}
-		
-		if (!empty($oeuvre['originalNom']))
-		{
-			$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['originalNom']);
-		}
-		else
-		{
-			$nomOriginal = nomSuffixe($oeuvre['intermediaireNom'], '-original');
-			
-			if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
+			if (!empty($oeuvre['pageIntermediaireDescription']))
 			{
-				$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($nomOriginal);
+				$description = $oeuvre['pageIntermediaireDescription'];
+			}
+			elseif (!empty($oeuvre['intermediaireLegende']))
+			{
+				$description = $oeuvre['intermediaireLegende'];
 			}
 			else
 			{
-				$urlOriginal = '';
+				$description = $title;
 			}
-		}
 		
-		if (!empty($urlOriginal))
-		{
-			$msgOriginal = "\n<p><a href='$urlOriginal'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
-		}
-		else
-		{
-			$msgOriginal = '';
-		}
+			if (!empty($oeuvre['intermediaireLargeur']))
+			{
+				$width = $oeuvre['intermediaireLargeur'];
+			}
+			else
+			{
+				list ($width, $height) = getimagesize($cheminOeuvre);
+			}
 		
-		if (!empty($oeuvre['auteurAjout']))
-		{
-			$auteur = $oeuvre['auteurAjout'];
-		}
-		elseif ($galerieFluxRssAuteurEstAuteurParDefaut)
-		{
-			$auteur = $auteurParDefaut;
-		}
-		else
-		{
-			$auteur = '';
-		}
+			if (!empty($oeuvre['intermediaireHauteur']))
+			{
+				$height = $oeuvre['intermediaireHauteur'];
+			}
 		
-		if (!empty($oeuvre['dateAjout']))
-		{
-			$pubDate = $oeuvre['dateAjout'];
-		}
-		else
-		{
-			$pubDate = date('Y-m-d H:i', fileatime($cheminOeuvre));
-		}
+			if (!empty($oeuvre['intermediaireAlt']))
+			{
+				$alt = $oeuvre['intermediaireAlt'];
+			}
+			else
+			{
+				$alt = $title;
+			}
 		
-		$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
-		$pubDate = fileatime($cheminOeuvre);
-		$itemsFluxRss[] = array (
-			"title" => $title,
-			"link" => $urlGalerieOeuvre,
-			"guid" => $urlGalerieOeuvre,
-			"description" => $description,
-			"auteur" => $auteur,
-			"pubDate" => $pubDate,
-		);
+			if (!empty($oeuvre['originalNom']))
+			{
+				$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['originalNom']);
+			}
+			else
+			{
+				$nomOriginal = nomSuffixe($oeuvre['intermediaireNom'], '-original');
+			
+				if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
+				{
+					$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($nomOriginal);
+				}
+				else
+				{
+					$urlOriginal = '';
+				}
+			}
+		
+			if (!empty($urlOriginal))
+			{
+				$msgOriginal = "\n<p><a href='$urlOriginal'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
+			}
+			else
+			{
+				$msgOriginal = '';
+			}
+		
+			if (!empty($oeuvre['auteurAjout']))
+			{
+				$dccreator = $oeuvre['auteurAjout'];
+			}
+			elseif ($galerieFluxRssAuteurEstAuteurParDefaut)
+			{
+				$dccreator = $auteurParDefaut;
+			}
+			else
+			{
+				$dccreator = '';
+			}
+		
+			if (!empty($oeuvre['dateAjout']))
+			{
+				$pubDate = $oeuvre['dateAjout'];
+			}
+			else
+			{
+				$pubDate = date('Y-m-d H:i', filemtime($cheminOeuvre));
+			}
+		
+			$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
+			$pubDate = filemtime($cheminOeuvre);
+			$itemsFluxRss[] = array (
+				"title" => $title,
+				"link" => $urlGalerieOeuvre,
+				"guid" => $urlGalerieOeuvre,
+				"description" => $description,
+				"dccreator" => $dccreator,
+				"pubDate" => $pubDate,
+			);
+		}
 	}
 	
 	return $itemsFluxRss;
@@ -940,34 +950,34 @@ Retourne un tableau d'un élément représentant une page du site, cet élément
 function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 {
 	$itemFlux = array ();
-	$infosPage = securiseTexte(infosPage($urlPage, $inclureApercu));
+	$infosPage = infosPage($urlPage, $inclureApercu);
 	
 	if (!empty($infosPage))
 	{
 		if (!empty($infosPage['dateCreation']))
 		{
-			$date = $infosPage['dateCreation'];
+			$date = securiseTexte($infosPage['dateCreation']);
 		}
 		elseif (!empty($infosPage['dateRevision']))
 		{
-			$date = $infosPage['dateRevision'];
+			$date = securiseTexte($infosPage['dateRevision']);
 		}
 		else
 		{
-			$date = fileatime($cheminPage);
+			$date = filemtime($cheminPage);
 		}
 	
 		if (!$infosPage['descriptionComplete'])
 		{
-			$infosPage['description'] .= securiseTexte("<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n");
+			$infosPage['description'] .= "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n";
 		}
 		
 		$itemFlux[] = array (
-			"title" => $infosPage['titre'],
+			"title" => securiseTexte($infosPage['titre']),
 			"link" => $urlPage,
 			"guid" => $urlPage,
-			"description" => $infosPage['description'],
-			"auteur" => $infosPage['auteur'],
+			"description" => securiseTexte($infosPage['description']),
+			"dccreator" => securiseTexte($infosPage['auteur']),
 			"pubDate" => $date,
 		);
 	}
@@ -1006,10 +1016,15 @@ Retourne un tableau d'informations au sujet de la page demandée. Le tableau con
     - contenu de la premère balise `h1`;
     - contenu de la balise `title`;
     - URL de la page.
+
   - `$infosPage['description']`: description de la page. Par défaut, vaut tout le contenu de la `div` `interieurContenu`, la première balise `h1` en moins. Selon les valeurs de `$inclureApercu` et `$apercu` pour la page demandée, la description peut correspondre à un extrait de la page ou au contenu de la métabalise `description`;
+
   - `$infosPage['descriptionComplete']`: vaut TRUE si la description n'est pas seulement un aperçu et correspond au texte en entier (`div` `interieurContenu`), sinon vaut FALSE;
+
   - `$infosPage['auteur']`: vaut le contenu de la métabalise `author`, si elle existe;
+
   - `$infosPage['dateCreation']`: vaut le contenu de la métabalise `date-creation-yyyymmdd`, si elle existe;
+
   - `$infosPage['dateRevision']`: vaut le contenu de la métabalise `date-revision-yyyymmdd`, si elle existe.
 
 Si la page demandée n'est pas accessible, retourne un tableau vide.
@@ -1027,14 +1042,14 @@ function infosPage($urlPage, $inclureApercu)
 	
 		if ($titre = $dom->find('h1'))
 		{
-			$infosPage['titre'] = $titre[0]->innertext;
+			$infosPage['titre'] = $titre[0]->plaintext;
 		}
 		else
 		{
 			$infosPage['titre'] = '';
 		}
 	
-		if (empty($infosPage['titre']) && $dom->find('title'))
+		if (empty($infosPage['titre']) && $titre = $dom->find('title'))
 		{
 			$infosPage['titre'] = $titre[0]->innertext;
 		}
@@ -1478,27 +1493,6 @@ function lienActif($html, $inclureGet = TRUE, $parent = '')
 	unset($dom);
 	
 	return $htmlFiltre;
-}
-
-/*
-Retourne le lien vers le fichier du flux RSS demandé.
-*/
-function lienFluxRss($urlFluxRss, $idGalerie, $estGalerie)
-{
-	if (!empty($idGalerie))
-	{
-		$description = sprintf(T_("RSS de la galerie %1\$s"), "<em>$idGalerie</em>");
-	}
-	elseif ($estGalerie)
-	{
-		$description = T_("RSS de toutes les galeries");
-	}
-	else
-	{
-		$description = T_("RSS global du site");
-	}
-	
-	return "<a href=\"$urlFluxRss\">$description</a>";
 }
 
 /*
@@ -2762,14 +2756,7 @@ function securiseTexte($texte)
 {
 	if (is_array($texte))
 	{
-		$texteSecurise = array ();
-		
-		foreach ($texte as $valeur)
-		{
-			$texteSecurise[] = securiseTexte($valeur);
-		}
-		
-		return $texteSecurise;
+		return array_map('securiseTexte', $texte);
 	}
 	elseif (is_string($texte))
 	{
@@ -3007,13 +2994,13 @@ function typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeC
 }
 
 /*
-Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur.
+Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur. Un troisième paramètre optionnel, s'il vaut TRUE, active la recherche d'un fichier d'index (par exemple `index.php`) pour l'ajouter, s'il y a lieu, à l'URL.
 
 Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` et `$retourneServeur` vallent TRUE.
 
 Fonction inspirée de <http://api.drupal.org/api/function/drupal_detect_baseurl>.
 */
-function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
+function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherIndex = FALSE)
 {
 	if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'])
 	{
@@ -3051,7 +3038,33 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE)
 		$url = "$uri";
 	}
 	
+	if ($rechercherIndex && preg_match('|/$|', $url))
+	{
+		$fichiersIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
+		
+		foreach ($fichiersIndex as $fichierIndex)
+		{
+			if (urlExiste($url . $fichierIndex))
+			{
+				$url .= $fichierIndex;
+				break;
+			}
+		}
+	}
+	
 	return $url;
+}
+
+/*
+Retourne TRUE si l'URL existe, sinon retourne FALSE.
+
+Merci à <http://us2.php.net/manual/en/function.file-exists.php#84918>.
+*/
+function urlExiste($url)
+{
+	$enTetes = @get_headers($url);
+	
+	return is_array($enTetes) ? preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/', $enTetes[0]) : FALSE;
 }
 
 /*

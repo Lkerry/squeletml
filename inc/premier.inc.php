@@ -47,7 +47,7 @@ foreach (aInclureDebut($racine) as $fichier)
 // Affectations 2 de 3.
 
 extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rss'), EXTR_SKIP);
+extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rssCategorie', 'rssGalerie'), EXTR_SKIP);
 
 if (!empty($apercu))
 {
@@ -107,6 +107,11 @@ $nomPage = nomPage();
 $premierOuDernier = 'premier';
 $robots = robots($robotsParDefaut, $robots);
 
+if (!isset($rssCategorie))
+{
+	$rssCategorie = $activerFluxRssCategorieParDefaut;
+}
+
 if (!isset($rssGalerie))
 {
 	$rssGalerie = $galerieActiverFluxRssParDefaut;
@@ -124,6 +129,7 @@ if ($tableDesMatieres)
 }
 
 $url = url();
+$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
 $urlFichiers = $urlRacine . '/site/fichiers';
 $urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
 $urlSansGet = url(FALSE);
@@ -177,19 +183,25 @@ if (!empty($boitesDeroulantesTableau))
 
 if (!empty($idGalerie) && $rssGalerie)
 {
-	$urlFlux = "$urlRacine/rss.php?chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
+	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
+}
+
+if (!empty($idCategorie) && $rssCategorie)
+{
+	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet);
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la catégorie %1$s'), $idCategorie);
 }
 
 if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 {
-	$urlFlux = $urlRacine . '/rss.php?global=galeries&amp;langue=' . LANGUE;
+	$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . LANGUE;
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('RSS de toutes les galeries');
 }
 
 if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 {
-	$urlFlux = $urlRacine . '/rss.php?global=pages&amp;langue=' . LANGUE;
+	$urlFlux = $urlRacine . '/rss.php?type=site&amp;langue=' . LANGUE;
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('RSS global du site');
 }
 

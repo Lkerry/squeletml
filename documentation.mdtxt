@@ -472,6 +472,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier de configuration.
 
+- `$rssCategorie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la catégorie en question, si la valeur est différente de `$activerFluxRssCategorieParDefaut` du fichier de configuration.
+
 - `$rssGalerie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la galerie en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration.
 
 - `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` `interieurContenu`. La table est ajoutée au début de cette `div`.
@@ -763,7 +765,7 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		dateAjout=2010-01-17 20:05
 
-	Cette information est ajoutée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. La date d'ajout est utilisée dans les flux RSS pour classer les oeuvres. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `fileatime()`]().
+	Cette information est ajoutée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. La date d'ajout est utilisée dans les flux RSS pour classer les oeuvres. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `filemtime()`]().
 
 - `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
 
@@ -874,6 +876,10 @@ Si la page visitée est autre chose qu'une page individuelle d'oeuvre, le modèl
 
 ### Syndication individuelle
 
+#### Syndication par catégorie
+
+Par défaut, chaque catégorie possède son propre flux RSS, généré automatiquement. Dans la configuration, il est possible de désactiver par défaut la syndication individuelle des catégories. Dans tous les cas, la variable optionnelle `$rssCategorie` peut être renseignée dans le fichier PHP de la catégorie pour activer (`TRUE`) ou désactiver (`FALSE`) la syndication pour la catégorie en question.
+
 #### Syndication par galerie
 
 Par défaut, chaque galerie possède son propre flux RSS, généré automatiquement. Dans la configuration, il est possible de désactiver par défaut la syndication individuelle des galeries. Dans tous les cas, la variable optionnelle `$rssGalerie` peut être renseignée dans le fichier PHP de la galerie pour activer (`TRUE`) ou désactiver (`FALSE`) la syndication pour la galerie en question.
@@ -884,7 +890,7 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 #### Syndication globale des galeries
 
-Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
+Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
 	[code de la langue]
 	id de la galerie=URL relative de la galerie
@@ -903,11 +909,11 @@ et:
 
 	$urlRacine/dossier/galerie-animaux.php
 
-**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-global-galeries.ini.txt` ou `site/inc/rss-global-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
+**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
 #### Syndication globale du site
 
-Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
+Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-site.ini.txt` ou `site/inc/rss-site.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
 
 	[code de la langue]
 	pages[]=URL relative de la page
@@ -926,7 +932,7 @@ et:
 
 	$urlRacine/autrePage.php
 
-L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieActiverFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-global-site.ini.txt` ou `site/inc/rss-global-site.ini` composeront le flux global du site.
+L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieActiverFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-site.ini.txt` ou `site/inc/rss-site.ini` composeront le flux global du site.
 
 ## Cache
 

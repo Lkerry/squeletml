@@ -462,6 +462,12 @@ $blocsArrondisSpecifiques = array (
 */
 $activerFluxRssGlobalSite = FALSE; // TRUE|FALSE
 
+// Syndication individuelle par défaut des catégories.
+/*
+- Note: il est possible de configurer la syndication pour chaque catégorie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssCategorie` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+*/
+$activerFluxRssCategorieParDefaut = TRUE; // TRUE|FALSE
+
 // Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 50;
 

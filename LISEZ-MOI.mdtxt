@@ -47,7 +47,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Syndication de contenu (flux RSS):
 
-  - Par défaut, un flux RSS pour chaque galerie, et un flux RSS global activable contenant les dernières oeuvres de toutes les galeries.
+  - Par défaut, un flux RSS pour chaque catégorie et chaque galerie, et un flux RSS global activable contenant les dernières oeuvres de toutes les galeries.
   - Un flux RSS global activable pour chaque langue du site.
   - Mise en cache possible des flux RSS, et choix de la durée de validité du cache.
 
