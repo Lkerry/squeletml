@@ -765,7 +765,9 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		dateAjout=2010-01-17 20:05
 
-	Cette information est ajoutée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. La date d'ajout est utilisée dans les flux RSS pour classer les oeuvres. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `filemtime()`]().
+	La partie après le jour est optionnelle. Il est donc possible de ne pas préciser l'heure ni les minutes, ou de ne préciser que l'heure.
+
+	La date d'ajout est insérée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. Cette information est utilisée dans les flux RSS pour classer les oeuvres. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `filemtime()`](http://php.net/manual/function.filemtime.php).
 
 - `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
 

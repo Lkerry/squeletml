@@ -644,6 +644,68 @@ function creeDossierCache($racine)
 }
 
 /*
+Le paramètre `$date` doit être une date sous une des formes suivantes:
+
+  - `année` (exemple: `2010`);
+  - `année-mois` (exemple: `2010-01`);
+  - `année-mois-jour` (exemple: `2010-01-19`);
+  - `année-mois-jour heure` (exemple: `2010-01-19 20`);
+  - `année-mois-jour heure:minutes` (exemple: `2010-01-19 20:04`);
+  - `année-mois-jour heure:minutes:secondes` (exemple: `2010-01-19 20:04:02`).
+
+L'année peut être sur deux ou quatre chiffres. Les autres informations peuvent avoir un zéro initial (par exemple `01` ou `1`). Lors du calcul du timestamp, une information manquante sera extraite de la date modèle `1970-1-1 0:0:0`.
+*/
+function dateVersTimestamp($date)
+{
+	$mktime = array (
+		'heure' => 0,
+		'minutes' => 0,
+		'secondes' => 0,
+		'mois' => 1,
+		'jour' => 1,
+		'annee' => 1970,
+	);
+	
+	if (!empty($date))
+	{
+		$mktime['annee'] = $date;
+		
+		if (strpos($mktime['annee'], '-') !== FALSE)
+		{
+			$jour = explode('-', $mktime['annee']);
+			$mktime['annee'] = $jour[0];
+			$mktime['mois'] = $jour[1];
+		
+			if (isset($jour[2]))
+			{
+				$mktime['jour'] = $jour[2];
+			
+				if (strpos($mktime['jour'], ' ') !== FALSE)
+				{
+					$heure = explode(' ', $mktime['jour']);
+					$mktime['jour'] = $heure[0];
+					$mktime['heure'] = $heure[1];
+		
+					if (strpos($mktime['heure'], ':') !== FALSE)
+					{
+						$heure = explode(':', $mktime['heure']);
+						$mktime['heure'] = $heure[0];
+						$mktime['minutes'] = $heure[1];
+			
+						if (isset($heure[2]))
+						{
+							$mktime['secondes'] = $heure[2];
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	return mktime($mktime['heure'], $mktime['minutes'], $mktime['secondes'], $mktime['mois'], $mktime['jour'], $mktime['annee']);
+}
+
+/*
 Retourne le texte supplémentaire d'une oeuvre pour le message envoyé par le module «Faire découvrir».
 */
 function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown)
@@ -814,7 +876,7 @@ function fluxRss($type, $itemsFluxRss, $url, $baliseTitleComplement, $idGalerie,
 				$contenuRss .= "\t\t\t<dc:creator>" . $itemFlux['dccreator'] . "</dc:creator>\n";
 			}
 			
-			$contenuRss .= "\t\t\t<pubDate>" . date('r', $itemFlux['pubDate']) . "</pubDate>\n";
+			$contenuRss .= "\t\t\t<pubDate>" . date('r', dateVersTimestamp($itemFlux['pubDate'])) . "</pubDate>\n";
 			$contenuRss .= "\t\t</item>\n\n";
 		}
 	}
@@ -929,7 +991,6 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			}
 		
 			$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
-			$pubDate = filemtime($cheminOeuvre);
 			$itemsFluxRss[] = array (
 				"title" => $title,
 				"link" => $urlGalerieOeuvre,
@@ -956,17 +1017,17 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 	{
 		if (!empty($infosPage['dateCreation']))
 		{
-			$date = securiseTexte($infosPage['dateCreation']);
+			$pubDate = securiseTexte($infosPage['dateCreation']);
 		}
 		elseif (!empty($infosPage['dateRevision']))
 		{
-			$date = securiseTexte($infosPage['dateRevision']);
+			$pubDate = securiseTexte($infosPage['dateRevision']);
 		}
 		else
 		{
-			$date = filemtime($cheminPage);
+			$pubDate = date('Y-m-d H:i', filemtime($cheminPage));
 		}
-	
+		
 		if (!$infosPage['descriptionComplete'])
 		{
 			$infosPage['description'] .= "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n";
@@ -978,7 +1039,7 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 			"guid" => $urlPage,
 			"description" => securiseTexte($infosPage['description']),
 			"dccreator" => securiseTexte($infosPage['auteur']),
-			"pubDate" => $date,
+			"pubDate" => $pubDate,
 		);
 	}
 	
@@ -986,16 +1047,20 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 }
 
 /*
-Retourne le tableau `$itemsFluxRss` trié selon la date de dernière modification et contenant au maximum le nombre d'items précisé dans la configuration.
+Retourne le tableau `$itemsFluxRss` contenant au maximum le nombre d'items précisé dans la configuration. L'ordre des items dépend du type.
 */
-function fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss)
+function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss, $galeriesDansFluxRssGlobalSite = FALSE)
 {
-	foreach ($itemsFluxRss as $cle => $valeur)
+	if ($type == 'galerie' || $type == 'galeries' || ($type == 'site' && $galeriesDansFluxRssGlobalSite))
 	{
-		$itemsFluxRssPubDate[$cle] = $valeur['pubDate'];
+		foreach ($itemsFluxRss as $cle => $valeur)
+		{
+			$itemsFluxRssPubDate[$cle] = $valeur['pubDate'];
+		}
+		
+		array_multisort($itemsFluxRssPubDate, SORT_DESC, $itemsFluxRss);
 	}
 	
-	array_multisort($itemsFluxRssPubDate, SORT_DESC, $itemsFluxRss);
 	$itemsFluxRss = array_slice($itemsFluxRss, 0, $nombreItemsFluxRss);
 	
 	return $itemsFluxRss;

@@ -101,7 +101,7 @@ if ($getType == 'galerie' && !empty($getChemin))
 					
 					if (!empty($itemsFluxRss))
 					{
-						$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
+						$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 					}
 					
 					$rssAafficher = fluxRss($getType, $itemsFluxRss, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), $idGalerie, '');
@@ -211,7 +211,7 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 			
 					if (!empty($itemsFluxRss))
 					{
-						$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
+						$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 					}
 					
 					$urlCategorie = $urlRacine . '/' . $getChemin;
@@ -237,72 +237,6 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 		else
 		{
 			$estPageDerreur = TRUE;
-		}
-	}
-	else
-	{
-		$estPageDerreur = TRUE;
-	}
-}
-elseif ($getType == 'categorie' && !empty($getChemin))
-{
-	$cheminConfigCategories = cheminConfigCategories($racine);
-	
-	if ($cheminConfigCategories)
-	{
-		$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
-	}
-	
-	if (isset($categories[$idCategorie]))
-	{
-		// A: le flux RSS est activé.
-		
-		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-		
-		$nomFichierCache = 'rss-categorie-' . md5($idCategorie) . '.xml';
-		
-		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
-		{
-			readfile("$racine/site/cache/$nomFichierCache");
-		}
-		else
-		{
-			$itemsFluxRss = array ();
-			$i = 0;
-			
-			foreach ($categories[$idCategorie]['pages'] as $page)
-			{
-				if ($i < $nombreItemsFluxRss)
-				{
-					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . str_replace('%2F', '/', rawurlencode($page)), $inclureApercu);
-					
-					if (!empty($fluxRssPageTableauBrut))
-					{
-						$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
-					}
-				}
-				
-				$i++;
-			}
-			
-			if (!empty($itemsFluxRss))
-			{
-				$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
-			}
-			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', '');
-			
-			if ($dureeCache)
-			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-				readfile("$racine/site/cache/$nomFichierCache");
-			}
-			else
-			{
-				echo $rssAafficher;
-			}
 		}
 	}
 	else
@@ -346,7 +280,7 @@ elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangu
 				
 				if (!empty($itemsFluxRss))
 				{
-					$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
+					$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 				}
 			}
 			
@@ -414,6 +348,9 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 				}
 				
 				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site.
+				
+				$galeriesDansFluxRssGlobalSite = FALSE;
+				
 				if ($galerieActiverFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
 				{
 					$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
@@ -424,6 +361,8 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 						{
 							if ($codeLangue == $getLangue)
 							{
+								$galeriesDansFluxRssGlobalSite = TRUE;
+								
 								foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 								{
 									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut));
@@ -435,7 +374,7 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 				
 				if (!empty($itemsFluxRss))
 				{
-					$itemsFluxRss = fluxRssTableauFinal($itemsFluxRss, $nombreItemsFluxRss);
+					$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss, $galeriesDansFluxRssGlobalSite);
 				}
 			}
 			
