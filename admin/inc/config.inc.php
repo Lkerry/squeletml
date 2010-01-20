@@ -28,6 +28,9 @@ $adminTailleCache = '2097152';
 */
 $adminBoitesDeroulantesParDefaut = 'enTete';
 
+// Inclusion du bas de page.
+$adminInclureBasDePage = TRUE; // TRUE|FALSE
+
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).

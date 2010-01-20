@@ -1,6 +1,14 @@
 <?php
 ########################################################################
 ##
+## Affectations.
+##
+########################################################################
+
+$cheminBasDePage = adminCheminXhtml($racineAdmin, 'bas-de-page');
+
+########################################################################
+##
 ## Ajouts dans `$adminBalisesLinkScriptFinales`.
 ##
 ########################################################################
@@ -67,6 +75,17 @@ JS;
 
 // Variable finale.
 $linkScriptFin = linkScript($adminBalisesLinkScriptFinales);
+
+########################################################################
+##
+## Traitement personnalisé optionnel.
+##
+########################################################################
+
+if (file_exists("$racine/site/$dossierAdmin/inc/dernier.inc.php"))
+{
+	include_once "$racine/site/$dossierAdmin/inc/dernier.inc.php";
+}
 
 ########################################################################
 ##

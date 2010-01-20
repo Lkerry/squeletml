@@ -48,6 +48,11 @@ body, html {
 	margin: 5px;
 }
 
+#basDePage {
+	margin-top: 25px;
+	text-align: right;
+}
+
 #tableDesMatieres, a.porteDocumentsProprietesFichier:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
 	border-radius: 8px; /* CSS 3. */
 }
