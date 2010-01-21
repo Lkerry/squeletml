@@ -51,6 +51,7 @@ $nomPage = nomPage();
 $url = url();
 $urlDeconnexion = adminUrlDeconnexion($urlRacine);
 $urlFichiers = $urlRacine . '/site/fichiers';
+$urlSansGet = url(FALSE);
 $urlSite = $urlRacine . '/site';
 
 ########################################################################

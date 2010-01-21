@@ -27,12 +27,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<h3><?php echo T_("Liens utiles"); ?></h3>
 		
 		<ul>
-			<li><?php echo T_("Section <a href=\"http://abcdrfc.free.fr/rfc-vf/rfc2616.htm#_Toc163190671\">«Accréditifs d'authentification et clients inactifs»</a> de la traduction en français de la <acronym lang=\"en\" title=\"Request for Comments\">RFC</acronym> 2616 (<em>Protocole de transfert Hypertexte -- <acronym lang=\"en\">HTTP</acronym>/1.1</em>)."); ?>
+			<li><?php printf(T_("Section <a href=\"%1\$s\">«Accréditifs d'authentification et clients inactifs»</a> de la traduction en français de la <acronym lang=\"en\" title=\"Request for Comments\">RFC</acronym> 2616 (<em>Protocole de transfert Hypertexte -- <acronym lang=\"en\">HTTP</acronym>/1.1</em>)."), "http://abcdrfc.free.fr/rfc-vf/rfc2616.htm#_Toc163190671"); ?>
 			<ul>
-				<li><?php echo T_("Le texte original de la même section de la <acronym lang=\"en\">RFC</acronym> 2616: <a href=\"http://www.w3.org/Protocols/rfc2616/rfc2616-sec15.html#sec15.6\" lang=\"en\">«Authentication Credentials and Idle Clients»</a>."); ?></li>
+				<li><?php printf(T_("Le texte original de la même section de la <acronym lang=\"en\">RFC</acronym> 2616: <a href=\"%1\$s\" lang=\"en\">«Authentication Credentials and Idle Clients»</a>."), "http://www.w3.org/Protocols/rfc2616/rfc2616-sec15.html#sec15.6"); ?></li>
 			</ul></li>
-			<li><?php echo T_("<a href=\"http://httpd.apache.org/docs/1.3/howto/auth.html#basicfaq\">Section «<span lang=\"en\">Frequently asked questions about basic auth</span>»</a> du document <em lang=\"en\">Authentication, Authorization, and Access Control</em> (documentation Apache)."); ?></li>
-			<li><?php echo T_("<a href=\"http://httpd.apache.org/docs/trunk/fr/howto/auth.html\">Authentification, autorisation et contrôle d'accès</a> (documentation Apache)."); ?></li>
+			<li><?php printf(T_("<a href=\"%1\$s\">Section «<span lang=\"en\">Frequently asked questions about basic auth</span>»</a> du document <em lang=\"en\">Authentication, Authorization, and Access Control</em> (documentation Apache)."), "http://httpd.apache.org/docs/1.3/howto/auth.html#basicfaq"); ?></li>
+			<li><?php printf(T_("<a href=\"%1\$s\">Authentification, autorisation et contrôle d'accès</a> (documentation Apache)."), "http://httpd.apache.org/docs/trunk/fr/howto/auth.html"); ?></li>
 		</ul>
 	</div><!-- /.bDcorps -->
 </div><!-- /#explications -->
