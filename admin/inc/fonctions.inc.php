@@ -1349,7 +1349,7 @@ function adminUnlink($fichier)
 }
 
 /*
-
+Retourne l'URL de déconnexion de la section d'administration.
 */
 function adminUrlDeconnexion($urlRacine)
 {
