@@ -656,6 +656,54 @@ Voici un exemple minimal:
 	
 	<?php include $racine . '/inc/dernier.inc.php'; ?>
 
+## Catégories
+
+Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut qu'un fichier de configuration et une page spéciale pour utiliser cette fonctionnalité:
+
+- le fichier de configuration `site/inc/categories.ini.txt` ou `site/inc/categories.ini` peut être créé à la main ou à l'aide du script de gestion des catégories dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages pour chaque catégorie, et ce sous la forme suivante:
+
+		[id de la catégorie]
+		pages[]=URL relative de la page
+
+	L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
+
+		[chiens]
+		pages[]=animaux/chiens/husky.php
+		pages[]=animaux/chiens/malamute.php
+
+	Les deux pages en question sont accessibles respectivement à l'adresse:
+
+		$urlRacine/animaux/chiens/husky.php
+
+	et:
+
+		$urlRacine/animaux/chiens/malamute.php
+
+- la page à visiter sur le site affiche la liste des pages faisant partie de la catégorie. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la catégorie que vous voulez afficher, et ce grâce à la variable `$idCategorie`. Disons que pour notre exemple la page est `$urlRacine/animaux/chiens/index.php` et qu'elle contient ceci:
+
+		<?php
+		$baliseTitle = "Articles sur les chiens";
+		$description = "Articles sur les chiens.";
+		$idCategorie = "chiens";
+		include '../../inc/premier.inc.php';
+		?>
+		
+		<h1>Articles sur les chiens</h1>
+		
+		<?php include $racine . '/inc/dernier.inc.php'; ?>
+
+	En visitant cette page, un aperçu pour chaque page listée dans le fichier de configuration pour la catégorie donnée sera affiché sous le titre `h1`. Voici un exemple d'aperçu qui pourrait être généré pour la page sur le husky:
+
+		Article sur le husky
+		
+		Écrit par pseudo le 2010-01-04. Dernière révision le 2010-01-05.
+		
+		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+		
+		Lire la suite de Article sur le husky 
+
+	La teneur exacte de l'aperçu de la page sur le husky dépend de la configuration de `$urlRacine/animaux/chiens/husky.php`. Dans notre exemple, les variables `$dateCreation` et `$dateRevision` ont été affectées. Pour sa part, le lien «Lire la suite de...» est ajouté lorsque le texte de la page n'apparaît pas au complet, et ce grâce à l'utilisation de la variable `$apercu`. Voir la section *Variables PHP* pour plus de détails au sujet de ces variables.
+
 ## Galeries
 
 *Note: la page [Bref tour d'horizon du module de galerie de Squeletml](http://www.jpfleury.net/squeletml/galerie) propose des explications accompagnées de captures d'écran.*
