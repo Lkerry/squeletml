@@ -51,7 +51,7 @@
 		<div id="page">
 			<div id="interieurPage">
 				<!-- ____________________ #enTete ____________________ -->
-				<div id="enTete" class="sep">
+				<div id="enTete">
 					<?php if ($inclureSurTitre): ?>
 						<div id="surTitre">
 							<?php include_once $cheminSurTitre; ?>
@@ -67,6 +67,7 @@
 					</div><!-- /#sousTitre -->
 					
 					<?php echo $blocs[100]; ?>
+					<div class="sep"></div>
 				</div><!-- /#enTete -->
 		
 				<!-- ____________________ #surContenu ____________________ -->
@@ -86,5 +87,5 @@
 						</div><!-- /#debutInterieurContenu -->
 						
 						<?php if (!empty($idGalerie)): ?>
-							<div id="galerie" class="sep">
+							<div id="galerie">
 						<?php endif; ?>

@@ -36,7 +36,3 @@ div.galerieNavigationSuivant img {
 li.actif {
 	list-style-image: url('../fichiers/puce.gif');
 }
-
-.sep {
-/*	height: 1%;*/
-}

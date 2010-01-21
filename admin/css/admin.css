@@ -137,8 +137,8 @@ li.liParent {
 	margin: 2px;
 }
 
-.sep {
-	overflow: hidden;
+.sepGalerieMinivignettes {
+	clear: both;
 }
 
 .erreur, .erreur code {

@@ -29,6 +29,7 @@
 					<!-- ____________________ #basDePage ____________________ -->
 					<div id="basDePage">
 						<?php echo $blocs[600]; ?>
+						<div class="sep"></div>
 						<?php include_once $cheminBasDePage; ?>
 					</div><!-- /#basDePage -->
 				<?php endif; ?>

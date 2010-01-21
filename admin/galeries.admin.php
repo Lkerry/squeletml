@@ -102,8 +102,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (!empty($corpsMinivignettes))
 						{
-							$corpsMinivignettes = '<div class="galerieMinivignettes sep">' . "\n" . $corpsMinivignettes;
+							$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
 							$corpsMinivignettes .= '</div><!-- /.galerieMinivignettes -->' . "\n";
+							$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
 							$apercu = "<li>" . sprintf(T_("Aperçu: %1\$s"), $corpsMinivignettes) . "</li>\n";
 						}
 						else

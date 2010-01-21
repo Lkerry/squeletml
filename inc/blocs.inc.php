@@ -154,7 +154,8 @@ if (!empty($blocsAinserer))
 						{
 							$classeBlocArrondi = '';
 						}
-					
+						
+						$blocs[$region] .= '<div class="sep"></div>' . "\n";
 						$blocs[$region] .= '<div id="fluxRss" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
 						$blocs[$region] .= "<ul>\n";
