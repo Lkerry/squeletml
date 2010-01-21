@@ -187,7 +187,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
 			}
 		
-			// S'il n'y a plus d'utilisateur dans le fichier `.acces`, on supprime ce fichier ainsi que l'authentification dans le `.htaccess`.
+			// S'il n'y a plus d'utilisateur dans le fichier `.acces`, on supprime l'authentification dans le `.htaccess`.
 			/*
 			Note: auparavant, je faisais:
 				clearstatcache();
@@ -196,8 +196,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			*/
 			if (strpos(file_get_contents($racine . '/.acces'), ':') === FALSE)
 			{
-				$messagesScript .= adminUnlink($racine . '/.acces');
-			
 				if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
 				{
 					$fichierHtaccess = array ();
@@ -294,7 +292,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 		
 				$htaccess .= "\tAuthType Basic\n";
-				$htaccess .= "\tAuthName \"Zone d'identification\"\n";
+				$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
 				$htaccess .= "\tRequire valid-user\n";
 		
 				if ($serveurFreeFr)
@@ -305,7 +303,36 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$htaccess .= "</FilesMatch>\n";
 				}
+				
+				$htaccessFilesModele = "deconnexion\.php$";
+				
+				if ($serveurFreeFr)
+				{
+					$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
+			
+					preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.deconnexion.acces', $cheminAcces);
+			
+					$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
+				}
+				else
+				{
+					$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
+					$htaccess .= "\tAuthUserFile $racine/.deconnexion.acces\n";
+				}
 		
+				$htaccess .= "\tAuthType Basic\n";
+				$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
+				$htaccess .= "\tRequire valid-user\n";
+		
+				if ($serveurFreeFr)
+				{
+					$htaccess .= "</Files>\n";
+				}
+				else
+				{
+					$htaccess .= "</FilesMatch>\n";
+				}
+				
 				$htaccess .= "# Fin de l'ajout automatique de Squeletml (accès admin).\n";
 		
 				if ($fic = @fopen($racine . '/.htaccess', 'a+'))

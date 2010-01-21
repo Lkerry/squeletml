@@ -24,7 +24,7 @@ if ($initExiste && $protection)
 }
 else
 {
-	$codeLangue = langue($langueParDefaut, 'navigateur');
+	$codeLangue = langue('', 'navigateur');
 	
 	// Nécessaire à la traduction.
 	phpGettext('.', $codeLangue);

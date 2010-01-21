@@ -285,7 +285,7 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 		</body>
 	</html>
 
-D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">` lorsque nous visitons la page d'une galerie. Aussi, certaines `div` peuvent être positionnées ailleurs selon les choix effectués dans le fichier de configuration, par exemple le menu. Enfin, il est possible d'utiliser son propre modèle de page, comme expliqué à la section *Le dossier `xhtml`*.
+D'autres `div` peuvent apparaître à la suite de `<div id="interieurContenu">` selon le module en cours d'utilisation, par exemple `<div id="galerie">` lorsque nous visitons la page d'une galerie. Aussi, certaines `div` peuvent être positionnées ailleurs selon les choix effectués dans le fichier de configuration, par exemple le menu. Enfin, il est possible d'utiliser son propre modèle de page, comme expliqué à la section «Le dossier `xhtml`».
 
 #### Nombre de colonnes et blocs de contenu
 
@@ -702,7 +702,7 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 		
 		Lire la suite de Article sur le husky 
 
-	La teneur exacte de l'aperçu de la page sur le husky dépend de la configuration de `$urlRacine/animaux/chiens/husky.php`. Dans notre exemple, les variables `$dateCreation` et `$dateRevision` ont été affectées. Pour sa part, le lien «Lire la suite de...» est ajouté lorsque le texte de la page n'apparaît pas au complet, et ce grâce à l'utilisation de la variable `$apercu`. Voir la section *Variables PHP* pour plus de détails au sujet de ces variables.
+	La teneur exacte de l'aperçu de la page sur le husky dépend de la configuration de `$urlRacine/animaux/chiens/husky.php`. Dans notre exemple, les variables `$dateCreation` et `$dateRevision` ont été affectées. Pour sa part, le lien «Lire la suite de...» est ajouté lorsque le texte de la page n'apparaît pas au complet, et ce grâce à l'utilisation de la variable `$apercu`. Voir la section «Variables PHP» pour plus de détails au sujet de ces variables.
 
 ## Galeries
 

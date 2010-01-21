@@ -1349,6 +1349,16 @@ function adminUnlink($fichier)
 }
 
 /*
+
+*/
+function adminUrlDeconnexion($urlRacine)
+{
+	list ($protocole, $url) = explode('://', $urlRacine, 2);
+	
+	return "$protocole://deconnexion@$url/deconnexion.php";
+}
+
+/*
 Retourne la version de l'image (intermediaire|vignette|original|inconnu).
 */
 function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime)
