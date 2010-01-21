@@ -563,6 +563,50 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		echo adminMessagesScript($messagesScript, T_("Maintenance du site"));
 	}
+	
+	########################################################################
+	##
+	## Suppression du cache.
+	##
+	########################################################################
+
+	if (isset($_POST['supprimerCache']))
+	{
+		$messagesScript = '';
+		
+		if (!isset($_POST['cache']))
+		{
+			$messagesScript .= '<li class="erreur">' . T_("Aucun type de cache sélectionné.") . "</li>\n";
+		}
+		elseif ($_POST['cache'] == 'admin')
+		{
+			if (adminVideCache($racineAdmin, 'admin'))
+			{
+				$messagesScript .= '<li>' . T_("Suppression du cache de l'administration effectuée.") . "</li>\n";
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache de l'administration. Veuillez vérifier manuellement son contenu.") . "</li>\n";
+			}
+		}
+		elseif ($_POST['cache'] == 'site')
+		{
+			if (adminVideCache($racineAdmin, 'site'))
+			{
+				$messagesScript .= '<li>' . T_("Suppression du cache du site effectuée.") . "</li>\n";
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache du site. Veuillez vérifier manuellement son contenu.") . "</li>\n";
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . T_("Le type de cache sélectionné n'est pas valide.") . "</li>\n";
+		}
+		
+		echo adminMessagesScript($messagesScript, T_("Suppression du cache"));
+	}
 	?>
 </div><!-- /#boiteMessages -->
 
@@ -648,6 +692,25 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</fieldset>
 				
 				<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /.boite -->
+	
+	<div class="boite">
+		<h2 id="cache"><?php echo T_("Supprimer le cache"); ?></h2>
+
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
+			<div>
+				<fieldset>
+					<legend><?php echo T_("Options"); ?></legend>
+					
+					<p><?php echo T_("Supprimer le cache:"); ?><br />
+					<input type="radio" name="cache" value="admin" /> <?php echo T_("de l'administration."); ?><br />
+					<input type="radio" name="cache" value="site" /> <?php echo T_("du site."); ?>
+					</p>
+				</fieldset>
+				
+				<p><input type="submit" name="supprimerCache" value="<?php echo T_('Supprimer le cache'); ?>" /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->

@@ -513,7 +513,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		
 		if (adminTailleCache($racineAdmin) > $adminTailleCache)
 		{
-			adminVideCache($racineAdmin);
+			adminVideCache($racineAdmin, 'admin');
 		}
 		
 		$cheminApercuImage = $racineAdmin . '/cache/' . md5($cheminFichier) . '.' . array_pop(explode('.', $cheminFichier));;
@@ -1460,31 +1460,46 @@ function adminVersionSqueletml($versionDemandee, $adresse)
 }
 
 /*
-Vide le cache. Seuls les fichiers à la racine du dossier sont supprimés, ce qui constitue tout ce qui est mis en cache par Squeletml. Retourne FALSE si une erreur survient, sinon retourne TRUE.
+Vide le cache de l'administration (si `$type` vaut `admin`) ou du site (si `$type` vaut `site`). Seuls les fichiers à la racine du dossier sont supprimés, ce qui constitue tout ce qui est mis en cache par Squeletml. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
-function adminVideCache($racineAdmin)
+function adminVideCache($racineAdmin, $type)
 {
-	$cheminCache = $racineAdmin . '/cache';
 	$sansErreur = TRUE;
 	
-	if ($dossier = @opendir($cheminCache))
+	if ($type == 'admin')
 	{
-		while (($fichier = @readdir($dossier)) !== FALSE)
-		{
-			if (!is_dir($cheminCache . '/' . $fichier))
-			{
-				if (!@unlink($cheminCache . '/' . $fichier))
-				{
-					$sansErreur = FALSE;
-				}
-			}
-		}
-		
-		closedir($dossier);
+		$cheminCache = $racineAdmin . '/cache';
+	}
+	elseif ($type == 'site')
+	{
+		$cheminCache = dirname($racineAdmin) . '/site/cache';
 	}
 	else
 	{
 		$sansErreur = FALSE;
+	}
+	
+	if ($sansErreur)
+	{
+		if ($dossier = @opendir($cheminCache))
+		{
+			while (($fichier = @readdir($dossier)) !== FALSE)
+			{
+				if (!is_dir($cheminCache . '/' . $fichier))
+				{
+					if (!@unlink($cheminCache . '/' . $fichier))
+					{
+						$sansErreur = FALSE;
+					}
+				}
+			}
+		
+			closedir($dossier);
+		}
+		else
+		{
+			$sansErreur = FALSE;
+		}
 	}
 	
 	return $sansErreur;
