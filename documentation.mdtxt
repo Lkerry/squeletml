@@ -119,6 +119,8 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 - `blocs.inc.php`: construit le code XHTML des blocs (menu des langues, menu principal, liens vers les flux RSS, etc.) pour une région spécifique. Après son inclusion, la variable `$blocs` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/blocs.inc.php`, qui sera inséré à la fin de celui par défaut.
 
+- `categories.inc.php`: construit et analyse la liste des articles faisant partie de la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/categorie.inc.php`, qui sera inséré à la fin de celui par défaut.
+
 - `config.inc.php`: contient presque toute la configuration du site, autant pour le formulaire de contact, les galeries photos, le titre du site, etc. Pour modifier une variable de ce fichier, créer le fichier `site/inc/config.inc.php` et y réaffecter les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
 
 - `constantes.inc.php`: contient les constantes PHP utilisées dans Squeletml. Vous pouvez ajouter vos propres constantes en créant le fichier `site/inc/constantes.inc.php`. S'il existe, ce fichier sera inséré après celui par défaut.
@@ -185,6 +187,14 @@ Il y a enfin les fichiers des pages par défaut:
 	**Il s'agit des pages livrées par défaut avec Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système d'inclusion.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `site/xhtml/fr/page.index.inc.php`, qui sera inclus à la place du fichier par défaut.
 
 	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$contactCourrielParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
+
+#### Dossiers inutiles pour une configuration donnée
+
+Le dossier d'une langue inactivée peut être supprimé, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas de la page `galerie.php` à la racine du site si cette dernière n'est pas utilisée.
+
+Lors d'une mise à jour, il est également inutile de copier ces dossiers ou fichiers.
+
+*Note: j'ai ajouté cette suggestion dans la documentation après avoir constaté une drôle de situation avec le moteur de recherche Google. J'ai mis sur pied un site en français, donc les pages en anglais n'étaient pas utilisées, et il n'y avait aucun lien pointant vers ces dernières. Malgré cela, les pages du dossier `en` se sont retrouvées dans l'index de Google. Je ne sais pas comment expliquer cette situation.*
 
 ### Structure XHTML par défaut
 
@@ -402,7 +412,10 @@ Pour mettre à jour Squeletml:
 
 Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer**, en plus des fichiers `.htaccess` ou `robots.txt`, le dossier `site`, qui contient votre configuration personnalisée, éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`) ainsi que les pages que vous avez vous-même ajoutées.
 
-**Note: si vous avez modifié le nom du dossier d'administration, ne pas oublier de supprimer l'ancien dossier et de renommer le nouveau.**
+**Notes:**
+
+- si vous avez modifié le nom du dossier d'administration, ne pas oublier de supprimer l'ancien dossier et de renommer le nouveau;
+- la lecture de la section «Dossiers inutiles pour une configuration donnée» est suggérée en complément à cette explication sur la mise à jour de Squeletml.
 
 ## Création de pages
 
