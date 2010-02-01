@@ -109,7 +109,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 		
 		$nomFichierCache = 'galerie-' . md5($idGalerie) . '-oeuvre-' . md5($id) . '.html';
 		
-		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{
 			$corpsGalerie .= file_get_contents("$racine/site/cache/$nomFichierCache");
 		}
@@ -119,14 +119,14 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 		
 			// On récupère le code de l'oeuvre demandée en version intermediaire.
-			$oeuvreIntermediaire = '<div id="galerieIntermediaire">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'intermediaire', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+			$oeuvreIntermediaire = '<div id="galerieIntermediaire">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'intermediaire', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
 
 			// On recherche l'oeuvre précédente pour la navigation (si l'oeuvre demandée est la première, il n'y a pas d'oeuvre précédente), et on récupère son code.
 			if (array_key_exists($indice - 1, $tableauGalerie))
 			{
 				$indiceOeuvrePrecedente = $indice - 1; // `$indiceOeuvrePrecedente` contient l'indice de l'oeuvre précédente.
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceOeuvrePrecedente]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceOeuvrePrecedente], $typeMime, 'vignette', 'precedent', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+				$oeuvrePrecedente = '<div class="galerieNavigationPrecedent">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceOeuvrePrecedente], $typeMime, 'vignette', 'precedent', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
 			
 				// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
 				if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
@@ -149,7 +149,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			{
 				$indiceOeuvreSuivante = $indice + 1; // `$indiceOeuvreSuivante` est l'indice de l'oeuvre suivante.
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceOeuvreSuivante]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceOeuvreSuivante], $typeMime, 'vignette', 'suivant', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+				$oeuvreSuivante = '<div class="galerieNavigationSuivant">' . oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceOeuvreSuivante], $typeMime, 'vignette', 'suivant', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
 			
 				// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
 				if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
@@ -323,7 +323,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 					}
 				
 					$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-					$corpsMinivignettes .= oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteOeuvreEnCours);
+					$corpsMinivignettes .= oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteOeuvreEnCours);
 					$minivignetteOeuvreEnCours = FALSE;
 				}
 			
@@ -349,7 +349,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 				$corpsGalerie = $corpsGalerie . $corpsMinivignettes . $galerieInfo;
 			}
 			
-			if ($dureeCache)
+			if ($dureeCache['galerie'])
 			{
 				creeDossierCache($racine);
 				@file_put_contents("$racine/site/cache/$nomFichierCache", $corpsGalerie);
@@ -388,6 +388,7 @@ elseif (!empty($idGalerie))
 		}
 		else
 		{
+			$nombreDePages = $pagination['nombreDePages'];
 			$indicePremiereOeuvre = $pagination['indicePremierElement'];
 			$indiceDerniereOeuvre = $pagination['indiceDernierElement'];
 			$baliseTitle = $pagination['baliseTitle'];
@@ -425,7 +426,7 @@ elseif (!empty($idGalerie))
 	{
 		$nomFichierCache = 'galerie-' . md5($idGalerie) . '.html';
 		
-		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{
 			$corpsGalerie .= file_get_contents("$racine/site/cache/$nomFichierCache");
 		}
@@ -434,7 +435,7 @@ elseif (!empty($idGalerie))
 			for ($indice = $indicePremiereOeuvre; $indice <= $indiceDerniereOeuvre && $indice < $nombreDoeuvres; $indice++)
 			{
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$corpsGalerie .= oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+				$corpsGalerie .= oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 			}
 	
 			if ($galerieVignettesParPage)
@@ -475,7 +476,7 @@ elseif (!empty($idGalerie))
 				$corpsGalerie .= $galerieInfo;
 			}
 			
-			if ($dureeCache)
+			if ($dureeCache['galerie'])
 			{
 				creeDossierCache($racine);
 				@file_put_contents("$racine/site/cache/$nomFichierCache", $corpsGalerie);

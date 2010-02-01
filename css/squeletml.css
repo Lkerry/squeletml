@@ -1,6 +1,6 @@
 /***********************************************************************
 **
-** Général.
+** `html`, `body` et général.
 **
 ***********************************************************************/
 
@@ -11,81 +11,6 @@ html {
 html, body {
 	margin: 0px;
 	padding: 0px;
-}
-
-#page {
-	max-width: 900px;
-	margin: 0px auto;
-	padding: 0px;
-	position: relative;
-}
-
-#ancres {
-	position: absolute;
-	left: -5000px;
-}
-
-div#titre h1, div#titre p {
-	padding: 0px;
-	font-weight: bold;
-	font-size: 1.2em;
-	line-height: 1.2em;
-}
-
-div#titre h1 img#logo, div#titre p img#logo {
-	float: left;
-	margin-right: 3px;
-}
-
-div#titre h1 span#logoSupplement, div#titre p span#logoSupplement {
-	display: block;
-	padding-top: 18px;
-	padding-bottom: 5px;
-}
-
-div#titre p a, div#titre p a:hover, div#titre p a:visited {
-	color: #007070;
-	text-decoration: none;
-	border-bottom: none;
-}
-
-div#titre p a img {
-	border: none;
-}
-
-div#sousTitre p {
-	margin: 0px;
-	padding: 0px;
-	font-style: italic;
-}
-
-#surContenu, #sousContenu {
-	width: 204px;
-	text-align: left;
-}
-
-#interieurContenu {
-	padding: 0px 5px 5px 5px;
-	margin-top: 15px;
-}
-
-#contenu h1, body.accueil #interieurContenu> h2:first-child {
-	margin-top: 0px;
-	padding-top: 0px;
-}
-
-div#auteur-et-dates {
-	font-style: italic;
-}
-
-#basDePage {
-	text-align: center;
-	padding: 0px 5px;
-}
-
-#basDePage img {
-	border: none;
-	vertical-align: bottom;
 }
 
 h1, h2, h3, h4, h5, h6, a, a:visited {
@@ -99,6 +24,11 @@ h1, h2, h3, h4, h5, h6, a, a:visited {
 a:hover {
 	text-decoration: none;
 	border-bottom: 1px dotted #f2f2f2;
+}
+
+ol, ul {
+	padding: 0px;
+	margin-left: 20px;
 }
 
 ul {
@@ -123,20 +53,9 @@ pre {
 	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
-a.actif {
-	font-weight: bold;
-}
-
-li.actif {
-	list-style-image: url('../fichiers/puce.png');
-}
-
-li.actif li {
-	list-style-image: none;
-}
-
-li.parent {
-	list-style-type: disc;
+#ancres {
+	position: absolute;
+	left: -5000px;
 }
 
 .pagination {
@@ -201,11 +120,45 @@ li.parent {
 	margin-bottom: 20px;
 }
 
+/* Message pour IE6. */
+
+div#messageIe6 {
+	border: 3px solid #090;
+	margin: 0px;
+	padding: 0px;
+	background: #cfc;
+	color: #000;
+}
+
+div#messageIe6 p {
+	margin: 10px;
+}
+
+div#messageIe6 p img, div#messageIe6 p span {
+	vertical-align: middle;
+	display: inline-block; 
+}
+
+div#messageIe6 p img {
+	border: none;
+}
+
+div#messageIe6 p a {
+	color: #006;
+}
+
 /***********************************************************************
 **
-** Bordures de la page.
+** Page.
 **
 ***********************************************************************/
+
+#page {
+	max-width: 900px;
+	margin: 0px auto;
+	padding: 0px;
+	position: relative;
+}
 
 body.bordureGauchePage #page {
 	border-left: 1px solid #f2f2f2;
@@ -217,9 +170,94 @@ body.bordureDroitePage #page {
 
 /***********************************************************************
 **
-** Catégories.
+** En-tête.
 **
 ***********************************************************************/
+
+div#titre h1, div#titre p {
+	padding: 0px;
+	font-weight: bold;
+	font-size: 1.2em;
+	line-height: 1.2em;
+}
+
+div#titre h1 img#logo, div#titre p img#logo {
+	float: left;
+	margin-right: 3px;
+}
+
+div#titre h1 span#logoSupplement, div#titre p span#logoSupplement {
+	display: block;
+	padding-top: 18px;
+	padding-bottom: 5px;
+}
+
+div#titre p a, div#titre p a:hover, div#titre p a:visited {
+	color: #007070;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+div#titre p a img {
+	border: none;
+}
+
+div#sousTitre p {
+	margin: 0px;
+	padding: 0px;
+	font-style: italic;
+}
+
+/* En-tête pleine largeur. */
+
+body.enTetePleineLargeur div#enTete {
+	background-color: white;
+	padding-bottom: 1px;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+body.enTetePleineLargeur div#titre h1, body.enTetePleineLargeur div#titre p {
+	padding: 0px;
+	margin: 0px 0px 0px 4px;/*?*/
+}
+
+body.enTetePleineLargeur div#sousTitre {
+	margin: 0px 0px 0px 79px;
+	padding: 0px;
+}
+
+/***********************************************************************
+**
+** Sur-contenu.
+**
+***********************************************************************/
+
+#surContenu {
+	width: 204px;
+	text-align: left;/*?*/
+}
+
+/***********************************************************************
+**
+** Contenu.
+**
+***********************************************************************/
+
+#contenu h1, body.accueil #interieurContenu> h2:first-child {
+	margin-top: 0px;
+	padding-top: 0px;
+}
+
+#interieurContenu {
+	padding: 0px 5px 5px 5px;/*?*/
+	margin-top: 15px;
+}
+
+#infosPublication {
+	font-style: italic;
+}
+
+/* Catégories. */
 
 .titreApercu {
 	margin-top: 35px;
@@ -234,11 +272,6 @@ body.bordureDroitePage #page {
 	color: inherit;
 }
 
-.auteurEtDatesApercu {
-	font-style: italic;
-	margin-bottom: 10px;
-}
-
 .descriptionApercu {
 	margin-left: 50px;
 }
@@ -247,65 +280,30 @@ body.bordureDroitePage #page {
 	font-size: 1em;
 }
 
+.infosPublicationApercu {
+	font-style: italic;
+	margin-bottom: 10px;
+}
+
 .lienApercu {
 	font-weight: bold;
 }
 
-/***********************************************************************
-**
-** Licence.
-**
-***********************************************************************/
+/* Contact. */
 
-#licence img {
-	border: none;
+#formContact label {
+	font-weight: bold;
 }
 
-#licence ul {
-	padding-left: 15px;
+#formContact input.champInfo {
+	width: 35%;
 }
 
-/***********************************************************************
-**
-** Module «Faire découvrir» et flux RSS.
-**
-***********************************************************************/
-
-#modeleMessageDecouvrir {
-	margin: 25px;
-	padding: 5px;
-	background-color: #f2f2f2;
+#formContact textarea {
+	width: 70%;
 }
 
-#fluxRss ul {
-	list-style-type: none;
-	padding: 0px;
-}
-
-#faireDecouvrir a, #fluxRss a {
-	padding-right: 3px;
-}
-
-#faireDecouvrir a {
-	padding-left: 22px;
-	background: url('../fichiers/enveloppe.png') no-repeat left center;
-}
-
-#fluxRss a {
-	margin-left: 1px;
-	padding-left: 19px;
-	background: url('../fichiers/rss.png') no-repeat left center;
-}
-
-h2#formulaireFaireDecouvrir {
-	clear: both;
-}
-
-/***********************************************************************
-**
-** Pages d'erreur.
-**
-***********************************************************************/
+/* Pages d'erreur. */
 
 h1#titrePage401, h1#titrePage404 {
 	padding-left: 20px;
@@ -317,6 +315,33 @@ h1#titrePage401 {
 
 h1#titrePage404 {
 	background: url('../fichiers/attention.png') no-repeat left center;
+}
+
+/***********************************************************************
+**
+** Sous-contenu.
+**
+***********************************************************************/
+
+#sousContenu {/*?*/
+	width: 204px;
+	text-align: left;
+}
+
+/***********************************************************************
+**
+** Bas de page.
+**
+***********************************************************************/
+
+#basDePage {
+	text-align: center;
+	padding: 0px 5px;/*?*/
+}
+
+#basDePage img {
+	border: none;
+	vertical-align: bottom;
 }
 
 /***********************************************************************
@@ -334,7 +359,7 @@ h1#titrePage404 {
 	margin-top: 20px;
 }
 
-.contenuBloc {
+.contenuBloc {/*?*/
 	padding-left: 3px;
 	padding-right: 3px;
 }
@@ -344,6 +369,22 @@ h1#titrePage404 {
 	margin-bottom: 0px;
 	padding-top: 0px;
 	padding-bottom: 0px;
+}
+
+a.actif {
+	font-weight: bold;
+}
+
+li.actif {
+	list-style-image: url('../fichiers/puce.png');
+}
+
+li.actif li {
+	list-style-image: none;
+}
+
+li.parent {
+	list-style-type: disc;
 }
 
 /* Coins arrondis. */
@@ -375,6 +416,48 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 	width: 8px;
 	background-repeat: no-repeat;
 	font-size: 1px; /* À cause d'un bogue d'IE. */
+}
+
+/* Flux RSS. */
+
+#fluxRss ul {
+	list-style-type: none;
+	padding: 0px;
+}
+
+#fluxRss a {/*?*/
+	margin-left: 1px;
+	padding-right: 3px;
+	padding-left: 19px;
+	background: url('../fichiers/rss.png') no-repeat left center;
+}
+
+/* Licence. */
+
+#licence img {
+	border: none;
+}
+
+#licence ul {
+	padding-left: 15px;/*?*/
+}
+
+/* Module «Faire découvrir». */
+
+#modeleMessageDecouvrir {
+	margin: 25px;
+	padding: 5px;
+	background-color: #f2f2f2;
+}
+
+h2#formulaireFaireDecouvrir {
+	clear: both;
+}
+
+#faireDecouvrir a {/*?*/
+	padding-right: 3px;
+	padding-left: 22px;
+	background: url('../fichiers/enveloppe.png') no-repeat left center;
 }
 
 /***********************************************************************
@@ -583,11 +666,7 @@ body.deuxColonnesSousContenuAdroite #sousContenu {
 	right: 0px;
 }
 
-/***********************************************************************
-**
-** Aucune colonne.
-**
-***********************************************************************/
+/* body.aucuneColonne */
 
 body.aucuneColonne #page {
 	max-width: 750px;
@@ -637,46 +716,6 @@ body.aucuneColonne #menu ul {
 body.aucuneColonne #menu li {
 	display: inline;
 	margin-right: 20px;
-}
-
-/***********************************************************************
-**
-** En-tête pleine largeur.
-**
-***********************************************************************/
-
-body.enTetePleineLargeur div#enTete {
-	background-color: white;
-	padding-bottom: 1px;
-	border-bottom: 1px solid #f2f2f2;
-}
-
-body.enTetePleineLargeur div#titre h1, body.enTetePleineLargeur div#titre p {
-	padding: 0px;
-	margin: 0px 0px 0px 4px;
-}
-
-body.enTetePleineLargeur div#sousTitre {
-	margin: 0px 0px 0px 79px;
-	padding: 0px;
-}
-
-/***********************************************************************
-**
-** Contact.
-**
-***********************************************************************/
-
-#formContact label {
-	font-weight: bold;
-}
-
-#formContact input.champInfo {
-	width: 35%;
-}
-
-#formContact textarea {
-	width: 70%;
 }
 
 /***********************************************************************
@@ -731,7 +770,7 @@ div.sepGalerieMinivignettes {
 	padding-left: 15px;
 }
 
-#galerieLienOriginal {
+#galerieLienOriginalLegende {
 	margin-top: 15px;
 }
 
@@ -808,11 +847,11 @@ div#galerieIntermediaireImg img {
 	background: url('../fichiers/ombre.png') no-repeat right bottom;
 }
 
-div#galerieIconeOriginal {
+div#galerieLienOriginalIcone {
 	margin-bottom: 5px;
 }
 
-div#galerieIconeOriginal img {
+div#galerieLienOriginalIcone img {
 	border: none;
 }
 
@@ -824,35 +863,4 @@ div.galerieNavigationAccueil img, div#galerieIntermediaireImg img {
 
 body.galerie div.pagination {
 	clear: both;
-}
-
-/***********************************************************************
-**
-** Message pour IE6.
-**
-***********************************************************************/
-
-div#messageIe6 {
-	border: 3px solid #090;
-	margin: 0px;
-	padding: 0px;
-	background: #cfc;
-	color: #000;
-}
-
-div#messageIe6 p {
-	margin: 10px;
-}
-
-div#messageIe6 p img, div#messageIe6 p span {
-	vertical-align: middle;
-	display: inline-block; 
-}
-
-div#messageIe6 p img {
-	border: none;
-}
-
-div#messageIe6 p a {
-	color: #006;
 }

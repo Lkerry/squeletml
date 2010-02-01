@@ -7,7 +7,7 @@ Ce fichier construit et analyse la liste des articles faisant partie de la caté
 phpGettext($racine, LANGUE);
 
 // Nom pour le cache.
-if ($dureeCache)
+if ($dureeCache['categorie'])
 {
 	$nomFichierCache = 'categorie-' . md5($idCategorie) . '.html';
 }
@@ -103,7 +103,7 @@ if (!empty($idCategorie))
 	else
 	{
 		// On vérifie si la catégorie existe en cache ou si le cache est expiré.
-		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+		if ($dureeCache['categorie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['categorie']))
 		{
 			$categorie .= file_get_contents("$racine/site/cache/$nomFichierCache");
 		}
@@ -124,20 +124,29 @@ if (!empty($idCategorie))
 					}
 		
 					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-					$auteurEtDates = auteurEtDates($infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision']);
+					$infosPublication = infosPublication($infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision']);
 					
-					if (!empty($auteurEtDates))
+					if (!empty($infosPublication))
 					{
-						$categorie .= "<div class=\"auteurEtDatesApercu\">\n";
-						$categorie .= $auteurEtDates;
-						$categorie .= "</div><!-- /.auteurEtDatesApercu -->\n";
+						$categorie .= "<div class=\"infosPublicationApercu\">\n";
+						$categorie .= $infosPublication;
+						$categorie .= "</div><!-- /.infosPublicationApercu -->\n";
 					}
 					
 					$categorie .= "<div class=\"descriptionApercu\">\n";
-					$categorie .= $infosPage['description'] . "\n";
+					
+					if (!empty($infosPage['apercu']))
+					{
+						$categorie .= $infosPage['apercu'] . "\n";
+					}
+					else
+					{
+						$categorie .= $infosPage['contenu'] . "\n";
+					}
+					
 					$categorie .= "</div><!-- /.descriptionApercu -->\n";
-		
-					if (!$infosPage['descriptionComplete'])
+					
+					if (!empty($infosPage['apercu']))
 					{
 						$categorie .= "<div class=\"lienApercu\">\n";
 						$categorie .= sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em>') . "\n";
@@ -150,7 +159,7 @@ if (!empty($idCategorie))
 		
 			$categorie .= $pagination;
 		
-			if ($dureeCache)
+			if ($dureeCache['categorie'])
 			{
 				creeDossierCache($racine);
 				@file_put_contents("$racine/site/cache/$nomFichierCache", $categorie);

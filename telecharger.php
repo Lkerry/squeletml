@@ -1,14 +1,19 @@
 <?php
 include_once 'init.inc.php';
+include_once $racine . '/inc/fonctions.inc.php';
 
 foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {
 	include_once $cheminFichier;
 }
 
-$chemin = $racine . '/' . $_GET['fichier'];
-$urlFichier = $urlRacine . '/' . $_GET['fichier'];
-$nom = superBasename($_GET['fichier']);
+include_once $racine . '/inc/mimedetect/file.inc.php';
+include_once $racine . '/inc/mimedetect/mimedetect.inc.php';
+
+$fichier = securiseTexte($_GET['fichier']);
+$chemin = $racine . '/' . $fichier;
+$urlFichier = $urlRacine . '/' . superRawurlencode($fichier);
+$nom = superBasename($fichier);
 $typeMime = typeMime($chemin, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 
 if ($typeMime == 'application/octet-stream')

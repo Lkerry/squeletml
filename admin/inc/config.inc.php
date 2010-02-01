@@ -20,7 +20,7 @@ $adminUrlMaintenance = 'maintenance.php';
   - `26214400` équivaut à 25 Mio;
   - `52428800` équivaut à 50 Mio;
 */
-$adminTailleCache = '2097152';
+$adminTailleCache = '5242880';
 
 // Activation de boîtes déroulantes par défaut.
 /*
@@ -50,7 +50,7 @@ $adminRobots = 'noindex, nofollow, noarchive';
 
 // Langue par défaut de l'administration.
 /*
-- Langue par défaut si aucune autre précision n'est apportée. Si la variable `$langue` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui sera utilisée.
+- Langue par défaut si aucune autre précision n'est apportée. Si la variable `$langue` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
 - Voir la fonction `langue()`.
 */
 $adminLangueParDefaut = 'fr';

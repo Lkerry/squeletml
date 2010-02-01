@@ -1,5 +1,6 @@
 <?php
 include 'inc/zero.inc.php';
+admin_set_time_limit(300);
 
 if (!empty($adminFiltreDossiers))
 {
@@ -13,9 +14,9 @@ else
 
 if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['fichier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
 {
-	$chemin = $_GET['fichier'];
-	$nom = superBasename($chemin);
-
+	$chemin = securiseTexte($_GET['fichier']);
+	$nom = securiseTexte(superBasename($chemin));
+	
 	if (file_exists($chemin))
 	{
 		if (chdir(dirname($chemin)))
@@ -25,7 +26,14 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 			if (is_dir($chemin))
 			{
 				$dossierDeSauvegarde = $racineAdmin . '/cache';
-				$nomArchive = $nom . '.tar';
+				$date = '';
+				
+				if (isset($_GET['action']) && $_GET['action'] == 'date')
+				{
+					$date = '_' . date('Y-m-d_H:i:s');
+				}
+				
+				$nomArchive = $nom . $date . '.tar';
 				$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
 				$archive = new tar($cheminArchive);
 				$listeFichiers = adminListeFichiers($chemin);

@@ -155,7 +155,6 @@ if (!empty($blocsAinserer))
 							$classeBlocArrondi = '';
 						}
 						
-						$blocs[$region] .= '<div class="sep"></div>' . "\n";
 						$blocs[$region] .= '<div id="fluxRss" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
 						$blocs[$region] .= "<ul>\n";
@@ -228,31 +227,35 @@ if (!empty($blocsAinserer))
 				
 					break;
 				
-				case 'auteur-et-dates':
-					$bloc = auteurEtDates($auteur, $dateCreation, $dateRevision);
-					
-					if (!empty($bloc))
+				case 'infos-publication':
+					if ($infosPublication)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						$bloc = infosPublication($auteur, $dateCreation, $dateRevision);
+					
+						if (!empty($bloc))
 						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+							list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
-						$blocs[$region] .= '<div id="auteur-et-dates" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
-						$blocs[$region] .= '</div><!-- /#auteur-et-dates -->' . "\n";
+							if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+							{
+								$classeBlocArrondi = ' blocArrondi';
+							}
+							else
+							{
+								$classeBlocArrondi = '';
+							}
+				
+							$blocs[$region] .= '<div id="infosPublication" class="bloc' . $classeBlocArrondi . '">' . "\n";
+							$blocs[$region] .= $codeInterieurBlocHaut;
+							$blocs[$region] .= $bloc;
+							$blocs[$region] .= $codeInterieurBlocBas;
+							$blocs[$region] .= '</div><!-- /#infosPublication -->' . "\n";
+						}
 					}
-				
+					
 					break;
 				
+				// Blocs personnalisés.
 				default:
 					if (cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
 					{

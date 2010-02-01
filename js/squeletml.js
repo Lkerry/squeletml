@@ -80,6 +80,19 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre)
 		oParent.insertBefore(oConteneur, oParent.firstChild);
 		$('#tableDesMatieresBdCorps').tableOfContents(oParent, {startLevel: 2, depth: 6});
 		oConteneur.insertBefore(oTitre, oConteneur.firstChild);
+		
+		// S'il n'y a qu'un `li` vide (en fait, ne contenant qu'un retour à la ligne), aucun titre n'a été trouvé, on peut donc supprimer la table des matières, qui ne sert à rien. Note: pour IE6, le `li` est vraiment vide (aucun retour à la ligne).
+		if ($('#tableDesMatieresBdCorps li').length == 1 && ($('#tableDesMatieresBdCorps > li').text() == "\n" || $('#tableDesMatieresBdCorps > li').text() == ''))
+		{
+			$('#tableDesMatieres').remove();
+		}
+		
+		var oH1 = $(oParent).find('h1');
+		
+		if (oH1.length > 0)
+		{
+			$(oH1[0]).after($('#tableDesMatieres'));
+		}
 	})
 }
 

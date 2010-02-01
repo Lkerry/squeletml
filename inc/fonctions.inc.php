@@ -63,6 +63,26 @@ function aInclureDebut($racine)
 }
 
 /*
+Ajoute la variable GET à l'adresse fournie, et retourne le résultat. `$get` doit être sous la forme `cle=valeur` ou `cle`.
+*/
+function ajouteGet($adresse, $get)
+{
+	if (!empty($get))
+	{
+		if (strpos($adresse, '?') !== FALSE)
+		{
+			$adresse .= '&amp;' . $get;
+		}
+		else
+		{
+			$adresse .= '?' . $get;
+		}
+	}
+	
+	return $adresse;
+}
+
+/*
 Retourne les annexes de la documentation.
 */
 function annexesDocumentation($racineAdmin)
@@ -82,37 +102,6 @@ function annexesDocumentation($racineAdmin)
 	$texte .= '<pre id="fichierDeConfiguration">' . coloreFichierPhp($racineAdmin . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
 	
 	return $texte;
-}
-
-/*
-Retourne les informations sur l'auteur et les dates de création et de révision. Si aucune information n'est présente, retourne une chaine vide.
-*/
-function auteurEtDates($auteur, $dateCreation, $dateRevision)
-{
-	$auteurEtDates = '';
-	
-	if (!empty($auteur))
-	{
-		if (!empty($dateCreation))
-		{
-			$auteurEtDates .= sprintf(T_("Écrit par %1\$s le %2\$s."), $auteur, $dateCreation) . "\n";
-		}
-		else
-		{
-			$auteurEtDates .= sprintf(T_("Écrit par %1\$s."), $auteur) . "\n";
-		}
-	}
-	elseif (!empty($dateCreation))
-	{
-		$auteurEtDates .= sprintf(T_("Écrit le %1\$s."), $dateCreation) . "\n";
-	}
-	
-	if (!empty($dateRevision))
-	{
-		$auteurEtDates .= sprintf(T_("Dernière révision le %1\$s."), $dateRevision) . "\n";
-	}
-	
-	return $auteurEtDates;
 }
 
 /*
@@ -144,7 +133,7 @@ Returne TRUE si le bloc a des coins arrondis, sinon retourne FALSE.
 */
 function blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
 {
-	if ((isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) || $blocsArrondisParDefaut)
+	if ((isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) || (!isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisParDefaut))
 	{
 		return TRUE;
 	}
@@ -890,7 +879,7 @@ function fluxRss($type, $itemsFluxRss, $url, $baliseTitleComplement, $idGalerie,
 /*
 Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
-function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut)
+function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
 	$itemsFluxRss = array ();
@@ -940,10 +929,12 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			{
 				$alt = $title;
 			}
-		
+			
+			$urlOriginal = '';
+			
 			if (!empty($oeuvre['originalNom']))
 			{
-				$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['originalNom']);
+				$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['originalNom']);
 			}
 			else
 			{
@@ -951,16 +942,21 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			
 				if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
 				{
-					$urlOriginal = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($nomOriginal);
+					$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($nomOriginal);
+				}
+			}
+			
+			if (!empty($urlOriginal))
+			{
+				if ($galerieLienOriginalTelecharger)
+				{
+					$urlOriginal = "$urlRacine/telecharger.php?fichier=$urlOriginal";
 				}
 				else
 				{
-					$urlOriginal = '';
+					$urlOriginal = "$urlRacine/$urlOriginal";
 				}
-			}
-		
-			if (!empty($urlOriginal))
-			{
+				
 				$msgOriginal = "\n<p><a href='$urlOriginal'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
 			}
 			else
@@ -1008,10 +1004,10 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 */
-function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
+function fluxRssPageTableauBrut($cheminPage, $urlPage, $fluxRssAvecApercu)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($urlPage, $inclureApercu);
+	$infosPage = infosPage($urlPage, $fluxRssAvecApercu);
 	
 	if (!empty($infosPage))
 	{
@@ -1028,16 +1024,20 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage, $inclureApercu)
 			$pubDate = date('Y-m-d H:i', filemtime($cheminPage));
 		}
 		
-		if (!$infosPage['descriptionComplete'])
+		if (!empty($infosPage['apercu']))
 		{
-			$infosPage['description'] .= "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n";
+			$description = $infosPage['apercu'] . "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n";
+		}
+		else
+		{
+			$description = $infosPage['contenu'];
 		}
 		
 		$itemFlux[] = array (
 			"title" => securiseTexte($infosPage['titre']),
 			"link" => $urlPage,
 			"guid" => $urlPage,
-			"description" => securiseTexte($infosPage['description']),
+			"description" => securiseTexte($description),
 			"dccreator" => securiseTexte($infosPage['auteur']),
 			"pubDate" => $pubDate,
 		);
@@ -1082,9 +1082,9 @@ Retourne un tableau d'informations au sujet de la page demandée. Le tableau con
     - contenu de la balise `title`;
     - URL de la page.
 
-  - `$infosPage['description']`: description de la page. Par défaut, vaut tout le contenu de la `div` `interieurContenu`, la première balise `h1` en moins. Selon les valeurs de `$inclureApercu` et `$apercu` pour la page demandée, la description peut correspondre à un extrait de la page ou au contenu de la métabalise `description`;
+  - `$infosPage['contenu']`: vaut tout le contenu de la `div` `interieurContenu`, la première balise `h1` en moins;
 
-  - `$infosPage['descriptionComplete']`: vaut TRUE si la description n'est pas seulement un aperçu et correspond au texte en entier (`div` `interieurContenu`), sinon vaut FALSE;
+  - `$infosPage['apercu']`: est vide par défaut. Selon les valeurs de `$inclureApercu` et `$apercu` pour la page demandée, la description peut correspondre à un extrait de la page ou au contenu de la métabalise `description`;
 
   - `$infosPage['auteur']`: vaut le contenu de la métabalise `author`, si elle existe;
 
@@ -1126,63 +1126,62 @@ function infosPage($urlPage, $inclureApercu)
 			$infosPage['titre'] = $urlPage;
 		}
 	
-		// Description.
+		// Contenu.
 	
-		if ($description = $dom->find('div#interieurContenu'))
+		if ($contenu = $dom->find('div#interieurContenu'))
 		{
-			if ($h1 = $description[0]->find('h1'))
+			if ($h1 = $contenu[0]->find('h1'))
 			{
 				$h1[0]->outertext = '';
 			}
 			
-			if ($debutInterieurContenu = $description[0]->find('div#debutInterieurContenu'))
+			if ($debutInterieurContenu = $contenu[0]->find('div#debutInterieurContenu'))
 			{
 				$debutInterieurContenu[0]->outertext = '';
 			}
 			
-			if ($finInterieurContenu = $description[0]->find('div#finInterieurContenu'))
+			if ($finInterieurContenu = $contenu[0]->find('div#finInterieurContenu'))
 			{
 				$finInterieurContenu[0]->outertext = '';
 			}
 			
-			$infosPage['description'] = $description[0]->innertext;
-			unset($description);
+			$infosPage['contenu'] = $contenu[0]->innertext;
+			unset($contenu);
 		}
 		else
 		{
-			$infosPage['description'] = '';
+			$infosPage['contenu'] = '';
 		}
-	
+		
+		// Aperçu.
+		
 		$apercuInterne = FALSE;
-		$infosPage['descriptionComplete'] = TRUE;
+		$infosPage['apercu'] = '';
 	
-		if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['description'], $resultatApercu))
+		if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['contenu'], $resultatApercu))
 		{
 			if ($resultatApercu[1] == 'interne')
 			{
-				if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $infosPage['description'], $resultatInterne))
+				if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $infosPage['contenu'], $resultatInterne))
 				{
 					$apercuInterne = TRUE;
-					$infosPage['descriptionComplete'] = FALSE;
-					$infosPage['description'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]));
+					$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]));
 				}
 			}
 			elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
 			{
-				$infosPage['descriptionComplete'] = FALSE;
-				$infosPage['description'] = $description[0]->content;
+				$infosPage['apercu'] = $description[0]->content;
 				unset($description);
 			}
 			else
 			{
-				$infosPage['descriptionComplete'] = FALSE;
-				$infosPage['description'] = $resultatApercu[1];
+				$infosPage['apercu'] = $resultatApercu[1];
 			}
 		}
 	
 		if (!$apercuInterne)
 		{
-			$infosPage['description'] = supprimeCommentairesHtml($infosPage['description']);
+			$infosPage['apercu'] = supprimeCommentairesHtml($infosPage['apercu']);
 		}
 	
 		// Auteur.
@@ -1223,6 +1222,37 @@ function infosPage($urlPage, $inclureApercu)
 	}
 	
 	return $infosPage;
+}
+
+/*
+Retourne les informations sur l'auteur et les dates de création et de révision. Si aucune information n'est présente, retourne une chaine vide.
+*/
+function infosPublication($auteur, $dateCreation, $dateRevision)
+{
+	$infosPublication = '';
+	
+	if (!empty($auteur))
+	{
+		if (!empty($dateCreation))
+		{
+			$infosPublication .= sprintf(T_("Écrit par %1\$s le %2\$s."), $auteur, $dateCreation) . "\n";
+		}
+		else
+		{
+			$infosPublication .= sprintf(T_("Écrit par %1\$s."), $auteur) . "\n";
+		}
+	}
+	elseif (!empty($dateCreation))
+	{
+		$infosPublication .= sprintf(T_("Écrit le %1\$s."), $dateCreation) . "\n";
+	}
+	
+	if (!empty($dateRevision))
+	{
+		$infosPublication .= sprintf(T_("Dernière révision le %1\$s."), $dateRevision) . "\n";
+	}
+	
+	return $infosPublication;
 }
 
 /*
@@ -1731,11 +1761,6 @@ function linkScript($balisesBrutes, $versionParDefautLinkScript = '')
 	$balisesFormatees = '';
 	$favicon = '';
 	
-	if (!empty($versionParDefautLinkScript))
-	{
-		$versionParDefautLinkScript = '?' . $versionParDefautLinkScript;
-	}
-	
 	foreach ($balisesBrutesAinclure as $fichierBrut)
 	{
 		// On récupère les infos.
@@ -1754,27 +1779,27 @@ function linkScript($balisesBrutes, $versionParDefautLinkScript = '')
 		{
 			case 'favicon':
 				// On ne conserve qu'une déclaration de favicon.
-				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . $fichier . $versionParDefautLinkScript . '" />' . "\n";
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" />' . "\n";
 				break;
 	
 			case 'css':
-				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . $fichier . $versionParDefautLinkScript . '" media="screen" />' . "\n";
+				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n";
 				break;
 	
 			case 'cssltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $versionParDefautLinkScript . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 		
 			case 'cssIE7':
-				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $versionParDefautLinkScript . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'csslteIE7':
-				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . $fichier . $versionParDefautLinkScript . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 	
 			case 'js':
-				$balisesFormatees .= '<script type="text/javascript" src="' . $fichier . $versionParDefautLinkScript . '"></script>' . "\n";
+				$balisesFormatees .= '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScript) . '"></script>' . "\n";
 				break;
 				
 			case 'jsDirect':
@@ -1787,7 +1812,7 @@ $fichier\n//]]>\n</script>\n";
 				break;
 				
 			case 'jsltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . $fichier . $versionParDefautLinkScript . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScript) . '"></script>' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'rss':
@@ -1796,11 +1821,11 @@ $fichier\n//]]>\n</script>\n";
 					$title = ' title="' . $title . '"';
 				}
 				
-				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . $fichier . $versionParDefautLinkScript . '"' . $title . ' />' . "\n";
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '"' . $title . ' />' . "\n";
 				break;
 				
 			case 'po':
-				$balisesFormatees .= '<link type="application/x-po" rel="gettext" href="' . $fichier . $versionParDefautLinkScript . '" />' . "\n";
+				$balisesFormatees .= '<link type="application/x-po" rel="gettext" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" />' . "\n";
 				break;
 		}
 	}
@@ -2290,7 +2315,7 @@ function oeuvre(
 	$galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown,
 	
 	// Lien vers l'oeuvre originale.
-	$galerieLienOriginalEmplacement, $galerieLienOriginalIcone, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger,
+	$galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger,
 	
 	// Navigation.
 	$galerieAccueilJavascript, $galerieNavigation,
@@ -2347,6 +2372,17 @@ function oeuvre(
 			$attributTitle = '';
 		}
 		
+		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
+		if (!empty($infosOeuvre['originalNom']))
+		{
+			$originalNom = $infosOeuvre['originalNom'];
+		}
+		// Sinon on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
+		else
+		{
+			$originalNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-original');
+		}
+		
 		if (!empty($infosOeuvre['intermediaireLegende']))
 		{
 			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
@@ -2365,51 +2401,72 @@ function oeuvre(
 			$legende = '';
 		}
 		
-		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
-		if (!empty($infosOeuvre['originalNom']))
+		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on récupère certaines informations.
+		
+		$divLienOriginalIcone = '';
+		$divLienOriginalLegende = '';
+		$aLienOriginalDebut = '';
+		$aLienOriginalFin = '';
+		$aLienOriginalImgIntermediaireDebut = '';
+		$aLienOriginalImgIntermediaireFin = '';
+		$relLienOriginal = '';
+		
+		if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
 		{
-			$originalNom = $infosOeuvre['originalNom'];
-		}
-		// Sinon on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
-		else
-		{
-			$originalNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-original');
+			$relLienOriginal = ' rel="lightbox"';
 		}
 		
-		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on insère un lien vers l'image.
+		$originalExiste = FALSE;
+		
 		if (file_exists($racineImgSrc . '/' . $originalNom))
 		{
-			$lienOriginalHref = '';
-			
-			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript && ($galerieLienOriginalEmplacement == 'legende' || $galerieLienOriginalEmplacement == 'imageLegende'))
-			{
-				$lienOriginalTrad = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
-				$lienOriginalHref .= $urlRacine . '/telecharger.php?fichier=';
-			}
-			else
-			{
-				$lienOriginalTrad = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
-			}
-			
-			$lienOriginalHref .= preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
-			
-			if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
-			{
-				$relOriginal = ' rel="lightbox"';
-			}
-			else
-			{
-				$relOriginal = '';
-			}
-			
-			$lienOriginal = '<div id="galerieLienOriginal"><a href="' . $lienOriginalHref . '"' . $relOriginal . '>' . $lienOriginalTrad . "</a></div>\n";
+			$originalExiste = TRUE;
 		}
-		else
+		
+		if ($originalExiste)
 		{
-			$lienOriginal = '';
+			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
+			{
+				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
+				$texteLienOriginal = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
+			}
+			else
+			{
+				$urlLienOriginal = $urlImgSrc . '/' . $originalNom;
+				$texteLienOriginal = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
+			}
+			
+			$aLienOriginalDebut = '<a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>';
+			$aLienOriginalFin = '</a>';
+			
+			if ($galerieLienOriginalEmplacement['legende'])
+			{
+				$divLienOriginalLegende = '<div id="galerieLienOriginalLegende"><a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>' . $texteLienOriginal . "</a></div><!-- /#galerieLienOriginalLegende -->\n";
+			}
+			
+			if ($galerieLienOriginalEmplacement['image'])
+			{
+				$aLienOriginalImgIntermediaireDebut = $aLienOriginalDebut;
+				$aLienOriginalImgIntermediaireFin = $aLienOriginalFin;
+			}
+			
+			if ($galerieLienOriginalEmplacement['icone'])
+			{
+				if (file_exists($racine . '/site/fichiers/agrandir.png'))
+				{
+					$iconeLienOriginalSrc = $urlRacine . '/site/fichiers/agrandir.png';
+				}
+				else
+				{
+					$iconeLienOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
+				}
+			
+				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . str_replace('&nbsp;', ' ', $texteLienOriginal) . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
+			}
 		}
 		
 		// Exif.
+		
 		$exif = '';
 		
 		if ($galerieExifAjout && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
@@ -2417,7 +2474,7 @@ function oeuvre(
 			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], 'IFD0', 0);
 			
 			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
-			if (!$tableauExif && !empty($lienOriginal) && $typeMime == 'image/jpeg')
+			if (!$tableauExif && $originalExiste && $typeMime == 'image/jpeg')
 			{
 				$tableauExif = exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
 			}
@@ -2480,51 +2537,18 @@ function oeuvre(
 			}
 		}
 		
-		if (!empty($lienOriginalHref) && ($galerieLienOriginalEmplacement == 'image' || $galerieLienOriginalEmplacement == 'imageLegende'))
-		{
-			if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
-			{
-				$relOriginal = ' rel="lightbox"';
-			}
-			else
-			{
-				$relOriginal = '';
-			}
-			
-			$lienOriginalAvant = '<a href="' . $lienOriginalHref . '"' . $relOriginal . '>';
-			$lienOriginalApres = '</a>';
-		}
-		else
-		{
-			$lienOriginalAvant = '';
-			$lienOriginalApres = '';
-		}
-		
-		if ($galerieLienOriginalIcone && !empty($lienOriginalHref))
-		{
-			if (file_exists($racine . '/site/fichiers/agrandir.png'))
-			{
-				$galerieLienOriginalIconeSrc = $urlRacine . '/site/fichiers/agrandir.png';
-			}
-			else
-			{
-				$galerieLienOriginalIconeSrc = $urlRacine . '/fichiers/agrandir.png';
-			}
-			
-			$imgLienOriginal = '<div id="galerieIconeOriginal">' . $lienOriginalAvant . '<img src="' . $galerieLienOriginalIconeSrc . '" alt="' . str_replace('&nbsp;', ' ', $lienOriginalTrad) . '" width="22" height="22" />' . $lienOriginalApres . '</div><!-- /#galerieIconeOriginal -->' . "\n";
-		}
-		else
-		{
-			$imgLienOriginal = '';
-		}
-		
+		// Code de retour.
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal;
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
 		}
 		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
 		{
-			return '<div id="galerieIntermediaireImg">' . $lienOriginalAvant . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $lienOriginalApres . "</div><!-- /#galerieIntermediaireImg -->\n" . $imgLienOriginal . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $lienOriginal . "</div><!-- /#galerieIntermediaireTexte -->\n";
+			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
+		}
+		else
+		{
+			return '';
 		}
 	}
 	####################################################################
@@ -2674,6 +2698,7 @@ function oeuvre(
 Construit le code HTML pour afficher une pagination, et retourne un tableau contenant les informations suivantes:
 
   - `$pagination['pagination']`: code HTML de la pagination;
+  - `$pagination['nombreDePages']`: nombre de pages de la pagination;
   - `$pagination['indicePremierElement']`: indice du premier élément de la page en cours;
   - `$pagination['indiceDernierElement']`: indice du dernier élément de la page en cours;
   - `$pagination['baliseTitle']`: contenu de la balise `title` modifié pour prendre en compte la pagination;
@@ -2684,21 +2709,21 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 {
 	$pagination = array ();
 	$pagination['pagination'] = '';
+	$pagination['nombreDePages'] = ceil($nombreElements / $elementsParPage);
 	$pagination['indicePremierElement'] = 0;
 	$pagination['indiceDernierElement'] = 0;
 	$pagination['baliseTitle'] = $baliseTitle;
 	$pagination['description'] = $description;
 	$pagination['estPageDerreur'] = FALSE;
-	$nombreDePages = ceil($nombreElements / $elementsParPage);
 
 	if (isset($_GET['page']))
 	{
 		$page = intval($_GET['page']);
 		
-		if ($page > $nombreDePages)
+		if ($page > $pagination['nombreDePages'])
 		{
 			$pagination['estPageDerreur'] = TRUE;
-			$page = $nombreDePages;
+			$page = $pagination['nombreDePages'];
 		}
 		elseif ($page < 1)
 		{
@@ -2755,10 +2780,10 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 			$lienPrecedent = substr($lien, 0, -1);
 		}
 		
-		$pagination['pagination'] .= '<a href="' . rawurlencode($lienPrecedent) . '">' . T_("Page précédente") . '</a>';
+		$pagination['pagination'] .= '<a href="' . $lienPrecedent . '">' . T_("Page précédente") . '</a>';
 	}
 	
-	if ($page < $nombreDePages)
+	if ($page < $pagination['nombreDePages'])
 	{
 		$numeroPageSuivant = $page + 1;
 		$lienSuivant = $lien . 'page=' . $numeroPageSuivant;
@@ -2768,9 +2793,9 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 			$pagination['pagination'] .= ' | ';
 		}
 		
-		$pagination['pagination'] .= '<a href="' . rawurlencode($lienSuivant) . '">' . T_("Page suivante") . '</a>';
+		$pagination['pagination'] .= '<a href="' . $lienSuivant . '">' . T_("Page suivante") . '</a>';
 	}
-
+	
 	$pagination['pagination'] .= '</div><!-- /.pagination -->' . "\n";
 	
 	return $pagination;
@@ -2870,7 +2895,7 @@ function styleDivVideNavigation($oeuvre)
 }
 
 /*
-Simule la fonction `superBasename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
+Simule la fonction `basename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
 */
 function superBasename($chemin, $suffixe = '')
 {
@@ -2958,6 +2983,14 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 	}
 	
 	return $tableau;
+}
+
+/*
+Retourne l'URL modifiée par `rawurlencode`, mais dont les occurences de `%2F` ont été remplacées par `/`.
+*/
+function superRawurlencode($url)
+{
+	return str_replace('%2F', '/', rawurlencode($url));
 }
 
 /*

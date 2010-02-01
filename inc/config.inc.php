@@ -51,7 +51,7 @@ $balisesLinkScript[] = "$urlRacine/*#favicon#$urlRacine/fichiers/puce.png";
   <script type="text/javascript" src="/js/squeletml.js?1"></script>
 - Voir la fonction `linkScript()`.
 */
-$versionParDefautLinkScript = '';
+$versionParDefautLinkScript = "";
 
 // Inclusion des feuilles de style par défaut de Squeletml (dossier `css`).
 /*
@@ -68,7 +68,7 @@ $inclureMotsCles = FALSE; // TRUE|FALSE
 // Contenu par défaut de la métabalise `robots`.
 /*
 - Liste de valeurs possibles: index, follow, archive, noindex, nofollow, noarchive, noodp, noydir.
-- Si la variable `$robots` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- Si la variable `$robots` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
 - Voir la fonction `robots()`.
 */
 $robotsParDefaut = 'index, follow, archive';
@@ -78,7 +78,7 @@ $charset = 'UTF-8';
 
 // Langue par défaut.
 /*
-- Langue par défaut si aucune autre précision n'est apportée. Si la variable `$langue` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- Langue par défaut si aucune autre précision n'est apportée. Si la variable `$langue` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
 - Voir la fonction `langue()`.
 */
 $langueParDefaut = 'fr';
@@ -142,7 +142,7 @@ $ordreBlocsDansFluxHtml = array (
 	'faire-decouvrir' => array (501, 502, 501),
 	'legende-oeuvre-galerie' => array (502, 503, 502), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => array (503, 504, 503),
-	'auteur-et-dates' => array (400, 400, 400),
+	'infos-publication' => array (400, 400, 400),
 	'licence' => array (401, 401, 401),
 );
 
@@ -177,22 +177,29 @@ $afficherMessageIe6 = TRUE; // TRUE|FALSE
 
 // Auteur par défaut.
 /*
-- Auteur par défaut si aucune autre précision n'est apportée. Si la variable `$auteur` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
-- L'auteur est inséré en tant que métabalise `author`. Cette information est également utilisée lors du listage des articles faisant partie d'une catégorie ainsi que dans les flux RSS.
+- Auteur par défaut si aucune autre précision n'est apportée. Si la variable `$auteur` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
+- L'auteur est inséré en tant que métabalise `author`. Cette information est également utilisée dans le bloc des informations de publication, lors du listage des articles faisant partie d'une catégorie ainsi que dans les flux RSS.
 */
-$auteurParDefaut = '';
+$auteurParDefaut = "";
+
+// Affichage par défaut des informations de publication.
+/*
+- Les informations de publication contiennent l'auteur, la date de création et la date de dernière révision.
+- Voir dans la documentation les explications pour les variables `$auteur`, `$dateCreation`, `$dateRevision` et `$infosPublication`.
+*/
+$afficherInfosPublicationParDefaut = TRUE; // TRUE|FALSE
 
 // Licence par défaut pour tout le site.
 /*
-- Licence à déclarer pour chaque page du site. Si la variable `$licence` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- Licence à déclarer pour chaque page du site. Si la variable `$licence` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
 - Plusieurs licences peuvent être déclarées, chacune devant être séparée par une espace.
 - Voir la fonction `licence()` pour connaître les choix possibles.
 */
-$licenceParDefaut = '';
+$licenceParDefaut = "";
 
 // Affichage par défaut de la table des matières.
 /*
-- État de la table des matières si aucune autre précision n'est apportée. Si la variable `$tableDesMatieres` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- État de la table des matières si aucune autre précision n'est apportée. Si la variable `$tableDesMatieres` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
 */
 $afficherTableDesMatieresParDefaut = FALSE; // TRUE|FALSE
 
@@ -275,7 +282,7 @@ Comme le montre l'exemple général, le titre n'est pas à comprendre au sens s�
 
 Voir la fonction Javascript `boiteDeroulante()`.
 */
-$boitesDeroulantesParDefaut = '';
+$boitesDeroulantesParDefaut = "";
 
 // Balises `link` et `script` finales, ajoutées juste avant `</body>`.
 /*
@@ -310,9 +317,12 @@ $articlesParPage = 10;
   - `86400` équivaut à 1 jour;
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
-- Lorsqu'il est activé, le système de cache est utilisé pour les flux RSS, les catégories et les galeries.
 */
-$dureeCache = 0;
+$dureeCache = array (
+	'fluxRss' => 0,
+	'categorie' => 0,
+	'galerie' => 0,
+);
 
 /* ____________________ Style CSS. ____________________ */
 
@@ -336,7 +346,7 @@ $liensActifsBlocs = array (
 	'faire-decouvrir' => NULL, // Ne s'applique pas.
 	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => NULL, // Ne s'applique pas.
-	'auteur-et-dates' => NULL, // Ne s'applique pas.
+	'infos-publication' => NULL, // Ne s'applique pas.
 	'licence' => NULL, // Ne s'applique pas.
 );
 
@@ -396,7 +406,7 @@ $limiterProfondeurListesBlocs = array (
 	'faire-decouvrir' => NULL, // Ne s'applique pas.
 	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 	'flux-rss' => NULL, // Ne s'applique pas.
-	'auteur-et-dates' => NULL, // Ne s'applique pas.
+	'infos-publication' => NULL, // Ne s'applique pas.
 	'licence' => NULL, // Ne s'applique pas.
 );
 
@@ -407,18 +417,18 @@ $limiterProfondeurListesBlocs = array (
 */
 $nombreDeColonnes = 1; // 0|1|2
 
+// S'il y a lieu, emplacement de la colonne unique.
+/*
+- Si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées à `body`, sinon si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées à `body`.
+*/
+$uneColonneAgauche = TRUE; // TRUE|FALSE
+
 // Emplacement du sous-contenu lorsqu'il y a deux colonnes.
 /*
 - Si `$nombreDeColonnes` vaut 2 et si `$deuxColonnesSousContenuAgauche` vaut TRUE, ajoute la classe `deuxColonnesSousContenuAgauche` à `body`, sinon si `$nombreDeColonnes` vaut 2 et que `$deuxColonnesSousContenuAgauche` vaut FALSE, ajoute la classe `deuxColonnesSousContenuAdroite` à `body`.
 - Le sur-contenu va être affiché par défaut dans la colonne opposée.
 */
 $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
-
-// S'il y a lieu, emplacement de la colonne unique.
-/*
-- Si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut TRUE, les classes `colonneAgauche` et `uneColonneAgauche` sont ajoutées à `body`, sinon si `$nombreDeColonnes` vaut 1 et que `$uneColonneAgauche` vaut FALSE, les classes `colonneAdroite` et `uneColonneAdroite` sont ajoutées à `body`.
-*/
-$uneColonneAgauche = TRUE; // TRUE|FALSE
 
 // S'il y a lieu, arrière-plan d'une colonne.
 $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
@@ -464,12 +474,15 @@ $activerFluxRssGlobalSite = FALSE; // TRUE|FALSE
 
 // Syndication individuelle par défaut des catégories.
 /*
-- Note: il est possible de configurer la syndication pour chaque catégorie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssCategorie` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- Note: il est possible de configurer la syndication pour chaque catégorie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssCategorie` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
 */
 $activerFluxRssCategorieParDefaut = TRUE; // TRUE|FALSE
 
 // Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 50;
+
+// Si `$inclureApercu` vaut TRUE, utiliser les aperçus dans les flux RSS.
+$utiliserApercuDansFluxRss = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
@@ -483,7 +496,7 @@ $nombreItemsFluxRss = 50;
 /*
 - Pour utiliser le formulaire de contact livré par défaut sans devoir créer une page de contact personnalisée simplement pour y renseigner la variable `$courrielContact`, saisir ci-dessous l'adresse courriel à utiliser, sinon laisser vide.
 */
-$contactCourrielParDefaut = '';
+$contactCourrielParDefaut = "";
 
 // Vérification de la forme du courriel.
 $contactVerifierCourriel = TRUE; // TRUE|FALSE
@@ -641,13 +654,21 @@ $galerieExifInfos = array (
 	'Model' => TRUE,
 );
 
-// Si le format original d'une image existe, est-ce que le lien vers le fichier est fait sur l'image ou dans la légende, ou les deux?
-$galerieLienOriginalEmplacement = 'imageLegende'; // image|legende|imageLegende
-
-// Si le format original d'une image existe, est-ce qu'on ajoute une petite icône sous l'image pour le signifier?
-$galerieLienOriginalIcone = TRUE; // TRUE|FALSE
+// Si le format original d'une image existe, emplacement du lien vers le fichier.
+/*
+- Si l'emplacement `icone` vaut TRUE, une petite icône est ajoutée sous l'image pour signifier que le format original existe.
+- Les valeurs possibles pour chaque emplacement sont TRUE ou FALSE.
+*/
+$galerieLienOriginalEmplacement = array (
+	'image' => TRUE,
+	'legende' => TRUE,
+	'icone' => TRUE,
+);
 
 // Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
+/*
+- Cette option n'est pas conseillée pour de grandes images. Voir <http://code.google.com/p/slimbox/wiki/FAQ#Can_Slimbox_automatically_resize_my_images_when_they_are_too_lar> pour plus de détails.
+*/
 $galerieLienOriginalJavascript = FALSE; // TRUE|FALSE
 
 // Si le format original d'une image existe et que le lien n'est pas pris en charge par une fenêtre Javascript, est-ce que le lien vers le fichier force le téléchargement sans affichage dans le navigateur?
@@ -666,7 +687,7 @@ $galerieLegendeEmplacement = array ('bas', 'bloc', 'bloc');
 
 // Syndication individuelle par défaut des galeries.
 /*
-- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssGalerie` existe (par exemple déclarée dans une page) et n'est pas vide, c'est la valeur de cette dernière qui est utilisée.
+- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssGalerie` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
 */
 $galerieActiverFluxRssParDefaut = TRUE; // TRUE|FALSE
 

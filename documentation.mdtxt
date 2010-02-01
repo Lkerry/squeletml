@@ -445,7 +445,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
 
-- `$auteur`: nom ou noms à inclure dans la métabalise `author`, si différents du nom ou des noms par défaut déclarés dans le fichier de configuration. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie.
+- `$auteur`: nom ou noms à inclure dans la métabalise `author`, si différents du nom ou des noms par défaut déclarés dans le fichier de configuration. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le bloc des informations de publication.
 
 - `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner l'URL de la page en cours.
 
@@ -461,9 +461,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
-- `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le classement des items des flux RSS.
+- `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie, dans le classement des items des flux RSS et dans le bloc des informations de publication.
 
-- `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
+- `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le bloc des informations de publication, dans le listage des articles faisant partie d'une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
@@ -472,6 +472,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 - `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section «Galeries»), une galerie sera insérée dans la page.
 
 	Par exemple, si nous avons `$idGalerie = "mes-voyages";`, Squeletml va rechercher le dossier `site/fichiers/galeries/mes-voyages`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
+
+- `$infosPublication`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut afficher ou non les informations de publication (auteur, date de création, date de dernière révision).
 
 - `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier de configuration.
 
@@ -999,9 +1001,9 @@ L'inclusion des galeries dans le flux global du site dépend de la valeur de la 
 
 ## Cache
 
-Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, si la variable `$dureeCache` du fichier de configuration du site vaut plus de 0, le cache sera activé, et ce pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une oeuvre) et des catégories ainsi que pour les flux RSS.
+Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. La durée du cache peut être précisée pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une oeuvre) et des catégories ainsi que pour les flux RSS.
 
-Il est particulièrement recommandé d'activer le cache si le système de catégories est utilisé, car le temps de construction d'une page de catégorie peut être réduit de l'ordre de 90% avec le cache.
+Il est particulièrement recommandé d'activer le cache des catégories si ces dernières sont utilisées, car le temps de construction d'une page de catégorie peut être réduit de l'ordre de 90% en utilisant le cache.
 
 ## Développement
 

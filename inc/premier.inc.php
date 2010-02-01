@@ -47,7 +47,7 @@ foreach (aInclureDebut($racine) as $fichier)
 // Affectations 2 de 3.
 
 extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur', 'rssCategorie', 'rssGalerie'), EXTR_SKIP);
+extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur'), EXTR_SKIP);
 
 if (!empty($apercu))
 {
@@ -61,7 +61,6 @@ if (!isset($auteur))
 
 $baliseTitle = baliseTitle($baliseTitle, array ($langue, $langueParDefaut));
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut));
-$boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 $cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
 $cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sous-titre');
@@ -86,6 +85,11 @@ if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 }
 
 $doctype = doctype($xhtmlStrict);
+
+if (!isset($infosPublication))
+{
+	$infosPublication = $afficherInfosPublicationParDefaut;
+}
 
 if (!isset($licence))
 {
@@ -122,6 +126,11 @@ if (!isset($tableDesMatieres))
 	$tableDesMatieres = $afficherTableDesMatieresParDefaut;
 }
 
+if (!empty($idCategorie))
+{
+	$tableDesMatieres = FALSE;
+}
+
 if ($tableDesMatieres)
 {
 	$boitesDeroulantes .= ' tableDesMatieres';
@@ -150,6 +159,8 @@ if (!empty($idGalerie))
 include $racine . '/inc/blocs.inc.php';
 
 // Affectations 3 de 3.
+
+$boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
 if ($estPageDerreur)
 {

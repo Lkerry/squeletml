@@ -35,28 +35,6 @@ function adminAinclureDebut($racineAdmin)
 }
 
 /*
-Ajoute la variable GET à l'adresse fournie, et retourne le résultat. `$get` doit être sous la forme `cle=valeur`. Dans l'adresse de retour, `$get` est la première variable GET.
-*/
-function adminAjouteGet($adresse, $get)
-{
-	$nouvelleAdresse = $adresse;
-	
-	if (!empty($get))
-	{
-		if (strpos($nouvelleAdresse, '?'))
-		{
-			$nouvelleAdresse = str_replace("?$get&amp;", '?', $nouvelleAdresse);
-		}
-		else
-		{
-			$nouvelleAdresse .= "?$get";
-		}
-	}
-	
-	return $nouvelleAdresse;
-}
-
-/*
 Retourne l'`id` de `body`.
 */
 function adminBodyId()
@@ -705,7 +683,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 				{
 					$fichierMisEnForme = '';
 				
-					if ($adminPorteDocumentsDroits['copier'] && $adminPorteDocumentsDroits['deplacer'] && $adminPorteDocumentsDroits['modifier-permissions'] && $adminPorteDocumentsDroits['supprimer'])
+					if ($adminPorteDocumentsDroits['copier'] || $adminPorteDocumentsDroits['deplacer'] || $adminPorteDocumentsDroits['modifier-permissions'] || $adminPorteDocumentsDroits['supprimer'])
 					{
 						$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$dossierAparcourir/$fichier\" />\n";
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
@@ -719,13 +697,13 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 				
 					if ($adminPorteDocumentsDroits['editer'])
 					{
-						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=editer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=editer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 					}
 				
 					if ($adminPorteDocumentsDroits['renommer'])
 					{
-						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messagesPorteDocuments\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 					}
 				
@@ -821,39 +799,34 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 
 		foreach ($tableauGalerie as $oeuvre)
 		{
-			foreach ($oeuvre as $cle => $valeur)
+			// On prend en compte l'oeuvre seulement si elle existe encore.
+			if (!empty($oeuvre['intermediaireNom']) && file_exists($cheminGalerie . '/' . $oeuvre['intermediaireNom']) && !adminImageEstDeclaree($oeuvre['intermediaireNom'], $galerieTemp, 'intermediaire'))
 			{
-				if ($cle == 'intermediaireNom')
+				$galerieTemp[$i]['intermediaireNom'] = $oeuvre['intermediaireNom'];
+				
+				foreach ($oeuvre as $cle => $valeur)
 				{
-					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur) && !adminImageEstDeclaree($valeur, $galerieTemp, 'intermediaire'))
+					if ($cle == 'vignetteNom')
+					{
+						if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
+						{
+							$galerieTemp[$i][$cle] = $valeur;
+						}
+					}
+					elseif ($cle == 'originalNom')
+					{
+						if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
+						{
+							$galerieTemp[$i][$cle] = $valeur;
+						}
+					}
+					elseif (!empty($valeur))
 					{
 						$galerieTemp[$i][$cle] = $valeur;
 					}
-					else
-					{
-						continue; // On sort de cette oeuvre sans la prendre en note, car elle n'existe plus.
-					}
-				}
-				elseif ($cle == 'vignetteNom')
-				{
-					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
-					{
-						$galerieTemp[$i][$cle] = $valeur;
-					}
-				}
-				elseif ($cle == 'originalNom')
-				{
-					if (!empty($valeur) && file_exists($cheminGalerie . '/' . $valeur))
-					{
-						$galerieTemp[$i][$cle] = $valeur;
-					}
-				}
-				elseif (!empty($valeur))
-				{
-					$galerieTemp[$i][$cle] = $valeur;
 				}
 			}
-		
+			
 			$i++;
 		}
 	}
@@ -947,11 +920,11 @@ function adminMessageFilesError($erreur)
 			break;
 			
 		case 1:
-			$messageErreur = T_("Le fichier téléchargé excède la taille de upload_max_filesize, configurée dans le php.ini.");
+			$messageErreur = T_("Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, configurée dans le <code>php.ini</code>.");
 			break;
 			
 		case 2:
-			$messageErreur = T_("Le fichier téléchargé excède la taille de MAX_FILE_SIZE, qui a été spécifiée dans le formulaire HTML.");
+			$messageErreur = T_("Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a été spécifiée dans le formulaire HTML.");
 			break;
 			
 		case 3:
@@ -1197,6 +1170,17 @@ function adminRmdirRecursif($dossierAsupprimer)
 	}
 	
 	return $messagesScript;
+}
+
+/*
+Modifie le délai d'expiration seulement si PHP n'est pas en mode `safe mode`.
+*/
+function admin_set_time_limit($t)
+{
+	if (!ini_get('safe_mode'))
+	{
+		set_time_limit($t);
+	}
 }
 
 /*

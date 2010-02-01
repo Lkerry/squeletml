@@ -21,7 +21,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if ($adminPorteDocumentsDroits['creer'])
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/categories.ini.txt#messagesPorteDocuments') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/categories.ini.txt#messages') . "</li>\n";
 			}
 			else
 			{
@@ -237,7 +237,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if ($adminPorteDocumentsDroits['creer'])
 			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/categories.ini.txt#messagesPorteDocuments') . "</p>\n";
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/categories.ini.txt#messages') . "</p>\n";
 			}
 			else
 			{
