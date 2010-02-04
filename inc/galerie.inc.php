@@ -209,7 +209,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			}
 			elseif ($galerieNavigationEmplacement == 'bas')
 			{
-				$corpsGalerie .= $oeuvreIntermediaire . $oeuvrePrecedente . $oeuvreSuivante;
+				$corpsGalerie .= $oeuvreIntermediaire . $oeuvrePrecedente . $oeuvreSuivante . "<div class=\"sep\"></div>\n";
 			}
 		
 			// `$galerieInfo`.

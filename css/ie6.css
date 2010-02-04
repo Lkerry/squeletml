@@ -4,12 +4,12 @@
 	width: expression( document.body.clientWidth > 900? "900px": "auto" );
 }
 
-body.aucuneColonne #page {
-	width: expression( document.body.clientWidth > 750? "750px": "auto" );
+body.enTetePleineLargeur div#enTete {
+	width: 100%;
 }
 
-body.aucuneColonne #menuLangues {
-	left: 650px;
+body.aucuneColonne #page {
+	width: expression( document.body.clientWidth > 750? "750px": "auto" );
 }
 
 .titreApercu a:visited {
@@ -22,15 +22,6 @@ body.aucuneColonne #menuLangues {
 
 #fluxRss a {
 	background: url('../fichiers/rss.gif') no-repeat left 20%;
-}
-
-#fluxRss ul {
-	margin-left: 0px;
-	padding-left: 0px;
-}
-
-#licence ul {
-	margin-left: 0px;
 }
 
 div.galerieNavigationSuivant img {

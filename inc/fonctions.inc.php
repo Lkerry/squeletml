@@ -464,7 +464,7 @@ function classesContenu($differencierLiensVisitesHorsContenu, $classesContenu)
 }
 
 /*
-Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une div de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une div de classe `bloc`).
+Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une `div` de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une `div` de classe `bloc`).
 */
 function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
 {
@@ -2383,24 +2383,6 @@ function oeuvre(
 			$originalNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-original');
 		}
 		
-		if (!empty($infosOeuvre['intermediaireLegende']))
-		{
-			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
-		}
-		elseif ($galerieLegendeAutomatique)
-		{
-			if ($contenuAlt = str_replace('alt="', '', $alt))
-			{
-				$contenuAlt = substr($contenuAlt, 0, -1);
-			}
-			
-			$legende = "<div id=\"galerieIntermediaireLegende\">$contenuAlt (" . sprintf(T_("%1\$s&nbsp;Kio"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom))) . ")</div>\n";
-		}
-		else
-		{
-			$legende = '';
-		}
-		
 		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on récupère certaines informations.
 		
 		$divLienOriginalIcone = '';
@@ -2463,6 +2445,32 @@ function oeuvre(
 			
 				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . str_replace('&nbsp;', ' ', $texteLienOriginal) . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
 			}
+		}
+		
+		// Légende.
+		if (!empty($infosOeuvre['intermediaireLegende']))
+		{
+			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
+		}
+		elseif ($galerieLegendeAutomatique)
+		{
+			if ($contenuAlt = str_replace('alt="', '', $alt))
+			{
+				$contenuAlt = substr($contenuAlt, 0, -1);
+			}
+			
+			$legende = '<div id="galerieIntermediaireLegende">' . $contenuAlt;
+			
+			if ($originalExiste && !$galerieLienOriginalEmplacement['legende'])
+			{
+				$legende .= "\n" . sprintf(T_("(%1\$s&nbsp;Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+			}
+			
+			$legende .= "</div>\n";
+		}
+		else
+		{
+			$legende = '';
 		}
 		
 		// Exif.

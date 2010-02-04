@@ -114,12 +114,12 @@ Ce choix concerne l'ordre dans lequel les blocs apparaissent dans le flux HTML. 
 
 Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font référence respectivement à l'ordre du bloc lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux. Selon la centaine à laquelle le nombre appartient, le bloc sera placé dans une région en particulier:
 
-- un nombre entre 100 et 199 signifie que le bloc en question sera placé dans la `div` `enTete`;
-- un nombre entre 200 et 299 signifie que le bloc en question sera placé dans la `div` `surContenu`;
-- un nombre entre 300 et 399 signifie que le bloc en question sera placé dans la `div` `debutInterieurContenu`;
-- un nombre entre 400 et 499 signifie que le bloc en question sera placé dans la `div` `finInterieurContenu`;
-- un nombre entre 500 et 599 signifie que le bloc en question sera placé dans la `div` `sousContenu`;
-- un nombre entre 600 et 699 signifie que le bloc en question sera placé dans la `div` `basDePage`;
+- `div` `enTete`: 100-199 (un nombre entre 100 et 199 signifie que le bloc en question sera placé dans la `div` `enTete`);
+- `div` `surContenu`: 200-299;
+- `div` `debutInterieurContenu`: 300-399;
+- `div` `finInterieurContenu`: 400-499;
+- `div` `sousContenu`: 500-599;
+- `div` `basDePage`: 600-699.
 
 À l'intérieur d'une même région, l'ordre d'insertion des blocs se fait en ordre croissant des nombres leur étant assignés.
 
@@ -595,7 +595,7 @@ $galerieNavigation = 'fleches'; // fleches|vignettes
 - Il s'agit d'une superposition (une sorte de tatouage) d'une image au centre de chaque vignette. Par défaut il s'agit d'une petite flèche gauche pour la vignette de l'image précédente et d'une petite flèche droite pour la vignette de l'image suivante. Il est possible d'utiliser ses propres images. Le résultat est un seul fichier image.
 - Voir la documentation pour plus de détails.
 */
-$galerieNavigationTatouerVignettes = FALSE; // TRUE|FALSE
+$galerieNavigationTatouerVignettes = TRUE; // TRUE|FALSE
 
 // Si la navigation est faite avec des vignettes, et si `$galerieNavigationTatouerVignettes` vaut FALSE, ajout d'une petite flèche à côté des vignettes.
 /*

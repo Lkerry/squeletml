@@ -9,6 +9,6 @@ include $racine . '/inc/premier.inc.php';
 
 <p>La page demandée n'existe pas.</p>
 
-<p>Vous pouvez <?php echo lienAccueil(ACCUEIL, estAccueil(ACCUEIL), "retourner à la page d'accueil"); ?>.</p>
+<p>Vous pouvez <?php echo lienAccueil(ACCUEIL, $estAccueil, "retourner à la page d'accueil"); ?>.</p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

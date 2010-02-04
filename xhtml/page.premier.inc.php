@@ -66,15 +66,17 @@
 						<?php include_once $cheminSousTitre; ?>
 					</div><!-- /#sousTitre -->
 					
-					<?php echo $blocs[100]; ?>
 					<div class="sep"></div>
+					<?php echo $blocs[100]; ?>
 				</div><!-- /#enTete -->
-		
-				<!-- ____________________ #surContenu ____________________ -->
-				<div id="surContenu">
-					<?php echo $blocs[200]; ?>
-				</div><!-- /#surContenu -->
-		
+				
+				<?php if (!empty($blocs[200])): ?>
+					<!-- ____________________ #surContenu ____________________ -->
+					<div id="surContenu">
+						<?php echo $blocs[200]; ?>
+					</div><!-- /#surContenu -->
+				<?php endif; ?>
+				
 				<!-- ____________________ #contenu ____________________ -->
 				<div id="contenu"<?php echo $classesContenu; ?>>
 					<div id="interieurContenu">
@@ -82,9 +84,11 @@
 							<?php echo $apercu; ?>
 						<?php endif; ?>
 						
-						<div id="debutInterieurContenu">
-							<?php echo $blocs[300]; ?>
-						</div><!-- /#debutInterieurContenu -->
+						<?php if (!empty($blocs[300])): ?>
+							<div id="debutInterieurContenu">
+								<?php echo $blocs[300]; ?>
+							</div><!-- /#debutInterieurContenu -->
+						<?php endif; ?>
 						
 						<?php if (!empty($idGalerie)): ?>
 							<div id="galerie">

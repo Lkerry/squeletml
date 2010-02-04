@@ -65,7 +65,8 @@ $cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'a
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
 $cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sur-titre');
-$classesBody = classesBody(estAccueil(ACCUEIL), $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $classesBody);
+$estAccueil = estAccueil(ACCUEIL);
+$classesBody = classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $classesBody);
 
 if (!empty($classesBody))
 {
@@ -106,7 +107,7 @@ if ($inclureMotsCles)
 	$motsCles = motsCles($motsCles, $description);
 }
 
-$nomSite = nomSite(estAccueil(ACCUEIL), lienAccueil(ACCUEIL, estAccueil(ACCUEIL), titreSite($titreSite, array ($langue, $langueParDefaut))));
+$nomSite = nomSite($estAccueil, lienAccueil(ACCUEIL, $estAccueil, titreSite($titreSite, array ($langue, $langueParDefaut))));
 $nomPage = nomPage();
 $premierOuDernier = 'premier';
 $robots = robots($robotsParDefaut, $robots);
@@ -254,6 +255,13 @@ if ($afficherMessageIe6)
 	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.cookie.js";
 	$balisesLinkScript[] = "$url#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('messageIe6');});";
+}
+
+if ($estAccueil)
+{
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
+	$jsDirect = "ajouteEvenementLoad(function(){var oH2 = \$('body.accueil #interieurContenu').find('h2'); if (oH2.length > 0){\$(oH2[0]).addClass('accueilInterieurContenuPremierH2');}});\n";
+	$balisesLinkScript[] = "$urlRacine/*#jsDirect#$jsDirect";
 }
 
 // Variable finale.

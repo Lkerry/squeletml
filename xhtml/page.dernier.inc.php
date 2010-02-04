@@ -4,6 +4,8 @@
 						
 						<?php if (!empty($idGalerie)): ?>
 							</div><!-- /#galerie -->
+							
+							<div class="sep"></div>
 						<?php endif; ?>
 						
 						<?php if ($inclureContact): ?>
@@ -14,16 +16,20 @@
 							<?php echo $categorie; ?>
 						<?php endif; ?>
 						
-						<div id="finInterieurContenu">
-							<?php echo $blocs[400]; ?>
-						</div><!-- /#finInterieurContenu -->
+						<?php if (!empty($blocs[400])): ?>
+							<div id="finInterieurContenu">
+								<?php echo $blocs[400]; ?>
+							</div><!-- /#finInterieurContenu -->
+						<?php endif; ?>
 					</div><!-- /#interieurContenu -->
 				</div><!-- /#contenu -->
 				
-				<!-- ____________________ #sousContenu ____________________ -->
-				<div id="sousContenu">
-					<?php echo $blocs[500]; ?>
-				</div><!-- /#sousContenu -->
+				<?php if (!empty($blocs[500])): ?>
+					<!-- ____________________ #sousContenu ____________________ -->
+					<div id="sousContenu">
+						<?php echo $blocs[500]; ?>
+					</div><!-- /#sousContenu -->
+				<?php endif; ?>
 				
 				<?php if ($inclureBasDePage): ?>
 					<!-- ____________________ #basDePage ____________________ -->
