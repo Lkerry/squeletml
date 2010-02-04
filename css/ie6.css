@@ -24,10 +24,6 @@ body.aucuneColonne #page {
 	background: url('../fichiers/rss.gif') no-repeat left 20%;
 }
 
-div.galerieNavigationSuivant img {
-	float: left;
-}
-
 li.actif {
 	list-style-image: url('../fichiers/puce.gif');
 }

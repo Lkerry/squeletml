@@ -741,6 +741,7 @@ div.galerieNavigationSuivant {
 div.galerieNavigationSuivant img {
 	border: none;
 	float: right;
+	clear: both;
 }
 
 .galerieFleche img, div.galerieNavigationVide {
