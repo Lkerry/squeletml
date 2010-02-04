@@ -445,6 +445,9 @@ $borduresPage = array(
 */ 
 $enTetePleineLargeur = FALSE; // TRUE|FALSE
 
+// Table des matières avec coins arrondis.
+$tableDesMatieresArrondie = TRUE; // TRUE|FALSE
+
 // Blocs de contenu avec coins arrondis par défaut.
 $blocsArrondisParDefaut = FALSE; // TRUE|FALSE
 

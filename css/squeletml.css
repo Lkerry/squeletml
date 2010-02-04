@@ -243,6 +243,10 @@ div#sousTitre p {
 	padding-top: 5px;
 }
 
+body.tableDesMatieresArrondie #tableDesMatieres {
+	border-radius: 8px; /* CSS 3. */
+}
+
 #infosPublication {
 	font-style: italic;
 }

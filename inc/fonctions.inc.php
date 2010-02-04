@@ -349,7 +349,7 @@ function cheminsInc($racine, $nom)
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $classesBody)
+function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesBody)
 {
 	$class = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -433,6 +433,11 @@ function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgau
 	if ($differencierLiensVisitesHorsContenu)
 	{
 		$class .= 'liensVisitesDifferencies ';
+	}
+	
+	if ($tableDesMatieresArrondie)
+	{
+		$class .= 'tableDesMatieresArrondie ';
 	}
 	
 	if (!empty($classesBody))
