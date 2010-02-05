@@ -191,7 +191,7 @@ if (isset($_POST['envoyer']))
 		if (mail($adresseTo, $objet, $corps, $enTete))
 		{
 			$messageEnvoye = TRUE;
-			$messagesScript .= '<p class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";
+			$messagesScript .= '<p id="messagesContact" class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";
 			$nom = '';
 			$courriel = '';
 			$message = '';
@@ -200,14 +200,14 @@ if (isset($_POST['envoyer']))
 		}
 		else
 		{
-			$messagesScript .= '<p class="erreur">' . T_("ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.") . "</p>\n";
+			$messagesScript .= '<p id="messagesContact" class="erreur">' . T_("ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.") . "</p>\n";
 		}
 	}
 
 	// Messages de confirmation ou d'erreur.
 	if ($erreurFormulaire)
 	{
-		$contact .= '<div class="erreur">' . "\n";
+		$contact .= '<div id="messagesContact" class="erreur">' . "\n";
 		$contact .= '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>' . "\n";
 		
 		$contact .= "<ul>\n";
