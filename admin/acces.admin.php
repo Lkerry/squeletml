@@ -151,7 +151,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			if ($fic2 = @fopen($racine . '/.acces', 'r'))
 			{
-				$utilisateurs = array ();
+				$utilisateurs = '';
 				
 				// On vérifie si l'utilisateur est déjà présent.
 				$utilisateurAbsent = TRUE;
@@ -164,9 +164,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$utilisateurAbsent = FALSE;
 					}
-					else
+					elseif ($ligne != "\n")
 					{
-						$utilisateurs[] = $ligne;
+						$utilisateurs .= $ligne;
 					}
 				}
 		
@@ -179,7 +179,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			if ($fic2 = @fopen($racine . '/.acces', 'w'))
 			{
-				fputs($fic2, implode("\n", $utilisateurs));
+				fputs($fic2, $utilisateurs);
 				fclose($fic2);
 			}
 			else
