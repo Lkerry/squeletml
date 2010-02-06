@@ -5,7 +5,7 @@ admin_set_time_limit(300);
 if (!empty($adminFiltreDossiers))
 {
 	$tableauFiltresDossiers = explode('|', $adminFiltreDossiers);
-	$tableauFiltresDossiers = array_map('realpath', $tableauFiltresDossiers);
+	$tableauFiltresDossiers = adminTableauCheminsCanoniques($tableauFiltresDossiers);
 }
 else
 {

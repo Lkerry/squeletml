@@ -43,6 +43,26 @@ function adminBodyId()
 }
 
 /*
+Transforme un tableau de chemins en tableau de chemins canoniques, et retourne le tableau résultant.
+*/
+function adminTableauCheminsCanoniques($tableauChemins)
+{
+	$tableauCheminsCanoniques = array ();
+	
+	foreach ($tableauChemins as $chemin)
+	{
+		$chemin = realpath($chemin);
+		
+		if ($chemin !== FALSE)
+		{
+			$tableauCheminsCanoniques[] = $chemin;
+		}
+	}
+	
+	return $tableauCheminsCanoniques;
+}
+
+/*
 Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)basename($racineAdmin)/inc/$nom.inc.php` demandé.
 */
 function adminCheminsInc($racineAdmin, $nom)
@@ -646,7 +666,7 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 }
 
 /*
-Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient s'il ya lieu les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
+Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient s'il y a lieu les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
 function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierAparcourir, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {

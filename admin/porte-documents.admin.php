@@ -38,7 +38,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 if (!empty($adminFiltreDossiers))
 {
 	$tableauFiltresDossiers = explode('|', $adminFiltreDossiers);
-	$tableauFiltresDossiers = array_map('realpath', $tableauFiltresDossiers);
+	$tableauFiltresDossiers = adminTableauCheminsCanoniques($tableauFiltresDossiers);
 }
 else
 {
