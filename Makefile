@@ -42,7 +42,6 @@ archives: menage-archives ChangeLog version.txt
 	mv ChangeLog-$(tag) $(tag)/
 	mv ChangeLog-$(tag)-fichiers $(tag)/
 	cp version.txt $(tag)/
-	touch $(tag)/.acces
 	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
 	          # une variable de Makefile dans une commande shell $(...).
 	          # Par exemple, ceci ne fonctionne pas:
