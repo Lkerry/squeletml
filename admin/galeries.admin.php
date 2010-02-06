@@ -106,7 +106,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
 							$corpsMinivignettes .= '</div><!-- /.galerieMinivignettes -->' . "\n";
 							$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-							$apercu = "<li>" . sprintf(T_("Aperçu: %1\$s"), $corpsMinivignettes) . "</li>\n";
+							$apercu = '<li>' . sprintf(T_ngettext("Aperçu (%1\$s image): %2\$s", "Aperçu (%1\$s images): %2\$s", $nombreDoeuvres), $nombreDoeuvres, $corpsMinivignettes) . "</li>\n";
 						}
 						else
 						{
@@ -120,7 +120,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$messagesScript .= '<li>' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
 					$messagesScript .= "<ul>\n";
-					$messagesScript .= "<li>" . sprintf(T_("Identifiant: %1\$s"), $fichier) . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Identifiant: %1\$s"), $fichier) . "</li>\n";
 					$messagesScript .= $fichierDeConfiguration;
 					$messagesScript .= $parcoursDossier;
 					$messagesScript .= $apercu;

@@ -979,7 +979,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 				{
 					if (@touch($fichierAcreerNom))
 					{
-						$messagesScript .= "<li>"; // Ouverture de `<li>`.
+						$messagesScript .= '<li>'; // Ouverture de `<li>`.
 						$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierAcreerNom</code>");
 						
 						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
@@ -1009,7 +1009,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 					{
 						if (@touch($fichierMarkdownAcreerNom))
 						{
-							$messagesScript .= "<li>"; // Ouverture de `<li>`.
+							$messagesScript .= '<li>'; // Ouverture de `<li>`.
 							$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierMarkdownAcreerNom</code>");
 						
 							if ($adminPorteDocumentsDroits['editer'])
