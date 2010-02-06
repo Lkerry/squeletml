@@ -53,7 +53,7 @@ body, html {
 	text-align: right;
 }
 
-#tableDesMatieres, a.porteDocumentsProprietesFichier:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
+#tableDesMatieres, a.lienInfobulle:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
 	border-radius: 8px; /* CSS 3. */
 }
 
@@ -253,21 +253,21 @@ pre.consulterModifications {
 
 /* Infobulle. Inspirée de <http://www.alsacreations.com/astuce/lire/1-comment-contrler-et-modifier-lapparence-dune-infobullenbsp.html>. */
 
-a.porteDocumentsProprietesFichier {
+a.lienInfobulle {
 	position: relative;
 	text-decoration: none;
 	color: black;
 }
 
-a.porteDocumentsProprietesFichier span {
+a.lienInfobulle span {
 	display: none;
 }
 
-a.porteDocumentsProprietesFichier:hover {
+a.lienInfobulle:hover {
 	z-index: 500;
 }
 
-a.porteDocumentsProprietesFichier:hover span {
+a.lienInfobulle:hover span {
 	display: block;
 	border: 1px solid #b3b3b3;
 	width: 425px;
@@ -280,12 +280,16 @@ a.porteDocumentsProprietesFichier:hover span {
 	padding: 2px;
 }
 
-a.porteDocumentsProprietesFichier img {
+a.lienInfobulle img {
 	border: none;
 }
 
 img.infobulleApercuImage {
 	border: 1px dashed #b3b3b3;
+}
+
+body#galeries-admin-php div.galerieMinivignettes {
+	width: 50%;
 }
 
 /* BUEditor. */
