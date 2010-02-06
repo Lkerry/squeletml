@@ -605,31 +605,36 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript .= '<li class="erreur">' . T_("Aucun type de cache sélectionné.") . "</li>\n";
 		}
-		elseif ($_POST['cache'] == 'admin')
-		{
-			if (adminVideCache($racineAdmin, 'admin'))
-			{
-				$messagesScript .= '<li>' . T_("Suppression du cache de l'administration effectuée.") . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache de l'administration. Veuillez vérifier manuellement son contenu.") . "</li>\n";
-			}
-		}
-		elseif ($_POST['cache'] == 'site')
-		{
-			if (adminVideCache($racineAdmin, 'site'))
-			{
-				$messagesScript .= '<li>' . T_("Suppression du cache du site effectuée.") . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache du site. Veuillez vérifier manuellement son contenu.") . "</li>\n";
-			}
-		}
 		else
 		{
-			$messagesScript .= '<li class="erreur">' . T_("Le type de cache sélectionné n'est pas valide.") . "</li>\n";
+			if (in_array('admin', $_POST['cache']))
+			{
+				if (adminVideCache($racineAdmin, 'admin'))
+				{
+					$messagesScript .= '<li>' . T_("Suppression du cache de l'administration effectuée.") . "</li>\n";
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache de l'administration. Veuillez vérifier manuellement son contenu.") . "</li>\n";
+				}
+			}
+			
+			if (in_array('site', $_POST['cache']))
+			{
+				if (adminVideCache($racineAdmin, 'site'))
+				{
+					$messagesScript .= '<li>' . T_("Suppression du cache du site effectuée.") . "</li>\n";
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache du site. Veuillez vérifier manuellement son contenu.") . "</li>\n";
+				}
+			}
+			
+			if (empty($messagesScript))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Le type de cache sélectionné n'est pas valide.") . "</li>\n";
+			}
 		}
 		
 		echo adminMessagesScript($messagesScript, T_("Suppression du cache"));
@@ -732,8 +737,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 					
 					<p><?php echo T_("Supprimer le cache:"); ?><br />
-					<input type="radio" name="cache" value="admin" /> <?php echo T_("de l'administration."); ?><br />
-					<input type="radio" name="cache" value="site" /> <?php echo T_("du site."); ?>
+					<input type="checkbox" name="cache[]" value="admin" /> <?php echo T_("de l'administration."); ?><br />
+					<input type="checkbox" name="cache[]" value="site" /> <?php echo T_("du site."); ?>
 					</p>
 				</fieldset>
 				
