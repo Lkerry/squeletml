@@ -359,7 +359,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 	// Si l'oeuvre n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie dans le but d'éviter le contenu dupliqué.
 	else
 	{
-		$estPageDerreur = TRUE;
+		$erreur404 = TRUE;
 		$id = securiseTexte($_GET['oeuvre']);
 		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les oeuvres</a>."), $id, $urlSansGet) . "</p>\n";
 		
@@ -384,7 +384,7 @@ elseif (!empty($idGalerie))
 		
 		if ($pagination['estPageDerreur'])
 		{
-			$estPageDerreur = TRUE;
+			$erreur404 = TRUE;
 		}
 		else
 		{
@@ -398,7 +398,7 @@ elseif (!empty($idGalerie))
 	}
 	elseif (isset($_GET['page']) && $_GET['page'] != 1)
 	{
-		$estPageDerreur = TRUE;
+		$erreur404 = TRUE;
 	}
 	else
 	{
@@ -407,7 +407,7 @@ elseif (!empty($idGalerie))
 		$indiceDerniereOeuvre = $nombreDoeuvres - 1;
 	}
 	
-	if ($estPageDerreur)
+	if ($erreur404)
 	{
 		$corpsGalerie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
 		
@@ -491,7 +491,7 @@ elseif (!empty($idGalerie))
 ########################################################################
 else
 {
-	$estPageDerreur = TRUE;
+	$erreur404 = TRUE;
 	$corpsGalerie .= '<p>' . sprintf(T_("La galerie %1\$s est introuvable."), $nomGalerie) . "</p>\n";
 	
 	// Ajustement des métabalises.

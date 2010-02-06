@@ -63,7 +63,7 @@ if (!empty($idCategorie))
 		
 		if ($pagination['estPageDerreur'])
 		{
-			$estPageDerreur = TRUE;
+			$erreur404 = TRUE;
 		}
 		else
 		{
@@ -76,7 +76,7 @@ if (!empty($idCategorie))
 	}
 	elseif (isset($_GET['page']) && $_GET['page'] != 1)
 	{
-		$estPageDerreur = TRUE;
+		$erreur404 = TRUE;
 	}
 	else
 	{
@@ -85,7 +85,7 @@ if (!empty($idCategorie))
 		$indiceDernierArticle = $nombreArticles - 1;
 	}
 	
-	if ($estPageDerreur)
+	if ($erreur404)
 	{
 		$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
 		
@@ -174,7 +174,7 @@ if (!empty($idCategorie))
 ########################################################################
 else
 {
-	$estPageDerreur = TRUE;
+	$erreur404 = TRUE;
 	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), "<em>$nomCategorie</em>") . "</p>\n";
 	
 	// Ajustement des métabalises.

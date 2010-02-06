@@ -3,7 +3,7 @@
 Ce fichier crée les variables nécessaires à l'incorporation au formulaire de contact du module «Faire découvrir». Aucun code XHTML n'est envoyé au navigateur.
 */
 
-if (!$estPageDerreur)
+if (!$erreur404)
 {
 	if (!isset($messageEnvoye))
 	{

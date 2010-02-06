@@ -47,7 +47,7 @@ foreach (aInclureDebut($racine) as $fichier)
 // Affectations 2 de 3.
 
 extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'estPageDerreur'), EXTR_SKIP);
+extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'erreur404', 'estPageDerreur'), EXTR_SKIP);
 
 if (!empty($apercu))
 {
@@ -163,7 +163,12 @@ include $racine . '/inc/blocs.inc.php';
 
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
-if ($estPageDerreur)
+if ($erreur404 || $estPageDerreur)
+{
+	$robots = 'noindex, follow, noarchive';
+}
+
+if ($erreur404)
 {
 	$enTetesHttp .= "header('HTTP/1.1 404 Not found');";
 }

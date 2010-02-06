@@ -53,7 +53,7 @@ else
 	$getType = '';
 }
 
-$estPageDerreur = FALSE;
+$erreur404 = FALSE;
 
 if ($getType == 'galerie' && !empty($getChemin))
 {
@@ -129,17 +129,17 @@ if ($getType == 'galerie' && !empty($getChemin))
 			}
 			else
 			{
-				$estPageDerreur = TRUE;
+				$erreur404 = TRUE;
 			}
 		}
 		else
 		{
-			$estPageDerreur = TRUE;
+			$erreur404 = TRUE;
 		}
 	}
 	else
 	{
-		$estPageDerreur = TRUE;
+		$erreur404 = TRUE;
 	}
 }
 elseif ($getType == 'categorie' && !empty($getChemin))
@@ -240,17 +240,17 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 			}
 			else
 			{
-				$estPageDerreur = TRUE;
+				$erreur404 = TRUE;
 			}
 		}
 		else
 		{
-			$estPageDerreur = TRUE;
+			$erreur404 = TRUE;
 		}
 	}
 	else
 	{
-		$estPageDerreur = TRUE;
+		$erreur404 = TRUE;
 	}
 }
 elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangue]))
@@ -309,7 +309,7 @@ elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangu
 	}
 	else
 	{
-		$estPageDerreur = TRUE;
+		$erreur404 = TRUE;
 	}
 }
 elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
@@ -403,15 +403,15 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 	}
 	else
 	{
-		$estPageDerreur = TRUE;
+		$erreur404 = TRUE;
 	}
 }
 else
 {
-	$estPageDerreur = TRUE;
+	$erreur404 = TRUE;
 }
 
-if ($estPageDerreur)
+if ($erreur404)
 {
 	header('HTTP/1.1 404 Not found');
 }
