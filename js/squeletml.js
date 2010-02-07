@@ -32,12 +32,32 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 	var oIdDeComparaison1 = document.getElementById(idDeComparaison1);
 	var oIdDeComparaison2 = document.getElementById(idDeComparaison2);
 	
-	if (oIdAegaliser && oIdDeComparaison1 && oIdDeComparaison2)
+	if (oIdAegaliser && (oIdDeComparaison1 || oIdDeComparaison2))
 	{
 		var hauteurIdAegaliser = oIdAegaliser.offsetHeight;
-		var hauteurIdDeComparaison1 = oIdDeComparaison1.offsetHeight + 80;
-		var hauteurIdDeComparaison2 = oIdDeComparaison2.offsetHeight + 80;
-		var hauteurMax = Math.max(hauteurIdDeComparaison1, hauteurIdDeComparaison2);
+		
+		if (oIdDeComparaison1)
+		{
+			var hauteurIdDeComparaison1 = oIdDeComparaison1.offsetHeight + 85;
+		}
+		
+		if (oIdDeComparaison2)
+		{
+			var hauteurIdDeComparaison2 = oIdDeComparaison2.offsetHeight + 85;
+		}
+		
+		if (oIdDeComparaison1 && oIdDeComparaison2)
+		{
+			var hauteurMax = Math.max(hauteurIdDeComparaison1, hauteurIdDeComparaison2);
+		}
+		else if (oIdDeComparaison1)
+		{
+			var hauteurMax = hauteurIdDeComparaison1;
+		}
+		else
+		{
+			var hauteurMax = hauteurIdDeComparaison2;
+		}
 		
 		if (hauteurMax > hauteurIdAegaliser)
 		{
