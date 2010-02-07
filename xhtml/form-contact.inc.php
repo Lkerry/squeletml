@@ -23,6 +23,11 @@
 		<p><label><?php echo T_("Votre message:"); ?></label><br />
 		<textarea name="message" cols="30" rows="10" id="message"><?php echo $message; ?></textarea></p>
 		
+		<?php // Champs supplémentaires optionnels. ?>
+		<?php if (file_exists($racine . '/site/xhtml/form-contact-champs-supplementaires.inc.php')): ?>
+			<?php include $racine . '/site/xhtml/form-contact-champs-supplementaires.inc.php'; ?>
+		<?php endif; ?>
+		
 		<?php if ($contactActiverCaptchaCalcul): ?>
 			<p><label><?php echo T_("Antipourriel:"); ?></label><br />
 				
