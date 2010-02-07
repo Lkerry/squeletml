@@ -12,7 +12,7 @@ if (file_exists('init.inc.php'))
 	include_once 'init.inc.php';
 }
 
-if (strpos(file_get_contents('.acces'), ':') !== FALSE)
+if (file_exists('.acces') && strpos(file_get_contents('.acces'), ':') !== FALSE)
 {
 	$protection = TRUE;
 	$nombreErreurs--;

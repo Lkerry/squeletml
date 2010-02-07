@@ -995,7 +995,24 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$cheminConfigGalerie = cheminConfigGalerie($racine, $id, TRUE);
 			}
 			
-			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance))
+			$parametresNouvellesImages = array ();
+			
+			if (isset($_POST['ajouter']) && !empty($_POST['parametres']))
+			{
+				$parametresNouvellesImagesTemp = explode("\n", trim(securiseTexte($_POST['parametres'])));
+				
+				foreach ($parametresNouvellesImagesTemp as $parametre)
+				{
+					$parametre = array_map('trim', explode("=", $parametre, 2));
+					
+					if (!empty($parametre[1]))
+					{
+						$parametresNouvellesImages[$parametre[0]] = $parametre[1];
+					}
+				}
+			}
+			
+			if (adminMajConfigGalerie($racine, $id, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages))
 			{
 				if ($configExisteAuDepart)
 				{
@@ -1129,6 +1146,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<li><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
 					</ul></li>
 				</ul>
+				
+				<?php $parametres = ''; ?>
+				
+				<?php foreach (adminParametresImage() as $parametre): ?>
+					<?php $parametres .= "$parametre=\n"; ?>
+				<?php endforeach; ?>
+				
+				<p><label><?php echo T_("Ajouter les paramètres suivants pour chaque image (un paramètre vide ne sera pas ajouté):"); ?></label><br />
+		<textarea name="parametres" cols="30" rows="10"><?php echo trim($parametres); ?></textarea></p>
 			</fieldset>
 			
 			<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
@@ -1452,25 +1478,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<p><label><?php echo T_("Pour chaque image intermédiaire, ajouter des paramètres:"); ?></label><br />
 				<select name="info[]" multiple="multiple" size="4">
 					<option value="aucun" selected="selected"><?php echo T_("Aucun"); ?></option>
-					<option value="id">id</option>
-					<option value="vignetteNom">vignetteNom</option>
-					<option value="vignetteLargeur">vignetteLargeur</option>
-					<option value="vignetteHauteur">vignetteHauteur</option>
-					<option value="vignetteAlt">vignetteAlt</option>
-					<option value="vignetteAttributTitle">vignetteAttributTitle</option>
-					<option value="intermediaireLargeur">intermediaireLargeur</option>
-					<option value="intermediaireHauteur">intermediaireHauteur</option>
-					<option value="intermediaireAlt">intermediaireAlt</option>
-					<option value="intermediaireAttributTitle">intermediaireAttributTitle</option>
-					<option value="intermediaireLegende">intermediaireLegende</option>
-					<option value="pageIntermediaireBaliseTitle">pageIntermediaireBaliseTitle</option>
-					<option value="pageIntermediaireDescription">pageIntermediaireDescription</option>
-					<option value="pageIntermediaireMotsCles">pageIntermediaireMotsCles</option>
-					<option value="originalNom">originalNom</option>
-					<option value="auteurAjout">auteurAjout</option>
-					<option value="dateAjout">dateAjout</option>
-					<option value="exclure">exclure</option>
-					<option value="commentaire">commentaire</option>
+					
+					<?php foreach (adminParametresImage() as $parametre): ?>
+						<option value="<?php echo $parametre; ?>"><?php echo $parametre; ?></option>
+					<?php endforeach; ?>
 				</select></p>
 			</fieldset>
 			

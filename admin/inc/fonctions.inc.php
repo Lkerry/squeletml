@@ -782,7 +782,7 @@ function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 /*
 Met à jour le fichier de configuration d'une galerie. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
-function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages = array ())
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 	$cheminConfigGalerie = cheminConfigGalerie($racine, $id);
@@ -881,9 +881,22 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	$dateAjout = date('Y-m-d H:i');
 	
-	foreach ($listeNouveauxFichiers as $valeur)
+	foreach ($listeNouveauxFichiers as $nouveauFichier)
 	{
-		array_unshift($galerieTemp, array ('intermediaireNom' => $valeur, 'dateAjout' => $dateAjout));
+		$parametres = array ();
+		$parametres['intermediaireNom'] = $nouveauFichier;
+		
+		foreach ($parametresNouvellesImages as $parametre => $valeur)
+		{
+			$parametres[$parametre] = $valeur;
+		}
+		
+		if (!array_key_exists('dateAjout', $parametres))
+		{
+			$parametres['dateAjout'] = $dateAjout;
+		}
+		
+		array_unshift($galerieTemp, $parametres);
 	}
 	
 	unset($listeNouveauxFichiers);
@@ -1019,6 +1032,34 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 	{
 		return '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), "<code>$fichier</code>") . "</li>\n";
 	}
+}
+
+/*
+Retourne un tableau dont chaque élément ets le nom d'un paramètre d'une image de galerie.
+*/
+function adminParametresImage()
+{
+	return array (
+		'id',
+		'intermediaireLegende',
+		'vignetteNom',
+		'vignetteLargeur',
+		'vignetteHauteur',
+		'vignetteAlt',
+		'vignetteAttributTitle',
+		'intermediaireLargeur',
+		'intermediaireHauteur',
+		'intermediaireAlt',
+		'intermediaireAttributTitle',
+		'pageIntermediaireBaliseTitle',
+		'pageIntermediaireDescription',
+		'pageIntermediaireMotsCles',
+		'originalNom',
+		'auteurAjout',
+		'dateAjout',
+		'exclure',
+		'commentaire',
+	);
 }
 
 /*

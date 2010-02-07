@@ -413,7 +413,6 @@ $limiterProfondeurListesBlocs = array (
 // Nombre de colonnes.
 /*
 - Si vaut 2, ajoute à la balise `body` les classes `deuxColonnes`, `colonneAgauche` et `colonneAdroite`, sinon si vaut 1, ajoute la classe `uneColonne`, sinon si vaut 0, ajoute la classe `aucuneColonne`.
-
 */
 $nombreDeColonnes = 1; // 0|1|2
 
