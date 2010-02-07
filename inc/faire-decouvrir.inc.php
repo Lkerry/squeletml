@@ -18,7 +18,7 @@ if (!$erreur404)
 		}
 		else
 		{
-			$nom = T_("Votre nom");
+			$nom = T_("VOTRE NOM");
 		}
 
 		if (!empty($_POST['message']) && !$messageEnvoye)

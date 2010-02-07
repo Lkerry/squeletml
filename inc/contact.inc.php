@@ -226,7 +226,7 @@ if (isset($_POST['envoyer']))
 include $racine . '/inc/faire-decouvrir.inc.php';
 $actionFormContact = actionFormContact($decouvrir);
 
-if ($nom == T_('Votre nom'))
+if ($nom == T_("VOTRE NOM"))
 {
 	$nom = '';
 }
