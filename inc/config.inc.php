@@ -509,6 +509,15 @@ $contactCourrielIdentifiantObjet = '[Contact] ';
 // Ajout dans le formulaire d'une option d'envoi d'une copie à l'expéditeur.
 $contactCopieCourriel = FALSE; // TRUE|FALSE
 
+// Champs obligatoires.
+/*
+- Chaque élément prend comme valeur TRUE ou FALSE.
+*/
+$contactChampsObligatoires = array (
+	'nom' => TRUE,
+	'message' => TRUE,
+);
+
 /* ____________________ Antipourriel. ____________________ */
 
 // Ajout d'un champ de calcul mathématique.

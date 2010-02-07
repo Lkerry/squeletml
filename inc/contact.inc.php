@@ -42,7 +42,7 @@ if (isset($_POST['envoyer']))
 		$courrielsDecouvrir = securiseTexte($_POST['courrielsDecouvrir']);
 	}
 	
-	if (empty($nom))
+	if (empty($nom) && $contactChampsObligatoires['nom'])
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li>' . T_("Vous n'avez pas inscrit de nom.") . "</li>\n";
@@ -81,7 +81,7 @@ if (isset($_POST['envoyer']))
 		}
 	}
 	
-	if (empty($message) && !$decouvrir)
+	if (empty($message) && !$decouvrir && $contactChampsObligatoires['message'])
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li>' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
