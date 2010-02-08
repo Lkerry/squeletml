@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Déconnexion de la section d'administration");
-$boitesDeroulantes = "explications";
+$boitesDeroulantes = "#explications";
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 

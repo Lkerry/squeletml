@@ -134,7 +134,7 @@ if (!empty($idCategorie))
 
 if ($tableDesMatieres)
 {
-	$boitesDeroulantes .= ' tableDesMatieres';
+	$boitesDeroulantes .= ' #tableDesMatieres';
 	$locale = locale(LANGUE);
 }
 

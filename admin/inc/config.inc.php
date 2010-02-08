@@ -26,7 +26,7 @@ $adminTailleCache = '5242880';
 /*
 - Voir les explications de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration du site.
 */
-$adminBoitesDeroulantesParDefaut = 'enTete';
+$adminBoitesDeroulantesParDefaut = '#enTete';
 
 // Inclusion du bas de page.
 $adminInclureBasDePage = TRUE; // TRUE|FALSE
@@ -203,17 +203,15 @@ $adminTypesMimePermis['qt|mov'] = 'video/quicktime';
 /*
 - Chaque élément peut valoir TRUE ou FALSE.
 */
-$adminPorteDocumentsDroits = array (
-	'ajouter' => TRUE,
-	'copier' => TRUE,
-	'creer' => TRUE,
-	'deplacer' => TRUE,
-	'editer' => TRUE,
-	'modifier-permissions' => TRUE,
-	'renommer' => TRUE,
-	'supprimer' => TRUE,
-	'telecharger' => TRUE,
-);
+$adminPorteDocumentsDroits['ajouter'] = TRUE;
+$adminPorteDocumentsDroits['copier'] = TRUE;
+$adminPorteDocumentsDroits['creer'] = TRUE;
+$adminPorteDocumentsDroits['deplacer'] = TRUE;
+$adminPorteDocumentsDroits['editer'] = TRUE;
+$adminPorteDocumentsDroits['modifier-permissions'] = TRUE;
+$adminPorteDocumentsDroits['renommer'] = TRUE;
+$adminPorteDocumentsDroits['supprimer'] = TRUE;
+$adminPorteDocumentsDroits['telecharger'] = TRUE;
 
 // Si `$adminPorteDocumentsDroits['edition']` vaut TRUE, activer une aide lors de l'édition.
 /*

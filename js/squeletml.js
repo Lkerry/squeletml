@@ -116,121 +116,95 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre)
 	})
 }
 
-/***********************************************************************
-**
-** Fonctions pour les boîtes déroulantes. Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>.
-**
-***********************************************************************/
-
+/*
+Boîte déroulante. Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>.
+*/
 function boiteDeroulante(conteneur)
 {
-	var oConteneur = document.getElementById(conteneur);
-	
-	if (conteneur == 'tableDesMatieres')
+	$(conteneur).each(function()
 	{
-		var cheminTitre = '#tableDesMatieresBdTitre';
-		var cheminCorps = '#tableDesMatieresBdCorps';
-	}
-	else
-	{
-		var cheminTitre = '#' + conteneur + ' .bDtitre';
-		var cheminCorps = '#' + conteneur + ' .bDcorps';
-	}
-	
-	var oTitre = $(cheminTitre).get(0);
-	var oCorps = $(cheminCorps).get(0);
-	var oA = document.createElement('a');
-	var oSpan1 = document.createElement('span');
-	var oSpan2 = document.createElement('span');
-	var oSpan3 = document.createElement('span');
-	var oTexteSpan1 = '';
-	var oTexteSpan1fin = '';
-	var oTexteSpan2 = '';
-	var oTexteSpan3 = document.createTextNode($(oTitre).html());
-	var symbole = '';
-	var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur));
-	
-	switch(temoinBoiteDeroulante)
-	{
-		case 'masquer':
-			$(oCorps).removeClass('afficher').addClass('masquer');
-			symbole = '+';
-			break;
-			
-		case 'afficher':
-			$(oCorps).removeClass('masquer').addClass('afficher');
-			symbole = '-';
-			break;
-			
-		default:
-			if (!$(oCorps).hasClass('masquer'))
-			{
-				$(oCorps).removeClass('masquer').addClass('afficher');
-				symbole = '-';
-			}
-			else
-			{
-				symbole = '+';
-			}
-	}
-	
-	oA.href= '#';
-	oA.setAttribute('class', 'boiteDeroulanteLien');
-	oSpan3.appendChild(oTexteSpan3);
-	oA.appendChild(oSpan3);
-	$(oTitre).html(oA);
-	oTexteSpan1 = document.createTextNode('[');
-	oTexteSpan1fin = document.createTextNode(']&nbsp;');
-	oTexteSpan2 = document.createTextNode(symbole);
-	oSpan2.appendChild(oTexteSpan2);
-	oSpan2.setAttribute('class', 'boiteDeroulanteVisuelSymbole');
-	oSpan1.appendChild(oTexteSpan1);
-	oSpan1.appendChild(oSpan2);
-	oSpan1.appendChild(oTexteSpan1fin);
-	oSpan1.setAttribute('class', 'boiteDeroulanteVisuel');
-	$(cheminTitre + '>a span:first').before(oSpan1);
-	$(cheminTitre + '>a').html(html_entity_decode($(cheminTitre + '>a').html()));
-	oA.onclick = function()
-	{
-		boiteDeroulanteChangementDetat(conteneur);
-		
-		if ($(oCorps).hasClass('masquer'))
+		if (conteneur == '#tableDesMatieres')
 		{
-			symbole = '+';
+			var cheminTitre = '#tableDesMatieresBdTitre';
+			var cheminCorps = '#tableDesMatieresBdCorps';
 		}
 		else
 		{
-			symbole = '-';
+			var cheminTitre = '.bDtitre';
+			var cheminCorps = '.bDcorps';
 		}
-		
-		$(cheminTitre + '>a span.boiteDeroulanteVisuelSymbole').html(symbole);
-		
-		return false;
-	};
-}
-
-function boiteDeroulanteChangementDetat(conteneur)
-{
-	if (conteneur == 'tableDesMatieres')
-	{
-		var cheminCorps = '#tableDesMatieresBdCorps';
-	}
-	else
-	{
-		var cheminCorps = '#' + conteneur + ' .bDcorps';
-	}
 	
-	var oCorps = $(cheminCorps).get(0);
-	var symbole = '';
+		var oTitre = $(this).find(cheminTitre).get(0);
+		var oCorps = $(this).find(cheminCorps).get(0);
+		var oA = document.createElement('a');
+		var oSpan1 = document.createElement('span');
+		var oSpan2 = document.createElement('span');
+		var oSpan3 = document.createElement('span');
+		var oTexteSpan1 = '';
+		var oTexteSpan1fin = '';
+		var oTexteSpan2 = '';
+		var oTexteSpan3 = document.createTextNode($(oTitre).html());
+		var symbole = '';
+		var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur.substr(1)));
 	
-	if ($(oCorps).hasClass('masquer'))
-	{
-		$(oCorps).removeClass('masquer').addClass('afficher');
-		$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur), 'afficher', { expires: 30, path: '/' });
-	}
-	else
-	{
-		$(oCorps).removeClass('afficher').addClass('masquer');
-		$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur), 'masquer', { expires: 30, path: '/' });
-	}
+		switch(temoinBoiteDeroulante)
+		{
+			case 'masquer':
+				$(oCorps).removeClass('afficher').addClass('masquer');
+				symbole = '+';
+				break;
+			
+			case 'afficher':
+				$(oCorps).removeClass('masquer').addClass('afficher');
+				symbole = '-';
+				break;
+			
+			default:
+				if (!$(oCorps).hasClass('masquer'))
+				{
+					$(oCorps).removeClass('masquer').addClass('afficher');
+					symbole = '-';
+				}
+				else
+				{
+					symbole = '+';
+				}
+		}
+	
+		oA.href= '#';
+		oA.setAttribute('class', 'boiteDeroulanteLien');
+		oSpan3.appendChild(oTexteSpan3);
+		oA.appendChild(oSpan3);
+		$(oTitre).html(oA);
+		oTexteSpan1 = document.createTextNode('[');
+		oTexteSpan1fin = document.createTextNode(']&nbsp;');
+		oTexteSpan2 = document.createTextNode(symbole);
+		oSpan2.appendChild(oTexteSpan2);
+		oSpan2.setAttribute('class', 'boiteDeroulanteVisuelSymbole');
+		oSpan1.appendChild(oTexteSpan1);
+		oSpan1.appendChild(oSpan2);
+		oSpan1.appendChild(oTexteSpan1fin);
+		oSpan1.setAttribute('class', 'boiteDeroulanteVisuel');
+		$(oTitre).find('>a span:first').before(oSpan1);
+		$(oTitre).find('>a').html(html_entity_decode($(oTitre).find('>a').html()));
+		oA.onclick = function()
+		{
+			if ($(oCorps).hasClass('masquer'))
+			{
+				$(oCorps).removeClass('masquer').addClass('afficher');
+				symbole = '-';
+				$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur.substr(1)), 'afficher', { expires: 180, path: '/' });
+			}
+			else
+			{
+				$(oCorps).removeClass('afficher').addClass('masquer');
+				symbole = '+';
+				$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur.substr(1)), 'masquer', { expires: 180, path: '/' });
+			}
+			
+			$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);
+		
+			return false;
+		};
+	});
 }

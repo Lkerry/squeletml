@@ -125,8 +125,8 @@ Chaque bloc se voit assigner trois nombres (séparés par une espace), qui font 
 
 Par exemple:
 
-	'menu-langues' => array (510, 510, 504),
-	'flux-rss' => array (502, 502, 506),
+	$ordreBlocsDansFluxHtml['menu-langues'] = array (510, 510, 504);
+	$ordreBlocsDansFluxHtml['flux-rss']     = array (502, 502, 506);
 
 signifie que le menu des langues ainsi que les liens RSS seront insérés dans la `div` `sousContenu`, peu importe le nombre de colonnes, puisque les deux blocs ont un nombre compris entre 500 et 599 pour chaque possibilité en lien avec le nombre de colonnes, et qu'à l'intérieur de la `div`, les liens RSS seront insérés en premier lorsqu'il n'y a pas de colonne et lorsqu'il n'y en a qu'une seule puisqu'en ordre croissant, nous obtenons 502 (les liens RSS) et 510 (le menu des langues), mais s'il y a deux colonnes, les liens RSS seront insérés après le menu des langues, car nous obtenons 504 (le menu des langues) et 506 (les liens RSS).
 
@@ -136,15 +136,13 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 
 Voir la fonction `blocs()`.
 */
-$ordreBlocsDansFluxHtml = array (
-	'menu-langues' => array (500, 500, 200),
-	'menu' => array (200, 501, 500),
-	'faire-decouvrir' => array (501, 502, 501),
-	'legende-oeuvre-galerie' => array (502, 503, 502), // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-	'flux-rss' => array (503, 504, 503),
-	'infos-publication' => array (400, 400, 400),
-	'licence' => array (401, 401, 401),
-);
+$ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
+$ordreBlocsDansFluxHtml['menu']                   = array (200, 501, 500);
+$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (501, 502, 501);
+$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (502, 503, 502);
+$ordreBlocsDansFluxHtml['flux-rss']               = array (503, 504, 503);
+$ordreBlocsDansFluxHtml['infos-publication']      = array (400, 400, 400);
+$ordreBlocsDansFluxHtml['licence']                = array (401, 401, 401);
 
 // Détection du type MIME.
 /*
@@ -205,9 +203,9 @@ $afficherTableDesMatieresParDefaut = FALSE; // TRUE|FALSE
 
 // Activation de boîtes déroulantes par défaut.
 /*
-Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, et enregistre, si possible, le choix d'affichage de l'internaute dans un témoin valide durant 30 jours. Ce contenu peut être situé n'importe où dans la page: menu, corps, bas de page, etc. Une boîte déroulante peut être activée seulement pour un contenu constitué d'un conteneur, d'un titre et d'un corps. La représentation générale est la suivante:
+Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, et enregistre, si possible, le choix d'affichage de l'internaute dans un témoin valide durant 180 jours. Ce contenu peut être situé n'importe où dans la page: menu, corps, bas de page, etc. Une boîte déroulante peut être activée seulement pour un contenu constitué d'un conteneur, d'un titre et d'un corps. La représentation générale est la suivante:
 
-	<balise id="conteneur">
+	<balise id="conteneur"> ou <balise class="conteneur">
 		<balise class="bDtitre">...</balise>
 		<balise class="bDcorps">...</balise>
 	</balise>
@@ -266,15 +264,21 @@ Nous constatons qu'un lien est ajouté au titre. Un clic sur le titre permet de 
 
 Dans l'exemple précédent, la boîte déroulante peut être activée de deux façons:
 
-1. en ajoutant `fruits` dans la variable `$boitesDeroulantesParDefaut`.
+1. en ajoutant `#fruits` dans la variable `$boitesDeroulantesParDefaut`.
 
-	La syntaxe de chaque boîte est donc la suivante:
+	La syntaxe de chaque boîte est donc:
 
-		'idConteneur'
+		'#conteneur'
+
+	pour un conteneur identifié à l'aide de son attribut `id`, ou bien:
+
+		'.conteneur'
+
+	pour un conteneur identifié à l'aide de son attribut `class`.
 
 	En ajoutant au moins une boîte dans cette variable, chaque page de Squeletml ajoutera les scripts nécessaires aux boîtes déroulantes. Pour ajouter plusieurs boîtes, le séparateur à utiliser est une espace. Voici un exemple d'ajout de plusieurs boîtes:
 
-		$boitesDeroulantesParDefaut = 'idConteneur1 idConteneur2 idConteneur3';
+		$boitesDeroulantesParDefaut = "#conteneur1 .conteneur2 .conteneur3";
 
 2. en renseignant la variable `$boitesDeroulantes` dans une page spécifique avant l'inclusion du premier fichier PHP (la syntaxe est la même que pour la variable `$boitesDeroulantesParDefaut`). Voir la documentation pour plus de détails.
 
@@ -318,11 +322,9 @@ $articlesParPage = 10;
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
 */
-$dureeCache = array (
-	'fluxRss' => 0,
-	'categorie' => 0,
-	'galerie' => 0,
-);
+$dureeCache['fluxRss'] = 0;
+$dureeCache['categorie'] = 0;
+$dureeCache['galerie'] = 0;
 
 /* ____________________ Style CSS. ____________________ */
 
@@ -338,17 +340,16 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 /*
 - Si la détection est activée pour un bloc, ajoute la classe `actif` à tous les liens (balises `a`) de ce bloc et pointant vers la page en cours ainsi qu'au `li` contenant ce lien. Avec la feuille de style par défaut, le résultat est un lien actif en gras et un `li` marqué d'une petite puce spéciale.
 - Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier de configuration pour connaître la syntaxe des clés du tableau (par exemple `menu-langues`).
+- Chaque élément prend comme valeur TRUE, FALSE ou NULL.
 - Voir la fonction `lienActif()`.
 */
-$liensActifsBlocs = array (
-	'menu-langues' => TRUE,
-	'menu' => TRUE,
-	'faire-decouvrir' => NULL, // Ne s'applique pas.
-	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-	'flux-rss' => NULL, // Ne s'applique pas.
-	'infos-publication' => NULL, // Ne s'applique pas.
-	'licence' => NULL, // Ne s'applique pas.
-);
+$liensActifsBlocs['menu-langues'] = TRUE;
+$liensActifsBlocs['menu'] = TRUE;
+$liensActifsBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+$liensActifsBlocs['flux-rss'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['infos-publication'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['licence'] = NULL; // Ne s'applique pas.
 
 // Limite de la profondeur d'une liste dans un bloc.
 /*
@@ -400,15 +401,13 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
-$limiterProfondeurListesBlocs = array (
-	'menu-langues' => FALSE,
-	'menu' => TRUE,
-	'faire-decouvrir' => NULL, // Ne s'applique pas.
-	'legende-oeuvre-galerie' => FALSE, // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-	'flux-rss' => NULL, // Ne s'applique pas.
-	'infos-publication' => NULL, // Ne s'applique pas.
-	'licence' => NULL, // Ne s'applique pas.
-);
+$limiterProfondeurListesBlocs['menu-langues'] = FALSE;
+$limiterProfondeurListesBlocs['menu'] = TRUE;
+$limiterProfondeurListesBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
+$limiterProfondeurListesBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+$limiterProfondeurListesBlocs['flux-rss'] = NULL; // Ne s'applique pas.
+$limiterProfondeurListesBlocs['infos-publication'] = NULL; // Ne s'applique pas.
+$limiterProfondeurListesBlocs['licence'] = NULL; // Ne s'applique pas.
 
 // Nombre de colonnes.
 /*
@@ -433,10 +432,11 @@ $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
 
 // Div `page` avec bordures.
-$borduresPage = array(
-	'gauche' => TRUE, // TRUE|FALSE
-	'droite' => TRUE, // TRUE|FALSE
-);
+/*
+- Les valeurs possibles sont TRUE ou FALSE.
+*/
+$borduresPage['gauche'] = TRUE;
+$borduresPage['droite'] = TRUE;
 
 // S'il y a au moins une colonne, étendre l'en-tête sur toute la largeur du site.
 /*
@@ -454,16 +454,14 @@ $blocsArrondisParDefaut = FALSE; // TRUE|FALSE
 /*
 Il est possible de modifier la configuration par défaut des blocs arrondis pour un bloc en particulier selon le nombre de colonnes. Par exemple, la ligne suivante:
 
-	'menu' => array (TRUE, FALSE, FALSE),
+	$blocsArrondisSpecifiques['menu'] = array (TRUE, FALSE, FALSE);
 
 précise que le bloc de menu principal devra avoir des coins arrondis lorsqu'il n'y a pas de colonne, mais ne devra pas en avoir lorsqu'il y en a une ou deux. Nous pouvons donc dégager la syntaxe générale suivante:
 
-	'bloc' => array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes),
+	$blocsArrondisSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
 */
-$blocsArrondisSpecifiques = array (
-	'menu' => array (TRUE, FALSE, FALSE),
-	'licence' => array (TRUE, TRUE, TRUE),
-);
+$blocsArrondisSpecifiques['menu'] = array (TRUE, FALSE, FALSE);
+$blocsArrondisSpecifiques['licence'] = array (TRUE, TRUE, TRUE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
@@ -513,10 +511,8 @@ $contactCopieCourriel = FALSE; // TRUE|FALSE
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$contactChampsObligatoires = array (
-	'nom' => TRUE,
-	'message' => TRUE,
-);
+$contactChampsObligatoires['nom'] = TRUE;
+$contactChampsObligatoires['message'] = TRUE;
 
 /* ____________________ Antipourriel. ____________________ */
 
@@ -556,10 +552,8 @@ $galerieQualiteJpg = 90; // 0-100
 - Les proportions de l'image sont conservées.
 - Au moins une dimension doit être donnée.
 */
-$galerieDimensionsVignette = array (
-	'largeur' => 100,
-	'hauteur' => 100,
-);
+$galerieDimensionsVignette['largeur'] = 100;
+$galerieDimensionsVignette['hauteur'] = 100;
 
 // Taille forcée pour une vignette.
 /*
@@ -579,10 +573,11 @@ $galerieForcerDimensionsVignette = TRUE; // TRUE|FALSE
 $galerieVignettesParPage = 0;
 
 // S'il y a pagination, affichage des liens au-dessus ou au-dessous des vignettes, ou les deux.
-$galeriePagination = array (
-	'au-dessus' => TRUE, // TRUE|FALSE
-	'au-dessous' => FALSE, // TRUE|FALSE
-);
+/*
+- Chaque élément prend comme valeur TRUE ou FALSE.
+*/
+$galeriePagination['au-dessus'] = TRUE;
+$galeriePagination['au-dessous'] = FALSE;
 
 // Affichage d'informations au sujet de la galerie.
 $galerieInfoAjout = TRUE; // TRUE|FALSE
@@ -655,26 +650,22 @@ $galerieExifAjout = TRUE; // TRUE|FALSE
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$galerieExifInfos = array (
-	'DateTime' => TRUE,
-	'ExposureTime' => TRUE,
-	'FNumber' => TRUE,
-	'FocalLength' => TRUE,
-	'ISOSpeedRatings' => TRUE,
-	'Make' => TRUE,
-	'Model' => TRUE,
-);
+$galerieExifInfos['DateTime'] = TRUE;
+$galerieExifInfos['ExposureTime'] = TRUE;
+$galerieExifInfos['FNumber'] = TRUE;
+$galerieExifInfos['FocalLength'] = TRUE;
+$galerieExifInfos['ISOSpeedRatings'] = TRUE;
+$galerieExifInfos['Make'] = TRUE;
+$galerieExifInfos['Model'] = TRUE;
 
 // Si le format original d'une image existe, emplacement du lien vers le fichier.
 /*
 - Si l'emplacement `icone` vaut TRUE, une petite icône est ajoutée sous l'image pour signifier que le format original existe.
 - Les valeurs possibles pour chaque emplacement sont TRUE ou FALSE.
 */
-$galerieLienOriginalEmplacement = array (
-	'image' => TRUE,
-	'legende' => TRUE,
-	'icone' => TRUE,
-);
+$galerieLienOriginalEmplacement['image'] = TRUE;
+$galerieLienOriginalEmplacement['legende'] = TRUE;
+$galerieLienOriginalEmplacement['icone'] = TRUE;
 
 // Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
 /*

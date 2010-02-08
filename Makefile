@@ -40,6 +40,7 @@ archives: menage-archives ChangeLog version.txt
 	php ./scripts.cli.php mdtxt ChangeLog-$(tag)
 	mv ChangeLog-$(tag).mdtxt $(bureau)/
 	mv ChangeLog-$(tag) $(tag)/
+	cp ChangeLog-$(tag)-fichiers $(bureau)/
 	mv ChangeLog-$(tag)-fichiers $(tag)/
 	cp version.txt $(tag)/
 	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer

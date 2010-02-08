@@ -30,7 +30,7 @@ $baliseTitle = T_("Porte-documents");
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {
-	$boitesDeroulantes = "affichageDetailleTypesMimePermis";
+	$boitesDeroulantes = "#affichageDetailleTypesMimePermis";
 }
 
 include $racineAdmin . '/inc/premier.inc.php';
