@@ -24,7 +24,7 @@
 		<textarea name="message" cols="30" rows="10" id="message"><?php echo $message; ?></textarea></p>
 		
 		<?php // Champs supplémentaires optionnels. ?>
-		<?php if (file_exists($racine . '/site/xhtml/form-contact-champs-supplementaires.inc.php')): ?>
+		<?php if (!$decouvrir && file_exists($racine . '/site/xhtml/form-contact-champs-supplementaires.inc.php')): ?>
 			<?php include $racine . '/site/xhtml/form-contact-champs-supplementaires.inc.php'; ?>
 		<?php endif; ?>
 		
