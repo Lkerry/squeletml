@@ -311,19 +311,30 @@ function cheminXhtml($racine, $nom)
 }
 
 /*
-Si `$retourneChemin` vaut TRUE, retourne le chemin vers le fichier `(site/)xhtml/$langue/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide. Si `$retourneChemin` vaut FALSE, retourne TRUE si un fichier a été trouvé, sinon retourne FALSE.
+Si `$retourneChemin` vaut TRUE, retourne le chemin vers le fichier `(site/)xhtml/($langue||multilingue)/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide. Si `$retourneChemin` vaut FALSE, retourne TRUE si un fichier a été trouvé, sinon retourne FALSE.
 */
 function cheminXhtmlLangue($racine, $langues, $nom, $retourneChemin = TRUE)
 {
-	foreach ($langues as $langue)
+	if (file_exists("$racine/site/xhtml/multilingue/$nom.inc.php"))
 	{
-		if (file_exists("$racine/site/xhtml/$langue/$nom.inc.php"))
+		return $retourneChemin ? "$racine/site/xhtml/multilingue/$nom.inc.php" : TRUE;
+	}
+	elseif (file_exists("$racine/xhtml/multilingue/$nom.inc.php"))
+	{
+		return $retourneChemin ? "$racine/xhtml/multilingue/$nom.inc.php" : TRUE;
+	}
+	else
+	{
+		foreach ($langues as $langue)
 		{
-			return $retourneChemin ? "$racine/site/xhtml/$langue/$nom.inc.php" : TRUE;
-		}
-		elseif (file_exists("$racine/xhtml/$langue/$nom.inc.php"))
-		{
-			return $retourneChemin ? "$racine/xhtml/$langue/$nom.inc.php" : TRUE;
+			if (file_exists("$racine/site/xhtml/$langue/$nom.inc.php"))
+			{
+				return $retourneChemin ? "$racine/site/xhtml/$langue/$nom.inc.php" : TRUE;
+			}
+			elseif (file_exists("$racine/xhtml/$langue/$nom.inc.php"))
+			{
+				return $retourneChemin ? "$racine/xhtml/$langue/$nom.inc.php" : TRUE;
+			}
 		}
 	}
 	

@@ -147,7 +147,7 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 #### Le dossier `xhtml`
 
-Le dossier `xhtml` contient tous les fichiers contenant la structure XHTML envoyée au navigateur. Autrement dit, les variables nécessaires à la construction d'une page ont été déclarées et affectées par les scripts du dossier `inc`, et elles setont utilisées dans les fichiers du dossier `xhtml`.
+Le dossier `xhtml` contient tous les fichiers contenant la structure XHTML envoyée au navigateur. Autrement dit, les variables nécessaires à la construction d'une page ont été déclarées et affectées par les scripts du dossier `inc`, et elles seront utilisées dans les fichiers du dossier `xhtml`.
 
 La plupart des fichiers du dossier `xhtml` peuvent être personnalisés en créant un fichier de même nom dans `site/xhtml`, et Squeletml reconnaîtra automatiquement le fichier personnel.
 
@@ -171,6 +171,8 @@ Ensuite, il y a les fichiers de division XHTML, qui sont, pour le français:
 	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `en/menu.inc.php`.
 
 	Ces fichiers contiennent le contenu par défaut pour chaque division représentée. Vous pouvez utiliser vos propres divisions en créant un fichier de même nom dans `site/xhtml`. Par exemple, pour modifier le menu en français, créer un fichier `site/xhtml/fr/menu.inc.php`, qui sera inséré à la place de la division par défaut.
+
+	Il est également possible d'utiliser la même division pour toutes les langues du site. Pour ce faire, placer le fichier de division dans le dossier `site/xhtml/multilingue/`. Par exemple, un menu commun à toutes les langues se trouvera dans `site/xhtml/multilingue/menu.inc.php`.
 
 	Certains fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/xhtml`. Voir la section «Structure XHTML par défaut».
 
