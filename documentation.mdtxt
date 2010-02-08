@@ -153,7 +153,7 @@ La plupart des fichiers du dossier `xhtml` peuvent être personnalisés en créa
 
 Pour commencer, il y a les fichiers de la structure XHTML générale de la page:
 
-- `form-contact.inc.php`: modèle du formulaire de contact. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/form-contact.inc.php`, qui sera utilisé à la place du modèle par défaut. Vous pouvez également ajouter des champs supplémentaires au modèle par défaut. Ainsi, si le fichier `site/xhtml/form-contact.inc.php` n'existe pas mais que le fichier `site/xhtml/form-contact.inc.php` existe, ce dernier sera inclus dans le modèle par défaut. Les champs supplémentaires apparaîtront sous le champ du message.
+- `form-contact.inc.php`: modèle du formulaire de contact. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/form-contact.inc.php`, qui sera utilisé à la place du modèle par défaut. Vous pouvez également ajouter des champs supplémentaires au modèle par défaut. Ainsi, si le fichier `site/xhtml/form-contact.inc.php` n'existe pas, des champs supplémentaires sous le champ `nom` peuvent être inclus dans le modèle par défaut grâce au fichier `site/xhtml/form-contact-champs-apres-nom.inc.php`, et des champs supplémentaires sous le message peuvent être inclus grâce au fichier `site/xhtml/form-contact-champs-apres-message.inc.php`.
 
 - `page.dernier.inc.php`: modèle de page suivant le contenu ajouté directement par l'utilisateur. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/page.dernier.inc.php`, qui sera utilisé à la place du modèle par défaut.
 
@@ -354,7 +354,7 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 		- *`site/inc/contact.inc.php`* après le traitement des champs par défaut
 		- *`site/inc/contact.inc.php`* avant l'envoi du message
 		- `inc/faire-decouvrir.inc.php` (voir les détails plus haut)
-		- *`site/xhtml/form-contact.inc.php`* **||** (`xhtml/form-contact.inc.php` && *`site/xhtml/form-contact-champs-supplementaires.inc.php`*)
+		- *`site/xhtml/form-contact.inc.php`* **||** (`xhtml/form-contact.inc.php` && *`site/xhtml/form-contact-champs-apres-nom.inc.php`* && *`site/xhtml/form-contact-champs-apres-message.inc.php`*)
 		- *`site/inc/contact.inc.php`* à la fin du fichier
 	- *`site/inc/dernier.inc.php`*
 	- *`site/xhtml/page.dernier.inc.php`* **||** `xhtml/page.dernier.inc.php`
