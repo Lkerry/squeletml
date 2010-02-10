@@ -50,9 +50,7 @@ if (isset($_POST['envoyer']))
 
 	if ($contactVerifierCourriel)
 	{
-		$motifCourriel = "/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i";
-
-		if (!preg_match($motifCourriel, $courriel))
+		if (!courrielValide($courriel))
 		{
 			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li>' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
@@ -67,7 +65,7 @@ if (isset($_POST['envoyer']))
 		
 		foreach ($tableauCourrielsDecouvrir as $courrielDecouvrir)
 		{
-			if (!preg_match($motifCourriel, $courrielDecouvrir))
+			if (!courrielValide($courrielDecouvrir))
 			{
 				$courrielsDecouvrirErreur .= $courrielDecouvrir . ', ';
 				$i++;

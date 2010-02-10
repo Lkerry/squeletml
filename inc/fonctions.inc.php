@@ -627,6 +627,16 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 }
 
 /*
+Retourne TRUE si l'adresse courriel a une forme valide, sinon retourne FALSE.
+*/
+function courrielValide($courriel)
+{
+	$motifCourriel = "/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i";
+	
+	return preg_match($motifCourriel, $courriel);
+}
+
+/*
 Vérifie si le dossier de cache existe. S'il n'existe pas, le dossier est créé, sinon rien n'est fait. Retourne TRUE si le dossier existe ou si la création a été effectuée avec succès, sinon retourne FALSE.
 */
 function creeDossierCache($racine)
