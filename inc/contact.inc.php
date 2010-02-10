@@ -10,7 +10,7 @@ phpGettext($racine, LANGUE);
 $nom = '';
 $courriel = '';
 $message = '';
-$copie = '';
+$copie = FALSE;
 $courrielsDecouvrir = '';
 $messageEnvoye = FALSE;
 $contact = '';
@@ -34,7 +34,7 @@ if (isset($_POST['envoyer']))
 	
 	if (isset($_POST['copie']))
 	{
-		$copie = $_POST['copie'];
+		$copie = TRUE;
 	}
 	
 	if ($decouvrir)
@@ -128,7 +128,7 @@ if (isset($_POST['envoyer']))
 		$adresseReplyTo = $courriel;
 		$adresseBcc = '';
 		
-		if ($decouvrir && $contactCopieCourriel && $copie == 'copie')
+		if ($decouvrir && $contactCopieCourriel && $copie)
 		{
 			$adresseTo = $adresseFrom;
 			$adresseBcc = $courrielsDecouvrir;
@@ -137,7 +137,7 @@ if (isset($_POST['envoyer']))
 		{
 			$adresseTo = $courrielsDecouvrir;
 		}
-		elseif (!$decouvrir && $contactCopieCourriel && $copie == 'copie')
+		elseif (!$decouvrir && $contactCopieCourriel && $copie)
 		{
 			$adresseTo = $adresseFrom;
 			$adresseBcc = $courrielContact;
@@ -193,7 +193,7 @@ if (isset($_POST['envoyer']))
 			$nom = '';
 			$courriel = '';
 			$message = '';
-			$copie = '';
+			$copie = FALSE;
 			$courrielsDecouvrir = '';
 		}
 		else

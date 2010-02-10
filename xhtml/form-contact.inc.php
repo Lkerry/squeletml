@@ -52,7 +52,7 @@
 				name="copie"
 				type="checkbox"
 				value="copie"
-				<?php if ($copie == 'copie'): ?>
+				<?php if ($copie): ?>
 					checked="checked"
 				<?php endif; ?>
 			/>
