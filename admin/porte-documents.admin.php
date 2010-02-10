@@ -1531,7 +1531,7 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 		echo '<div id="affichageDetailleTypesMimePermis">' . "\n";
 		echo '<p class="bDtitre"><strong>' . T_("Liste détaillée des types MIME permis") . "</strong></p>\n";
 	
-		echo '<div class="bDcorps masquer">' . "\n";
+		echo '<div class="bDcorps">' . "\n";
 		echo "<ul>\n";
 	
 		$affichageDetailleTypesMimePermis = '';

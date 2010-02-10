@@ -93,6 +93,7 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre)
 		oTitreTexte = document.createTextNode(T_("Table des matières"));
 		oTable.setAttribute('id', 'tableDesMatieresBdCorps');
 		oTable.setAttribute('class', 'bDcorps');
+		$(oTable).addClass('afficher');
 		
 		oConteneur.appendChild(oTable);
 		oTitre.appendChild(oTitreTexte);
@@ -146,7 +147,7 @@ function boiteDeroulante(conteneur)
 		var oTexteSpan3 = document.createTextNode($(oTitre).html());
 		var symbole = '';
 		var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur.substr(1)));
-	
+		
 		switch(temoinBoiteDeroulante)
 		{
 			case 'masquer':
@@ -160,17 +161,17 @@ function boiteDeroulante(conteneur)
 				break;
 			
 			default:
-				if (!$(oCorps).hasClass('masquer'))
+				if (!$(oCorps).hasClass('afficher'))
 				{
-					$(oCorps).removeClass('masquer').addClass('afficher');
-					symbole = '-';
+					$(oCorps).addClass('masquer');
+					symbole = '+';
 				}
 				else
 				{
-					symbole = '+';
+					symbole = '-';
 				}
 		}
-	
+		
 		oA.href= '#';
 		oA.setAttribute('class', 'boiteDeroulanteLien');
 		oSpan3.appendChild(oTexteSpan3);

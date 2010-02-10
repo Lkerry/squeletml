@@ -207,8 +207,10 @@ Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, 
 
 	<balise id="conteneur"> ou <balise class="conteneur">
 		<balise class="bDtitre">...</balise>
-		<balise class="bDcorps">...</balise>
+		<balise class="bDcorps (afficher|masquer)">...</balise>
 	</balise>
+
+Le corps est affiché seulement s'il possède une classe `afficher`. La classe `masquer` n'est donc pas essentielle.
 
 Voici un exemple concret:
 
@@ -217,7 +219,7 @@ Voici un exemple concret:
 	<div id="fruits">
 		<h2 class="bDtitre">Fruits disponibles</h2>
 		
-		<div class="bDcorps">
+		<div class="bDcorps afficher">
 			<ul>
 				<li>Fraises</li>
 				<li>Poires</li>
@@ -228,12 +230,12 @@ Voici un exemple concret:
 		</div>
 	</div>
 
-2. après application de la boîte déroulante avec affichage par défaut du corps:
+2. après application de la boîte déroulante. Le corps est affiché:
 
 	<div id="fruits">
 		<h2 class="bDtitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[-]&nbsp;</span><span>Fruits disponibles</span></a></h2>
 		
-		<div class="bDcorps" class="afficher">
+		<div class="bDcorps afficher">
 			<ul>
 				<li>Fraises</li>
 				<li>Poires</li>
@@ -244,12 +246,12 @@ Voici un exemple concret:
 		</div>
 	</div>
 
-3. après application de la boîte déroulante avec masquage par défaut du corps:
+3. après application de la boîte déroulante si le corps n'avait pas possédé de classe `afficher` (le corps aurait donc été masqué):
 
 	<div id="fruits">
 		<h2 class="bDtitre"><a href="#" class="boiteDeroulanteLien"><span class="boiteDeroulanteSymbole">[+]&nbsp;</span><span>Fruits disponibles</span></a></h2>
 		
-		<div class="bDcorps" class="masquer">
+		<div class="bDcorps masquer">
 			<ul>
 				<li>Fraises</li>
 				<li>Poires</li>

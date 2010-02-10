@@ -1,4 +1,4 @@
-<ul class="bDcorps masquer">
+<ul class="bDcorps">
 	<li><a href="<?php echo $urlRacineAdmin; ?>/porte-documents.admin.php#ajouter"><?php echo T_("Ajouter un fichier"); ?></a> | </li>
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/porte-documents.admin.php#creer"><?php echo T_("Créer un fichier"); ?></a> | </li>
