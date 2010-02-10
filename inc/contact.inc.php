@@ -188,7 +188,7 @@ if (isset($_POST['envoyer']))
 			include $racine . '/site/inc/contact.inc.php';
 		}
 		
-		if (mail($adresseTo, $objet, $corps, $enTete))
+		if (@mail($adresseTo, $objet, $corps, $enTete))
 		{
 			$messageEnvoye = TRUE;
 			$messagesScript .= '<p id="messages" class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";
