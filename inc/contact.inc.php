@@ -123,62 +123,48 @@ if (isset($_POST['envoyer']))
 	// Envoi du message.
 	if (!$erreurFormulaire)
 	{
-		// Adresses.
-		$adresseFrom = $courriel;
-		$adresseReplyTo = $courriel;
-		$adresseBcc = '';
+		$infosCourriel = array ();
+		$infosCourriel['From'] = "$nom <$courriel>";
+		$infosCourriel['ReplyTo'] = $infosCourriel['From'];
 		
 		if ($decouvrir && $contactCopieCourriel && $copie)
 		{
-			$adresseTo = $adresseFrom;
-			$adresseBcc = $courrielsDecouvrir;
+			$infosCourriel['destinataire'] = $infosCourriel['From'];
+			$infosCourriel['Bcc'] = $courrielsDecouvrir;
 		}
 		elseif ($decouvrir)
 		{
-			$adresseTo = $courrielsDecouvrir;
+			$infosCourriel['destinataire'] = $courrielsDecouvrir;
 		}
 		elseif (!$decouvrir && $contactCopieCourriel && $copie)
 		{
-			$adresseTo = $adresseFrom;
-			$adresseBcc = $courrielContact;
-		}
-		elseif (!$decouvrir)
-		{
-			$adresseTo = $courrielContact;
-		}
-		
-		$enTete = '';
-		$enTete .= "From: $nom <$adresseFrom>\n";
-		$enTete .= "Reply-to: $adresseReplyTo\n";
-
-		if (!empty($adresseBcc))
-		{
-			$enTete .= "Bcc: $adresseBcc\n";
-		}
-		
-		$enTete .= "MIME-Version: 1.0\n";
-		
-		if ($decouvrir)
-		{
-			$enTete .= "Content-Type: text/html; charset=\"utf-8\"\n";
+			$infosCourriel['destinataire'] = $infosCourriel['From'];
+			$infosCourriel['Bcc'] = $courrielContact;
 		}
 		else
 		{
-			$enTete .= "Content-Type: text/plain; charset=\"utf-8\"\n";
+			$infosCourriel['destinataire'] = $courrielContact;
 		}
-		
-		$enTete .= "X-Mailer: Squeletml\n";
 		
 		if ($decouvrir)
 		{
-			$corps = str_replace(array("\r\n", "\r"), "\n", $messageDecouvrir) . "\n";
+			$infosCourriel['format'] = 'html';
 		}
 		else
 		{
-			$corps = str_replace(array("\r\n", "\r"), "\n", $message) . "\n";
+			$infosCourriel['format'] = 'texte';
 		}
 		
-		$objet = $contactCourrielIdentifiantObjet . "Message de " . "$nom <$adresseFrom>";
+		$infosCourriel['objet'] = $contactCourrielIdentifiantObjet . "Message de " . $infosCourriel['From'];
+		
+		if ($decouvrir)
+		{
+			$infosCourriel['message'] = str_replace(array("\r\n", "\r"), "\n", $messageDecouvrir) . "\n";
+		}
+		else
+		{
+			$infosCourriel['message'] = str_replace(array("\r\n", "\r"), "\n", $message) . "\n";
+		}
 		
 		// Traitement personnalisé optionnel.
 		if (file_exists($racine . '/site/inc/contact.inc.php'))
@@ -186,7 +172,7 @@ if (isset($_POST['envoyer']))
 			include $racine . '/site/inc/contact.inc.php';
 		}
 		
-		if (@mail($adresseTo, $objet, $corps, $enTete))
+		if (courriel($infosCourriel))
 		{
 			$messageEnvoye = TRUE;
 			$messagesScript .= '<p id="messages" class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";

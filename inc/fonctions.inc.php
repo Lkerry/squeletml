@@ -627,6 +627,64 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 }
 
 /*
+Envoie un courriel. Retourne TRUE si le courriel a été envoyé, sinon retourne FALSE.
+
+Le tableau en paramètre peut contenir les informations suivantes:
+
+  - `$infos['From']` (optionnel);
+  - `$infos['ReplyTo']` (optionnel);
+  - `$infos['Bcc']` (optionnel);
+  - `$infos['format']` (optionnel): vaut par défaut `plain`. Peut valoir aussi `html`;
+  - `$infos['destinataire']` (obligatoire);
+  - `$infos['objet']` (obligatoire);
+  - `$infos['message']` (obligatoire);
+*/
+function courriel($infos)
+{
+	if (!isset($infos['destinataire']) || !isset($infos['objet']) || !isset($infos['message']))
+	{
+		return FALSE;
+	}
+	else
+	{
+		$enTete = '';
+	
+		if (!empty($infos['From']))
+		{
+			$enTete .= "From: {$infos['From']}\n";
+		}
+	
+	
+		if (!empty($infos['ReplyTo']))
+		{
+			$enTete .= "Reply-to: {$infos['ReplyTo']}\n";
+		}
+	
+
+		if (!empty($infos['Bcc']))
+		{
+			$enTete .= "Bcc: {$infos['Bcc']}\n";
+		}
+	
+		$enTete .= "MIME-Version: 1.0\n";
+	
+		if (isset($infos['format']) && $infos['format'] == 'html')
+		{
+			$format = 'html';
+		}
+		else
+		{
+			$format = 'plain';
+		}
+	
+		$enTete .= "Content-Type: text/$format; charset=\"utf-8\"\n";
+		$enTete .= "X-Mailer: Squeletml\n";
+	
+		return @mail($infos['destinataire'], $infos['objet'], $infos['message'], $enTete);
+	}
+}
+
+/*
 Retourne TRUE si l'adresse courriel a une forme valide, sinon retourne FALSE.
 */
 function courrielValide($courriel)
