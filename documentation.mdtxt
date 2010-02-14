@@ -723,11 +723,22 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 		
 		Écrit par pseudo le 2010-01-04. Dernière révision le 2010-01-05.
 		
-		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos.
+		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. […]
 		
 		Lire la suite de Article sur le husky 
 
 	La teneur exacte de l'aperçu de la page sur le husky dépend de la configuration de `$urlRacine/animaux/chiens/husky.php`. Dans notre exemple, les variables `$dateCreation` et `$dateRevision` ont été affectées. Pour sa part, le lien «Lire la suite de...» est ajouté lorsque le texte de la page n'apparaît pas au complet, et ce grâce à l'utilisation de la variable `$apercu`. Voir la section «Variables PHP» pour plus de détails au sujet de ces variables.
+
+	Si une page fait partie d'au moins une catégorie, les informations de publication au sujet de cette page feront référence à sa ou ses catégories. Exemple:
+
+		Écrit par pseudo le 2010-01-04. Dernière révision le 2010-01-05. Catégories: animaux, chiens
+
+	Un lien vers la page d'accueil de chaque catégorie peut être ajouté automatiquement. Pour ce faire, ajouter dans le fichier de configuration des catégories l'URL relative de la page d'accueil de la catégorie. Exemple:
+
+		[chiens]
+		urlCategorie=animaux/chiens/index.php
+		pages[]=animaux/chiens/husky.php
+		pages[]=animaux/chiens/malamute.php
 
 ## Galeries
 

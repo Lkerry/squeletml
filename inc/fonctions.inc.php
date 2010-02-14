@@ -1249,7 +1249,7 @@ function infosPage($urlPage, $inclureApercu)
 				if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $infosPage['contenu'], $resultatInterne))
 				{
 					$apercuInterne = TRUE;
-					$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]));
+					$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]) . ' […]');
 				}
 			}
 			elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
@@ -1309,9 +1309,43 @@ function infosPage($urlPage, $inclureApercu)
 }
 
 /*
-Retourne les informations sur l'auteur et les dates de création et de révision. Si aucune information n'est présente, retourne une chaine vide.
+Retourne un tableau des catégories auxquelles la page appartient. La structure est:
+
+	$listeCategories['idCategorie'] = 'urlCategorie';
 */
-function infosPublication($auteur, $dateCreation, $dateRevision)
+function categories($racine, $urlRacine, $url)
+{
+	$listeCategories = array ();
+	$cheminFichier = cheminConfigCategories($racine);
+	
+	if ($cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE && !empty($categories))
+	{
+		foreach ($categories as $categorie => $categorieInfos)
+		{
+			foreach ($categorieInfos['pages'] as $page)
+			{
+				$urlPage = $urlRacine . '/' . rtrim($page);
+				
+				if ($urlPage == $url)
+				{
+					$listeCategories[$categorie] = '';
+					
+					if (!empty($categorieInfos['urlCategorie']))
+					{
+						$listeCategories[$categorie] = $urlRacine . '/' . $categorieInfos['urlCategorie'];
+					}
+				}
+			}
+		}
+	}
+	
+	return $listeCategories;
+}
+
+/*
+Retourne les informations sur l'auteur, les dates de création et de révision ainsi que la ou les catégories. Si aucune information n'est présente, retourne une chaine vide.
+*/
+function infosPublication($auteur, $dateCreation, $dateRevision, $categories)
 {
 	$infosPublication = '';
 	
@@ -1334,6 +1368,25 @@ function infosPublication($auteur, $dateCreation, $dateRevision)
 	if (!empty($dateRevision))
 	{
 		$infosPublication .= sprintf(T_("Dernière révision le %1\$s."), $dateRevision) . "\n";
+	}
+	
+	if (!empty($categories))
+	{
+		$infosPublication .= T_ngettext("Catégorie:", "Catégories:", count($categories)) . "\n";
+		
+		foreach ($categories as $categorie => $urlCategorie)
+		{
+			if (!empty($urlCategorie))
+			{
+				$infosPublication .= "<a href=\"$urlCategorie\">$categorie</a>, ";
+			}
+			else
+			{
+				$infosPublication .= "$categorie, ";
+			}
+		}
+		
+		$infosPublication = substr($infosPublication, 0, -2); // Suppression du `, ` final.
 	}
 	
 	return $infosPublication;

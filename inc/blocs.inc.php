@@ -230,7 +230,8 @@ if (!empty($blocsAinserer))
 				case 'infos-publication':
 					if ($infosPublication)
 					{
-						$bloc = infosPublication($auteur, $dateCreation, $dateRevision);
+						$listeCategoriesPage = categories($racine, $urlRacine, $url);
+						$bloc = infosPublication($auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
 					
 						if (!empty($bloc))
 						{

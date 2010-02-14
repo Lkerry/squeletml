@@ -47,10 +47,20 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$listePages .= '<li class="liParent"><input type="text" name="cat[' . $i . ']" value="' . $categorie . '" />';
 						$listePages .= "<ul class=\"triable\">\n";
 						
-						foreach ($categorieInfos['pages'] as $page)
+						if (!isset($categorieInfos['urlCategorie']))
 						{
-							$page = rtrim($page);
-							$listePages .= '<li>pages[]=<input type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							$categorieInfos['urlCategorie'] = '';
+						}
+						
+						$listePages .= '<li>urlCategorie=<input type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCategorie'] . '" /></li>' . "\n";
+						
+						if (!empty($categorieInfos['pages']))
+						{
+							foreach ($categorieInfos['pages'] as $page)
+							{
+								$page = rtrim($page);
+								$listePages .= '<li>pages[]=<input type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							}
 						}
 						
 						$listePages .= "</ul></li>\n";
@@ -71,6 +81,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo "</ul>\n";
 				
 				echo '<p>' . sprintf(T_("Cet exemple fait référence à une page dont l'URL est %1\$s et qui est classée dans la catégorie %2\$s."), "<code>$urlRacine/animaux/chiens.php</code>", "<em>animaux</em>") . "</p>\n";
+				
+				echo '<p>' . sprintf(T_("Optionnellement, vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie, et ce à l'aide du paramètre %1\$s."), '<code>urlCategorie=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>') . "</p>\n";
 				
 				echo '<p>' . T_("Pour enlever une catégorie ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
 				
@@ -140,17 +152,25 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (isset($_POST['cat']))
 		{
-			foreach ($_POST['cat'] as $cle => $postLangueValeur)
+			foreach ($_POST['cat'] as $cle => $valeur)
 			{
-				if (!empty($postLangueValeur) && !empty($_POST['url'][$cle]))
+				if (!empty($valeur) && (!empty($_POST['urlCat'][$cle]) || !empty($_POST['url'][$cle])))
 				{
-					$contenuFichierTableau[$postLangueValeur] = array ();
+					$contenuFichierTableau[$valeur] = array ();
 					
-					foreach ($_POST['url'][$cle] as $page)
+					if (!empty($_POST['urlCat'][$cle]))
 					{
-						if (!empty($page))
+						$contenuFichierTableau[$valeur][] = 'urlCategorie=' . securiseTexte($_POST['urlCat'][$cle]) . "\n";
+					}
+					
+					if (!empty($_POST['url'][$cle]))
+					{
+						foreach ($_POST['url'][$cle] as $page)
 						{
-							$contenuFichierTableau[$postLangueValeur][] = 'pages[]=' . securiseTexte($page) . "\n";
+							if (!empty($page))
+							{
+								$contenuFichierTableau[$valeur][] = 'pages[]=' . securiseTexte($page) . "\n";
+							}
 						}
 					}
 				}
