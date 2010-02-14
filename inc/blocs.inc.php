@@ -269,7 +269,7 @@ if (!empty($blocsAinserer))
 					
 					$marquePagesSociaux = marquePagesSociaux($url, $baliseTitle);
 					
-					if ($marquePagesSociaux && !empty($marquePagesSociaux))
+					if ($marquePagesSociaux && !empty($marquePagesSociaux) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
 						$blocs[$region] .= '<div id="marquePagesSociaux" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
