@@ -3,6 +3,10 @@
 	color: inherit !important;
 }
 
+.boiteDeroulanteVisuel {
+	font-weight: bold;
+}
+
 .boiteDeroulanteVisuelSymbole {
 	font-family: monospace;
 }

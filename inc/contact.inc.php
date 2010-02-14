@@ -155,7 +155,7 @@ if (isset($_POST['envoyer']))
 			$infosCourriel['format'] = 'texte';
 		}
 		
-		$infosCourriel['objet'] = $contactCourrielIdentifiantObjet . "Message de " . $infosCourriel['From'];
+		$infosCourriel['objet'] = $contactCourrielIdentifiantObjet . "Message de $nom <$courriel>";
 		
 		if ($decouvrir)
 		{

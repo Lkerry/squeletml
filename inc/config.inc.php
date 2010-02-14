@@ -163,8 +163,8 @@ $inclureSurTitre = FALSE; // TRUE|FALSE
 // Inclusion du bas de page.
 $inclureBasDePage = TRUE; // TRUE|FALSE
 
-// Activation de l'option «Faire découvrir à des ami-e-s».
-$activerFaireDecouvrir = TRUE; // TRUE|FALSE
+// Activation par défaut de l'option «Faire découvrir à des ami-e-s».
+$activerFaireDecouvrirParDefaut = TRUE; // TRUE|FALSE
 
 // Affichage du message pour Internet Explorer 6.
 /*

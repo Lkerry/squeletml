@@ -110,7 +110,7 @@ if (!empty($blocsAinserer))
 						$classeBlocArrondi = '';
 					}
 				
-					if ($activerFaireDecouvrir && $decouvrir)
+					if ($faireDecouvrir && $decouvrir)
 					{
 						$blocs[$region] .= '<div id="faireDecouvrir" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;

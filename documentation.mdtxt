@@ -469,6 +469,10 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
+- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette fonctionnalité pour la page courante.
+
+	La variable `$activerFaireDecouvrirParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$faireDecouvrir` pour changer la valeur par défaut pour une page spécifique.
+
 - `$idCategorie`: un nombre, un mot ou une phrase identifiant la catégorie à chercher pour afficher la liste des articles en faisant partie. Voir la section «Catégories».
 
 - `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section «Galeries»), une galerie sera insérée dans la page.

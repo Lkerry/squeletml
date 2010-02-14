@@ -87,6 +87,11 @@ if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 
 $doctype = doctype($xhtmlStrict);
 
+if (!isset($faireDecouvrir))
+{
+	$faireDecouvrir = $activerFaireDecouvrirParDefaut;
+}
+
 if (!isset($infosPublication))
 {
 	$infosPublication = $afficherInfosPublicationParDefaut;

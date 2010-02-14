@@ -634,7 +634,7 @@ Le tableau en paramètre peut contenir les informations suivantes:
   - `$infos['From']` (optionnel);
   - `$infos['ReplyTo']` (optionnel);
   - `$infos['Bcc']` (optionnel);
-  - `$infos['format']` (optionnel): vaut par défaut `plain`. Peut valoir aussi `html`;
+  - `$infos['format']` (optionnel): le format texte (`plain`) est celui par défaut. Peut valoir également `html`;
   - `$infos['destinataire']` (obligatoire);
   - `$infos['objet']` (obligatoire);
   - `$infos['message']` (obligatoire);
