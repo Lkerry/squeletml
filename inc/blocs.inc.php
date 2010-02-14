@@ -255,6 +255,40 @@ if (!empty($blocsAinserer))
 					
 					break;
 				
+				case 'marque-pages-sociaux':
+					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+					{
+						$classeBlocArrondi = ' blocArrondi';
+					}
+					else
+					{
+						$classeBlocArrondi = '';
+					}
+					
+					$marquePagesSociaux = marquePagesSociaux($url, $baliseTitle);
+					
+					if ($marquePagesSociaux && !empty($marquePagesSociaux))
+					{
+						$blocs[$region] .= '<div id="marquePagesSociaux" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Réseaux sociaux") . "</h2>\n";
+						
+						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
+						
+						foreach ($marquePagesSociaux as $service)
+						{
+							$blocs[$region] .= '<li><a href="' . $service['lien'] . '">' . $service['nom'] . "</a></li>\n";
+						}
+						
+						$blocs[$region] .= "</ul>\n";
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#marquePagesSociaux -->' . "\n";
+					}
+				
+					break;
+				
 				// Blocs personnalisés.
 				default:
 					if (cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))

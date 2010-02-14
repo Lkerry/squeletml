@@ -17,11 +17,11 @@ body.aucuneColonne #page {
 }
 
 #faireDecouvrir a {
-	background: url('../fichiers/enveloppe.gif') no-repeat left 20%;
+	background: url('../fichiers/enveloppe.gif') no-repeat left center;
 }
 
 #fluxRss a {
-	background: url('../fichiers/rss.gif') no-repeat left 20%;
+	background: url('../fichiers/rss.gif') no-repeat left center;
 }
 
 li.actif {

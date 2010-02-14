@@ -469,7 +469,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
-- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette fonctionnalité pour la page courante.
+- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante.
 
 	La variable `$activerFaireDecouvrirParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$faireDecouvrir` pour changer la valeur par défaut pour une page spécifique.
 
@@ -488,6 +488,10 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 		$licence = 'art-libre cc-by-sa';
 
 	Voir la fonction `licence()` pour connaître tous les choix possibles.
+
+- `$marquePagesSociaux`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante.
+
+	La variable `$activerMarquePagesSociauxParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$marquePagesSociaux` pour changer la valeur par défaut pour une page spécifique.
 
 - `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$inclureMotsCles` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
 

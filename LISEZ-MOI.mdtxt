@@ -45,6 +45,8 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une oeuvre dans une galerie, une vignette de l'oeuvre et une description (si cette dernière existe) sont insérées dans le message.
 
+- Liens de marque-pages ou réseaux sociaux pour la page en cours.
+
 - Syndication de contenu (flux RSS):
 
   - Par défaut, un flux RSS pour chaque catégorie et chaque galerie, et un flux RSS global activable contenant les dernières oeuvres de toutes les galeries.
@@ -141,6 +143,8 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Icône utilisée pour le lien «Faire découvrir à des ami-e-s»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
 
+- **Icône utilisée pour les liens de marque-pages ou réseaux sociaux**: cette petite icône provient de l'[Open Clip Art Library](http://www.openclipart.org/) et est dans le domaine public.
+
 - **Icônes utilisées dans le porte-documents**: ces icônes proviennent du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
 - **Icône utilisée dans le script de gestion des flux RSS globaux**: cette icône provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
@@ -194,3 +198,5 @@ avec ce programme; si ce n'est pas le cas, consultez
 - **Unsharp Mask for PHP**: permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>.
 
 - La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.
+
+- Les liens de marque-pages et réseaux sociaux ont été en partie récupérés dans le module Service links pour Drupal, sous licence GPL. Voir <http://drupal.org/project/service_links>.

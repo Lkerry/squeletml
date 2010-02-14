@@ -139,8 +139,9 @@ Voir la fonction `blocs()`.
 $ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu']                   = array (200, 501, 500);
 $ordreBlocsDansFluxHtml['faire-decouvrir']        = array (501, 502, 501);
-$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (502, 503, 502);
-$ordreBlocsDansFluxHtml['flux-rss']               = array (503, 504, 503);
+$ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (502, 503, 502);
+$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (503, 504, 503);
+$ordreBlocsDansFluxHtml['flux-rss']               = array (504, 505, 504);
 $ordreBlocsDansFluxHtml['infos-publication']      = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']                = array (401, 401, 401);
 
@@ -165,6 +166,9 @@ $inclureBasDePage = TRUE; // TRUE|FALSE
 
 // Activation par défaut de l'option «Faire découvrir à des ami-e-s».
 $activerFaireDecouvrirParDefaut = TRUE; // TRUE|FALSE
+
+// Activation par défaut des marque-pages ou réseaux sociaux.
+$activerMarquePagesSociauxParDefaut = TRUE; // TRUE|FALSE
 
 // Affichage du message pour Internet Explorer 6.
 /*
@@ -352,6 +356,7 @@ $liensActifsBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lieu (voir `$ga
 $liensActifsBlocs['flux-rss'] = NULL; // Ne s'applique pas.
 $liensActifsBlocs['infos-publication'] = NULL; // Ne s'applique pas.
 $liensActifsBlocs['licence'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['marque-pages-sociaux'] = NULL; // Ne s'applique pas.
 
 // Limite de la profondeur d'une liste dans un bloc.
 /*
@@ -410,6 +415,7 @@ $limiterProfondeurListesBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lie
 $limiterProfondeurListesBlocs['flux-rss'] = NULL; // Ne s'applique pas.
 $limiterProfondeurListesBlocs['infos-publication'] = NULL; // Ne s'applique pas.
 $limiterProfondeurListesBlocs['licence'] = NULL; // Ne s'applique pas.
+$limiterProfondeurListesBlocs['marque-pages-sociaux'] = NULL; // Ne s'applique pas.
 
 // Nombre de colonnes.
 /*

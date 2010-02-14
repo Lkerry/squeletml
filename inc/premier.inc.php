@@ -102,6 +102,16 @@ if (!isset($licence))
 	$licence = $licenceParDefaut;
 }
 
+if (!isset($marquePagesSociaux))
+{
+	$marquePagesSociaux = $activerMarquePagesSociauxParDefaut;
+}
+
+if ($marquePagesSociaux)
+{
+	$boitesDeroulantes .= ' #marquePagesSociaux';
+}
+
 if ($afficherMessageIe6)
 {
 	$messageIe6 = messageIe6($urlRacine);

@@ -414,6 +414,7 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 }
 
 #fluxRss a {
+	display: block;
 	padding-left: 19px;
 	background: url('../fichiers/rss.png') no-repeat left center;
 }
@@ -422,6 +423,15 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 
 #licence img {
 	border: none;
+}
+
+/* Marque-pages et réseaux sociaux. */
+
+#marquePagesSociaux h2 {
+	margin: 0px;
+	padding: 0px 0px 0px 19px;
+	font-size: 1em;
+	background: url('../fichiers/marque-pages-sociaux.png') no-repeat left center;
 }
 
 /* Module «Faire découvrir». */
@@ -437,6 +447,7 @@ h2#formulaireFaireDecouvrir {
 }
 
 #faireDecouvrir a {
+	display: block;
 	padding-left: 22px;
 	background: url('../fichiers/enveloppe.png') no-repeat left center;
 }
