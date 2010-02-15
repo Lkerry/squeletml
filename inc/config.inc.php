@@ -138,10 +138,11 @@ Voir la fonction `blocs()`.
 */
 $ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu']                   = array (200, 501, 500);
-$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (501, 502, 501);
+$ordreBlocsDansFluxHtml['menu-categories']        = array (501, 502, 501);
 $ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (502, 503, 502);
-$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (503, 504, 503);
-$ordreBlocsDansFluxHtml['flux-rss']               = array (504, 505, 504);
+$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (503, 504, 503);
+$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (504, 505, 504);
+$ordreBlocsDansFluxHtml['flux-rss']               = array (505, 506, 505);
 $ordreBlocsDansFluxHtml['infos-publication']      = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']                = array (401, 401, 401);
 
@@ -299,7 +300,7 @@ $boitesDeroulantesParDefaut = "";
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');";
+$balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');});";
 
 // Inclusion de l'aperçu d'une page.
 /*
@@ -351,6 +352,7 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 */
 $liensActifsBlocs['menu-langues'] = TRUE;
 $liensActifsBlocs['menu'] = TRUE;
+$liensActifsBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $liensActifsBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
 $liensActifsBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $liensActifsBlocs['flux-rss'] = NULL; // Ne s'applique pas.
@@ -410,6 +412,7 @@ Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
 $limiterProfondeurListesBlocs['menu-langues'] = FALSE;
 $limiterProfondeurListesBlocs['menu'] = TRUE;
+$limiterProfondeurListesBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $limiterProfondeurListesBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
 $limiterProfondeurListesBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $limiterProfondeurListesBlocs['flux-rss'] = NULL; // Ne s'applique pas.
@@ -443,8 +446,9 @@ $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBord
 /*
 - Les valeurs possibles sont TRUE ou FALSE.
 */
-$borduresPage['gauche'] = TRUE;
 $borduresPage['droite'] = TRUE;
+$borduresPage['bas'] = TRUE;
+$borduresPage['gauche'] = TRUE;
 
 // S'il y a au moins une colonne, étendre l'en-tête sur toute la largeur du site.
 /*

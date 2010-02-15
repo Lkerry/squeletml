@@ -24,80 +24,6 @@ if (!empty($blocsAinserer))
 		{
 			switch ($blocAinserer)
 			{
-				case 'menu-langues':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-				
-					if (count($accueil) > 1)
-					{
-						$blocs[$region] .= '<div id="menuLangues" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-					
-						ob_start();
-						include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-langues');
-						$bloc = ob_get_contents();
-						ob_end_clean();
-					
-						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
-						{
-							$bloc = langueActive($bloc, LANGUE, $accueil);
-						}
-					
-						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
-						{
-							$bloc = limiteProfondeurListe($bloc);
-						}
-					
-						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
-						$blocs[$region] .= '</div><!-- /#menuLangues -->' . "\n";
-					}
-					
-					break;
-			
-				case 'menu':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-				
-					$blocs[$region] .= '<div id="menu" class="bloc' . $classeBlocArrondi . '">' . "\n";
-					$blocs[$region] .= $codeInterieurBlocHaut;
-				
-					ob_start();
-					include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu');
-					$bloc = ob_get_contents();
-					ob_end_clean();
-				
-					if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
-					{
-						$bloc = lienActif($bloc, FALSE, 'li');
-					}
-				
-					if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
-					{
-						$bloc = limiteProfondeurListe($bloc);
-					}
-				
-					$blocs[$region] .= $bloc;
-					$blocs[$region] .= $codeInterieurBlocBas;
-					$blocs[$region] .= '</div><!-- /#menu -->' . "\n";
-					break;
-			
 				case 'faire-decouvrir':
 					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
@@ -121,26 +47,6 @@ if (!empty($blocsAinserer))
 				
 					break;
 				
-				case 'legende-oeuvre-galerie':
-					if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
-					{
-						$bloc = $tableauCorpsGalerie['texteIntermediaire'];
-					
-						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
-						{
-							$bloc = lienActif($bloc, FALSE, 'li');
-						}
-					
-						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
-						{
-							$bloc = limiteProfondeurListe($bloc);
-						}
-					
-						$blocs[$region] .= $bloc;
-					}
-				
-					break;
-				
 				case 'flux-rss':
 					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
 					{
@@ -157,6 +63,8 @@ if (!empty($blocsAinserer))
 						
 						$blocs[$region] .= '<div id="fluxRss" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<h2>' . T_("Syndication") . "</h2>\n";
+						
 						$blocs[$region] .= "<ul>\n";
 					
 						if (!empty($idGalerie) && $rssGalerie)
@@ -182,6 +90,55 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= "</ul>\n";
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#fluxRss -->' . "\n";
+					}
+				
+					break;
+				
+				case 'infos-publication':
+					if ($infosPublication)
+					{
+						$listeCategoriesPage = categories($racine, $urlRacine, $url);
+						$bloc = infosPublication($auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
+					
+						if (!empty($bloc))
+						{
+							list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+							if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+							{
+								$classeBlocArrondi = ' blocArrondi';
+							}
+							else
+							{
+								$classeBlocArrondi = '';
+							}
+				
+							$blocs[$region] .= '<div id="infosPublication" class="bloc' . $classeBlocArrondi . '">' . "\n";
+							$blocs[$region] .= $codeInterieurBlocHaut;
+							$blocs[$region] .= $bloc;
+							$blocs[$region] .= $codeInterieurBlocBas;
+							$blocs[$region] .= '</div><!-- /#infosPublication -->' . "\n";
+						}
+					}
+					
+					break;
+				
+				case 'legende-oeuvre-galerie':
+					if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
+					{
+						$bloc = $tableauCorpsGalerie['texteIntermediaire'];
+					
+						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+						{
+							$bloc = lienActif($bloc, FALSE, 'li');
+						}
+					
+						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+						{
+							$bloc = limiteProfondeurListe($bloc);
+						}
+					
+						$blocs[$region] .= $bloc;
 					}
 				
 					break;
@@ -227,35 +184,6 @@ if (!empty($blocsAinserer))
 				
 					break;
 				
-				case 'infos-publication':
-					if ($infosPublication)
-					{
-						$listeCategoriesPage = categories($racine, $urlRacine, $url);
-						$bloc = infosPublication($auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
-					
-						if (!empty($bloc))
-						{
-							list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-							if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-							{
-								$classeBlocArrondi = ' blocArrondi';
-							}
-							else
-							{
-								$classeBlocArrondi = '';
-							}
-				
-							$blocs[$region] .= '<div id="infosPublication" class="bloc' . $classeBlocArrondi . '">' . "\n";
-							$blocs[$region] .= $codeInterieurBlocHaut;
-							$blocs[$region] .= $bloc;
-							$blocs[$region] .= $codeInterieurBlocBas;
-							$blocs[$region] .= '</div><!-- /#infosPublication -->' . "\n";
-						}
-					}
-					
-					break;
-				
 				case 'marque-pages-sociaux':
 					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
@@ -288,6 +216,122 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= '</div><!-- /#marquePagesSociaux -->' . "\n";
 					}
 				
+					break;
+				
+				case 'menu':
+					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+					{
+						$classeBlocArrondi = ' blocArrondi';
+					}
+					else
+					{
+						$classeBlocArrondi = '';
+					}
+				
+					$blocs[$region] .= '<div id="menu" class="bloc' . $classeBlocArrondi . '">' . "\n";
+					$blocs[$region] .= $codeInterieurBlocHaut;
+				
+					ob_start();
+					include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu');
+					$bloc = ob_get_contents();
+					ob_end_clean();
+				
+					if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+					{
+						$bloc = lienActif($bloc, FALSE, 'li');
+					}
+				
+					if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+					{
+						$bloc = limiteProfondeurListe($bloc);
+					}
+				
+					$blocs[$region] .= $bloc;
+					$blocs[$region] .= $codeInterieurBlocBas;
+					$blocs[$region] .= '</div><!-- /#menu -->' . "\n";
+					break;
+				
+				case 'menu-categories':
+					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+					{
+						$classeBlocArrondi = ' blocArrondi';
+					}
+					else
+					{
+						$classeBlocArrondi = '';
+					}
+					
+					$cheminMenuCategories = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-categories');
+					
+					if (!empty($cheminMenuCategories))
+					{
+						$blocs[$region] .= '<div id="menuCategories" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+					
+						ob_start();
+						include_once $cheminMenuCategories;
+						$bloc = ob_get_contents();
+						ob_end_clean();
+					
+						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+						{
+							$listeCategoriesPage = categories($racine, $urlRacine, $url);
+							$bloc = categoriesActives($bloc, $listeCategoriesPage);
+						}
+					
+						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+						{
+							$bloc = limiteProfondeurListe($bloc);
+						}
+					
+						$blocs[$region] .= $bloc;
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#menuCategories -->' . "\n";
+					}
+					
+					break;
+				
+				case 'menu-langues':
+					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+					{
+						$classeBlocArrondi = ' blocArrondi';
+					}
+					else
+					{
+						$classeBlocArrondi = '';
+					}
+				
+					if (count($accueil) > 1)
+					{
+						$blocs[$region] .= '<div id="menuLangues" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+					
+						ob_start();
+						include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-langues');
+						$bloc = ob_get_contents();
+						ob_end_clean();
+					
+						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+						{
+							$bloc = langueActive($bloc, LANGUE, $accueil);
+						}
+					
+						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+						{
+							$bloc = limiteProfondeurListe($bloc);
+						}
+					
+						$blocs[$region] .= $bloc;
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#menuLangues -->' . "\n";
+					}
+					
 					break;
 				
 				// Blocs personnalisés.

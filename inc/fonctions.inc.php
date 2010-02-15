@@ -225,6 +225,106 @@ function cacheExpire($fichier, $dureeCache)
 }
 
 /*
+Retourne un tableau des catégories auxquelles la page appartient. La structure est:
+
+	$listeCategories['idCategorie'] = 'urlCategorie';
+*/
+function categories($racine, $urlRacine, $url)
+{
+	$listeCategories = array ();
+	$cheminFichier = cheminConfigCategories($racine);
+	
+	if ($cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE && !empty($categories))
+	{
+		foreach ($categories as $categorie => $categorieInfos)
+		{
+			foreach ($categorieInfos['pages'] as $page)
+			{
+				$urlPage = $urlRacine . '/' . rtrim($page);
+				
+				if ($urlPage == $url)
+				{
+					$listeCategories[$categorie] = '';
+					
+					if (!empty($categorieInfos['urlCategorie']))
+					{
+						$listeCategories[$categorie] = $urlRacine . '/' . $categorieInfos['urlCategorie'];
+					}
+				}
+			}
+		}
+	}
+	
+	return $listeCategories;
+}
+
+/*
+S'il y a lieu, ajoute la classe `actif` au lien de chaque catégorie à laquelle la page fait partie ainsi qu'au `li` contenant le lien. Retourne le code résultant.
+*/
+function categoriesActives($codeMenuCategories, $categories)
+{
+	if (!empty($categories))
+	{
+		$dom = str_get_html($codeMenuCategories);
+	
+		foreach ($dom->find('a') as $a)
+		{
+			$actif = FALSE;
+			
+			foreach ($categories as $categorie => $urlCategorie)
+			{
+				if ($a->href == $urlCategorie)
+				{
+					$actif = TRUE;
+					break;
+				}
+			}
+			
+			if ($actif)
+			{
+				$class = 'actif';
+			
+				if (!empty($a->class))
+				{
+					$class .= ' ' . $a->class;
+				}
+			
+				$a->class = $class;
+			
+				$aParent = $a->parent();
+			
+				while ($aParent->tag != 'li' && $aParent->tag != 'root' && $aParent->tag != NULL)
+				{
+					$aParent = $aParent->parent();
+				}
+			
+				if ($aParent->tag == 'li')
+				{
+					$class = 'actif';
+				
+					if (!empty($aParent->class))
+					{
+						$class .= ' ' . $aParent->class;
+					}
+				
+					$aParent->class = $class;
+				}
+			}
+		}
+		
+		$codeMenuCategoriesFiltre = $dom->save();
+		$dom->clear();
+		unset($dom);
+		
+		return $codeMenuCategoriesFiltre;
+	}
+	else
+	{
+		return $codeMenuCategories;
+	}
+}
+
+/*
 Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
@@ -426,14 +526,19 @@ function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgau
 		$class .= "aucuneColonne ";
 	}
 	
-	if ($borduresPage['gauche'])
-	{
-		$class .= 'bordureGauchePage ';
-	}
-	
 	if ($borduresPage['droite'])
 	{
 		$class .= 'bordureDroitePage ';
+	}
+	
+	if ($borduresPage['bas'])
+	{
+		$class .= 'bordureBasPage ';
+	}
+	
+	if ($borduresPage['gauche'])
+	{
+		$class .= 'bordureGauchePage ';
 	}
 	
 	if ($enTetePleineLargeur && ($nombreDeColonnes == 1 || $nombreDeColonnes == 2))
@@ -1309,40 +1414,6 @@ function infosPage($urlPage, $inclureApercu)
 }
 
 /*
-Retourne un tableau des catégories auxquelles la page appartient. La structure est:
-
-	$listeCategories['idCategorie'] = 'urlCategorie';
-*/
-function categories($racine, $urlRacine, $url)
-{
-	$listeCategories = array ();
-	$cheminFichier = cheminConfigCategories($racine);
-	
-	if ($cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE && !empty($categories))
-	{
-		foreach ($categories as $categorie => $categorieInfos)
-		{
-			foreach ($categorieInfos['pages'] as $page)
-			{
-				$urlPage = $urlRacine . '/' . rtrim($page);
-				
-				if ($urlPage == $url)
-				{
-					$listeCategories[$categorie] = '';
-					
-					if (!empty($categorieInfos['urlCategorie']))
-					{
-						$listeCategories[$categorie] = $urlRacine . '/' . $categorieInfos['urlCategorie'];
-					}
-				}
-			}
-		}
-	}
-	
-	return $listeCategories;
-}
-
-/*
 Retourne les informations sur l'auteur, les dates de création et de révision ainsi que la ou les catégories. Si aucune information n'est présente, retourne une chaine vide.
 */
 function infosPublication($auteur, $dateCreation, $dateRevision, $categories)
@@ -1479,9 +1550,9 @@ function langueActive($codeMenuLangues, $langue, $accueil)
 	if (array_key_exists($langue, $accueil))
 	{
 		$url = $accueil[$langue] . '/';
-		$html = str_get_html($codeMenuLangues);
+		$dom = str_get_html($codeMenuLangues);
 	
-		foreach ($html->find('a') as $a)
+		foreach ($dom->find('a') as $a)
 		{
 			if ($a->href == $url)
 			{
@@ -1514,8 +1585,12 @@ function langueActive($codeMenuLangues, $langue, $accueil)
 				}
 			}
 		}
-	
-		return $html;
+		
+		$codeMenuLanguesFiltre = $dom->save();
+		$dom->clear();
+		unset($dom);
+		
+		return $codeMenuLanguesFiltre;
 	}
 	else
 	{

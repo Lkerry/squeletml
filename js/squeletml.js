@@ -38,12 +38,12 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 		
 		if (oIdDeComparaison1)
 		{
-			var hauteurIdDeComparaison1 = oIdDeComparaison1.offsetHeight + 85;
+			var hauteurIdDeComparaison1 = oIdDeComparaison1.offsetHeight;
 		}
 		
 		if (oIdDeComparaison2)
 		{
-			var hauteurIdDeComparaison2 = oIdDeComparaison2.offsetHeight + 85;
+			var hauteurIdDeComparaison2 = oIdDeComparaison2.offsetHeight;
 		}
 		
 		if (oIdDeComparaison1 && oIdDeComparaison2)
@@ -58,6 +58,8 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 		{
 			var hauteurMax = hauteurIdDeComparaison2;
 		}
+		
+		hauteurMax = hauteurMax + 85;
 		
 		if (hauteurMax > hauteurIdAegaliser)
 		{
@@ -204,7 +206,8 @@ function boiteDeroulante(conteneur)
 			}
 			
 			$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);
-		
+			egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');
+			
 			return false;
 		};
 	});

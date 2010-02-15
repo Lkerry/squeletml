@@ -160,12 +160,16 @@ div#messageIe6 p a {
 	position: relative;
 }
 
-body.bordureGauchePage #page {
-	border-left: 1px solid #f2f2f2;
-}
-
 body.bordureDroitePage #page {
 	border-right: 1px solid #f2f2f2;
+}
+
+body.bordureBasPage #page {
+	border-bottom: 1px solid #f2f2f2;
+}
+
+body.bordureGauchePage #page {
+	border-left: 1px solid #f2f2f2;
 }
 
 /***********************************************************************
@@ -354,6 +358,12 @@ h1#titrePage404 {
 	padding-right: 2px;
 }
 
+.bloc h2 {
+	margin: 0px;
+	padding: 0px;
+	font-size: 1em;
+}
+
 .bloc ul {
 	margin-top: 0px;
 	margin-bottom: 0px;
@@ -423,15 +433,6 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 
 #licence img {
 	border: none;
-}
-
-/* Marque-pages et réseaux sociaux. */
-
-#marquePagesSociaux h2 {
-	margin: 0px;
-	padding: 0px 0px 0px 19px;
-	font-size: 1em;
-	background: url('../fichiers/marque-pages-sociaux.png') no-repeat left center;
 }
 
 /* Module «Faire découvrir». */
