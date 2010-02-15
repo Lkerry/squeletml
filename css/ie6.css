@@ -16,6 +16,10 @@ body.aucuneColonne #page {
 	color: expression(this.parentNode.currentStyle.color); /* Palliatif à `inherit`. */
 }
 
+#infosPublication div.contenuBloc, div.infosPublicationApercu {
+	background: url('../fichiers/info.gif') no-repeat left center;
+}
+
 #faireDecouvrir a {
 	background: url('../fichiers/enveloppe.gif') no-repeat left center;
 }

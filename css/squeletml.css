@@ -429,6 +429,13 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 	background: url('../fichiers/rss.png') no-repeat left center;
 }
 
+/* Informations de publication. */
+
+#infosPublication div.contenuBloc, div.infosPublicationApercu {
+	padding-left: 19px;
+	background: url('../fichiers/info.png') no-repeat left center;
+}
+
 /* Licence. */
 
 #licence img {
