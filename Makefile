@@ -8,16 +8,16 @@
 languageSpecs=~/.local/share/gtksourceview-2.0/language-specs
 
 # Chemin vers le bureau
-bureau=`xdg-user-dir DESKTOP`
+bureau:=$(shell xdg-user-dir DESKTOP)
 
 # Récupère le dernier tag (qui représente la dernière version)
-tag=`bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1`
+tag:=$(shell bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1)
 
 # Récupère le numéro de la dernière révision de l'avant-dernier tag
-derniereRevAvantDernierTag=`bzr tags | sort -k2n,2n | tail -n 2 | head -n 1 | rev | cut -d ' ' -f 1 | rev`
+derniereRevAvantDernierTag:=$(shell bzr tags | sort -k2n,2n | tail -n 2 | head -n 1 | rev | cut -d ' ' -f 1 | rev)
 
 # Récupère le numéro de la première révision du dernier tag
-premiereRevTag=`bzr tags | sort -k2n,2n | tail -n 2 | head -n 1 | rev | cut -d ' ' -f 1 | rev | xargs expr 1 + `
+premiereRevTag:=$(shell echo $(derniereRevAvantDernierTag) | xargs expr 1 +)
 
 ########################################################################
 ##
@@ -46,15 +46,10 @@ archives: menage-archives ChangeLog version.txt
 	cp ChangeLog-version-actuelle-fichiers $(bureau)/
 	mv ChangeLog-version-actuelle-fichiers $(tag)/
 	cp version.txt $(tag)/
-	cd $(tag) # Palliatif au fait que je n'ai pas trouvé comment insérer
-	          # une variable de Makefile dans une commande shell $(...).
-	          # Par exemple, ceci ne fonctionne pas:
-	          # for po in $(find $(tag) -iname *.po);\
-	for po in `find . -iname *.po`;\
+	for po in $(shell find $(tag) -iname *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
-	cd ../
 	rm -f $(tag)/inc/devel.inc.php
 	rm -f $(tag)/Makefile
 	rm -f $(tag)/scripts.cli.php
@@ -111,13 +106,13 @@ message-accueil: menage-message-accueil
 	php ./scripts.cli.php message-accueil
 
 mo:
-	for po in `find locale/ -iname *.po`;\
+	for po in $(shell find locale/ -iname *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 
 po: pot
-	for po in `find ./ -iname *.po`;\
+	for po in $(shell find ./ -iname *.po);\
 	do\
 		msgmerge -o tempo $$po locale/squeletml.pot;\
 		rm $$po;\
@@ -126,7 +121,7 @@ po: pot
 
 pot: menage-pot
 	find ./ -iname "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
-	find ./ -iname "*.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \; # xgettext n'offre pas le Javascript dans les langages à parser, donc on déclare les fichiers .js comme étant du Perl 
+	find ./ -iname "*.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \; # xgettext n'offre pas le Javascript dans les langages à parser, donc on déclare les fichiers .js comme étant du Perl
 
 version.txt: menage-version.txt
 	echo $(tag) > version.txt
