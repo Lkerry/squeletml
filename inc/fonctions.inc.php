@@ -255,6 +255,8 @@ function categories($racine, $urlRacine, $url)
 		}
 	}
 	
+	ksort($listeCategories);
+	
 	return $listeCategories;
 }
 
@@ -1451,21 +1453,22 @@ function infosPublication($auteur, $dateCreation, $dateRevision, $categories)
 	
 	if (!empty($categories))
 	{
-		$infosPublication .= T_ngettext("Catégorie:", "Catégories:", count($categories)) . "\n";
+		$listeCategories = '';
 		
 		foreach ($categories as $categorie => $urlCategorie)
 		{
 			if (!empty($urlCategorie))
 			{
-				$infosPublication .= "<a href=\"$urlCategorie\">$categorie</a>, ";
+				$listeCategories .= "<a href=\"$urlCategorie\">$categorie</a>, ";
 			}
 			else
 			{
-				$infosPublication .= "$categorie, ";
+				$listeCategories .= "$categorie, ";
 			}
 		}
 		
-		$infosPublication = substr($infosPublication, 0, -2); // Suppression du `, ` final.
+		$listeCategories = substr($listeCategories, 0, -2); // Suppression du `, ` final.
+		$infosPublication .= sprintf(T_ngettext("Catégorie: %1\$s.", "Catégories: %1\$s.", count($categories)), $listeCategories) . "\n";
 	}
 	
 	return $infosPublication;
@@ -2331,6 +2334,7 @@ function menuCategoriesAutomatise($urlRacine, $categories)
 {
 	$menuCategories = '';
 	$catEtSousCat = array ();
+	ksort($categories);
 	
 	foreach ($categories as $cat => $catInfos)
 	{
@@ -2345,27 +2349,30 @@ function menuCategoriesAutomatise($urlRacine, $categories)
 		}
 	}
 	
-	foreach ($catEtSousCat as $cat => $catInfos)
+	if (!empty($catEtSousCat))
 	{
-		$menuCategories .= '<li>';
-		
-		if (!empty($catInfos['infos']['urlCategorie']))
+		foreach ($catEtSousCat as $cat => $catInfos)
 		{
-			$menuCategories .= '<a href="' . $urlRacine . '/' . $catInfos['infos']['urlCategorie'] . '">' . $cat . '</a>';
-		}
-		else
-		{
-			$menuCategories .= $cat;
-		}
+			$menuCategories .= '<li>';
 		
-		if (!empty($catInfos['sousCat']))
-		{
-			$menuCategories .= "<ul>\n";
-			$menuCategories .= menuCategoriesAutomatise($urlRacine, $catInfos['sousCat']);
-			$menuCategories .= "</ul>\n";
-		}
+			if (!empty($catInfos['infos']['urlCategorie']))
+			{
+				$menuCategories .= '<a href="' . $urlRacine . '/' . $catInfos['infos']['urlCategorie'] . '">' . $cat . '</a>';
+			}
+			else
+			{
+				$menuCategories .= $cat;
+			}
 		
-		$menuCategories .= "</li>\n";
+			if (!empty($catInfos['sousCat']))
+			{
+				$menuCategories .= "<ul>\n";
+				$menuCategories .= menuCategoriesAutomatise($urlRacine, $catInfos['sousCat']);
+				$menuCategories .= "</ul>\n";
+			}
+		
+			$menuCategories .= "</li>\n";
+		}
 	}
 	
 	return $menuCategories;
