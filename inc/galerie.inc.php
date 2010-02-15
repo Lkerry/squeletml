@@ -496,7 +496,7 @@ else
 	
 	// Ajustement des métabalises.
 	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);
-	$description = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie) . $baliseTitleComplement;
+	$description = $baliseTitle . $baliseTitleComplement;
 	
 	if ($inclureMotsCles)
 	{

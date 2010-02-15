@@ -25,19 +25,19 @@ if (!empty($blocsAinserer))
 			switch ($blocAinserer)
 			{
 				case 'faire-decouvrir':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-				
 					if ($faireDecouvrir && $decouvrir)
 					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
 						$blocs[$region] .= '<div id="faireDecouvrir" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
 						$blocs[$region] .= '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>';
@@ -185,21 +185,21 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'marque-pages-sociaux':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-					
 					$marquePagesSociaux = marquePagesSociaux($url, $baliseTitle);
 					
 					if ($marquePagesSociaux && !empty($marquePagesSociaux) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
 						$blocs[$region] .= '<div id="marquePagesSociaux" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
 						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Réseaux sociaux") . "</h2>\n";
@@ -254,40 +254,53 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'menu-categories':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-					
 					$cheminMenuCategories = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-categories');
+					$cheminConfigCategories = cheminConfigCategories($racine);
 					
 					if (!empty($cheminMenuCategories))
 					{
-						$blocs[$region] .= '<div id="menuCategories" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-					
 						ob_start();
 						include_once $cheminMenuCategories;
 						$bloc = ob_get_contents();
 						ob_end_clean();
+					}
+					elseif ($genererAutomatiquementMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
+					{
+						$bloc = menuCategoriesAutomatise($urlRacine, $categories);
+						
+						if (!empty($bloc))
+						{
+							$bloc = '<h2>' . T_("Catégories") . "</h2>\n<ul>\n$bloc</ul>\n";
+						}
+					}
 					
+					if (!empty($bloc))
+					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
+						$blocs[$region] .= '<div id="menuCategories" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
 							$listeCategoriesPage = categories($racine, $urlRacine, $url);
-							$bloc = categoriesActives($bloc, $listeCategoriesPage);
+							$bloc = categoriesActives($bloc, $listeCategoriesPage, $idCategorie);
 						}
-					
+						
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
 						{
 							$bloc = limiteProfondeurListe($bloc);
 						}
-					
+				
 						$blocs[$region] .= $bloc;
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuCategories -->' . "\n";
@@ -296,19 +309,19 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'menu-langues':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-					if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-				
 					if (count($accueil) > 1)
 					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
 						$blocs[$region] .= '<div id="menuLangues" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
 					

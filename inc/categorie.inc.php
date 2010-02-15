@@ -38,16 +38,16 @@ $categorie = '';
 
 if (!empty($idCategorie))
 {
-	// On écrase les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises, on génère une valeur automatiquement.
+	// Si aucune valeur n'a été donnée aux balises de l'en-tête de la page, on génère une valeur automatiquement.
 	
 	if (empty($baliseTitle))
 	{
-		$baliseTitle = sprintf(T_("Articles de la catégorie %1\$s"), "<em>$idCategorie</em>");
+		$baliseTitle = sprintf(T_("Articles de la catégorie %1\$s"), $idCategorie);
 	}
 	
 	if (empty($description))
 	{
-		$description = sprintf(T_("Articles de la catégorie %1\$s"), "<em>$idCategorie</em>");
+		$description = sprintf(T_("Articles de la catégorie %1\$s"), $idCategorie);
 	}
 	
 	if ($inclureMotsCles && empty($motsCles))
@@ -179,8 +179,8 @@ else
 	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), "<em>$nomCategorie</em>") . "</p>\n";
 	
 	// Ajustement des métabalises.
-	$baliseTitle = sprintf(T_("La catégorie %1\$s est introuvable"), "<em>$nomCategorie</em>");
-	$description = sprintf(T_("La catégorie %1\$s est introuvable"), "<em>$nomCategorie</em>") . $baliseTitleComplement;
+	$baliseTitle = sprintf(T_("La catégorie %1\$s est introuvable"), $nomCategorie);
+	$description = $baliseTitle . $baliseTitleComplement;
 	
 	if ($inclureMotsCles)
 	{

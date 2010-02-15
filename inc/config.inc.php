@@ -310,6 +310,12 @@ $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(functio
 */
 $inclureApercu = FALSE; // TRUE|FALSE
 
+// Génération automatisée du bloc de menu des catégories.
+/*
+
+*/
+$genererAutomatiquementMenuCategories = TRUE; // TRUE|FALSE
+
 // Pagination de la liste des articles faisant partie d'une catégorie.
 /*
 - Nombre d'articles par page (0 pour désactiver la pagination).

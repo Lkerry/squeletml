@@ -54,6 +54,43 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						$listePages .= '<li>urlCategorie=<input type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCategorie'] . '" /></li>' . "\n";
 						
+						if (!isset($categorieInfos['categorieParente']))
+						{
+							$categorieInfos['categorieParente'] = '';
+						}
+						
+						$listePages .= '<li>categorieParente=';
+						$listeOption = '';
+						
+						foreach ($categories as $cat => $catInfos)
+						{
+							if ($cat != $categorie)
+							{
+								$listeOption .= '<option value="' . $cat . '"';
+								
+								if ($cat == $categorieInfos['categorieParente'])
+								{
+									$listeOption .= ' selected="selected"';
+								}
+								
+								$listeOption .= '>' . $cat . "</option>\n";
+							}
+						}
+						
+						if (!empty($listeOption))
+						{
+							$listePages .= '<select name="catParente[' . $i . ']">' . "\n";
+							$listePages .= '<option value=""></option>' . "\n";
+							$listePages .= $listeOption;
+							$listePages .= "</select>\n";
+						}
+						else
+						{
+							$listePages .= '<input type="text" name="catParente[' . $i . ']" value="' . $categorieInfos['categorieParente'] . '" />';
+						}
+						
+						$listePages .= "</li>\n";
+						
 						if (!empty($categorieInfos['pages']))
 						{
 							foreach ($categorieInfos['pages'] as $page)
@@ -71,18 +108,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo '<div class="sousBoite">' . "\n";
 				echo '<h3>' . T_("Liste des pages classées par catégorie") . "</h3>\n";
 				
-				echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>') . "</p>\n";
+				echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %2\$s ainsi que la catégorie parente, s'il y a lieu, grâce à %3\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>urlCategorie=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>categorieParente=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
 				
 				echo "<ul>\n";
-				echo "<li>animaux\n";
+				echo "<li>chiens\n";
 				echo "<ul>\n";
-				echo "<li>pages[]=animaux/chiens.php</li>\n";
+				echo "<li>categorieParente=animaux</li>\n";
+				echo "<li>urlCategorie=animaux/chiens/index.php</li>\n";
+				echo "<li>pages[]=animaux/chiens/husky.php</li>\n";
 				echo "</ul></li>\n";
 				echo "</ul>\n";
 				
-				echo '<p>' . sprintf(T_("Cet exemple fait référence à une page dont l'URL est %1\$s et qui est classée dans la catégorie %2\$s."), "<code>$urlRacine/animaux/chiens.php</code>", "<em>animaux</em>") . "</p>\n";
-				
-				echo '<p>' . sprintf(T_("Optionnellement, vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie, et ce à l'aide du paramètre %1\$s."), '<code>urlCategorie=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>') . "</p>\n";
+				echo '<p>' . sprintf(T_("Cet exemple fait référence à une page dont l'URL est %1\$s et qui est classée dans la catégorie %2\$s, cette catégorie étant elle-même une sous-catégorie de la catégorie %3\$s."), "<code>$urlRacine/animaux/chiens/husky.php</code>", "<em>chiens</em>", "<em>animaux</em>") . "</p>\n";
 				
 				echo '<p>' . T_("Pour enlever une catégorie ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
 				
@@ -154,9 +191,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			foreach ($_POST['cat'] as $cle => $valeur)
 			{
-				if (!empty($valeur) && (!empty($_POST['urlCat'][$cle]) || !empty($_POST['url'][$cle])))
+				if (!empty($valeur) && (!empty($_POST['catParente'][$cle]) || !empty($_POST['urlCat'][$cle]) || !empty($_POST['url'][$cle])))
 				{
 					$contenuFichierTableau[$valeur] = array ();
+					
+					if (!empty($_POST['catParente'][$cle]))
+					{
+						$contenuFichierTableau[$valeur][] = 'categorieParente=' . securiseTexte($_POST['catParente'][$cle]) . "\n";
+					}
 					
 					if (!empty($_POST['urlCat'][$cle]))
 					{

@@ -46,7 +46,7 @@ foreach (aInclureDebut($racine) as $fichier)
 
 // Affectations 2 de 3.
 
-extract(init('', 'apercu', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'apercu', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'erreur404', 'estPageDerreur'), EXTR_SKIP);
 
 if (!empty($apercu))
@@ -59,7 +59,6 @@ if (!isset($auteur))
 	$auteur = $auteurParDefaut;
 }
 
-$baliseTitle = baliseTitle($baliseTitle, array ($langue, $langueParDefaut));
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut));
 $cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
@@ -176,6 +175,12 @@ include $racine . '/inc/blocs.inc.php';
 
 // Affectations 3 de 3.
 
+if (!isset($baliseTitle))
+{
+	$baliseTitle = '';
+}
+
+$baliseTitle = baliseTitle($baliseTitle, array ($langue, $langueParDefaut));
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
 if ($erreur404 || $estPageDerreur)

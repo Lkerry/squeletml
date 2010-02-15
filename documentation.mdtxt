@@ -174,8 +174,6 @@ Ensuite, il y a les fichiers de division XHTML, qui sont, pour le français:
 
 	Il est également possible d'utiliser la même division pour toutes les langues du site. Pour ce faire, placer le fichier de division dans le dossier `site/xhtml/multilingue/`. Par exemple, un menu commun à toutes les langues se trouvera dans `site/xhtml/multilingue/menu.inc.php`.
 
-	Certains fichiers n'existent pas par défaut dans `inc`, mais peuvent être créés dans `site/xhtml`. Voir la section «Structure XHTML par défaut».
-
 Il y a enfin les fichiers des pages par défaut:
 
   - `fr/page.401.inc.php`
@@ -708,7 +706,6 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 
 		<?php
 		$baliseTitle = "Articles sur les chiens";
-		$description = "Articles sur les chiens.";
 		$idCategorie = "chiens";
 		include '../../inc/premier.inc.php';
 		?>
@@ -739,6 +736,22 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 		urlCategorie=animaux/chiens/index.php
 		pages[]=animaux/chiens/husky.php
 		pages[]=animaux/chiens/malamute.php
+
+### Bloc de menu des catégories
+
+Les catégories peuvent être listées dans un menu qui leur est propre. Deux méthodes existent pour obtenir un tel menu:
+
+- créer le fichier `site/xhtml/(LANGUE|multilingue)/menu-categories.inc.php`;
+
+- si ce fichier n'existe pas et que `$genererAutomatiquementMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
+
+	[chiens]
+	categorieParente=animaux
+	urlCategorie=animaux/chiens/index.php
+	pages[]=animaux/chiens/husky.php
+	pages[]=animaux/chiens/malamute.php
+
+Dans l'un ou l'autre des cas, les catégories actives seront marquées comme telles, si cette option est activée dans le fichier de configuration du site.
 
 ## Galeries
 

@@ -261,9 +261,9 @@ function categories($racine, $urlRacine, $url)
 /*
 S'il y a lieu, ajoute la classe `actif` au lien de chaque catégorie à laquelle la page fait partie ainsi qu'au `li` contenant le lien. Retourne le code résultant.
 */
-function categoriesActives($codeMenuCategories, $categories)
+function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategorie)
 {
-	if (!empty($categories))
+	if (!empty($listeCategoriesPage) || !empty($idCategorie))
 	{
 		$dom = str_get_html($codeMenuCategories);
 	
@@ -271,13 +271,21 @@ function categoriesActives($codeMenuCategories, $categories)
 		{
 			$actif = FALSE;
 			
-			foreach ($categories as $categorie => $urlCategorie)
+			if (!empty($listeCategoriesPage))
 			{
-				if ($a->href == $urlCategorie)
+				foreach ($listeCategoriesPage as $categorie => $urlCategorie)
 				{
-					$actif = TRUE;
-					break;
+					if ($a->href == $urlCategorie)
+					{
+						$actif = TRUE;
+						break;
+					}
 				}
+			}
+			
+			if (!$actif && !empty($idCategorie) && $a->innertext == $idCategorie)
+			{
+				$actif = TRUE;
 			}
 			
 			if ($actif)
@@ -2314,6 +2322,53 @@ Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaî
 function mdtxtChaine($chaine)
 {
 	return Markdown($chaine);
+}
+
+/*
+Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
+*/
+function menuCategoriesAutomatise($urlRacine, $categories)
+{
+	$menuCategories = '';
+	$catEtSousCat = array ();
+	
+	foreach ($categories as $cat => $catInfos)
+	{
+		if (!empty($catInfos['categorieParente']))
+		{
+			$catParente = $catInfos['categorieParente'];
+			$catEtSousCat[$catParente]['sousCat'][$cat]['infos'] = $catInfos;
+		}
+		else
+		{
+			$catEtSousCat[$cat]['infos'] = $catInfos;
+		}
+	}
+	
+	foreach ($catEtSousCat as $cat => $catInfos)
+	{
+		$menuCategories .= '<li>';
+		
+		if (!empty($catInfos['infos']['urlCategorie']))
+		{
+			$menuCategories .= '<a href="' . $urlRacine . '/' . $catInfos['infos']['urlCategorie'] . '">' . $cat . '</a>';
+		}
+		else
+		{
+			$menuCategories .= $cat;
+		}
+		
+		if (!empty($catInfos['sousCat']))
+		{
+			$menuCategories .= "<ul>\n";
+			$menuCategories .= menuCategoriesAutomatise($urlRacine, $catInfos['sousCat']);
+			$menuCategories .= "</ul>\n";
+		}
+		
+		$menuCategories .= "</li>\n";
+	}
+	
+	return $menuCategories;
 }
 
 /*
