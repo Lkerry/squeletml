@@ -17,6 +17,11 @@ if (!isset($boitesDeroulantes))
 	$boitesDeroulantes = '';
 }
 
+if (!isset($boitesDeroulantesAlaMain))
+{
+	$boitesDeroulantesAlaMain = $adminBoitesDeroulantesAlaMainParDefaut;
+}
+
 if (!isset($tableDesMatieres))
 {
 	$tableDesMatieres = FALSE;
@@ -68,19 +73,23 @@ if (!adminEstIe() && $adminAideEdition != 'BUEditor')
 
 // Boîtes déroulantes.
 
-if (!empty($boitesDeroulantesTableau))
+if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 {
 	$adminBalisesLinkScript[] = "$url#css#$urlRacine/css/boites-deroulantes.css";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.cookie.js";
-	$jsDirect = '';
 	
-	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
+	if (!empty($boitesDeroulantesTableau))
 	{
-		$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
+		$jsDirect = '';
+		
+		foreach ($boitesDeroulantesTableau as $boiteDeroulante)
+		{
+			$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
+		}
+		
+		$adminBalisesLinkScript[] = "$url#jsDirect#$jsDirect";
 	}
-	
-	$adminBalisesLinkScript[] = "$url#jsDirect#$jsDirect";
 }
 
 // Aide lors de l'édition.

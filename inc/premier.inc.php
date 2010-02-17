@@ -60,6 +60,12 @@ if (!isset($auteur))
 }
 
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut));
+
+if (!isset($boitesDeroulantesAlaMain))
+{
+	$boitesDeroulantesAlaMain = $boitesDeroulantesAlaMainParDefaut;
+}
+
 $cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
 $cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sous-titre');
@@ -108,7 +114,7 @@ if (!isset($marquePagesSociaux))
 
 if ($marquePagesSociaux)
 {
-	$boitesDeroulantes .= ' #marquePagesSociaux';
+	$boitesDeroulantesAlaMain .= TRUE;
 }
 
 if ($afficherMessageIe6)
@@ -201,19 +207,23 @@ if ($erreur404)
 
 // Boîtes déroulantes.
 
-if (!empty($boitesDeroulantesTableau))
+if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 {
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/boites-deroulantes.css";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.cookie.js";
-	$jsDirect = '';
 	
-	foreach ($boitesDeroulantesTableau as $boiteDeroulante)
+	if (!empty($boitesDeroulantesTableau))
 	{
-		$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
+		$jsDirect = '';
+		
+		foreach ($boitesDeroulantesTableau as $boiteDeroulante)
+		{
+			$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
+		}
+		
+		$balisesLinkScript[] = "$url#jsDirect#$jsDirect";
 	}
-	
-	$balisesLinkScript[] = "$url#jsDirect#$jsDirect";
 }
 
 // Flux RSS.

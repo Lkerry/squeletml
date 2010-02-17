@@ -451,6 +451,10 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration pour une description détaillée de la syntaxe à utiliser.
 
+- `$boitesDeroulantesAlaMain`: prend la valeur `TRUE` ou `FALSE`. Si vaut `TRUE`, les fichiers nécessaires à la gestion d'une boîte déroulante (Javascript et CSS) seront inclus, mais l'appel à la fonction Javascript `boiteDeroulante()` ne se fera pas de manière automatique, mais à la main par l'utilisateur, qui devra insérer la fonction à l'endroit désiré dans le code de la page.
+
+	La variable `$boitesDeroulantesAlaMainParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$boitesDeroulantesAlaMain` pour changer la valeur par défaut pour une page spécifique.
+
 - `$classesBody`: permet d'ajouter des classes à la balise `body`. Voici un exemple:
 
 		$classesBody = 'maClasse1 maClasse2';

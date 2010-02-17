@@ -179,6 +179,10 @@ li.liParent {
 	margin-bottom: 5px;
 }
 
+.note {
+	font-style: italic;
+}
+
 ul.triable li {
 	background: url('../fichiers/glisser.png') no-repeat left center;
 	padding-left: 20px;

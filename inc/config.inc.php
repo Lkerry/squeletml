@@ -295,6 +295,13 @@ Voir la fonction Javascript `boiteDeroulante()`.
 */
 $boitesDeroulantesParDefaut = "";
 
+// Activation de boîtes déroulantes à la main par défaut.
+/*
+- Si vaut TRUE, insère les fichiers nécessaires à la gestion d'une boîte déroulante, mais l'appel à la fonction Javascript `boiteDeroulante()` est fait à la main par l'utilisateur.
+- Voir les explications de la variable `$boitesDeroulantesAlaMain` dans la documentation pour plus de détails.
+*/
+$boitesDeroulantesAlaMainParDefaut = FALSE; // TRUE|FALSE
+
 // Balises `link` et `script` finales, ajoutées juste avant `</body>`.
 /*
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.

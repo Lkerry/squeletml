@@ -1081,6 +1081,10 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 											$contenu .= '$boitesDeroulantes = "";' . "\n";
 											break;
 											
+										case 'boitesDeroulantesAlaMain':
+											$contenu .= '$boitesDeroulantesAlaMain = TRUE;' . "\n";
+											break;
+											
 										case 'classesBody':
 											$contenu .= '$classesBody = "";' . "\n";
 											break;
@@ -1380,6 +1384,12 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<div id="divContenuDossier">' . "\n";
+	
+	if ($adminActiverInfobulle['contenuDossier'])
+	{
+		echo '<p class="note">' . sprintf(T_("Note: si l'affichage du contenu du dossier est très lent, il est possible de désactiver l'infobulle (variable <code>%1\$s</code> dans le fichier de configuration de l'administration), ce qui devrait accélérer l'affichage."), '$adminActiverInfobulle[\'contenuDossier\']') . "</p>\n";
+	}
+	
 	echo '<h3 id="contenuDossier" class="bDtitre">' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$dossierAparcourir</code>") . "</h3>\n";
 	
 	echo '<div class="bDcorps afficher">' . "\n";
@@ -1397,7 +1407,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	else
 	{
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierAparcourir, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierAparcourir, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1487,8 +1497,12 @@ foreach ($listeDossiers as $listeDossier)
 		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
 	}
 	
-	$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-	$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+	if ($adminActiverInfobulle['listeDesDossiers'])
+	{
+		$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+	}
+	
 	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$adminAction" . $adminSymboleUrl . "action=parcourir&amp;valeur=$listeDossier&amp;dossierCourant=$listeDossier#fichiersEtDossiers\" title=\"" . sprintf(T_("Parcourir «%1\$s»"), $listeDossier) . "\"><code>$listeDossier</code></a></li>\n";
 	echo $dossierMisEnForme;
 	$classe = ($classe == 'impair') ? 'pair' : 'impair';
@@ -1641,6 +1655,7 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<option value="auteur">$auteur</option>' . "\n";
 	echo '<option value="baliseTitle" selected="selected">$baliseTitle</option>' . "\n";
 	echo '<option value="boitesDeroulantes">$boitesDeroulantes</option>' . "\n";
+	echo '<option value="boitesDeroulantesAlaMain">$boitesDeroulantesAlaMain</option>' . "\n";
 	echo '<option value="classesBody">$classesBody</option>' . "\n";
 	echo '<option value="classesContenu">$classesContenu</option>' . "\n";
 	echo '<option value="courrielContact">$courrielContact</option>' . "\n";

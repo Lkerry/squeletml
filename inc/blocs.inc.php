@@ -214,6 +214,11 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= "</ul>\n";
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#marquePagesSociaux -->' . "\n";
+						$blocs[$region] .= '<script type="text/javascript">' . "\n";
+						$blocs[$region] .= "//<![CDATA[\n";
+						$blocs[$region] .= "boiteDeroulante('#marquePagesSociaux');\n";
+						$blocs[$region] .= "//]]>\n";
+						$blocs[$region] .= "</script>\n";
 					}
 				
 					break;

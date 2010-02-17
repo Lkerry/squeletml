@@ -26,7 +26,22 @@ $adminTailleCache = '5242880';
 /*
 - Voir les explications de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration du site.
 */
-$adminBoitesDeroulantesParDefaut = '#enTete';
+$adminBoitesDeroulantesParDefaut = '';
+
+// Activation de boîtes déroulantes à la main par défaut.
+/*
+- Voir les explications de la variable `$boitesDeroulantesAlaMainParDefaut` dans le fichier de configuration du site.
+*/
+$adminBoitesDeroulantesAlaMainParDefaut = TRUE; // TRUE|FALSE
+
+// Activation de l'infobulle.
+/*
+- L'infobulle apparaît lors du survol du curseur au-dessus de l'icône des propriétés d'un dossier ou d'un fichier, et contient plusieurs informations sur ce dernier.
+- Note: lors du listage de dossiers contenant beaucoup de fichiers, cette option peut ralentir considérablement l'affichage de la page. C'est la raison pour laquelle il peut être intéressant de la désactiver.
+*/
+$adminActiverInfobulle['contenuDossier'] = TRUE; // TRUE|FALSE
+$adminActiverInfobulle['listeDesDossiers'] = TRUE; // TRUE|FALSE
+$adminActiverInfobulle['apercuGalerie'] = TRUE; // TRUE|FALSE
 
 // Inclusion du bas de page.
 $adminInclureBasDePage = TRUE; // TRUE|FALSE

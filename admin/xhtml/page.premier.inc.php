@@ -35,6 +35,12 @@
 				</div><!-- /#raccourcis -->
 			</div><!-- /#enTete -->
 			
+			<script type="text/javascript">
+			//<![CDATA[
+				boiteDeroulante('#enTete');
+			//]]>
+			</script>
+			
 			<!-- ____________________ #contenu ____________________ -->
 			<div id="contenu">
 				<div id="interieurContenu">

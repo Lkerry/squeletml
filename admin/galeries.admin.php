@@ -81,7 +81,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
 							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 							$minivignette = $resultat[1];
-							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $tableauGalerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							
+							if ($adminActiverInfobulle['apercuGalerie'])
+							{
+								$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $tableauGalerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							}
+							else
+							{
+								$infobulle = '';
+							}
+							
 							$config = '';
 							
 							foreach ($tableauGalerie[$j] as $parametre => $valeur)
@@ -107,6 +116,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
 							$corpsMinivignettes .= '</div><!-- /.galerieMinivignettes -->' . "\n";
 							$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+							$corpsMinivignettes .= '<p class="note">' . sprintf(T_("Note: si l'affichage de l'aperçu est très lent, il est possible de le désactiver (variable <code>%1\$s</code> dans le fichier de configuration de l'administration)."), '$adminActiverInfobulle[\'apercuGalerie\']') . "</p>\n";
 							$apercu = '<li>' . sprintf(T_ngettext("Aperçu (%1\$s image): %2\$s", "Aperçu (%1\$s images): %2\$s", $nombreDoeuvres), $nombreDoeuvres, $corpsMinivignettes) . "</li>\n";
 						}
 						else
