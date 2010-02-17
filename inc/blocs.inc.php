@@ -264,7 +264,7 @@ if (!empty($blocsAinserer))
 						$bloc = ob_get_contents();
 						ob_end_clean();
 					}
-					elseif ($genererAutomatiquementMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
+					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 					{
 						$bloc = menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie);
 						

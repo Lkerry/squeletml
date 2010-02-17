@@ -1075,6 +1075,7 @@ function adminParametresImage()
 {
 	return array (
 		'id',
+		'titre',
 		'intermediaireLegende',
 		'vignetteNom',
 		'vignetteLargeur',

@@ -958,6 +958,11 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	
 	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>\n";
 	
+	if (!empty($oeuvre['titre']))
+	{
+		$messageDecouvrirSupplement .= '<p>' . $oeuvre['titre'] . "</p>\n";
+	}
+	
 	if (!empty($oeuvre['intermediaireLegende']))
 	{
 		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['intermediaireLegende'], $galerieLegendeMarkdown);
@@ -972,14 +977,14 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 	}
 	elseif (!empty($oeuvre['pageIntermediaireDescription']))
 	{
-		$messageDecouvrirSupplement .= $oeuvre['pageIntermediaireDescription'];
+		$messageDecouvrirSupplement .= '<p>' . $oeuvre['pageIntermediaireDescription'] . "</p>\n";
 	}
 	elseif (!empty($oeuvre['pageIntermediaireBaliseTitle']))
 	{
-		$messageDecouvrirSupplement .= $oeuvre['pageIntermediaireBaliseTitle'];
+		$messageDecouvrirSupplement .= '<p>' . $oeuvre['pageIntermediaireBaliseTitle'] . "</p>\n";
 	}
 	
-	$messageDecouvrirSupplement = "<div style='font-style: italic; text-align: center;'>$messageDecouvrirSupplement</div>\n";
+	$messageDecouvrirSupplement = "<div style='font-style: italic;'>$messageDecouvrirSupplement</div>\n";
 	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Voyez l'oeuvre en plus grande taille!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageDecouvrirSupplement;
@@ -1041,6 +1046,31 @@ function estAccueil($accueil)
 	{
 		return FALSE;
 	}
+}
+
+/*
+Retourne l'extension d'un fichier (sans le point). Si aucune extension n'est trouvée, retourne une chaîne vide.
+*/
+function extension($nomFichier)
+{
+	$extension = array_pop(explode('.', $nomFichier));
+	
+	return $extension != $nomFichier ? $extension : '';
+}
+
+/*
+Filtre une chaîne de caractères pour ne conserver que des caractères non accentués et certains autres caractères. Retourne la chaîne filtrée.
+*/
+function filtreChaine($racine, $chaine)
+{
+	$transliteration = parse_ini_file($racine . '/inc/pathauto/i18n-ascii.txt');
+	
+	$chaine = strtr($chaine, $transliteration);
+	$chaine = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $chaine);
+	$chaine = preg_replace('/-+/', '-', $chaine);
+	$chaine = str_replace('-.', '.', $chaine);
+	
+	return $chaine;
 }
 
 /*
@@ -1121,8 +1151,9 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 	{
 		foreach ($tableauGalerie as $oeuvre)
 		{
-			$id = idOeuvre($oeuvre);
-			$title = sprintf(T_("Oeuvre %1\$s"), $id);
+			$id = idOeuvre($racine, $oeuvre);
+			$titreOeuvre = titreOeuvre($oeuvre);
+			$title = sprintf(T_("Oeuvre %1\$s"), $titreOeuvre);
 			$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
 			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['intermediaireNom']);
 			$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
@@ -1343,9 +1374,20 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArtic
 /*
 Retourne l'`id` d'une oeuvre d'une galerie.
 */
-function idOeuvre($oeuvre)
+function idOeuvre($racine, $oeuvre)
 {
-	return !empty($oeuvre['id']) ? $oeuvre['id'] : $oeuvre['intermediaireNom'];
+	if (!empty($oeuvre['id']))
+	{
+		return $oeuvre['id'];
+	}
+	elseif (!empty($oeuvre['titre']))
+	{
+		return filtreChaine($racine, $oeuvre['titre']);
+	}
+	else
+	{
+		return filtreChaine($racine, $oeuvre['intermediaireNom']);
+	}
 }
 
 /*
@@ -2819,8 +2861,8 @@ function oeuvre(
 		}
 		else
 		{
-			$id = idOeuvre($infosOeuvre);
-			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
+			$titreOeuvre = titreOeuvre($infosOeuvre);
+			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $titreOeuvre) . '"';
 		}
 		
 		if (!empty($infosOeuvre['intermediaireAttributTitle']))
@@ -2867,15 +2909,17 @@ function oeuvre(
 		
 		if ($originalExiste)
 		{
+			$originalExtension = extension($originalNom);
+			
 			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
 			{
 				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
-				$texteLienOriginal = sprintf(T_("Télécharger l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
+				$texteLienOriginal = sprintf(T_("Télécharger l'oeuvre au format original (extension: %1\$s; taille: %2\$s Kio)"), "<em>.$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
 			}
 			else
 			{
 				$urlLienOriginal = $urlImgSrc . '/' . $originalNom;
-				$texteLienOriginal = sprintf(T_("Afficher l'image au format original (%1\$s" . "Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)) . '&nbsp;');
+				$texteLienOriginal = sprintf(T_("Afficher l'oeuvre au format original (extension: %1\$s; taille: %2\$s Kio)"), "<em>.$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
 			}
 			
 			$aLienOriginalDebut = '<a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>';
@@ -2923,7 +2967,7 @@ function oeuvre(
 			
 			if ($originalExiste && !$galerieLienOriginalEmplacement['legende'])
 			{
-				$legende .= "\n" . sprintf(T_("(%1\$s&nbsp;Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$legende .= "\n" . sprintf(T_("(%1\$s Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
 			}
 			
 			$legende .= "</div>\n";
@@ -3101,15 +3145,14 @@ function oeuvre(
 			}
 		}
 		
-		$id = idOeuvre($infosOeuvre);
-		
 		if (!empty($infosOeuvre['vignetteAlt']))
 		{
 			$alt = 'alt="' . $infosOeuvre['vignetteAlt'] . '"';
 		}
 		else
 		{
-			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $id) . '"';
+			$titreOeuvre = titreOeuvre($infosOeuvre);
+			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $titreOeuvre) . '"';
 		}
 		
 		if (!empty($infosOeuvre['vignetteAttributTitle']))
@@ -3145,7 +3188,7 @@ function oeuvre(
 		}
 		else
 		{
-			
+			$id = idOeuvre($racine, $infosOeuvre);
 			$aHref = '<a href="' . url(FALSE, FALSE) . '?oeuvre=' . $id . '">';
 		}
 		
@@ -3532,6 +3575,25 @@ function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 	else
 	{
 		return FALSE;
+	}
+}
+
+/*
+Retourne le titre d'une oeuvre.
+*/
+function titreOeuvre($oeuvre)
+{
+	if (!empty($oeuvre['titre']))
+	{
+		return $oeuvre['titre'];
+	}
+	elseif (!empty($oeuvre['id']))
+	{
+		return $oeuvre['id'];
+	}
+	else
+	{
+		return $oeuvre['intermediaireNom'];
 	}
 }
 

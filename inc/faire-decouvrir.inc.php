@@ -42,7 +42,7 @@ if (!$erreur404 && !$estPageDerreur)
 	
 		foreach($tableauGalerie as $oeuvre)
 		{
-			$id = idOeuvre($oeuvre);
+			$id = idOeuvre($racine, $oeuvre);
 		
 			if ($id == sansEchappement($_GET['oeuvre']))
 			{
@@ -52,7 +52,8 @@ if (!$erreur404 && !$estPageDerreur)
 				{
 					$decouvrirInclureContact = TRUE;
 					$messageDecouvrirSupplement = decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown);
-					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'oeuvre %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $oeuvre['intermediaireNom'] . '</em>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
+					$titreOeuvre = titreOeuvre($oeuvre);
+					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'oeuvre %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $titreOeuvre . '</em>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 				}
 			
 				break;

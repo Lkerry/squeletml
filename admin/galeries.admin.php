@@ -821,13 +821,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 						{
 							$contenu = '';
 							$contenu .= '<?php' . "\n";
-							$contenu .= '$baliseTitle = "Galerie ' . $id . '";' . "\n";
-							$contenu .= '$description = "Galerie ' . $id . '";' . "\n";
 							$contenu .= '$idGalerie = "' . $id . '";' . "\n";
 							$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
 							$contenu .= '?>' . "\n";
-							$contenu .= "\n";
-							$contenu .= '<h1>Galerie <em>' . $id . '</em></h1>' . "\n";
 							$contenu .= "\n";
 							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 							fputs($fic, $contenu);
@@ -1155,7 +1151,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<?php endforeach; ?>
 				
 				<p><label><?php echo T_("Ajouter les paramètres suivants pour chaque image (un paramètre vide ne sera pas ajouté):"); ?></label><br />
-		<textarea name="parametres" cols="30" rows="10"><?php echo trim($parametres); ?></textarea></p>
+		<textarea name="parametres" cols="50" rows="10"><?php echo trim($parametres); ?></textarea></p>
 			</fieldset>
 			
 			<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>

@@ -26,7 +26,8 @@ else
 	$idGalerie = '';
 }
 
-// Initialisation du corps de la galerie.
+// Initialisation du titre et du corps de la galerie.
+$titreGalerie = '';
 $corpsGalerie = '';
 
 // Nombre d'oeuvres dans la galerie.
@@ -53,13 +54,14 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 	foreach($tableauGalerie as $oeuvre)
 	{
 		// On récupère l'`id` de chaque image.
-		$id = idOeuvre($oeuvre);
+		$id = idOeuvre($racine, $oeuvre);
 		
 		if ($id == sansEchappement($_GET['oeuvre']))
 		{
 			// A: l'image existe.
 			
 			$imageExiste = TRUE;
+			$titreOeuvre = titreOeuvre($oeuvre);
 			
 			// On écrase les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable `$tableauGalerie`, on génère une valeur automatiquement.
 			
@@ -69,7 +71,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie %2\$s"), $id, $idGalerie);
+				$baliseTitle = sprintf(T_("Oeuvre %1\$s de la galerie %2\$s"), $titreOeuvre, $idGalerie);
 			}
 			
 			if (!empty($tableauGalerie[$indice]['pageIntermediaireDescription']))
@@ -82,7 +84,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			}
 			else
 			{
-				$description = sprintf(T_("Oeuvre %1\$s en version intermediaire, galerie %2\$s"), $id, $idGalerie) . $baliseTitleComplement;
+				$description = sprintf(T_("Oeuvre %1\$s en version intermediaire, galerie %2\$s"), $titreOeuvre, $idGalerie) . $baliseTitleComplement;
 			}
 			
 			if ($inclureMotsCles)
@@ -93,7 +95,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 				}
 			
 				$motsCles = motsCles($tableauGalerie[$indice]['pageIntermediaireMotsCles'], $description);
-				$motsCles .= ', ' . $id;
+				$motsCles .= ', ' . $titreOeuvre;
 			}
 			
 			break; // On arrête la recherche de l'image, car elle a été trouvée.
@@ -101,7 +103,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 		
 		$indice++;
 	}
-
+	
 	// Si l'oeuvre existe, on génère le code pour l'affichage de la version intermediaire ainsi que du système de navigation dans la galerie.
 	if ($imageExiste)
 	{
@@ -115,6 +117,12 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 		}
 		else
 		{
+			// Titre de la galerie.
+			if ($galerieGenererTitrePages)
+			{
+				$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s<br />&gt; Galerie %2\$s"), "<em>$titreOeuvre</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			}
+			
 			$indiceOeuvreEnCours = $indice;
 			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 		
@@ -360,12 +368,20 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 	else
 	{
 		$erreur404 = TRUE;
+		
 		$id = securiseTexte($_GET['oeuvre']);
-		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les oeuvres</a>."), $id, $urlSansGet) . "</p>\n";
+		
+		// Titre de la galerie.
+		if ($galerieGenererTitrePages)
+		{
+			$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s<br />&gt; Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
+		}
+		
+		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les oeuvres</a>."), "<em>$id</em>", $urlSansGet) . "</p>\n";
 		
 		// Ajustement des métabalises.
 		$baliseTitle = sprintf(T_("L'oeuvre %1\$s est introuvable"), $id);
-		$description = sprintf(T_("L'oeuvre %1\$s est introuvable"), $id) . $baliseTitleComplement;
+		$description = $baliseTitle . $baliseTitleComplement;
 		$motsCles = motsCles('', $description);
 		$motsCles .= ', ' . $id;
 		$robots = "noindex, follow, noarchive";
@@ -378,10 +394,16 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 ########################################################################
 elseif (!empty($idGalerie))
 {
+	// Titre de la galerie.
+	if ($galerieGenererTitrePages)
+	{
+		$titreGalerie = '<h1>' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</h1>\n";
+	}
+	
 	if ($galerieVignettesParPage)
 	{
 		$pagination = pagination($nombreDoeuvres, $galerieVignettesParPage, $urlSansGet, $baliseTitle, $description);
-		
+	
 		if ($pagination['estPageDerreur'])
 		{
 			$erreur404 = TRUE;
@@ -406,26 +428,44 @@ elseif (!empty($idGalerie))
 		$indicePremiereOeuvre = 0;
 		$indiceDerniereOeuvre = $nombreDoeuvres - 1;
 	}
-	
+
 	if ($erreur404)
 	{
 		$corpsGalerie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
-		
+	
 		// Ajustement des métabalises.
-		$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
-		$description = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page'])) . $baliseTitleComplement;
 		
+		$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
+		$description = $baliseTitle . $baliseTitleComplement;
+	
 		if ($inclureMotsCles)
 		{
 			$motsCles = motsCles('', $description);
 		}
-		
+	
 		$robots = "noindex, follow, noarchive";
 	}
 	else
 	{
-		$nomFichierCache = 'galerie-' . md5($idGalerie) . '.cache.html';
+		// Si aucune valeur n'a été donnée aux balises de l'en-tête de la page, on génère une valeur automatiquement.
 		
+		if (empty($baliseTitle))
+		{
+			$baliseTitle = sprintf(T_("Galerie %1\$s"), $idGalerie);
+		}
+		
+		if (empty($description))
+		{
+			$description = sprintf(T_("Galerie %1\$s"), $idGalerie);
+		}
+		
+		if ($inclureMotsCles && empty($motsCles))
+		{
+			$motsCles = motsCles('', $description);
+		}
+		
+		$nomFichierCache = 'galerie-' . md5($idGalerie) . '.cache.html';
+	
 		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{
 			$corpsGalerie .= file_get_contents("$racine/site/cache/$nomFichierCache");
@@ -437,35 +477,35 @@ elseif (!empty($idGalerie))
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 				$corpsGalerie .= oeuvre($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 			}
-	
+
 			if ($galerieVignettesParPage)
 			{
 				if ($galeriePagination['au-dessus'])
 				{
 					$corpsGalerie = $pagination . $corpsGalerie;
 				}
-		
+	
 				if ($galeriePagination['au-dessous'])
 				{
 					$corpsGalerie .= $pagination;
 				}
 			}
-	
+
 			$galerieInfo = '';
-	
+
 			if ($galerieInfoAjout)
 			{
 				$galerieInfo .= '<div id="galerieInfo">' . "\n";
 				$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s oeuvre", "Cette galerie contient %1\$s oeuvres", $nombreDoeuvres), $nombreDoeuvres) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
-		
+	
 				if ($url != $urlSansGet)
 				{
 					$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
 				}
-		
+	
 				$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
 			}
-	
+
 			// Variable `$corpsGalerie` finale.
 			if ($galerieInfoEmplacement == 'haut')
 			{
@@ -475,7 +515,7 @@ elseif (!empty($idGalerie))
 			{
 				$corpsGalerie .= $galerieInfo;
 			}
-			
+		
 			if ($dureeCache['galerie'])
 			{
 				creeDossierCache($racine);
@@ -492,9 +532,17 @@ elseif (!empty($idGalerie))
 else
 {
 	$erreur404 = TRUE;
-	$corpsGalerie .= '<p>' . sprintf(T_("La galerie %1\$s est introuvable."), $nomGalerie) . "</p>\n";
+	
+	// Titre de la galerie.
+	if ($galerieGenererTitrePages)
+	{
+		$titreGalerie = '<h1>' . sprintf(T_("Galerie %1\$s"), "<em>$nomGalerie</em>") . "</h1>\n";
+	}
+	
+	$corpsGalerie .= '<p>' . sprintf(T_("La galerie %1\$s est introuvable."), "<em>$nomGalerie</em>") . "</p>\n";
 	
 	// Ajustement des métabalises.
+	
 	$baliseTitle = sprintf(T_("La galerie %1\$s est introuvable"), $nomGalerie);
 	$description = $baliseTitle . $baliseTitleComplement;
 	
@@ -508,6 +556,7 @@ else
 }
 
 $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
+$tableauCorpsGalerie['corpsGalerie'] = $titreGalerie . $tableauCorpsGalerie['corpsGalerie'];
 
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/galerie.inc.php'))

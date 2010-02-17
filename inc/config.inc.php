@@ -139,10 +139,10 @@ Voir la fonction `blocs()`.
 $ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu']                   = array (200, 501, 500);
 $ordreBlocsDansFluxHtml['menu-categories']        = array (501, 502, 501);
-$ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (502, 503, 502);
-$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (503, 504, 503);
-$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (504, 505, 504);
-$ordreBlocsDansFluxHtml['flux-rss']               = array (505, 506, 505);
+$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (502, 503, 502);
+$ordreBlocsDansFluxHtml['flux-rss']               = array (503, 504, 503);
+$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (504, 505, 504);
+$ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (505, 506, 505);
 $ordreBlocsDansFluxHtml['infos-publication']      = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']                = array (401, 401, 401);
 
@@ -308,15 +308,22 @@ $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(functio
 - Le but de mettre `$inclureApercu` à FALSE est que les scripts qui utilisent normalement l'aperçu d'une page sauteront alors l'étape de sa recherche, ce qui sauvera du temps et des ressources.
 - Voir les explications de la variable `$apercu` dans la documentation pour plus de détails.
 */
-$inclureApercu = FALSE; // TRUE|FALSE
+$inclureApercu = TRUE; // TRUE|FALSE
+
+// Génération automatisée du titre principal de la page d'accueil d'une catégorie.
+/*
+- Si vaut `TRUE`, un titre `h1` sera ajouté avant la liste des pages faisant partie de la catégorie affichée.
+*/
+$genererTitrePageCategories = TRUE; // TRUE|FALSE
 
 // Génération automatisée du bloc de menu des catégories.
 /*
-
+- Le bloc de menu des catégories peut être réalisé à la main dans le fichier `menu-categories.inc.php` ou généré automatiquement.
+- Voir la section «Bloc de menu des catégories» dans la documentation pour plus de détails.
 */
-$genererAutomatiquementMenuCategories = TRUE; // TRUE|FALSE
+$genererMenuCategories = TRUE; // TRUE|FALSE
 
-// Si `$genererAutomatiquementMenuCategories` vaut TRUE, affichage du nombre d'articles dans chaque catégorie.
+// Si `$genererMenuCategories` vaut TRUE, affichage du nombre d'articles dans chaque catégorie.
 /*
 - Exemple: `Animaux (23)`.
 */
@@ -566,6 +573,12 @@ $contactCaptchaLiensNombre = 5; // Nombre maximal de liens dans un message
 ########################################################################
 
 /* ____________________ Général. ____________________ */
+
+// Génération automatisée du titre principal des pages d'une galerie.
+/*
+- Si vaut `TRUE`, un titre `h1` sera ajouté au début de chaque page d'une galerie (accueil d'une galerie et pages individuelles d'une oeuvre).
+*/
+$galerieGenererTitrePages = TRUE; // TRUE|FALSE
 
 // Qualité des images JPG générées par le script.
 $galerieQualiteJpg = 90; // 0-100

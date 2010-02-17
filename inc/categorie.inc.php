@@ -42,12 +42,12 @@ if (!empty($idCategorie))
 	
 	if (empty($baliseTitle))
 	{
-		$baliseTitle = sprintf(T_("Articles de la catégorie %1\$s"), $idCategorie);
+		$baliseTitle = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
 	}
 	
 	if (empty($description))
 	{
-		$description = sprintf(T_("Articles de la catégorie %1\$s"), $idCategorie);
+		$description = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
 	}
 	
 	if ($inclureMotsCles && empty($motsCles))
@@ -90,6 +90,7 @@ if (!empty($idCategorie))
 		$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
 		
 		// Ajustement des métabalises.
+		
 		$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
 		$description = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page'])) . $baliseTitleComplement;
 		
@@ -109,6 +110,11 @@ if (!empty($idCategorie))
 		}
 		else
 		{
+			if ($genererTitrePageCategories)
+			{
+				$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
+			}
+			
 			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 			{
 				$adresse = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
@@ -179,6 +185,7 @@ else
 	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), "<em>$nomCategorie</em>") . "</p>\n";
 	
 	// Ajustement des métabalises.
+	
 	$baliseTitle = sprintf(T_("La catégorie %1\$s est introuvable"), $nomCategorie);
 	$description = $baliseTitle . $baliseTitleComplement;
 	

@@ -743,7 +743,7 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 
 - créer le fichier `site/xhtml/(LANGUE|multilingue)/menu-categories.inc.php`;
 
-- si ce fichier n'existe pas et que `$genererAutomatiquementMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
+- si ce fichier n'existe pas et que `$genererMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
 
 	[Chiens]
 	urlCategorie=animaux/chiens/
@@ -792,9 +792,13 @@ Voici un exemple:
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète des paramètres possibles:
 
-- `id`: utilisé dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Ceci permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du nom du fichier image. Exemple:
+- `id`: utilisé dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Ceci permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'oeuvre ou du nom du fichier image. Exemple:
 
 		id=5
+
+- `titre`: utilisé pour nommer l'oeuvre dans les textes générés par le script. Exemple:
+
+		titre=Le fleuve Saint-Laurent en hiver
 
 - `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version intermédiaire, c'est-à-dire `intermediaireNom(sans extension)-vignette.extension`. Exemple:
 
@@ -810,11 +814,11 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 - `vignetteAlt`: texte alternatif (contenu de l'attribut `alt`) de la vignette. Si vide, le contenu sera généré automatiquement. Exemple:
 
-		vignetteAlt=Chien assis sur un divan.
+		vignetteAlt=Chien assis sur un divan
 
 - `vignetteAttributTitle`: texte affiché dans une infobulle au survol de l'image par la souris. Exemple:
 
-		vignetteAttributTitle=Chien assis sur un divan.
+		vignetteAttributTitle=Chien assis sur un divan
 
 - `intermediaireLargeur`: largeur de l'image en version intermédiaire. Voir `vignetteLargeur` pour plus de détails. Exemple:
 
@@ -826,11 +830,11 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 - `intermediaireAlt`: texte alternatif (contenu de l'attribut `alt`) de l'image en version intermédiaire. Si vide, le contenu sera généré automatiquement. Exemple:
 
-		intermediaireAlt=Chien dormant sur un divan.
+		intermediaireAlt=Chien dormant sur un divan
 
 - `intermediaireAttributTitle`: texte affiché dans une infobulle au survol de l'image par la souris. Exemple:
 
-		intermediaireAttributTitle=Chien dormant sur un divan.
+		intermediaireAttributTitle=Chien dormant sur un divan
 
 - `intermediaireLegende`: commentaire qui sera affiché sous l'image en version intermédiaire. Exemple:
 
@@ -878,6 +882,7 @@ Voici un exemple pour une galerie de deux images:
 
 	[fichier1.jpg]
 	id=1
+	titre=Lorem ipsum
 	intermediaireLegende=Lorem ipsum dolor sit amet.
 	
 	[fichier2.jpg]
@@ -887,6 +892,7 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 
 	[intermediaireNom]
 	id=
+	titre=
 	vignetteNom=
 	vignetteLargeur=
 	vignetteHauteur=

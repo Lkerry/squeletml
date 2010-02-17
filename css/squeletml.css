@@ -359,7 +359,7 @@ h1#titrePage404 {
 }
 
 .bloc h2 {
-	margin: 0px;
+	margin: 0px 0px 5px 0px;
 	padding: 0px;
 	font-size: 1em;
 }
@@ -727,13 +727,9 @@ div.sepGalerieMinivignettes {
 	margin-left: 25px;
 }
 
-#galerieIntermediaireTexteHorsContenu .contenuBloc {
+#galerieIntermediaireTexteHorsContenu #galerieIntermediaireTexte {
+	padding-left: 5px;
 	border-left: 3px solid #007070;
-}
-
-#galerieIntermediaireTexteHorsContenu h2 {
-	margin-top: 0px;
-	font-size: 1.1em;
 }
 
 #galerieIntermediaireTexteHorsContenu ul {

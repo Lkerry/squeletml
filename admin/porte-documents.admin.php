@@ -1074,7 +1074,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 											break;
 											
 										case 'baliseTitle':
-											$contenu .= '$baliseTitle = "Titre (contenu de la balise `title`)";' . "\n";
+											$contenu .= '$baliseTitle = "' . T_("Titre (contenu de la balise `title`)") . '";' . "\n";
 											break;
 											
 										case 'boitesDeroulantes':
@@ -1102,7 +1102,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 											break;
 											
 										case 'description':
-											$contenu .= '$description = "Description de la page";' . "\n";
+											$contenu .= '$description = "' . T_("Description de la page") . '";' . "\n";
 											break;
 											
 										case 'idCategorie':
@@ -1161,7 +1161,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 								
 								if ($fichierAcreerType == 'FichierModeleHtml')
 								{
-									$contenu .= '<h1>Titre de la page</h1>' . "\n";
+									$contenu .= '<h1>' . T_("Titre de la page") . "</h1>\n";
 									$contenu .= "\n";
 									$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
 								}
@@ -1183,7 +1183,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							if ($fic = @fopen($cheminPage . '/' . "$page.mdtxt", 'a'))
 							{
 								$contenu = '';
-								$contenu .= '# Titre de la page' . "\n";
+								$contenu .= '# ' . T_("Titre de la page") . "\n";
 								$contenu .= "\n";
 								$contenu .= "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.";
 								fputs($fic, $contenu);
@@ -1253,11 +1253,7 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 		if ($adminFiltreNom)
 		{
 			$ancienNomFichier = $nomFichier;
-			$transliteration = parse_ini_file($racineAdmin . '/inc/pathauto/i18n-ascii.txt');
-			$nomFichier = strtr($nomFichier, $transliteration);
-			$nomFichier = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $nomFichier);
-			$nomFichier = preg_replace('/-+/', '-', $nomFichier);
-			$nomFichier = str_replace('-.', '.', $nomFichier);
+			$nomFichier = filtreChaine($racine, $nomFichier);
 			
 			if ($nomFichier != $ancienNomFichier)
 			{
