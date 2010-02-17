@@ -90,7 +90,6 @@ $jsDirect = <<<JS
 	$(function()
 	{
 		$('ul.triable').sortable();
-		$('ul.triable').disableSelection();
 	});
 JS;
 $adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
