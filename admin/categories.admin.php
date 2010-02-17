@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Catégories");
-$boitesDeroulantes = '.bD';
+$boitesDeroulantes = '.aideAdminCategories #configActuelleAdminCategories';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -51,7 +51,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$categorieInfos['urlCategorie'] = '';
 					}
 					
-					$listePages .= '<li>urlCategorie=<input class="url" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCategorie'] . '" /></li>' . "\n";
+					$listePages .= '<li>urlCategorie=<input class="long" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCategorie'] . '" /></li>' . "\n";
 					
 					if (!isset($categorieInfos['categorieParente']))
 					{
@@ -95,7 +95,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						foreach ($categorieInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$listePages .= '<li>pages[]=<input class="url" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							$listePages .= '<li>pages[]=<input class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
 						}
 					}
 					
@@ -107,7 +107,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Liste des pages classées par catégorie") . "</h3>\n";
 			
-			echo '<div class="bD">' . "\n";
+			echo '<div class="aideAdminCategories">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
 			echo "<div class=\"bDcorps afficher\">\n";
@@ -128,12 +128,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 			echo "</div><!-- /.bDcorps -->\n";
-			echo "</div><!-- /.bD -->\n";
+			echo "</div><!-- /.aideAdminCategories -->\n";
 			
 			echo "<fieldset>\n";
 			echo '<legend>' . T_("Options") . "</legend>\n";
 			
-			echo '<div class="bD">' . "\n";
+			echo '<div id="configActuelleAdminCategories">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
 			echo "<ul class=\"bDcorps afficher\">\n";
@@ -148,7 +148,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			
 			echo "</ul>\n";
-			echo "</div><!-- /.bD -->\n";
+			echo "</div><!-- /#configActuelleAdminCategories -->\n";
 			
 			echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
 			

@@ -148,7 +148,20 @@ function boiteDeroulante(conteneur)
 		var oTexteSpan2 = '';
 		var oTexteSpan3 = document.createTextNode($(oTitre).html());
 		var symbole = '';
-		var temoinBoiteDeroulante = $.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur.substr(1)));
+		var nomTemoin = 'squeletmlBoiteDeroulante';
+		
+		if (conteneur.substr(0, 1) == '.')
+		{
+			nomTemoin += 'Class';
+		}
+		else if (conteneur.substr(0, 1) == '#')
+		{
+			nomTemoin += 'Id';
+		}
+		
+		nomTemoin += ucfirst(conteneur.substr(1));
+		
+		var temoinBoiteDeroulante = $.cookie(nomTemoin);
 		
 		switch(temoinBoiteDeroulante)
 		{
@@ -196,13 +209,13 @@ function boiteDeroulante(conteneur)
 			{
 				$(oCorps).removeClass('masquer').addClass('afficher');
 				symbole = '-';
-				$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur.substr(1)), 'afficher', { expires: 180, path: '/' });
+				$.cookie(nomTemoin, 'afficher', { expires: 180, path: '/' });
 			}
 			else
 			{
 				$(oCorps).removeClass('afficher').addClass('masquer');
 				symbole = '+';
-				$.cookie('squeletmlBoiteDeroulante' + ucfirst(conteneur.substr(1)), 'masquer', { expires: 180, path: '/' });
+				$.cookie(nomTemoin, 'masquer', { expires: 180, path: '/' });
 			}
 			
 			$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);

@@ -27,11 +27,11 @@ if (
 }
 
 $baliseTitle = T_("Porte-documents");
-$boitesDeroulantes = '#divListeDossiers #divContenuDossier';
+$boitesDeroulantes = '#divListeDossiersAdminPorteDoc #divContenuDossierAdminPorteDoc';
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {
-	$boitesDeroulantes .= ' #affichageDetailleTypesMimePermis';
+	$boitesDeroulantes .= ' #typesMimePermisAdminPorteDoc';
 }
 
 include $racineAdmin . '/inc/premier.inc.php';
@@ -1383,7 +1383,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	
 	echo '<div class="sousBoite">' . "\n";
-	echo '<div id="divContenuDossier">' . "\n";
+	echo '<div id="divContenuDossierAdminPorteDoc">' . "\n";
 	
 	if ($adminActiverInfobulle['contenuDossier'])
 	{
@@ -1441,14 +1441,14 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	
 	echo "</div><!-- /.bDcorps -->\n";
-	echo "</div><!-- /#divContenuDossier -->\n";
+	echo "</div><!-- /#divContenuDossierAdminPorteDoc -->\n";
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
 /* ____________________ Listage des dossiers. ____________________ */
 
 echo '<div class="sousBoite">' . "\n";
-echo '<div id="divListeDossiers">' . "\n";
+echo '<div id="divListeDossiersAdminPorteDoc">' . "\n";
 echo '<h3 id="listeDossiers" class="bDtitre">' . T_("Liste des dossiers") . "</h3>\n";
 
 $listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
@@ -1509,7 +1509,7 @@ foreach ($listeDossiers as $listeDossier)
 }
 
 echo "</ul>\n";
-echo "</div><!-- /#divListeDossiers -->\n";
+echo "</div><!-- /#divListeDossiersAdminPorteDoc -->\n";
 echo "</div><!-- /.sousBoite -->\n";
 
 if ($afficherBoiteActions)
@@ -1545,20 +1545,20 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 		$affichageTypesMimePermis = substr($affichageTypesMimePermis, 0, -2);
 		echo '<p>' . sprintf(T_("Les types de fichier permis sont: %1\$s."), $affichageTypesMimePermis) . "</p>\n";
 	
-		echo '<div id="affichageDetailleTypesMimePermis">' . "\n";
+		echo '<div id="typesMimePermisAdminPorteDoc">' . "\n";
 		echo '<p class="bDtitre"><strong>' . T_("Liste détaillée des types MIME permis") . "</strong></p>\n";
 	
 		echo '<div class="bDcorps">' . "\n";
 		echo "<ul>\n";
 	
-		$affichageDetailleTypesMimePermis = '';
+		$typesMimePermisAdminPorteDoc = '';
 		
 		foreach ($adminTypesMimePermis as $extensions => $type)
 		{
-			$affichageDetailleTypesMimePermis .= "<li>$type ($extensions)</li>";
+			$typesMimePermisAdminPorteDoc .= "<li>$type ($extensions)</li>";
 		}
 	
-		echo $affichageDetailleTypesMimePermis;
+		echo $typesMimePermisAdminPorteDoc;
 		echo "</ul>\n";
 		echo "</div>\n";
 		echo "</div>\n";

@@ -2,7 +2,7 @@
 include 'inc/zero.inc.php';
 admin_set_time_limit(300);
 $baliseTitle = T_("Galeries");
-$boitesDeroulantes = '.bD';
+$boitesDeroulantes = '.fichierConfigAdminGaleries #ajoutParametresAdminGaleries .aideAdminGaleries';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -1006,15 +1006,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (isset($_POST['ajouter']) && !empty($_POST['parametres']))
 			{
-				$parametresNouvellesImagesTemp = explode("\n", trim(securiseTexte($_POST['parametres'])));
-				
-				foreach ($parametresNouvellesImagesTemp as $parametre)
+				foreach ($_POST['parametres'] as $parametre => $valeur)
 				{
-					$parametre = array_map('trim', explode("=", $parametre, 2));
-					
-					if (!empty($parametre[1]))
+					if (!empty($valeur))
 					{
-						$parametresNouvellesImages[$parametre[0]] = $parametre[1];
+						$parametre = securiseTexte(trim($parametre));
+						$valeur = securiseTexte(trim($valeur));
+						$parametresNouvellesImages[$parametre] = $valeur;
 					}
 				}
 			}
@@ -1144,24 +1142,33 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<input type="file" name="fichier" size="25"/></p>
 			</fieldset>
 
-			<fieldset>
-				<legend><?php echo T_("Fichier de configuration"); ?></legend>
+			<fieldset class="fichierConfigAdminGaleries">
+				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<ul>
-					<li><input type="checkbox" name="config" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
+				<div class="bDcorps afficher">
 					<ul>
-						<li><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
-					</ul></li>
-				</ul>
+						<li><input type="checkbox" name="config" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
+						<ul>
+							<li><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
+						</ul></li>
+					</ul>
 				
-				<?php $parametres = ''; ?>
-				
-				<?php foreach (adminParametresImage() as $parametre): ?>
-					<?php $parametres .= "$parametre=\n"; ?>
-				<?php endforeach; ?>
-				
-				<p><label><?php echo T_("Ajouter les paramètres suivants pour chaque image (un paramètre vide ne sera pas ajouté):"); ?></label><br />
-		<textarea name="parametres" cols="50" rows="10"><?php echo trim($parametres); ?></textarea></p>
+					<fieldset id="ajoutParametresAdminGaleries">
+						<legend class="bDtitre"><?php echo T_("Paramètres"); ?></legend>
+					
+						<?php $parametres = adminParametresImage(); ?>
+					
+						<div class="bDcorps afficher">
+							<p><?php echo T_("Ajouter les paramètres suivants pour chaque image (un paramètre vide ne sera pas ajouté):"); ?></p>
+					
+							<ul>
+								<?php foreach ($parametres as $parametre): ?>
+									<li><input class="long" type="text" name="parametres[<?php echo $parametre; ?>]" value="" /> <label><?php echo "<code>$parametre</code>"; ?></label></li>
+								<?php endforeach; ?>
+							</ul>
+						</div><!-- /.bDcorps -->
+					</fieldset>
+				</div><!-- /.bDcorps -->
 			</fieldset>
 			
 			<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
@@ -1216,10 +1223,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
 			</fieldset>
 
-			<fieldset>
-				<legend><?php echo T_("Fichier de configuration"); ?></legend>
+			<fieldset class="fichierConfigAdminGaleries">
+				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<ul>
+				<ul class="bDcorps afficher">
 					<li><input type="checkbox" name="config" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
 					<ul>
 						<li><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
@@ -1239,7 +1246,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <div class="boite">
 	<h2 id="supprimer"><?php echo T_("Supprimer des images"); ?></h2>
 	
-	<div class="bD">
+	<div class="aideAdminGaleries">
 		<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 	
 		<div class="bDcorps afficher">
@@ -1261,7 +1268,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 			<p><?php echo T_("Il est aussi possible de supprimer le fichier de configuration de la galerie ainsi que le dossier de la galerie si ce dernier est vide."); ?></p>
 		</div><!-- .bDcorps -->
-	</div><!-- .bD -->
+	</div><!-- .aideAdminGaleries -->
 	
 	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
@@ -1307,10 +1314,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</ul>
 			</fieldset>
 			
-			<fieldset>
-				<legend><?php echo T_("Fichier de configuration"); ?></legend>
+			<fieldset class="fichierConfigAdminGaleries">
+				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<ul>
+				<ul class="bDcorps afficher">
 					<li><input type="checkbox" name="config" value="maj" checked="checked" /> <label><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
 					<ul>
 						<li><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
@@ -1451,10 +1458,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</p>
 			</fieldset>
 			
-			<fieldset>
-				<legend><?php echo T_("Fichier de configuration"); ?></legend>
+			<fieldset class="fichierConfigAdminGaleries">
+				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<p><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
+				<p class="bDcorps afficher"><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
 			</fieldset>
 			
 			<p><input type="submit" name="majConf" value="<?php echo T_('Créer ou mettre à jour'); ?>" /></p>
@@ -1498,10 +1505,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</select></p>
 			</fieldset>
 			
-			<fieldset>
-				<legend><?php echo T_("Fichier de configuration"); ?></legend>
+			<fieldset class="fichierConfigAdminGaleries">
+				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<p><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></p>
+				<p class="bDcorps"><input type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></p>
 			</fieldset>
 			
 			<p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>

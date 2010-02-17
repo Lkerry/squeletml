@@ -1,13 +1,13 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Déconnexion de la section d'administration");
-$boitesDeroulantes = "#explications";
+$boitesDeroulantes = "#explicationsAdminDeconnexion";
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
 <h1><?php echo T_("Déconnexion de la section d'administration"); ?></h1>
 
-<div id="explications">
+<div id="explicationsAdminDeconnexion">
 	<h2 class="bDtitre"><?php echo T_("Explications"); ?></h2>
 	
 	<div class="bDcorps">
@@ -35,7 +35,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<li><?php printf(T_("<a href=\"%1\$s\">Authentification, autorisation et contrôle d'accès</a> (documentation Apache)."), "http://httpd.apache.org/docs/trunk/fr/howto/auth.html"); ?></li>
 		</ul>
 	</div><!-- /.bDcorps -->
-</div><!-- /#explications -->
+</div><!-- /#explicationsAdminDeconnexion -->
 
 <h2><?php echo T_("Se déconnecter"); ?></h2>
 

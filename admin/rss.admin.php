@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Flux RSS globaux");
-$boitesDeroulantes = '.bD';
+$boitesDeroulantes = '.aideAdminRss .configActuelleAdminRss';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -59,7 +59,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 						{
-							$listeGaleries .= '<li><input type="text" name="id[' . $i . '][]" value="' . $idGalerie . '" />=<input class="url" type="text" name="url[' . $i . '][]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
+							$listeGaleries .= '<li><input type="text" name="id[' . $i . '][]" value="' . $idGalerie . '" />=<input class="long" type="text" name="url[' . $i . '][]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
 						}
 						
 						$listeGaleries .= "</ul></li>\n";
@@ -70,7 +70,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo '<div class="sousBoite">' . "\n";
 				echo '<h3>' . T_("Liste des pages des galeries") . "</h3>\n";
 				
-				echo '<div class="bD">' . "\n";
+				echo '<div class="aideAdminRss">' . "\n";
 				echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 				
 				echo "<div class=\"bDcorps afficher\">\n";
@@ -89,12 +89,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 				echo "</div><!-- /.bDcorps -->\n";
-				echo "</div><!-- /.bD -->\n";
+				echo "</div><!-- /.aideAdminRss -->\n";
 				
 				echo "<fieldset>\n";
 				echo '<legend>' . T_("Options") . "</legend>\n";
 				
-				echo '<div class="bD">' . "\n";
+				echo '<div class="configActuelleAdminRss">' . "\n";
 				echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 				
 				echo "<ul class=\"bDcorps afficher\">\n";
@@ -109,14 +109,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				
 				echo "</ul>\n";
-				echo "</div><!-- /.bD -->\n";
+				echo "</div><!-- /.configActuelleAdminRss -->\n";
 				
 				echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong></p>\n";
 				
 				echo "<ul>\n";
 				echo '<li><input type="text" name="langueAjout" value="" />';
 				echo "<ul>\n";
-				echo '<li><input type="text" name="idAjout" value="" />=<input class="url" type="text" name="urlAjout" value="" /></li>' . "\n";
+				echo '<li><input type="text" name="idAjout" value="" />=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 				echo "</ul></li>\n";
 				echo "</ul>\n";
 				echo "</fieldset>\n";
@@ -177,7 +177,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						foreach ($langueInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$listePages .= '<li>pages[]=<input class="url" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							$listePages .= '<li>pages[]=<input class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
 						}
 						
 						$listePages .= "</ul></li>\n";
@@ -188,7 +188,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo '<div class="sousBoite">' . "\n";
 				echo '<h3>' . T_("Liste des pages autres que les galeries") . "</h3>\n";
 				
-				echo '<div class="bD">' . "\n";
+				echo '<div class="aideAdminRss">' . "\n";
 				echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 				
 				echo "<div class=\"bDcorps afficher\">\n";
@@ -207,12 +207,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 				echo "</div><!-- /.bDcorps -->\n";
-				echo "</div><!-- /.bD -->\n";
+				echo "</div><!-- /.aideAdminRss -->\n";
 				
 				echo "<fieldset>\n";
 				echo '<legend>' . T_("Options") . "</legend>\n";
 				
-				echo '<div class="bD">' . "\n";
+				echo '<div class="configActuelleAdminRss">' . "\n";
 				echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 				
 				echo "<ul class=\"bDcorps afficher\">\n";
@@ -227,14 +227,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				
 				echo "</ul>\n";
-				echo "</div><!-- /.bD -->\n";
+				echo "</div><!-- /.configActuelleAdminRss -->\n";
 				
 				echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
 				
 				echo "<ul>\n";
 				echo '<li><input type="text" name="langueAjout" value="" />';
 				echo "<ul>\n";
-				echo '<li>pages[]=<input class="url" type="text" name="urlAjout" value="" /></li>' . "\n";
+				echo '<li>pages[]=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 				echo "</ul></li>\n";
 				echo "</ul>\n";
 				echo "</fieldset>\n";
