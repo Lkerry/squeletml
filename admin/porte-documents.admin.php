@@ -27,10 +27,11 @@ if (
 }
 
 $baliseTitle = T_("Porte-documents");
+$boitesDeroulantes = '#divListeDossiers #divContenuDossier';
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {
-	$boitesDeroulantes = "#affichageDetailleTypesMimePermis";
+	$boitesDeroulantes .= ' #affichageDetailleTypesMimePermis';
 }
 
 include $racineAdmin . '/inc/premier.inc.php';
@@ -1382,8 +1383,10 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	}
 	
 	echo '<div class="sousBoite">' . "\n";
-	echo '<h3 id="contenuDossier">' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$dossierAparcourir</code>") . "</h3>\n";
+	echo '<div id="divContenuDossier">' . "\n";
+	echo '<h3 id="contenuDossier" class="bDtitre">' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$dossierAparcourir</code>") . "</h3>\n";
 	
+	echo '<div class="bDcorps afficher">' . "\n";
 	if (!file_exists($dossierAparcourir))
 	{
 		echo '<p class="erreur">' . sprintf(T_("%1\$s n'existe pas."), "<code>$dossierAparcourir</code>") . "</p>\n";
@@ -1431,17 +1434,20 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 		}
 	}
 	
+	echo "</div><!-- /.bDcorps -->\n";
+	echo "</div><!-- /#divContenuDossier -->\n";
 	echo "</div><!-- /.sousBoite -->\n";
 }
 
 /* ____________________ Listage des dossiers. ____________________ */
 
 echo '<div class="sousBoite">' . "\n";
-echo '<h3 id="listeDossiers">' . T_("Liste des dossiers") . "</h3>\n";
+echo '<div id="divListeDossiers">' . "\n";
+echo '<h3 id="listeDossiers" class="bDtitre">' . T_("Liste des dossiers") . "</h3>\n";
 
 $listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
 
-echo "<ul class=\"porteDocumentsListe porteDocumentsListeDernierNiveau\">\n";
+echo "<ul class=\"bDcorps afficher porteDocumentsListe porteDocumentsListeDernierNiveau\">\n";
 
 $classe = 'impair';
 
@@ -1493,6 +1499,7 @@ foreach ($listeDossiers as $listeDossier)
 }
 
 echo "</ul>\n";
+echo "</div><!-- /#divListeDossiers -->\n";
 echo "</div><!-- /.sousBoite -->\n";
 
 if ($afficherBoiteActions)

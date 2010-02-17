@@ -85,6 +85,7 @@ else
 			
 			<?php $fonctions = get_defined_functions(); ?>
 			<?php $modules = get_loaded_extensions(); ?>
+			<?php natcasesort($modules); ?>
 			
 			<ul>
 				<li><?php echo $nombreFonctions; ?> <?php echo count($fonctions['internal']); ?></li>
@@ -94,13 +95,17 @@ else
 			<ul>
 				<?php foreach($modules as $module): ?>
 					<li><h3><?php echo $module; ?></h3>
-					<ul>
-						<?php $fonctionsModule = get_extension_funcs($module); ?>
-						
-						<?php foreach($fonctionsModule as $fonctionModule): ?>
-							<li><?php echo $fonctionModule; ?></li>
-						<?php endforeach; ?>
-					</ul></li>
+					<?php $fonctionsModule = get_extension_funcs($module); ?>
+					
+					<?php if ($fonctionsModule): ?>
+						<?php natcasesort($fonctionsModule); ?>
+						<ul>
+							<?php foreach($fonctionsModule as $fonctionModule): ?>
+								<li><?php echo $fonctionModule; ?></li>
+							<?php endforeach; ?>
+						</ul>
+					<?php endif; ?>
+					</li>
 				<?php endforeach; ?>
 			</ul>
 		<?php endif; ?>

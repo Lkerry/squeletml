@@ -39,19 +39,24 @@ $derniereVersionSqueletml = adminVersionSqueletml('derniere', URL_DERNIERE_VERSI
 	
 	<?php $fonctions = get_defined_functions(); ?>
 	<?php $modules = get_loaded_extensions(); ?>
+	<?php natcasesort($modules); ?>
 	
 	<p><?php printf(T_("Il y a %1\$s fonctions internes réparties entre %2\$s modules. En voici la liste:"), count($fonctions['internal']), count($modules)); ?></p>
 	
 	<ul>
 		<?php foreach($modules as $module): ?>
 			<li><h3><?php echo $module; ?></h3>
-			<ul>
-				<?php $fonctionsModule = get_extension_funcs($module); ?>
-				
-				<?php foreach($fonctionsModule as $fonctionModule): ?>
-					<li><?php echo $fonctionModule; ?></li>
-				<?php endforeach; ?>
-			</ul></li>
+			<?php $fonctionsModule = get_extension_funcs($module); ?>
+			
+			<?php if ($fonctionsModule): ?>
+				<?php natcasesort($fonctionsModule); ?>
+				<ul>
+					<?php foreach($fonctionsModule as $fonctionModule): ?>
+						<li><?php echo $fonctionModule; ?></li>
+					<?php endforeach; ?>
+				</ul>
+			<?php endif; ?>
+			</li>
 		<?php endforeach; ?>
 	</ul>
 <?php endif; ?>

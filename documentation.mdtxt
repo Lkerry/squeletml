@@ -690,7 +690,7 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 
 	L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
 
-		[chiens]
+		[Chiens]
 		pages[]=animaux/chiens/husky.php
 		pages[]=animaux/chiens/malamute.php
 
@@ -706,7 +706,7 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 
 		<?php
 		$baliseTitle = "Articles sur les chiens";
-		$idCategorie = "chiens";
+		$idCategorie = "Chiens";
 		include '../../inc/premier.inc.php';
 		?>
 		
@@ -728,12 +728,12 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 
 	Si une page fait partie d'au moins une catégorie, les informations de publication au sujet de cette page feront référence à sa ou ses catégories. Exemple:
 
-		Écrit par pseudo le 2010-01-04. Dernière révision le 2010-01-05. Catégories: animaux, chiens
+		Écrit par pseudo le 2010-01-04. Dernière révision le 2010-01-05. Catégories: Animaux, Chiens
 
 	Un lien vers la page d'accueil de chaque catégorie peut être ajouté automatiquement. Pour ce faire, ajouter dans le fichier de configuration des catégories l'URL relative de la page d'accueil de la catégorie. Exemple:
 
-		[chiens]
-		urlCategorie=animaux/chiens/index.php
+		[Chiens]
+		urlCategorie=animaux/chiens/
 		pages[]=animaux/chiens/husky.php
 		pages[]=animaux/chiens/malamute.php
 
@@ -745,9 +745,9 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 
 - si ce fichier n'existe pas et que `$genererAutomatiquementMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
 
-	[chiens]
-	categorieParente=animaux
-	urlCategorie=animaux/chiens/index.php
+	[Chiens]
+	urlCategorie=animaux/chiens/
+	categorieParente=Animaux
 	pages[]=animaux/chiens/husky.php
 	pages[]=animaux/chiens/malamute.php
 

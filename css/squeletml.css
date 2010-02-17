@@ -271,7 +271,7 @@ body.tableDesMatieresArrondie #tableDesMatieres {
 }
 
 .descriptionApercu {
-	margin-left: 50px;
+	margin: 20px 50px;
 }
 
 .descriptionApercu h1, .descriptionApercu h2, .descriptionApercu h3, .descriptionApercu h4, .descriptionApercu h5, .descriptionApercu h6 {

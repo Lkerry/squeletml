@@ -7,7 +7,7 @@
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/categories.admin.php"><?php echo T_("Catégories"); ?></a> | </li>
 	
-	<li><a href="<?php echo $urlRacineAdmin; ?>/rss.admin.php"><?php echo T_("Flux RSS globaux"); ?></a> <strong>||</strong> </li>
+	<li><a href="<?php echo $urlRacineAdmin; ?>/rss.admin.php"><?php echo T_("RSS globaux"); ?></a> <strong>||</strong> </li>
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/documentation.admin.php"><?php echo T_("Aide"); ?></a> | </li>
 	

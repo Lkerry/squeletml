@@ -5,7 +5,7 @@
 ##
 ########################################################################
 
-$cheminBasDePage = adminCheminXhtml($racineAdmin, 'bas-de-page');
+$cheminBasDePage = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'bas-de-page');
 
 ########################################################################
 ##

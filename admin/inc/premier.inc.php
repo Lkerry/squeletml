@@ -28,8 +28,8 @@ if ($tableDesMatieres)
 }
 
 $boitesDeroulantesTableau = boitesDeroulantes($adminBoitesDeroulantesParDefaut, $boitesDeroulantes);
-$cheminAncres = adminCheminXhtml($racineAdmin, 'ancres');
-$cheminRaccourcis = adminCheminXhtml($racineAdmin, 'raccourcis');
+$cheminAncres = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'ancres');
+$cheminRaccourcis = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
 $doctype = doctype($adminXhtmlStrict);
 $idBody = adminBodyId();
 
@@ -42,7 +42,7 @@ $locale = locale(LANGUE);
 
 // Menu.
 ob_start();
-include_once adminCheminXhtml($racineAdmin, 'menu');
+include_once adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
 $menu = ob_get_contents();
 ob_end_clean();
 $menu = lienActif($menu, FALSE);

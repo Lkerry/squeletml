@@ -37,6 +37,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 	</div><!-- /.bDcorps -->
 </div><!-- /#explications -->
 
-<p><a href="<?php echo $urlDeconnexion; ?>"><?php echo T_("Lien de déconnexion"); ?></a></p>
+<h2><?php echo T_("Se déconnecter"); ?></h2>
+
+<p><a id="lienDeconnexion" href="<?php echo $urlDeconnexion; ?>"><?php echo T_("Lien de déconnexion"); ?></a></p>
 
 <?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

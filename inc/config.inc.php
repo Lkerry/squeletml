@@ -316,6 +316,12 @@ $inclureApercu = FALSE; // TRUE|FALSE
 */
 $genererAutomatiquementMenuCategories = TRUE; // TRUE|FALSE
 
+// Si `$genererAutomatiquementMenuCategories` vaut TRUE, affichage du nombre d'articles dans chaque catégorie.
+/*
+- Exemple: `Animaux (23)`.
+*/
+$afficherNombreArticlesCategorie = TRUE; // TRUE|FALSE
+
 // Pagination de la liste des articles faisant partie d'une catégorie.
 /*
 - Nombre d'articles par page (0 pour désactiver la pagination).

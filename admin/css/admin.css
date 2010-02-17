@@ -69,6 +69,11 @@ a:hover {
 	text-decoration: none;
 }
 
+a#lienDeconnexion {
+	background: url('../fichiers/se-deconnecter.png') no-repeat left center;
+	padding-left: 20px;
+}
+
 p {
 	margin-bottom: 8px;
 }
@@ -108,13 +113,17 @@ fieldset {
 	border: 1px solid #b3b3b3;
 }
 
-body#galeries-admin-php fieldset ul, body#rss-admin-php fieldset ul {
+body#categories-admin-php fieldset ul, body#galeries-admin-php fieldset ul, body#rss-admin-php fieldset ul {
 	list-style-type: none;
 	padding-left: 0px;
 }
 
-body#galeries-admin-php fieldset ul ul, body#rss-admin-php fieldset ul ul {
+body#categories-admin-php fieldset ul ul, body#galeries-admin-php fieldset ul ul, body#rss-admin-php fieldset ul ul {
 	padding-left: 20px;
+}
+
+input.url {
+	width: 50%;
 }
 
 legend {

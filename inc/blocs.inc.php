@@ -266,7 +266,7 @@ if (!empty($blocsAinserer))
 					}
 					elseif ($genererAutomatiquementMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 					{
-						$bloc = menuCategoriesAutomatise($urlRacine, $categories);
+						$bloc = menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie);
 						
 						if (!empty($bloc))
 						{

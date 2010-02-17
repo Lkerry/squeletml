@@ -101,6 +101,40 @@ function adminCheminXhtml($racineAdmin, $nom)
 }
 
 /*
+Retourne le chemin vers le fichier `(site/)basename($racineAdmin)/xhtml/($langue||multilingue)/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide.
+*/
+function adminCheminXhtmlLangue($racineAdmin, $langues, $nom)
+{
+	$racine = dirname($racineAdmin);
+	$dossierAdmin = basename($racineAdmin);
+	
+	if (file_exists("$racine/site/$dossierAdmin/xhtml/multilingue/$nom.inc.php"))
+	{
+		return "$racine/site/$dossierAdmin/xhtml/multilingue/$nom.inc.php";
+	}
+	elseif (file_exists("$racineAdmin/xhtml/multilingue/$nom.inc.php"))
+	{
+		return "$racineAdmin/xhtml/multilingue/$nom.inc.php";
+	}
+	else
+	{
+		foreach ($langues as $langue)
+		{
+			if (file_exists("$racine/site/$dossierAdmin/xhtml/$langue/$nom.inc.php"))
+			{
+				return "$racine/site/$dossierAdmin/xhtml/$langue/$nom.inc.php";
+			}
+			elseif (file_exists("$racineAdmin/xhtml/$langue/$nom.inc.php"))
+			{
+				return "$racineAdmin/xhtml/$langue/$nom.inc.php";
+			}
+		}
+	}
+	
+	return '';
+}
+
+/*
 Simule `chmod()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminChmod($fichier, $permissions)

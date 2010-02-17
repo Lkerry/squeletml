@@ -335,6 +335,40 @@ function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategor
 }
 
 /*
+Retourne un tableau contenant la liste des catégories enfants d'une catégorie donnée.
+*/
+function categoriesEnfants($categories, $categorie)
+{
+	$categoriesEnfants = array ();
+	
+	foreach ($categories as $cat => $catInfos)
+	{
+		if (isset($catInfos['categorieParente']) && $catInfos['categorieParente'] == $categorie)
+		{
+			$categoriesEnfants[] = $cat;
+		}
+	}
+	
+	return $categoriesEnfants;
+}
+
+/*
+Retourne un tableau contenant la liste des catégories parentes indirectes d'une catégorie donnée. Par exemple, si la catégorie donnée est «Miniatures», que cette dernière a comme catégorie parente «Chiens», et que la catégorie «Chiens» est une catégorie enfant de «Animaux», la fonction va retourner `array ('Chiens', 'Animaux')`.
+*/
+function categoriesParentesIndirectes($categories, $categorie)
+{
+	$categoriesParentesIndirectes = array ();
+	
+	if (isset($categories[$categorie]['categorieParente']))
+	{
+		$categoriesParentesIndirectes[] = $categories[$categorie]['categorieParente'];
+		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $categories[$categorie]['categorieParente']));
+	}
+	
+	return array_unique($categoriesParentesIndirectes);
+}
+
+/*
 Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
@@ -1263,6 +1297,47 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss, $galerie
 	$itemsFluxRss = array_slice($itemsFluxRss, 0, $nombreItemsFluxRss);
 	
 	return $itemsFluxRss;
+}
+
+/*
+Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
+*/
+function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
+{
+	$htmlCategorie = '';
+	$htmlCategorie .= '<li>';
+			
+	if (!empty($categories[$categorie]['urlCategorie']))
+	{
+		$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCategorie'] . '">' . $categorie . '</a>';
+	}
+	else
+	{
+		$htmlCategorie .= $categorie;
+	}
+	
+	if ($afficherNombreArticlesCategorie)
+	{
+		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
+	}
+	
+	$categoriesEnfants = categoriesEnfants($categories, $categorie);
+	
+	if (!empty($categoriesEnfants))
+	{
+		$htmlCategorie .= "<ul>\n";
+		
+		foreach ($categoriesEnfants as $enfant)
+		{
+			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
+		}
+		
+		$htmlCategorie .= "</ul>\n";
+	}
+	
+	$htmlCategorie .= "</li>\n";
+	
+	return $htmlCategorie;
 }
 
 /*
@@ -2330,52 +2405,20 @@ function mdtxtChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($urlRacine, $categories)
+function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie)
 {
-	$menuCategories = '';
-	$catEtSousCat = array ();
+	$menuCategoriesAutomatise = '';
 	ksort($categories);
 	
-	foreach ($categories as $cat => $catInfos)
+	foreach ($categories as $categorie => $categorieInfos)
 	{
-		if (!empty($catInfos['categorieParente']))
+		if (empty($categorieInfos['categorieParente']))
 		{
-			$catParente = $catInfos['categorieParente'];
-			$catEtSousCat[$catParente]['sousCat'][$cat]['infos'] = $catInfos;
-		}
-		else
-		{
-			$catEtSousCat[$cat]['infos'] = $catInfos;
+			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
 		}
 	}
 	
-	if (!empty($catEtSousCat))
-	{
-		foreach ($catEtSousCat as $cat => $catInfos)
-		{
-			$menuCategories .= '<li>';
-		
-			if (!empty($catInfos['infos']['urlCategorie']))
-			{
-				$menuCategories .= '<a href="' . $urlRacine . '/' . $catInfos['infos']['urlCategorie'] . '">' . $cat . '</a>';
-			}
-			else
-			{
-				$menuCategories .= $cat;
-			}
-		
-			if (!empty($catInfos['sousCat']))
-			{
-				$menuCategories .= "<ul>\n";
-				$menuCategories .= menuCategoriesAutomatise($urlRacine, $catInfos['sousCat']);
-				$menuCategories .= "</ul>\n";
-			}
-		
-			$menuCategories .= "</li>\n";
-		}
-	}
-	
-	return $menuCategories;
+	return $menuCategoriesAutomatise;
 }
 
 /*
