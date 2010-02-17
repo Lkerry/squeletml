@@ -44,6 +44,15 @@ body, html {
 	display: inline;
 }
 
+#lienBas {
+	text-align: right;
+}
+
+#lienBas p {
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
 #contenu {
 	margin: 5px;
 }
@@ -59,6 +68,10 @@ body, html {
 
 h1, h2, h3, h4, h5, h6, a {
 	color: #007070;
+}
+
+h1 {
+	margin-top: 5px;
 }
 
 a:visited {

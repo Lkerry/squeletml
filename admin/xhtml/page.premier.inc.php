@@ -38,3 +38,6 @@
 			<!-- ____________________ #contenu ____________________ -->
 			<div id="contenu">
 				<div id="interieurContenu">
+					<div id="lienBas">
+						<?php include_once $cheminLienBas; ?>
+					</div><!-- /#lienBas -->

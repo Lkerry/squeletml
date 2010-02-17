@@ -29,6 +29,7 @@ if ($tableDesMatieres)
 
 $boitesDeroulantesTableau = boitesDeroulantes($adminBoitesDeroulantesParDefaut, $boitesDeroulantes);
 $cheminAncres = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'ancres');
+$cheminLienBas = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
 $cheminRaccourcis = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
 $doctype = doctype($adminXhtmlStrict);
 $idBody = adminBodyId();
