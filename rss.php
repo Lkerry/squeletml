@@ -97,11 +97,11 @@ if ($getType == 'galerie' && !empty($getChemin))
 				
 				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 				
-				$nomFichierCache = 'rss-galerie-' . md5($idGalerie) . '.xml';
+				$nomFichierCache = 'rss-galerie-' . md5($idGalerie) . '.cache.xml';
 				
 				if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 				{
-					readfile("$racine/site/cache/$nomFichierCache");
+					@readfile("$racine/site/cache/$nomFichierCache");
 				}
 				else
 				{
@@ -119,7 +119,7 @@ if ($getType == 'galerie' && !empty($getChemin))
 					{
 						creeDossierCache($racine);
 						@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-						readfile("$racine/site/cache/$nomFichierCache");
+						@readfile("$racine/site/cache/$nomFichierCache");
 					}
 					else
 					{
@@ -191,11 +191,11 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 		
 				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-				$nomFichierCache = 'rss-categorie-' . md5($idCategorie) . '.xml';
+				$nomFichierCache = 'rss-categorie-' . md5($idCategorie) . '.cache.xml';
 		
 				if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 				{
-					readfile("$racine/site/cache/$nomFichierCache");
+					@readfile("$racine/site/cache/$nomFichierCache");
 				}
 				else
 				{
@@ -230,7 +230,7 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 					{
 						creeDossierCache($racine);
 						@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-						readfile("$racine/site/cache/$nomFichierCache");
+						@readfile("$racine/site/cache/$nomFichierCache");
 					}
 					else
 					{
@@ -263,11 +263,11 @@ elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangu
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = 'rss-galeries-' . md5($getLangue) . '.xml';
+		$nomFichierCache = 'rss-galeries-' . md5($getLangue) . '.cache.xml';
 		
 		if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 		{
-			readfile("$racine/site/cache/$nomFichierCache");
+			@readfile("$racine/site/cache/$nomFichierCache");
 		}
 		else
 		{
@@ -299,7 +299,7 @@ elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangu
 			{
 				creeDossierCache($racine);
 				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-				readfile("$racine/site/cache/$nomFichierCache");
+				@readfile("$racine/site/cache/$nomFichierCache");
 			}
 			else
 			{
@@ -322,11 +322,11 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = 'rss-site-' . md5($getLangue) . '.xml';
+		$nomFichierCache = 'rss-site-' . md5($getLangue) . '.cache.xml';
 		
 		if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 		{
-			readfile("$racine/site/cache/$nomFichierCache");
+			@readfile("$racine/site/cache/$nomFichierCache");
 		}
 		else
 		{
@@ -393,7 +393,7 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 			{
 				creeDossierCache($racine);
 				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-				readfile("$racine/site/cache/$nomFichierCache");
+				@readfile("$racine/site/cache/$nomFichierCache");
 			}
 			else
 			{

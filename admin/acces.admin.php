@@ -274,9 +274,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$htaccess = '';
 				$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 				$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
-		
-				$htaccessFilesModele = "(ChangeLog|ChangeLogDerniereVersion|\.acces|\.admin\.php|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
-		
+				
+				$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
+				
 				if ($serveurFreeFr)
 				{
 					$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";

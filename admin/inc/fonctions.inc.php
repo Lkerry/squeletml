@@ -548,7 +548,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 			adminVideCache($racineAdmin, 'admin');
 		}
 		
-		$cheminApercuImage = $racineAdmin . '/cache/' . md5($cheminFichier) . '.' . array_pop(explode('.', $cheminFichier));;
+		$cheminApercuImage = $racineAdmin . '/cache/' . md5($cheminFichier) . '.cache.' . array_pop(explode('.', $cheminFichier));
 		
 		if (!file_exists($cheminApercuImage))
 		{

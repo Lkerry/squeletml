@@ -107,7 +107,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 	{
 		// On vérifie si l'oeuvre existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = 'galerie-' . md5($idGalerie) . '-oeuvre-' . md5($id) . '.html';
+		$nomFichierCache = 'galerie-' . md5($idGalerie) . '-oeuvre-' . md5($id) . '.cache.html';
 		
 		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{
@@ -424,7 +424,7 @@ elseif (!empty($idGalerie))
 	}
 	else
 	{
-		$nomFichierCache = 'galerie-' . md5($idGalerie) . '.html';
+		$nomFichierCache = 'galerie-' . md5($idGalerie) . '.cache.html';
 		
 		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{

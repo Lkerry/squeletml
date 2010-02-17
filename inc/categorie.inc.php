@@ -9,7 +9,7 @@ phpGettext($racine, LANGUE);
 // Nom pour le cache.
 if ($dureeCache['categorie'])
 {
-	$nomFichierCache = 'categorie-' . md5($idCategorie) . '.html';
+	$nomFichierCache = 'categorie-' . md5($idCategorie) . '.cache.html';
 }
 
 // Liste des articles à afficher.

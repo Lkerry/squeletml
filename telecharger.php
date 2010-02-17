@@ -26,7 +26,7 @@ if (file_exists($chemin) && preg_match("|^$racine/site/fichiers/galeries/[^/]+/$
 	header('Content-Type: ' . $typeMime);
 	header('Content-Disposition: attachment; filename="' . $nom . '"');
 	header('Content-Length: ' . filesize($chemin));
-	readfile($urlFichier);
+	@readfile($urlFichier);
 }
 elseif (file_exists($chemin))
 {

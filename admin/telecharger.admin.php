@@ -60,7 +60,7 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 					header('Content-Type: ' . $contentType);
 					header('Content-Disposition: attachment; filename="' . $nomArchive . '"');
 					header('Content-Length: ' . filesize($cheminArchive));
-					readfile($cheminArchive);
+					@readfile($cheminArchive);
 					@unlink($cheminArchive);
 				}
 		
@@ -81,7 +81,7 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 				header('Content-Type: ' . $typeMime);
 				header('Content-Disposition: attachment; filename="' . $nom . '"');
 				header('Content-Length: ' . filesize($chemin));
-				readfile($chemin);
+				@readfile($chemin);
 			}
 		}
 		else
