@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Catégories");
-$boitesDeroulantes = '.aideAdminCategories #configActuelleAdminCategories';
+$boitesDeroulantes = '.aideAdminCat #configActuelleAdminCat #optionsAjoutAdminCat';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -107,7 +107,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Liste des pages classées par catégorie") . "</h3>\n";
 			
-			echo '<div class="aideAdminCategories">' . "\n";
+			echo '<div class="aideAdminCat">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
 			echo "<div class=\"bDcorps afficher\">\n";
@@ -128,12 +128,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 			echo "</div><!-- /.bDcorps -->\n";
-			echo "</div><!-- /.aideAdminCategories -->\n";
+			echo "</div><!-- /.aideAdminCat -->\n";
 			
 			echo "<fieldset>\n";
 			echo '<legend>' . T_("Options") . "</legend>\n";
 			
-			echo '<div id="configActuelleAdminCategories">' . "\n";
+			echo '<div id="configActuelleAdminCat">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
 			echo "<ul class=\"bDcorps afficher\">\n";
@@ -148,7 +148,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			
 			echo "</ul>\n";
-			echo "</div><!-- /#configActuelleAdminCategories -->\n";
+			echo "</div><!-- /#configActuelleAdminCat -->\n";
 			
 			echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
 			
@@ -172,17 +172,43 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
-			echo "<fieldset>\n";
-			echo '<legend>' . T_("Options d'ajout") . "</legend>\n";
+			echo "<fieldset id=\"optionsAjoutAdminCat\">\n";
+			echo '<legend class="bDtitre">' . T_("Options d'ajout") . "</legend>\n";
 			
+			echo '<div class="bDcorps afficher">' . "\n";
 			echo "<ul>\n";
-			echo '<li><input type="checkbox" name="parentAjout" value="ajout" checked="checked" /> <label>' . T_("S'il y a lieu, inclure la page dans la catégorie parente.") . '</label>' . "\n";
+			echo '<li><input type="checkbox" name="parentAjout" value="ajout" checked="checked" /> <label>' . T_("S'il y a lieu, inclure la page dans la catégorie parente.") . "</label>\n";
 			echo "<ul>\n";
-			echo '<li><input type="checkbox" name="parentsAjout" value="ajout" checked="checked" /> <label>' . T_("S'il y a lieu, inclure la page également dans les catégories parentes indirectes.") . '</label></li>' . "\n";
-			echo "</ul></li>\n";
+			echo '<li><input type="checkbox" name="parentsAjout" value="ajout" checked="checked" /> <label>' . T_("S'il y a lieu, inclure la page également dans les catégories parentes indirectes.") . "</label></li>\n";
 			echo "</ul>\n";
 			
 			echo '<p>' . T_("Explications: par exemple, une page est ajoutée à la catégorie «Miniatures». Cette catégorie a comme parent «Chiens», qui a elle-même comme parent la catégorie «Animaux». Si l'option d'ajout dans la catégorie parente est sélectionnée, la page sera ajoutée dans la catégorie «Miniatures» et dans la catégorie parente «Chiens». Aussi, si l'option d'ajout dans les catégories parentes indirectes est sélectionnée, la page sera également ajoutée à la catégorie «Animaux».") . "</p>\n";
+			echo "</li>\n";
+			
+			$rssCheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+			
+			if ($rssCheminFichier)
+			{
+				$rssPages = super_parse_ini_file($rssCheminFichier, TRUE);
+				
+				if (!empty($rssPages))
+				{
+					$rssListeLangues = '';
+					$rssListeLangues .= '<select name="rssLangueAjout">' . "\n";
+					
+					foreach ($rssPages as $rssCodeLangue => $rssLangueInfos)
+					{
+						$rssListeLangues .= "<option value=\"$rssCodeLangue\">$rssCodeLangue</option>\n";
+					}
+					
+					$rssListeLangues .= "</select>";
+					
+					echo '<li><input type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label>' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS global du site</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
+				}
+			}
+			
+			echo "</ul>\n";
+			echo "</div><!-- /.bDcorps -->\n";
 			echo "</fieldset>\n";
 			echo "</fieldset>\n";
 			
@@ -343,22 +369,24 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				$messagesScript .= '<li>';
+				$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				
-				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+				$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
 				
-				echo "<ul>\n";
-				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				echo "</ul>\n";
+				$messagesScript .= "<ul>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "</ul>\n";
+				$messagesScript .= "</li>\n";
 			}
 			else
 			{
-				$messagesScript = '<li>';
+				$messagesScript .= '<li>';
 				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-				$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+				$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
 				$messagesScript .= "<ul>\n";
-				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				$messagesScript .= "</ul>\n";
 				$messagesScript .= "</li>\n";
 			}
@@ -379,16 +407,83 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			
-			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+			$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
 			
 			$messagesScript .= "<ul>\n";
-			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 			$messagesScript .= "</ul>\n";
 			$messagesScript .= "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
+		
+		if (isset($_POST['rssAjout']) && !empty($_POST['urlAjout']) && !empty($_POST['rssLangueAjout']))
+		{
+			$messagesScript = '';
+			$urlAjout = securiseTexte($_POST['urlAjout']);
+			$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
+			$contenuFichierRssTableau = array ();
+			$rssCheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+			
+			if (!$rssCheminFichier)
+			{
+				$rssCheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
+				
+				if ($adminPorteDocumentsDroits['creer'])
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$rssCheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-site.ini.txt#messages') . "</li>\n";
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$rssCheminFichier</code>") . "</li>\n";
+				}
+			}
+			elseif (($rssPages = super_parse_ini_file($rssCheminFichier, TRUE)) === FALSE)
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $rssCheminFichier . '</code>') . "</li>\n";
+			}
+			elseif (!empty($rssPages))
+			{
+				foreach ($rssPages as $codeLangue => $langueInfos)
+				{
+					$contenuFichierRssTableau[$codeLangue] = array ();
+					
+					foreach ($langueInfos['pages'] as $page)
+					{
+						$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+					}
+				}
+			}
+			
+			if (!isset($contenuFichierRssTableau[$rssLangueAjout]))
+			{
+				$contenuFichierRssTableau[$rssLangueAjout] = array ();
+			}
+			
+			array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjout\n");
+			
+			$contenuFichierRss = '';
+			
+			foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
+			{
+				if (!empty($langueInfos))
+				{
+					$contenuFichierRss .= "[$codeLangue]\n";
+					
+					foreach ($langueInfos as $ligne)
+					{
+						$contenuFichierRss .= $ligne;
+					}
+					
+					$contenuFichierRss .= "\n";
+				}
+			}
+			
+			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
+			
+			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS global du site"));
+		}
 	}
 	?>
 </div><!-- /#boiteMessages -->

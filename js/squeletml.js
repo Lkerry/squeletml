@@ -209,13 +209,13 @@ function boiteDeroulante(conteneur)
 			{
 				$(oCorps).removeClass('masquer').addClass('afficher');
 				symbole = '-';
-				$.cookie(nomTemoin, 'afficher', { expires: 180, path: '/' });
+				$.cookie(nomTemoin, 'afficher', { expires: 365, path: '/' });
 			}
 			else
 			{
 				$(oCorps).removeClass('afficher').addClass('masquer');
 				symbole = '+';
-				$.cookie(nomTemoin, 'masquer', { expires: 180, path: '/' });
+				$.cookie(nomTemoin, 'masquer', { expires: 365, path: '/' });
 			}
 			
 			$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);

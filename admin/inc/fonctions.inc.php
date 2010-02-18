@@ -411,6 +411,67 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 }
 
 /*
+Enregistre la configuration du flux RSS global du site et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $adminPorteDocumentsDroits)
+{
+	$messagesScript = '';
+	$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+	
+	if ($cheminFichier)
+	{
+		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
+		{
+			$messagesScript .= '<li>';
+			$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			
+			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+			
+			$messagesScript .= "<ul>\n";
+			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			$messagesScript .= "</ul>\n";
+			$messagesScript .= "</li>\n";
+		}
+		else
+		{
+			$messagesScript .= '<li>';
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+			$messagesScript .= "<ul>\n";
+			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+			$messagesScript .= "</ul>\n";
+			$messagesScript .= "</li>\n";
+		}
+	}
+	else
+	{
+		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
+		$messagesScript .= '<li>';
+		
+		if ($adminPorteDocumentsDroits['creer'])
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-site.ini.txt#messages') . "</p>\n";
+		}
+		else
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
+		}
+		
+		$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		
+		$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+		
+		$messagesScript .= "<ul>\n";
+		$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+		$messagesScript .= "</ul>\n";
+		$messagesScript .= "</li>\n";
+	}
+	
+	return $messagesScript;
+}
+
+/*
 Retourne TRUE si le navigateur de l'internaute est Internet Explorer, sinon retourne FALSE.
 */
 function adminEstIe()

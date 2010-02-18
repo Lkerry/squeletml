@@ -392,7 +392,7 @@ function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 }
 
 /*
-Retourne le chemin vers le fichier de configuration du flux RSS global des galeries ou des pages autres que les galeries, selon le nom passé en paramètre. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+Retourne le chemin vers le fichier de configuration du flux RSS global des galeries ou du site, selon le nom passé en paramètre. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FALSE)
 {

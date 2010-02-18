@@ -18,7 +18,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	##################################################################
 	#
-	# Pages des galeries.
+	# Flux RSS global des galeries.
 	#
 	##################################################################
 	
@@ -68,7 +68,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				
 				echo '<div class="sousBoite">' . "\n";
-				echo '<h3>' . T_("Liste des pages des galeries") . "</h3>\n";
+				echo '<h3>' . T_("Liste des pages du flux RSS global des galeries") . "</h3>\n";
 				
 				echo '<div class="aideAdminRss">' . "\n";
 				echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
@@ -136,7 +136,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	}
 	##################################################################
 	#
-	# Autres pages
+	# Flux RSS global du site.
 	#
 	##################################################################
 	elseif (isset($_POST['global']) && $_POST['global'] == 'site')
@@ -157,98 +157,95 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
-		else
+		elseif (($pages = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 		{
-			if (($pages = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
+			echo "<form action='$adminAction#messages' method='post'>\n";
+			echo "<div>\n";
+		
+			if (!empty($pages))
 			{
-				echo "<form action='$adminAction#messages' method='post'>\n";
-				echo "<div>\n";
-			
-				if (!empty($pages))
+				$listePages = '';
+				$i = 0;
+				
+				foreach ($pages as $codeLangue => $langueInfos)
 				{
-					$listePages = '';
-					$i = 0;
+					$listePages .= '<li class="liParent"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+					$listePages .= "<ul class=\"triable\">\n";
 					
-					foreach ($pages as $codeLangue => $langueInfos)
+					foreach ($langueInfos['pages'] as $page)
 					{
-						$listePages .= '<li class="liParent"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
-						$listePages .= "<ul class=\"triable\">\n";
-						
-						foreach ($langueInfos['pages'] as $page)
-						{
-							$page = rtrim($page);
-							$listePages .= '<li>pages[]=<input class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
-						}
-						
-						$listePages .= "</ul></li>\n";
-						$i++;
+						$page = rtrim($page);
+						$listePages .= '<li>pages[]=<input class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
 					}
+					
+					$listePages .= "</ul></li>\n";
+					$i++;
 				}
+			}
+		
+			echo '<div class="sousBoite">' . "\n";
+			echo '<h3>' . T_("Liste des pages du flux RSS global du site") . "</h3>\n";
 			
-				echo '<div class="sousBoite">' . "\n";
-				echo '<h3>' . T_("Liste des pages autres que les galeries") . "</h3>\n";
-				
-				echo '<div class="aideAdminRss">' . "\n";
-				echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
-				
-				echo "<div class=\"bDcorps afficher\">\n";
-				echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>') . "</p>\n";
-				
-				echo "<ul>\n";
-				echo "<li>fr\n";
-				echo "<ul>\n";
-				echo "<li>pages[]=animaux/chiens.php</li>\n";
-				echo "</ul></li>\n";
-				echo "</ul>\n";
-				
-				echo '<p>' . sprintf(T_("Cet exemple fait référence à une page en français dont l'URL est %1\$s."), "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
-				
-				echo '<p>' . T_("Pour enlever une langue ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
-				
-				echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
-				echo "</div><!-- /.bDcorps -->\n";
-				echo "</div><!-- /.aideAdminRss -->\n";
-				
-				echo "<fieldset>\n";
-				echo '<legend>' . T_("Options") . "</legend>\n";
-				
-				echo '<div class="configActuelleAdminRss">' . "\n";
-				echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
-				
-				echo "<ul class=\"bDcorps afficher\">\n";
-				
-				if (!empty($listePages))
-				{
-					echo $listePages;
-				}
-				else
-				{
-					echo '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
-				}
-				
-				echo "</ul>\n";
-				echo "</div><!-- /.configActuelleAdminRss -->\n";
-				
-				echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
-				
-				echo "<ul>\n";
-				echo '<li><input type="text" name="langueAjout" value="" />';
-				echo "<ul>\n";
-				echo '<li>pages[]=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
-				echo "</ul></li>\n";
-				echo "</ul>\n";
-				echo "</fieldset>\n";
-				
-				echo '<p><input type="submit" name="modifsSite" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
-				
-				echo "</div>\n";
-				echo "</form>\n";
-				echo "</div><!-- /.sousBoite -->\n";
+			echo '<div class="aideAdminRss">' . "\n";
+			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
+			
+			echo "<div class=\"bDcorps afficher\">\n";
+			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>') . "</p>\n";
+			
+			echo "<ul>\n";
+			echo "<li>fr\n";
+			echo "<ul>\n";
+			echo "<li>pages[]=animaux/chiens.php</li>\n";
+			echo "</ul></li>\n";
+			echo "</ul>\n";
+			
+			echo '<p>' . sprintf(T_("Cet exemple fait référence à une page en français dont l'URL est %1\$s."), "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
+			
+			echo '<p>' . T_("Pour enlever une langue ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
+			
+			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
+			echo "</div><!-- /.bDcorps -->\n";
+			echo "</div><!-- /.aideAdminRss -->\n";
+			
+			echo "<fieldset>\n";
+			echo '<legend>' . T_("Options") . "</legend>\n";
+			
+			echo '<div class="configActuelleAdminRss">' . "\n";
+			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
+			
+			echo "<ul class=\"bDcorps afficher\">\n";
+			
+			if (!empty($listePages))
+			{
+				echo $listePages;
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+				echo '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
 			}
+			
+			echo "</ul>\n";
+			echo "</div><!-- /.configActuelleAdminRss -->\n";
+			
+			echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
+			
+			echo "<ul>\n";
+			echo '<li><input type="text" name="langueAjout" value="" />';
+			echo "<ul>\n";
+			echo '<li>pages[]=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
+			echo "</ul></li>\n";
+			echo "</ul>\n";
+			echo "</fieldset>\n";
+			
+			echo '<p><input type="submit" name="modifsSite" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
+			
+			echo "</div>\n";
+			echo "</form>\n";
+			echo "</div><!-- /.sousBoite -->\n";
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript);
@@ -318,13 +315,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				$messagesScript .= '<li>';
+				$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				
-				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+				$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 				
-				echo "<ul>\n";
-				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				echo "</ul>\n";
+				$messagesScript .= "<ul>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "</ul>\n";
+				$messagesScript .= "</li>\n";
 			}
 			else
 			{
@@ -369,7 +368,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	{
 		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Enregistrement des modifications pour les pages autres que les galeries") . "</h3>\n" ;
+		echo '<h3>' . T_("Enregistrement des modifications pour les pages du site") . "</h3>\n" ;
 	
 		$contenuFichierTableau = array ();
 		
@@ -421,55 +420,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
-		
-		if ($cheminFichier)
-		{
-			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
-			{
-				echo '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-				
-				echo '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-				
-				echo "<ul>\n";
-				echo "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				echo "</ul>\n";
-			}
-			else
-			{
-				$messagesScript = '<li>';
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-				$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-				$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-				$messagesScript .= "<ul>\n";
-				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				$messagesScript .= "</ul>\n";
-				$messagesScript .= "</li>\n";
-			}
-		}
-		else
-		{
-			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
-			$messagesScript .= '<li>';
-			
-			if ($adminPorteDocumentsDroits['creer'])
-			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-site.ini.txt#messages') . "</p>\n";
-			}
-			else
-			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
-			}
-			
-			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-			
-			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-			
-			$messagesScript .= "<ul>\n";
-			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			$messagesScript .= "</ul>\n";
-			$messagesScript .= "</li>\n";
-		}
+		$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $adminPorteDocumentsDroits);
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
@@ -510,7 +461,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<ul>
 					<li><input type="radio" name="global" value="galeries" /> <?php echo T_("Pages des galeries"); ?></li>
 				
-					<li><input type="radio" name="global" value="site" checked="checked" /> <?php echo T_("Pages autres que les galeries"); ?></li>
+					<li><input type="radio" name="global" value="site" checked="checked" /> <?php echo T_("Pages du site"); ?></li>
 				</ul>
 			</fieldset>
 			
