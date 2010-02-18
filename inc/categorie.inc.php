@@ -57,9 +57,9 @@ if (!empty($idCategorie))
 	
 	$nombreArticles = count($categories[$idCategorie]['pages']);
 	
-	if ($articlesParPage)
+	if ($nombreItemsPageCategorie)
 	{
-		$pagination = pagination($nombreArticles, $articlesParPage, $urlSansGet, $baliseTitle, $description);
+		$pagination = pagination($nombreArticles, $nombreItemsPageCategorie, $urlSansGet, $baliseTitle, $description);
 		
 		if ($pagination['estPageDerreur'])
 		{
@@ -87,6 +87,12 @@ if (!empty($idCategorie))
 	
 	if ($erreur404)
 	{
+		// Titre de la catégorie.
+		if ($genererTitrePageCategories)
+		{
+			$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
+		}
+		
 		$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
 		
 		// Ajustement des métabalises.
@@ -110,6 +116,7 @@ if (!empty($idCategorie))
 		}
 		else
 		{
+			// Titre de la catégorie.
 			if ($genererTitrePageCategories)
 			{
 				$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
@@ -182,6 +189,13 @@ if (!empty($idCategorie))
 else
 {
 	$erreur404 = TRUE;
+	
+	// Titre de la catégorie.
+	if ($genererTitrePageCategories)
+	{
+		$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$nomCategorie</em>") . "</h1>\n";
+	}
+	
 	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), "<em>$nomCategorie</em>") . "</p>\n";
 	
 	// Ajustement des métabalises.

@@ -330,17 +330,17 @@ $genererTitrePageCategories = TRUE; // TRUE|FALSE
 */
 $genererMenuCategories = TRUE; // TRUE|FALSE
 
-// Si `$genererMenuCategories` vaut TRUE, affichage du nombre d'articles dans chaque catégorie.
+// Si `$genererMenuCategories` vaut TRUE, affichage du nombre de pages dans chaque catégorie.
 /*
 - Exemple: `Animaux (23)`.
 */
-$afficherNombreArticlesCategorie = TRUE; // TRUE|FALSE
+$afficherNombrePagesCategorie = TRUE; // TRUE|FALSE
 
-// Pagination de la liste des articles faisant partie d'une catégorie.
+// Pagination de la liste des pages faisant partie d'une catégorie.
 /*
-- Nombre d'articles par page (0 pour désactiver la pagination).
+- Nombre d'items par page (0 pour désactiver la pagination).
 */
-$articlesParPage = 10;
+$nombreItemsPageCategorie = 10;
 
 // Expiration du cache.
 /*

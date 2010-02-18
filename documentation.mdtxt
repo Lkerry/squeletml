@@ -722,7 +722,7 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 
 		Article sur le husky
 		
-		Écrit par pseudo le 2010-01-04. Dernière révision le 2010-01-05.
+		Publié par pseudo le 2010-01-04. Dernière révision le 2010-01-05.
 		
 		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. […]
 		
@@ -732,7 +732,7 @@ Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut q
 
 	Si une page fait partie d'au moins une catégorie, les informations de publication au sujet de cette page feront référence à sa ou ses catégories. Exemple:
 
-		Écrit par pseudo le 2010-01-04. Dernière révision le 2010-01-05. Catégories: Animaux, Chiens
+		Publié par pseudo le 2010-01-04. Dernière révision le 2010-01-05. Catégories: Animaux, Chiens
 
 	Un lien vers la page d'accueil de chaque catégorie peut être ajouté automatiquement. Pour ce faire, ajouter dans le fichier de configuration des catégories l'URL relative de la page d'accueil de la catégorie. Exemple:
 
@@ -803,6 +803,12 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 - `titre`: utilisé pour nommer l'oeuvre dans les textes générés par le script. Exemple:
 
 		titre=Le fleuve Saint-Laurent en hiver
+
+- `licence`: licence ou licences de l'oeuvre. Exemple:
+
+		licence=art-libre
+
+	Voir les explications de la variable `$licence` dans la documentation pour plus de détails.
 
 - `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version intermédiaire, c'est-à-dire `intermediaireNom(sans extension)-vignette.extension`. Exemple:
 
@@ -897,6 +903,7 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	[intermediaireNom]
 	id=
 	titre=
+	licence=
 	vignetteNom=
 	vignetteLargeur=
 	vignetteHauteur=

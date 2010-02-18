@@ -95,7 +95,7 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'infos-publication':
-					if ($infosPublication)
+					if ($infosPublication && !$erreur404 && !$estPageDerreur && empty($courrielContact) && empty($idCategorie) && empty($idGalerie))
 					{
 						$listeCategoriesPage = categories($racine, $urlRacine, $url);
 						$bloc = infosPublication($auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
@@ -144,7 +144,7 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'licence':
-					if (!empty($licence))
+					if (!empty($licence) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
 						$licenceTableau = explode(' ', $licence);
 						$bloc = '';
@@ -185,9 +185,9 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'marque-pages-sociaux':
-					$marquePagesSociaux = marquePagesSociaux($url, $baliseTitle);
+					$listeMarquePagesSociaux = marquePagesSociaux($url, $baliseTitle);
 					
-					if ($marquePagesSociaux && !empty($marquePagesSociaux) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					if ($marquePagesSociaux && !empty($listeMarquePagesSociaux) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
 						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
@@ -206,7 +206,7 @@ if (!empty($blocsAinserer))
 						
 						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
 						
-						foreach ($marquePagesSociaux as $service)
+						foreach ($listeMarquePagesSociaux as $service)
 						{
 							$blocs[$region] .= '<li><a href="' . $service['lien'] . '">' . $service['nom'] . "</a></li>\n";
 						}
@@ -271,7 +271,7 @@ if (!empty($blocsAinserer))
 					}
 					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 					{
-						$bloc = menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie);
+						$bloc = menuCategoriesAutomatise($urlRacine, $categories, $afficherNombrePagesCategorie);
 						
 						if (!empty($bloc))
 						{

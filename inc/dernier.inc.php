@@ -30,6 +30,15 @@ else
 
 $premierOuDernier = 'dernier';
 
+if (!empty($idCategorie) || !empty($nomCategorie))
+{
+	$afficherCategorie = TRUE;
+}
+else
+{
+	$afficherCategorie = FALSE;
+}
+
 if (!empty($tableauCorpsGalerie['corpsGalerie']))
 {
 	$galerie = $tableauCorpsGalerie['corpsGalerie'];

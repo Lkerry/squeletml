@@ -1333,7 +1333,7 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss, $galerie
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
+function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombrePagesCategorie)
 {
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
@@ -1347,7 +1347,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArtic
 		$htmlCategorie .= $categorie;
 	}
 	
-	if ($afficherNombreArticlesCategorie)
+	if ($afficherNombrePagesCategorie)
 	{
 		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
 	}
@@ -1360,7 +1360,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArtic
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
+			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $afficherNombrePagesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -1551,16 +1551,16 @@ function infosPublication($auteur, $dateCreation, $dateRevision, $categories)
 	{
 		if (!empty($dateCreation))
 		{
-			$infosPublication .= sprintf(T_("Écrit par %1\$s le %2\$s."), $auteur, $dateCreation) . "\n";
+			$infosPublication .= sprintf(T_("Publié par %1\$s le %2\$s."), $auteur, $dateCreation) . "\n";
 		}
 		else
 		{
-			$infosPublication .= sprintf(T_("Écrit par %1\$s."), $auteur) . "\n";
+			$infosPublication .= sprintf(T_("Publié par %1\$s."), $auteur) . "\n";
 		}
 	}
 	elseif (!empty($dateCreation))
 	{
-		$infosPublication .= sprintf(T_("Écrit le %1\$s."), $dateCreation) . "\n";
+		$infosPublication .= sprintf(T_("Publié le %1\$s."), $dateCreation) . "\n";
 	}
 	
 	if (!empty($dateRevision))
@@ -1784,6 +1784,8 @@ Retourne le code HTML informant de la licence choisie. Le paramètre `$choixLice
 
   - `mit` pour la licence MIT.
 
+  - `verbatim` pour la licence GNU Verbatim Copying License. Voir <http://www.gnu.org/licenses/licenses.fr.html#VerbatimCopying>.
+
 Si le choix n'est pas valide, une chaîne vide est retournée.
 */
 function licence($urlRacine, $choixLicence)
@@ -1868,6 +1870,10 @@ function licence($urlRacine, $choixLicence)
 
 		case 'mit':
 			$licence = sprintf(T_("<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1\$s alt=\"Licence MIT\" /></a> Mis à disposition sous la <a href=\"http://www.opensource.org/licenses/mit-license.php\">licence MIT</a>."), "src=\"$urlRacine/fichiers/licence-mit-80x15.png\" width=\"80\" height=\"15\"");
+			break;
+
+		case 'verbatim':
+			$licence = T_("La reproduction exacte et la distribution intégrale de cet article est permise sur n'importe quel support d'archivage, pourvu que cette notice soit préservée.");
 			break;
 
 		default:
@@ -2447,7 +2453,7 @@ function mdtxtChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie)
+function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombrePagesCategorie)
 {
 	$menuCategoriesAutomatise = '';
 	ksort($categories);
@@ -2456,7 +2462,7 @@ function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticl
 	{
 		if (empty($categorieInfos['categorieParente']))
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $afficherNombrePagesCategorie);
 		}
 	}
 	

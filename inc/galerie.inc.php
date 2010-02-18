@@ -61,6 +61,12 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			// A: l'image existe.
 			
 			$imageExiste = TRUE;
+			
+			if (!empty($tableauGalerie[$indice]['licence']))
+			{
+				$licence = $tableauGalerie[$indice]['licence'];
+			}
+			
 			$titreOeuvre = titreOeuvre($oeuvre);
 			
 			// On écrase les valeurs par défaut des balises de l'en-tête de la page (pour éviter le contenu dupliqué). Si aucune valeur n'a été donnée à ces balises dans la variable `$tableauGalerie`, on génère une valeur automatiquement.

@@ -1142,6 +1142,7 @@ function adminParametresImage()
 		'id',
 		'titre',
 		'intermediaireLegende',
+		'licence',
 		'vignetteNom',
 		'vignetteLargeur',
 		'vignetteHauteur',

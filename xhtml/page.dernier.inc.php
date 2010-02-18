@@ -12,7 +12,7 @@
 							<?php echo $contact; ?>
 						<?php endif; ?>
 						
-						<?php if (!empty($idCategorie)): ?>
+						<?php if ($afficherCategorie): ?>
 							<?php echo $categorie; ?>
 						<?php endif; ?>
 						

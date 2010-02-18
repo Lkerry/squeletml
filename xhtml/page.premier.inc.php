@@ -11,7 +11,7 @@
 			<meta name="description" content="<?php echo $description; ?>" />
 		<?php endif; ?>
 		
-		<?php if ($inclureMotsCles): ?>
+		<?php if ($inclureMotsCles && !empty($motsCles)): ?>
 			<meta name="keywords" content="<?php echo $motsCles; ?>" />
 		<?php endif; ?>
 		

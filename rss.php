@@ -106,7 +106,7 @@ if ($getType == 'galerie' && !empty($getChemin))
 				else
 				{
 					$urlGalerie = $urlRacine . '/' . $getChemin;
-					$itemsFluxRss = fluxRssGalerieTableauBrut($racineAdmin, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 					
 					if (!empty($itemsFluxRss))
 					{
@@ -282,7 +282,7 @@ elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangu
 					{
 						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 						{
-							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racineAdmin, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
+							$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
 						}
 					}
 				}
@@ -374,7 +374,7 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 								
 								foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 								{
-									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racineAdmin, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
+									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
 								}
 							}
 						}
