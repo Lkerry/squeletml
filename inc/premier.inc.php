@@ -230,13 +230,13 @@ if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 
 if (!empty($idGalerie) && $rssGalerie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet);
+	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
 }
 
 if (!empty($idCategorie) && $rssCategorie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet);
+	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la catégorie %1$s'), $idCategorie);
 }
 

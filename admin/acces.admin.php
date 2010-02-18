@@ -639,6 +639,28 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		echo adminMessagesScript($messagesScript, T_("Suppression du cache"));
 	}
+	
+	########################################################################
+	##
+	## Lancement du cron.
+	##
+	########################################################################
+
+	if (isset($_POST['lancerCron']))
+	{
+		$messagesScript = '';
+		
+		if (@file_get_contents("$urlRacine/cron.php") !== FALSE)
+		{
+			$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . T_("Une erreur a eu lieu lors du lancement du cron.") . "</li>\n";
+		}
+		
+		echo adminMessagesScript($messagesScript, T_("Lancement du cron"));
+	}
 	?>
 </div><!-- /#boiteMessages -->
 
@@ -743,6 +765,24 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</fieldset>
 				
 				<p><input type="submit" name="supprimerCache" value="<?php echo T_('Supprimer le cache'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /.boite -->
+	
+	<div class="boite">
+		<h2 id="cron"><?php echo T_("Lancer le cron manuellement"); ?></h2>
+
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
+			<div>
+				<?php $dateCron = @file_get_contents("$racine/site/inc/cron.txt"); ?>
+				
+				<?php if ($dateCron !== FALSE): ?>
+					<p><?php printf(T_("Dernier lancement du cron le %1\$s."), date('Y-m-d (H:i:s)', $dateCron)); ?></p>
+				<?php endif; ?>
+				
+				<p><?php echo T_("Cette action peut prendre plusieurs minutes."); ?></p>
+				
+				<p><input type="submit" name="lancerCron" value="<?php echo T_('Lancer le cron'); ?>" /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->

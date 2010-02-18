@@ -9,7 +9,16 @@ phpGettext($racine, LANGUE);
 // Nom pour le cache.
 if ($dureeCache['categorie'])
 {
-	$nomFichierCache = 'categorie-' . md5($idCategorie) . '.cache.html';
+	if (!empty($_GET['page']))
+	{
+		$getPage = '-page-' . securiseTexte($_GET['page']);
+	}
+	else
+	{
+		$getPage = '-page-1';
+	}
+	
+	$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie$getPage.cache.html");
 }
 
 // Liste des articles à afficher.
@@ -57,9 +66,9 @@ if (!empty($idCategorie))
 	
 	$nombreArticles = count($categories[$idCategorie]['pages']);
 	
-	if ($nombreItemsPageCategorie)
+	if ($nombreArticlesParPageCategorie)
 	{
-		$pagination = pagination($nombreArticles, $nombreItemsPageCategorie, $urlSansGet, $baliseTitle, $description);
+		$pagination = pagination($nombreArticles, $nombreArticlesParPageCategorie, $urlSansGet, $baliseTitle, $description);
 		
 		if ($pagination['estPageDerreur'])
 		{
@@ -124,7 +133,7 @@ if (!empty($idCategorie))
 			
 			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 			{
-				$adresse = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
+				$adresse = $urlRacine . '/' . superRawurlencode($categories[$idCategorie]['pages'][$indice]);
 				$infosPage = infosPage($adresse, $inclureApercu);
 		
 				if (!empty($infosPage))

@@ -69,12 +69,12 @@ if (!empty($blocsAinserer))
 					
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet) . '">' . sprintf(T_("RSS de la galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '">' . sprintf(T_("RSS de la galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
 						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlAvecIndexSansGet) . '">' . sprintf(T_("RSS de la catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '">' . sprintf(T_("RSS de la catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 						}
 						
 						if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
@@ -271,7 +271,7 @@ if (!empty($blocsAinserer))
 					}
 					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 					{
-						$bloc = menuCategoriesAutomatise($urlRacine, $categories, $afficherNombrePagesCategorie);
+						$bloc = menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie);
 						
 						if (!empty($bloc))
 						{

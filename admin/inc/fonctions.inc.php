@@ -609,7 +609,8 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 			adminVideCache($racineAdmin, 'admin');
 		}
 		
-		$cheminApercuImage = $racineAdmin . '/cache/' . md5($cheminFichier) . '.cache.' . extension($cheminFichier);
+		$extension = extension($cheminFichier);
+		$cheminApercuImage = $racineAdmin . '/cache/' . filtreChaine($racine, "$cheminFichier.cache.$extension");
 		
 		if (!file_exists($cheminApercuImage))
 		{
@@ -1332,17 +1333,6 @@ function adminRmdirRecursif($dossierAsupprimer)
 	}
 	
 	return $messagesScript;
-}
-
-/*
-Modifie le délai d'expiration seulement si PHP n'est pas en mode `safe mode`.
-*/
-function admin_set_time_limit($t)
-{
-	if (!ini_get('safe_mode'))
-	{
-		set_time_limit($t);
-	}
 }
 
 /*

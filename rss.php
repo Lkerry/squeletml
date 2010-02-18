@@ -29,6 +29,9 @@ else
 if (isset($_GET['chemin']))
 {
 	$getChemin = sansEchappement($_GET['chemin']);
+	$getChemin = urlAvecIndex($urlRacine . '/' . superRawurlencode($getChemin));
+	$getChemin = rawurldecode($getChemin);
+	$getChemin = str_replace($urlRacine . '/', '', $getChemin);
 }
 else
 {
@@ -97,7 +100,7 @@ if ($getType == 'galerie' && !empty($getChemin))
 				
 				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 				
-				$nomFichierCache = 'rss-galerie-' . md5($idGalerie) . '.cache.xml';
+				$nomFichierCache = filtreChaine($racine, "rss-galerie-$idGalerie.cache.xml");
 				
 				if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 				{
@@ -191,7 +194,7 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 		
 				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-				$nomFichierCache = 'rss-categorie-' . md5($idCategorie) . '.cache.xml';
+				$nomFichierCache = filtreChaine($racine, "rss-categorie-$idCategorie.cache.xml");
 		
 				if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 				{
@@ -207,7 +210,7 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 						if ($i < $nombreItemsFluxRss)
 						{
 							$page = rtrim($page);
-							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . superRawurlencode($page), $fluxRssAvecApercu);
+							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . superRawurlencode($page), $fluxRssAvecApercu);
 					
 							if (!empty($fluxRssPageTableauBrut))
 							{
@@ -263,7 +266,7 @@ elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangu
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = 'rss-galeries-' . md5($getLangue) . '.cache.xml';
+		$nomFichierCache = filtreChaine($racine, "rss-galeries-$getLangue.cache.xml");
 		
 		if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 		{
@@ -322,7 +325,7 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = 'rss-site-' . md5($getLangue) . '.cache.xml';
+		$nomFichierCache = filtreChaine($racine, "rss-site-$getLangue.cache.xml");
 		
 		if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
 		{
@@ -344,7 +347,7 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 						foreach ($langueInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . "/" . superRawurlencode($page), $fluxRssAvecApercu);
+							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . superRawurlencode($page), $fluxRssAvecApercu);
 							
 							if (!empty($fluxRssPageTableauBrut))
 							{

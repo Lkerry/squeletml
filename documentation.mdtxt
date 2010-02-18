@@ -1056,6 +1056,20 @@ Par défaut, Squeletml n'utilise pas de système de cache des pages générées.
 
 Il est particulièrement recommandé d'activer le cache des catégories si ces dernières sont utilisées, car le temps de construction d'une page de catégorie peut être réduit de l'ordre de 90% en utilisant le cache.
 
+Dans certains cas, le cache peut être long à générer, ce qui a comme conséquence qu'un internaute visitant une page dont le cache n'a pas encore été généré ou est expiré peut attendre assez longtemps avant de voir le contenu s'afficher. Cependant, il est possible de générer le cache automatiquement sans attendre la visite d'internautes. Voir la section «Cron» pour plus de détails.
+
+## Cron
+
+Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance. Pour l'instant, ces tâches concernent la génération automatique du cache des pages utilisant cette fonctionnalité (flux RSS, catégorie et galerie, selon la valeur de la variable `$dureeCache` du fichier de configuration du site).
+
+Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
+
+	* */12 * * * lynx -source $urlRacine/cron.php > /dev/null 2>&1
+
+Grâce à la commande ci-dessus, la page `cron.php` est visitée toutes les 12 heures. Bien sûr, ne pas oublier de remplacer `$urlRacine` par la bonne valeur, par exemple:
+
+	* */12 * * * lynx -source http://www.nomDeDomaine.ext/cron.php > /dev/null 2>&1
+
 ## Développement
 
 Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).

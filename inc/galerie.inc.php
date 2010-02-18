@@ -115,7 +115,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 	{
 		// On vérifie si l'oeuvre existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = 'galerie-' . md5($idGalerie) . '-oeuvre-' . md5($id) . '.cache.html';
+		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-oeuvre-$id.cache.html");
 		
 		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{
@@ -400,6 +400,23 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 ########################################################################
 elseif (!empty($idGalerie))
 {
+	// Si aucune valeur n'a été donnée aux balises de l'en-tête de la page, on génère une valeur automatiquement.
+	
+	if (empty($baliseTitle))
+	{
+		$baliseTitle = sprintf(T_("Galerie %1\$s"), $idGalerie);
+	}
+	
+	if (empty($description))
+	{
+		$description = sprintf(T_("Galerie %1\$s"), $idGalerie);
+	}
+	
+	if ($inclureMotsCles && empty($motsCles))
+	{
+		$motsCles = motsCles('', $description);
+	}
+	
 	// Titre de la galerie.
 	if ($galerieGenererTitrePages)
 	{
@@ -453,24 +470,16 @@ elseif (!empty($idGalerie))
 	}
 	else
 	{
-		// Si aucune valeur n'a été donnée aux balises de l'en-tête de la page, on génère une valeur automatiquement.
-		
-		if (empty($baliseTitle))
+		if (!empty($_GET['page']))
 		{
-			$baliseTitle = sprintf(T_("Galerie %1\$s"), $idGalerie);
+			$getPage = '-page-' . securiseTexte($_GET['page']);
+		}
+		else
+		{
+			$getPage = '-page-1';
 		}
 		
-		if (empty($description))
-		{
-			$description = sprintf(T_("Galerie %1\$s"), $idGalerie);
-		}
-		
-		if ($inclureMotsCles && empty($motsCles))
-		{
-			$motsCles = motsCles('', $description);
-		}
-		
-		$nomFichierCache = 'galerie-' . md5($idGalerie) . '.cache.html';
+		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie$getPage.cache.html");
 	
 		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{

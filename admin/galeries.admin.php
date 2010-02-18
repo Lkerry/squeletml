@@ -1,6 +1,6 @@
 <?php
 include 'inc/zero.inc.php';
-admin_set_time_limit(300);
+super_set_time_limit(300);
 $baliseTitle = T_("Galeries");
 $boitesDeroulantes = '.fichierConfigAdminGaleries #ajoutParametresAdminGaleries .aideAdminGaleries';
 include $racineAdmin . '/inc/premier.inc.php';

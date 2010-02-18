@@ -242,7 +242,7 @@ function categories($racine, $urlRacine, $url)
 			{
 				$urlPage = $urlRacine . '/' . rtrim($page);
 				
-				if ($urlPage == $url)
+				if (superRawurlencode($urlPage) == $url)
 				{
 					$listeCategories[$categorie] = '';
 					
@@ -956,7 +956,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 		$vignetteAlt = '';
 	}
 	
-	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>\n";
+	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>\n";
 	
 	if (!empty($oeuvre['titre']))
 	{
@@ -1155,7 +1155,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$titreOeuvre = titreOeuvre($oeuvre);
 			$title = sprintf(T_("Oeuvre %1\$s"), $titreOeuvre);
 			$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
-			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['intermediaireNom']);
+			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($oeuvre['intermediaireNom']);
 			$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
 		
 			if (!empty($oeuvre['pageIntermediaireDescription']))
@@ -1198,7 +1198,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			
 			if (!empty($oeuvre['originalNom']))
 			{
-				$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($oeuvre['originalNom']);
+				$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($oeuvre['originalNom']);
 			}
 			else
 			{
@@ -1206,7 +1206,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			
 				if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
 				{
-					$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . "/" . rawurlencode($nomOriginal);
+					$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($nomOriginal);
 				}
 			}
 			
@@ -1333,7 +1333,7 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss, $galerie
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombrePagesCategorie)
+function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
 {
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
@@ -1347,7 +1347,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombrePages
 		$htmlCategorie .= $categorie;
 	}
 	
-	if ($afficherNombrePagesCategorie)
+	if ($afficherNombreArticlesCategorie)
 	{
 		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
 	}
@@ -1360,7 +1360,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombrePages
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $afficherNombrePagesCategorie);
+			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -2453,7 +2453,7 @@ function mdtxtChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombrePagesCategorie)
+function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie)
 {
 	$menuCategoriesAutomatise = '';
 	ksort($categories);
@@ -2462,7 +2462,7 @@ function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombrePagesC
 	{
 		if (empty($categorieInfos['categorieParente']))
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $afficherNombrePagesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
 		}
 	}
 	
@@ -3503,11 +3503,30 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 }
 
 /*
-Retourne l'URL modifiée par `rawurlencode`, mais dont les occurences de `%2F` ont été remplacées par `/`.
+Retourne l'URL modifiée par `rawurlencode`, mais avec quelques substitutions.
 */
 function superRawurlencode($url)
 {
-	return str_replace('%2F', '/', rawurlencode($url));
+	$url = html_entity_decode($url); // `&amp;` => `&`.
+	$url = rawurlencode($url);
+	$url = str_replace('%3A', ':', $url);
+	$url = str_replace('%2F', '/', $url);
+	$url = str_replace('%3F', '?', $url);
+	$url = str_replace('%3D', '=', $url);
+	$url = str_replace('%26', '&', $url);
+	
+	return $url;
+}
+
+/*
+Modifie le délai d'expiration seulement si PHP n'est pas en mode `safe mode`.
+*/
+function super_set_time_limit($t)
+{
+	if (!ini_get('safe_mode'))
+	{
+		set_time_limit($t);
+	}
 }
 
 /*
@@ -3672,7 +3691,23 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherI
 		$url = "$uri";
 	}
 	
-	if ($rechercherIndex && preg_match('|/$|', $url))
+	if ($rechercherIndex)
+	{
+		$url = urlAvecIndex(superRawurlencode($url));
+		$url = rawurldecode($url);
+	}
+	
+	return $url;
+}
+
+/*
+Recherche un index (par exemple `index.php`) pour l'URL fournie. Si un index a été trouvé, retourne l'URL avec l'index, sinon retourne l'URL de départ.
+
+Fournir une URL préalablement traitée par `superRawurlencode()`.
+*/
+function urlAvecIndex($url)
+{
+	if (preg_match('|/$|', $url))
 	{
 		$fichiersIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
 		
@@ -3692,7 +3727,9 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherI
 /*
 Retourne TRUE si l'URL existe, sinon retourne FALSE.
 
-Merci à <http://us2.php.net/manual/en/function.file-exists.php#84918>.
+Fournir une URL préalablement traitée par `superRawurlencode()`.
+
+Merci à <http://php.net/manual/fr/function.file-exists.php#84918>.
 */
 function urlExiste($url)
 {

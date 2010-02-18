@@ -1,6 +1,6 @@
 <?php
 include 'inc/zero.inc.php';
-admin_set_time_limit(300);
+super_set_time_limit(300);
 
 if (!empty($adminFiltreDossiers))
 {
