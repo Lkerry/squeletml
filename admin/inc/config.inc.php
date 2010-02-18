@@ -143,7 +143,7 @@ $adminTypeFiltreDossiers = 'dossiersExclus';
 - Exemple:
   $adminFiltreDossiers = '../rep|../rep2|../rep3/sous-rep4';
 */
-$adminFiltreDossiers = '../.bzr';
+$adminFiltreDossiers = '../admin/cache|../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../inc/filter_htmlcorrector|../inc/mimedetect|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale|../site/cache|../src|../.bzr';
 
 /* ____________________ Ajout de fichiers. ____________________ */
 
