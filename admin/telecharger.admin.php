@@ -40,7 +40,10 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 		
 				foreach ($listeFichiers as $fichier)
 				{
-					$archive->add($fichier);
+					if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+					{
+						$archive->add($fichier);
+					}
 				}
 		
 				$resultatArchive = $archive->write();
