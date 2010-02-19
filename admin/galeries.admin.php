@@ -392,7 +392,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$galerieQualiteJpg = securiseTexte($_POST['qualiteJpg']);
 			
-			if (isset($_POST['redimensionnerAnalyserConfig']) && $_POST['redimensionnerAnalyserConfig'] == 'analyserConfig')
+			if (isset($_POST['redimensionnerRenommer']) && in_array('analyserConfig', $_POST['redimensionnerRenommer']))
 			{
 				$analyserConfig = TRUE;
 			}
@@ -401,9 +401,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$analyserConfig = FALSE;
 			}
 			
-			if (isset($_POST['redimensionnerRenommer']) && $_POST['redimensionnerRenommer'] == 'renommer')
+			if (isset($_POST['redimensionnerRenommer']) && in_array('renommer', $_POST['redimensionnerRenommer']))
 			{
-				if (isset($_POST['redimensionnerNePasRenommerMotifs']) && $_POST['redimensionnerNePasRenommerMotifs'] == 'nePasRenommerMotifs')
+				if (isset($_POST['redimensionnerRenommer']) && in_array('nePasRenommerMotifs', $_POST['redimensionnerRenommer']))
 				{
 					$renommerTout = FALSE;
 				}
@@ -611,11 +611,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 						$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 						
-						if ((isset($_POST['supprimerImagesVignettes']) && $_POST['supprimerImagesVignettes'] == 'supprimer' && $versionImage == 'vignette') || (isset($_POST['supprimerImagesIntermediaires']) && $_POST['supprimerImagesIntermediaires'] == 'supprimer' && $versionImage == 'intermediaire') || (isset($_POST['supprimerImagesOriginal']) && $_POST['supprimerImagesOriginal'] == 'supprimer' && $versionImage == 'original'))
+						if (isset($_POST['supprimer']) && ((in_array('vignettes', $_POST['supprimer']) && $versionImage == 'vignette') || (in_array('intermediaires', $_POST['supprimer']) && $versionImage == 'intermediaire') || (in_array('original', $_POST['supprimer']) && $versionImage == 'original')))
 						{
 							$messagesScript .= adminUnlink($cheminGalerie . '/' . $fichier);
 						}
-						elseif (isset($_POST['supprimerImagesConfig']) && $_POST['supprimerImagesConfig'] == 'supprimer' && ($fichier == 'config.ini.txt' || $fichier == 'config.ini'))
+						elseif (isset($_POST['supprimer']) && in_array('config', $_POST['supprimer']) && ($fichier == 'config.ini.txt' || $fichier == 'config.ini'))
 						{
 							$configAsupprimer = $cheminGalerie . '/' . $fichier;
 						}
@@ -629,7 +629,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$messagesScript .= adminUnlink($configAsupprimer);
 				}
 				
-				if (isset($_POST['supprimerImagesVignettesAvecTatouage']) && $_POST['supprimerImagesVignettesAvecTatouage'] == 'supprimer')
+				if (isset($_POST['supprimer']) && in_array('vignettesAvecTatouage', $_POST['supprimer']))
 				{
 					$cheminTatouage = $racine . '/site/fichiers/galeries/' . $id . '/tatouage';
 				
@@ -676,7 +676,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 				}
 				
-				if (isset($_POST['supprimerImagesDossier']) && $_POST['supprimerImagesDossier'] == 'supprimer')
+				if (isset($_POST['supprimer']) && in_array('dossier', $_POST['supprimer']))
 				{
 					if (adminDossierEstVide($cheminGalerie))
 					{
@@ -878,7 +878,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
-			if (isset($_POST['configExclureMotifsCommeIntermediaires']) && $_POST['configExclureMotifsCommeIntermediaires'] == 'activer')
+			if (isset($_POST['config']) && in_array('exclureMotifsCommeIntermediaires', $_POST['config']))
 			{
 				$exclureMotifsCommeIntermediaires = TRUE;
 			}
@@ -970,7 +970,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	$sousBoiteFichierConfigDebut = FALSE;
 
-	if (isset($_POST['config']) && $_POST['config'] == 'maj')
+	if (isset($_POST['config']) && in_array('maj', $_POST['config']))
 	{
 		$messagesScript = '';
 		$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
@@ -981,7 +981,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
-			if (isset($_POST['configExclureMotifsCommeIntermediaires']) && $_POST['configExclureMotifsCommeIntermediaires'] == 'activer')
+			if (isset($_POST['config']) && in_array('exclureMotifsCommeIntermediaires', $_POST['config']))
 			{
 				$exclureMotifsCommeIntermediaires = TRUE;
 			}
@@ -1047,7 +1047,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo "</ul>\n";
 	}
 	
-	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && $_POST['config'] == 'maj')) && cheminConfigGalerie($racine, $id))
+	if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && in_array('maj', $_POST['config']))) && cheminConfigGalerie($racine, $id))
 	{
 		if (!$sousBoiteFichierConfigDebut)
 		{
@@ -1147,9 +1147,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				<div class="bDcorps afficher">
 					<ul>
-						<li><input id="ajouterInputConfig" type="checkbox" name="config" value="maj" checked="checked" /> <label for="ajouterInputConfig"><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
+						<li><input id="ajouterInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="ajouterInputConfig"><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
 						<ul>
-							<li><input id="ajouterInputconfigExclureMotifsCommeIntermediaires" type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label for="ajouterInputconfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
+							<li><input id="ajouterInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="ajouterInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
 						</ul></li>
 					</ul>
 				
@@ -1213,11 +1213,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				<p><?php echo T_("La liste des images originales redimensionnables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
 				<ul>
-					<li><input id="redimensionnerInputRedimensionnerRenommer" type="checkbox" name="redimensionnerRenommer" value="renommer" checked="checked" /> <label for="redimensionnerInputRedimensionnerRenommer"><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
+					<li><input id="redimensionnerInputRenommer" type="checkbox" name="redimensionnerRenommer[]" value="renommer" checked="checked" /> <label for="redimensionnerInputRenommer"><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
 					
-					<li><input id="redimensionnerInputRedimensionnerNePasRenommerMotifs" type="checkbox" name="redimensionnerNePasRenommerMotifs" value="nePasRenommerMotifs" checked="checked" /> <label for="redimensionnerInputRedimensionnerNePasRenommerMotifs"><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
+					<li><input id="redimensionnerInputNePasRenommerMotifs" type="checkbox" name="redimensionnerRenommer[]" value="nePasRenommerMotifs" checked="checked" /> <label for="redimensionnerInputNePasRenommerMotifs"><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
 					
-					<li><input id="redimensionnerInputRedimensionnerAnalyserConfig" type="checkbox" name="redimensionnerAnalyserConfig" value="analyserConfig" /> <label for="redimensionnerInputRedimensionnerAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme valeur d'un des paramètres <code>intermediaireNom</code>, <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
+					<li><input id="redimensionnerInputAnalyserConfig" type="checkbox" name="redimensionnerRenommer[]" value="analyserConfig" /> <label for="redimensionnerInputAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme valeur d'un des paramètres <code>intermediaireNom</code>, <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
 				</ul>
 				
 				<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
@@ -1227,9 +1227,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
 				<ul class="bDcorps afficher">
-					<li><input id="redimensionnerInputConfig" type="checkbox" name="config" value="maj" checked="checked" /> <label for="redimensionnerInputConfig"><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
+					<li><input id="redimensionnerInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="redimensionnerInputConfig"><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
 					<ul>
-						<li><input id="redimensionnerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label for="redimensionnerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
+						<li><input id="redimensionnerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="redimensionnerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
 					</ul></li>
 				</ul>
 			</fieldset>
@@ -1300,17 +1300,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</ul>
 				
 				<ul>
-					<li><input id="supprimerInputSupprimerImagesVignettes" type="checkbox" name="supprimerImagesVignettes" value="supprimer" /> <label for="supprimerInputSupprimerImagesVignettes"><?php echo T_("Supprimer les vignettes."); ?></label></li>
+					<li><input id="supprimerInputVignettes" type="checkbox" name="supprimer[]" value="vignettes" /> <label for="supprimerInputVignettes"><?php echo T_("Supprimer les vignettes."); ?></label></li>
 					
-					<li><input id="supprimerInputSupprimerImagesVignettesAvecTatouage" type="checkbox" name="supprimerImagesVignettesAvecTatouage" value="supprimer" /> <label for="supprimerInputSupprimerImagesVignettesAvecTatouage"><?php echo T_("Supprimer les vignettes de navigation avec tatouage."); ?></label></li>
+					<li><input id="supprimerInputVignettesAvecTatouage" type="checkbox" name="supprimer[]" value="vignettesAvecTatouage" /> <label for="supprimerInputVignettesAvecTatouage"><?php echo T_("Supprimer les vignettes de navigation avec tatouage."); ?></label></li>
 					
-					<li><input id="supprimerInputSupprimerImagesIntermediaires" type="checkbox" name="supprimerImagesIntermediaires" value="supprimer" /> <label for="supprimerInputSupprimerImagesIntermediaires"><?php echo T_("Supprimer les images intermédiaires."); ?></label></li>
+					<li><input id="supprimerInputIntermediaires" type="checkbox" name="supprimer[]" value="intermediaires" /> <label for="supprimerInputIntermediaires"><?php echo T_("Supprimer les images intermédiaires."); ?></label></li>
 					
-					<li><input id="supprimerInputSupprimerImagesOriginal" type="checkbox" name="supprimerImagesOriginal" value="supprimer" /> <label for="supprimerInputSupprimerImagesOriginal"><?php echo T_("Supprimer les images originales."); ?></label></li>
+					<li><input id="supprimerInputOriginal" type="checkbox" name="supprimer[]" value="original" /> <label for="supprimerInputOriginal"><?php echo T_("Supprimer les images originales."); ?></label></li>
 					
-					<li><input id="supprimerInputSupprimerImagesConfig" type="checkbox" name="supprimerImagesConfig" value="supprimer" /> <label for="supprimerInputSupprimerImagesConfig"><?php echo T_("Supprimer le fichier de configuration."); ?></label></li>
+					<li><input id="supprimerInputConfig" type="checkbox" name="supprimer[]" value="config" /> <label for="supprimerInputConfig"><?php echo T_("Supprimer le fichier de configuration."); ?></label></li>
 					
-					<li><input id="supprimerInputSupprimerImagesDossier" type="checkbox" name="supprimerImagesDossier" value="supprimer" /> <label for="supprimerInputSupprimerImagesDossier"><?php echo T_("Supprimer le dossier de la galerie s'il est vide."); ?></label></li>
+					<li><input id="supprimerInputDossier" type="checkbox" name="supprimer[]" value="dossier" /> <label for="supprimerInputDossier"><?php echo T_("Supprimer le dossier de la galerie s'il est vide."); ?></label></li>
 				</ul>
 			</fieldset>
 			
@@ -1318,9 +1318,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
 				<ul class="bDcorps afficher">
-					<li><input id="supprimerInputConfig" type="checkbox" name="config" value="maj" checked="checked" /> <label for="supprimerInputConfig"><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
+					<li><input id="supprimerInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="supprimerInputConfig"><?php echo T_("Créer ou mettre à jour le fichier de configuration de cette galerie."); ?></label>
 					<ul>
-						<li><input id="supprimerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label for="supprimerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
+						<li><input id="supprimerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="supprimerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
 					</ul></li>
 				</ul>
 			</fieldset>
@@ -1461,7 +1461,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<fieldset class="fichierConfigAdminGaleries">
 				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<p class="bDcorps afficher"><input for="configInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label for="configInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
+				<p class="bDcorps afficher"><input for="configInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="configInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
 			</fieldset>
 			
 			<p><input type="submit" name="majConf" value="<?php echo T_('Créer ou mettre à jour'); ?>" /></p>
@@ -1508,7 +1508,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<fieldset class="fichierConfigAdminGaleries">
 				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<p class="bDcorps"><input id="modeleInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="configExclureMotifsCommeIntermediaires" value="activer" checked="checked" /> <label for="modeleInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></p>
+				<p class="bDcorps"><input id="modeleInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="modeleInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></p>
 			</fieldset>
 			
 			<p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>
