@@ -4,12 +4,12 @@ if (file_exists('init.inc.php'))
 	include_once 'init.inc.php';
 	include_once $racine . '/inc/fonctions.inc.php';
 	
-	super_set_time_limit(300);
-	
 	foreach (cheminsInc($racine, 'config') as $cheminFichier)
 	{
 		include_once $cheminFichier;
 	}
+	
+	super_set_time_limit($delaiExpirationScript);
 	
 	@file_put_contents("$racine/site/inc/cron.txt", time());
 	
