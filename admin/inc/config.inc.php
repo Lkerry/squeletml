@@ -125,25 +125,42 @@ $adminSymboleUrl = '?';
 */
 $adminDossierRacinePorteDocuments = '..';
 
-// Filtre des dossiers.
+// Filtre d'accès aux dossiers.
 /*
-- Il est possible d'appliquer un filtre à la liste de dossiers.
+- Il est possible d'appliquer un filtre d'accès à la liste des dossiers du site. Un dossier inaccessible ne peut être géré par le porte-documents ni téléchargé par l'administration.
 - Pour ne préciser que les dossiers à prendre en compte, mettre 'dossiersInclus'
 - Pour ne préciser que les dossiers à exclure, mettre 'dossiersExclus'
 - Pour ne pas appliquer de filtre, laisser la variable vide, c'est-à-dire:
-  $adminTypeFiltreDossiers = '';
+  $adminTypeFiltreAccesDossiers = '';
 */
-$adminTypeFiltreDossiers = 'dossiersExclus';
+$adminTypeFiltreAccesDossiers = 'dossiersExclus';
 
-// Dossiers à prendre en compte dans le filtre.
+// Dossiers à prendre en compte dans le filtre d'accès.
 /*
-- Si la variable `$adminTypeFiltreDossiers` est vide, aucun filtre ne sera appliqué.
+- Si la variable `$adminTypeFiltreAccesDossiers` est vide, aucun filtre ne sera appliqué.
 - Le chemin peut être absolu ou bien relatif à partir du dossier racine de l'administration (valeur de `$racineAdmin`).
 - Lister les dossiers en les séparant par une barre verticale | (ne pas mettre d'espace).
 - Exemple:
-  $adminFiltreDossiers = '../rep|../rep2|../rep3/sous-rep4';
+  $adminFiltreAccesDossiers = '../rep|../rep2|../rep3/sous-rep4';
 */
-$adminFiltreDossiers = '../admin/cache|../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../inc/filter_htmlcorrector|../inc/mimedetect|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale|../site/cache|../src|../.bzr';
+$adminFiltreAccesDossiers = '../.bzr';
+
+// Filtre d'affichage des dossiers.
+/*
+- Il est possible d'appliquer un filtre d'affichage à la liste des dossiers du site. Un dossier dont l'affichage est désactivé est quand même accessible par le porte-documents et téléchargeable; il n'apparaît simplement pas par défaut dans le porte-documents, ce qui allège l'utilisation de cet outil.
+- Pour ne préciser que les dossiers à prendre en compte, mettre 'dossiersAffiches'
+- Pour ne préciser que les dossiers à exclure, mettre 'dossiersNonAffiches'
+- Pour ne pas appliquer de filtre, laisser la variable vide, c'est-à-dire:
+  $adminTypeFiltreAffichageDossiers = '';
+*/
+$adminTypeFiltreAffichageDossiers = 'dossiersNonAffiches';
+
+// Dossiers à prendre en compte dans le filtre d'affichage.
+/*
+- Si la variable `$adminTypeFiltreAffichageDossiers` est vide, aucun filtre ne sera appliqué.
+- Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
+*/
+$adminFiltreAffichageDossiers = '../admin/cache|../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../inc/filter_htmlcorrector|../inc/mimedetect|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale|../site/cache|../src';
 
 /* ____________________ Ajout de fichiers. ____________________ */
 

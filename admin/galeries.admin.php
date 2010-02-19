@@ -17,14 +17,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 		$id = securiseTexte(superBasename($_POST['id']));
 	}
 	
-	if (!empty($adminFiltreDossiers))
+	if (!empty($adminFiltreAccesDossiers))
 	{
-		$tableauFiltresDossiers = explode('|', $adminFiltreDossiers);
-		$tableauFiltresDossiers = adminTableauCheminsCanoniques($tableauFiltresDossiers);
+		$tableauFiltresAccesDossiers = explode('|', $adminFiltreAccesDossiers);
+		$tableauFiltresAccesDossiers = adminTableauCheminsCanoniques($tableauFiltresAccesDossiers);
 	}
 	else
 	{
-		$tableauFiltresDossiers = array ();
+		$tableauFiltresAccesDossiers = array ();
 	}
 	
 	########################################################################
@@ -793,7 +793,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 		}
-		elseif (!adminEmplacementPermis($cheminPage, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+		elseif (!adminEmplacementPermis($cheminPage, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la création d'une page web de galerie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminPage</code>") . "</li>\n";
 		}

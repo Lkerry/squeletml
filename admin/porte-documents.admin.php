@@ -36,14 +36,24 @@ if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 
 include $racineAdmin . '/inc/premier.inc.php';
 
-if (!empty($adminFiltreDossiers))
+if (!empty($adminFiltreAccesDossiers))
 {
-	$tableauFiltresDossiers = explode('|', $adminFiltreDossiers);
-	$tableauFiltresDossiers = adminTableauCheminsCanoniques($tableauFiltresDossiers);
+	$tableauFiltresAccesDossiers = explode('|', $adminFiltreAccesDossiers);
+	$tableauFiltresAccesDossiers = adminTableauCheminsCanoniques($tableauFiltresAccesDossiers);
 }
 else
 {
-	$tableauFiltresDossiers = array ();
+	$tableauFiltresAccesDossiers = array ();
+}
+
+if (!empty($adminFiltreAffichageDossiers))
+{
+	$tableauFiltresAffichageDossiers = explode('|', $adminFiltreAffichageDossiers);
+	$tableauFiltresAffichageDossiers = adminTableauCheminsCanoniques($tableauFiltresAffichageDossiers);
+}
+else
+{
+	$tableauFiltresAffichageDossiers = array ();
 }
 
 if (isset($_GET['valeur']))
@@ -64,7 +74,7 @@ elseif (isset($_POST['porteDocumentsDossierCourant']))
 	$dossierCourant = securiseTexte($_POST['porteDocumentsDossierCourant']);
 }
 
-if (!isset($dossierCourant) || !file_exists($dossierCourant) || !is_dir($dossierCourant) || !adminEmplacementPermis($dossierCourant, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+if (!isset($dossierCourant) || !file_exists($dossierCourant) || !is_dir($dossierCourant) || !adminEmplacementPermis($dossierCourant, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 {
 	$dossierCourant = '';
 }
@@ -107,7 +117,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie'])
 	else
 	{
 		$fichiersAcopier = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAcopier = adminEmplacementsPermis($fichiersAcopier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAcopier = adminEmplacementsPermis($fichiersAcopier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAcopier = adminEmplacementsModifiables($fichiersAcopier, $adminDossierRacinePorteDocuments);
 		
 		echo '<form action="' . $adminAction . '#messages" method="post">' . "\n";
@@ -129,7 +139,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie'])
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
 		echo '<p><select name="porteDocumentsCopieChemin" size="1">' . "\n";
-		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		
 		foreach ($listeDossiers as $valeur)
 		{
@@ -186,14 +196,14 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'est pas un dossier."), "<code>$cheminDeCopie</code>") . "</li>\n";
 	}
-	elseif (!adminEmplacementPermis($cheminDeCopie, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($cheminDeCopie, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la copie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminDeCopie</code>") . "</li>\n";
 	}
 	else
 	{
 		$fichiersAcopier = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAcopier = adminEmplacementsPermis($fichiersAcopier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAcopier = adminEmplacementsPermis($fichiersAcopier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAcopier = adminEmplacementsModifiables($fichiersAcopier, $adminDossierRacinePorteDocuments);
 		$fichiersAcopier = adminTriParProfondeur($fichiersAcopier);
 		
@@ -250,7 +260,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 	else
 	{
 		$fichiersAdeplacer = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAdeplacer = adminEmplacementsPermis($fichiersAdeplacer, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAdeplacer = adminEmplacementsPermis($fichiersAdeplacer, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAdeplacer = adminEmplacementsModifiables($fichiersAdeplacer, $adminDossierRacinePorteDocuments);
 		
 		echo '<form action="' . $adminAction . '#messages" method="post">' . "\n";
@@ -272,7 +282,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
 		echo '<p><select name="porteDocumentsDeplacementChemin" size="1">' . "\n";
-		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		
 		foreach ($listeDossiers as $valeur)
 		{
@@ -328,14 +338,14 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'est pas un dossier."), "<code>$cheminDeDeplacement</code>") . "</li>\n";
 	}
-	elseif (!adminEmplacementPermis($cheminDeDeplacement, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($cheminDeDeplacement, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour le déplacement (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminDeDeplacement</code>") . "</li>\n";
 	}
 	else
 	{
 		$fichiersAdeplacer = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAdeplacer = adminEmplacementsPermis($fichiersAdeplacer, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAdeplacer = adminEmplacementsPermis($fichiersAdeplacer, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAdeplacer = adminEmplacementsModifiables($fichiersAdeplacer, $adminDossierRacinePorteDocuments);
 		$fichiersAdeplacer = adminTriParProfondeur($fichiersAdeplacer);
 		
@@ -384,7 +394,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 	else
 	{
 		$fichiersAsupprimer = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAsupprimer = adminEmplacementsPermis($fichiersAsupprimer, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAsupprimer = adminEmplacementsPermis($fichiersAsupprimer, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAsupprimer = adminEmplacementsModifiables($fichiersAsupprimer, $adminDossierRacinePorteDocuments);
 		
 		echo '<form action="' . $adminAction . '#messages" method="post">' . "\n";
@@ -430,7 +440,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 	else
 	{
 		$fichiersAsupprimer = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAsupprimer = adminEmplacementsPermis($fichiersAsupprimer, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAsupprimer = adminEmplacementsPermis($fichiersAsupprimer, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAsupprimer = adminEmplacementsModifiables($fichiersAsupprimer, $adminDossierRacinePorteDocuments);
 		$fichiersAsupprimer = adminTriParProfondeur($fichiersAsupprimer);
 		
@@ -476,7 +486,7 @@ if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDoc
 	else
 	{
 		$fichiersAmodifier = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAmodifier = adminEmplacementsPermis($fichiersAmodifier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAmodifier = adminEmplacementsPermis($fichiersAmodifier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAmodifier = adminEmplacementsModifiables($fichiersAmodifier, $adminDossierRacinePorteDocuments);
 		
 		echo '<p>' . T_("Spécifier les nouvelles permissions pour les fichiers ci-dessous.") . "</p>\n";
@@ -538,7 +548,7 @@ if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDoc
 	else
 	{
 		$fichiersAmodifier = securiseTexte($_POST['porteDocumentsFichiers']);
-		$fichiersAmodifier = adminEmplacementsPermis($fichiersAmodifier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+		$fichiersAmodifier = adminEmplacementsPermis($fichiersAmodifier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAmodifier = adminEmplacementsModifiables($fichiersAmodifier, $adminDossierRacinePorteDocuments);
 		$fichiersAmodifier = adminTriParProfondeur($fichiersAmodifier);
 		$permissions = octdec($_POST['porteDocumentsPermissionsValeur']);
@@ -594,7 +604,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
 	}
-	elseif (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$getValeur</code>") . "</li>\n";
 	}
@@ -700,7 +710,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
 	}
-	elseif (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 	}
@@ -766,7 +776,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 	
 	echo '<h3>' . T_("Renommage d'un fichier") . "</h3>\n";
 	
-	if (!adminEmplacementPermis($ancienNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	if (!adminEmplacementPermis($ancienNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
 	}
@@ -864,11 +874,11 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Renommage de %2\$s impossible."), "<code>$nouveauNom</code>", "<code>$ancienNom</code>") . "</li>\n";
 	}
-	elseif (!adminEmplacementPermis($ancienNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($ancienNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$ancienNom</code>") . "</li>\n";
 	}
-	elseif (!adminEmplacementPermis($nouveauNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($nouveauNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement de %1\$s n'est pas gérable par le porte-documents."), "<code>$nouveauNom</code>") . "</li>\n";
 	}
@@ -951,7 +961,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà."), "<code>$fichierMarkdownAcreerNom</code>") . "</li>\n";
 		}
-		elseif (!adminEmplacementPermis($fichierAcreerNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+		elseif (!adminEmplacementPermis($fichierAcreerNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$fichierAcreerNom</code>") . "</li>\n";
 		}
@@ -1235,7 +1245,7 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	{
 		$messagesScript .= '<li class="erreur">' . T_("Aucun dossier spécifié.") . "</li>\n";
 	}
-	elseif (!adminEmplacementPermis($_POST['porteDocumentsAjouterDossier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($_POST['porteDocumentsAjouterDossier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour l'ajout (%1\$s) n'est pas gérable par le porte-documents."), "<code>" . securiseTexte($_POST['porteDocumentsAjouterDossier']) . "</code>") . "</li>\n";
 	}
@@ -1387,7 +1397,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	
 	if ($adminActiverInfobulle['contenuDossier'])
 	{
-		echo '<p class="note">' . sprintf(T_("Note: si l'affichage du contenu du dossier est très lent, il est possible de désactiver l'infobulle (variable <code>%1\$s</code> dans le fichier de configuration de l'administration), ce qui devrait accélérer l'affichage."), '$adminActiverInfobulle[\'contenuDossier\']') . "</p>\n";
+		echo '<p class="note">' . sprintf(T_("Astuce: désactiver l'infobulle (variable <code>%1\$s</code>) accélère l'affichage du contenu des dossiers."), '$adminActiverInfobulle[\'contenuDossier\']') . "</p>\n";
 	}
 	
 	echo '<h3 id="contenuDossier" class="bDtitre">' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$dossierAparcourir</code>") . "</h3>\n";
@@ -1401,13 +1411,14 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	{
 		echo '<p class="erreur">' . sprintf(T_("%1\$s n'est pas un dossier."), "<code>$dossierAparcourir</code>") . "</p>\n";
 	}
-	elseif (!adminEmplacementPermis($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+	elseif (!adminEmplacementPermis($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		echo '<p class="erreur">' . sprintf(T_("L'emplacement %1\$s n'est pas gérable par le porte-documents."), "<code>$dossierAparcourir</code>") . "</p>\n";
 	}
 	else
 	{
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierAparcourir, $adminTypeFiltreDossiers, $tableauFiltresDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle);
+		$dossierDeDepartAparcourir = $dossierAparcourir;
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1451,7 +1462,7 @@ echo '<div class="sousBoite">' . "\n";
 echo '<div id="divListeDossiersAdminPorteDoc">' . "\n";
 echo '<h3 id="listeDossiers" class="bDtitre">' . T_("Liste des dossiers") . "</h3>\n";
 
-$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 
 echo "<ul class=\"bDcorps afficher porteDocumentsListe porteDocumentsListeDernierNiveau\">\n";
 
@@ -1572,7 +1583,7 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	echo '<p><label>' . T_("Fichier:") . "</label><br />\n" . '<input type="file" name="porteDocumentsAjouterFichier" size="25"/>' . "</p>\n";
 	
 	echo '<p><label>' . T_("Dossier:") . "</label><br />\n" . '<select name="porteDocumentsAjouterDossier" size="1">' . "\n";
-	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 	
 	foreach ($listeDossiers as $valeur)
 	{
@@ -1622,7 +1633,7 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<p><label>' . T_("Chemin et nom:") . "</label><br />\n";
 
 	echo '<select name="porteDocumentsCreationChemin" size="1">' . "\n";
-	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers);
+	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 	
 	foreach ($listeDossiers as $valeur)
 	{

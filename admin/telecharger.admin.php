@@ -2,17 +2,17 @@
 include 'inc/zero.inc.php';
 super_set_time_limit(300);
 
-if (!empty($adminFiltreDossiers))
+if (!empty($adminFiltreAccesDossiers))
 {
-	$tableauFiltresDossiers = explode('|', $adminFiltreDossiers);
-	$tableauFiltresDossiers = adminTableauCheminsCanoniques($tableauFiltresDossiers);
+	$tableauFiltresAccesDossiers = explode('|', $adminFiltreAccesDossiers);
+	$tableauFiltresAccesDossiers = adminTableauCheminsCanoniques($tableauFiltresAccesDossiers);
 }
 else
 {
-	$tableauFiltresDossiers = array ();
+	$tableauFiltresAccesDossiers = array ();
 }
 
-if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['fichier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['fichier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 {
 	$chemin = securiseTexte($_GET['fichier']);
 	$nom = securiseTexte(superBasename($chemin));
@@ -40,7 +40,7 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 		
 				foreach ($listeFichiers as $fichier)
 				{
-					if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreDossiers, $tableauFiltresDossiers))
+					if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 					{
 						$archive->add($fichier);
 					}
