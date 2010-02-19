@@ -27,7 +27,8 @@ if (file_exists('init.inc.php'))
 				{
 					if (!empty($categorieInfos['urlCategorie']))
 					{
-						$tableauUrl[] = $urlRacine . '/rss.php?type=categorie&amp;chemin=' . $categorieInfos['urlCategorie'];
+						$nomFichierCache = filtreChaine($racine, "rss-categorie-$categorie.cache.xml");
+						$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=categorie&amp;chemin=' . $categorieInfos['urlCategorie'], 'cache' => $nomFichierCache);
 					}
 				}
 			}
@@ -41,7 +42,14 @@ if (file_exists('init.inc.php'))
 			{
 				foreach ($pages as $codeLangue => $langueInfos)
 				{
-					$tableauUrl[] = $urlRacine . '/rss.php?type=galeries&amp;langue=' . $codeLangue;
+					$nomFichierCache = filtreChaine($racine, "rss-galeries-$codeLangue.cache.xml");
+					$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=galeries&amp;langue=' . $codeLangue, 'cache' => $nomFichierCache);
+					
+					foreach ($langueInfos as $idGalerie => $urlGalerie)
+					{
+						$nomFichierCache = filtreChaine($racine, "rss-galerie-$idGalerie.cache.xml");
+						$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=galerie&amp;chemin=' . $urlGalerie, 'cache' => $nomFichierCache);
+					}
 				}
 			}
 		}
@@ -54,7 +62,8 @@ if (file_exists('init.inc.php'))
 			{
 				foreach ($pages as $codeLangue => $langueInfos)
 				{
-					$tableauUrl[] = $urlRacine . '/rss.php?type=site&amp;langue=' . $codeLangue;
+					$nomFichierCache = filtreChaine($racine, "rss-site-$codeLangue.cache.xml");
+					$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=site&amp;langue=' . $codeLangue, 'cache' => $nomFichierCache);
 				}
 			}
 		}
@@ -83,15 +92,17 @@ if (file_exists('init.inc.php'))
 						{
 							$nombreDePages = 1;
 						}
-					
-						$tableauUrl[] = $urlRacine . '/' . $urlGalerie;
+						
+						$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-page-1.cache.html");
+						$tableauUrl[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache);
 					
 						if ($nombreDePages > 1)
 						{
 							for ($i = 2; $i <= $nombreDePages; $i++)
 							{
 								$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "page=$i");
-								$tableauUrl[] = $adresse;
+								$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-page-$i.cache.html");
+								$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
 							}
 						}
 					}
@@ -120,14 +131,16 @@ if (file_exists('init.inc.php'))
 						$nombreDePages = 1;
 					}
 					
-					$tableauUrl[] = $urlRacine . '/' . $categorieInfos['urlCategorie'];
+					$nomFichierCache = filtreChaine($racine, "categorie-$categorie-page-1.cache.html");
+					$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorieInfos['urlCategorie'], 'cache' => $nomFichierCache);
 					
 					if ($nombreDePages > 1)
 					{
 						for ($i = 2; $i <= $nombreDePages; $i++)
 						{
 							$adresse = ajouteGet($urlRacine . '/' . $categorieInfos['urlCategorie'], "page=$i");
-							$tableauUrl[] = $adresse;
+							$nomFichierCache = filtreChaine($racine, "categorie-$categorie-page-$i.cache.html");
+							$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
 						}
 					}
 				}
@@ -137,7 +150,8 @@ if (file_exists('init.inc.php'))
 	
 	foreach ($tableauUrl as $url)
 	{
-		@file_get_contents(superRawurlencode($url));
+		@unlink($racine . '/site/cache/' . $url['cache']);
+		@file_get_contents(superRawurlencode($url['url']));
 	}
 }
 ?>

@@ -1060,7 +1060,7 @@ Dans certains cas, le cache peut être long à générer, ce qui a comme conséq
 
 ## Cron
 
-Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance. Pour l'instant, ces tâches concernent la génération automatique du cache des pages utilisant cette fonctionnalité (flux RSS, catégorie et galerie, selon la valeur de la variable `$dureeCache` du fichier de configuration du site).
+Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance. Pour l'instant, ces tâches concernent la génération automatique du cache des pages utilisant cette fonctionnalité (flux RSS, catégorie et galerie, selon la valeur de la variable `$dureeCache` du fichier de configuration du site). À noter que le cache de la page individuelle d'une oeuvre d'une galerie n'est pas généré par le cron.
 
 Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
 
