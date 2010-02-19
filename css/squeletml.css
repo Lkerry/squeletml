@@ -293,6 +293,10 @@ body.tableDesMatieresArrondie #tableDesMatieres {
 	font-weight: bold;
 }
 
+#formContact label.labelPhrase {
+	font-weight: normal;
+}
+
 #formContact input.champInfo {
 	width: 35%;
 }

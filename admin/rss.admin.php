@@ -171,11 +171,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$listePages .= '<li class="liParent"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
 					$listePages .= "<ul class=\"triable\">\n";
+					$j = 0;
 					
 					foreach ($langueInfos['pages'] as $page)
 					{
 						$page = rtrim($page);
-						$listePages .= '<li>pages[]=<input class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+						$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '">pages[]=</label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+						$j++;
 					}
 					
 					$listePages .= "</ul></li>\n";
@@ -232,7 +234,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "<ul>\n";
 			echo '<li><input type="text" name="langueAjout" value="" />';
 			echo "<ul>\n";
-			echo '<li>pages[]=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
+			echo '<li><label for="inputUrlAjout">pages[]=</label><input id="inputUrlAjout" class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			echo "</fieldset>\n";
@@ -459,9 +461,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<ul>
-					<li><input type="radio" name="global" value="galeries" /> <?php echo T_("Pages des galeries"); ?></li>
+					<li><input id="inputGlobalGaleries" type="radio" name="global" value="galeries" /> <label for="inputGlobalGaleries"><?php echo T_("Pages des galeries"); ?></label></li>
 				
-					<li><input type="radio" name="global" value="site" checked="checked" /> <?php echo T_("Pages du site"); ?></li>
+					<li><input id="inputGlobalSite" type="radio" name="global" value="site" checked="checked" /> <label for="inputGlobalSite"><?php echo T_("Pages du site"); ?></label></li>
 				</ul>
 			</fieldset>
 			

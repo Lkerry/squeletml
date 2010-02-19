@@ -51,14 +51,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$categorieInfos['urlCategorie'] = '';
 					}
 					
-					$listePages .= '<li>urlCategorie=<input class="long" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCategorie'] . '" /></li>' . "\n";
+					$listePages .= '<li><label for="inputUrlCat-' . $i . '">urlCategorie=</label><input id="inputUrlCat-' . $i . '" class="long" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCategorie'] . '" /></li>' . "\n";
 					
 					if (!isset($categorieInfos['categorieParente']))
 					{
 						$categorieInfos['categorieParente'] = '';
 					}
 					
-					$listePages .= '<li>categorieParente=';
+					$listePages .= '<li><label for="catParente-' . $i . '">categorieParente=</label>';
 					$listeOption = '';
 					
 					foreach ($categories as $cat => $catInfos)
@@ -78,24 +78,27 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!empty($listeOption))
 					{
-						$listePages .= '<select name="catParente[' . $i . ']">' . "\n";
+						$listePages .= '<select id="catParente-' . $i . '" name="catParente[' . $i . ']">' . "\n";
 						$listePages .= '<option value=""></option>' . "\n";
 						$listePages .= $listeOption;
 						$listePages .= "</select>\n";
 					}
 					else
 					{
-						$listePages .= '<input type="text" name="catParente[' . $i . ']" value="' . $categorieInfos['categorieParente'] . '" />';
+						$listePages .= '<input id="catParente-' . $i . '" type="text" name="catParente[' . $i . ']" value="' . $categorieInfos['categorieParente'] . '" />';
 					}
 					
 					$listePages .= "</li>\n";
 					
 					if (!empty($categorieInfos['pages']))
 					{
+						$j = 0;
+						
 						foreach ($categorieInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$listePages .= '<li>pages[]=<input class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '">pages[]=</label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							$j++;
 						}
 					}
 					
@@ -168,7 +171,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '</select> <input type="text" name="catAjoutInput" value="" />' . "\n";
 			echo "<ul>\n";
-			echo '<li>pages[]=<input type="text" name="urlAjout" value="" /></li>' . "\n";
+			echo '<li><label for="inputUrlAjout">pages[]=</label><input id="inputUrlAjout" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
@@ -177,9 +180,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<div class="bDcorps afficher">' . "\n";
 			echo "<ul>\n";
-			echo '<li><input type="checkbox" name="parentAjout" value="ajout" checked="checked" /> <label>' . T_("S'il y a lieu, inclure la page dans la catégorie parente.") . "</label>\n";
+			echo '<li><input id="inputParentAjout" type="checkbox" name="parentAjout" value="ajout" checked="checked" /> <label for="inputParentAjout">' . T_("S'il y a lieu, inclure la page dans la catégorie parente.") . "</label>\n";
 			echo "<ul>\n";
-			echo '<li><input type="checkbox" name="parentsAjout" value="ajout" checked="checked" /> <label>' . T_("S'il y a lieu, inclure la page également dans les catégories parentes indirectes.") . "</label></li>\n";
+			echo '<li><input id="inputParentsAjout" type="checkbox" name="parentsAjout" value="ajout" checked="checked" /> <label for="inputParentsAjout">' . T_("S'il y a lieu, inclure la page également dans les catégories parentes indirectes.") . "</label></li>\n";
 			echo "</ul>\n";
 			
 			echo '<p>' . T_("Explications: par exemple, une page est ajoutée à la catégorie «Miniatures». Cette catégorie a comme parent «Chiens», qui a elle-même comme parent la catégorie «Animaux». Si l'option d'ajout dans la catégorie parente est sélectionnée, la page sera ajoutée dans la catégorie «Miniatures» et dans la catégorie parente «Chiens». Aussi, si l'option d'ajout dans les catégories parentes indirectes est sélectionnée, la page sera également ajoutée à la catégorie «Animaux».") . "</p>\n";
@@ -203,7 +206,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$rssListeLangues .= "</select>";
 					
-					echo '<li><input type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label>' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS global du site</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
+					echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS global du site</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
 				}
 			}
 			

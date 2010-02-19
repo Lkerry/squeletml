@@ -1,20 +1,20 @@
 <form id="formContact" method="post" action="<?php echo $actionFormContact; ?>#messages">
 	<div id="divContact">
-		<p><label><?php echo T_("Votre nom:"); ?></label><br />
-		<input class="champInfo" name="nom" type="text" size="30" maxlength="120" value="<?php echo $nom; ?>" /></p>
+		<p><label for="inputNom"><?php echo T_("Votre nom:"); ?></label><br />
+		<input id="inputNom" class="champInfo" name="nom" type="text" size="30" maxlength="120" value="<?php echo $nom; ?>" /></p>
 		
 		<?php // Champs supplémentaires optionnels après le nom. ?>
 		<?php if (!$decouvrir && file_exists($racine . '/site/xhtml/form-contact-champs-apres-nom.inc.php')): ?>
 			<?php include $racine . '/site/xhtml/form-contact-champs-apres-nom.inc.php'; ?>
 		<?php endif; ?>
 		
-		<p><label><?php echo T_("Votre courriel:"); ?></label><br />
-		<input class="champInfo" name="courriel" type="text" size="30" maxlength="120" value="<?php echo $courriel; ?>" /></p>
+		<p><label for="inputCourriel"><?php echo T_("Votre courriel:"); ?></label><br />
+		<input id="inputCourriel" class="champInfo" name="courriel" type="text" size="30" maxlength="120" value="<?php echo $courriel; ?>" /></p>
 		
 		<?php if ($decouvrir): ?>
-			<p><label><?php echo T_("Les courriels de vos ami-e-s:"); ?></label><br />
+			<p><label for="inputCourrielsDecouvrir"><?php echo T_("Les courriels de vos ami-e-s:"); ?></label><br />
 			<?php echo T_("Pour envoyer le message à plus d'une personne, veuillez séparer les adresses par une virgule."); ?><br />
-			<input class="champInfo" name="courrielsDecouvrir" type="text" size="30" maxlength="120" value="<?php echo $courrielsDecouvrir; ?>" /></p>
+			<input id="inputCourrielsDecouvrir" class="champInfo" name="courrielsDecouvrir" type="text" size="30" maxlength="120" value="<?php echo $courrielsDecouvrir; ?>" /></p>
 			
 			<p><?php echo T_("Modèle du message qui sera envoyé à vos ami-e-s:"); ?></p>
 			
@@ -25,8 +25,8 @@
 			<p><?php echo T_("Optionnellement, vous pouvez ajouter ci-dessous un petit mot personnalisé:"); ?></p>
 		<?php endif; ?>
 		
-		<p><label><?php echo T_("Votre message:"); ?></label><br />
-		<textarea name="message" cols="30" rows="10" id="message"><?php echo $message; ?></textarea></p>
+		<p><label for="message"><?php echo T_("Votre message:"); ?></label><br />
+		<textarea id="message" name="message" cols="30" rows="10"><?php echo $message; ?></textarea></p>
 		
 		<?php // Champs supplémentaires optionnels après le message. ?>
 		<?php if (!$decouvrir && file_exists($racine . '/site/xhtml/form-contact-champs-apres-message.inc.php')): ?>
@@ -49,6 +49,7 @@
 		
 		<?php if ($contactCopieCourriel): ?>
 			<p><input
+				id="inputCopie"
 				name="copie"
 				type="checkbox"
 				value="copie"
@@ -56,7 +57,7 @@
 					checked="checked"
 				<?php endif; ?>
 			/>
-			<?php echo T_("Je souhaite recevoir une copie du message"); ?></p>
+			<label for="inputCopie" class="labelPhrase"><?php echo T_("Je souhaite recevoir une copie du message"); ?></label></p>
 		<?php endif; ?>
 		
 		<p><input name="envoyer" type="submit" value="<?php echo T_('Envoyer le message'); ?>" /></p>

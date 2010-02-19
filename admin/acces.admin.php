@@ -694,11 +694,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
 					
-					<p><label><?php echo T_("Nom:"); ?></label><br />
-					<input type="text" name="nom" /></p>
+					<p><label for="inputNom"><?php echo T_("Nom:"); ?></label><br />
+					<input id="inputNom" type="text" name="nom" /></p>
 			
-					<p><label><?php echo T_("Mot de passe:"); ?></label><br />
-					<input type="password" name="motDePasse" /></p>
+					<p><label for="inputMotDePasse"><?php echo T_("Mot de passe:"); ?></label><br />
+					<input id="inputMotDePasse" type="password" name="motDePasse" /></p>
 				</fieldset>
 				
 				<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer'); ?>" /></p>
@@ -723,8 +723,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 					
 					<p><?php echo T_("Le site est présentement:"); ?><br />
-					<input type="radio" name="etat" value="enLigne" <?php if (!adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <?php echo T_("en ligne."); ?><br />
-					<input type="radio" name="etat" value="horsLigne" <?php if (adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <?php echo T_("en maintenance (hors ligne)."); ?> <?php if (adminSiteEnMaintenance($racine . '/.htaccess')): ?>
+					<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
+					<input id="inputEtatHorsLigne" type="radio" name="etat" value="horsLigne" <?php if (adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <label for="inputEtatHorsLigne"><?php echo T_("en maintenance (hors ligne)."); ?></label> <?php if (adminSiteEnMaintenance($racine . '/.htaccess')): ?>
 						<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
 							<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
 						<?php else: ?>
@@ -733,7 +733,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<?php endif; ?>
 					</p>
 			
-					<p><label><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
+					<p><label for="inputIp"><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
 					<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
 					
 					<?php if ($ip): ?>
@@ -742,7 +742,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<?php $valeurChampIp = adminIpInternaute(); ?>
 					<?php endif; ?>
 					
-					<input type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
+					<input id="inputIp" type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
 				</fieldset>
 				
 				<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
@@ -759,8 +759,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 					
 					<p><?php echo T_("Supprimer le cache:"); ?><br />
-					<input type="checkbox" name="cache[]" value="admin" /> <?php echo T_("de l'administration."); ?><br />
-					<input type="checkbox" name="cache[]" value="site" /> <?php echo T_("du site."); ?>
+					<input id="inputCacheAdmin" type="checkbox" name="cache[]" value="admin" /> <label for="inputCacheAdmin"><?php echo T_("de l'administration."); ?></label><br />
+					<input id="inputCacheSite" type="checkbox" name="cache[]" value="site" /> <label for="inputCacheSite"><?php echo T_("du site."); ?></label>
 					</p>
 				</fieldset>
 				

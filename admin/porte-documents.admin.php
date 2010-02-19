@@ -138,7 +138,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie'])
 		echo "<fieldset>\n";
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
-		echo '<p><select name="porteDocumentsCopieChemin" size="1">' . "\n";
+		echo '<p><label for="selectPorteDocumentsCopieChemin">' . T_("Emplacement:") . '</label><br />' . "\n" . '<select id="selectPorteDocumentsCopieChemin" name="porteDocumentsCopieChemin" size="1">' . "\n";
 		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		
 		foreach ($listeDossiers as $valeur)
@@ -281,7 +281,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 		echo "<fieldset>\n";
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
-		echo '<p><select name="porteDocumentsDeplacementChemin" size="1">' . "\n";
+		echo '<p><label for="selectPorteDocumentsDeplacementChemin">' . T_("Emplacement:") . '</label><br />' . "\n" . '<select id="selectPorteDocumentsDeplacementChemin" name="porteDocumentsDeplacementChemin" size="1">' . "\n";
 		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		
 		foreach ($listeDossiers as $valeur)
@@ -507,9 +507,9 @@ if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDoc
 		echo "<fieldset>\n";
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
-		echo "<p><input type=\"checkbox\" name=\"porteDocumentsPermissionsRecursives\" value=\"permissionsRecursives\" /> Pour chaque dossier sélectionné, modifier ses permissions ainsi que celles de tout son contenu.</p>\n";
+		echo "<p><input id=\"inputPorteDocumentsPermissionsRecursives\" type=\"checkbox\" name=\"porteDocumentsPermissionsRecursives\" value=\"permissionsRecursives\" /> <label for=\"inputPorteDocumentsPermissionsRecursives\">Pour chaque dossier sélectionné, modifier ses permissions ainsi que celles de tout son contenu.</label></p>\n";
 
-		echo '<p><label>' . T_("Nouvelles permissions (notation octale sur trois chiffres, par exemple 755):") . "</label><br />\n" . '<input type="text" name="porteDocumentsPermissionsValeur" size="3" value="" />' . "</p>\n";
+		echo '<p><label for="inputPorteDocumentsPermissionsValeur">' . T_("Nouvelles permissions (notation octale sur trois chiffres, par exemple 755):") . "</label><br />\n" . '<input id="inputPorteDocumentsPermissionsValeur" type="text" name="porteDocumentsPermissionsValeur" size="3" value="" />' . "</p>\n";
 		echo "</fieldset>\n";
 		
 		echo '<p><input type="submit" name="porteDocumentsPermissionsConfirmation" value="' . T_("Modifier les permissions") . '" />' . "</p>\n";
@@ -803,18 +803,18 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 	
 		if ($adminPorteDocumentsDroits['copier'])
 		{
-			echo '<p><input type="checkbox" name="porteDocumentsRenommageCopie" value="copie" />' . T_("Copier avant de renommer") . "</p>\n";
+			echo '<p><input id="inputPorteDocumentsRenommageCopie" type="checkbox" name="porteDocumentsRenommageCopie" value="copie" /><label for="inputPorteDocumentsRenommageCopie">' . T_("Copier avant de renommer") . "</label></p>\n";
 		}
 	
 		echo '<input type="hidden" name="porteDocumentsAncienNom" value="' . $ancienNom . '" />';
 	
 		if ($adminPorteDocumentsDroits['deplacer'])
 		{
-			echo '<p><input type="text" name="porteDocumentsNouveauNom" value="' . $ancienNom . '" size="50" />' . "</p>\n";
+			echo '<p><label for="inputPorteDocumentsNouveauNom">' . T_("Nouveau nom:") . "</label><br />\n" . '<input id="inputPorteDocumentsNouveauNom" type="text" name="porteDocumentsNouveauNom" value="' . $ancienNom . '" size="50" />' . "</p>\n";
 		}
 		else
 		{
-			echo '<p>' . dirname($ancienNom) . '/<input type="text" name="porteDocumentsNouveauNom" value="' . superBasename($ancienNom) . '" size="50" />' . "</p>\n";
+			echo '<p><label for="inputPorteDocumentsNouveauNom">' . T_("Nouveau nom:") . "</label><br />\n" . dirname($ancienNom) . '/<input id="inputPorteDocumentsNouveauNom" type="text" name="porteDocumentsNouveauNom" value="' . superBasename($ancienNom) . '" size="50" />' . "</p>\n";
 		}
 	
 		echo "</fieldset>\n";
@@ -1580,9 +1580,9 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	echo "<fieldset>\n";
 	echo '<legend>' . T_("Options") . "</legend>\n";
 	
-	echo '<p><label>' . T_("Fichier:") . "</label><br />\n" . '<input type="file" name="porteDocumentsAjouterFichier" size="25"/>' . "</p>\n";
+	echo '<p><label for="inputPorteDocumentsAjouterFichier">' . T_("Fichier:") . "</label><br />\n" . '<input id="inputPorteDocumentsAjouterFichier" type="file" name="porteDocumentsAjouterFichier" size="25"/>' . "</p>\n";
 	
-	echo '<p><label>' . T_("Dossier:") . "</label><br />\n" . '<select name="porteDocumentsAjouterDossier" size="1">' . "\n";
+	echo '<p><label for="selectPorteDocumentsAjouterDossier">' . T_("Dossier:") . "</label><br />\n" . '<select id="selectPorteDocumentsAjouterDossier" name="porteDocumentsAjouterDossier" size="1">' . "\n";
 	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 	
 	foreach ($listeDossiers as $valeur)
@@ -1601,8 +1601,8 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	
 	echo "</select></p>\n";
 
-	echo "<p><label>Nouveau nom du fichier (optionnel):</label><br />\n";
-	echo '<input type="text" name="porteDocumentsAjouterNom" size="25" value="" /></p>' . "\n";;
+	echo "<p><label for=\"inputPorteDocumentsAjouterNom\">Nouveau nom du fichier (optionnel):</label><br />\n";
+	echo '<input id="inputPorteDocumentsAjouterNom" type="text" name="porteDocumentsAjouterNom" size="25" value="" /></p>' . "\n";;
 	echo "</fieldset>\n";
 	
 	echo '<p><input type="submit" name="porteDocumentsAjouter" value="' . T_("Ajouter") . '" />' . "</p>\n";
@@ -1630,9 +1630,9 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo "<fieldset>\n";
 	echo '<legend>' . T_("Options") . "</legend>\n";
 	
-	echo '<p><label>' . T_("Chemin et nom:") . "</label><br />\n";
+	echo '<p>' . sprintf(T_("<label for=\"%1\$s\">Chemin</label> et <label for=\"%2\$s\">nom</label>:"), "selectPorteDocumentsCreationChemin", "inputPorteDocumentsCreationNom") . "<br />\n";
 
-	echo '<select name="porteDocumentsCreationChemin" size="1">' . "\n";
+	echo '<select id="selectPorteDocumentsCreationChemin" name="porteDocumentsCreationChemin" size="1">' . "\n";
 	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 	
 	foreach ($listeDossiers as $valeur)
@@ -1650,18 +1650,18 @@ if ($adminPorteDocumentsDroits['creer'])
 	}
 	
 	echo '</select>';
-	echo ' / <input type="text" name="porteDocumentsCreationNom" size="25" value="" /></p>' . "\n";
+	echo ' / <input id="inputPorteDocumentsCreationNom" type="text" name="porteDocumentsCreationNom" size="25" value="" /></p>' . "\n";
 	
-	echo '<p><label>' . T_("Type:") . "</label><br />\n";
-	echo '<select name="porteDocumentsCreationType" size="1">' . "\n";
+	echo '<p><label for="selectPorteDocumentsCreationType">' . T_("Type:") . "</label><br />\n";
+	echo '<select id="selectPorteDocumentsCreationType" name="porteDocumentsCreationType" size="1">' . "\n";
 	echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
 	echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
 	echo '<option value="FichierModeleHtml">' .  T_("Fichier modèle HTML de page web") . "</option>\n";
 	echo '<option value="FichierModeleMarkdown">' .  T_("Fichier modèle HTML de page web avec syntaxe Markdown") . "</option>\n";
 	echo "</select></p>\n";
 	
-	echo '<p><label>' . T_("Si le type est une page modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
-	echo '<select name="porteDocumentsCreationVar[]" multiple="multiple" size="5">' . "\n";
+	echo '<p><label for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
+	echo '<select id="selectPorteDocumentsCreationVar" name="porteDocumentsCreationVar[]" multiple="multiple" size="5">' . "\n";
 	echo '<option value="apercu">$apercu</option>' . "\n";
 	echo '<option value="auteur">$auteur</option>' . "\n";
 	echo '<option value="baliseTitle" selected="selected">$baliseTitle</option>' . "\n";
