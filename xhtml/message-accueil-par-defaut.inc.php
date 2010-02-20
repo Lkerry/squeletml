@@ -11,4 +11,4 @@ echo T_("<p>Aussi, un fichier de configuration permet de paramétrer, par simple
 
 echo T_("<p>Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.</p>");
 
-printf(T_("<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href='%1\$s'>en visitant la documentation</a>.</p>"), "$dossierAdmin/documentation.admin.php");?>
+printf(T_("<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href='%1\$s'>en visitant la documentation</a>.</p>"), "$urlRacine/$dossierAdmin/documentation.admin.php");?>

@@ -79,7 +79,7 @@ elseif ($argv[1] == 'message-accueil')
 			fputs($fic, 'echo T_("' . $ligne . '");' . "\n\n");
 		}
 		
-		fputs($fic, 'printf(T_("<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href=\'%1\$s\'>en visitant la documentation</a>.</p>"), "$dossierAdmin/documentation.admin.php");');
+		fputs($fic, 'printf(T_("<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href=\'%1\$s\'>en visitant la documentation</a>.</p>"), "$urlRacine/$dossierAdmin/documentation.admin.php");');
 		
 		fputs($fic, "?>");
 		fclose($fic);
