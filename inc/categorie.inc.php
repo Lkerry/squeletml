@@ -133,8 +133,9 @@ if (!empty($idCategorie))
 			
 			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 			{
+				$adresseInfosPage = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
 				$adresse = $urlRacine . '/' . superRawurlencode($categories[$idCategorie]['pages'][$indice]);
-				$infosPage = infosPage($adresse, $inclureApercu);
+				$infosPage = infosPage($adresseInfosPage, $inclureApercu);
 		
 				if (!empty($infosPage))
 				{

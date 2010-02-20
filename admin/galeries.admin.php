@@ -690,7 +690,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$messagesScript .= "<li class='erreur'>" . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du dossier %1\$s impossible."), "<code>$cheminGalerie</code>") . "</li>\n";
 			}
 		}
 		
@@ -818,11 +818,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						if ($adminPorteDocumentsDroits['editer'])
 						{
-							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>éditer le fichier</a> ou <a href='%3\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 						}
 						else
 						{
-							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href='%2\$s'>visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 						}
 					}
 					else
@@ -841,11 +841,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 							if ($adminPorteDocumentsDroits['editer'])
 							{
-								$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>éditer le fichier</a> ou <a href='%2\$s'>visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+								$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 							}
 							else
 							{
-								$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href='%1\$s'>visiter la page</a>."), $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+								$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">visiter la page</a>."), $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
 							}
 						}
 						else

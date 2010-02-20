@@ -619,7 +619,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 			echo '<p>' . sprintf(T_("Le fichier %1\$s n'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisie (qui peut être vide)."), "<code>$getValeur</code>") . "</p>\n";
 		}
 		
-		echo "<form action='" . ajouteGet($adminAction, securiseTexte(SID)) . "#messages' method='post'>\n";
+		echo '<form action="' . ajouteGet($adminAction, securiseTexte(SID)) . '#messages" method="post">' . "\n";
 		echo "<div>\n";
 		clearstatcache();
 		
@@ -668,7 +668,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 		
 		echo '<p><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
 		
-		echo "<form action='$adminAction#messages' method='post'>\n";
+		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 		echo "<div>\n";
 		echo '<p><input type="submit" name="porteDocumentsEditionAnnulation" value="' . T_("Annuler") . '" />' . "</p>\n";
 		
@@ -728,7 +728,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 		if ($_POST['porteDocumentsEditionJeton'] != $_SESSION['jeton'])
 		{
 			$messageErreurEditionAafficher = TRUE;
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("La demande de modification du fichier %1\$s ne peut aboutir. Il peut y avoir deux raisons à ce problème:\n<ul>\n<li>votre session a expiré. Dans ce cas, copiez le contenu qui devait être sauvegardé et tentez à nouveau d'éditer le fichier;</li>\n<li>la demande ne provient pas du serveur hébergeant le porte-documents. Vérifiez dans ce cas que vous n'êtes pas la cible d'une attaque de type <acronym lang='en' title='Cross-site request forgery'>CSRF</acronym> (<a href='http://fr.wikipedia.org/wiki/CSRF'>voir la définition de «<acronym lang='en'>CSRF</acronym>» sur Wikipédia</a>). Vérifiez entre autre que le contenu qui allait être sauvegardé ne renferme pas de code malicieux.</li>\n</ul>\n"), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La demande de modification du fichier %1\$s ne peut aboutir. Il peut y avoir deux raisons à ce problème:\n<ul>\n<li>votre session a expiré. Dans ce cas, copiez le contenu qui devait être sauvegardé et tentez à nouveau d'éditer le fichier;</li>\n<li>la demande ne provient pas du serveur hébergeant le porte-documents. Vérifiez dans ce cas que vous n'êtes pas la cible d'une attaque de type <acronym lang=\"en\" title=\"Cross-site request forgery\">CSRF</acronym> (<a href=\"http://fr.wikipedia.org/wiki/CSRF\">voir la définition de «<acronym lang=\"en\">CSRF</acronym>» sur Wikipédia</a>). Vérifiez entre autre que le contenu qui allait être sauvegardé ne renferme pas de code malicieux.</li>\n</ul>\n"), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 		}
 		elseif ($fic = @fopen($porteDocumentsEditionNom, 'w'))
 		{
@@ -795,7 +795,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 			echo '<p>' . sprintf(T_("Pour renommer %1\$s, spécifier le nouveau nom dans le champ."), "<code>$ancienNom</code>") . "</p>\n";
 		}
 	
-		echo "<form action='$adminAction' method='post'>\n";
+		echo "<form action=\"$adminAction\" method=\"post\">\n";
 		echo "<div>\n";
 	
 		echo "<fieldset>\n";
@@ -1485,13 +1485,13 @@ foreach ($listeDossiers as $listeDossier)
 		}
 		
 		$dossierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$listeDossier\"$disabled />";
-		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	
 	if ($adminPorteDocumentsDroits['telecharger'])
 	{
 		$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$listeDossier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
-		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	
 	if ($adminPorteDocumentsDroits['renommer'])
@@ -1505,13 +1505,13 @@ foreach ($listeDossiers as $listeDossier)
 			$dossierMisEnForme .= "<img src=\"$urlRacineAdmin/fichiers/renommer-desactive.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" />\n";
 		}
 		
-		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	
 	if ($adminActiverInfobulle['listeDesDossiers'])
 	{
 		$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-		$dossierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	
 	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$adminAction" . $adminSymboleUrl . "action=parcourir&amp;valeur=$listeDossier&amp;dossierCourant=$listeDossier#fichiersEtDossiers\" title=\"" . sprintf(T_("Parcourir «%1\$s»"), $listeDossier) . "\"><code>$listeDossier</code></a></li>\n";

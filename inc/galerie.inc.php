@@ -515,9 +515,10 @@ elseif (!empty($idGalerie))
 	
 				if ($url != $urlSansGet)
 				{
-					$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a></p>\n";
+					$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a>";
 				}
-	
+				
+				$galerieInfo .= "</p>\n";
 				$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
 			}
 

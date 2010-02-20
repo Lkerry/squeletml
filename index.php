@@ -57,11 +57,11 @@ else
 	{
 		if (!$initExiste)
 		{
-			echo '<li>' . sprintf(T_("Après avoir créé et renseigné le fichier %1\$s, veuillez visiter <a href='%2\$s'>la page de gestion de l'accès au site et à l'administration</a> et ajouter un utilisateur pour protéger l'accès à la section d'administration de votre site."), '<code>init.inc.php</code>', 'admin/acces.admin.php') . "</li>\n";
+			echo '<li>' . sprintf(T_("Après avoir créé et renseigné le fichier %1\$s, veuillez visiter <a href=\"%2\$s\">la page de gestion de l'accès au site et à l'administration</a> et ajouter un utilisateur pour protéger l'accès à la section d'administration de votre site."), '<code>init.inc.php</code>', 'admin/acces.admin.php') . "</li>\n";
 		}
 		else
 		{
-			echo '<li>' . sprintf(T_("Veuillez visiter <a href='%1\$s'>la page de gestion de l'accès au site et à l'administration</a> et ajouter un utilisateur pour protéger l'accès à la section d'administration de votre site."), $dossierAdmin . '/acces.admin.php') . "</li>\n";
+			echo '<li>' . sprintf(T_("Veuillez visiter <a href=\"%1\$s\">la page de gestion de l'accès au site et à l'administration</a> et ajouter un utilisateur pour protéger l'accès à la section d'administration de votre site."), $dossierAdmin . '/acces.admin.php') . "</li>\n";
 		}
 	}
 	

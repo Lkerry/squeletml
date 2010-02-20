@@ -44,7 +44,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			if (($galeries = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 			{
-				echo "<form action='$adminAction#messages' method='post'>\n";
+				echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 				echo "<div>\n";
 				$listeGaleries = '';
 				
@@ -159,7 +159,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		elseif (($pages = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 		{
-			echo "<form action='$adminAction#messages' method='post'>\n";
+			echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 			echo "<div>\n";
 		
 			if (!empty($pages))

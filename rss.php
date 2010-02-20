@@ -29,8 +29,7 @@ else
 if (isset($_GET['chemin']))
 {
 	$getChemin = sansEchappement($_GET['chemin']);
-	$getChemin = urlAvecIndex($urlRacine . '/' . superRawurlencode($getChemin));
-	$getChemin = rawurldecode($getChemin);
+	$getChemin = urlAvecIndex($urlRacine . '/' . $getChemin);
 	$getChemin = str_replace($urlRacine . '/', '', $getChemin);
 }
 else
@@ -55,6 +54,8 @@ else
 {
 	$getType = '';
 }
+
+$url = url();
 
 $erreur404 = FALSE;
 
@@ -116,7 +117,7 @@ if ($getType == 'galerie' && !empty($getChemin))
 						$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 					}
 					
-					$rssAafficher = fluxRss($getType, $itemsFluxRss, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), $idGalerie, '');
+					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), $idGalerie, '');
 					
 					if ($dureeCache['fluxRss'])
 					{
@@ -210,7 +211,7 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 						if ($i < $nombreItemsFluxRss)
 						{
 							$page = rtrim($page);
-							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . superRawurlencode($page), $fluxRssAvecApercu);
+							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu);
 					
 							if (!empty($fluxRssPageTableauBrut))
 							{
@@ -227,7 +228,7 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 					}
 					
 					$urlCategorie = $urlRacine . '/' . $getChemin;
-					$rssAafficher = fluxRss($getType, $itemsFluxRss, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', $idCategorie);
+					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', $idCategorie);
 			
 					if ($dureeCache['fluxRss'])
 					{
@@ -296,7 +297,7 @@ elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangu
 				}
 			}
 			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', '');
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', '');
 			
 			if ($dureeCache['fluxRss'])
 			{
@@ -347,7 +348,7 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 						foreach ($langueInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . superRawurlencode($page), $fluxRssAvecApercu);
+							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu);
 							
 							if (!empty($fluxRssPageTableauBrut))
 							{
@@ -390,7 +391,7 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 				}
 			}
 			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', '');
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', '');
 			
 			if ($dureeCache['fluxRss'])
 			{

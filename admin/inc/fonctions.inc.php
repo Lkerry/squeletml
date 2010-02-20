@@ -297,6 +297,54 @@ function adminDossierEstVide($cheminDossier)
 }
 
 /*
+Retourne TRUE si le dossier fourni est affichable, sinon retourne FALSE.
+*/
+function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers)
+{
+	$adminDossierRacinePorteDocuments = realpath($adminDossierRacinePorteDocuments);
+	
+	do
+	{
+		$emplacement = realpath($dossierAparcourir);
+	} while ($emplacement === FALSE && $dossierAparcourir = dirname($dossierAparcourir));
+	
+	if ($emplacement == $adminDossierRacinePorteDocuments || empty($adminTypeFiltreAffichageDossiers))
+	{
+		return TRUE;
+	}
+	elseif ($adminTypeFiltreAffichageDossiers == 'dossiersAffiches')
+	{
+		foreach ($tableauFiltresAffichageDossiers as $dossierFiltre)
+		{
+			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement))
+			{
+				return TRUE;
+			}
+		}
+	}
+	elseif ($adminTypeFiltreAffichageDossiers == 'dossiersNonAffiches')
+	{
+		$aAjouter = TRUE;
+		
+		foreach ($tableauFiltresAffichageDossiers as $dossierFiltre)
+		{
+			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $emplacement))
+			{
+				$aAjouter = FALSE;
+				break;
+			}
+		}
+		
+		if ($aAjouter)
+		{
+			return TRUE;
+		}
+	}
+	
+	return FALSE;
+}
+
+/*
 Retourne TRUE s'il est permis de modifier l'emplacement du fichier passé en paramètre, sinon retourne FALSE.
 */
 function adminEmplacementModifiable($cheminFichier, $adminDossierRacinePorteDocuments)
@@ -762,59 +810,6 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 	return $liste;
 }
 
-
-
-
-
-
-/*
-Retourne TRUE si le dossier fourni est affichable, sinon retourne FALSE.
-*/
-function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers)
-{
-	$adminDossierRacinePorteDocuments = realpath($adminDossierRacinePorteDocuments);
-	
-	do
-	{
-		$emplacement = realpath($dossierAparcourir);
-	} while ($emplacement === FALSE && $dossierAparcourir = dirname($dossierAparcourir));
-	
-	if ($emplacement == $adminDossierRacinePorteDocuments || empty($adminTypeFiltreAffichageDossiers))
-	{
-		return TRUE;
-	}
-	elseif ($adminTypeFiltreAffichageDossiers == 'dossiersAffiches')
-	{
-		foreach ($tableauFiltresAffichageDossiers as $dossierFiltre)
-		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement))
-			{
-				return TRUE;
-			}
-		}
-	}
-	elseif ($adminTypeFiltreAffichageDossiers == 'dossiersNonAffiches')
-	{
-		$aAjouter = TRUE;
-		
-		foreach ($tableauFiltresAffichageDossiers as $dossierFiltre)
-		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $emplacement))
-			{
-				$aAjouter = FALSE;
-				break;
-			}
-		}
-		
-		if ($aAjouter)
-		{
-			return TRUE;
-		}
-	}
-	
-	return FALSE;
-}
-
 /*
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient s'il y a lieu les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
@@ -860,31 +855,31 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					if ($adminPorteDocumentsDroits['copier'] || $adminPorteDocumentsDroits['deplacer'] || $adminPorteDocumentsDroits['modifier-permissions'] || $adminPorteDocumentsDroits['supprimer'])
 					{
 						$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$dossierAparcourir/$fichier\" />\n";
-						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 				
 					if ($adminPorteDocumentsDroits['telecharger'])
 					{
 						$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$dossierAparcourir/$fichier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
-						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 				
 					if ($adminPorteDocumentsDroits['editer'])
 					{
 						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=editer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
-						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 				
 					if ($adminPorteDocumentsDroits['renommer'])
 					{
 						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
-						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 					
 					if ($adminActiverInfobulle['contenuDossier'])
 					{
 						$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierAparcourir/$fichier", TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-						$fichierMisEnForme .= "<span class='porteDocumentsSep'>|</span>\n";
+						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 					
 					$fichierMisEnForme .= "<a class=\"porteDocumentsFichier\" href=\"$dossierAparcourir/$fichier\" title=\"" . sprintf(T_("Afficher «%1\$s»"), $fichier) . "\"><code>$fichier</code></a>\n";
@@ -1648,7 +1643,7 @@ Retourne la version demandée de Squeletml.
 */
 function adminVersionSqueletml($versionDemandee, $adresse)
 {
-	$version = @file_get_contents($adresse);
+	$version = @file_get_contents(superRawurlencode($adresse, TRUE));
 	$version = explode('-', $version);
 	
 	if (isset($version[1]))

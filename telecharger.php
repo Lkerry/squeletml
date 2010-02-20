@@ -12,7 +12,7 @@ include_once $racine . '/inc/mimedetect/mimedetect.inc.php';
 
 $fichier = securiseTexte($_GET['fichier']);
 $chemin = $racine . '/' . $fichier;
-$urlFichier = $urlRacine . '/' . superRawurlencode($fichier);
+$urlFichier = $urlRacine . '/' . superRawurlencode($fichier, TRUE);
 $nom = superBasename($fichier);
 $typeMime = typeMime($chemin, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 

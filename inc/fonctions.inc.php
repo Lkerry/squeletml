@@ -225,9 +225,11 @@ function cacheExpire($fichier, $dureeCache)
 }
 
 /*
-Retourne un tableau des catégories auxquelles la page appartient. La structure est:
+Retourne un tableau des catégories auxquelles appartient l'URL fournie. La structure est:
 
 	$listeCategories['idCategorie'] = 'urlCategorie';
+
+Fournir une URL traitée par `superRawurlencode()`.
 */
 function categories($racine, $urlRacine, $url)
 {
@@ -956,7 +958,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 		$vignetteAlt = '';
 	}
 	
-	$messageDecouvrirSupplement .= "<p style='text-align: center;'><img src='$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($vignetteNom) . "' alt='$vignetteAlt' /></p>\n";
+	$messageDecouvrirSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
 	
 	if (!empty($oeuvre['titre']))
 	{
@@ -984,7 +986,7 @@ function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLege
 		$messageDecouvrirSupplement .= '<p>' . $oeuvre['pageIntermediaireBaliseTitle'] . "</p>\n";
 	}
 	
-	$messageDecouvrirSupplement = "<div style='font-style: italic;'>$messageDecouvrirSupplement</div>\n";
+	$messageDecouvrirSupplement = "<div style=\"font-style: italic;\">$messageDecouvrirSupplement</div>\n";
 	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Voyez l'oeuvre en plus grande taille!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageDecouvrirSupplement;
@@ -1008,7 +1010,7 @@ function decouvrirSupplementPage($description, $baliseTitle)
 	
 	if (!empty($messageDecouvrirSupplement))
 	{
-		$messageDecouvrirSupplement = "<p style='font-style: italic;'>$messageDecouvrirSupplement</p>\n";
+		$messageDecouvrirSupplement = "<p style=\"font-style: italic;\">$messageDecouvrirSupplement</p>\n";
 	}
 	
 	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Consultez cette page!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
@@ -1075,26 +1077,29 @@ function filtreChaine($racine, $chaine)
 
 /*
 Retourne le contenu d'un fichier RSS.
+
+Fournir les URL traitées par `superRawurlencode()`.
 */
-function fluxRss($type, $itemsFluxRss, $url, $baliseTitleComplement, $idGalerie, $idCategorie)
+function fluxRss($type, $itemsFluxRss, $urlRss, $url, $baliseTitleComplement, $idGalerie, $idCategorie)
 {
 	$contenuRss = '';
 	$contenuRss .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-	$contenuRss .= '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/">' . "\n";
+	$contenuRss .= '<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">' . "\n";
 	$contenuRss .= "\t<channel>\n";
+	$contenuRss .= "\t\t" . '<atom:link href="' . $urlRss . '" rel="self" type="application/rss+xml" />' . "\n";
 	
 	// Page individuelle d'une galerie.
 	if ($type == 'galerie')
 	{
 		$contenuRss .= "\t\t<title>" . sprintf(T_("Galerie %1\$s"), $idGalerie . $baliseTitleComplement) . "</title>\n";
-		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<link>" . $url . "</link>\n";
 		$contenuRss .= "\t\t<description>" . sprintf(T_("Derniers ajouts à la galerie «%1\$s»"), $idGalerie) . "</description>\n\n";
 	}
 	// Catégorie.
 	elseif ($type == 'categorie')
 	{
 		$contenuRss .= "\t\t<title>" . sprintf(T_("Dernières publications dans la catégorie «%1\$s»"), $idCategorie) . $baliseTitleComplement . "</title>\n";
-		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<link>" . $url . "</link>\n";
 		$contenuRss .= "\t\t<description>" . sprintf(T_("Dernières publications dans la catégorie «%1\$s»"), $idCategorie) . $baliseTitleComplement . "</description>\n\n";
 	}
 	// Toutes les galeries.
@@ -1102,14 +1107,14 @@ function fluxRss($type, $itemsFluxRss, $url, $baliseTitleComplement, $idGalerie,
 	{
 		
 		$contenuRss .= "\t\t<title>" . T_("Galeries") . $baliseTitleComplement . "</title>\n";
-		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<link>" . $url . "</link>\n";
 		$contenuRss .= "\t\t<description>" . T_("Derniers ajouts aux galeries") . $baliseTitleComplement . "</description>\n\n";
 	}
 	// Tout le site.
 	elseif ($type == 'site')
 	{
 		$contenuRss .= "\t\t<title>" . T_("Dernières publications") . $baliseTitleComplement . "</title>\n";
-		$contenuRss .= "\t\t<link>$url</link>\n";
+		$contenuRss .= "\t\t<link>" . $url . "</link>\n";
 		$contenuRss .= "\t\t<description>" . T_("Dernières publications") . $baliseTitleComplement . "</description>\n\n";
 	}
 	
@@ -1156,7 +1161,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$title = sprintf(T_("Oeuvre %1\$s"), $titreOeuvre);
 			$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
 			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($oeuvre['intermediaireNom']);
-			$urlGalerieOeuvre = "$urlGalerie?oeuvre=$id";
+			$urlGalerieOeuvre = superRawurlencode("$urlGalerie?oeuvre=$id");
 		
 			if (!empty($oeuvre['pageIntermediaireDescription']))
 			{
@@ -1221,7 +1226,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 					$urlOriginal = "$urlRacine/$urlOriginal";
 				}
 				
-				$msgOriginal = "\n<p><a href='$urlOriginal'>" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
+				$msgOriginal = "\n<p><a href=\"$urlOriginal\">" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
 			}
 			else
 			{
@@ -1250,7 +1255,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 				$pubDate = date('Y-m-d H:i', filemtime($cheminOeuvre));
 			}
 		
-			$description = securiseTexte("<div>$description</div>\n<p><img src='$urlOeuvre' width='$width' height='$height' alt='$alt' /></p>$msgOriginal");
+			$description = securiseTexte("<div>$description</div>\n<p><img src=\"$urlOeuvre\" width=\"$width\" height=\"$height\" alt=\"$alt\" /></p>$msgOriginal");
 			$itemsFluxRss[] = array (
 				"title" => $title,
 				"link" => $urlGalerieOeuvre,
@@ -1267,11 +1272,14 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
+
+Ne pas fournir une URL traitée par `superRawurlencode()`.
 */
 function fluxRssPageTableauBrut($cheminPage, $urlPage, $fluxRssAvecApercu)
 {
 	$itemFlux = array ();
 	$infosPage = infosPage($urlPage, $fluxRssAvecApercu);
+	$urlPage = superRawurlencode($urlPage);
 	
 	if (!empty($infosPage))
 	{
@@ -1391,7 +1399,7 @@ function idOeuvre($racine, $oeuvre)
 }
 
 /*
-Retourne un tableau d'informations au sujet de la page demandée. Le tableau contient les informations suivantes:
+Retourne un tableau d'informations au sujet de l'URL fournie. Le tableau contient les informations suivantes:
 
   - `$infosPage['titre']`: titre de la page. Prend comme valeur la première information trouvée parmi les suivantes:
     - contenu de la premère balise `h1`;
@@ -1409,11 +1417,13 @@ Retourne un tableau d'informations au sujet de la page demandée. Le tableau con
   - `$infosPage['dateRevision']`: vaut le contenu de la métabalise `date-revision-yyyymmdd`, si elle existe.
 
 Si la page demandée n'est pas accessible, retourne un tableau vide.
+
+Ne pas fournir une URL traitée par `superRawurlencode()`.
 */
 function infosPage($urlPage, $inclureApercu)
 {
 	$infosPage = array ();
-	$html = @file_get_contents($urlPage);
+	$html = @file_get_contents(superRawurlencode($urlPage, TRUE));
 	
 	if ($html !== FALSE)
 	{
@@ -1439,7 +1449,7 @@ function infosPage($urlPage, $inclureApercu)
 	
 		if (empty($infosPage['titre']))
 		{
-			$infosPage['titre'] = $urlPage;
+			$infosPage['titre'] = superRawurlencode($urlPage);
 		}
 	
 		// Contenu.
@@ -2373,7 +2383,7 @@ function marquePagesSociaux($url, $titre)
 	
 	$liens['Newsvine'] = array(
 		'nom' => 'Newsvine',
-		'lien' => "http://www.newsvine.com/_tools/seed&save?u=$url&amp;h=$titre",
+		'lien' => "http://www.newsvine.com/_tools/seed&amp;save?u=$url&amp;h=$titre",
 	);
 	
 	$liens['Propeller'] = array(
@@ -3051,7 +3061,7 @@ function oeuvre(
 			
 			if (!empty($exif))
 			{
-				$exif = "<div id='galerieIntermediaireExif'>\n<ul>\n" . $exif . "</ul>\n</div><!-- /#galerieIntermediaireExif -->\n";
+				$exif = "<div id=\"galerieIntermediaireExif\">\n<ul>\n" . $exif . "</ul>\n</div><!-- /#galerieIntermediaireExif -->\n";
 			}
 		}
 		
@@ -3503,17 +3513,27 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 }
 
 /*
-Retourne l'URL modifiée par `rawurlencode`, mais avec quelques substitutions.
+Retourne l'URL traitée par `rawurlencode`, mais avec quelques substitutions.
 */
-function superRawurlencode($url)
+function superRawurlencode($url, $decoderEsperluette = FALSE)
 {
-	$url = html_entity_decode($url); // `&amp;` => `&`.
+	$url = preg_replace('/&(?!amp;)/', '&amp;', $url);
 	$url = rawurlencode($url);
+	
+	// Entre autres pour `file_get_contents()` et `readfile()`.
+	if ($decoderEsperluette)
+	{
+		$url = str_replace('%26amp%3B', '&', $url);
+	}
+	else
+	{
+		$url = str_replace('%26amp%3B', '&amp;', $url);
+	}
+	
 	$url = str_replace('%3A', ':', $url);
 	$url = str_replace('%2F', '/', $url);
 	$url = str_replace('%3F', '?', $url);
 	$url = str_replace('%3D', '=', $url);
-	$url = str_replace('%26', '&', $url);
 	
 	return $url;
 }
@@ -3693,8 +3713,7 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherI
 	
 	if ($rechercherIndex)
 	{
-		$url = urlAvecIndex(superRawurlencode($url));
-		$url = rawurldecode($url);
+		$url = urlAvecIndex($url);
 	}
 	
 	return $url;
@@ -3702,8 +3721,6 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherI
 
 /*
 Recherche un index (par exemple `index.php`) pour l'URL fournie. Si un index a été trouvé, retourne l'URL avec l'index, sinon retourne l'URL de départ.
-
-Fournir une URL préalablement traitée par `superRawurlencode()`.
 */
 function urlAvecIndex($url)
 {
@@ -3727,13 +3744,11 @@ function urlAvecIndex($url)
 /*
 Retourne TRUE si l'URL existe, sinon retourne FALSE.
 
-Fournir une URL préalablement traitée par `superRawurlencode()`.
-
 Merci à <http://php.net/manual/fr/function.file-exists.php#84918>.
 */
 function urlExiste($url)
 {
-	$enTetes = @get_headers($url);
+	$enTetes = @get_headers(superRawurlencode($url));
 	
 	return is_array($enTetes) ? preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/', $enTetes[0]) : FALSE;
 }

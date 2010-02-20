@@ -31,7 +31,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		elseif (($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 		{
-			echo "<form action='$adminAction#messages' method='post'>\n";
+			echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 			echo "<div>\n";
 		
 			if (!empty($categories))

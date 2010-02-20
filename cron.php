@@ -151,7 +151,7 @@ if (file_exists('init.inc.php'))
 	foreach ($tableauUrl as $url)
 	{
 		@unlink($racine . '/site/cache/' . $url['cache']);
-		@file_get_contents(superRawurlencode($url['url']));
+		@file_get_contents(superRawurlencode($url['url']), TRUE);
 	}
 }
 ?>
