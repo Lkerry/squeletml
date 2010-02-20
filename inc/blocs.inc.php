@@ -152,7 +152,7 @@ if (!empty($blocsAinserer))
 						foreach ($licenceTableau as $choixLicence)
 						{
 							$codeLicence = licence($urlRacine, $choixLicence);
-						
+							
 							if (!empty($codeLicence))
 							{
 								$bloc .= "<li>$codeLicence</li>\n";

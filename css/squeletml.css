@@ -357,6 +357,10 @@ h1#titrePage404 {
 	margin-bottom: 20px;
 }
 
+#finInterieurContenu .bloc {
+	margin-top: 30px;
+}
+
 .contenuBloc {
 	padding-left: 2px;
 	padding-right: 2px;
