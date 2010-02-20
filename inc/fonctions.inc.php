@@ -1032,13 +1032,20 @@ function estAccueil($accueil)
 }
 
 /*
-Retourne l'extension d'un fichier (sans le point). Si aucune extension n'est trouvée, retourne une chaîne vide.
+Si `$retourneNomSansExtension` vaut FALSE, retourne l'extension d'un fichier (sans le point). Si aucune extension n'a pas été trouvée, retourne une chaîne vide. Sinon si `$retourneNomSansExtension` vaut TRUE, retourne le nom du fichier sans l'extension (ni le point).
 */
-function extension($nomFichier)
+function extension($nomFichier, $retourneNomSansExtension = FALSE)
 {
-	$extension = array_pop(explode('.', $nomFichier));
-	
-	return $extension != $nomFichier ? $extension : '';
+	if ($retourneNomSansExtension)
+	{
+		return array_shift(explode('.', $nomFichier, 2));
+	}
+	else
+	{
+		$extension = array_pop(explode('.', $nomFichier));
+		
+		return $extension != $nomFichier ? $extension : '';
+	}
 }
 
 /*

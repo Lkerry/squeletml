@@ -636,8 +636,10 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		}
 		
 		$racine = dirname($racineAdmin);
+		
+		$nomFichierSansExtension = extension(superBasename($cheminFichier), TRUE);
 		$extension = extension($cheminFichier);
-		$cheminApercuImage = $racineAdmin . '/cache/' . filtreChaine($racine, "$cheminFichier.cache.$extension");
+		$cheminApercuImage = $racineAdmin . '/cache/' . filtreChaine($racine, $nomFichierSansExtension . '-' . dechex(crc32($cheminFichier)) . ".cache.$extension");
 		
 		if (!file_exists($cheminApercuImage))
 		{
