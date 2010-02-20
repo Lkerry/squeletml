@@ -237,7 +237,7 @@ if ($contactActiverCaptchaCalcul)
 }
 
 ob_start();
-include_once cheminXhtml($racine, 'form-contact');
+include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact');
 $contact .= ob_get_contents();
 ob_end_clean();
 

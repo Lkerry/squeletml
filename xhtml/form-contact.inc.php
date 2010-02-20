@@ -4,8 +4,8 @@
 		<input id="inputNom" class="champInfo" name="nom" type="text" size="30" maxlength="120" value="<?php echo $nom; ?>" /></p>
 		
 		<?php // Champs supplémentaires optionnels après le nom. ?>
-		<?php if (!$decouvrir && file_exists($racine . '/site/xhtml/form-contact-champs-apres-nom.inc.php')): ?>
-			<?php include $racine . '/site/xhtml/form-contact-champs-apres-nom.inc.php'; ?>
+		<?php if (!$decouvrir && cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact-champs-apres-nom', FALSE)): ?>
+			<?php include cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact-champs-apres-nom'); ?>
 		<?php endif; ?>
 		
 		<p><label for="inputCourriel"><?php echo T_("Votre courriel:"); ?></label><br />
@@ -29,8 +29,8 @@
 		<textarea id="message" name="message" cols="30" rows="10"><?php echo $message; ?></textarea></p>
 		
 		<?php // Champs supplémentaires optionnels après le message. ?>
-		<?php if (!$decouvrir && file_exists($racine . '/site/xhtml/form-contact-champs-apres-message.inc.php')): ?>
-			<?php include $racine . '/site/xhtml/form-contact-champs-apres-message.inc.php'; ?>
+		<?php if (!$decouvrir && cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact-champs-apres-message', FALSE)): ?>
+			<?php include cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact-champs-apres-message'); ?>
 		<?php endif; ?>
 		
 		<?php if ($contactActiverCaptchaCalcul): ?>

@@ -81,12 +81,24 @@ function adminCheminsInc($racineAdmin, $nom)
 }
 
 /*
-Retourne le chemin vers le fichier `(site/)basename($racineAdmin)/xhtml/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide.
+Retourne le chemin vers le fichier `(site/)basename($racineAdmin)/xhtml/(LANGUE/)$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide.
 */
-function adminCheminXhtml($racineAdmin, $nom)
+function adminCheminXhtml($racineAdmin, $langues, $nom)
 {
 	$racine = dirname($racineAdmin);
 	$dossierAdmin = basename($racineAdmin);
+	
+	foreach ($langues as $langue)
+	{
+		if (file_exists("$racine/site/$dossierAdmin/xhtml/$langue/$nom.inc.php"))
+		{
+			return "$racine/site/$dossierAdmin/xhtml/$langue/$nom.inc.php";
+		}
+		elseif (file_exists("$racineAdmin/xhtml/$langue/$nom.inc.php"))
+		{
+			return "$racineAdmin/xhtml/$langue/$nom.inc.php";
+		}
+	}
 	
 	if (file_exists("$racine/site/$dossierAdmin/xhtml/$nom.inc.php"))
 	{
@@ -95,40 +107,6 @@ function adminCheminXhtml($racineAdmin, $nom)
 	elseif (file_exists("$racineAdmin/xhtml/$nom.inc.php"))
 	{
 		return "$racineAdmin/xhtml/$nom.inc.php";
-	}
-	
-	return '';
-}
-
-/*
-Retourne le chemin vers le fichier `(site/)basename($racineAdmin)/xhtml/($langue||multilingue)/$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide.
-*/
-function adminCheminXhtmlLangue($racineAdmin, $langues, $nom)
-{
-	$racine = dirname($racineAdmin);
-	$dossierAdmin = basename($racineAdmin);
-	
-	if (file_exists("$racine/site/$dossierAdmin/xhtml/multilingue/$nom.inc.php"))
-	{
-		return "$racine/site/$dossierAdmin/xhtml/multilingue/$nom.inc.php";
-	}
-	elseif (file_exists("$racineAdmin/xhtml/multilingue/$nom.inc.php"))
-	{
-		return "$racineAdmin/xhtml/multilingue/$nom.inc.php";
-	}
-	else
-	{
-		foreach ($langues as $langue)
-		{
-			if (file_exists("$racine/site/$dossierAdmin/xhtml/$langue/$nom.inc.php"))
-			{
-				return "$racine/site/$dossierAdmin/xhtml/$langue/$nom.inc.php";
-			}
-			elseif (file_exists("$racineAdmin/xhtml/$langue/$nom.inc.php"))
-			{
-				return "$racineAdmin/xhtml/$langue/$nom.inc.php";
-			}
-		}
 	}
 	
 	return '';

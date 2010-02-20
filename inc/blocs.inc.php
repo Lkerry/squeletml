@@ -239,7 +239,7 @@ if (!empty($blocsAinserer))
 					$blocs[$region] .= $codeInterieurBlocHaut;
 				
 					ob_start();
-					include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu');
+					include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu');
 					$bloc = ob_get_contents();
 					ob_end_clean();
 				
@@ -259,7 +259,7 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'menu-categories':
-					$cheminMenuCategories = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-categories');
+					$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
 					$cheminConfigCategories = cheminConfigCategories($racine);
 					
 					if (!empty($cheminMenuCategories))
@@ -331,7 +331,7 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocHaut;
 					
 						ob_start();
-						include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'menu-langues');
+						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
 						$bloc = ob_get_contents();
 						ob_end_clean();
 					
@@ -354,7 +354,7 @@ if (!empty($blocsAinserer))
 				
 				// Blocs personnalisés.
 				default:
-					if (cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
+					if (cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
 					{
 						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 					
@@ -371,7 +371,7 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocHaut;
 					
 						ob_start();
-						include_once cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), $blocAinserer);
+						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer);
 						$bloc = ob_get_contents();
 						ob_end_clean();
 					

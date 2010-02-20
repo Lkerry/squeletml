@@ -5,7 +5,7 @@
 ##
 ########################################################################
 
-$cheminBasDePage = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'bas-de-page');
+$cheminBasDePage = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'bas-de-page');
 
 ########################################################################
 ##
@@ -93,5 +93,5 @@ if (file_exists("$racine/site/$dossierAdmin/inc/dernier.inc.php"))
 ##
 ########################################################################
 
-include_once adminCheminXhtml($racineAdmin, 'page.dernier');
+include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.dernier');
 ?>

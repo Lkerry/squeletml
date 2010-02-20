@@ -33,9 +33,9 @@ if ($tableDesMatieres)
 }
 
 $boitesDeroulantesTableau = boitesDeroulantes($adminBoitesDeroulantesParDefaut, $boitesDeroulantes);
-$cheminAncres = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'ancres');
-$cheminLienBas = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
-$cheminRaccourcis = adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
+$cheminAncres = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'ancres');
+$cheminLienBas = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
+$cheminRaccourcis = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
 $doctype = doctype($adminXhtmlStrict);
 $idBody = adminBodyId();
 
@@ -48,7 +48,7 @@ $locale = locale(LANGUE);
 
 // Menu.
 ob_start();
-include_once adminCheminXhtmlLangue($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
+include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
 $menu = ob_get_contents();
 ob_end_clean();
 $menu = lienActif($menu, FALSE);
@@ -242,5 +242,5 @@ if (file_exists("$racine/site/$dossierAdmin/inc/premier.inc.php"))
 ##
 ########################################################################
 
-include_once adminCheminXhtml($racineAdmin, 'page.premier');
+include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.premier');
 ?>

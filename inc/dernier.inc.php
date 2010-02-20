@@ -1,6 +1,6 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.dernier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.dernier.inc.php`.
 
 Étapes dans ce fichier:
 
@@ -17,7 +17,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 // Affectations.
 
-$cheminBasDePage = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'bas-de-page');
+$cheminBasDePage = cheminXhtml($racine, array ($langue, $langueParDefaut), 'bas-de-page');
 
 if (!empty($courrielContact) || ($decouvrir && $decouvrirInclureContact))
 {
@@ -69,5 +69,5 @@ if (file_exists($racine . '/site/inc/dernier.inc.php'))
 ##
 ########################################################################
 
-include_once cheminXhtml($racine, 'page.dernier');
+include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.dernier');
 ?>

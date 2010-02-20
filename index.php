@@ -20,7 +20,7 @@ if (file_exists('.acces') && strpos(file_get_contents('.acces'), ':') !== FALSE)
 
 if ($initExiste && $protection)
 {
-	include_once cheminXhtmlLangue($racine, array('fr'), 'page.index');
+	include_once cheminXhtml($racine, array('fr'), 'page.index');
 }
 else
 {

@@ -1,6 +1,6 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/page.premier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.premier.inc.php`.
 
 Étapes dans ce fichier:
 
@@ -66,10 +66,10 @@ if (!isset($boitesDeroulantesAlaMain))
 	$boitesDeroulantesAlaMain = $boitesDeroulantesAlaMainParDefaut;
 }
 
-$cheminAncres = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'ancres');
+$cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
-$cheminSousTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sous-titre');
-$cheminSurTitre = cheminXhtmlLangue($racine, array ($langue, $langueParDefaut), 'sur-titre');
+$cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
+$cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
 $estAccueil = estAccueil(ACCUEIL);
 $classesBody = classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesBody);
 
@@ -336,5 +336,5 @@ if (!empty($enTetesHttp))
 ##
 ########################################################################
 
-include_once cheminXhtml($racine, 'page.premier');
+include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.premier');
 ?>
