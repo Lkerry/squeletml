@@ -1394,12 +1394,6 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<div id="divContenuDossierAdminPorteDoc">' . "\n";
-	
-	if ($adminActiverInfobulle['contenuDossier'])
-	{
-		echo '<p class="note">' . sprintf(T_("Astuce: désactiver l'infobulle (variable <code>%1\$s</code>) accélère l'affichage du contenu des dossiers."), '$adminActiverInfobulle[\'contenuDossier\']') . "</p>\n";
-	}
-	
 	echo '<h3 id="contenuDossier" class="bDtitre">' . sprintf(T_("Contenu du dossier %1\$s"), "<code>$dossierAparcourir</code>") . "</h3>\n";
 	
 	echo '<div class="bDcorps afficher">' . "\n";
@@ -1418,7 +1412,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	else
 	{
 		$dossierDeDepartAparcourir = $dossierAparcourir;
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiers, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle);
 		
 		if (!empty($listeFormateeFichiers))
 		{

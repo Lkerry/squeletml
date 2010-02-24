@@ -116,7 +116,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
 							$corpsMinivignettes .= '</div><!-- /.galerieMinivignettes -->' . "\n";
 							$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-							$corpsMinivignettes .= '<p class="note">' . sprintf(T_("Note: si l'affichage de l'aperçu est très lent, il est possible de le désactiver (variable <code>%1\$s</code> dans le fichier de configuration de l'administration)."), '$adminActiverInfobulle[\'apercuGalerie\']') . "</p>\n";
 							$apercu = '<li>' . sprintf(T_ngettext("Aperçu (%1\$s image): %2\$s", "Aperçu (%1\$s images): %2\$s", $nombreDoeuvres), $nombreDoeuvres, $corpsMinivignettes) . "</li>\n";
 						}
 						else
@@ -1217,7 +1216,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					<li><input id="redimensionnerInputNePasRenommerMotifs" type="checkbox" name="redimensionnerRenommer[]" value="nePasRenommerMotifs" checked="checked" /> <label for="redimensionnerInputNePasRenommerMotifs"><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
 					
-					<li><input id="redimensionnerInputAnalyserConfig" type="checkbox" name="redimensionnerRenommer[]" value="analyserConfig" /> <label for="redimensionnerInputAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme valeur d'un des paramètres <code>intermediaireNom</code>, <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
+					<li><input id="redimensionnerInputAnalyserConfig" type="checkbox" name="redimensionnerRenommer[]" value="analyserConfig" /> <label for="redimensionnerInputAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme titre de section ou comme valeur d'un des paramètres <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
 				</ul>
 				
 				<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
@@ -1233,7 +1232,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					</ul></li>
 				</ul>
 			</fieldset>
-
+			
 			<p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
 			<p><input type="submit" name="redimensionner" value="<?php echo T_('redimensionner les images originales'); ?>" /></p>

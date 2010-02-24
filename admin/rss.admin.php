@@ -33,103 +33,104 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if ($adminPorteDocumentsDroits['creer'])
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-galeries.ini.txt#messages') . "</li>\n";
+				if (!@touch($cheminFichier))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				}
 			}
 			else
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
-		else
+		
+		if (file_exists($cheminFichier) && ($galeries = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 		{
-			if (($galeries = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
+			echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
+			echo "<div>\n";
+			$listeGaleries = '';
+			
+			if (!empty($galeries))
 			{
-				echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
-				echo "<div>\n";
-				$listeGaleries = '';
+				$i = 0;
 				
-				if (!empty($galeries))
+				foreach ($galeries as $codeLangue => $langueInfos)
 				{
-					$i = 0;
+					$listeGaleries .= '<li class="liParent"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+					$listeGaleries .= "<ul class=\"triable\">\n";
 					
-					foreach ($galeries as $codeLangue => $langueInfos)
+					foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
 					{
-						$listeGaleries .= '<li class="liParent"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
-						$listeGaleries .= "<ul class=\"triable\">\n";
-						
-						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
-						{
-							$listeGaleries .= '<li><input type="text" name="id[' . $i . '][]" value="' . $idGalerie . '" />=<input class="long" type="text" name="url[' . $i . '][]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
-						}
-						
-						$listeGaleries .= "</ul></li>\n";
-						$i++;
+						$listeGaleries .= '<li><input type="text" name="id[' . $i . '][]" value="' . $idGalerie . '" />=<input class="long" type="text" name="url[' . $i . '][]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
 					}
+					
+					$listeGaleries .= "</ul></li>\n";
+					$i++;
 				}
-				
-				echo '<div class="sousBoite">' . "\n";
-				echo '<h3>' . T_("Liste des pages du flux RSS global des galeries") . "</h3>\n";
-				
-				echo '<div class="aideAdminRss">' . "\n";
-				echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
-				
-				echo "<div class=\"bDcorps afficher\">\n";
-				echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>' . T_("identifiant de la galerie") . '=' . T_("URL relative de la galerie") . '</code>') . "</p>\n";
-				
-				echo "<ul>\n";
-				echo "<li>fr\n";
-				echo "<ul>\n";
-				echo "<li>chiens=animaux/chiens.php</li>\n";
-				echo "</ul></li>\n";
-				echo "</ul>\n";
-				
-				echo '<p>' . sprintf(T_("Cet exemple fait référence à une galerie en français dont l'identifiant est %1\$s et dont l'URL est %2\$s."), "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
-				
-				echo '<p>' . T_("Pour enlever une langue ou une galerie, simplement supprimer le contenu du champ.") . "</p>\n";
-				
-				echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
-				echo "</div><!-- /.bDcorps -->\n";
-				echo "</div><!-- /.aideAdminRss -->\n";
-				
-				echo "<fieldset>\n";
-				echo '<legend>' . T_("Options") . "</legend>\n";
-				
-				echo '<div class="configActuelleAdminRss">' . "\n";
-				echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
-				
-				echo "<ul class=\"bDcorps afficher\">\n";
-				
-				if (!empty($listeGaleries))
-				{
-					echo $listeGaleries;
-				}
-				else
-				{
-					echo '<li>' . T_("Le fichier est vide. Aucune galerie n'y est listée.") . "</li>\n";
-				}
-				
-				echo "</ul>\n";
-				echo "</div><!-- /.configActuelleAdminRss -->\n";
-				
-				echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong></p>\n";
-				
-				echo "<ul>\n";
-				echo '<li><input type="text" name="langueAjout" value="" />';
-				echo "<ul>\n";
-				echo '<li><input type="text" name="idAjout" value="" />=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
-				echo "</ul></li>\n";
-				echo "</ul>\n";
-				echo "</fieldset>\n";
-				
-				echo '<p><input type="submit" name="modifsGaleries" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
-				echo "</div>\n";
-				echo "</form>\n";
-				echo "</div><!-- /.sousBoite -->\n";
+			}
+			
+			echo '<div class="sousBoite">' . "\n";
+			echo '<h3>' . T_("Liste des pages du flux RSS global des galeries") . "</h3>\n";
+			
+			echo '<div class="aideAdminRss">' . "\n";
+			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
+			
+			echo "<div class=\"bDcorps afficher\">\n";
+			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>' . T_("identifiant de la galerie") . '=' . T_("URL relative de la galerie") . '</code>') . "</p>\n";
+			
+			echo "<ul>\n";
+			echo "<li>fr\n";
+			echo "<ul>\n";
+			echo "<li>chiens=animaux/chiens.php</li>\n";
+			echo "</ul></li>\n";
+			echo "</ul>\n";
+			
+			echo '<p>' . sprintf(T_("Cet exemple fait référence à une galerie en français dont l'identifiant est %1\$s et dont l'URL est %2\$s."), "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
+			
+			echo '<p>' . T_("Pour enlever une langue ou une galerie, simplement supprimer le contenu du champ.") . "</p>\n";
+			
+			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
+			echo "</div><!-- /.bDcorps -->\n";
+			echo "</div><!-- /.aideAdminRss -->\n";
+			
+			echo "<fieldset>\n";
+			echo '<legend>' . T_("Options") . "</legend>\n";
+			
+			echo '<div class="configActuelleAdminRss">' . "\n";
+			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
+			
+			echo "<ul class=\"bDcorps afficher\">\n";
+			
+			if (!empty($listeGaleries))
+			{
+				echo $listeGaleries;
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+				echo '<li>' . T_("Le fichier est vide. Aucune galerie n'y est listée.") . "</li>\n";
 			}
+			
+			echo "</ul>\n";
+			echo "</div><!-- /.configActuelleAdminRss -->\n";
+			
+			echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong></p>\n";
+			
+			echo "<ul>\n";
+			echo '<li><input type="text" name="langueAjout" value="" />';
+			echo "<ul>\n";
+			echo '<li><input type="text" name="idAjout" value="" />=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
+			echo "</ul></li>\n";
+			echo "</ul>\n";
+			echo "</fieldset>\n";
+			
+			echo '<p><input type="submit" name="modifsGaleries" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
+			echo "</div>\n";
+			echo "</form>\n";
+			echo "</div><!-- /.sousBoite -->\n";
+		}
+		elseif (file_exists($cheminFichier))
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript);
@@ -150,14 +151,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if ($adminPorteDocumentsDroits['creer'])
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-site.ini.txt#messages') . "</li>\n";
+				if (!@touch($cheminFichier))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				}
 			}
 			else
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
-		elseif (($pages = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
+		
+		if (file_exists($cheminFichier) && ($pages = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 		{
 			echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 			echo "<div>\n";
@@ -245,7 +250,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</form>\n";
 			echo "</div><!-- /.sousBoite -->\n";
 		}
-		else
+		elseif (file_exists($cheminFichier))
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 		}
@@ -313,7 +318,24 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
 		
-		if ($cheminFichier)
+		if (!$cheminFichier)
+		{
+			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
+			
+			if ($adminPorteDocumentsDroits['creer'])
+			{
+				if (!@touch($cheminFichier))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+			}
+		}
+		
+		if (file_exists($cheminFichier))
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
@@ -341,18 +363,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
-			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
 			$messagesScript .= '<li>';
-			
-			if ($adminPorteDocumentsDroits['creer'])
-			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-galeries.ini.txt#messages') . "</p>\n";
-			}
-			else
-			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
-			}
-			
 			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			
 			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
@@ -434,16 +445,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
 	
 	<ul>
-		<?php if ($galerieActiverFluxRssGlobal): ?>
-			<li><?php echo T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
-		
 		<?php if ($activerFluxRssGlobalSite): ?>
 			<li><?php echo T_("Le flux RSS global du site est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
 		<?php else: ?>
 			<li><?php echo T_("Le flux RSS global du site n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
+		<?php endif; ?>
+		
+		<?php if ($galerieActiverFluxRssGlobal): ?>
+			<li><?php echo T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
+		<?php else: ?>
+			<li><?php echo T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
 		<?php endif; ?>
 	</ul>
 	
@@ -461,9 +472,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<ul>
-					<li><input id="inputGlobalGaleries" type="radio" name="global" value="galeries" /> <label for="inputGlobalGaleries"><?php echo T_("Pages des galeries"); ?></label></li>
-				
 					<li><input id="inputGlobalSite" type="radio" name="global" value="site" checked="checked" /> <label for="inputGlobalSite"><?php echo T_("Pages du site"); ?></label></li>
+					<li><input id="inputGlobalGaleries" type="radio" name="global" value="galeries" /> <label for="inputGlobalGaleries"><?php echo T_("Pages des galeries"); ?></label></li>
 				</ul>
 			</fieldset>
 			

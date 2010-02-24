@@ -155,12 +155,15 @@ $adminFiltreAccesDossiers = '../.bzr';
 */
 $adminTypeFiltreAffichageDossiers = 'dossiersNonAffiches';
 
-// Dossiers à prendre en compte dans le filtre d'affichage.
+// Listage du contenu des sous-dossiers lors de l'affichage du contenu d'un dossier.
+$adminListerSousDossiers = FALSE; // TRUE|FALSE
+
+// Si `$adminListageSousDossiers` vaut TRUE, dossiers à prendre en compte dans le filtre d'affichage.
 /*
 - Si la variable `$adminTypeFiltreAffichageDossiers` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageDossiers = '../admin/cache|../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../inc/filter_htmlcorrector|../inc/mimedetect|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale|../site/cache|../src';
+$adminFiltreAffichageDossiers = '../admin|../css|../fichiers|../inc|../js|../locale|../site/cache|../site/fichiers/galeries|../src|../xhtml';
 
 /* ____________________ Ajout de fichiers. ____________________ */
 

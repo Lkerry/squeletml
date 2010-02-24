@@ -22,14 +22,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if ($adminPorteDocumentsDroits['creer'])
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/categories.ini.txt#messages') . "</li>\n";
+				if (!@touch($cheminFichier))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				}
 			}
 			else
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
-		elseif (($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
+		
+		if (file_exists($cheminFichier) && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 		{
 			echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 			echo "<div>\n";
@@ -221,7 +225,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</form>\n";
 			echo "</div><!-- /.sousBoite -->\n";
 		}
-		else
+		elseif (file_exists($cheminFichier))
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
 		}
@@ -368,7 +372,24 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		$cheminFichier = cheminConfigCategories($racine);
 		
-		if ($cheminFichier)
+		if (!$cheminFichier)
+		{
+			$cheminFichier = cheminConfigCategories($racine, TRUE);
+			
+			if ($adminPorteDocumentsDroits['creer'])
+			{
+				if (!@touch($cheminFichier))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+			}
+		}
+		
+		if (file_exists($cheminFichier))
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
@@ -396,18 +417,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
-			$cheminFichier = cheminConfigCategories($racine, TRUE);
 			$messagesScript .= '<li>';
-			
-			if ($adminPorteDocumentsDroits['creer'])
-			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$cheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/categories.ini.txt#messages') . "</p>\n";
-			}
-			else
-			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</p>\n";
-			}
-			
 			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			
 			$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
@@ -435,14 +445,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if ($adminPorteDocumentsDroits['creer'])
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas. <a href=\"%2\$s\">Vous pouvez créer ce fichier</a>."), "<code>$rssCheminFichier</code>", 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/rss-site.ini.txt#messages') . "</li>\n";
+					@touch($rssCheminFichier);
 				}
 				else
 				{
 					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$rssCheminFichier</code>") . "</li>\n";
 				}
 			}
-			elseif (($rssPages = super_parse_ini_file($rssCheminFichier, TRUE)) === FALSE)
+			
+			if (file_exists($rssCheminFichier) && ($rssPages = super_parse_ini_file($rssCheminFichier, TRUE)) === FALSE)
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $rssCheminFichier . '</code>') . "</li>\n";
 			}
