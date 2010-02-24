@@ -3,8 +3,8 @@ include 'inc/zero.inc.php';
 $baliseTitle = T_("Version de Squeletml et autres informations");
 include $racineAdmin . '/inc/premier.inc.php';
 
-$versionActuelleSqueletml = adminVersionSqueletml('actuelle', $racine . '/version.txt');
-$derniereVersionSqueletml = adminVersionSqueletml('derniere', URL_DERNIERE_VERSION_SQUELETML);
+$versionActuelleSqueletml = adminVersionSqueletml($racine . '/version.txt');
+$derniereVersionSqueletml = adminVersionSqueletml(URL_DERNIERE_VERSION_SQUELETML);
 ?>
 
 <h1><?php echo T_("Version de Squeletml et autres informations"); ?></h1>

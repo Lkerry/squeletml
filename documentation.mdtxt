@@ -2,7 +2,7 @@
 
 ## Installation
 
-Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il est donc seulement nécessaire de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.jpfleury.net/squeletml), d'extraire cette archive et de placer les fichiers sur un serveur, par exemple par ftp.
+Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il est donc seulement nécessaire de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.squeletml.net/), d'extraire cette archive et de placer les fichiers sur un serveur, par exemple par ftp.
 
 **Notes:**
 
@@ -197,8 +197,6 @@ Lors d'une mise à jour, il est également inutile de copier ces dossiers ou fic
 *Note: j'ai ajouté cette suggestion dans la documentation après avoir constaté une drôle de situation avec le moteur de recherche Google. J'ai mis sur pied un site en français, donc les pages en anglais n'étaient pas utilisées, et il n'y avait aucun lien pointant vers ces dernières. Malgré cela, les pages du dossier `en` se sont retrouvées dans l'index de Google. Je ne sais pas comment expliquer cette situation.*
 
 ### Structure XHTML par défaut
-
-*Note: la page [Aperçu de la structure d'une page de Squeletml](http://www.jpfleury.net/squeletml/structure) propose des explications accompagnées d'une capture d'écran annotée.*
 
 Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 
@@ -758,8 +756,6 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 Dans l'un ou l'autre des cas, les catégories actives seront marquées comme telles, si cette option est activée dans le fichier de configuration du site.
 
 ## Galeries
-
-*Note: la page [Bref tour d'horizon du module de galerie de Squeletml](http://www.jpfleury.net/squeletml/galerie) propose des explications accompagnées de captures d'écran.*
 
 Chaque galerie possède son propre identifiant unique, aussi appelé *id*, qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'identifiant vaut `galerie1`. Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible:
 

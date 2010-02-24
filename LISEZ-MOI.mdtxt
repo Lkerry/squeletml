@@ -1,12 +1,8 @@
 # Squeletml, squelette de site XHTML et PHP
 
-## Téléchargement
-
-[Lien rapide de téléchargement de Squeletml.](http://www.jpfleury.net/squeletml#attachments)
-
 ## Qu'est-ce que Squeletml?
 
-<img class='gauche' src='http://www.jpfleury.net/fichiers/squeletml-logo.png' alt='Squeletml' width='75' height='75' />Le logiciel libre Squeletml est un squelette de site valide XHTML 1.0 Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but de réduire l'effort nécessaire pour la création et la maintenance de ce genre de site.
+Le logiciel libre Squeletml est un squelette de site valide XHTML 1.0 Strict géré par inclusion de fichiers PHP et sans base de données, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but de réduire l'effort nécessaire pour la création et la maintenance de ce genre de site.
 
 En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin), et ces derniers fournissent une structure de site personnalisée et traduite dans la langue de la page (si disponible). Chaque page peut facilement avoir ses propres informations: langue, balise `title`, métabalises, feuilles de style, scripts Javascript, titre de premier niveau (`h1`), table des matières, etc. L'en-tête personnalisée permet d'offrir de meilleurs repères aux internautes, d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement.
 
@@ -93,18 +89,17 @@ Squeletml a donc été écrit dans le but de pouvoir mettre sur pied rapidement 
 
 ## Captures d'écran
 
-Visitez la [galerie de captures d'écran de Squeletml](http://www.jpfleury.net/galeries/captures-d-ecran/squeletml).
+Visitez la [galerie de captures d'écran de Squeletml](http://www.squeletml.net/captures.php).
 
 ## Documentation
 
-Voir le fichier `documentation.mdtxt` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.jpfleury.net/squeletml/documentation).
+Voir le fichier `documentation.mdtxt` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.squeletml.net/documentation.php).
 
 ## Problèmes ou suggestions
 
-Pour faire part d'un problème d'utilisation avec Squeletml, proposer une fonctionnalité ou poser une question, il y a quatre possibilités:
+Pour faire part d'un problème d'utilisation avec Squeletml, proposer une fonctionnalité ou poser une question, il y a quelques possibilités:
 
-- laisser un [commentaire sur une des pages de Squeletml](http://www.jpfleury.net/squeletml);
-- envoyer un [message à partir du formulaire de contact](http://www.jpfleury.net/contact);
+- envoyer un [message à partir du formulaire de contact](http://www.squeletml.net/contact.php);
 - faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/squeletml);
 - ou poser une [question sur Launchpad](https://answers.launchpad.net/squeletml).
 
@@ -114,7 +109,7 @@ N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolt
 
 ### Squeletml
 
-Auteur: Jean-Philippe Fleury <http://www.jpfleury.net/contact>  
+Auteur: [Jean-Philippe Fleury](http://www.jpfleury.net/contact)  
 Copyright © Jean-Philippe Fleury, 2009.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
@@ -163,42 +158,42 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 ### Scripts externes
 
-- **BUEditor**: sous licence GPL. Voir <http://ufku.com/drupal/bueditor>.
+- [**BUEditor**](http://ufku.com/drupal/bueditor): sous licence GPL.
 
-- **CodeMirror**: sous licence BSD. Voir <http://marijn.haverbeke.nl/codemirror/>.
+- [**CodeMirror**](http://marijn.haverbeke.nl/codemirror/): sous licence BSD.
 
-- **Drag'nDrop & DHTML Library**: sous licence LGPL version 2.1 ou toute version ultérieure. Voir <http://www.walterzorn.com/dragdrop/dragdrop_e.htm>.
+- [**Drag'nDrop & DHTML Library**](http://www.walterzorn.com/dragdrop/dragdrop_e.htm): sous licence LGPL version 2.1 ou toute version ultérieure..
 
-- **\_filter\_htmlcorrector**: fonction de Drupal, sous licence GPL version ou toute version ultérieure. Voir <http://api.drupal.org/api/function/_filter_htmlcorrector/6>.
+- [**\_filter\_htmlcorrector**](http://api.drupal.org/api/function/_filter_htmlcorrector/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure.
 
-- **JavaScript Gettext**: sous licence LGPL version 2 ou toute version ultérieure. Voir <http://jsgettext.berlios.de/>.
+- [**JavaScript Gettext**](http://jsgettext.berlios.de/): sous licence LGPL version 2 ou toute version ultérieure.
 
-- **jQuery**: sous double licence MIT et GPL. Voir <http://jquery.com/>.
+- [**jQuery**](http://jquery.com/): sous double licence MIT et GPL.
 
-- **jQuery Cookie plugin**: sous double licence MIT et GPL. Voir <http://plugins.jquery.com/project/cookie>.
+- [**jQuery Cookie plugin**](http://plugins.jquery.com/project/cookie): sous double licence MIT et GPL.
 
-- **jQuery UI**: sous double licence MIT et GPL. Voir <http://jqueryui.com/>.
+- [**jQuery UI**](http://jqueryui.com/): sous double licence MIT et GPL.
 
-- **MimeDetect**: module pour Drupal sous licence GPL version 2 ou toute version ultérieure. Voir <http://drupal.org/project/mimedetect>. Je l'ai modifié pour le rendre indépendant de Drupal. J'ai également ajouté la fonction `file_get_mimetype()` provenant du fichier `includes/file.inc` de Drupal 6, sous licence GPL version 2 ou toute version ultérieure. Voir <http://api.drupal.org/api/drupal/includes--file.inc/6/source>. J'ai publié le résultat sous licence GPL version 3 ou toute version ultérieure.
+- [**MimeDetect**](http://drupal.org/project/mimedetect): module pour Drupal sous licence GPL version 2 ou toute version ultérieure. Je l'ai modifié pour le rendre indépendant de Drupal. J'ai également ajouté la fonction `file_get_mimetype()` provenant du [fichier `includes/file.inc` de Drupal 6](http://api.drupal.org/api/drupal/includes--file.inc/6/source), sous licence GPL version 2 ou toute version ultérieure. J'ai publié le résultat sous licence GPL version 3 ou toute version ultérieure.
 
-- **PclZip**: Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir <http://www.phpconcept.net/>.
+- [**PclZip**](http://www.phpconcept.net/): Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir le site de PclZip.
 
-- **PHP gettext**: sous licence GPL version 2 ou toute version ultérieure. Voir <https://launchpad.net/php-gettext/>.
+- [**PHP gettext**](https://launchpad.net/php-gettext/): sous licence GPL version 2 ou toute version ultérieure.
 
-- **PHPJS**: sous double licence MIT et GPL. Voir <http://phpjs.org/>.
+- [**PHPJS**](http://phpjs.org/): sous double licence MIT et GPL.
 
-- **PHP Markdown**: sous licence de style BSD. Voir <http://michelf.com/projets/php-markdown/>.
+- [**PHP Markdown**](http://michelf.com/projets/php-markdown/): sous licence de style BSD.
 
-- **PHP Simple HTML DOM Parser**: sous licence MIT. Voir <http://simplehtmldom.sourceforge.net/>.
+- [**PHP Simple HTML DOM Parser**](http://simplehtmldom.sourceforge.net/): sous licence MIT.
 
-- **Slimbox 2**: sous licence MIT. Voir <http://www.digitalia.be/software/slimbox2>.
+- [**Slimbox 2**](http://www.digitalia.be/software/slimbox2): sous licence MIT.
 
-- **Table of Contents jQuery Plugin**: le script original a été écrit par Doug Neiner et est sous licence MIT. Voir <http://fuelyourcoding.com/table-of-contents-jquery-plugin/>. J'ai modifié le script et ai incorporé une fraction de code provenant du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), publié sous licence GPL (sans précision de la version). Je publie le script résultant sous licence GPL version 3 ou toute version ultérieure.
+- [**Table of Contents jQuery Plugin**](http://fuelyourcoding.com/table-of-contents-jquery-plugin/): le script original a été écrit par Doug Neiner et est sous licence MIT. J'ai modifié le script et ai incorporé une fraction de code provenant du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), publié sous licence GPL (sans précision de la version). Je publie le script résultant sous licence GPL version 3 ou toute version ultérieure.
 
-- **Tar et UnTar (classes PHP)**: sous licence LGPL 2.1. Voir <http://php-classes.sourceforge.net/>.
+- [**Tar et UnTar (classes PHP)**](http://php-classes.sourceforge.net/): sous licence LGPL 2.1.
 
-- **Unsharp Mask for PHP**: permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL. Voir le code sur <http://vikjavev.no/computing/ump.php?id=306>.
+- [**Unsharp Mask for PHP**](http://vikjavev.no/computing/ump.php?id=306): permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL.
 
-- La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.
+- La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
 
-- Les liens de marque-pages et réseaux sociaux ont été en partie récupérés dans le module Service links pour Drupal, sous licence GPL. Voir <http://drupal.org/project/service_links>.
+- Les liens de marque-pages et réseaux sociaux ont été en partie récupérés dans le [module Service links pour Drupal](http://drupal.org/project/service_links), sous licence GPL.

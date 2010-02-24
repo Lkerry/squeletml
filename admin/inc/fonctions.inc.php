@@ -16,6 +16,11 @@ function adminAinclureDebut($racineAdmin)
 	$fichiers[] = $racineAdmin . '/inc/tar/tar.class.php';
 	$fichiers[] = $racineAdmin . '/inc/untar/untar.class.php';
 	
+	if (nomPage() == 'galeries.admin.php')
+	{
+		$fichiers[] = $racineAdmin . '/inc/UnsharpMask/UnsharpMask.inc.php';
+	}
+	
 	foreach (cheminsInc($racine, 'config') as $fichier)
 	{
 		$fichiers[] = $fichier;
@@ -32,34 +37,6 @@ function adminAinclureDebut($racineAdmin)
 	}
 	
 	return $fichiers;
-}
-
-/*
-Retourne l'`id` de `body`.
-*/
-function adminBodyId()
-{
-	return str_replace('.', '-', nomPage());
-}
-
-/*
-Transforme un tableau de chemins en tableau de chemins canoniques, et retourne le tableau résultant.
-*/
-function adminTableauCheminsCanoniques($tableauChemins)
-{
-	$tableauCheminsCanoniques = array ();
-	
-	foreach ($tableauChemins as $chemin)
-	{
-		$chemin = realpath($chemin);
-		
-		if ($chemin !== FALSE)
-		{
-			$tableauCheminsCanoniques[] = $chemin;
-		}
-	}
-	
-	return $tableauCheminsCanoniques;
 }
 
 /*
@@ -551,6 +528,14 @@ function adminGz($fichierSource)
 	{
 		return $fichierCompresse;
 	}
+}
+
+/*
+Retourne l'`id` de `body`.
+*/
+function adminIdBody()
+{
+	return str_replace('.', '-', nomPage());
 }
 
 /*
@@ -1415,6 +1400,26 @@ function adminSiteEnMaintenanceIp($cheminHtaccess)
 }
 
 /*
+Transforme un tableau de chemins en tableau de chemins canoniques, et retourne le tableau résultant.
+*/
+function adminTableauCheminsCanoniques($tableauChemins)
+{
+	$tableauCheminsCanoniques = array ();
+	
+	foreach ($tableauChemins as $chemin)
+	{
+		$chemin = realpath($chemin);
+		
+		if ($chemin !== FALSE)
+		{
+			$tableauCheminsCanoniques[] = $chemin;
+		}
+	}
+	
+	return $tableauCheminsCanoniques;
+}
+
+/*
 Retourne la taille en octets du dossier de cache de l'administration si le dossier est accessible, sinon retourne FALSE.
 */
 function adminTailleCache($racineAdmin)
@@ -1619,9 +1624,9 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 }
 
 /*
-Retourne la version demandée de Squeletml.
+Retourne la version de Squeletml.
 */
-function adminVersionSqueletml($versionDemandee, $adresse)
+function adminVersionSqueletml($adresse)
 {
 	$version = @file_get_contents(superRawurlencode($adresse, TRUE));
 	$version = explode('-', $version);

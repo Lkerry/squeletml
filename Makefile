@@ -43,7 +43,6 @@ archives: menage-archives ChangeLog version.txt
 	php ./scripts.cli.php mdtxt ChangeLog-version-actuelle
 	mv ChangeLog-version-actuelle.mdtxt $(bureau)/
 	mv ChangeLog-version-actuelle $(tag)/
-	cp ChangeLog-version-actuelle-fichiers $(bureau)/
 	mv ChangeLog-version-actuelle-fichiers $(tag)/
 	cp version.txt $(tag)/
 	for po in $(shell find $(tag) -iname *.po);\
@@ -54,15 +53,12 @@ archives: menage-archives ChangeLog version.txt
 	rm -f $(tag)/Makefile
 	rm -f $(tag)/scripts.cli.php
 	rm -rf $(tag)/src
-	tar --bzip2 -cvf $(tag).tar.bz2 $(tag) # --bzip2 = -j
-	zip -rv $(tag).zip $(tag)
+	tar --bzip2 -cvf squeletml.tar.bz2 $(tag) # --bzip2 = -j
+	zip -rv squeletml.zip $(tag)
 	rm -rf $(tag)
-	mv $(tag).tar.bz2 $(tag).tbz2 # Drupal bogue avec l'ajout de fichiers .tar.bz2
-	mv $(tag).tbz2 $(bureau)/
-	mv $(tag).zip $(bureau)/
-	cp LISEZ-MOI.mdtxt $(bureau)/LISEZ-MOI-$(tag).mdtxt
-	cp documentation.mdtxt $(bureau)/documentation-$(tag).mdtxt
-	cp version.txt $(bureau)/derniere-version-squeletml.txt
+	mv squeletml.tar.bz2 $(bureau)/
+	mv squeletml.zip $(bureau)/
+	cp documentation.mdtxt $(bureau)/documentation-avec-config.mdtxt
 	php ./scripts.cli.php annexes-doc $(bureau)/documentation-$(tag).mdtxt
 
 ChangeLog: menage-ChangeLog
@@ -81,8 +77,8 @@ lp:
 	bzr push lp:~jpfle/squeletml/trunk
 
 menage-archives:
-	rm -f $(tag).tbz2
-	rm -f $(tag).zip
+	rm -f squeletml.tar.bz2
+	rm -f squeletml.zip
 
 menage-ChangeLog:
 	rm -f ChangeLog

@@ -146,8 +146,8 @@ if (!empty($blocsAinserer))
 				case 'licence':
 					if (!empty($licence) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
-						$licenceTableau = explode(' ', $licence);
 						$bloc = '';
+						$licenceTableau = explode(' ', $licence);
 					
 						foreach ($licenceTableau as $choixLicence)
 						{
@@ -259,6 +259,7 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'menu-categories':
+					$bloc = '';
 					$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
 					$cheminConfigCategories = cheminConfigCategories($racine);
 					
@@ -305,7 +306,7 @@ if (!empty($blocsAinserer))
 						{
 							$bloc = limiteProfondeurListe($bloc);
 						}
-				
+						
 						$blocs[$region] .= $bloc;
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuCategories -->' . "\n";

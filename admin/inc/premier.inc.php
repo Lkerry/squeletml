@@ -37,7 +37,7 @@ $cheminAncres = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDe
 $cheminLienBas = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
 $cheminRaccourcis = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
 $doctype = doctype($adminXhtmlStrict);
-$idBody = adminBodyId();
+$idBody = adminIdBody();
 
 if (!empty($idBody))
 {
