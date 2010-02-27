@@ -278,6 +278,10 @@ body.tableDesMatieresArrondie #tableDesMatieres {
 	font-size: 1em;
 }
 
+div.descriptionApercu div#galerieIntermediaireImg {
+	text-align: center;
+}
+
 .infosPublicationApercu {
 	font-style: italic;
 	margin-bottom: 10px;

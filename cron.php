@@ -9,6 +9,8 @@ if (file_exists('init.inc.php'))
 		include_once $cheminFichier;
 	}
 	
+	include_once $racine . '/inc/simplehtmldom/simple_html_dom.php';
+	
 	super_set_time_limit($delaiExpirationScript);
 	
 	@file_put_contents("$racine/site/inc/cron.txt", time());
@@ -20,6 +22,37 @@ if (file_exists('init.inc.php'))
 		if (cheminConfigCategories($racine))
 		{
 			$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
+			
+			if ($categories === FALSE)
+			{
+				$categories = array ();
+			}
+			
+			if (cheminConfigFluxRssGlobal($racine, 'galeries'))
+			{
+				$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+			
+				if (!empty($pages))
+				{
+					foreach ($pages as $codeLangue => $langueInfos)
+					{
+						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, $categories, array('galeries'));
+					}
+				}
+			}
+			
+			if (cheminConfigFluxRssGlobal($racine, 'site'))
+			{
+				$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+			
+				if (!empty($pages))
+				{
+					foreach ($pages as $codeLangue => $langueInfos)
+					{
+						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, $categories, array('site'));
+					}
+				}
+			}
 			
 			if (!empty($categories))
 			{
@@ -151,7 +184,7 @@ if (file_exists('init.inc.php'))
 	foreach ($tableauUrl as $url)
 	{
 		@unlink($racine . '/site/cache/' . $url['cache']);
-		@file_get_contents(superRawurlencode($url['url']), TRUE);
+		@file_get_contents(superRawurlencode($url['url'], TRUE));
 	}
 }
 ?>

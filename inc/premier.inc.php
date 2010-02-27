@@ -137,6 +137,11 @@ if (!isset($rssCategorie))
 	$rssCategorie = $activerFluxRssCategorieParDefaut;
 }
 
+if (isset($idCategorie) && ($idCategorie == 'site' || $idCategorie == 'galeries'))
+{
+	$rssCategorie = FALSE;
+}
+
 if (!isset($rssGalerie))
 {
 	$rssGalerie = $galerieActiverFluxRssParDefaut;
@@ -231,25 +236,33 @@ if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 if (!empty($idGalerie) && $rssGalerie)
 {
 	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
-	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la galerie %1$s'), $idGalerie);
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Galerie %1$s'), $idGalerie);
 }
 
 if (!empty($idCategorie) && $rssCategorie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
-	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('RSS de la catégorie %1$s'), $idCategorie);
+	if (strpos($url, $urlRacine . '/categorie.php?id=') !== FALSE)
+	{
+		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=$idCategorie";
+	}
+	else
+	{
+		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
+	}
+	
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
 }
 
 if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
 {
 	$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('RSS de toutes les galeries');
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Derniers ajouts aux galeries');
 }
 
 if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
 {
 	$urlFlux = $urlRacine . '/rss.php?type=site&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('RSS global du site');
+	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Dernières publications');
 }
 
 // Slimbox2.

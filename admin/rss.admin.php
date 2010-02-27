@@ -18,7 +18,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	##################################################################
 	#
-	# Flux RSS global des galeries.
+	# Flux RSS des derniers ajouts aux galeries.
 	#
 	##################################################################
 	
@@ -35,12 +35,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if (!@touch($cheminFichier))
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -70,7 +70,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			
 			echo '<div class="sousBoite">' . "\n";
-			echo '<h3>' . T_("Liste des pages du flux RSS global des galeries") . "</h3>\n";
+			echo '<h3>' . T_("Liste des pages du flux RSS des derniers ajouts aux galeries") . "</h3>\n";
 			
 			echo '<div class="aideAdminRss">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
@@ -137,7 +137,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	}
 	##################################################################
 	#
-	# Flux RSS global du site.
+	# Flux RSS des dernières publications.
 	#
 	##################################################################
 	elseif (isset($_POST['global']) && $_POST['global'] == 'site')
@@ -153,12 +153,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if (!@touch($cheminFichier))
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -191,7 +191,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		
 			echo '<div class="sousBoite">' . "\n";
-			echo '<h3>' . T_("Liste des pages du flux RSS global du site") . "</h3>\n";
+			echo '<h3>' . T_("Liste des pages du flux RSS des dernières publications") . "</h3>\n";
 			
 			echo '<div class="aideAdminRss">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
@@ -326,12 +326,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if (!@touch($cheminFichier))
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS global des galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -446,15 +446,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	<ul>
 		<?php if ($activerFluxRssGlobalSite): ?>
-			<li><?php echo T_("Le flux RSS global du site est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
+			<li><?php echo T_("Le flux RSS des dernières publications est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
 		<?php else: ?>
-			<li><?php echo T_("Le flux RSS global du site n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
+			<li><?php echo T_("Le flux RSS des dernières publications n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
 		<?php endif; ?>
 		
 		<?php if ($galerieActiverFluxRssGlobal): ?>
-			<li><?php echo T_("Le flux RSS global des galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
+			<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
 		<?php else: ?>
-			<li><?php echo T_("Le flux RSS global des galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
+			<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
 		<?php endif; ?>
 	</ul>
 	
@@ -472,8 +472,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<legend><?php echo T_("Options"); ?></legend>
 				
 				<ul>
-					<li><input id="inputGlobalSite" type="radio" name="global" value="site" checked="checked" /> <label for="inputGlobalSite"><?php echo T_("Pages du site"); ?></label></li>
-					<li><input id="inputGlobalGaleries" type="radio" name="global" value="galeries" /> <label for="inputGlobalGaleries"><?php echo T_("Pages des galeries"); ?></label></li>
+					<li><input id="inputGlobalSite" type="radio" name="global" value="site" checked="checked" /> <label for="inputGlobalSite"><?php echo T_("Dernières publications"); ?></label></li>
+					<li><input id="inputGlobalGaleries" type="radio" name="global" value="galeries" /> <label for="inputGlobalGaleries"><?php echo T_("Derniers ajouts aux galeries"); ?></label></li>
 				</ul>
 			</fieldset>
 			

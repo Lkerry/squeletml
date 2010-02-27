@@ -1040,160 +1040,160 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 						}
 					}
 					
-					if (($fichierAcreerType != 'FichierModeleMarkdown' && file_exists($fichierAcreerNom)) || ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierAcreerNom) && file_exists($fichierMarkdownAcreerNom)))
+					if (($fichierAcreerType == 'FichierModeleHtml' && file_exists($fichierAcreerNom)) || ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierAcreerNom) && file_exists($fichierMarkdownAcreerNom)))
 					{
-						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
+						$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
+						$cheminInclude = dirname($cheminInclude);
+						
+						if ($cheminInclude == '.')
 						{
-							$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
-							$cheminInclude = dirname($cheminInclude);
-							
-							if ($cheminInclude == '.')
-							{
-								$cheminInclude = '';
-							}
-							
-							if (!empty($cheminInclude))
-							{
-								$cheminInclude .= '/';
-							}
+							$cheminInclude = '';
+						}
+						
+						if (!empty($cheminInclude))
+						{
+							$cheminInclude .= '/';
+						}
 
-							if ($fic = @fopen($cheminPage . '/' . $page, 'a'))
+						if ($fic = @fopen($cheminPage . '/' . $page, 'a'))
+						{
+							if (isset($_POST['porteDocumentsCreationVar']))
 							{
-								if (isset($_POST['porteDocumentsCreationVar']))
-								{
-									$fichierAcreerVar = securiseTexte($_POST['porteDocumentsCreationVar']);
-								}
-								else
-								{
-									$fichierAcreerVar = array ();
-								}
-								
-								$contenu = '';
-								$contenu .= '<?php' . "\n";
-								
-								foreach ($fichierAcreerVar as $var)
-								{
-									switch ($var)
-									{
-										case 'apercu':
-											$contenu .= '$apercu = "";' . "\n";
-											break;
-											
-										case 'auteur':
-											$contenu .= '$auteur = ' . var_export($auteurParDefaut, TRUE) . ";\n";
-											break;
-											
-										case 'baliseTitle':
-											$contenu .= '$baliseTitle = "' . T_("Titre (contenu de la balise `title`)") . '";' . "\n";
-											break;
-											
-										case 'boitesDeroulantes':
-											$contenu .= '$boitesDeroulantes = "";' . "\n";
-											break;
-											
-										case 'boitesDeroulantesAlaMain':
-											$contenu .= '$boitesDeroulantesAlaMain = TRUE;' . "\n";
-											break;
-											
-										case 'classesBody':
-											$contenu .= '$classesBody = "";' . "\n";
-											break;
-											
-										case 'classesContenu':
-											$contenu .= '$classesContenu = "";' . "\n";
-											break;
-											
-										case 'courrielContact':
-											$contenu .= '$courrielContact = "@";' . "\n";
-											break;
-											
-										case 'dateCreation':
-											$contenu .= '$dateCreation = "' . date('Y-m-d') . '";' . "\n";
-											break;
-											
-										case 'dateRevision':
-											$contenu .= '$dateRevision = "' . date('Y-m-d') . '";' . "\n";
-											break;
-											
-										case 'description':
-											$contenu .= '$description = "' . T_("Description de la page") . '";' . "\n";
-											break;
-											
-										case 'idCategorie':
-											$contenu .= '$idCategorie = "";' . "\n";
-											break;
-											
-										case 'idGalerie':
-											$contenu .= '$idGalerie = "";' . "\n";
-											break;
-											
-										case 'langue':
-											$contenu .= '$langue = ' . var_export($langueParDefaut, TRUE) . ";\n";
-											break;
-											
-										case 'licence':
-											$contenu .= '$licence = ' . var_export($licenceParDefaut, TRUE) . ";\n";
-											break;
-											
-										case 'motsCles':
-											$contenu .= '$motsCles = "";' . "\n";
-											break;
-											
-										case 'robots':
-											$contenu .= '$robots = ' . var_export($robotsParDefaut, TRUE) . ";\n";
-											break;
-											
-										case 'rssGalerie':
-											if ($galerieActiverFluxRssParDefaut)
-											{
-												$contenu .= '$rssGalerie = FALSE;' . "\n";
-											}
-											else
-											{
-												$contenu .= '$rssGalerie = TRUE;' . "\n";
-											}
-											
-											break;
-											
-										case 'tableDesMatieres':
-											if ($afficherTableDesMatieresParDefaut)
-											{
-												$contenu .= '$tableDesMatieres = FALSE;' . "\n";
-											}
-											else
-											{
-												$contenu .= '$tableDesMatieres = TRUE;' . "\n";
-											}
-											
-											break;
-									}
-								}
-								
-								$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
-								$contenu .= '?>' . "\n";
-								$contenu .= "\n";
-								
-								if ($fichierAcreerType == 'FichierModeleHtml')
-								{
-									$contenu .= '<h1>' . T_("Titre de la page") . "</h1>\n";
-									$contenu .= "\n";
-									$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
-								}
-								elseif ($fichierAcreerType == 'FichierModeleMarkdown')
-								{
-									$contenu .= '<?php echo mdtxt("' . superBasename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
-								}
-								
-								$contenu .= "\n";
-								$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
-								fputs($fic, $contenu);
-								fclose($fic);
+								$fichierAcreerVar = securiseTexte($_POST['porteDocumentsCreationVar']);
 							}
 							else
 							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
+								$fichierAcreerVar = array ();
 							}
 							
+							$contenu = '';
+							$contenu .= '<?php' . "\n";
+							
+							foreach ($fichierAcreerVar as $var)
+							{
+								switch ($var)
+								{
+									case 'apercu':
+										$contenu .= '$apercu = "";' . "\n";
+										break;
+										
+									case 'auteur':
+										$contenu .= '$auteur = ' . var_export($auteurParDefaut, TRUE) . ";\n";
+										break;
+										
+									case 'baliseTitle':
+										$contenu .= '$baliseTitle = "' . T_("Titre (contenu de la balise `title`)") . '";' . "\n";
+										break;
+										
+									case 'boitesDeroulantes':
+										$contenu .= '$boitesDeroulantes = "";' . "\n";
+										break;
+										
+									case 'boitesDeroulantesAlaMain':
+										$contenu .= '$boitesDeroulantesAlaMain = TRUE;' . "\n";
+										break;
+										
+									case 'classesBody':
+										$contenu .= '$classesBody = "";' . "\n";
+										break;
+										
+									case 'classesContenu':
+										$contenu .= '$classesContenu = "";' . "\n";
+										break;
+										
+									case 'courrielContact':
+										$contenu .= '$courrielContact = "@";' . "\n";
+										break;
+										
+									case 'dateCreation':
+										$contenu .= '$dateCreation = "' . date('Y-m-d') . '";' . "\n";
+										break;
+										
+									case 'dateRevision':
+										$contenu .= '$dateRevision = "' . date('Y-m-d') . '";' . "\n";
+										break;
+										
+									case 'description':
+										$contenu .= '$description = "' . T_("Description de la page") . '";' . "\n";
+										break;
+										
+									case 'idCategorie':
+										$contenu .= '$idCategorie = "";' . "\n";
+										break;
+										
+									case 'idGalerie':
+										$contenu .= '$idGalerie = "";' . "\n";
+										break;
+										
+									case 'langue':
+										$contenu .= '$langue = ' . var_export($langueParDefaut, TRUE) . ";\n";
+										break;
+										
+									case 'licence':
+										$contenu .= '$licence = ' . var_export($licenceParDefaut, TRUE) . ";\n";
+										break;
+										
+									case 'motsCles':
+										$contenu .= '$motsCles = "";' . "\n";
+										break;
+										
+									case 'robots':
+										$contenu .= '$robots = ' . var_export($robotsParDefaut, TRUE) . ";\n";
+										break;
+										
+									case 'rssGalerie':
+										if ($galerieActiverFluxRssParDefaut)
+										{
+											$contenu .= '$rssGalerie = FALSE;' . "\n";
+										}
+										else
+										{
+											$contenu .= '$rssGalerie = TRUE;' . "\n";
+										}
+										
+										break;
+										
+									case 'tableDesMatieres':
+										if ($afficherTableDesMatieresParDefaut)
+										{
+											$contenu .= '$tableDesMatieres = FALSE;' . "\n";
+										}
+										else
+										{
+											$contenu .= '$tableDesMatieres = TRUE;' . "\n";
+										}
+										
+										break;
+								}
+							}
+							
+							$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
+							$contenu .= '?>' . "\n";
+							$contenu .= "\n";
+							
+							if ($fichierAcreerType == 'FichierModeleHtml')
+							{
+								$contenu .= '<h1>' . T_("Titre de la page") . "</h1>\n";
+								$contenu .= "\n";
+								$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
+							}
+							elseif ($fichierAcreerType == 'FichierModeleMarkdown')
+							{
+								$contenu .= '<?php echo mdtxt("' . superBasename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
+							}
+							
+							$contenu .= "\n";
+							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
+							fputs($fic, $contenu);
+							fclose($fic);
+						}
+						else
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
+						}
+						
+						if ($fichierAcreerType == 'FichierModeleMarkdown')
+						{
 							if ($fic = @fopen($cheminPage . '/' . "$page.mdtxt", 'a'))
 							{
 								$contenu = '';
@@ -1658,7 +1658,7 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<select id="selectPorteDocumentsCreationVar" name="porteDocumentsCreationVar[]" multiple="multiple" size="5">' . "\n";
 	echo '<option value="apercu">$apercu</option>' . "\n";
 	echo '<option value="auteur">$auteur</option>' . "\n";
-	echo '<option value="baliseTitle" selected="selected">$baliseTitle</option>' . "\n";
+	echo '<option value="baliseTitle">$baliseTitle</option>' . "\n";
 	echo '<option value="boitesDeroulantes">$boitesDeroulantes</option>' . "\n";
 	echo '<option value="boitesDeroulantesAlaMain">$boitesDeroulantesAlaMain</option>' . "\n";
 	echo '<option value="classesBody">$classesBody</option>' . "\n";
@@ -1666,7 +1666,7 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<option value="courrielContact">$courrielContact</option>' . "\n";
 	echo '<option value="dateCreation">$dateCreation</option>' . "\n";
 	echo '<option value="dateRevision">$dateRevision</option>' . "\n";
-	echo '<option value="description" selected="selected">$description</option>' . "\n";
+	echo '<option value="description">$description</option>' . "\n";
 	echo '<option value="idCategorie">$idCategorie</option>' . "\n";
 	echo '<option value="idGalerie">$idGalerie</option>' . "\n";
 	echo '<option value="langue">$langue</option>' . "\n";

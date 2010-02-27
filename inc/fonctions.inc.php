@@ -63,6 +63,60 @@ function aInclureDebut($racine)
 }
 
 /*
+Ajoute au tableau des catégories la catégorie spéciale `site` (si elle n'existe pas déjà) contenant les dernières publications du site (pages déclarées dans le fichier de configuration du flux RSS des dernières publications), et retourne le tableau résultant.
+*/
+function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesSpecialesAajouter)
+{
+	if (in_array('galeries', $categoriesSpecialesAajouter) && !isset($categories['galeries']))
+	{
+		$contenuRss = @file_get_contents(superRawurlencode($urlRacine . '/rss.php?type=galeries&amp;langue=' . $langue, TRUE));
+		
+		if ($contenuRss !== FALSE)
+		{
+			$categories = array ('galeries' => array ()) + $categories;
+			$categories['galeries']['urlCategorie'] = 'categorie.php?id=galeries';
+			$categories['galeries']['pages'] = array ();
+			$dom = str_get_html($contenuRss);
+			
+			foreach ($dom->find('item') as $item)
+			{
+				if ($guid = $item->find('guid'))
+				{
+					$categories['galeries']['pages'][] = str_replace($urlRacine . '/', '', rawurldecode($guid[0]->innertext));
+				}
+			}
+			
+			$dom->clear();
+			unset($dom);
+		}
+	}
+	
+	if (in_array('site', $categoriesSpecialesAajouter) && !isset($categories['site']))
+	{
+		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+	
+		if ($cheminFichier)
+		{
+			$pages = super_parse_ini_file($cheminFichier, TRUE);
+		}
+	
+		if (isset($pages[$langue]))
+		{
+			$categories = array ('site' => array ()) + $categories;
+			$categories['site']['urlCategorie'] = 'categorie.php?id=site';
+			$categories['site']['pages'] = array ();
+		
+			foreach ($pages[$langue]['pages'] as $page)
+			{
+				$categories['site']['pages'][] = $page;
+			}
+		}
+	}
+	
+	return $categories;
+}
+
+/*
 Ajoute la variable GET à l'adresse fournie, et retourne le résultat. `$get` doit être sous la forme `cle=valeur` ou `cle`.
 */
 function ajouteGet($adresse, $get)
@@ -1150,20 +1204,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
 			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($oeuvre['intermediaireNom']);
 			$urlGalerieOeuvre = superRawurlencode("$urlGalerie?oeuvre=$id");
-		
-			if (!empty($oeuvre['pageIntermediaireDescription']))
-			{
-				$description = $oeuvre['pageIntermediaireDescription'];
-			}
-			elseif (!empty($oeuvre['intermediaireLegende']))
-			{
-				$description = $oeuvre['intermediaireLegende'];
-			}
-			else
-			{
-				$description = $title;
-			}
-		
+			
 			if (!empty($oeuvre['intermediaireLargeur']))
 			{
 				$width = $oeuvre['intermediaireLargeur'];
@@ -1214,7 +1255,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 					$urlOriginal = "$urlRacine/$urlOriginal";
 				}
 				
-				$msgOriginal = "\n<p><a href=\"$urlOriginal\">" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
+				$msgOriginal = "<p><a href=\"$urlOriginal\">" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
 			}
 			else
 			{
@@ -1242,8 +1283,22 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			{
 				$pubDate = date('Y-m-d H:i', filemtime($cheminOeuvre));
 			}
-		
-			$description = securiseTexte("<div>$description</div>\n<p><img src=\"$urlOeuvre\" width=\"$width\" height=\"$height\" alt=\"$alt\" /></p>$msgOriginal");
+			
+			$description = '<p>' . sprintf(T_("Oeuvre %1\$s"), "<em>$titreOeuvre</em>") . "</p>\n";
+			$description .= "<p><img src=\"$urlOeuvre\" width=\"$width\" height=\"$height\" alt=\"$alt\" /></p>\n";
+			
+			if (!empty($oeuvre['intermediaireLegende']))
+			{
+				$description .= '<div>' . $oeuvre['intermediaireLegende'] . "</div>\n";
+			}
+			elseif (!empty($oeuvre['pageIntermediaireDescription']))
+			{
+				$description .= '<div>' . $oeuvre['pageIntermediaireDescription'] . "</div>\n";
+			}
+			
+			$description .= $msgOriginal;
+			$description = securiseTexte($description);
+			
 			$itemsFluxRss[] = array (
 				"title" => $title,
 				"link" => $urlGalerieOeuvre,
@@ -1331,16 +1386,27 @@ Retourne le code HTML d'une catégorie à inclure dans le menu des catégories a
 */
 function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
 {
+	$nomCategorie = $categorie;
+	
+	if ($nomCategorie == 'site')
+	{
+		$nomCategorie = T_("Dernières publications");
+	}
+	elseif ($nomCategorie == 'galeries')
+	{
+		$nomCategorie = T_("Derniers ajouts aux galeries");
+	}
+	
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
 			
 	if (!empty($categories[$categorie]['urlCategorie']))
 	{
-		$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCategorie'] . '">' . $categorie . '</a>';
+		$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCategorie'] . '">' . $nomCategorie . '</a>';
 	}
 	else
 	{
-		$htmlCategorie .= $categorie;
+		$htmlCategorie .= '<a href="' . $urlRacine . '/categorie.php?id=' . $categorie . '">' . $nomCategorie . '</a>';
 	}
 	
 	if ($afficherNombreArticlesCategorie)
@@ -1439,10 +1505,19 @@ function infosPage($urlPage, $inclureApercu)
 		{
 			$infosPage['titre'] = superRawurlencode($urlPage);
 		}
-	
+		
 		// Contenu.
-	
-		if ($contenu = $dom->find('div#interieurContenu'))
+		
+		if ($contenu = $dom->find('div#galerieIntermediaireImg img'))
+		{
+			$infosPage['contenu'] = '<div id="galerieIntermediaireImg"><a href="' . superRawurlencode($urlPage) . '">' . $contenu[0]->outertext . "</a></div>\n";
+			
+			if ($contenu = $dom->find('div#galerieIntermediaireLegende'))
+			{
+				$infosPage['contenu'] .= $contenu[0]->outertext;
+			}
+		}
+		elseif ($contenu = $dom->find('div#interieurContenu'))
 		{
 			if ($h1 = $contenu[0]->find('h1'))
 			{
@@ -1541,7 +1616,7 @@ function infosPage($urlPage, $inclureApercu)
 /*
 Retourne les informations sur l'auteur, les dates de création et de révision ainsi que la ou les catégories. Si aucune information n'est présente, retourne une chaine vide.
 */
-function infosPublication($auteur, $dateCreation, $dateRevision, $categories)
+function infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $categories)
 {
 	$infosPublication = '';
 	
@@ -1578,7 +1653,7 @@ function infosPublication($auteur, $dateCreation, $dateRevision, $categories)
 			}
 			else
 			{
-				$listeCategories .= "$categorie, ";
+				$listeCategories .= "<a href=\"$urlRacine/categorie.php?id=$categorie\">$categorie</a>, ";
 			}
 		}
 		
@@ -2451,10 +2526,15 @@ function mdtxtChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($urlRacine, $categories, $afficherNombreArticlesCategorie)
+function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales)
 {
 	$menuCategoriesAutomatise = '';
 	ksort($categories);
+	
+	if ($activerCategoriesGlobales)
+	{
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array('site', 'galeries'));
+	}
 	
 	foreach ($categories as $categorie => $categorieInfos)
 	{

@@ -131,6 +131,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<p>' . sprintf(T_("Cet exemple fait référence à la catégorie %1\$s, accessible à l'adresse %2\$s, enfant de la catégorie %3\$s et contenant une page dont l'URL est %4\$s."), "<em>Chiens</em>", "<code>$urlRacine/animaux/chiens/</code>", "<em>Animaux</em>", "<code>$urlRacine/animaux/chiens/husky.php</code>") . "</p>\n";
 			
+			echo '<p>' . sprintf(T_("Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s."), 'urlCategorie', '$urlRacine/categorie.php?id=$idCategorie') . "</p>\n";
+			
 			echo '<p>' . T_("Pour enlever une catégorie ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
 			
 			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
@@ -210,7 +212,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$rssListeLangues .= "</select>";
 					
-					echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS global du site</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
+					echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
 				}
 			}
 			
@@ -245,6 +247,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			foreach ($_POST['cat'] as $cle => $cat)
 			{
+				$cat = securiseTexte($cat);
+				
 				if (!empty($cat) && (!empty($_POST['catParente'][$cle]) || !empty($_POST['urlCat'][$cle]) || !empty($_POST['url'][$cle])))
 				{
 					$contenuFichierTableau[$cat] = array ();
@@ -449,7 +453,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS global du site puisque le fichier %1\$s n'existe pas."), "<code>$rssCheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$rssCheminFichier</code>") . "</li>\n";
 				}
 			}
 			
@@ -496,7 +500,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
 			
-			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS global du site"));
+			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des dernières publications"));
 		}
 	}
 	?>

@@ -37,6 +37,15 @@ else
 	$getChemin = '';
 }
 
+if (isset($_GET['id']))
+{
+	$getId = sansEchappement($_GET['id']);
+}
+else
+{
+	$getId = '';
+}
+
 if (isset($_GET['langue']))
 {
 	$getLangue = sansEchappement($_GET['langue']);
@@ -146,37 +155,52 @@ if ($getType == 'galerie' && !empty($getChemin))
 		$erreur404 = TRUE;
 	}
 }
-elseif ($getType == 'categorie' && !empty($getChemin))
+elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)))
 {
-	if (file_exists($racine . '/' . $getChemin) && $fic = @fopen($racine . '/' . $getChemin, 'r'))
+	if (!empty($getChemin))
 	{
-		while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
+		if (file_exists($racine . '/' . $getChemin) && $fic = @fopen($racine . '/' . $getChemin, 'r'))
 		{
-			$ligne = rtrim(fgets($fic));
+			while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
+			{
+				$ligne = rtrim(fgets($fic));
+				
+				if (preg_match('/\$rssCategorie\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $resultat))
+				{
+					if ($resultat[1] == "TRUE" || $resultat[1] == "true")
+					{
+						$rssCategorie = TRUE;
+					}
+					elseif ($resultat[1] == "FALSE" || $resultat[1] == "false")
+					{
+						$rssCategorie = FALSE;
+					}
+				}
+				
+				if (preg_match('/\$idCategorie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $resultat))
+				{
+					$idCategorie = $resultat[1];
+				}
+			}
 			
-			if (preg_match('/\$rssCategorie\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $resultat))
-			{
-				if ($resultat[1] == "TRUE" || $resultat[1] == "true")
-				{
-					$rssCategorie = TRUE;
-				}
-				elseif ($resultat[1] == "FALSE" || $resultat[1] == "false")
-				{
-					$rssCategorie = FALSE;
-				}
-			}
-	
-			if (preg_match('/\$idCategorie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $resultat))
-			{
-				$idCategorie = $resultat[1];
-			}
+			fclose($fic);
 		}
-
-		fclose($fic);
-		
+		else
+		{
+			$erreur404 = TRUE;
+		}
+	}
+	
+	if (!$erreur404)
+	{
 		if (!isset($rssCategorie))
 		{
 			$rssCategorie = $activerFluxRssCategorieParDefaut;
+		}
+		
+		if (!empty($getId))
+		{
+			$idCategorie = $getId;
 		}
 		
 		// Flux RSS de la catégorie.
@@ -227,7 +251,15 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 						$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 					}
 					
-					$urlCategorie = $urlRacine . '/' . $getChemin;
+					if (!empty($getChemin))
+					{
+						$urlCategorie = $urlRacine . '/' . $getChemin;
+					}
+					else
+					{
+						$urlCategorie = $urlRacine . '/categorie.php?id=' . $idCategorie;
+					}
+					
 					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', $idCategorie);
 			
 					if ($dureeCache['fluxRss'])
@@ -251,10 +283,6 @@ elseif ($getType == 'categorie' && !empty($getChemin))
 		{
 			$erreur404 = TRUE;
 		}
-	}
-	else
-	{
-		$erreur404 = TRUE;
 	}
 }
 elseif ($getType == 'galeries' && !empty($getLangue) && isset($accueil[$getLangue]))
@@ -358,31 +386,6 @@ elseif ($getType == 'site' && !empty($getLangue) && isset($accueil[$getLangue]))
 					}
 					
 					$i++;
-				}
-				
-				// On vérifie si les galeries ont leur flux RSS global, et si oui, on les inclut dans le flux RSS global du site.
-				
-				$galeriesDansFluxRssGlobalSite = FALSE;
-				
-				if ($galerieActiverFluxRssGlobal && $cheminConfigFluxRssGlobalGaleries)
-				{
-					$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
-					
-					if (!empty($galeries))
-					{
-						foreach ($galeries as $codeLangue => $langueInfos)
-						{
-							if ($codeLangue == $getLangue)
-							{
-								$galeriesDansFluxRssGlobalSite = TRUE;
-								
-								foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
-								{
-									$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
-								}
-							}
-						}
-					}
 				}
 				
 				if (!empty($itemsFluxRss))

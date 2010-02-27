@@ -683,61 +683,71 @@ Voici un exemple minimal:
 
 ## Catégories
 
-Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut qu'un fichier de configuration et une page spéciale pour utiliser cette fonctionnalité:
+Squeletml propose un moyen de regrouper des pages: les catégories. Il ne faut au minimum qu'un fichier de configuration pour utiliser cette fonctionnalité. Le fichier de configuration `site/inc/categories.ini.txt` ou `site/inc/categories.ini` peut être créé à la main ou à l'aide du script de gestion des catégories dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages pour chaque catégorie, et ce sous la forme suivante:
 
-- le fichier de configuration `site/inc/categories.ini.txt` ou `site/inc/categories.ini` peut être créé à la main ou à l'aide du script de gestion des catégories dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages pour chaque catégorie, et ce sous la forme suivante:
+	[id de la catégorie]
+	pages[]=URL relative de la page
 
-		[id de la catégorie]
-		pages[]=URL relative de la page
+L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
 
-	L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
+	[Chiens]
+	pages[]=animaux/chiens/husky.php
+	pages[]=animaux/chiens/malamute.php
 
-		[Chiens]
-		pages[]=animaux/chiens/husky.php
-		pages[]=animaux/chiens/malamute.php
+Les deux pages en question sont accessibles respectivement à l'adresse:
 
-	Les deux pages en question sont accessibles respectivement à l'adresse:
+	$urlRacine/animaux/chiens/husky.php
 
-		$urlRacine/animaux/chiens/husky.php
+et:
 
-	et:
+	$urlRacine/animaux/chiens/malamute.php
 
-		$urlRacine/animaux/chiens/malamute.php
+Optionnellement, un lien vers la page d'accueil de chaque catégorie peut être précisé grâce au paramètre `urlCategorie`:
 
-- la page à visiter sur le site affiche la liste des pages faisant partie de la catégorie. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la catégorie que vous voulez afficher, et ce grâce à la variable `$idCategorie`. Disons que pour notre exemple la page est `$urlRacine/animaux/chiens/index.php` et qu'elle contient ceci:
+	urlCategorie=l'URL relative de la page d'accueil de la catégorie
 
-		<?php
-		$baliseTitle = "Articles sur les chiens";
-		$idCategorie = "Chiens";
-		include '../../inc/premier.inc.php';
-		?>
-		
-		<h1>Articles sur les chiens</h1>
-		
-		<?php include $racine . '/inc/dernier.inc.php'; ?>
+Exemple:
 
-	En visitant cette page, un aperçu pour chaque page listée dans le fichier de configuration pour la catégorie donnée sera affiché sous le titre `h1`. Voici un exemple d'aperçu qui pourrait être généré pour la page sur le husky:
+	[Chiens]
+	urlCategorie=animaux/chiens/
+	pages[]=animaux/chiens/husky.php
+	pages[]=animaux/chiens/malamute.php
 
-		Article sur le husky
-		
-		Publié par pseudo le 2010-01-04. Dernière révision le 2010-01-05.
-		
-		Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. […]
-		
-		Lire la suite de Article sur le husky 
+La page d'accueil d'une catégorie peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la catégorie que vous voulez afficher, et ce grâce à la variable `$idCategorie`. Disons que pour notre exemple la page est `$urlRacine/animaux/chiens/index.php` et qu'elle contient ceci:
 
-	La teneur exacte de l'aperçu de la page sur le husky dépend de la configuration de `$urlRacine/animaux/chiens/husky.php`. Dans notre exemple, les variables `$dateCreation` et `$dateRevision` ont été affectées. Pour sa part, le lien «Lire la suite de...» est ajouté lorsque le texte de la page n'apparaît pas au complet, et ce grâce à l'utilisation de la variable `$apercu`. Voir la section «Variables PHP» pour plus de détails au sujet de ces variables.
+	<?php
+	$baliseTitle = "Articles sur les chiens";
+	$idCategorie = "Chiens";
+	include '../../inc/premier.inc.php';
+	?>
+	
+	<?php include $racine . '/inc/dernier.inc.php'; ?>
 
-	Si une page fait partie d'au moins une catégorie, les informations de publication au sujet de cette page feront référence à sa ou ses catégories. Exemple:
+En visitant cette page, un aperçu pour chaque page listée dans le fichier de configuration pour la catégorie donnée sera généré. Un titre de premier niveau (`h1`) sera également généré par défaut (voir la variable `$genererTitrePageCategories` dans le fichier de configuration du site).
 
-		Publié par pseudo le 2010-01-04. Dernière révision le 2010-01-05. Catégories: Animaux, Chiens
+Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre `urlCategorie`, l'URL sera générée automatiquement, et ce sous la forme `$urlRacine/categorie.php?id=$idCategorie`. Pour éviter le contenu dupliqué dans les moteurs de recherche, seules les catégories pour lesquelles aucune valeur n'a été donnée au paramètre `urlCategorie` sont accessibles sur la page `$urlRacine/categorie.php`.
 
-	Un lien vers la page d'accueil de chaque catégorie peut être ajouté automatiquement. Pour ce faire, ajouter dans le fichier de configuration des catégories l'URL relative de la page d'accueil de la catégorie. Exemple:
+Voici un exemple d'aperçu qui pourrait être généré pour la page sur le husky:
 
-		[Chiens]
-		urlCategorie=animaux/chiens/
-		pages[]=animaux/chiens/husky.php
-		pages[]=animaux/chiens/malamute.php
+	Article sur le husky
+	
+	Publié par pseudo le 2010-01-04. Dernière révision le 2010-01-05.
+	
+	Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. […]
+	
+	Lire la suite de Article sur le husky 
+
+La teneur exacte de l'aperçu de la page sur le husky dépend de la configuration de `$urlRacine/animaux/chiens/husky.php`. Dans notre exemple, les variables `$dateCreation` et `$dateRevision` ont été affectées. Pour sa part, le lien «Lire la suite de...» est ajouté lorsque le texte de la page n'apparaît pas au complet, et ce grâce à l'utilisation de la variable `$apercu`. Voir la section «Variables PHP» pour plus de détails au sujet de ces variables.
+
+Si une page fait partie d'une catégorie au moins, les informations de publication au sujet de cette page feront référence à sa ou ses catégories. Exemple:
+
+	Publié par pseudo le 2010-01-04. Dernière révision le 2010-01-05. Catégories: Animaux, Chiens
+
+### Catégories spéciales
+
+Les catégories spéciales sont `site ` (les dernières publications) et `galeries` (les derniers ajouts aux galeries). Par défaut, l'URL est `$urlRacine/categorie.php?id=(site|galeries)`. Il n'y a pas de flux RSS associé à ces catégories puisque les flux RSS globaux remplissent déjà cette tâche.
+
+Pour que les catégories spéciales soient activées, la variable `$activerCategoriesGlobales` du fichier de configuration du site doit valoir `TRUE`.
 
 ### Bloc de menu des catégories
 
@@ -1002,49 +1012,55 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 #### Syndication globale des galeries
 
-Par défaut, le flux RSS comprenant toutes les galeries du site est désactivé. Ceci peut être modifié dans le fichier de configuration. Si le flux RSS global des galeries est activé, un fichier `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
+Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts aux galeries, il faut:
 
-	[code de la langue]
-	id de la galerie=URL relative de la galerie
+- que la variable `$galerieActiverFluxRssGlobal` dans le fichier de configuration du site vaille TRUE;
 
-Le code de la langue précise la langue de la syndication globale. L'`id` correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
+- qu'un fichier `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini` soit créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
 
-	[fr]
-	mes voyages=voyages.php
-	animaux=dossier/galerie-animaux.php
+		[code de la langue]
+		id de la galerie=URL relative de la galerie
 
-Les deux galeries en question sont accessibles respectivement à l'adresse:
+	Le code de la langue précise la langue de la syndication globale. L'`id` correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
 
-	$urlRacine/voyages.php
+		[fr]
+		mes voyages=voyages.php
+		animaux=dossier/galerie-animaux.php
 
-et:
+	Les deux galeries en question sont accessibles respectivement à l'adresse:
 
-	$urlRacine/dossier/galerie-animaux.php
+		$urlRacine/voyages.php
 
-**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
+	et:
+
+		$urlRacine/dossier/galerie-animaux.php
+
+	**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
 #### Syndication globale du site
 
-Par défaut, la syndication globale du site est désactivée, mais peut être activée dans le fichier de configuration. Si elle est activée, un fichier `site/inc/rss-site.ini.txt` ou `site/inc/rss-site.ini` doit être créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
+Pour activer le flux RSS global du site, ou flux RSS des dernières publications, il faut:
 
-	[code de la langue]
-	pages[]=URL relative de la page
+- que la variable `$activerFluxRssGlobalSite` dans le fichier de configuration du site vaille TRUE;
 
-Le code de la langue précise la langue de la syndication globale. L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
+- qu'un fichier `site/inc/rss-site.ini.txt` ou `site/inc/rss-site.ini` soit créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
 
-	[fr]
-	pages[]=dossier1/dossier2/page.php
-	pages[]=autrePage.php
+		[code de la langue]
+		pages[]=URL relative de la page
 
-Les deux pages en question sont accessibles respectivement à l'adresse:
+	Le code de la langue précise la langue de la syndication globale. L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
 
-	$urlRacine/dossier1/dossier2/page.php
+		[fr]
+		pages[]=dossier1/dossier2/page.php
+		pages[]=autrePage.php
 
-et:
+	Les deux pages en question sont accessibles respectivement à l'adresse:
 
-	$urlRacine/autrePage.php
+		$urlRacine/dossier1/dossier2/page.php
 
-L'inclusion des galeries dans le flux global du site dépend de la valeur de la variable `$galerieActiverFluxRssGlobal`, présente dans le fichier de configuration. Si cette variable vaut `TRUE`, les galeries seront incluses, sinon seules les pages listées dans le fichier `site/inc/rss-site.ini.txt` ou `site/inc/rss-site.ini` composeront le flux global du site.
+	et:
+
+		$urlRacine/autrePage.php
 
 ## Cache
 

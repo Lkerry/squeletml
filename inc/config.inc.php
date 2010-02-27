@@ -325,6 +325,23 @@ $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(functio
 */
 $inclureApercu = TRUE; // TRUE|FALSE
 
+// Expiration du cache.
+/*
+- Temps en secondes avant que le cache n'expire.
+- Exemples:
+  - `0` équivaut à désactiver le cache;
+  - `1800` équivaut à 30 minutes;
+  - `3600` équivaut à 1 heure;
+  - `28800` équivaut à 8 heures;
+  - `43200` équivaut à 12 heures;
+  - `86400` équivaut à 1 jour;
+  - `259200` équivaut à 3 jours;
+  - `604800` équivaut à 7 jours.
+*/
+$dureeCache['fluxRss'] = 10;
+$dureeCache['categorie'] = 10;
+$dureeCache['galerie'] = 10;
+
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*
 - Si vaut `TRUE`, un titre `h1` sera ajouté avant la liste des pages faisant partie de la catégorie affichée.
@@ -344,28 +361,18 @@ $genererMenuCategories = TRUE; // TRUE|FALSE
 */
 $afficherNombreArticlesCategorie = TRUE; // TRUE|FALSE
 
+// Activation s'il y a lieu des catégories spéciales.
+/*
+- Les catégories spéciales sont les dernières publications et les derniers ajouts aux galeries.
+- Par défaut, l'URL est `$urlRacine/categorie.php?id=(site|galeries)`.
+*/
+$activerCategoriesGlobales = TRUE; // TRUE|FALSE
+
 // Pagination de la liste des articles faisant partie d'une catégorie.
 /*
 - Nombre d'articles par page (0 pour désactiver la pagination).
 */
 $nombreArticlesParPageCategorie = 10;
-
-// Expiration du cache.
-/*
-- Temps en secondes avant que le cache n'expire.
-- Exemples:
-  - `0` équivaut à désactiver le cache;
-  - `1800` équivaut à 30 minutes;
-  - `3600` équivaut à 1 heure;
-  - `28800` équivaut à 8 heures;
-  - `43200` équivaut à 12 heures;
-  - `86400` équivaut à 1 jour;
-  - `259200` équivaut à 3 jours;
-  - `604800` équivaut à 7 jours.
-*/
-$dureeCache['fluxRss'] = 0;
-$dureeCache['categorie'] = 0;
-$dureeCache['galerie'] = 0;
 
 /* ____________________ Style CSS. ____________________ */
 
@@ -511,12 +518,12 @@ $blocsArrondisSpecifiques['licence'] = array (TRUE, TRUE, TRUE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
-// Syndication globale du site.
+// Syndication globale du site (dernières publications).
 /*
-- La syndication globale du site est constituée des pages, mais également des galeries si `$galerieActiverFluxRssGlobal` vaut TRUE. La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL.
+- La syndication n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant une liste d'URL.
 - Voir la documentation pour plus de détails.
 */
-$activerFluxRssGlobalSite = FALSE; // TRUE|FALSE
+$activerFluxRssGlobalSite = TRUE; // TRUE|FALSE
 
 // Syndication individuelle par défaut des catégories.
 /*
@@ -745,12 +752,12 @@ $galerieLegendeEmplacement = array ('bas', 'bloc', 'bloc');
 */
 $galerieActiverFluxRssParDefaut = TRUE; // TRUE|FALSE
 
-// Syndication globale pour toutes les galeries.
+// Syndication globale des galeries (derniers ajouts aux galeries).
 /*
 - La syndication globale des galeries n'est pas complètement automatique. En effet, il faut maintenir un fichier contenant la liste des galeries et de leur URL.
 - Voir la documentation pour plus de détails.
 */
-$galerieActiverFluxRssGlobal = FALSE; // TRUE|FALSE
+$galerieActiverFluxRssGlobal = TRUE; // TRUE|FALSE
 
 // Auteur par défaut à afficher dans la syndication.
 /*

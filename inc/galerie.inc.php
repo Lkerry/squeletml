@@ -126,7 +126,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 			// Titre de la galerie.
 			if ($galerieGenererTitrePages)
 			{
-				$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s &gt;&nbsp;Galerie %2\$s"), "<em>$titreOeuvre</em>", "<em>$idGalerie</em>") . "</h1>\n";
+				$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s&nbsp;| Galerie %2\$s"), "<em>$titreOeuvre</em>", "<em>$idGalerie</em>") . "</h1>\n";
 			}
 			
 			$indiceOeuvreEnCours = $indice;
@@ -380,7 +380,7 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 		// Titre de la galerie.
 		if ($galerieGenererTitrePages)
 		{
-			$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s &gt;&nbsp;Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s&nbsp;| Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
 		}
 		
 		$corpsGalerie .= '<p>' . sprintf(T_("L'oeuvre %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les oeuvres</a>."), "<em>$id</em>", $urlSansGet) . "</p>\n";

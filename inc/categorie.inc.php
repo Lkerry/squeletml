@@ -22,20 +22,42 @@ if ($dureeCache['categorie'])
 }
 
 // Liste des articles à afficher.
-
-$cheminFichier = cheminConfigCategories($racine);
-
-if ($cheminFichier)
+if ($idCategorie == 'site')
 {
-	$categories = super_parse_ini_file($cheminFichier, TRUE);
+	$categories = ajouteCategoriesSpeciales($racine, $urlRacine, LANGUE, array (), array ('site'));
+	
+	if (empty($categories))
+	{
+		$nomCategorie = T_("Dernières publications");
+		$idCategorie = '';
+	}
 }
-
-if (!isset($categories[$idCategorie]))
+// La catégorie spéciale `galeries` est basée sur le flux RSS des derniers ajouts aux galeries, donc son schéma est légèrement différent des autres catégories.
+elseif ($idCategorie == 'galeries')
 {
-	$nomCategorie = $idCategorie;
-	$idCategorie = '';
+	$categories = ajouteCategoriesSpeciales($racine, $urlRacine, LANGUE, array (), array ('galeries'));
+	
+	if (empty($categories))
+	{
+		$nomCategorie = T_("Derniers ajouts aux galeries");
+		$idCategorie = '';
+	}
 }
+else
+{
+	$cheminFichier = cheminConfigCategories($racine);
+	
+	if ($cheminFichier)
+	{
+		$categories = super_parse_ini_file($cheminFichier, TRUE);
+	}
 
+	if (!isset($categories[$idCategorie]))
+	{
+		$nomCategorie = $idCategorie;
+		$idCategorie = '';
+	}
+}
 // Initialisation du contenu de la catégorie.
 $categorie = '';
 
@@ -51,12 +73,34 @@ if (!empty($idCategorie))
 	
 	if (empty($baliseTitle))
 	{
-		$baliseTitle = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
+		if ($idCategorie == 'site')
+		{
+			$baliseTitle = T_("Dernières publications");
+		}
+		elseif ($idCategorie == 'galeries')
+		{
+			$baliseTitle = T_("Derniers ajouts aux galeries");
+		}
+		else
+		{
+			$baliseTitle = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
+		}
 	}
 	
 	if (empty($description))
 	{
-		$description = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
+		if ($idCategorie == 'site')
+		{
+			$description = T_("Dernières publications");
+		}
+		elseif ($idCategorie == 'galeries')
+		{
+			$description = T_("Derniers ajouts aux galeries");
+		}
+		else
+		{
+			$description = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
+		}
 	}
 	
 	if ($inclureMotsCles && empty($motsCles))
@@ -99,15 +143,34 @@ if (!empty($idCategorie))
 		// Titre de la catégorie.
 		if ($genererTitrePageCategories)
 		{
-			$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
+			if ($idCategorie == 'site')
+			{
+				$categorie .= '<h1>' . T_("Dernières publications") . "</h1>\n";
+			}
+			elseif ($idCategorie == 'galeries')
+			{
+				$categorie .= '<h1>' . T_("Derniers ajouts aux galeries") . "</h1>\n";
+			}
+			else
+			{
+				$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
+			}
 		}
-		
-		$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
 		
 		// Ajustement des métabalises.
 		
-		$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
-		$description = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page'])) . $baliseTitleComplement;
+		if (isset($_GET['page']))
+		{
+			$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
+			$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
+			$description = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page'])) . $baliseTitleComplement;
+		}
+		else
+		{
+			$categorie .= '<p>' . T_("La page est introuvable.") . "</p>\n";
+			$baliseTitle = T_("La page est introuvable");
+			$description = T_("La page est introuvable") . $baliseTitleComplement;
+		}
 		
 		if ($inclureMotsCles)
 		{
@@ -128,7 +191,18 @@ if (!empty($idCategorie))
 			// Titre de la catégorie.
 			if ($genererTitrePageCategories)
 			{
-				$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
+				if ($idCategorie == 'site')
+				{
+					$categorie .= '<h1>' . T_("Dernières publications") . "</h1>\n";
+				}
+				elseif ($idCategorie == 'galeries')
+				{
+					$categorie .= '<h1>' . T_("Derniers ajouts aux galeries") . "</h1>\n";
+				}
+				else
+				{
+					$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
+				}
 			}
 			
 			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
@@ -148,7 +222,7 @@ if (!empty($idCategorie))
 		
 					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
 					$listeCategoriesPage = categories($racine, $urlRacine, $adresse);
-					$infosPublication = infosPublication($infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesPage);
+					$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesPage);
 					
 					if (!empty($infosPublication))
 					{
@@ -203,7 +277,18 @@ else
 	// Titre de la catégorie.
 	if ($genererTitrePageCategories)
 	{
-		$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$nomCategorie</em>") . "</h1>\n";
+		if ($idCategorie == 'site')
+		{
+			$categorie .= '<h1>' . T_("Dernières publications") . "</h1>\n";
+		}
+		elseif ($idCategorie == 'galeries')
+		{
+			$categorie .= '<h1>' . T_("Derniers ajouts aux galeries") . "</h1>\n";
+		}
+		else
+		{
+			$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$nomCategorie</em>") . "</h1>\n";
+		}
 	}
 	
 	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), "<em>$nomCategorie</em>") . "</p>\n";
