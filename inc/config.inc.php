@@ -338,9 +338,9 @@ $inclureApercu = TRUE; // TRUE|FALSE
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
 */
-$dureeCache['fluxRss'] = 10;
-$dureeCache['categorie'] = 10;
-$dureeCache['galerie'] = 10;
+$dureeCache['fluxRss'] = 0;
+$dureeCache['categorie'] = 0;
+$dureeCache['galerie'] = 0;
 
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*
@@ -368,9 +368,9 @@ $afficherNombreArticlesCategorie = TRUE; // TRUE|FALSE
 */
 $activerCategoriesGlobales = TRUE; // TRUE|FALSE
 
-// Pagination de la liste des articles faisant partie d'une catégorie.
+// Pagination par défaut de la liste des articles faisant partie d'une catégorie.
 /*
-- Nombre d'articles par page (0 pour désactiver la pagination).
+- Nombre d'articles par page par défaut (0 pour désactiver la pagination).
 */
 $nombreArticlesParPageCategorie = 10;
 
