@@ -259,6 +259,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$contenuFichierTableau[$cat]['infos'][] = 'urlCategorie=' . securiseTexte($_POST['urlCat'][$cle]) . "\n";
 					}
+					else
+					{
+						$contenuFichierTableau[$cat]['infos'][] = "urlCategorie=categorie.php?id=$cat\n";
+					}
 					
 					if (!empty($_POST['catParente'][$cle]))
 					{

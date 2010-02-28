@@ -279,7 +279,7 @@ if (!empty($blocsAinserer))
 					}
 					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 					{
-						$bloc = menuCategoriesAutomatise($racine, $urlRacine, LANGUE, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales);
+						$bloc = menuCategoriesAutomatise($racine, $urlRacine, LANGUE, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 						
 						if (!empty($bloc))
 						{

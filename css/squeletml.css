@@ -323,6 +323,19 @@ h1#titrePage404 {
 	background: url('../fichiers/attention.png') no-repeat left center;
 }
 
+/* Publications récentes (voir la fonction `publicationsRecentes()`). */
+
+div.publicationsRecentesGalerie ul, div.publicationsRecentesGaleries ul {
+	list-style-type: none;
+}
+
+div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
+	padding: 5px 10px 10px 5px;
+	border: none;
+	margin: 10px;
+	background: url('../fichiers/ombre-vignette.png') no-repeat right bottom;
+}
+
 /***********************************************************************
 **
 ** Sous-contenu.

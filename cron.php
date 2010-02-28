@@ -9,8 +9,6 @@ if (file_exists('init.inc.php'))
 		include_once $cheminFichier;
 	}
 	
-	include_once $racine . '/inc/simplehtmldom/simple_html_dom.php';
-	
 	super_set_time_limit($delaiExpirationScript);
 	
 	@file_put_contents("$racine/site/inc/cron.txt", time());
@@ -36,7 +34,7 @@ if (file_exists('init.inc.php'))
 				{
 					foreach ($pages as $codeLangue => $langueInfos)
 					{
-						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, $categories, array('galeries'));
+						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, $categories, array('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 					}
 				}
 			}
@@ -49,7 +47,7 @@ if (file_exists('init.inc.php'))
 				{
 					foreach ($pages as $codeLangue => $langueInfos)
 					{
-						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, $categories, array('site'));
+						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, $categories, array('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 					}
 				}
 			}

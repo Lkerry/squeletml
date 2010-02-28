@@ -65,29 +65,23 @@ function aInclureDebut($racine)
 /*
 Ajoute au tableau des catégories la catégorie spéciale `site` (si elle n'existe pas déjà) contenant les dernières publications du site (pages déclarées dans le fichier de configuration du flux RSS des dernières publications), et retourne le tableau résultant.
 */
-function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesSpecialesAajouter)
+function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesSpecialesAajouter, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	if (in_array('galeries', $categoriesSpecialesAajouter) && !isset($categories['galeries']))
 	{
-		$contenuRss = @file_get_contents(superRawurlencode($urlRacine . '/rss.php?type=galeries&amp;langue=' . $langue, TRUE));
+		$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 		
-		if ($contenuRss !== FALSE)
+		if (!empty($itemsFluxRss))
 		{
+			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss);
 			$categories = array ('galeries' => array ()) + $categories;
 			$categories['galeries']['urlCategorie'] = 'categorie.php?id=galeries';
 			$categories['galeries']['pages'] = array ();
-			$dom = str_get_html($contenuRss);
 			
-			foreach ($dom->find('item') as $item)
+			foreach ($itemsFluxRss as $item => $infosItem)
 			{
-				if ($guid = $item->find('guid'))
-				{
-					$categories['galeries']['pages'][] = str_replace($urlRacine . '/', '', rawurldecode($guid[0]->innertext));
-				}
+				$categories['galeries']['pages'][] = str_replace($urlRacine . '/', '', rawurldecode($infosItem['link']));
 			}
-			
-			$dom->clear();
-			unset($dom);
 		}
 	}
 	
@@ -1200,7 +1194,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 		{
 			$id = idOeuvre($racine, $oeuvre);
 			$titreOeuvre = titreOeuvre($oeuvre);
-			$title = sprintf(T_("Oeuvre %1\$s"), $titreOeuvre);
+			$title = sprintf(T_("Oeuvre %1\$s | Galerie %2\$s"), $titreOeuvre, $idGalerie);
 			$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
 			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($oeuvre['intermediaireNom']);
 			$urlGalerieOeuvre = superRawurlencode("$urlGalerie?oeuvre=$id");
@@ -1284,7 +1278,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 				$pubDate = date('Y-m-d H:i', filemtime($cheminOeuvre));
 			}
 			
-			$description = '<p>' . sprintf(T_("Oeuvre %1\$s"), "<em>$titreOeuvre</em>") . "</p>\n";
+			$description = '<p>' . sprintf(T_("Oeuvre %1\$s | Galerie %2\$s."), "<em>$titreOeuvre</em>", "<em>$idGalerie</em>") . "</p>\n";
 			$description .= "<p><img src=\"$urlOeuvre\" width=\"$width\" height=\"$height\" alt=\"$alt\" /></p>\n";
 			
 			if (!empty($oeuvre['intermediaireLegende']))
@@ -1307,6 +1301,38 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 				"dccreator" => $dccreator,
 				"pubDate" => $pubDate,
 			);
+		}
+	}
+	
+	return $itemsFluxRss;
+}
+
+/*
+Retourne un tableau listant les oeuvres de toutes les galeries déclarées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries.
+
+Voir la fonction `fluxRssGalerieTableauBrut()` pour plus de détails.
+*/
+function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+{
+	$itemsFluxRss = array ();
+	$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
+	
+	if ($cheminConfigFluxRssGlobalGaleries)
+	{
+		$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
+		
+		if (!empty($galeries))
+		{
+			foreach ($galeries as $codeLangue => $langueInfos)
+			{
+				if ($codeLangue == $langue)
+				{
+					foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
+					{
+						$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
+					}
+				}
+			}
 		}
 	}
 	
@@ -1364,9 +1390,9 @@ function fluxRssPageTableauBrut($cheminPage, $urlPage, $fluxRssAvecApercu)
 /*
 Retourne le tableau `$itemsFluxRss` contenant au maximum le nombre d'items précisé dans la configuration. L'ordre des items dépend du type.
 */
-function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss, $galeriesDansFluxRssGlobalSite = FALSE)
+function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 {
-	if ($type == 'galerie' || $type == 'galeries' || ($type == 'site' && $galeriesDansFluxRssGlobalSite))
+	if ($type == 'galerie' || $type == 'galeries')
 	{
 		foreach ($itemsFluxRss as $cle => $valeur)
 		{
@@ -2526,14 +2552,14 @@ function mdtxtChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales)
+function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$menuCategoriesAutomatise = '';
 	ksort($categories);
 	
 	if ($activerCategoriesGlobales)
 	{
-		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array('site', 'galeries'));
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array('site', 'galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 	}
 	
 	foreach ($categories as $categorie => $categorieInfos)
@@ -3216,10 +3242,8 @@ function oeuvre(
 				else
 				{
 					list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $vignetteNom);
-					{
-						$width = 'width="' . $larg . '"';
-						$height = 'height="' . $haut . '"';
-					}
+					$width = 'width="' . $larg . '"';
+					$height = 'height="' . $haut . '"';
 				}
 			}
 			else
@@ -3416,6 +3440,429 @@ function phpGettext($racine, $langue)
 	T_textdomain($domain);
 	
 	return TRUE;
+}
+
+/*
+Retourne une liste des publications récentes pour le type de publication donné.
+
+Les types possibles sont:
+
+- `categorie`: derniers ajouts à une catégorie en particulier;
+- `galerie`: derniers ajouts à une galerie en particulier;
+- `galeries`: derniers ajouts aux galeries;
+- `site`: dernières publications sur le site.
+
+Le paramètre `$id` n'est utile que pour les types `categorie` (fournir la valeur de `$idCategorie`) et `galerie` (fournir la valeur de `$idGalerie`). Dans les autres cas, ce paramètre peut être vide.
+
+Le paramètre `$nombreVoulu` correspond au nombre de publications dans la liste retournée.
+
+Le paramètre `$ajouterLien` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien est ajouté vers la liste complète des publications pour le type donné (par exemple vers la liste de toutes les pages appartenant à une catégorie).
+
+À noter que le code retourné peut ne pas avoir été généré, mais lu dans le cache, si `$dureeCache['publications-recentes']` du fichier de configuration du site vaut plus de 0.
+*/
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLien, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+{
+	$html = '';
+	
+	if ($type == 'categorie')
+	{
+		// On vérifie si la liste existe en cache ou si le cache est expiré.
+		
+		if ($ajouterLien)
+		{
+			$lienCache = '-avec-lien';
+		}
+		else
+		{
+			$lienCache = '-sans-lien';
+		}
+		
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-categorie-$id-$nombreVoulu$lienCache.cache.html");
+		
+		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
+		{
+			@readfile("$racine/site/cache/$nomFichierCache");
+		}
+		else
+		{
+			$itemsFluxRss = array ();
+			$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
+			
+			if (!empty($categories) && isset($categories[$id]))
+			{
+				$nombreReel = count($categories[$id]);
+				$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+				$i = 0;
+				
+				foreach ($categories[$id]['pages'] as $page)
+				{
+					if ($i < $nombreVoulu)
+					{
+						$page = rtrim($page);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", FALSE);
+						
+						if (!empty($fluxRssPageTableauBrut))
+						{
+							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+						}
+					}
+					
+					$i++;
+				}
+				
+				if (!empty($itemsFluxRss))
+				{
+					$itemsFluxRss = fluxRssTableauFinal('categorie', $itemsFluxRss, $nombreVoulu);
+					
+					foreach ($itemsFluxRss as $cle => $valeur)
+					{
+						$html .= '<li><a href="' . $valeur['link'] . '">' . $valeur['title'] . "</a></li>\n";
+					}
+					
+					if (!empty($html))
+					{
+						if ($ajouterLien)
+						{
+							if (!empty($categories[$id]['urlCategorie']))
+							{
+								$lien = $urlRacine . '/' . $categories[$id]['urlCategorie'];
+							}
+							else
+							{
+								$lien = $urlRacine . '/categorie.php?id=' . $id;
+							}
+							
+							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("En lire plus") . "</a></p>\n";
+						}
+						
+						$html = "<div class=\"publicationsRecentes publicationsRecentesCategorie\">\n<ul>\n$html</ul>\n</div>\n";
+					}
+				}
+			}
+			
+			if ($dureeCache['publications-recentes'])
+			{
+				creeDossierCache($racine);
+				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
+			}
+		}
+	}
+	elseif ($type == 'galerie')
+	{
+		// On vérifie si la liste existe en cache ou si le cache est expiré.
+		
+		if ($ajouterLien)
+		{
+			$lienCache = '-avec-lien';
+		}
+		else
+		{
+			$lienCache = '-sans-lien';
+		}
+		
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-galerie-$id-$nombreVoulu$lienCache.cache.html");
+		
+		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
+		{
+			@readfile("$racine/site/cache/$nomFichierCache");
+		}
+		else
+		{
+			$urlGalerie = '';
+			$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
+			
+			if ($cheminConfigFluxRssGlobalGaleries)
+			{
+				$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
+				
+				if (!empty($galeries) && isset($galeries[$langue][$id]))
+				{
+					$urlGalerie = $urlRacine . '/' . $galeries[$langue][$id];
+				}
+			}
+			
+			if (!empty($urlGalerie))
+			{
+				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $id), TRUE);
+				
+				if ($tableauGalerie !== FALSE)
+				{
+					$vignettes = array ();
+					
+					foreach ($tableauGalerie as $oeuvre)
+					{
+						$titre = sprintf(T_("Oeuvre %1\$s | Galerie %2\$s"), titreOeuvre($oeuvre), $id);
+						
+						if (!empty($oeuvre['dateAjout']))
+						{
+							$date = $oeuvre['dateAjout'];
+						}
+						else
+						{
+							$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom']));
+						}
+						
+						if (isset($oeuvre['vignetteNom']))
+						{
+							$vignetteNom = $oeuvre['vignetteNom'];
+						}
+						else
+						{
+							$vignetteNom = nomSuffixe($oeuvre['intermediaireNom'], '-vignette');
+						}
+					
+						if (!empty($oeuvre['vignetteLargeur']) || !empty($oeuvre['vignetteHauteur']))
+						{
+							if (!empty($oeuvre['vignetteLargeur']))
+							{
+								$width = $oeuvre['vignetteLargeur'];
+							}
+				
+							if (!empty($oeuvre['vignetteHauteur']))
+							{
+								$height = $oeuvre['vignetteHauteur'];
+							}
+						}
+						else
+						{
+							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $id . '/' . $vignetteNom);
+						}
+						
+						$vignettes[] = array (
+							'code' => '<li><a href="' . superRawurlencode($urlGalerie . '?oeuvre=' . idOeuvre($racine, $oeuvre)) . '" title="' . $titre . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($id) . '/' . $vignetteNom . '" alt="' . $titre . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
+							'date' => $date,
+						);
+					}
+					
+					foreach ($vignettes as $cle => $valeur)
+					{
+						$vignettesDate[$cle] = $valeur['date'];
+					}
+					
+					array_multisort($vignettesDate, SORT_DESC, $vignettes);
+					
+					$nombreReel = count($vignettes);
+					$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+					
+					for ($i = 0; $i < $nombreVoulu; $i++)
+					{
+						$html .= $vignettes[$i]['code'];
+					}
+					
+					if (!empty($html))
+					{
+						if ($ajouterLien)
+						{
+							$html .= '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'oeuvres") . "</a></p>\n";
+						}
+				
+						$html = "<div class=\"publicationsRecentes publicationsRecentesGalerie\">\n<ul>\n$html</ul>\n</div>\n";
+					}
+				}
+			}
+			
+			if ($dureeCache['publications-recentes'])
+			{
+				creeDossierCache($racine);
+				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
+			}
+		}
+	}
+	elseif ($type == 'galeries')
+	{
+		// On vérifie si la liste existe en cache ou si le cache est expiré.
+		
+		if ($ajouterLien)
+		{
+			$lienCache = '-avec-lien';
+		}
+		else
+		{
+			$lienCache = '-sans-lien';
+		}
+		
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-galeries-$langue-$nombreVoulu$lienCache.cache.html");
+		
+		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
+		{
+			@readfile("$racine/site/cache/$nomFichierCache");
+		}
+		else
+		{
+			$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+			
+			if (!empty($itemsFluxRss))
+			{
+				$nombreReel = count($itemsFluxRss);
+				$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+				$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu);
+			}
+			
+			if (!empty($itemsFluxRss))
+			{
+				for ($i = 0; $i < $nombreVoulu; $i++)
+				{
+					preg_match('/<img src="([^"]+)"/', htmlspecialchars_decode($itemsFluxRss[$i]['description']), $resultat);
+					$intermediaireSrc = rawurldecode($resultat[1]);
+					$intermediaireNom = superBasename($intermediaireSrc);
+					$idGalerie = superBasename(str_replace("/$intermediaireNom", '', $intermediaireSrc));
+				
+					if (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerie))
+					{
+						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
+					
+						if (isset($tableauGalerie[$intermediaireNom]['vignetteNom']))
+						{
+							$vignetteNom = $tableauGalerie[$intermediaireNom]['vignetteNom'];
+						}
+						else
+						{
+							$vignetteNom = nomSuffixe($intermediaireNom, '-vignette');
+						}
+					
+						if (!empty($tableauGalerie[$intermediaireNom]['vignetteLargeur']) || !empty($tableauGalerie[$intermediaireNom]['vignetteHauteur']))
+						{
+							if (!empty($tableauGalerie[$intermediaireNom]['vignetteLargeur']))
+							{
+								$width = $tableauGalerie[$intermediaireNom]['vignetteLargeur'];
+							}
+				
+							if (!empty($tableauGalerie[$intermediaireNom]['vignetteHauteur']))
+							{
+								$height = $tableauGalerie[$intermediaireNom]['vignetteHauteur'];
+							}
+						}
+						else
+						{
+							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idGalerie . '/' . $vignetteNom);
+						}
+					
+						$vignetteImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie) . '/' . $vignetteNom . '" alt="' . $itemsFluxRss[$i]['title'] . '" width="' . $width . '" height="' . $height . '" />';
+					}
+				
+					$html .= '<li><a href="' . $itemsFluxRss[$i]['link'] . '" title="' . $itemsFluxRss[$i]['title'] . '">' . "$vignetteImg</a></li>\n";
+				}
+			
+				if (!empty($html))
+				{
+					if ($ajouterLien)
+					{
+						$cheminFichier = cheminConfigCategories($racine);
+					
+						if ($cheminFichier)
+						{
+							$categories = super_parse_ini_file($cheminFichier, TRUE);
+						}
+						else
+						{
+							$categories = array ();
+						}
+					
+						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('galeries'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+						$lien = $urlRacine . '/' . $categories['galeries']['urlCategorie'];
+						$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'oeuvres") . "</a></p>\n";
+					}
+				
+					$html = "<div class=\"publicationsRecentes publicationsRecentesGaleries\">\n<ul>\n$html</ul>\n</div>\n";
+				}
+			}
+			
+			if ($dureeCache['publications-recentes'])
+			{
+				creeDossierCache($racine);
+				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
+			}
+		}
+	}
+	elseif ($type == 'site')
+	{
+		// On vérifie si la liste existe en cache ou si le cache est expiré.
+		
+		if ($ajouterLien)
+		{
+			$lienCache = '-avec-lien';
+		}
+		else
+		{
+			$lienCache = '-sans-lien';
+		}
+		
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-site-$langue-$nombreVoulu$lienCache.cache.html");
+		
+		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
+		{
+			@readfile("$racine/site/cache/$nomFichierCache");
+		}
+		else
+		{
+			$itemsFluxRss = array ();
+			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+			
+			if (!empty($pages) && isset($pages[$langue]['pages']))
+			{
+				$nombreReel = count($pages[$langue]['pages']);
+				$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+				$i = 0;
+				
+				foreach ($pages[$langue]['pages'] as $page)
+				{
+					if ($i < $nombreVoulu)
+					{
+						$page = rtrim($page);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, FALSE);
+					
+						if (!empty($fluxRssPageTableauBrut))
+						{
+							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+						}
+					}
+					
+					$i++;
+				}
+				
+				if (!empty($itemsFluxRss))
+				{
+					$itemsFluxRss = fluxRssTableauFinal('site', $itemsFluxRss, $nombreVoulu);
+					
+					foreach ($itemsFluxRss as $cle => $valeur)
+					{
+						$html .= '<li><a href="' . $valeur['link'] . '">' . $valeur['title'] . "</a></li>\n";
+					}
+					
+					if (!empty($html))
+					{
+						if ($ajouterLien)
+						{
+							$cheminFichier = cheminConfigCategories($racine);
+							
+							if ($cheminFichier)
+							{
+								$categories = super_parse_ini_file($cheminFichier, TRUE);
+							}
+							else
+							{
+								$categories = array ();
+							}
+							
+							$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('site'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+							$lien = $urlRacine . '/' . $categories['site']['urlCategorie'];
+							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("En lire plus") . "</a></p>\n";
+						}
+						
+						$html = "<div class=\"publicationsRecentes publicationsRecentesSite\">\n<ul>\n$html</ul>\n</div>\n";
+					}
+				}
+			}
+			
+			if ($dureeCache['publications-recentes'])
+			{
+				creeDossierCache($racine);
+				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
+			}
+		}
+	}
+	
+	return $html;
 }
 
 /*

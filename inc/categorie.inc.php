@@ -24,7 +24,7 @@ if ($dureeCache['categorie'])
 // Liste des articles à afficher.
 if ($idCategorie == 'site')
 {
-	$categories = ajouteCategoriesSpeciales($racine, $urlRacine, LANGUE, array (), array ('site'));
+	$categories = ajouteCategoriesSpeciales($racine, $urlRacine, LANGUE, array (), array ('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 	
 	if (empty($categories))
 	{
@@ -35,7 +35,7 @@ if ($idCategorie == 'site')
 // La catégorie spéciale `galeries` est basée sur le flux RSS des derniers ajouts aux galeries, donc son schéma est légèrement différent des autres catégories.
 elseif ($idCategorie == 'galeries')
 {
-	$categories = ajouteCategoriesSpeciales($racine, $urlRacine, LANGUE, array (), array ('galeries'));
+	$categories = ajouteCategoriesSpeciales($racine, $urlRacine, LANGUE, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 	
 	if (empty($categories))
 	{

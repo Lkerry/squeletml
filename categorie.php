@@ -17,7 +17,7 @@ if ($cheminFichier)
 {
 	$categories = super_parse_ini_file($cheminFichier, TRUE);
 	
-	if (isset($categories[$idCategorie]['urlCategorie']))
+	if (isset($categories[$idCategorie]['urlCategorie']) && $categories[$idCategorie]['urlCategorie'] != "categorie.php?id=$idCategorie")
 	{
 		// Empêcher la duplication de contenu dans les moteurs de recherche.
 		$erreur404 = TRUE;

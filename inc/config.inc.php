@@ -341,6 +341,7 @@ $inclureApercu = TRUE; // TRUE|FALSE
 $dureeCache['fluxRss'] = 0;
 $dureeCache['categorie'] = 0;
 $dureeCache['galerie'] = 0;
+$dureeCache['publications-recentes'] = 0; // Voir la fonction `publicationsRecentes()`.
 
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*
