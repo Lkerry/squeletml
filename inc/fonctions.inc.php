@@ -3532,7 +3532,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 								$lien = $urlRacine . '/categorie.php?id=' . $id;
 							}
 							
-							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("En lire plus") . "</a></p>\n";
+							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 						}
 						
 						$html = "<div class=\"publicationsRecentes publicationsRecentesCategorie\">\n<ul>\n$html</ul>\n</div>\n";
@@ -3846,7 +3846,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 							
 							$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('site'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 							$lien = $urlRacine . '/' . $categories['site']['urlCategorie'];
-							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("En lire plus") . "</a></p>\n";
+							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 						}
 						
 						$html = "<div class=\"publicationsRecentes publicationsRecentesSite\">\n<ul>\n$html</ul>\n</div>\n";

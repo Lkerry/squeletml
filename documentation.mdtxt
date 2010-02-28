@@ -645,6 +645,18 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 		`fr`
 
+#### Liste des dernières publications
+
+La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
+
+	$dernieresOeuvres = publicationsRecentes($racine, $urlRacine, LANGUE, 'galerie', "chiens", 5, TRUE, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+
+Dans l'exemple ci-dessus, la variable `$dernieresOeuvres` contient les 5 dernières oeuvres ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une oeuvre et un lien vers la page individuelle de l'oeuvre. Aussi, le septième paramètre vaut `TRUE`, donc un lien «Voir plus d'oeuvres» est ajouté à la fin de la liste vers l'accueil de la galerie.
+
+Pour les types de publication `categorie` et `site`, la fonction renvoie une liste de titres pointant vers la page en question.
+
+Voir les explications de la fonction `publicationsRecentes()` dans le fichier `inc/fonctions.inc.php` pour plus de détails.
+
 #### Coloration de code PHP
 
 Il est possible d'utiliser une version personnalisée des fonctions `highlight_string()` et `highlight_file()` de PHP. En effet, `coloreCodePhp()` et `coloreFichierPhp()` remplacent les espaces insécables par des espaces normales et modifient les couleurs par défaut (entre autres pour améliorer le contraste des commentaires).
