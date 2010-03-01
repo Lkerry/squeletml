@@ -3468,14 +3468,14 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		
 		if ($ajouterLien)
 		{
-			$lienCache = '-avec-lien';
+			$lienCache = 'avec-lien';
 		}
 		else
 		{
-			$lienCache = '-sans-lien';
+			$lienCache = 'sans-lien';
 		}
 		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-categorie-$id-$nombreVoulu$lienCache.cache.html");
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-categorie-$id-$nombreVoulu-$lienCache-$langue.cache.html");
 		
 		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
 		{
@@ -3551,14 +3551,14 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		
 		if ($ajouterLien)
 		{
-			$lienCache = '-avec-lien';
+			$lienCache = 'avec-lien';
 		}
 		else
 		{
-			$lienCache = '-sans-lien';
+			$lienCache = 'sans-lien';
 		}
 		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-galerie-$id-$nombreVoulu$lienCache.cache.html");
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-galerie-$id-$nombreVoulu-$lienCache-$langue.cache.html");
 		
 		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
 		{
@@ -3672,14 +3672,14 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		
 		if ($ajouterLien)
 		{
-			$lienCache = '-avec-lien';
+			$lienCache = 'avec-lien';
 		}
 		else
 		{
-			$lienCache = '-sans-lien';
+			$lienCache = 'sans-lien';
 		}
 		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-galeries-$langue-$nombreVoulu$lienCache.cache.html");
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-galeries-$nombreVoulu-$lienCache-$langue.cache.html");
 		
 		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
 		{
@@ -3778,14 +3778,14 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		
 		if ($ajouterLien)
 		{
-			$lienCache = '-avec-lien';
+			$lienCache = 'avec-lien';
 		}
 		else
 		{
-			$lienCache = '-sans-lien';
+			$lienCache = 'sans-lien';
 		}
 		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-site-$langue-$nombreVoulu$lienCache.cache.html");
+		$nomFichierCache = filtreChaine($racine, "publications-recentes-site-$nombreVoulu-$lienCache-$langue.cache.html");
 		
 		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
 		{
