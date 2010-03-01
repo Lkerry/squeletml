@@ -48,7 +48,7 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'flux-rss':
-					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries')) || ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site')))
+					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGaleriesActif || $fluxRssGlobalSiteActif)
 					{
 						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 					
@@ -67,30 +67,30 @@ if (!empty($blocsAinserer))
 						
 						$blocs[$region] .= "<ul>\n";
 						
-						if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
+						if ($fluxRssGlobalSiteActif)
 						{
 							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=site&amp;langue=" . LANGUE . '">' . T_("Dernières publications") . "</a></li>\n";
 						}
 						
-						if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
+						if ($fluxRssGlobalGaleriesActif)
 						{
 							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galeries&amp;langue=" . LANGUE . '">' . T_("Derniers ajouts aux galeries") . "</a></li>\n";
 						}
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '&amp;langue=' . LANGUE . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
 						{
 							if (strpos($url, $urlRacine . '/categorie.php?id=') !== FALSE)
 							{
-								$blocs[$region] .= "<li><a href=\"$urlRacine/rss.php?type=categorie&amp;id=$idCategorie\">" . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+								$blocs[$region] .= "<li><a href=\"$urlRacine/rss.php?type=categorie&amp;id=$idCategorie&amp;langue=" . LANGUE . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 							}
 							else
 							{
-								$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+								$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '&amp;langue=' . LANGUE . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 							}
 						}
 						
@@ -104,7 +104,7 @@ if (!empty($blocsAinserer))
 				case 'infos-publication':
 					if ($infosPublication && !$erreur404 && !$estPageDerreur && empty($courrielContact) && empty($idCategorie) && empty($idGalerie))
 					{
-						$listeCategoriesPage = categories($racine, $urlRacine, $url);
+						$listeCategoriesPage = categories($racine, $urlRacine, $url, LANGUE);
 						$bloc = infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
 					
 						if (!empty($bloc))
@@ -305,7 +305,7 @@ if (!empty($blocsAinserer))
 						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
-							$listeCategoriesPage = categories($racine, $urlRacine, $url);
+							$listeCategoriesPage = categories($racine, $urlRacine, $url, LANGUE);
 							$bloc = categoriesActives($bloc, $listeCategoriesPage, $idCategorie);
 						}
 						

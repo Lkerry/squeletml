@@ -24,6 +24,20 @@ if ($cheminFichier)
 	}
 }
 
+if (!empty($_GET['langue']))
+{
+	$langue = securiseTexte($_GET['langue']);
+	
+	if (!isset($accueil[$langue]))
+	{
+		$erreur404 = TRUE;
+	}
+}
+else
+{
+	$erreur404 = TRUE;
+}
+
 include $racine . '/inc/premier.inc.php';
 include $racine . '/inc/dernier.inc.php';
 ?>

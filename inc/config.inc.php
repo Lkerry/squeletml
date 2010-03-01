@@ -533,7 +533,7 @@ $activerFluxRssGlobalSite = TRUE; // TRUE|FALSE
 $activerFluxRssCategorieParDefaut = TRUE; // TRUE|FALSE
 
 // Nombre maximal d'items par flux RSS.
-$nombreItemsFluxRss = 50;
+$nombreItemsFluxRss = 25;
 
 // Si `$inclureApercu` vaut TRUE, utiliser les aperçus dans les flux RSS.
 $utiliserApercuDansFluxRss = FALSE; // TRUE|FALSE
@@ -743,7 +743,7 @@ $galerieLienOriginalTelecharger = FALSE; // TRUE|FALSE
 - Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `bloc` transforme la légende en bloc positionnable comme n'importe quel autre bloc de contenu à l'aide de la variable `$ordreBlocsDansFluxHtml`.
 - Les trois emplacements à préciser sont respectivement lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux.
 */
-$galerieLegendeEmplacement = array ('bas', 'bloc', 'bloc');
+$galerieLegendeEmplacement = array ('bas', 'bas', 'bas');
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 

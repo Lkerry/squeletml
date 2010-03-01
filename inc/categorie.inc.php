@@ -11,14 +11,14 @@ if ($dureeCache['categorie'])
 {
 	if (!empty($_GET['page']))
 	{
-		$getPage = '-page-' . securiseTexte($_GET['page']);
+		$getPage = securiseTexte($_GET['page']);
 	}
 	else
 	{
-		$getPage = '-page-1';
+		$getPage = '1';
 	}
 	
-	$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie$getPage.cache.html");
+	$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie-page-$getPage-" . LANGUE . '.cache.html');
 }
 
 // Liste des articles à afficher.
@@ -221,7 +221,7 @@ if (!empty($idCategorie))
 					}
 		
 					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-					$listeCategoriesPage = categories($racine, $urlRacine, $adresse);
+					$listeCategoriesPage = categories($racine, $urlRacine, $adresse, LANGUE);
 					$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesPage);
 					
 					if (!empty($infosPublication))

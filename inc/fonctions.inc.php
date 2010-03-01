@@ -279,7 +279,7 @@ Retourne un tableau des catégories auxquelles appartient l'URL fournie. La stru
 
 Fournir une URL traitée par `superRawurlencode()`.
 */
-function categories($racine, $urlRacine, $url)
+function categories($racine, $urlRacine, $url, $langue)
 {
 	$listeCategories = array ();
 	$cheminFichier = cheminConfigCategories($racine);
@@ -296,7 +296,11 @@ function categories($racine, $urlRacine, $url)
 				{
 					$listeCategories[$categorie] = '';
 					
-					if (!empty($categorieInfos['urlCategorie']))
+					if (empty($categorieInfos['urlCategorie']) || strpos($categorieInfos['urlCategorie'], 'categorie.php?id=') !== FALSE)
+					{
+						$listeCategories[$categorie] = "$urlRacine/categorie.php?id=$categorie&amp;langue=$langue";
+					}
+					else
 					{
 						$listeCategories[$categorie] = $urlRacine . '/' . $categorieInfos['urlCategorie'];
 					}
@@ -1315,24 +1319,13 @@ Voir la fonction `fluxRssGalerieTableauBrut()` pour plus de détails.
 function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$itemsFluxRss = array ();
-	$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
+	$galeries = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
 	
-	if ($cheminConfigFluxRssGlobalGaleries)
+	if (isset($galeries[$langue]))
 	{
-		$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
-		
-		if (!empty($galeries))
+		foreach ($galeries[$langue] as $idGalerie => $urlRelativeGalerie)
 		{
-			foreach ($galeries as $codeLangue => $langueInfos)
-			{
-				if ($codeLangue == $langue)
-				{
-					foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
-					{
-						$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
-					}
-				}
-			}
+			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
 		}
 	}
 	
@@ -1410,7 +1403,7 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
+function htmlCategorie($urlRacine, $categories, $categorie, $langue, $afficherNombreArticlesCategorie)
 {
 	$nomCategorie = $categorie;
 	
@@ -1425,15 +1418,20 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArtic
 	
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
-			
+	
 	if (!empty($categories[$categorie]['urlCategorie']))
 	{
-		$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCategorie'] . '">' . $nomCategorie . '</a>';
+		if (strpos($categories[$categorie]['urlCategorie'], 'categorie.php?id=') !== FALSE)
+		{
+			$categories[$categorie]['urlCategorie'] .= "&amp;langue=$langue";
+		}
 	}
 	else
 	{
-		$htmlCategorie .= '<a href="' . $urlRacine . '/categorie.php?id=' . $categorie . '">' . $nomCategorie . '</a>';
+		$categories[$categorie]['urlCategorie'] = "categorie.php?id=$categorie&amp;langue=$langue";
 	}
+	
+	$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCategorie'] . '">' . $nomCategorie . '</a>';
 	
 	if ($afficherNombreArticlesCategorie)
 	{
@@ -1448,7 +1446,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArtic
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
+			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $langue, $afficherNombreArticlesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -2566,7 +2564,7 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $af
 	{
 		if (empty($categorieInfos['categorieParente']))
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $langue, $afficherNombreArticlesCategorie);
 		}
 	}
 	

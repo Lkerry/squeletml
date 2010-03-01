@@ -113,9 +113,15 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 	// Si l'oeuvre existe, on génère le code pour l'affichage de la version intermediaire ainsi que du système de navigation dans la galerie.
 	if ($imageExiste)
 	{
+		// Titre de la galerie.
+		if ($galerieGenererTitrePages)
+		{
+			$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s&nbsp;| Galerie %2\$s"), "<em>$titreOeuvre</em>", "<em>$idGalerie</em>") . "</h1>\n";
+		}
+		
 		// On vérifie si l'oeuvre existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-oeuvre-$id.cache.html");
+		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-oeuvre-$id-" . LANGUE . '.cache.html');
 		
 		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{
@@ -123,12 +129,6 @@ if (!empty($idGalerie) && isset($_GET['oeuvre']))
 		}
 		else
 		{
-			// Titre de la galerie.
-			if ($galerieGenererTitrePages)
-			{
-				$titreGalerie = '<h1>' . sprintf(T_("Oeuvre %1\$s&nbsp;| Galerie %2\$s"), "<em>$titreOeuvre</em>", "<em>$idGalerie</em>") . "</h1>\n";
-			}
-			
 			$indiceOeuvreEnCours = $indice;
 			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 		
@@ -472,14 +472,14 @@ elseif (!empty($idGalerie))
 	{
 		if (!empty($_GET['page']))
 		{
-			$getPage = '-page-' . securiseTexte($_GET['page']);
+			$getPage = securiseTexte($_GET['page']);
 		}
 		else
 		{
-			$getPage = '-page-1';
+			$getPage = '1';
 		}
 		
-		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie$getPage.cache.html");
+		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-page-$getPage-" . LANGUE . '.cache.html');
 	
 		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
 		{

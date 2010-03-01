@@ -26,7 +26,7 @@ premiereRevTag:=$(shell echo $(derniereRevAvantDernierTag) | xargs expr 1 +)
 ########################################################################
 
 # Met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. À faire par exemple avant la dernière révision d'une prochaine version.
-generer: message-accueil po
+generer: message-accueil po mo
 
 # Crée des archives .bz2 et .zip; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le ChangeLog) sur le bureau; et déplace les archives également sur le bureau. À faire après un bzr tag... pour la sortie d'une nouvelle version.
 publier: archives

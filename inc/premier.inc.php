@@ -233,9 +233,37 @@ if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 
 // Flux RSS.
 
+$fluxRssGlobalSiteActif = FALSE;
+
+if ($activerFluxRssGlobalSite)
+{
+	$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+	
+	if (isset($pages[LANGUE]))
+	{
+		$fluxRssGlobalSiteActif = TRUE;
+		$urlFlux = $urlRacine . '/rss.php?type=site&amp;langue=' . LANGUE;
+		$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Dernières publications');
+	}
+}
+
+$fluxRssGlobalGaleriesActif = FALSE;
+
+if ($galerieActiverFluxRssGlobal)
+{
+	$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+	
+	if (isset($pages[LANGUE]))
+	{
+		$fluxRssGlobalGaleriesActif = TRUE;
+		$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . LANGUE;
+		$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Derniers ajouts aux galeries');
+	}
+}
+
 if (!empty($idGalerie) && $rssGalerie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
+	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '&amp;langue=' . LANGUE;
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Galerie %1$s'), $idGalerie);
 }
 
@@ -243,26 +271,14 @@ if (!empty($idCategorie) && $rssCategorie)
 {
 	if (strpos($url, $urlRacine . '/categorie.php?id=') !== FALSE)
 	{
-		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=$idCategorie";
+		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=$idCategorie&amp;langue=" . LANGUE;
 	}
 	else
 	{
-		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
+		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '&amp;langue=' . LANGUE;
 	}
 	
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
-}
-
-if ($galerieActiverFluxRssGlobal && cheminConfigFluxRssGlobal($racine, 'galeries'))
-{
-	$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Derniers ajouts aux galeries');
-}
-
-if ($activerFluxRssGlobalSite && cheminConfigFluxRssGlobal($racine, 'site'))
-{
-	$urlFlux = $urlRacine . '/rss.php?type=site&amp;langue=' . LANGUE;
-	$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Dernières publications');
 }
 
 // Slimbox2.
