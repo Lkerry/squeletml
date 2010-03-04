@@ -1072,15 +1072,24 @@ Retourne TRUE si la page est l'accueil, sinon retourne FALSE.
 function estAccueil($accueil)
 {
 	$url = url();
+	$listeIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
 	
-	if ($url == $accueil . '/' || $url == $accueil . '/index.php' || $url == $accueil . '/index.html' || $url == $accueil . '/index.htm')
+	if ($url == $accueil . '/')
 	{
 		return TRUE;
 	}
 	else
 	{
-		return FALSE;
+		foreach ($listeIndex as $index)
+		{
+			if ($url == $accueil . '/' . $index)
+			{
+				return TRUE;
+			}
+		}
 	}
+	
+	return FALSE;
 }
 
 /*

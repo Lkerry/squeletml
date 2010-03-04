@@ -179,22 +179,19 @@ Il y a enfin les fichiers des pages par défaut:
   - `fr/page.401.inc.php`
   - `fr/page.404.inc.php`
   - `fr/page.contact.inc.php`
-  - `fr/page.galerie.inc.php`
   - `fr/page.index.inc.php`
 
 	Pour chaque autre langue, le `fr` est remplacé par le code approprié, par exemple `en/page.index.inc.php`.
 
 	**Il s'agit des pages livrées par défaut avec Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système d'inclusion.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `site/xhtml/fr/page.index.inc.php`, qui sera inclus à la place du fichier par défaut.
 
-	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil. Pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$contactCourrielParDefaut` dans le fichier de configuration. Enfin, le lien vers la page de galerie par défaut peut être enlevé du menu si vous ne voulez pas de galerie ou si vous voulez une galerie avec un nom de page différent.
+	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil, et pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$contactCourrielParDefaut` dans le fichier de configuration.
 
 #### Dossiers inutiles pour une configuration donnée
 
-Le dossier d'une langue inactivée peut être supprimé, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas de la page `galerie.php` à la racine du site si cette dernière n'est pas utilisée.
+Le dossier d'une langue inactivée peut être supprimé, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas des pages `exemple.php` et `galerie-demo.php` à la racine du site si ces dernières ne sont pas utilisées.
 
 Lors d'une mise à jour, il est également inutile de copier ces dossiers ou fichiers.
-
-*Note: j'ai ajouté cette suggestion dans la documentation après avoir constaté une drôle de situation avec le moteur de recherche Google. J'ai mis sur pied un site en français, donc les pages en anglais n'étaient pas utilisées, et il n'y avait aucun lien pointant vers ces dernières. Malgré cela, les pages du dossier `en` se sont retrouvées dans l'index de Google. Je ne sais pas comment expliquer cette situation.*
 
 ### Structure XHTML par défaut
 
@@ -420,7 +417,7 @@ Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichie
 Il y a plusieurs manières de créer une page:
 
 1. Créer un fichier vide et reproduir la structure d'une page.
-2. Copier le fichier `modele.php` et le coller avec le nom désiré.
+2. Copier le fichier `exemple.php` et le coller avec le nom désiré.
 3. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Fichier modèle de page web» ou «Fichier modèle HTML de page web avec syntaxe Markdown».
 
 Voici l'anatomie d'une page:
