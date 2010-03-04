@@ -2218,7 +2218,7 @@ function linkScript($balisesBrutes, $versionParDefautLinkScript = '')
 		// On récupère les infos.
 		list ($type, $fichier) = explode('#', $fichierBrut, 2);
 		
-		if ($type == 'rss' && strpos($fichier, '#'))
+		if ($type == 'rss' && strpos($fichier, '#') !== FALSE)
 		{
 			list ($fichier, $title) = explode('#', $fichier, 2);
 		}
@@ -2313,7 +2313,7 @@ function linkScriptAinclure($balisesBrutes)
 		list ($url, $type, $fichier) = explode('#', $baliseBrute, 3);
 		$url = preg_quote($url);
 		
-		if ($type == 'rss' && strpos($fichier, '#'))
+		if ($type == 'rss' && strpos($fichier, '#') !== FALSE)
 		{
 			list ($fichier, $title) = explode('#', $fichier, 2);
 		}
@@ -2345,7 +2345,7 @@ function linkScriptAinclure($balisesBrutes)
 				// On récupère les infos de la balise de comparaison.
 				list ($urlAinclure, $typeAinclure, $fichierAinclure) = explode('#', $baliseBruteAinclure, 3);
 				
-				if ($typeAinclure == 'rss' && strpos($fichierAinclure, '#'))
+				if ($typeAinclure == 'rss' && strpos($fichierAinclure, '#') !== FALSE)
 				{
 					list ($fichierAinclure) = explode('#', $fichierAinclure, 2);
 				}

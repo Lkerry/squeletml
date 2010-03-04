@@ -485,7 +485,7 @@ Retourne TRUE si le navigateur de l'internaute est Internet Explorer, sinon reto
 */
 function adminEstIe()
 {
-	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE'))
+	if (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE)
 	{
 		return TRUE;
 	}
