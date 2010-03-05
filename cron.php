@@ -27,18 +27,17 @@ if (file_exists('init.inc.php'))
 			{
 				foreach ($categories as $categorie => $categorieInfos)
 				{
-					foreach ($accueil as $langueCache => $infosLangueCache)
+					$langueCat = langueCat($categorieInfos, $langueParDefaut);
+					
+					$nomFichierCache = filtreChaine($racine, "rss-categorie-$categorie-$langueCat.cache.xml");
+					
+					if (empty($categorieInfos['urlCat']) || strpos($categorieInfos['urlCat'], 'categorie.php?id=') !== FALSE)
 					{
-						$nomFichierCache = filtreChaine($racine, "rss-categorie-$categorie-$langueCache.cache.xml");
-						
-						if (empty($categorieInfos['urlCategorie']) || $categorieInfos['urlCategorie'] == "categorie.php?id=$categorie")
-						{
-							$tableauUrl[] = array ('url' => "$urlRacine/rss.php?type=categorie&amp;id=$categorie&amp;langue=$langueCache", 'cache' => $nomFichierCache);
-						}
-						else
-						{
-							$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=categorie&amp;chemin=' . $categorieInfos['urlCategorie'] . "&amp;langue=$langueCache", 'cache' => $nomFichierCache);
-						}
+						$tableauUrl[] = array ('url' => "$urlRacine/rss.php?type=categorie&amp;id=$categorie", 'cache' => $nomFichierCache);
+					}
+					else
+					{
+						$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=categorie&amp;chemin=' . $categorieInfos['urlCat'], 'cache' => $nomFichierCache);
 					}
 				}
 			}
@@ -57,10 +56,11 @@ if (file_exists('init.inc.php'))
 					
 					foreach ($langueInfos as $idGalerie => $urlGalerie)
 					{
+						$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=galerie&amp;chemin=' . $urlGalerie, 'cache' => '');
+						
 						foreach ($accueil as $langueCache => $infosLangueCache)
 						{
-							$nomFichierCache = filtreChaine($racine, "rss-galerie-$idGalerie-$langueCache.cache.xml");
-							$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=galerie&amp;chemin=' . $urlGalerie . '&amp;langue=' . $langueCache, 'cache' => $nomFichierCache);
+							$extraAsupprimer[] = filtreChaine($racine, "rss-galerie-$idGalerie-$langueCache.cache.xml");
 						}
 					}
 				}
@@ -128,9 +128,12 @@ if (file_exists('init.inc.php'))
 	{
 		$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 		
-		if ($categories === FALSE)
+		if (!empty($categories))
 		{
-			$categories = array ();
+			foreach ($categories as $categorie => $categorieInfos)
+			{
+				$tableauUrl = array_merge($tableauUrl, cronUrlCategorie($racine, $urlRacine, $categorieInfos, $categorie, $nombreArticlesParPageCategorie, $langueParDefaut));
+			}
 		}
 		
 		if (cheminConfigFluxRssGlobal($racine, 'galeries'))
@@ -145,8 +148,7 @@ if (file_exists('init.inc.php'))
 					
 					if (!empty($categorie))
 					{
-						$categories = array_merge($categorie, $categories);
-						break; // Si cette catégorie globale existe, l'important est d'obtenir sa présence dans le tableau des catégories, car les autres langues seront ajoutées (s'il y a lieu) plus bas.
+						$tableauUrl = array_merge($tableauUrl, cronUrlCategorie($racine, $urlRacine, $categorie['galeries'], 'galeries', $nombreArticlesParPageCategorie, $langueParDefaut));
 					}
 				}
 			}
@@ -164,78 +166,10 @@ if (file_exists('init.inc.php'))
 					
 					if (!empty($categorie))
 					{
-						$categories = array_merge($categorie, $categories);
-						break;
+						$tableauUrl = array_merge($tableauUrl, cronUrlCategorie($racine, $urlRacine, $categorie['site'], 'site', $nombreArticlesParPageCategorie, $langueParDefaut));
 					}
 				}
 			}
-		}
-		
-		if (!empty($categories))
-		{
-			foreach ($categories as $categorie => $categorieInfos)
-			{
-				if ($nombreArticlesParPageCategorie)
-				{
-					$nombreArticles = count($categorieInfos['pages']);
-					$nombreDePages = ceil($nombreArticles / $nombreArticlesParPageCategorie);
-				}
-				else
-				{
-					$nombreDePages = 1;
-				}
-				
-				if (empty($categorieInfos['urlCategorie']) || $categorieInfos['urlCategorie'] == "categorie.php?id=$categorie")
-				{
-					foreach ($accueil as $langueCache => $infosLangueCache)
-					{
-						$categorieInfos['urlCategorie'] = "categorie.php?id=$categorie&amp;langue=$langueCache";
-						$nomFichierCache = filtreChaine($racine, "categorie-$categorie-page-1-$langueCache.cache.html");
-				$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorieInfos['urlCategorie'], 'cache' => $nomFichierCache);
-						
-						if ($nombreDePages > 1)
-						{
-							for ($i = 2; $i <= $nombreDePages; $i++)
-							{
-								$adresse = ajouteGet($urlRacine . '/' . $categorieInfos['urlCategorie'], "page=$i");
-								$nomFichierCache = filtreChaine($racine, "categorie-$categorie-page-$i-$langueCache.cache.html");
-								$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
-							}
-						}
-					}
-				}
-				else
-				{
-					foreach ($accueil as $langueCache => $infosLangueCache)
-					{
-						$extraAsupprimer[] = filtreChaine($racine, "categorie-$categorie-page-1-$langueCache.cache.html");
-					}
-					
-					$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorieInfos['urlCategorie'], 'cache' => '');
-			
-					if ($nombreDePages > 1)
-					{
-						for ($i = 2; $i <= $nombreDePages; $i++)
-						{
-							foreach ($accueil as $langueCache => $infosLangueCache)
-							{
-								$extraAsupprimer[] = filtreChaine($racine, "categorie-$categorie-page-$i-$langueCache.cache.html");
-							}
-							
-							$adresse = ajouteGet($urlRacine . '/' . $categorieInfos['urlCategorie'], "page=$i");
-							$tableauUrl[] = array ('url' => $adresse, 'cache' => '');
-						}
-					}
-				}
-			}
-		}
-	}
-	
-	foreach ($tableauUrl as $url)
-	{
-		if (!empty($url['cache']))
-		{
-			@unlink($racine . '/site/cache/' . $url['cache']);
 		}
 	}
 	
@@ -246,6 +180,11 @@ if (file_exists('init.inc.php'))
 	
 	foreach ($tableauUrl as $url)
 	{
+		if (!empty($url['cache']))
+		{
+			@unlink($racine . '/site/cache/' . $url['cache']);
+		}
+		
 		if (empty($url['cache']) || !file_exists($racine . '/site/cache/' . $url['cache']))
 		{
 			@file_get_contents(superRawurlencode($url['url'], TRUE));

@@ -50,19 +50,59 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$listePages .= '<li class="liParent"><input type="text" name="cat[' . $i . ']" value="' . $categorie . '" />';
 					$listePages .= "<ul class=\"triable\">\n";
 					
-					if (!isset($categorieInfos['urlCategorie']))
+					// Langue.
+					
+					if (!isset($categorieInfos['langueCat']))
 					{
-						$categorieInfos['urlCategorie'] = '';
+						$categorieInfos['langueCat'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputUrlCat-' . $i . '">urlCategorie=</label><input id="inputUrlCat-' . $i . '" class="long" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCategorie'] . '" /></li>' . "\n";
+					$listePages .= '<li><label for="langueCat-' . $i . '">langueCat=</label>';
+					$listeOption = '';
 					
-					if (!isset($categorieInfos['categorieParente']))
+					foreach ($accueil as $codeLangue => $urlLangue)
 					{
-						$categorieInfos['categorieParente'] = '';
+						$listeOption .= '<option value="' . $codeLangue . '"';
+						
+						if ($codeLangue == $categorieInfos['langueCat'])
+						{
+							$listeOption .= ' selected="selected"';
+						}
+						
+						$listeOption .= '>' . $codeLangue . "</option>\n";
 					}
 					
-					$listePages .= '<li><label for="catParente-' . $i . '">categorieParente=</label>';
+					if (!empty($listeOption))
+					{
+						$listePages .= '<select id="langueCat-' . $i . '" name="langueCat[' . $i . ']">' . "\n";
+						$listePages .= '<option value=""></option>' . "\n";
+						$listePages .= $listeOption;
+						$listePages .= "</select>\n";
+					}
+					else
+					{
+						$listePages .= '<input id="langueCat-' . $i . '" type="text" name="langueCat[' . $i . ']" value="' . $categorieInfos['langueCat'] . '" />';
+					}
+					
+					$listePages .= "</li>\n";
+					
+					// URL.
+					
+					if (!isset($categorieInfos['urlCat']))
+					{
+						$categorieInfos['urlCat'] = '';
+					}
+					
+					$listePages .= '<li><label for="inputUrlCat-' . $i . '">urlCat=</label><input id="inputUrlCat-' . $i . '" class="long" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCat'] . '" /></li>' . "\n";
+					
+					// Catégorie parente.
+					
+					if (!isset($categorieInfos['catParente']))
+					{
+						$categorieInfos['catParente'] = '';
+					}
+					
+					$listePages .= '<li><label for="catParente-' . $i . '">catParente=</label>';
 					$listeOption = '';
 					
 					foreach ($categories as $cat => $catInfos)
@@ -71,7 +111,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						{
 							$listeOption .= '<option value="' . $cat . '"';
 							
-							if ($cat == $categorieInfos['categorieParente'])
+							if ($cat == $categorieInfos['catParente'])
 							{
 								$listeOption .= ' selected="selected"';
 							}
@@ -89,7 +129,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$listePages .= '<input id="catParente-' . $i . '" type="text" name="catParente[' . $i . ']" value="' . $categorieInfos['categorieParente'] . '" />';
+						$listePages .= '<input id="catParente-' . $i . '" type="text" name="catParente[' . $i . ']" value="' . $categorieInfos['catParente'] . '" />';
 					}
 					
 					$listePages .= "</li>\n";
@@ -118,20 +158,23 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
 			echo "<div class=\"bDcorps afficher\">\n";
-			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %2\$s ainsi que la catégorie parente, s'il y a lieu, grâce à %3\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>urlCategorie=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>categorieParente=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
+			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser la langue à laquelle appartient une catégorie, et ce à l'aide du paramètre %2\$s. Vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %3\$s ainsi que la catégorie parente, s'il y a lieu, grâce à %4\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>langueCat=' . T_("langue à laquelle appartient la catégorie") . '</code>', '<code>urlCat=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>catParente=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
 			
 			echo "<ul>\n";
 			echo "<li>Chiens\n";
 			echo "<ul>\n";
-			echo "<li>urlCategorie=animaux/chiens/</li>\n";
-			echo "<li>categorieParente=Animaux</li>\n";
+			echo "<li>langueCat=fr</li>\n";
+			echo "<li>urlCat=animaux/chiens/</li>\n";
+			echo "<li>catParente=Animaux</li>\n";
 			echo "<li>pages[]=animaux/chiens/husky.php</li>\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
-			echo '<p>' . sprintf(T_("Cet exemple fait référence à la catégorie %1\$s, accessible à l'adresse %2\$s, enfant de la catégorie %3\$s et contenant une page dont l'URL est %4\$s."), "<em>Chiens</em>", "<code>$urlRacine/animaux/chiens/</code>", "<em>Animaux</em>", "<code>$urlRacine/animaux/chiens/husky.php</code>") . "</p>\n";
+			echo '<p>' . sprintf(T_("Cet exemple fait référence à la catégorie en français %1\$s, accessible à l'adresse %2\$s, enfant de la catégorie %3\$s et contenant une page dont l'URL est %4\$s."), "<em>Chiens</em>", "<code>$urlRacine/animaux/chiens/</code>", "<em>Animaux</em>", "<code>$urlRacine/animaux/chiens/husky.php</code>") . "</p>\n";
 			
-			echo '<p>' . sprintf(T_("Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s."), 'urlCategorie', '$urlRacine/categorie.php?id=$idCategorie') . "</p>\n";
+			echo '<p>' . sprintf(T_("Si la langue d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, la langue sera celle déclarée par défaut dans le fichier de configuration du site."), 'langueCat') . "</p>\n";
+			
+			echo '<p>' . sprintf(T_("Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s."), 'urlCat', '$urlRacine/categorie.php?id=$idCategorie') . "</p>\n";
 			
 			echo '<p>' . T_("Pour enlever une catégorie ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
 			
@@ -249,24 +292,42 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$cat = securiseTexte($cat);
 				
-				if (!empty($cat) && (!empty($_POST['catParente'][$cle]) || !empty($_POST['urlCat'][$cle]) || !empty($_POST['url'][$cle])))
+				if (!empty($cat) && (!empty($_POST['langueCat'][$cle]) || !empty($_POST['catParente'][$cle]) || !empty($_POST['urlCat'][$cle]) || !empty($_POST['url'][$cle])))
 				{
 					$contenuFichierTableau[$cat] = array ();
 					$contenuFichierTableau[$cat]['infos'] = array ();
 					$contenuFichierTableau[$cat]['pages'] = array ();
 					
-					if (!empty($_POST['urlCat'][$cle]))
+					if (!empty($_POST['langueCat'][$cle]))
 					{
-						$contenuFichierTableau[$cat]['infos'][] = 'urlCategorie=' . securiseTexte($_POST['urlCat'][$cle]) . "\n";
+						$langueCat = securiseTexte($_POST['langueCat'][$cle]);
+						$contenuFichierTableau[$cat]['infos'][] = "langueCat=$langueCat\n";
 					}
 					else
 					{
-						$contenuFichierTableau[$cat]['infos'][] = "urlCategorie=categorie.php?id=$cat\n";
+						$langueCat = $langueParDefaut;
+						$contenuFichierTableau[$cat]['infos'][] = "langueCat=$langueCat\n";
+					}
+					
+					if (!empty($_POST['urlCat'][$cle]))
+					{
+						$contenuFichierTableau[$cat]['infos'][] = 'urlCat=' . securiseTexte($_POST['urlCat'][$cle]) . "\n";
+					}
+					else
+					{
+						$urlCat = "urlCat=categorie.php?id=$cat";
+						
+						if (estCatSpeciale($cat))
+						{
+							$urlCat .= "&amp;langue=$langueCat";
+						}
+						
+						$contenuFichierTableau[$cat]['infos'][] = "$urlCat\n";
 					}
 					
 					if (!empty($_POST['catParente'][$cle]))
 					{
-						$contenuFichierTableau[$cat]['infos'][] = 'categorieParente=' . securiseTexte($_POST['catParente'][$cle]) . "\n";
+						$contenuFichierTableau[$cat]['infos'][] = 'catParente=' . securiseTexte($_POST['catParente'][$cle]) . "\n";
 					}
 					
 					if (!empty($_POST['url'][$cle]))
@@ -312,14 +373,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					foreach ($catAjout as $c)
 					{
-						if (!empty($categories[$c]['categorieParente']))
+						if (!empty($categories[$c]['catParente']))
 						{
-							if (!in_array($categories[$c]['categorieParente'], $parentsAjout))
+							if (!in_array($categories[$c]['catParente'], $parentsAjout))
 							{
-								$parentsAjout[] = $categories[$c]['categorieParente'];
+								$parentsAjout[] = $categories[$c]['catParente'];
 							}
 							
-							$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$c]['categorieParente']));
+							$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$c]['catParente']));
 						}
 					}
 					
@@ -335,9 +396,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					foreach ($catAjout as $c)
 					{
-						if (!empty($categories[$c]['categorieParente']) && !in_array($categories[$c]['categorieParente'], $catAjout))
+						if (!empty($categories[$c]['catParente']) && !in_array($categories[$c]['catParente'], $catAjout))
 						{
-							$catAjout[] = $categories[$c]['categorieParente'];
+							$catAjout[] = $categories[$c]['catParente'];
 						}
 					}
 				}

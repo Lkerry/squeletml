@@ -75,7 +75,8 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 		{
 			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss);
 			$categories = array ('galeries' => array ()) + $categories;
-			$categories['galeries']['urlCategorie'] = 'categorie.php?id=galeries';
+			$categories['galeries']['langueCat'] = $langue;
+			$categories['galeries']['urlCat'] = "categorie.php?id=galeries&amp;langue=$langue";
 			$categories['galeries']['pages'] = array ();
 			
 			foreach ($itemsFluxRss as $item => $infosItem)
@@ -97,7 +98,8 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 		if (isset($pages[$langue]))
 		{
 			$categories = array ('site' => array ()) + $categories;
-			$categories['site']['urlCategorie'] = 'categorie.php?id=site';
+			$categories['site']['langueCat'] = $langue;
+			$categories['site']['urlCat'] = "categorie.php?id=site&amp;langue=$langue";
 			$categories['site']['pages'] = array ();
 		
 			foreach ($pages[$langue]['pages'] as $page)
@@ -275,11 +277,11 @@ function cacheExpire($fichier, $dureeCache)
 /*
 Retourne un tableau des catégories auxquelles appartient l'URL fournie. La structure est:
 
-	$listeCategories['idCategorie'] = 'urlCategorie';
+	$listeCategories['idCategorie'] = 'urlCat';
 
 Fournir une URL traitée par `superRawurlencode()`.
 */
-function categories($racine, $urlRacine, $url, $langue)
+function categories($racine, $urlRacine, $url, $langueParDefaut)
 {
 	$listeCategories = array ();
 	$cheminFichier = cheminConfigCategories($racine);
@@ -294,16 +296,7 @@ function categories($racine, $urlRacine, $url, $langue)
 				
 				if (superRawurlencode($urlPage) == $url)
 				{
-					$listeCategories[$categorie] = '';
-					
-					if (empty($categorieInfos['urlCategorie']) || strpos($categorieInfos['urlCategorie'], 'categorie.php?id=') !== FALSE)
-					{
-						$listeCategories[$categorie] = "$urlRacine/categorie.php?id=$categorie&amp;langue=$langue";
-					}
-					else
-					{
-						$listeCategories[$categorie] = $urlRacine . '/' . $categorieInfos['urlCategorie'];
-					}
+					$listeCategories[$categorie] = urlCat($categorieInfos, $categorie, $langueParDefaut);
 				}
 			}
 		}
@@ -389,17 +382,20 @@ function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategor
 }
 
 /*
-Retourne un tableau contenant la liste des catégories enfants d'une catégorie donnée.
+Retourne un tableau contenant la liste des catégories enfants d'une catégorie donnée. Les catégories enfants doivent avoir la même langue que la catégorie parente.
 */
-function categoriesEnfants($categories, $categorie)
+function categoriesEnfants($categories, $categorie, $langueParDefaut)
 {
 	$categoriesEnfants = array ();
 	
 	foreach ($categories as $cat => $catInfos)
 	{
-		if (isset($catInfos['categorieParente']) && $catInfos['categorieParente'] == $categorie)
+		if (isset($catInfos['catParente']) && $catInfos['catParente'] == $categorie)
 		{
-			$categoriesEnfants[] = $cat;
+			if (langueCat($catInfos, $langueParDefaut) == langueCat($categories[$categorie], $langueParDefaut))
+			{
+				$categoriesEnfants[] = $cat;
+			}
 		}
 	}
 	
@@ -408,15 +404,26 @@ function categoriesEnfants($categories, $categorie)
 
 /*
 Retourne un tableau contenant la liste des catégories parentes indirectes d'une catégorie donnée. Par exemple, si la catégorie donnée est «Miniatures», que cette dernière a comme catégorie parente «Chiens», et que la catégorie «Chiens» est une catégorie enfant de «Animaux», la fonction va retourner `array ('Chiens', 'Animaux')`.
+
+Note: chaque catégorie parente doit avoir la même langue que la catégorie donnée.
 */
-function categoriesParentesIndirectes($categories, $categorie)
+function categoriesParentesIndirectes($categories, $categorie, $langueParDefaut)
 {
 	$categoriesParentesIndirectes = array ();
 	
-	if (isset($categories[$categorie]['categorieParente']))
+	if (isset($categories[$categorie]['catParente']))
 	{
-		$categoriesParentesIndirectes[] = $categories[$categorie]['categorieParente'];
-		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $categories[$categorie]['categorieParente']));
+		$idCatParente = $categories[$categorie]['catParente'];
+	}
+	else
+	{
+		$idCatParente = '';
+	}
+	
+	if (!empty($idCatParente) && langueCat($categories[$idCatParente], $langueParDefaut) == langueCat($categories[$categorie], $langueParDefaut))
+	{
+		$categoriesParentesIndirectes[] = $idCatParente;
+		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $idCatParente, $langueParDefaut));
 	}
 	
 	return array_unique($categoriesParentesIndirectes);
@@ -901,6 +908,41 @@ function creeDossierCache($racine)
 }
 
 /*
+Retourne un tableau d'URL à visiter par le cron pour une catégorie donnée.
+*/
+function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombreArticlesParPageCategorie, $langueParDefaut)
+{
+	$tableauUrl = array ();
+	
+	if ($nombreArticlesParPageCategorie)
+	{
+		$nombreArticles = count($categorie['pages']);
+		$nombreDePages = ceil($nombreArticles / $nombreArticlesParPageCategorie);
+	}
+	else
+	{
+		$nombreDePages = 1;
+	}
+	
+	$categorie['langueCat'] = langueCat($categorie, $langueParDefaut);
+	$categorie['urlCat'] = urlCat($categorie, $idCategorie, $langueParDefaut);
+	$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie-page-1-" . $categorie['langueCat'] . '.cache.html');
+$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache' => $nomFichierCache);
+	
+	if ($nombreDePages > 1)
+	{
+		for ($i = 2; $i <= $nombreDePages; $i++)
+		{
+			$adresse = ajouteGet($urlRacine . '/' . $categorie['urlCat'], "page=$i");
+			$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie-page-$i-" . $categorie['langueCat'] . '.cache.html');
+			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+		}
+	}
+	
+	return $tableauUrl;
+}
+
+/*
 Le paramètre `$date` doit être une date sous une des formes suivantes:
 
   - `année` (exemple: `2010`);
@@ -1090,6 +1132,21 @@ function estAccueil($accueil)
 	}
 	
 	return FALSE;
+}
+
+/*
+Retourne TRUE si la catégorie est une catégorie spéciale, sinon retourne FALSE.
+*/
+function estCatSpeciale($categorie)
+{
+	if ($categorie == 'galeries' || $categorie == 'site')
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /*
@@ -1412,7 +1469,7 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($urlRacine, $categories, $categorie, $langue, $afficherNombreArticlesCategorie)
+function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie)
 {
 	$nomCategorie = $categorie;
 	
@@ -1428,26 +1485,16 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langue, $afficherNo
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
 	
-	if (!empty($categories[$categorie]['urlCategorie']))
-	{
-		if (strpos($categories[$categorie]['urlCategorie'], 'categorie.php?id=') !== FALSE)
-		{
-			$categories[$categorie]['urlCategorie'] .= "&amp;langue=$langue";
-		}
-	}
-	else
-	{
-		$categories[$categorie]['urlCategorie'] = "categorie.php?id=$categorie&amp;langue=$langue";
-	}
+	$categories[$categorie]['urlCat'] = urlCat($categories[$categorie], $categorie, $langueParDefaut);
 	
-	$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCategorie'] . '">' . $nomCategorie . '</a>';
+	$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCat'] . '">' . $nomCategorie . '</a>';
 	
 	if ($afficherNombreArticlesCategorie)
 	{
 		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
 	}
 	
-	$categoriesEnfants = categoriesEnfants($categories, $categorie);
+	$categoriesEnfants = categoriesEnfants($categories, $categorie, $langueParDefaut);
 	
 	if (!empty($categoriesEnfants))
 	{
@@ -1455,7 +1502,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langue, $afficherNo
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $langue, $afficherNombreArticlesCategorie);
+			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $langueParDefaut, $afficherNombreArticlesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -1678,16 +1725,9 @@ function infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $ca
 	{
 		$listeCategories = '';
 		
-		foreach ($categories as $categorie => $urlCategorie)
+		foreach ($categories as $categorie => $urlCat)
 		{
-			if (!empty($urlCategorie))
-			{
-				$listeCategories .= "<a href=\"$urlCategorie\">$categorie</a>, ";
-			}
-			else
-			{
-				$listeCategories .= "<a href=\"$urlRacine/categorie.php?id=$categorie\">$categorie</a>, ";
-			}
+			$listeCategories .= "<a href=\"$urlRacine/$urlCat\">$categorie</a>, ";
 		}
 		
 		$listeCategories = substr($listeCategories, 0, -2); // Suppression du `, ` final.
@@ -1830,6 +1870,14 @@ function langueActive($codeMenuLangues, $langue, $accueil)
 	{
 		return $codeMenuLangues;
 	}
+}
+
+/*
+Retourne la langue d'une catégorie.
+*/
+function langueCat($categorie, $langueParDefaut)
+{
+	return !empty($categorie['langueCat']) ? $categorie['langueCat'] : $langueParDefaut;
 }
 
 /*
@@ -2559,7 +2607,7 @@ function mdtxtChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+function menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$menuCategoriesAutomatise = '';
 	ksort($categories);
@@ -2571,9 +2619,9 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $af
 	
 	foreach ($categories as $categorie => $categorieInfos)
 	{
-		if (empty($categorieInfos['categorieParente']))
+		if (empty($categorieInfos['catParente']) && langueCat($categorieInfos, $langueParDefaut) == $langue)
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $langue, $afficherNombreArticlesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie);
 		}
 	}
 	
@@ -3467,7 +3515,7 @@ Le paramètre `$ajouterLien` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien 
 
 À noter que le code retourné peut ne pas avoir été généré, mais lu dans le cache, si `$dureeCache['publications-recentes']` du fichier de configuration du site vaut plus de 0.
 */
-function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLien, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $type, $id, $nombreVoulu, $ajouterLien, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$html = '';
 	
@@ -3530,15 +3578,8 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					{
 						if ($ajouterLien)
 						{
-							if (!empty($categories[$id]['urlCategorie']))
-							{
-								$lien = $urlRacine . '/' . $categories[$id]['urlCategorie'];
-							}
-							else
-							{
-								$lien = $urlRacine . '/categorie.php?id=' . $id;
-							}
-							
+							$categories[$id]['urlCat'] = urlCat($categories[$id], $id, $langueParDefaut);
+							$lien = $urlRacine . '/' . $categories[$id]['urlCat'];
 							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 						}
 						
@@ -3766,7 +3807,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 						}
 					
 						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('galeries'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-						$lien = $urlRacine . '/' . $categories['galeries']['urlCategorie'];
+						$lien = $urlRacine . '/' . $categories['galeries']['urlCat'];
 						$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'oeuvres") . "</a></p>\n";
 					}
 				
@@ -3852,7 +3893,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 							}
 							
 							$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('site'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-							$lien = $urlRacine . '/' . $categories['site']['urlCategorie'];
+							$lien = $urlRacine . '/' . $categories['site']['urlCat'];
 							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 						}
 						
@@ -4261,6 +4302,33 @@ function urlAvecIndex($url)
 	}
 	
 	return $url;
+}
+
+/*
+Retourne l'URL relative d'une catégorie.
+*/
+function urlCat($categorie, $idCategorie, $langueParDefaut)
+{
+	$langue = langueCat($categorie, $langueParDefaut);
+	
+	if (!empty($categorie['urlCat']))
+	{
+		if (strpos($categorie['urlCat'], 'categorie.php?id=') !== FALSE && !preg_match('/\blangue=/', $categorie['urlCat']) && estCatSpeciale($idCategorie) && !empty($langue))
+		{
+			$categorie['urlCat'] .= "&amp;langue=$langue";
+		}
+	}
+	else
+	{
+		$categorie['urlCat'] = "categorie.php?id=$idCategorie";
+		
+		if (estCatSpeciale($idCategorie) && !empty($langue))
+		{
+			$categorie['urlCat'] .= "&amp;langue=$langue";
+		}
+	}
+	
+	return $categorie['urlCat'];
 }
 
 /*

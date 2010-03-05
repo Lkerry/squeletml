@@ -221,7 +221,7 @@ if (!empty($idCategorie))
 					}
 		
 					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-					$listeCategoriesPage = categories($racine, $urlRacine, $adresse, LANGUE);
+					$listeCategoriesPage = categories($racine, $urlRacine, $adresse, $langueParDefaut);
 					$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesPage);
 					
 					if (!empty($infosPublication))

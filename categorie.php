@@ -2,38 +2,50 @@
 include_once 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
-if (!empty($_GET['id']))
+foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {
-	$idCategorie = securiseTexte($_GET['id']);
-}
-else
-{
-	$erreur404 = TRUE;
-}
-
-$cheminFichier = cheminConfigCategories($racine);
-
-if ($cheminFichier)
-{
-	$categories = super_parse_ini_file($cheminFichier, TRUE);
-	
-	if (isset($categories[$idCategorie]['urlCategorie']) && $categories[$idCategorie]['urlCategorie'] != "categorie.php?id=$idCategorie")
-	{
-		// Empêcher la duplication de contenu dans les moteurs de recherche.
-		$erreur404 = TRUE;
-	}
+	include_once $cheminFichier;
 }
 
 if (!empty($_GET['langue']))
 {
-	$langue = securiseTexte($_GET['langue']);
+	$getLangue = securiseTexte($_GET['langue']);
+}
+
+if (!empty($_GET['id']))
+{
+	$idCategorie = securiseTexte($_GET['id']);
+	$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 	
-	if (!isset($accueil[$langue]))
+	if (!empty($getLangue))
 	{
-		$erreur404 = TRUE;
+		$langue = $getLangue;
+	}
+	elseif (isset($categories[$idCategorie]))
+	{
+		$langue = langueCat($categories[$idCategorie], $langueParDefaut);
+	}
+	else
+	{
+		$langue = $langueParDefaut;
+	}
+	
+	// Nécessaire à la traduction.
+	phpGettext('.', $langue);
+	
+	if ($categories !== FALSE && estCatSpeciale($idCategorie) && !empty($getLangue))
+	{
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $getLangue, $categories, array($idCategorie), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 	}
 }
-else
+
+if (
+	empty($idCategorie) ||
+	!isset($categories[$idCategorie]) ||
+	(empty($getLangue) && estCatSpeciale($idCategorie)) ||
+	(!empty($getLangue) && !estCatSpeciale($idCategorie)) ||
+	(!empty($categories[$idCategorie]['urlCat']) && strpos($categories[$idCategorie]['urlCat'], "categorie.php?id=$idCategorie") === FALSE) // Empêcher la duplication de contenu dans les moteurs de recherche.
+)
 {
 	$erreur404 = TRUE;
 }

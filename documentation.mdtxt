@@ -646,7 +646,7 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresOeuvres = publicationsRecentes($racine, $urlRacine, LANGUE, 'galerie', "chiens", 5, TRUE, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+	$dernieresOeuvres = publicationsRecentes($racine, $urlRacine, $langueParDefaut, LANGUE, 'galerie', "chiens", 5, TRUE, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 
 Dans l'exemple ci-dessus, la variable `$dernieresOeuvres` contient les 5 dernières oeuvres ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une oeuvre et un lien vers la page individuelle de l'oeuvre. Aussi, le septième paramètre vaut `TRUE`, donc un lien «Voir plus d'oeuvres» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
@@ -711,14 +711,21 @@ et:
 
 	$urlRacine/animaux/chiens/malamute.php
 
-Optionnellement, un lien vers la page d'accueil de chaque catégorie peut être précisé grâce au paramètre `urlCategorie`:
+Optionnellement, la langue à laquelle appartient chaque catégorie peut être précisée avec le paramètre `langueCat`:
 
-	urlCategorie=l'URL relative de la page d'accueil de la catégorie
+	langueCat=fr
+
+Si aucune langue n'est précisée, la langue par défaut du site est utilisée.
+
+Aussi, un lien vers la page d'accueil de chaque catégorie peut optionnellement être précisé grâce au paramètre `urlCat`:
+
+	urlCat=l'URL relative de la page d'accueil de la catégorie
 
 Exemple:
 
 	[Chiens]
-	urlCategorie=animaux/chiens/
+	langueCat=fr
+	urlCat=animaux/chiens/
 	pages[]=animaux/chiens/husky.php
 	pages[]=animaux/chiens/malamute.php
 
@@ -734,7 +741,7 @@ La page d'accueil d'une catégorie peut être située n'importe où sur le site.
 
 En visitant cette page, un aperçu pour chaque page listée dans le fichier de configuration pour la catégorie donnée sera généré. Un titre de premier niveau (`h1`) sera également généré par défaut (voir la variable `$genererTitrePageCategories` dans le fichier de configuration du site).
 
-Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre `urlCategorie`, l'URL sera générée automatiquement, et ce sous la forme `$urlRacine/categorie.php?id=$idCategorie`. Pour éviter le contenu dupliqué dans les moteurs de recherche, seules les catégories pour lesquelles aucune valeur n'a été donnée au paramètre `urlCategorie` sont accessibles sur la page `$urlRacine/categorie.php`.
+Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre `urlCat`, l'URL sera générée automatiquement, et ce sous la forme `$urlRacine/categorie.php?id=$idCategorie`. Pour éviter le contenu dupliqué dans les moteurs de recherche, seules les catégories pour lesquelles aucune valeur n'a été donnée au paramètre `urlCat` sont accessibles sur la page `$urlRacine/categorie.php`.
 
 Voici un exemple d'aperçu qui pourrait être généré pour la page sur le husky:
 
@@ -754,7 +761,7 @@ Si une page fait partie d'une catégorie au moins, les informations de publicati
 
 ### Catégories spéciales
 
-Les catégories spéciales sont `site ` (les dernières publications) et `galeries` (les derniers ajouts aux galeries). Par défaut, l'URL est `$urlRacine/categorie.php?id=(site|galeries)`. Il n'y a pas de flux RSS associé à ces catégories puisque les flux RSS globaux remplissent déjà cette tâche.
+Les catégories spéciales sont `site ` (les dernières publications) et `galeries` (les derniers ajouts aux galeries). Par défaut, l'URL est `$urlRacine/categorie.php?id=(site|galeries)&amp;langue=$langue`. Il n'y a pas de flux RSS associé à ces catégories puisque les flux RSS globaux remplissent déjà cette tâche.
 
 Pour que les catégories spéciales soient activées, la variable `$activerCategoriesGlobales` du fichier de configuration du site doit valoir `TRUE`.
 
@@ -767,8 +774,8 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 - si ce fichier n'existe pas et que `$genererMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
 
 	[Chiens]
-	urlCategorie=animaux/chiens/
-	categorieParente=Animaux
+	urlCat=animaux/chiens/
+	catParente=Animaux
 	pages[]=animaux/chiens/husky.php
 	pages[]=animaux/chiens/malamute.php
 
