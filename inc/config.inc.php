@@ -81,6 +81,12 @@ $inclureMotsCles = FALSE; // TRUE|FALSE
 */
 $robotsParDefaut = 'index, follow, archive';
 
+// Désactivation de l'indexation des pages de catégorie dans les moteurs de recherche.
+/*
+- L'intérêt de ne pas indexer les pages de catégorie dans les moteurs de recherche est d'éviter le contenu dupliqué.
+*/
+$desactiverIndexationPagesCategorie = FALSE; // TRUE|FALSE
+
 // Encodage du site.
 $charset = 'UTF-8';
 

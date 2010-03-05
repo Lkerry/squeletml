@@ -69,6 +69,11 @@ $categorie = '';
 
 if (!empty($idCategorie))
 {
+	if ($desactiverIndexationPagesCategorie)
+	{
+		$robots = 'noindex, follow, noarchive';
+	}
+	
 	// Si aucune valeur n'a été donnée aux balises de l'en-tête de la page, on génère une valeur automatiquement.
 	
 	if (empty($baliseTitle))
