@@ -56,7 +56,33 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				foreach ($galeries as $codeLangue => $langueInfos)
 				{
-					$listeGaleries .= '<li class="liParent"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+					$listeGaleries .= '<li class="liParent">';
+					$listeOption = '';
+					
+					foreach ($accueil as $langueAccueil => $urlLangueAccueil)
+					{
+						$listeOption .= '<option value="' . $langueAccueil . '"';
+						
+						if ($langueAccueil == $codeLangue)
+						{
+							$listeOption .= ' selected="selected"';
+						}
+						
+						$listeOption .= '>' . $langueAccueil . "</option>\n";
+					}
+					
+					if (!empty($listeOption))
+					{
+						$listeGaleries .= '<select name="langue[' . $i . ']">' . "\n";
+						$listeGaleries .= '<option value=""></option>' . "\n";
+						$listeGaleries .= $listeOption;
+						$listeGaleries .= "</select>\n";
+					}
+					else
+					{
+						$listeGaleries .= '<input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+					}
+					
 					$listeGaleries .= "<ul class=\"triable\">\n";
 					
 					foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
@@ -116,7 +142,26 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong></p>\n";
 			
 			echo "<ul>\n";
-			echo '<li><input type="text" name="langueAjout" value="" />';
+			echo '<li>';
+			$listeOption = '';
+			
+			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
+			{
+				$listeOption .= '<option value="' . $langueAccueil . '">' . $langueAccueil . "</option>\n";
+			}
+			
+			if (!empty($listeOption))
+			{
+				echo '<select name="langueAjout">' . "\n";
+				echo '<option value=""></option>' . "\n";
+				echo $listeOption;
+				echo "</select>\n";
+			}
+			else
+			{
+				echo '<input type="text" name="langueAjout" value="" />';
+			}
+			
 			echo "<ul>\n";
 			echo '<li><input type="text" name="idAjout" value="" />=<input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
@@ -174,7 +219,33 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				foreach ($pages as $codeLangue => $langueInfos)
 				{
-					$listePages .= '<li class="liParent"><input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+					$listePages .= '<li class="liParent">';
+					$listeOption = '';
+					
+					foreach ($accueil as $langueAccueil => $urlLangueAccueil)
+					{
+						$listeOption .= '<option value="' . $langueAccueil . '"';
+						
+						if ($langueAccueil == $codeLangue)
+						{
+							$listeOption .= ' selected="selected"';
+						}
+						
+						$listeOption .= '>' . $langueAccueil . "</option>\n";
+					}
+					
+					if (!empty($listeOption))
+					{
+						$listePages .= '<select name="langue[' . $i . ']">' . "\n";
+						$listePages .= '<option value=""></option>' . "\n";
+						$listePages .= $listeOption;
+						$listePages .= "</select>\n";
+					}
+					else
+					{
+						$listePages .= '<input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+					}
+					
 					$listePages .= "<ul class=\"triable\">\n";
 					$j = 0;
 					
@@ -237,7 +308,26 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
 			
 			echo "<ul>\n";
-			echo '<li><input type="text" name="langueAjout" value="" />';
+			echo '<li>';
+			$listeOption = '';
+			
+			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
+			{
+				$listeOption .= '<option value="' . $langueAccueil . '">' . $langueAccueil . "</option>\n";
+			}
+			
+			if (!empty($listeOption))
+			{
+				echo '<select name="langueAjout">' . "\n";
+				echo '<option value=""></option>' . "\n";
+				echo $listeOption;
+				echo "</select>\n";
+			}
+			else
+			{
+				echo '<input type="text" name="langueAjout" value="" />';
+			}
+			
 			echo "<ul>\n";
 			echo '<li><label for="inputUrlAjout">pages[]=</label><input id="inputUrlAjout" class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
