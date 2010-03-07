@@ -151,14 +151,14 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 Voir la fonction `blocs()`.
 */
 $ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
-$ordreBlocsDansFluxHtml['menu']                   = array (200, 501, 500);
-$ordreBlocsDansFluxHtml['menu-categories']        = array (501, 502, 501);
-$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (502, 503, 502);
-$ordreBlocsDansFluxHtml['flux-rss']               = array (503, 504, 503);
-$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (504, 505, 504);
-$ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (505, 506, 505);
+$ordreBlocsDansFluxHtml['menu']                   = array (200, 510, 500);
+$ordreBlocsDansFluxHtml['menu-categories']        = array (510, 520, 510);
+$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (520, 530, 520);
+$ordreBlocsDansFluxHtml['flux-rss']               = array (530, 540, 530);
+$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (540, 550, 540);
+$ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (550, 560, 550);
 $ordreBlocsDansFluxHtml['infos-publication']      = array (400, 400, 400);
-$ordreBlocsDansFluxHtml['licence']                = array (401, 401, 401);
+$ordreBlocsDansFluxHtml['licence']                = array (410, 410, 410);
 
 // Détection du type MIME.
 /*

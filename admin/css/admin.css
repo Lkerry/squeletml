@@ -86,11 +86,15 @@ h1 {
 	margin-top: 5px;
 }
 
+a, a code {
+	text-decoration: underline;
+}
+
 a:visited {
 	color: #4C177D;
 }
 
-a:hover {
+a:hover, a:hover code {
 	text-decoration: none;
 }
 

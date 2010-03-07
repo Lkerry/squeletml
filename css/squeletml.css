@@ -21,7 +21,11 @@ h1, h2, h3, h4, h5, h6, a, a:visited {
 	color: #4C177D;
 }
 
-a:hover {
+a, a code {
+	text-decoration: underline;
+}
+
+a:hover, a:hover code {
 	text-decoration: none;
 }
 

@@ -2775,7 +2775,7 @@ function noticeMaintenance()
 {
 	$notice = '';
 	$notice .= '<div id="noticeMaintenance">' . "\n";
-	$notice .= '<p>' . T_("Le site est présentement hors ligne pour maintenance. Certaines options peuvent ne pas fonctionner correctement.") . "</p>\n";
+	$notice .= '<p>' . T_("Le site est présentement hors ligne pour maintenance. Certaines pages peuvent ne pas s'afficher correctement.") . "</p>\n";
 	$notice .= "</div><!-- /#noticeMaintenance -->\n";
 	
 	return $notice;

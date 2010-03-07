@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-06 21:48-0500\n"
+"POT-Creation-Date: 2010-03-07 17:50-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -417,7 +417,7 @@ msgstr ""
 #: admin/porte-documents.admin.php:508 admin/porte-documents.admin.php:802
 #: admin/porte-documents.admin.php:1575 admin/porte-documents.admin.php:1625
 #: admin/acces.admin.php:695 admin/acces.admin.php:723
-#: admin/acces.admin.php:759
+#: admin/acces.admin.php:761
 msgid "Options"
 msgstr ""
 
@@ -757,14 +757,14 @@ msgstr ""
 
 #: admin/rss.admin.php:565 inc/fonctions.inc.php:1225
 #: inc/fonctions.inc.php:1227 inc/fonctions.inc.php:1481 inc/blocs.inc.php:72
-#: inc/premier.inc.php:254 inc/categorie.inc.php:31 inc/categorie.inc.php:83
+#: inc/premier.inc.php:255 inc/categorie.inc.php:31 inc/categorie.inc.php:83
 #: inc/categorie.inc.php:99 inc/categorie.inc.php:153
 #: inc/categorie.inc.php:201 inc/categorie.inc.php:287
 msgid "Dernières publications"
 msgstr ""
 
 #: admin/rss.admin.php:566 inc/fonctions.inc.php:1220
-#: inc/fonctions.inc.php:1485 inc/blocs.inc.php:77 inc/premier.inc.php:268
+#: inc/fonctions.inc.php:1485 inc/blocs.inc.php:77 inc/premier.inc.php:269
 #: inc/categorie.inc.php:42 inc/categorie.inc.php:87 inc/categorie.inc.php:103
 #: inc/categorie.inc.php:157 inc/categorie.inc.php:205
 #: inc/categorie.inc.php:291
@@ -2504,12 +2504,12 @@ msgstr ""
 msgid "Le site est en maintenance (hors ligne)."
 msgstr ""
 
-#: admin/acces.admin.php:579 admin/acces.admin.php:729
+#: admin/acces.admin.php:579 admin/acces.admin.php:731
 #, php-format
 msgid "L'IP %1$s a accès au site hors ligne."
 msgstr ""
 
-#: admin/acces.admin.php:583 admin/acces.admin.php:731
+#: admin/acces.admin.php:583 admin/acces.admin.php:733
 msgid "Aucune IP n'a accès au site hors ligne."
 msgstr ""
 
@@ -2626,72 +2626,72 @@ msgid ""
 "mise hors ligne du site ne fonctionnera pas."
 msgstr ""
 
-#: admin/acces.admin.php:725
+#: admin/acces.admin.php:727
 msgid "Le site est présentement:"
 msgstr ""
 
-#: admin/acces.admin.php:726
+#: admin/acces.admin.php:728
 msgid "en ligne."
 msgstr ""
 
-#: admin/acces.admin.php:727
+#: admin/acces.admin.php:729
 msgid "en maintenance (hors ligne)."
 msgstr ""
 
-#: admin/acces.admin.php:736
+#: admin/acces.admin.php:738
 msgid ""
 "IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour "
 "désactiver cette option):"
 msgstr ""
 
-#: admin/acces.admin.php:748
+#: admin/acces.admin.php:750
 msgid "Changer l'état du site"
 msgstr ""
 
-#: admin/acces.admin.php:754 admin/acces.admin.php:767
+#: admin/acces.admin.php:756 admin/acces.admin.php:769
 msgid "Supprimer le cache"
 msgstr ""
 
-#: admin/acces.admin.php:761
+#: admin/acces.admin.php:763
 msgid "Supprimer le cache:"
 msgstr ""
 
-#: admin/acces.admin.php:762
+#: admin/acces.admin.php:764
 msgid "de l'administration."
 msgstr ""
 
-#: admin/acces.admin.php:763
+#: admin/acces.admin.php:765
 msgid "du site."
 msgstr ""
 
-#: admin/acces.admin.php:773
+#: admin/acces.admin.php:775
 msgid "Lancer le cron manuellement"
 msgstr ""
 
-#: admin/acces.admin.php:780
+#: admin/acces.admin.php:782
 #, php-format
 msgid "Dernier lancement du cron le %1$s."
 msgstr ""
 
-#: admin/acces.admin.php:783
+#: admin/acces.admin.php:785
 msgid "Cette action peut prendre plusieurs minutes."
 msgstr ""
 
-#: admin/acces.admin.php:785
+#: admin/acces.admin.php:787
 msgid "Lancer le cron"
 msgstr ""
 
-#: admin/acces.admin.php:792
+#: admin/acces.admin.php:794
 msgid "Obtenir une copie de sauvegarde du site"
 msgstr ""
 
-#: admin/acces.admin.php:794
+#: admin/acces.admin.php:796
 msgid ""
 "Vous pouvez télécharger sur votre ordinateur une archive contenant tout le "
 "site."
 msgstr ""
 
-#: admin/acces.admin.php:796
+#: admin/acces.admin.php:798
 msgid "Télécharger une copie de sauvegarde du site."
 msgstr ""
 
@@ -2730,7 +2730,7 @@ msgstr ""
 msgid "Consultez cette page!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1203 inc/blocs.inc.php:82 inc/premier.inc.php:275
+#: inc/fonctions.inc.php:1203 inc/blocs.inc.php:82 inc/premier.inc.php:276
 #: inc/galerie.inc.php:407 inc/galerie.inc.php:412 inc/galerie.inc.php:423
 #: inc/galerie.inc.php:555
 #, php-format
@@ -3012,8 +3012,8 @@ msgstr ""
 
 #: inc/fonctions.inc.php:2778
 msgid ""
-"Le site est présentement hors ligne pour maintenance. Certaines options "
-"peuvent ne pas fonctionner correctement."
+"Le site est présentement hors ligne pour maintenance. Certaines pages "
+"peuvent ne pas s'afficher correctement."
 msgstr ""
 
 #: inc/fonctions.inc.php:2871
@@ -3112,7 +3112,7 @@ msgstr ""
 msgid "Syndication"
 msgstr ""
 
-#: inc/blocs.inc.php:89 inc/blocs.inc.php:93 inc/premier.inc.php:289
+#: inc/blocs.inc.php:89 inc/blocs.inc.php:93 inc/premier.inc.php:290
 #, php-format
 msgid "Catégorie %1$s"
 msgstr ""
