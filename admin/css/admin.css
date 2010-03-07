@@ -13,6 +13,18 @@ body, html {
 	padding: 0px;
 }
 
+div#noticeMaintenance {
+	margin: 0px;
+	padding: 10px;
+	background: #f2f2f2;
+}
+
+div#noticeMaintenance p {
+	margin: 0px;
+	padding: 0px;
+	font-weight: bold;
+}
+
 #page {
 	max-width: 950px;
 	margin: 0px auto;
