@@ -570,7 +570,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 	
-		if ($siteEstEnMaintenance)
+		if (siteEstEnMaintenance($racine . '/.htaccess'))
 		{
 			$messagesScript .= '<li>' . T_("Le site est en maintenance (hors ligne).") . "</li>\n";
 			
@@ -721,6 +721,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<div>
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
+					
+					<?php $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess'); ?>
 					
 					<p><?php echo T_("Le site est présentement:"); ?><br />
 					<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!$siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
