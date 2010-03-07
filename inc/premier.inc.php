@@ -37,6 +37,15 @@ include_once $racine . '/inc/fonctions.inc.php';
 
 extract(init('', 'langue'), EXTR_SKIP);
 
+$nomPage = nomPage();
+$url = url();
+$urlSansGet = url(FALSE);
+$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
+
+$urlFichiers = $urlRacine . '/site/fichiers';
+$urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
+$urlSite = $urlRacine . '/site';
+
 // Inclusions 2 de 3.
 
 foreach (aInclureDebut($racine) as $fichier)
@@ -128,7 +137,6 @@ if ($inclureMotsCles)
 }
 
 $nomSite = nomSite($estAccueil, lienAccueil(ACCUEIL, $estAccueil, titreSite($titreSite, array ($langue, $langueParDefaut))));
-$nomPage = nomPage();
 
 $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 
@@ -170,13 +178,6 @@ if ($tableDesMatieres)
 	$boitesDeroulantes .= ' #tableDesMatieres';
 	$locale = locale(LANGUE);
 }
-
-$url = url();
-$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
-$urlFichiers = $urlRacine . '/site/fichiers';
-$urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
-$urlSansGet = url(FALSE);
-$urlSite = $urlRacine . '/site';
 
 // Inclusions 3 de 3.
 

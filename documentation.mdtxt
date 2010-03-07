@@ -608,7 +608,11 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 - `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
 
-		<a href="<?php echo $urlRacine . '/maintenance.php'; ?>">lien vers la page de maintenance</a>
+		<a href="<?php echo $urlRacine; ?>/cron.php">lien vers la page de cron</a>
+
+- `$urlRacineAdmin`: contient l'URL vers le dossier d'administration de Squeletml. Exemple:
+
+		<a href="<?php echo $urlRacineAdmin; ?>">lien vers la section d'administration</a>
 
 - `$urlSite`: contient l'URL vers le dossier `site`. Exemple de lien vers une image:
 
@@ -618,13 +622,23 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 		<a href="<?php echo $urlFichiers; ?>/image.jpg">lien vers une image</a>
 
-- `$url`: contient l'URL de la page en cours. Exemple de valeur:
+- variables relatives à l'URL de la page en cours (à moins d'indication contraire, dans les exemples qui suivent, l'URL de référence est `http://www.NomDeDomaine.ext/fichier.php?a=1&b=2`):
 
-		http://www.NomDeDomaine.ext/fichier.php?a=2&b=3
+  - `$nomPage`: contient le nom de la page en cours. Exemple:
 
-- `$nomPage`: contient le nom de la page en cours. Exemple de valeur:
+			fichier.php
 
-		fichier.php
+  - `$url`: contient l'URL de la page en cours. Exemple:
+
+			http://www.NomDeDomaine.ext/fichier.php?a=1&b=2
+
+  - `$urlSansGet`: contient l'URL de la page en cours sans les variables `GET`. Exemple:
+
+			http://www.NomDeDomaine.ext/fichier.php
+
+  - `$urlAvecIndexSansGet`: contient l'URL de la page en cours sans les variables `GET` et avec le fichier d'index, s'il y a lieu. Pour l'URL `http://www.NomDeDomaine.ext/actualite/?a=1&b=2`, la valeur serait par exemple:
+
+			http://www.NomDeDomaine.ext/actualite/index.php
 
 ##### Constantes
 
