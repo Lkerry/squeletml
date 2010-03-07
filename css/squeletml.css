@@ -146,6 +146,18 @@ div#messageIe6 p a {
 	color: #006;
 }
 
+div#noticeMaintenance {
+	margin: 0px;
+	padding: 10px;
+	background: #f2f2f2;
+}
+
+div#noticeMaintenance p {
+	margin: 0px;
+	padding: 0px;
+	font-weight: bold;
+}
+
 /***********************************************************************
 **
 ** Page.

@@ -8,7 +8,7 @@ En effet, seulement deux fichiers doivent être inclus dans chaque page (un au d
 
 Aussi, un fichier de configuration permet de paramétrer, par simple affectation de variables, le flux HTML ainsi que plusieurs aspets visuels sans devoir bidouiller dans les feuilles de style CSS ou la structure de page. Bien sûr, il est également possible d'utiliser ses propres styles ou structure de page.
 
-Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
+Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, le classement par catégories, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
 
 ## Fonctionnalités et caractéristiques
 
@@ -36,6 +36,8 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 - Gestion multilingue, et structure de site (menus, bas de page, etc.) selon la langue de la page.
 
 - Possibilité de générer automatiquement une table des matières pour la page en cours.
+
+- Génération automatique des pages de catégorie et du menu des catégories.
 
 - Ajout d'un nombre illimité de formulaires de contact, et ce avec options d'antipourriel et de copie à l'expéditeur.
 
@@ -74,7 +76,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor) ou coloration syntaxique du code en direct à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie), ajout, téléchargement...
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise en maintenance du site.
   - Gestion des galeries: listage de toutes les galeries existantes, création et mise à jour du fichier de configuration pour chaque galerie, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
-  - Gestion des flux RSS globaux.
+  - Gestion des catégories et des flux RSS globaux.
   - Documentation: consultation de l'aide directement en local.
 
 - Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox. Squeletml fonctionne avec Internet Explorer 6, mais il est clairement optimisé pour les navigateurs modernes (testé sur plusieurs navigateurs).

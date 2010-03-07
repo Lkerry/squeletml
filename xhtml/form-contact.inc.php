@@ -1,4 +1,4 @@
-<form id="formContact" method="post" action="<?php echo $actionFormContact; ?>#messages">
+<form id="formContact" method="post" action="<?php echo $actionFormContact; ?>">
 	<div id="divContact">
 		<p><label for="inputNom"><?php echo T_("Votre nom:"); ?></label><br />
 		<input id="inputNom" class="champInfo" name="nom" type="text" size="30" maxlength="120" value="<?php echo $nom; ?>" /></p>

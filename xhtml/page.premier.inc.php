@@ -41,10 +41,15 @@
 		<div id="ancres">
 			<?php include_once $cheminAncres; ?>
 		</div><!-- /#ancres -->
-
+		
 		<?php if ($afficherMessageIe6): ?>
 			<!-- ____________________ Message pour IE6. ____________________ -->
 			<?php echo $messageIe6; ?>
+		<?php endif; ?>
+		
+		<?php if ($siteEstEnMaintenance): ?>
+			<!-- ____________________ Maintenance du site. ____________________ -->
+			<?php echo $noticeMaintenance; ?>
 		<?php endif; ?>
 		
 		<!-- ____________________ #page ____________________ -->

@@ -129,6 +129,14 @@ if ($inclureMotsCles)
 
 $nomSite = nomSite($estAccueil, lienAccueil(ACCUEIL, $estAccueil, titreSite($titreSite, array ($langue, $langueParDefaut))));
 $nomPage = nomPage();
+
+$siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
+
+if ($siteEstEnMaintenance)
+{
+	$noticeMaintenance = noticeMaintenance();
+}
+
 $premierOuDernier = 'premier';
 $robots = robots($robotsParDefaut, $robots);
 
@@ -194,7 +202,7 @@ if (!isset($baliseTitle))
 $baliseTitle = baliseTitle($baliseTitle, array ($langue, $langueParDefaut));
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
-if ($erreur404 || $estPageDerreur)
+if ($erreur404 || $estPageDerreur || $courrielContact == '@')
 {
 	$robots = 'noindex, follow, noarchive';
 }

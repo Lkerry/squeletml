@@ -26,6 +26,10 @@ function actionFormContact($decouvrir)
 	{
 		$action .= '#formulaireFaireDecouvrir';
 	}
+	else
+	{
+		$action .= '#messages';
+	}
 	
 	return $action;
 }
@@ -509,19 +513,18 @@ function cheminXhtml($racine, $langues, $nom, $retourneChemin = TRUE)
 		{
 			return $retourneChemin ? "$racine/site/xhtml/$langue/$nom.inc.php" : TRUE;
 		}
+		elseif (file_exists("$racine/site/xhtml/$nom.inc.php"))
+		{
+			return $retourneChemin ? "$racine/site/xhtml/$nom.inc.php" : TRUE;
+		}
 		elseif (file_exists("$racine/xhtml/$langue/$nom.inc.php"))
 		{
 			return $retourneChemin ? "$racine/xhtml/$langue/$nom.inc.php" : TRUE;
 		}
-	}
-	
-	if (file_exists("$racine/site/xhtml/$nom.inc.php"))
-	{
-		return $retourneChemin ? "$racine/site/xhtml/$nom.inc.php" : TRUE;
-	}
-	elseif (file_exists("$racine/xhtml/$nom.inc.php"))
-	{
-		return $retourneChemin ? "$racine/xhtml/$nom.inc.php" : TRUE;
+		elseif (file_exists("$racine/xhtml/$nom.inc.php"))
+		{
+			return $retourneChemin ? "$racine/xhtml/$nom.inc.php" : TRUE;
+		}
 	}
 	
 	return $retourneChemin ? '' : FALSE;
@@ -2766,6 +2769,19 @@ function nomSuffixe($nomFichier, $suffixe)
 }
 
 /*
+Retourne le code de la petite notice affichée dans le haut des pages pour informer que le site est en maintenance. Seules les personnes ayant accès au site hors ligne peuvent voir cette notice.
+*/
+function noticeMaintenance()
+{
+	$notice = '';
+	$notice .= '<div id="noticeMaintenance">' . "\n";
+	$notice .= '<p>' . T_("Le site est présentement hors ligne pour maintenance. Certaines options peuvent ne pas fonctionner correctement.") . "</p>\n";
+	$notice .= "</div><!-- /#noticeMaintenance -->\n";
+	
+	return $notice;
+}
+
+/*
 Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouvelleImageDimensionsVoulues, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $nettete)
@@ -3946,6 +3962,29 @@ function securiseTexte($texte)
 	{
 		return '';
 	}
+}
+
+/*
+Retourne TRUE si le site est en maintenance, sinon retourne FALSE.
+*/
+function siteEstEnMaintenance($cheminHtaccess)
+{
+	if ($fic = @fopen($cheminHtaccess, 'r'))
+	{
+		while (!feof($fic))
+		{
+			$ligne = rtrim(fgets($fic));
+			
+			if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
+			{
+				return TRUE;
+			}
+		}
+		
+		fclose($fic);
+	}
+	
+	return FALSE;
 }
 
 /*

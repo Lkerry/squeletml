@@ -570,7 +570,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 	
-		if (adminSiteEnMaintenance($racine . '/.htaccess'))
+		if ($siteEstEnMaintenance)
 		{
 			$messagesScript .= '<li>' . T_("Le site est en maintenance (hors ligne).") . "</li>\n";
 			
@@ -723,8 +723,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 					
 					<p><?php echo T_("Le site est présentement:"); ?><br />
-					<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
-					<input id="inputEtatHorsLigne" type="radio" name="etat" value="horsLigne" <?php if (adminSiteEnMaintenance($racine . '/.htaccess')) {echo 'checked="checked"';} ?> /> <label for="inputEtatHorsLigne"><?php echo T_("en maintenance (hors ligne)."); ?></label> <?php if (adminSiteEnMaintenance($racine . '/.htaccess')): ?>
+					<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!$siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
+					<input id="inputEtatHorsLigne" type="radio" name="etat" value="horsLigne" <?php if ($siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatHorsLigne"><?php echo T_("en maintenance (hors ligne)."); ?></label> <?php if ($siteEstEnMaintenance): ?>
 						<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
 							<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
 						<?php else: ?>

@@ -41,7 +41,7 @@ archives: menage-archives ChangeLog version.txt
 	bzr export -r tag:$(tag) $(tag)
 	mv ChangeLog $(tag)/
 	php ./scripts.cli.php mdtxt ChangeLog-version-actuelle
-	mv ChangeLog-version-actuelle.mdtxt $(bureau)/
+	mv ChangeLog-version-actuelle.mdtxt $(bureau)/ChangeLog-$(tag).mdtxt
 	mv ChangeLog-version-actuelle $(tag)/
 	mv ChangeLog-version-actuelle-fichiers $(tag)/
 	cp version.txt $(tag)/

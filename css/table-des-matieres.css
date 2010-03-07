@@ -15,6 +15,7 @@ div#tableDesMatieres h2 {
 
 div#tableDesMatieres ul {
 	list-style-type: circle;
+	margin-left: 0px;
 	padding-left: 20px;
 }
 

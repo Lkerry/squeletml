@@ -46,6 +46,13 @@ if (!empty($idBody))
 
 $locale = locale(LANGUE);
 
+$siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
+
+if ($siteEstEnMaintenance)
+{
+	$noticeMaintenance = noticeMaintenance();
+}
+
 // Menu.
 ob_start();
 include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');

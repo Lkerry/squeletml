@@ -1360,29 +1360,6 @@ function adminRmdirRecursif($dossierAsupprimer)
 }
 
 /*
-Retourne TRUE si le site est en maintenance, sinon retourne FALSE.
-*/
-function adminSiteEnMaintenance($cheminHtaccess)
-{
-	if ($fic = @fopen($cheminHtaccess, 'r'))
-	{
-		while (!feof($fic))
-		{
-			$ligne = rtrim(fgets($fic));
-			
-			if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
-			{
-				return TRUE;
-			}
-		}
-		
-		fclose($fic);
-	}
-	
-	return FALSE;
-}
-
-/*
 Retourne l'IP ayant accès au site en maintenance, si elle existe, sinon retourne FALSE.
 */
 function adminSiteEnMaintenanceIp($cheminHtaccess)

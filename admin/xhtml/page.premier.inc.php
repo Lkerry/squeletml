@@ -22,6 +22,11 @@
 			<?php include_once $cheminAncres; ?>
 		</div><!-- /#ancres -->
 		
+		<?php if ($siteEstEnMaintenance): ?>
+			<!-- ____________________ Maintenance du site. ____________________ -->
+			<?php echo $noticeMaintenance; ?>
+		<?php endif; ?>
+		
 		<!-- ____________________ #page ____________________ -->
 		<div id="page">
 			<!-- ____________________ #enTete ____________________ -->
