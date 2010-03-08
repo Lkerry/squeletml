@@ -35,8 +35,6 @@ include_once $racine . '/inc/fonctions.inc.php';
 
 // Affectations 1 de 3.
 
-extract(init('', 'langue'), EXTR_SKIP);
-
 $nomPage = nomPage();
 $url = url();
 $urlSansGet = url(FALSE);
@@ -46,12 +44,22 @@ $urlFichiers = $urlRacine . '/site/fichiers';
 $urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
 $urlSite = $urlRacine . '/site';
 
+$estPageDeconnexion = estPageDeconnexion($urlRacine, $urlSansGet);
+extract(init('', 'langue'), EXTR_SKIP);
+
+if ($estPageDeconnexion)
+{
+	$langue = langue('navigateur', '');
+}
+
 // Inclusions 2 de 3.
 
 foreach (aInclureDebut($racine) as $fichier)
 {
 	include_once $fichier;
 }
+
+phpGettext($racine, LANGUE); // Nécessaire à la traduction.
 
 // Affectations 2 de 3.
 
@@ -198,6 +206,11 @@ include $racine . '/inc/blocs.inc.php';
 if (!isset($baliseTitle))
 {
 	$baliseTitle = '';
+}
+
+if ($estPageDeconnexion)
+{
+	$baliseTitle = T_("Déconnexion de la section d'administration de Squeletml");
 }
 
 $baliseTitle = baliseTitle($baliseTitle, array ($langue, $langueParDefaut));

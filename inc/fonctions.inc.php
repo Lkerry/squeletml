@@ -1153,6 +1153,14 @@ function estCatSpeciale($categorie)
 }
 
 /*
+Retourne TRUE si la page courrante est la page de déconnexion, sinon retourne FALSE.
+*/
+function estPageDeconnexion($urlRacine, $urlSansGet)
+{
+	return $urlSansGet == $urlRacine . '/deconnexion.php' ? TRUE : FALSE;
+}
+
+/*
 Si `$retourneNomSansExtension` vaut FALSE, retourne l'extension d'un fichier (sans le point). Si aucune extension n'a pas été trouvée, retourne une chaîne vide. Sinon si `$retourneNomSansExtension` vaut TRUE, retourne le nom du fichier sans l'extension (ni le point).
 */
 function extension($nomFichier, $retourneNomSansExtension = FALSE)
@@ -1806,7 +1814,7 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 /*
 Retourne la langue de la page courante.
 */
-function langue($langueParDefaut, $langue)
+function langue($langue, $langueParDefaut)
 {
 	if ($langue == 'navigateur')
 	{

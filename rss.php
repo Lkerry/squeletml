@@ -11,8 +11,7 @@ if (isset($_GET['langue']))
 {
 	$getLangue = sansEchappement($_GET['langue']);
 	
-	// Nécessaire à la traduction.
-	phpGettext('.', $getLangue);
+	phpGettext('.', $getLangue); // Nécessaire à la traduction.
 }
 else
 {
@@ -123,8 +122,7 @@ elseif ($getType == 'galerie' && !empty($getChemin) && empty($getLangue))
 					$langue = $langueParDefaut;
 				}
 				
-				// Nécessaire à la traduction.
-				phpGettext('.', $langue);
+				phpGettext('.', $langue); // Nécessaire à la traduction.
 				
 				$nomFichierCache = filtreChaine($racine, "rss-galerie-$idGalerie-$langue.cache.xml");
 				
@@ -239,8 +237,7 @@ elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && emp
 				
 				$langue = langueCat($categories[$idCategorie], $langueParDefaut);
 				
-				// Nécessaire à la traduction.
-				phpGettext('.', $langue);
+				phpGettext('.', $langue); // Nécessaire à la traduction.
 				
 				$nomFichierCache = filtreChaine($racine, "rss-categorie-$idCategorie-$langue.cache.xml");
 		

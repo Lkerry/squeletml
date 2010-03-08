@@ -91,21 +91,33 @@ pre {
 	margin-bottom: 0px;
 }
 
+.gauche {
+	text-align: left;
+}
+
 .centre {
+	text-align: center;
+}
+
+.droite {
+	text-align: right;
+}
+
+.imgGauche {
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.imgCentre {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.droite {
+.imgDroite {
 	float: right;
 	margin-left: 5px;
-	margin-bottom: 5px;
-}
-
-.gauche {
-	float: left;
-	margin-right: 5px;
 	margin-bottom: 5px;
 }
 

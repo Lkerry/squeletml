@@ -154,7 +154,7 @@ MARKDOWN;
 
 <?php echo mdtxtChaine($markdown); ?>
 
-<h2>Fichiers</h2>
+<h2>Fichiers et styles CSS généraux</h2>
 
 <?php
 $cheminImage = "$racine/fichiers/squeletml-logo.png";
@@ -165,16 +165,24 @@ $extensionImage = extension($cheminImage);
 $typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 ?>
 
-<p><img class="gauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> Le nom de cette image est <code><?php echo $nomImage; ?></code>, son extension est <code><?php echo $extensionImage; ?></code> et son type MIME est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code>. Il s'agit du logo de Squeletml.</p>
+<p><img class="imgGauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> Le nom de cette image est <code><?php echo $nomImage; ?></code>, son extension est <code><?php echo $extensionImage; ?></code> et son type MIME est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code>. Il s'agit du logo de Squeletml.</p>
 
 <div class="sep"></div>
 
 <p>Voici la bannière de Squeletml:</p>
 
-<img class="centre" src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80x15.png" alt="Squeletml" width="80" height="15" />
+<img class="imgCentre" src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80x15.png" alt="Squeletml" width="80" height="15" />
 
-<p><img class="droite" src="<?php echo $urlRacine; ?>/fichiers/firefox-52x52.png" alt="Firefox" width="52" height="52" /> Voici un petit logo à droite du paragraphe. Lorem ipsum dolor sit amet, consec tetier adipis cing elit. In sapien ante; dictum id, phare tra ut, males uada et, magna. Class aptent taci ti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc. Quisque sit amet mi sit amet magna faucibus luctus. Ut pellentesque sodales arcu. Phasellus a elit. Maecenas rhoncus lorem id quam. Sed sed arcu et quam fermentum ultrices. Aenean pulvinar molestie magna. Vestibulum bibendum? Nullam libero arcu, ultrices a; aliquet quis, adipiscing sit amet, neque.</p>
+<p><img class="imgDroite" src="<?php echo $urlRacine; ?>/fichiers/firefox-52x52.png" alt="Firefox" width="52" height="52" /> Voici maintenant un petit logo à droite du paragraphe. Lorem ipsum dolor sit amet, consec tetier adipis cing elit. In sapien ante; dictum id, phare tra ut, males uada et, magna. Class aptent taci ti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>
 
 <div class="sep"></div>
+
+<p class="gauche">Tiens, alignons du texte à droite.</p>
+
+<p class="centre">Et au centre.</p>
+
+<p class="droite">À gauche maintenant.</p>
+
+<p>Quisque sit amet mi sit amet magna faucibus luctus. Ut pellentesque sodales arcu. Phasellus a elit. Maecenas rhoncus lorem id quam. Sed sed arcu et quam fermentum ultrices. Aenean pulvinar molestie magna. Vestibulum bibendum? Nullam libero arcu, ultrices a; aliquet quis, adipiscing sit amet, neque.</p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

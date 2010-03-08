@@ -3,9 +3,6 @@
 Ce fichier construit et analyse la liste des articles faisant partie de la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
 */
 
-// Nécessaire à la traduction.
-phpGettext($racine, LANGUE);
-
 // Nom pour le cache.
 if ($dureeCache['categorie'])
 {
@@ -96,15 +93,15 @@ if (!empty($idCategorie))
 	{
 		if ($idCategorie == 'site')
 		{
-			$description = T_("Dernières publications");
+			$description = T_("Dernières publications.");
 		}
 		elseif ($idCategorie == 'galeries')
 		{
-			$description = T_("Derniers ajouts aux galeries");
+			$description = T_("Derniers ajouts aux galeries.");
 		}
 		else
 		{
-			$description = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
+			$description = sprintf(T_("Articles dans la catégorie %1\$s."), $idCategorie);
 		}
 	}
 	
@@ -168,13 +165,13 @@ if (!empty($idCategorie))
 		{
 			$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
 			$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
-			$description = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page'])) . $baliseTitleComplement;
+			$description = sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . $baliseTitleComplement;
 		}
 		else
 		{
 			$categorie .= '<p>' . T_("La page est introuvable.") . "</p>\n";
 			$baliseTitle = T_("La page est introuvable");
-			$description = T_("La page est introuvable") . $baliseTitleComplement;
+			$description = T_("La page est introuvable.") . $baliseTitleComplement;
 		}
 		
 		if ($inclureMotsCles)

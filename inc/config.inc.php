@@ -27,8 +27,8 @@ $xhtmlStrict = TRUE; // TRUE|FALSE
 - Le complément de la balise `title` est ajouté à la suite du contenu principal de la balise `title`.
 - Voir les fonctions `baliseTitle()` et `baliseTitleComplement()`.
 */
-$tableauBaliseTitleComplement['fr'] = " | Site Squeletml";
-$tableauBaliseTitleComplement['en'] = " | Squeletml website";
+$tableauBaliseTitleComplement['fr'] = " | Squeletml";
+$tableauBaliseTitleComplement['en'] = " | Squeletml";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
@@ -49,7 +49,7 @@ $balisesLinkScript[] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
 $balisesLinkScript[] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
 $balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
 $balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
-$balisesLinkScript[] = "$urlRacine/*#favicon#$urlRacine/fichiers/puce.png";
+$balisesLinkScript[] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
 
 // Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`.
 /*

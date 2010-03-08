@@ -694,7 +694,7 @@ Voici un exemple minimal:
 
 	<?php
 	$baliseTitle = "Titre (contenu de la balise `title`)";
-	$description = "Description de la page";
+	$description = "Description de la page.";
 	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion
 	?>
 	

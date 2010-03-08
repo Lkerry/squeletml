@@ -128,7 +128,7 @@ if ($adminAideEdition == 'BUEditor')
 	$js = "js:
 	var B = eDefBrowseButton('', 'attr_src', 'Browse', 'image');
 	var form = [
-		{name: 'class', title: '" . T_("Classe (style)") . "', type: 'select', options: {'': '', gauche: '" . T_("Gauche") . "', centre: '" . T_("Centre") . "', droite: '" . T_("Droite") . "'}},
+		{name: 'class', title: '" . T_("Classe (style)") . "', type: 'select', options: {'': '', imgGauche: '" . T_("Gauche") . "', imgCentre: '" . T_("Centre") . "', imgDroite: '" . T_("Droite") . "'}},
 		{name: 'src', value: '" . $urlFichiers . "/', title: '" . T_("URL") . "', suffix: B},
 		{name: 'width', title: '" . T_("Largeur × hauteur") . "', suffix: '" . T_(" × ") . "', getnext: true, attributes: {size: 3}},
 		{name: 'height', attributes: {size: 3}},

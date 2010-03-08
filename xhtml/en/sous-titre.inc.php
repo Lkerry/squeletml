@@ -1,1 +1,1 @@
-<p>My Squeletml site</p>
+<p>XHTML empowered by PHP</p>

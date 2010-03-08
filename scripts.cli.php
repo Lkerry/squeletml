@@ -102,8 +102,7 @@ elseif ($argv[1] == 'annexes-doc')
 		include_once $cheminFichier;
 	}
 	
-	// Nécessaire à la traduction.
-	phpGettext('.', 'fr');
+	phpGettext('.', 'fr'); // Nécessaire à la traduction.
 	
 	$ajout = annexesDocumentation($racineAdmin);
 	

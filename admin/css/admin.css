@@ -183,16 +183,16 @@ li.liParent {
 	color: #630000;
 }
 
-.droite {
-	float: right;
-	margin-left: 5px;
-	margin-bottom: 5px;
+.gauche {
+	text-align: left;
 }
 
-.gauche {
-	float: left;
-	margin-right: 5px;
-	margin-bottom: 5px;
+.centre {
+	text-align: center;
+}
+
+.droite {
+	text-align: right;
 }
 
 .note {
@@ -225,6 +225,12 @@ ul.triable li {
 
 #boiteMessages h2, #boiteMessages h3, #boiteMessages h4, #boiteMessages h5, #boiteMessages h6 {
 	color: black;
+}
+
+p#porteDocumentsLienHaut {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	text-align: right;
 }
 
 #redimensionnable {
@@ -340,21 +346,21 @@ textarea.editor-textarea {
 	height: 92%;
 }
 
-.centre {
+.imgGauche {
+	float: left;
+	margin-right: 5px;
+	margin-bottom: 5px;
+}
+
+.imgCentre {
 	display: block;
 	margin-left: auto;
 	margin-right: auto;
 }
 
-.droite {
+.imgDroite {
 	float: right;
 	margin-left: 5px;
-	margin-bottom: 5px;
-}
-
-.gauche {
-	float: left;
-	margin-right: 5px;
 	margin-bottom: 5px;
 }
 

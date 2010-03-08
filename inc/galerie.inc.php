@@ -3,9 +3,6 @@
 Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une oeuvre. Aucun code XHTML n'est envoyé au navigateur.
 */
 
-// Nécessaire à la traduction.
-phpGettext($racine, LANGUE);
-
 // Liste des oeuvres à afficher.
 if ($idGalerie == 'démo')
 {

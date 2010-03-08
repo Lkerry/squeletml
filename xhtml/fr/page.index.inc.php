@@ -1,6 +1,6 @@
 <?php
 $baliseTitle = "Bienvenue sur votre site Squeletml";
-$description = "Page d'accueil par défaut de Squeletml";
+$description = "Page d'accueil par défaut de Squeletml.";
 $langue = 'fr';
 $robots = "noindex, follow, noarchive"; // Empêche la présence de la page par défaut dans les moteurs de recherche.
 include $racine . '/inc/premier.inc.php';

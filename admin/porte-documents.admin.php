@@ -800,7 +800,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 	
 		echo "<fieldset>\n";
 		echo '<legend>' . T_("Options") . "</legend>\n";
-	
+		
 		if ($adminPorteDocumentsDroits['copier'])
 		{
 			echo '<p><input id="inputPorteDocumentsRenommageCopie" type="checkbox" name="porteDocumentsRenommageCopie" value="copie" /><label for="inputPorteDocumentsRenommageCopie">' . T_("Copier avant de renommer") . "</label></p>\n";
@@ -1114,7 +1114,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 										break;
 										
 									case 'description':
-										$contenu .= '$description = "' . T_("Description de la page") . '";' . "\n";
+										$contenu .= '$description = "' . T_("Description de la page.") . '";' . "\n";
 										break;
 										
 									case 'idCategorie':
@@ -1448,6 +1448,8 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	echo "</div><!-- /.bDcorps -->\n";
 	echo "</div><!-- /#divContenuDossierAdminPorteDoc -->\n";
 	echo "</div><!-- /.sousBoite -->\n";
+	
+	echo '<p id="porteDocumentsLienHaut"><a href="#ancres">' . T_("Haut") . "</a></p>\n";
 }
 
 /* ____________________ Listage des dossiers. ____________________ */

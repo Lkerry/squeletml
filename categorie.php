@@ -30,8 +30,7 @@ if (!empty($_GET['id']))
 		$langue = $langueParDefaut;
 	}
 	
-	// Nécessaire à la traduction.
-	phpGettext('.', $langue);
+	phpGettext('.', $langue); // Nécessaire à la traduction.
 	
 	if ($categories !== FALSE && estCatSpeciale($idCategorie) && !empty($getLangue))
 	{

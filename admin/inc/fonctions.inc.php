@@ -71,19 +71,18 @@ function adminCheminXhtml($racineAdmin, $langues, $nom)
 		{
 			return "$racine/site/$dossierAdmin/xhtml/$langue/$nom.inc.php";
 		}
+		elseif (file_exists("$racine/site/$dossierAdmin/xhtml/$nom.inc.php"))
+		{
+			return "$racine/site/$dossierAdmin/xhtml/$nom.inc.php";
+		}
 		elseif (file_exists("$racineAdmin/xhtml/$langue/$nom.inc.php"))
 		{
 			return "$racineAdmin/xhtml/$langue/$nom.inc.php";
 		}
-	}
-	
-	if (file_exists("$racine/site/$dossierAdmin/xhtml/$nom.inc.php"))
-	{
-		return "$racine/site/$dossierAdmin/xhtml/$nom.inc.php";
-	}
-	elseif (file_exists("$racineAdmin/xhtml/$nom.inc.php"))
-	{
-		return "$racineAdmin/xhtml/$nom.inc.php";
+		elseif (file_exists("$racineAdmin/xhtml/$nom.inc.php"))
+		{
+			return "$racineAdmin/xhtml/$nom.inc.php";
+		}
 	}
 	
 	return '';
