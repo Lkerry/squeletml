@@ -1077,18 +1077,20 @@ function decouvrirSupplementPage($description, $baliseTitle)
 {
 	$messageDecouvrirSupplement = '';
 	
+	if (!empty($baliseTitle))
+	{
+		$messageDecouvrirSupplement .= '<p>' . $baliseTitle . "</p>\n";
+	}
+	
 	if (!empty($description))
 	{
-		$messageDecouvrirSupplement .= $description;
+		$messageDecouvrirSupplement .= '<p>' . $description . "</p>\n";
 	}
-	elseif (!empty($baliseTitle))
-	{
-		$messageDecouvrirSupplement .= $baliseTitle;
-	}
+	
 	
 	if (!empty($messageDecouvrirSupplement))
 	{
-		$messageDecouvrirSupplement = "<p style=\"font-style: italic;\">$messageDecouvrirSupplement</p>\n";
+		$messageDecouvrirSupplement = "<div style=\"font-style: italic;\">$messageDecouvrirSupplement</div>\n";
 	}
 	
 	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Consultez cette page!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";

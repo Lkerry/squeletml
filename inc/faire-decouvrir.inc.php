@@ -73,7 +73,7 @@ if (!$erreur404 && !$estPageDerreur)
 				$description = '';
 			}
 		
-			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle);
+			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle . $baliseTitleComplement);
 			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 		}
 	}
@@ -90,7 +90,7 @@ if (!$erreur404 && !$estPageDerreur)
 				$description = '';
 			}
 		
-			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle);
+			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle . $baliseTitleComplement);
 			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . urlPageSansDecouvrir() . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 		}
 	}
