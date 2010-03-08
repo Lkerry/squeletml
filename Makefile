@@ -45,11 +45,7 @@ archives: menage-archives ChangeLog version.txt
 	mv ChangeLog-version-actuelle $(tag)/
 	mv ChangeLog-version-actuelle-fichiers $(tag)/
 	cp version.txt $(tag)/
-	for po in $(shell find $(tag) -iname *.po);\
-	do\
-		msgfmt -o $${po%\.*}.mo $$po;\
-		cp $${po%\.*}.mo $(tag)/$${po%\.*}.mo;\
-	done
+	$(MAKE) mo-archives
 	rm -f $(tag)/inc/devel.inc.php
 	rm -f $(tag)/Makefile
 	rm -f $(tag)/scripts.cli.php
@@ -104,6 +100,12 @@ message-accueil: menage-message-accueil
 
 mo:
 	for po in $(shell find locale/ -iname *.po);\
+	do\
+		msgfmt -o $${po%\.*}.mo $$po;\
+	done
+
+mo-archives:
+	for po in $(shell find $(tag)/locale/ -iname *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
