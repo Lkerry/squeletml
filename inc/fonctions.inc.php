@@ -517,7 +517,11 @@ function cheminXhtml($racine, $langues, $nom, $retourneChemin = TRUE)
 		{
 			return $retourneChemin ? "$racine/site/xhtml/$nom.inc.php" : TRUE;
 		}
-		elseif (file_exists("$racine/xhtml/$langue/$nom.inc.php"))
+	}
+	
+	foreach ($langues as $langue)
+	{
+		if (file_exists("$racine/xhtml/$langue/$nom.inc.php"))
 		{
 			return $retourneChemin ? "$racine/xhtml/$langue/$nom.inc.php" : TRUE;
 		}

@@ -75,7 +75,11 @@ function adminCheminXhtml($racineAdmin, $langues, $nom)
 		{
 			return "$racine/site/$dossierAdmin/xhtml/$nom.inc.php";
 		}
-		elseif (file_exists("$racineAdmin/xhtml/$langue/$nom.inc.php"))
+	}
+	
+	foreach ($langues as $langue)
+	{
+		if (file_exists("$racineAdmin/xhtml/$langue/$nom.inc.php"))
 		{
 			return "$racineAdmin/xhtml/$langue/$nom.inc.php";
 		}
