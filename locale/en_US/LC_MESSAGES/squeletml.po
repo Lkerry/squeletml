@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-09 08:50-0500\n"
+"POT-Creation-Date: 2010-03-10 15:46-0500\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -1735,136 +1735,136 @@ msgstr ""
 msgid "Administration de Squeletml"
 msgstr ""
 
-#: admin/inc/premier.inc.php:113
+#: admin/inc/premier.inc.php:106
 msgid "Prévisualisation"
 msgstr ""
 
-#: admin/inc/premier.inc.php:115
+#: admin/inc/premier.inc.php:108
 msgid "Emphase forte"
 msgstr ""
 
-#: admin/inc/premier.inc.php:117
+#: admin/inc/premier.inc.php:110
 msgid "Emphase légère"
 msgstr ""
 
-#: admin/inc/premier.inc.php:122
+#: admin/inc/premier.inc.php:115
 msgid "Attribut «href» (adresse)"
 msgstr ""
 
-#: admin/inc/premier.inc.php:123
+#: admin/inc/premier.inc.php:116
 msgid "Attribut «title» (optionnel)"
 msgstr ""
 
-#: admin/inc/premier.inc.php:125 admin/inc/premier.inc.php:126
+#: admin/inc/premier.inc.php:118 admin/inc/premier.inc.php:119
 msgid "Lien"
 msgstr ""
 
-#: admin/inc/premier.inc.php:125 admin/inc/premier.inc.php:137
+#: admin/inc/premier.inc.php:118 admin/inc/premier.inc.php:130
 #: admin/porte-documents.admin.php:1341 admin/porte-documents.admin.php:1604
 #: admin/acces.admin.php:704
 msgid "Ajouter"
 msgstr ""
 
-#: admin/inc/premier.inc.php:131
+#: admin/inc/premier.inc.php:124
 msgid "Classe (style)"
 msgstr ""
 
-#: admin/inc/premier.inc.php:131
+#: admin/inc/premier.inc.php:124
 msgid "Gauche"
 msgstr ""
 
-#: admin/inc/premier.inc.php:131
+#: admin/inc/premier.inc.php:124
 msgid "Centre"
 msgstr ""
 
-#: admin/inc/premier.inc.php:131
+#: admin/inc/premier.inc.php:124
 msgid "Droite"
 msgstr ""
 
-#: admin/inc/premier.inc.php:132
+#: admin/inc/premier.inc.php:125
 msgid "URL"
 msgstr ""
 
-#: admin/inc/premier.inc.php:133
+#: admin/inc/premier.inc.php:126
 msgid "Largeur × hauteur"
 msgstr ""
 
-#: admin/inc/premier.inc.php:133
+#: admin/inc/premier.inc.php:126
 msgid " × "
 msgstr ""
 
-#: admin/inc/premier.inc.php:135
+#: admin/inc/premier.inc.php:128
 msgid "Texte alternatif"
 msgstr ""
 
-#: admin/inc/premier.inc.php:137 admin/inc/premier.inc.php:138
+#: admin/inc/premier.inc.php:130 admin/inc/premier.inc.php:131
 msgid "Image"
 msgstr ""
 
-#: admin/inc/premier.inc.php:140
+#: admin/inc/premier.inc.php:133
 msgid "Liste non ordonnée"
 msgstr ""
 
-#: admin/inc/premier.inc.php:142
+#: admin/inc/premier.inc.php:135
 msgid "Liste ordonnée"
 msgstr ""
 
-#: admin/inc/premier.inc.php:144
+#: admin/inc/premier.inc.php:137
 msgid "Fin de l\\'aperçu"
 msgstr ""
 
-#: admin/inc/premier.inc.php:146
+#: admin/inc/premier.inc.php:139
 msgid "Titre de premier niveau"
 msgstr ""
 
-#: admin/inc/premier.inc.php:148
+#: admin/inc/premier.inc.php:141
 msgid "Titre de deuxième niveau"
 msgstr ""
 
-#: admin/inc/premier.inc.php:150
+#: admin/inc/premier.inc.php:143
 msgid "Titre de troisième niveau"
 msgstr ""
 
-#: admin/inc/premier.inc.php:152
+#: admin/inc/premier.inc.php:145
 msgid "Titre de quatrième niveau"
 msgstr ""
 
-#: admin/inc/premier.inc.php:154
+#: admin/inc/premier.inc.php:147
 msgid "Titre de cinquième niveau"
 msgstr ""
 
-#: admin/inc/premier.inc.php:156
+#: admin/inc/premier.inc.php:149
 msgid "Titre de sixième niveau"
 msgstr ""
 
-#: admin/inc/premier.inc.php:158
+#: admin/inc/premier.inc.php:151
 msgid "Division"
 msgstr ""
 
-#: admin/inc/premier.inc.php:160
+#: admin/inc/premier.inc.php:153
 msgid "Ligne horizontale"
 msgstr ""
 
-#: admin/inc/premier.inc.php:162
+#: admin/inc/premier.inc.php:155
 msgid "Paragraphe"
 msgstr ""
 
-#: admin/inc/premier.inc.php:165 admin/inc/premier.inc.php:168
+#: admin/inc/premier.inc.php:158 admin/inc/premier.inc.php:161
 msgid "Balise personnalisée"
 msgstr ""
 
-#: admin/inc/premier.inc.php:171
+#: admin/inc/premier.inc.php:164
 msgid ""
 "Insérer le code proposé pour intégrer la vidéo. Ce dernier sera modifié pour "
 "devenir valide XHTML 1.0 Strict. Testé avec blip.tv, Dailymotion, Google "
 "Vidéos, Metacafe, Vimeo et Youtube."
 msgstr ""
 
-#: admin/inc/premier.inc.php:200
+#: admin/inc/premier.inc.php:193
 msgid "Vidéo"
 msgstr ""
 
-#: admin/inc/premier.inc.php:200
+#: admin/inc/premier.inc.php:193
 msgid "vidéo"
 msgstr ""
 
@@ -2756,7 +2756,7 @@ msgstr ""
 msgid "Dernières publications dans la catégorie «%1$s»"
 msgstr ""
 
-#: inc/fonctions.inc.php:1284 inc/fonctions.inc.php:3672
+#: inc/fonctions.inc.php:1284 inc/fonctions.inc.php:3677
 #, php-format
 msgid "Oeuvre %1$s | Galerie %2$s"
 msgstr "Work %1$s | Gallery %2$s"
@@ -3002,7 +3002,7 @@ msgstr ""
 "Verbatim copying and distribution of this entire article are permitted "
 "worldwide without royalty in any medium, provided this notice is preserved."
 
-#: inc/fonctions.inc.php:2656
+#: inc/fonctions.inc.php:2661
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
@@ -3010,7 +3010,7 @@ msgstr ""
 "Do you know that Internet&nbsp;Explorer&nbsp;6 (with which you are visiting "
 "this site) is out of date?"
 
-#: inc/fonctions.inc.php:2658
+#: inc/fonctions.inc.php:2663
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -3023,101 +3023,101 @@ msgstr ""
 "performance and respect of web standards. Firefox is totally free. If you "
 "are using a computer at work you should contact your IT administrator."
 
-#: inc/fonctions.inc.php:2660
+#: inc/fonctions.inc.php:2665
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:2792
+#: inc/fonctions.inc.php:2797
 msgid ""
 "Le site est présentement hors ligne pour maintenance. Certaines pages "
 "peuvent ne pas s'afficher correctement."
 msgstr ""
 
-#: inc/fonctions.inc.php:2885
+#: inc/fonctions.inc.php:2890
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:2889
+#: inc/fonctions.inc.php:2894
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
 msgstr ""
 
-#: inc/fonctions.inc.php:2932 inc/fonctions.inc.php:2945
-#: inc/fonctions.inc.php:2958
+#: inc/fonctions.inc.php:2937 inc/fonctions.inc.php:2950
+#: inc/fonctions.inc.php:2963
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:2936 inc/fonctions.inc.php:2949
-#: inc/fonctions.inc.php:2962
+#: inc/fonctions.inc.php:2941 inc/fonctions.inc.php:2954
+#: inc/fonctions.inc.php:2967
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
 msgstr ""
 
-#: inc/fonctions.inc.php:3060 inc/fonctions.inc.php:3348
+#: inc/fonctions.inc.php:3065 inc/fonctions.inc.php:3353
 #, php-format
 msgid "Oeuvre %1$s"
 msgstr "Work %1$s"
 
-#: inc/fonctions.inc.php:3112
+#: inc/fonctions.inc.php:3117
 #, php-format
 msgid ""
 "Télécharger l'oeuvre au format original (extension: %1$s; taille: %2$s Kio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:3117
+#: inc/fonctions.inc.php:3122
 #, php-format
 msgid ""
 "Afficher l'oeuvre au format original (extension: %1$s; taille: %2$s Kio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:3165
+#: inc/fonctions.inc.php:3170
 #, php-format
 msgid "(%1$s Kio)"
 msgstr ""
 
-#: inc/fonctions.inc.php:3198
+#: inc/fonctions.inc.php:3203
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:3202
+#: inc/fonctions.inc.php:3207
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:3212
+#: inc/fonctions.inc.php:3217
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:3216
+#: inc/fonctions.inc.php:3221
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:3220
+#: inc/fonctions.inc.php:3225
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:3224
+#: inc/fonctions.inc.php:3229
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:3228
+#: inc/fonctions.inc.php:3233
 msgid "Fabriquant"
 msgstr "Manufacturer"
 
-#: inc/fonctions.inc.php:3487
+#: inc/fonctions.inc.php:3492
 msgid "Page précédente"
 msgstr ""
 
-#: inc/fonctions.inc.php:3500
+#: inc/fonctions.inc.php:3505
 msgid "Page suivante"
 msgstr ""
 
-#: inc/fonctions.inc.php:3613 inc/fonctions.inc.php:3927
+#: inc/fonctions.inc.php:3618 inc/fonctions.inc.php:3932
 msgid "Voir plus de titres"
 msgstr ""
 
-#: inc/fonctions.inc.php:3734 inc/fonctions.inc.php:3841
+#: inc/fonctions.inc.php:3739 inc/fonctions.inc.php:3846
 msgid "Voir plus d'oeuvres"
 msgstr ""
 
