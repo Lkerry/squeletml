@@ -22,6 +22,14 @@ $urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
 include_once $racineAdmin . '/inc/fonctions.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
+$nomPage = nomPage();
+$url = url();
+$urlSansGet = url(FALSE);
+$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
+$urlDeconnexion = adminUrlDeconnexion($urlRacine);
+$urlFichiers = $urlRacine . '/site/fichiers';
+$urlSite = $urlRacine . '/site';
+
 foreach (adminAinclureDebut($racineAdmin) as $fichier)
 {
 	include_once $fichier;

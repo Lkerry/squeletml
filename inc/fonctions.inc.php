@@ -2522,6 +2522,11 @@ function marquePagesSociaux($url, $titre)
 		'lien' => "http://www.google.com/bookmarks/mark?op=add&amp;bkmk=$url&amp;title=$titre",
 	);
 	
+	$liens['Identica'] = array(
+		'nom' => 'Identi.ca',
+		'lien' => "http://identi.ca/index.php?action=newnotice&status_textarea=$titre $url",
+	);
+	
 	$liens['Linkedin'] = array(
 		'nom' => 'LinkedIn',
 		'lien' => "http://www.linkedin.com/shareArticle?mini=true&amp;url=$url&amp;title=$titre",
