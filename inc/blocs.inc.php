@@ -192,7 +192,7 @@ if (!empty($blocsAinserer))
 					break;
 				
 				case 'marque-pages-sociaux':
-					$listeMarquePagesSociaux = marquePagesSociaux($url, $baliseTitle);
+					$listeMarquePagesSociaux = marquePagesSociaux($url, $baliseTitle . $baliseTitleComplement);
 					
 					if ($marquePagesSociaux && !empty($listeMarquePagesSociaux) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
