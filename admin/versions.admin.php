@@ -4,7 +4,19 @@ $baliseTitle = T_("Version de Squeletml et autres informations");
 include $racineAdmin . '/inc/premier.inc.php';
 
 $versionActuelleSqueletml = adminVersionSqueletml($racine . '/version.txt');
+$tableauVersionActuelleSqueletml = explode('.', $versionActuelleSqueletml);
 $derniereVersionSqueletml = adminVersionSqueletml(URL_DERNIERE_VERSION_SQUELETML);
+$tableauDerniereVersionSqueletml = explode('.', $derniereVersionSqueletml);
+
+if (!isset($tableauVersionActuelleSqueletml[2]))
+{
+	$tableauVersionActuelleSqueletml[2] = 0;
+}
+
+if (!isset($tableauDerniereVersionSqueletml[2]))
+{
+	$tableauDerniereVersionSqueletml[2] = 0;
+}
 ?>
 
 <h1><?php echo T_("Version de Squeletml et autres informations"); ?></h1>
@@ -15,8 +27,8 @@ $derniereVersionSqueletml = adminVersionSqueletml(URL_DERNIERE_VERSION_SQUELETML
 	<li>
 		<?php printf(T_("Version de Squeletml: %1\$s"), $versionActuelleSqueletml); ?>
 		
-		<?php if ($derniereVersionSqueletml > $versionActuelleSqueletml): ?>
-			<?php printf(T_("(<a href=\"%1\$s\">la version %2\$s est disponible</a>)"), URL_SQUELETML, $derniereVersionSqueletml); ?>
+		<?php if (($tableauDerniereVersionSqueletml[0] > $tableauVersionActuelleSqueletml[0]) || ($tableauDerniereVersionSqueletml[1] > $tableauVersionActuelleSqueletml[1]) || ($tableauDerniereVersionSqueletml[2] > $tableauVersionActuelleSqueletml[2])): ?>
+			<?php printf(T_("(<a href=\"%1\$s\">la version %2\$s est disponible</a>)"), URL_TELECHARGEMENT_SQUELETML, $derniereVersionSqueletml); ?>
 		<?php elseif ($derniereVersionSqueletml == $versionActuelleSqueletml): ?>
 			<?php echo T_("(il s'agit de la dernière version publiée)"); ?>
 		<?php else: ?>
