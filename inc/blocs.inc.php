@@ -215,7 +215,7 @@ if (!empty($blocsAinserer))
 						
 						foreach ($listeMarquePagesSociaux as $service)
 						{
-							$blocs[$region] .= '<li><a href="' . $service['lien'] . '">' . $service['nom'] . "</a></li>\n";
+							$blocs[$region] .= '<li><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
 						}
 						
 						$blocs[$region] .= "</ul>\n";
