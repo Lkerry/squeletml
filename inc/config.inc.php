@@ -25,10 +25,15 @@ $xhtmlStrict = TRUE; // TRUE|FALSE
 // Complément de la balise `title` selon la langue.
 /*
 - Le complément de la balise `title` est ajouté à la suite du contenu principal de la balise `title`.
+- Pour chaque langue, deux compléments sont précisables:
+  - `accueil`, utilisé seulement sur la page d'accueil de la langue en question;
+  - `interne`, utilisé pour toutes les autres pages dans cette langue.
 - Voir les fonctions `baliseTitle()` et `baliseTitleComplement()`.
 */
-$tableauBaliseTitleComplement['fr'] = " | Squeletml";
-$tableauBaliseTitleComplement['en'] = " | Squeletml";
+$tableauBaliseTitleComplement['fr']['accueil'] = " | Système de gestion de contenu léger et sans base de données";
+$tableauBaliseTitleComplement['fr']['interne'] = " | Squeletml";
+$tableauBaliseTitleComplement['en']['accueil'] = " | Lightweight content management system without database";
+$tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*

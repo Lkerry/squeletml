@@ -1,6 +1,6 @@
 <?php
 $baliseTitle = "Authentification requise";
-$description = "La page demandée requiert un authentification.";
+$description = "La page demandée requiert une authentification.";
 $langue = 'fr';
 include $racine . '/inc/premier.inc.php';
 ?>

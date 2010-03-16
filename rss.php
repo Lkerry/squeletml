@@ -140,7 +140,7 @@ elseif ($getType == 'galerie' && !empty($getChemin) && empty($getLangue))
 						$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 					}
 					
-					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), $idGalerie, '');
+					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), FALSE), $idGalerie, '');
 					
 					if ($dureeCache['fluxRss'])
 					{
@@ -280,7 +280,7 @@ elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && emp
 						$urlCategorie = $urlRacine . '/' . urlCat($categories[$idCategorie], $idCategorie, $langueParDefaut);
 					}
 					
-					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut)), '', $idCategorie);
+					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), FALSE), '', $idCategorie);
 			
 					if ($dureeCache['fluxRss'])
 					{
@@ -332,7 +332,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 			}
 			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut)), '', '');
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
 			if ($dureeCache['fluxRss'])
 			{
@@ -399,7 +399,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 			}
 			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut)), '', '');
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
 			if ($dureeCache['fluxRss'])
 			{

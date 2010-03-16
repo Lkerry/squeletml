@@ -169,13 +169,28 @@ function baliseTitle($baliseTitle, $langues)
 /*
 Retourne le complément de la balise `title`. Si aucun complément, n'a été trouvé, retourne une chaîne vide.
 */
-function baliseTitleComplement($tableauBaliseTitleComplement, $langues)
+function baliseTitleComplement($tableauBaliseTitleComplement, $langues, $estAccueil)
 {
+	if ($estAccueil)
+	{
+		$premierElementAtester = 'accueil';
+		$deuxiemeElementAtester = 'interne';
+	}
+	else
+	{
+		$premierElementAtester = 'interne';
+		$deuxiemeElementAtester = 'accueil';
+	}
+	
 	foreach ($langues as $langue)
 	{
-		if (array_key_exists($langue, $tableauBaliseTitleComplement))
+		if (isset($tableauBaliseTitleComplement[$langue][$premierElementAtester]))
 		{
-			return $tableauBaliseTitleComplement[$langue];
+			return $tableauBaliseTitleComplement[$langue][$premierElementAtester];
+		}
+		elseif (isset($tableauBaliseTitleComplement[$langue][$deuxiemeElementAtester]))
+		{
+			return $tableauBaliseTitleComplement[$langue][$deuxiemeElementAtester];
 		}
 	}
 	
