@@ -170,12 +170,6 @@ $adminFiltreAffichageDossiers = '../admin|../css|../fichiers|../inc|../js|../loc
 // Taille maximale des fichiers ajoutés (en octets).
 $adminTailleMaxFichiers = adminPhpIniOctets(ini_get('upload_max_filesize'));
 
-// Filtre des noms de fichier.
-/*
-- Le filtre convertit automatiquement les caractères différents de `a-zA-Z0-9.-_+` en tiret, et les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e»).
-*/
-$adminFiltreNom = FALSE; // TRUE|FALSE
-
 // Filtre du type Mime.
 $adminFiltreTypesMime = TRUE; // TRUE|FALSE
 

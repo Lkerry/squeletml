@@ -142,12 +142,12 @@ fieldset {
 	border: 1px solid #b3b3b3;
 }
 
-body#categories-admin-php fieldset ul, body#galeries-admin-php fieldset ul, body#rss-admin-php fieldset ul {
+fieldset ul {
 	list-style-type: none;
 	padding-left: 0px;
 }
 
-body#categories-admin-php fieldset ul ul, body#galeries-admin-php fieldset ul ul, body#rss-admin-php fieldset ul ul {
+fieldset ul ul {
 	padding-left: 20px;
 }
 

@@ -181,6 +181,19 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
+			$filtrerNom = FALSE;
+			$casse = '';
+			
+			if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+			{
+				$filtrerNom = TRUE;
+			
+				if (in_array('min', $_POST['filtrerNom']))
+				{
+					$casse = 'min';
+				}
+			}
+			
 			if ($id == 'nouvelleGalerie')
 			{
 				$id = securiseTexte(superBasename($_POST['idNouvelleGalerie']));
@@ -212,13 +225,29 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					elseif ($typeMime != 'application/zip' && $typeMime != 'application/x-tar')
 					{
-						if (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomArchive))
+						$nomFiltreArchive = $nomArchive;
+						
+						if ($filtrerNom)
 						{
-							$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomArchive . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+							$nomFiltreArchive = filtreChaine($racine, $nomArchive, $casse);
+						}
+						
+						if (file_exists($cheminGalerie . '/' . $nomFiltreArchive))
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), "<code>$nomFiltreArchive</code>", "<code>$cheminGalerie</code>") . "</li>\n";
+						}
+						elseif (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomFiltreArchive))
+						{
+							if ($nomFiltreArchive != $nomArchive)
+							{
+								$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$nomArchive</code>", "<code>$nomFiltreArchive</code>") . "</li>\n";
+							}
+							
+							$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreArchive . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
 						}
 						else
 						{
-							$messagesScript .= '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors du déplacement du fichier %1\$s."), '<code>' . $nomArchive . '</code>') . "</li>\n";
 						}
 					}
 					elseif ($typeMime == 'application/zip' && !function_exists('gzopen'))
@@ -240,7 +269,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 							foreach ($resultatArchive as $infoImage)
 							{
 								$nomFichier = superBasename($infoImage['filename']);
+								$nomFiltreFichier = $nomFichier;
+								
+								if ($filtrerNom)
+								{
+									$nomFiltreFichier = filtreChaine($racine, $nomFichier, $casse);
+								}
+								
 								$cheminFichier = $cheminGaleries . '/' . $id . '/' . $nomFichier;
+								$cheminFiltreFichier = $cheminGaleries . '/' . $id . '/' . $nomFiltreFichier;
 								
 								if ($infoImage['status'] == 'ok')
 								{
@@ -251,9 +288,33 @@ include $racineAdmin . '/inc/premier.inc.php';
 										@unlink($cheminFichier);
 										$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
 									}
-									else
+									elseif ($nomFiltreFichier == $nomFichier)
 									{
 										$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+									}
+									else
+									{
+										$messagesScriptFiltre = '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$nomFichier</code>", "<code>$nomFiltreFichier</code>") . "</li>\n";
+										
+										if (file_exists($cheminFiltreFichier))
+										{
+											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+											$messagesScript .= $messagesScriptFiltre;
+											$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s impossible, car un fichier %2\$s existe déjà dans le dossier %3\$s."), '<code>' . $nomFichier . '</code>', '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+										}
+										else
+										{
+											$messagesScript .= $messagesScriptFiltre;
+											
+											if (@rename($cheminFichier, $cheminFiltreFichier))
+											{
+												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+											}
+											else
+											{
+												$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), '<code>' . $nomFichier . '</code>', '<code>' . $nomFiltreFichier . '</code>') . "</li>\n";
+											}
+										}
 									}
 								}
 								elseif ($infoImage['status'] == 'newer_exist')
@@ -277,53 +338,63 @@ include $racineAdmin . '/inc/premier.inc.php';
 							for ($i = 0; $i < count($listeFichiers); $i++)
 							{
 								$nomFichier = $listeFichiers[$i]['filename'];
+								$nomFiltreFichier = $nomFichier;
+								
+								if ($filtrerNom)
+								{
+									$nomFiltreFichier = filtreChaine($racine, $nomFichier, $casse);
+								}
+								
+								if ($nomFiltreFichier != $nomFichier)
+								{
+									$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$nomFichier</code>", "<code>$nomFiltreFichier</code>") . "</li>\n";
+								}
+								
 								$cheminFichier = $cheminGalerie . '/' . $nomFichier;
+								$cheminFichierFiltre = $cheminGalerie . '/' . $nomFiltreFichier;
 								
 								if ($listeFichiers[$i]['filetype'] == 'directory')
 								{
-									if (file_exists($cheminFichier))
+									if (file_exists($cheminFichierFiltre))
 									{
-										$messagesScript .= '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminGalerie . '/' . $nomFichier . '</code>') . "</li>\n";
+										$messagesScript .= '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . $cheminFichierFiltre . '</code>') . "</li>\n";
 									}
 									else
 									{
-										$messagesScript .= adminMkdir($cheminFichier, octdec(755), TRUE);
+										$messagesScript .= adminMkdir($cheminFichierFiltre, octdec(755), TRUE);
+									}
+								}
+								elseif (file_exists($cheminFichierFiltre))
+								{
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichierFiltre . '</code>') . "</li>\n";
+								}
+								elseif ($fic = @fopen($cheminFichierFiltre, 'w'))
+								{
+									$donnees = $fichierTar->extract($nomFichier);
+									
+									if (fwrite($fic, $donnees))
+									{
+										fclose($fic);
+										$typeMimeFichier = typeMime($cheminFichierFiltre, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+										
+										if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
+										{
+											@unlink($cheminFichierFiltre);
+											$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
+										}
+										else
+										{
+											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+										}
+									}
+									else
+									{
+										$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichierFiltre . '</code>') . "</li>\n";
 									}
 								}
 								else
 								{
-									if (file_exists($cheminFichier))
-									{
-										$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
-									}
-									elseif ($fic = @fopen($cheminFichier, 'w'))
-									{
-										$donnees = $fichierTar->extract($nomFichier);
-										
-										if (fwrite($fic, $donnees))
-										{
-											fclose($fic);
-											$typeMimeFichier = typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-											
-											if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
-											{
-												@unlink($cheminFichier);
-												$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . $nomFichier . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
-											}
-											else
-											{
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
-											}
-										}
-										else
-										{
-											$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
-										}
-									}
-									else
-									{
-										$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>";
-									}
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminFichierFiltre . '</code>') . "</li>";
 								}
 							}
 							
@@ -332,7 +403,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						}
 						else
 						{
-							$messagesScript .= '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors du déplacement du fichier %1\$s."), '<code>' . $nomArchive . '</code>') . "</li>\n";
 						}
 					}
 					
@@ -343,7 +414,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . T_("Erreur lors du déplacement du fichier %1\$s.", '<code>' . $nomArchive . '</code>') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors du déplacement du fichier %1\$s."), '<code>' . $nomArchive . '</code>') . "</li>\n";
 				}
 			}
 		}
@@ -766,6 +837,25 @@ include $racineAdmin . '/inc/premier.inc.php';
 	{
 		$messagesScript = '';
 		$page = superBasename(securiseTexte($_POST['page']));
+		
+		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+		{
+			$pageAncienNom = $page;
+			$casse = '';
+			
+			if (in_array('min', $_POST['filtrerNom']))
+			{
+				$casse = 'min';
+			}
+			
+			$page = filtreChaine($racine, $page, $casse);
+			
+			if ($page != $pageAncienNom)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$pageAncienNom</code>", "<code>$page</code>") . "</li>\n";
+			}
+		}
+		
 		$cheminPage = '../' . dirname(securiseTexte($_POST['page']));
 		
 		if ($cheminPage == '../.')
@@ -1139,6 +1229,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 				<p><label for="ajouterInputFichier"><?php echo T_("Fichier:"); ?></label><br />
 				<input id="ajouterInputFichier" type="file" name="fichier" size="25"/></p>
+				
+				<ul>
+					<li><input id="ajouterInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="ajouterInputFiltrerNom"><?php printf(T_("Filtrer le nom de chaque image. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
+					<ul>
+						<li><input id="ajouterInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="ajouterInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
+					</ul></li>
+				</ul>
 			</fieldset>
 
 			<fieldset class="fichierConfigAdminGaleries">
@@ -1423,6 +1520,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 				<p><label for="pageWebInputPage"><?php echo T_("Emplacement de la page web:"); ?></label><br />
 				<?php echo $urlRacine . '/'; ?><input id="pageWebInputPage" type="text" name="page" /></p>
+				
+				<ul>
+					<li><input id="pageWebInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="pageWebInputFiltrerNom"><?php printf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
+					<ul>
+						<li><input id="pageWebInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="pageWebInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
+					</ul></li>
+				</ul>
 			</fieldset>
 			
 			<p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>

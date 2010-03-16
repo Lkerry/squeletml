@@ -1186,7 +1186,7 @@ function extension($nomFichier, $retourneNomSansExtension = FALSE)
 /*
 Filtre une chaîne de caractères pour ne conserver que des caractères non accentués et certains autres caractères. Retourne la chaîne filtrée.
 */
-function filtreChaine($racine, $chaine)
+function filtreChaine($racine, $chaine, $casse = '')
 {
 	$transliteration = parse_ini_file($racine . '/inc/pathauto/i18n-ascii.txt');
 	
@@ -1194,6 +1194,23 @@ function filtreChaine($racine, $chaine)
 	$chaine = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $chaine);
 	$chaine = preg_replace('/-+/', '-', $chaine);
 	$chaine = str_replace('-.', '.', $chaine);
+	
+	if ($casse == 'min')
+	{
+		$chaine = strtolower($chaine);
+	}
+	elseif ($casse == 'maj')
+	{
+		$chaine = strtoupper($chaine);
+	}
+	elseif ($casse == 'premiereMaj')
+	{
+		$chaine = ucfirst($chaine);
+	}
+	elseif ($casse == 'premiereChaqueMotMaj')
+	{
+		$chaine = ucwords($chaine);
+	}
 	
 	return $chaine;
 }

@@ -941,7 +941,27 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 	else
 	{
 		$fichierAcreerType = $_POST['porteDocumentsCreationType'];
-		$fichierAcreerNom = securiseTexte($_POST['porteDocumentsCreationChemin']) . '/' . securiseTexte($_POST['porteDocumentsCreationNom']);
+		$fichierAcreerNom = securiseTexte($_POST['porteDocumentsCreationNom']);
+		
+		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+		{
+			$fichierAcreerAncienNom = $fichierAcreerNom;
+			$casse = '';
+			
+			if (in_array('min', $_POST['filtrerNom']))
+			{
+				$casse = 'min';
+			}
+			
+			$fichierAcreerNom = filtreChaine($racine, $fichierAcreerNom, $casse);
+			
+			if ($fichierAcreerNom != $fichierAcreerAncienNom)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$fichierAcreerAncienNom</code>", "<code>$fichierAcreerNom</code>") . "</li>\n";
+			}
+		}
+		
+		$fichierAcreerNom = securiseTexte($_POST['porteDocumentsCreationChemin']) . '/' . $fichierAcreerNom;
 		
 		if (!preg_match("|^$adminDossierRacinePorteDocuments/|i", $fichierAcreerNom))
 		{
@@ -1264,14 +1284,21 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 			$nomFichier = $nouveauNomFichier;
 		}
 		
-		if ($adminFiltreNom)
+		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
 		{
 			$ancienNomFichier = $nomFichier;
-			$nomFichier = filtreChaine($racine, $nomFichier);
+			$casse = '';
+			
+			if (in_array('min', $_POST['filtrerNom']))
+			{
+				$casse = 'min';
+			}
+			
+			$nomFichier = filtreChaine($racine, $nomFichier, $casse);
 			
 			if ($nomFichier != $ancienNomFichier)
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Filtre du nom de fichier activé: renommage de %1\$s en %2\$s effectué."), "<code>$ancienNomFichier</code>", "<code>$nomFichier</code>") . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$ancienNomFichier</code>", "<code>$nomFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -1599,6 +1626,8 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 
 	echo "<p><label for=\"inputPorteDocumentsAjouterNom\">Nouveau nom du fichier (optionnel):</label><br />\n";
 	echo '<input id="inputPorteDocumentsAjouterNom" type="text" name="porteDocumentsAjouterNom" size="25" value="" /></p>' . "\n";;
+	
+	echo "<ul>\n" . '<li><input id="inputPorteDocumentsAjouterFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="inputPorteDocumentsAjouterFiltrerNom">' . sprintf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>') . "</label>\n<ul>\n" . '<li><input id="inputPorteDocumentsAjouterFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="inputPorteDocumentsAjouterFiltrerCasse">' . T_("Filtrer également les majuscules en minuscules.") . "</label></li>\n</ul>\n</li>\n</ul>\n";
 	echo "</fieldset>\n";
 	
 	echo '<p><input type="submit" name="porteDocumentsAjouter" value="' . T_("Ajouter") . '" />' . "</p>\n";
@@ -1647,6 +1676,8 @@ if ($adminPorteDocumentsDroits['creer'])
 	
 	echo '</select>';
 	echo ' / <input id="inputPorteDocumentsCreationNom" type="text" name="porteDocumentsCreationNom" size="25" value="" /></p>' . "\n";
+	
+	echo "<ul>\n" . '<li><input id="inputPorteDocumentsAjouterFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="inputPorteDocumentsAjouterFiltrerNom">' . sprintf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>') . "</label>\n<ul>\n" . '<li><input id="inputPorteDocumentsAjouterFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="inputPorteDocumentsAjouterFiltrerCasse">' . T_("Filtrer également les majuscules en minuscules.") . "</label></li>\n</ul>\n</li>\n</ul>\n";
 	
 	echo '<p><label for="selectPorteDocumentsCreationType">' . T_("Type:") . "</label><br />\n";
 	echo '<select id="selectPorteDocumentsCreationType" name="porteDocumentsCreationType" size="1">' . "\n";
