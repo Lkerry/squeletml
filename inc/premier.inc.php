@@ -102,7 +102,7 @@ if (!empty($classesContenu))
 	$classesContenu = ' class="' . $classesContenu . '"';
 }
 
-list ($contenuDoctype, $baliseHtml) = doctype($doctype, LANGUE);
+list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($doctype, LANGUE);
 
 if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 {

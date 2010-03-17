@@ -1,5 +1,4 @@
-<?php echo $contenuDoctype; ?>
-<?php echo $baliseHtml; ?>
+<?php echo $contenuDoctype . $ouvertureBaliseHtml; ?>
 	<!-- ____________________ <head> ____________________ -->
 	<head>
 		<!-- Titre. -->
