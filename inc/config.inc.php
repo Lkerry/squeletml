@@ -161,16 +161,17 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 
 Voir la fonction `blocs()`.
 */
-$ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
-$ordreBlocsDansFluxHtml['menu']                   = array (200, 510, 500);
-$ordreBlocsDansFluxHtml['menu-categories']        = array (510, 520, 510);
-$ordreBlocsDansFluxHtml['legende-image-galerie']  = array (520, 530, 520);
-$ordreBlocsDansFluxHtml['flux-rss']               = array (530, 540, 530);
-$ordreBlocsDansFluxHtml['faire-decouvrir']        = array (540, 550, 540);
-$ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (550, 560, 550);
-$ordreBlocsDansFluxHtml['infos-publication']      = array (400, 400, 400);
-$ordreBlocsDansFluxHtml['licence']                = array (410, 410, 410);
-$ordreBlocsDansFluxHtml['lien-page']              = array (420, 420, 420);
+$ordreBlocsDansFluxHtml['balise-h1']             = array (300, 300, 300);
+$ordreBlocsDansFluxHtml['infos-publication']     = array (400, 400, 400);
+$ordreBlocsDansFluxHtml['licence']               = array (410, 410, 410);
+$ordreBlocsDansFluxHtml['lien-page']             = array (420, 420, 420);
+$ordreBlocsDansFluxHtml['menu-langues']          = array (500, 500, 200);
+$ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 500);
+$ordreBlocsDansFluxHtml['menu-categories']       = array (510, 520, 510);
+$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (520, 530, 520);
+$ordreBlocsDansFluxHtml['flux-rss']              = array (530, 540, 530);
+$ordreBlocsDansFluxHtml['faire-decouvrir']       = array (540, 550, 540);
+$ordreBlocsDansFluxHtml['marque-pages-sociaux']  = array (550, 560, 550);
 
 // Détection du type MIME.
 /*
@@ -362,9 +363,9 @@ $inclureApercu = TRUE; // TRUE|FALSE
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
 */
-$dureeCache['fluxRss'] = 0;
-$dureeCache['categorie'] = 0;
-$dureeCache['galerie'] = 0;
+$dureeCache['fluxRss']               = 0;
+$dureeCache['categorie']             = 0;
+$dureeCache['galerie']               = 0;
 $dureeCache['publications-recentes'] = 0; // Voir la fonction `publicationsRecentes()`.
 
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
@@ -413,23 +414,24 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 /*
 - Si la détection est activée pour un bloc, ajoute la classe `actif` à tous les liens (balises `a`) de ce bloc et pointant vers la page en cours ainsi qu'au `li` contenant ce lien. Avec la feuille de style par défaut, le résultat est un lien actif en gras et un `li` marqué d'une petite puce spéciale.
 - Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier de configuration pour connaître la syntaxe des clés du tableau (par exemple `menu-langues`).
-- Chaque élément prend comme valeur TRUE, FALSE ou NULL.
+- Chaque élément prend comme valeur TRUE, FALSE ou NULL. NULL signifie que cette option ne s'applique pas au bloc en question.
 - Voir la fonction `lienActif()`.
 */
-$liensActifsBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
-$liensActifsBlocs['flux-rss'] = NULL; // Ne s'applique pas.
-$liensActifsBlocs['infos-publication'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['balise-h1']             = NULL;
+$liensActifsBlocs['faire-decouvrir']       = NULL;
+$liensActifsBlocs['flux-rss']              = NULL;
+$liensActifsBlocs['infos-publication']     = NULL;
 $liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-$liensActifsBlocs['licence'] = NULL; // Ne s'applique pas.
-$liensActifsBlocs['lien-page'] = NULL; // Ne s'applique pas.
-$liensActifsBlocs['marque-pages-sociaux'] = NULL; // Ne s'applique pas.
-$liensActifsBlocs['menu'] = TRUE;
-$liensActifsBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
-$liensActifsBlocs['menu-langues'] = TRUE;
+$liensActifsBlocs['licence']               = NULL;
+$liensActifsBlocs['lien-page']             = NULL;
+$liensActifsBlocs['marque-pages-sociaux']  = NULL;
+$liensActifsBlocs['menu']                  = TRUE;
+$liensActifsBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$liensActifsBlocs['menu-langues']          = TRUE;
 
 // Limite de la profondeur d'une liste dans un bloc.
 /*
-Pour chaque bloc, préciser par TRUE ou FALSE si la profondeur d'une liste y étant présente doit être limitée. Aucun texte n'est supprimé, mais une classe `masquer` est ajoutée aux sous-listes inactives identifiées auparavant par la fonction `lienActif()`, ce qui signifie qu'un bloc pour lequel la détection des liens actifs n'aura pas été activée dans la variable `$liensActifsBlocs` (dans ce fichier de configuration) ne pourra pas avoir de limite de profondeur.
+Pour chaque bloc, préciser par TRUE ou FALSE (ou NULL si cette option ne s'applique pas au bloc en question) si la profondeur d'une liste y étant présente doit être limitée. Aucun texte n'est supprimé, mais une classe `masquer` est ajoutée aux sous-listes inactives identifiées auparavant par la fonction `lienActif()`, ce qui signifie qu'un bloc pour lequel la détection des liens actifs n'aura pas été activée dans la variable `$liensActifsBlocs` (dans ce fichier de configuration) ne pourra pas avoir de limite de profondeur.
 
 Par exemple, si la page en cours est `page2.1.php`, une liste comme celle-ci:
 
@@ -477,16 +479,17 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
-$limiterProfondeurListesBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['flux-rss'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['infos-publication'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
-$limiterProfondeurListesBlocs['licence'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['lien-page'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['marque-pages-sociaux'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['menu'] = TRUE;
-$limiterProfondeurListesBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
-$limiterProfondeurListesBlocs['menu-langues'] = FALSE;
+$limiterProfondeurListesBlocs['balise-h1']             = NULL;
+$limiterProfondeurListesBlocs['faire-decouvrir']       = NULL;
+$limiterProfondeurListesBlocs['flux-rss']              = NULL;
+$limiterProfondeurListesBlocs['infos-publication']     = NULL;
+$limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE;
+$limiterProfondeurListesBlocs['licence']               = NULL;
+$limiterProfondeurListesBlocs['lien-page']             = NULL;
+$limiterProfondeurListesBlocs['marque-pages-sociaux']  = NULL;
+$limiterProfondeurListesBlocs['menu']                  = TRUE;
+$limiterProfondeurListesBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$limiterProfondeurListesBlocs['menu-langues']          = FALSE;
 
 // Nombre de colonnes.
 /*
@@ -515,7 +518,7 @@ $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBord
 - Les valeurs possibles sont TRUE ou FALSE.
 */
 $borduresPage['droite'] = TRUE;
-$borduresPage['bas'] = TRUE;
+$borduresPage['bas']    = TRUE;
 $borduresPage['gauche'] = TRUE;
 
 // S'il y a au moins une colonne, étendre l'en-tête sur toute la largeur du site.
@@ -540,8 +543,10 @@ précise que le bloc de menu principal devra avoir des coins arrondis lorsqu'il 
 
 	$blocsArrondisSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
 */
-$blocsArrondisSpecifiques['menu'] = array (TRUE, FALSE, FALSE);
-$blocsArrondisSpecifiques['licence'] = array (TRUE, TRUE, TRUE);
+$blocsArrondisSpecifiques['balise-h1'] = array (FALSE, FALSE, FALSE);
+$blocsArrondisSpecifiques['menu']      = array (TRUE, FALSE, FALSE);
+$blocsArrondisSpecifiques['licence']   = array (TRUE, TRUE, TRUE);
+$blocsArrondisSpecifiques['lien-page'] = array (TRUE, TRUE, TRUE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
@@ -591,7 +596,7 @@ $contactCopieCourriel = FALSE; // TRUE|FALSE
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$contactChampsObligatoires['nom'] = TRUE;
+$contactChampsObligatoires['nom']     = TRUE;
 $contactChampsObligatoires['message'] = TRUE;
 
 /* ____________________ Antipourriel. ____________________ */
@@ -662,7 +667,7 @@ $galerieVignettesParPage = 0;
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$galeriePagination['au-dessus'] = TRUE;
+$galeriePagination['au-dessus']  = TRUE;
 $galeriePagination['au-dessous'] = FALSE;
 
 // Affichage d'informations au sujet de la galerie.
@@ -733,22 +738,22 @@ $galerieExifAjout = TRUE; // TRUE|FALSE
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$galerieExifInfos['DateTime'] = TRUE;
-$galerieExifInfos['ExposureTime'] = TRUE;
-$galerieExifInfos['FNumber'] = TRUE;
-$galerieExifInfos['FocalLength'] = TRUE;
+$galerieExifInfos['DateTime']        = TRUE;
+$galerieExifInfos['ExposureTime']    = TRUE;
+$galerieExifInfos['FNumber']         = TRUE;
+$galerieExifInfos['FocalLength']     = TRUE;
 $galerieExifInfos['ISOSpeedRatings'] = TRUE;
-$galerieExifInfos['Make'] = TRUE;
-$galerieExifInfos['Model'] = TRUE;
+$galerieExifInfos['Make']            = TRUE;
+$galerieExifInfos['Model']           = TRUE;
 
 // Si le format original d'une image existe, emplacement du lien vers le fichier.
 /*
 - Si l'emplacement `icone` vaut TRUE, une petite icône est ajoutée sous l'image pour signifier que le format original existe.
 - Les valeurs possibles pour chaque emplacement sont TRUE ou FALSE.
 */
-$galerieLienOriginalEmplacement['image'] = TRUE;
+$galerieLienOriginalEmplacement['image']   = TRUE;
 $galerieLienOriginalEmplacement['legende'] = TRUE;
-$galerieLienOriginalEmplacement['icone'] = TRUE;
+$galerieLienOriginalEmplacement['icone']   = TRUE;
 
 // Si le format original d'une image existe, est-ce que le lien vers le fichier est pris en charge par une fenêtre Javascript (ne fonctionne pas pour le SVG)?
 /*

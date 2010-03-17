@@ -63,7 +63,7 @@ phpGettext($racine, LANGUE); // Nécessaire à la traduction.
 
 // Affectations 2 de 3.
 
-extract(init('', 'apercu', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'apercu', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'erreur404', 'estPageDerreur'), EXTR_SKIP);
 
 if (!empty($apercu))
@@ -218,7 +218,7 @@ if ($estPageDeconnexion)
 	$baliseTitle = T_("Déconnexion de la section d'administration de Squeletml");
 }
 
-$baliseTitle = baliseTitle($baliseTitle, array ($langue, $langueParDefaut));
+$baliseTitle = baliseTitle($baliseTitle, $baliseH1);
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
 if ($erreur404 || $estPageDerreur || $courrielContact == '@')

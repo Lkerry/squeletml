@@ -39,9 +39,9 @@ $adminBoitesDeroulantesAlaMainParDefaut = TRUE; // TRUE|FALSE
 - L'infobulle apparaît lors du survol du curseur au-dessus de l'icône des propriétés d'un dossier ou d'un fichier, et contient plusieurs informations sur ce dernier.
 - Note: lors du listage de dossiers contenant beaucoup de fichiers, cette option peut ralentir considérablement l'affichage de la page. C'est la raison pour laquelle il peut être intéressant de la désactiver.
 */
-$adminActiverInfobulle['contenuDossier'] = TRUE; // TRUE|FALSE
+$adminActiverInfobulle['contenuDossier']   = TRUE; // TRUE|FALSE
 $adminActiverInfobulle['listeDesDossiers'] = TRUE; // TRUE|FALSE
-$adminActiverInfobulle['apercuGalerie'] = TRUE; // TRUE|FALSE
+$adminActiverInfobulle['apercuGalerie']    = TRUE; // TRUE|FALSE
 
 // Inclusion du bas de page.
 $adminInclureBasDePage = TRUE; // TRUE|FALSE
@@ -177,53 +177,53 @@ $adminFiltreTypesMime = TRUE; // TRUE|FALSE
 /*
 - Si `$adminFiltreTypesMime` vaut TRUE et que le tableau `$adminTypesMimePermis` est vide, l'ajout de fichiers par le porte-documents sera désactivé.
 */
-$adminTypesMimePermis['gif'] = 'image/gif';
+$adminTypesMimePermis['gif']          = 'image/gif';
 $adminTypesMimePermis['jpeg|jpg|jpe'] = 'image/jpeg';
-$adminTypesMimePermis['png'] = 'image/png';
-$adminTypesMimePermis['svg|svgz'] = 'image/svg+xml';
-$adminTypesMimePermis['bmp'] = 'image/x-ms-bmp';
-$adminTypesMimePermis['tiff|tif'] = 'image/tiff';
-$adminTypesMimePermis['xcf'] = 'application/x-xcf';
-$adminTypesMimePermis['psd'] = 'image/x-photoshop';
+$adminTypesMimePermis['png']          = 'image/png';
+$adminTypesMimePermis['svg|svgz']     = 'image/svg+xml';
+$adminTypesMimePermis['bmp']          = 'image/x-ms-bmp';
+$adminTypesMimePermis['tiff|tif']     = 'image/tiff';
+$adminTypesMimePermis['xcf']          = 'application/x-xcf';
+$adminTypesMimePermis['psd']          = 'image/x-photoshop';
 
-$adminTypesMimePermis['html|htm|shtml'] = 'text/html';
-$adminTypesMimePermis['xhtml|xht'] = 'application/xhtml+xml';
-$adminTypesMimePermis['xml|xsl'] = 'application/xml';
-$adminTypesMimePermis['css'] = 'text/css';
+$adminTypesMimePermis['html|htm|shtml']       = 'text/html';
+$adminTypesMimePermis['xhtml|xht']            = 'application/xhtml+xml';
+$adminTypesMimePermis['xml|xsl']              = 'application/xml';
+$adminTypesMimePermis['css']                  = 'text/css';
 $adminTypesMimePermis['asc|txt|text|pot|ini'] = 'text/plain';
 
-$adminTypesMimePermis['odb'] = 'application/vnd.oasis.opendocument.database';
-$adminTypesMimePermis['odp'] = 'application/vnd.oasis.opendocument.presentation';
-$adminTypesMimePermis['ods'] = 'application/vnd.oasis.opendocument.spreadsheet';
-$adminTypesMimePermis['odt'] = 'application/vnd.oasis.opendocument.text';
-$adminTypesMimePermis['rtf'] = 'application/rtf';
-$adminTypesMimePermis['mdb'] = 'application/msaccess';
-$adminTypesMimePermis['ppt|pps'] = 'application/vnd.ms-powerpoint';
-$adminTypesMimePermis['pptx'] = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
+$adminTypesMimePermis['odb']         = 'application/vnd.oasis.opendocument.database';
+$adminTypesMimePermis['odp']         = 'application/vnd.oasis.opendocument.presentation';
+$adminTypesMimePermis['ods']         = 'application/vnd.oasis.opendocument.spreadsheet';
+$adminTypesMimePermis['odt']         = 'application/vnd.oasis.opendocument.text';
+$adminTypesMimePermis['rtf']         = 'application/rtf';
+$adminTypesMimePermis['mdb']         = 'application/msaccess';
+$adminTypesMimePermis['ppt|pps']     = 'application/vnd.ms-powerpoint';
+$adminTypesMimePermis['pptx']        = 'application/vnd.openxmlformats-officedocument.presentationml.presentation';
 $adminTypesMimePermis['xls|xlb|xlt'] = 'application/vnd.ms-excel';
-$adminTypesMimePermis['xlsx'] = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-$adminTypesMimePermis['doc|dot'] = 'application/msword';
-$adminTypesMimePermis['docx'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-$adminTypesMimePermis['pdf'] = 'application/pdf';
-$adminTypesMimePermis['ps|ai|eps'] = 'application/postscript';
+$adminTypesMimePermis['xlsx']        = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+$adminTypesMimePermis['doc|dot']     = 'application/msword';
+$adminTypesMimePermis['docx']        = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+$adminTypesMimePermis['pdf']         = 'application/pdf';
+$adminTypesMimePermis['ps|ai|eps']   = 'application/postscript';
 
-$adminTypesMimePermis['tar'] = 'application/x-tar';
-$adminTypesMimePermis['7z'] = 'application/x-7z-compressed';
+$adminTypesMimePermis['tar']          = 'application/x-tar';
+$adminTypesMimePermis['7z']           = 'application/x-7z-compressed';
 $adminTypesMimePermis['gtar|tgz|taz'] = 'application/x-gtar';
-$adminTypesMimePermis['zip'] = 'application/zip';
-$adminTypesMimePermis['rar'] = 'application/rar';
+$adminTypesMimePermis['zip']          = 'application/zip';
+$adminTypesMimePermis['rar']          = 'application/rar';
 
-$adminTypesMimePermis['ogg|ogx'] = 'application/ogg';
-$adminTypesMimePermis['oga|spx'] = 'audio/ogg';
-$adminTypesMimePermis['ogv'] = 'video/ogg';
-$adminTypesMimePermis['avi'] = 'video/x-msvideo';
+$adminTypesMimePermis['ogg|ogx']                = 'application/ogg';
+$adminTypesMimePermis['oga|spx']                = 'audio/ogg';
+$adminTypesMimePermis['ogv']                    = 'video/ogg';
+$adminTypesMimePermis['avi']                    = 'video/x-msvideo';
 $adminTypesMimePermis['mpga|mpega|mp2|mp3|m4a'] = 'audio/mpeg';
-$adminTypesMimePermis['mpeg|mpg|mpe'] = 'video/mpeg';
-$adminTypesMimePermis['mp4'] = 'video/mp4';
-$adminTypesMimePermis['ra|rm|ram'] = 'audio/x-pn-realaudio';
-$adminTypesMimePermis['wma'] = 'audio/x-ms-wma';
-$adminTypesMimePermis['wmv'] = 'video/x-ms-wmv';
-$adminTypesMimePermis['qt|mov'] = 'video/quicktime';
+$adminTypesMimePermis['mpeg|mpg|mpe']           = 'video/mpeg';
+$adminTypesMimePermis['mp4']                    = 'video/mp4';
+$adminTypesMimePermis['ra|rm|ram']              = 'audio/x-pn-realaudio';
+$adminTypesMimePermis['wma']                    = 'audio/x-ms-wma';
+$adminTypesMimePermis['wmv']                    = 'video/x-ms-wmv';
+$adminTypesMimePermis['qt|mov']                 = 'video/quicktime';
 
 /* ____________________ Actions sur les fichiers. ____________________ */
 
@@ -231,15 +231,15 @@ $adminTypesMimePermis['qt|mov'] = 'video/quicktime';
 /*
 - Chaque élément peut valoir TRUE ou FALSE.
 */
-$adminPorteDocumentsDroits['ajouter'] = TRUE;
-$adminPorteDocumentsDroits['copier'] = TRUE;
-$adminPorteDocumentsDroits['creer'] = TRUE;
-$adminPorteDocumentsDroits['deplacer'] = TRUE;
-$adminPorteDocumentsDroits['editer'] = TRUE;
+$adminPorteDocumentsDroits['ajouter']              = TRUE;
+$adminPorteDocumentsDroits['copier']               = TRUE;
+$adminPorteDocumentsDroits['creer']                = TRUE;
+$adminPorteDocumentsDroits['deplacer']             = TRUE;
+$adminPorteDocumentsDroits['editer']               = TRUE;
 $adminPorteDocumentsDroits['modifier-permissions'] = TRUE;
-$adminPorteDocumentsDroits['renommer'] = TRUE;
-$adminPorteDocumentsDroits['supprimer'] = TRUE;
-$adminPorteDocumentsDroits['telecharger'] = TRUE;
+$adminPorteDocumentsDroits['renommer']             = TRUE;
+$adminPorteDocumentsDroits['supprimer']            = TRUE;
+$adminPorteDocumentsDroits['telecharger']          = TRUE;
 
 // Si `$adminPorteDocumentsDroits['edition']` vaut TRUE, activer une aide lors de l'édition.
 /*

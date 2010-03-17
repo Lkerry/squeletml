@@ -161,9 +161,23 @@ function annexesDocumentation($racineAdmin)
 /*
 Retourne le contenu de la balise `title`.
 */
-function baliseTitle($baliseTitle, $langues)
+function baliseTitle($baliseTitle, $baliseH1)
 {
-	return empty($baliseTitle) ? url() : $baliseTitle;
+	if (empty($baliseTitle))
+	{
+		if (!empty($baliseH1))
+		{
+			return $baliseH1;
+		}
+		else
+		{
+			return urlPageSansDecouvrir();
+		}
+	}
+	else
+	{
+		return $baliseTitle;
+	}
 }
 
 /*

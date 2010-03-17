@@ -468,6 +468,13 @@ div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
 	font-size: 1px; /* À cause d'un bogue d'IE. */
 }
 
+/* Balise `h1`. */
+
+div#baliseH1 .contenuBloc {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
 /* Flux RSS. */
 
 #fluxRss ul {

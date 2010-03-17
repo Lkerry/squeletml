@@ -1101,6 +1101,10 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 										$contenu .= '$auteur = ' . var_export($auteurParDefaut, TRUE) . ";\n";
 										break;
 										
+									case 'baliseH1':
+										$contenu .= '$baliseH1 = "' . T_("Titre de premier niveau") . '";' . "\n";
+										break;
+										
 									case 'baliseTitle':
 										$contenu .= '$baliseTitle = "' . T_("Titre (contenu de la balise `title`)") . '";' . "\n";
 										break;
@@ -1739,6 +1743,7 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<select id="selectPorteDocumentsCreationVar" name="porteDocumentsCreationVar[]" multiple="multiple" size="5">' . "\n";
 	echo '<option value="apercu">$apercu</option>' . "\n";
 	echo '<option value="auteur">$auteur</option>' . "\n";
+	echo '<option value="baliseH1">$baliseH1</option>' . "\n";
 	echo '<option value="baliseTitle">$baliseTitle</option>' . "\n";
 	echo '<option value="boitesDeroulantes">$boitesDeroulantes</option>' . "\n";
 	echo '<option value="boitesDeroulantesAlaMain">$boitesDeroulantesAlaMain</option>' . "\n";

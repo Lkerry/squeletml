@@ -442,7 +442,17 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$auteur`: nom ou noms à inclure dans la métabalise `author`, si la valeur est différente de `$auteurParDefaut` du fichier de configuration du site. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le bloc des informations de publication.
 
-- `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner l'URL de la page en cours.
+- `$baliseH1`: contenu de la balise `h1`. Il s'agit donc du titre de premier niveau pour la page courante. Exemple:
+
+		$baliseH1 = "Titre de premier niveau de la page courante";
+
+	Ce titre peut très bien être ajouté directement dans le corps de la page en HTML sans passer par la variable `$baliseH1`. Le but d'utiliser cette variable est:
+
+	- d'éviter de saisir deux fois la même information dans le cas où nous voulons que la balise `title` ait le même contenu que le titre de premier niveau. En effet, si la variable `$baliseTitle` n'est pas renseignée, mais que `$baliseH1` l'est, alors la variable `$baliseTitle` aura le même contenu que le titre `h1`;
+	
+	- de pouvoir manipuler le titre de premier niveau comme un bloc de contenu (`balise-h1`), et ainsi pouvoir choisir son emplacement parmi les diverses régions possibles. Par exemple, le bloc de contenu sur les informations de publication s'affiche par défaut sous le contenu dans la région `finInterieurContenu`. En créant un bloc `balise-h1`, il est ainsi possible de faire apparaître le bloc des informations de publication dans le haut de la page, entre le titre de premier niveau et le contenu.
+
+- `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner la valeur de la variable `$baliseH1` si cette dernière n'est pas vide, sinon l'URL de la page en cours.
 
 - `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration du site pour une description détaillée de la syntaxe à utiliser.
 

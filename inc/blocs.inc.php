@@ -24,6 +24,29 @@ if (!empty($blocsAinserer))
 		{
 			switch ($blocAinserer)
 			{
+				case 'balise-h1':
+					if (!empty($baliseH1))
+					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
+						$blocs[$region] .= '<div id="baliseH1" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= "<h1>$baliseH1</h1>\n";
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#baliseH1 -->' . "\n";
+					}
+				
+					break;
+				
 				case 'faire-decouvrir':
 					if ($faireDecouvrir && $decouvrir)
 					{
@@ -209,7 +232,7 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocHaut;
 						$blocs[$region] .= '<h2>' . T_("Faire un lien vers cette page") . "</h2>\n";
 						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
-						$codeLienPage = '<a href="' . urlPageSansDecouvrir() . '">' . $baliseTitle . '</a>';
+						$codeLienPage = '<a href="' . urlPageSansDecouvrir() . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
 						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
