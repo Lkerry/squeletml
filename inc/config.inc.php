@@ -17,10 +17,16 @@ $delaiExpirationScript = 300;
 
 // Choix du DTD (Définition de Type de Document).
 /*
-- Si `$xhtmlStrict` vaut TRUE, le doctype utilisé est XHTML 1.0 Strict, sinon c'est XHTML 1.0 Transitional. Si vous ne savez pas de quoi il s'agit, laissez TRUE. Le seul intérêt de choisir FALSE est dans le cas où on sait qu'on doit utiliser du code non valide en XHTML 1.0 Strict.
+- Les choix possibles sont:
+  - XHTML 1.1
+  - XHTML 1.0 Strict
+  - XHTML 1.0 Transitional
+  - HTML 4.01 Strict
+  - HTML 4.01 Transitional
+
 - Voir la fonction `doctype()`.
 */
-$xhtmlStrict = TRUE; // TRUE|FALSE
+$doctype = 'XHTML 1.0 Strict';
 
 // Complément de la balise `title` selon la langue.
 /*
@@ -28,7 +34,7 @@ $xhtmlStrict = TRUE; // TRUE|FALSE
 - Pour chaque langue, deux compléments sont précisables:
   - `accueil`, utilisé seulement sur la page d'accueil de la langue en question;
   - `interne`, utilisé pour toutes les autres pages dans cette langue.
-- Voir les fonctions `baliseTitle()` et `baliseTitleComplement()`.
+- Voir la fonction `baliseTitleComplement()`.
 */
 $tableauBaliseTitleComplement['fr']['accueil'] = " | Système de gestion de contenu léger et sans base de données";
 $tableauBaliseTitleComplement['fr']['interne'] = " | Squeletml";
@@ -158,7 +164,7 @@ Voir la fonction `blocs()`.
 $ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu']                   = array (200, 510, 500);
 $ordreBlocsDansFluxHtml['menu-categories']        = array (510, 520, 510);
-$ordreBlocsDansFluxHtml['legende-oeuvre-galerie'] = array (520, 530, 520);
+$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (520, 530, 520);
 $ordreBlocsDansFluxHtml['flux-rss']               = array (530, 540, 530);
 $ordreBlocsDansFluxHtml['faire-decouvrir']        = array (540, 550, 540);
 $ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (550, 560, 550);
@@ -407,7 +413,7 @@ $liensActifsBlocs['menu-langues'] = TRUE;
 $liensActifsBlocs['menu'] = TRUE;
 $liensActifsBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $liensActifsBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
-$liensActifsBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+$liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $liensActifsBlocs['flux-rss'] = NULL; // Ne s'applique pas.
 $liensActifsBlocs['infos-publication'] = NULL; // Ne s'applique pas.
 $liensActifsBlocs['licence'] = NULL; // Ne s'applique pas.
@@ -467,7 +473,7 @@ $limiterProfondeurListesBlocs['menu-langues'] = FALSE;
 $limiterProfondeurListesBlocs['menu'] = TRUE;
 $limiterProfondeurListesBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $limiterProfondeurListesBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['legende-oeuvre-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
+$limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $limiterProfondeurListesBlocs['flux-rss'] = NULL; // Ne s'applique pas.
 $limiterProfondeurListesBlocs['infos-publication'] = NULL; // Ne s'applique pas.
 $limiterProfondeurListesBlocs['licence'] = NULL; // Ne s'applique pas.
@@ -610,7 +616,7 @@ $contactCaptchaLiensNombre = 5; // Nombre maximal de liens dans un message
 
 // Génération automatisée du titre principal des pages d'une galerie.
 /*
-- Si vaut `TRUE`, un titre `h1` sera ajouté au début de chaque page d'une galerie (accueil d'une galerie et pages individuelles d'une oeuvre).
+- Si vaut `TRUE`, un titre `h1` sera ajouté au début de chaque page d'une galerie (accueil d'une galerie et pages individuelles d'une image).
 */
 $galerieGenererTitrePages = TRUE; // TRUE|FALSE
 
@@ -662,9 +668,9 @@ $galerieInfoEmplacement = 'haut'; // haut|bas
 */
 $galerieAccueilJavascript = FALSE; // TRUE|FALSE
 
-/* ____________________ Page individuelle d'une oeuvre. ____________________ */
+/* ____________________ Page individuelle d'une image. ____________________ */
 
-// Choix de la navigation entre les oeuvres.
+// Choix de la navigation entre les images.
 $galerieNavigation = 'fleches'; // fleches|vignettes
 
 // Si la navigation est faite avec des vignettes, ajout d'une petite flèche au centre des vignettes.
@@ -684,9 +690,9 @@ $galerieNavigationAccompagnerVignettes = TRUE; // TRUE|FALSE
 // Choix de l'emplacement de la navigation.
 $galerieNavigationEmplacement = 'haut'; // haut|bas
 
-// Aperçu grâce à des minivignettes du contenu de la galerie sur les pages individuelles de chaque oeuvre.
+// Aperçu grâce à des minivignettes du contenu de la galerie sur les pages individuelles de chaque image.
 /*
-- Il s'agit d'un résumé visuel de la galerie. Chaque oeuvre est représentée par une toute petite vignette cliquable.
+- Il s'agit d'un résumé visuel de la galerie. Chaque image est représentée par une toute petite vignette cliquable.
 */
 $galerieAfficherMinivignettes = TRUE; //TRUE|FALSE
 
@@ -700,10 +706,7 @@ $galerieMinivignettesEmplacement = 'haut'; // haut|bas
 $galerieMinivignettesNombre = 0;
 
 // Ajout automatique d'une légende dans le cas où aucune légende n'a été précisée.
-/*
-- La légende générée automatiquement correspond au contenu de l'attribut `alt` et à la taille du fichier.
-*/
-$galerieLegendeAutomatique = FALSE; // TRUE|FALSE
+$galerieLegendeAutomatique = TRUE; // TRUE|FALSE
 
 // Utilisation de la syntaxe Markdown dans la légende.
 /*
@@ -773,7 +776,7 @@ $galerieActiverFluxRssGlobal = TRUE; // TRUE|FALSE
 
 // Auteur par défaut à afficher dans la syndication.
 /*
-- Si `$galerieFluxRssAuteurEstAuteurParDefaut` vaut TRUE, l'auteur affiché dans les flux RSS pour une oeuvre donnée est la valeur de `$auteurParDefaut` (voir ce présent fichier de configuration). Dans tous les cas, si le champ `auteurAjout` est précisé pour l'oeuvre donnée dans le fichier de configuration de la galerie en question, c'est la valeur de ce dernier qui est utilisée.
+- Si `$galerieFluxRssAuteurEstAuteurParDefaut` vaut TRUE, l'auteur affiché dans les flux RSS pour une image donnée est la valeur de `$auteurParDefaut` (voir ce présent fichier de configuration). Dans tous les cas, si le champ `auteurAjout` est précisé pour l'image donnée dans le fichier de configuration de la galerie en question, c'est la valeur de ce dernier qui est utilisée.
 */
 $galerieFluxRssAuteurEstAuteurParDefaut = TRUE; // TRUE|FALSE
 ?>

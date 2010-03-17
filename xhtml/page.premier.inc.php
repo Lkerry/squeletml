@@ -1,4 +1,5 @@
-<?php echo $doctype; ?><html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo LANGUE; ?>" lang="<?php echo LANGUE; ?>">
+<?php echo $contenuDoctype; ?>
+<?php echo $baliseHtml; ?>
 	<!-- ____________________ <head> ____________________ -->
 	<head>
 		<!-- Titre. -->

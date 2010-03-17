@@ -139,7 +139,7 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 - `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
 
-- `galerie.inc.php`: génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une oeuvre. Vous pouvez modifier ces variables en créant le fichier `site/inc/galerie.inc.php`, qui sera inséré à la fin de celui par défaut.
+- `galerie.inc.php`: génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une image. Vous pouvez modifier ces variables en créant le fichier `site/inc/galerie.inc.php`, qui sera inséré à la fin de celui par défaut.
 
 - `premier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Vous pouvez créer le fichier `site/inc/premier.inc.php`, qui sera inséré à la fin de celui par défaut.
 
@@ -660,9 +660,9 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresOeuvres = publicationsRecentes($racine, $urlRacine, $langueParDefaut, LANGUE, 'galerie', "chiens", 5, TRUE, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+	$dernieresImages = publicationsRecentes($racine, $urlRacine, $langueParDefaut, LANGUE, 'galerie', "chiens", 5, TRUE, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 
-Dans l'exemple ci-dessus, la variable `$dernieresOeuvres` contient les 5 dernières oeuvres ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une oeuvre et un lien vers la page individuelle de l'oeuvre. Aussi, le septième paramètre vaut `TRUE`, donc un lien «Voir plus d'oeuvres» est ajouté à la fin de la liste vers l'accueil de la galerie.
+Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième paramètre vaut `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
 Pour les types de publication `categorie` et `site`, la fonction renvoie une liste de titres pointant vers la page en question.
 
@@ -821,7 +821,7 @@ Chaque image d'une galerie est déclinée en au moins deux versions: vignette et
 
 Cette information doit se retrouver dans le fichier de configuration `site/fichiers/galeries/$idGalerie/config.ini.txt` ou `site/fichiers/galeries/$idGalerie/config.ini`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
 
-Chaque oeuvre de la galerie possède sa propre section dans le fichier de configuration. La section commence par un titre entre crochets représentant le nom du fichier de l'image en version intermédiaire (et se termine par le début d'une autre section ou par la fin du fichier):
+Chaque image de la galerie possède sa propre section dans le fichier de configuration. La section commence par un titre entre crochets représentant le nom du fichier de l'image en version intermédiaire (et se termine par le début d'une autre section ou par la fin du fichier):
 
 	`[intermediaireNom]`
 
@@ -830,17 +830,17 @@ Voici un exemple:
 	[fichier1.jpg]
 	[fichier2.jpg]
 
-Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque oeuvre. Voici la liste complète des paramètres possibles:
+Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque image. Voici la liste complète des paramètres possibles:
 
-- `id`: utilisé dans l'adresse URL pour identifier l'oeuvre, au lieu de l'indice de la position de l'oeuvre dans le tableau de la galerie. Ceci permet de facilement déplacer des oeuvres dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'oeuvre ou du nom du fichier image. Exemple:
+- `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. Exemple:
 
 		id=5
 
-- `titre`: utilisé pour nommer l'oeuvre dans les textes générés par le script. Exemple:
+- `titre`: utilisé pour nommer l'image dans les textes générés par le script. Exemple:
 
 		titre=Le fleuve Saint-Laurent en hiver
 
-- `licence`: licence ou licences de l'oeuvre. Exemple:
+- `licence`: licence ou licences de l'image. Exemple:
 
 		licence=art-libre
 
@@ -902,25 +902,25 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		originalNom=fichier1Original.jpg
 
-- `auteurAjout`: auteur de l'ajout de l'oeuvre dans la galerie. Exemple:
+- `auteurAjout`: auteur de l'ajout de l'image dans la galerie. Exemple:
 
 		auteurAjout=Moi
 
 	S'il existe et n'est pas vide, ce champ est utilisé dans les flux RSS.
 
-- `dateAjout`: date d'ajout de l'oeuvre dans la galerie, sous la forme `Y-m-d H:i` ([voir la fonction PHP `date()`](http://php.net/manual/function.date.php)). Exemple:
+- `dateAjout`: date d'ajout de l'image dans la galerie, sous la forme `Y-m-d H:i` ([voir la fonction PHP `date()`](http://php.net/manual/function.date.php)). Exemple:
 
 		dateAjout=2010-01-17 20:05
 
 	La partie après le jour est optionnelle. Il est donc possible de ne pas préciser l'heure ni les minutes, ou de ne préciser que l'heure.
 
-	La date d'ajout est insérée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. Cette information est utilisée dans les flux RSS pour classer les oeuvres. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `filemtime()`](http://php.net/manual/function.filemtime.php).
+	La date d'ajout est insérée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. Cette information est utilisée dans les flux RSS pour classer les images. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `filemtime()`](http://php.net/manual/function.filemtime.php).
 
 - `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
 
 		exclure=oui
 
-- `commentaire`: n'est pas utilisé par Squeletml pour l'affichage de l'oeuvre. Il s'agit d'un paramètre utile pour ajouter des notes personnelles quand on modifie le fichier de configuration dans un éditeur de texte sans passer par la section d'administration de Squeletml. Exemple:
+- `commentaire`: n'est pas utilisé par Squeletml pour l'affichage de l'image. Il s'agit d'un paramètre utile pour ajouter des notes personnelles quand on modifie le fichier de configuration dans un éditeur de texte sans passer par la section d'administration de Squeletml. Exemple:
 
 		commentaire=Photographie à 50% de sa taille originale.
 
@@ -957,9 +957,9 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	exclure=
 	commentaire=
 
-### Navigation entre les oeuvres
+### Navigation entre les images
 
-Il y a six méthodes possibles pour naviguer entre les oeuvres. La méthode à utiliser est paramétrable dans le fichier de configuration du site.
+Il y a six méthodes possibles pour naviguer entre les images. La méthode à utiliser est paramétrable dans le fichier de configuration du site.
 
 #### Fenêtre Javascript
 
@@ -1003,7 +1003,7 @@ Les fichiers par défaut pour les flèches accompagnant les vignettes sont `fich
 
 #### Minivignettes
 
-Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de la galerie, composé de minivignettes des oeuvres de la galerie. Chaque minivignette est cliquable. Par défaut, la hauteur d'une minivignette est de 35 pixels. Ceci peut être modifié par CSS.
+Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de la galerie, composé de minivignettes des images de la galerie. Chaque minivignette est cliquable. Par défaut, la hauteur d'une minivignette est de 35 pixels. Ceci peut être modifié par CSS.
 
 Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
 
@@ -1011,7 +1011,7 @@ Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
 
 Une option «Faire découvrir à des ami-e-s» est activée par défaut. Concrètement, un lien est inséré dans le menu pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
 
-Si la page visitée est la page individuelle d'une oeuvre dans une galerie, le modèle de message contiendra une vignette de l'oeuvre et, si possible, une description, qui est formée par une de ces informations (en ordre de priorité):
+Si la page visitée est la page individuelle d'une image dans une galerie, le modèle de message contiendra une vignette de l'image et, si possible, une description, qui est formée par une de ces informations (en ordre de priorité):
 
 - `intermediaireLegende`
 - `intermediaireAlt`
@@ -1019,7 +1019,7 @@ Si la page visitée est la page individuelle d'une oeuvre dans une galerie, le m
 - `pageIntermediaireDescription`
 - `pageIntermediaireBaliseTitle`
 
-Si la page visitée est autre chose qu'une page individuelle d'oeuvre, le modèle de message contiendra un lien vers la page et, si possible une description, qui est formée par une de ces informations (en ordre de priorité):
+Si la page visitée est autre chose qu'une page individuelle d'image, le modèle de message contiendra un lien vers la page et, si possible une description, qui est formée par une de ces informations (en ordre de priorité):
 
 - `$baliseDescription`
 - `$baliseTitle`
@@ -1094,7 +1094,7 @@ Pour activer le flux RSS global du site, ou flux RSS des dernières publications
 
 ## Cache
 
-Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. La durée du cache peut être précisée pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une oeuvre) et des catégories ainsi que pour les flux RSS.
+Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. La durée du cache peut être précisée pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une image) et des catégories ainsi que pour les flux RSS.
 
 Il est particulièrement recommandé d'activer le cache des catégories si ces dernières sont utilisées, car le temps de construction d'une page de catégorie peut être réduit de l'ordre de 90% en utilisant le cache.
 
@@ -1102,7 +1102,7 @@ Dans certains cas, le cache peut être long à générer, ce qui a comme conséq
 
 ## Cron
 
-Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance. Pour l'instant, ces tâches concernent la génération automatique du cache des pages utilisant cette fonctionnalité (flux RSS, catégorie et galerie, selon la valeur de la variable `$dureeCache` du fichier de configuration du site). À noter que le cache de la page individuelle d'une oeuvre d'une galerie n'est pas généré par le cron.
+Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance. Pour l'instant, ces tâches concernent la génération automatique du cache des pages utilisant cette fonctionnalité (flux RSS, catégorie et galerie, selon la valeur de la variable `$dureeCache` du fichier de configuration du site). À noter que le cache de la page individuelle d'une image d'une galerie n'est pas généré par le cron.
 
 Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
 

@@ -72,13 +72,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $fichier), TRUE);
 						$racineImgSrc = $racine . '/site/fichiers/galeries/' . $fichier;
-						$nombreDoeuvres = count($tableauGalerie);
+						$nombreDimages = count($tableauGalerie);
 						$corpsMinivignettes = '';
 						
-						for ($j = 0; $j <= ($nombreDoeuvres - 1) && $j < $nombreDoeuvres; $j++)
+						for ($j = 0; $j <= ($nombreDimages - 1) && $j < $nombreDimages; $j++)
 						{
 							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$j]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-							$minivignette = oeuvre($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
+							$minivignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
 							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 							$minivignette = $resultat[1];
 							
@@ -116,7 +116,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
 							$corpsMinivignettes .= '</div><!-- /.galerieMinivignettes -->' . "\n";
 							$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-							$apercu = '<li>' . sprintf(T_ngettext("Aperçu (%1\$s image): %2\$s", "Aperçu (%1\$s images): %2\$s", $nombreDoeuvres), $nombreDoeuvres, $corpsMinivignettes) . "</li>\n";
+							$apercu = '<li>' . sprintf(T_ngettext("Aperçu (%1\$s image): %2\$s", "Aperçu (%1\$s images): %2\$s", $nombreDimages), $nombreDimages, $corpsMinivignettes) . "</li>\n";
 						}
 						else
 						{
@@ -1358,7 +1358,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 			<p><?php echo T_("Tout d'abord, vous pouvez supprimer les vignettes d'une galerie pour forcer leur regénération automatique."); ?></p>
 
-			<p><?php echo T_("Aussi, si la navigation entre les oeuvres d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationTatouerVignettes</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les oeuvres précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre. Vous pouvez supprimer ces vignettes de navigation avec tatouage."); ?></p>
+			<p><?php echo T_("Aussi, si la navigation entre les images d'une galerie est réalisée avec des vignettes et si <code>\$galerieNavigationTatouerVignettes</code> vaut <code>TRUE</code>, de nouvelles vignettes de navigation vers les images précédente et suivante sont générées, et contiennent une petite image (par défaut une flèche) au centre. Vous pouvez supprimer ces vignettes de navigation avec tatouage."); ?></p>
 
 			<p><?php echo T_("Vous pouvez également supprimer les images de taille intermédiaires ou au format original."); ?></p>
 

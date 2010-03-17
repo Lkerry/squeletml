@@ -85,7 +85,7 @@ if (!empty($idCategorie))
 		}
 		else
 		{
-			$baliseTitle = sprintf(T_("Articles dans la catégorie %1\$s"), $idCategorie);
+			$baliseTitle = sprintf(T_("%1\$s – Tous les articles faisant partie de la catégorie %2\$s"), $idCategorie, $idCategorie);
 		}
 	}
 	
@@ -93,15 +93,15 @@ if (!empty($idCategorie))
 	{
 		if ($idCategorie == 'site')
 		{
-			$description = T_("Dernières publications.");
+			$description = T_("Consulter les dernières publications sur le site.") . $baliseTitleComplement;
 		}
 		elseif ($idCategorie == 'galeries')
 		{
-			$description = T_("Derniers ajouts aux galeries.");
+			$description = T_("Consulter les derniers ajouts effectués aux galeries du site.") . $baliseTitleComplement;
 		}
 		else
 		{
-			$description = sprintf(T_("Articles dans la catégorie %1\$s."), $idCategorie);
+			$description = sprintf(T_("Consulter tous les articles de la catégorie %1\$s."), $idCategorie) . $baliseTitleComplement;
 		}
 	}
 	
@@ -165,18 +165,18 @@ if (!empty($idCategorie))
 		{
 			$categorie .= '<p>' . sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . "</p>\n";
 			$baliseTitle = sprintf(T_("La page %1\$s est introuvable"), securiseTexte($_GET['page']));
-			$description = sprintf(T_("La page %1\$s est introuvable."), securiseTexte($_GET['page'])) . $baliseTitleComplement;
+			$description = '';
 		}
 		else
 		{
 			$categorie .= '<p>' . T_("La page est introuvable.") . "</p>\n";
 			$baliseTitle = T_("La page est introuvable");
-			$description = T_("La page est introuvable.") . $baliseTitleComplement;
+			$description = '';
 		}
 		
 		if ($inclureMotsCles)
 		{
-			$motsCles = motsCles('', $description);
+			$motsCles = '';
 		}
 		
 		$robots = "noindex, follow, noarchive";
@@ -298,12 +298,11 @@ else
 	// Ajustement des métabalises.
 	
 	$baliseTitle = sprintf(T_("La catégorie %1\$s est introuvable"), $nomCategorie);
-	$description = $baliseTitle . $baliseTitleComplement;
+	$description = '';
 	
 	if ($inclureMotsCles)
 	{
-		$motsCles = motsCles('', $description);
-		$motsCles .= ', ' . $nomCategorie;
+		$motsCles = '';
 	}
 	
 	$robots = "noindex, follow, noarchive";

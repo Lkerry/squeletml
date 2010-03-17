@@ -36,7 +36,7 @@ $boitesDeroulantesTableau = boitesDeroulantes($adminBoitesDeroulantesParDefaut, 
 $cheminAncres = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'ancres');
 $cheminLienBas = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
 $cheminRaccourcis = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
-$doctype = doctype($adminXhtmlStrict);
+list ($contenuDoctype, $baliseHtml) = doctype($adminDoctype, LANGUE_ADMIN);
 $idBody = adminIdBody();
 
 if (!empty($idBody))
@@ -44,7 +44,7 @@ if (!empty($idBody))
 	$idBody = ' id="' . $idBody . '"';
 }
 
-$locale = locale(LANGUE);
+$locale = locale(LANGUE_ADMIN);
 
 $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 

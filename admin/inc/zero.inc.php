@@ -35,7 +35,7 @@ foreach (adminAinclureDebut($racineAdmin) as $fichier)
 	include_once $fichier;
 }
 
-phpGettext('..', langue($adminLangueParDefaut, '')); // Nécessaire à la traduction.
+phpGettext('..', LANGUE_ADMIN); // Nécessaire à la traduction.
 
 // Traitement personnalisé optionnel.
 if (file_exists("$racine/site/$dossierAdmin/inc/zero.inc.php"))

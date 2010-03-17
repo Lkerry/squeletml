@@ -50,9 +50,9 @@ $adminInclureBasDePage = TRUE; // TRUE|FALSE
 
 // Choix du DTD (Définition de Type de Document).
 /*
-- Voir les explications de la variable `$xhtmlStrict` dans le fichier de configuration du site.
+- Voir les explications de la variable `$doctype` dans le fichier de configuration du site.
 */
-$adminXhtmlStrict = TRUE; // TRUE|FALSE
+$adminDoctype = 'XHTML 1.0 Strict';
 
 // Encodage de l'administration.
 $adminCharset = 'UTF-8';

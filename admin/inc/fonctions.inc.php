@@ -36,6 +36,11 @@ function adminAinclureDebut($racineAdmin)
 		$fichiers[] = $fichier;
 	}
 	
+	foreach (adminCheminsInc($racineAdmin, 'constantes') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
 	return $fichiers;
 }
 
@@ -554,17 +559,17 @@ function adminImageEstDeclaree($fichier, $tableauGalerie, $versionAchercher = FA
 {
 	if ($tableauGalerie)
 	{
-		foreach ($tableauGalerie as $oeuvre)
+		foreach ($tableauGalerie as $image)
 		{
-			if ((!$versionAchercher || $versionAchercher = 'intermediaire') && (isset($oeuvre['intermediaireNom']) && $oeuvre['intermediaireNom'] == $fichier))
+			if ((!$versionAchercher || $versionAchercher = 'intermediaire') && (isset($image['intermediaireNom']) && $image['intermediaireNom'] == $fichier))
 			{
 				return TRUE;
 			}
-			elseif ((!$versionAchercher || $versionAchercher = 'vignette') && (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $fichier))
+			elseif ((!$versionAchercher || $versionAchercher = 'vignette') && (isset($image['vignetteNom']) && $image['vignetteNom'] == $fichier))
 			{
 				return TRUE;
 			}
-			elseif ((!$versionAchercher || $versionAchercher = 'original') && (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $fichier))
+			elseif ((!$versionAchercher || $versionAchercher = 'original') && (isset($image['originalNom']) && $image['originalNom'] == $fichier))
 			{
 				return TRUE;
 			}
@@ -944,14 +949,14 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 		$tableauGalerie = tableauGalerie($cheminConfigGalerie);
 		$i = 0;
 
-		foreach ($tableauGalerie as $oeuvre)
+		foreach ($tableauGalerie as $image)
 		{
-			// On prend en compte l'oeuvre seulement si elle existe encore.
-			if (!empty($oeuvre['intermediaireNom']) && file_exists($cheminGalerie . '/' . $oeuvre['intermediaireNom']) && !adminImageEstDeclaree($oeuvre['intermediaireNom'], $galerieTemp, 'intermediaire'))
+			// On prend en compte l'image seulement si elle existe encore.
+			if (!empty($image['intermediaireNom']) && file_exists($cheminGalerie . '/' . $image['intermediaireNom']) && !adminImageEstDeclaree($image['intermediaireNom'], $galerieTemp, 'intermediaire'))
 			{
-				$galerieTemp[$i]['intermediaireNom'] = $oeuvre['intermediaireNom'];
+				$galerieTemp[$i]['intermediaireNom'] = $image['intermediaireNom'];
 				
-				foreach ($oeuvre as $cle => $valeur)
+				foreach ($image as $cle => $valeur)
 				{
 					if ($cle == 'vignetteNom')
 					{
@@ -1030,11 +1035,11 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	$contenuConfig = '';
 	
-	foreach ($galerieTemp as $oeuvre)
+	foreach ($galerieTemp as $image)
 	{
 		$contenuConfigTemp = '';
 		
-		foreach ($oeuvre as $cle => $valeur)
+		foreach ($image as $cle => $valeur)
 		{
 			if ($cle == 'intermediaireNom')
 			{
@@ -1533,17 +1538,17 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 		{
 			$tableauGalerie = tableauGalerie($cheminConfigGalerie);
 			
-			foreach ($tableauGalerie as $oeuvre)
+			foreach ($tableauGalerie as $image)
 			{
-				if ($oeuvre['intermediaireNom'] == $nomImage)
+				if ($image['intermediaireNom'] == $nomImage)
 				{
 					return 'intermediaire';
 				}
-				elseif (isset($oeuvre['vignetteNom']) && $oeuvre['vignetteNom'] == $nomImage)
+				elseif (isset($image['vignetteNom']) && $image['vignetteNom'] == $nomImage)
 				{
 					return 'vignette';
 				}
-				elseif (isset($oeuvre['originalNom']) && $oeuvre['originalNom'] == $nomImage)
+				elseif (isset($image['originalNom']) && $image['originalNom'] == $nomImage)
 				{
 					return 'original';
 				}
@@ -1551,7 +1556,7 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 				{
 					$nomConstruitIntermediaire = $nomConstruit[1] . $nomConstruit[2];
 					
-					if ($oeuvre['intermediaireNom'] == $nomConstruitIntermediaire)
+					if ($image['intermediaireNom'] == $nomConstruitIntermediaire)
 					{
 						return 'vignette';
 					}
@@ -1560,7 +1565,7 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 				{
 					$nomConstruitIntermediaire = $nomConstruit[1] . $nomConstruit[2];
 					
-					if ($oeuvre['intermediaireNom'] == $nomConstruitIntermediaire)
+					if ($image['intermediaireNom'] == $nomConstruitIntermediaire)
 					{
 						return 'original';
 					}

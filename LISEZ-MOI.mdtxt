@@ -41,13 +41,13 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Ajout d'un nombre illimité de formulaires de contact, et ce avec options d'antipourriel et de copie à l'expéditeur.
 
-- Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une oeuvre dans une galerie, une vignette de l'oeuvre et une description (si cette dernière existe) sont insérées dans le message.
+- Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une image dans une galerie, une vignette de l'image et une description (si cette dernière existe) sont insérées dans le message.
 
 - Liens de marque-pages ou réseaux sociaux pour la page en cours.
 
 - Syndication de contenu (flux RSS):
 
-  - Par défaut, un flux RSS pour chaque catégorie et chaque galerie, et un flux RSS global activable contenant les dernières oeuvres de toutes les galeries.
+  - Par défaut, un flux RSS pour chaque catégorie et chaque galerie, et un flux RSS global activable contenant les dernières images de toutes les galeries.
   - Un flux RSS global activable pour chaque langue du site.
   - Mise en cache possible des flux RSS, et choix de la durée de validité du cache.
 
@@ -134,9 +134,9 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Bannières**: les bannières de 80px × 15px de Squeletml et des licences utilisent la police de caractères [Picopixel](http://www.dafont.com/FR/micropixel.font) de Sebastian Weber. Sur le site de Dafont, la licence est précisée ainsi: «Domaine public / GNU GPL». J'ai écrit à l'auteur pour obtenir des précisions, sans réponse pour l'instant. Les bannières des licences Copyleft utilisent également une image de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Copyleft.svg?uselang=fr) dans le domaine public. La bannière du domaine public utilise également une image de [Wikimedia Commons](http://fr.wikipedia.org/wiki/Fichier:PD-icon.svg) dans le domaine public.
 
-- **Images utilisées dans la galerie démo**: les oeuvres de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
+- **Images utilisées dans la galerie démo**: les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
 
-	La petite icône offrant un lien vers le format original d'une oeuvre provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
+	La petite icône offrant un lien vers le format original d'une image provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
 - **Icône utilisée dans le lien de déconnexion**: cette icône provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 

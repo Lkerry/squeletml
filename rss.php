@@ -133,7 +133,7 @@ elseif ($getType == 'galerie' && !empty($getChemin) && empty($getLangue))
 				else
 				{
 					$urlGalerie = $urlRacine . '/' . $getChemin;
-					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 					
 					if (!empty($itemsFluxRss))
 					{
@@ -325,7 +325,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 		{
 			$langue = $getLangue;
 			include_once $racine . '/inc/constantes.inc.php';
-			$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $getLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+			$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $getLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 			
 			if (!empty($itemsFluxRss))
 			{

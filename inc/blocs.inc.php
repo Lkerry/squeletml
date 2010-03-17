@@ -130,7 +130,7 @@ if (!empty($blocsAinserer))
 					
 					break;
 				
-				case 'legende-oeuvre-galerie':
+				case 'legende-image-galerie':
 					if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 					{
 						$bloc = $tableauCorpsGalerie['texteIntermediaire'];

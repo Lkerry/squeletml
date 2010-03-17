@@ -7,7 +7,7 @@
 
 // AUTOLOAD CODE BLOCK (MAY BE CHANGED OR REMOVED)
 jQuery(function($) {
-	$("a[rel^='lightbox']").slimbox({counterText: "Oeuvre {x} sur {y}", overlayFadeDuration: 50, resizeDuration: 50, imageFadeDuration: 50, captionAnimationDuration: 50}, null, function(el) {
+	$("a[rel^='lightbox']").slimbox({counterText: "Image {x} sur {y}", overlayFadeDuration: 50, resizeDuration: 50, imageFadeDuration: 50, captionAnimationDuration: 50}, null, function(el) {
 		return (this == el) || ((this.rel.length > 8) && (this.rel == el.rel));
 	});
 });

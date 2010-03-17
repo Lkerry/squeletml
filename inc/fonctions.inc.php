@@ -73,7 +73,7 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 {
 	if (in_array('galeries', $categoriesSpecialesAajouter) && !isset($categories['galeries']))
 	{
-		$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+		$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
 		
 		if (!empty($itemsFluxRss))
 		{
@@ -804,9 +804,9 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
 			
-			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-oeuvre-galerie', $nombreDeColonnes);
+			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes);
 			
-			if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-oeuvre-galerie', $nombreDeColonnes))
+			if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes))
 			{
 				$classeBlocArrondi = ' blocArrondi';
 			}
@@ -815,7 +815,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 				$classeBlocArrondi = '';
 			}
 			
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc' . $classeBlocArrondi . '">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'oeuvre") . "</h2>\n" . $resultat[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc' . $classeBlocArrondi . '">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'image") . "</h2>\n" . $resultat[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
@@ -1027,64 +1027,65 @@ function dateVersTimestamp($date)
 }
 
 /*
-Retourne le texte supplémentaire d'une oeuvre pour le message envoyé par le module «Faire découvrir».
+Retourne le texte supplémentaire d'une image pour le message envoyé par le module «Faire découvrir».
 */
-function decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown)
+function decouvrirSupplementImage($urlRacine, $idGalerie, $image, $galerieLegendeMarkdown)
 {
 	$messageDecouvrirSupplement = '';
+	$titreImage = titreImage($image);
 	
-	if (!empty($oeuvre['vignetteNom']))
+	if (!empty($image['vignetteNom']))
 	{
-		$vignetteNom = $oeuvre['vignetteNom'];
+		$vignetteNom = $image['vignetteNom'];
 	}
 	else
 	{
-		$vignetteNom = nomSuffixe($oeuvre['intermediaireNom'], '-vignette');
+		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
 	}
 	
-	if (!empty($oeuvre['vignetteAlt']))
+	if (!empty($image['vignetteAlt']))
 	{
-		$vignetteAlt = $oeuvre['vignetteAlt'];
+		$vignetteAlt = $image['vignetteAlt'];
 	}
-	elseif (!empty($oeuvre['intermediaireAlt']))
+	elseif (!empty($image['intermediaireAlt']))
 	{
-		$vignetteAlt = $oeuvre['intermediaireAlt'];
+		$vignetteAlt = $image['intermediaireAlt'];
 	}
 	else
 	{
-		$vignetteAlt = '';
+		$vignetteAlt = sprintf(T_("Image %1\$s"), $titreImage);
 	}
 	
 	$messageDecouvrirSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
 	
-	if (!empty($oeuvre['titre']))
+	if (!empty($image['titre']))
 	{
-		$messageDecouvrirSupplement .= '<p>' . $oeuvre['titre'] . "</p>\n";
+		$messageDecouvrirSupplement .= '<p>' . $image['titre'] . "</p>\n";
 	}
 	
-	if (!empty($oeuvre['intermediaireLegende']))
+	if (!empty($image['intermediaireLegende']))
 	{
-		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['intermediaireLegende'], $galerieLegendeMarkdown);
+		$messageDecouvrirSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
 	}
-	elseif (!empty($oeuvre['intermediaireAlt']))
+	elseif (!empty($image['intermediaireAlt']))
 	{
-		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['intermediaireAlt'], $galerieLegendeMarkdown);
+		$messageDecouvrirSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
 	}
-	elseif (!empty($oeuvre['vignetteAlt']))
+	elseif (!empty($image['vignetteAlt']))
 	{
-		$messageDecouvrirSupplement .= intermediaireLegende($oeuvre['vignetteAlt'], $galerieLegendeMarkdown);
+		$messageDecouvrirSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
 	}
-	elseif (!empty($oeuvre['pageIntermediaireDescription']))
+	elseif (!empty($image['pageIntermediaireDescription']))
 	{
-		$messageDecouvrirSupplement .= '<p>' . $oeuvre['pageIntermediaireDescription'] . "</p>\n";
+		$messageDecouvrirSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
 	}
-	elseif (!empty($oeuvre['pageIntermediaireBaliseTitle']))
+	elseif (!empty($image['pageIntermediaireBaliseTitle']))
 	{
-		$messageDecouvrirSupplement .= '<p>' . $oeuvre['pageIntermediaireBaliseTitle'] . "</p>\n";
+		$messageDecouvrirSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
 	}
 	
 	$messageDecouvrirSupplement = "<div style=\"font-style: italic;\">$messageDecouvrirSupplement</div>\n";
-	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . T_("Voyez l'oeuvre en plus grande taille!") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
+	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageDecouvrirSupplement;
 }
@@ -1118,17 +1119,35 @@ function decouvrirSupplementPage($description, $baliseTitle)
 }
 
 /*
-Retourne le DTD (Définition de Type de Document) de la page.
+Retourne un tableau dont le premier élément contient le contenu du DTD (Définition de Type de Document); et le second élément, le contenu de la balise `html`.
 */
-function doctype($xhtmlStrict)
+function doctype($doctype, $langue)
 {
-	if ($xhtmlStrict)
+	switch ($doctype)
 	{
-		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
-	}
-	else
-	{
-		return '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n";
+		case 'XHTML 1.1':
+			return array ("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">", "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"$langue\">");
+			break;
+			
+		case 'XHTML 1.0 Strict':
+			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">', "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"$langue\" lang=\"$langue\">");
+			break;
+			
+		case 'XHTML 1.0 Transitional':
+			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">', "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"$langue\" lang=\"$langue\">");
+			break;
+			
+		case 'HTML 4.01 Strict':
+			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">', "<html lang=\"$langue\">");
+			break;
+			
+		case 'HTML 4.01 Transitional':
+			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">', "<html lang=\"$langue\">");
+			break;
+			
+		default:
+			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">', "<html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"$langue\" lang=\"$langue\">");
+			break;
 	}
 }
 
@@ -1231,6 +1250,35 @@ function filtreChaine($racine, $chaine, $casse = '')
 }
 
 /*
+Retourne le code HTML filtré.
+*/
+function filtreHtml($racine, $doctype, $charset, $balisesPermises, $codeHtml)
+{
+	require_once $racine . '/inc/htmlpurifier/library/HTMLPurifier.auto.php';
+	$configHtmlPurifier = HTMLPurifier_Config::createDefault();
+	$configHtmlPurifier->set('Cache.SerializerPath', $racine . '/site/cache');
+	
+	if (!empty($doctype))
+	{
+		$configHtmlPurifier->set('HTML.Doctype', $doctype);
+	}
+	
+	if (!empty($charset))
+	{
+		$configHtmlPurifier->set('Core.Encoding', $charset);
+	}
+	
+	if ($balisesPermises != 'defaut')
+	{
+		$configHtmlPurifier->set('HTML.Allowed', $balisesPermises);
+	}
+	
+	$htmlPurifier = new HTMLPurifier($configHtmlPurifier);
+	
+	return $htmlPurifier->purify($codeHtml);
+}
+
+/*
 Retourne le contenu d'un fichier RSS.
 
 Fournir les URL traitées par `superRawurlencode()`.
@@ -1300,84 +1348,84 @@ function fluxRss($type, $itemsFluxRss, $urlRss, $url, $baliseTitleComplement, $i
 }
 
 /*
-Retourne un tableau listant les oeuvres d'une galerie, chaque oeuvre constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
+Retourne un tableau listant les images d'une galerie, chaque image constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
-function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
 	$itemsFluxRss = array ();
 	
 	if ($tableauGalerie !== FALSE)
 	{
-		foreach ($tableauGalerie as $oeuvre)
+		foreach ($tableauGalerie as $image)
 		{
-			$id = idOeuvre($racine, $oeuvre);
-			$titreOeuvre = titreOeuvre($oeuvre);
-			$title = sprintf(T_("Oeuvre %1\$s | Galerie %2\$s"), $titreOeuvre, $idGalerie);
-			$cheminOeuvre = "$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom'];
-			$urlOeuvre = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($oeuvre['intermediaireNom']);
-			$urlGalerieOeuvre = superRawurlencode("$urlGalerie?oeuvre=$id");
+			$id = idImage($racine, $image);
+			$titreImage = titreImage($image);
+			$title = sprintf(T_("%1\$s – Galerie %2\$s"), $titreImage, $idGalerie);
+			$cheminImage = "$racine/site/fichiers/galeries/$idGalerie/" . $image['intermediaireNom'];
+			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($image['intermediaireNom']);
+			$urlGalerieImage = superRawurlencode("$urlGalerie?image=$id");
 			
-			if (!empty($oeuvre['intermediaireLargeur']))
+			if (!empty($image['intermediaireLargeur']))
 			{
-				$width = $oeuvre['intermediaireLargeur'];
+				$width = $image['intermediaireLargeur'];
 			}
 			else
 			{
-				list ($width, $height) = getimagesize($cheminOeuvre);
+				list ($width, $height) = getimagesize($cheminImage);
 			}
 		
-			if (!empty($oeuvre['intermediaireHauteur']))
+			if (!empty($image['intermediaireHauteur']))
 			{
-				$height = $oeuvre['intermediaireHauteur'];
+				$height = $image['intermediaireHauteur'];
 			}
 		
-			if (!empty($oeuvre['intermediaireAlt']))
+			if (!empty($image['intermediaireAlt']))
 			{
-				$alt = $oeuvre['intermediaireAlt'];
+				$alt = $image['intermediaireAlt'];
 			}
 			else
 			{
-				$alt = $title;
+				$alt = sprintf(T_("Image %1\$s"), $titreImage);
 			}
 			
 			$urlOriginal = '';
 			
-			if (!empty($oeuvre['originalNom']))
+			if (!empty($image['originalNom']))
 			{
-				$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($oeuvre['originalNom']);
+				$nomOriginal = $image['originalNom'];
+				
 			}
 			else
 			{
-				$nomOriginal = nomSuffixe($oeuvre['intermediaireNom'], '-original');
-			
-				if (file_exists("$racine/site/fichiers/galeries/$idGalerie/$nomOriginal"))
-				{
-					$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($nomOriginal);
-				}
+				$nomOriginal = nomSuffixe($image['intermediaireNom'], '-original');
 			}
 			
-			if (!empty($urlOriginal))
+			$cheminOriginal = "$racine/site/fichiers/galeries/$idGalerie/$nomOriginal";
+			
+			if (file_exists($cheminOriginal))
 			{
+				$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($nomOriginal);
+				
 				if ($galerieLienOriginalTelecharger)
 				{
 					$urlOriginal = "$urlRacine/telecharger.php?fichier=$urlOriginal";
+					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", '<em>.' . extension($nomOriginal) . '</em>', octetsVersKio(filesize($cheminOriginal))) . "</a></li>\n";
 				}
 				else
 				{
 					$urlOriginal = "$urlRacine/$urlOriginal";
+					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", '<em>.' . extension($nomOriginal) . '</em>', octetsVersKio(filesize($cheminOriginal))) . "</a></li>\n";
 				}
-				
-				$msgOriginal = "<p><a href=\"$urlOriginal\">" . T_("Lien vers l'oeuvre au format original.") . "</a></p>\n";
 			}
 			else
 			{
 				$msgOriginal = '';
 			}
-		
-			if (!empty($oeuvre['auteurAjout']))
+			
+			if (!empty($image['auteurAjout']))
 			{
-				$dccreator = $oeuvre['auteurAjout'];
+				$dccreator = $image['auteurAjout'];
 			}
 			elseif ($galerieFluxRssAuteurEstAuteurParDefaut)
 			{
@@ -1388,34 +1436,31 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 				$dccreator = '';
 			}
 		
-			if (!empty($oeuvre['dateAjout']))
+			if (!empty($image['dateAjout']))
 			{
-				$pubDate = $oeuvre['dateAjout'];
+				$pubDate = $image['dateAjout'];
 			}
 			else
 			{
-				$pubDate = date('Y-m-d H:i', filemtime($cheminOeuvre));
+				$pubDate = date('Y-m-d H:i', filemtime($cheminImage));
 			}
 			
-			$description = '<p>' . sprintf(T_("Oeuvre %1\$s | Galerie %2\$s."), "<em>$titreOeuvre</em>", "<em>$idGalerie</em>") . "</p>\n";
-			$description .= "<p><img src=\"$urlOeuvre\" width=\"$width\" height=\"$height\" alt=\"$alt\" /></p>\n";
+			$description = '';
+			$description .= "<p><img src=\"$urlImage\" width=\"$width\" height=\"$height\" alt=\"$alt\" /></p>\n";
 			
-			if (!empty($oeuvre['intermediaireLegende']))
+			if (!empty($image['intermediaireLegende']))
 			{
-				$description .= '<div>' . $oeuvre['intermediaireLegende'] . "</div>\n";
-			}
-			elseif (!empty($oeuvre['pageIntermediaireDescription']))
-			{
-				$description .= '<div>' . $oeuvre['pageIntermediaireDescription'] . "</div>\n";
+				$description .= '<div>' . intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
 			}
 			
-			$description .= $msgOriginal;
+			$msgPagePresentation = "<li><a href=\"$urlGalerieImage\">" . sprintf(T_("Consulter la page de présentation de l'image %1\$s dans la galerie %2\$s."), "<em>$titreImage</em>", "<em>$idGalerie</em>") . "</a></li>\n";
+			$description .= "<ul>\n" . $msgPagePresentation . $msgOriginal . "</ul>\n";
 			$description = securiseTexte($description);
 			
 			$itemsFluxRss[] = array (
 				"title" => $title,
-				"link" => $urlGalerieOeuvre,
-				"guid" => $urlGalerieOeuvre,
+				"link" => $urlGalerieImage,
+				"guid" => $urlGalerieImage,
 				"description" => $description,
 				"dccreator" => $dccreator,
 				"pubDate" => $pubDate,
@@ -1427,11 +1472,11 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 }
 
 /*
-Retourne un tableau listant les oeuvres de toutes les galeries déclarées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries.
+Retourne un tableau listant les images de toutes les galeries déclarées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries.
 
 Voir la fonction `fluxRssGalerieTableauBrut()` pour plus de détails.
 */
-function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$itemsFluxRss = array ();
 	$galeries = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
@@ -1440,7 +1485,7 @@ function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRs
 	{
 		foreach ($galeries[$langue] as $idGalerie => $urlRelativeGalerie)
 		{
-			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger));
+			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown));
 		}
 	}
 	
@@ -1563,21 +1608,21 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $a
 }
 
 /*
-Retourne l'`id` d'une oeuvre d'une galerie.
+Retourne l'`id` d'une image d'une galerie.
 */
-function idOeuvre($racine, $oeuvre)
+function idImage($racine, $image)
 {
-	if (!empty($oeuvre['id']))
+	if (!empty($image['id']))
 	{
-		return $oeuvre['id'];
+		return $image['id'];
 	}
-	elseif (!empty($oeuvre['titre']))
+	elseif (!empty($image['titre']))
 	{
-		return filtreChaine($racine, $oeuvre['titre']);
+		return filtreChaine($racine, $image['titre']);
 	}
 	else
 	{
-		return filtreChaine($racine, $oeuvre['intermediaireNom']);
+		return filtreChaine($racine, $image['intermediaireNom']);
 	}
 }
 
@@ -1835,7 +1880,7 @@ function init($valeurDinitialisation)
 }
 
 /*
-Retourne la légende d'une oeuvre dans le bon format.
+Retourne la légende d'une image dans le bon format.
 */
 function intermediaireLegende($legende, $galerieLegendeMarkdown)
 {
@@ -3033,14 +3078,14 @@ function octetsVersMio($octets)
 }
 
 /*
-Construit et retourne le code pour afficher une oeuvre dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
+Construit et retourne le code pour afficher une image dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
 */
-function oeuvre(
+function image(
 	// Infos sur le site.
 	$racine, $urlRacine, $racineImgSrc, $urlImgSrc, $estAccueil, $nombreDeColonnes,
 	
 	// Infos sur l'image à générer.
-	$infosOeuvre, $typeMime, $taille, $sens, $galerieQualiteJpg,
+	$infosImage, $typeMime, $taille, $sens, $galerieQualiteJpg,
 	
 	// Exif.
 	$galerieExifAjout, $galerieExifInfos,
@@ -3048,14 +3093,14 @@ function oeuvre(
 	// Légende.
 	$galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown,
 	
-	// Lien vers l'oeuvre originale.
+	// Lien vers l'image originale.
 	$galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger,
 	
 	// Navigation.
 	$galerieAccueilJavascript, $galerieNavigation,
 	
 	// Vignettes.
-	$galerieDimensionsVignette, $galerieForcerDimensionsVignette, $vignetteAvecDimensions, $minivignetteOeuvreEnCours
+	$galerieDimensionsVignette, $galerieForcerDimensionsVignette, $vignetteAvecDimensions, $minivignetteImageEnCours
 )
 {
 	####################################################################
@@ -3066,40 +3111,41 @@ function oeuvre(
 	
 	if ($taille == 'intermediaire')
 	{
-		if (!empty($infosOeuvre['intermediaireLargeur']) || !empty($infosOeuvre['intermediaireHauteur']))
+		$titreImage = titreImage($infosImage);
+		
+		if (!empty($infosImage['intermediaireLargeur']) || !empty($infosImage['intermediaireHauteur']))
 		{
-			if (!empty($infosOeuvre['intermediaireLargeur']))
+			if (!empty($infosImage['intermediaireLargeur']))
 			{
-				$width = 'width="' . $infosOeuvre['intermediaireLargeur'] . '"';
+				$width = 'width="' . $infosImage['intermediaireLargeur'] . '"';
 			}
 			
-			if (!empty($infosOeuvre['intermediaireHauteur']))
+			if (!empty($infosImage['intermediaireHauteur']))
 			{
-				$height = 'height="' . $infosOeuvre['intermediaireHauteur'] . '"';
+				$height = 'height="' . $infosImage['intermediaireHauteur'] . '"';
 			}
 		}
 		else
 		{
-			list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $infosOeuvre['intermediaireNom']);
+			list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $infosImage['intermediaireNom']);
 			{
 				$width = 'width="' . $larg . '"';
 				$height = 'height="' . $haut . '"';
 			}
 		}
 		
-		if (!empty($infosOeuvre['intermediaireAlt']))
+		if (!empty($infosImage['intermediaireAlt']))
 		{
-			$alt = 'alt="' . $infosOeuvre['intermediaireAlt'] . '"';
+			$alt = 'alt="' . $infosImage['intermediaireAlt'] . '"';
 		}
 		else
 		{
-			$titreOeuvre = titreOeuvre($infosOeuvre);
-			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $titreOeuvre) . '"';
+			$alt = 'alt="' . sprintf(T_("Image %1\$s"), $titreImage) . '"';
 		}
 		
-		if (!empty($infosOeuvre['intermediaireAttributTitle']))
+		if (!empty($infosImage['intermediaireAttributTitle']))
 		{
-			$attributTitle = 'title="' . $infosOeuvre['intermediaireAttributTitle'] . '"';
+			$attributTitle = 'title="' . $infosImage['intermediaireAttributTitle'] . '"';
 		}
 		else
 		{
@@ -3107,14 +3153,14 @@ function oeuvre(
 		}
 		
 		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
-		if (!empty($infosOeuvre['originalNom']))
+		if (!empty($infosImage['originalNom']))
 		{
-			$originalNom = $infosOeuvre['originalNom'];
+			$originalNom = $infosImage['originalNom'];
 		}
 		// Sinon on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
 		else
 		{
-			$originalNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-original');
+			$originalNom = nomSuffixe($infosImage['intermediaireNom'], '-original');
 		}
 		
 		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on récupère certaines informations.
@@ -3146,12 +3192,14 @@ function oeuvre(
 			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
 			{
 				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
-				$texteLienOriginal = sprintf(T_("Télécharger l'oeuvre au format original (extension: %1\$s; taille: %2\$s Kio)"), "<em>.$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", "<em>.$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteAltLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original"), $titreImage);
 			}
 			else
 			{
 				$urlLienOriginal = $urlImgSrc . '/' . $originalNom;
-				$texteLienOriginal = sprintf(T_("Afficher l'oeuvre au format original (extension: %1\$s; taille: %2\$s Kio)"), "<em>.$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteLienOriginal = sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", "<em>.$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteAltLienOriginal = sprintf(T_("Voir l'image %1\$s au format original"), $titreImage);
 			}
 			
 			$aLienOriginalDebut = '<a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>';
@@ -3179,30 +3227,18 @@ function oeuvre(
 					$iconeLienOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
 				}
 			
-				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . str_replace('&nbsp;', ' ', $texteLienOriginal) . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
+				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . $texteAltLienOriginal . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
 			}
 		}
 		
 		// Légende.
-		if (!empty($infosOeuvre['intermediaireLegende']))
+		if (!empty($infosImage['intermediaireLegende']))
 		{
-			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosOeuvre['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
+			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosImage['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
 		}
-		elseif ($galerieLegendeAutomatique)
+		elseif ($galerieLegendeAutomatique && (!$originalExiste || ($originalExiste && !$galerieLienOriginalEmplacement['legende'])))
 		{
-			if ($contenuAlt = str_replace('alt="', '', $alt))
-			{
-				$contenuAlt = substr($contenuAlt, 0, -1);
-			}
-			
-			$legende = '<div id="galerieIntermediaireLegende">' . $contenuAlt;
-			
-			if ($originalExiste && !$galerieLienOriginalEmplacement['legende'])
-			{
-				$legende .= "\n" . sprintf(T_("(%1\$s Kio)"), octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
-			}
-			
-			$legende .= "</div>\n";
+			$legende = '<div id="galerieIntermediaireLegende">' . sprintf(T_("Image %1\$s (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", '<em>.' . extension($infosImage['intermediaireNom']) . '</em>', octetsVersKio(filesize($racineImgSrc . '/' . $infosImage['intermediaireNom']))) . "</div>\n";
 		}
 		else
 		{
@@ -3215,7 +3251,7 @@ function oeuvre(
 		
 		if ($galerieExifAjout && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
 		{
-			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], 'IFD0', 0);
+			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosImage['intermediaireNom'], 'IFD0', 0);
 			
 			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
 			if (!$tableauExif && $originalExiste && $typeMime == 'image/jpeg')
@@ -3284,11 +3320,11 @@ function oeuvre(
 		// Code de retour.
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
 		}
 		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
 		{
-			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
+			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
 		}
 		else
 		{
@@ -3322,14 +3358,14 @@ function oeuvre(
 		elseif (($galerieNavigation == 'fleches' && empty($sens)) || $galerieNavigation == 'vignettes')
 		{
 			// Si le nom de la vignette a été renseigné, on prend pour acquis que le fichier existe avec ce nom. On assigne donc une valeur à l'attribut `src`.
-			if (!empty($infosOeuvre['vignetteNom']))
+			if (!empty($infosImage['vignetteNom']))
 			{
-				$src = 'src="' . $urlImgSrc . '/' . $infosOeuvre['vignetteNom'] . '"';
+				$src = 'src="' . $urlImgSrc . '/' . $infosImage['vignetteNom'] . '"';
 			}
 			// Sinon on génère un nom automatique selon le nom de la version intermediaire de l'image.
 			else
 			{
-				$vignetteNom = nomSuffixe($infosOeuvre['intermediaireNom'], '-vignette');
+				$vignetteNom = nomSuffixe($infosImage['intermediaireNom'], '-vignette');
 				
 				// On vérifie si un fichier existe avec ce nom.
 				// Si oui, on assigne une valeur à l'attribut `src`.
@@ -3340,7 +3376,7 @@ function oeuvre(
 				// Sinon on génère une vignette.
 				else
 				{
-					nouvelleImage($racineImgSrc . '/' . $infosOeuvre['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, FALSE);
+					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, FALSE);
 					
 					// On assigne l'attribut `src`.
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
@@ -3349,16 +3385,16 @@ function oeuvre(
 			
 			if ($vignetteAvecDimensions)
 			{
-				if (!empty($infosOeuvre['vignetteLargeur']) || !empty($infosOeuvre['vignetteHauteur']))
+				if (!empty($infosImage['vignetteLargeur']) || !empty($infosImage['vignetteHauteur']))
 				{
-					if (!empty($infosOeuvre['vignetteLargeur']))
+					if (!empty($infosImage['vignetteLargeur']))
 					{
-						$width = 'width="' . $infosOeuvre['vignetteLargeur'] . '"';
+						$width = 'width="' . $infosImage['vignetteLargeur'] . '"';
 					}
 				
-					if (!empty($infosOeuvre['vignetteHauteur']))
+					if (!empty($infosImage['vignetteHauteur']))
 					{
-						$height = 'height="' . $infosOeuvre['vignetteHauteur'] . '"';
+						$height = 'height="' . $infosImage['vignetteHauteur'] . '"';
 					}
 				}
 				else
@@ -3375,19 +3411,19 @@ function oeuvre(
 			}
 		}
 		
-		if (!empty($infosOeuvre['vignetteAlt']))
+		if (!empty($infosImage['vignetteAlt']))
 		{
-			$alt = 'alt="' . $infosOeuvre['vignetteAlt'] . '"';
+			$alt = 'alt="' . $infosImage['vignetteAlt'] . '"';
 		}
 		else
 		{
-			$titreOeuvre = titreOeuvre($infosOeuvre);
-			$alt = 'alt="' . sprintf(T_("Oeuvre %1\$s"), $titreOeuvre) . '"';
+			$titreImage = titreImage($infosImage);
+			$alt = 'alt="' . sprintf(T_("Image %1\$s"), $titreImage) . '"';
 		}
 		
-		if (!empty($infosOeuvre['vignetteAttributTitle']))
+		if (!empty($infosImage['vignetteAttributTitle']))
 		{
-			$attributTitle = 'title="' . $infosOeuvre['vignetteAttributTitle'] . '"';
+			$attributTitle = 'title="' . $infosImage['vignetteAttributTitle'] . '"';
 		}
 		else
 		{
@@ -3405,26 +3441,26 @@ function oeuvre(
 		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
-			if (!empty($infosOeuvre['intermediaireLegende']))
+			if (!empty($infosImage['intermediaireLegende']))
 			{
-				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $infosOeuvre['intermediaireLegende']) . '"';
+				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $infosImage['intermediaireLegende']) . '"';
 			}
 			else
 			{
 				$title = '';
 			}
 			
-			$aHref = '<a href="' . $urlImgSrc . '/' . $infosOeuvre['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
+			$aHref = '<a href="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
 		}
 		else
 		{
-			$id = idOeuvre($racine, $infosOeuvre);
-			$aHref = '<a href="' . url(FALSE, FALSE) . '?oeuvre=' . $id . '">';
+			$id = idImage($racine, $infosImage);
+			$aHref = '<a href="' . url(FALSE, FALSE) . '?image=' . $id . '" title="' . $titreImage . '">';
 		}
 		
-		if ($minivignetteOeuvreEnCours)
+		if ($minivignetteImageEnCours)
 		{
-			$class .= ' minivignetteOeuvreEnCours';
+			$class .= ' minivignetteImageEnCours';
 		}
 		
 		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt $attributTitle /></a></div>\n";
@@ -3480,8 +3516,8 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 	// Ajustement des métabalises.
 	if (isset($page) && $page != 1)
 	{
-		$pagination['baliseTitle'] .= " - Page $page";
-		$pagination['description'] .= " - Page $page";
+		$pagination['baliseTitle'] = sprintf(T_("%1\$s – Page %2\$s"), $pagination['baliseTitle'], $page);
+		$pagination['description'] = sprintf(T_("%1\$s – Page %2\$s"), $pagination['description'], $page);
 	}
 	
 	$pagination['indicePremierElement'] = ($page - 1) * $elementsParPage;
@@ -3704,38 +3740,40 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 				{
 					$vignettes = array ();
 					
-					foreach ($tableauGalerie as $oeuvre)
+					foreach ($tableauGalerie as $image)
 					{
-						$titre = sprintf(T_("Oeuvre %1\$s | Galerie %2\$s"), titreOeuvre($oeuvre), $id);
+						$titreImage = titreImage($image);
+						$title = $titreImage;
+						$alt = $titreImage;
 						
-						if (!empty($oeuvre['dateAjout']))
+						if (!empty($image['dateAjout']))
 						{
-							$date = $oeuvre['dateAjout'];
+							$date = $image['dateAjout'];
 						}
 						else
 						{
-							$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idGalerie/" . $oeuvre['intermediaireNom']));
+							$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idGalerie/" . $image['intermediaireNom']));
 						}
 						
-						if (isset($oeuvre['vignetteNom']))
+						if (isset($image['vignetteNom']))
 						{
-							$vignetteNom = $oeuvre['vignetteNom'];
+							$vignetteNom = $image['vignetteNom'];
 						}
 						else
 						{
-							$vignetteNom = nomSuffixe($oeuvre['intermediaireNom'], '-vignette');
+							$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
 						}
 					
-						if (!empty($oeuvre['vignetteLargeur']) || !empty($oeuvre['vignetteHauteur']))
+						if (!empty($image['vignetteLargeur']) || !empty($image['vignetteHauteur']))
 						{
-							if (!empty($oeuvre['vignetteLargeur']))
+							if (!empty($image['vignetteLargeur']))
 							{
-								$width = $oeuvre['vignetteLargeur'];
+								$width = $image['vignetteLargeur'];
 							}
 				
-							if (!empty($oeuvre['vignetteHauteur']))
+							if (!empty($image['vignetteHauteur']))
 							{
-								$height = $oeuvre['vignetteHauteur'];
+								$height = $image['vignetteHauteur'];
 							}
 						}
 						else
@@ -3744,7 +3782,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						}
 						
 						$vignettes[] = array (
-							'code' => '<li><a href="' . superRawurlencode($urlGalerie . '?oeuvre=' . idOeuvre($racine, $oeuvre)) . '" title="' . $titre . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($id) . '/' . $vignetteNom . '" alt="' . $titre . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
+							'code' => '<li><a href="' . superRawurlencode($urlGalerie . '?image=' . idImage($racine, $image)) . '" title="' . $title . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($id) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
 							'date' => $date,
 						);
 					}
@@ -3768,7 +3806,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					{
 						if ($ajouterLien)
 						{
-							$html .= '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'oeuvres") . "</a></p>\n";
+							$html .= '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'images") . "</a></p>\n";
 						}
 				
 						$html = "<div class=\"publicationsRecentes publicationsRecentesGalerie\">\n<ul>\n$html</ul>\n</div>\n";
@@ -3804,7 +3842,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 		}
 		else
 		{
-			$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+			$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
 			
 			if (!empty($itemsFluxRss))
 			{
@@ -3875,7 +3913,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					
 						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('galeries'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 						$lien = $urlRacine . '/' . $categories['galeries']['urlCat'];
-						$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'oeuvres") . "</a></p>\n";
+						$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'images") . "</a></p>\n";
 					}
 				
 					$html = "<div class=\"publicationsRecentes publicationsRecentesGaleries\">\n<ul>\n$html</ul>\n</div>\n";
@@ -4041,15 +4079,15 @@ function siteEstEnMaintenance($cheminHtaccess)
 /*
 Génère l'attribut `style` pour les div vide simulant la présence d'une flèche ou d'une vignette de navigation dans la galerie.
 */
-function styleDivVideNavigation($oeuvre)
+function styleDivVideNavigation($image)
 {
 	$width = '';
 	$height = '';
 	
-	if (!empty($oeuvre))
+	if (!empty($image))
 	{
-		preg_match('/width="(\d+)"/', $oeuvre, $resultatWidth);
-		preg_match('/height="(\d+)"/', $oeuvre, $resultatHeight);
+		preg_match('/width="(\d+)"/', $image, $resultatWidth);
+		preg_match('/height="(\d+)"/', $image, $resultatHeight);
 		
 		if (!empty($resultatWidth[1]))
 		{
@@ -4259,11 +4297,11 @@ function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 	{
 		$tableauGalerie = array ();
 		
-		foreach ($galerieIni as $oeuvre => $infos)
+		foreach ($galerieIni as $image => $infos)
 		{
 			if (!$exclure || !(isset($infos['exclure']) && $infos['exclure'] == 'oui'))
 			{
-				$infos['intermediaireNom'] = $oeuvre;
+				$infos['intermediaireNom'] = $image;
 				$tableauGalerie[] = $infos;
 			}
 		}
@@ -4277,21 +4315,21 @@ function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 }
 
 /*
-Retourne le titre d'une oeuvre.
+Retourne le titre d'une image.
 */
-function titreOeuvre($oeuvre)
+function titreImage($image)
 {
-	if (!empty($oeuvre['titre']))
+	if (!empty($image['titre']))
 	{
-		return $oeuvre['titre'];
+		return $image['titre'];
 	}
-	elseif (!empty($oeuvre['id']))
+	elseif (!empty($image['id']))
 	{
-		return $oeuvre['id'];
+		return $image['id'];
 	}
 	else
 	{
-		return $oeuvre['intermediaireNom'];
+		return $image['intermediaireNom'];
 	}
 }
 
@@ -4517,9 +4555,8 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 	list ($larg, $haut) = getimagesize($cheminImage);
 	$width = 'width="' . $larg . '"';
 	$height = 'height="' . $haut . '"';
-	preg_match('/alt="([^"]+)"/', $paragraphe, $resultat);
-	$altContenu = $resultat[1];
-	$alt = 'alt="' . $altContenu . '"';
+	preg_match('/(alt="[^"]+")/', $paragraphe, $resultat);
+	$alt = $resultat[1];
 	$img = "<div id=\"galerieAccompagnementVignette" . ucfirst($sens) . "\"><img src=\"$urlImage\" $alt $width $height /></div>\n";
 	
 	// On retourne le paragraphe avec l'image en plus.

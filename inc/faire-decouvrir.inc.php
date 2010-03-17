@@ -35,44 +35,38 @@ if (!$erreur404 && !$estPageDerreur)
 
 	$cheminConfigGalerie = cheminConfigGalerie($racine, $idGalerie);
 
-	if (!empty($idGalerie) && isset($_GET['oeuvre']) && $cheminConfigGalerie)
+	if (!empty($idGalerie) && isset($_GET['image']) && $cheminConfigGalerie)
 	{
 		$tableauGalerie = tableauGalerie($cheminConfigGalerie, TRUE);
 		$i = 0;
 	
-		foreach($tableauGalerie as $oeuvre)
+		foreach($tableauGalerie as $image)
 		{
-			$id = idOeuvre($racine, $oeuvre);
+			$id = idImage($racine, $image);
 		
-			if ($id == sansEchappement($_GET['oeuvre']))
+			if ($id == sansEchappement($_GET['image']))
 			{
 				$decouvrir = TRUE;
 			
 				if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 				{
 					$decouvrirInclureContact = TRUE;
-					$messageDecouvrirSupplement = decouvrirSupplementOeuvre($urlRacine, $idGalerie, $oeuvre, $galerieLegendeMarkdown);
-					$titreOeuvre = titreOeuvre($oeuvre);
-					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'oeuvre %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $titreOeuvre . '</em>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
+					$messageDecouvrirSupplement = decouvrirSupplementImage($urlRacine, $idGalerie, $image, $galerieLegendeMarkdown);
+					$titreImage = titreImage($image);
+					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'image %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $titreImage . '</em>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 				}
 			
 				break;
 			}
 		}
 	}
-	elseif (!empty($idGalerie) && !isset($_GET['oeuvre']) && $cheminConfigGalerie)
+	elseif (!empty($idGalerie) && !isset($_GET['image']) && $cheminConfigGalerie)
 	{
 		$decouvrir = TRUE;
 	
 		if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 		{
 			$decouvrirInclureContact = TRUE;
-		
-			if (!isset($description))
-			{
-				$description = '';
-			}
-		
 			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle . $baliseTitleComplement);
 			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 		}
@@ -84,12 +78,6 @@ if (!$erreur404 && !$estPageDerreur)
 		if (isset($_GET['action']) && $_GET['action'] == 'faireDecouvrir')
 		{
 			$decouvrirInclureContact = TRUE;
-		
-			if (!isset($description))
-			{
-				$description = '';
-			}
-		
 			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle . $baliseTitleComplement);
 			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . urlPageSansDecouvrir() . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 		}

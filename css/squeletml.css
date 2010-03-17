@@ -765,7 +765,7 @@ div#galerieIntermediaire div#galerieIntermediaireTexte {
 	margin-bottom: 15px;
 }
 
-div.minivignetteOeuvreEnCours img {
+div.minivignetteImageEnCours img {
 	border-left: 5px solid #b3b3b3 !important;
 	border-right: 5px solid #b3b3b3 !important;
 }

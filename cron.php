@@ -98,8 +98,8 @@ if (file_exists('init.inc.php'))
 						
 						if ($galerieVignettesParPage)
 						{
-							$nombreDoeuvres = count($tableauGalerie);
-							$nombreDePages = ceil($nombreDoeuvres / $galerieVignettesParPage);
+							$nombreDimages = count($tableauGalerie);
+							$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
 						}
 						else
 						{
