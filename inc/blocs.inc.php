@@ -191,6 +191,32 @@ if (!empty($blocsAinserer))
 				
 					break;
 				
+				case 'lien-page':
+					if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
+						$blocs[$region] .= '<div id="lienPage" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<h2>' . T_("Faire un lien vers cette page") . "</h2>\n";
+						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
+						$codeLienPage = '<a href="' . urlPageSansDecouvrir() . '">' . $baliseTitle . '</a>';
+						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
+					}
+				
+					break;
+				
 				case 'marque-pages-sociaux':
 					$listeMarquePagesSociaux = marquePagesSociaux($url, $baliseTitle . $baliseTitleComplement);
 					

@@ -124,6 +124,11 @@ if (!isset($licence))
 	$licence = $licenceParDefaut;
 }
 
+if (!isset($lienPage))
+{
+	$lienPage = $afficherLienPageParDefaut;
+}
+
 if (!isset($marquePagesSociaux))
 {
 	$marquePagesSociaux = $activerMarquePagesSociauxParDefaut;

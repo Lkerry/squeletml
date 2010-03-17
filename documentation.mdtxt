@@ -431,7 +431,7 @@ Voici l'anatomie d'une page:
 
 Voici les différentes variables optionnelles avant l'inclusion du premier fichier PHP:
 
-- `$apercu`: aperçu de la page en cours, inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration vaut TRUE.
+- `$apercu`: aperçu de la page en cours, inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration du site vaut TRUE.
 
 	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la div `interieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
 
@@ -440,15 +440,13 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
 
-- `$auteur`: nom ou noms à inclure dans la métabalise `author`, si différents du nom ou des noms par défaut déclarés dans le fichier de configuration. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le bloc des informations de publication.
+- `$auteur`: nom ou noms à inclure dans la métabalise `author`, si la valeur est différente de `$auteurParDefaut` du fichier de configuration du site. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le bloc des informations de publication.
 
 - `$baliseTitle`: contenu de la balise `title`. Si cette variable est vide, elle se verra assigner l'URL de la page en cours.
 
-- `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration pour une description détaillée de la syntaxe à utiliser.
+- `$boitesDeroulantes`: permet d'activer les boîte déroulantes pour du contenu présent dans la page en cours. Voir les commentaires de la variable `$boitesDeroulantesParDefaut` dans le fichier de configuration du site pour une description détaillée de la syntaxe à utiliser.
 
-- `$boitesDeroulantesAlaMain`: prend la valeur `TRUE` ou `FALSE`. Si vaut `TRUE`, les fichiers nécessaires à la gestion d'une boîte déroulante (Javascript et CSS) seront inclus, mais l'appel à la fonction Javascript `boiteDeroulante()` ne se fera pas de manière automatique, mais à la main par l'utilisateur, qui devra insérer la fonction à l'endroit désiré dans le code de la page.
-
-	La variable `$boitesDeroulantesAlaMainParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$boitesDeroulantesAlaMain` pour changer la valeur par défaut pour une page spécifique.
+- `$boitesDeroulantesAlaMain`: prend la valeur `TRUE` ou `FALSE`, si la valeur est différente de `$boitesDeroulantesAlaMainParDefaut` du fichier de configuration du site. Si vaut `TRUE`, les fichiers nécessaires à la gestion d'une boîte déroulante (Javascript et CSS) seront inclus, mais l'appel à la fonction Javascript `boiteDeroulante()` ne se fera pas de manière automatique, mais à la main par l'utilisateur, qui devra insérer la fonction à l'endroit désiré dans le code de la page.
 
 - `$classesBody`: permet d'ajouter des classes à la balise `body`. Voici un exemple:
 
@@ -458,7 +456,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
 
-	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
+	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration du site, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
 - `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie, dans le classement des items des flux RSS et dans le bloc des informations de publication.
 
@@ -466,9 +464,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
-- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante.
-
-	La variable `$activerFaireDecouvrirParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$faireDecouvrir` pour changer la valeur par défaut pour une page spécifique.
+- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante, si la valeur est différente de `$activerFaireDecouvrirParDefaut` du fichier de configuration du site.
 
 - `$idCategorie`: un nombre, un mot ou une phrase identifiant la catégorie à chercher pour afficher la liste des articles en faisant partie. Voir la section «Catégories».
 
@@ -476,31 +472,29 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Par exemple, si nous avons `$idGalerie = "mes-voyages";`, Squeletml va rechercher le dossier `site/fichiers/galeries/mes-voyages`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
 
-- `$infosPublication`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut afficher ou non les informations de publication (auteur, date de création, date de dernière révision).
+- `$infosPublication`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut afficher ou non les informations de publication (auteur, date de création, date de dernière révision) pour la page courante, si la valeur est différente de `$afficherInfosPublicationParDefaut` du fichier de configuration du site.
 
-- `$langue`: langue de la page courante, si différente de la langue par défaut déclarée dans le fichier de configuration.
+- `$langue`: langue de la page courante, si la valeur est différente de `$langueParDefaut` du fichier de configuration du site.
 
-- `$licence`: licence de la page courante, si différente de la licence par défaut déclarée dans le fichier de configuration. Plusieurs licences peuvent être déclarées, chacune devant être séparée par une espace. Voici un exemple:
+- `$licence`: licence de la page courante, si la valeur est différente de `$licenceParDefaut` du fichier de configuration du site. Plusieurs licences peuvent être déclarées, chacune devant être séparée par une espace. Voici un exemple:
 
 		$licence = 'art-libre cc-by-sa';
 
 	Voir la fonction `licence()` pour connaître tous les choix possibles.
 
-- `$marquePagesSociaux`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante.
+- `$lienPage`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut afficher ou non une suggestion de code pour un lien vers la page courante, si la valeur est différente de `$afficherLienPageParDefaut` du fichier de configuration du site.
 
-	La variable `$activerMarquePagesSociauxParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$marquePagesSociaux` pour changer la valeur par défaut pour une page spécifique.
+- `$marquePagesSociaux`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante, si la valeur est différente de `$activerMarquePagesSociauxParDefaut` du fichier de configuration du site.
 
-- `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$inclureMotsCles` vaut `FALSE` dans le fichier de configuration, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
+- `$motsCles`: contenu de la métabalise `keywords`. Si cette variable est vide ou inexistante, elle sera générée automatiquement à partir du contenu de la variable `$description`. Prenez note que si `$inclureMotsCles` vaut `FALSE` dans le fichier de configuration du site, les mots-clés ne seront pas ajoutés à l'en-tête de la page, même si `$motsCles` n'est pas vide.
 
-- `$robots`: contenu de la métabalise `robots`, si différent du contenu par défaut déclaré dans le fichier de configuration.
+- `$robots`: contenu de la métabalise `robots`, si la valeur est différente de `$robotsParDefaut` du fichier de configuration du site.
 
-- `$rssCategorie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la catégorie en question, si la valeur est différente de `$activerFluxRssCategorieParDefaut` du fichier de configuration.
+- `$rssCategorie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la catégorie en question, si la valeur est différente de `$activerFluxRssCategorieParDefaut` du fichier de configuration du site.
 
-- `$rssGalerie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la galerie en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration.
+- `$rssGalerie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la galerie en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration du site.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page en question. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` `interieurContenu`. La table est ajoutée au début de cette `div`.
-
-	La variable `$afficherTableDesMatieresParDefaut`, déclarée dans le fichier de configuration, s'applique à toutes les pages du site. Utiliser `$tableDesMatieres` pour changer la valeur par défaut pour une page spécifique.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` `interieurContenu`. La table est ajoutée au début de cette `div`.
 
 ### Inclusion du premier fichier PHP
 

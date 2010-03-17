@@ -164,12 +164,13 @@ Voir la fonction `blocs()`.
 $ordreBlocsDansFluxHtml['menu-langues']           = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu']                   = array (200, 510, 500);
 $ordreBlocsDansFluxHtml['menu-categories']        = array (510, 520, 510);
-$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (520, 530, 520);
+$ordreBlocsDansFluxHtml['legende-image-galerie']  = array (520, 530, 520);
 $ordreBlocsDansFluxHtml['flux-rss']               = array (530, 540, 530);
 $ordreBlocsDansFluxHtml['faire-decouvrir']        = array (540, 550, 540);
 $ordreBlocsDansFluxHtml['marque-pages-sociaux']   = array (550, 560, 550);
 $ordreBlocsDansFluxHtml['infos-publication']      = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']                = array (410, 410, 410);
+$ordreBlocsDansFluxHtml['lien-page']              = array (420, 420, 420);
 
 // Détection du type MIME.
 /*
@@ -216,6 +217,12 @@ $auteurParDefaut = "";
 - Voir dans la documentation les explications pour les variables `$auteur`, `$dateCreation`, `$dateRevision` et `$infosPublication`.
 */
 $afficherInfosPublicationParDefaut = TRUE; // TRUE|FALSE
+
+// Affichage par défaut d'une suggestion de code pour un lien vers la page.
+/*
+- Le code propose un lien prêt à être intégré dans une page HTML. Si la variable `$afficherLienPage` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
+*/
+$afficherLienPageParDefaut = TRUE; // TRUE|FALSE
 
 // Licence par défaut pour tout le site.
 /*
@@ -409,15 +416,16 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Chaque élément prend comme valeur TRUE, FALSE ou NULL.
 - Voir la fonction `lienActif()`.
 */
-$liensActifsBlocs['menu-langues'] = TRUE;
-$liensActifsBlocs['menu'] = TRUE;
-$liensActifsBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $liensActifsBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
-$liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $liensActifsBlocs['flux-rss'] = NULL; // Ne s'applique pas.
 $liensActifsBlocs['infos-publication'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $liensActifsBlocs['licence'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['lien-page'] = NULL; // Ne s'applique pas.
 $liensActifsBlocs['marque-pages-sociaux'] = NULL; // Ne s'applique pas.
+$liensActifsBlocs['menu'] = TRUE;
+$liensActifsBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$liensActifsBlocs['menu-langues'] = TRUE;
 
 // Limite de la profondeur d'une liste dans un bloc.
 /*
@@ -469,15 +477,16 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
-$limiterProfondeurListesBlocs['menu-langues'] = FALSE;
-$limiterProfondeurListesBlocs['menu'] = TRUE;
-$limiterProfondeurListesBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $limiterProfondeurListesBlocs['faire-decouvrir'] = NULL; // Ne s'applique pas.
-$limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $limiterProfondeurListesBlocs['flux-rss'] = NULL; // Ne s'applique pas.
 $limiterProfondeurListesBlocs['infos-publication'] = NULL; // Ne s'applique pas.
+$limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $limiterProfondeurListesBlocs['licence'] = NULL; // Ne s'applique pas.
+$limiterProfondeurListesBlocs['lien-page'] = NULL; // Ne s'applique pas.
 $limiterProfondeurListesBlocs['marque-pages-sociaux'] = NULL; // Ne s'applique pas.
+$limiterProfondeurListesBlocs['menu'] = TRUE;
+$limiterProfondeurListesBlocs['menu-categories'] = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$limiterProfondeurListesBlocs['menu-langues'] = FALSE;
 
 // Nombre de colonnes.
 /*
