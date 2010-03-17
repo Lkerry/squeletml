@@ -8,12 +8,12 @@
 							<div class="sep"></div>
 						<?php endif; ?>
 						
-						<?php if ($inclureContact): ?>
-							<?php echo $contact; ?>
-						<?php endif; ?>
-						
 						<?php if ($afficherCategorie): ?>
 							<?php echo $categorie; ?>
+						<?php endif; ?>
+						
+						<?php if ($inclureContact): ?>
+							<?php echo $contact; ?>
 						<?php endif; ?>
 						
 						<?php if (!empty($blocs[400])): ?>

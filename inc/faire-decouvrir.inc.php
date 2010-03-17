@@ -53,7 +53,7 @@ if (!$erreur404 && !$estPageDerreur)
 					$decouvrirInclureContact = TRUE;
 					$messageDecouvrirSupplement = decouvrirSupplementImage($urlRacine, $idGalerie, $image, $galerieLegendeMarkdown);
 					$titreImage = titreImage($image);
-					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'image %3\$s, qui fait partie de la galerie %4\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $titreImage . '</em>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
+					$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'image %3\$s, qui fait partie de la galerie %4\$s:"), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $titreImage . '</em>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 				}
 			
 				break;
@@ -68,7 +68,7 @@ if (!$erreur404 && !$estPageDerreur)
 		{
 			$decouvrirInclureContact = TRUE;
 			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle . $baliseTitleComplement);
-			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
+			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s:"), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 		}
 	}
 	elseif (empty($courrielContact))
@@ -79,7 +79,7 @@ if (!$erreur404 && !$estPageDerreur)
 		{
 			$decouvrirInclureContact = TRUE;
 			$messageDecouvrirSupplement = decouvrirSupplementPage($description, $baliseTitle . $baliseTitleComplement);
-			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page %3\$s."), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . urlPageSansDecouvrir() . '</em>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
+			$messageDecouvrir = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page suivante:"), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>') . "</p>\n" . $messageDecouvrirSupplement . $petitMot;
 		}
 	}
 }
