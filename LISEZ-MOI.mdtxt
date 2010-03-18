@@ -6,7 +6,7 @@ Le logiciel libre Squeletml est un squelette de site valide XHTML 1.0 Strict gé
 
 En effet, seulement deux fichiers doivent être inclus dans chaque page (un au début et un à la fin), et ces derniers fournissent une structure de site personnalisée et traduite dans la langue de la page (si disponible). Chaque page peut facilement avoir ses propres informations: langue, balise `title`, métabalises, feuilles de style, scripts Javascript, titre de premier niveau (`h1`), table des matières, etc. L'en-tête personnalisée permet d'offrir de meilleurs repères aux internautes, d'éviter le contenu dupliqué dans les moteurs de recherche et d'avoir un site optimisé pour le référencement.
 
-Aussi, un fichier de configuration permet de paramétrer, par simple affectation de variables, le flux HTML ainsi que plusieurs aspets visuels sans devoir bidouiller dans les feuilles de style CSS ou la structure de page. Bien sûr, il est également possible d'utiliser ses propres styles ou structure de page.
+Aussi, un fichier de configuration permet de paramétrer, par simple affectation de variables, le flux HTML ainsi que plusieurs aspects visuels sans devoir bidouiller dans les feuilles de style CSS ou la structure de page. Bien sûr, il est également possible d'utiliser ses propres styles ou structure de page.
 
 Enfin, Squeletml fournit quelques modules prêts à l'emploi, comme des formulaires de contact, des galeries photo, le classement par catégories, des flux RSS, une fonction «Faire découvrir à des ami-e-s», une interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
 
@@ -26,7 +26,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Fichier de configuration offrant une syntaxe simple pour:
 
-  - insérer des fichiers CSS ou Javascipt dans l'ent-ête de certaines pages en particulier, ou bien pour toutes les pages du site;
+  - insérer des fichiers CSS ou Javascipt dans l'en-tête de certaines pages en particulier, ou bien pour toutes les pages du site;
   - choisir diverses structures et styles possibles pour le site: nombre de colonnes et arrière-plan, position des blocs de contenu (comme les menus) dans le flux HTML (et par conséquent leur ordre dans les colonnes), présence ou non de certaines structures comme le bas de page, ajout de blocs de contenu personnalisés, blocs avec coins arrondis, activation de boîtes déroulantes sur les contenus spécifiés (affichant ou masquant le corps du contenu par simple clic sur le titre, et enregistrant la préférence de l'internaute), etc.
 
 - Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue ou le type de la page (texte, galerie, formulaire de contact, etc.).
