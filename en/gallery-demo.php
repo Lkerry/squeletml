@@ -1,5 +1,5 @@
 <?php
-$baliseTitle = "Squeletml's demo gallery";
+$baliseTitle = "Gallery (demo)";
 $langue = 'en';
 $idGalerie = 'démo';
 $rssGalerie = FALSE;

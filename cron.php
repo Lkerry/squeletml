@@ -118,6 +118,14 @@ if (file_exists('init.inc.php'))
 								$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
 							}
 						}
+						
+						foreach ($tableauGalerie as $image)
+						{
+							$id = idImage($racine, $image);
+							$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "image=$id");
+							$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-image-$id-$codeLangue.cache.html");
+							$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+						}
 					}
 				}
 			}
