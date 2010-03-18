@@ -344,13 +344,19 @@ $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(functio
 
 // Inclusion de l'aperçu d'une page.
 /*
-- L'aperçu d'une page (s'il existe et n'est pas vide, et si `$inclureApercu` vaut TRUE) est inséré en tant que commentaire HTML au début de la div `interieurContenu` et est utilisé par certains scripts comme celui de construction des flux RSS.
+- L'aperçu d'une page (s'il existe et n'est pas vide, et si `$inclureApercu` vaut TRUE) est inséré en tant que commentaire HTML au début de la `div` `interieurContenu` et est utilisé par certains scripts comme celui de construction des flux RSS.
 - Le but de mettre `$inclureApercu` à FALSE est que les scripts qui utilisent normalement l'aperçu d'une page sauteront alors l'étape de sa recherche, ce qui sauvera du temps et des ressources.
 - Voir les explications de la variable `$apercu` dans la documentation pour plus de détails.
 */
 $inclureApercu = TRUE; // TRUE|FALSE
 
-// Taille, en nombre de caractères, de l'aperçu généré automatiquement.
+// Si `$inclureApercu` vaut TRUE, aperçu par défaut.
+/*
+- Voir les explications de la variable `$apercu` dans la documentation pour connaître les différentes valeurs possibles.
+*/
+$apercuParDefaut = "";
+
+// S'il y a lieu, taille, en nombre de caractères, d'un aperçu généré automatiquement.
 $tailleApercuAutomatique = 750;
 
 // Expiration du cache.

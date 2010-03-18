@@ -431,7 +431,7 @@ Voici l'anatomie d'une page:
 
 Voici les différentes variables optionnelles avant l'inclusion du premier fichier PHP:
 
-- `$apercu`: aperçu de la page en cours, inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration du site vaut TRUE.
+- `$apercu`: aperçu de la page en cours, si la valeur est différente de `$apercuParDefaut` du fichier de configuration du site. Le contenu de `$apercu` est inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration du site vaut TRUE.
 
 	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la `div` `interieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
 
