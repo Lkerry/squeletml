@@ -598,6 +598,10 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 		echo mdtxtChaine($chaine);
 		?>
 
+#### Fonctions diverses
+
+Voir la page `exemple.php` située à la racine de l'installation de Squeletml pour voir plusieurs exemples d'utilisation de fonctions aidant à la rédaction du contenu.
+
 #### Variables et constantes utiles
 
 Quelques variables et constantes PHP peuvent être utilisées dans la rédaction du contenu pour faciliter l'élaboration des chemins vers certains fichiers:

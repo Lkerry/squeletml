@@ -463,6 +463,29 @@ function categoriesParentesIndirectes($categories, $categorie, $langueParDefaut)
 }
 
 /*
+Retourne le chapeau balisé. Optionnellement, le chapeau peut être rédigé à l'aide de la syntaxe Markdown. Pour ce faire, s'assurer que le deuxième paramètre vaille TRUE.
+*/
+function chapeau($contenuChapeau, $chapeauEnMarkdown = FALSE)
+{
+	$chapeau = '';
+	$chapeau .= "<div class=\"chapeau\">\n";
+	$chapeau .= '<p class="legende"><span>' . T_("Résumé") . "</span></p>\n";
+	
+	$chapeau .= "<div class=\"contenuChapeau\">\n";
+	
+	if ($chapeauEnMarkdown)
+	{
+		$contenuChapeau = mdtxtChaine($contenuChapeau);
+	}
+	
+	$chapeau .= $contenuChapeau;
+	$chapeau .= "</div><!-- /.contenuChapeau -->\n";
+	$chapeau .= "</div><!-- /.chapeau -->\n";
+	
+	return $chapeau;
+}
+
+/*
 Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
@@ -4056,29 +4079,6 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 	}
 	
 	return $html;
-}
-
-/*
-Retourne le résumé balisé. Optionnellement, le résumé peut être rédigé à l'aide de la syntaxe MArkdown. Pour ce faire, s'assurer que le deuxième paramètre vaille TRUE.
-*/
-function resume($contenuResume, $resumeEnMarkdown = FALSE)
-{
-	$resume = '';
-	$resume .= "<div class=\"resume\">\n";
-	$resume .= '<p class="legende"><span>' . T_("Résumé") . "</span></p>\n";
-	
-	$resume .= "<div class=\"contenuResume\">\n";
-	
-	if ($resumeEnMarkdown)
-	{
-		$contenuResume = mdtxtChaine($contenuResume);
-	}
-	
-	$resume .= $contenuResume;
-	$resume .= "</div><!-- /.contenuResume -->\n";
-	$resume .= "</div><!-- /.resume -->\n";
-	
-	return $resume;
 }
 
 /*

@@ -27,7 +27,7 @@ if (
 }
 
 $baliseTitle = T_("Porte-documents");
-$boitesDeroulantes = '#divListeDossiersAdminPorteDoc #divContenuDossierAdminPorteDoc';
+$boitesDeroulantes = '#divListeDossiersAdminPorteDoc #divContenuDossierAdminPorteDoc #varPageModele';
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {
@@ -1739,8 +1739,8 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<option value="FichierModeleMarkdown">' .  T_("Fichier modèle HTML de page web avec syntaxe Markdown") . "</option>\n";
 	echo "</select></p>\n";
 	
-	echo '<p><label for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
-	echo '<select id="selectPorteDocumentsCreationVar" name="porteDocumentsCreationVar[]" multiple="multiple" size="5">' . "\n";
+	echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
+	echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
 	echo '<option value="apercu">$apercu</option>' . "\n";
 	echo '<option value="auteur">$auteur</option>' . "\n";
 	echo '<option value="baliseH1">$baliseH1</option>' . "\n";

@@ -166,12 +166,12 @@ $ordreBlocsDansFluxHtml['infos-publication']     = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']               = array (410, 410, 410);
 $ordreBlocsDansFluxHtml['lien-page']             = array (420, 420, 420);
 $ordreBlocsDansFluxHtml['menu-langues']          = array (500, 500, 200);
-$ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 500);
-$ordreBlocsDansFluxHtml['menu-categories']       = array (510, 520, 510);
-$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (520, 530, 520);
-$ordreBlocsDansFluxHtml['flux-rss']              = array (530, 540, 530);
-$ordreBlocsDansFluxHtml['faire-decouvrir']       = array (540, 550, 540);
-$ordreBlocsDansFluxHtml['marque-pages-sociaux']  = array (550, 560, 550);
+$ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
+$ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
+$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
+$ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
+$ordreBlocsDansFluxHtml['faire-decouvrir']       = array (550, 550, 550);
+$ordreBlocsDansFluxHtml['marque-pages-sociaux']  = array (560, 560, 560);
 
 // Détection du type MIME.
 /*

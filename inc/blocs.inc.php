@@ -44,9 +44,9 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#baliseH1 -->' . "\n";
 					}
-				
+					
 					break;
-				
+					
 				case 'faire-decouvrir':
 					if ($faireDecouvrir && $decouvrir)
 					{
@@ -67,9 +67,9 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#faireDecouvrir -->' . "\n";
 					}
-				
+					
 					break;
-				
+					
 				case 'flux-rss':
 					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGaleriesActif || $fluxRssGlobalSiteActif)
 					{
@@ -121,9 +121,9 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#fluxRss -->' . "\n";
 					}
-				
+					
 					break;
-				
+					
 				case 'infos-publication':
 					if ($infosPublication && !$erreur404 && !$estPageDerreur && empty($courrielContact) && empty($idCategorie) && empty($idGalerie))
 					{
@@ -150,9 +150,9 @@ if (!empty($blocsAinserer))
 							$blocs[$region] .= '</div><!-- /#infosPublication -->' . "\n";
 						}
 					}
-					
+						
 					break;
-				
+					
 				case 'legende-image-galerie':
 					if (!empty($tableauCorpsGalerie['texteIntermediaire']) && $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 					{
@@ -170,9 +170,9 @@ if (!empty($blocsAinserer))
 					
 						$blocs[$region] .= $bloc;
 					}
-				
+					
 					break;
-				
+					
 				case 'licence':
 					if (!empty($licence) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
@@ -211,9 +211,9 @@ if (!empty($blocsAinserer))
 							$blocs[$region] .= '</div><!-- /#licence -->' . "\n";
 						}
 					}
-				
+					
 					break;
-				
+					
 				case 'lien-page':
 					if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
@@ -237,9 +237,9 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
 					}
-				
+					
 					break;
-				
+					
 				case 'marque-pages-sociaux':
 					$listeMarquePagesSociaux = marquePagesSociaux($url, $baliseTitle . $baliseTitleComplement);
 					
@@ -276,9 +276,9 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= "//]]>\n";
 						$blocs[$region] .= "</script>\n";
 					}
-				
+					
 					break;
-				
+					
 				case 'menu':
 					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
@@ -313,7 +313,7 @@ if (!empty($blocsAinserer))
 					$blocs[$region] .= $codeInterieurBlocBas;
 					$blocs[$region] .= '</div><!-- /#menu -->' . "\n";
 					break;
-				
+					
 				case 'menu-categories':
 					$bloc = '';
 					$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
@@ -367,9 +367,9 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuCategories -->' . "\n";
 					}
-					
+						
 					break;
-				
+					
 				case 'menu-langues':
 					if (count($accueil) > 1)
 					{
@@ -406,9 +406,9 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuLangues -->' . "\n";
 					}
-					
+						
 					break;
-				
+					
 				// Blocs personnalisés.
 				default:
 					if (cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
@@ -446,7 +446,7 @@ if (!empty($blocsAinserer))
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= "</div><!-- /.$blocAinserer -->\n";
 					}
-				
+					
 					break;
 			}
 		}

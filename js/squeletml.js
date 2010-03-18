@@ -110,13 +110,13 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre)
 			$('#tableDesMatieres').remove();
 		}
 		
-		var oResume = $(oParent).find('div.resume');
+		var oChapeau = $(oParent).find('div.chapeau');
 		var oDiC = $(oParent).find('div#debutInterieurContenu');
 		var oH1 = $(oParent).find('h1');
 		
-		if (oResume.length > 0)
+		if (oChapeau.length > 0)
 		{
-			$(oResume[0]).after($('#tableDesMatieres'));
+			$(oChapeau[0]).after($('#tableDesMatieres'));
 		}
 		else if (oDiC.length > 0)
 		{

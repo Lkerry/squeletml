@@ -282,19 +282,19 @@ body.tableDesMatieresArrondie #tableDesMatieres {
 	font-style: italic;
 }
 
-/* Résumé, style `fieldset`. */
+/* Chapeau, style `fieldset`. */
 
-div.resume {
+div.chapeau {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	border: 1px solid #b3b3b3;
 }
 
-div.resume p {
+div.chapeau p {
 	margin-bottom: 5px;
 }
 
-div.resume p.legende {
+div.chapeau p.legende {
 	margin-top: -10px;
 	margin-bottom: 0px;
 	margin-left: 10px;
@@ -302,14 +302,14 @@ div.resume p.legende {
 	float: left;
 }
 
-div.resume p.legende span
+div.chapeau p.legende span
 {
 	padding: 0px 10px;
 	background-color: #fff;
 	font-weight: bold;
 }
 
-div.resume div.contenuResume {
+div.chapeau div.contenuChapeau {
 	clear: both;
 	padding: 0px 10px 10px 10px;
 }
