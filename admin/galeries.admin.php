@@ -1404,7 +1404,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					<li><input id="supprimerInputOriginal" type="checkbox" name="supprimer[]" value="original" /> <label for="supprimerInputOriginal"><?php echo T_("Supprimer les images originales."); ?></label></li>
 					
-					<li><input id="supprimerInputConfig" type="checkbox" name="supprimer[]" value="config" /> <label for="supprimerInputConfig"><?php echo T_("Supprimer le fichier de configuration."); ?></label></li>
+					<li><input id="supprimerInputFichierConfig" type="checkbox" name="supprimer[]" value="config" /> <label for="supprimerInputFichierConfig"><?php echo T_("Supprimer le fichier de configuration."); ?></label></li>
 					
 					<li><input id="supprimerInputDossier" type="checkbox" name="supprimer[]" value="dossier" /> <label for="supprimerInputDossier"><?php echo T_("Supprimer le dossier de la galerie s'il est vide."); ?></label></li>
 				</ul>
@@ -1564,12 +1564,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<fieldset class="fichierConfigAdminGaleries">
 				<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-				<p class="bDcorps afficher"><input for="configInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="configInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
+				<p class="bDcorps afficher">
+				<input type="hidden" name="config[]" value="maj" />
+				<input id="configInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="configInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
 			</fieldset>
 			
 			<p><input type="submit" name="majConf" value="<?php echo T_('Créer ou mettre à jour'); ?>" /></p>
-			
-			<input type="hidden" name="config" value="maj" />
 		</div>
 	</form>
 </div><!-- /.boite -->
