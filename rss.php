@@ -255,7 +255,7 @@ elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && emp
 						if ($i < $nombreItemsFluxRss)
 						{
 							$page = rtrim($page);
-							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu);
+							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique);
 					
 							if (!empty($fluxRssPageTableauBrut))
 							{
@@ -382,7 +382,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique);
 					
 						if (!empty($fluxRssPageTableauBrut))
 						{

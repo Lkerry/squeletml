@@ -13,7 +13,7 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 
 <h1>Modèle de page</h1>
 
-<p>Cette page présente des exemples d'utilisation de variables, de constantes, de fonctions, etc. de Squeletml pour la création d'une page.<!-- /aperçu --> Regarder le fichier source pour bien comprendre de quelle manière les différentes options ont été utilisées, et <a href="<?php echo $urlRacineAdmin; ?>/documentation.admin.php">se référer à la documentation</a> pour plus de détails.</p>
+<?php echo resume("<p>Cette page présente des exemples d'utilisation de variables, de constantes, de fonctions, etc. de Squeletml pour la création d'une page.<!-- /aperçu --> Regarder le fichier source pour bien comprendre de quelle manière les différentes options ont été utilisées, et <a href=\"$urlRacineAdmin/documentation.admin.php\">se référer à la documentation</a> pour plus de détails.</p>"); ?>
 
 <h2>Boîtes déroulantes</h2>
 

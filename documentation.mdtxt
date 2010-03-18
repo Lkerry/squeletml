@@ -433,12 +433,14 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$apercu`: aperçu de la page en cours, inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration du site vaut TRUE.
 
-	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la div `interieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
+	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la `div` `interieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
 
 		<div id="interieurContenu">
 			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada<!-- /aperçu --> et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam.</p>
 
 	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
+
+	Sinon si `$apercu` vaut exactement `automatique` (`$apercu = "automatique";`), le commentaire HTML inséré sera donc `<!-- APERÇU: automatique -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu les premiers caractères de la `div` `interieurContenu`. Le nombre de caractères correspond à la valeur de la variable `$tailleApercuAutomatique` du fichier de configuration du site.
 
 - `$auteur`: nom ou noms à inclure dans la métabalise `author`, si la valeur est différente de `$auteurParDefaut` du fichier de configuration du site. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le bloc des informations de publication.
 

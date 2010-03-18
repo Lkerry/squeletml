@@ -211,7 +211,7 @@ if (!empty($idCategorie))
 			{
 				$adresseInfosPage = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
 				$adresse = $urlRacine . '/' . superRawurlencode($categories[$idCategorie]['pages'][$indice]);
-				$infosPage = infosPage($adresseInfosPage, $inclureApercu);
+				$infosPage = infosPage($adresseInfosPage, $inclureApercu, $tailleApercuAutomatique);
 		
 				if (!empty($infosPage))
 				{

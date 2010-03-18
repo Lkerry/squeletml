@@ -350,6 +350,9 @@ $balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(functio
 */
 $inclureApercu = TRUE; // TRUE|FALSE
 
+// Taille, en nombre de caractères, de l'aperçu généré automatiquement.
+$tailleApercuAutomatique = 750;
+
 // Expiration du cache.
 /*
 - Temps en secondes avant que le cache n'expire.

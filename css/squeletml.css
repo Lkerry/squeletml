@@ -282,6 +282,38 @@ body.tableDesMatieresArrondie #tableDesMatieres {
 	font-style: italic;
 }
 
+/* Résumé, style `fieldset`. */
+
+div.resume {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	border: 1px solid #b3b3b3;
+}
+
+div.resume p {
+	margin-bottom: 5px;
+}
+
+div.resume p.legende {
+	margin-top: -10px;
+	margin-bottom: 0px;
+	margin-left: 10px;
+	padding-bottom: 0px;
+	float: left;
+}
+
+div.resume p.legende span
+{
+	padding: 0px 10px;
+	background-color: #fff;
+	font-weight: bold;
+}
+
+div.resume div.contenuResume {
+	clear: both;
+	padding: 0px 10px 10px 10px;
+}
+
 /* Catégories. */
 
 .titreApercu {

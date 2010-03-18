@@ -1512,10 +1512,10 @@ Retourne un tableau d'un élément représentant une page du site, cet élément
 
 Ne pas fournir une URL traitée par `superRawurlencode()`.
 */
-function fluxRssPageTableauBrut($cheminPage, $urlPage, $fluxRssAvecApercu)
+function fluxRssPageTableauBrut($cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($urlPage, $fluxRssAvecApercu);
+	$infosPage = infosPage($urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique);
 	$urlPage = superRawurlencode($urlPage);
 	
 	if (!empty($infosPage))
@@ -1663,7 +1663,7 @@ Si la page demandée n'est pas accessible, retourne un tableau vide.
 
 Ne pas fournir une URL traitée par `superRawurlencode()`.
 */
-function infosPage($urlPage, $inclureApercu)
+function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique)
 {
 	$infosPage = array ();
 	$html = @file_get_contents(superRawurlencode($urlPage, TRUE));
@@ -1733,7 +1733,7 @@ function infosPage($urlPage, $inclureApercu)
 		
 		// Aperçu.
 		
-		$apercuInterne = FALSE;
+		$commentairesHtmlSupprimes = FALSE;
 		$infosPage['apercu'] = '';
 	
 		if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['contenu'], $resultatApercu))
@@ -1742,8 +1742,8 @@ function infosPage($urlPage, $inclureApercu)
 			{
 				if (preg_match('|^(.+?)<!-- ?/aperçu ?-->|s', $infosPage['contenu'], $resultatInterne))
 				{
-					$apercuInterne = TRUE;
 					$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]) . ' […]');
+					$commentairesHtmlSupprimes = TRUE;
 				}
 			}
 			elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
@@ -1751,13 +1751,38 @@ function infosPage($urlPage, $inclureApercu)
 				$infosPage['apercu'] = $description[0]->content;
 				unset($description);
 			}
+			elseif ($resultatApercu[1] == 'automatique')
+			{
+				// Merci à <http://mydrupalblog.lhmdesign.com/drupal-php-how-auto-truncate-content-end-word>.
+				
+				$mots = explode(' ', supprimeCommentairesHtml($infosPage['contenu']));
+				$commentairesHtmlSupprimes = TRUE;
+				$apercu = '';
+				
+				foreach ($mots as $mot)
+				{
+					if (strlen($apercu) < $tailleApercuAutomatique)
+					{
+						$apercu .= ' ' . $mot;
+					}
+					else
+					{
+						$apercu .= ' […]';
+						break;
+					}
+				}
+				
+				unset($mots);
+				$infosPage['apercu'] = corrigeHtml($apercu);
+				unset($apercu);
+			}
 			else
 			{
 				$infosPage['apercu'] = $resultatApercu[1];
 			}
 		}
 	
-		if (!$apercuInterne)
+		if (!$commentairesHtmlSupprimes)
 		{
 			$infosPage['apercu'] = supprimeCommentairesHtml($infosPage['apercu']);
 		}
@@ -3672,7 +3697,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					if ($i < $nombreVoulu)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", FALSE);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", FALSE, 600);
 						
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -3977,7 +4002,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					if ($i < $nombreVoulu)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, FALSE);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, FALSE, 600);
 					
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -4031,6 +4056,29 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 	}
 	
 	return $html;
+}
+
+/*
+Retourne le résumé balisé. Optionnellement, le résumé peut être rédigé à l'aide de la syntaxe MArkdown. Pour ce faire, s'assurer que le deuxième paramètre vaille TRUE.
+*/
+function resume($contenuResume, $resumeEnMarkdown = FALSE)
+{
+	$resume = '';
+	$resume .= "<div class=\"resume\">\n";
+	$resume .= '<p class="legende"><span>' . T_("Résumé") . "</span></p>\n";
+	
+	$resume .= "<div class=\"contenuResume\">\n";
+	
+	if ($resumeEnMarkdown)
+	{
+		$contenuResume = mdtxtChaine($contenuResume);
+	}
+	
+	$resume .= $contenuResume;
+	$resume .= "</div><!-- /.contenuResume -->\n";
+	$resume .= "</div><!-- /.resume -->\n";
+	
+	return $resume;
 }
 
 /*

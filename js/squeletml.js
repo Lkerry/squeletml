@@ -110,9 +110,19 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre)
 			$('#tableDesMatieres').remove();
 		}
 		
+		var oResume = $(oParent).find('div.resume');
+		var oDiC = $(oParent).find('div#debutInterieurContenu');
 		var oH1 = $(oParent).find('h1');
 		
-		if (oH1.length > 0)
+		if (oResume.length > 0)
+		{
+			$(oResume[0]).after($('#tableDesMatieres'));
+		}
+		else if (oDiC.length > 0)
+		{
+			$(oDiC[0]).after($('#tableDesMatieres'));
+		}
+		else if (oH1.length > 0)
 		{
 			$(oH1[0]).after($('#tableDesMatieres'));
 		}
