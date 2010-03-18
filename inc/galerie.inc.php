@@ -114,7 +114,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		// Titre de la galerie.
 		if ($galerieGenererTitrePages)
 		{
-			$titreGalerie = '<h1>' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>") . "</h1>\n";
 		}
 		
 		// On vérifie si l'image existe en cache ou si le cache est expiré.
@@ -131,14 +131,14 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 		
 			// On récupère le code de l'image demandée en version intermediaire.
-			$imageIntermediaire = '<div id="galerieIntermediaire">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'intermediaire', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+			$imageIntermediaire = '<div id="galerieIntermediaire">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'intermediaire', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
 
 			// On recherche l'image précédente pour la navigation (si l'image demandée est la première, il n'y a pas d'image précédente), et on récupère son code.
 			if (array_key_exists($indice - 1, $tableauGalerie))
 			{
 				$indiceImagePrecedente = $indice - 1; // `$indiceImagePrecedente` contient l'indice de l'image précédente.
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceImagePrecedente]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$imagePrecedente = '<div class="galerieNavigationPrecedent">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImagePrecedente], $typeMime, 'vignette', 'precedent', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+				$imagePrecedente = '<div class="galerieNavigationPrecedent">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImagePrecedente], $typeMime, 'vignette', 'precedent', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
 			
 				// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
 				if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
@@ -161,7 +161,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			{
 				$indiceImageSuivante = $indice + 1; // `$indiceImageSuivante` est l'indice de l'image suivante.
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceImageSuivante]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$imageSuivante = '<div class="galerieNavigationSuivant">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImageSuivante], $typeMime, 'vignette', 'suivant', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+				$imageSuivante = '<div class="galerieNavigationSuivant">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImageSuivante], $typeMime, 'vignette', 'suivant', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
 			
 				// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
 				if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
@@ -335,7 +335,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 					}
 				
 					$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-					$corpsMinivignettes .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours);
+					$corpsMinivignettes .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours);
 					$minivignetteImageEnCours = FALSE;
 				}
 			
@@ -378,7 +378,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		// Titre de la galerie.
 		if ($galerieGenererTitrePages)
 		{
-			$titreGalerie = '<h1>' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
 		}
 		
 		$corpsGalerie .= '<p>' . sprintf(T_("L'image %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les images de la galerie %3\$s</a>."), "<em>$id</em>", $urlSansGet, "<em>$idGalerie</em>") . "</p>\n";
@@ -423,7 +423,7 @@ elseif (!empty($idGalerie))
 	// Titre de la galerie.
 	if ($galerieGenererTitrePages)
 	{
-		$titreGalerie = '<h1>' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</h1>\n";
+		$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</h1>\n";
 	}
 	
 	if ($galerieVignettesParPage)
@@ -493,7 +493,7 @@ elseif (!empty($idGalerie))
 			for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
 			{
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$corpsGalerie .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+				$corpsGalerie .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 			}
 
 			if ($galerieVignettesParPage)
@@ -555,7 +555,7 @@ else
 	// Titre de la galerie.
 	if ($galerieGenererTitrePages)
 	{
-		$titreGalerie = '<h1>' . sprintf(T_("Galerie %1\$s"), "<em>$nomGalerie</em>") . "</h1>\n";
+		$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$nomGalerie</em>") . "</h1>\n";
 	}
 	
 	$corpsGalerie .= '<p>' . sprintf(T_("La galerie %1\$s est introuvable."), "<em>$nomGalerie</em>") . "</p>\n";

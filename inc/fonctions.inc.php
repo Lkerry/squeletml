@@ -3160,7 +3160,7 @@ function image(
 	$galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger,
 	
 	// Navigation.
-	$galerieAccueilJavascript, $galerieNavigation,
+	$galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation,
 	
 	// Vignettes.
 	$galerieDimensionsVignette, $galerieForcerDimensionsVignette, $vignetteAvecDimensions, $minivignetteImageEnCours
@@ -3517,8 +3517,39 @@ function image(
 		}
 		else
 		{
+			switch ($galerieAncreDeNavigation)
+			{
+				case 'galerie':
+					$ancre = '#galerie';
+					break;
+					
+				case 'titre':
+					$ancre = '#galerieTitre';
+					break;
+					
+				case 'info':
+					$ancre = '#galerieInfo';
+					break;
+					
+				case 'minivignettes':
+					$ancre = '#galerieMinivignettes';
+					break;
+					
+				case 'divImage':
+					$ancre = '#galerieIntermediaire';
+					break;
+					
+				case 'image':
+					$ancre = '#galerieIntermediaireImg';
+					break;
+					
+				default:
+					$ancre = '';
+					break;
+			}
+			
 			$id = idImage($racine, $infosImage);
-			$aHref = '<a href="' . url(FALSE, FALSE) . '?image=' . $id . '" title="' . $titreImage . '">';
+			$aHref = '<a href="' . url(FALSE, FALSE) . '?image=' . $id . $ancre . '" title="' . $titreImage . '">';
 		}
 		
 		if ($minivignetteImageEnCours)

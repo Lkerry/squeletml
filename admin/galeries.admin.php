@@ -78,7 +78,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						for ($j = 0; $j <= ($nombreDimages - 1) && $j < $nombreDimages; $j++)
 						{
 							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$j]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-							$minivignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
+							$minivignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
 							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 							$minivignette = $resultat[1];
 							

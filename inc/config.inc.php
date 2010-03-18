@@ -728,6 +728,19 @@ $galerieMinivignettesEmplacement = 'haut'; // haut|bas
 */
 $galerieMinivignettesNombre = 0;
 
+// Ajout d'une ancre de navigation.
+/*
+- L'ancre est ajoutée dans le lien d'une vignette ou d'une flèche de navigation, et permet de positionner la page à un endroit précis lors de la navigation entre les images d'une galerie.
+- Les choix possibles sont:
+  - `galerie`: `div` générale de la galerie;
+  - `titre`: titre de premier niveau de la page, si ce dernier est généré automatiquement (voir la variable `$galerieGenererTitrePages` dans ce présent fichier de configuration);
+  - `info`: le paragraphe d'information au sujet de la galerie;
+  - `minivignettes`;
+  - `divImage`: la `div` comprenant l'image en version intermédiaire;
+  - `image`: l'image en version intermédiaire.
+*/
+$galerieAncreDeNavigation = 'galerie';
+
 // Ajout automatique d'une légende dans le cas où aucune légende n'a été précisée.
 $galerieLegendeAutomatique = TRUE; // TRUE|FALSE
 
