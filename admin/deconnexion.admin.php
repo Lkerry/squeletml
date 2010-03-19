@@ -10,7 +10,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 <div id="explicationsAdminDeconnexion">
 	<h2 class="bDtitre"><?php echo T_("Explications"); ?></h2>
 	
-	<div class="bDcorps">
+	<div class="bDcorps afficher">
 		<p><?php echo T_("Avant de se déconnecter de la section d'administration, il est important de bien comprendre la manière dont l'accès est géré. Squeletml utilise l'authentification basique <acronym lang=\"en\" title=\"HyperText Transfer Protocol\">HTTP</acronym> offerte par Apache. Les informations de connexion sont gardées en mémoire par le navigateur, qui va automatiquement les envoyer au serveur lors de chaque visite d'une page à accès restreint."); ?></p>
 
 		<p><?php echo T_("L'identifiant et le mot de passe sont donc gérés au niveau du client, et non au niveau du serveur. Il n'y a rien de prévu dans le protocole <acronym lang=\"en\">HTTP</acronym>/1.1 pour permettre au serveur de forcer un navigateur à cesser une connexion déjà établie."); ?></p>
