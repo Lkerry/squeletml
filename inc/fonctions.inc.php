@@ -1239,7 +1239,7 @@ function estPageDeconnexion($urlRacine, $urlSansGet)
 }
 
 /*
-Si `$retourneNomSansExtension` vaut FALSE, retourne l'extension d'un fichier (sans le point). Si aucune extension n'a pas été trouvée, retourne une chaîne vide. Sinon si `$retourneNomSansExtension` vaut TRUE, retourne le nom du fichier sans l'extension (ni le point).
+Si `$retourneNomSansExtension` vaut FALSE, retourne l'extension d'un fichier (sans le point). Si aucune extension n'a été trouvée, retourne une chaîne vide. Sinon si `$retourneNomSansExtension` vaut TRUE, retourne le nom du fichier sans l'extension (ni le point).
 */
 function extension($nomFichier, $retourneNomSansExtension = FALSE)
 {

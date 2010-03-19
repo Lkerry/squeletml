@@ -945,6 +945,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
 		{
 			$fichierAcreerAncienNom = $fichierAcreerNom;
+			$titrePotentiel = extension($fichierAcreerAncienNom, TRUE);
 			$casse = '';
 			
 			if (in_array('min', $_POST['filtrerNom']))
@@ -958,6 +959,10 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 			{
 				$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$fichierAcreerAncienNom</code>", "<code>$fichierAcreerNom</code>") . "</li>\n";
 			}
+		}
+		else
+		{
+			$titrePotentiel = '';
 		}
 		
 		$fichierAcreerNom = securiseTexte($_POST['porteDocumentsCreationChemin']) . '/' . $fichierAcreerNom;
@@ -1087,6 +1092,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							
 							$contenu = '';
 							$contenu .= '<?php' . "\n";
+							$varPageModeleBaliseH1 = FALSE;
 							
 							foreach ($fichierAcreerVar as $var)
 							{
@@ -1101,11 +1107,34 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 										break;
 										
 									case 'baliseH1':
-										$contenu .= '$baliseH1 = "' . T_("Titre de premier niveau") . '";' . "\n";
+										$varPageModeleBaliseH1 = TRUE;
+										$contenu .= '$baliseH1 = "';
+										
+										if (!empty($titrePotentiel))
+										{
+											$contenu .= $titrePotentiel;
+										}
+										else
+										{
+											$contenu .= T_("Titre de premier niveau");
+										}
+										
+										$contenu .= '";' . "\n";
 										break;
 										
 									case 'baliseTitle':
-										$contenu .= '$baliseTitle = "' . T_("Titre (contenu de la balise `title`)") . '";' . "\n";
+										$contenu .= '$baliseTitle = "';
+										
+										if (!empty($titrePotentiel))
+										{
+											$contenu .= $titrePotentiel;
+										}
+										else
+										{
+											$contenu .= T_("Titre (contenu de la balise `title`)");
+										}
+										
+										$contenu .= '";' . "\n";
 										break;
 										
 									case 'boitesDeroulantes':
@@ -1244,8 +1273,12 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							
 							if ($fichierAcreerType == 'FichierModeleHtml')
 							{
-								$contenu .= '<h1>' . T_("Titre de la page") . "</h1>\n";
-								$contenu .= "\n";
+								if (!$varPageModeleBaliseH1)
+								{
+									$contenu .= '<h1>' . T_("Titre de la page") . "</h1>\n";
+									$contenu .= "\n";
+								}
+								
 								$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
 							}
 							elseif ($fichierAcreerType == 'FichierModeleMarkdown')
@@ -1268,8 +1301,13 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							if ($fic = @fopen($cheminPage . '/' . "$page.mdtxt", 'a'))
 							{
 								$contenu = '';
-								$contenu .= '# ' . T_("Titre de la page") . "\n";
-								$contenu .= "\n";
+								
+								if (!$varPageModeleBaliseH1)
+								{
+									$contenu .= '# ' . T_("Titre de la page") . "\n";
+									$contenu .= "\n";
+								}
+								
 								$contenu .= "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.";
 								fputs($fic, $contenu);
 								fclose($fic);
