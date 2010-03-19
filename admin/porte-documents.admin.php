@@ -2,7 +2,6 @@
 /* ____________________ Inclusions et affectations. ____________________ */
 
 include 'inc/zero.inc.php';
-super_set_time_limit($delaiExpirationScript);
 
 // Jeton utilisé pour vérifier la provenance d'un formulaire complété d'édition de fichier.
 if (

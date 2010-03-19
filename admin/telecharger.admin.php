@@ -1,6 +1,5 @@
 <?php
 include 'inc/zero.inc.php';
-super_set_time_limit($delaiExpirationScript);
 
 if (!empty($adminFiltreAccesDossiers))
 {

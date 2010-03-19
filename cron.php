@@ -10,8 +10,6 @@ if (file_exists('init.inc.php'))
 		include_once $cheminFichier;
 	}
 	
-	super_set_time_limit($delaiExpirationScript);
-	
 	@file_put_contents("$racine/site/inc/cron.txt", time());
 	
 	$tableauUrl = array ();

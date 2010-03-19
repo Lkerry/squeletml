@@ -4324,17 +4324,6 @@ function superRawurlencode($url, $decoderEsperluette = FALSE)
 }
 
 /*
-Modifie le délai d'expiration seulement si PHP n'est pas en mode `safe mode`.
-*/
-function super_set_time_limit($t)
-{
-	if (!ini_get('safe_mode'))
-	{
-		set_time_limit($t);
-	}
-}
-
-/*
 Retourne le code HTML sans les commentaires.
 */
 function supprimeCommentairesHtml($html)

@@ -5,14 +5,6 @@
 ##
 ########################################################################
 
-/* ____________________ Général. ____________________ */
-
-// Délai d'expiration d'un script.
-/*
-- Voir la fonction `super_set_time_limit()`, qui n'est utilisée que pour certains scripts nécessitant potentiellement plus de temps d'exécution.
-*/
-$delaiExpirationScript = 300;
-
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).
