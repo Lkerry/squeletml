@@ -547,7 +547,6 @@ précise que le bloc de menu principal devra avoir des coins arrondis lorsqu'il 
 $blocsArrondisSpecifiques['balise-h1'] = array (FALSE, FALSE, FALSE);
 $blocsArrondisSpecifiques['menu']      = array (TRUE, FALSE, FALSE);
 $blocsArrondisSpecifiques['licence']   = array (TRUE, TRUE, TRUE);
-$blocsArrondisSpecifiques['lien-page'] = array (TRUE, TRUE, TRUE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 

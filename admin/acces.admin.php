@@ -51,6 +51,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript .= '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
 		}
+		elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && $_POST['motDePasse'] != $_POST['motDePasse2'])
+		{
+			$messagesScript .= '<li class="erreur">' . T_("Veuillez confirmer correctement le mot de passe.") . "</li>\n";
+		}
 		// Ajout d'un utilisateur.
 		elseif (isset($_POST['ajouter']))
 		{
@@ -699,9 +703,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 					<p><label for="inputMotDePasse"><?php echo T_("Mot de passe:"); ?></label><br />
 					<input id="inputMotDePasse" type="password" name="motDePasse" /></p>
+					
+					<p><label for="inputMotDePasse2"><?php echo T_("Confirmer le mot de passe:"); ?></label><br />
+					<input id="inputMotDePasse2" type="password" name="motDePasse2" /></p>
 				</fieldset>
 				
-				<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer'); ?>" /></p>
+				<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter l\'utilisateur'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer l\'utilisateur'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier le mot de passe'); ?>" /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->
