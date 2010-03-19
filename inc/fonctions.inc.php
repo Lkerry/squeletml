@@ -1243,14 +1243,14 @@ Si `$retourneNomSansExtension` vaut FALSE, retourne l'extension d'un fichier (sa
 */
 function extension($nomFichier, $retourneNomSansExtension = FALSE)
 {
+	$extension = array_pop(explode('.', $nomFichier));
+	
 	if ($retourneNomSansExtension)
 	{
-		return array_shift(explode('.', $nomFichier, 2));
+		return $extension != $nomFichier ? superBasename($nomFichier, '.' . $extension) : $nomFichier;
 	}
 	else
 	{
-		$extension = array_pop(explode('.', $nomFichier));
-		
 		return $extension != $nomFichier ? $extension : '';
 	}
 }
