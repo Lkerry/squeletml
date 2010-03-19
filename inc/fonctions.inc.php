@@ -212,21 +212,6 @@ function baliseTitleComplement($tableauBaliseTitleComplement, $langues, $estAccu
 }
 
 /*
-Returne TRUE si le bloc a des coins arrondis, sinon retourne FALSE.
-*/
-function blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
-{
-	if ((isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) || (!isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisParDefaut))
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-/*
 Retourne un tableau de régions dont chacune est un tableau contenant la liste des blocs à insérer. Si `$premierOuDernier` vaut `premier`, seules les régions situées avant le contenu de l'utilisateur (régions 100, 200 et 300) seront prises en considération, sinon si `$premierOuDernier` vaut `dernier`, seules les régions situées après le contenu de l'utilisateur (régions 400, 500 et 600) seront analysées. L'ordre des blocs dans une région correspond à l'ordre (du premier au dernier) dans lequel ces derniers doivent y apparaître.
 */
 function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier)
@@ -254,6 +239,22 @@ function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier)
 	asort($ordreBlocsDansFluxHtmlFiltre);
 	
 	return $ordreBlocsDansFluxHtmlFiltre;
+}
+
+/*
+Prend en argument un contenu qui sera retourné balisé pour apparaître dans une boîte avec des coins arrondis.
+*/
+function boiteArrondie($contenu)
+{
+	$code = '';
+	list ($codeInterieurHaut, $codeInterieurBas) = codeInterieurBloc(FALSE, array (), '', 0, TRUE);
+	$code .= '<div class="blocArrondi">' . "\n";
+	$code .= $codeInterieurHaut;
+	$code .= "$contenu\n";
+	$code .= $codeInterieurBas;
+	$code .= '</div><!-- /.blocArrondi -->' . "\n";
+	
+	return $code;
 }
 
 /*
@@ -730,15 +731,15 @@ function classesContenu($differencierLiensVisitesHorsContenu, $classesContenu)
 }
 
 /*
-Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une `div` de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une `div` de classe `bloc`).
+Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une `div` de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une `div` de classe `bloc`). Si `$forcerBlocArrondi` vaut TRUE, le code retourné sera nécessairement celui pour un bloc arrondi.
 */
-function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
+function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes, $forcerBlocArrondi = FALSE)
 {
 	$codeInterieurBloc = array ();
 	$codeInterieurBloc[0] = "\n\t";
 	$codeInterieurBloc[1] = "\n\t" . '</div><!-- /.contenuBloc -->';
 	
-	if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes))
+	if ($forcerBlocArrondi || estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes))
 	{
 		$codeInterieurBloc[0] .= '<div class="haut-droit"></div><div class="haut-gauche"></div>';
 		$codeInterieurBloc[1] .= '<div class="bas-droit"></div><div class="bas-gauche"></div>';
@@ -843,7 +844,7 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 			
 			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes);
 			
-			if (blocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes))
+			if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes))
 			{
 				$classeBlocArrondi = ' blocArrondi';
 			}
@@ -1213,6 +1214,21 @@ function estAccueil($accueil)
 	}
 	
 	return FALSE;
+}
+
+/*
+Returne TRUE si le bloc a des coins arrondis, sinon retourne FALSE.
+*/
+function estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
+{
+	if ((isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) || (!isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisParDefaut))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /*

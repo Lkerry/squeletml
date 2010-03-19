@@ -162,10 +162,11 @@ $urlImage = "$urlRacine/fichiers/squeletml-logo.png";
 $nomImage = superBasename($cheminImage);
 $vignetteNom = nomSuffixe($nomImage, '-vignette');
 $extensionImage = extension($cheminImage);
+$nomImageSansExtension = extension($cheminImage, TRUE);
 $typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 ?>
 
-<p><img class="imgGauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> Le nom de cette image est <code><?php echo $nomImage; ?></code>, son extension est <code><?php echo $extensionImage; ?></code> et son type MIME est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code>. Il s'agit du logo de Squeletml.</p>
+<p><img class="imgGauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> Le nom de cette image est <code><?php echo $nomImage; ?></code>, son extension est <code><?php echo $extensionImage; ?></code> (ce qui donne <code><?php echo $nomImageSansExtension; ?></code> sans l'extension) et son type MIME est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code>. Il s'agit du logo de Squeletml.</p>
 
 <div class="sep"></div>
 
@@ -183,6 +184,6 @@ $typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMime
 
 <p class="droite">À gauche maintenant.</p>
 
-<p>Quisque sit amet mi sit amet magna faucibus luctus. Ut pellentesque sodales arcu. Phasellus a elit. Maecenas rhoncus lorem id quam. Sed sed arcu et quam fermentum ultrices. Aenean pulvinar molestie magna. Vestibulum bibendum? Nullam libero arcu, ultrices a; aliquet quis, adipiscing sit amet, neque.</p>
+<?php echo boiteArrondie("Quisque sit amet mi sit amet magna faucibus luctus. Ut pellentesque sodales arcu. Phasellus a elit. Maecenas rhoncus lorem id quam. Sed sed arcu et quam fermentum ultrices. Aenean pulvinar molestie magna. Vestibulum bibendum? Nullam libero arcu, ultrices a; aliquet quis, adipiscing sit amet, neque."); ?>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>
