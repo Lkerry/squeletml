@@ -26,6 +26,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 		$tableauFiltresAccesDossiers = array ();
 	}
 	
+	$rotationSansPerteActivee = FALSE;
+	
+	if (is_executable($adminCheminExiftran) || (is_executable($adminCheminJpegtran) && function_exists('exif_read_data')))
+	{
+		$rotationSansPerteActivee = TRUE;
+	}
+	
 	########################################################################
 	##
 	## Listage des galeries existantes.
@@ -231,18 +238,27 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$nomFiltreArchive = filtreChaine($racine, $nomArchive, $casse);
 						}
 						
+						$messagesScriptFiltre = '';
+						
+						if ($nomFiltreArchive != $nomArchive)
+						{
+							$messagesScriptFiltre = '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$nomArchive</code>", "<code>$nomFiltreArchive</code>") . "</li>\n";
+						}
+						
 						if (file_exists($cheminGalerie . '/' . $nomFiltreArchive))
 						{
+							$messagesScript .= $messagesScriptFiltre;
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), "<code>$nomFiltreArchive</code>", "<code>$cheminGalerie</code>") . "</li>\n";
 						}
 						elseif (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomFiltreArchive))
 						{
-							if ($nomFiltreArchive != $nomArchive)
-							{
-								$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$nomArchive</code>", "<code>$nomFiltreArchive</code>") . "</li>\n";
-							}
-							
+							$messagesScript .= $messagesScriptFiltre;
 							$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreArchive . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+							
+							if (isset($_POST['rotationAuto']) && $rotationSansPerteActivee && $typeMime == 'image/jpeg')
+							{
+								$messagesScript .= adminRotationJpegSansPerte($cheminGalerie . '/' . $nomFiltreArchive, $adminCheminExiftran, $adminCheminJpegtran);
+							}
 						}
 						else
 						{
@@ -290,6 +306,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 									elseif ($nomFiltreFichier == $nomFichier)
 									{
 										$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+										
+										if (isset($_POST['rotationAuto']) && $rotationSansPerteActivee && $typeMimeFichier == 'image/jpeg')
+										{
+											$messagesScript .= adminRotationJpegSansPerte($cheminFichier, $adminCheminExiftran, $adminCheminJpegtran);
+										}
 									}
 									else
 									{
@@ -298,21 +319,36 @@ include $racineAdmin . '/inc/premier.inc.php';
 										if (file_exists($cheminFiltreFichier))
 										{
 											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+											
+											if (isset($_POST['rotationAuto']) && $rotationSansPerteActivee && $typeMimeFichier == 'image/jpeg')
+											{
+												$messagesScript .= adminRotationJpegSansPerte($cheminFichier, $adminCheminExiftran, $adminCheminJpegtran);
+											}
+											
 											$messagesScript .= $messagesScriptFiltre;
 											$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s impossible, car un fichier %2\$s existe déjà dans le dossier %3\$s."), '<code>' . $nomFichier . '</code>', '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
 										}
-										else
+										elseif (@rename($cheminFichier, $cheminFiltreFichier))
 										{
 											$messagesScript .= $messagesScriptFiltre;
+											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
 											
-											if (@rename($cheminFichier, $cheminFiltreFichier))
+											if (isset($_POST['rotationAuto']) && $rotationSansPerteActivee && $typeMimeFichier == 'image/jpeg')
 											{
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+												$messagesScript .= adminRotationJpegSansPerte($cheminFiltreFichier, $adminCheminExiftran, $adminCheminJpegtran);
 											}
-											else
+										}
+										else
+										{
+											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $id . '</code>') . "</li>\n";
+											
+											if (isset($_POST['rotationAuto']) && $rotationSansPerteActivee && $typeMimeFichier == 'image/jpeg')
 											{
-												$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), '<code>' . $nomFichier . '</code>', '<code>' . $nomFiltreFichier . '</code>') . "</li>\n";
+												$messagesScript .= adminRotationJpegSansPerte($cheminFichier, $adminCheminExiftran, $adminCheminJpegtran);
 											}
+											
+											$messagesScript .= $messagesScriptFiltre;
+											$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), '<code>' . $nomFichier . '</code>', '<code>' . $nomFiltreFichier . '</code>') . "</li>\n";
 										}
 									}
 								}
@@ -384,6 +420,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 										else
 										{
 											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGalerie . '</code>') . "</li>\n";
+											
+											if (isset($_POST['rotationAuto']) && $rotationSansPerteActivee && $typeMimeFichier == 'image/jpeg')
+											{
+												$messagesScript .= adminRotationJpegSansPerte($cheminFichierFiltre, $adminCheminExiftran, $adminCheminJpegtran);
+											}
 										}
 									}
 									else
@@ -1235,6 +1276,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<li><input id="ajouterInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="ajouterInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
 					</ul></li>
 				</ul>
+				
+				<?php if ($rotationSansPerteActivee): ?>
+					<p><input id="ajouterInputRotationAuto" type="checkbox" name="rotationAuto" value="rotation" /> <label for="ajouterInputRotationAuto"><?php echo T_("S'applique aux fichiers JPG: tenter d'effectuer une rotation automatique et sans perte de qualité, basée sur les informations EXIF d'orientation de l'image (tous les appareils numériques n'enregistrent pas cette information)."); ?></label></p>
+				<?php endif; ?>
 			</fieldset>
 
 			<fieldset class="fichierConfigAdminGaleries">

@@ -100,6 +100,21 @@ $adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsD
 
 ########################################################################
 ##
+## Galeries.
+##
+########################################################################
+
+// Commandes pour la rotation automatique et sans perte de qualité des images JPG.
+/*
+- Pour utiliser `exiftran`, mettre son chemin d'accès sur la machine.
+- Pour utiliser `jpegtran`, mettre son chemin d'accès sur la machine et s'assurer que la fonction PHP `exif_read_data()` est utilisable.
+- Voir les commentaires de la fonction `adminRotationJpegSansPerte()` pour plus de détails.
+*/
+$adminCheminExiftran = '/usr/bin/exiftran';
+$adminCheminJpegtran = '/usr/bin/jpegtran';
+
+########################################################################
+##
 ## Porte-documents.
 ##
 ########################################################################

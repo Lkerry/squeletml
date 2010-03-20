@@ -1368,6 +1368,112 @@ function adminRmdirRecursif($dossierAsupprimer)
 }
 
 /*
+Si nécessaire, effectue une rotation automatique et sans perte de qualité d'une image JPG. La rotation à effectuer est trouvée à partir des informations EXIF d'orientation. Retourne le résultat de l'opération sous forme de message concaténable dans `$messagesScript`.
+
+La vérification du type MIME de l'image n'est pas effectuée, donc la fonction suppose que l'image dont le chemin est passé en paramètre est de type MIME `image/jpeg`. Aussi, pour que la rotation puisse avoir lieu, une des deux configurations suivantes doit être vérifiée:
+
+- accès à l'exécutable `exiftran`, dont le chemin est passé en paramètre dans la variable `$cheminExiftran`;
+- accès à l'exécutable `jpegtran`, dont le chemin est passé en paramètre dans la variable `$cheminJpegtran`, ainsi qu'à la fonction PHP `exif_read_data()`.
+
+Si `exiftran` est exécutable, il sera utilisé en priorité.
+
+Fonction inspirée au départ par `acidfree_rotate_image()`, fonction présente dans le fichier `image_manip.inc` du module Acidfree Albums pour Drupal (<http://drupal.org/project/acidfree>).
+*/
+function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtran)
+{
+	$messagesScript = '';
+	$cheminEchapeImage = adminSuperEscapeshellarg($cheminImage);
+	
+	if (function_exists('exif_read_data'))
+	{
+		$exif = exif_read_data($cheminImage);
+		
+		if (!empty($exif['IFD0']['Orientation']))
+		{
+			$orientation = $exif['IFD0']['Orientation'];
+		}
+		elseif (!empty($exif['Orientation']))
+		{
+			$orientation = $exif['Orientation'];
+		}
+	}
+	
+	if (isset($orientation) && $orientation == 1)
+	{
+		$messagesScript = '<li>' . sprintf(T_("Aucune rotation automatique à effectuer pour l'image %1\$s."), "<code>$cheminImage</code>") . "</li>\n";
+	}
+	elseif (is_executable($cheminExiftran))
+	{
+		exec("$cheminExiftran -aip $cheminEchapeImage", $sortie, $ret);
+		
+		if (!$ret)
+		{
+			$messagesScript = '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
+		}
+		else
+		{
+			$messagesScript = '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
+		}
+	}
+	elseif (is_executable($cheminJpegtran) && isset($orientation))
+	{
+		$parametresJpegtran = '';
+		
+		// Merci à <http://ca.php.net/manual/fr/function.exif-read-data.php#76964> pour l'analyse de l'orientation.
+		switch($orientation)
+		{
+			case 2:
+				$parametresJpegtran = '-flip horizontal';
+				break;
+			
+			case 3:
+				$parametresJpegtran = '-rotate 180';
+				break;
+			
+			case 4:
+				$parametresJpegtran = '-flip vertical';
+				break;
+			
+			case 5:
+				$parametresJpegtran = '-flip vertical -rotate 90';
+				break;
+			
+			case 6:
+				$parametresJpegtran = '-rotate 90';
+				break;
+			
+			case 7:
+				$parametresJpegtran = '-flip horizontal -rotate 90';
+				break;
+			
+			case 8:
+				$parametresJpegtran = '-rotate 270';
+				break;
+		}
+		
+		$cheminImageTmp = adminSuperEscapeshellarg(tempnam(dirname($cheminImage), 'jpg'));
+		exec("$cheminJpegtran -copy all $parametresJpegtran -outfile $cheminImageTmp $cheminEchapeImage", $sortie, $ret);
+		
+		if (!$ret && @copy($cheminImageTmp, $cheminImage))
+		{
+			$messagesScript = '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+		}
+		else
+		{
+			$messagesScript = '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+		}
+		
+		@unlink($cheminImageTmp);
+	}
+	else
+	{
+		$messagesScript = '<li class="erreur">' . sprintf(T_("Votre environnement ne permet pas d'effectuer une rotation automatique et sans perte de qualité. La configuration nécessaire est soit un accès à l'exécutable %1\$s, soit un accès à l'exécutable %2\$s ainsi qu'à la fonction PHP %3\$s."), '<code>exiftran</code>', '<code>jpegtran</code>', '<code>exif_read_data()</code>') . "</li>\n";
+	}
+	
+	return $messagesScript;
+}
+
+/*
 Retourne l'IP ayant accès au site en maintenance, si elle existe, sinon retourne FALSE.
 */
 function adminSiteEnMaintenanceIp($cheminHtaccess)
@@ -1388,6 +1494,14 @@ function adminSiteEnMaintenanceIp($cheminHtaccess)
 	}
 	
 	return FALSE;
+}
+
+/*
+Reproduit la fonction `escapeshellarg()`, mais sans dépendre de la locale. Par exemple, les caractères non supportés par la locale ne sont pas supprimés.
+*/
+function adminSuperEscapeshellarg($arg)
+{
+	return "'" . str_replace("'", "'\''", $arg) . "'";
 }
 
 /*
