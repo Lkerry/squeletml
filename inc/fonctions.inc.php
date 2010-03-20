@@ -1282,6 +1282,8 @@ function filtreChaine($racine, $chaine, $casse = '')
 	$chaine = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $chaine);
 	$chaine = preg_replace('/-+/', '-', $chaine);
 	$chaine = str_replace('-.', '.', $chaine);
+	$chaine = str_replace('.-', '-', $chaine);
+	$chaine = preg_replace('/\.+/', '.', $chaine);
 	
 	if ($casse == 'min')
 	{
