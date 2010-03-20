@@ -1368,7 +1368,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 }
 
 /*
-Si nécessaire, effectue une rotation automatique et sans perte de qualité d'une image JPG. La rotation à effectuer est trouvée à partir des informations EXIF d'orientation. Retourne le résultat de l'opération sous forme de message concaténable dans `$messagesScript`.
+Si nécessaire, effectue une rotation automatique et sans perte de qualité d'une image JPG. La rotation à effectuer est trouvée à partir de l'orientation déclarée dans les données Exif, si cette information existe. Retourne le résultat de l'opération sous forme de message concaténable dans `$messagesScript`.
 
 La vérification du type MIME de l'image n'est pas effectuée, donc la fonction suppose que l'image dont le chemin est passé en paramètre est de type MIME `image/jpeg`. Aussi, pour que la rotation puisse avoir lieu, une des deux configurations suivantes doit être vérifiée:
 

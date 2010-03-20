@@ -84,7 +84,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						for ($j = 0; $j <= ($nombreDimages - 1) && $j < $nombreDimages; $j++)
 						{
 							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$j]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-							$minivignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifInfos, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
+							$minivignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $fichier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
 							preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 							$minivignette = $resultat[1];
 							
@@ -1278,7 +1278,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</ul>
 				
 				<?php if ($rotationSansPerteActivee): ?>
-					<p><input id="ajouterInputRotationAuto" type="checkbox" name="rotationAuto" value="rotation" /> <label for="ajouterInputRotationAuto"><?php echo T_("S'applique aux fichiers JPG: tenter d'effectuer une rotation automatique et sans perte de qualité, basée sur les informations EXIF d'orientation de l'image (tous les appareils numériques n'enregistrent pas cette information)."); ?></label></p>
+					<p><input id="ajouterInputRotationAuto" type="checkbox" name="rotationAuto" value="rotation" checked="checked" /> <label for="ajouterInputRotationAuto"><?php echo T_("S'applique aux fichiers JPG: tenter d'effectuer une rotation automatique et sans perte de qualité, basée sur l'orientation déclarée dans les données Exif, si cette information existe."); ?></label></p>
 				<?php endif; ?>
 			</fieldset>
 

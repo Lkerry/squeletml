@@ -741,9 +741,9 @@ $galerieLegendeAutomatique = TRUE; // TRUE|FALSE
 */
 $galerieLegendeMarkdown = FALSE; // TRUE|FALSE
 
-// Affichage d'informations Exif pour les fichiers JPG.
+// Affichage de données Exif pour les fichiers JPG.
 /*
-- La version de PHP utilisée doit être compilée avec l'option `--enable-exif`. Voir <http://us3.php.net/manual/fr/exif.requirements.php> pour plus de détails. Si ce n'est pas le cas, les informations Exif ne seront tout simplement pas affichées.
+- La version de PHP utilisée doit être compilée avec l'option `--enable-exif`. Voir <http://us3.php.net/manual/fr/exif.requirements.php> pour plus de détails. Si ce n'est pas le cas, les données Exif ne seront tout simplement pas affichées.
 */
 $galerieExifAjout = TRUE; // TRUE|FALSE
 
@@ -751,13 +751,13 @@ $galerieExifAjout = TRUE; // TRUE|FALSE
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$galerieExifInfos['DateTime']        = TRUE;
-$galerieExifInfos['ExposureTime']    = TRUE;
-$galerieExifInfos['FNumber']         = TRUE;
-$galerieExifInfos['FocalLength']     = TRUE;
-$galerieExifInfos['ISOSpeedRatings'] = TRUE;
-$galerieExifInfos['Make']            = TRUE;
-$galerieExifInfos['Model']           = TRUE;
+$galerieExifDonnees['DateTime']        = TRUE;
+$galerieExifDonnees['ExposureTime']    = TRUE;
+$galerieExifDonnees['FNumber']         = TRUE;
+$galerieExifDonnees['FocalLength']     = TRUE;
+$galerieExifDonnees['ISOSpeedRatings'] = TRUE;
+$galerieExifDonnees['Make']            = TRUE;
+$galerieExifDonnees['Model']           = TRUE;
 
 // Si le format original d'une image existe, emplacement du lien vers le fichier.
 /*

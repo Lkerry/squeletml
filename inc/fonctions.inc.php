@@ -3167,7 +3167,7 @@ function image(
 	$infosImage, $typeMime, $taille, $sens, $galerieQualiteJpg,
 	
 	// Exif.
-	$galerieExifAjout, $galerieExifInfos,
+	$galerieExifAjout, $galerieExifDonnees,
 	
 	// Légende.
 	$galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown,
@@ -3332,7 +3332,7 @@ function image(
 		{
 			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosImage['intermediaireNom'], 'IFD0', 0);
 			
-			// Si aucune données Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
+			// Si aucune donnée Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
 			if (!$tableauExif && $originalExiste && $typeMime == 'image/jpeg')
 			{
 				$tableauExif = exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
@@ -3340,7 +3340,7 @@ function image(
 			
 			if ($tableauExif)
 			{
-				foreach ($galerieExifInfos as $cle => $valeur)
+				foreach ($galerieExifDonnees as $cle => $valeur)
 				{
 					if ($valeur && !empty($tableauExif[$cle]))
 					{
