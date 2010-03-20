@@ -1172,10 +1172,11 @@ Retourne un tableau dont chaque élément ets le nom d'un paramètre d'une image
 function adminParametresImage()
 {
 	return array (
-		'id',
 		'titre',
 		'intermediaireLegende',
+		'id',
 		'licence',
+		'originalNom',
 		'vignetteNom',
 		'vignetteLargeur',
 		'vignetteHauteur',
@@ -1188,7 +1189,6 @@ function adminParametresImage()
 		'pageIntermediaireBaliseTitle',
 		'pageIntermediaireDescription',
 		'pageIntermediaireMotsCles',
-		'originalNom',
 		'auteurAjout',
 		'dateAjout',
 		'exclure',

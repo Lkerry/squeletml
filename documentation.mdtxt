@@ -842,19 +842,27 @@ Voici un exemple:
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque image. Voici la liste complète des paramètres possibles:
 
-- `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. Exemple:
-
-		id=5
-
 - `titre`: utilisé pour nommer l'image dans les textes générés par le script. Exemple:
 
 		titre=Le fleuve Saint-Laurent en hiver
+
+- `intermediaireLegende`: commentaire qui sera affiché sous l'image en version intermédiaire. Exemple:
+
+		intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
+
+- `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. Exemple:
+
+		id=5
 
 - `licence`: licence ou licences de l'image. Exemple:
 
 		licence=art-libre
 
 	Voir les explications de la variable `$licence` dans la documentation pour plus de détails.
+
+- `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version intermédiaire, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version intermédiaire, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version intermédiaire, c'est-à-dire `intermediaireNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
+
+		originalNom=fichier1Original.jpg
 
 - `vignetteNom`: nom de l'image en version vignette. Si l'information n'est pas renseignée, le nom de la vignette sera déduit à partir du nom de l'image en version intermédiaire, c'est-à-dire `intermediaireNom(sans extension)-vignette.extension`. Exemple:
 
@@ -892,10 +900,6 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		intermediaireAttributTitle=Chien dormant sur un divan
 
-- `intermediaireLegende`: commentaire qui sera affiché sous l'image en version intermédiaire. Exemple:
-
-		intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
-
 - `pageIntermediaireBaliseTitle`: contenu de la balise `title` de la page présentant l'image en version intermédiaire. Laisser vide pour une génération automatique. Exemple:
 
 		pageIntermediaireBaliseTitle=Bla bla bla
@@ -907,10 +911,6 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 - `pageIntermediaireMotsCles`: contenu de la métabalise `keywords` de la page présentant l'image en version intermédiaire. Laisser vide pour une génération automatique. Exemple:
 
 		pageIntermediaireMotsCles=photographie, chien, bla bla bla, divan, photo
-
-- `originalNom`: nom de l'image au format original (en tout cas normalement de taille plus importante que la version intermédiaire, ou un fichier source). Si l'information est renseignée, un lien de téléchargement vers ce fichier sera ajouté, selon la configuration, dans le bas de l'image en version intermédiaire, directement sur l'image ou sur une petite icône sous l'image (l'icône par défaut est `fichiers/agrandir.png`; pour utiliser sa propre icône, créer le fichier `site/fichiers/agrandir.png`). Si l'information n'est pas renseignée, un nom sera construit à partir du nom de l'image en version intermédiaire, c'est-à-dire `intermediaireNom(sans extension)-original.extension`, un test sera effectué pour savoir si ce fichier existe, et s'il existe, un lien sera ajouté. Exemple:
-
-		originalNom=fichier1Original.jpg
 
 - `auteurAjout`: auteur de l'ajout de l'image dans la galerie. Exemple:
 
