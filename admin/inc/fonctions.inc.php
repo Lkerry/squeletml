@@ -1451,8 +1451,9 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 				break;
 		}
 		
-		$cheminImageTmp = adminSuperEscapeshellarg(tempnam(dirname($cheminImage), 'jpg'));
-		exec("$cheminJpegtran -copy all $parametresJpegtran -outfile $cheminImageTmp $cheminEchapeImage", $sortie, $ret);
+		$cheminImageTmp = tempnam(dirname($cheminImage), 'jpg');
+		$cheminEchapeImageTmp = adminSuperEscapeshellarg($cheminImageTmp);
+		exec("$cheminJpegtran -copy all $parametresJpegtran -outfile $cheminEchapeImageTmp $cheminEchapeImage", $sortie, $ret);
 		
 		if (!$ret && @copy($cheminImageTmp, $cheminImage))
 		{
