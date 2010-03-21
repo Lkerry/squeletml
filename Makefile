@@ -48,6 +48,8 @@ archives: menage-archives ChangeLog version.txt
 	mv ChangeLog-version-actuelle $(tag)/
 	mv ChangeLog-version-actuelle-fichiers $(tag)/
 	cp version.txt $(tag)/
+	php ./scripts.cli.php config $(tag)
+	php ./scripts.cli.php css $(tag)
 	$(MAKE) mo-archives
 	rm -f $(tag)/inc/devel.inc.php
 	rm -f $(tag)/Makefile

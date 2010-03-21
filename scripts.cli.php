@@ -108,4 +108,37 @@ elseif ($argv[1] == 'annexes-doc')
 	
 	file_put_contents($cheminDocumentation, $ajout, FILE_APPEND);
 }
+########################################################################
+##
+## Modèles de fichiers de configuration (du site et de l'administration) personnalisés.
+##
+########################################################################
+elseif ($argv[1] == 'config')
+{
+	$cheminTag = $argv[2];
+	
+	$config = file_get_contents('inc/config.inc.php');
+	preg_match_all('~(^{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
+	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
+	file_put_contents($cheminTag . '/site/inc/config.inc.php', $ajout);
+	
+	$config = file_get_contents('admin/inc/config.inc.php');
+	preg_match_all('|^(/\*.*?\*/)|ms', $config, $resultat);
+	$ajout = implode("\n\n", $resultat[1]) . "\n\n";
+	file_put_contents($cheminTag . '/site/admin/inc/config.inc.php', $ajout);
+}
+########################################################################
+##
+## Modèle de feuille de style CSS personnalisée.
+##
+########################################################################
+elseif ($argv[1] == 'css')
+{
+	$cheminTag = $argv[2];
+	
+	$css = file_get_contents('css/squeletml.css');
+	preg_match_all('|^(/\*.*?\*/)|ms', $css, $resultat);
+	$ajout = implode("\n\n", $resultat[1]) . "\n\n";
+	file_put_contents($cheminTag . '/site/css/style.css', $ajout);
+}
 ?>
