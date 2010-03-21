@@ -24,7 +24,7 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 		
 			if (is_dir($chemin))
 			{
-				$dossierDeSauvegarde = $racineAdmin . '/cache';
+				$dossierDeSauvegarde = $racine . '/site/' . $dossierAdmin . '/cache';
 				$date = '';
 				
 				if (isset($_GET['action']) && $_GET['action'] == 'date')

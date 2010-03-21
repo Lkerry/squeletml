@@ -635,10 +635,10 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		}
 		
 		$racine = dirname($racineAdmin);
-		
+		$dossierAdmin = superBasename($racineAdmin);
 		$nomFichierSansExtension = extension(superBasename($cheminFichier), TRUE);
 		$extension = extension($cheminFichier);
-		$cheminApercuImage = $racineAdmin . '/cache/' . filtreChaine($racine, $nomFichierSansExtension . '-' . dechex(crc32($cheminFichier)) . ".cache.$extension");
+		$cheminApercuImage = "$racine/site/$dossierAdmin/cache/" . filtreChaine($racine, $nomFichierSansExtension . '-' . dechex(crc32($cheminFichier)) . ".cache.$extension");
 		
 		if (!file_exists($cheminApercuImage))
 		{
@@ -648,7 +648,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		if (file_exists($cheminApercuImage))
 		{
 			list ($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
-			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . $urlRacineAdmin . "/cache/" . superBasename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
+			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . dirname($urlRacineAdmin) . "/site/$dossierAdmin/cache/" . superBasename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
 		}
 	}
 	
@@ -1530,7 +1530,9 @@ Retourne la taille en octets du dossier de cache de l'administration si le dossi
 */
 function adminTailleCache($racineAdmin)
 {
-	$cheminCache = $racineAdmin . '/cache';
+	$racine = dirname($racineAdmin);
+	$dossierAdmin = superBasename($racineAdmin);
+	$cheminCache = $racine . '/site/' . $dossierAdmin . '/cache';
 	$taille = 0;
 	
 	if ($dossier = @opendir($cheminCache))
@@ -1758,7 +1760,9 @@ function adminVideCache($racineAdmin, $type)
 	
 	if ($type == 'admin')
 	{
-		$cheminCache = $racineAdmin . '/cache';
+		$racine = dirname($racineAdmin);
+		$dossierAdmin = superBasename($racineAdmin);
+		$cheminCache = $racine . '/site/' . $dossierAdmin . '/cache';
 	}
 	elseif ($type == 'site')
 	{
