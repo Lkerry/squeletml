@@ -190,36 +190,34 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			// On simule l'espace de la flèche de navigation pour que l'image demeure centrée dans le cas où on se trouve à une extrémité de la galerie (début ou fin).
 			if (empty($imagePrecedente))
 			{
-				$class = "galerieNavigationPrecedent galerieFleche";
+				$class = "galerieNavigationPrecedent";
 			
 				if ($galerieNavigation == 'vignettes')
 				{
-					$style = styleDivVideNavigation($imageSuivante);
+					$class .= " galerieNavigationVideVignette";
 				}
-				else
+				elseif ($galerieNavigation == 'fleches')
 				{
-					$class .= " galerieNavigationVide";
-					$style = '';
+					$class .= " galerieNavigationVideFleche";
 				}
 			
-				$imagePrecedente = "<div class=\"$class\"$style></div>\n";
+				$imagePrecedente = "<div class=\"$class\"></div>\n";
 			}
 		
 			if (empty($imageSuivante))
 			{
-				$class = "galerieNavigationSuivant galerieFleche";
+				$class = "galerieNavigationSuivant";
 			
 				if ($galerieNavigation == 'vignettes')
 				{
-					$style = styleDivVideNavigation($imagePrecedente);
+					$class .= " galerieNavigationVideVignette";
 				}
-				else
+				elseif ($galerieNavigation == 'fleches')
 				{
-					$class .= " galerieNavigationVide";
-					$style = '';
+					$class .= " galerieNavigationVideFleche";
 				}
 			
-				$imageSuivante = "<div class=\"$class\"$style></div>\n";
+				$imageSuivante = "<div class=\"$class\"></div>\n";
 			}
 		
 			// On crée le corps de la galerie.

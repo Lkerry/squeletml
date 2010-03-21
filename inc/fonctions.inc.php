@@ -4193,42 +4193,6 @@ function siteEstEnMaintenance($cheminHtaccess)
 }
 
 /*
-Génère l'attribut `style` pour les div vide simulant la présence d'une flèche ou d'une vignette de navigation dans la galerie.
-*/
-function styleDivVideNavigation($image)
-{
-	$width = '';
-	$height = '';
-	
-	if (!empty($image))
-	{
-		preg_match('/width="(\d+)"/', $image, $resultatWidth);
-		preg_match('/height="(\d+)"/', $image, $resultatHeight);
-		
-		if (!empty($resultatWidth[1]))
-		{
-			$width = $resultatWidth[1];
-		}
-		
-		if (!empty($resultatHeight[1]))
-		{
-			$height = $resultatHeight[1];
-		}
-	}
-	
-	if (empty($width) && empty($height))
-	{
-		$style = '';
-	}
-	else
-	{
-		$style = ' style="width: ' . $width . 'px; height: ' . $height . 'px;"';
-	}
-	
-	return $style;
-}
-
-/*
 Simule la fonction `basename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
 */
 function superBasename($chemin, $suffixe = '')
