@@ -638,7 +638,7 @@ $galerieGenererTitrePages = TRUE; // TRUE|FALSE
 /*
 - Par défaut, le titre généré comprend dans la balise `h1` le titre de l'image et le nom de la galerie. Mettre à TRUE pour que le titre de l'image soit dans un `h1` et le nom de la galerie dans un `p`.
 */
-$galerieSeparerTitreImageEtNomGalerie = true; // TRUE|FALSE
+$galerieSeparerTitreImageEtNomGalerie = FALSE; // TRUE|FALSE
 
 // Qualité des images JPG générées par le script.
 $galerieQualiteJpg = 90; // 0-100
