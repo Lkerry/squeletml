@@ -114,7 +114,15 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		// Titre de la galerie.
 		if ($galerieGenererTitrePages)
 		{
-			$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			if ($galerieSeparerTitreImageEtNomGalerie)
+			{
+				$titreGalerie = '<h1 id="galerieTitre">' . $titreImage . "</h1>\n";
+				$titreGalerie .= '<p id="galerieSousTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</p>\n";
+			}
+			else
+			{
+				$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			}
 		}
 		
 		// On vérifie si l'image existe en cache ou si le cache est expiré.
@@ -378,7 +386,15 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		// Titre de la galerie.
 		if ($galerieGenererTitrePages)
 		{
-			$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			if ($galerieSeparerTitreImageEtNomGalerie)
+			{
+				$titreGalerie = '<h1 id="galerieTitre">' . $id . "</h1>\n";
+				$titreGalerie .= '<p id="galerieSousTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</p>\n";
+			}
+			else
+			{
+				$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
+			}
 		}
 		
 		$corpsGalerie .= '<p>' . sprintf(T_("L'image %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les images de la galerie %3\$s</a>."), "<em>$id</em>", $urlSansGet, "<em>$idGalerie</em>") . "</p>\n";

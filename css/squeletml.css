@@ -800,6 +800,10 @@ body.galerieAucuneColonne #page {
 	max-width: 750px;
 }
 
+p#galerieSousTitre {
+	font-weight: bold;
+}
+
 div#galerieIntermediaire div#galerieIntermediaireTexte {
 	margin-bottom: 15px;
 }

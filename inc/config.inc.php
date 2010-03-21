@@ -634,6 +634,12 @@ $contactCaptchaLiensNombre = 5; // Nombre maximal de liens dans un message
 */
 $galerieGenererTitrePages = TRUE; // TRUE|FALSE
 
+// Si `$galerieGenererTitrePages` vaut TRUE, séparation du titre de l'image et du nom de la galerie.
+/*
+- Par défaut, le titre généré comprend dans la balise `h1` le titre de l'image et le nom de la galerie. Mettre à TRUE pour que le titre de l'image soit dans un `h1` et le nom de la galerie dans un `p`.
+*/
+$galerieSeparerTitreImageEtNomGalerie = true; // TRUE|FALSE
+
 // Qualité des images JPG générées par le script.
 $galerieQualiteJpg = 90; // 0-100
 
@@ -725,6 +731,7 @@ $galerieMinivignettesNombre = 0;
 - Les choix possibles sont:
   - `galerie`: `div` générale de la galerie;
   - `titre`: titre de premier niveau de la page, si ce dernier est généré automatiquement (voir la variable `$galerieGenererTitrePages` dans ce présent fichier de configuration);
+  - `sousTitre`: titre de deuxième niveau de la page, si ce dernier est généré automatiquement (voir les variables `$galerieGenererTitrePages` et `$galerieSeparerTitreImageEtNomGalerie` dans ce présent fichier de configuration);
   - `info`: le paragraphe d'information au sujet de la galerie;
   - `minivignettes`;
   - `divImage`: la `div` comprenant l'image en version intermédiaire;

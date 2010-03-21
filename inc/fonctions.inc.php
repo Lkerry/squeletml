@@ -3545,6 +3545,10 @@ function image(
 					$ancre = '#galerieTitre';
 					break;
 					
+				case 'sousTitre':
+					$ancre = '#galerieSousTitre';
+					break;
+					
 				case 'info':
 					$ancre = '#galerieInfo';
 					break;
