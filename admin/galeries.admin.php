@@ -11,6 +11,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 
 	<?php
+	$tailleMaxFichier = adminPhpIniOctets(ini_get('upload_max_filesize'));
+	
 	if (isset($_POST['id']))
 	{
 		$id = securiseTexte(superBasename($_POST['id']));
@@ -1248,7 +1250,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
 
-	<p><?php printf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s Mio (%2\$s octets)."), octetsVersMio($adminTailleMaxFichiers), $adminTailleMaxFichiers); ?></p>
+	<p><?php printf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier); ?></p>
 
 	<form action="<?php echo $adminAction; ?>#messages" method="post" enctype="multipart/form-data">
 		<div>

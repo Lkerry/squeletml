@@ -35,6 +35,8 @@ if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 
 include $racineAdmin . '/inc/premier.inc.php';
 
+$tailleMaxFichier = adminPhpIniOctets(ini_get('upload_max_filesize'));
+
 if (!empty($adminFiltreAccesDossiers))
 {
 	$tableauFiltresAccesDossiers = explode('|', $adminFiltreAccesDossiers);
@@ -1346,9 +1348,9 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	{
 		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
 	}
-	elseif (file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && filesize($_FILES['porteDocumentsAjouterFichier']['tmp_name']) > $adminTailleMaxFichiers)
+	elseif (file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && filesize($_FILES['porteDocumentsAjouterFichier']['tmp_name']) > $tailleMaxFichier)
 	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($adminTailleMaxFichiers), $adminTailleMaxFichiers) . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier) . "</li>\n";
 	}
 	elseif (empty($_POST['porteDocumentsAjouterDossier']))
 	{
@@ -1653,7 +1655,7 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	
 	echo "<p>Choisir le fichier à ajouter et le dossier parent. Optionnellement, vous pouvez renommer le fichier.</p>\n";
 	
-	echo '<p>' . sprintf(T_("La taille maximale d'un transfert de fichier est %1\$s Mio (%2\$s octets)."), octetsVersMio($adminTailleMaxFichiers), $adminTailleMaxFichiers) . "</p>\n";
+	echo '<p>' . sprintf(T_("La taille maximale d'un transfert de fichier est %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier) . "</p>\n";
 	
 	if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 	{

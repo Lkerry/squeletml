@@ -182,9 +182,6 @@ $adminFiltreAffichageDossiers = '../admin|../css|../fichiers|../inc|../js|../loc
 
 /* ____________________ Ajout de fichiers. ____________________ */
 
-// Taille maximale des fichiers ajoutés (en octets).
-$adminTailleMaxFichiers = adminPhpIniOctets(ini_get('upload_max_filesize'));
-
 // Filtre du type Mime.
 $adminFiltreTypesMime = TRUE; // TRUE|FALSE
 
