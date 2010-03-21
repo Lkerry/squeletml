@@ -118,12 +118,12 @@ elseif ($argv[1] == 'config')
 	$cheminTag = $argv[2];
 	
 	$config = file_get_contents('inc/config.inc.php');
-	preg_match_all('~(^{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
+	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
 	file_put_contents($cheminTag . '/site/inc/config.inc.php', $ajout);
 	
 	$config = file_get_contents('admin/inc/config.inc.php');
-	preg_match_all('~(^{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
+	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
 	file_put_contents($cheminTag . '/site/admin/inc/config.inc.php', $ajout);
 }
