@@ -5,7 +5,10 @@
 ########################################################################
 
 # Chemin vers le dossier local de définition des languages pour GtkSourceView
-languageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+
+# Chemin vers le dossier local de scripts pour Nautilus
+cheminNautilusScripts=~/.gnome2/nautilus-scripts
 
 # Chemin vers le bureau
 bureau:=$(shell xdg-user-dir DESKTOP)
@@ -66,9 +69,13 @@ ChangeLog: menage-ChangeLog
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r revno:$(premiereRevTag)..tag:$(tag) > ChangeLog-version-actuelle
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr status -r revno:$(derniereRevAvantDernierTag)..tag:$(tag) > ChangeLog-version-actuelle-fichiers
 
+exif: menage-exif
+	mkdir -p $(cheminNautilusScripts)/
+	cp src/exiftran-rotation/exiftran-rotation $(cheminNautilusScripts)/
+
 ini: menage-ini
-	mkdir -p $(languageSpecs)/
-	cp src/ini-squeletml/ini-squeletml.lang $(languageSpecs)/
+	mkdir -p $(cheminLanguageSpecs)/
+	cp src/ini-squeletml/ini-squeletml.lang $(cheminLanguageSpecs)/
 
 lp:
 	bzr push lp:~jpfle/squeletml/trunk
@@ -82,8 +89,11 @@ menage-ChangeLog:
 	rm -f ChangeLog-version-actuelle
 	rm -f ChangeLog-version-actuelle-fichiers
 
+menage-exif:
+	rm -f $(cheminNautilusScripts)/exiftran-rotation
+
 menage-ini:
-	rm -f $(languageSpecs)/ini-squeletml.lang
+	rm -f $(cheminLanguageSpecs)/ini-squeletml.lang
 
 menage-message-accueil:
 	rm -f xhtml/message-accueil-par-defaut.inc.php

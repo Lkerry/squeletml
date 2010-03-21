@@ -1153,3 +1153,10 @@ Les principales commandes du fichier `Makefile` sont:
 	Pour utiliser la coloration, démarrer ou redémarrer gedit et ouvrir un fichier de configuration. Si l'extension du fichier est `.ini.txt`, la coloration s'activera automatiquement, sinon aller dans le menu *Affichage > Mode de coloration > Autres* et choisir *.ini Squeletml*.
 
 	La désinstallation de la coloration se fait grâce à la commande `make menage-ini`.
+
+- `make exif`: installe pour l'utilisateur courant un script Nautilus (sous GNU/Linux et Gnome) qui tente d'effectuer la rotation automatique d'images JPG. `exiftran` doit être installé. La rotation automatique est sans perte de qualité et est basée sur l'orientation déclarée dans les données Exif de l'image, si cette information existe. Pour utiliser le script, sélectionner les images JPG dans Nautilus, cliquer droit, aller dans *Scripts* et choisir `exiftran-rotation`.
+
+	Cette fonctionnalité est accessible directement en ligne dans la section d'administration de Squeletml lors de l'ajout d'images dans une galerie si `exiftran` est accessible sur le serveur ou si `jpegtran` est accessible et que la fonction PHP `exif_read_data()` existe. L'intérêt du script Nautilus `exiftran` est quand le serveur sur lequel le site Squeletml est installé ne possède pas cette configuration.
+
+	La désinstallation du script se fait grâce à la commande `make menage-exif`.
+
