@@ -122,13 +122,18 @@ mo-archives:
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 
-po: pot
+po: pot pofr
 	for po in $(shell find ./ -iname *.po);\
 	do\
 		msgmerge -o tempo $$po locale/squeletml.pot;\
 		rm $$po;\
 		mv tempo $$po;\
 	done
+
+pofr:
+	msgen locale/squeletml.pot -o locale/fr_CA/LC_MESSAGES/tempo.po
+	msgmerge -o locale/fr_CA/LC_MESSAGES/squeletml.po locale/fr_CA/LC_MESSAGES/squeletml.po.info locale/fr_CA/LC_MESSAGES/tempo.po
+	rm -f locale/fr_CA/LC_MESSAGES/tempo.po
 
 pot: menage-pot
 	find ./ -iname "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
