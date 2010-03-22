@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 20:58-0400\n"
+"POT-Creation-Date: 2010-03-21 21:36-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3431,28 +3431,6 @@ msgstr ""
 #, php-format
 msgid "La galerie %1$s est introuvable"
 msgstr ""
-
-#: js/Gettext/lib/Gettext.js:40 js/Gettext/lib/Gettext.js:43
-msgid "some string"
-msgstr ""
-
-#: js/Gettext/lib/Gettext.js:209
-msgid ""
-" ...> items will be tried. The <LINK> should be specified as:\n"
-"\n"
-"    <link rel="
-msgstr ""
-
-#: js/Gettext/lib/Gettext.js:211 js/Gettext/lib/Gettext.js:212
-#: js/Gettext/lib/Gettext.js:213 js/Gettext/lib/Gettext.js:214
-msgid " type="
-msgstr ""
-
-#: js/Gettext/lib/Gettext.js:1055
-msgid "one banana"
-msgid_plural "%1 bananas"
-msgstr[0] ""
-msgstr[1] ""
 
 #: js/squeletml.js:95
 msgid "Table des matières"

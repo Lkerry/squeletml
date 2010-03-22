@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-03-21 20:58-0400\n"
+"POT-Creation-Date: 2010-03-21 21:36-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -3959,31 +3959,6 @@ msgstr "La galerie %1$s est introuvable."
 #, php-format
 msgid "La galerie %1$s est introuvable"
 msgstr "La galerie %1$s est introuvable"
-
-#: js/Gettext/lib/Gettext.js:40 js/Gettext/lib/Gettext.js:43
-msgid "some string"
-msgstr "some string"
-
-#: js/Gettext/lib/Gettext.js:209
-msgid ""
-" ...> items will be tried. The <LINK> should be specified as:\n"
-"\n"
-"    <link rel="
-msgstr ""
-" ...> items will be tried. The <LINK> should be specified as:\n"
-"\n"
-"    <link rel="
-
-#: js/Gettext/lib/Gettext.js:211 js/Gettext/lib/Gettext.js:212
-#: js/Gettext/lib/Gettext.js:213 js/Gettext/lib/Gettext.js:214
-msgid " type="
-msgstr " type="
-
-#: js/Gettext/lib/Gettext.js:1055
-msgid "one banana"
-msgid_plural "%1 bananas"
-msgstr[0] "one banana"
-msgstr[1] "%1 bananas"
 
 #: js/squeletml.js:95
 msgid "Table des matières"
