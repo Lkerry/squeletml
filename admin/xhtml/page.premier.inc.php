@@ -1,12 +1,13 @@
 <?php echo $contenuDoctype . $ouvertureBaliseHtml; ?>
 	<!-- ____________________ <head> ____________________ -->
 	<head>
+		<!-- Métabalises (1 de 2). -->
+		<meta http-equiv="content-type" content="text/html; charset=<?php echo $adminCharset; ?>" />
+		
 		<!-- Titre. -->
 		<title><?php echo $baliseTitle; ?></title>
 		
-		<!-- Métabalises. -->
-		<meta http-equiv="content-type" content="text/html; charset=<?php echo $adminCharset; ?>" />
-		
+		<!-- Métabalises (2 de 2). -->
 		<meta name="robots" content="<?php echo $adminRobots; ?>" />
 		
 		<meta name="generator" content="Squeletml" />

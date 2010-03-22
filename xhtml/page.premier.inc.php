@@ -1,12 +1,13 @@
 <?php echo $contenuDoctype . $ouvertureBaliseHtml; ?>
 	<!-- ____________________ <head> ____________________ -->
 	<head>
+		<!-- Métabalises (1 de 2). -->
+		<meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
+		
 		<!-- Titre. -->
 		<title><?php echo $baliseTitle . $baliseTitleComplement; ?></title>
 		
-		<!-- Métabalises. -->
-		<meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
-		
+		<!-- Métabalises (2 de 2). -->
 		<?php if (!empty($description)): ?>
 			<meta name="description" content="<?php echo $description; ?>" />
 		<?php endif; ?>
