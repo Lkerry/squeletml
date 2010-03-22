@@ -11,6 +11,7 @@ $urlRacine = "http://localhost/serveur_local/squeletml"; // Sans la barre finale
 // URL des différentes langues offertes sur le site.
 /*
 - Ajouter l'URL relative de chaque langue à l'URL racine de Squeletml (`$urlRacine`), sans la barre finale /.
+- Commenter les langues non utilisées.
 */
 $accueil['fr'] = $urlRacine;
 $accueil['en'] = $urlRacine . '/en';
