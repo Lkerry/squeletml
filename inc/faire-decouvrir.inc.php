@@ -84,6 +84,12 @@ if (!$erreur404 && !$estPageDerreur)
 	}
 }
 
+// Empêcher le contenu dupliqué dans les moteurs de recherche.
+if ($decouvrir && $decouvrirInclureContact)
+{
+	$robots = 'noindex, follow, noarchive';
+}
+
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/faire-decouvrir.inc.php'))
 {
