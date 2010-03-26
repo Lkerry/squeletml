@@ -4143,7 +4143,7 @@ Retourne le contenu de la métabalise `robots`.
 */
 function robots($robotsParDefaut, $robots)
 {
-	return $robots ? $robots : $robotsParDefaut;
+	return !empty($robots) ? $robots : $robotsParDefaut;
 }
 
 /*
