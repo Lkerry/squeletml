@@ -13,8 +13,42 @@ html, body {
 	padding: 0px;
 }
 
+body {
+	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
+	font-size: 0.96em;
+}
+
 h1, h2, h3, h4, h5, h6, a, a:visited {
 	color: #007070;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin: 20px 0px;
+}
+
+h1 {
+	font-size: 1.9em;
+}
+
+h2 {
+	font-size: 1.6em;
+}
+
+h3 {
+	font-size: 1.3em;
+}
+
+h4 {
+	font-size: 1.15em;
+}
+
+h5 {
+	font-size: 1em;
+}
+
+h6 {
+	font-size: 1em;
+	font-style: italic;
 }
 
 .liensVisitesDifferencies a:visited {
@@ -44,6 +78,7 @@ li {
 }
 
 pre, code {
+	font-family: Courier, "Courier New", FreeMono, "Liberation Mono", monospace;
 	background-color: #f2f2f2;
 }
 

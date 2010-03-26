@@ -13,6 +13,11 @@ body, html {
 	padding: 0px;
 }
 
+body {
+	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
+	font-size: 0.96em;
+}
+
 div#noticeMaintenance {
 	margin: 0px;
 	padding: 10px;
@@ -82,8 +87,34 @@ h1, h2, h3, h4, h5, h6, a {
 	color: #007070;
 }
 
+h1, h2, h3, h4, h5, h6 {
+	margin: 20px 0px;
+}
+
 h1 {
 	margin-top: 5px;
+	font-size: 1.9em;
+}
+
+h2 {
+	font-size: 1.6em;
+}
+
+h3 {
+	font-size: 1.3em;
+}
+
+h4 {
+	font-size: 1.15em;
+}
+
+h5 {
+	font-size: 1em;
+}
+
+h6 {
+	font-size: 1em;
+	font-style: italic;
 }
 
 a, a code {
@@ -123,6 +154,10 @@ body#documentation-admin-php pre#fichierDeConfiguration {
 	background-color: transparent;
 }
 
+body#galeries-admin-php div.galerieMinivignettes {
+	width: 50%;
+}
+
 code {
 	color: #0000E2;
 }
@@ -134,6 +169,10 @@ pre {
 	margin: 5px 0px;
 	border: 1px solid #b3b3b3;
 	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+}
+
+pre, code {
+	font-family: Courier, "Courier New", FreeMono, "Liberation Mono", monospace;
 }
 
 fieldset {
@@ -206,7 +245,7 @@ ul.triable li {
 
 /***********************************************************************
 **
-** Porte-documents.
+** Boîtes.
 **
 ***********************************************************************/
 
@@ -226,6 +265,26 @@ ul.triable li {
 #boiteMessages h2, #boiteMessages h3, #boiteMessages h4, #boiteMessages h5, #boiteMessages h6 {
 	color: black;
 }
+
+.boite {
+	margin: 25px 0px;
+	border: 1px solid #b3b3b3;
+	padding: 5px;
+	background-color: #f2f2f2;
+}
+
+.sousBoite {
+	margin: 25px;
+	border: 1px dashed #b3b3b3;
+	padding: 5px;
+	background-color: #f7f7f7;
+}
+
+/***********************************************************************
+**
+** Porte-documents.
+**
+***********************************************************************/
 
 p#porteDocumentsLienHaut {
 	margin-top: 0px;
@@ -248,20 +307,6 @@ a.porteDocumentsFichier {
 pre.consulterModifications {
 	width: 95%;
 	height: 500px;
-}
-
-.boite {
-	margin: 25px 0px;
-	border: 1px solid #b3b3b3;
-	padding: 5px;
-	background-color: #f2f2f2;
-}
-
-.sousBoite {
-	margin: 25px;
-	border: 1px dashed #b3b3b3;
-	padding: 5px;
-	background-color: #f7f7f7;
 }
 
 .editeur {
@@ -334,10 +379,6 @@ a.lienInfobulle img {
 
 img.infobulleApercuImage {
 	border: 1px dashed #b3b3b3;
-}
-
-body#galeries-admin-php div.galerieMinivignettes {
-	width: 50%;
 }
 
 /* BUEditor. */
