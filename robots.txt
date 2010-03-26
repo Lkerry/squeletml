@@ -1,4 +1,2 @@
 User-agent: *
 Disallow: /telecharger.php
-Disallow: /*?action=faireDecouvrir
-Disallow: /*&action=faireDecouvrir
