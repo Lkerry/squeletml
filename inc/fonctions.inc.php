@@ -606,128 +606,144 @@ function cheminsInc($racine, $nom)
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesBody)
+function classesBody($racine, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesSupplementaires)
 {
-	$class = '';
+	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
 	
 	if ($estAccueil)
 	{
-		$class .= 'accueil ';
+		$classesBody .= 'accueil ';
+	}
+	
+	if (!empty($idCategorie))
+	{
+		$classesBody .= 'categorie ';
 	}
 	
 	if (!empty($idGalerie))
 	{
-		$class .= 'galerie ';
+		$classesBody .= 'galerie ';
 		
 		if ($nombreDeColonnes == 0)
 		{
-			$class .= 'galerieAucuneColonne ';
+			$classesBody .= 'galerieAucuneColonne ';
 		}
+	}
+	
+	if (!empty($courrielContact))
+	{
+		$classesBody .= 'contact ';
 	}
 	
 	if ($nombreDeColonnes == 2)
 	{
-		$class .= 'deuxColonnes colonneAgauche colonneAdroite ';
+		$classesBody .= 'deuxColonnes colonneAgauche colonneAdroite ';
 		
 		if ($arrierePlanColonne != 'Aucun')
 		{
-			$class .= "deuxColonnes$arrierePlanColonne ";
+			$classesBody .= "deuxColonnes$arrierePlanColonne ";
 		}
 		
 		if ($deuxColonnesSousContenuAgauche)
 		{
-			$class .= "deuxColonnesSousContenuAgauche ";
+			$classesBody .= "deuxColonnesSousContenuAgauche ";
 		}
 		else
 		{
-			$class .= "deuxColonnesSousContenuAdroite ";
+			$classesBody .= "deuxColonnesSousContenuAdroite ";
 		}
 	}
 	elseif ($nombreDeColonnes == 1)
 	{
-		$class .= 'uneColonne ';
+		$classesBody .= 'uneColonne ';
 		
 		if ($uneColonneAgauche)
 		{
-			$class .= "colonneAgauche uneColonneAgauche ";
+			$classesBody .= "colonneAgauche uneColonneAgauche ";
 			
 			if ($arrierePlanColonne != 'Aucun')
 			{
-				$class .= "colonneAgauche$arrierePlanColonne ";
+				$classesBody .= "colonneAgauche$arrierePlanColonne ";
 			}
 		}
 		else
 		{
-			$class .= "colonneAdroite uneColonneAdroite ";
+			$classesBody .= "colonneAdroite uneColonneAdroite ";
 			
 			if ($arrierePlanColonne != 'Aucun')
 			{
-				$class .= "colonneAdroite$arrierePlanColonne ";
+				$classesBody .= "colonneAdroite$arrierePlanColonne ";
 			}
 		}
 	}
 	elseif ($nombreDeColonnes == 0)
 	{
-		$class .= "aucuneColonne ";
+		$classesBody .= "aucuneColonne ";
 	}
 	
 	if ($borduresPage['droite'])
 	{
-		$class .= 'bordureDroitePage ';
+		$classesBody .= 'bordureDroitePage ';
 	}
 	
 	if ($borduresPage['bas'])
 	{
-		$class .= 'bordureBasPage ';
+		$classesBody .= 'bordureBasPage ';
 	}
 	
 	if ($borduresPage['gauche'])
 	{
-		$class .= 'bordureGauchePage ';
+		$classesBody .= 'bordureGauchePage ';
 	}
 	
 	if ($enTetePleineLargeur && ($nombreDeColonnes == 1 || $nombreDeColonnes == 2))
 	{
-		$class .= 'enTetePleineLargeur ';
+		$classesBody .= 'enTetePleineLargeur ';
 	}
 	
 	if ($differencierLiensVisitesHorsContenu)
 	{
-		$class .= 'liensVisitesDifferencies ';
+		$classesBody .= 'liensVisitesDifferencies ';
 	}
 	
 	if ($tableDesMatieresArrondie)
 	{
-		$class .= 'tableDesMatieresArrondie ';
+		$classesBody .= 'tableDesMatieresArrondie ';
 	}
 	
-	if (!empty($classesBody))
+	$classeUrl = filtreChaine($racine, url(TRUE, FALSE, TRUE));
+	$classeUrl = str_replace(array ('.', '+'), '-', $classeUrl);
+	$classeUrl = filtreChaine($racine, $classeUrl);
+	$classeUrl = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classeUrl);
+	$classesBody .= $classeUrl . ' ';
+	
+	if (!empty($classesSupplementaires))
 	{
-		$class .= trim($classesBody);
+		$classesBody .= trim($classesSupplementaires) . ' ';
 	}
 	
-	return trim($class);
+	return $classesBody;
 }
 
 /*
 Retourne une liste de classes pour la div `contenu`.
 */
-function classesContenu($differencierLiensVisitesHorsContenu, $classesContenu)
+function classesContenu($differencierLiensVisitesHorsContenu, $classesSupplementaires)
 {
-	$class = '';
+	$classesContenu = '';
 	
 	if (!$differencierLiensVisitesHorsContenu)
 	{
-		$class = 'liensVisitesDifferencies ';
+		$classesContenu .= 'liensVisitesDifferencies ';
 	}
 	
-	if (!empty($classesContenu))
+	if (!empty($classesSupplementaires))
 	{
-		$class .= trim($classesContenu);
+		$classesContenu .= trim($classesSupplementaires) . ' ';
 	}
 	
-	return trim($class);
+	return $classesContenu;
 }
 
 /*

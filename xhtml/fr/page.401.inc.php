@@ -2,6 +2,7 @@
 $baliseTitle = "Authentification requise";
 $description = "La page demandée requiert une authentification.";
 $langue = 'fr';
+$classesBody = 'erreur401';
 include $racine . '/inc/premier.inc.php';
 ?>
 

@@ -2,6 +2,7 @@
 $baliseTitle = "Page introuvable";
 $description = "La page demandée n'existe pas.";
 $langue = 'fr';
+$classesBody = 'erreur404';
 include $racine . '/inc/premier.inc.php';
 ?>
 

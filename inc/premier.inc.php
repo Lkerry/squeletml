@@ -93,18 +93,12 @@ $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres'
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
-$classesBody = classesBody($estAccueil, $idGalerie, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesBody);
-
-if (!empty($classesBody))
-{
-	$classesBody = ' class="' . $classesBody . '"';
-}
-
+$classesBody = classesBody($racine, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
 if (!empty($classesContenu))
 {
-	$classesContenu = ' class="' . $classesContenu . '"';
+	$classesContenu = ' class="' . trim($classesContenu) . '"';
 }
 
 list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($doctype, LANGUE);
@@ -225,6 +219,16 @@ if ($estPageDeconnexion)
 
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1);
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
+
+if ($estPageDerreur)
+{
+	$classesBody .= 'pageDerreur ';
+}
+
+if (!empty($classesBody))
+{
+	$classesBody = ' class="' . trim($classesBody) . '"';
+}
 
 if ($erreur404 || $estPageDerreur || $courrielContact == '@')
 {

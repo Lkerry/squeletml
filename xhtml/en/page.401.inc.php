@@ -2,6 +2,7 @@
 $baliseTitle = "Authorization Required";
 $description = "The URL you requested requires authentication.";
 $langue = 'en';
+$classesBody = 'erreur401';
 include $racine . '/inc/premier.inc.php';
 ?>
 

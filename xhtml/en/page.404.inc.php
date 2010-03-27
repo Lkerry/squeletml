@@ -2,6 +2,7 @@
 $baliseTitle = "File not found";
 $description = "The URL you requested was not found.";
 $langue = 'en';
+$classesBody = 'erreur404';
 include $racine . '/inc/premier.inc.php';
 ?>
 
