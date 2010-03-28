@@ -59,7 +59,7 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 			var hauteurMax = hauteurIdDeComparaison2;
 		}
 		
-		hauteurMax = hauteurMax + 85;
+		hauteurMax = hauteurMax + 87;
 		
 		if (hauteurMax > hauteurIdAegaliser)
 		{

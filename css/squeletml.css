@@ -305,10 +305,6 @@ div#sousTitre p {
 	padding: 5px;
 }
 
-#debutInterieurContenu {
-	padding-top: 5px;
-}
-
 body.tableDesMatieresArrondie #tableDesMatieres {
 	border-radius: 8px; /* CSS 3. */
 }
@@ -681,7 +677,7 @@ body.colonneAgauche #contenu {
 
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	position: absolute;
-	top: 85px;
+	top: 87px;
 }
 
 body.colonneAgauche #basDePage {
@@ -707,7 +703,7 @@ body.colonneAdroite #contenu {
 
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
-	top: 85px;
+	top: 87px;
 }
 
 body.colonneAdroite #basDePage {
