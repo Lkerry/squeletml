@@ -642,7 +642,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		
 		if (!file_exists($cheminApercuImage))
 		{
-			nouvelleImage($cheminFichier, $cheminApercuImage, $typeMime, array ('largeur' => 50, 'hauteur' => 50), TRUE, $galerieQualiteJpg, $galerieCouleurAlloueeImage, FALSE);
+			nouvelleImage($cheminFichier, $cheminApercuImage, $typeMime, array ('largeur' => 50, 'hauteur' => 50), TRUE, $galerieQualiteJpg, $galerieCouleurAlloueeImage, array ('nettete' => FALSE));
 		}
 		
 		if (file_exists($cheminApercuImage))

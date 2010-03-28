@@ -3101,9 +3101,9 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 		imagecopyresampled($nouvelleImage, $imageSource, $demiSupplementLargeur, $demiSupplementHauteur, 0, 0, $nouvelleImageLargeur, $nouvelleImageHauteur, $imageSourceLargeur, $imageSourceHauteur);
 		
 		// Netteté demandée.
-		if ($nettete)
+		if ($nettete['nettete'])
 		{
-			$nouvelleImage = UnsharpMask($nouvelleImage, '100', '1', '3');
+			$nouvelleImage = UnsharpMask($nouvelleImage, $nettete['gain'], $nettete['rayon'], $nettete['seuil']);
 		}
 		
 		// On enregistre la nouvelle image.
@@ -3477,7 +3477,7 @@ function image(
 				// Sinon on génère une vignette.
 				else
 				{
-					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, FALSE);
+					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, array ('nettete' => FALSE));
 					
 					// On assigne l'attribut `src`.
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';

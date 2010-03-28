@@ -609,17 +609,35 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 							if (!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
 							{
-								if (isset($_POST['actions']) && $_POST['actions'] == 'nettete')
+								$nettete = array (
+									'nettete' => FALSE,
+									'gain' => 100,
+									'rayon' => 1,
+									'seuil' => 3,
+								);
+								
+								if (isset($_POST['nettete']))
 								{
-									$nettete = TRUE;
+									$nettete['nettete'] = TRUE;
+									
+									if (!empty($_POST['netteteGain']))
+									{
+										$nettete['gain'] = securiseTexte($_POST['netteteGain']);
+									}
+
+									if (!empty($_POST['netteteRayon']))
+									{
+										$nettete['rayon'] = securiseTexte($_POST['netteteRayon']);
+									}
+
+									if (!empty($_POST['netteteSeuil']))
+									{
+										$nettete['seuil'] = securiseTexte($_POST['netteteSeuil']);
+									}
 								}
-								else
-								{
-									$nettete = FALSE;
-								}
-				
+								
 								$imageIntermediaireDimensionsVoulues = array ();
-				
+								
 								if (isset($_POST['largeur']))
 								{
 									if (!empty($_POST['largeur']))
@@ -1351,7 +1369,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<p><label for="redimensionnerInputQualiteJpg"><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
 				<input id="redimensionnerInputQualiteJpg" type="text" name="qualiteJpg" value="<?php echo $galerieQualiteJpg; ?>" size="2" /></p>
 
-				<p><input id="redimensionnerInputNettete" type="checkbox" name="actions" value="nettete" /> <label for="redimensionnerInputNettete"><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label></p>
+				<ul>
+					<li><input id="redimensionnerInputNettete" type="checkbox" name="nettete" value="renforcerNettete" /> <label for="redimensionnerInputNettete"><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label>
+					<ul>
+						<li><label for="redimensionnerInputNetteteGain"><?php echo T_("Gain:"); ?></label> <input id="redimensionnerInputNetteteGain" type="text" name="netteteGain" size="4" value="100" /></li>
+						<li><label for="redimensionnerInputNetteteRayon"><?php echo T_("Rayon:"); ?></label> <input id="redimensionnerInputNetteteRayon" type="text" name="netteteRayon" size="4" value="1" /></li>
+						<li><label for="redimensionnerInputNetteteSeuil"><?php echo T_("Seuil:"); ?></label> <input id="redimensionnerInputNetteteSeuil" type="text" name="netteteSeuil" size="4" value="3" /></li>
+					</ul></li>
+				</ul>
 				
 				<p><?php echo T_("La liste des images originales redimensionnables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
 				<ul>
