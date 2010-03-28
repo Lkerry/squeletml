@@ -6,7 +6,7 @@ Ce fichier construit le code des blocs. Après son inclusion, le tableau `$blocs
 // Vérification de l'état du module «Faire découvrir».
 include $racine . '/inc/faire-decouvrir.inc.php';
 
-$blocsAinserer = blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier);
+$blocsAinsererTemp = blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier);
 $blocs = array (
 	100 => '',
 	200 => '',
@@ -16,8 +16,23 @@ $blocs = array (
 	600 => '',
 );
 
-if (!empty($blocsAinserer))
+if (!empty($blocsAinsererTemp))
 {
+	$blocsAinserer = array ();
+	
+	foreach ($blocsAinsererTemp as $region => $blocsParRegion)
+	{
+		$blocsAinserer[$region] = array ();
+		
+		foreach ($blocsParRegion as $blocAinserer)
+		{
+			if (!isset($conditionsBlocs[$blocAinserer]) || eval($conditionsBlocs[$blocAinserer]))
+			{
+				$blocsAinserer[$region][] = $blocAinserer;
+			}
+		}
+	}
+	
 	foreach ($blocsAinserer as $region => $blocsParRegion)
 	{
 		foreach ($blocsParRegion as $blocAinserer)

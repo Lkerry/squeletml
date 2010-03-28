@@ -165,6 +165,22 @@ $ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
 $ordreBlocsDansFluxHtml['faire-decouvrir']       = array (550, 550, 550);
 $ordreBlocsDansFluxHtml['marque-pages-sociaux']  = array (560, 560, 560);
 
+// Conditions d'insertion des blocs.
+/*
+- Il est possible d'ajouter des conditions à l'insertion d'un bloc de contenu. Les conditions doivent être du code PHP valide. Elles seront exécutées par la fonction PHP `eval()`. Un bloc sera inclus seulement si le code PHP retourne TRUE. Exemple:
+	
+		$conditionsBlocs['faire-decouvrir'] = 'return strpos($url, "/dossier/") ? TRUE : FALSE;';
+	
+	Voici la même condition, écrite autrement:
+	
+		$conditionsBlocs['faire-decouvrir'] = 'if (strpos($url, "/dossier/")) {return TRUE;} else {return FALSE;}';
+	
+	Dans cet exemple, le bloc «Faire découvrir» sera inclus seulement si l'URL contient `/dossier/`.
+	
+- Si aucune condition n'est donnée pour un bloc, le retour est automatiquement évalué à TRUE.
+*/
+$conditionsBlocs = array ();
+
 // Détection du type MIME.
 /*
 - La détection du type MIME se fait par un des outils suivants, selon leur disponibilité (en ordre de priorité):
