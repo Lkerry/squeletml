@@ -4,265 +4,450 @@ $baliseTitle = T_("Accès");
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
-<h1><?php echo T_("Gestion de l'accès au site et à l'administration"); ?></h1>
+<div id="sousMenu">
+	<ul>
+		<li><a href="#messages"><?php echo T_("Messages"); ?></a></li>
+		<li><a href="#utilisateurs"><?php echo T_("Utilisateurs"); ?></a></li>
+		<li><a href="#droits"><?php echo T_("Droits d'accès"); ?></a></li>
+		<li><a href="#maintenance"><?php echo T_("Maintenance"); ?></a></li>
+		<li><a href="#cache"><?php echo T_("Cache"); ?></a></li>
+		<li><a href="#cron"><?php echo T_("Cron"); ?></a></li>
+		<li><a href="#sauvegarde"><?php echo T_("Sauvegarde"); ?></a></li>
+	</ul>
+</div>
 
-<div id="boiteMessages" class="boite">
-	<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
+<div id="contenuPrincipal">
+	<h1><?php echo T_("Gestion de l'accès au site et à l'administration"); ?></h1>
 
-	<?php
-	// Début des tests pour vérifier l'accessibilité des fichiers nécessaires au script.
-	$messagesScript = '';
-	$erreurAccesFichiers = FALSE;
-	
-	if ($ficTest = @fopen($racine . '/.htaccess', 'a+'))
-	{
-		fclose($ficTest);
-	}
-	else
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.htaccess</code>") . "</li>\n";
-		$erreurAccesFichiers = TRUE;
-	}
+	<div id="boiteMessages" class="boite">
+		<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 
-	if ($ficTest = @fopen($racine . '/.acces', 'a+'))
-	{
-		fclose($ficTest);
-	}
-	else
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.acces</code>") . "</li>\n";
-		$erreurAccesFichiers = TRUE;
-	}
-	
-	echo adminMessagesScript($messagesScript);
-	// Fin des tests.
-
-	########################################################################
-	##
-	## Gestion des droits d'accès à l'administration.
-	##
-	########################################################################
-
-	if (!$erreurAccesFichiers && isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
-	{
+		<?php
+		// Début des tests pour vérifier l'accessibilité des fichiers nécessaires au script.
 		$messagesScript = '';
+		$erreurAccesFichiers = FALSE;
+	
+		if ($ficTest = @fopen($racine . '/.htaccess', 'a+'))
+		{
+			fclose($ficTest);
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.htaccess</code>") . "</li>\n";
+			$erreurAccesFichiers = TRUE;
+		}
+
+		if ($ficTest = @fopen($racine . '/.acces', 'a+'))
+		{
+			fclose($ficTest);
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.acces</code>") . "</li>\n";
+			$erreurAccesFichiers = TRUE;
+		}
+	
+		echo adminMessagesScript($messagesScript);
+		// Fin des tests.
+
+		########################################################################
+		##
+		## Gestion des droits d'accès à l'administration.
+		##
+		########################################################################
+
+		if (!$erreurAccesFichiers && isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
+		{
+			$messagesScript = '';
 		
-		if (empty($_POST['nom']))
-		{
-			$messagesScript .= '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
-		}
-		elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && $_POST['motDePasse'] != $_POST['motDePasse2'])
-		{
-			$messagesScript .= '<li class="erreur">' . T_("Veuillez confirmer correctement le mot de passe.") . "</li>\n";
-		}
-		// Ajout d'un utilisateur.
-		elseif (isset($_POST['ajouter']))
-		{
-			if ($fic2 = @fopen($racine . '/.acces', 'a+'))
+			if (empty($_POST['nom']))
 			{
-				if (stristr(PHP_OS, 'win') || $serveurFreeFr)
+				$messagesScript .= '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
+			}
+			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && $_POST['motDePasse'] != $_POST['motDePasse2'])
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Veuillez confirmer correctement le mot de passe.") . "</li>\n";
+			}
+			// Ajout d'un utilisateur.
+			elseif (isset($_POST['ajouter']))
+			{
+				if ($fic2 = @fopen($racine . '/.acces', 'a+'))
 				{
-					$acces = securiseTexte($_POST['nom']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
+					if (stristr(PHP_OS, 'win') || $serveurFreeFr)
+					{
+						$acces = securiseTexte($_POST['nom']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
+					}
+					else
+					{
+						$acces = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+					} 
+			
+					// On vérifie si l'utilisateur est déjà présent.
+					$utilisateurAbsent = TRUE;
+				
+					while (!feof($fic2))
+					{
+						$ligne = fgets($fic2);
+					
+						if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
+						{
+							$utilisateurAbsent = FALSE;
+							break;
+						}
+					}
+		
+					if ($utilisateurAbsent)
+					{
+						fputs($fic2, $acces);
+						$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['nom'])) . "</li>\n";
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['nom'])) . "</li>\n";
+					}
+		
+					fclose($fic2);
 				}
 				else
 				{
-					$acces = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
-				} 
-			
-				// On vérifie si l'utilisateur est déjà présent.
-				$utilisateurAbsent = TRUE;
-				
-				while (!feof($fic2))
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+				}
+			}
+			// Modification d'un utilisateur.
+			elseif (isset($_POST['modifier']))
+			{
+				if ($fic2 = @fopen($racine . '/.acces', 'r'))
 				{
-					$ligne = fgets($fic2);
-					
-					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
+					$utilisateurs = array ();
+				
+					// On vérifie si l'utilisateur est déjà présent.
+					$utilisateurAbsent = TRUE;
+				
+					while (!feof($fic2))
 					{
-						$utilisateurAbsent = FALSE;
-						break;
+						$ligne = fgets($fic2);
+					
+						if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
+						{
+							$utilisateurAbsent = FALSE;
+							$ligne = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+						}
+			
+						$utilisateurs[] = $ligne;
+					}
+		
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+				}
+		
+				if ($fic2 = @fopen($racine . '/.acces', 'w'))
+				{
+					fputs($fic2, implode("\n", $utilisateurs));
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+				}
+		
+				if ($utilisateurAbsent)
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['nom'])) . "</li>\n";
+				}
+				else
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Modification du mot de passe de l'utilisateur <em>%1\$s</em> effectuée."), securiseTexte($_POST['nom'])) . "</li>\n";
+				}
+			}
+	
+			// Suppression d'un utilisateur.
+			elseif (isset($_POST['supprimer']))
+			{
+				if ($fic2 = @fopen($racine . '/.acces', 'r'))
+				{
+					$utilisateurs = '';
+				
+					// On vérifie si l'utilisateur est déjà présent.
+					$utilisateurAbsent = TRUE;
+		
+					while (!feof($fic2))
+					{
+						$ligne = fgets($fic2);
+					
+						if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
+						{
+							$utilisateurAbsent = FALSE;
+						}
+						elseif ($ligne != "\n")
+						{
+							$utilisateurs .= $ligne;
+						}
+					}
+		
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+				}
+		
+				if ($fic2 = @fopen($racine . '/.acces', 'w'))
+				{
+					fputs($fic2, $utilisateurs);
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+				}
+		
+				// S'il n'y a plus d'utilisateur dans le fichier `.acces`, on supprime l'authentification dans le `.htaccess`.
+				/*
+				Note: auparavant, je faisais:
+					clearstatcache();
+					if (filesize($racine . '/.acces') == 0) {...}
+				mais des lignes vides faisaient en sorte que la taille du fichier n'était pas à 0. Maintenant je fais simplement regarder s'il y a un `:` dans le fichier, ce qui signifierait qu'il y a au moins un utilisateur.
+				*/
+				if (strpos(file_get_contents($racine . '/.acces'), ':') === FALSE)
+				{
+					if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
+					{
+						$fichierHtaccess = array ();
+					
+						while (!feof($fic2))
+						{
+							$ligne = rtrim(fgets($fic2));
+						
+							if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
+							{
+								while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(accès admin\)./', $ligne))
+								{
+									$ligne = fgets($fic2);
+								}
+							}
+							else
+							{
+								$fichierHtaccess[] = $ligne;
+							}
+						}
+		
+						fclose($fic2);
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+					}
+			
+					if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
+					{
+						fputs($fic2, implode("\n", $fichierHtaccess));
+						fclose($fic2);
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
 					}
 				}
 		
 				if ($utilisateurAbsent)
 				{
-					fputs($fic2, $acces);
-					$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['nom'])) . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['nom'])) . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
 				}
-		
-				fclose($fic2);
 			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
-			}
-		}
-		// Modification d'un utilisateur.
-		elseif (isset($_POST['modifier']))
-		{
-			if ($fic2 = @fopen($racine . '/.acces', 'r'))
-			{
-				$utilisateurs = array ();
-				
-				// On vérifie si l'utilisateur est déjà présent.
-				$utilisateurAbsent = TRUE;
-				
-				while (!feof($fic2))
-				{
-					$ligne = fgets($fic2);
-					
-					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
-					{
-						$utilisateurAbsent = FALSE;
-						$ligne = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
-					}
-			
-					$utilisateurs[] = $ligne;
-				}
-		
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
-			}
-		
-			if ($fic2 = @fopen($racine . '/.acces', 'w'))
-			{
-				fputs($fic2, implode("\n", $utilisateurs));
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
-			}
-		
-			if ($utilisateurAbsent)
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['nom'])) . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Modification du mot de passe de l'utilisateur <em>%1\$s</em> effectuée."), securiseTexte($_POST['nom'])) . "</li>\n";
-			}
-		}
 	
-		// Suppression d'un utilisateur.
-		elseif (isset($_POST['supprimer']))
-		{
-			if ($fic2 = @fopen($racine . '/.acces', 'r'))
+			// Lien vers `.acces` à partir de `.htaccess`.
+			if (file_exists($racine . '/.acces') && strpos(file_get_contents($racine . '/.acces'), ':') !== FALSE)
 			{
-				$utilisateurs = '';
-				
-				// On vérifie si l'utilisateur est déjà présent.
-				$utilisateurAbsent = TRUE;
-		
-				while (!feof($fic2))
+				$lienAccesDansHtaccess = FALSE;
+			
+				if ($fic = @fopen($racine . '/.htaccess', 'r'))
 				{
-					$ligne = fgets($fic2);
+					while (!feof($fic))
+					{
+						$ligne = rtrim(fgets($fic));
 					
-					if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
-					{
-						$utilisateurAbsent = FALSE;
-					}
-					elseif ($ligne != "\n")
-					{
-						$utilisateurs .= $ligne;
-					}
-				}
-		
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
-			}
-		
-			if ($fic2 = @fopen($racine . '/.acces', 'w'))
-			{
-				fputs($fic2, $utilisateurs);
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
-			}
-		
-			// S'il n'y a plus d'utilisateur dans le fichier `.acces`, on supprime l'authentification dans le `.htaccess`.
-			/*
-			Note: auparavant, je faisais:
-				clearstatcache();
-				if (filesize($racine . '/.acces') == 0) {...}
-			mais des lignes vides faisaient en sorte que la taille du fichier n'était pas à 0. Maintenant je fais simplement regarder s'il y a un `:` dans le fichier, ce qui signifierait qu'il y a au moins un utilisateur.
-			*/
-			if (strpos(file_get_contents($racine . '/.acces'), ':') === FALSE)
-			{
-				if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
-				{
-					$fichierHtaccess = array ();
-					
-					while (!feof($fic2))
-					{
-						$ligne = rtrim(fgets($fic2));
-						
 						if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
 						{
-							while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(accès admin\)./', $ligne))
-							{
-								$ligne = fgets($fic2);
-							}
-						}
-						else
-						{
-							$fichierHtaccess[] = $ligne;
+							$lienAccesDansHtaccess = TRUE;
+							break;
 						}
 					}
-		
-					fclose($fic2);
+					fclose($fic);
 				}
 				else
 				{
 					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
 				}
-			
-				if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
-				{
-					fputs($fic2, implode("\n", $fichierHtaccess));
-					fclose($fic2);
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-				}
-			}
-		
-			if ($utilisateurAbsent)
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
-			}
-		}
 	
-		// Lien vers `.acces` à partir de `.htaccess`.
-		if (file_exists($racine . '/.acces') && strpos(file_get_contents($racine . '/.acces'), ':') !== FALSE)
-		{
-			$lienAccesDansHtaccess = FALSE;
+				if (!$lienAccesDansHtaccess)
+				{
+					$htaccess = '';
+					$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
+					$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
+				
+					$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
+				
+					if ($serveurFreeFr)
+					{
+						$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
 			
+						preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
+			
+						$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
+					}
+					else
+					{
+						$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
+						$htaccess .= "\tAuthUserFile $racine/.acces\n";
+					}
+		
+					$htaccess .= "\tAuthType Basic\n";
+					$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
+					$htaccess .= "\tRequire valid-user\n";
+		
+					if ($serveurFreeFr)
+					{
+						$htaccess .= "</Files>\n";
+					}
+					else
+					{
+						$htaccess .= "</FilesMatch>\n";
+					}
+				
+					$htaccessFilesModele = "deconnexion\.php$";
+				
+					if ($serveurFreeFr)
+					{
+						$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
+			
+						preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.deconnexion.acces', $cheminAcces);
+			
+						$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
+					}
+					else
+					{
+						$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
+						$htaccess .= "\tAuthUserFile $racine/.deconnexion.acces\n";
+					}
+		
+					$htaccess .= "\tAuthType Basic\n";
+					$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
+					$htaccess .= "\tRequire valid-user\n";
+		
+					if ($serveurFreeFr)
+					{
+						$htaccess .= "</Files>\n";
+					}
+					else
+					{
+						$htaccess .= "</FilesMatch>\n";
+					}
+				
+					$htaccess .= "# Fin de l'ajout automatique de Squeletml (accès admin).\n";
+		
+					if ($fic = @fopen($racine . '/.htaccess', 'a+'))
+					{
+						fputs($fic, $htaccess);
+						fclose($fic);
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+					}
+				}
+			}
+		
+			echo adminMessagesScript($messagesScript, T_("Gestion des droits d'accès à l'administration"));
+		}
+
+		########################################################################
+		##
+		## Listage des utilisateurs.
+		##
+		########################################################################
+
+		if (!$erreurAccesFichiers && ((isset($_POST['lister'])) || (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))))
+		{
+			echo '<div class="sousBoite">' . "\n";
+			echo '<h3>' . T_("Liste des utilisateurs") . "</h3>\n";
+
+			echo '<p>' . T_("Voici les utilisateurs ayant accès à l'administration:") . "</p>\n" . "\n";
+
+			echo '<ul>' . "\n";
+			$i = 0;
+		
+			if (file_exists($racine . '/.acces'))
+			{
+				if ($fic3 = @fopen($racine . '/.acces', 'r'))
+				{
+					$listeUtilisateurs = array ();
+				
+					while (!feof($fic3))
+					{
+						$ligne = fgets($fic3);
+					
+						if (preg_match('/^[^:]+:/', $ligne))
+						{
+							list ($utilisateur) = explode(':', $ligne);
+							$listeUtilisateurs[] = $utilisateur;
+							$i++;
+						}
+					}
+				
+					fclose($fic3);
+				
+					if (!empty($listeUtilisateurs))
+					{
+						natcasesort($listeUtilisateurs);
+					
+						foreach ($listeUtilisateurs as $utilisateur)
+						{
+							echo '<li>' . $utilisateur . "</li>\n";
+						}
+					}
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+				}
+			}
+
+			if (!$i)
+			{
+				echo '<li>' . T_("Aucun") . "</li>\n";
+			}
+		
+			echo "</ul>\n";
+			echo "</div><!-- /.sousBoite -->\n";
+		}
+
+		########################################################################
+		##
+		## Mise hors ligne du site pour maintenance.
+		##
+		########################################################################
+
+		if (!$erreurAccesFichiers && isset($_POST['changerEtat']))
+		{
+			$messagesScript = '';
+			$maintenanceDansHtaccess = FALSE;
+		
 			if ($fic = @fopen($racine . '/.htaccess', 'r'))
 			{
 				while (!feof($fic))
 				{
 					$ligne = rtrim(fgets($fic));
-					
-					if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
+				
+					if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
 					{
-						$lienAccesDansHtaccess = TRUE;
+						$maintenanceDansHtaccess = TRUE;
 						break;
 					}
 				}
@@ -272,73 +457,30 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
 			}
-	
-			if (!$lienAccesDansHtaccess)
+
+			if ($_POST['etat'] == 'horsLigne' && !$maintenanceDansHtaccess)
 			{
 				$htaccess = '';
-				$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
-				$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
-				
-				$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
-				
-				if ($serveurFreeFr)
+				$htaccess .= "# Ajout automatique de Squeletml (maintenance). Ne pas modifier.\n";
+				$htaccess .= "<IfModule mod_rewrite.c>\n";
+				$htaccess .= "\tOptions +FollowSymLinks\n";
+				$htaccess .= "\tRewriteEngine on\n";
+				$htaccess .= "\tRewriteBase /\n";
+		
+				if (!empty($_POST['ip']))
 				{
-					$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
-			
-					preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
-			
-					$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
-				}
-				else
-				{
-					$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
-					$htaccess .= "\tAuthUserFile $racine/.acces\n";
+					$ip = str_replace('.', '\.', securiseTexte($_POST['ip']));
+					$htaccess .= "\tRewriteCond %{REMOTE_ADDR} !^$ip\n";
 				}
 		
-				$htaccess .= "\tAuthType Basic\n";
-				$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
-				$htaccess .= "\tRequire valid-user\n";
+				preg_match('|^[a-z]+://' . $_SERVER['SERVER_NAME'] . '(/.+)|i', $urlRacine . '/' . $adminUrlMaintenance, $resultat);
+				$adminUrlMaintenanceDansHtaccess = $resultat[1];
 		
-				if ($serveurFreeFr)
-				{
-					$htaccess .= "</Files>\n";
-				}
-				else
-				{
-					$htaccess .= "</FilesMatch>\n";
-				}
-				
-				$htaccessFilesModele = "deconnexion\.php$";
-				
-				if ($serveurFreeFr)
-				{
-					$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
-			
-					preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.deconnexion.acces', $cheminAcces);
-			
-					$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
-				}
-				else
-				{
-					$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
-					$htaccess .= "\tAuthUserFile $racine/.deconnexion.acces\n";
-				}
-		
-				$htaccess .= "\tAuthType Basic\n";
-				$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
-				$htaccess .= "\tRequire valid-user\n";
-		
-				if ($serveurFreeFr)
-				{
-					$htaccess .= "</Files>\n";
-				}
-				else
-				{
-					$htaccess .= "</FilesMatch>\n";
-				}
-				
-				$htaccess .= "# Fin de l'ajout automatique de Squeletml (accès admin).\n";
-		
+				$htaccess .= "\tRewriteCond %{REQUEST_URI} !$adminUrlMaintenanceDansHtaccess$\n";
+				$htaccess .= "\tRewriteRule .* $adminUrlMaintenanceDansHtaccess [L]\n";
+				$htaccess .= "</IfModule>\n";
+				$htaccess .= "# Fin de l'ajout automatique de Squeletml (maintenance).\n";
+	
 				if ($fic = @fopen($racine . '/.htaccess', 'a+'))
 				{
 					fputs($fic, $htaccess);
@@ -349,462 +491,334 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
 				}
 			}
-		}
-		
-		echo adminMessagesScript($messagesScript, T_("Gestion des droits d'accès à l'administration"));
-	}
-
-	########################################################################
-	##
-	## Listage des utilisateurs.
-	##
-	########################################################################
-
-	if (!$erreurAccesFichiers && ((isset($_POST['lister'])) || (isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))))
-	{
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Liste des utilisateurs") . "</h3>\n";
-
-		echo '<p>' . T_("Voici les utilisateurs ayant accès à l'administration:") . "</p>\n" . "\n";
-
-		echo '<ul>' . "\n";
-		$i = 0;
-		
-		if (file_exists($racine . '/.acces'))
-		{
-			if ($fic3 = @fopen($racine . '/.acces', 'r'))
+			elseif ($_POST['etat'] == 'horsLigne' && $maintenanceDansHtaccess && $_POST['ip'] != adminSiteEnMaintenanceIp($racine . '/.htaccess'))
 			{
-				$listeUtilisateurs = array ();
-				
-				while (!feof($fic3))
+				if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
 				{
-					$ligne = fgets($fic3);
-					
-					if (preg_match('/^[^:]+:/', $ligne))
+					$fichierHtaccess = array ();
+				
+					while (!feof($fic2))
 					{
-						list ($utilisateur) = explode(':', $ligne);
-						$listeUtilisateurs[] = $utilisateur;
-						$i++;
-					}
-				}
-				
-				fclose($fic3);
-				
-				if (!empty($listeUtilisateurs))
-				{
-					natcasesort($listeUtilisateurs);
+						$ligne = rtrim(fgets($fic2));
 					
-					foreach ($listeUtilisateurs as $utilisateur)
-					{
-						echo '<li>' . $utilisateur . "</li>\n";
-					}
-				}
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
-			}
-		}
-
-		if (!$i)
-		{
-			echo '<li>' . T_("Aucun") . "</li>\n";
-		}
-		
-		echo "</ul>\n";
-		echo "</div><!-- /.sousBoite -->\n";
-	}
-
-	########################################################################
-	##
-	## Mise hors ligne du site pour maintenance.
-	##
-	########################################################################
-
-	if (!$erreurAccesFichiers && isset($_POST['changerEtat']))
-	{
-		$messagesScript = '';
-		$maintenanceDansHtaccess = FALSE;
-		
-		if ($fic = @fopen($racine . '/.htaccess', 'r'))
-		{
-			while (!feof($fic))
-			{
-				$ligne = rtrim(fgets($fic));
-				
-				if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
-				{
-					$maintenanceDansHtaccess = TRUE;
-					break;
-				}
-			}
-			fclose($fic);
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-		}
-
-		if ($_POST['etat'] == 'horsLigne' && !$maintenanceDansHtaccess)
-		{
-			$htaccess = '';
-			$htaccess .= "# Ajout automatique de Squeletml (maintenance). Ne pas modifier.\n";
-			$htaccess .= "<IfModule mod_rewrite.c>\n";
-			$htaccess .= "\tOptions +FollowSymLinks\n";
-			$htaccess .= "\tRewriteEngine on\n";
-			$htaccess .= "\tRewriteBase /\n";
-		
-			if (!empty($_POST['ip']))
-			{
-				$ip = str_replace('.', '\.', securiseTexte($_POST['ip']));
-				$htaccess .= "\tRewriteCond %{REMOTE_ADDR} !^$ip\n";
-			}
-		
-			preg_match('|^[a-z]+://' . $_SERVER['SERVER_NAME'] . '(/.+)|i', $urlRacine . '/' . $adminUrlMaintenance, $resultat);
-			$adminUrlMaintenanceDansHtaccess = $resultat[1];
-		
-			$htaccess .= "\tRewriteCond %{REQUEST_URI} !$adminUrlMaintenanceDansHtaccess$\n";
-			$htaccess .= "\tRewriteRule .* $adminUrlMaintenanceDansHtaccess [L]\n";
-			$htaccess .= "</IfModule>\n";
-			$htaccess .= "# Fin de l'ajout automatique de Squeletml (maintenance).\n";
-	
-			if ($fic = @fopen($racine . '/.htaccess', 'a+'))
-			{
-				fputs($fic, $htaccess);
-				fclose($fic);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-			}
-		}
-		elseif ($_POST['etat'] == 'horsLigne' && $maintenanceDansHtaccess && $_POST['ip'] != adminSiteEnMaintenanceIp($racine . '/.htaccess'))
-		{
-			if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
-			{
-				$fichierHtaccess = array ();
-				
-				while (!feof($fic2))
-				{
-					$ligne = rtrim(fgets($fic2));
-					
-					if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
-					{
-						$fichierHtaccess[] = $ligne;
-						
-						while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
+						if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
 						{
-							$ligne = rtrim(fgets($fic2));
-							
-							if (preg_match('/^\tRewriteCond %{REMOTE_ADDR} !\^(([0-9]{1,4}\\\.){3}[0-9]{1,4})/', $ligne))
+							$fichierHtaccess[] = $ligne;
+						
+							while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
 							{
-								if (!empty($_POST['ip']))
+								$ligne = rtrim(fgets($fic2));
+							
+								if (preg_match('/^\tRewriteCond %{REMOTE_ADDR} !\^(([0-9]{1,4}\\\.){3}[0-9]{1,4})/', $ligne))
 								{
-									$ip = str_replace('.', '\.', securiseTexte($_POST['ip']));
-									$fichierHtaccess[] = "\tRewriteCond %{REMOTE_ADDR} !^$ip";
+									if (!empty($_POST['ip']))
+									{
+										$ip = str_replace('.', '\.', securiseTexte($_POST['ip']));
+										$fichierHtaccess[] = "\tRewriteCond %{REMOTE_ADDR} !^$ip";
+									}
+								}
+								else
+								{
+									$fichierHtaccess[] = $ligne;
 								}
 							}
-							else
+						}
+						else
+						{
+							$fichierHtaccess[] = $ligne;
+						}
+					}
+	
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+				}
+		
+				if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
+				{
+					fputs($fic2, implode("\n", $fichierHtaccess));
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+				}
+			}
+			elseif ($_POST['etat'] == 'enLigne' && $maintenanceDansHtaccess)
+			{
+				if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
+				{
+					$fichierHtaccess = array ();
+				
+					while (!feof($fic2))
+					{
+						$ligne = rtrim(fgets($fic2));
+					
+						if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
+						{
+							while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
 							{
-								$fichierHtaccess[] = $ligne;
+								$ligne = fgets($fic2);
 							}
 						}
-					}
-					else
-					{
-						$fichierHtaccess[] = $ligne;
-					}
-				}
-	
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-			}
-		
-			if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
-			{
-				fputs($fic2, implode("\n", $fichierHtaccess));
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-			}
-		}
-		elseif ($_POST['etat'] == 'enLigne' && $maintenanceDansHtaccess)
-		{
-			if ($fic2 = @fopen($racine . '/.htaccess', 'r'))
-			{
-				$fichierHtaccess = array ();
-				
-				while (!feof($fic2))
-				{
-					$ligne = rtrim(fgets($fic2));
-					
-					if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
-					{
-						while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
+						else
 						{
-							$ligne = fgets($fic2);
+							$fichierHtaccess[] = $ligne;
 						}
 					}
+	
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+				}
+		
+				if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
+				{
+					fputs($fic2, implode("\n", $fichierHtaccess));
+					fclose($fic2);
+				}
+				else
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+				}
+			}
+	
+			if (siteEstEnMaintenance($racine . '/.htaccess'))
+			{
+				$messagesScript .= '<li>' . T_("Le site est en maintenance (hors ligne).") . "</li>\n";
+			
+				if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'))
+				{
+					$messagesScript .= '<li>' . sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip) . "</li>\n";
+				}
+				else
+				{
+					$messagesScript .= '<li>' . T_("Aucune IP n'a accès au site hors ligne.") . "</li>\n";
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li>' . T_("Le site est en ligne.") . "</li>\n";
+			}
+		
+			echo adminMessagesScript($messagesScript, T_("Maintenance du site"));
+		}
+	
+		########################################################################
+		##
+		## Suppression du cache.
+		##
+		########################################################################
+
+		if (isset($_POST['supprimerCache']))
+		{
+			$messagesScript = '';
+		
+			if (!isset($_POST['cache']))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Aucun type de cache sélectionné.") . "</li>\n";
+			}
+			else
+			{
+				if (in_array('admin', $_POST['cache']))
+				{
+					if (adminVideCache($racineAdmin, 'admin'))
+					{
+						$messagesScript .= '<li>' . T_("Suppression du cache de l'administration effectuée.") . "</li>\n";
+					}
 					else
 					{
-						$fichierHtaccess[] = $ligne;
+						$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache de l'administration. Veuillez vérifier manuellement son contenu.") . "</li>\n";
 					}
 				}
-	
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-			}
-		
-			if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
-			{
-				fputs($fic2, implode("\n", $fichierHtaccess));
-				fclose($fic2);
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-			}
-		}
-	
-		if (siteEstEnMaintenance($racine . '/.htaccess'))
-		{
-			$messagesScript .= '<li>' . T_("Le site est en maintenance (hors ligne).") . "</li>\n";
 			
-			if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'))
-			{
-				$messagesScript .= '<li>' . sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip) . "</li>\n";
+				if (in_array('site', $_POST['cache']))
+				{
+					if (adminVideCache($racineAdmin, 'site'))
+					{
+						$messagesScript .= '<li>' . T_("Suppression du cache du site effectuée.") . "</li>\n";
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache du site. Veuillez vérifier manuellement son contenu.") . "</li>\n";
+					}
+				}
+			
+				if (empty($messagesScript))
+				{
+					$messagesScript .= '<li class="erreur">' . T_("Le type de cache sélectionné n'est pas valide.") . "</li>\n";
+				}
 			}
-			else
-			{
-				$messagesScript .= '<li>' . T_("Aucune IP n'a accès au site hors ligne.") . "</li>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<li>' . T_("Le site est en ligne.") . "</li>\n";
-		}
 		
-		echo adminMessagesScript($messagesScript, T_("Maintenance du site"));
-	}
+			echo adminMessagesScript($messagesScript, T_("Suppression du cache"));
+		}
 	
-	########################################################################
-	##
-	## Suppression du cache.
-	##
-	########################################################################
+		########################################################################
+		##
+		## Lancement du cron.
+		##
+		########################################################################
 
-	if (isset($_POST['supprimerCache']))
-	{
-		$messagesScript = '';
-		
-		if (!isset($_POST['cache']))
+		if (isset($_POST['lancerCron']))
 		{
-			$messagesScript .= '<li class="erreur">' . T_("Aucun type de cache sélectionné.") . "</li>\n";
-		}
-		else
-		{
-			if (in_array('admin', $_POST['cache']))
-			{
-				if (adminVideCache($racineAdmin, 'admin'))
-				{
-					$messagesScript .= '<li>' . T_("Suppression du cache de l'administration effectuée.") . "</li>\n";
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache de l'administration. Veuillez vérifier manuellement son contenu.") . "</li>\n";
-				}
-			}
-			
-			if (in_array('site', $_POST['cache']))
-			{
-				if (adminVideCache($racineAdmin, 'site'))
-				{
-					$messagesScript .= '<li>' . T_("Suppression du cache du site effectuée.") . "</li>\n";
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . T_("Erreur lors de la suppression du cache du site. Veuillez vérifier manuellement son contenu.") . "</li>\n";
-				}
-			}
-			
-			if (empty($messagesScript))
-			{
-				$messagesScript .= '<li class="erreur">' . T_("Le type de cache sélectionné n'est pas valide.") . "</li>\n";
-			}
-		}
+			$messagesScript = '';
 		
-		echo adminMessagesScript($messagesScript, T_("Suppression du cache"));
-	}
-	
-	########################################################################
-	##
-	## Lancement du cron.
-	##
-	########################################################################
+			if (@file_get_contents("$urlRacine/cron.php") !== FALSE)
+			{
+				$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Une erreur a eu lieu lors du lancement du cron.") . "</li>\n";
+			}
+		
+			echo adminMessagesScript($messagesScript, T_("Lancement du cron"));
+		}
+		?>
+	</div><!-- /#boiteMessages -->
 
-	if (isset($_POST['lancerCron']))
-	{
-		$messagesScript = '';
-		
-		if (@file_get_contents("$urlRacine/cron.php") !== FALSE)
-		{
-			$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . T_("Une erreur a eu lieu lors du lancement du cron.") . "</li>\n";
-		}
-		
-		echo adminMessagesScript($messagesScript, T_("Lancement du cron"));
-	}
+	<?php
+	########################################################################
+	##
+	## Formulaires.
+	##
+	########################################################################
 	?>
-</div><!-- /#boiteMessages -->
-
-<?php
-########################################################################
-##
-## Formulaires.
-##
-########################################################################
-?>
-<?php if (!$erreurAccesFichiers): ?>
-	<div class="boite">
-		<h2 id="utilisateurs"><?php echo T_("Lister les utilisateurs ayant accès à l'administration"); ?></h2>
-
-		<p><?php echo T_("Vous pouvez afficher la liste des utilisateurs ayant accès à l'administration."); ?></p>
-
-		<form action="<?php echo $adminAction; ?>#messages" method="post">
-			<div>
-				<p><input type="submit" name="lister" value="<?php echo T_('Lister les utilisateurs'); ?>" /></p>
-			</div>
-		</form>
-	</div><!-- /.boite -->
-
-	<div class="boite">
-		<h2 id="droits"><?php echo T_("Gérer les droits d'accès à l'administration"); ?></h2>
-
-		<p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
-
-		<form action="<?php echo $adminAction; ?>#messages" method="post">
-			<div>
-				<fieldset>
-					<legend><?php echo T_("Options"); ?></legend>
-					
-					<p><label for="inputNom"><?php echo T_("Nom:"); ?></label><br />
-					<input id="inputNom" type="text" name="nom" /></p>
-			
-					<p><label for="inputMotDePasse"><?php echo T_("Mot de passe:"); ?></label><br />
-					<input id="inputMotDePasse" type="password" name="motDePasse" /></p>
-					
-					<p><label for="inputMotDePasse2"><?php echo T_("Confirmer le mot de passe:"); ?></label><br />
-					<input id="inputMotDePasse2" type="password" name="motDePasse2" /></p>
-				</fieldset>
-				
-				<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter l\'utilisateur'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer l\'utilisateur'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier le mot de passe'); ?>" /></p>
-			</div>
-		</form>
-	</div><!-- /.boite -->
-
-	<div class="boite">
-		<h2 id="maintenance"><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
-
-		<p><?php echo T_("Si le site est hors ligne, tous les internautes visitant une page du site seront redirigés vers la page de maintenance."); ?></p>
-
-		<?php if (adminReecritureDurl(FALSE) == 'n'): ?>
-			<p><strong><?php echo T_("Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
-		<?php elseif (adminReecritureDurl(FALSE) == '?'): ?>
-			<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
-		<?php endif; ?>
-
-		<form action="<?php echo $adminAction; ?>#messages" method="post">
-			<div>
-				<fieldset>
-					<legend><?php echo T_("Options"); ?></legend>
-					
-					<?php $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess'); ?>
-					
-					<p><?php echo T_("Le site est présentement:"); ?><br />
-					<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!$siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
-					<input id="inputEtatHorsLigne" type="radio" name="etat" value="horsLigne" <?php if ($siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatHorsLigne"><?php echo T_("en maintenance (hors ligne)."); ?></label> <?php if ($siteEstEnMaintenance): ?>
-						<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
-							<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
-						<?php else: ?>
-							<?php echo T_("Aucune IP n'a accès au site hors ligne."); ?>
-						<?php endif; ?>
-					<?php endif; ?>
-					</p>
-			
-					<p><label for="inputIp"><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
-					<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
-					
-					<?php if ($ip): ?>
-						<?php $valeurChampIp = $ip; ?>
-					<?php else: ?>
-						<?php $valeurChampIp = adminIpInternaute(); ?>
-					<?php endif; ?>
-					
-					<input id="inputIp" type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
-				</fieldset>
-				
-				<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
-			</div>
-		</form>
-	</div><!-- /.boite -->
-	
-	<div class="boite">
-		<h2 id="cache"><?php echo T_("Supprimer le cache"); ?></h2>
-
-		<form action="<?php echo $adminAction; ?>#messages" method="post">
-			<div>
-				<fieldset>
-					<legend><?php echo T_("Options"); ?></legend>
-					
-					<p><?php echo T_("Supprimer le cache:"); ?><br />
-					<input id="inputCacheAdmin" type="checkbox" name="cache[]" value="admin" /> <label for="inputCacheAdmin"><?php echo T_("de l'administration."); ?></label><br />
-					<input id="inputCacheSite" type="checkbox" name="cache[]" value="site" /> <label for="inputCacheSite"><?php echo T_("du site."); ?></label>
-					</p>
-				</fieldset>
-				
-				<p><input type="submit" name="supprimerCache" value="<?php echo T_('Supprimer le cache'); ?>" /></p>
-			</div>
-		</form>
-	</div><!-- /.boite -->
-	
-	<div class="boite">
-		<h2 id="cron"><?php echo T_("Lancer le cron manuellement"); ?></h2>
-
-		<form action="<?php echo $adminAction; ?>#messages" method="post">
-			<div>
-				<?php $dateCron = @file_get_contents("$racine/site/inc/cron.txt"); ?>
-				
-				<?php if ($dateCron !== FALSE): ?>
-					<p><?php printf(T_("Dernier lancement du cron le %1\$s."), date('Y-m-d (H:i:s)', $dateCron)); ?></p>
-				<?php endif; ?>
-				
-				<p><?php echo T_("Cette action peut prendre plusieurs minutes."); ?></p>
-				
-				<p><input type="submit" name="lancerCron" value="<?php echo T_('Lancer le cron'); ?>" /></p>
-			</div>
-		</form>
-	</div><!-- /.boite -->
-	
-	<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
+	<?php if (!$erreurAccesFichiers): ?>
 		<div class="boite">
-			<h2 id="sauvegarde"><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
-		
-			<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
-		
-			<p><a href="telecharger.admin.php?fichier=<?php echo $racine; ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
+			<h2 id="utilisateurs"><?php echo T_("Lister les utilisateurs ayant accès à l'administration"); ?></h2>
+
+			<p><?php echo T_("Vous pouvez afficher la liste des utilisateurs ayant accès à l'administration."); ?></p>
+
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<p><input type="submit" name="lister" value="<?php echo T_('Lister les utilisateurs'); ?>" /></p>
+				</div>
+			</form>
 		</div><!-- /.boite -->
+
+		<div class="boite">
+			<h2 id="droits"><?php echo T_("Gérer les droits d'accès à l'administration"); ?></h2>
+
+			<p><?php echo T_("Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur existant."); ?></p>
+
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<fieldset>
+						<legend><?php echo T_("Options"); ?></legend>
+					
+						<p><label for="inputNom"><?php echo T_("Nom:"); ?></label><br />
+						<input id="inputNom" type="text" name="nom" /></p>
+			
+						<p><label for="inputMotDePasse"><?php echo T_("Mot de passe:"); ?></label><br />
+						<input id="inputMotDePasse" type="password" name="motDePasse" /></p>
+					
+						<p><label for="inputMotDePasse2"><?php echo T_("Confirmer le mot de passe:"); ?></label><br />
+						<input id="inputMotDePasse2" type="password" name="motDePasse2" /></p>
+					</fieldset>
+				
+					<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter l\'utilisateur'); ?>" /> <input type="submit" name="supprimer" value="<?php echo T_('Supprimer l\'utilisateur'); ?>" /> <input type="submit" name="modifier" value="<?php echo T_('Modifier le mot de passe'); ?>" /></p>
+				</div>
+			</form>
+		</div><!-- /.boite -->
+
+		<div class="boite">
+			<h2 id="maintenance"><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
+
+			<p><?php echo T_("Si le site est hors ligne, tous les internautes visitant une page du site seront redirigés vers la page de maintenance."); ?></p>
+
+			<?php if (adminReecritureDurl(FALSE) == 'n'): ?>
+				<p><strong><?php echo T_("Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
+			<?php elseif (adminReecritureDurl(FALSE) == '?'): ?>
+				<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
+			<?php endif; ?>
+
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<fieldset>
+						<legend><?php echo T_("Options"); ?></legend>
+					
+						<?php $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess'); ?>
+					
+						<p><?php echo T_("Le site est présentement:"); ?><br />
+						<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!$siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
+						<input id="inputEtatHorsLigne" type="radio" name="etat" value="horsLigne" <?php if ($siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatHorsLigne"><?php echo T_("en maintenance (hors ligne)."); ?></label> <?php if ($siteEstEnMaintenance): ?>
+							<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
+								<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
+							<?php else: ?>
+								<?php echo T_("Aucune IP n'a accès au site hors ligne."); ?>
+							<?php endif; ?>
+						<?php endif; ?>
+						</p>
+			
+						<p><label for="inputIp"><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
+						<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
+					
+						<?php if ($ip): ?>
+							<?php $valeurChampIp = $ip; ?>
+						<?php else: ?>
+							<?php $valeurChampIp = adminIpInternaute(); ?>
+						<?php endif; ?>
+					
+						<input id="inputIp" type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
+					</fieldset>
+				
+					<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
+				</div>
+			</form>
+		</div><!-- /.boite -->
+	
+		<div class="boite">
+			<h2 id="cache"><?php echo T_("Supprimer le cache"); ?></h2>
+
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<fieldset>
+						<legend><?php echo T_("Options"); ?></legend>
+					
+						<p><?php echo T_("Supprimer le cache:"); ?><br />
+						<input id="inputCacheAdmin" type="checkbox" name="cache[]" value="admin" /> <label for="inputCacheAdmin"><?php echo T_("de l'administration."); ?></label><br />
+						<input id="inputCacheSite" type="checkbox" name="cache[]" value="site" /> <label for="inputCacheSite"><?php echo T_("du site."); ?></label>
+						</p>
+					</fieldset>
+				
+					<p><input type="submit" name="supprimerCache" value="<?php echo T_('Supprimer le cache'); ?>" /></p>
+				</div>
+			</form>
+		</div><!-- /.boite -->
+	
+		<div class="boite">
+			<h2 id="cron"><?php echo T_("Lancer le cron manuellement"); ?></h2>
+
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<?php $dateCron = @file_get_contents("$racine/site/inc/cron.txt"); ?>
+				
+					<?php if ($dateCron !== FALSE): ?>
+						<p><?php printf(T_("Dernier lancement du cron le %1\$s."), date('Y-m-d (H:i:s)', $dateCron)); ?></p>
+					<?php endif; ?>
+				
+					<p><?php echo T_("Cette action peut prendre plusieurs minutes."); ?></p>
+				
+					<p><input type="submit" name="lancerCron" value="<?php echo T_('Lancer le cron'); ?>" /></p>
+				</div>
+			</form>
+		</div><!-- /.boite -->
+	
+		<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
+			<div class="boite">
+				<h2 id="sauvegarde"><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
+		
+				<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
+		
+				<p><a href="telecharger.admin.php?fichier=<?php echo $racine; ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
+			</div><!-- /.boite -->
+		<?php endif; ?>
 	<?php endif; ?>
-<?php endif; ?>
+</div><!-- /#contenuPrincipal -->
 
 <?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

@@ -2,6 +2,10 @@
 	width: expression( document.body.clientWidth > 950? "950px": "auto" );
 }
 
+#sousMenu {
+	float: left;
+}
+
 fieldset {
 	padding: 5px;
 }

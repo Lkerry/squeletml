@@ -1,4 +1,4 @@
-#tableDesMatieres, a.lienInfobulle:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
+#sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
 	-moz-border-radius: 8px; /* Gecko. */
 	-webkit-border-radius: 8px; /* Webkit. */
 }

@@ -74,6 +74,23 @@ div#noticeMaintenance p {
 	margin: 5px;
 }
 
+div#sousMenu {
+	position: fixed;
+	width: 140px;
+	border: 1px solid #b3b3b3;
+	padding: 5px;
+	background-color: #f2f2f2;
+}
+
+div#sousMenu ul {
+	margin: 0px;
+	padding: 0px 0px 0px 20px;
+}
+
+div#contenuPrincipal {
+	margin-left: 160px;
+}
+
 #basDePage {
 	margin-top: 25px;
 	text-align: right;
@@ -363,7 +380,7 @@ a.lienInfobulle:hover {
 a.lienInfobulle:hover span {
 	display: block;
 	border: 1px solid #b3b3b3;
-	width: 425px;
+	width: 350px;
 	position: absolute;
 	top: 20px;
 	left: 20px;
