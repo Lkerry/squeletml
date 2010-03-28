@@ -17,7 +17,7 @@ if ($argv[1] == 'mdtxt')
 	$fichier = preg_replace('/^/m', "\t\t", $fichier);
 	$fichier = preg_replace('/^\t\t=== ([^=]+) ===$/m', '- $1' . "\n", $fichier);
 	$fichier = preg_replace('/^\t\t([0-9]{4}(-[0-9]{2}){2})  /m', "\t" . '- $1&nbsp;&nbsp;', $fichier);
-	$fichier = preg_replace('/^\t\t\t\* (.+)$/m', "\t\t" . '- $1', $fichier);
+	$fichier = preg_replace('/^\t\t\t\* (.+)$/em', "\"\t\t- \" . str_replace('_', '\_', '\$1')", $fichier);
 	$fichier = preg_replace('/,\n\t\t- (?! )/m', ",  \n\t\t", $fichier);
 	$fichier = preg_replace('/\.\n\t\t- (?! )/m', ".\n\n\t\t- ", $fichier);
 	$fichier = preg_replace('/^\t$/m', '', $fichier);
