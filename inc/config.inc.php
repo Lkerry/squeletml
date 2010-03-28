@@ -737,7 +737,7 @@ $galerieMinivignettesNombre = 0;
   - `divImage`: la `div` comprenant l'image en version intermédiaire;
   - `image`: l'image en version intermédiaire.
 */
-$galerieAncreDeNavigation = 'galerie';
+$galerieAncreDeNavigation = 'titre';
 
 // Ajout automatique d'une légende dans le cas où aucune légende n'a été précisée.
 $galerieLegendeAutomatique = TRUE; // TRUE|FALSE

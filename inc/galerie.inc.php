@@ -24,7 +24,8 @@ else
 }
 
 // Initialisation du titre et du corps de la galerie.
-$titreGalerie = '';
+$titreGalerieGenere = FALSE;
+$sousTitreGalerie = '';
 $corpsGalerie = '';
 
 // Nombre d'images dans la galerie.
@@ -116,13 +117,15 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		{
 			if ($galerieSeparerTitreImageEtNomGalerie)
 			{
-				$titreGalerie = '<h1 id="galerieTitre">' . $titreImage . "</h1>\n";
-				$titreGalerie .= '<p id="galerieSousTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</p>\n";
+				$baliseH1 = $titreImage;
+				$sousTitreGalerie = '<p id="galerieSousTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</p>\n";
 			}
 			else
 			{
-				$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>") . "</h1>\n";
+				$baliseH1 = sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>");
 			}
+
+			$titreGalerieGenere = TRUE;
 		}
 		
 		// On vérifie si l'image existe en cache ou si le cache est expiré.
@@ -386,13 +389,15 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		{
 			if ($galerieSeparerTitreImageEtNomGalerie)
 			{
-				$titreGalerie = '<h1 id="galerieTitre">' . $id . "</h1>\n";
-				$titreGalerie .= '<p id="galerieSousTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</p>\n";
+				$baliseH1 = $id;
+				$sousTitreGalerie = sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>");
 			}
 			else
 			{
-				$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>") . "</h1>\n";
+				$baliseH1 = sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>");
 			}
+
+			$titreGalerieGenere = TRUE;
 		}
 		
 		$corpsGalerie .= '<p>' . sprintf(T_("L'image %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les images de la galerie %3\$s</a>."), "<em>$id</em>", $urlSansGet, "<em>$idGalerie</em>") . "</p>\n";
@@ -437,7 +442,8 @@ elseif (!empty($idGalerie))
 	// Titre de la galerie.
 	if ($galerieGenererTitrePages)
 	{
-		$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</h1>\n";
+		$baliseH1 = sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>");
+		$titreGalerieGenere = TRUE;
 	}
 	
 	if ($galerieVignettesParPage)
@@ -569,7 +575,8 @@ else
 	// Titre de la galerie.
 	if ($galerieGenererTitrePages)
 	{
-		$titreGalerie = '<h1 id="galerieTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$nomGalerie</em>") . "</h1>\n";
+		$baliseH1 = sprintf(T_("Galerie %1\$s"), "<em>$nomGalerie</em>");
+		$titreGalerieGenere = TRUE;
 	}
 	
 	$corpsGalerie .= '<p>' . sprintf(T_("La galerie %1\$s est introuvable."), "<em>$nomGalerie</em>") . "</p>\n";
@@ -588,7 +595,6 @@ else
 }
 
 $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
-$tableauCorpsGalerie['corpsGalerie'] = $titreGalerie . $tableauCorpsGalerie['corpsGalerie'];
 
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/galerie.inc.php'))

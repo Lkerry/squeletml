@@ -40,7 +40,22 @@ if (!empty($blocsAinserer))
 						
 						$blocs[$region] .= '<div id="baliseH1" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= "<h1>$baliseH1</h1>\n";
+						
+						if ($titreGalerieGenere)
+						{
+							$h1 = '<h1 id="galerieTitre">' . $baliseH1 . "</h1>\n";
+							
+							if (!empty($sousTitreGalerie))
+							{
+								$h1 .= '<p id="galerieSousTitre">' . $sousTitreGalerie . "</p>\n";
+							}
+						}
+						else
+						{
+							$h1 = "<h1>$baliseH1</h1>\n";
+						}
+						
+						$blocs[$region] .= $h1;
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#baliseH1 -->' . "\n";
 					}

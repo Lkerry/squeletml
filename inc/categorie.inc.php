@@ -147,15 +147,15 @@ if (!empty($idCategorie))
 		{
 			if ($idCategorie == 'site')
 			{
-				$categorie .= '<h1>' . T_("Dernières publications") . "</h1>\n";
+				$baliseH1 = T_("Dernières publications");
 			}
 			elseif ($idCategorie == 'galeries')
 			{
-				$categorie .= '<h1>' . T_("Derniers ajouts aux galeries") . "</h1>\n";
+				$baliseH1 = T_("Derniers ajouts aux galeries");
 			}
 			else
 			{
-				$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
+				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>");
 			}
 		}
 		
@@ -183,6 +183,23 @@ if (!empty($idCategorie))
 	}
 	else
 	{
+		// Titre de la catégorie.
+		if ($genererTitrePageCategories)
+		{
+			if ($idCategorie == 'site')
+			{
+				$baliseH1 = T_("Dernières publications");
+			}
+			elseif ($idCategorie == 'galeries')
+			{
+				$baliseH1 = T_("Derniers ajouts aux galeries");
+			}
+			else
+			{
+				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>");
+			}
+		}
+		
 		// On vérifie si la catégorie existe en cache ou si le cache est expiré.
 		if ($dureeCache['categorie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['categorie']))
 		{
@@ -190,51 +207,34 @@ if (!empty($idCategorie))
 		}
 		else
 		{
-			// Titre de la catégorie.
-			if ($genererTitrePageCategories)
-			{
-				if ($idCategorie == 'site')
-				{
-					$categorie .= '<h1>' . T_("Dernières publications") . "</h1>\n";
-				}
-				elseif ($idCategorie == 'galeries')
-				{
-					$categorie .= '<h1>' . T_("Derniers ajouts aux galeries") . "</h1>\n";
-				}
-				else
-				{
-					$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>") . "</h1>\n";
-				}
-			}
-			
 			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 			{
 				$adresseInfosPage = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
 				$adresse = $urlRacine . '/' . superRawurlencode($categories[$idCategorie]['pages'][$indice]);
 				$infosPage = infosPage($adresseInfosPage, $inclureApercu, $tailleApercuAutomatique);
-		
+	
 				if (!empty($infosPage))
 				{
 					$categorie .= "<div class=\"apercu\">\n";
-		
+	
 					if (!empty($baliseTitleComplement))
 					{
 						$infosPage['titre'] = preg_replace('/' . preg_quote($baliseTitleComplement) . '$/', '', $infosPage['titre']);
 					}
-		
+	
 					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
 					$listeCategoriesPage = categories($racine, $urlRacine, $adresse, $langueParDefaut);
 					$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesPage);
-					
+				
 					if (!empty($infosPublication))
 					{
 						$categorie .= "<div class=\"infosPublicationApercu\">\n";
 						$categorie .= $infosPublication;
 						$categorie .= "</div><!-- /.infosPublicationApercu -->\n";
 					}
-					
+				
 					$categorie .= "<div class=\"descriptionApercu\">\n";
-					
+				
 					if (!empty($infosPage['apercu']))
 					{
 						$categorie .= $infosPage['apercu'] . "\n";
@@ -243,22 +243,22 @@ if (!empty($idCategorie))
 					{
 						$categorie .= $infosPage['contenu'] . "\n";
 					}
-					
+				
 					$categorie .= "</div><!-- /.descriptionApercu -->\n";
-					
+				
 					if (!empty($infosPage['apercu']))
 					{
 						$categorie .= "<div class=\"lienApercu\">\n";
 						$categorie .= sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em>') . "\n";
 						$categorie .= "</div><!-- /.lienApercu -->\n";
 					}
-		
+	
 					$categorie .= "</div><!-- /.apercu -->\n";
 				}
 			}
-		
+	
 			$categorie .= $pagination;
-		
+	
 			if ($dureeCache['categorie'])
 			{
 				creeDossierCache($racine);
@@ -281,15 +281,15 @@ else
 	{
 		if ($idCategorie == 'site')
 		{
-			$categorie .= '<h1>' . T_("Dernières publications") . "</h1>\n";
+			$baliseH1 = T_("Dernières publications");
 		}
 		elseif ($idCategorie == 'galeries')
 		{
-			$categorie .= '<h1>' . T_("Derniers ajouts aux galeries") . "</h1>\n";
+			$baliseH1 = T_("Derniers ajouts aux galeries");
 		}
 		else
 		{
-			$categorie .= '<h1>' . sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$nomCategorie</em>") . "</h1>\n";
+			$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$nomCategorie</em>");
 		}
 	}
 	
