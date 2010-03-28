@@ -34,27 +34,11 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 include_once $racine . '/inc/fonctions.inc.php';
 
 // Affectations 1 de 3.
-
-$nomPage = nomPage();
-$url = url();
-$urlSansGet = url(FALSE);
-$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
-
-$urlFichiers = $urlRacine . '/site/fichiers';
-$urlRacineAdmin = $urlRacine . '/' . $dossierAdmin;
-$urlSite = $urlRacine . '/site';
-
-$estPageDeconnexion = estPageDeconnexion($urlRacine, $urlSansGet);
-extract(init('', 'langue'), EXTR_SKIP);
-
-if ($estPageDeconnexion)
-{
-	$langue = langue('navigateur', '');
-}
+eval(variablesAaffecterAuDebut());
 
 // Inclusions 2 de 3.
 
-foreach (aInclureDebut($racine) as $fichier)
+foreach (fichiersAinclureAuDebut($racine) as $fichier)
 {
 	include_once $fichier;
 }

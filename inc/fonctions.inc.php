@@ -35,38 +35,6 @@ function actionFormContact($decouvrir)
 }
 
 /*
-Retourne un tableau contenant les fichiers à inclure au début du script.
-*/
-function aInclureDebut($racine)
-{
-	$fichiers = array ();
-	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
-	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
-	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
-	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
-	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
-	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
-	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
-	
-	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
-	{
-		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
-	}
-	
-	foreach (cheminsInc($racine, 'config') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	foreach (cheminsInc($racine, 'constantes') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	return $fichiers;
-}
-
-/*
 Ajoute au tableau des catégories la catégorie spéciale `site` (si elle n'existe pas déjà) contenant les dernières publications du site (pages déclarées dans le fichier de configuration du flux RSS des dernières publications), et retourne le tableau résultant.
 */
 function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesSpecialesAajouter, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
@@ -1285,6 +1253,38 @@ function extension($nomFichier, $retourneNomSansExtension = FALSE)
 	{
 		return $extension != $nomFichier ? $extension : '';
 	}
+}
+
+/*
+Retourne un tableau contenant les fichiers à inclure au début du script.
+*/
+function fichiersAinclureAuDebut($racine)
+{
+	$fichiers = array ();
+	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
+	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
+	
+	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
+	}
+	
+	foreach (cheminsInc($racine, 'config') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	foreach (cheminsInc($racine, 'constantes') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	return $fichiers;
 }
 
 /*
@@ -4623,6 +4623,29 @@ function urlPageSansDecouvrir($retourneTableau = FALSE)
 	{
 		return $urlPageSansDecouvrir[0];
 	}
+}
+
+/*
+Retourne sous forme de chaîne le code PHP nécessaire aux premières affectations du script. La chaîne retournée doit ensuite être exécutée par la fonction PHP `eval()`.
+*/
+function variablesAaffecterAuDebut()
+{
+	return '$nomPage = nomPage();
+	$url = url();
+	$urlSansGet = url(FALSE);
+	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
+
+	$urlFichiers = $urlRacine . \'/site/fichiers\';
+	$urlRacineAdmin = $urlRacine . \'/\' . $dossierAdmin;
+	$urlSite = $urlRacine . \'/site\';
+
+	$estPageDeconnexion = estPageDeconnexion($urlRacine, $urlSansGet);
+	extract(init(\'\', \'langue\'), EXTR_SKIP);
+
+	if ($estPageDeconnexion)
+	{
+		$langue = langue(\'navigateur\', \'\');
+	}';
 }
 
 /*

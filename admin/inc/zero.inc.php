@@ -30,7 +30,7 @@ $urlDeconnexion = adminUrlDeconnexion($urlRacine);
 $urlFichiers = $urlRacine . '/site/fichiers';
 $urlSite = $urlRacine . '/site';
 
-foreach (adminAinclureDebut($racineAdmin) as $fichier)
+foreach (adminFichiersAinclureAuDebut($racineAdmin) as $fichier)
 {
 	include_once $fichier;
 }
