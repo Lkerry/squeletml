@@ -2981,7 +2981,7 @@ function noticeMaintenance()
 /*
 Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouvelleImageDimensionsVoulues, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $nettete)
+function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouvelleImageDimensionsVoulues, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $nettete)
 {
 	$erreur = FALSE;
 	$messagesScript = '';
@@ -3087,14 +3087,14 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 		
 		if ($typeMime == 'image/gif' || ($galerieForcerDimensionsVignette && $typeMime == 'image/jpeg'))
 		{
-			$blanc = imagecolorallocate($nouvelleImage, 255, 255, 255);
-			imagefill($nouvelleImage, 0, 0, $blanc);
+			$couleur = imagecolorallocate($nouvelleImage, $galerieCouleurAlloueeImage['rouge'], $galerieCouleurAlloueeImage['vert'], $galerieCouleurAlloueeImage['bleu']);
+			imagefill($nouvelleImage, 0, 0, $couleur);
 		}
 		
 		if ($typeMime == 'image/png')
 		{
-			$transparentColor = imagecolorallocatealpha($nouvelleImage, 200, 200, 200, 127);
-			imagefill($nouvelleImage, 0, 0, $transparentColor);
+			$transparence = imagecolorallocatealpha($nouvelleImage, 200, 200, 200, 127);
+			imagefill($nouvelleImage, 0, 0, $transparence);
 		}
 		
 		// On crée la nouvelle image à partir de l'image source.
@@ -3186,7 +3186,7 @@ function image(
 	$racine, $urlRacine, $racineImgSrc, $urlImgSrc, $estAccueil, $nombreDeColonnes,
 	
 	// Infos sur l'image à générer.
-	$infosImage, $typeMime, $taille, $sens, $galerieQualiteJpg,
+	$infosImage, $typeMime, $taille, $sens, $galerieQualiteJpg, $galerieCouleurAlloueeImage,
 	
 	// Exif.
 	$galerieExifAjout, $galerieExifDonnees,
@@ -3477,7 +3477,7 @@ function image(
 				// Sinon on génère une vignette.
 				else
 				{
-					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, FALSE);
+					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, FALSE);
 					
 					// On assigne l'attribut `src`.
 					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';

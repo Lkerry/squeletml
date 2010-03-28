@@ -643,6 +643,17 @@ $galerieSeparerTitreImageEtNomGalerie = FALSE; // TRUE|FALSE
 // Qualité des images JPG générées par le script.
 $galerieQualiteJpg = 90; // 0-100
 
+// Couleur allouée pour les images JPG et GIF générées par le script.
+/*
+- Cette couleur est visible lorsque des bordures sont ajoutées aux vignettes générées automatiquement (`$galerieForcerDimensionsVignette` doit valoir TRUE). Par défaut, c'est du blanc.
+- Les images PNG ont des bordures transparentes.
+*/
+$galerieCouleurAlloueeImage = array (
+	'rouge' => '255',
+	'vert'  => '255',
+	'bleu'  => '255',
+);
+
 // Dimensions d'une vignette si génération automatique.
 /*
 - La valeur `0` assignée à une dimension signifie que cette dernière sera calculée automatiquement à partir de l'autre dimension donnée ainsi que des dimensions de l'image source. Si les deux dimensions sont données, la plus grande taille possible contenable dans ces dimensions sera utilisée, sans toutefois dépasser la taille originale.
@@ -655,7 +666,7 @@ $galerieDimensionsVignette['hauteur'] = 100;
 // Taille forcée pour une vignette.
 /*
 - En résumé: permet d'avoir des vignettes de même hauteur ou de même largeur, ou les deux.
-- En détails: si la taille calculée pour la génération d'une vignette est plus petite que la taille voulue pour une vignette, ajoute des bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant.
+- En détails: si la taille calculée pour la génération d'une vignette est plus petite que la taille voulue pour une vignette, ajoute des bordures de couleur `$galerieCouleurAlloueeImage` (ou transparentes pour les PNG) pour compléter l'espace manquant.
   - Par exemple, disons que nous avons une petite image source de 24 px × 24 px, et que la taille voulue pour une vignette est de 100 px × 100 px. Si `$galerieForcerDimensionsVignette` vaut FALSE, la vignette créée aura la même taille que l'image source (c'est-à-dire 24 px × 24 px), mais si `$galerieForcerDimensionsVignette` vaut TRUE, alors la vignette fera 100 px × 100 px, mais il y aura des marges blanches ou transparentes de 38 px autour du corps de l'image (qui se trouve donc à être centrée).
   - Bien sûr, on ne peut forcer une dimension (largeur ou hauteur) que si la dimension voulue a été précisée dans `$galerieDimensionsVignette`.
 */
