@@ -680,7 +680,7 @@ function classesBody($racine, $estAccueil, $idCategorie, $idGalerie, $courrielCo
 		$classesBody .= 'tableDesMatieresArrondie ';
 	}
 	
-	$classeUrl = filtreChaine($racine, url(TRUE, FALSE, TRUE));
+	$classeUrl = filtreChaine($racine, rawurldecode(url(TRUE, FALSE, TRUE)));
 	$classeUrl = str_replace(array ('.', '+'), '-', $classeUrl);
 	$classeUrl = filtreChaine($racine, $classeUrl);
 	$classeUrl = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classeUrl);
@@ -4477,23 +4477,44 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherI
 	
 	$uri = securiseTexte($_SERVER['REQUEST_URI']);
 	
+	if ($rechercherIndex)
+	{
+		preg_match('/(\?.*)/', $uri, $resultat);
+		
+		if (!empty($resultat[1]))
+		{
+			$variablesGet = $resultat[1];
+		}
+		else
+		{
+			$variablesGet = '';
+		}
+		
+		$uriSansGet = preg_replace('/\?.*/', '', $uri);
+		$urlSansGet = $protocole . $serveur . $port . $uriSansGet;
+		$urlSansGetAvecIndex = urlAvecIndex($urlSansGet);
+		
+		if ($urlSansGetAvecIndex != $urlSansGet)
+		{
+			$fichierIndex = superBasename($urlSansGetAvecIndex);
+			$uriSansGet .= $fichierIndex;
+		}
+		
+		$uri = $uriSansGet . $variablesGet;
+	}
+	
 	if (!$retourneVariablesGet)
 	{
-		$uri = preg_replace("/\?.*/", '', $uri);
+		$uri = preg_replace('/\?.*/', '', $uri);
 	}
 	
 	if ($retourneServeur)
 	{
-		$url = "$protocole$serveur$port$uri";
+		$url = $protocole . $serveur . $port . $uri;
 	}
 	else
 	{
-		$url = "$uri";
-	}
-	
-	if ($rechercherIndex)
-	{
-		$url = urlAvecIndex($url);
+		$url = $uri;
 	}
 	
 	return $url;
