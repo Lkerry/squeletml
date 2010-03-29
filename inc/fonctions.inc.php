@@ -4527,7 +4527,14 @@ function urlAvecIndex($url)
 {
 	if (preg_match('|/$|', $url))
 	{
-		$fichiersIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
+		/*
+		La valeur par défaut de `DirectoryIndex` sous Apache 2 est (voir le fichier `/etc/apache2/mods-available/dir.conf` sous Ubuntu):
+		
+			DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm
+		
+		Pour une question de rapidité, j'ai déplacé `index.php` en première position.
+		*/
+		$fichiersIndex = array ('index.php', 'index.html', 'index.cgi', 'index.pl', 'index.xhtml', 'index.htm');
 		
 		foreach ($fichiersIndex as $fichierIndex)
 		{
@@ -4571,14 +4578,32 @@ function urlCat($categorie, $idCategorie, $langueParDefaut)
 
 /*
 Retourne TRUE si l'URL existe, sinon retourne FALSE.
-
-Merci à <http://php.net/manual/fr/function.file-exists.php#84918>.
 */
 function urlExiste($url)
 {
-	$enTetes = @get_headers(superRawurlencode($url));
+	// Méthode 1: `get_headers()`. Merci à <http://php.net/manual/fr/function.file-exists.php#84918>.
+#	$enTetes = @get_headers(superRawurlencode($url));
 	
-	return is_array($enTetes) ? preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/', $enTetes[0]) : FALSE;
+	// Méthode 2: `file_get_contents()`.
+#	@file_get_contents($url);
+#	$enTetes = $http_response_header;
+	
+	// Retour commun aux méthodes 1 et 2.
+#	return is_array($enTetes) ? preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/', $enTetes[0]) : FALSE;
+	
+	// Méthode 3: `fopen()`.
+	$enTetes = @fopen($url, 'r');
+	
+	// Retour de la méthode 3.
+	if ($enTetes !== FALSE)
+	{
+		fclose($enTetes);
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
 }
 
 /*
