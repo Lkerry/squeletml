@@ -194,8 +194,14 @@ $typeMimeFile = FALSE; // TRUE|FALSE
 $typeMimeCheminFile = '/usr/bin/file';
 $typeMimeCorrespondance = array ();
 
+// Inclusion des ancres.
+$inclureAncres = TRUE; // TRUE|FALSE
+
 // Inclusion du sur-titre.
 $inclureSurTitre = FALSE; // TRUE|FALSE
+
+// Inclusion du sous-titre.
+$inclureSousTitre = TRUE; // TRUE|FALSE
 
 // Inclusion du bas de page.
 $inclureBasDePage = TRUE; // TRUE|FALSE

@@ -40,10 +40,12 @@
 	<?php flush(); // Si possible, envoi immédiat de l'en-tête au navigateur. ?>
 	<!-- ____________________ <body> ____________________ -->
 	<body<?php echo $classesBody; ?>>
-		<!-- ____________________ #ancres ____________________ -->
-		<div id="ancres">
-			<?php include_once $cheminAncres; ?>
-		</div><!-- /#ancres -->
+		<?php if ($inclureAncres): ?>
+			<!-- ____________________ #ancres ____________________ -->
+			<div id="ancres">
+				<?php include_once $cheminAncres; ?>
+			</div><!-- /#ancres -->
+		<?php endif; ?>
 		
 		<?php if ($afficherMessageIe6): ?>
 			<!-- ____________________ Message pour IE6. ____________________ -->
@@ -70,9 +72,11 @@
 						<?php echo $nomSite; ?>
 					</div><!-- /#titre -->
 
-					<div id="sousTitre">
-						<?php include_once $cheminSousTitre; ?>
-					</div><!-- /#sousTitre -->
+					<?php if ($inclureSousTitre): ?>
+						<div id="sousTitre">
+							<?php include_once $cheminSousTitre; ?>
+						</div><!-- /#sousTitre -->
+					<?php endif; ?>
 					
 					<div class="sep"></div>
 					<?php echo $blocs[100]; ?>
