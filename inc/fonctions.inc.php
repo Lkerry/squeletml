@@ -1653,7 +1653,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $a
 	
 	$categories[$categorie]['urlCat'] = urlCat($categories[$categorie], $categorie, $langueParDefaut);
 	
-	$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['urlCat'] . '">' . $nomCategorie . '</a>';
+	$htmlCategorie .= '<a href="' . $urlRacine . '/' . superRawurlencode($categories[$categorie]['urlCat']) . '">' . $nomCategorie . '</a>';
 	
 	if ($afficherNombreArticlesCategorie)
 	{
@@ -1918,7 +1918,7 @@ function infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $ca
 		
 		foreach ($categories as $categorie => $urlCat)
 		{
-			$listeCategories .= "<a href=\"$urlRacine/$urlCat\">$categorie</a>, ";
+			$listeCategories .= '<a href="' . $urlRacine . '/' . superRawurlencode($urlCat) . '">' . $categorie . '</a>, ';
 		}
 		
 		$listeCategories = substr($listeCategories, 0, -2); // Suppression du `, ` final.
