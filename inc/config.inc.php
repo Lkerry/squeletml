@@ -397,6 +397,12 @@ $dureeCache['publications-recentes'] = 0; // Voir la fonction `publicationsRecen
 */
 $genererTitrePageCategories = TRUE; // TRUE|FALSE
 
+// Si `$genererTitrePageCategories` vaut TRUE, faire précéder le nom de la catégorie de l'expression «Articles dans la catégorie» traduit dans la langue de la page.
+/*
+- Par exemple, le choix est d'afficher «Chiens» ou «Articles dans la catégorie Chiens».
+*/
+$titrePageCategoriesAvecMotCategorie = TRUE; // TRUE|FALSE
+
 // Génération automatisée du bloc de menu des catégories.
 /*
 - Le bloc de menu des catégories peut être réalisé à la main dans le fichier `menu-categories.inc.php` ou généré automatiquement.
@@ -668,8 +674,8 @@ $galerieSeparerTitreImageEtNomGalerie = FALSE; // TRUE|FALSE
 - `accueil` correspond à l'accueil d'une galerie, alors que `page-image` correspond à la page individuelle d'une image.
 - Chaque élément peut valoir TRUE ou FALSE.
 */
-$galerieTitreAvecMotGalerie['accueil']    = false;
-$galerieTitreAvecMotGalerie['page-image'] = false;
+$galerieTitreAvecMotGalerie['accueil']    = TRUE;
+$galerieTitreAvecMotGalerie['page-image'] = TRUE;
 
 // Qualité des images JPG générées par le script.
 $galerieQualiteJpg = 90; // 0-100

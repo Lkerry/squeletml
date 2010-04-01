@@ -153,9 +153,13 @@ if (!empty($idCategorie))
 			{
 				$baliseH1 = T_("Derniers ajouts aux galeries");
 			}
-			else
+			elseif ($titrePageCategoriesAvecMotCategorie)
 			{
 				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>");
+			}
+			else
+			{
+				$baliseH1 = "<em>$idCategorie</em>";
 			}
 		}
 		
@@ -194,9 +198,13 @@ if (!empty($idCategorie))
 			{
 				$baliseH1 = T_("Derniers ajouts aux galeries");
 			}
-			else
+			elseif ($titrePageCategoriesAvecMotCategorie)
 			{
 				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>");
+			}
+			else
+			{
+				$baliseH1 = "<em>$idCategorie</em>";
 			}
 		}
 		
@@ -287,9 +295,13 @@ else
 		{
 			$baliseH1 = T_("Derniers ajouts aux galeries");
 		}
-		else
+		elseif ($titrePageCategoriesAvecMotCategorie)
 		{
 			$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$nomCategorie</em>");
+		}
+		else
+		{
+			$baliseH1 = "<em>$nomCategorie</em>";
 		}
 	}
 	
