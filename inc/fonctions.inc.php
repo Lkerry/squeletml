@@ -574,7 +574,7 @@ function cheminsInc($racine, $nom)
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesSupplementaires)
+function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
 {
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -606,6 +606,11 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		else
 		{
 			$classesBody .= 'galerieAccueil ';
+			
+			if (!empty($galerieAccueilJavascriptCouleurNavigation) && $galerieAccueilJavascriptCouleurNavigation != 'blanc')
+			{
+				$classesBody .= "slimbox2$galerieAccueilJavascriptCouleurNavigation ";
+			}
 		}
 	}
 	

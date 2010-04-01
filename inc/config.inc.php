@@ -736,6 +736,9 @@ $galerieInfoEmplacement = 'haut'; // haut|bas
 */
 $galerieAccueilJavascript = FALSE; // TRUE|FALSE
 
+// Si `$galerieAccueilJavascript` vaut TRUE, couleur d'arrière-plan des flèches de navigation.
+$galerieAccueilJavascriptCouleurNavigation = 'gris'; // blanc|gris
+
 // Si `$galerieAccueilJavascript` vaut TRUE, ajout d'un lien de navigation sans Javascript.
 $galerieAccueilLienSansJavascript = TRUE; // TRUE|FALSE
 
