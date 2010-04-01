@@ -384,7 +384,6 @@ if (!empty($blocsAinsererTemp))
 						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
-							$listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
 							$bloc = categoriesActives($bloc, $listeCategoriesPage, $idCategorie);
 						}
 						

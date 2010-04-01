@@ -77,7 +77,8 @@ $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres'
 $cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
-$classesBody = classesBody($racine, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesBody);
+$listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
+$classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
 if (!empty($classesContenu))

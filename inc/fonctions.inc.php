@@ -574,7 +574,7 @@ function cheminsInc($racine, $nom)
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($racine, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesSupplementaires)
+function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $classesSupplementaires)
 {
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -597,11 +597,41 @@ function classesBody($racine, $estAccueil, $idCategorie, $idGalerie, $courrielCo
 		{
 			$classesBody .= 'galerieAucuneColonne ';
 		}
+		
+		if (preg_match('/(\?|&(amp;)?)image\=(.+?)(&(amp;)?|$)/', $url, $resultat))
+		{
+			$classesBody .= 'galeriePageImage ';
+			$classesBody .= chaineVersClasseCss($racine, 'image-' . $resultat[3]) . ' ';
+		}
+		else
+		{
+			$classesBody .= 'galerieAccueil ';
+		}
 	}
 	
 	if (!empty($courrielContact))
 	{
 		$classesBody .= 'contact ';
+	}
+	
+	if (empty($idCategorie) && empty($idGalerie) && empty($courrielContact))
+	{
+		$classesBody .= 'pageStandard ';
+	}
+	
+	if (!empty($listeCategoriesPage))
+	{
+		$classesBody .= 'article ';
+		
+		foreach ($listeCategoriesPage as $categoriePage => $urlCategoriePage)
+		{
+			$classesBody .= chaineVersClasseCss($racine, "article-$categoriePage") . ' ';
+		}
+	}
+	
+	if (empty($idCategorie) && empty($idGalerie) && empty($courrielContact) && empty($listeCategoriesPage))
+	{
+		$classesBody .= 'pageStandardSansCategorie ';
 	}
 	
 	if ($nombreDeColonnes == 2)
@@ -680,11 +710,26 @@ function classesBody($racine, $estAccueil, $idCategorie, $idGalerie, $courrielCo
 		$classesBody .= 'tableDesMatieresArrondie ';
 	}
 	
-	$classeUrl = filtreChaine($racine, rawurldecode(url(TRUE, FALSE, TRUE)));
-	$classeUrl = str_replace(array ('.', '+'), '-', $classeUrl);
-	$classeUrl = filtreChaine($racine, $classeUrl);
-	$classeUrl = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classeUrl);
-	$classesBody .= $classeUrl . ' ';
+	$urlAvecGetSansServeurAvecIndex = url(TRUE, FALSE, TRUE);
+	$classesBody .= chaineVersClasseCss($racine, $urlAvecGetSansServeurAvecIndex) . ' ';
+	
+	if (dirname($urlAvecGetSansServeurAvecIndex) != $urlAvecGetSansServeurAvecIndex)
+	{
+		$classesBody .= chaineVersClasseCss($racine, dirname($urlAvecGetSansServeurAvecIndex)) . ' ';
+	}
+	
+	if (superBasename($urlAvecGetSansServeurAvecIndex) != $urlAvecGetSansServeurAvecIndex)
+	{
+		$classesBody .= chaineVersClasseCss($racine, superBasename($urlAvecGetSansServeurAvecIndex)) . ' ';
+	}
+	
+	$urlSansGetSansServeurAvecIndex = url(FALSE, FALSE, TRUE);
+	
+	if ($urlSansGetSansServeurAvecIndex != $urlAvecGetSansServeurAvecIndex)
+	{
+		$classesBody .= chaineVersClasseCss($racine, $urlSansGetSansServeurAvecIndex) . ' ';
+		$classesBody .= chaineVersClasseCss($racine, superBasename($urlSansGetSansServeurAvecIndex)) . ' ';
+	}
 	
 	if (!empty($classesSupplementaires))
 	{
@@ -4669,6 +4714,19 @@ function urlPageSansDecouvrir($retourneTableau = FALSE)
 	{
 		return $urlPageSansDecouvrir[0];
 	}
+}
+
+/*
+Retourne la chaîne fournie en paramètre filtrée convenablement pour un nom de classe CSS.
+*/
+function chaineVersClasseCss($racine, $chaine)
+{
+	$classe = filtreChaine($racine, rawurldecode($chaine));
+	$classe = str_replace(array ('.', '+'), '-', $classe);
+	$classe = filtreChaine($racine, $classe);
+	$classe = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classe);
+	
+	return $classe;
 }
 
 /*

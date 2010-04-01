@@ -464,6 +464,17 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 		$classesBody = 'maClasse1 maClasse2';
 
+	Prendre note que la balise `body` contient déjà par défaut plusieurs classes, dont la plupart ont un nom explicite. Voici cependant quelques classes qui méritent d'être définies:
+
+  - `accueil`: ajoutée aux pages d'accueil de chaque langue du site.
+  - `article`: ajoutée aux pages étant classées dans au moins une catégorie.
+  - `categorie`: ajoutée aux pages listant les articles appartenant à une catégorie.
+  - `galerie`: ajoutée aux pages d'une galerie, que ce soit la page d'accueil de la galerie ou une page individuelle d'une image.
+  - `galerieAccueil`: ajoutée aux pages d'accueil de chaque galerie.
+  - `galeriePageImage`: ajoutée à chaque page individuelle d'une image dans une galerie.
+  - `pageStandard`: ajoutée aux pages n'étant ni un formulaire de contact, ni une galerie, ni une page listant les articles appartenant à une catégorie.
+  - `pageStandardSansCategorie`: ajoutée aux pages n'étant ni un formulaire de contact, ni une galerie, ni une page listant les articles appartenant à une catégorie, ni une page étant classée dans au moins une catégorie.
+
 - `$classesContenu`: permet d'ajouter des classes à la `div` `contenu`. Voir `$classesBody` pour un exemple d'utilisation.
 
 - `$courrielContact`: adresse courriel qui va recevoir les messages du formulaire de contact. Si cette variable existe et n'est pas vide, un formulaire de contact sera automatiquement inclus dans la page. Il est donc facile de créer autant de formulaires que désiré en créant pour chacun une page contenant une varibale `$courrielContact`.
