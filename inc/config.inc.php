@@ -397,7 +397,7 @@ $dureeCache['publications-recentes'] = 0; // Voir la fonction `publicationsRecen
 */
 $genererTitrePageCategories = TRUE; // TRUE|FALSE
 
-// Si `$genererTitrePageCategories` vaut TRUE, faire précéder le nom de la catégorie de l'expression «Articles dans la catégorie» traduit dans la langue de la page.
+// Si `$genererTitrePageCategories` vaut TRUE, nom de la catégorie précédé de l'expression «Articles dans la catégorie» traduit dans la langue de la page.
 /*
 - Par exemple, le choix est d'afficher «Chiens» ou «Articles dans la catégorie Chiens».
 */
@@ -668,7 +668,7 @@ $galerieGenererTitrePages = TRUE; // TRUE|FALSE
 */
 $galerieSeparerTitreImageEtNomGalerie = FALSE; // TRUE|FALSE
 
-// Si `$galerieGenererTitrePages` vaut TRUE, faire précéder le nom de la galerie du mot «Galerie» traduit dans la langue de la page.
+// Si `$galerieGenererTitrePages` vaut TRUE, nom de la galerie précédé du mot «Galerie» traduit dans la langue de la page.
 /*
 - Par exemple, le choix est d'afficher «Chiens» ou «Galerie Chiens».
 - `accueil` correspond à l'accueil d'une galerie, alors que `page-image` correspond à la page individuelle d'une image.
@@ -735,6 +735,16 @@ $galerieInfoEmplacement = 'haut'; // haut|bas
 - Utiliser Slimbox 2 pour passer d'une image à une autre sur la page d'accueil de la galerie au lieu de naviguer d'une image à une autre en rechargeant toute la page.
 */
 $galerieAccueilJavascript = FALSE; // TRUE|FALSE
+
+// Si `$galerieAccueilJavascript` vaut TRUE, ajout d'un lien de navigation sans Javascript.
+$galerieAccueilLienSansJavascript = TRUE; // TRUE|FALSE
+
+// Si `$galerieAccueilLienSansJavascript` vaut TRUE, choix de l'emplacement du lien.
+/*
+- Les choix possibles sont: haut, bas, info.
+- Les emplacements `haut` et `bas` font référence au bloc de vignettes, alors que `info` fait référence aux informations au sujet de la galerie affichées lorsque `$galerieInfoAjout` vaut TRUE.
+*/
+$galerieAccueilLienSansJavascriptEmplacement = 'info';
 
 /* ____________________ Page individuelle d'une image. ____________________ */
 

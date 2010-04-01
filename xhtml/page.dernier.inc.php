@@ -4,8 +4,6 @@
 						
 						<?php if (!empty($idGalerie)): ?>
 							</div><!-- /#galerie -->
-							
-							<div class="sep"></div>
 						<?php endif; ?>
 						
 						<?php if ($afficherCategorie): ?>

@@ -548,6 +548,43 @@ elseif (!empty($idGalerie))
 				$corpsGalerie .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 			}
 
+			$corpsGalerie .= "<div class=\"sep\"></div>\n";
+			$lienSansJavascript = '';
+			
+			if ($galerieAccueilJavascript && $galerieAccueilLienSansJavascript)
+			{
+				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+				{
+					$lienSansJavascript .= '<div id="galerieLienSansJavascript">' . "\n";
+					$lienSansJavascript .= "<p>";
+				}
+				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
+				{
+					$lienSansJavascript .= '<span id="galerieLienSansJavascript">';
+				}
+
+				$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . '">' . T_("Naviguer dans la galerie sans fenêtre Javascript.") . "</a>";
+				
+				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+				{
+					$lienSansJavascript .= "</p>\n";
+					$lienSansJavascript .= '</div><!-- /#galerieLienSansJavascript -->' . "\n";
+				}
+				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
+				{
+					$lienSansJavascript .= '</span>';
+				}
+
+				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut')
+				{
+					$corpsGalerie = $lienSansJavascript . $corpsGalerie;
+				}
+				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'bas')
+				{
+					$corpsGalerie .= $lienSansJavascript;
+				}
+			}
+			
 			if ($galerieVignettesParPage)
 			{
 				if ($galeriePagination['au-dessus'])
@@ -572,11 +609,16 @@ elseif (!empty($idGalerie))
 				{
 					$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a>";
 				}
+
+				if (!empty($lienSansJavascript) && $galerieAccueilLienSansJavascriptEmplacement == 'info')
+				{
+					$galerieInfo .= " $lienSansJavascript";
+				}
 				
 				$galerieInfo .= "</p>\n";
 				$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
 			}
-
+			
 			// Variable `$corpsGalerie` finale.
 			if ($galerieInfoEmplacement == 'haut')
 			{
