@@ -118,11 +118,23 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			if ($galerieSeparerTitreImageEtNomGalerie)
 			{
 				$baliseH1 = $titreImage;
-				$sousTitreGalerie = '<p id="galerieSousTitre">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</p>\n";
+
+				if ($galerieTitreAvecMotGalerie['page-image'])
+				{
+					$sousTitreGalerie = sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>");
+				}
+				else
+				{
+					$sousTitreGalerie = "<em>$idGalerie</em>";
+				}
+			}
+			elseif ($galerieTitreAvecMotGalerie['page-image'])
+			{
+				$baliseH1 = sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>");
 			}
 			else
 			{
-				$baliseH1 = sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>");
+				$baliseH1 = sprintf(T_("%1\$s – %2\$s"), "<em>$titreImage</em>", "<em>$idGalerie</em>");
 			}
 
 			$titreGalerieGenere = TRUE;
@@ -390,11 +402,23 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			if ($galerieSeparerTitreImageEtNomGalerie)
 			{
 				$baliseH1 = $id;
-				$sousTitreGalerie = sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>");
+
+				if ($galerieTitreAvecMotGalerie['page-image'])
+				{
+					$sousTitreGalerie = sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>");
+				}
+				else
+				{
+					$sousTitreGalerie = "<em>$idGalerie</em>";
+				}
+			}
+			elseif ($galerieTitreAvecMotGalerie['page-image'])
+			{
+				$baliseH1 = sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>");
 			}
 			else
 			{
-				$baliseH1 = sprintf(T_("%1\$s – Galerie %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>");
+				$baliseH1 = sprintf(T_("%1\$s – %2\$s"), "<em>$id</em>", "<em>$idGalerie</em>");
 			}
 
 			$titreGalerieGenere = TRUE;
@@ -442,7 +466,15 @@ elseif (!empty($idGalerie))
 	// Titre de la galerie.
 	if ($galerieGenererTitrePages)
 	{
-		$baliseH1 = sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>");
+		if ($galerieTitreAvecMotGalerie['accueil'])
+		{
+			$baliseH1 = sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>");
+		}
+		else
+		{
+			$baliseH1 = "<em>$idGalerie</em>";
+		}
+		
 		$titreGalerieGenere = TRUE;
 	}
 	
@@ -575,7 +607,15 @@ else
 	// Titre de la galerie.
 	if ($galerieGenererTitrePages)
 	{
-		$baliseH1 = sprintf(T_("Galerie %1\$s"), "<em>$nomGalerie</em>");
+		if ($galerieTitreAvecMotGalerie['accueil'])
+		{
+			$baliseH1 = sprintf(T_("Galerie %1\$s"), "<em>$nomGalerie</em>");
+		}
+		else
+		{
+			$baliseH1 = "<em>$nomGalerie</em>";
+		}
+		
 		$titreGalerieGenere = TRUE;
 	}
 	

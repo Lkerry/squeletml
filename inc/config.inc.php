@@ -662,6 +662,15 @@ $galerieGenererTitrePages = TRUE; // TRUE|FALSE
 */
 $galerieSeparerTitreImageEtNomGalerie = FALSE; // TRUE|FALSE
 
+// Si `$galerieGenererTitrePages` vaut TRUE, faire précéder le nom de la galerie du mot «Galerie» traduit dans la langue de la page.
+/*
+- Par exemple, le choix est d'afficher «Chiens» ou «Galerie Chiens».
+- `accueil` correspond à l'accueil d'une galerie, alors que `page-image` correspond à la page individuelle d'une image.
+- Chaque élément peut valoir TRUE ou FALSE.
+*/
+$galerieTitreAvecMotGalerie['accueil']    = false;
+$galerieTitreAvecMotGalerie['page-image'] = false;
+
 // Qualité des images JPG générées par le script.
 $galerieQualiteJpg = 90; // 0-100
 
