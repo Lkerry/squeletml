@@ -158,7 +158,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
 			echo "<div class=\"bDcorps afficher\">\n";
-			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser la langue à laquelle appartient une catégorie, et ce à l'aide du paramètre %2\$s. Vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %3\$s ainsi que la catégorie parente, s'il y a lieu, grâce à %4\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>langueCat=' . T_("langue à laquelle appartient la catégorie") . '</code>', '<code>urlCat=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>catParente=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
+			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser la langue à laquelle appartient une catégorie, et ce à l'aide du paramètre %2\$s. Vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %3\$s (dans ce cas, vous devez créer la page d'accueil manuellement) ainsi que la catégorie parente, s'il y a lieu, grâce à %4\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>langueCat=' . T_("langue à laquelle appartient la catégorie") . '</code>', '<code>urlCat=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>catParente=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
 			
 			echo "<ul>\n";
 			echo "<li>Chiens\n";
@@ -170,11 +170,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
-			echo '<p>' . sprintf(T_("Cet exemple fait référence à la catégorie en français %1\$s, accessible à l'adresse %2\$s, enfant de la catégorie %3\$s et contenant une page dont l'URL est %4\$s."), "<em>Chiens</em>", "<code>$urlRacine/animaux/chiens/</code>", "<em>Animaux</em>", "<code>$urlRacine/animaux/chiens/husky.php</code>") . "</p>\n";
+			echo '<p>' . sprintf(T_("Cet exemple fait référence à la catégorie en français «%1\$s», accessible à l'adresse %2\$s, enfant de la catégorie «%3\$s» et contenant une page dont l'URL est %4\$s."), "Chiens", "<code>$urlRacine/animaux/chiens/</code>", "Animaux", "<code>$urlRacine/animaux/chiens/husky.php</code>") . "</p>\n";
 			
-			echo '<p>' . sprintf(T_("Si la langue d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, la langue sera celle déclarée par défaut dans le fichier de configuration du site."), 'langueCat') . "</p>\n";
+			echo '<p>' . sprintf(T_("Si la langue d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, la langue sera celle déclarée par défaut dans le fichier de configuration du site."), '<code>langueCat</code>') . "</p>\n";
 			
-			echo '<p>' . sprintf(T_("Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s."), 'urlCat', '$urlRacine/categorie.php?id=$idCategorie') . "</p>\n";
+			echo '<p>' . sprintf(T_("Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s. Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque %3\$s est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie."), '<code>urlCat</code>', '<code>$urlRacine/categorie.php?id=$idCategorie</code>', '<code>categorie.php</code>') . "</p>\n";
 			
 			echo '<p>' . T_("Pour enlever une catégorie ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
 			
