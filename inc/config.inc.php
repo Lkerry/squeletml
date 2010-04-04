@@ -43,16 +43,17 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 - Dans le fichier de configuration personnalisé, ajouter tout simplement des éléments au tableau `$balisesLinkScript`, par exemple:
   $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/site/css/style-general.css";
   $balisesLinkScript[] = "$urlRacine/page.php#css#$urlRacine/site/css/style-page.css";
+- Ci-dessous, la clé est spécifiée (par exemple `$balisesLinkScript[5]`) pour permettre de modifier facilement une inclusion par défaut dans le fichier de configuration personnalisé. Pour ajouter de nouvelles inclusions, il n'est pas nécessaire de rensigner la clé (voir les exemples ci-dessus).
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
-$balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
-$balisesLinkScript[] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
-$balisesLinkScript[] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
-$balisesLinkScript[] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
-$balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
-$balisesLinkScript[] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
-$balisesLinkScript[] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
+$balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
+$balisesLinkScript[1] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
+$balisesLinkScript[2] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
+$balisesLinkScript[3] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
+$balisesLinkScript[4] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
+$balisesLinkScript[5] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
+$balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
+$balisesLinkScript[7] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
 
 // Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`.
 /*
@@ -354,7 +355,7 @@ $boitesDeroulantesAlaMainParDefaut = FALSE; // TRUE|FALSE
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScriptFinales[] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');});";
+$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');});";
 
 // Inclusion de l'aperçu d'une page.
 /*

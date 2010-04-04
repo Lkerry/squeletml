@@ -60,9 +60,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 		
-			if (empty($_POST['nom']))
+			if (empty($_POST['identifiant']))
 			{
-				$messagesScript .= '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
 			}
 			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && $_POST['motDePasse'] != $_POST['motDePasse2'])
 			{
@@ -75,11 +75,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (stristr(PHP_OS, 'win') || $serveurFreeFr)
 					{
-						$acces = securiseTexte($_POST['nom']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
+						$acces = securiseTexte($_POST['identifiant']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
 					}
 					else
 					{
-						$acces = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+						$acces = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
 					} 
 			
 					// On vérifie si l'utilisateur est déjà présent.
@@ -89,7 +89,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
+						if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
 						{
 							$utilisateurAbsent = FALSE;
 							break;
@@ -99,11 +99,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if ($utilisateurAbsent)
 					{
 						fputs($fic2, $acces);
-						$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['nom'])) . "</li>\n";
+						$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['identifiant'])) . "</li>\n";
 					}
 					else
 					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['nom'])) . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['identifiant'])) . "</li>\n";
 					}
 		
 					fclose($fic2);
@@ -127,10 +127,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
+						if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
 						{
 							$utilisateurAbsent = FALSE;
-							$ligne = securiseTexte($_POST['nom']) . ':' . crypt(securiseTexte($_POST['motDePasse']), CRYPT_STD_DES) . "\n";
+							$ligne = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
 						}
 			
 						$utilisateurs[] = $ligne;
@@ -155,11 +155,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 				if ($utilisateurAbsent)
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['nom'])) . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['identifiant'])) . "</li>\n";
 				}
 				else
 				{
-					$messagesScript .= '<li>' . sprintf(T_("Modification du mot de passe de l'utilisateur <em>%1\$s</em> effectuée."), securiseTexte($_POST['nom'])) . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Modification du mot de passe de l'utilisateur <em>%1\$s</em> effectuée."), securiseTexte($_POST['identifiant'])) . "</li>\n";
 				}
 			}
 	
@@ -177,7 +177,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (preg_match('/^' . securiseTexte($_POST['nom']) . ':/', $ligne))
+						if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
 						{
 							$utilisateurAbsent = FALSE;
 						}
@@ -254,116 +254,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 				if ($utilisateurAbsent)
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['identifiant'])) . "</li>\n";
 				}
 				else
 				{
-					$messagesScript .= '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['nom'])) . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['identifiant'])) . "</li>\n";
 				}
 			}
 	
 			// Lien vers `.acces` à partir de `.htaccess`.
-			if (file_exists($racine . '/.acces') && strpos(file_get_contents($racine . '/.acces'), ':') !== FALSE)
-			{
-				$lienAccesDansHtaccess = FALSE;
+			$messagesScript .= accesDansHtaccess($racine, $serveurFreeFr);
 			
-				if ($fic = @fopen($racine . '/.htaccess', 'r'))
-				{
-					while (!feof($fic))
-					{
-						$ligne = rtrim(fgets($fic));
-					
-						if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
-						{
-							$lienAccesDansHtaccess = TRUE;
-							break;
-						}
-					}
-					fclose($fic);
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-				}
-	
-				if (!$lienAccesDansHtaccess)
-				{
-					$htaccess = '';
-					$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
-					$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
-				
-					$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
-				
-					if ($serveurFreeFr)
-					{
-						$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
-			
-						preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
-			
-						$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
-					}
-					else
-					{
-						$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
-						$htaccess .= "\tAuthUserFile $racine/.acces\n";
-					}
-		
-					$htaccess .= "\tAuthType Basic\n";
-					$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
-					$htaccess .= "\tRequire valid-user\n";
-		
-					if ($serveurFreeFr)
-					{
-						$htaccess .= "</Files>\n";
-					}
-					else
-					{
-						$htaccess .= "</FilesMatch>\n";
-					}
-				
-					$htaccessFilesModele = "deconnexion\.php$";
-				
-					if ($serveurFreeFr)
-					{
-						$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
-			
-						preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.deconnexion.acces', $cheminAcces);
-			
-						$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
-					}
-					else
-					{
-						$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
-						$htaccess .= "\tAuthUserFile $racine/.deconnexion.acces\n";
-					}
-		
-					$htaccess .= "\tAuthType Basic\n";
-					$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
-					$htaccess .= "\tRequire valid-user\n";
-		
-					if ($serveurFreeFr)
-					{
-						$htaccess .= "</Files>\n";
-					}
-					else
-					{
-						$htaccess .= "</FilesMatch>\n";
-					}
-				
-					$htaccess .= "# Fin de l'ajout automatique de Squeletml (accès admin).\n";
-		
-					if ($fic = @fopen($racine . '/.htaccess', 'a+'))
-					{
-						fputs($fic, $htaccess);
-						fclose($fic);
-					}
-					else
-					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
-					}
-				}
-			}
-		
 			echo adminMessagesScript($messagesScript, T_("Gestion des droits d'accès à l'administration"));
 		}
 
@@ -711,8 +612,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<fieldset>
 						<legend><?php echo T_("Options"); ?></legend>
 					
-						<p><label for="inputNom"><?php echo T_("Nom:"); ?></label><br />
-						<input id="inputNom" type="text" name="nom" /></p>
+						<p><label for="inputIdentifiant"><?php echo T_("Identifiant:"); ?></label><br />
+						<input id="inputIdentifiant" type="text" name="identifiant" /></p>
 			
 						<p><label for="inputMotDePasse"><?php echo T_("Mot de passe:"); ?></label><br />
 						<input id="inputMotDePasse" type="password" name="motDePasse" /></p>

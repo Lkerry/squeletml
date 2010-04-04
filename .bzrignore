@@ -1,8 +1,10 @@
 .acces
+.htaccess
 *.mo
 init.inc.php
 site/admin/cache/*
 site/cache/*
-site/fichiers/galeries
+site/fichiers/galeries/*
 site/inc/*
+robots.txt
 version.txt

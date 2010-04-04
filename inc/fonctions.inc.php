@@ -1,5 +1,117 @@
 <?php
 /*
+Ajoute dans le fichier `.htaccess` le code nécessaire à la protection de certains fichiers dont l'accès est réservé aux utilisateurs listés dans `.acces`. Si une erreur survient, retourne le résultat sous forme de message concaténable dans `$messagesScript`, sinon retourne une chaîne vide.
+*/
+function accesDansHtaccess($racine, $serveurFreeFr)
+{
+	$messagesScript = '';
+	
+	if (file_exists($racine . '/.acces') && strpos(file_get_contents($racine . '/.acces'), ':') !== FALSE)
+	{
+		$lienAccesDansHtaccess = FALSE;
+	
+		if ($fic = @fopen($racine . '/.htaccess', 'r'))
+		{
+			while (!feof($fic))
+			{
+				$ligne = rtrim(fgets($fic));
+			
+				if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
+				{
+					$lienAccesDansHtaccess = TRUE;
+					break;
+				}
+			}
+			
+			fclose($fic);
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+		}
+
+		if (!$lienAccesDansHtaccess)
+		{
+			$htaccess = '';
+			$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
+			$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
+		
+			$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
+		
+			if ($serveurFreeFr)
+			{
+				$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
+	
+				preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
+	
+				$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
+			}
+			else
+			{
+				$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
+				$htaccess .= "\tAuthUserFile $racine/.acces\n";
+			}
+
+			$htaccess .= "\tAuthType Basic\n";
+			$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
+			$htaccess .= "\tRequire valid-user\n";
+
+			if ($serveurFreeFr)
+			{
+				$htaccess .= "</Files>\n";
+			}
+			else
+			{
+				$htaccess .= "</FilesMatch>\n";
+			}
+		
+			$htaccessFilesModele = "deconnexion\.php$";
+		
+			if ($serveurFreeFr)
+			{
+				$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
+	
+				preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.deconnexion.acces', $cheminAcces);
+	
+				$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
+			}
+			else
+			{
+				$htaccess .= "<FilesMatch \"$htaccessFilesModele\">\n";
+				$htaccess .= "\tAuthUserFile $racine/.deconnexion.acces\n";
+			}
+
+			$htaccess .= "\tAuthType Basic\n";
+			$htaccess .= "\tAuthName \"Administration de Squeletml\"\n";
+			$htaccess .= "\tRequire valid-user\n";
+
+			if ($serveurFreeFr)
+			{
+				$htaccess .= "</Files>\n";
+			}
+			else
+			{
+				$htaccess .= "</FilesMatch>\n";
+			}
+		
+			$htaccess .= "# Fin de l'ajout automatique de Squeletml (accès admin).\n";
+
+			if ($fic = @fopen($racine . '/.htaccess', 'a+'))
+			{
+				fputs($fic, $htaccess);
+				fclose($fic);
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+			}
+		}
+	}
+	
+	return $messagesScript;
+}
+
+/*
 Retourne le lien vers l'accueil de la langue de la page. Si le lien n'a pas été trouvé, retourne une chaîne vide.
 */
 function accueil($accueil, $langues)
@@ -429,6 +541,19 @@ function categoriesParentesIndirectes($categories, $categorie, $langueParDefaut)
 	}
 	
 	return array_unique($categoriesParentesIndirectes);
+}
+
+/*
+Retourne la chaîne fournie en paramètre filtrée convenablement pour un nom de classe CSS.
+*/
+function chaineVersClasseCss($racine, $chaine)
+{
+	$classe = filtreChaine($racine, rawurldecode($chaine));
+	$classe = str_replace(array ('.', '+'), '-', $classe);
+	$classe = filtreChaine($racine, $classe);
+	$classe = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classe);
+	
+	return $classe;
 }
 
 /*
@@ -4499,7 +4624,7 @@ function typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeC
 /*
 Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur. Un troisième paramètre optionnel, s'il vaut TRUE, active la recherche d'un fichier d'index (par exemple `index.php`) pour l'ajouter, s'il y a lieu, à l'URL.
 
-Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` et `$retourneServeur` vallent TRUE.
+Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonction va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` et `$retourneServeur` vallent TRUE.
 
 Fonction inspirée de <http://api.drupal.org/api/function/drupal_detect_baseurl>.
 */
@@ -4722,16 +4847,29 @@ function urlPageSansDecouvrir($retourneTableau = FALSE)
 }
 
 /*
-Retourne la chaîne fournie en paramètre filtrée convenablement pour un nom de classe CSS.
+Retourne l'URL parente de la page courante. En d'autres mots, supprime la page courante de l'URL et retourne le résultat. Exemples:
+
+- si l'URL est `http://www.NomDeDomaine.ext/dossier/fichier.php?a=2&b=3#ancre`, la fonction retourne `http://www.NomDeDomaine.ext/dossier`;
+- si l'URL est `http://www.NomDeDomaine.ext/dossier/index.php`, la fonction retourne `http://www.NomDeDomaine.ext/dossier`;
+- si l'URL est `http://www.NomDeDomaine.ext/dossier/`, la fonction retourne `http://www.NomDeDomaine.ext/dossier` (fichier index implicite);
+- si l'URL est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonction retourne `http://www.NomDeDomaine.ext`;
+- si l'URL est `http://www.NomDeDomaine.ext/index.php`, la fonction retourne `http://www.NomDeDomaine.ext`;
+- si l'URL est `http://www.NomDeDomaine.ext/`, la fonction retourne `http://www.NomDeDomaine.ext` (fichier index implicite).
 */
-function chaineVersClasseCss($racine, $chaine)
+function urlParente()
 {
-	$classe = filtreChaine($racine, rawurldecode($chaine));
-	$classe = str_replace(array ('.', '+'), '-', $classe);
-	$classe = filtreChaine($racine, $classe);
-	$classe = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classe);
+	$urlSansGet = url(FALSE);
 	
-	return $classe;
+	if (preg_match('|/$|', $urlSansGet))
+	{
+		$urlParente = substr($urlSansGet, 0, -1);
+	}
+	else
+	{
+		$urlParente = dirname($urlSansGet);
+	}
+	
+	return $urlParente;
 }
 
 /*

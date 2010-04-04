@@ -74,29 +74,29 @@ $adminLangueParDefaut = 'fr';
 /*
 - Voir les explications de la variable `$balisesLinkScript` dans le fichier de configuration du site.
 */
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/admin.css";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/extensions-proprietaires.css";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#css#$urlRacine/css/extensions-proprietaires.css";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/phpjs/php.min.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/*#favicon#$urlRacine/fichiers/favicon.png";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[0] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/admin.css";
+$adminBalisesLinkScript[1] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/extensions-proprietaires.css";
+$adminBalisesLinkScript[2] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
+$adminBalisesLinkScript[3] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";
+$adminBalisesLinkScript[4] = "$urlRacineAdmin/*#css#$urlRacine/css/extensions-proprietaires.css";
+$adminBalisesLinkScript[5] = "$urlRacineAdmin/*#js#$urlRacine/js/phpjs/php.min.js";
+$adminBalisesLinkScript[6] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
+$adminBalisesLinkScript[7] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
+$adminBalisesLinkScript[8] = "$urlRacineAdmin/*#favicon#$urlRacine/fichiers/favicon.png";
+$adminBalisesLinkScript[9] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[10] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[11] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
 $jsDirect = <<<JS
 	$(function()
 	{
 		$('ul.triable').sortable();
 	});
 JS;
-$adminBalisesLinkScript[] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
-$adminBalisesLinkScript[] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[12] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[13] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[14] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[15] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[16] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
 
 ########################################################################
 ##

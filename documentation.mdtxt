@@ -1,31 +1,45 @@
 # Documentation de Squeletml
 
-## Installation
+## Prérequis
 
-Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée. Pour installer Squeletml, il est donc seulement nécessaire de télécharger l'archive de la dernière version sur la [page d'accueil du logiciel](http://www.squeletml.net/), d'extraire cette archive et de placer les fichiers sur un serveur, par exemple par ftp.
+Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée.
 
 **Notes:**
 
 - pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur;
 - pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
 
+## Installation
+
+L'installation est très simple. Seulement deux petites étapes sont nécessaires:
+
+1. télécharger l'archive de la dernière version sur la [page de téléchargement du logiciel](http://www.squeletml.net/telechargement.php), extraire l'archive et placer les fichiers sur votre serveur, par exemple par ftp;
+2. visiter la page d'accueil et suivre les indications.
+
+Ensuite, si tout se passe bien, Squeletml aura créé les fichiers nécessaires et la structure par défaut du site sera accessible.
+
 ### Mise en situation
 
-On extrait l'archive, ce qui crée par exemple le dossier `squeletml-2.0`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-2.0` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-2.0`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+1. On extrait l'archive, ce qui crée par exemple le dossier `squeletml-2.0`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-2.0` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-2.0`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+2. On visite dans notre navigateur la page d'accueil de l'installation, ce qui nous donne `http://www.nomDeDomaine.ext/monSiteSqueletml/` ou `http://www.nomDeDomaine.ext/` selon le choix effectué à l'étape 1, et on suit les indications affichées.
+
+### Installation à la main
 
 ## Configuration
 
 ### Actions obligatoires
 
-Deux seuls fichiers doivent obligatoirement être créés et configurés, bien que vous voudrez probablement personnaliser ensuite le reste du site.
+Seulement trois fichiers doivent obligatoirement être créés et configurés, bien que vous voudrez probablement personnaliser ensuite le reste du site.
 
-Tant que ces deux fichiers n'existent pas, la page d'accueil de votre installation de Squeletml émettra un avertissement.
+Tant que ces fichiers n'existent pas, la page d'accueil de votre installation de Squeletml émettra un avertissement.
 
 **Note: les personnes installant Squeletml sur un serveur de Free.fr doivent effectuer quelques manipulations supplémentaires. Voir un peu plus bas.**
 
 #### Le fichier `init.inc.php`
 
-Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouvez le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml. Copiez-le et coller-le sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
+Si l'étape 2 de l'installation de Squeletml se passe bien, le fichier `init.inc.php` sera créé et renseigné automatiquement.
+
+Vous pouvez optionnellement, avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouver le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml, le copier et le coller sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
 
 Ce fichier contient deux variables obligatoires à renseigner:
 
@@ -37,8 +51,6 @@ Ce fichier contient deux variables obligatoires à renseigner:
 
 	Vous pouvez ajouter autant de langues que vous le désirez, dans la mesure où cette langue est offerte par défaut avec Squeletml ou que vous en effectuiez la traduction. Le français est la langue par défaut. Ainsi, l'interface de Squeletml sera toujours disponible à 100% dans cette langue. Pour l'instant, une traduction partielle en anglais accompagne Squeletml.
 
-Une fois ce fichier renseigné, vous pouvez visiter dans votre navigateur l'adresse URL de votre installation, par exemple `http://www.nomDeDomaine.ext/`.
-
 **Note: il est possible de renommer le dossier d'administration pour plus de sécurité, qui est par défaut `admin`. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `init.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation. Par exemple, modifier ceci:**
 
 	http://www.nomDeDomaine.ext/admin/acces.admin.php
@@ -47,13 +59,15 @@ pour:
 
 	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
 
-#### Protection de l'administration (fichier `.acces`)
+#### Protection de l'administration (fichiers `.htaccess` et `.acces`)
 
-Une fois que le fichier `init.inc.php` existe et qu'il est correctement renseigné, il est important de protéger sans attendre la section d'administration du site. Pour ce faire, visitez la page suivante:
+Durant l'étape 2 de l'installation de Squeletml, vous devriez avoir suivi les indications nécessaires à la protection de l'administration de Squeletml.
+
+Vous pouvez optionnellement trouver le fichier `.htaccess.defaut`, situé à la racine de votre installation de Squeletml, le copier et le coller sous le nom `.htaccess` (il faut donc enlever le `defaut` final du nom). Ensuite, visiter la page suivante:
 
 	http://www.nomDeDomaine.ext/admin/acces.admin.php
 
-et ajoutez un utilisateur. Les utilisateurs sont listés dans le fichier `.acces` situé à la racine de votre installation de Squeletml.
+et ajouter un utilisateur. Un fichier `.acces` sera créé à la racine de votre installation de Squeletml. Ce fichier contient la liste des utilisateurs.
 
 #### Actions obligatoires supplémentaires sur un serveur de Free.fr
 
@@ -69,9 +83,19 @@ et la décommenter, ce qui donne:
 
 		php 1
 
-### Les autres fichiers
+### Autres actions
+
+#### Le fichier `robots.txt`
+
+Durant l'étape 2 de l'installation de Squeletml, le fichier `robots.txt` devrait avoir été créé automatiquement.
+
+Vous pouvez optionnellement trouver le fichier `robots.txt.defaut`, situé à la racine de votre installation de Squeletml, le copier et le coller sous le nom `robots.txt` (il faut donc enlever le `defaut` final du nom).
+
+Vous pouvez personnaliser ce fichier ou le laisser tel quel.
 
 #### Le fichier `.htaccess`
+
+Durant l'étape 2 de l'installation de Squeletml, le fichier `.htaccess` devrait avoir été créé et renseigné automatiquement.
 
 Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Si en visitant une page inexistante, vous ne voyez pas le contenu de la page d'erreur, ouvrez le fichier `.htaccess`, trouvez la ligne:
 
@@ -80,8 +104,6 @@ Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute 
 et modifiez `/404.php` par la bonne adresse URL, par exemple `http://www.nomDeDomaine.ext/404.php`.
 
 D'autres pages d'erreur sont déclarées dans le `.htaccess`, comme celle pour l'erreur 401. Au besoin, modifier dans le `.htaccess` le chemin de toutes les pages d'erreur.
-
-Ce fichier va également contenir les instructions pour protéger le dossier d'administration.
 
 #### Le fichier `inc/config.inc.php`
 
@@ -401,15 +423,15 @@ Pour mettre à jour Squeletml:
 
 - Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom ressemble à `squeletml-2.0`.
 
-- Ensuite, sélectionnez et copiez tout le contenu de ce dossier, à l'exception éventuellement de ce qui suit: vous avez fort probablement personnalisé le fichier `.htaccess` (ne serait-ce que pour protéger l'accès à l'administration), et peut-être le fichier `robots.txt`. Dans ce cas, ne copiez pas le ou les fichiers modifiés. Vous pouvez cependant vérifier si ces fichiers ont été modifiés dans la nouvelle version de Squeletml et, si tel est le cas, les éditer à la main pour y appliquer les changements.
+- Ensuite, sélectionnez et copiez tout le contenu de ce dossier, et collez la sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
 
-- Maintenant, collez votre précédente sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
-
-Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer**, en plus des fichiers `.htaccess` ou `robots.txt`, le dossier `site`, qui contient votre configuration personnalisée, éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`) ainsi que les pages que vous avez vous-même ajoutées.
+Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer** les quelques fichiers de configuration à la racine (`.acces`, `.htaccess`, `init.inc.php` et `robots.txt`), le dossier `site`, qui contient votre configuration personnalisée, éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`) ainsi que les pages que vous avez vous-même ajoutées.
 
 **Notes:**
 
+- le fichier `ChangeLog-version-actuelle-fichiers` contient la liste des fichiers ajoutés, modifiés ou supprimés entre la version actuelle et la version précédente de Squeletml;
 - si vous avez modifié le nom du dossier d'administration, ne pas oublier de supprimer l'ancien dossier et de renommer le nouveau;
+- il est bon de vérifier si les fichiers de configuration à la racine par défaut ont été modifiés dans la nouvelle version de Squeletml et, si tel est le cas, les éditer à la main pour y appliquer les changements;
 - la lecture de la section «Dossiers inutiles pour une configuration donnée» est suggérée en complément à cette explication sur la mise à jour de Squeletml.
 
 ## Création de pages

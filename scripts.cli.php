@@ -120,12 +120,12 @@ elseif ($argv[1] == 'config')
 	$config = file_get_contents('inc/config.inc.php');
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
-	file_put_contents($cheminTag . '/site/inc/config.inc.php', $ajout);
+	file_put_contents($cheminTag . '/site/inc/config.inc.php.defaut', $ajout);
 	
 	$config = file_get_contents('admin/inc/config.inc.php');
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
-	file_put_contents($cheminTag . '/site/admin/inc/config.inc.php', $ajout);
+	file_put_contents($cheminTag . '/site/admin/inc/config.inc.php.defaut', $ajout);
 }
 ########################################################################
 ##
@@ -139,6 +139,6 @@ elseif ($argv[1] == 'css')
 	$css = file_get_contents('css/squeletml.css');
 	preg_match_all('|^(/\*.*?\*/)|ms', $css, $resultat);
 	$ajout = implode("\n\n", $resultat[1]) . "\n\n";
-	file_put_contents($cheminTag . '/site/css/style.css', $ajout);
+	file_put_contents($cheminTag . '/site/css/style.css.defaut', $ajout);
 }
 ?>
