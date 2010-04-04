@@ -3,7 +3,7 @@ $racine = dirname(__FILE__);
 include_once $racine . '/inc/fonctions.inc.php';
 $urlParente = urlParente();
 
-if (file_exists($racine . '/site/inc/squeletml-est-installé.txt'))
+if (file_exists($racine . '/site/inc/squeletml-est-installe.txt'))
 {
 	header("Location: $urlParente/", TRUE, 301);
 }
@@ -409,9 +409,14 @@ else
 	// Installation terminée.
 	else
 	{
-		if (!file_exists($racine . '/site/inc/squeletml-est-installé.txt'))
+		$erreurFichierSqueletmlEstInstalle = FALSE;
+		
+		if (!file_exists($racine . '/site/inc/squeletml-est-installe.txt'))
 		{
-			@touch($racine . '/site/inc/squeletml-est-installé.txt');
+			if (!@touch($racine . '/site/inc/squeletml-est-installe.txt'))
+			{
+				$erreurFichierSqueletmlEstInstalle = TRUE;
+			}
 		}
 
 		if (isset($_POST['ajouter']) && !empty($messagesScript))
@@ -426,6 +431,11 @@ else
 		}
 		
 		echo '<h2>' . T_("Installation terminée") . "</h2>\n";
+
+		if ($erreurFichierSqueletmlEstInstalle)
+		{
+			echo '<p class="erreur">' . sprintf(T_("L'installation est terminée, mais le fichier %1\$s n'a pu être créé. Vérifiez que son dossier parent est bien accessible en écriture, et crééez le fichier manuellement (laisser le contenu vide). Ce fichier est important pour informer Squeletml de ne plus lancer l'installation automatisée."), '<code>site/inc/squeletml-est-installe.txt</code>') . "</p>\n";
+		}
 		
 		echo '<p>' . T_("La suite vous appartient:") . "</p>\n";
 		

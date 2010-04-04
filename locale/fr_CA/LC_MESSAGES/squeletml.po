@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-04 14:29-0400\n"
+"POT-Creation-Date: 2010-04-04 14:56-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -278,7 +278,7 @@ msgstr "J'héberge mon site sur un serveur de Free.fr."
 msgid "Créer les fichiers"
 msgstr "Créer les fichiers"
 
-#: installation.php:373 installation.php:424
+#: installation.php:373 installation.php:429
 #, php-format
 msgid "Étape %1$s terminée."
 msgstr "Étape %1$s terminée."
@@ -311,20 +311,33 @@ msgstr "Confirmer le mot de passe:"
 msgid "Ajouter l'utilisateur"
 msgstr "Ajouter l'utilisateur"
 
-#: installation.php:428
+#: installation.php:433
 msgid "Installation terminée"
 msgstr "Installation terminée"
 
-#: installation.php:430
+#: installation.php:437
+#, php-format
+msgid ""
+"L'installation est terminée, mais le fichier %1$s n'a pu être créé. Vérifiez "
+"que son dossier parent est bien accessible en écriture, et crééez le fichier "
+"manuellement (laisser le contenu vide). Ce fichier est important pour "
+"informer Squeletml de ne plus lancer l'installation automatisée."
+msgstr ""
+"L'installation est terminée, mais le fichier %1$s n'a pu être créé. Vérifiez "
+"que son dossier parent est bien accessible en écriture, et crééez le fichier "
+"manuellement (laisser le contenu vide). Ce fichier est important pour "
+"informer Squeletml de ne plus lancer l'installation automatisée."
+
+#: installation.php:440
 msgid "La suite vous appartient:"
 msgstr "La suite vous appartient:"
 
-#: installation.php:433
+#: installation.php:443
 #, php-format
 msgid "<a href=\"%1$s\">Visiter la page d'accueil de votre site.</a>"
 msgstr "<a href=\"%1$s\">Visiter la page d'accueil de votre site.</a>"
 
-#: installation.php:434
+#: installation.php:444
 #, php-format
 msgid "<a href=\"%1$s\">Administrer Squeletml.</a>"
 msgstr "<a href=\"%1$s\">Administrer Squeletml.</a>"

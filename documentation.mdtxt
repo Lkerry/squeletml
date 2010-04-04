@@ -41,11 +41,21 @@ Ce fichier contient deux variables obligatoires à renseigner:
 
 - `$urlRacine`: il s'agit de l'adresse URL vers votre site Squeletml. Par exemple, `http://www.nomDeDomaine.ext/monSiteSqueletml` ou `http://www.nomDeDomaine.ext`.
 
-- `$accueil[]`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site. Si votre site est offert dans une seule langue, le tableau ne contiendra qu'un élément. Exemple:
-
-		$accueil['fr'] = $urlRacine;
+- `$accueil`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site.
 
 	Vous pouvez ajouter autant de langues que vous le désirez, dans la mesure où cette langue est offerte par défaut avec Squeletml ou que vous en effectuiez la traduction. Le français est la langue par défaut. Ainsi, l'interface de Squeletml sera toujours disponible à 100% dans cette langue. Pour l'instant, une traduction partielle en anglais accompagne Squeletml.
+
+	Vous pouvez également commenter les langues dont vous ne vous servez pas. Seules les langues existant dans le tableau `$accueil` apparaissent dans le menu des langues généré automatiquement par Squeletml.
+
+	Exemple d'un site n'utilisant que le français:
+
+		$accueil['fr'] = $urlRacine;
+		#$accueil['en'] = $urlRacine . '/en';
+
+	Exemple d'un site utilisant le français et l'anglais:
+
+		$accueil['fr'] = $urlRacine;
+		$accueil['en'] = $urlRacine . '/en';
 
 **Note: il est possible de renommer le dossier d'administration pour plus de sécurité, qui est par défaut `admin`. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `init.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation. Par exemple, modifier ceci:**
 
@@ -75,9 +85,9 @@ D'autres pages d'erreur sont déclarées dans le `.htaccess`, comme celle pour l
 
 ### Déclaration de l'installation terminée
 
-Créer un fichier vide `squeletml-est-installé.txt` dans le dossier `site/inc`, ce qui donne:
+Créer un fichier vide `squeletml-est-installe.txt` dans le dossier `site/inc`, ce qui donne:
 
-	site/inc/squeletml-est-installé.txt
+	site/inc/squeletml-est-installe.txt
 
 L'installation par défaut via une page web sera ainsi désactivée.
 
@@ -410,6 +420,8 @@ Pour mettre à jour Squeletml:
 - Visitez la page `http://www.nomDeDomaine.ext/admin/acces.admin.php` et mettez votre site en maintenance (hors ligne). Vous pouvez ajouter votre adresse IP dans le champ prévu à cet effet pour avoir encore accès à votre site durant la maintenance.
 
 	La page de maintenance n'a pas de dépendance à des fichiers du site, à l'exception du fichier `.htaccess` de la racine, ce qui veut dire qu'en mode maintenance, vous pouvez supprimer ou déplacer tous les fichiers voulus, à l'exception de `maintenance.php` et `.htaccess`.
+
+	Il est possible de personnaliser la page de maintenance en créant le fichier `maintenance.inc.php` à la racine du site. Si un tel fichier existe, il sera utilisé à la place de la page de maintenance par défaut.
 
 	**Note: la réécriture d'URL doit être activée sur votre serveur pour utiliser cette fonctionnalité. Si tel n'est pas le cas, ignorez le mode maintenance et passez à l'étape suivante.**
 
