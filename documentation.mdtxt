@@ -9,41 +9,37 @@ Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de donn�
 - pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur;
 - pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
 
-## Installation
+## Installation automatisée
 
-L'installation est très simple. Seulement deux petites étapes sont nécessaires:
+La procédure d'installation par défaut est très simple. Seulement deux petites étapes sont nécessaires:
 
 1. télécharger l'archive de la dernière version sur la [page de téléchargement du logiciel](http://www.squeletml.net/telechargement.php), extraire l'archive et placer les fichiers sur votre serveur, par exemple par ftp;
-2. visiter la page d'accueil et suivre les indications.
+2. visiter la page d'accueil de votre nouveau site et suivre les quelques indications.
 
-Ensuite, si tout se passe bien, Squeletml aura créé les fichiers nécessaires et la structure par défaut du site sera accessible.
+Si tout se passe bien, Squeletml créera automatiquement les fichiers nécessaires et la structure par défaut de votre site sera accessible.
 
 ### Mise en situation
 
 1. On extrait l'archive, ce qui crée par exemple le dossier `squeletml-2.0`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-2.0` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-2.0`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
-2. On visite dans notre navigateur la page d'accueil de l'installation, ce qui nous donne `http://www.nomDeDomaine.ext/monSiteSqueletml/` ou `http://www.nomDeDomaine.ext/` selon le choix effectué à l'étape 1, et on suit les indications affichées.
+2. On visite dans notre navigateur la page d'accueil du nouveau site, ce qui nous donne `http://www.nomDeDomaine.ext/monSiteSqueletml/` ou `http://www.nomDeDomaine.ext/` selon le choix effectué à l'étape 1, et on suit les indications affichées.
 
-### Installation à la main
+## Installation à la main
 
-## Configuration
+Par défaut, l'installation se fait via une page web. Cependant, il est possible d'installer Squeletml à la main.
 
-### Actions obligatoires
+Seulement quatre fichiers doivent obligatoirement être créés et configurés, bien que vous voudrez probablement personnaliser ensuite le reste du site.
 
-Seulement trois fichiers doivent obligatoirement être créés et configurés, bien que vous voudrez probablement personnaliser ensuite le reste du site.
-
-Tant que ces fichiers n'existent pas, la page d'accueil de votre installation de Squeletml émettra un avertissement.
+Tant que l'installation n'est pas terminée, la page d'accueil de votre site Squeletml dirigera vers la procédure d'installation par défaut via une page web.
 
 **Note: les personnes installant Squeletml sur un serveur de Free.fr doivent effectuer quelques manipulations supplémentaires. Voir un peu plus bas.**
 
-#### Le fichier `init.inc.php`
+### Le fichier `init.inc.php`
 
-Si l'étape 2 de l'installation de Squeletml se passe bien, le fichier `init.inc.php` sera créé et renseigné automatiquement.
-
-Vous pouvez optionnellement, avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouver le fichier `init.inc.php.defaut`, situé à la racine de votre installation de Squeletml, le copier et le coller sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
+Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouver le fichier `init.inc.php.defaut`, situé à la racine de votre site Squeletml, le copier et le coller sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
 
 Ce fichier contient deux variables obligatoires à renseigner:
 
-- `$urlRacine`: il s'agit de l'adresse URL vers votre installation de Squeletml. Par exemple, `http://www.nomDeDomaine.ext/monSiteSqueletml` ou `http://www.nomDeDomaine.ext`.
+- `$urlRacine`: il s'agit de l'adresse URL vers votre site Squeletml. Par exemple, `http://www.nomDeDomaine.ext/monSiteSqueletml` ou `http://www.nomDeDomaine.ext`.
 
 - `$accueil[]`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site. Si votre site est offert dans une seule langue, le tableau ne contiendra qu'un élément. Exemple:
 
@@ -59,45 +55,17 @@ pour:
 
 	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
 
-#### Protection de l'administration (fichiers `.htaccess` et `.acces`)
+### Protection de l'administration (fichiers `.htaccess` et `.acces`)
 
-Durant l'étape 2 de l'installation de Squeletml, vous devriez avoir suivi les indications nécessaires à la protection de l'administration de Squeletml.
-
-Vous pouvez optionnellement trouver le fichier `.htaccess.defaut`, situé à la racine de votre installation de Squeletml, le copier et le coller sous le nom `.htaccess` (il faut donc enlever le `defaut` final du nom). Ensuite, visiter la page suivante:
+Trouver le fichier `.htaccess.defaut`, situé à la racine de votre site Squeletml, le copier et le coller sous le nom `.htaccess` (il faut donc enlever le `defaut` final du nom). Ensuite, visiter la page suivante:
 
 	http://www.nomDeDomaine.ext/admin/acces.admin.php
 
-et ajouter un utilisateur. Un fichier `.acces` sera créé à la racine de votre installation de Squeletml. Ce fichier contient la liste des utilisateurs.
+et ajouter un utilisateur. Un fichier `.acces` sera créé à la racine de votre site Squeletml. Ce fichier contient la liste des utilisateurs.
 
-#### Actions obligatoires supplémentaires sur un serveur de Free.fr
+#### Chemin des pages d'erreur
 
-Pour une installation de Squeletml sur un serveur de Free.fr, il faut effectuer en plus les deux actions obligatoires suivantes:
-
-- Ouvrir le fichier `init.inc.php` situé à la racine de l'installation. Trouver la variable `$serveurFreeFr` et modifier sa valeur pour `TRUE`.
-
-- Ouvrir le fichier `.htaccess` situé à la racine de l'installation. Trouver la ligne suivante:
-
-		#php 1
-
-et la décommenter, ce qui donne:
-
-		php 1
-
-### Autres actions
-
-#### Le fichier `robots.txt`
-
-Durant l'étape 2 de l'installation de Squeletml, le fichier `robots.txt` devrait avoir été créé automatiquement.
-
-Vous pouvez optionnellement trouver le fichier `robots.txt.defaut`, situé à la racine de votre installation de Squeletml, le copier et le coller sous le nom `robots.txt` (il faut donc enlever le `defaut` final du nom).
-
-Vous pouvez personnaliser ce fichier ou le laisser tel quel.
-
-#### Le fichier `.htaccess`
-
-Durant l'étape 2 de l'installation de Squeletml, le fichier `.htaccess` devrait avoir été créé et renseigné automatiquement.
-
-Ce fichier contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Si en visitant une page inexistante, vous ne voyez pas le contenu de la page d'erreur, ouvrez le fichier `.htaccess`, trouvez la ligne:
+Le fichier `.htaccess` contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Si en visitant une page inexistante, vous ne voyez pas le contenu de la page d'erreur, ouvrez le fichier `.htaccess`, trouvez la ligne:
 
 	ErrorDocument 404 /404.php
 
@@ -105,9 +73,33 @@ et modifiez `/404.php` par la bonne adresse URL, par exemple `http://www.nomDeDo
 
 D'autres pages d'erreur sont déclarées dans le `.htaccess`, comme celle pour l'erreur 401. Au besoin, modifier dans le `.htaccess` le chemin de toutes les pages d'erreur.
 
-#### Le fichier `inc/config.inc.php`
+### Déclaration de l'installation terminée
 
-Ce fichier contient beaucoup de paramètres au sujet du site. Les variables modifiables sont en général documentées directement dans le fichier de configuration. Mais pour bien comprendre comment tirer partie des possibilités de ce fichier, il faut préalablement comprendre la structure de Squeletml. Vous serez ensuite en mesure de modifier des paramètres de votre site.
+Créer un fichier vide `squeletml-est-installé.txt` dans le dossier `site/inc`, ce qui donne:
+
+	site/inc/squeletml-est-installé.txt
+
+L'installation par défaut via une page web sera ainsi désactivée.
+
+### Actions obligatoires supplémentaires sur un serveur de Free.fr
+
+Pour une installation de Squeletml sur un serveur de Free.fr, il faut effectuer en plus les deux actions obligatoires suivantes:
+
+- Ouvrir le fichier `init.inc.php` situé à la racine de votre site Squeletml. Trouver la variable `$serveurFreeFr` et modifier sa valeur pour `TRUE`.
+
+- Ouvrir le fichier `.htaccess` situé à la racine de votre site Squeletml. Trouver la ligne suivante:
+
+		#php 1
+
+et la décommenter, ce qui donne:
+
+		php 1
+
+### Le fichier `robots.txt`
+
+Vous pouvez trouver le fichier `robots.txt.defaut`, situé à la racine de votre site Squeletml, le copier et le coller sous le nom `robots.txt` (il faut donc enlever le `defaut` final du nom).
+
+Vous pouvez personnaliser ce fichier ou le laisser tel quel.
 
 ## Architecture de Squeletml
 
@@ -633,7 +625,7 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 
 #### Fonctions diverses
 
-Voir la page `exemple.php` située à la racine de l'installation de Squeletml pour voir plusieurs exemples d'utilisation de fonctions aidant à la rédaction du contenu.
+Voir la page `exemple.php` située à la racine de votre site Squeletml pour voir plusieurs exemples d'utilisation de fonctions aidant à la rédaction du contenu.
 
 #### Variables et constantes utiles
 
@@ -645,11 +637,11 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 		<a href="<?php echo $accueil['en']; ?>/gallery.php">lien vers une galerie dans la section en anglais</a>
 
-- `$racine`: contient le chemin sur le serveur vers le dossier d'installation de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de l'installation de Squeletml:
+- `$racine`: contient le chemin sur le serveur vers le dossier racine de Squeletml. Exemple d'inclusion d'un fichier situé à la racine de votre site Squeletml:
 
 		<?php include $racine . '/fichier.inc.php'; ?>
 
-- `$urlRacine`: contient l'URL vers le dossier d'installation de Squeletml. Exemple:
+- `$urlRacine`: contient l'URL vers le dossier racine de Squeletml. Exemple:
 
 		<a href="<?php echo $urlRacine; ?>/cron.php">lien vers la page de cron</a>
 
