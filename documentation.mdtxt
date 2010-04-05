@@ -1163,10 +1163,6 @@ Grâce à la commande ci-dessus, la page `cron.php` est visitée toutes les 12 h
 
 Il est possible de recevoir un rapport par courriel après l'exécution du cron. Pour ce faire, la variable `$rapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
 
-## Demande de création d'un compte utilisateur en ligne
-
-Il est possible d'activer un formulaire de demande de création d'un compte utilisateur (donnant accès à l'administration du site). Pour ce faire, mettre la variable `$activerCreationCompte` du fichier de configuration du site à `TRUE` et s'assurer qu'un courriel d'administration a été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée). Le formulaire sera ensuite accessible à la page `compte.php` située à la racine de votre site Squeletml.
-
 ## Développement
 
 Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).

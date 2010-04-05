@@ -149,6 +149,6 @@ if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourriel
 }
 else
 {
-	header("Location: $urlParente/", TRUE, 401);
+	header('Location: ' . urlParente() . '/', TRUE, 301);
 }
 ?>

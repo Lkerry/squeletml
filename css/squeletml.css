@@ -572,6 +572,12 @@ h2#formulaireFaireDecouvrir {
 	background: url('../fichiers/enveloppe.png') no-repeat left center;
 }
 
+/* Recherche Google. */
+
+#rechercheGoogle #inputMotsCles {
+	width: 184px;
+}
+
 /***********************************************************************
 **
 ** Arrière-plans des colonnes.

@@ -437,6 +437,36 @@ if (!empty($blocsAinsererTemp))
 					}
 						
 					break;
+
+				case 'recherche-google':
+					if ($activerRechercheGoogle)
+					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
+						$blocs[$region] .= '<div id="rechercheGoogle" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<h2>' . T_("Recherche dans le site") . "</h2>\n";
+						$blocs[$region] .= '<form method="get" action="http://www.google.' . $rechercheGoogleExtension . '/search">' . "\n";
+						$blocs[$region] .= "<div>\n";
+						$blocs[$region] .= '<input id="inputMotsCles" type="text" name="as_q" maxlength="255" />' . "\n";
+						$blocs[$region] .= '<input type="submit" value="' . T_("Rechercher") . '" />' . "\n";
+						$blocs[$region] .= '<input type="hidden" name="as_sitesearch" value="' . securiseTexte($_SERVER['SERVER_NAME']) . '" />' . "\n";
+						$blocs[$region] .= "</div>\n";
+						$blocs[$region] .= "</form>\n";
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#rechercheGoogle -->' . "\n";
+					}
+					
+					break;
 					
 				// Blocs personnalisés.
 				default:

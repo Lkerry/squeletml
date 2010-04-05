@@ -20,6 +20,9 @@ $courrielExpediteurRapports = "";
 $rapportCron = FALSE; // TRUE|FALSE
 
 // Activation de la demande de création de compte à partir du site.
+/*
+- Si la demande est activée, le formulaire est accessible à la page `compte.php`, située à la racine du site.
+*/
 $activerCreationCompte = FALSE; // TRUE|FALSE
 
 /* ____________________ En-tête HTML. ____________________ */
@@ -182,6 +185,7 @@ $ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
 $ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
 $ordreBlocsDansFluxHtml['faire-decouvrir']       = array (550, 550, 550);
 $ordreBlocsDansFluxHtml['marque-pages-sociaux']  = array (560, 560, 560);
+$ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 
 // Conditions d'insertion des blocs.
 /*
@@ -229,6 +233,18 @@ $activerFaireDecouvrirParDefaut = TRUE; // TRUE|FALSE
 
 // Activation par défaut des marque-pages ou réseaux sociaux.
 $activerMarquePagesSociauxParDefaut = TRUE; // TRUE|FALSE
+
+// Activation de la recherche Google.
+/*
+- Voir le bloc de contenu `recherche-google`.
+*/
+$activerRechercheGoogle = TRUE; // TRUE|FALSE
+
+// Si `$activerRechercheGoogle` vaut TRUE, extension à utiliser.
+/*
+- Par exemple `ca` pour utiliser `google.ca`.
+*/
+$rechercheGoogleExtension = 'ca';
 
 // Affichage du message pour Internet Explorer 6.
 /*
