@@ -3,6 +3,5 @@ div#tableDesMatieres {
 }
 
 #tableDesMatieresBdTitre a {
-	text-decoration: none !important;
 	color: expression(this.parentNode.currentStyle.color); /* Palliatif à `inherit`. */
 }

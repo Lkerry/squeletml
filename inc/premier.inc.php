@@ -321,6 +321,7 @@ if ($tableDesMatieres)
 {
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
+	$balisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
 	
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/Gettext/lib/Gettext.js";
 	
