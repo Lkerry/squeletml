@@ -231,11 +231,17 @@ if (file_exists('init.inc.php'))
 		}
 	}
 
-	if ($rapportCron && (!empty($courrielRapports) || !empty($contactCourrielParDefaut)))
+	if ($rapportCron && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 	{
 		$infosCourriel = array ();
-		$infosCourriel['destinataire'] = !empty($courrielRapports) ? $courrielRapports : $contactCourrielParDefaut;
-		$infosCourriel['objet'] = "Cron ($date)";
+
+		if (!empty($courrielExpediteurRapports))
+		{
+			$infosCourriel['From'] = $courrielExpediteurRapports;
+		}
+		
+		$infosCourriel['destinataire'] = !empty($courrielAdmin) ? $courrielAdmin : $contactCourrielParDefaut;
+		$infosCourriel['objet'] = "Cron ($date)" . baliseTitleComplement($tableauBaliseTitleComplement, array ($langueParDefaut), FALSE);
 		$infosCourriel['message'] = $rapport;
 		courriel($infosCourriel);
 	}

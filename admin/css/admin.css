@@ -34,6 +34,9 @@ div#noticeMaintenance p {
 	max-width: 950px;
 	margin: 0px auto;
 	padding: 0px;
+	border-right: 1px solid #f2f2f2;
+	border-bottom: 1px solid #f2f2f2;
+	border-left: 1px solid #f2f2f2;
 }
 
 #ancres {
@@ -44,11 +47,8 @@ div#noticeMaintenance p {
 #enTete {
 	padding: 5px 5px 0px 5px;
 	background: url('../fichiers/rayures.png') repeat left top;
-	border-right: 1px solid #f2f2f2;
 	border-bottom: 1px solid #f2f2f2;
-	border-left: 1px solid #f2f2f2;
 	text-align: center;
-	border-radius: 0px 0px 8px 8px; /* CSS 3. */
 }
 
 #enTete ul {
@@ -77,9 +77,10 @@ div#noticeMaintenance p {
 div#sousMenu {
 	position: fixed;
 	width: 140px;
-	border: 1px solid #b3b3b3;
+	margin-left: 1px;
 	padding: 5px;
-	background-color: #f2f2f2;
+	background: url('../fichiers/rayures.png') repeat left top;
+	border: 1px solid #f2f2f2;
 }
 
 div#sousMenu ul {
@@ -92,12 +93,16 @@ div#contenuPrincipal {
 }
 
 #basDePage {
-	margin-top: 25px;
+	margin: 25px 5px 5px;
 	text-align: right;
 }
 
-#tableDesMatieres, a.lienInfobulle:hover span, fieldset, .galerieMinivignettes img, img.infobulleApercuImage, .porteDocumentsListe li, pre, .boite, .sousBoite {
+#sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
 	border-radius: 8px; /* CSS 3. */
+}
+
+div#tableDesMatieres {
+	border-color: #f2f2f2 !important;
 }
 
 h1, h2, h3, h4, h5, h6, a {
@@ -196,6 +201,7 @@ fieldset {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	border: 1px solid #b3b3b3;
+	background-color: #f7f7f7;
 }
 
 fieldset ul {
@@ -227,7 +233,7 @@ li.liParent {
 .galerieMinivignettes img {
 	float: left;
 	height: 35px;
-	border: 1px dashed #b3b3b3;
+	border: 1px solid #b3b3b3 !important;
 	margin: 2px;
 }
 
@@ -266,10 +272,6 @@ ul.triable li {
 **
 ***********************************************************************/
 
-#boiteMessages {
-	border: 1px dashed #b3b3b3;
-}
-
 #boiteMessages h2, .boite h2, .sousBoite h3 {
 	margin-top: 0px;
 }
@@ -285,14 +287,13 @@ ul.triable li {
 
 .boite {
 	margin: 25px 0px;
-	border: 1px solid #b3b3b3;
 	padding: 5px;
 	background-color: #f2f2f2;
 }
 
 .sousBoite {
 	margin: 25px;
-	border: 1px dashed #b3b3b3;
+	border: 1px solid #b3b3b3;
 	padding: 5px;
 	background-color: #f7f7f7;
 }
@@ -379,11 +380,11 @@ a.lienInfobulle:hover {
 
 a.lienInfobulle:hover span {
 	display: block;
-	border: 1px solid #b3b3b3;
 	width: 350px;
 	position: absolute;
 	top: 20px;
 	left: 20px;
+	border: 1px solid #b3b3b3;
 	background: #f2f2f2;
 	text-align: left;
 	color: black;
@@ -395,7 +396,7 @@ a.lienInfobulle img {
 }
 
 img.infobulleApercuImage {
-	border: 1px dashed #b3b3b3;
+	border: 1px solid #b3b3b3 !important;
 }
 
 /* BUEditor. */

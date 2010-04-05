@@ -690,31 +690,6 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 }
 
 /*
-Retourne l'IP de l'internaute si elle a été trouvée, sinon retourne FALSE.
-*/
-function adminIpInternaute()
-{
-	if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-	{
-		$ip = securiseTexte($_SERVER['HTTP_X_FORWARDED_FOR']);
-	}
-	elseif (isset($_SERVER['HTTP_CLIENT_IP']))
-	{
-		$ip = securiseTexte($_SERVER['HTTP_CLIENT_IP']);
-	}
-	elseif (isset($_SERVER['REMOTE_ADDR']))
-	{
-		$ip = securiseTexte($_SERVER['REMOTE_ADDR']);
-	}
-	else
-	{
-		$ip = FALSE;
-	}
-	
-	return $ip;
-}
-
-/*
 Retourne sous forme de tableau la liste des dossiers et fichiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Les dossiers ou fichiers dont l'accès a échoué ne sont pas retournés.
 */
 function adminListeFichiers($dossier)

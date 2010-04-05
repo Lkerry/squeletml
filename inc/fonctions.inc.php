@@ -389,6 +389,49 @@ function cacheExpire($fichier, $dureeCache)
 }
 
 /*
+Retourne le code à insérer dans un formulaire pour afficher un antipourriel basé sur un calcul mathématique.
+*/
+function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
+{
+	$calculUn = mt_rand($calculMin, $calculMax);
+	$calculDeux = mt_rand($calculMin, $calculMax);
+	$captchaCalcul = '';
+	$inputHidden = '';
+	$inputHidden .= '<input type="hidden" name="u" value="' . $calculUn . '" />' . "\n";
+	
+	// Ajout de quelques `input` bidons pour augmenter les chances de duper les robots pourrielleurs.
+	$nbreInput = mt_rand(5, 10);
+	$lettresExcluses = 'drsu';
+	
+	for ($i = 0; $i < $nbreInput; $i++)
+	{
+		$lettreAuHasard = lettreAuHasard($lettresExcluses);
+		$lettresExcluses .= $lettreAuHasard;
+		$inputHidden .= '<input type="hidden" name="' . $lettreAuHasard . '" value="' . mt_rand($calculMin, $calculMax) . '" />' . "\n";
+	}
+	
+	$inputHidden .= '<input type="hidden" name="d" value="' . $calculDeux . '" />' . "\n";
+	
+	$captchaCalcul .= '<p><label>' . T_("Antipourriel:") . "</label><br />\n";
+	
+	if ($calculInverse)
+	{
+		$captchaCalcul .= sprintf(T_("Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1\$s (plusieurs réponses possibles):"), $calculUn);
+		$captchaCalcul .= sprintf(T_("%1\$s et %2\$s"), "<input name=\"r\" type=\"text\" size=\"4\" />", "<input name=\"s\" type=\"text\" size=\"4\" />");
+	}
+	else
+	{
+		$captchaCalcul .= sprintf(T_("Veuillez compléter: %1\$s ajouté à %2\$s vaut %3\$s"), $calculUn, $calculDeux, "<input name=\"r\" type=\"text\" size=\"4\" />");
+	}
+
+	$captchaCalcul .= "</p>\n";
+
+	$captchaCalcul .= $inputHidden;
+
+	return $captchaCalcul;
+}
+
+/*
 Retourne un tableau des catégories auxquelles appartient l'URL fournie. La structure est:
 
 	$listeCategories['idCategorie'] = 'urlCat';
@@ -1406,14 +1449,6 @@ function estCatSpeciale($categorie)
 }
 
 /*
-Retourne TRUE si la page courrante est la page de déconnexion, sinon retourne FALSE.
-*/
-function estPageDeconnexion($urlRacine, $urlSansGet)
-{
-	return $urlSansGet == $urlRacine . '/deconnexion.php' ? TRUE : FALSE;
-}
-
-/*
 Si `$retourneNomSansExtension` vaut FALSE, retourne l'extension d'un fichier (sans le point). Si aucune extension n'a été trouvée, retourne une chaîne vide. Sinon si `$retourneNomSansExtension` vaut TRUE, retourne le nom du fichier sans l'extension (ni le point).
 */
 function extension($nomFichier, $retourneNomSansExtension = FALSE)
@@ -2164,6 +2199,31 @@ function intermediaireLegende($legende, $galerieLegendeMarkdown)
 	{
 		return $legende;
 	}
+}
+
+/*
+Retourne l'IP de l'internaute si elle a été trouvée, sinon retourne une chaîne vide.
+*/
+function ipInternaute()
+{
+	if (isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+	{
+		$ip = securiseTexte($_SERVER['HTTP_X_FORWARDED_FOR']);
+	}
+	elseif (isset($_SERVER['HTTP_CLIENT_IP']))
+	{
+		$ip = securiseTexte($_SERVER['HTTP_CLIENT_IP']);
+	}
+	elseif (isset($_SERVER['REMOTE_ADDR']))
+	{
+		$ip = securiseTexte($_SERVER['REMOTE_ADDR']);
+	}
+	else
+	{
+		$ip = '';
+	}
+	
+	return $ip;
 }
 
 /*
@@ -4886,10 +4946,11 @@ function variablesAaffecterAuDebut()
 	$urlRacineAdmin = $urlRacine . \'/\' . $dossierAdmin;
 	$urlSite = $urlRacine . \'/site\';
 
-	$estPageDeconnexion = estPageDeconnexion($urlRacine, $urlSansGet);
+	$estPageCompte = $urlSansGet == "$urlRacine/compte.php" ? TRUE : FALSE;
+	$estPageDeconnexion = $urlSansGet == "$urlRacine/deconnexion.php" ? TRUE : FALSE;
 	extract(init(\'\', \'langue\'), EXTR_SKIP);
 
-	if ($estPageDeconnexion)
+	if ($estPageCompte || $estPageDeconnexion)
 	{
 		$langue = langue(\'navigateur\', \'\');
 	}';

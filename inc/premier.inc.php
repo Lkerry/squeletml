@@ -65,6 +65,15 @@ if (!isset($auteur))
 	$auteur = $auteurParDefaut;
 }
 
+if ($estPageCompte)
+{
+	$baliseH1 = T_("Demande de création d'un compte utilisateur");
+}
+elseif ($estPageDeconnexion)
+{
+	$baliseH1 = T_("Déconnexion de la section d'administration de Squeletml");
+}
+
 $estAccueil = estAccueil(ACCUEIL);
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), $estAccueil);
 
@@ -195,11 +204,6 @@ include $racine . '/inc/blocs.inc.php';
 if (!isset($baliseTitle))
 {
 	$baliseTitle = '';
-}
-
-if ($estPageDeconnexion)
-{
-	$baliseTitle = T_("Déconnexion de la section d'administration de Squeletml");
 }
 
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1);

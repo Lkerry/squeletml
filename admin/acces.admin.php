@@ -64,6 +64,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
 			}
+			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && strlen($_POST['motDePasse']) < 8)
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Pour une question de sécurité, le mot de passe doit contenir au moins huit caractères.") . "</li>\n";
+			}
 			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && $_POST['motDePasse'] != $_POST['motDePasse2'])
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Veuillez confirmer correctement le mot de passe.") . "</li>\n";
@@ -662,7 +666,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<?php if ($ip): ?>
 							<?php $valeurChampIp = $ip; ?>
 						<?php else: ?>
-							<?php $valeurChampIp = adminIpInternaute(); ?>
+							<?php $valeurChampIp = ipInternaute(); ?>
 						<?php endif; ?>
 					
 						<input id="inputIp" type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>

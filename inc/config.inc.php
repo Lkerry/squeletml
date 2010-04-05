@@ -7,11 +7,20 @@
 
 /* ____________________ Général. ____________________ */
 
-// Adresse de réception des rapports générés par Squeletml. Si vide, utilisation de `$contactCourrielParDefaut` (voir le présent fichier de configuration) si cette dernière variable n'est pas vide.
-$courrielRapports = "jp";
+// Adresse courriel de la personne responsable de l'administration du site, donc adresse de réception des rapports générés par Squeletml. Si vide, utilisation de `$contactCourrielParDefaut` (voir le présent fichier de configuration) si cette dernière variable n'est pas vide.
+$courrielAdmin = "jp";
+
+// Expéditeur des rapports de Squeletml envoyés par courriel.
+/*
+- Laisser vide pour utiliser la valeur par défaut de votre serveur.
+*/
+$courrielExpediteurRapports = "";
 
 // Envoi d'un rapport par courriel après l'exécution du cron.
 $rapportCron = TRUE; // TRUE|FALSE
+
+// Activation de la demande de création de compte à partir du site.
+$activerCreationCompte = TRUE; // TRUE|FALSE
 
 /* ____________________ En-tête HTML. ____________________ */
 
@@ -654,8 +663,8 @@ $contactCaptchaCalculMax = 10;
 $contactCaptchaCalculInverse = TRUE; // TRUE|FALSE;
 
 // Limitation du nombre de liens dans le corps d'un message.
-$contactActiverCaptchaLiens = FALSE; // TRUE|FALSE
-$contactCaptchaLiensNombre = 5; // Nombre maximal de liens dans un message
+$contactActiverLimiteNombreLiens = FALSE; // TRUE|FALSE
+$contactNombreLiensMax = 5; // Nombre maximal de liens dans un message
 
 ########################################################################
 ##

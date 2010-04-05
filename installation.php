@@ -213,6 +213,11 @@ else
 			$installationTerminee = FALSE;
 			$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
 		}
+		elseif (strlen($_POST['motDePasse']) < 8)
+		{
+			$installationTerminee = FALSE;
+			$messagesScript .= '<li class="erreur">' . T_("Pour une question de sécurité, le mot de passe doit contenir au moins huit caractères.") . "</li>\n";
+		}
 		elseif ($_POST['motDePasse'] != $_POST['motDePasse2'])
 		{
 			$installationTerminee = FALSE;
@@ -229,7 +234,7 @@ else
 				else
 				{
 					$acces = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
-				} 
+				}
 
 				// On vérifie si l'utilisateur est déjà présent.
 				$utilisateurAbsent = TRUE;
@@ -287,18 +292,20 @@ else
 	echo '<meta name="robots" content="noindex, nofollow, noarchive" />' . "\n";
 	echo '<link rel="shortcut icon" type="images/x-icon" href="' . $urlParente . '/fichiers/favicon.png" />' . "\n";
 	echo '<style type="text/css">' . "\n";
-	echo "body {font-family: Arial, Helvetica, \"Liberation Sans\", FreeSans, sans-serif; font-size: 0.96em;}\n";
-	echo "#page {width: 50%; margin: 10px auto; background-color: #F7F7F7;}\n";
-	echo "#page, .messages {border: 2px solid #EBEBEB; padding: 10px; -moz-border-radius: 8px; /* Gecko. */ -webkit-border-radius: 8px; /* Webkit. */ border-radius: 8px; /* CSS 3. */}\n";
+	echo "html, body { margin: 0px; padding: 0px;}\n";
+	echo "body {font-family: Arial, Helvetica, \"Liberation Sans\", FreeSans, sans-serif; font-size: 0.96em; margin: 0}\n";
+	echo "#page {width: 50%; margin: 0px auto; padding: 5px; border: 1px solid #f2f2f2; border-top: 0px;}\n";
 	echo "h1 {margin-top: 0px; font-size: 1.9em;}\n";
 	echo "h2 {font-size: 1.6em;}\n";
 	echo "h1, h2 {color: #007070;}\n";
-	echo "a:visited {color: #4C177D;}\n";
+	echo "a:visited {color: #4c177d;}\n";
 	echo "a:hover {text-decoration: none;}\n";
-	echo "code {color: #0000E2;}\n";
+	echo "code {color: #0000e2;}\n";
 	echo "ul {padding: 0px; margin-left: 20px;}\n";
 	echo "ul {list-style-type: circle;}\n";
+	echo ".blocMessagesScript ul {margin-top: 0px; margin-bottom: 0px;}\n";
 	echo "li {margin-top: 5px; margin-bottom: 5px;}\n";
+	echo ".blocMessagesScript {padding: 10px; -moz-border-radius: 8px; /* Gecko. */ -webkit-border-radius: 8px; /* Webkit. */ border-radius: 8px; /* CSS 3. */ background-color: #f2f2f2;}\n";
 	echo ".erreur {color: #630000;}\n";
 	echo "</style>\n";
 	echo "</head>\n";
@@ -314,13 +321,13 @@ else
 		
 		if (!empty($messagesScript))
 		{
-			echo "<div class=\"messages\">\n";
+			echo "<div class=\"blocMessagesScript\">\n";
 			echo "<ul>\n";
 			echo $messagesScript;
 			echo "</ul>\n";
 			
 			echo '<p class="erreur">' . sprintf(T_("Vérifiez que le dossier racine de Squeletml est bien accessible en écriture. Ensuite, <a href=\"%1\$s\">visitez de nouveau la présente page</a>."), url()) . "</p>\n";
-			echo "</div><!-- /.messages -->\n";
+			echo "</div><!-- /.blocMessagesScript -->\n";
 		}
 		
 		echo '<form action="' . url() . '" method="post">' . "\n";
@@ -365,24 +372,24 @@ else
 	{
 		if (isset($_POST['creer']) && !empty($messagesScript))
 		{
-			echo "<div class=\"messages\">\n";
+			echo "<div class=\"blocMessagesScript\">\n";
 			echo "<ul>\n";
 			echo $messagesScript;
 			echo "</ul>\n";
 			
 			echo '<p><strong>' . sprintf(T_("Étape %1\$s terminée."), 1) . "</strong></p>\n";
-			echo "</div><!-- /.messages -->\n";
+			echo "</div><!-- /.blocMessagesScript -->\n";
 		}
 		
 		echo '<h2>' . sprintf(T_("Étape %1\$s de %2\$s:"), 2, 2) . "\n" .  T_("ajout d'un utilisateur") . "</h2>\n";
 
 		if (!isset($_POST['creer']) && !empty($messagesScript))
 		{
-			echo "<div class=\"messages\">\n";
+			echo "<div class=\"blocMessagesScript\">\n";
 			echo "<ul>\n";
 			echo $messagesScript;
 			echo "</ul>\n";
-			echo "</div><!-- /.messages -->\n";
+			echo "</div><!-- /.blocMessagesScript -->\n";
 		}
 
 		echo '<p>' . T_("Veuillez ajouter un utilisateur pour restreindre l'accès à la section d'administration de votre site:") . "</p>\n";
@@ -421,13 +428,13 @@ else
 
 		if (isset($_POST['ajouter']) && !empty($messagesScript))
 		{
-			echo "<div class=\"messages\">\n";
+			echo "<div class=\"blocMessagesScript\">\n";
 			echo "<ul>\n";
 			echo $messagesScript;
 			echo "</ul>\n";
 
 			echo '<p><strong>' . sprintf(T_("Étape %1\$s terminée."), 2) . "</strong></p>\n";
-			echo "</div><!-- /.messages -->\n";
+			echo "</div><!-- /.blocMessagesScript -->\n";
 		}
 		
 		echo '<h2>' . T_("Installation terminée") . "</h2>\n";

@@ -102,27 +102,16 @@ pre {
 	text-align: center;
 }
 
-.erreur, .succes {
-	border-width: 2px;
-	border-style: solid;
-	padding: 10px;
-}
-
 .erreur {
-	border-color: red;
+	color: #630000;
 }
 
-.succes {
-	border-color: green;
-}
-
-.erreur p {
+.blocMessagesScript p {
 	margin-top: 0px;
-	font-weight: bold;
-	font-size: 1.1em;
 }
 
-.erreur ul {
+.blocMessagesScript ul {
+	margin-top: 0px;
 	margin-bottom: 0px;
 }
 
@@ -306,6 +295,7 @@ div#sousTitre p {
 }
 
 body.tableDesMatieresArrondie #tableDesMatieres {
+	border-color: #f2f2f2;
 	border-radius: 8px; /* CSS 3. */
 }
 
@@ -910,7 +900,7 @@ div#galerieMinivignettes {
 div#galerieMinivignettes img {
 	float: left;
 	height: 35px;
-	border: 1px solid #f2f2f2;
+	border: 1px solid #b3b3b3;
 	margin: 2px;
 }
 

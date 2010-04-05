@@ -4,8 +4,6 @@ $enTetesHttp = "header('Cache-Control: no-cache, must-revalidate'); /* HTTP/1.1.
 include 'inc/premier.inc.php';
 ?>
 
-<h1><?php echo T_("Déconnexion de la section d'administration de Squeletml"); ?></h1>
-
 <p><?php echo T_("Pour vous assurer de la déconnexion, visitez l'accueil de la section d'administration. Si une fenêtre de connexion vous demande de vous identifier, la déconnexion a été effectuée avec succès."); ?></p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

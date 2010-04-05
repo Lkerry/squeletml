@@ -1159,6 +1159,10 @@ Grâce à la commande ci-dessus, la page `cron.php` est visitée toutes les 12 h
 
 	* */12 * * * lynx -source http://www.nomDeDomaine.ext/cron.php > /dev/null 2>&1
 
+### Rapport par courriel
+
+Il est possible de recevoir un rapport par courriel après l'exécution du cron. Pour ce faire, la variable `$rapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
+
 ## Développement
 
 Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).

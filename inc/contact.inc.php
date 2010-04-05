@@ -42,7 +42,7 @@ if (isset($_POST['envoyer']))
 	if (empty($nom) && $contactChampsObligatoires['nom'])
 	{
 		$erreurFormulaire = TRUE;
-		$messagesScript .= '<li>' . T_("Vous n'avez pas inscrit de nom.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas inscrit de nom.") . "</li>\n";
 	}
 
 	if ($contactVerifierCourriel)
@@ -50,8 +50,13 @@ if (isset($_POST['envoyer']))
 		if (!courrielValide($courriel))
 		{
 			$erreurFormulaire = TRUE;
-			$messagesScript .= '<li>' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
 		}
+	}
+	elseif (empty($courriel))
+	{
+		$erreurFormulaire = TRUE;
+		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas inscrit de courriel.") . "</li>\n";
 	}
 	
 	if ($contactVerifierCourriel && !empty($courrielsDecouvrir))
@@ -72,14 +77,14 @@ if (isset($_POST['envoyer']))
 		if (!empty($courrielsDecouvrirErreur))
 		{
 			$erreurFormulaire = TRUE;
-			$messagesScript .= '<li>' . sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsDecouvrirErreur, 0, -2)) . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsDecouvrirErreur, 0, -2)) . "</li>\n";
 		}
 	}
 	
 	if (empty($message) && !$decouvrir && $contactChampsObligatoires['message'])
 	{
 		$erreurFormulaire = TRUE;
-		$messagesScript .= '<li>' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
 	}
 
 	if ($contactActiverCaptchaCalcul)
@@ -98,16 +103,16 @@ if (isset($_POST['envoyer']))
 		if ($sommeUnDeux != $resultat)
 		{
 			$erreurFormulaire = TRUE;
-			$messagesScript .= '<li>' . T_("Veuillez répondre correctement à la question antipourriel.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Veuillez répondre correctement à la question antipourriel.") . "</li>\n";
 		}
 	}
 
-	if ($contactActiverCaptchaLiens)
+	if ($contactActiverLimiteNombreLiens)
 	{
-		if (substr_count($message, 'http') > $contactCaptchaLiensNombre)
+		if (substr_count($message, 'http') > $contactNombreLiensMax)
 		{
 			$erreurFormulaire = TRUE;
-			$messagesScript .= '<li>' . T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel à cause de ses liens trop nombreux. Veuillez le modifier.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel en raison de ses liens trop nombreux. Veuillez le modifier.") . "</li>\n";
 		}
 	}
 	
@@ -172,7 +177,7 @@ if (isset($_POST['envoyer']))
 		if (courriel($infosCourriel))
 		{
 			$messageEnvoye = TRUE;
-			$messagesScript .= '<p id="messages" class="succes">' . T_("Votre message a bien été envoyé.") . "</p>\n";
+			$messagesScript .= '<li>' . T_("Votre message a bien été envoyé.") . "</li>\n";
 			$nom = '';
 			$courriel = '';
 			$message = '';
@@ -181,24 +186,26 @@ if (isset($_POST['envoyer']))
 		}
 		else
 		{
-			$messagesScript .= '<p id="messages" class="erreur">' . T_("ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard.") . "</p>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Erreur: votre message n'a pas pu être envoyé. Essayez un peu plus tard.") . "</li>\n";
 		}
 	}
 
 	// Messages de confirmation ou d'erreur.
-	if ($erreurFormulaire)
+	if (!empty($messagesScript))
 	{
-		$contact .= '<div id="messages" class="erreur">' . "\n";
-		$contact .= '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>' . "\n";
+		$blocMessagesScript = '';
+		$blocMessagesScript .= '<div id="messages" class="blocMessagesScript">' . "\n";
 		
-		$contact .= "<ul>\n";
-		$contact .= $messagesScript;
-		$contact .= "</ul>\n";
-		$contact .= "</div><!-- /.erreur -->\n";
-	}
-	elseif (!empty($messagesScript))
-	{
-		$contact .= $messagesScript;
+		if ($erreurFormulaire)
+		{
+			$blocMessagesScript .= '<p>' . T_("Le formulaire n'a pas été rempli correctement") . ':</p>' . "\n";
+		}
+		
+		$blocMessagesScript .= "<ul>\n";
+		$blocMessagesScript .= $messagesScript;
+		$blocMessagesScript .= "</ul>\n";
+		$blocMessagesScript .= "</div><!-- /#messages -->\n";
+		$contact .= boiteArrondie($blocMessagesScript);
 	}
 }
 
@@ -210,27 +217,6 @@ $actionFormContact = actionFormContact($decouvrir);
 if ($nom == T_("VOTRE NOM"))
 {
 	$nom = '';
-}
-
-if ($contactActiverCaptchaCalcul)
-{
-	$contactCaptchaCalculUn = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
-	$contactCaptchaCalculDeux = mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax);
-	$inputHidden = '';
-	$inputHidden .= '<input name="u" type="hidden" value="' . $contactCaptchaCalculUn . '" />' . "\n";
-	
-	// Ajout de quelques `input` bidons pour augmenter les chances de duper les robots pourrielleurs.
-	$nbreInput = mt_rand(5, 10);
-	$lettresExcluses = 'drsu';
-	
-	for ($i = 0; $i < $nbreInput; $i++)
-	{
-		$lettreAuHasard = lettreAuHasard($lettresExcluses);
-		$lettresExcluses .= $lettreAuHasard;
-		$inputHidden .= '<input name="' . $lettreAuHasard . '" type="hidden" value="' . mt_rand($contactCaptchaCalculMin, $contactCaptchaCalculMax) . '" />' . "\n";
-	}
-	
-	$inputHidden .= '<input name="d" type="hidden" value="' . $contactCaptchaCalculDeux . '" />' . "\n";
 }
 
 ob_start();
