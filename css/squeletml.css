@@ -102,6 +102,18 @@ pre {
 	text-align: center;
 }
 
+.pagination img {
+	border: none;
+	width: 40px;
+	height: 40px;
+}
+
+.pagination .separateurPaginationTypeImage {
+	margin-left: 10px;
+	margin-right: 10px;
+	visibility: hidden;
+}
+
 .erreur {
 	color: #630000;
 }

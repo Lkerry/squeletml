@@ -1016,9 +1016,11 @@ Si une légende est précisée pour une image, elle s'affiche sous cette derniè
 
 #### Flèches
 
+Il est possible de choisir l'emplacement des flèches (haut ou bas).
+
 Les flèches par défaut sont `fichiers/precedent.png` et `fichiers/suivant.png`. Pour utiliser ses propres images, créer les fichiers `site/fichiers/precedent.png` et `site/fichiers/suivant.png`.
 
-Il est possible de choisir l'emplacement des flèches (haut ou bas).
+*Note: de façon générale, toute pagination sur le site effectuée à l'aide de flèches utilise les images personnalisées si ces dernières existent, sinon les flèches par défaut sont utilisées.*
 
 #### Vignettes
 

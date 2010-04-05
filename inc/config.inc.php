@@ -463,6 +463,9 @@ $activerCategoriesGlobales = TRUE; // TRUE|FALSE
 */
 $nombreArticlesParPageCategorie = 10;
 
+// S'il y a pagination, type de liens.
+$typePaginationCategorie = 'texte'; // image|texte
+
 /* ____________________ Style CSS. ____________________ */
 
 // Note: les options suivantes n'ont aucune influence sur le flux HTML. Il s'agit simplement d'un outil optionnel mais utile pour modifier le style du site sans devoir bidouiller dans les feuilles CSS. En aucun cas ces options sont obligatoires à la stylisation du site.
@@ -759,6 +762,9 @@ $galerieVignettesParPage = 0;
 */
 $galeriePagination['au-dessus']  = TRUE;
 $galeriePagination['au-dessous'] = FALSE;
+
+// S'il y a pagination, type de liens.
+$galerieTypePagination = 'texte'; // image|texte
 
 // Affichage d'informations au sujet de la galerie.
 $galerieInfoAjout = TRUE; // TRUE|FALSE

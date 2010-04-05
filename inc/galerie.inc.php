@@ -479,7 +479,7 @@ elseif (!empty($idGalerie))
 	
 	if ($galerieVignettesParPage)
 	{
-		$pagination = pagination($nombreDimages, $galerieVignettesParPage, $urlSansGet, $baliseTitle, $description);
+		$pagination = pagination($racine, $urlRacine, $galerieTypePagination, $nombreDimages, $galerieVignettesParPage, $urlSansGet, $baliseTitle, $description);
 	
 		if ($pagination['estPageDerreur'])
 		{

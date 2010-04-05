@@ -3854,7 +3854,7 @@ Construit le code HTML pour afficher une pagination, et retourne un tableau cont
   - `$pagination['description']`: contenu de la métabalise `description` modifié pour prendre en compte la pagination;
   - `$pagination['estPageDerreur']`: informe si la page demandée par la variable GET `page` existe. Vaut TRUE si la page n'existe pas.
 */
-function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
+function pagination($racine, $urlRacine, $type, $nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
 {
 	$pagination = array ();
 	$pagination['pagination'] = '';
@@ -3929,7 +3929,27 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 			$lienPrecedent = substr($lien, 0, -1);
 		}
 		
-		$pagination['pagination'] .= '<a href="' . $lienPrecedent . '">' . T_("Page précédente") . '</a>';
+		$pagination['pagination'] .= '<a href="' . $lienPrecedent . '">';
+
+		if ($type == 'image')
+		{
+			if (file_exists($racine . '/site/fichiers/precedent.png'))
+			{
+				$srcPrecedent = $urlRacine . '/site/fichiers/precedent.png';
+			}
+			else
+			{
+				$srcPrecedent = $urlRacine . '/fichiers/precedent.png';
+			}
+			
+			$pagination['pagination'] .= '<img class="paginationPrecedent" src="' . $srcPrecedent . '" alt="' . T_("Page précédente") . '" width="80" height="80" />';
+		}
+		elseif ($type == 'texte')
+		{
+			$pagination['pagination'] .= T_("Page précédente");
+		}
+		
+		$pagination['pagination'] .= '</a>';
 	}
 	
 	if ($page < $pagination['nombreDePages'])
@@ -3939,10 +3959,30 @@ function pagination($nombreElements, $elementsParPage, $urlSansGet, $baliseTitle
 		
 		if (isset($lienPrecedent))
 		{
-			$pagination['pagination'] .= ' | ';
+			$pagination['pagination'] .= '<span class="separateurPaginationType' . ucfirst($type) . '"> | </span>';
+		}
+
+		$pagination['pagination'] .= '<a href="' . $lienSuivant . '">';
+		
+		if ($type == 'image')
+		{
+			if (file_exists($racine . '/site/fichiers/suivant.png'))
+			{
+				$srcSuivant = $urlRacine . '/site/fichiers/suivant.png';
+			}
+			else
+			{
+				$srcSuivant = $urlRacine . '/fichiers/suivant.png';
+			}
+			
+			$pagination['pagination'] .= '<img class="paginationSuivant" src="' . $srcSuivant . '" alt="' . T_("Page suivante") . '" width="80" height="80" />';
+		}
+		elseif ($type == 'texte')
+		{
+			$pagination['pagination'] .= T_("Page suivante");
 		}
 		
-		$pagination['pagination'] .= '<a href="' . $lienSuivant . '">' . T_("Page suivante") . '</a>';
+		$pagination['pagination'] .= '</a>';
 	}
 	
 	$pagination['pagination'] .= '</div><!-- /.pagination -->' . "\n";
