@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-04 14:56-0400\n"
+"POT-Creation-Date: 2010-04-05 14:01-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -14,6 +14,84 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: compte.php:25 installation.php:214 admin/acces.admin.php:65
+msgid "Aucun identifiant spécifié."
+msgstr ""
+
+#: compte.php:31 inc/contact.inc.php:53
+msgid ""
+"Votre adresse courriel ne semble pas avoir une forme valide. Veuillez "
+"vérifier."
+msgstr "The e-mail entered seems to contain some errors. Please check it."
+
+#: compte.php:37 installation.php:219 admin/acces.admin.php:69
+msgid ""
+"Pour une question de sécurité, le mot de passe doit contenir au moins huit "
+"caractères."
+msgstr ""
+
+#: compte.php:42 installation.php:224 admin/acces.admin.php:73
+#, fuzzy
+msgid "Veuillez confirmer correctement le mot de passe."
+msgstr "Please answer correctly the anti-spam question."
+
+#: compte.php:59 inc/contact.inc.php:106
+msgid "Veuillez répondre correctement à la question antipourriel."
+msgstr "Please answer correctly the anti-spam question."
+
+#: compte.php:73 inc/premier.inc.php:70
+msgid "Demande de création d'un compte utilisateur"
+msgstr ""
+
+#: compte.php:75
+#, php-format
+msgid "Identifiant et mot de passe à ajouter dans le fichier %1$s:"
+msgstr ""
+
+#: compte.php:87 compte.php:128
+#, fuzzy
+msgid "Courriel:"
+msgstr "Anti-spam:"
+
+#: compte.php:88
+msgid "Adresse IP:"
+msgstr ""
+
+#: compte.php:89
+msgid "Administration de l'accès:"
+msgstr ""
+
+#: compte.php:90
+#, php-format
+msgid "Modification du fichier %1$s:"
+msgstr ""
+
+#: compte.php:94
+msgid "La demande de création d'un compte utilisateur a été envoyée."
+msgstr ""
+
+#: compte.php:98
+#, fuzzy
+msgid ""
+"Erreur: votre demande n'a pas pu être envoyée. Essayez un peu plus tard."
+msgstr "CAUTION: your e-mail could not be sent. Please try again later."
+
+#: compte.php:119 installation.php:399 admin/acces.admin.php:619
+msgid "Identifiant:"
+msgstr ""
+
+#: compte.php:137 installation.php:408 admin/acces.admin.php:622
+msgid "Mot de passe:"
+msgstr ""
+
+#: compte.php:139 installation.php:410 admin/acces.admin.php:625
+msgid "Confirmer le mot de passe:"
+msgstr ""
+
+#: compte.php:143
+msgid "Demander la création d'un compte"
+msgstr ""
 
 #: xhtml/message-accueil-par-defaut.inc.php:2
 msgid "<h2>Bienvenue sur votre site Squeletml</h2>"
@@ -108,34 +186,11 @@ msgstr "Optionally, you can add here a personal message:"
 msgid "Votre message:"
 msgstr "Your text:"
 
-#: xhtml/form-contact.inc.php:37
-msgid "Antipourriel:"
-msgstr "Anti-spam:"
-
-#: xhtml/form-contact.inc.php:40
-#, php-format
-msgid ""
-"Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1$s "
-"(plusieurs réponses possibles):"
-msgstr ""
-"Please enter two numbers which added together give %1$s (multiple answers "
-"possible):"
-
-#: xhtml/form-contact.inc.php:41
-#, php-format
-msgid "%1$s et %2$s"
-msgstr "%1$s and %2$s"
-
-#: xhtml/form-contact.inc.php:43
-#, php-format
-msgid "Veuillez compléter: %1$s ajouté à %2$s vaut %3$s"
-msgstr "Answer: adding %1$s to %2$s makes %3$s"
-
-#: xhtml/form-contact.inc.php:60
+#: xhtml/form-contact.inc.php:50
 msgid "Je souhaite recevoir une copie du message"
 msgstr "I want to receive a copy"
 
-#: xhtml/form-contact.inc.php:63
+#: xhtml/form-contact.inc.php:53
 msgid "Envoyer le message"
 msgstr "Send email"
 
@@ -178,109 +233,88 @@ msgstr ""
 msgid "Création du fichier %1$s impossible."
 msgstr ""
 
-#: installation.php:214 admin/acces.admin.php:65
-msgid "Aucun identifiant spécifié."
-msgstr ""
-
-#: installation.php:219 admin/acces.admin.php:69
-#, fuzzy
-msgid "Veuillez confirmer correctement le mot de passe."
-msgstr "Please answer correctly the anti-spam question."
-
-#: installation.php:251 admin/acces.admin.php:102
+#: installation.php:256 admin/acces.admin.php:106
 #, php-format
 msgid "Ajout de l'utilisateur <em>%1$s</em> effectué."
 msgstr ""
 
-#: installation.php:255 admin/acces.admin.php:106
+#: installation.php:260 admin/acces.admin.php:110
 #, php-format
 msgid "L'utilisateur <em>%1$s</em> a déjà les droits."
 msgstr ""
 
-#: installation.php:271 admin/categories.admin.php:275
+#: installation.php:276 admin/categories.admin.php:275
 #: admin/categories.admin.php:478 admin/categories.admin.php:527
 #: admin/rss.admin.php:178 admin/rss.admin.php:345 admin/rss.admin.php:445
-#: admin/inc/fonctions.inc.php:421 admin/acces.admin.php:113
-#: admin/acces.admin.php:143 admin/acces.admin.php:153
-#: admin/acces.admin.php:194 admin/acces.admin.php:204
-#: admin/acces.admin.php:241 admin/acces.admin.php:251
-#: admin/acces.admin.php:319 admin/acces.admin.php:359
-#: admin/acces.admin.php:392 admin/acces.admin.php:437
-#: admin/acces.admin.php:447 admin/acces.admin.php:477
-#: admin/acces.admin.php:487 inc/fonctions.inc.php:30
+#: admin/inc/fonctions.inc.php:421 admin/acces.admin.php:117
+#: admin/acces.admin.php:147 admin/acces.admin.php:157
+#: admin/acces.admin.php:198 admin/acces.admin.php:208
+#: admin/acces.admin.php:245 admin/acces.admin.php:255
+#: admin/acces.admin.php:323 admin/acces.admin.php:363
+#: admin/acces.admin.php:396 admin/acces.admin.php:441
+#: admin/acces.admin.php:451 admin/acces.admin.php:481
+#: admin/acces.admin.php:491 inc/fonctions.inc.php:30
 #: inc/fonctions.inc.php:106
 #, php-format
 msgid "Ouverture du fichier %1$s impossible."
 msgstr ""
 
-#: installation.php:285 installation.php:307
+#: installation.php:290 installation.php:314
 msgid "Installation de Squeletml"
 msgstr ""
 
-#: installation.php:313 installation.php:377
+#: installation.php:320 installation.php:384
 #, fuzzy, php-format
 msgid "Étape %1$s de %2$s:"
 msgstr "%1$s and %2$s"
 
-#: installation.php:313
+#: installation.php:320
 msgid "création de fichiers"
 msgstr ""
 
-#: installation.php:322
+#: installation.php:329
 #, php-format
 msgid ""
 "Vérifiez que le dossier racine de Squeletml est bien accessible en écriture. "
 "Ensuite, <a href=\"%1$s\">visitez de nouveau la présente page</a>."
 msgstr ""
 
-#: installation.php:328
+#: installation.php:335
 msgid "Langues à activer dans le menu:"
 msgstr ""
 
-#: installation.php:357
+#: installation.php:364
 msgid "J'héberge mon site sur un serveur de Free.fr."
 msgstr ""
 
-#: installation.php:359
+#: installation.php:366
 msgid "Créer les fichiers"
 msgstr ""
 
-#: installation.php:373 installation.php:429
+#: installation.php:380 installation.php:436
 #, php-format
 msgid "Étape %1$s terminée."
 msgstr ""
 
-#: installation.php:377
+#: installation.php:384
 msgid "ajout d'un utilisateur"
 msgstr ""
 
-#: installation.php:388
+#: installation.php:395
 msgid ""
 "Veuillez ajouter un utilisateur pour restreindre l'accès à la section "
 "d'administration de votre site:"
 msgstr ""
 
-#: installation.php:392 admin/acces.admin.php:615
-msgid "Identifiant:"
-msgstr ""
-
-#: installation.php:401 admin/acces.admin.php:618
-msgid "Mot de passe:"
-msgstr ""
-
-#: installation.php:403 admin/acces.admin.php:621
-msgid "Confirmer le mot de passe:"
-msgstr ""
-
-#: installation.php:405 admin/acces.admin.php:625
+#: installation.php:412 admin/acces.admin.php:629
 msgid "Ajouter l'utilisateur"
 msgstr ""
 
-#: installation.php:433
+#: installation.php:440
 msgid "Installation terminée"
 msgstr ""
 
-#: installation.php:437
+#: installation.php:444
 #, php-format
 msgid ""
 "L'installation est terminée, mais le fichier %1$s n'a pu être créé. Vérifiez "
@@ -289,25 +323,21 @@ msgid ""
 "informer Squeletml de ne plus lancer l'installation automatisée."
 msgstr ""
 
-#: installation.php:440
+#: installation.php:447
 msgid "La suite vous appartient:"
 msgstr ""
 
-#: installation.php:443
+#: installation.php:450
 #, php-format
 msgid "<a href=\"%1$s\">Visiter la page d'accueil de votre site.</a>"
 msgstr ""
 
-#: installation.php:444
+#: installation.php:451
 #, php-format
 msgid "<a href=\"%1$s\">Administrer Squeletml.</a>"
 msgstr ""
 
-#: deconnexion.php:7 inc/premier.inc.php:202
-msgid "Déconnexion de la section d'administration de Squeletml"
-msgstr ""
-
-#: deconnexion.php:9
+#: deconnexion.php:7
 msgid ""
 "Pour vous assurer de la déconnexion, visitez l'accueil de la section "
 "d'administration. Si une fenêtre de connexion vous demande de vous "
@@ -533,8 +563,8 @@ msgstr ""
 #: admin/porte-documents.admin.php:140 admin/porte-documents.admin.php:283
 #: admin/porte-documents.admin.php:509 admin/porte-documents.admin.php:803
 #: admin/porte-documents.admin.php:1695 admin/porte-documents.admin.php:1747
-#: admin/acces.admin.php:613 admin/acces.admin.php:644
-#: admin/acces.admin.php:682
+#: admin/acces.admin.php:617 admin/acces.admin.php:648
+#: admin/acces.admin.php:686
 msgid "Options"
 msgstr ""
 
@@ -698,7 +728,7 @@ msgid "Porte-documents"
 msgstr ""
 
 #: admin/xhtml/menu.inc.php:6 admin/galeries.admin.php:3
-#: inc/fonctions.inc.php:1559
+#: inc/fonctions.inc.php:1594
 msgid "Galeries"
 msgstr ""
 
@@ -856,16 +886,16 @@ msgstr ""
 msgid "Pages ajoutées aux flux RSS globaux"
 msgstr ""
 
-#: admin/rss.admin.php:565 inc/fonctions.inc.php:1566
-#: inc/fonctions.inc.php:1568 inc/fonctions.inc.php:1819 inc/blocs.inc.php:125
-#: inc/premier.inc.php:267 inc/categorie.inc.php:28 inc/categorie.inc.php:80
+#: admin/rss.admin.php:565 inc/fonctions.inc.php:1601
+#: inc/fonctions.inc.php:1603 inc/fonctions.inc.php:1854 inc/blocs.inc.php:125
+#: inc/premier.inc.php:271 inc/categorie.inc.php:28 inc/categorie.inc.php:80
 #: inc/categorie.inc.php:150 inc/categorie.inc.php:195
 #: inc/categorie.inc.php:292
 msgid "Dernières publications"
 msgstr ""
 
-#: admin/rss.admin.php:566 inc/fonctions.inc.php:1561
-#: inc/fonctions.inc.php:1823 inc/blocs.inc.php:130 inc/premier.inc.php:281
+#: admin/rss.admin.php:566 inc/fonctions.inc.php:1596
+#: inc/fonctions.inc.php:1858 inc/blocs.inc.php:130 inc/premier.inc.php:285
 #: inc/categorie.inc.php:39 inc/categorie.inc.php:84 inc/categorie.inc.php:154
 #: inc/categorie.inc.php:199 inc/categorie.inc.php:296
 msgid "Derniers ajouts aux galeries"
@@ -920,7 +950,7 @@ msgstr ""
 msgid "Supprimer"
 msgstr ""
 
-#: admin/galeries.admin.php:15 admin/inc/fonctions.inc.php:854
+#: admin/galeries.admin.php:15 admin/inc/fonctions.inc.php:829
 #: admin/porte-documents.admin.php:823 admin/porte-documents.admin.php:1615
 #: admin/porte-documents.admin.php:1619
 msgid "Renommer"
@@ -1067,7 +1097,7 @@ msgid ""
 "dossier %3$s."
 msgstr ""
 
-#: admin/galeries.admin.php:369 admin/inc/fonctions.inc.php:1308
+#: admin/galeries.admin.php:369 admin/inc/fonctions.inc.php:1283
 #, php-format
 msgid "Renommage de %1$s en %2$s impossible."
 msgstr ""
@@ -1705,7 +1735,7 @@ msgstr ""
 msgid "Pour chaque image intermédiaire, ajouter des paramètres:"
 msgstr ""
 
-#: admin/galeries.admin.php:1690 admin/acces.admin.php:325
+#: admin/galeries.admin.php:1690 admin/acces.admin.php:329
 msgid "Aucun"
 msgstr ""
 
@@ -1738,7 +1768,7 @@ msgid ""
 msgstr ""
 
 #: admin/inc/fonctions.inc.php:112 admin/inc/fonctions.inc.php:170
-#: admin/inc/fonctions.inc.php:1357
+#: admin/inc/fonctions.inc.php:1332
 #, php-format
 msgid "Accès au dossier %1$s impossible."
 msgstr ""
@@ -1811,34 +1841,34 @@ msgstr ""
 msgid "<strong>Permissions:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:819
+#: admin/inc/fonctions.inc.php:794
 msgid "Vide."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:823
+#: admin/inc/fonctions.inc.php:798
 #, php-format
 msgid "Affichage désactivé. <a href=\"%1$s\">Lister ce dossier.</a>"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:842 admin/porte-documents.admin.php:1607
+#: admin/inc/fonctions.inc.php:817 admin/porte-documents.admin.php:1607
 #, fuzzy
 msgid "Télécharger"
 msgstr "Download Firefox"
 
-#: admin/inc/fonctions.inc.php:848
+#: admin/inc/fonctions.inc.php:823
 msgid "Éditer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:864
+#: admin/inc/fonctions.inc.php:839
 #, php-format
 msgid "Afficher «%1$s»"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1084
+#: admin/inc/fonctions.inc.php:1059
 msgid "Aucune erreur, le téléchargement est correct."
 msgstr "There is no error, the file uploaded with success."
 
-#: admin/inc/fonctions.inc.php:1088
+#: admin/inc/fonctions.inc.php:1063
 #, fuzzy
 msgid ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
@@ -1846,7 +1876,7 @@ msgid ""
 msgstr ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 
-#: admin/inc/fonctions.inc.php:1092
+#: admin/inc/fonctions.inc.php:1067
 #, fuzzy
 msgid ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
@@ -1855,93 +1885,93 @@ msgstr ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form."
 
-#: admin/inc/fonctions.inc.php:1096
+#: admin/inc/fonctions.inc.php:1071
 msgid "Le fichier n'a été que partiellement téléchargé."
 msgstr "The uploaded file was only partially uploaded."
 
-#: admin/inc/fonctions.inc.php:1100
+#: admin/inc/fonctions.inc.php:1075
 msgid "Aucun fichier n'a été téléchargé."
 msgstr "No file was uploaded."
 
-#: admin/inc/fonctions.inc.php:1104
+#: admin/inc/fonctions.inc.php:1079
 msgid "Un dossier temporaire est manquant."
 msgstr "Missing a temporary folder."
 
-#: admin/inc/fonctions.inc.php:1108
+#: admin/inc/fonctions.inc.php:1083
 msgid "Échec de l'écriture du fichier sur le disque."
 msgstr "Failed to write file to disk."
 
-#: admin/inc/fonctions.inc.php:1112
+#: admin/inc/fonctions.inc.php:1087
 msgid "L'envoi de fichier est arrêté par l'extension."
 msgstr "File upload stopped by extension."
 
-#: admin/inc/fonctions.inc.php:1161
+#: admin/inc/fonctions.inc.php:1136
 #, php-format
 msgid "Création du dossier %1$s effectuée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1165
+#: admin/inc/fonctions.inc.php:1140
 #, php-format
 msgid "Création du dossier %1$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1260
+#: admin/inc/fonctions.inc.php:1235
 msgid "La réécriture d'URL est activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1265
+#: admin/inc/fonctions.inc.php:1240
 msgid "La réécriture d'URL n'est pas activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1271
+#: admin/inc/fonctions.inc.php:1246
 msgid "Impossible de déterminer si la réécriture d'URL est activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1293
+#: admin/inc/fonctions.inc.php:1268
 #, php-format
 msgid "Déplacement de %1$s vers %2$s effectué."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1297
+#: admin/inc/fonctions.inc.php:1272
 #, php-format
 msgid "Renommage de %1$s en %2$s effectué."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1304
+#: admin/inc/fonctions.inc.php:1279
 #, php-format
 msgid "Déplacement de %1$s vers %2$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1320 admin/inc/fonctions.inc.php:1625
+#: admin/inc/fonctions.inc.php:1295 admin/inc/fonctions.inc.php:1600
 #, php-format
 msgid "Suppression de %1$s effectuée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1324 admin/inc/fonctions.inc.php:1629
+#: admin/inc/fonctions.inc.php:1299 admin/inc/fonctions.inc.php:1604
 #, php-format
 msgid "Suppression de %1$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1403
+#: admin/inc/fonctions.inc.php:1378
 #, php-format
 msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1411 admin/inc/fonctions.inc.php:1460
+#: admin/inc/fonctions.inc.php:1386 admin/inc/fonctions.inc.php:1435
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
 "l'image %2$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1415 admin/inc/fonctions.inc.php:1464
+#: admin/inc/fonctions.inc.php:1390 admin/inc/fonctions.inc.php:1439
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1471
+#: admin/inc/fonctions.inc.php:1446
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une rotation automatique et "
@@ -2685,230 +2715,230 @@ msgid ""
 "assigner les bons droits et revisiter la présente page."
 msgstr ""
 
-#: admin/acces.admin.php:158
+#: admin/acces.admin.php:162
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Son mot de passe ne peut "
 "donc pas être modifié."
 msgstr ""
 
-#: admin/acces.admin.php:162
+#: admin/acces.admin.php:166
 #, php-format
 msgid "Modification du mot de passe de l'utilisateur <em>%1$s</em> effectuée."
 msgstr ""
 
-#: admin/acces.admin.php:257
+#: admin/acces.admin.php:261
 #, php-format
 msgid ""
 "L'utilisateur <em>%1$s</em> n'a pas les droits. Il ne peut donc pas être "
 "supprimé."
 msgstr ""
 
-#: admin/acces.admin.php:261
+#: admin/acces.admin.php:265
 #, php-format
 msgid "Utilisateur <em>%1$s</em> supprimé."
 msgstr ""
 
-#: admin/acces.admin.php:268
+#: admin/acces.admin.php:272
 msgid "Gestion des droits d'accès à l'administration"
 msgstr ""
 
-#: admin/acces.admin.php:280
+#: admin/acces.admin.php:284
 msgid "Liste des utilisateurs"
 msgstr ""
 
-#: admin/acces.admin.php:282
+#: admin/acces.admin.php:286
 msgid "Voici les utilisateurs ayant accès à l'administration:"
 msgstr ""
 
-#: admin/acces.admin.php:493
+#: admin/acces.admin.php:497
 msgid "Le site est en maintenance (hors ligne)."
 msgstr ""
 
-#: admin/acces.admin.php:497 admin/acces.admin.php:652
+#: admin/acces.admin.php:501 admin/acces.admin.php:656
 #, php-format
 msgid "L'IP %1$s a accès au site hors ligne."
 msgstr ""
 
-#: admin/acces.admin.php:501 admin/acces.admin.php:654
+#: admin/acces.admin.php:505 admin/acces.admin.php:658
 msgid "Aucune IP n'a accès au site hors ligne."
 msgstr ""
 
-#: admin/acces.admin.php:506
+#: admin/acces.admin.php:510
 msgid "Le site est en ligne."
 msgstr ""
 
-#: admin/acces.admin.php:509
+#: admin/acces.admin.php:513
 msgid "Maintenance du site"
 msgstr ""
 
-#: admin/acces.admin.php:524
+#: admin/acces.admin.php:528
 msgid "Aucun type de cache sélectionné."
 msgstr ""
 
-#: admin/acces.admin.php:532
+#: admin/acces.admin.php:536
 msgid "Suppression du cache de l'administration effectuée."
 msgstr ""
 
-#: admin/acces.admin.php:536
+#: admin/acces.admin.php:540
 msgid ""
 "Erreur lors de la suppression du cache de l'administration. Veuillez "
 "vérifier manuellement son contenu."
 msgstr ""
 
-#: admin/acces.admin.php:544
+#: admin/acces.admin.php:548
 msgid "Suppression du cache du site effectuée."
 msgstr ""
 
-#: admin/acces.admin.php:548
+#: admin/acces.admin.php:552
 msgid ""
 "Erreur lors de la suppression du cache du site. Veuillez vérifier "
 "manuellement son contenu."
 msgstr ""
 
-#: admin/acces.admin.php:554
+#: admin/acces.admin.php:558
 msgid "Le type de cache sélectionné n'est pas valide."
 msgstr ""
 
-#: admin/acces.admin.php:558
+#: admin/acces.admin.php:562
 msgid "Suppression du cache"
 msgstr ""
 
-#: admin/acces.admin.php:573
+#: admin/acces.admin.php:577
 msgid "Lancement du cron effectué et terminé."
 msgstr ""
 
-#: admin/acces.admin.php:577
+#: admin/acces.admin.php:581
 msgid "Une erreur a eu lieu lors du lancement du cron."
 msgstr ""
 
-#: admin/acces.admin.php:580
+#: admin/acces.admin.php:584
 msgid "Lancement du cron"
 msgstr ""
 
-#: admin/acces.admin.php:594
+#: admin/acces.admin.php:598
 msgid "Lister les utilisateurs ayant accès à l'administration"
 msgstr ""
 
-#: admin/acces.admin.php:596
+#: admin/acces.admin.php:600
 msgid ""
 "Vous pouvez afficher la liste des utilisateurs ayant accès à "
 "l'administration."
 msgstr ""
 
-#: admin/acces.admin.php:600
+#: admin/acces.admin.php:604
 msgid "Lister les utilisateurs"
 msgstr ""
 
-#: admin/acces.admin.php:606
+#: admin/acces.admin.php:610
 msgid "Gérer les droits d'accès à l'administration"
 msgstr ""
 
-#: admin/acces.admin.php:608
+#: admin/acces.admin.php:612
 msgid ""
 "Vous pouvez ajouter ou supprimer un utilisateur en remplissant le formulaire "
 "ci-dessous. Vous pouvez également modifier le mot de passe d'un utilisateur "
 "existant."
 msgstr ""
 
-#: admin/acces.admin.php:625
+#: admin/acces.admin.php:629
 msgid "Supprimer l'utilisateur"
 msgstr ""
 
-#: admin/acces.admin.php:625
+#: admin/acces.admin.php:629
 msgid "Modifier le mot de passe"
 msgstr ""
 
-#: admin/acces.admin.php:631
+#: admin/acces.admin.php:635
 msgid "Mettre le site hors ligne pour maintenance"
 msgstr ""
 
-#: admin/acces.admin.php:633
+#: admin/acces.admin.php:637
 msgid ""
 "Si le site est hors ligne, tous les internautes visitant une page du site "
 "seront redirigés vers la page de maintenance."
 msgstr ""
 
-#: admin/acces.admin.php:636
+#: admin/acces.admin.php:640
 msgid ""
 "Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est "
 "pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera "
 "pas."
 msgstr ""
 
-#: admin/acces.admin.php:638
+#: admin/acces.admin.php:642
 msgid ""
 "Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</"
 "code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la "
 "mise hors ligne du site ne fonctionnera pas."
 msgstr ""
 
-#: admin/acces.admin.php:648
+#: admin/acces.admin.php:652
 msgid "Le site est présentement:"
 msgstr ""
 
-#: admin/acces.admin.php:649
+#: admin/acces.admin.php:653
 msgid "en ligne."
 msgstr ""
 
-#: admin/acces.admin.php:650
+#: admin/acces.admin.php:654
 msgid "en maintenance (hors ligne)."
 msgstr ""
 
-#: admin/acces.admin.php:659
+#: admin/acces.admin.php:663
 msgid ""
 "IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour "
 "désactiver cette option):"
 msgstr ""
 
-#: admin/acces.admin.php:671
+#: admin/acces.admin.php:675
 msgid "Changer l'état du site"
 msgstr ""
 
-#: admin/acces.admin.php:677 admin/acces.admin.php:690
+#: admin/acces.admin.php:681 admin/acces.admin.php:694
 msgid "Supprimer le cache"
 msgstr ""
 
-#: admin/acces.admin.php:684
+#: admin/acces.admin.php:688
 msgid "Supprimer le cache:"
 msgstr ""
 
-#: admin/acces.admin.php:685
+#: admin/acces.admin.php:689
 msgid "de l'administration."
 msgstr ""
 
-#: admin/acces.admin.php:686
+#: admin/acces.admin.php:690
 msgid "du site."
 msgstr ""
 
-#: admin/acces.admin.php:696
+#: admin/acces.admin.php:700
 msgid "Lancer le cron manuellement"
 msgstr ""
 
-#: admin/acces.admin.php:703
+#: admin/acces.admin.php:707
 #, php-format
 msgid "Dernier lancement du cron le %1$s."
 msgstr ""
 
-#: admin/acces.admin.php:706
+#: admin/acces.admin.php:710
 msgid "Cette action peut prendre plusieurs minutes."
 msgstr ""
 
-#: admin/acces.admin.php:708
+#: admin/acces.admin.php:712
 msgid "Lancer le cron"
 msgstr ""
 
-#: admin/acces.admin.php:715
+#: admin/acces.admin.php:719
 msgid "Obtenir une copie de sauvegarde du site"
 msgstr ""
 
-#: admin/acces.admin.php:717
+#: admin/acces.admin.php:721
 msgid ""
 "Vous pouvez télécharger sur votre ordinateur une archive contenant tout le "
 "site."
 msgstr ""
 
-#: admin/acces.admin.php:719
+#: admin/acces.admin.php:723
 msgid "Télécharger une copie de sauvegarde du site."
 msgstr ""
 
@@ -2931,113 +2961,136 @@ msgstr ""
 msgid "Contenu du fichier de configuration de l'administration de Squeletml"
 msgstr ""
 
-#: inc/fonctions.inc.php:566
+#: inc/fonctions.inc.php:415
+msgid "Antipourriel:"
+msgstr "Anti-spam:"
+
+#: inc/fonctions.inc.php:419
+#, php-format
+msgid ""
+"Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1$s "
+"(plusieurs réponses possibles):"
+msgstr ""
+"Please enter two numbers which added together give %1$s (multiple answers "
+"possible):"
+
+#: inc/fonctions.inc.php:420
+#, php-format
+msgid "%1$s et %2$s"
+msgstr "%1$s and %2$s"
+
+#: inc/fonctions.inc.php:424
+#, php-format
+msgid "Veuillez compléter: %1$s ajouté à %2$s vaut %3$s"
+msgstr "Answer: adding %1$s to %2$s makes %3$s"
+
+#: inc/fonctions.inc.php:609
 msgid "Résumé"
 msgstr ""
 
-#: inc/fonctions.inc.php:1015
+#: inc/fonctions.inc.php:1058
 msgid "Légende de l'image"
 msgstr ""
 
-#: inc/fonctions.inc.php:1253 inc/fonctions.inc.php:1636
-#: inc/fonctions.inc.php:3419 inc/fonctions.inc.php:3697
+#: inc/fonctions.inc.php:1296 inc/fonctions.inc.php:1671
+#: inc/fonctions.inc.php:3479 inc/fonctions.inc.php:3757
 #, fuzzy, php-format
 msgid "Image %1$s"
 msgstr "Category: %1$s."
 
-#: inc/fonctions.inc.php:1285
+#: inc/fonctions.inc.php:1328
 #, php-format
 msgid "Voyez l'image %1$s en plus grande taille!"
 msgstr ""
 
-#: inc/fonctions.inc.php:1285
+#: inc/fonctions.inc.php:1328
 msgid "En espérant qu'elle vous intéresse!"
 msgstr "We hope it'll interest you!"
 
-#: inc/fonctions.inc.php:1314
+#: inc/fonctions.inc.php:1357
 #, fuzzy
 msgid "En espérant que cette page vous intéresse!"
 msgstr "We hope it'll interest you!"
 
-#: inc/fonctions.inc.php:1544 inc/blocs.inc.php:135 inc/premier.inc.php:288
+#: inc/fonctions.inc.php:1579 inc/blocs.inc.php:135 inc/premier.inc.php:292
 #: inc/galerie.inc.php:124 inc/galerie.inc.php:408 inc/galerie.inc.php:453
 #: inc/galerie.inc.php:471 inc/galerie.inc.php:654
 #, php-format
 msgid "Galerie %1$s"
 msgstr "Gallery %1$s"
 
-#: inc/fonctions.inc.php:1546
+#: inc/fonctions.inc.php:1581
 #, php-format
 msgid "Derniers ajouts à la galerie «%1$s»"
 msgstr ""
 
-#: inc/fonctions.inc.php:1551 inc/fonctions.inc.php:1553
+#: inc/fonctions.inc.php:1586 inc/fonctions.inc.php:1588
 #, php-format
 msgid "Dernières publications dans la catégorie «%1$s»"
 msgstr ""
 
-#: inc/fonctions.inc.php:1611 inc/galerie.inc.php:81 inc/galerie.inc.php:133
+#: inc/fonctions.inc.php:1646 inc/galerie.inc.php:81 inc/galerie.inc.php:133
 #: inc/galerie.inc.php:417
 #, fuzzy, php-format
 msgid "%1$s – Galerie %2$s"
 msgstr "Work %1$s | Gallery %2$s"
 
-#: inc/fonctions.inc.php:1660 inc/fonctions.inc.php:3471
+#: inc/fonctions.inc.php:1695 inc/fonctions.inc.php:3531
 #, php-format
 msgid ""
 "Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
 "Kio)."
 msgstr ""
 
-#: inc/fonctions.inc.php:1665 inc/fonctions.inc.php:3477
+#: inc/fonctions.inc.php:1700 inc/fonctions.inc.php:3537
 #, php-format
 msgid ""
 "Voir l'image %1$s au format original (extension: %2$s; taille: %3$s Kio)."
 msgstr ""
 
-#: inc/fonctions.inc.php:1703
+#: inc/fonctions.inc.php:1738
 #, php-format
 msgid "Consulter la page de présentation de l'image %1$s dans la galerie %2$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:1770
+#: inc/fonctions.inc.php:1805
 #, php-format
 msgid "Lire la suite de %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:1835
+#: inc/fonctions.inc.php:1870
 #, php-format
 msgid " (%1$s)"
 msgstr ""
 
-#: inc/fonctions.inc.php:2073
+#: inc/fonctions.inc.php:2108
 #, php-format
 msgid "Publié par %1$s le %2$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2077
+#: inc/fonctions.inc.php:2112
 #, php-format
 msgid "Publié par %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2082
+#: inc/fonctions.inc.php:2117
 #, php-format
 msgid "Publié le %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2087
+#: inc/fonctions.inc.php:2122
 #, php-format
 msgid "Dernière révision le %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2100
+#: inc/fonctions.inc.php:2135
 #, php-format
 msgid "Catégorie: %1$s."
 msgid_plural "Catégories: %1$s."
 msgstr[0] "Category: %1$s."
 msgstr[1] "Categories: %1$s."
 
-#: inc/fonctions.inc.php:2316
+#: inc/fonctions.inc.php:2376
 #, php-format
 msgid ""
 "<a href=\"http://artlibre.org/licence/lal\"><img %1$s alt=\"Licence Art Libre"
@@ -3045,7 +3098,7 @@ msgid ""
 "\">licence Art Libre</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2320
+#: inc/fonctions.inc.php:2380
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1$s alt="
@@ -3054,7 +3107,7 @@ msgid ""
 "deed.fr\">contrat Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2324
+#: inc/fonctions.inc.php:2384
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1$s "
@@ -3064,7 +3117,7 @@ msgid ""
 "Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2328
+#: inc/fonctions.inc.php:2388
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1$s "
@@ -3073,7 +3126,7 @@ msgid ""
 "licenses/by-nd/3.0/deed.fr\">contrat Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2332
+#: inc/fonctions.inc.php:2392
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1$s "
@@ -3083,7 +3136,7 @@ msgid ""
 "a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2336
+#: inc/fonctions.inc.php:2396
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img %1"
@@ -3093,7 +3146,7 @@ msgid ""
 "sa/3.0/deed.fr\">contrat Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2340
+#: inc/fonctions.inc.php:2400
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img %1"
@@ -3103,7 +3156,7 @@ msgid ""
 "Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2344
+#: inc/fonctions.inc.php:2404
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/publicdomain/deed.fr\"><img %1"
@@ -3111,7 +3164,7 @@ msgid ""
 "creativecommons.org/licenses/publicdomain/deed.fr\">domaine public</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2348
+#: inc/fonctions.inc.php:2408
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-2.0.html\"><img %1$s alt=\"Licence "
@@ -3120,7 +3173,7 @@ msgid ""
 "de GNU, version 2</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2352
+#: inc/fonctions.inc.php:2412
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -3130,7 +3183,7 @@ msgid ""
 "a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2356
+#: inc/fonctions.inc.php:2416
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\"><img %1$s alt=\"Licence "
@@ -3139,7 +3192,7 @@ msgid ""
 "de GNU, version 3</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2360
+#: inc/fonctions.inc.php:2420
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -3149,7 +3202,7 @@ msgid ""
 "a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2364
+#: inc/fonctions.inc.php:2424
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\"><img %1$s alt="
@@ -3158,7 +3211,7 @@ msgid ""
 "publique générale GNU Affero, version 3</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2368
+#: inc/fonctions.inc.php:2428
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl.html\"><img %1$s alt=\"Licence "
@@ -3168,7 +3221,7 @@ msgid ""
 "ultérieure</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2372
+#: inc/fonctions.inc.php:2432
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\"><img %1$s alt="
@@ -3177,7 +3230,7 @@ msgid ""
 "\">licence publique générale amoindrie de GNU, version 2.1</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2376
+#: inc/fonctions.inc.php:2436
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -3187,7 +3240,7 @@ msgid ""
 "version ultérieure</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2380
+#: inc/fonctions.inc.php:2440
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\"><img %1$s alt="
@@ -3196,7 +3249,7 @@ msgid ""
 "\">licence publique générale amoindrie de GNU, version 3</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2384
+#: inc/fonctions.inc.php:2444
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -3206,7 +3259,7 @@ msgid ""
 "version ultérieure</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2388
+#: inc/fonctions.inc.php:2448
 #, php-format
 msgid ""
 "<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
@@ -3215,7 +3268,7 @@ msgid ""
 "\">licence BSD modifiée</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2392
+#: inc/fonctions.inc.php:2452
 #, php-format
 msgid ""
 "<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1$s alt="
@@ -3223,7 +3276,7 @@ msgid ""
 "opensource.org/licenses/mit-license.php\">licence MIT</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2396
+#: inc/fonctions.inc.php:2456
 msgid ""
 "La reproduction exacte et la distribution intégrale de cet article est "
 "permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
@@ -3232,7 +3285,7 @@ msgstr ""
 "Verbatim copying and distribution of this entire article are permitted "
 "worldwide without royalty in any medium, provided this notice is preserved."
 
-#: inc/fonctions.inc.php:3014
+#: inc/fonctions.inc.php:3074
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
@@ -3240,7 +3293,7 @@ msgstr ""
 "Do you know that Internet&nbsp;Explorer&nbsp;6 (with which you are visiting "
 "this site) is out of date?"
 
-#: inc/fonctions.inc.php:3016
+#: inc/fonctions.inc.php:3076
 msgid ""
 "Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous "
 "recommandons d'utiliser <strong>Firefox</strong>, un navigateur libre, "
@@ -3253,99 +3306,99 @@ msgstr ""
 "performance and respect of web standards. Firefox is totally free. If you "
 "are using a computer at work you should contact your IT administrator."
 
-#: inc/fonctions.inc.php:3018
+#: inc/fonctions.inc.php:3078
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:3150
+#: inc/fonctions.inc.php:3210
 msgid ""
 "Le site est présentement hors ligne pour maintenance. Certaines pages "
 "peuvent ne pas s'afficher correctement."
 msgstr ""
 
-#: inc/fonctions.inc.php:3243
+#: inc/fonctions.inc.php:3303
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3247
+#: inc/fonctions.inc.php:3307
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
 msgstr ""
 
-#: inc/fonctions.inc.php:3290 inc/fonctions.inc.php:3303
-#: inc/fonctions.inc.php:3316
+#: inc/fonctions.inc.php:3350 inc/fonctions.inc.php:3363
+#: inc/fonctions.inc.php:3376
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3294 inc/fonctions.inc.php:3307
-#: inc/fonctions.inc.php:3320
+#: inc/fonctions.inc.php:3354 inc/fonctions.inc.php:3367
+#: inc/fonctions.inc.php:3380
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
 msgstr ""
 
-#: inc/fonctions.inc.php:3472
+#: inc/fonctions.inc.php:3532
 #, php-format
 msgid "Télécharger l'image %1$s au format original"
 msgstr ""
 
-#: inc/fonctions.inc.php:3478
+#: inc/fonctions.inc.php:3538
 #, php-format
 msgid "Voir l'image %1$s au format original"
 msgstr ""
 
-#: inc/fonctions.inc.php:3517
+#: inc/fonctions.inc.php:3577
 #, php-format
 msgid "Image %1$s (extension: %2$s; taille: %3$s Kio)."
 msgstr ""
 
-#: inc/fonctions.inc.php:3547
+#: inc/fonctions.inc.php:3607
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:3551
+#: inc/fonctions.inc.php:3611
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:3561
+#: inc/fonctions.inc.php:3621
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:3565
+#: inc/fonctions.inc.php:3625
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:3569
+#: inc/fonctions.inc.php:3629
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:3573
+#: inc/fonctions.inc.php:3633
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:3577
+#: inc/fonctions.inc.php:3637
 msgid "Fabriquant"
 msgstr "Manufacturer"
 
-#: inc/fonctions.inc.php:3830 inc/fonctions.inc.php:3831
+#: inc/fonctions.inc.php:3890 inc/fonctions.inc.php:3891
 #, fuzzy, php-format
 msgid "%1$s – Page %2$s"
 msgstr "%1$s and %2$s"
 
-#: inc/fonctions.inc.php:3871
+#: inc/fonctions.inc.php:3931
 msgid "Page précédente"
 msgstr ""
 
-#: inc/fonctions.inc.php:3884
+#: inc/fonctions.inc.php:3944
 msgid "Page suivante"
 msgstr ""
 
-#: inc/fonctions.inc.php:3997 inc/fonctions.inc.php:4313
+#: inc/fonctions.inc.php:4057 inc/fonctions.inc.php:4373
 msgid "Voir plus de titres"
 msgstr ""
 
-#: inc/fonctions.inc.php:4120 inc/fonctions.inc.php:4227
+#: inc/fonctions.inc.php:4180 inc/fonctions.inc.php:4287
 msgid "Voir plus d'images"
 msgstr ""
 
@@ -3357,7 +3410,7 @@ msgstr "Share with friends"
 msgid "Syndication"
 msgstr ""
 
-#: inc/blocs.inc.php:142 inc/blocs.inc.php:146 inc/premier.inc.php:302
+#: inc/blocs.inc.php:142 inc/blocs.inc.php:146 inc/premier.inc.php:306
 #, fuzzy, php-format
 msgid "Catégorie %1$s"
 msgstr "Category: %1$s."
@@ -3373,6 +3426,10 @@ msgstr ""
 #: inc/blocs.inc.php:291
 msgid "Réseaux sociaux"
 msgstr "Social networks"
+
+#: inc/premier.inc.php:74
+msgid "Déconnexion de la section d'administration de Squeletml"
+msgstr ""
 
 #: inc/categorie.inc.php:88
 #, php-format
@@ -3431,7 +3488,7 @@ msgstr ""
 msgid "La catégorie %1$s est introuvable"
 msgstr ""
 
-#: inc/faire-decouvrir.inc.php:21 inc/contact.inc.php:210
+#: inc/faire-decouvrir.inc.php:21 inc/contact.inc.php:217
 msgid "VOTRE NOM"
 msgstr "YOUR NAME"
 
@@ -3473,13 +3530,12 @@ msgstr ""
 msgid "Vous n'avez pas inscrit de nom."
 msgstr "You have not written your name."
 
-#: inc/contact.inc.php:53
-msgid ""
-"Votre adresse courriel ne semble pas avoir une forme valide. Veuillez "
-"vérifier."
-msgstr "The e-mail entered seems to contain some errors. Please check it."
+#: inc/contact.inc.php:59
+#, fuzzy
+msgid "Vous n'avez pas inscrit de courriel."
+msgstr "You have not written your name."
 
-#: inc/contact.inc.php:75
+#: inc/contact.inc.php:80
 #, fuzzy, php-format
 msgid ""
 "L'adresse suivante ne semble pas avoir une forme valide; veuillez la "
@@ -3490,30 +3546,27 @@ msgid_plural ""
 msgstr[0] "The e-mail entered seems to contain some errors. Please check it."
 msgstr[1] "The e-mail entered seems to contain some errors. Please check it."
 
-#: inc/contact.inc.php:82
+#: inc/contact.inc.php:87
 msgid "Vous n'avez pas écrit de message."
 msgstr "You have not written any text."
 
-#: inc/contact.inc.php:101
-msgid "Veuillez répondre correctement à la question antipourriel."
-msgstr "Please answer correctly the anti-spam question."
-
-#: inc/contact.inc.php:110
+#: inc/contact.inc.php:115
 #, fuzzy
 msgid ""
 "Votre message a une forme qui le fait malheureusement classer comme du "
-"pourriel à cause de ses liens trop nombreux. Veuillez le modifier."
+"pourriel en raison de ses liens trop nombreux. Veuillez le modifier."
 msgstr "Unfortunately your text has been identified as spam. Please change it."
 
-#: inc/contact.inc.php:175
+#: inc/contact.inc.php:180
 msgid "Votre message a bien été envoyé."
 msgstr "Your email has been sent."
 
-#: inc/contact.inc.php:184
-msgid "ERREUR: votre message n'a pas pu être envoyé. Essayez un peu plus tard."
+#: inc/contact.inc.php:189
+#, fuzzy
+msgid "Erreur: votre message n'a pas pu être envoyé. Essayez un peu plus tard."
 msgstr "CAUTION: your e-mail could not be sent. Please try again later."
 
-#: inc/contact.inc.php:192
+#: inc/contact.inc.php:201
 msgid "Le formulaire n'a pas été rempli correctement"
 msgstr "The form has not been filled correctly"
 

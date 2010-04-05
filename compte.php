@@ -9,7 +9,7 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 	include_once $cheminFichier;
 }
 
-if ($activerCreationCompte)
+if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 {
 	$robots = 'noindex, nofollow, noarchive';
 	include $racine . '/inc/premier.inc.php';

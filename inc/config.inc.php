@@ -8,7 +8,7 @@
 /* ____________________ Général. ____________________ */
 
 // Adresse courriel de la personne responsable de l'administration du site, donc adresse de réception des rapports générés par Squeletml. Si vide, utilisation de `$contactCourrielParDefaut` (voir le présent fichier de configuration) si cette dernière variable n'est pas vide.
-$courrielAdmin = "jp";
+$courrielAdmin = "";
 
 // Expéditeur des rapports de Squeletml envoyés par courriel.
 /*
@@ -17,10 +17,10 @@ $courrielAdmin = "jp";
 $courrielExpediteurRapports = "";
 
 // Envoi d'un rapport par courriel après l'exécution du cron.
-$rapportCron = TRUE; // TRUE|FALSE
+$rapportCron = FALSE; // TRUE|FALSE
 
 // Activation de la demande de création de compte à partir du site.
-$activerCreationCompte = TRUE; // TRUE|FALSE
+$activerCreationCompte = FALSE; // TRUE|FALSE
 
 /* ____________________ En-tête HTML. ____________________ */
 
