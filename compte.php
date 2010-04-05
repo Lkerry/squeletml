@@ -11,6 +11,11 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 
 if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 {
+	$faireDecouvrir = FALSE;
+	$infosPublication = FALSE;
+	$licence = '';
+	$lienPage = FALSE;
+	$marquePagesSociaux = FALSE;
 	$robots = 'noindex, nofollow, noarchive';
 	include $racine . '/inc/premier.inc.php';
 	

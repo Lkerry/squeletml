@@ -23,7 +23,7 @@ $rapportCron = FALSE; // TRUE|FALSE
 /*
 - Si la demande est activée, le formulaire est accessible à la page `compte.php`, située à la racine du site.
 */
-$activerCreationCompte = FALSE; // TRUE|FALSE
+$activerCreationCompte = true; // TRUE|FALSE
 
 /* ____________________ En-tête HTML. ____________________ */
 
@@ -491,6 +491,7 @@ $liensActifsBlocs['marque-pages-sociaux']  = NULL;
 $liensActifsBlocs['menu']                  = TRUE;
 $liensActifsBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $liensActifsBlocs['menu-langues']          = TRUE;
+$liensActifsBlocs['recherche-google']  = NULL;
 
 // Limite de la profondeur d'une liste dans un bloc.
 /*
@@ -553,6 +554,7 @@ $limiterProfondeurListesBlocs['marque-pages-sociaux']  = NULL;
 $limiterProfondeurListesBlocs['menu']                  = TRUE;
 $limiterProfondeurListesBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $limiterProfondeurListesBlocs['menu-langues']          = FALSE;
+$limiterProfondeurListesBlocs['recherche-google']  = NULL;
 
 // Nombre de colonnes.
 /*
