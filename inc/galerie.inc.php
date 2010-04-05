@@ -24,7 +24,6 @@ else
 }
 
 // Initialisation du titre et du corps de la galerie.
-$titreGalerieGenere = FALSE;
 $sousTitreGalerie = '';
 $corpsGalerie = '';
 

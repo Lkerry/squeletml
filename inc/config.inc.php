@@ -23,7 +23,7 @@ $rapportCron = FALSE; // TRUE|FALSE
 /*
 - Si la demande est activée, le formulaire est accessible à la page `compte.php`, située à la racine du site.
 */
-$activerCreationCompte = true; // TRUE|FALSE
+$activerCreationCompte = FALSE; // TRUE|FALSE
 
 /* ____________________ En-tête HTML. ____________________ */
 
