@@ -1453,7 +1453,8 @@ Si `$retourneNomSansExtension` vaut FALSE, retourne l'extension d'un fichier (sa
 */
 function extension($nomFichier, $retourneNomSansExtension = FALSE)
 {
-	$extension = array_pop(explode('.', $nomFichier));
+	$tableauNomFichier = explode('.', $nomFichier);
+	$extension = array_pop($tableauNomFichier);
 	
 	if ($retourneNomSansExtension)
 	{
