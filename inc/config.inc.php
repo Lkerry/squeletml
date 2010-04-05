@@ -5,6 +5,14 @@
 ##
 ########################################################################
 
+/* ____________________ Général. ____________________ */
+
+// Adresse de réception des rapports générés par Squeletml. Si vide, utilisation de `$contactCourrielParDefaut` (voir le présent fichier de configuration) si cette dernière variable n'est pas vide.
+$courrielRapports = "jp";
+
+// Envoi d'un rapport par courriel après l'exécution du cron.
+$rapportCron = TRUE; // TRUE|FALSE
+
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).

@@ -97,6 +97,8 @@ elseif ($argv[1] == 'annexes-doc')
 	include 'init.inc.php';
 	include $racine . '/inc/fonctions.inc.php';
 	
+	eval(variablesAaffecterAuDebut());
+	
 	foreach (cheminsInc($racine, 'config') as $cheminFichier)
 	{
 		include_once $cheminFichier;

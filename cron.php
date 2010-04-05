@@ -5,12 +5,15 @@ if (file_exists('init.inc.php'))
 	include_once $racine . '/inc/fonctions.inc.php';
 	include_once $racine . '/inc/php-gettext/gettext.inc';
 	
+	eval(variablesAaffecterAuDebut());
+	
 	foreach (cheminsInc($racine, 'config') as $cheminFichier)
 	{
 		include_once $cheminFichier;
 	}
 	
-	@file_put_contents("$racine/site/inc/cron.txt", time());
+	$date = time();
+	@file_put_contents("$racine/site/inc/cron.txt", $date);
 	
 	$tableauUrl = array ();
 	$extraAsupprimer = array ();
@@ -179,22 +182,62 @@ if (file_exists('init.inc.php'))
 		}
 	}
 	
+	$rapport = '';
+	
 	foreach ($extraAsupprimer as $aSupprimer)
 	{
-		@unlink($racine . '/site/cache/' . $aSupprimer);
+		if (@unlink($racine . '/site/cache/' . $aSupprimer))
+		{
+			$rapport .= '1: ';
+		}
+		else
+		{
+			$rapport .= '0: ';
+		}
+		
+		$rapport .= 'unlink("' . $racine . '/site/cache/' . $aSupprimer . '");' . "\n\n";
 	}
 	
 	foreach ($tableauUrl as $url)
 	{
 		if (!empty($url['cache']))
 		{
-			@unlink($racine . '/site/cache/' . $url['cache']);
+			if (@unlink($racine . '/site/cache/' . $url['cache']))
+			{
+				$rapport .= '1: ';
+			}
+			else
+			{
+				$rapport .= '0: ';
+			}
+			
+			$rapport .= 'unlink("' . $racine . '/site/cache/' . $url['cache'] . '");' . "\n\n";
 		}
 		
 		if (empty($url['cache']) || !file_exists($racine . '/site/cache/' . $url['cache']))
 		{
-			@file_get_contents(superRawurlencode($url['url'], TRUE));
+			$urlEncodee = superRawurlencode($url['url'], TRUE);
+			
+			if (@file_get_contents($urlEncodee) !== FALSE)
+			{
+				$rapport .= '1: ';
+			}
+			else
+			{
+				$rapport .= '0: ';
+			}
+
+			$rapport .= 'file_get_contents("' . $urlEncodee . '");' . "\n\n";
 		}
+	}
+
+	if ($rapportCron && (!empty($courrielRapports) || !empty($contactCourrielParDefaut)))
+	{
+		$infosCourriel = array ();
+		$infosCourriel['destinataire'] = !empty($courrielRapports) ? $courrielRapports : $contactCourrielParDefaut;
+		$infosCourriel['objet'] = "Cron ($date)";
+		$infosCourriel['message'] = $rapport;
+		courriel($infosCourriel);
 	}
 }
 ?>
