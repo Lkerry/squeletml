@@ -174,7 +174,7 @@ $typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMime
 
 <img class="imgCentre" src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80x15.png" alt="Squeletml" width="80" height="15" />
 
-<p><img class="imgDroite" src="<?php echo $urlRacine; ?>/fichiers/firefox-52x52.png" alt="Firefox" width="52" height="52" /> Voici maintenant un petit logo à droite du paragraphe. Lorem ipsum dolor sit amet, consec tetier adipis cing elit. In sapien ante; dictum id, phare tra ut, males uada et, magna. Class aptent taci ti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>
+<p><img class="imgDroite" src="<?php echo $urlRacine; ?>/fichiers/Deer_Park_Globe.png" alt="Firefox" width="52" height="52" /> Voici maintenant un petit logo à droite du paragraphe. Lorem ipsum dolor sit amet, consec tetier adipis cing elit. In sapien ante; dictum id, phare tra ut, males uada et, magna. Class aptent taci ti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>
 
 <div class="sep"></div>
 

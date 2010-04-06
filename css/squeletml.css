@@ -96,6 +96,27 @@ pre {
 	left: -5000px;
 }
 
+div#noticeMaintenance {
+	margin: 0px;
+	padding: 10px;
+	background: #f2f2f2;
+}
+
+div#noticeMaintenance p {
+	margin: 0px;
+	padding: 0px;
+	font-weight: bold;
+}
+
+.blocMessagesScript p {
+	margin-top: 0px;
+}
+
+.blocMessagesScript ul {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
 .pagination {
 	margin-top: 25px;
 	margin-bottom: 25px;
@@ -114,17 +135,10 @@ pre {
 	visibility: hidden;
 }
 
+/* Classes générales. */
+
 .erreur {
 	color: #630000;
-}
-
-.blocMessagesScript p {
-	margin-top: 0px;
-}
-
-.blocMessagesScript ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
 }
 
 .gauche {
@@ -169,45 +183,6 @@ pre {
 	text-align: center;
 	margin-top: 20px;
 	margin-bottom: 20px;
-}
-
-/* Message pour IE6. */
-
-div#messageIe6 {
-	border: 3px solid #090;
-	margin: 0px;
-	padding: 0px;
-	background: #cfc;
-	color: #000;
-}
-
-div#messageIe6 p {
-	margin: 10px;
-}
-
-div#messageIe6 p img, div#messageIe6 p span {
-	vertical-align: middle;
-	display: inline-block; 
-}
-
-div#messageIe6 p img {
-	border: none;
-}
-
-div#messageIe6 p a {
-	color: #006;
-}
-
-div#noticeMaintenance {
-	margin: 0px;
-	padding: 10px;
-	background: #f2f2f2;
-}
-
-div#noticeMaintenance p {
-	margin: 0px;
-	padding: 0px;
-	font-weight: bold;
 }
 
 /***********************************************************************

@@ -31,3 +31,38 @@ body.aucuneColonne #page {
 li.actif {
 	list-style-image: url('../fichiers/puce.gif');
 }
+
+/* Message pour IE6. */
+
+div#messageIe6 {
+	border: 3px solid #ff6d00;
+	margin: 0px;
+	padding: 0px;
+	background: #f2f2f2;
+	color: #000;
+}
+
+div#messageIe6 a {
+	color: #007070;
+}
+
+div#messageIe6 a:visited {
+	color: #4C177D;
+}
+
+div#messageIe6 p.bDtitre a {
+	color: #000 !important;
+}
+
+div#messageIe6 p {
+	margin: 10px;
+}
+
+div#messageIe6 p img, div#messageIe6 p span {
+	vertical-align: middle;
+	display: inline-block; 
+}
+
+div#messageIe6 p img {
+	border: none;
+}
