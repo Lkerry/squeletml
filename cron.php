@@ -216,7 +216,9 @@ if (file_exists('init.inc.php'))
 		
 		if (empty($url['cache']) || !file_exists($racine . '/site/cache/' . $url['cache']))
 		{
-			if (contenuUrl($url['url']) !== FALSE)
+			$urlEncodee = superRawurlencode($url['url'], TRUE);
+			
+			if (contenuUrl($urlEncodee) !== FALSE)
 			{
 				$rapport .= '1: ';
 			}
@@ -225,7 +227,7 @@ if (file_exists('init.inc.php'))
 				$rapport .= '0: ';
 			}
 
-			$rapport .= 'file_get_contents("' . superRawurlencode($url['url'], TRUE) . '");' . "\n\n";
+			$rapport .= 'contenuUrl("' . $urlEncodee . '");' . "\n\n";
 		}
 	}
 

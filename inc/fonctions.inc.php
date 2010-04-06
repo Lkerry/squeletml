@@ -1027,11 +1027,11 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 
 /*
 Retourne le contenu accessible à l'URL fournie en paramètre. Si l'URL n'est pas accessible, retourne FALSE.
+
+Fournir une URL traitée par `superRawurlencode()`.
 */
 function contenuUrl($url)
 {
-	$url = superRawurlencode($url, TRUE);
-	
 	if (function_exists('curl_init'))
 	{
 		$ch = @curl_init($url);
@@ -1957,7 +1957,7 @@ Ne pas fournir une URL traitée par `superRawurlencode()`.
 function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique)
 {
 	$infosPage = array ();
-	$html = contenuUrl($urlPage);
+	$html = contenuUrl(superRawurlencode($urlPage, TRUE));
 	
 	if ($html !== FALSE)
 	{
