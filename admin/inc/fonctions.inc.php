@@ -5,7 +5,7 @@ Retourne un tableau dont chaque élément contient un chemin vers le fichier `(s
 function adminCheminsInc($racineAdmin, $nom)
 {
 	$racine = dirname($racineAdmin);
-	$dossierAdmin = basename($racineAdmin);
+	$dossierAdmin = superBasename($racineAdmin);
 	$fichiers = array ();
 	$fichiers[] = "$racineAdmin/inc/$nom.inc.php";
 	
@@ -23,7 +23,7 @@ Retourne le chemin vers le fichier `(site/)basename($racineAdmin)/xhtml/(LANGUE/
 function adminCheminXhtml($racineAdmin, $langues, $nom)
 {
 	$racine = dirname($racineAdmin);
-	$dossierAdmin = basename($racineAdmin);
+	$dossierAdmin = superBasename($racineAdmin);
 	
 	foreach ($langues as $langue)
 	{
@@ -1711,7 +1711,7 @@ Retourne la version de Squeletml.
 */
 function adminVersionSqueletml($adresse)
 {
-	$version = @file_get_contents(superRawurlencode($adresse, TRUE));
+	$version = contenuUrl($adresse);
 	$version = explode('-', $version);
 	
 	if (isset($version[1]))

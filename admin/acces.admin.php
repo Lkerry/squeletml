@@ -572,7 +572,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 		
-			if (@file_get_contents("$urlRacine/cron.php") !== FALSE)
+			if (contenuUrl("$urlRacine/cron.php") !== FALSE)
 			{
 				$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
 			}

@@ -1026,6 +1026,29 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 }
 
 /*
+Retourne le contenu accessible à l'URL fournie en paramètre. Si l'URL n'est pas accessible, retourne FALSE.
+*/
+function contenuUrl($url)
+{
+	$url = superRawurlencode($url, TRUE);
+	
+	if (function_exists('curl_init'))
+	{
+		$ch = @curl_init($url);
+		@curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		@curl_setopt($ch, CURLOPT_FAILONERROR, TRUE);
+		$contenu = @curl_exec($ch);
+		@curl_close($ch);
+	}
+	else
+	{
+		$contenu = @file_get_contents($url);
+	}
+	
+	return $contenu;
+}
+
+/*
 S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
 */
 function corrigeHtml($html)
@@ -1934,7 +1957,7 @@ Ne pas fournir une URL traitée par `superRawurlencode()`.
 function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique)
 {
 	$infosPage = array ();
-	$html = @file_get_contents(superRawurlencode($urlPage, TRUE));
+	$html = contenuUrl($urlPage);
 	
 	if ($html !== FALSE)
 	{
@@ -4587,9 +4610,9 @@ function superRawurlencode($url, $decoderEsperluette = FALSE)
 	$url = preg_replace('/&(?!amp;)/', '&amp;', $url);
 	$url = rawurlencode($url);
 	
-	// Entre autres pour `file_get_contents()` et `readfile()`.
 	if ($decoderEsperluette)
 	{
+		// Entre autres pour `curl_init()`, `file_get_contents()`, `fopen()`, `get_headers()` et `readfile()`.
 		$url = str_replace('%26amp%3B', '&', $url);
 	}
 	else
@@ -4803,23 +4826,19 @@ function urlAvecIndex($url)
 {
 	if (preg_match('|/$|', $url))
 	{
-		/*
-		La valeur par défaut de `DirectoryIndex` sous Apache 2 est (voir le fichier `/etc/apache2/mods-available/dir.conf` sous Ubuntu):
+#		$fichiersIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
+#		
+#		foreach ($fichiersIndex as $fichierIndex)
+#		{
+#			if (urlExiste($url . $fichierIndex))
+#			{
+#				$url .= $fichierIndex;
+#				break;
+#			}
+#		}
 		
-			DirectoryIndex index.html index.cgi index.pl index.php index.xhtml index.htm
-		
-		Pour une question de rapidité, j'ai déplacé `index.php` en première position.
-		*/
-		$fichiersIndex = array ('index.php', 'index.html', 'index.cgi', 'index.pl', 'index.xhtml', 'index.htm');
-		
-		foreach ($fichiersIndex as $fichierIndex)
-		{
-			if (urlExiste($url . $fichierIndex))
-			{
-				$url .= $fichierIndex;
-				break;
-			}
-		}
+		// À cause d'une lenteur sur les serveurs de Koumbit, je laisse tomber le test ci-dessus et ajoute directement `index.php`.
+		$url .= 'index.php';
 	}
 	
 	return $url;
@@ -4857,29 +4876,25 @@ Retourne TRUE si l'URL existe, sinon retourne FALSE.
 */
 function urlExiste($url)
 {
-	// Méthode 1: `get_headers()`. Merci à <http://php.net/manual/fr/function.file-exists.php#84918>.
-#	$enTetes = @get_headers(superRawurlencode($url));
+	$url = superRawurlencode($url, TRUE);
 	
-	// Méthode 2: `file_get_contents()`.
-#	@file_get_contents($url);
-#	$enTetes = $http_response_header;
-	
-	// Retour commun aux méthodes 1 et 2.
-#	return is_array($enTetes) ? preg_match('/^HTTP\\/\\d+\\.\\d+\\s+2\\d\\d\\s+.*$/', $enTetes[0]) : FALSE;
-	
-	// Méthode 3: `fopen()`.
-	$enTetes = @fopen($url, 'r');
-	
-	// Retour de la méthode 3.
-	if ($enTetes !== FALSE)
+	if (function_exists('curl_init'))
 	{
-		fclose($enTetes);
-		return TRUE;
+		$ch = @curl_init($url);
+		@curl_setopt($ch, CURLOPT_HEADER, TRUE);
+		@curl_setopt($ch, CURLOPT_NOBODY, TRUE);
+		@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE);
+		@curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+		$enTetes = @curl_exec($ch);
+		@curl_close($ch);
 	}
 	else
 	{
-		return FALSE;
+		@file_get_contents($url, 0, NULL, 0, 1);
+		$enTetes = $http_response_header[0];
 	}
+	
+	return preg_match('~^HTTP/\d+\.\d+\s+(2|3)~', $enTetes);
 }
 
 /*
