@@ -7,7 +7,11 @@ Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de donn�
 **Notes:**
 
 - pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur;
-- pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
+- pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé;
+- pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible;
+- la récupération de contenu externe se fait par `cURL` si disponible, sinon par `file_get_contents()`;
+- la détection du type MIME peut se faire par `Fileinfo` de PHP ou par la commande `file` sur le système;
+- la rotation automatique et sans perte de qualité des images JPG peut se faire avec la commande `exiftran` sur le système, ou bien avec la commande `jpegtran` sur le système et la fonction PHP `exif_read_data()`.
 
 ## Installation automatisée
 

@@ -857,7 +857,7 @@ $galerieLegendeMarkdown = FALSE; // TRUE|FALSE
 */
 $galerieExifAjout = TRUE; // TRUE|FALSE
 
-// S'il y a lieu, choix des informations Exif à afficher.
+// S'il y a lieu, choix des données Exif à afficher.
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
@@ -889,7 +889,7 @@ $galerieLienOriginalTelecharger = FALSE; // TRUE|FALSE
 
 // S'il y a lieu, emplacement de la légende.
 /*
-- La légende comprend les informations Exif et le lien vers l'image originale.
+- La légende comprend les données Exif et le lien vers l'image originale.
 - Les choix possibles sont: haut, bas, bloc.
 - Les emplacements `haut` et `bas` font référence à l'image en version intermediaire, alors que `bloc` transforme la légende en bloc positionnable comme n'importe quel autre bloc de contenu à l'aide de la variable `$ordreBlocsDansFluxHtml`.
 - Les trois emplacements à préciser sont respectivement lorsqu'il n'y a pas de colonne, lorsqu'il y a une seule colonne et lorsqu'il y en a deux.
