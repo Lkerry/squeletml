@@ -227,7 +227,7 @@ if (!empty($idCategorie))
 	
 					if (!empty($baliseTitleComplement))
 					{
-						$infosPage['titre'] = preg_replace('/' . preg_quote($baliseTitleComplement) . '$/', '', $infosPage['titre']);
+						$infosPage['titre'] = preg_replace('/' . preg_quote($baliseTitleComplement, '/') . '$/', '', $infosPage['titre']);
 					}
 	
 					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";

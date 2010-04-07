@@ -147,6 +147,29 @@ function actionFormContact($decouvrir)
 }
 
 /*
+Retourne TRUE si l'administration est protégée, sinon retourne FALSE.
+
+À noter une restriction importante de cette fonction: une vérification est effectuée pour savoir si le fichier `.acces` contient au moins un utilisateur et si une directive `AuthUserFile` pointe vers ce fichier dans `.htaccess`, mais aucune vérification n'est effectuée pour savoir si la directive `AuthUserFile` est bien prise en compte par le serveur.
+*/
+function adminEstProtegee($racine)
+{
+	$adminEstProtegee = FALSE;
+	
+	if (file_exists($racine . '/.htaccess') && file_exists($racine . '/.acces'))
+	{
+		$htaccess = @file_get_contents($racine . '/.htaccess');
+		$acces = @file_get_contents($racine . '/.acces');
+		
+		if ($htaccess !== FALSE && $acces !== FALSE && preg_match('/^\tAuthUserFile ' . preg_quote($racine, '/') . '\/\.acces\n/m', $htaccess) && preg_match('/^[^:]+:/m', $acces))
+		{
+			$adminEstProtegee = TRUE;
+		}
+	}
+	
+	return $adminEstProtegee;
+}
+
+/*
 Ajoute au tableau des catégories la catégorie spéciale `site` (si elle n'existe pas déjà) contenant les dernières publications du site (pages déclarées dans le fichier de configuration du flux RSS des dernières publications), et retourne le tableau résultant.
 */
 function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesSpecialesAajouter, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)

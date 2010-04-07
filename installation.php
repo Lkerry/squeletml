@@ -3,6 +3,11 @@ $racine = dirname(__FILE__);
 include_once $racine . '/inc/fonctions.inc.php';
 $urlParente = urlParente();
 
+if (!isset($_POST['ajouter']) && !file_exists($racine . '/site/inc/squeletml-est-installe.txt') && file_exists($racine . '/init.inc.php') && adminEstProtegee($racine))
+{
+	@touch($racine . '/site/inc/squeletml-est-installe.txt');
+}
+
 if (file_exists($racine . '/site/inc/squeletml-est-installe.txt'))
 {
 	header("Location: $urlParente/", TRUE, 301);
@@ -65,11 +70,11 @@ else
 						}
 						elseif (!in_array('fr', $_POST['langues']))
 						{
-							$initIncPhp = preg_replace('|^(' . preg_quote('$accueil[\'fr\']') . ')|m', '#$1', $initIncPhp);
+							$initIncPhp = preg_replace('/^(' . preg_quote('$accueil[\'fr\']') . ')/m', '#$1', $initIncPhp);
 						}
 						elseif (!in_array('en', $_POST['langues']))
 						{
-							$initIncPhp = preg_replace('|^(' . preg_quote('$accueil[\'en\']') . ')|m', '#$1', $initIncPhp);
+							$initIncPhp = preg_replace('/^(' . preg_quote('$accueil[\'en\']') . ')/m', '#$1', $initIncPhp);
 						}
 					}
 					
@@ -108,7 +113,7 @@ else
 			
 					if ($robotsTxt !== FALSE)
 					{
-						$robotsTxt = preg_replace('|^(Disallow\: )(/telecharger\.php)|m', '$1' . $urlSansServeurRacine . '$2', $robotsTxt);
+						$robotsTxt = preg_replace('|^(Disallow: )(/telecharger\.php)|m', '$1' . $urlSansServeurRacine . '$2', $robotsTxt);
 						
 						if (@file_put_contents($racine . '/robots.txt', $robotsTxt) === FALSE)
 						{
@@ -208,7 +213,11 @@ else
 		include_once $racine . '/init.inc.php';
 		$installationTerminee = TRUE;
 		
-		if (empty($_POST['identifiant']))
+		if (adminEstProtegee($racine))
+		{
+			$messagesScript .= '<li>' . T_("L'administration est déjà protégée.") . "</li>\n";
+		}
+		elseif (empty($_POST['identifiant']))
 		{
 			$installationTerminee = FALSE;
 			$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
@@ -223,58 +232,55 @@ else
 			$installationTerminee = FALSE;
 			$messagesScript .= '<li class="erreur">' . T_("Veuillez confirmer correctement le mot de passe.") . "</li>\n";
 		}
-		else
+		elseif ($fic = @fopen($racine . '/.acces', 'a+'))
 		{
-			if ($fic = @fopen($racine . '/.acces', 'a+'))
+			if (stristr(PHP_OS, 'win') || $serveurFreeFr)
 			{
-				if (stristr(PHP_OS, 'win') || $serveurFreeFr)
-				{
-					$acces = securiseTexte($_POST['identifiant']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
-				}
-				else
-				{
-					$acces = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
-				}
-
-				// On vérifie si l'utilisateur est déjà présent.
-				$utilisateurAbsent = TRUE;
-
-				while (!feof($fic))
-				{
-					$ligne = fgets($fic);
-	
-					if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
-					{
-						$utilisateurAbsent = FALSE;
-						break;
-					}
-				}
-
-				if ($utilisateurAbsent)
-				{
-					fputs($fic, $acces);
-					$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['identifiant'])) . "</li>\n";
-				}
-				else
-				{
-					$messagesScript .= '<li>' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['identifiant'])) . "</li>\n";
-				}
-		
-				fclose($fic);
-
-				$accesDansHtaccess = accesDansHtaccess($racine, $serveurFreeFr);
-
-				if (!empty($accesDansHtaccess))
-				{
-					$installationTerminee = FALSE;
-					$messagesScript .= $accesDansHtaccess;
-				}
+				$acces = securiseTexte($_POST['identifiant']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
 			}
 			else
 			{
-				$installationTerminee = FALSE;
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+				$acces = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
 			}
+
+			// On vérifie si l'utilisateur est déjà présent.
+			$utilisateurAbsent = TRUE;
+
+			while (!feof($fic))
+			{
+				$ligne = fgets($fic);
+
+				if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
+				{
+					$utilisateurAbsent = FALSE;
+					break;
+				}
+			}
+
+			if ($utilisateurAbsent)
+			{
+				fputs($fic, $acces);
+				$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+			}
+			else
+			{
+				$messagesScript .= '<li>' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+			}
+
+			fclose($fic);
+
+			$accesDansHtaccess = accesDansHtaccess($racine, $serveurFreeFr);
+
+			if (!empty($accesDansHtaccess))
+			{
+				$installationTerminee = FALSE;
+				$messagesScript .= $accesDansHtaccess;
+			}
+		}
+		else
+		{
+			$installationTerminee = FALSE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
 		}
 	}
 	
