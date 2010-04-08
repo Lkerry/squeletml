@@ -571,12 +571,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 	?>
 </div><!-- /#boiteMessages -->
 
-<div class="boite">
-	<h2 id="actions"><?php echo T_("Actions"); ?></h2>
+<?php if (!isset($_GET['action']) || $_GET['action'] != 'lister'): ?>
+	<div class="boite">
+		<h2 id="actions"><?php echo T_("Actions"); ?></h2>
 	
-	<ul>
-		<li><a href="<?php echo $adminAction; ?>?action=lister#messages"><?php echo T_('Lister les pages classées par catégorie.'); ?></a></li>
-	</ul>
-</div><!-- /.boite -->
+		<ul>
+			<li><a href="<?php echo $adminAction; ?>?action=lister#messages"><?php echo T_('Lister les pages classées par catégorie.'); ?></a></li>
+		</ul>
+	</div><!-- /.boite -->
+<?php endif; ?>
 
 <?php include $racineAdmin . '/inc/dernier.inc.php'; ?>

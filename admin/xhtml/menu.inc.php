@@ -5,7 +5,7 @@
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/galeries.admin.php"><?php echo T_("Galeries"); ?></a> | </li>
 	
-	<li><a href="<?php echo $urlRacineAdmin; ?>/categories.admin.php"><?php echo T_("Catégories"); ?></a> | </li>
+	<li><a href="<?php echo $urlRacineAdmin; ?>/categories.admin.php?action=lister"><?php echo T_("Catégories"); ?></a> | </li>
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/rss.admin.php"><?php echo T_("RSS globaux"); ?></a> <strong>||</strong> </li>
 	
