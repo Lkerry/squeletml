@@ -188,6 +188,8 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**PHP Simple HTML DOM Parser**](http://simplehtmldom.sourceforge.net/): sous licence MIT.
 
+- [**RollingCurl**](http://code.google.com/p/rolling-curl/): sous licence Apache 2.
+
 - [**Slimbox 2**](http://www.digitalia.be/software/slimbox2): sous licence MIT.
 
 - [**Table of Contents jQuery Plugin**](http://fuelyourcoding.com/table-of-contents-jquery-plugin/): le script original a été écrit par Doug Neiner et est sous licence MIT. J'ai modifié le script et ai incorporé une fraction de code provenant du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), publié sous licence GPL (sans précision de la version). Je publie le script résultant sous licence GPL version 3 ou toute version ultérieure.

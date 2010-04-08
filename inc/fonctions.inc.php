@@ -1,5 +1,28 @@
 <?php
 /*
+Retourne TRUE si l'administration est protégée, sinon retourne FALSE.
+
+À noter une restriction importante de cette fonction: une vérification est effectuée pour savoir si le fichier `.acces` contient au moins un utilisateur et si une directive `AuthUserFile` pointe vers ce fichier dans `.htaccess`, mais aucune vérification n'est effectuée pour savoir si la directive `AuthUserFile` est bien prise en compte par le serveur.
+*/
+function accesAdminEstProtege($racine)
+{
+	$accesAdminEstProtege = FALSE;
+	
+	if (file_exists($racine . '/.htaccess') && file_exists($racine . '/.acces'))
+	{
+		$htaccess = @file_get_contents($racine . '/.htaccess');
+		$acces = @file_get_contents($racine . '/.acces');
+		
+		if ($htaccess !== FALSE && $acces !== FALSE && preg_match('/^\tAuthUserFile ' . preg_quote($racine, '/') . '\/\.acces\n/m', $htaccess) && preg_match('/^[^:]+:/m', $acces))
+		{
+			$accesAdminEstProtege = TRUE;
+		}
+	}
+	
+	return $accesAdminEstProtege;
+}
+
+/*
 Ajoute dans le fichier `.htaccess` le code nécessaire à la protection de certains fichiers dont l'accès est réservé aux utilisateurs listés dans `.acces`. Si une erreur survient, retourne le résultat sous forme de message concaténable dans `$messagesScript`, sinon retourne une chaîne vide.
 */
 function accesDansHtaccess($racine, $serveurFreeFr)
@@ -147,29 +170,6 @@ function actionFormContact($decouvrir)
 }
 
 /*
-Retourne TRUE si l'administration est protégée, sinon retourne FALSE.
-
-À noter une restriction importante de cette fonction: une vérification est effectuée pour savoir si le fichier `.acces` contient au moins un utilisateur et si une directive `AuthUserFile` pointe vers ce fichier dans `.htaccess`, mais aucune vérification n'est effectuée pour savoir si la directive `AuthUserFile` est bien prise en compte par le serveur.
-*/
-function adminEstProtegee($racine)
-{
-	$adminEstProtegee = FALSE;
-	
-	if (file_exists($racine . '/.htaccess') && file_exists($racine . '/.acces'))
-	{
-		$htaccess = @file_get_contents($racine . '/.htaccess');
-		$acces = @file_get_contents($racine . '/.acces');
-		
-		if ($htaccess !== FALSE && $acces !== FALSE && preg_match('/^\tAuthUserFile ' . preg_quote($racine, '/') . '\/\.acces\n/m', $htaccess) && preg_match('/^[^:]+:/m', $acces))
-		{
-			$adminEstProtegee = TRUE;
-		}
-	}
-	
-	return $adminEstProtegee;
-}
-
-/*
 Ajoute au tableau des catégories la catégorie spéciale `site` (si elle n'existe pas déjà) contenant les dernières publications du site (pages déclarées dans le fichier de configuration du flux RSS des dernières publications), et retourne le tableau résultant.
 */
 function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesSpecialesAajouter, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
@@ -259,6 +259,55 @@ function annexesDocumentation($racineAdmin)
 	$texte .= '<pre id="fichierDeConfiguration">' . coloreFichierPhp($racineAdmin . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
 	
 	return $texte;
+}
+
+/*
+Retourne le code HTML de l'aperçu d'une page apparaissant dans une page de catégorie.
+*/
+function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut)
+{
+	$apercu = '';
+	$apercu .= "<div class=\"apercu\">\n";
+	
+	if (!empty($baliseTitleComplement))
+	{
+		$infosPage['titre'] = preg_replace('/' . preg_quote($baliseTitleComplement, '/') . '$/', '', $infosPage['titre']);
+	}
+
+	$apercu .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
+	$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse, $langueParDefaut);
+	$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesAdresse);
+
+	if (!empty($infosPublication))
+	{
+		$apercu .= "<div class=\"infosPublicationApercu\">\n";
+		$apercu .= $infosPublication;
+		$apercu .= "</div><!-- /.infosPublicationApercu -->\n";
+	}
+
+	$apercu .= "<div class=\"descriptionApercu\">\n";
+
+	if (!empty($infosPage['apercu']))
+	{
+		$apercu .= $infosPage['apercu'] . "\n";
+	}
+	else
+	{
+		$apercu .= $infosPage['contenu'] . "\n";
+	}
+
+	$apercu .= "</div><!-- /.descriptionApercu -->\n";
+
+	if (!empty($infosPage['apercu']))
+	{
+		$apercu .= "<div class=\"lienApercu\">\n";
+		$apercu .= sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em>') . "\n";
+		$apercu .= "</div><!-- /.lienApercu -->\n";
+	}
+
+	$apercu .= "</div><!-- /.apercu -->\n";
+
+	return $apercu;
 }
 
 /*
@@ -1251,6 +1300,39 @@ $tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache'
 }
 
 /*
+S'il ne vaut pas FALSE, le contenu est balisé et ensuite affiché. Retourne une chaîne vide.
+*/
+function cUrlCategorie($contenu, $infos)
+{
+	if ($contenu !== FALSE)
+	{
+		echo "<!-- `cUrlCategorie()`: {$infos['url']} -->$contenu<!-- /`cUrlCategorie()`: {$infos['url']} -->";
+	}
+	
+	return '';
+}
+
+/*
+Affiche une ligne de rapport cron pour une requête effectuée avec `RollingCurl`. Retourne une chaîne vide.
+*/
+function cUrlCronRapport($contenu, $infos)
+{
+	if (preg_match('/^(2|3)/', $infos['http_code']))
+	{
+		$rapport .= '1: ';
+	}
+	else
+	{
+		$rapport .= '0: ';
+	}
+	
+	$rapport .= 'RollingCurl: ' . $infos['url'] . "\n\n";
+	echo $rapport;
+	
+	return '';
+}
+
+/*
 Le paramètre `$date` doit être une date sous une des formes suivantes:
 
   - `année` (exemple: `2010`);
@@ -1515,7 +1597,7 @@ function extension($nomFichier, $retourneNomSansExtension = FALSE)
 /*
 Retourne un tableau contenant les fichiers à inclure au début du script.
 */
-function fichiersAinclureAuDebut($racine)
+function fichiersAinclureAuDebut($racine, $idCategorie)
 {
 	$fichiers = array ();
 	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
@@ -1525,6 +1607,11 @@ function fichiersAinclureAuDebut($racine)
 	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
+	
+	if (!empty($idCategorie))
+	{
+		$fichiers[] = $racine . '/inc/rolling-curl/RollingCurl.php';
+	}
 	
 	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
 	{
@@ -1956,7 +2043,7 @@ function idImage($racine, $image)
 }
 
 /*
-Retourne un tableau d'informations au sujet de l'URL fournie. Le tableau contient les informations suivantes:
+Retourne un tableau d'informations au sujet du contenu accessible à l'URL `$urlPage`, ou directement au sujet du contenu fourni si `$html` n'est pas vide. Le tableau contient les informations suivantes:
 
   - `$infosPage['titre']`: titre de la page. Prend comme valeur la première information trouvée parmi les suivantes:
     - contenu de la premère balise `h1`;
@@ -1973,14 +2060,18 @@ Retourne un tableau d'informations au sujet de l'URL fournie. Le tableau contien
 
   - `$infosPage['dateRevision']`: vaut le contenu de la métabalise `date-revision-yyyymmdd`, si elle existe.
 
-Si la page demandée n'est pas accessible, retourne un tableau vide.
+Si `$html` est vide et que l'URL fournie n'est pas accessible, retourne un tableau vide.
 
 Ne pas fournir une URL traitée par `superRawurlencode()`.
 */
-function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique)
+function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique, $html = '')
 {
 	$infosPage = array ();
-	$html = contenuUrl(superRawurlencode($urlPage, TRUE));
+	
+	if (empty($html))
+	{
+		$html = contenuUrl(superRawurlencode($urlPage, TRUE));
+	}
 	
 	if ($html !== FALSE)
 	{

@@ -36,9 +36,14 @@ include_once $racine . '/inc/fonctions.inc.php';
 // Affectations 1 de 3.
 eval(variablesAaffecterAuDebut());
 
+if (!isset($idCategorie))
+{
+	$idCategorie = '';
+}
+
 // Inclusions 2 de 3.
 
-foreach (fichiersAinclureAuDebut($racine) as $fichier)
+foreach (fichiersAinclureAuDebut($racine, $idCategorie) as $fichier)
 {
 	include_once $fichier;
 }
@@ -47,7 +52,7 @@ phpGettext($racine, LANGUE); // Nécessaire à la traduction.
 
 // Affectations 2 de 3.
 
-extract(init('', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idCategorie', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
 
 if (!isset($apercu))

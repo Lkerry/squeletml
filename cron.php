@@ -14,6 +14,15 @@ if (file_exists('init.inc.php'))
 	
 	$date = time();
 	@file_put_contents("$racine/site/inc/cron.txt", $date);
+
+	$cUrlEstDisponible = FALSE;
+
+	if (function_exists('curl_init'))
+	{
+		$cUrlEstDisponible = TRUE;
+		require $racine . '/inc/rolling-curl/RollingCurl.php';
+		$ch = new RollingCurl('cUrlCronRapport');
+	}
 	
 	$tableauUrl = array ();
 	$extraAsupprimer = array ();
@@ -218,19 +227,35 @@ if (file_exists('init.inc.php'))
 		{
 			$urlEncodee = superRawurlencode($url['url'], TRUE);
 			
-			if (contenuUrl($urlEncodee) !== FALSE)
+			if ($cUrlEstDisponible)
 			{
-				$rapport .= '1: ';
+				$requete = new Request(superRawurlencode($url['url'], TRUE));
+				$ch->add($requete);
 			}
 			else
 			{
-				$rapport .= '0: ';
+				if (@file_get_contents($urlEncodee) !== FALSE)
+				{
+					$rapport .= '1: ';
+				}
+				else
+				{
+					$rapport .= '0: ';
+				}
+				
+				$rapport .= 'file_get_contents("' . $urlEncodee . '");' . "\n\n";
 			}
-
-			$rapport .= 'contenuUrl("' . $urlEncodee . '");' . "\n\n";
 		}
 	}
-
+	
+	if ($cUrlEstDisponible)
+	{
+		ob_start();
+		$ch->execute();
+		$rapport .= ob_get_contents();
+		ob_end_clean();
+	}
+	
 	if ($rapportCron && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 	{
 		$infosCourriel = array ();

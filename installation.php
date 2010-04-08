@@ -3,7 +3,7 @@ $racine = dirname(__FILE__);
 include_once $racine . '/inc/fonctions.inc.php';
 $urlParente = urlParente();
 
-if (!isset($_POST['ajouter']) && !file_exists($racine . '/site/inc/squeletml-est-installe.txt') && file_exists($racine . '/init.inc.php') && adminEstProtegee($racine))
+if (!isset($_POST['ajouter']) && !file_exists($racine . '/site/inc/squeletml-est-installe.txt') && file_exists($racine . '/init.inc.php') && accesAdminEstProtege($racine))
 {
 	@touch($racine . '/site/inc/squeletml-est-installe.txt');
 }
@@ -213,7 +213,7 @@ else
 		include_once $racine . '/init.inc.php';
 		$installationTerminee = TRUE;
 		
-		if (adminEstProtegee($racine))
+		if (accesAdminEstProtege($racine))
 		{
 			$messagesScript .= '<li>' . T_("L'administration est déjà protégée.") . "</li>\n";
 		}

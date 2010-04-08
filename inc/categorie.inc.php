@@ -215,58 +215,56 @@ if (!empty($idCategorie))
 		}
 		else
 		{
-			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
+			if (function_exists('curl_init'))
 			{
-				$adresseInfosPage = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
-				$adresse = $urlRacine . '/' . superRawurlencode($categories[$idCategorie]['pages'][$indice]);
-				$infosPage = infosPage($adresseInfosPage, $inclureApercu, $tailleApercuAutomatique);
-	
-				if (!empty($infosPage))
+				$ch = new RollingCurl('cUrlCategorie');
+				$ch->options = array(CURLOPT_FAILONERROR => TRUE);
+				
+				for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 				{
-					$categorie .= "<div class=\"apercu\">\n";
-	
-					if (!empty($baliseTitleComplement))
-					{
-						$infosPage['titre'] = preg_replace('/' . preg_quote($baliseTitleComplement, '/') . '$/', '', $infosPage['titre']);
-					}
-	
-					$categorie .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-					$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse, $langueParDefaut);
-					$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesAdresse);
+					$adresse = $urlRacine . '/' . superRawurlencode($categories[$idCategorie]['pages'][$indice]);
+					$requete = new Request($adresse);
+					$ch->add($requete);
+				}
 				
-					if (!empty($infosPublication))
-					{
-						$categorie .= "<div class=\"infosPublicationApercu\">\n";
-						$categorie .= $infosPublication;
-						$categorie .= "</div><!-- /.infosPublicationApercu -->\n";
-					}
+				ob_start();
+				$ch->execute();
+				$cUrlCategorie = ob_get_contents();
+				ob_end_clean();
 				
-					$categorie .= "<div class=\"descriptionApercu\">\n";
-				
-					if (!empty($infosPage['apercu']))
+				for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
+				{
+					$adresseNonEncodee = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
+					$adresse = superRawurlencode($adresseNonEncodee);
+					
+					if (preg_match('/' . preg_quote("<!-- `cUrlCategorie()`: $adresse -->", '/') . '(.+?)' . preg_quote("<!-- /`cUrlCategorie()`: $adresse -->", '/') . '/s', $cUrlCategorie, $resultat))
 					{
-						$categorie .= $infosPage['apercu'] . "\n";
+						$infosPage = infosPage($adresseNonEncodee, $inclureApercu, $tailleApercuAutomatique, $resultat[1]);
+						
+						if (!empty($infosPage))
+						{
+							$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut);
+						}
 					}
-					else
-					{
-						$categorie .= $infosPage['contenu'] . "\n";
-					}
-				
-					$categorie .= "</div><!-- /.descriptionApercu -->\n";
-				
-					if (!empty($infosPage['apercu']))
-					{
-						$categorie .= "<div class=\"lienApercu\">\n";
-						$categorie .= sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em>') . "\n";
-						$categorie .= "</div><!-- /.lienApercu -->\n";
-					}
-	
-					$categorie .= "</div><!-- /.apercu -->\n";
 				}
 			}
+			else
+			{
+				for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
+				{
+					$adresseNonEncodee = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
+					$adresse = superRawurlencode($adresseNonEncodee);
+					$infosPage = infosPage($adresseNonEncodee, $inclureApercu, $tailleApercuAutomatique);
 	
+					if (!empty($infosPage))
+					{
+						$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut);
+					}
+				}
+			}
+			
 			$categorie .= $pagination;
-	
+			
 			if ($dureeCache['categorie'])
 			{
 				creeDossierCache($racine);
