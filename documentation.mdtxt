@@ -1153,6 +1153,8 @@ Il est particulièrement recommandé d'activer le cache des catégories si ces d
 
 Dans certains cas, le cache peut être long à générer, ce qui a comme conséquence qu'un internaute visitant une page dont le cache n'a pas encore été généré ou est expiré peut attendre assez longtemps avant de voir le contenu s'afficher. Cependant, il est possible de générer le cache automatiquement sans attendre la visite d'internautes. Voir la section «Cron» pour plus de détails.
 
+*Note: si `cURL` est disponible sur le serveur, des requêtes en parallèle sont effectuées pour construire une page de catégorie, ce qui diminue le temps nécessaire à l'opération. Dans ce cas, il est moins critique d'activer le cache, même si cela demeure conseillé.*
+
 ## Cron
 
 Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance. Pour l'instant, ces tâches concernent la génération automatique du cache des pages utilisant cette fonctionnalité (flux RSS, catégorie et galerie, selon la valeur de la variable `$dureeCache` du fichier de configuration du site). À noter que le cache de la page individuelle d'une image d'une galerie n'est pas généré par le cron.

@@ -15,7 +15,6 @@
 		<!-- Balises `link` et `script`. -->
 		<?php echo $linkScript; ?>
 	</head>
-	<?php flush(); // Si possible, envoi immédiat de l'en-tête au navigateur. ?>
 	<!-- ____________________ <body> ____________________ -->
 	<body<?php echo $idBody; ?>>
 		<!-- ____________________ #ancres ____________________ -->
