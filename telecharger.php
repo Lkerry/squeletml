@@ -23,7 +23,7 @@ if ($typeMime == 'application/octet-stream')
 	$typeMime = 'application/force-download';
 }
 
-if (file_exists($chemin) && preg_match("|^$racine/site/fichiers/galeries/[^/]+/$nom$|", $chemin) && $typeMime != 'text/plain')
+if (file_exists($chemin) && preg_match('|^' . preg_quote($racine, '|') . '(/site)?/fichiers/galeries/[^/]+/' . preg_quote($nom, '|') . '$|', $chemin) && $typeMime != 'text/plain')
 {
 	header('Content-Type: ' . $typeMime);
 	header('Content-Disposition: attachment; filename="' . $nom . '"');
