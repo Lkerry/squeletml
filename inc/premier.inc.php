@@ -7,13 +7,14 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 1. Première série d'inclusions.
 2. Première série d'affectations.
 3. Deuxième série d'inclusions.
-4. Deuxième série d'affectations.
-5. Troisième série d'inclusions.
-6. Troisième série d'affectations.
-7. Ajouts dans `$balisesLinkScript`.
-8. Traitement personnalisé optionnel.
-9. En-têtes HTTP.
-10. Inclusion de code XHTML.
+4. Première série de traitement personnalisé optionnel.
+5. Deuxième série d'affectations.
+6. Troisième série d'inclusions.
+7. Troisième série d'affectations.
+8. Ajouts dans `$balisesLinkScript`.
+9. Deuxième série de traitement personnalisé optionnel.
+10. En-têtes HTTP.
+11. Inclusion de code XHTML.
 */
 
 ########################################################################
@@ -61,6 +62,12 @@ foreach (fichiersAinclureAuDebut($racine, $idCategorie) as $fichier)
 }
 
 phpGettext($racine, LANGUE); // Nécessaire à la traduction.
+
+// Traitement personnalisé optionnel 1 de 2.
+if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
+{
+	include_once $racine . '/site/inc/premier-pre.inc.php';
+}
 
 // Affectations 2 de 3.
 
@@ -382,7 +389,7 @@ $linkScript = linkScript($balisesLinkScript, $versionParDefautLinkScript);
 
 ########################################################################
 ##
-## Traitement personnalisé optionnel.
+## Traitement personnalisé optionnel 2 de 2.
 ##
 ########################################################################
 

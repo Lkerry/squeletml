@@ -163,9 +163,9 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 - `contact.inc.php`: construit et analyse le formulaire de contact. Après son inclusion, la variable `$contact` est prête à être utilisée et contient les messages (d'erreur ou de confirmation) affichés à l'internaute et le formulaire en tant que tel. Il est possible d'interagir avec ce script en créant le fichier `site/inc/contact.inc.php`, qui sera inséré à différentes étapes du script:
 
-  - juste après l'analyse des champs par défaut du formulaire, ce qui permet entre autres d'avoir des champs personnalisés et d'utiliser son propre script d'analyse de ces champs. Les variables utiles lors d'une analyse personnalisée sont `$erreurFormulaire`, qui annule l'envoi du message si elle vaut `TRUE`, et `$messagesScript`, qui contient les explications affichées après le traitement du formulaire.
+  - juste après l'analyse des champs par défaut du formulaire, ce qui permet entre autres d'avoir des champs personnalisés et d'utiliser son propre script d'analyse de ces champs. Les variables utiles lors d'une analyse personnalisée sont `$erreurFormulaire`, qui annule l'envoi du message si elle vaut `TRUE`, et `$messagesScript`, qui contient les explications affichées après le traitement du formulaire;
 
-  - juste avant l'envoi du message, ce qui permet de modifier le corps du message, l'objet, etc.
+  - juste avant l'envoi du message, ce qui permet de modifier le corps du message, l'objet, etc.;
 
   - à la fin du fichier par défaut.
 
@@ -177,7 +177,10 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 - `galerie.inc.php`: génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une image. Vous pouvez modifier ces variables en créant le fichier `site/inc/galerie.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-- `premier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Vous pouvez créer le fichier `site/inc/premier.inc.php`, qui sera inséré à la fin de celui par défaut.
+- `premier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Deux traitements personnalisés peuvent être effectués dans ce fichier:
+
+  - vous pouvez créer le fichier `site/inc/premier-pre.inc.php`, qui sera inséré dans `inc/premier.inc.php` après la deuxième série d'inclusions, donc juste avant les affectations en masse;
+  - vous pouvez également créer le fichier `site/inc/premier.inc.php`, qui sera inséré à la fin de celui par défaut.
 
 **Note: le principe de personnalisation des fichiers du dossier `inc` est applicable également à la section d'administration. La structure répliquée à l'intérieur du dossier `site` doit être contenue dans un dossier de même nom que celui de l'administration, qui est `admin` par défaut. Par exemple, pour modifier des variables du fichier de configuration `admin/inc/config.inc.php`, créer le fichier `site/admin/inc/config.inc.php`.**
 
