@@ -85,7 +85,7 @@ if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourriel
 			}
 			else
 			{
-				$ligneAcces = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse']));
+				$ligneAcces = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']);
 			}
 			
 			$infosCourriel['message'] .= "$ligneAcces\n\n";

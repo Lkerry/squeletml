@@ -83,7 +83,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$acces = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
+						$acces = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
 					} 
 			
 					// On vérifie si l'utilisateur est déjà présent.
@@ -134,7 +134,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
 						{
 							$utilisateurAbsent = FALSE;
-							$ligne = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
+							$ligne = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
 						}
 			
 						$utilisateurs[] = $ligne;

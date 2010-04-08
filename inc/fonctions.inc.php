@@ -812,6 +812,14 @@ function cheminsInc($racine, $nom)
 }
 
 /*
+Retourne le mot de passe chiffré.
+*/
+function chiffreMotDePasse($motDePasse)
+{
+	return '{SHA}' . base64_encode(sha1($motDePasse, TRUE));
+}
+
+/*
 Retourne une liste de classes pour `body`.
 */
 function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)

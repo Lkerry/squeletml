@@ -240,7 +240,7 @@ else
 			}
 			else
 			{
-				$acces = securiseTexte($_POST['identifiant']) . ':' . crypt(securiseTexte($_POST['motDePasse'])) . "\n";
+				$acces = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
 			}
 
 			// On vérifie si l'utilisateur est déjà présent.
