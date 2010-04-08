@@ -272,9 +272,13 @@ div#sousTitre p {
 **
 ***********************************************************************/
 
-#contenu h1, .accueilInterieurContenuPremierH2 {
+#contenu h1, #contenu .accueilPremierH2 {
 	margin-top: 0px;
 	padding-top: 0px;
+}
+
+#contenu .accueilPremierH2 {
+	font-size: 1.9em;
 }
 
 #interieurContenu {

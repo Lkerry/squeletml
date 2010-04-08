@@ -98,23 +98,19 @@ elseif ($argv[1] == 'message-accueil')
 	if ($fic = fopen('LISEZ-MOI.mdtxt', 'r'))
 	{
 		$fichierLisezMoi = array ();
-		$fichierLisezMoi[] = '<h2>Bienvenue sur votre site Squeletml</h2>';
 		
 		while (!feof($fic))
 		{
 			$ligne = fgets($fic);
 			
-			if ($ligne == "## Qu'est-ce que Squeletml?\n")
+			if (preg_match('/^## /', $ligne))
 			{
+				$ligne = fgets($fic);
+				
 				do
 				{
 					if ($ligne != "\n")
 					{
-						if (preg_match('|<img |', $ligne))
-						{
-							$ligne = preg_replace('|<img [^>]+>|', '', $ligne);
-						}
-						
 						$fichierLisezMoi[] = rtrim(Markdown($ligne));
 					}
 					
@@ -130,16 +126,17 @@ elseif ($argv[1] == 'message-accueil')
 	
 	if ($fic = fopen('xhtml/message-accueil-par-defaut.inc.php', 'w'))
 	{
-		fputs($fic, "<?php\n");
+		fputs($fic, '<?php' . "\n");
+		fputs($fic, 'echo \'<h2 class="accueilPremierH2">\' . T_("Bienvenue sur votre site Squeletml") . "</h2>\n";' . "\n\n");
 		
 		foreach ($fichierLisezMoi as $ligne)
 		{
-			fputs($fic, 'echo T_("' . $ligne . '");' . "\n\n");
+			fputs($fic, 'echo T_("' . str_replace('"', '\"', $ligne) . '") . "\n";' . "\n\n");
 		}
 		
-		fputs($fic, 'printf(T_("<p>Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href=\'%1\$s\'>en visitant la documentation</a>.</p>"), "$urlRacine/$dossierAdmin/documentation.admin.php");');
+		fputs($fic, 'echo \'<p>\' . sprintf(T_("Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à personnaliser votre installation, <a href=\"%1\$s\">en visitant la documentation</a>."), "$urlRacine/$dossierAdmin/documentation.admin.php") . "</p>\n";' . "\n");
 		
-		fputs($fic, "?>");
+		fputs($fic, '?>');
 		fclose($fic);
 	}
 }

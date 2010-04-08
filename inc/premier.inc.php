@@ -355,7 +355,7 @@ if ($afficherMessageIe6)
 if ($estAccueil)
 {
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
-	$jsDirect = "ajouteEvenementLoad(function(){var oH2 = \$('body.accueil #interieurContenu').find('h2'); if (oH2.length > 0){\$(oH2[0]).addClass('accueilInterieurContenuPremierH2');}});\n";
+	$jsDirect = "ajouteEvenementLoad(function(){var oH2 = \$('body.accueil #interieurContenu').find('h2'); if (oH2.length > 0){\$(oH2[0]).addClass('accueilPremierH2');}});\n";
 	$balisesLinkScript[] = "$urlRacine/*#jsDirect#$jsDirect";
 }
 
