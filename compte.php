@@ -2,7 +2,7 @@
 include_once 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
-eval(variablesAaffecterAuDebut());
+eval(variablesAvantConfig());
 
 foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {

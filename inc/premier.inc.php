@@ -34,7 +34,19 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 include_once $racine . '/inc/fonctions.inc.php';
 
 // Affectations 1 de 3.
+
 eval(variablesAaffecterAuDebut());
+$estPageCompte = $urlSansGet == "$urlRacine/compte.php" ? TRUE : FALSE;
+$estPageDeconnexion = $urlSansGet == "$urlRacine/deconnexion.php" ? TRUE : FALSE;
+
+if ($estPageCompte || $estPageDeconnexion)
+{
+	$langue = langue('navigateur', '');
+}
+elseif (!isset($langue))
+{
+	$langue = '';
+}
 
 if (!isset($idCategorie))
 {

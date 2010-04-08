@@ -5,7 +5,7 @@ if (file_exists('init.inc.php'))
 	include_once $racine . '/inc/fonctions.inc.php';
 	include_once $racine . '/inc/php-gettext/gettext.inc';
 	
-	eval(variablesAaffecterAuDebut());
+	eval(variablesAvantConfig());
 	
 	foreach (cheminsInc($racine, 'config') as $cheminFichier)
 	{

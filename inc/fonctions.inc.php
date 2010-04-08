@@ -5115,23 +5115,25 @@ Retourne sous forme de chaîne le code PHP nécessaire aux premières affectatio
 */
 function variablesAaffecterAuDebut()
 {
-	return '$nomPage = nomPage();
+	$variables = '$nomPage = nomPage();
 	$url = url();
 	$urlSansGet = url(FALSE);
-	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
+	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);';
+	$variables .= variablesAvantConfig();
+	
+	return $variables;
+}
 
-	$urlFichiers = $urlRacine . \'/site/fichiers\';
+/*
+Retourne sous forme de chaîne le code PHP nécessaire aux affectations devant être effectuées avant l'inclusion des fichiers de configuration. La chaîne retournée doit ensuite être exécutée par la fonction PHP `eval()`.
+*/
+function variablesAvantConfig()
+{
+	$variables = '$urlFichiers = $urlRacine . \'/site/fichiers\';
 	$urlRacineAdmin = $urlRacine . \'/\' . $dossierAdmin;
-	$urlSite = $urlRacine . \'/site\';
-
-	$estPageCompte = $urlSansGet == "$urlRacine/compte.php" ? TRUE : FALSE;
-	$estPageDeconnexion = $urlSansGet == "$urlRacine/deconnexion.php" ? TRUE : FALSE;
-	extract(init(\'\', \'langue\'), EXTR_SKIP);
-
-	if ($estPageCompte || $estPageDeconnexion)
-	{
-		$langue = langue(\'navigateur\', \'\');
-	}';
+	$urlSite = $urlRacine . \'/site\';';
+	
+	return $variables;
 }
 
 /*
