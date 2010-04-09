@@ -28,6 +28,7 @@ if (isset($_POST['envoyer']))
 	$message = securiseTexte($_POST['message']);
 	$messagesScript = '';
 	$erreurFormulaire = FALSE;
+	$formulaireValide = FALSE;
 	
 	if (isset($_POST['copie']))
 	{
@@ -116,14 +117,19 @@ if (isset($_POST['envoyer']))
 		}
 	}
 	
-	// Traitement personnalisé optionnel.
+	// Traitement personnalisé optionnel 1 de 4.
 	if (file_exists($racine . '/site/inc/contact.inc.php'))
 	{
 		include $racine . '/site/inc/contact.inc.php';
 	}
 	
-	// Envoi du message.
 	if (!$erreurFormulaire)
+	{
+		$formulaireValide = TRUE;
+	}
+	
+	// Envoi du message.
+	if ($formulaireValide)
 	{
 		$infosCourriel = array ();
 		$infosCourriel['From'] = "$nom <$courriel>";
@@ -168,7 +174,7 @@ if (isset($_POST['envoyer']))
 			$infosCourriel['message'] = str_replace(array("\r\n", "\r"), "\n", $message) . "\n";
 		}
 		
-		// Traitement personnalisé optionnel.
+		// Traitement personnalisé optionnel 2 de 4.
 		if (file_exists($racine . '/site/inc/contact.inc.php'))
 		{
 			include $racine . '/site/inc/contact.inc.php';
@@ -219,12 +225,18 @@ if ($nom == T_("VOTRE NOM"))
 	$nom = '';
 }
 
+// Traitement personnalisé optionnel 3 de 4.
+if (file_exists($racine . '/site/inc/contact.inc.php'))
+{
+	include $racine . '/site/inc/contact.inc.php';
+}
+
 ob_start();
 include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact');
 $contact .= ob_get_contents();
 ob_end_clean();
 
-// Traitement personnalisé optionnel.
+// Traitement personnalisé optionnel 4 de 4.
 if (file_exists($racine . '/site/inc/contact.inc.php'))
 {
 	include $racine . '/site/inc/contact.inc.php';

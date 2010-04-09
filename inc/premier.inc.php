@@ -32,6 +32,11 @@ if (file_exists($racine . '/inc/devel.inc.php'))
 	include_once $racine . '/inc/devel.inc.php';
 }
 
+if (file_exists($racine . '/site/inc/devel.inc.php'))
+{
+	include_once $racine . '/site/inc/devel.inc.php';
+}
+
 include_once $racine . '/inc/fonctions.inc.php';
 
 // Affectations 1 de 3.

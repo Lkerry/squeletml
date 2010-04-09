@@ -4,16 +4,22 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 Étapes dans ce fichier:
 
-1. Affectations.
-2. Inclusions.
-3. Inclusion de code XHTML.
+1. Affectations, inclusions et traitement personnalisé optionnel.
+2. Inclusion de code XHTML.
 */
 
 ########################################################################
 ##
-## Affectations et inclusions.
+## Affectations, inclusions et traitement personnalisé optionnel.
 ##
 ########################################################################
+
+// Traitement personnalisé optionnel 1 de 2.
+
+if (file_exists($racine . '/site/inc/dernier-pre.inc.php'))
+{
+	include_once $racine . '/site/inc/dernier-pre.inc.php';
+}
 
 // Affectations.
 
@@ -56,7 +62,7 @@ $linkScriptFin = linkScript($balisesLinkScriptFinales);
 include $racine . '/inc/blocs.inc.php';
 include_once $racine . '/inc/contact.inc.php';
 
-// Traitement personnalisé optionnel.
+// Traitement personnalisé optionnel 2 de 2.
 
 if (file_exists($racine . '/site/inc/dernier.inc.php'))
 {

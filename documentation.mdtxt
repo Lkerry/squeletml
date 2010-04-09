@@ -169,7 +169,10 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
   - à la fin du fichier par défaut.
 
-- `dernier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Vous pouvez créer le fichier `site/inc/dernier.inc.php`, qui sera inséré à la fin de celui par défaut.
+- `dernier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Deux traitements personnalisés peuvent être effectués dans ce fichier:
+
+  - vous pouvez créer le fichier `site/inc/dernier-pre.inc.php`, qui sera inséré au début de `inc/dernier.inc.php`;
+  - vous pouvez également créer le fichier `site/inc/dernier.inc.php`, qui sera inséré à la fin de celui par défaut.
 
 - `faire-decouvrir.inc.php`: crée les variables nécessaires à l'incorporation au formulaire de contact du module «Faire découvrir». Vous pouvez modifier ces variables en créant le fichier `site/inc/faire-decouvrir.inc.php`, qui sera inséré à la fin de celui par défaut.
 
@@ -197,6 +200,49 @@ Il est également possible d'utiliser le même fichier pour toutes les langues d
 Pour commencer, il y a les fichiers de la structure XHTML générale de la page:
 
 - `form-contact.inc.php`: modèle du formulaire de contact. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/(LANGUE/)form-contact.inc.php`, qui sera utilisé à la place du modèle par défaut. Vous pouvez également ajouter des champs supplémentaires au modèle par défaut. Ainsi, si le fichier `site/xhtml/(LANGUE/)form-contact.inc.php` n'existe pas, des champs supplémentaires sous le champ `nom` peuvent être inclus dans le modèle par défaut grâce au fichier `site/xhtml/(LANGUE/)form-contact-champs-apres-nom.inc.php`, et des champs supplémentaires sous le message peuvent être inclus grâce au fichier `site/xhtml/(LANGUE/)form-contact-champs-apres-message.inc.php`.
+
+	**Mise en situation:** nous voulons afficher sous le champ `nom` un nouveau champ de saisie pour le code postal, et ce pour les formulaires en français.
+
+	Il faut commencer par ajouter le code du nouveau champ de saisie dans le fichier `site/xhtml/fr/form-contact-champs-apres-nom.inc.php`, ce qui donne par exemple:
+
+		<p><label for="inputCodePostal">Votre code postal:</label><br />
+		<input id="inputCodePostal" class="champInfo" type="text" name="codePostal" size="7" maxlength="7" value="<?php echo $codePostal; ?>" /></p>
+
+	Ensuite, il faut ajouter le traitement de ce nouveau champ dans le fichier `site/inc/contact.inc.php`. Le traitement doit inclure la validation de la saisie ainsi que son utilisation lorsque toutes les données sont valides et que le courriel peut être envoyé. Cela peut donner ce qui suit:
+
+		<?php
+		$codePostal = '';
+
+		// L'envoi du message est demandé
+		if (isset($_POST['envoyer']))
+		{
+			$codePostal = securiseTexte($_POST['codePostal']);
+			$codePostal = str_replace(' ', '', $codePostal);
+			$codePostal = strtoupper($codePostal);
+	
+			if (empty($codePostal))
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= "<li class=\"erreur\">Vous n'avez pas inscrit de code postal.</li>\n";
+			}
+			elseif (!preg_match('/([A-Z]\d){3}/', $codePostal))
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= "<li class=\"erreur\">Le code postal ne semble pas avoir une forme valide. Veuillez l'inscrire sous la forme <em>A1A1A1</em>.</li>\n";
+			}
+	
+			// Envoi du message
+			if ($formulaireValide)
+			{
+				if (!empty($infosCourriel['message']))
+				{
+					$infosCourriel['message'] = rtrim($infosCourriel['message']) . "\n\n=========================\n\n";
+				}
+		
+				$infosCourriel['message'] .= "Code postal: $codePostal";
+			}
+		}
+		?>
 
 - `page.dernier.inc.php`: modèle de page suivant le contenu ajouté directement par l'utilisateur. Vous pouvez utiliser votre propre modèle en créant le fichier `site/xhtml/(LANGUE/)page.dernier.inc.php`, qui sera utilisé à la place du modèle par défaut.
 
@@ -360,12 +406,16 @@ Il est bon de rappeler qu'un modèle de page personnalisé peut être utilisé (
 Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers principaux et pour lesquels une personnalisation est possible sont listés.
 
 - `inc/premier.inc.php`
+	- `init.inc.php`
+	- *`inc/devel.inc.php`*
+	- *`site/inc/devel.inc.php`*
 	- `inc/fonctions.inc.php`
 	- *`site/inc/fonctions.inc.php`*
 	- `inc/config.inc.php`
 	- *`site/inc/config.inc.php`*
 	- `inc/constantes.inc.php`
 	- *`site/inc/constantes.inc.php`*
+	- *`site/inc/premier-pre.inc.php`*
 	- Si `$idCategorie` n'est pas vide: `inc/categorie.inc.php`
 		- *`site/inc/categorie.inc.php`*
 	- Si `$idGalerie` n'est pas vide: `inc/galerie.inc.php`
@@ -380,12 +430,14 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 	- *`site/xhtml/(LANGUE/)page.premier.inc.php`* **||** `xhtml/(LANGUE/)page.premier.inc.php`
 - Contenu de la page
 - `inc/dernier.inc.php`
+	- *`site/inc/dernier-pre.inc.php`*
 	- `inc/blocs.inc.php` (voir les détails plus haut)
 	- `inc/contact.inc.php`
 		- `inc/faire-decouvrir.inc.php` (voir les détails plus haut)
 		- *`site/inc/contact.inc.php`* après le traitement des champs par défaut
 		- *`site/inc/contact.inc.php`* avant l'envoi du message
 		- `inc/faire-decouvrir.inc.php` (voir les détails plus haut)
+		- *`site/inc/contact.inc.php`* avant l'inclusion du code XHTML du formulaire
 		- *`site/xhtml/(LANGUE/)form-contact.inc.php`* **||** (`xhtml/(LANGUE/)form-contact.inc.php` && *`site/xhtml/(LANGUE/)form-contact-champs-apres-nom.inc.php`* && *`site/xhtml/(LANGUE/)form-contact-champs-apres-message.inc.php`*)
 		- *`site/inc/contact.inc.php`* à la fin du fichier
 	- *`site/inc/dernier.inc.php`*

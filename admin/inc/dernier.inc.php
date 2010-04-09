@@ -1,6 +1,17 @@
 <?php
 ########################################################################
 ##
+## Traitement personnalisé optionnel 1 de 2.
+##
+########################################################################
+
+if (file_exists("$racine/site/$dossierAdmin/inc/dernier-pre.inc.php"))
+{
+	include_once "$racine/site/$dossierAdmin/inc/dernier-pre.inc.php";
+}
+
+########################################################################
+##
 ## Affectations.
 ##
 ########################################################################
@@ -78,7 +89,7 @@ $linkScriptFin = linkScript($adminBalisesLinkScriptFinales);
 
 ########################################################################
 ##
-## Traitement personnalisé optionnel.
+## Traitement personnalisé optionnel 2 de 2.
 ##
 ########################################################################
 
