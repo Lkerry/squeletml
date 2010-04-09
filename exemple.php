@@ -21,7 +21,8 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 
 <?php
 $courriel = 'contact_a_exemple_point_qc';
-$urlTestExistance = 'http://www.exemple-abcde-12345.qc/';
+$urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
+$urlTestExistance2 = URL_SQUELETML;
 $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle page.php?a=1&b=2&c=3";
 ?>
 
@@ -52,10 +53,18 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 		</li>
 		
 		<li>
-			<?php if (urlExiste($urlTestExistance)): ?>
-				l'URL <code><?php echo $urlTestExistance; ?></code> existe;
+			<?php if (urlExiste($urlTestExistance1)): ?>
+				l'URL <code><?php echo $urlTestExistance1; ?></code> existe;
 			<?php else: ?>
-				l'URL <code><?php echo $urlTestExistance; ?></code> n'existe pas;
+				l'URL <code><?php echo $urlTestExistance1; ?></code> n'existe pas;
+			<?php endif; ?>
+		</li>
+		
+		<li>
+			<?php if (urlExiste($urlTestExistance2)): ?>
+				l'URL <code><?php echo $urlTestExistance2; ?></code> existe;
+			<?php else: ?>
+				l'URL <code><?php echo $urlTestExistance2; ?></code> n'existe pas;
 			<?php endif; ?>
 		</li>
 		

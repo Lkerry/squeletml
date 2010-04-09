@@ -1325,7 +1325,7 @@ Affiche une ligne de rapport cron pour une requête effectuée avec `RollingCurl
 */
 function cUrlCronRapport($contenu, $infos)
 {
-	if (preg_match('/^(2|3)/', $infos['http_code']))
+	if (preg_match('/^[23]/', $infos['http_code']))
 	{
 		$rapport .= '1: ';
 	}
@@ -4999,6 +4999,7 @@ Retourne TRUE si l'URL existe, sinon retourne FALSE.
 function urlExiste($url)
 {
 	$url = superRawurlencode($url, TRUE);
+	$enTetes = '';
 	
 	if (function_exists('curl_init'))
 	{
@@ -5013,10 +5014,14 @@ function urlExiste($url)
 	else
 	{
 		@file_get_contents($url, 0, NULL, 0, 1);
-		$enTetes = $http_response_header[0];
+		
+		if (isset($http_response_header[0]))
+		{
+			$enTetes = $http_response_header[0];
+		}
 	}
 	
-	return preg_match('~^HTTP/\d+\.\d+\s+(2|3)~', $enTetes);
+	return preg_match('~^HTTP/\d+\.\d+\s+[23]~', $enTetes);
 }
 
 /*
