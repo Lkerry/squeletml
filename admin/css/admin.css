@@ -217,6 +217,10 @@ input.long {
 	width: 50%;
 }
 
+input.tresLong {
+	width: 75%;
+}
+
 legend {
 	font-weight: bold;
 }
@@ -262,7 +266,12 @@ li.liParent {
 }
 
 ul.triable li {
-	background: url('../fichiers/glisser.png') no-repeat left center;
+	background: url('../fichiers/glisser.png') no-repeat left 5px;
+	padding-left: 20px;
+}
+
+ul.nonTriable li {
+	background: none;
 	padding-left: 20px;
 }
 

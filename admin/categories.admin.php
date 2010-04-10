@@ -48,7 +48,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$listeCategories[] = $categorie;
 					$listePages .= '<li class="liParent"><input type="text" name="cat[' . $i . ']" value="' . $categorie . '" />';
-					$listePages .= "<ul class=\"triable\">\n";
+					$listePages .= "<ul class=\"nonTriable\">\n";
 					
 					// Langue.
 					
@@ -133,6 +133,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$listePages .= "</li>\n";
+					$listePages .= "</ul>\n";
+					
+					$listePages .= "<ul class=\"triable\">\n";
+					
+					// Pages.
 					
 					if (!empty($categorieInfos['pages']))
 					{
@@ -188,7 +193,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div id="configActuelleAdminCat">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-			echo "<ul class=\"bDcorps afficher\">\n";
+			echo "<ul class=\"triable bDcorps afficher\">\n";
 			
 			if (!empty($listePages))
 			{
@@ -202,7 +207,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul>\n";
 			echo "</div><!-- /#configActuelleAdminCat -->\n";
 			
-			echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
+			echo '<h4>' . T_("Ajouter une page") . "</h4>\n";
 			
 			echo '<p>' . T_("Il est possible d'ajouter une page à plus d'une catégorie. Il est aussi possible de créer une catégorie. Pour ce faire, ajouter «Nouvelle catégorie» à votre sélection et saisir le nom dans le champ. Pour créer plus d'une catégorie, séparer les noms par un carré (exemple: <code>animaux#chiens</code>).") . "</p>\n";
 			
@@ -237,11 +242,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<p>' . T_("Explications: par exemple, une page est ajoutée à la catégorie «Miniatures». Cette catégorie a comme parent «Chiens», qui a elle-même comme parent la catégorie «Animaux». Si l'option d'ajout dans la catégorie parente est sélectionnée, la page sera ajoutée dans la catégorie «Miniatures» et dans la catégorie parente «Chiens». Aussi, si l'option d'ajout dans les catégories parentes indirectes est sélectionnée, la page sera également ajoutée à la catégorie «Animaux».") . "</p>\n";
 			echo "</li>\n";
 			
-			$rssCheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+			$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site');
 			
-			if ($rssCheminFichier)
+			if ($cheminFichierRss)
 			{
-				$rssPages = super_parse_ini_file($rssCheminFichier, TRUE);
+				$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
 				
 				if (!empty($rssPages))
 				{
@@ -256,6 +261,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$rssListeLangues .= "</select>";
 					
 					echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
+
+					echo '<li><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap</a>."), 'sitemap.admin.php') . "</label></li>\n";
 				}
 			}
 			
@@ -458,44 +465,31 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
+		$messagesScript .= '<li>';
+		
 		if (file_exists($cheminFichier))
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				$messagesScript .= '<li>';
 				$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-				
-				$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
-				
-				$messagesScript .= "<ul>\n";
-				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				$messagesScript .= "</ul>\n";
-				$messagesScript .= "</li>\n";
 			}
 			else
 			{
-				$messagesScript .= '<li>';
 				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-				$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
-				$messagesScript .= "<ul>\n";
-				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				$messagesScript .= "</ul>\n";
-				$messagesScript .= "</li>\n";
 			}
 		}
 		else
 		{
-			$messagesScript .= '<li>';
 			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-			
-			$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
-			
-			$messagesScript .= "<ul>\n";
-			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			$messagesScript .= "</ul>\n";
-			$messagesScript .= "</li>\n";
 		}
+		
+		$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
+		
+		$messagesScript .= "<ul>\n";
+		$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+		$messagesScript .= "</ul>\n";
+		$messagesScript .= "</li>\n";
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
@@ -506,25 +500,25 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$urlAjout = securiseTexte($_POST['urlAjout']);
 			$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
 			$contenuFichierRssTableau = array ();
-			$rssCheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+			$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site');
 			
-			if (!$rssCheminFichier)
+			if (!$cheminFichierRss)
 			{
-				$rssCheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
+				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
 				
 				if ($adminPorteDocumentsDroits['creer'])
 				{
-					@touch($rssCheminFichier);
+					@touch($cheminFichierRss);
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$rssCheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichierRss</code>") . "</li>\n";
 				}
 			}
 			
-			if (file_exists($rssCheminFichier) && ($rssPages = super_parse_ini_file($rssCheminFichier, TRUE)) === FALSE)
+			if (file_exists($cheminFichierRss) && ($rssPages = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $rssCheminFichier . '</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierRss . '</code>') . "</li>\n";
 			}
 			elseif (!empty($rssPages))
 			{
@@ -566,6 +560,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
 			
 			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des dernières publications"));
+		}
+		
+		if (isset($_POST['sitemapAjout']) && !empty($_POST['urlAjout']))
+		{
+			$urlAjout = $urlRacine . '/' . securiseTexte($_POST['urlAjout']);
+			$messagesScript = adminAjouteUrlDansSitemap($racine, array ($urlAjout => array ()), $adminPorteDocumentsDroits);
+			
+			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap"));
 		}
 	}
 	?>

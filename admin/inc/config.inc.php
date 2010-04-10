@@ -97,6 +97,10 @@ $adminBalisesLinkScript[13] = "$urlRacineAdmin/categories.admin.php*#js#$urlRaci
 $adminBalisesLinkScript[14] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
 $adminBalisesLinkScript[15] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
 $adminBalisesLinkScript[16] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[17] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[18] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[19] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[20] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
 
 ########################################################################
 ##

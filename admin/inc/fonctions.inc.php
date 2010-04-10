@@ -1,5 +1,127 @@
 <?php
 /*
+Ajoute les URL fournies au fichier Sitemap et retourne le résultat sous forme de message concaténable dans `$messagesScript`. Si une URL est déjà présente dans le fichier Sitemap, ses informations seront mises à jour, s'il y a lieu.
+*/
+function adminAjouteUrlDansSitemap($racine, $tableauUrl, $adminPorteDocumentsDroits)
+{
+	$messagesScript = '';
+	$cheminFichierSitemap = $racine . '/sitemap_site.xml';
+	
+	if (!file_exists($cheminFichierSitemap))
+	{
+		if ($adminPorteDocumentsDroits['creer'])
+		{
+			@touch($cheminFichierSitemap);
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas."), "<code>$cheminFichierSitemap</code>") . "</li>\n";
+		}
+	}
+	
+	if (file_exists($cheminFichierSitemap) && ($contenuSitemap = @file_get_contents($cheminFichierSitemap)) === FALSE)
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierSitemap . '</code>') . "</li>\n";
+	}
+	elseif (empty($contenuSitemap))
+	{
+		$contenuSitemap = '';
+		$contenuSitemap .= adminPlanSitemapXml();
+	}
+	
+	$dom = new DomDocument();
+	$dom->preserveWhiteSpace = FALSE;
+	$dom->loadXML($contenuSitemap);
+	
+	if (!empty($tableauUrl))
+	{
+		$eUrlListe = $dom->getElementsByTagName('url');
+		
+		foreach ($tableauUrl as $urlAjout => $infosUrlAjout)
+		{
+			$urlDansSitemap = FALSE;
+			
+			foreach($eUrlListe as $eUrl)
+			{
+				$eLoc = $eUrl->getElementsByTagName('loc')->item(0);
+				
+				if ($eLoc->firstChild->nodeValue == $urlAjout)
+				{
+					$urlDansSitemap = TRUE;
+					$messagesScript .= '<li>' . sprintf(T_("L'URL %1\$s se trouve déjà dans le fichier Sitemap."), '<code>' . $urlAjout . '</code>') . "</li>\n";
+					
+					foreach ($infosUrlAjout as $champ => $valeur)
+					{
+						$eChampListe = $eUrl->getElementsByTagName($champ);
+						
+						if ($eChampListe->length > 0)
+						{
+							$eChampAmettreAjour = $eChampListe->item(0);
+							$champAncienContenu = $eChampAmettreAjour->firstChild->nodeValue;
+							
+							if (!empty($valeur))
+							{
+								if ($valeur != $champAncienContenu)
+								{
+									$eChampAmettreAjour->firstChild->nodeValue = $valeur;
+									$messagesScript .= '<li>' . sprintf(T_("Mise à jour du champ %1\$s (de %2\$s vers %3\$s) pour l'URL %4\$s."), "<code>$champ</code>", "<code>$champAncienContenu</code>", "<code>$valeur</code>", "<code>$urlAjout</code>") . "</li>\n";
+								}
+							}
+							else
+							{
+								$eUrl->removeChild($eChampAmettreAjour);
+								$messagesScript .= '<li>' . sprintf(T_("Suppression du champ %1\$s (qui valait %2\$s) pour l'URL %3\$s."), "<code>$champ</code>", "<code>$champAncienContenu</code>", "<code>$urlAjout</code>") . "</li>\n";
+							}
+						}
+						elseif (!empty($valeur))
+						{
+							$eNouveauChamp = $dom->createElement($champ);
+							$contenuChamp = $dom->createTextNode($valeur);
+							$eNouveauChamp->appendChild($contenuChamp);
+							$eUrl->appendChild($eNouveauChamp);
+							$messagesScript .= '<li>' . sprintf(T_("Ajout du champ %1\$s (dont la valeur est %2\$s) pour l'URL %3\$s."), "<code>$champ</code>", "<code>$valeur</code>", '<code>' . $urlAjout . '</code>') . "</li>\n";
+						}
+					}
+					
+					break;
+				}
+			}
+			
+			if (!$urlDansSitemap)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Ajout de l'URL %1\$s dans le fichier Sitemap effectué."), '<code>' . $urlAjout . '</code>') . "</li>\n";
+				$eNouvelleUrl = $dom->createElement('url');
+				$eNouveauLoc = $dom->createElement('loc');
+				$contenuLoc = $dom->createTextNode($urlAjout);
+				$eNouveauLoc->appendChild($contenuLoc);
+				$eNouvelleUrl->appendChild($eNouveauLoc);
+				
+				foreach ($infosUrlAjout as $champ => $valeur)
+				{
+					if (!empty($valeur))
+					{
+						$eNouveauChamp = $dom->createElement($champ);
+						$contenuChamp = $dom->createTextNode($valeur);
+						$eNouveauChamp->appendChild($contenuChamp);
+						$eNouvelleUrl->appendChild($eNouveauChamp);
+						$messagesScript .= '<li>' . sprintf(T_("Ajout du champ %1\$s (dont la valeur est %2\$s) pour l'URL %3\$s."), "<code>$champ</code>", "<code>$valeur</code>", '<code>' . $urlAjout . '</code>') . "</li>\n";
+					}
+				}
+				
+				$eUrlset = $dom->documentElement;
+				$eUrlset->appendChild($eNouvelleUrl);
+			}
+		}
+	}
+	
+	$dom->formatOutput = TRUE;
+	$contenuSitemap = $dom->saveXML();
+	$messagesScript .= adminEnregistreSitemap($racine, $contenuSitemap, $adminPorteDocumentsDroits);
+	
+	return $messagesScript;
+}
+
+/*
 Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)basename($racineAdmin)/inc/$nom.inc.php` demandé.
 */
 function adminCheminsInc($racineAdmin, $nom)
@@ -401,44 +523,84 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $admin
 		}
 	}
 	
+	$messagesScript .= '<li>';
+	
 	if (file_exists($cheminFichier))
 	{
 		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 		{
-			$messagesScript .= '<li>';
 			$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-			
-			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-			
-			$messagesScript .= "<ul>\n";
-			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			$messagesScript .= "</ul>\n";
-			$messagesScript .= "</li>\n";
 		}
 		else
 		{
-			$messagesScript .= '<li>';
 			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-			$messagesScript .= "<ul>\n";
-			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			$messagesScript .= "</ul>\n";
-			$messagesScript .= "</li>\n";
 		}
 	}
 	else
 	{
-		$messagesScript .= '<li>';
 		$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-		
-		$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-		
-		$messagesScript .= "<ul>\n";
-		$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-		$messagesScript .= "</ul>\n";
-		$messagesScript .= "</li>\n";
 	}
+
+	$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+	
+	$messagesScript .= "<ul>\n";
+	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</li>\n";
+	
+	return $messagesScript;
+}
+
+/*
+Enregistre le contenu du fichier Sitemap et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminEnregistreSitemap($racine, $contenuFichier, $adminPorteDocumentsDroits)
+{
+	$messagesScript = '';
+	$cheminFichier = $racine . '/sitemap_site.xml';
+	
+	if (!file_exists($cheminFichier))
+	{
+		if ($adminPorteDocumentsDroits['creer'])
+		{
+			if (!@touch($cheminFichier))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+		}
+	}
+	
+	$messagesScript .= '<li>';
+	
+	if (file_exists($cheminFichier))
+	{
+		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
+		{
+			$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+		}
+		else
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		}
+	}
+	else
+	{
+		
+		$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+	}
+	
+	$messagesScript .= '<pre id="contenuFichierSitemap">' . securiseTexte($contenuFichier) . "</pre>\n";
+	
+	$messagesScript .= "<ul>\n";
+	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierSitemap');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</li>\n";
 	
 	return $messagesScript;
 }
@@ -1220,6 +1382,23 @@ function adminPhpIniOctets($nombre)
 	}
 	
 	return $octets;
+}
+
+/*
+Retourne un plan modèle de fichier Sitemap au format Xml. Si `$fermeUrlset` vaut FALSE, la balise fermante de `urlset` ne sera pas incluse dans le modèle retourné.
+*/
+function adminPlanSitemapXml($fermeUrlset = TRUE)
+{
+	$enTete = '';
+	$enTete .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	$enTete .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
+	
+	if ($fermeUrlset)
+	{
+		$enTete .= '</urlset>';
+	}
+	
+	return $enTete;
 }
 
 /*

@@ -76,7 +76,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor) ou coloration syntaxique du code en direct à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie), ajout, téléchargement...
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration, et mise en maintenance du site.
   - Gestion des galeries: listage de toutes les galeries existantes, création et mise à jour du fichier de configuration pour chaque galerie, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
-  - Gestion des catégories et des flux RSS globaux.
+  - Gestion des catégories, des flux RSS globaux et des fichiers Sitemap au format XML.
   - Documentation: consultation de l'aide directement en local.
 
 - Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox. Squeletml fonctionne avec Internet Explorer 6, mais il est clairement optimisé pour les navigateurs modernes (testé sur plusieurs navigateurs).

@@ -125,7 +125,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="configActuelleAdminRss">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-			echo "<ul class=\"bDcorps afficher\">\n";
+			echo "<ul class=\"triable bDcorps afficher\">\n";
 			
 			if (!empty($listeGaleries))
 			{
@@ -139,7 +139,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul>\n";
 			echo "</div><!-- /.configActuelleAdminRss -->\n";
 			
-			echo '<p><strong>' . T_("Ajouter une galerie:") . "</strong></p>\n";
+			echo '<h4>' . T_("Ajouter une galerie") . "</h4>\n";
 			
 			echo "<ul>\n";
 			echo '<li>';
@@ -291,7 +291,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="configActuelleAdminRss">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-			echo "<ul class=\"bDcorps afficher\">\n";
+			echo "<ul class=\"triable bDcorps afficher\">\n";
 			
 			if (!empty($listePages))
 			{
@@ -305,7 +305,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul>\n";
 			echo "</div><!-- /.configActuelleAdminRss -->\n";
 			
-			echo '<p><strong>' . T_("Ajouter une page:") . "</strong></p>\n";
+			echo '<h4>' . T_("Ajouter une page") . "</h4>\n";
 			
 			echo "<ul>\n";
 			echo '<li>';
@@ -332,6 +332,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<li><label for="inputUrlAjout">pages[]=</label><input id="inputUrlAjout" class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
+			
+			echo '<p><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap</a>."), 'sitemap.admin.php') . "</label></p>\n";
 			echo "</fieldset>\n";
 			
 			echo '<p><input type="submit" name="modifsSite" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
@@ -425,44 +427,31 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
+		$messagesScript .= '<li>';
+		
 		if (file_exists($cheminFichier))
 		{
 			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 			{
-				$messagesScript .= '<li>';
 				$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-				
-				$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-				
-				$messagesScript .= "<ul>\n";
-				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				$messagesScript .= "</ul>\n";
-				$messagesScript .= "</li>\n";
 			}
 			else
 			{
-				$messagesScript .= '<li>';
 				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 				$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-				$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-				$messagesScript .= "<ul>\n";
-				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-				$messagesScript .= "</ul>\n";
-				$messagesScript .= "</li>\n";
 			}
 		}
 		else
 		{
-			$messagesScript .= '<li>';
 			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-			
-			$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-			
-			$messagesScript .= "<ul>\n";
-			$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-			$messagesScript .= "</ul>\n";
-			$messagesScript .= "</li>\n";
 		}
+		
+		$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+		
+		$messagesScript .= "<ul>\n";
+		$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+		$messagesScript .= "</ul>\n";
+		$messagesScript .= "</li>\n";
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
@@ -527,6 +516,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
+		
+		if (isset($_POST['sitemapAjout']) && !empty($_POST['urlAjout']))
+		{
+			$urlAjout = $urlRacine . '/' . securiseTexte($_POST['urlAjout']);
+			$messagesScript = adminAjouteUrlDansSitemap($racine, array ($urlAjout => array ()), $adminPorteDocumentsDroits);
+			
+			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap"));
+		}
 	}
 	?>
 </div><!-- /#boiteMessages -->
