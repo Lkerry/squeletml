@@ -172,7 +172,7 @@ body#documentation-admin-php em code {
 	color: #E30000;
 }
 
-body#documentation-admin-php pre#fichierDeConfiguration {
+body#documentation-admin-php pre.fichierDeConfiguration {
 	background-color: transparent;
 }
 
@@ -265,7 +265,7 @@ li.liParent {
 	font-style: italic;
 }
 
-ul.triable li {
+ul.nonTriable ul.triable li.liParent, li.liParent ul.triable li, ul.triable li {
 	background: url('../fichiers/glisser.png') no-repeat left 5px;
 	padding-left: 20px;
 }

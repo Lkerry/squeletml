@@ -59,7 +59,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 			$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
-			$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.defaut|\.ini|\.mdtxt|\.txt|\.xml)$";
+			$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.defaut|\.ini|\.mdtxt|\.txt)$";
 		
 			if ($serveurFreeFr)
 			{
@@ -252,11 +252,11 @@ function annexesDocumentation($racineAdmin)
 	
 	$texte .= T_("Voici le contenu du fichier de configuration, largement commenté, et constituant ainsi un bon complément à la documentation, pour ne pas dire une seconde documentation en parallèle.") . "\n\n";
 	
-	$texte .= '<pre id="fichierDeConfiguration">' . coloreFichierPhp($racine . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
+	$texte .= '<pre class="fichierDeConfiguration">' . coloreFichierPhp($racine . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
 	
 	$texte .= '### ' . T_("Contenu du fichier de configuration de l'administration de Squeletml") . "\n\n";
 	
-	$texte .= '<pre id="fichierDeConfiguration">' . coloreFichierPhp($racineAdmin . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
+	$texte .= '<pre class="fichierDeConfiguration">' . coloreFichierPhp($racineAdmin . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
 	
 	return $texte;
 }
@@ -2112,7 +2112,7 @@ function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique, $html = '
 		
 		if ($contenu = $dom->find('div#galerieIntermediaireImg img'))
 		{
-			$infosPage['contenu'] = '<div id="galerieIntermediaireImg"><a href="' . superRawurlencode($urlPage) . '">' . $contenu[0]->outertext . "</a></div>\n";
+			$infosPage['contenu'] = '<div class="galerieIntermediaireImgApercu"><a href="' . superRawurlencode($urlPage) . '">' . $contenu[0]->outertext . "</a></div>\n";
 			
 			if ($contenu = $dom->find('div#galerieIntermediaireLegende'))
 			{
@@ -3083,7 +3083,7 @@ function marquePagesSociaux($url, $titre)
 	
 	$liens['Identica'] = array(
 		'nom' => 'Identi.ca',
-		'lien' => "http://identi.ca/index.php?action=newnotice&status_textarea=$titre $url",
+		'lien' => "http://identi.ca/index.php?action=newnotice&amp;status_textarea=$titre $url",
 	);
 	
 	$liens['Linkedin'] = array(

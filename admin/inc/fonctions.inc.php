@@ -1,17 +1,28 @@
 <?php
 /*
-Ajoute les URL fournies au fichier Sitemap et retourne le résultat sous forme de message concaténable dans `$messagesScript`. Si une URL est déjà présente dans le fichier Sitemap, ses informations seront mises à jour, s'il y a lieu.
+Ajoute les URL fournies au fichier Sitemap demandé (du site ou des galeries) et retourne le résultat sous forme de message concaténable dans `$messagesScript`. Si une URL est déjà présente dans le fichier Sitemap, ses informations seront mises à jour, s'il y a lieu.
 */
-function adminAjouteUrlDansSitemap($racine, $tableauUrl, $adminPorteDocumentsDroits)
+function adminAjouteUrlDansSitemap($racine, $type, $tableauUrl, $adminPorteDocumentsDroits)
 {
 	$messagesScript = '';
-	$cheminFichierSitemap = $racine . '/sitemap_site.xml';
+
+	if ($type == 'galeries')
+	{
+		$cheminFichierSitemap = $racine . '/sitemap_galeries.xml';
+	}
+	else
+	{
+		$cheminFichierSitemap = $racine . '/sitemap_site.xml';
+	}
 	
 	if (!file_exists($cheminFichierSitemap))
 	{
 		if ($adminPorteDocumentsDroits['creer'])
 		{
-			@touch($cheminFichierSitemap);
+			if (!@touch($cheminFichierSitemap))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierSitemap</code>") . "</li>\n";
+			}
 		}
 		else
 		{
@@ -19,104 +30,233 @@ function adminAjouteUrlDansSitemap($racine, $tableauUrl, $adminPorteDocumentsDro
 		}
 	}
 	
-	if (file_exists($cheminFichierSitemap) && ($contenuSitemap = @file_get_contents($cheminFichierSitemap)) === FALSE)
+	if (file_exists($cheminFichierSitemap))
 	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierSitemap . '</code>') . "</li>\n";
-	}
-	elseif (empty($contenuSitemap))
-	{
-		$contenuSitemap = '';
-		$contenuSitemap .= adminPlanSitemapXml();
-	}
-	
-	$dom = new DomDocument();
-	$dom->preserveWhiteSpace = FALSE;
-	$dom->loadXML($contenuSitemap);
-	
-	if (!empty($tableauUrl))
-	{
-		$eUrlListe = $dom->getElementsByTagName('url');
+		$contenuSitemap = @file_get_contents($cheminFichierSitemap);
 		
-		foreach ($tableauUrl as $urlAjout => $infosUrlAjout)
+		if ($contenuSitemap === FALSE)
 		{
-			$urlDansSitemap = FALSE;
-			
-			foreach($eUrlListe as $eUrl)
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierSitemap . '</code>') . "</li>\n";
+		}
+		else
+		{
+			if (empty($contenuSitemap))
 			{
-				$eLoc = $eUrl->getElementsByTagName('loc')->item(0);
-				
-				if ($eLoc->firstChild->nodeValue == $urlAjout)
+				$contenuSitemap = adminPlanSitemapXml();
+			}
+			
+			$dom = new DomDocument();
+			$dom->preserveWhiteSpace = FALSE;
+			$dom->loadXML($contenuSitemap);
+	
+			if (!empty($tableauUrl))
+			{
+				$eUrlListe = $dom->getElementsByTagName('url');
+		
+				foreach ($tableauUrl as $urlAjout => $infosUrlAjout)
 				{
-					$urlDansSitemap = TRUE;
-					$messagesScript .= '<li>' . sprintf(T_("L'URL %1\$s se trouve déjà dans le fichier Sitemap."), '<code>' . $urlAjout . '</code>') . "</li>\n";
-					
-					foreach ($infosUrlAjout as $champ => $valeur)
+					$urlDansSitemap = FALSE;
+			
+					foreach($eUrlListe as $eUrl)
 					{
-						$eChampListe = $eUrl->getElementsByTagName($champ);
-						
-						if ($eChampListe->length > 0)
+						$eLoc = $eUrl->getElementsByTagName('loc')->item(0);
+				
+						if ($eLoc->firstChild->nodeValue == $urlAjout)
 						{
-							$eChampAmettreAjour = $eChampListe->item(0);
-							$champAncienContenu = $eChampAmettreAjour->firstChild->nodeValue;
-							
-							if (!empty($valeur))
+							$urlDansSitemap = TRUE;
+							$messagesScript .= '<li>' . sprintf(T_("La page %1\$s se trouve déjà dans le fichier Sitemap."), "<code>$urlAjout</code>") . "</li>\n";
+					
+							foreach ($infosUrlAjout as $balise => $valeur)
 							{
-								if ($valeur != $champAncienContenu)
+								if ($balise == 'image')
 								{
-									$eChampAmettreAjour->firstChild->nodeValue = $valeur;
-									$messagesScript .= '<li>' . sprintf(T_("Mise à jour du champ %1\$s (de %2\$s vers %3\$s) pour l'URL %4\$s."), "<code>$champ</code>", "<code>$champAncienContenu</code>", "<code>$valeur</code>", "<code>$urlAjout</code>") . "</li>\n";
+									if (!empty($valeur))
+									{
+										$eBaliseListe = $eUrl->getElementsByTagNameNS('http://www.google.com/schemas/sitemap-image/1.1', $balise);
+								
+										foreach ($valeur as $imageAjout => $infosImageAjout)
+										{
+											$imageDansSitemap = FALSE;
+									
+											foreach($eBaliseListe as $eBalise)
+											{
+												$eImageLoc = $eBalise->getElementsByTagNameNS('http://www.google.com/schemas/sitemap-image/1.1', 'loc')->item(0);
+										
+												if ($eImageLoc->firstChild->nodeValue == $imageAjout)
+												{
+													$imageDansSitemap = TRUE;
+													$messagesScript .= '<li>' . sprintf(T_("L'image %1\$s se trouve déjà dans le fichier Sitemap pour la page %2\$s."), '<code>' . $imageAjout . '</code>', "<code>$urlAjout</code>") . "</li>\n";
+											
+													foreach ($infosImageAjout as $baliseImage => $valeurImage)
+													{
+														$eBaliseImageListe = $eBalise->getElementsByTagNameNS('http://www.google.com/schemas/sitemap-image/1.1', $baliseImage);
+												
+														if ($eBaliseImageListe->length > 0)
+														{
+															$eBaliseImageAmettreAjour = $eBaliseImageListe->item(0);
+															$baliseImageAncienContenu = $eBaliseImageAmettreAjour->firstChild->nodeValue;
+													
+															if (!empty($valeurImage))
+															{
+																if ($valeurImage != $baliseImageAncienContenu)
+																{
+																	$eBaliseImageAmettreAjour->firstChild->nodeValue = $valeurImage;
+																	$messagesScript .= '<li>' . sprintf(T_("Mise à jour de la balise %1\$s (de %2\$s vers %3\$s) pour l'image %4\$s de la page %5\$s."), "<code>$baliseImage</code>", "<code>$baliseImageAncienContenu</code>", "<code>$valeurImage</code>", "<code>$imageAjout</code>", "<code>$urlAjout</code>") . "</li>\n";
+																}
+															}
+															else
+															{
+																$eBalise->removeChild($eBaliseImageAmettreAjour);
+																$messagesScript .= '<li>' . sprintf(T_("Suppression de la balise %1\$s (qui valait %2\$s) pour l'image %3\$s de la page %4\$s."), "<code>$balise</code>", "<code>$baliseAncienContenu</code>", "<code>$imageAjout</code>", "<code>$urlAjout</code>") . "</li>\n";
+															}
+														}
+														elseif (!empty($valeurImage))
+														{
+															$eNouvelleBaliseImage = $dom->createElementNS('http://www.google.com/schemas/sitemap-image/1.1', "image:$baliseImage");
+															$contenuBaliseImage = $dom->createTextNode($valeurImage);
+															$eNouvelleBaliseImage->appendChild($contenuBaliseImage);
+															$eBalise->appendChild($eNouvelleBaliseImage);
+															$messagesScript .= '<li>' . sprintf(T_("Ajout de la balise %1\$s (dont la valeur est %2\$s) pour l'image %3\$s de la page %4\$s."), "<code>$balise</code>", "<code>$valeur</code>", "<code>$imageAjout</code>", "<code>$urlAjout</code>") . "</li>\n";
+														}
+													}
+											
+													break;
+												}
+											}
+									
+											if (!$imageDansSitemap)
+											{
+												$messagesScript .= '<li>' . sprintf(T_("Ajout dans le fichier Sitemap de l'image %1\$s pour la page %2\$s effectué."), "<code>$imageAjout</code>", "<code>$urlAjout</code>") . "</li>\n";
+												$eNouvelleImage = $dom->createElementNS('http://www.google.com/schemas/sitemap-image/1.1', "image:image");
+												$eNouveauLocImage = $dom->createElementNS('http://www.google.com/schemas/sitemap-image/1.1', 'image:loc');
+												$contenuLocImage = $dom->createTextNode($imageAjout);
+												$eNouveauLocImage->appendChild($contenuLocImage);
+												$eNouvelleImage->appendChild($eNouveauLocImage);
+										
+												foreach ($infosImageAjout as $baliseImage => $valeurImage)
+												{
+													if (!empty($valeurImage))
+													{
+														$eNouvelleBaliseImage = $dom->createElementNS('http://www.google.com/schemas/sitemap-image/1.1', "image:$baliseImage");
+														$contenuBaliseImage = $dom->createTextNode($valeurImage);
+														$eNouvelleBaliseImage->appendChild($contenuBaliseImage);
+														$eNouvelleImage->appendChild($eNouvelleBaliseImage);
+														$messagesScript .= '<li>' . sprintf(T_("Ajout de la balise %1\$s (dont la valeur est %2\$s) pour l'image %3\$s de la page %4\$s."), "<code>$baliseImage</code>", "<code>$valeurImage</code>", "<code>$imageAjout</code>", "<code>$urlAjout</code>") . "</li>\n";
+													}
+												}
+										
+												$eUrl->appendChild($eNouvelleImage);
+											}
+										}
+									}
+								}
+								else
+								{
+									$eBaliseListe = $eUrl->getElementsByTagName($balise);
+						
+									if ($eBaliseListe->length > 0)
+									{
+										$eBaliseAmettreAjour = $eBaliseListe->item(0);
+										$baliseAncienContenu = $eBaliseAmettreAjour->firstChild->nodeValue;
+							
+										if (!empty($valeur))
+										{
+											if ($valeur != $baliseAncienContenu)
+											{
+												$eBaliseAmettreAjour->firstChild->nodeValue = $valeur;
+												$messagesScript .= '<li>' . sprintf(T_("Mise à jour de la balise %1\$s (de %2\$s vers %3\$s) pour l'URL %4\$s."), "<code>$balise</code>", "<code>$baliseAncienContenu</code>", "<code>$valeur</code>", "<code>$urlAjout</code>") . "</li>\n";
+											}
+										}
+										else
+										{
+											$eUrl->removeChild($eBaliseAmettreAjour);
+											$messagesScript .= '<li>' . sprintf(T_("Suppression de la balise %1\$s (qui valait %2\$s) pour l'URL %3\$s."), "<code>$balise</code>", "<code>$baliseAncienContenu</code>", "<code>$urlAjout</code>") . "</li>\n";
+										}
+									}
+									elseif (!empty($valeur))
+									{
+										$eNouvelleBalise = $dom->createElement($balise);
+										$contenuBalise = $dom->createTextNode($valeur);
+										$eNouvelleBalise->appendChild($contenuBalise);
+										$eUrl->appendChild($eNouvelleBalise);
+										$messagesScript .= '<li>' . sprintf(T_("Ajout de la balise %1\$s (dont la valeur est %2\$s) pour l'URL %3\$s."), "<code>$balise</code>", "<code>$valeur</code>", "<code>$urlAjout</code>") . "</li>\n";
+									}
 								}
 							}
-							else
+					
+							break;
+						}
+					}
+			
+					if (!$urlDansSitemap)
+					{
+						$messagesScript .= '<li>' . sprintf(T_("Ajout de l'URL %1\$s dans le fichier Sitemap effectué."), "<code>$urlAjout</code>") . "</li>\n";
+						$eNouvelleUrl = $dom->createElement('url');
+						$eNouveauLoc = $dom->createElement('loc');
+						$contenuLoc = $dom->createTextNode($urlAjout);
+						$eNouveauLoc->appendChild($contenuLoc);
+						$eNouvelleUrl->appendChild($eNouveauLoc);
+				
+						foreach ($infosUrlAjout as $balise => $valeur)
+						{
+							if ($balise == 'image')
 							{
-								$eUrl->removeChild($eChampAmettreAjour);
-								$messagesScript .= '<li>' . sprintf(T_("Suppression du champ %1\$s (qui valait %2\$s) pour l'URL %3\$s."), "<code>$champ</code>", "<code>$champAncienContenu</code>", "<code>$urlAjout</code>") . "</li>\n";
+								if (!empty($valeur))
+								{
+									foreach ($valeur as $imageAjout => $infosImageAjout)
+									{
+										$messagesScript .= '<li>' . sprintf(T_("Ajout dans le fichier Sitemap de l'image %1\$s pour la page %2\$s effectué."), "<code>$imageAjout</code>", "<code>$urlAjout</code>") . "</li>\n";
+										$eNouvelleImage = $dom->createElementNS('http://www.google.com/schemas/sitemap-image/1.1', "image:image");
+										$eNouveauLocImage = $dom->createElementNS('http://www.google.com/schemas/sitemap-image/1.1', 'image:loc');
+										$contenuLocImage = $dom->createTextNode($imageAjout);
+										$eNouveauLocImage->appendChild($contenuLocImage);
+										$eNouvelleImage->appendChild($eNouveauLocImage);
+								
+										foreach ($infosImageAjout as $baliseImage => $valeurImage)
+										{
+											if (!empty($valeurImage))
+											{
+												$eNouvelleBaliseImage = $dom->createElementNS('http://www.google.com/schemas/sitemap-image/1.1', "image:$baliseImage");
+												$contenuBaliseImage = $dom->createTextNode($valeurImage);
+												$eNouvelleBaliseImage->appendChild($contenuBaliseImage);
+												$eNouvelleImage->appendChild($eNouvelleBaliseImage);
+												$messagesScript .= '<li>' . sprintf(T_("Ajout de la balise %1\$s (dont la valeur est %2\$s) pour l'image %3\$s de la page %4\$s."), "<code>$baliseImage</code>", "<code>$valeurImage</code>", "<code>$imageAjout</code>", "<code>$urlAjout</code>") . "</li>\n";
+											}
+										}
+								
+										$eNouvelleUrl->appendChild($eNouvelleImage);
+									}
+								}
+							}
+							elseif (!empty($valeur))
+							{
+								$eNouvelleBalise = $dom->createElement($balise);
+								$contenuBalise = $dom->createTextNode($valeur);
+								$eNouvelleBalise->appendChild($contenuBalise);
+								$eNouvelleUrl->appendChild($eNouvelleBalise);
+								$messagesScript .= '<li>' . sprintf(T_("Ajout de la balise %1\$s (dont la valeur est %2\$s) pour l'URL %3\$s."), "<code>$balise</code>", "<code>$valeur</code>", "<code>$urlAjout</code>") . "</li>\n";
 							}
 						}
-						elseif (!empty($valeur))
-						{
-							$eNouveauChamp = $dom->createElement($champ);
-							$contenuChamp = $dom->createTextNode($valeur);
-							$eNouveauChamp->appendChild($contenuChamp);
-							$eUrl->appendChild($eNouveauChamp);
-							$messagesScript .= '<li>' . sprintf(T_("Ajout du champ %1\$s (dont la valeur est %2\$s) pour l'URL %3\$s."), "<code>$champ</code>", "<code>$valeur</code>", '<code>' . $urlAjout . '</code>') . "</li>\n";
-						}
-					}
-					
-					break;
-				}
-			}
-			
-			if (!$urlDansSitemap)
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Ajout de l'URL %1\$s dans le fichier Sitemap effectué."), '<code>' . $urlAjout . '</code>') . "</li>\n";
-				$eNouvelleUrl = $dom->createElement('url');
-				$eNouveauLoc = $dom->createElement('loc');
-				$contenuLoc = $dom->createTextNode($urlAjout);
-				$eNouveauLoc->appendChild($contenuLoc);
-				$eNouvelleUrl->appendChild($eNouveauLoc);
 				
-				foreach ($infosUrlAjout as $champ => $valeur)
-				{
-					if (!empty($valeur))
-					{
-						$eNouveauChamp = $dom->createElement($champ);
-						$contenuChamp = $dom->createTextNode($valeur);
-						$eNouveauChamp->appendChild($contenuChamp);
-						$eNouvelleUrl->appendChild($eNouveauChamp);
-						$messagesScript .= '<li>' . sprintf(T_("Ajout du champ %1\$s (dont la valeur est %2\$s) pour l'URL %3\$s."), "<code>$champ</code>", "<code>$valeur</code>", '<code>' . $urlAjout . '</code>') . "</li>\n";
+						$eUrlset = $dom->documentElement;
+						$eUrlset->appendChild($eNouvelleUrl);
 					}
 				}
-				
-				$eUrlset = $dom->documentElement;
-				$eUrlset->appendChild($eNouvelleUrl);
 			}
+	
+			$dom->formatOutput = TRUE;
+			$contenuSitemap = $dom->saveXML();
+	
+			// Si on a chargé précédemment une balise `urlset` vide, le formatage ne s'applique pas. On recharge donc une seconde fois.
+			$dom = new DomDocument();
+			$dom->preserveWhiteSpace = FALSE;
+			$dom->loadXML($contenuSitemap);
+			$dom->formatOutput = TRUE;
+			$contenuSitemap = $dom->saveXML();
+	
+			$messagesScript .= adminEnregistreSitemap($racine, $type, $contenuSitemap, $adminPorteDocumentsDroits);
 		}
 	}
-	
-	$dom->formatOutput = TRUE;
-	$contenuSitemap = $dom->saveXML();
-	$messagesScript .= adminEnregistreSitemap($racine, $contenuSitemap, $adminPorteDocumentsDroits);
 	
 	return $messagesScript;
 }
@@ -290,6 +430,78 @@ function adminCopyDossier($dossierSource, $dossierDeDestination)
 		else
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierSource</code>") . "</li>\n";
+		}
+	}
+	
+	return $messagesScript;
+}
+
+/*
+Vérifie si le fichier d'index Sitemap est déclaré dans le fichier `robots.txt`, et le déclare au besoin. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocumentsDroits)
+{
+	$messagesScript = '';
+	$cheminFichierRobots = $racine . '/robots.txt';
+	
+	if (!file_exists($cheminFichierRobots))
+	{
+		if ($adminPorteDocumentsDroits['creer'])
+		{
+			if (!@touch($cheminFichierRobots))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier d'index Sitemap ne peut être déclaré puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierRobots</code>") . "</li>\n";
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier d'index Sitemap ne peut être déclaré puisque %1\$s n'existe pas."), "<code>$cheminFichierRobots</code>") . "</li>\n";
+		}
+	}
+	
+	if (file_exists($cheminFichierRobots))
+	{
+		$contenuRobots = @file_get_contents($cheminFichierRobots);
+		
+		if ($contenuRobots === FALSE)
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$cheminFichierRobots</code>") . "</li>\n";
+		}
+		else
+		{
+			$contenuRobots = trim($contenuRobots);
+			$declaration = "Sitemap: $urlRacine/sitemap_index.xml";
+			
+			if (preg_match('/^' . preg_quote($declaration, '/') . '$/m', $contenuRobots))
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Le fichier d'index Sitemap est déjà déclaré dans le fichier %1\$s."), "<code>$cheminFichierRobots</code>") . "</li>\n";
+			}
+			else
+			{
+				$contenuRobots .= "\n$declaration";
+				$messagesScript .= '<li>';
+
+				if (@file_put_contents($cheminFichierRobots, $contenuRobots) !== FALSE)
+				{
+					$messagesScript .= '<p>' . sprintf(T_("Déclaration du fichier d'index Sitemap dans le fichier %1\$s effectuée."), "<code>$cheminFichierRobots</code>") . "</p>\n";
+
+
+					$messagesScript .= '<p>' . T_("Voici le contenu qui a été enregistré dans le fichier:") . "</p>\n";
+				}
+				else
+				{
+					$messagesScript .= '<p class="erreur">' . sprintf(T_("Déclaration du fichier d'index Sitemap dans le fichier %1\$s impossible."), "<code>$cheminFichierRobots</code>") . "</p>\n";
+
+					$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+				}
+
+				$messagesScript .= '<pre id="contenuFichierRobots">' . securiseTexte($contenuRobots) . "</pre>\n";
+	
+				$messagesScript .= "<ul>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierRobots');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "</ul>\n";
+				$messagesScript .= "</li>\n";
+			}
 		}
 	}
 	
@@ -553,12 +765,24 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $admin
 }
 
 /*
-Enregistre le contenu du fichier Sitemap et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+Enregistre le contenu du fichier Sitemap (du site, des galeries ou d'index) et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminEnregistreSitemap($racine, $contenuFichier, $adminPorteDocumentsDroits)
+function adminEnregistreSitemap($racine, $type, $contenuFichier, $adminPorteDocumentsDroits)
 {
 	$messagesScript = '';
-	$cheminFichier = $racine . '/sitemap_site.xml';
+	
+	if ($type == 'galeries')
+	{
+		$cheminFichier = $racine . '/sitemap_galeries.xml';
+	}
+	elseif ($type == 'index')
+	{
+		$cheminFichier = $racine . '/sitemap_index.xml';
+	}
+	else
+	{
+		$cheminFichier = $racine . '/sitemap_site.xml';
+	}
 	
 	if (!file_exists($cheminFichier))
 	{
@@ -591,7 +815,6 @@ function adminEnregistreSitemap($racine, $contenuFichier, $adminPorteDocumentsDr
 	}
 	else
 	{
-		
 		$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 	}
 	
@@ -663,6 +886,118 @@ function adminFichiersAinclureAuDebut($racineAdmin)
 	}
 	
 	return $fichiers;
+}
+
+/*
+Génère le fichier Sitemap des galeries et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits)
+{
+	$messagesScript = '';
+	$tableauUrlSitemap = array ();
+	
+	if (cheminConfigFluxRssGlobal($racine, 'galeries'))
+	{
+		if (!file_exists($racine . '/sitemap_galeries.xml'))
+		{
+			if ($adminPorteDocumentsDroits['creer'])
+			{
+				if (!@touch($cheminFichier))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$racine/sitemap_galeries.xml</code>") . "</li>\n";
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas."), "<code>$racine/sitemap_galeries.xml</code>") . "</li>\n";
+			}
+		}
+		
+		if (file_exists($racine . '/sitemap_galeries.xml'))
+		{
+			@file_put_contents($racine . '/sitemap_galeries.xml', adminPlanSitemapXml());
+			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+			
+			if (!empty($pages))
+			{
+				foreach ($pages as $codeLangue => $langueInfos)
+				{
+					foreach ($langueInfos as $idGalerie => $urlGalerie)
+					{
+						if (cheminConfigGalerie($racine, $idGalerie))
+						{
+							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
+						
+							if ($galerieVignettesParPage)
+							{
+								$nombreDimages = count($tableauGalerie);
+								$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
+							}
+							else
+							{
+								$nombreDePages = 1;
+							}
+						
+							$loc = $urlRacine . '/' . superRawurlencode($urlGalerie);
+							$tableauUrlSitemap[$loc] = array ();
+				
+							if ($nombreDePages > 1)
+							{
+								for ($i = 2; $i <= $nombreDePages; $i++)
+								{
+									$loc = ajouteGet($urlRacine . '/' . $urlGalerie, "page=$i");
+									$loc = superRawurlencode($loc);
+									$tableauUrlSitemap[$loc] = array ();
+								}
+							}
+						
+							foreach ($tableauGalerie as $image)
+							{
+								$id = idImage($racine, $image);
+								$loc = ajouteGet($urlRacine . '/' . $urlGalerie, "image=$id");
+								$loc = superRawurlencode($loc);
+								$tableauUrlSitemap[$loc] = array ();
+								$tableauUrlSitemap[$loc]['image'] = array ();
+								$urlImage = $urlRacine . '/site/fichiers/galeries/' . $idGalerie . '/' . $image['intermediaireNom'];
+								$urlImage = superRawurlencode($urlImage);
+								$tableauUrlSitemap[$loc]['image'][$urlImage] = array ();
+							
+								if (!empty($image['intermediaireLegende']))
+								{
+									$tableauUrlSitemap[$loc]['image'][$urlImage]['caption'] = securiseTexte($image['intermediaireLegende']);
+								}
+							
+								if (!empty($image['titre']))
+								{
+									$tableauUrlSitemap[$loc]['image'][$urlImage]['title'] = securiseTexte($image['titre']);
+								}
+							
+								if (!empty($image['licence']))
+								{
+									$tableauLicence = explode(' ', $image['licence'], 2);
+									$codeLicence = licence($urlRacine, $tableauLicence[0]);
+									preg_match('/href="([^"]+)"/', $codeLicence, $resultat);
+								
+									if (!empty($resultat[1]))
+									{
+										$tableauUrlSitemap[$loc]['image'][$urlImage]['license'] = $resultat[1];
+									}
+								}
+							}
+						}
+					}
+				}
+				
+				$messagesScript .= adminAjouteUrlDansSitemap($racine, 'galeries', $tableauUrlSitemap, $adminPorteDocumentsDroits);
+			}
+		}
+	}
+	else
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Le fichier Sitemap des galeries ne peut pas être généré puisque le fichier de configuration du flux RSS global des galerie n'existe pas, et c'est dans ce fichier que la liste des galeries existantes est extraite.") . "</li>\n";
+	}
+	
+	return $messagesScript;
 }
 
 /*
@@ -1385,20 +1720,43 @@ function adminPhpIniOctets($nombre)
 }
 
 /*
-Retourne un plan modèle de fichier Sitemap au format Xml. Si `$fermeUrlset` vaut FALSE, la balise fermante de `urlset` ne sera pas incluse dans le modèle retourné.
+Retourne un plan modèle de fichier d'index Sitemap au format XML. Si `$remplitEtfermeSitemapindex` vaut FALSE, le contenu par défaut de la balise `sitemapindex` ainsi que sa balise fermante ne seront pas inclus dans le modèle retourné.
+*/
+function adminPlanSitemapIndexXml($urlRacine, $remplitEtfermeSitemapindex = TRUE)
+{
+	$plan = '';
+	$plan .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	$plan .= '<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+	
+	if ($remplitEtfermeSitemapindex)
+	{
+		$plan .= "  <sitemap>\n";
+		$plan .= "    <loc>$urlRacine/sitemap_site.xml</loc>\n";
+		$plan .= "  </sitemap>\n";
+		$plan .= "  <sitemap>\n";
+		$plan .= "    <loc>$urlRacine/sitemap_galeries.xml</loc>\n";
+		$plan .= "  </sitemap>\n";
+		$plan .= '</sitemapindex>';
+	}
+	
+	return $plan;
+}
+
+/*
+Retourne un plan modèle de fichier Sitemap (du site ou des galeries) au format XML. Si `$fermeUrlset` vaut FALSE, la balise fermante de `urlset` ne sera pas incluse dans le modèle retourné.
 */
 function adminPlanSitemapXml($fermeUrlset = TRUE)
 {
-	$enTete = '';
-	$enTete .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
-	$enTete .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
+	$plan = '';
+	$plan .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+	$plan .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">' . "\n";
 	
 	if ($fermeUrlset)
 	{
-		$enTete .= '</urlset>';
+		$plan .= '</urlset>';
 	}
 	
-	return $enTete;
+	return $plan;
 }
 
 /*

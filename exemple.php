@@ -23,7 +23,7 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 $courriel = 'contact_a_exemple_point_qc';
 $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 $urlTestExistance2 = URL_SQUELETML;
-$urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle page.php?a=1&b=2&c=3";
+$urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle page.php?a=1&amp;b=2&amp;c=3";
 ?>
 
 <div class="testBoiteDeroulante2">

@@ -3,6 +3,7 @@ if (file_exists('init.inc.php'))
 {
 	include_once 'init.inc.php';
 	include_once $racine . '/inc/fonctions.inc.php';
+	include_once $racineAdmin . '/inc/fonctions.inc.php';
 	include_once $racine . '/inc/php-gettext/gettext.inc';
 	
 	eval(variablesAvantConfig());
@@ -12,11 +13,28 @@ if (file_exists('init.inc.php'))
 		include_once $cheminFichier;
 	}
 	
+	foreach (adminCheminsInc($racineAdmin, 'config') as $cheminFichier)
+	{
+		include_once $cheminFichier;
+	}
+	
+	phpGettext('.', $langueParDefaut); // Nécessaire à la traduction.
+	
 	$date = time();
 	@file_put_contents("$racine/site/inc/cron.txt", $date);
+	
+	$rapport = '';
+	$rapport .= '# ' . sprintf(T_("Rapport d'exécution du cron (%1\$s)"), $date) . "\n\n";
+	
+	########################################################################
+	##
+	## Cache.
+	##
+	########################################################################
 
+	$rapport .= '## ' . T_("Cache") . "\n\n";
 	$cUrlEstDisponible = FALSE;
-
+	
 	if (function_exists('curl_init'))
 	{
 		$cUrlEstDisponible = TRUE;
@@ -24,9 +42,10 @@ if (file_exists('init.inc.php'))
 		$ch = new RollingCurl('cUrlCronRapport');
 	}
 	
-	$tableauUrl = array ();
+	$tableauUrlCache = array ();
 	$extraAsupprimer = array ();
 	
+	// Flux RSS.
 	if ($dureeCache['fluxRss'])
 	{
 		if (cheminConfigCategories($racine))
@@ -43,11 +62,11 @@ if (file_exists('init.inc.php'))
 					
 					if (empty($categorieInfos['urlCat']) || strpos($categorieInfos['urlCat'], 'categorie.php?id=') !== FALSE)
 					{
-						$tableauUrl[] = array ('url' => "$urlRacine/rss.php?type=categorie&amp;id=$categorie", 'cache' => $nomFichierCache);
+						$tableauUrlCache[] = array ('url' => "$urlRacine/rss.php?type=categorie&amp;id=$categorie", 'cache' => $nomFichierCache);
 					}
 					else
 					{
-						$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=categorie&amp;chemin=' . $categorieInfos['urlCat'], 'cache' => $nomFichierCache);
+						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&amp;chemin=' . $categorieInfos['urlCat'], 'cache' => $nomFichierCache);
 					}
 				}
 			}
@@ -62,11 +81,11 @@ if (file_exists('init.inc.php'))
 				foreach ($pages as $codeLangue => $langueInfos)
 				{
 					$nomFichierCache = filtreChaine($racine, "rss-galeries-$codeLangue.cache.xml");
-					$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=galeries&amp;langue=' . $codeLangue, 'cache' => $nomFichierCache);
+					$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&amp;langue=' . $codeLangue, 'cache' => $nomFichierCache);
 					
 					foreach ($langueInfos as $idGalerie => $urlGalerie)
 					{
-						$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=galerie&amp;chemin=' . $urlGalerie, 'cache' => '');
+						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galerie&amp;chemin=' . $urlGalerie, 'cache' => '');
 						
 						foreach ($accueil as $langueCache => $infosLangueCache)
 						{
@@ -86,12 +105,13 @@ if (file_exists('init.inc.php'))
 				foreach ($pages as $codeLangue => $langueInfos)
 				{
 					$nomFichierCache = filtreChaine($racine, "rss-site-$codeLangue.cache.xml");
-					$tableauUrl[] = array ('url' => $urlRacine . '/rss.php?type=site&amp;langue=' . $codeLangue, 'cache' => $nomFichierCache);
+					$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=site&amp;langue=' . $codeLangue, 'cache' => $nomFichierCache);
 				}
 			}
 		}
 	}
 	
+	// Galeries.
 	if ($dureeCache['galerie'] && cheminConfigFluxRssGlobal($racine, 'galeries'))
 	{
 		$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
@@ -117,7 +137,7 @@ if (file_exists('init.inc.php'))
 						}
 						
 						$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-page-1-$codeLangue.cache.html");
-						$tableauUrl[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache);
+						$tableauUrlCache[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache);
 				
 						if ($nombreDePages > 1)
 						{
@@ -125,7 +145,7 @@ if (file_exists('init.inc.php'))
 							{
 								$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "page=$i");
 								$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-page-$i-$codeLangue.cache.html");
-								$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+								$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
 							}
 						}
 						
@@ -134,7 +154,7 @@ if (file_exists('init.inc.php'))
 							$id = idImage($racine, $image);
 							$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "image=$id");
 							$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-image-$id-$codeLangue.cache.html");
-							$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+							$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
 						}
 					}
 				}
@@ -142,6 +162,7 @@ if (file_exists('init.inc.php'))
 		}
 	}
 	
+	// Catégories.
 	if ($dureeCache['categorie'] && cheminConfigCategories($racine))
 	{
 		$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
@@ -150,7 +171,7 @@ if (file_exists('init.inc.php'))
 		{
 			foreach ($categories as $categorie => $categorieInfos)
 			{
-				$tableauUrl = array_merge($tableauUrl, cronUrlCategorie($racine, $urlRacine, $categorieInfos, $categorie, $nombreArticlesParPageCategorie, $langueParDefaut));
+				$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorieInfos, $categorie, $nombreArticlesParPageCategorie, $langueParDefaut));
 			}
 		}
 		
@@ -166,7 +187,7 @@ if (file_exists('init.inc.php'))
 					
 					if (!empty($categorie))
 					{
-						$tableauUrl = array_merge($tableauUrl, cronUrlCategorie($racine, $urlRacine, $categorie['galeries'], 'galeries', $nombreArticlesParPageCategorie, $langueParDefaut));
+						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['galeries'], 'galeries', $nombreArticlesParPageCategorie, $langueParDefaut));
 					}
 				}
 			}
@@ -184,40 +205,40 @@ if (file_exists('init.inc.php'))
 					
 					if (!empty($categorie))
 					{
-						$tableauUrl = array_merge($tableauUrl, cronUrlCategorie($racine, $urlRacine, $categorie['site'], 'site', $nombreArticlesParPageCategorie, $langueParDefaut));
+						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['site'], 'site', $nombreArticlesParPageCategorie, $langueParDefaut));
 					}
 				}
 			}
 		}
 	}
 	
-	$rapport = '';
+	// Mise en action.
 	
 	foreach ($extraAsupprimer as $aSupprimer)
 	{
 		if (@unlink($racine . '/site/cache/' . $aSupprimer))
 		{
-			$rapport .= '1: ';
+			$rapport .= '- 1: ';
 		}
 		else
 		{
-			$rapport .= '0: ';
+			$rapport .= '- 0: ';
 		}
 		
 		$rapport .= 'unlink("' . $racine . '/site/cache/' . $aSupprimer . '");' . "\n\n";
 	}
 	
-	foreach ($tableauUrl as $url)
+	foreach ($tableauUrlCache as $url)
 	{
 		if (!empty($url['cache']))
 		{
 			if (@unlink($racine . '/site/cache/' . $url['cache']))
 			{
-				$rapport .= '1: ';
+				$rapport .= '- 1: ';
 			}
 			else
 			{
-				$rapport .= '0: ';
+				$rapport .= '- 0: ';
 			}
 			
 			$rapport .= 'unlink("' . $racine . '/site/cache/' . $url['cache'] . '");' . "\n\n";
@@ -236,11 +257,11 @@ if (file_exists('init.inc.php'))
 			{
 				if (@file_get_contents($urlEncodee) !== FALSE)
 				{
-					$rapport .= '1: ';
+					$rapport .= '- 1: ';
 				}
 				else
 				{
-					$rapport .= '0: ';
+					$rapport .= '- 0: ';
 				}
 				
 				$rapport .= 'file_get_contents("' . $urlEncodee . '");' . "\n\n";
@@ -255,6 +276,21 @@ if (file_exists('init.inc.php'))
 		$rapport .= ob_get_contents();
 		ob_end_clean();
 	}
+	
+	########################################################################
+	##
+	## Fichier Sitemap des galeries.
+	##
+	########################################################################
+
+	$rapport .= '## ' . T_("Fichier Sitemap des galeries") . "\n\n";
+	$rapport .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits) . "\n\n";
+	
+	########################################################################
+	##
+	## Envoi du rapport.
+	##
+	########################################################################
 	
 	if ($rapportCron && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 	{

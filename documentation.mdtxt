@@ -1156,6 +1156,31 @@ Par défaut, chaque galerie possède son propre flux RSS, généré automatiquem
 
 *Note: chaque langue du site a sa propre syndication globale. Le code de la langue dans les explications qui suivent précise la langue de la syndication globale. Par exemple, `fr` signifie que la page en question sera incluse dans le flux RSS global de la section du site en français. Le code de la langue doit correspondre aux indices du tableau `$accueil`, déclaré dans le fichier `init.inc.php`, situé à la racine du site.*
 
+#### Syndication globale du site
+
+Pour activer le flux RSS global du site, ou flux RSS des dernières publications, il faut:
+
+- que la variable `$activerFluxRssGlobalSite` dans le fichier de configuration du site vaille TRUE;
+
+- qu'un fichier `site/inc/rss-site.ini.txt` ou `site/inc/rss-site.ini` soit créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
+
+		[code de la langue]
+		pages[]=URL relative de la page
+
+	Le code de la langue précise la langue de la syndication globale. L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
+
+		[fr]
+		pages[]=dossier1/dossier2/page.php
+		pages[]=autrePage.php
+
+	Les deux pages en question sont accessibles respectivement à l'adresse:
+
+		$urlRacine/dossier1/dossier2/page.php
+
+	et:
+
+		$urlRacine/autrePage.php
+		
 #### Syndication globale des galeries
 
 Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts aux galeries, il faut:
@@ -1183,31 +1208,6 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 	**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
-#### Syndication globale du site
-
-Pour activer le flux RSS global du site, ou flux RSS des dernières publications, il faut:
-
-- que la variable `$activerFluxRssGlobalSite` dans le fichier de configuration du site vaille TRUE;
-
-- qu'un fichier `site/inc/rss-site.ini.txt` ou `site/inc/rss-site.ini` soit créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des pages à inclure dans le flux RSS, et ce sous la forme suivante:
-
-		[code de la langue]
-		pages[]=URL relative de la page
-
-	Le code de la langue précise la langue de la syndication globale. L'URL relative est le chemin de la page à partir de l'URL racine du site. Exemple:
-
-		[fr]
-		pages[]=dossier1/dossier2/page.php
-		pages[]=autrePage.php
-
-	Les deux pages en question sont accessibles respectivement à l'adresse:
-
-		$urlRacine/dossier1/dossier2/page.php
-
-	et:
-
-		$urlRacine/autrePage.php
-
 ## Cache
 
 Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. La durée du cache peut être précisée pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une image) et des catégories ainsi que pour les flux RSS.
@@ -1220,7 +1220,13 @@ Dans certains cas, le cache peut être long à générer, ce qui a comme conséq
 
 ## Cron
 
-Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance. Pour l'instant, ces tâches concernent la génération automatique du cache des pages utilisant cette fonctionnalité (flux RSS, catégorie et galerie, selon la valeur de la variable `$dureeCache` du fichier de configuration du site). À noter que le cache de la page individuelle d'une image d'une galerie n'est pas généré par le cron.
+Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance:
+
+- génération du cache des flux RSS des dernières publications et des derniers ajouts aux galeries, ainsi que de chaque catégorie et galerie. Chaque page individuelle d'une image dans une galerie est également mise en cache. Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site.
+
+- génération du fichier Sitemap des galeries. Les galeries prises en compte sont celles listées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries (`site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`). Si le fichier d'index Sitemap n'existe pas, il sera créé. De même, si le fichier d'index Sitemap n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
+
+### Lancement du cron
 
 Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
 
@@ -1233,6 +1239,16 @@ Grâce à la commande ci-dessus, la page `cron.php` est visitée toutes les 12 h
 ### Rapport par courriel
 
 Il est possible de recevoir un rapport par courriel après l'exécution du cron. Pour ce faire, la variable `$rapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
+
+## Fichiers Sitemap
+
+Trois [fichiers Sitemap au format XML](http://www.sitemaps.org/fr/) sont utilisés par Squeletml:
+
+- `sitemap_site.xml`: contient les pages du site, et est géré dans la section d'administration;
+- `sitemap_galeries.xml`: contient la page d'acceuil de chaque galerie ainsi que chaque page individuelle d'une image dans une galerie. Ce fichier est généré automatiquement dans la section d'administration ou par le cron;
+- `sitemap_index.xml`: fichier d'index Sitemap regroupant les deux fichiers mentionnés ci-dessus. Ce fichier est généré automatiquement dans la section d'administration ou par le cron.
+
+Ces trois fichiers se trouvent à la racine du site. Les fichiers Sitemap du site et des galeries supportent la nouvelle fonction (avril 2010) d'ajout pour chaque page listée dans un fichier Sitemap classique des informations au sujet des images importantes apparaissant dans la page. Voir <a href="http://www.google.com/support/webmasters/bin/answer.py?answer=178636" hreflang="en" lang="en">«Adding image information to a Sitemap»</a>.
 
 ## Développement
 

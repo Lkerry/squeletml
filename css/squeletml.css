@@ -349,7 +349,7 @@ div.chapeau div.contenuChapeau {
 	font-size: 1em;
 }
 
-div.descriptionApercu div#galerieIntermediaireImg {
+div.descriptionApercu div.galerieIntermediaireImgApercu {
 	text-align: center;
 }
 
@@ -929,7 +929,7 @@ div.galerieNavigationAccueil img {
 	background: url('../fichiers/ombre-vignette.png') no-repeat right bottom;
 }
 
-div#galerieIntermediaireImg img {
+div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
 	background: url('../fichiers/ombre.png') no-repeat right bottom;
 }
 
@@ -941,7 +941,7 @@ div#galerieLienOriginalIcone img {
 	border: none;
 }
 
-div.galerieNavigationAccueil img, div#galerieIntermediaireImg img {
+div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
 	padding: 5px 10px 10px 5px;
 	border: none;
 	margin: 10px;

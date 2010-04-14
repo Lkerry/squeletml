@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Catégories");
-$boitesDeroulantes = '.aideAdminCat #configActuelleAdminCat #optionsAjoutAdminCat';
+$boitesDeroulantes = '.aideAdminCat #configActuelleAdminCat .pagesCategorie #optionsAjoutAdminCat';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -57,7 +57,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$categorieInfos['langueCat'] = '';
 					}
 					
-					$listePages .= '<li><label for="langueCat-' . $i . '">langueCat=</label>';
+					$listePages .= '<li><label for="langueCat-' . $i . '"><code>langueCat=</code></label>';
 					$listeOption = '';
 					
 					foreach ($accueil as $codeLangue => $urlLangue)
@@ -93,7 +93,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$categorieInfos['urlCat'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputUrlCat-' . $i . '">urlCat=</label><input id="inputUrlCat-' . $i . '" class="long" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCat'] . '" /></li>' . "\n";
+					$listePages .= '<li><label for="inputUrlCat-' . $i . '"><code>urlCat=</code></label><input id="inputUrlCat-' . $i . '" class="long" type="text" name="urlCat[' . $i . ']" value="' . $categorieInfos['urlCat'] . '" /></li>' . "\n";
 					
 					// Catégorie parente.
 					
@@ -102,7 +102,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$categorieInfos['catParente'] = '';
 					}
 					
-					$listePages .= '<li><label for="catParente-' . $i . '">catParente=</label>';
+					$listePages .= '<li><label for="catParente-' . $i . '"><code>catParente=</code></label>';
 					$listeOption = '';
 					
 					foreach ($categories as $cat => $catInfos)
@@ -133,25 +133,27 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$listePages .= "</li>\n";
-					$listePages .= "</ul>\n";
-					
-					$listePages .= "<ul class=\"triable\">\n";
 					
 					// Pages.
 					
 					if (!empty($categorieInfos['pages']))
 					{
+						$listePages .= '<li class="liParent pagesCategorie"><code class="bDtitre">pages</code>';
+						$listePages .= "<ul class=\"bDcorps afficher triable\">\n";
 						$j = 0;
 						
 						foreach ($categorieInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '">pages[]=</label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
 							$j++;
 						}
+
+						$listePages .= "</ul></li>\n";
 					}
 					
 					$listePages .= "</ul></li>\n";
+#					$listePages .= "</ul>\n";
 					$i++;
 				}
 			}
@@ -168,10 +170,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "<ul>\n";
 			echo "<li>Chiens\n";
 			echo "<ul>\n";
-			echo "<li>langueCat=fr</li>\n";
-			echo "<li>urlCat=animaux/chiens/</li>\n";
-			echo "<li>catParente=Animaux</li>\n";
-			echo "<li>pages[]=animaux/chiens/husky.php</li>\n";
+			echo "<li><code>langueCat=fr</code></li>\n";
+			echo "<li><code>urlCat=animaux/chiens/</code></li>\n";
+			echo "<li><code>catParente=Animaux</code></li>\n";
+			echo "<li><code>pages</code>";
+			echo "<ul>";
+			echo "<li><code>pages[]=animaux/chiens/husky.php</code></li>\n";
+			echo "</ul></li>\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
@@ -193,18 +198,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div id="configActuelleAdminCat">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-			echo "<ul class=\"triable bDcorps afficher\">\n";
-			
 			if (!empty($listePages))
 			{
+				echo "<ul class=\"triable bDcorps afficher\">\n";
 				echo $listePages;
+				echo "</ul>\n";
 			}
 			else
 			{
-				echo '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
+				echo '<p>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</p>\n";
 			}
 			
-			echo "</ul>\n";
 			echo "</div><!-- /#configActuelleAdminCat -->\n";
 			
 			echo '<h4>' . T_("Ajouter une page") . "</h4>\n";
@@ -225,7 +229,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '</select> <input type="text" name="catAjoutInput" value="" />' . "\n";
 			echo "<ul>\n";
-			echo '<li><label for="inputUrlAjout">pages[]=</label><input id="inputUrlAjout" type="text" name="urlAjout" value="" /></li>' . "\n";
+			echo '<li><label for="inputUrlAjout"><code>pages[]=</code></label><input id="inputUrlAjout" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
@@ -262,7 +266,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
 
-					echo '<li><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap</a>."), 'sitemap.admin.php') . "</label></li>\n";
+					echo '<li><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap du site</a>."), 'sitemap.admin.php?sitemap=site') . "</label></li>\n";
 				}
 			}
 			
@@ -272,10 +276,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</fieldset>\n";
 			
 			echo '<p><input type="submit" name="modifsCategories" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
-			
+			echo "</div><!-- /.sousBoite -->\n";
 			echo "</div>\n";
 			echo "</form>\n";
-			echo "</div><!-- /.sousBoite -->\n";
 		}
 		elseif (file_exists($cheminFichier))
 		{
@@ -564,10 +567,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (isset($_POST['sitemapAjout']) && !empty($_POST['urlAjout']))
 		{
-			$urlAjout = $urlRacine . '/' . securiseTexte($_POST['urlAjout']);
-			$messagesScript = adminAjouteUrlDansSitemap($racine, array ($urlAjout => array ()), $adminPorteDocumentsDroits);
+			$urlAjout = $urlRacine . '/' . superRawurlencode($_POST['urlAjout']);
+			$messagesScript = adminAjouteUrlDansSitemap($racine, 'site', array ($urlAjout => array ()), $adminPorteDocumentsDroits);
 			
-			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap"));
+			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap du site"));
 		}
 	}
 	?>

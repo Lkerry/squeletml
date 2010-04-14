@@ -1525,7 +1525,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
 				
-					<p><?php printf(T_("<label for=\"\">Identifiant actuel de la galerie</label> et son <label for=\"\">nouvel identifiant</label>:"), "renommerSelectId", "renommerInputIdNouveauNomGalerie"); ?><br />
+					<p><?php printf(T_("<label for=\"%1\$s\">Identifiant actuel de la galerie</label> et son <label for=\"%2\$s\">nouvel identifiant</label>:"), "renommerSelectId", "renommerInputIdNouveauNomGalerie"); ?><br />
 					<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
