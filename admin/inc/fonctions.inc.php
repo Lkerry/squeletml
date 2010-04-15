@@ -1723,7 +1723,7 @@ function adminPhpIniOctets($nombre)
 /*
 Retourne un plan modèle de fichier d'index Sitemap au format XML. Si `$remplitEtfermeSitemapindex` vaut FALSE, le contenu par défaut de la balise `sitemapindex` ainsi que sa balise fermante ne seront pas inclus dans le modèle retourné.
 */
-function adminPlanSitemapIndexXml($urlRacine, $remplitEtfermeSitemapindex = TRUE)
+function adminPlanSitemapIndexXml($urlRacine, $activerSitemapGaleries, $remplitEtfermeSitemapindex = TRUE)
 {
 	$plan = '';
 	$plan .= '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
@@ -1734,9 +1734,14 @@ function adminPlanSitemapIndexXml($urlRacine, $remplitEtfermeSitemapindex = TRUE
 		$plan .= "  <sitemap>\n";
 		$plan .= "    <loc>$urlRacine/sitemap_site.xml</loc>\n";
 		$plan .= "  </sitemap>\n";
-		$plan .= "  <sitemap>\n";
-		$plan .= "    <loc>$urlRacine/sitemap_galeries.xml</loc>\n";
-		$plan .= "  </sitemap>\n";
+		
+		if ($activerSitemapGaleries)
+		{
+			$plan .= "  <sitemap>\n";
+			$plan .= "    <loc>$urlRacine/sitemap_galeries.xml</loc>\n";
+			$plan .= "  </sitemap>\n";
+		}
+		
 		$plan .= '</sitemapindex>';
 	}
 	

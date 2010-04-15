@@ -108,6 +108,9 @@ $adminBalisesLinkScript[20] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDi
 ##
 ########################################################################
 
+// Activation du Sitemap des galeries.
+$adminActiverSitemapGaleries = TRUE; // TRUE|FALSE
+
 // Commandes pour la rotation automatique et sans perte de qualité des images JPG.
 /*
 - Pour utiliser `exiftran`, mettre son chemin d'accès sur la machine.

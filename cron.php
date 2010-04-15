@@ -15,6 +15,11 @@ if (file_exists($racine . '/init.inc.php'))
 		include_once $cheminFichier;
 	}
 	
+	foreach (adminCheminsInc($racineAdmin, 'config') as $cheminFichier)
+	{
+		include_once $cheminFichier;
+	}
+	
 	if ($activerPageCron)
 	{
 		$timestamp = time();
@@ -329,13 +334,16 @@ if (file_exists($racine . '/init.inc.php'))
 		}
 
 		$rapport .= "</ul>\n";
-	
-		$rapport .= '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n";
 
-		$rapport .= "<ul>\n";
-		$rapport .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits);
-		$rapport .= "</ul>\n";
+		if ($adminActiverSitemapGaleries)
+		{
+			$rapport .= '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n";
 
+			$rapport .= "<ul>\n";
+			$rapport .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits);
+			$rapport .= "</ul>\n";
+		}
+		
 		$rapport .= '<h3>' . T_("Vérification de l'existence du fichier d'index Sitemap") . "</h3>\n";
 
 		$cheminFichierSitemapIndex = $racine . '/sitemap_index.xml';
@@ -345,7 +353,7 @@ if (file_exists($racine . '/init.inc.php'))
 		{
 			$rapport .= '<li>' . sprintf(T_("Le fichier d'index Sitemap (%1\$s) existe."), "<code>$cheminFichierSitemapIndex</code>") . "</li>\n";
 		}
-		elseif (@file_put_contents($cheminFichierSitemapIndex, adminPlanSitemapIndexXml($urlRacine)) !== FALSE)
+		elseif (@file_put_contents($cheminFichierSitemapIndex, adminPlanSitemapIndexXml($urlRacine, $adminActiverSitemapGaleries)) !== FALSE)
 		{
 			$rapport .= '<li>' . sprintf(T_("Le fichier d'index Sitemap (%1\$s) n'existait pas, donc un plan modèle vide a été créé."), "<code>$cheminFichierSitemapIndex</code>") . "</li>\n";
 		}

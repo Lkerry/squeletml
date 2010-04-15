@@ -229,39 +229,31 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications du fichier d'index Sitemap") . "</h3>\n" ;
 
-		$contenuLastmodSite = '';
-		$contenuLastmodGaleries = '';
-		
-		if (!empty($_POST['lastmodSite']))
-		{
-			$contenuLastmodSite = securiseTexte($_POST['lastmodSite']);
-		}
-		
-		if (!empty($_POST['lastmodGaleries']))
-		{
-			$contenuLastmodGaleries = securiseTexte($_POST['lastmodGaleries']);
-		}
-		
 		$contenuFichier = '';
-		$contenuFichier .= adminPlanSitemapIndexXml($urlRacine, FALSE);
+		$contenuFichier .= adminPlanSitemapIndexXml($urlRacine, $adminActiverSitemapGaleries, FALSE);
 		$contenuFichier .= "  <sitemap>\n";
 		$contenuFichier .= "    <loc>$urlRacine/sitemap_site.xml</loc>\n";
 		
-		if (!empty($contenuLastmodSite))
+		if (!empty($_POST['lastmodSite']))
 		{
-			$contenuFichier .= "    <lastmod>$contenuLastmodSite</lastmod>\n";
+			$contenuFichier .= '    <lastmod>' . securiseTexte($_POST['lastmodSite']) . "</lastmod>\n";
 		}
 		
 		$contenuFichier .= "  </sitemap>\n";
-		$contenuFichier .= "  <sitemap>\n";
-		$contenuFichier .= "    <loc>$urlRacine/sitemap_galeries.xml</loc>\n";
-		
-		if (!empty($contenuLastmodGaleries))
+
+		if ($adminActiverSitemapGaleries)
 		{
-			$contenuFichier .= "    <lastmod>$contenuLastmodGaleries</lastmod>\n";
+			$contenuFichier .= "  <sitemap>\n";
+			$contenuFichier .= "    <loc>$urlRacine/sitemap_galeries.xml</loc>\n";
+		
+			if (!empty($_POST['lastmodGaleries']))
+			{
+				$contenuFichier .= '    <lastmod>' . securiseTexte($_POST['lastmodGaleries']) . "</lastmod>\n";
+			}
+		
+			$contenuFichier .= "  </sitemap>\n";
 		}
 		
-		$contenuFichier .= "  </sitemap>\n";
 		$contenuFichier .= '</sitemapindex>';
 		
 		$messagesScript .= adminEnregistreSitemap($racine, 'index', $contenuFichier, $adminPorteDocumentsDroits);
@@ -648,7 +640,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			echo adminMessagesScript($messagesScript);
 		}
-		elseif ($_POST['sitemap'] == 'galeries')
+		elseif ($_POST['sitemap'] == 'galeries' && $adminActiverSitemapGaleries)
 		{
 			$messagesScript = '';
 			echo '<div class="sousBoite">' . "\n";
@@ -667,7 +659,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if ($adminPorteDocumentsDroits['creer'])
 				{
-					@file_put_contents($cheminFichier, adminPlanSitemapIndexXml($urlRacine));
+					@file_put_contents($cheminFichier, adminPlanSitemapIndexXml($urlRacine, $adminActiverSitemapGaleries));
 					
 					if (!file_exists($cheminFichier))
 					{
@@ -710,7 +702,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								$contenuLastmodSite = $eLastmodListe->item(0)->firstChild->nodeValue;
 							}
 						}
-						elseif ($loc == $urlRacine . '/sitemap_galeries.xml')
+						elseif ($loc == $urlRacine . '/sitemap_galeries.xml' && $adminActiverSitemapGaleries)
 						{
 							$eLastmodListe = $eSitemap->getElementsByTagName('lastmod');
 							
@@ -726,11 +718,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$listePages .= "<ul>\n";
 				$listePages .= '<li><label for="inputLastmodSite"><code>lastmod=</code></label><input id="inputLastmodSite" type="text" name="lastmodSite" value="' . $contenuLastmodSite . '" /></li>' . "\n";
 				$listePages .= "</ul></li>\n";
-
-				$listePages .= '<li class="liParent"><code>loc=' . $urlRacine . '/sitemap_galeries.xml</code>';
-				$listePages .= "<ul>\n";
-				$listePages .= '<li><label for="inputLastmodGaleries"><code>lastmod=</code></label><input id="inputLastmodGaleries" type="text" name="lastmodGaleries" value="' . $contenuLastmodGaleries . '" /></li>' . "\n";
-				$listePages .= "</ul></li>\n";
+				
+				if ($adminActiverSitemapGaleries)
+				{
+					$listePages .= '<li class="liParent"><code>loc=' . $urlRacine . '/sitemap_galeries.xml</code>';
+					$listePages .= "<ul>\n";
+					$listePages .= '<li><label for="inputLastmodGaleries"><code>lastmod=</code></label><input id="inputLastmodGaleries" type="text" name="lastmodGaleries" value="' . $contenuLastmodGaleries . '" /></li>' . "\n";
+					$listePages .= "</ul></li>\n";
+				}
 				
 				echo '<div class="sousBoite">' . "\n";
 				echo '<h3>' . T_("Liste des fichiers Sitemap regroupés dans le fichier d'index Sitemap") . "</h3>\n";
@@ -781,7 +776,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				<ul>
 					<li><input id="inputSitemapSite" type="radio" name="sitemap" value="site" checked="checked" /> <label for="inputSitemapSite"><?php echo T_("Lister les pages du fichier Sitemap du site"); ?></label></li>
-					<li><input id="inputSitemapGaleries" type="radio" name="sitemap" value="galeries" /> <label for="inputSitemapGaleries"><?php echo T_("Générer automatiquement le fichier Sitemap des galeries"); ?></label></li>
+
+					<?php if ($adminActiverSitemapGaleries): ?>
+						<li><input id="inputSitemapGaleries" type="radio" name="sitemap" value="galeries" /> <label for="inputSitemapGaleries"><?php echo T_("Générer automatiquement le fichier Sitemap des galeries"); ?></label></li>
+					<?php endif; ?>
+					
 					<li><input id="inputSitemapIndex" type="radio" name="sitemap" value="index" /> <label for="inputSitemapIndex"><?php echo T_("Lister les fichiers Sitemap regroupés dans le fichier d'index Sitemap"); ?></label></li>
 					<li><input id="inputSitemapRobots" type="radio" name="sitemap" value="robots" /> <label for="inputSitemapRobots"><?php printf(T_("Vérifier la déclaration du fichier d'index Sitemap dans le fichier %1\$s"), '<code>robots.txt</code>'); ?></label></li>
 				</ul>
