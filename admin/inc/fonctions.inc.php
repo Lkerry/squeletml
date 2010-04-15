@@ -713,6 +713,65 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 }
 
 /*
+Enregistre la configuration du flux RSS des derniers ajouts aux galeries et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier, $adminPorteDocumentsDroits)
+{
+	$messagesScript = '';
+	$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
+	
+	if (!$cheminFichier)
+	{
+		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
+		
+		if ($adminPorteDocumentsDroits['creer'])
+		{
+			if (!@touch($cheminFichier))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+		}
+	}
+	
+	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
+	
+	if (file_exists($cheminFichier))
+	{
+		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
+		{
+			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+		}
+		else
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		}
+	}
+	else
+	{
+		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+	}
+
+	$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+	$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+	
+	$messagesScript .= "<ul>\n";
+	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</div><!-- /.bDcorps -->\n";
+	$messagesScript .= "</li>\n";
+
+	return $messagesScript;
+}
+
+/*
 Enregistre la configuration du flux RSS des dernières publications et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $adminPorteDocumentsDroits)

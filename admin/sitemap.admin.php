@@ -1,7 +1,8 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Fichiers Sitemap");
-$boitesDeroulantes = '#configActuelleAdminSitemapSite #optionsAjoutAdminSitemap .aideAdminSitemap .contenuFichierPourSauvegarde .sitemapBalisesOptionnelles .sitemapImage';
+$boitesDeroulantes = '#configActuelleAdminSitemapSite #optionsAjoutAdminSitemap';
+$boitesDeroulantes .= ' .aideAdminSitemap .contenuFichierPourSauvegarde .sitemapBalisesOptionnelles .sitemapImage';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 

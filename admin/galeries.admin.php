@@ -1,7 +1,8 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Galeries");
-$boitesDeroulantes = '#ajoutParametresAdminGaleries .aideAdminGaleries .fichierConfigAdminGaleries';
+$boitesDeroulantes = '#ajoutParametresAdminGaleries';
+$boitesDeroulantes .= ' .aideAdminGaleries .contenuFichierPourSauvegarde .fichierConfigAdminGaleries';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -912,6 +913,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['creerPage']))
 		{
 			$messagesScript = '';
+			$actionValide = FALSE;
 			$page = superBasename(securiseTexte($_POST['page']));
 		
 			if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
@@ -979,21 +981,27 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 					if (file_exists($cheminPage))
 					{
+						$urlGalerie = $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3));
+						$urlAjoutDansRss = substr($cheminPage . '/' . $page, 3);
+						
 						if (file_exists($cheminPage . '/' . $page))
 						{
+							$actionValide = TRUE;
+							
 							if ($adminPorteDocumentsDroits['editer'])
 							{
-								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
 							}
 							else
 							{
-								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlGalerie) . "</li>\n";
 							}
 						}
 						else
 						{
 							if ($fic = @fopen($cheminPage . '/' . $page, 'a'))
 							{
+								$actionValide = TRUE;
 								$contenu = '';
 								$contenu .= '<?php' . "\n";
 								$contenu .= '$idGalerie = "' . $id . '";' . "\n";
@@ -1006,11 +1014,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 								if ($adminPorteDocumentsDroits['editer'])
 								{
-									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
 								}
 								else
 								{
-									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">visiter la page</a>."), $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3))) . "</li>\n";
+									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">visiter la page</a>."), $urlGalerie) . "</li>\n";
 								}
 							}
 							else
@@ -1024,6 +1032,73 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 			echo adminMessagesScript($messagesScript, T_("Création d'une page web de galerie"));
+
+			if (isset($_POST['rssAjout']) && !empty($urlAjoutDansRss) && !empty($_POST['rssLangueAjout']) && $actionValide)
+			{
+				$messagesScript = '';
+				$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
+				$contenuFichierRssTableau = array ();
+				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries');
+		
+				if (!$cheminFichierRss)
+				{
+					$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
+			
+					if ($adminPorteDocumentsDroits['creer'])
+					{
+						@touch($cheminFichierRss);
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichierRss</code>") . "</li>\n";
+					}
+				}
+		
+				if (file_exists($cheminFichierRss) && ($galeries = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierRss . '</code>') . "</li>\n";
+				}
+				elseif (!empty($galeries))
+				{
+					foreach ($galeries as $codeLangue => $langueInfos)
+					{
+						$contenuFichierRssTableau[$codeLangue] = array ();
+
+						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
+						{
+							$contenuFichierRssTableau[$codeLangue][] = "$idGalerie=$urlRelativeGalerie\n";
+						}
+					}
+				}
+		
+				if (!isset($contenuFichierRssTableau[$rssLangueAjout]))
+				{
+					$contenuFichierRssTableau[$rssLangueAjout] = array ();
+				}
+		
+				array_unshift($contenuFichierRssTableau[$rssLangueAjout], "$id=$urlAjoutDansRss\n");
+		
+				$contenuFichierRss = '';
+		
+				foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
+				{
+					if (!empty($langueInfos))
+					{
+						$contenuFichierRss .= "[$codeLangue]\n";
+				
+						foreach ($langueInfos as $ligne)
+						{
+							$contenuFichierRss .= $ligne;
+						}
+				
+						$contenuFichierRss .= "\n";
+					}
+				}
+				
+				$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
+		
+				echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des derniers ajouts aux galeries"));
+			}
 		}
 
 		########################################################################
@@ -1614,8 +1689,29 @@ include $racineAdmin . '/inc/premier.inc.php';
 							<li><input id="pageWebInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="pageWebInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
 						</ul></li>
 					</ul>
+					
+					<?php $cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries'); ?>
+					
+					<?php if ($cheminFichierRss): ?>
+						<?php $rssPages = super_parse_ini_file($cheminFichierRss, TRUE); ?>
+						
+						<?php if (!empty($rssPages)): ?>
+							<?php $rssListeLangues = ''; ?>
+							<?php $rssListeLangues .= '<select name="rssLangueAjout">' . "\n"; ?>
+							
+							<?php foreach ($rssPages as $rssCodeLangue => $rssLangueInfos): ?>
+								<?php $rssListeLangues .= "<option value=\"$rssCodeLangue\">$rssCodeLangue</option>\n"; ?>
+							<?php endforeach; ?>
+							
+							<?php $rssListeLangues .= "</select>"; ?>
+
+							<ul>
+								<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout"><?php printf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des derniers ajouts aux galeries</a> pour la langue %2\$s."), "rss.admin.php?global=galeries", $rssListeLangues); ?></label></li>
+							</ul>
+						<?php endif; ?>
+					<?php endif; ?>
 				</fieldset>
-			
+				
 				<p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>
 			</div>
 		</form>

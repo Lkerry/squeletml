@@ -1,5 +1,8 @@
-.bDtitre a {
+.bDtitre a, .bDtitre a code {
 	text-decoration: none !important;
+}
+
+.bDtitre a {
 	color: inherit !important;
 }
 
