@@ -1772,13 +1772,13 @@ if ($adminPorteDocumentsDroits['creer'])
 	
 	echo '<p><label for="selectPorteDocumentsCreationType">' . T_("Type:") . "</label><br />\n";
 	echo '<select id="selectPorteDocumentsCreationType" name="porteDocumentsCreationType" size="1">' . "\n";
-	echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
+	echo '<option value="FichierModeleHtml">' .  T_("Page web modèle") . "</option>\n";
+	echo '<option value="FichierModeleMarkdown">' .  T_("Page web modèle avec syntaxe Markdown") . "</option>\n";
 	echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
-	echo '<option value="FichierModeleHtml">' .  T_("Fichier modèle HTML de page web") . "</option>\n";
-	echo '<option value="FichierModeleMarkdown">' .  T_("Fichier modèle HTML de page web avec syntaxe Markdown") . "</option>\n";
+	echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
 	echo "</select></p>\n";
 	
-	echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
+	echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page web modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
 	echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
 	echo '<option value="apercu">$apercu</option>' . "\n";
 	echo '<option value="auteur">$auteur</option>' . "\n";
