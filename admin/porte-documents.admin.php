@@ -26,7 +26,7 @@ if (
 }
 
 $baliseTitle = T_("Porte-documents");
-$boitesDeroulantes = '#divListeDossiersAdminPorteDoc #divContenuDossierAdminPorteDoc #varPageModele';
+$boitesDeroulantes = '#divContenuDossierAdminPorteDoc #divListeDossiersAdminPorteDoc #varPageModele';
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {

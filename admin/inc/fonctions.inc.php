@@ -479,27 +479,29 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocuments
 			else
 			{
 				$contenuRobots .= "\n$declaration";
-				$messagesScript .= '<li>';
+				$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
 
 				if (@file_put_contents($cheminFichierRobots, $contenuRobots) !== FALSE)
 				{
 					$messagesScript .= '<p>' . sprintf(T_("Déclaration du fichier d'index Sitemap dans le fichier %1\$s effectuée."), "<code>$cheminFichierRobots</code>") . "</p>\n";
 
 
-					$messagesScript .= '<p>' . T_("Voici le contenu qui a été enregistré dans le fichier:") . "</p>\n";
+					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui a été enregistré dans le fichier:") . "</p>\n";
 				}
 				else
 				{
 					$messagesScript .= '<p class="erreur">' . sprintf(T_("Déclaration du fichier d'index Sitemap dans le fichier %1\$s impossible."), "<code>$cheminFichierRobots</code>") . "</p>\n";
 
-					$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 				}
 
+				$messagesScript .= "<div class=\"bDcorps afficher\">\n";
 				$messagesScript .= '<pre id="contenuFichierRobots">' . securiseTexte($contenuRobots) . "</pre>\n";
 	
 				$messagesScript .= "<ul>\n";
 				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierRobots');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				$messagesScript .= "</ul>\n";
+				$messagesScript .= "</div><!-- /.bDcorps -->\n";
 				$messagesScript .= "</li>\n";
 			}
 		}
@@ -735,30 +737,35 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $admin
 		}
 	}
 	
-	$messagesScript .= '<li>';
+	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
 	
 	if (file_exists($cheminFichier))
 	{
 		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 		{
-			$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 		}
 		else
 		{
 			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 		}
 	}
 	else
 	{
-		$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 	}
 
+	$messagesScript .= "<div class=\"bDcorps afficher\">\n";
 	$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 	
 	$messagesScript .= "<ul>\n";
 	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</div><!-- /.bDcorps -->\n";
 	$messagesScript .= "</li>\n";
 	
 	return $messagesScript;
@@ -799,30 +806,35 @@ function adminEnregistreSitemap($racine, $type, $contenuFichier, $adminPorteDocu
 		}
 	}
 	
-	$messagesScript .= '<li>';
+	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
 	
 	if (file_exists($cheminFichier))
 	{
 		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
 		{
-			$messagesScript .= '<p>' . sprintf(T_("Les modifications ont été enregistrées. Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
 		}
 		else
 		{
 			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-			$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 		}
 	}
 	else
 	{
-		$messagesScript .= '<p>' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 	}
-	
+
+	$messagesScript .= "<div class=\"bDcorps afficher\">\n";
 	$messagesScript .= '<pre id="contenuFichierSitemap">' . securiseTexte($contenuFichier) . "</pre>\n";
 	
 	$messagesScript .= "<ul>\n";
 	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierSitemap');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</div><!-- /.bDcorps -->\n";
 	$messagesScript .= "</li>\n";
 	
 	return $messagesScript;

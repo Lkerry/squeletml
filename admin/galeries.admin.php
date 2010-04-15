@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Galeries");
-$boitesDeroulantes = '.fichierConfigAdminGaleries #ajoutParametresAdminGaleries .aideAdminGaleries';
+$boitesDeroulantes = '#ajoutParametresAdminGaleries .aideAdminGaleries .fichierConfigAdminGaleries';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
