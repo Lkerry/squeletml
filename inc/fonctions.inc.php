@@ -2622,7 +2622,14 @@ function lienActif($html, $inclureGet = TRUE, $parent = '')
 	
 	foreach ($dom->find('a') as $a)
 	{
-		if ($a->href == $url)
+		$aHref = $a->href;
+		
+		if (!$inclureGet)
+		{
+			$aHref = preg_replace('/\?.*/', '', $aHref);
+		}
+		
+		if ($aHref == $url)
 		{
 			$class = 'actif';
 			
