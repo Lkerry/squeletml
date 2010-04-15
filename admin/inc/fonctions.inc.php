@@ -894,28 +894,29 @@ Génère le fichier Sitemap des galeries et retourne le résultat sous forme de 
 function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits)
 {
 	$messagesScript = '';
+	$cheminFichier = $racine . '/sitemap_galeries.xml';
 	$tableauUrlSitemap = array ();
 	
 	if (cheminConfigFluxRssGlobal($racine, 'galeries'))
 	{
-		if (!file_exists($racine . '/sitemap_galeries.xml'))
+		if (!file_exists($cheminFichier))
 		{
 			if ($adminPorteDocumentsDroits['creer'])
 			{
 				if (!@touch($cheminFichier))
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$racine/sitemap_galeries.xml</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas."), "<code>$racine/sitemap_galeries.xml</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
-		if (file_exists($racine . '/sitemap_galeries.xml'))
+		if (file_exists($cheminFichier))
 		{
-			@file_put_contents($racine . '/sitemap_galeries.xml', adminPlanSitemapXml());
+			@file_put_contents($cheminFichier, adminPlanSitemapXml());
 			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
 			
 			if (!empty($pages))

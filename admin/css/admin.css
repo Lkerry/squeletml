@@ -307,6 +307,21 @@ ul.nonTriable li {
 	background-color: #f7f7f7;
 }
 
+/* Rapport du cron. */
+
+#rapportCron h1, #rapportCron h2, #rapportCron h3 {
+	margin-top: 20px;
+}
+
+#rapportCron h1 {
+	color: black;
+}
+
+#rapportCron h2 {
+	background: none;
+	padding-left: 0px;
+}
+
 /***********************************************************************
 **
 ** Porte-documents.

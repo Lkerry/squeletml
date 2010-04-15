@@ -1325,16 +1325,18 @@ Affiche une ligne de rapport cron pour une requête effectuée avec `RollingCurl
 */
 function cUrlCronRapport($contenu, $infos)
 {
+	$rapport = '';
+	
 	if (preg_match('/^[23]/', $infos['http_code']))
 	{
-		$rapport .= '1: ';
+		$rapport .= '<li>1: ';
 	}
 	else
 	{
-		$rapport .= '0: ';
+		$rapport .= '<li class="erreur">0: ';
 	}
 	
-	$rapport .= 'RollingCurl: ' . $infos['url'] . "\n\n";
+	$rapport .= 'RollingCurl: <code>' . $infos['url'] . "</code></li>\n";
 	echo $rapport;
 	
 	return '';

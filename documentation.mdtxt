@@ -1220,7 +1220,7 @@ Dans certains cas, le cache peut être long à générer, ce qui a comme conséq
 
 ## Cron
 
-Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance:
+Le cron permet d'effectuer certaines tâches de maintenance:
 
 - génération du cache des flux RSS des dernières publications et des derniers ajouts aux galeries, ainsi que de chaque catégorie et galerie. Chaque page individuelle d'une image dans une galerie est également mise en cache. Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site.
 
@@ -1228,7 +1228,7 @@ Le fichier `cron.php` permet d'effectuer certaines tâches de maintenance:
 
 ### Lancement du cron
 
-Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
+Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où `$activerPageCron` dans le fichier de configuration du site vaut `TRUE` et que la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
 
 	* */12 * * * lynx -source $urlRacine/cron.php > /dev/null 2>&1
 
@@ -1238,7 +1238,7 @@ Grâce à la commande ci-dessus, la page `cron.php` est visitée toutes les 12 h
 
 ### Rapport par courriel
 
-Il est possible de recevoir un rapport par courriel après l'exécution du cron. Pour ce faire, la variable `$rapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
+Il est possible de recevoir un rapport par courriel au format HTML après l'exécution du cron. Pour ce faire, la variable `$envoyerRapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
 
 ## Fichiers Sitemap
 

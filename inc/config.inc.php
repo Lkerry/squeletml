@@ -7,17 +7,33 @@
 
 /* ____________________ Général. ____________________ */
 
-// Adresse courriel de la personne responsable de l'administration du site, donc adresse de réception des rapports générés par Squeletml. Si vide, utilisation de `$contactCourrielParDefaut` (voir le présent fichier de configuration) si cette dernière variable n'est pas vide.
+// Adresse de l'admin.
+/*
+- Il s'agit de l'adresse courriel de la personne responsable de l'administration du site, donc adresse de réception des rapports générés par Squeletml.
+- Si vide, utilisation de `$contactCourrielParDefaut` (voir le présent fichier de configuration) si cette dernière variable n'est pas vide.
+*/
 $courrielAdmin = "";
 
 // Expéditeur des rapports de Squeletml envoyés par courriel.
 /*
-- Laisser vide pour utiliser la valeur par défaut de votre serveur.
+- Laisser vide pour utiliser la valeur par défaut du serveur.
 */
 $courrielExpediteurRapports = "";
 
+// Langue des rapports de Squeletml envoyés par courriel.
+/*
+- Si vide, utilisation de `$langueParDefaut` (voir le présent fichier de configuration).
+*/
+$langueRapports = "";
+
+// Activation de la page du cron.
+/*
+- Si la page du cron est activée, le cron pourra être lancé en visitant `cron.php` à la racine du site.
+*/
+$activerPageCron = TRUE; // TRUE|FALSE
+
 // Envoi d'un rapport par courriel après l'exécution du cron.
-$rapportCron = FALSE; // TRUE|FALSE
+$envoyerRapportCron = FALSE; // TRUE|FALSE
 
 // Activation de la demande de création de compte à partir du site.
 /*

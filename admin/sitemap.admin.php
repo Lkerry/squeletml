@@ -652,7 +652,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			echo '<div class="sousBoite">' . "\n";
-			echo '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n" ;
+			echo '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n";
 			
 			$messagesScript .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits);
 			echo adminMessagesScript($messagesScript);
