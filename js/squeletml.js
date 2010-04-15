@@ -5,7 +5,7 @@
 ***********************************************************************/
 
 /*
-Permet d'éviter l'écrasement d'événements se produisant lorsque plusieurs `window.onload` sont utilisés. Merci à <http://www.alsacreations.com/article/lire/565-JavaScript-organiser-son-code-en-modules.html>.
+Évite l'écrasement d'événements se produisant lorsque plusieurs `window.onload` sont utilisés. Merci à <http://www.alsacreations.com/article/lire/565-JavaScript-organiser-son-code-en-modules.html>.
 */
 function ajouteEvenementLoad(fonction)
 {
@@ -24,7 +24,7 @@ function ajouteEvenementLoad(fonction)
 }
 
 /*
-Ajustement de la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` si `idAegaliser` n'est pas déjà aussi haut.
+Ajuste la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` si `idAegaliser` n'est pas déjà aussi haut.
 */
 function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 {
@@ -69,7 +69,7 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 }
 
 /*
-Alias identique pour le `gettext` de JSGettext à ce qui est utilisé dans Squeletml avec PHP Gettext.
+Crée un alias identique pour le `gettext` de JSGettext à ce qui est utilisé dans Squeletml avec PHP Gettext.
 */
 function T_(msgid)
 {
@@ -130,7 +130,7 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre)
 }
 
 /*
-Boîte déroulante. Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>.
+Gère une boîte déroulante. Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>.
 */
 function boiteDeroulante(conteneur)
 {
@@ -215,20 +215,38 @@ function boiteDeroulante(conteneur)
 		$(oTitre).find('>a').html(html_entity_decode($(oTitre).find('>a').html()));
 		oA.onclick = function()
 		{
-			if ($(oCorps).hasClass('masquer'))
+			$(conteneur).each(function()
 			{
-				$(oCorps).removeClass('masquer').addClass('afficher');
-				symbole = '-';
-				$.cookie(nomTemoin, 'afficher', { expires: 365, path: '/' });
-			}
-			else
-			{
-				$(oCorps).removeClass('afficher').addClass('masquer');
-				symbole = '+';
-				$.cookie(nomTemoin, 'masquer', { expires: 365, path: '/' });
-			}
+				if (conteneur == '#tableDesMatieres')
+				{
+					var cheminTitre = '#tableDesMatieresBdTitre';
+					var cheminCorps = '#tableDesMatieresBdCorps';
+				}
+				else
+				{
+					var cheminTitre = '.bDtitre';
+					var cheminCorps = '.bDcorps';
+				}
+				
+				var oTitre = $(this).find(cheminTitre).get(0);
+				var oCorps = $(this).find(cheminCorps).get(0);
+				
+				if ($(oCorps).hasClass('masquer'))
+				{
+					$(oCorps).removeClass('masquer').addClass('afficher');
+					symbole = '-';
+					$.cookie(nomTemoin, 'afficher', { expires: 365, path: '/' });
+				}
+				else
+				{
+					$(oCorps).removeClass('afficher').addClass('masquer');
+					symbole = '+';
+					$.cookie(nomTemoin, 'masquer', { expires: 365, path: '/' });
+				}
+				
+				$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);
+			});
 			
-			$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);
 			egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');
 			
 			return false;
