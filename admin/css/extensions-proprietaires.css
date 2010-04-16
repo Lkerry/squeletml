@@ -1,4 +1,4 @@
-#galeriesAdminConfigGraphique li.galeriesAdminConfigGraphiqueVignette, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
+#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
 	-moz-border-radius: 8px; /* Gecko. */
 	-webkit-border-radius: 8px; /* Webkit. */
 }

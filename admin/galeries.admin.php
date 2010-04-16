@@ -2,7 +2,8 @@
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Galeries");
 $boitesDeroulantes = '#ajoutParametresAdminGaleries';
-$boitesDeroulantes .= ' .aideAdminGaleries .galeriesAdminConfigGraphiqueConfig .contenuFichierPourSauvegarde';
+$boitesDeroulantes .= ' .aideAdminGaleries .autresParametres .configGraphiqueListeParametres';
+$boitesDeroulantes .= ' .contenuFichierPourSauvegarde';
 $boitesDeroulantes .= ' .fichierConfigAdminGaleries .galeriesAdminModifierConfig';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
@@ -30,8 +31,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 
 		<?php
+		$tableauParametres = adminParametresImage();
 		$tailleMaxFichier = adminPhpIniOctets(ini_get('upload_max_filesize'));
-	
+		
 		if (isset($_POST['id']))
 		{
 			$id = securiseTexte(superBasename($_POST['id']));
@@ -84,23 +86,23 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if ($cheminConfigGalerie)
 						{
-							$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . $idLien . '#messages">' . T_("Modifier graphiquement le fichier de configuration") . "</a></li>\n";
+							$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . $idLien . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
 							
 							if ($adminPorteDocumentsDroits['editer'])
 							{
-								$fichierDeConfiguration .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents") . "</a></li>\n";
+								$fichierDeConfiguration .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 							}
 							else
 							{
-								$fichierDeConfiguration .= '<li>' . T_("La galerie a un fichier de configuration") . "</li>\n";
+								$fichierDeConfiguration .= '<li>' . T_("La galerie a un fichier de configuration.") . "</li>\n";
 							}
 						}
 						else
 						{
-							$fichierDeConfiguration .= '<li>' . T_("Aucun fichier de configuration") . "</li>\n";
+							$fichierDeConfiguration .= '<li>' . T_("Aucun fichier de configuration.") . "</li>\n";
 						}
 					
-						$parcoursDossier = '<li><a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . T_("Parcourir le dossier") . "</a></li>\n";
+						$parcoursDossier = '<li><a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . T_("Parcourir le dossier.") . "</a></li>\n";
 					
 						if ($cheminConfigGalerie)
 						{
@@ -1141,7 +1143,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $id), TRUE);
 				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $id;
 				$nombreDimages = count($tableauGalerie);
-				$parametres = adminParametresImage();
 				$corpsGalerie = '';
 				$corpsGalerie .= '<div id="galeriesAdminConfigGraphique">';
 				$corpsGalerie .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
@@ -1154,45 +1155,60 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 					$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $id, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 					preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
-					$vignette = $resultat[1];
+					$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
 					$intermediaireNom = $tableauGalerie[$i]['intermediaireNom'];
-
+					
 					$config = '';
+					$config .= "<div class=\"configGraphiqueListeParametres\">\n";
 					$config .= '<input type="hidden" name="configGraphiqueVignettes[]" value="' . $intermediaireNom . '" />' . "\n";
 					$config .= '<input type="hidden" name="indiceIntermediaireNom[' . $intermediaireNom . ']" value="' . $i . '" />' . "\n";
 					$config .= '<p class="bDtitre"><code>' . $intermediaireNom . "</code></p>\n";
 					
 					$config .= "<ul class=\"nonTriable bDcorps\">\n";
 					
-					foreach ($parametres as $parametre)
+					foreach ($tableauParametres[0] as $parametre)
 					{
 						$contenuParametre = '';
-						
+					
 						if (!empty($tableauGalerie[$i][$parametre]))
 						{
 							$contenuParametre = $tableauGalerie[$i][$parametre];
 						}
-						
+					
 						$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . $contenuParametre . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '">' . "<code>$parametre</code></label></li>\n";
 					}
 					
+					$config .= '<li class="autresParametres"><span class="bDtitre">' . T_("Afficher plus de paramètres") . '</span>';
+					$config .= "<ul class=\"bDcorps\">\n";
+					
+					foreach ($tableauParametres[1] as $parametre)
+					{
+						$contenuParametre = '';
+					
+						if (!empty($tableauGalerie[$i][$parametre]))
+						{
+							$contenuParametre = $tableauGalerie[$i][$parametre];
+						}
+					
+						$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . $contenuParametre . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '">' . "<code>$parametre</code></label></li>\n";
+					}
+					
+					$config .= "</ul></li>\n";
 					$config .= "</ul>\n";
+					$config .= "</div><!-- /.configGraphiqueListeParametres -->\n";
 					
-					$corpsGalerie .= '<li class="galeriesAdminConfigGraphiqueVignette">';
+					$corpsGalerie .= '<li class="configGraphiqueListeVignettes">';
 					$corpsGalerie .= $vignette;
-					$corpsGalerie .= "<div class=\"galeriesAdminConfigGraphiqueConfig\">\n";
 					$corpsGalerie .= $config;
-					$corpsGalerie .= "</div><!-- /.galeriesAdminConfigGraphiqueConfig -->\n";
-					
-					$corpsGalerie .= '<div class="galeriesAdminConfigGraphiqueLienMaj"><a href="#configGraphiqueMettreAjour">' . T_("Lien vers «Mettre à jour»") . "</a></div>\n";
-					$corpsGalerie .= "</li><!-- /.galeriesAdminConfigGraphiqueVignette -->\n";
+					$corpsGalerie .= '<div class="configGraphiqueLienMaj"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></div>\n";
+					$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
 				}
 				
 				$corpsGalerie .= "</ul>\n";
 				
 				$corpsGalerie .= "<div class=\"sep\"></div>\n";
 
-				$corpsGalerie .= '<p><input id="configGraphiqueMettreAjour" type="submit" name="configGraphiqueMettreAjour" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
+				$corpsGalerie .= '<p><input id="configGraphiqueMaj" type="submit" name="configGraphiqueMaj" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
 				$corpsGalerie .= "</div>\n";
 				$corpsGalerie .= "</form>\n";
 				$corpsGalerie .= "</div><!-- /#galeriesAdminConfigGraphique -->\n";
@@ -1210,7 +1226,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		/* Mise en action. */
 		
-		if (isset($_POST['configGraphiqueMettreAjour']))
+		if (isset($_POST['configGraphiqueMaj']))
 		{
 			$messagesScript = '';
 			$id = securiseTexte($_POST['configGraphiqueIdGalerie']);
@@ -1233,8 +1249,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					foreach ($_POST['parametres'][$i] as $parametre => $valeur)
 					{
-						$valeur = trim($valeur);
-						
 						if (!empty($valeur))
 						{
 							$contenuFichier .= securiseTexte($parametre) . '=' . securiseTexte($valeur) . "\n";
@@ -1483,15 +1497,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<h4>' . T_("Information") . "</h4>\n" ;
 		
 			echo "<ul>\n";
-		
+
+			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie:");
+			echo "<ul>\n";
+			echo '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . $id . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
+
 			if ($adminPorteDocumentsDroits['editer'])
 			{
-				echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . ' <a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messages">' . T_("Modifier le fichier.") . "</a></li>\n";
+				echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $id . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $id . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 			}
-			else
-			{
-				echo '<li>' . T_("Un fichier de configuration existe pour cette galerie.") . "</li>\n";
-			}
+
+			echo "</ul></li>\n";
 		
 			echo "</ul>\n";
 		}
@@ -1517,7 +1533,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
 				<?php if ($adminPorteDocumentsDroits['editer']): ?>
-					<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie a un fichier de configuration, un lien vous permettra de modifier ce dernier dans le porte-documents."); ?></p>
+					<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie a un fichier de configuration, un lien vous permettra de modifier ce dernier."); ?></p>
 				<?php else: ?>
 					<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes, qu'elles aient ou non un fichier de configuration."); ?></p>
 				<?php endif; ?>
@@ -1588,15 +1604,20 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<fieldset id="ajoutParametresAdminGaleries">
 							<legend class="bDtitre"><?php echo T_("Paramètres"); ?></legend>
 					
-							<?php $parametres = adminParametresImage(); ?>
-					
 							<div class="bDcorps afficher">
 								<p><?php echo T_("Ajouter les paramètres suivants pour chaque image (un paramètre vide ne sera pas ajouté):"); ?></p>
 					
 								<ul>
-									<?php foreach ($parametres as $parametre): ?>
+									<?php foreach ($tableauParametres[0] as $parametre): ?>
 										<li><input id="ajouterInputParametres-<?php echo $parametre; ?>" class="long" type="text" name="parametres[<?php echo $parametre; ?>]" value="" /> <label for="ajouterInputParametres-<?php echo $parametre; ?>"><?php echo "<code>$parametre</code>"; ?></label></li>
 									<?php endforeach; ?>
+									
+									<li class="autresParametres"><span class="bDtitre"><?php echo T_("Afficher plus de paramètres"); ?></span>
+									<ul class="bDcorps">
+										<?php foreach ($tableauParametres[1] as $parametre): ?>
+											<li><input id="ajouterInputParametres-<?php echo $parametre; ?>" class="long" type="text" name="parametres[<?php echo $parametre; ?>]" value="" /> <label for="ajouterInputParametres-<?php echo $parametre; ?>"><?php echo "<code>$parametre</code>"; ?></label></li>
+										<?php endforeach; ?>
+									</ul></li>
 								</ul>
 							</div><!-- /.bDcorps -->
 						</fieldset>
@@ -1998,8 +2019,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<select id="modeleSelectInfo" name="info[]" multiple="multiple" size="4">
 						<option value="aucun" selected="selected"><?php echo T_("Aucun"); ?></option>
 					
-						<?php foreach (adminParametresImage() as $parametre): ?>
-							<option value="<?php echo $parametre; ?>"><?php echo $parametre; ?></option>
+						<?php foreach ($tableauParametres as $parametres): ?>
+							<?php foreach ($parametres as $parametre): ?>
+								<option value="<?php echo $parametre; ?>"><?php echo $parametre; ?></option>
+							<?php endforeach; ?>
 						<?php endforeach; ?>
 					</select></p>
 				</fieldset>

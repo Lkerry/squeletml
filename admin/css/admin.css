@@ -97,7 +97,7 @@ div#contenuPrincipal {
 	text-align: right;
 }
 
-#galeriesAdminConfigGraphique li.galeriesAdminConfigGraphiqueVignette, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
+#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
 	border-radius: 8px; /* CSS 3. */
 }
 
@@ -344,14 +344,14 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 	margin-left: 0px;
 }
 
-#galeriesAdminConfigGraphique li.galeriesAdminConfigGraphiqueVignette {
+#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes {
 	margin-bottom: 20px;
 	padding: 5px;
 	border: 1px solid #b3b3b3;
 	background-color: #f7f7f7;
 }
 
-#galeriesAdminConfigGraphique div.galeriesAdminConfigGraphiqueLienMaj {
+#galeriesAdminConfigGraphique div.configGraphiqueLienMaj {
 	text-align: right;
 }
 

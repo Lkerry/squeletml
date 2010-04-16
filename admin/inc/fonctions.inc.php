@@ -1711,32 +1711,36 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 }
 
 /*
-Retourne un tableau dont chaque élément est le nom d'un paramètre d'une image de galerie.
+Retourne un tableau de deux éléments tableau dont chaque élément contient le nom d'un paramètre d'une image de galerie. Le premier tableau contient les paramètres les plus utilisés; le second, ceux qui le sont moins.
 */
 function adminParametresImage()
 {
 	return array (
-		'titre',
-		'intermediaireLegende',
-		'id',
-		'licence',
-		'originalNom',
-		'vignetteNom',
-		'vignetteLargeur',
-		'vignetteHauteur',
-		'vignetteAlt',
-		'vignetteAttributTitle',
-		'intermediaireLargeur',
-		'intermediaireHauteur',
-		'intermediaireAlt',
-		'intermediaireAttributTitle',
-		'pageIntermediaireBaliseTitle',
-		'pageIntermediaireDescription',
-		'pageIntermediaireMotsCles',
-		'auteurAjout',
-		'dateAjout',
-		'exclure',
-		'commentaire',
+		array (
+			'titre',
+			'intermediaireLegende',
+			'exclure',
+		),
+		array (
+			'id',
+			'licence',
+			'originalNom',
+			'vignetteNom',
+			'vignetteLargeur',
+			'vignetteHauteur',
+			'vignetteAlt',
+			'vignetteAttributTitle',
+			'intermediaireLargeur',
+			'intermediaireHauteur',
+			'intermediaireAlt',
+			'intermediaireAttributTitle',
+			'pageIntermediaireBaliseTitle',
+			'pageIntermediaireDescription',
+			'pageIntermediaireMotsCles',
+			'auteurAjout',
+			'dateAjout',
+			'commentaire',
+		),
 	);
 }
 

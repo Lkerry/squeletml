@@ -942,6 +942,7 @@ Chaque image de la galerie possède sa propre section dans le fichier de configu
 Voici un exemple:
 
 	[fichier1.jpg]
+	
 	[fichier2.jpg]
 
 Il s'agit d'une configuration minimale pour une galerie de deux images. Il est cependant possible d'ajouter beaucoup plus d'information pour chaque image. Voici la liste complète des paramètres possibles:
@@ -953,6 +954,10 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 - `intermediaireLegende`: commentaire qui sera affiché sous l'image en version intermédiaire. Exemple:
 
 		intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
+
+- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
+
+		exclure=oui
 
 - `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. Exemple:
 
@@ -1030,10 +1035,6 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 	La date d'ajout est insérée automatiquement par Squeletml lorsque les galeries sont gérées par l'interface d'administration. Cette information est utilisée dans les flux RSS pour classer les images. Si `dateAjout` n'existe pas, la date utilisée sera celle du fichier image sur le serveur retournée par la [fonction PHP `filemtime()`](http://php.net/manual/function.filemtime.php).
 
-- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
-
-		exclure=oui
-
 - `commentaire`: n'est pas utilisé par Squeletml pour l'affichage de l'image. Il s'agit d'un paramètre utile pour ajouter des notes personnelles quand on modifie le fichier de configuration dans un éditeur de texte sans passer par la section d'administration de Squeletml. Exemple:
 
 		commentaire=Photographie à 50% de sa taille originale.
@@ -1051,8 +1052,10 @@ Voici un exemple pour une galerie de deux images:
 Voici une entrée vide, qu'il est possible de copier/coller:
 
 	[intermediaireNom]
-	id=
 	titre=
+	intermediaireLegende=
+	exclure=
+	id=
 	licence=
 	vignetteNom=
 	vignetteLargeur=
@@ -1061,14 +1064,12 @@ Voici une entrée vide, qu'il est possible de copier/coller:
 	intermediaireLargeur=
 	intermediaireHauteur=
 	intermediaireAlt=
-	intermediaireLegende=
 	pageIntermediaireBaliseTitle=
 	pageIntermediaireDescription=
 	pageIntermediaireMotsCles=
 	originalNom=
 	auteurAjout=
 	dateAjout=
-	exclure=
 	commentaire=
 
 ### Navigation entre les images
