@@ -83,24 +83,30 @@ $adminBalisesLinkScript[5] = "$urlRacineAdmin/*#js#$urlRacine/js/phpjs/php.min.j
 $adminBalisesLinkScript[6] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
 $adminBalisesLinkScript[7] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
 $adminBalisesLinkScript[8] = "$urlRacineAdmin/*#favicon#$urlRacine/fichiers/favicon.png";
-$adminBalisesLinkScript[9] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[10] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[11] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+
 $jsDirect = <<<JS
 	$(function()
 	{
 		$('ul.triable').sortable();
 	});
 JS;
-$adminBalisesLinkScript[12] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
-$adminBalisesLinkScript[13] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[14] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[15] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
-$adminBalisesLinkScript[16] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
-$adminBalisesLinkScript[17] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[18] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[19] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
-$adminBalisesLinkScript[20] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
+
+$adminBalisesLinkScript[9] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[10] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[11] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[12] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[13] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[14] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[15] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[16] = "$urlRacineAdmin/galeries.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[17] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[18] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[19] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[20] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[21] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[22] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
+$adminBalisesLinkScript[23] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[24] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
 
 ########################################################################
 ##

@@ -215,38 +215,20 @@ function boiteDeroulante(conteneur)
 		$(oTitre).find('>a').html(html_entity_decode($(oTitre).find('>a').html()));
 		oA.onclick = function()
 		{
-			$(conteneur).each(function()
+			if ($(oCorps).hasClass('masquer'))
 			{
-				if (conteneur == '#tableDesMatieres')
-				{
-					var cheminTitre = '#tableDesMatieresBdTitre';
-					var cheminCorps = '#tableDesMatieresBdCorps';
-				}
-				else
-				{
-					var cheminTitre = '.bDtitre';
-					var cheminCorps = '.bDcorps';
-				}
-				
-				var oTitre = $(this).find(cheminTitre).get(0);
-				var oCorps = $(this).find(cheminCorps).get(0);
-				
-				if ($(oCorps).hasClass('masquer'))
-				{
-					$(oCorps).removeClass('masquer').addClass('afficher');
-					symbole = '-';
-					$.cookie(nomTemoin, 'afficher', { expires: 365, path: '/' });
-				}
-				else
-				{
-					$(oCorps).removeClass('afficher').addClass('masquer');
-					symbole = '+';
-					$.cookie(nomTemoin, 'masquer', { expires: 365, path: '/' });
-				}
-				
-				$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);
-			});
+				$(oCorps).removeClass('masquer').addClass('afficher');
+				symbole = '-';
+				$.cookie(nomTemoin, 'afficher', { expires: 365, path: '/' });
+			}
+			else
+			{
+				$(oCorps).removeClass('afficher').addClass('masquer');
+				symbole = '+';
+				$.cookie(nomTemoin, 'masquer', { expires: 365, path: '/' });
+			}
 			
+			$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);
 			egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');
 			
 			return false;

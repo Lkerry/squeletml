@@ -1711,7 +1711,7 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 }
 
 /*
-Retourne un tableau dont chaque élément ets le nom d'un paramètre d'une image de galerie.
+Retourne un tableau dont chaque élément est le nom d'un paramètre d'une image de galerie.
 */
 function adminParametresImage()
 {

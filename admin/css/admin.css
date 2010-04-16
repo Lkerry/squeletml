@@ -97,7 +97,7 @@ div#contenuPrincipal {
 	text-align: right;
 }
 
-#sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
+#galeriesAdminConfigGraphique li.galeriesAdminConfigGraphiqueVignette, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
 	border-radius: 8px; /* CSS 3. */
 }
 
@@ -164,22 +164,6 @@ p {
 	font-weight: bold;
 }
 
-body#documentation-admin-php pre {
-	background-color: #f2f2f2;
-}
-
-body#documentation-admin-php em code {
-	color: #E30000;
-}
-
-body#documentation-admin-php pre.fichierDeConfiguration {
-	background-color: transparent;
-}
-
-body#galeries-admin-php div.galerieMinivignettes {
-	width: 50%;
-}
-
 code {
 	color: #0000E2;
 }
@@ -225,6 +209,15 @@ legend {
 	font-weight: bold;
 }
 
+ol, ul {
+	padding: 0px;
+	margin-left: 20px;
+}
+
+ul {
+	list-style-type: circle;
+}
+
 li {
 	margin-top: 5px;
 	margin-bottom: 5px;
@@ -232,17 +225,6 @@ li {
 
 li.liParent {
 	margin-bottom: 40px;
-}
-
-.galerieMinivignettes img {
-	float: left;
-	height: 35px;
-	border: 1px solid #b3b3b3 !important;
-	margin: 2px;
-}
-
-.sepGalerieMinivignettes {
-	clear: both;
 }
 
 .erreur, .erreur code {
@@ -320,6 +302,72 @@ ul.nonTriable li {
 #rapportCron h2 {
 	background: none;
 	padding-left: 0px;
+}
+
+/***********************************************************************
+**
+** Documentation.
+**
+***********************************************************************/
+
+body#documentation-admin-php pre {
+	background-color: #f2f2f2;
+}
+
+body#documentation-admin-php em code {
+	color: #E30000;
+}
+
+body#documentation-admin-php pre.fichierDeConfiguration {
+	background-color: transparent;
+}
+
+/***********************************************************************
+**
+** Galeries.
+**
+***********************************************************************/
+
+#galeriesAdminConfigGraphique img {
+	background: url('../../fichiers/ombre-vignette.png') no-repeat right bottom;
+	padding: 5px 10px 10px 5px;
+	border: none;
+	margin: 10px;
+}
+
+#galeriesAdminConfigGraphique p.bDtitre {
+	margin-top: 0px;
+}
+
+#galeriesAdminConfigGraphique ul {
+	list-style-type: none;
+	margin-left: 0px;
+}
+
+#galeriesAdminConfigGraphique li.galeriesAdminConfigGraphiqueVignette {
+	margin-bottom: 20px;
+	padding: 5px;
+	border: 1px solid #b3b3b3;
+	background-color: #f7f7f7;
+}
+
+#galeriesAdminConfigGraphique div.galeriesAdminConfigGraphiqueLienMaj {
+	text-align: right;
+}
+
+body#galeries-admin-php div.galerieMinivignettes {
+	width: 50%;
+}
+
+.galerieMinivignettes img {
+	float: left;
+	height: 35px;
+	border: 1px solid #b3b3b3 !important;
+	margin: 2px;
+}
+
+.sep, .sepGalerieMinivignettes {
+	clear: both;
 }
 
 /***********************************************************************
