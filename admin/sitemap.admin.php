@@ -768,6 +768,22 @@ include $racineAdmin . '/inc/premier.inc.php';
 </div><!-- /#boiteMessages -->
 
 <div class="boite">
+	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
+	
+	<ul>
+		<?php if ($adminActiverSitemapGaleries): ?>
+			<li><?php echo T_("Le Sitemap des galeries est activé") . ' (<code>$adminActiverSitemapGaleries = TRUE;</code>).'; ?></li>
+		<?php else: ?>
+			<li><?php echo T_("Le Sitemap des galeries n'est pas activé") . ' (<code>$adminActiverSitemapGaleries = FALSE;</code>).'; ?></li>
+		<?php endif; ?>
+	</ul>
+	
+	<?php if ($adminPorteDocumentsDroits['editer']): ?>
+		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/<?php echo rawurlencode($dossierAdmin); ?>/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+	<?php endif; ?>
+</div><!-- /.boite -->
+
+<div class="boite">
 	<h2 id="actions"><?php echo T_("Fichiers Sitemap"); ?></h2>
 
 	<form action="<?php echo $adminAction; ?>#messages" method="post">
