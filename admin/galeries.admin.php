@@ -1086,9 +1086,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$contenuFichierRssTableau[$rssLangueAjout] = array ();
 				}
-		
-				array_unshift($contenuFichierRssTableau[$rssLangueAjout], "$id=$urlAjoutDansRss\n");
-		
+
+				if (!preg_grep('/^' . preg_quote($id, '/') . '=/', $contenuFichierRssTableau[$rssLangueAjout]))
+				{
+					array_unshift($contenuFichierRssTableau[$rssLangueAjout], "$id=$urlAjoutDansRss\n");
+				}
+				
 				$contenuFichierRss = '';
 		
 				foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)

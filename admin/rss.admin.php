@@ -362,7 +362,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					foreach ($_POST['id'][$cle] as $cle2 => $idGalerie)
 					{
-						if (!empty($idGalerie) && !empty($_POST['url'][$cle][$cle2]))
+						if (!empty($idGalerie) && !empty($_POST['url'][$cle][$cle2]) && !preg_grep('/^' . preg_quote(securiseTexte($idGalerie), '/') . '=/', $contenuFichierTableau[$postLangueValeur]))
 						{
 							$contenuFichierTableau[$postLangueValeur][] = securiseTexte($idGalerie) . '=' . securiseTexte($_POST['url'][$cle][$cle2]) . "\n";
 						}
@@ -380,7 +380,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFichierTableau[$langueAjout] = array ();
 			}
 			
-			array_unshift($contenuFichierTableau[$langueAjout], securiseTexte($_POST['idAjout']) . '=' . securiseTexte($_POST['urlAjout']) . "\n");
+			if (!preg_grep('/^' . preg_quote(securiseTexte($_POST['idAjout']), '/') . '=/', $contenuFichierTableau[$langueAjout]))
+			{
+				array_unshift($contenuFichierTableau[$langueAjout], securiseTexte($_POST['idAjout']) . '=' . securiseTexte($_POST['urlAjout']) . "\n");
+			}
 		}
 		
 		$contenuFichier = '';
@@ -423,7 +426,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					foreach ($_POST['url'][$cle] as $page)
 					{
-						if (!empty($page))
+						if (!empty($page) && !preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($page), '/') . "\n/", $contenuFichierTableau[$postLangueValeur]))
 						{
 							$contenuFichierTableau[$postLangueValeur][] = 'pages[]=' . securiseTexte($page) . "\n";
 						}
@@ -440,8 +443,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$contenuFichierTableau[$langueAjout] = array ();
 			}
-			
-			array_unshift($contenuFichierTableau[$langueAjout], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
+
+			if (!preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($_POST['urlAjout']), '/') . "\n/", $contenuFichierTableau[$langueAjout]))
+			{
+				array_unshift($contenuFichierTableau[$langueAjout], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
+			}
 		}
 		
 		$contenuFichier = '';

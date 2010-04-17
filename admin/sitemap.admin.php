@@ -209,9 +209,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$contenuFichierRssTableau[$rssLangueAjout] = array ();
 			}
-		
-			array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjoutRss\n");
-		
+
+			if (!preg_grep('/^pages\[\]=' . preg_quote($urlAjoutRss, '/') . "\n/", $contenuFichierRssTableau[$rssLangueAjout]))
+			{
+				array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjoutRss\n");
+			}
+			
 			$contenuFichierRss = '';
 		
 			foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)

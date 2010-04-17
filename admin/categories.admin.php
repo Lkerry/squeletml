@@ -248,7 +248,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</li>\n";
 			
 			$rssListeLangues = '';
-			$rssListeLangues .= '<select name="langueAjout">' . "\n";
+			$rssListeLangues .= '<select name="rssLangueAjout">' . "\n";
 			
 			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
 			{
@@ -340,7 +340,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						foreach ($_POST['url'][$cle] as $page)
 						{
-							if (!empty($page))
+							if (!empty($page) && !preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($page), '/') . "\n/", $contenuFichierTableau[$cat]['pages']))
 							{
 								$contenuFichierTableau[$cat]['pages'][] = 'pages[]=' . securiseTexte($page) . "\n";
 							}
@@ -386,7 +386,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								$parentsAjout[] = $categories[$c]['catParente'];
 							}
 							
-							$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$c]['catParente']));
+							$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$c]['catParente'], $langueParDefaut));
 						}
 					}
 					
@@ -418,8 +418,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$contenuFichierTableau[$c]['infos'] = array ();
 					$contenuFichierTableau[$c]['pages'] = array ();
 				}
-				
-				array_unshift($contenuFichierTableau[$c]['pages'], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
+
+				if (!preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($_POST['urlAjout']), '/') . "\n/", $contenuFichierTableau[$c]['pages']))
+				{
+					array_unshift($contenuFichierTableau[$c]['pages'], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
+				}
 			}
 		}
 		
@@ -542,7 +545,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFichierRssTableau[$rssLangueAjout] = array ();
 			}
 			
-			array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjout\n");
+			if (!preg_grep('/^pages\[\]=' . preg_quote($urlAjout, '/') . "\n/", $contenuFichierRssTableau[$rssLangueAjout]))
+			{
+				array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjout\n");
+			}
 			
 			$contenuFichierRss = '';
 			
