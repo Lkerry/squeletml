@@ -96,7 +96,7 @@ if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 		
 		foreach ($boitesDeroulantesTableau as $boiteDeroulante)
 		{
-			$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante');});\n";
+			$jsDirect .= "\tajouteEvenementLoad(function(){boiteDeroulante('$boiteDeroulante', '');});\n";
 		}
 		
 		$adminBalisesLinkScript[] = "$url#jsDirect#$jsDirect";

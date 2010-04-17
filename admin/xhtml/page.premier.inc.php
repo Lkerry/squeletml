@@ -42,7 +42,7 @@
 			
 			<script type="text/javascript">
 			//<![CDATA[
-				boiteDeroulante('#enTete');
+				boiteDeroulante('#enTete', '');
 			//]]>
 			</script>
 			

@@ -24,9 +24,9 @@ function ajouteEvenementLoad(fonction)
 }
 
 /*
-Ajuste la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` si `idAegaliser` n'est pas déjà aussi haut.
+Ajuste la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` plus `hauteurEnPlus`, et ce si `idAegaliser` n'est pas déjà aussi haut.
 */
-function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
+function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2, hauteurEnPlus)
 {
 	var oIdAegaliser = document.getElementById(idAegaliser);
 	var oIdDeComparaison1 = document.getElementById(idDeComparaison1);
@@ -59,7 +59,7 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2)
 			var hauteurMax = hauteurIdDeComparaison2;
 		}
 		
-		hauteurMax = hauteurMax + 87;
+		hauteurMax = hauteurMax + hauteurEnPlus;
 		
 		if (hauteurMax > hauteurIdAegaliser)
 		{
@@ -130,9 +130,11 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, nive
 }
 
 /*
-Gère une boîte déroulante. Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>.
+Gère une boîte déroulante. Si la variable `aExecuterApresClic` n'est pas vide, son contenu est exécuté par `eval()` après un clic sur une boîte déroulante.
+
+Inspiré en partie de <http://forum.alsacreations.com/topic-4-33864-1-AfficherMasquer-un-bloc-dans-une-page-web-par-CSS.html>.
 */
-function boiteDeroulante(conteneur)
+function boiteDeroulante(conteneur, aExecuterApresClic)
 {
 	$(conteneur).each(function()
 	{
@@ -229,7 +231,11 @@ function boiteDeroulante(conteneur)
 			}
 			
 			$(oTitre).find('>a span.boiteDeroulanteVisuelSymbole').html(symbole);
-			egaliseHauteur('interieurPage', 'surContenu', 'sousContenu');
+			
+			if (aExecuterApresClic.length)
+			{
+				eval(aExecuterApresClic);
+			}
 			
 			return false;
 		};

@@ -302,7 +302,7 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '</div><!-- /#marquePagesSociaux -->' . "\n";
 						$blocs[$region] .= '<script type="text/javascript">' . "\n";
 						$blocs[$region] .= "//<![CDATA[\n";
-						$blocs[$region] .= "boiteDeroulante('#marquePagesSociaux');\n";
+						$blocs[$region] .= "boiteDeroulante('#marquePagesSociaux', \"$aExecuterApresClicBd\");\n";
 						$blocs[$region] .= "//]]>\n";
 						$blocs[$region] .= "</script>\n";
 					}
