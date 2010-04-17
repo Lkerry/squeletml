@@ -198,17 +198,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div id="configActuelleAdminCat">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-			if (!empty($listePages))
+			if (empty($listePages))
 			{
-				echo "<ul class=\"triable bDcorps afficher\">\n";
-				echo $listePages;
-				echo "</ul>\n";
+				$listePages = '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
+				echo "<ul class=\"bDcorps afficher\">\n";
 			}
 			else
 			{
-				echo '<p>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</p>\n";
+				echo "<ul class=\"triable bDcorps afficher\">\n";
 			}
 			
+			echo $listePages;
+			echo "</ul>\n";
 			echo "</div><!-- /#configActuelleAdminCat -->\n";
 			
 			echo '<h4>' . T_("Ajouter une page") . "</h4>\n";
@@ -246,30 +247,25 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<p>' . T_("Explications: par exemple, une page est ajoutée à la catégorie «Miniatures». Cette catégorie a comme parent «Chiens», qui a elle-même comme parent la catégorie «Animaux». Si l'option d'ajout dans la catégorie parente est sélectionnée, la page sera ajoutée dans la catégorie «Miniatures» et dans la catégorie parente «Chiens». Aussi, si l'option d'ajout dans les catégories parentes indirectes est sélectionnée, la page sera également ajoutée à la catégorie «Animaux».") . "</p>\n";
 			echo "</li>\n";
 			
-			$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site');
+			$rssListeLangues = '';
+			$rssListeLangues .= '<select name="langueAjout">' . "\n";
 			
-			if ($cheminFichierRss)
+			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
 			{
-				$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+				$rssListeLangues .= '<option value="' . $langueAccueil . '"';
 				
-				if (!empty($rssPages))
+				if ($langueAccueil == $langueParDefaut)
 				{
-					$rssListeLangues = '';
-					$rssListeLangues .= '<select name="rssLangueAjout">' . "\n";
-					
-					foreach ($rssPages as $rssCodeLangue => $rssLangueInfos)
-					{
-						$rssListeLangues .= "<option value=\"$rssCodeLangue\">$rssCodeLangue</option>\n";
-					}
-					
-					$rssListeLangues .= "</select>";
-					
-					echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
-
-					echo '<li><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap du site</a>."), 'sitemap.admin.php?sitemap=site') . "</label></li>\n";
+					$rssListeLangues .= ' selected="selected"';
 				}
+				
+				$rssListeLangues .= '>' . $langueAccueil . "</option>\n";
 			}
 			
+			$rssListeLangues .= "</select>\n";
+			
+			echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
+			echo '<li><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap du site</a>."), 'sitemap.admin.php?sitemap=site') . "</label></li>\n";
 			echo "</ul>\n";
 			echo "</div><!-- /.bDcorps -->\n";
 			echo "</fieldset>\n";

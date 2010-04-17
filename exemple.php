@@ -8,6 +8,7 @@ $boitesDeroulantes = "#testBoiteDeroulante1 .testBoiteDeroulante2";
 $auteur = "Squeletml";
 $dateCreation = "2010-03-01";
 $dateRevision = "2010-03-02";
+$licence = "agplv3+";
 include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion.
 ?>
 
@@ -38,7 +39,7 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 			<?php if (estAccueil($accueil)): ?>
 				la présente page est la page d'accueil;
 			<?php else: ?>
-				<a href="<?php echo ACCUEIL; ?>">lien vers la page d'accueil</a>;
+				<a href="<?php echo ACCUEIL; ?>/">lien vers la page d'accueil</a>;
 			<?php endif; ?>
 		</li>
 		
@@ -187,11 +188,11 @@ $typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMime
 
 <div class="sep"></div>
 
-<p class="gauche">Tiens, alignons du texte à droite.</p>
+<p class="gauche">Tiens, alignons du texte à gauche.</p>
 
 <p class="centre">Et au centre.</p>
 
-<p class="droite">À gauche maintenant.</p>
+<p class="droite">À droite maintenant.</p>
 
 <?php echo boiteArrondie("Quisque sit amet mi sit amet magna faucibus luctus. Ut pellentesque sodales arcu. Phasellus a elit. Maecenas rhoncus lorem id quam. Sed sed arcu et quam fermentum ultrices. Aenean pulvinar molestie magna. Vestibulum bibendum? Nullam libero arcu, ultrices a; aliquet quis, adipiscing sit amet, neque."); ?>
 

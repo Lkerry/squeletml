@@ -1,6 +1,7 @@
 <?php
 $racine = dirname(__FILE__);
 include_once $racine . '/inc/fonctions.inc.php';
+$urlSansGet = url(FALSE);
 $urlParente = urlParente();
 
 if (!isset($_POST['ajouter']) && !file_exists($racine . '/site/inc/squeletml-est-installe.txt') && file_exists($racine . '/init.inc.php') && accesAdminEstProtege($racine))
@@ -14,6 +15,24 @@ if (file_exists($racine . '/site/inc/squeletml-est-installe.txt'))
 }
 else
 {
+	$serveurFreeFr = FALSE;
+	
+	if (preg_match('/\.free\.fr$/', php_uname()))
+	{
+		$serveurFreeFr = TRUE;
+	}
+	
+	if ($serveurFreeFr && !file_exists($racine . '/.htaccess'))
+	{
+		// Serveurs de Free.fr: création d'un fichier `.htaccess` temporaire dans le but d'utiliser PHP 5 durant l'installation, le temps que le `.htaccess` permanent soit créé.
+		if ($fic = @fopen($racine . '/.htaccess', 'w'))
+		{
+			fwrite($fic, 'php 1');
+			fclose($fic);
+			header("Location: $urlSansGet", TRUE, 302);
+		}
+	}
+	
 	$codeLangue = langue('navigateur', '');
 	phpGettext('.', $codeLangue); // Nécessaire à la traduction.
 	
@@ -38,12 +57,6 @@ else
 		$passerAlEtape2 = TRUE;
 		$urlSansServeur = url(FALSE, FALSE);
 		$urlSansServeurRacine = preg_replace('|/[^/]+$|', '', $urlSansServeur);
-		$serveurFreeFr = FALSE;
-		
-		if (isset($_POST['freeFr']))
-		{
-			$serveurFreeFr = TRUE;
-		}
 		
 		if (!file_exists($racine . '/init.inc.php') && file_exists($racine . '/init.inc.php.defaut'))
 		{
@@ -139,43 +152,58 @@ else
 			$messagesScript .= '<li>' . sprintf(T_("Le fichier %1\$s existe."), '<code>robots.txt</code>') . "</li>\n";
 		}
 
-		if (!file_exists($racine . '/.htaccess') && file_exists($racine . '/.htaccess.defaut'))
+		if (!file_exists($racine . '/.htaccess') || ($serveurFreeFr && @file_get_contents($racine . '/.htaccess') == 'php 1'))
 		{
-			if (@copy($racine . '/.htaccess.defaut', $racine . '/.htaccess'))
+			if ($serveurFreeFr && @file_get_contents($racine . '/.htaccess') == 'php 1')
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>.htaccess</code>', '<code>.htaccess.defaut</code>') . "</li>\n";
-				if (!empty($urlSansServeurRacine) || $serveurFreeFr)
-				{
-					$htaccess = @file_get_contents($racine . '/.htaccess');
+				// Suppression du `.htaccess` temporaire.
+				@unlink($racine . '/.htaccess');
+			}
 			
-					if ($htaccess !== FALSE)
+			if ($serveurFreeFr)
+			{
+				$modeleHtaccess = '.htaccess.defaut.free.fr';
+				$cheminModeleHtaccess = $racine . '/' . $modeleHtaccess;
+			}
+			else
+			{
+				$modeleHtaccess = '.htaccess.defaut';
+				$cheminModeleHtaccess = $racine . '/' . $modeleHtaccess;
+			}
+			
+			if (file_exists($cheminModeleHtaccess))
+			{
+				if (@copy($cheminModeleHtaccess, $racine . '/.htaccess'))
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>.htaccess</code>', "<code>$modeleHtaccess</code>") . "</li>\n";
+					if (!empty($urlSansServeurRacine))
 					{
-						$htaccess = preg_replace('|^(ErrorDocument 401 )(/401\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
-						$htaccess = preg_replace('|^(ErrorDocument 404 )(/404\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
-						$htaccess = preg_replace('|^(ErrorDocument 503 )(/maintenance\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
-
-						if ($serveurFreeFr)
+						$htaccess = @file_get_contents($racine . '/.htaccess');
+			
+						if ($htaccess !== FALSE)
 						{
-							$htaccess = preg_replace('|^#(php 1)|m', '$1', $htaccess);
+							$htaccess = preg_replace('|^(ErrorDocument 401 )(/401\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
+							$htaccess = preg_replace('|^(ErrorDocument 404 )(/404\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
+							$htaccess = preg_replace('|^(ErrorDocument 503 )(/maintenance\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
+
+							if (@file_put_contents($racine . '/.htaccess', $htaccess) === FALSE)
+							{
+								$passerAlEtape2 = FALSE;
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>.htaccess</code>') . "</li>\n";
+							}
 						}
-						
-						if (@file_put_contents($racine . '/.htaccess', $htaccess) === FALSE)
+						else
 						{
 							$passerAlEtape2 = FALSE;
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>.htaccess</code>') . "</li>\n";
 						}
 					}
-					else
-					{
-						$passerAlEtape2 = FALSE;
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>.htaccess</code>') . "</li>\n";
-					}
 				}
-			}
-			else
-			{
-				$passerAlEtape2 = FALSE;
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>.htaccess</code>', '<code>.htaccess.defaut</code>') . "</li>\n";
+				else
+				{
+					$passerAlEtape2 = FALSE;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>.htaccess</code>', "<code>$modeleHtaccess</code>") . "</li>\n";
+				}
 			}
 		}
 		else
@@ -212,10 +240,30 @@ else
 	{
 		include_once $racine . '/init.inc.php';
 		$installationTerminee = TRUE;
+		$accesAvecUtilisateur = FALSE;
+		
+		if (($acces = @file_get_contents($racine . '/.acces')) && preg_match('/^[^:]+:/m', $acces))
+		{
+			$accesAvecUtilisateur = TRUE;
+		}
 		
 		if (accesAdminEstProtege($racine))
 		{
 			$messagesScript .= '<li>' . T_("L'administration est déjà protégée.") . "</li>\n";
+		}
+		elseif ($accesAvecUtilisateur)
+		{
+			$accesDansHtaccess = accesDansHtaccess($racine, $serveurFreeFr);
+			
+			if (!empty($accesDansHtaccess))
+			{
+				$installationTerminee = FALSE;
+				$messagesScript .= $accesDansHtaccess;
+			}
+			else
+			{
+				$messagesScript .= '<li>' . T_("Protection de l'administration effectuée.") . "</li>\n";
+			}
 		}
 		elseif (empty($_POST['identifiant']))
 		{
@@ -270,11 +318,15 @@ else
 			fclose($fic);
 
 			$accesDansHtaccess = accesDansHtaccess($racine, $serveurFreeFr);
-
+			
 			if (!empty($accesDansHtaccess))
 			{
 				$installationTerminee = FALSE;
 				$messagesScript .= $accesDansHtaccess;
+			}
+			else
+			{
+				$messagesScript .= '<li>' . T_("Protection de l'administration effectuée.") . "</li>\n";
 			}
 		}
 		else
@@ -332,11 +384,11 @@ else
 			echo $messagesScript;
 			echo "</ul>\n";
 			
-			echo '<p class="erreur">' . sprintf(T_("Vérifiez que le dossier racine de Squeletml est bien accessible en écriture. Ensuite, <a href=\"%1\$s\">visitez de nouveau la présente page</a>."), url()) . "</p>\n";
+			echo '<p class="erreur">' . sprintf(T_("Vérifiez que le dossier racine de Squeletml est bien accessible en écriture. Ensuite, <a href=\"%1\$s\">visitez de nouveau la présente page</a>."), $urlSansGet) . "</p>\n";
 			echo "</div><!-- /.blocMessagesScript -->\n";
 		}
 		
-		echo '<form action="' . url() . '" method="post">' . "\n";
+		echo '<form action="' . $urlSansGet . '" method="post">' . "\n";
 		echo "<div>\n";
 		echo '<p><label for="inputLangues">' . T_("Langues à activer dans le menu:") . "</label><br />\n" . '<select id="inputLangues" name="langues[]" multiple="multiple">' . "\n";
 	
@@ -359,15 +411,6 @@ else
 		echo "<option value=\"fr\"$selectedFr>fr</option>\n";
 		echo "<option value=\"en\"$selectedEn>en</option>\n";
 		echo '</select></p>' . "\n";
-
-		echo '<p><input id="inputFreeFr" type="checkbox" name="freeFr" ';
-	
-		if (isset($_POST['freeFr']))
-		{
-			echo 'checked="checked" ';
-		}
-	
-		echo '/> <label for="inputFreeFr">' . T_("J'héberge mon site sur un serveur de Free.fr.") . "</label></p>\n";
 
 		echo '<p><input type="submit" name="creer" value="' . T_("Créer les fichiers") . '" /></p>' . "\n";
 		echo "</div>\n";
@@ -397,25 +440,36 @@ else
 			echo "</ul>\n";
 			echo "</div><!-- /.blocMessagesScript -->\n";
 		}
-
-		echo '<p>' . T_("Veuillez ajouter un utilisateur pour restreindre l'accès à la section d'administration de votre site:") . "</p>\n";
-
-		echo '<form action="' . url() . '" method="post">' . "\n";
+		
+		echo '<form action="' . $urlSansGet . '" method="post">' . "\n";
 		echo "<div>\n";
-		echo '<p><label for="inputIdentifiant">' . T_("Identifiant:") . "</label><br />\n" . '<input id="inputIdentifiant" type="text" name="identifiant" ';
-
-		if (!empty($_POST['identifiant']))
+		
+		if (file_exists($racine . '/.acces') && ($acces = @file_get_contents($racine . '/.acces')) && preg_match('/^[^:]+:/m', $acces))
 		{
-			echo 'value="' . securiseTexte($_POST['identifiant']) . '" ';
+			echo '<p>' . T_("Un utilisateur est déjà présent. Veuillez activer la protection de l'administration.") . "</p>\n";
+			
+			echo '<p><input type="submit" name="ajouter" value="' . T_("Protéger l'administration") . '" /></p>' . "\n";
 		}
+		else
+		{
+			echo '<p>' . T_("Veuillez ajouter un utilisateur pour restreindre l'accès à la section d'administration de votre site:") . "</p>\n";
+		
+			echo '<p><label for="inputIdentifiant">' . T_("Identifiant:") . "</label><br />\n" . '<input id="inputIdentifiant" type="text" name="identifiant" ';
 
-		echo '/></p>' . "\n";
+			if (!empty($_POST['identifiant']))
+			{
+				echo 'value="' . securiseTexte($_POST['identifiant']) . '" ';
+			}
 
-		echo '<p><label for="inputMotDePasse">' . T_("Mot de passe:") . "</label><br />\n" . '<input id="inputMotDePasse" type="password" name="motDePasse" /></p>' . "\n";
+			echo '/></p>' . "\n";
 
-		echo '<p><label for="inputMotDePasse2">' . T_("Confirmer le mot de passe:") . "</label><br />\n" . '<input id="inputMotDePasse2" type="password" name="motDePasse2" /></p>' . "\n";
+			echo '<p><label for="inputMotDePasse">' . T_("Mot de passe:") . "</label><br />\n" . '<input id="inputMotDePasse" type="password" name="motDePasse" /></p>' . "\n";
+
+			echo '<p><label for="inputMotDePasse2">' . T_("Confirmer le mot de passe:") . "</label><br />\n" . '<input id="inputMotDePasse2" type="password" name="motDePasse2" /></p>' . "\n";
 	
-		echo '<p><input type="submit" name="ajouter" value="' . T_("Ajouter l'utilisateur") . '" /></p>' . "\n";
+			echo '<p><input type="submit" name="ajouter" value="' . T_("Ajouter l'utilisateur") . '" /></p>' . "\n";
+		}
+		
 		echo "</div>\n";
 		echo "</form>\n";
 	}

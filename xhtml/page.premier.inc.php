@@ -101,6 +101,7 @@
 							</div><!-- /#debutInterieurContenu -->
 						<?php endif; ?>
 						
-						<?php if (!empty($idGalerie)): ?>
-							<div id="galerie">
-						<?php endif; ?>
+						<div id="milieuInterieurContenu">
+							<?php if (!empty($idGalerie)): ?>
+								<div id="galerie">
+							<?php endif; ?>

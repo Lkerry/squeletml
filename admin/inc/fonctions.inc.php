@@ -1062,6 +1062,10 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 				
 				$messagesScript .= adminAjouteUrlDansSitemap($racine, 'galeries', $tableauUrlSitemap, $adminPorteDocumentsDroits);
 			}
+			else
+			{
+				$messagesScript .= '<li>' . T_("Aucune page à ajouter dans le fichier Sitemap des galeries.") . "</li>\n";
+			}
 		}
 	}
 	else
@@ -1979,7 +1983,7 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 	
 	if (function_exists('exif_read_data'))
 	{
-		$exif = exif_read_data($cheminImage);
+		$exif = @exif_read_data($cheminImage);
 		
 		if (!empty($exif['IFD0']['Orientation']))
 		{

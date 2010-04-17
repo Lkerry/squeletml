@@ -1,0 +1,42 @@
+# Utiliser PHP 5 au lieu de PHP 4.
+php 1
+
+########################################################################
+##
+## Possiblement configurable.
+##
+########################################################################
+
+# Pages d'erreur. Au besoin, changer le chemin vers la page. Exemple:
+# ErrorDocument 404 http://www.NomDeDomaine.ext/monSite/404.php
+# Note: pour l'erreur 401, il faut spécifier une URL locale. Exemple:
+# ErrorDocument 401 /monSite/401.php
+ErrorDocument 401 /401.php
+ErrorDocument 404 /404.php
+ErrorDocument 503 /maintenance.php
+
+# Ne pas lister les fichiers dans un dossier sans fichier `index`.
+Options -Indexes
+
+########################################################################
+##
+## Suggestions.
+##
+########################################################################
+
+# Modèle de redirection de pages.
+#RedirectPermanent /dossier/fichier.php http://www.monSite.ext/nouveau-dossier/nouveau-fichier.php
+
+########################################################################
+##
+## NORMALEMENT, CE QUI SUIT NE DEVRAIT PAS ÊTRE MODIFIÉ.
+##
+########################################################################
+
+# S'assurer de l'accès au fichier `robots.txt`.
+<Files robots.txt>
+	Order Deny,Allow
+	Allow from all
+	Satisfy any
+</Files>
+

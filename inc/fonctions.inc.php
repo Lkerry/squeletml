@@ -3742,12 +3742,12 @@ function image(
 		
 		if ($galerieExifAjout && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
 		{
-			$tableauExif = exif_read_data($racineImgSrc . '/' . $infosImage['intermediaireNom'], 'IFD0', 0);
+			$tableauExif = @exif_read_data($racineImgSrc . '/' . $infosImage['intermediaireNom'], 'IFD0', 0);
 			
 			// Si aucune donnée Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
 			if (!$tableauExif && $originalExiste && $typeMime == 'image/jpeg')
 			{
-				$tableauExif = exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
+				$tableauExif = @exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
 			}
 			
 			if ($tableauExif)

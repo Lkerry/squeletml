@@ -1892,26 +1892,24 @@ include $racineAdmin . '/inc/premier.inc.php';
 						</ul></li>
 					</ul>
 					
-					<?php $cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries'); ?>
+					<?php $rssListeLangues = ''; ?>
+					<?php $rssListeLangues .= '<select name="rssLangueAjout">' . "\n"; ?>
 					
-					<?php if ($cheminFichierRss): ?>
-						<?php $rssPages = super_parse_ini_file($cheminFichierRss, TRUE); ?>
-						
-						<?php if (!empty($rssPages)): ?>
-							<?php $rssListeLangues = ''; ?>
-							<?php $rssListeLangues .= '<select name="rssLangueAjout">' . "\n"; ?>
-							
-							<?php foreach ($rssPages as $rssCodeLangue => $rssLangueInfos): ?>
-								<?php $rssListeLangues .= "<option value=\"$rssCodeLangue\">$rssCodeLangue</option>\n"; ?>
-							<?php endforeach; ?>
-							
-							<?php $rssListeLangues .= "</select>"; ?>
-
-							<ul>
-								<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout"><?php printf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des derniers ajouts aux galeries</a> pour la langue %2\$s."), "rss.admin.php?global=galeries", $rssListeLangues); ?></label></li>
-							</ul>
+					<?php foreach ($accueil as $langueAccueil => $urlLangueAccueil): ?>
+						<?php $rssListeLangues .= '<option value="' . $langueAccueil . '"'; ?>
+				
+						<?php if ($langueAccueil == $langueParDefaut): ?>
+							<?php $rssListeLangues .= ' selected="selected"'; ?>
 						<?php endif; ?>
-					<?php endif; ?>
+				
+						<?php $rssListeLangues .= '>' . $langueAccueil . "</option>\n"; ?>
+					<?php endforeach; ?>
+					
+					<?php $rssListeLangues .= "</select>"; ?>
+
+					<ul>
+						<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout"><?php printf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des derniers ajouts aux galeries</a> pour la langue %2\$s."), "rss.admin.php?global=galeries", $rssListeLangues); ?></label></li>
+					</ul>
 				</fieldset>
 				
 				<p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>

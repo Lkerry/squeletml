@@ -1,18 +1,19 @@
-						<?php if ($afficherGalerie): ?>
-							<?php echo $galerie; ?>
-						<?php endif; ?>
+							<?php if ($afficherGalerie): ?>
+								<?php echo $galerie; ?>
+							<?php endif; ?>
 						
-						<?php if (!empty($idGalerie)): ?>
-							</div><!-- /#galerie -->
-						<?php endif; ?>
+							<?php if (!empty($idGalerie)): ?>
+								</div><!-- /#galerie -->
+							<?php endif; ?>
 						
-						<?php if ($afficherCategorie): ?>
-							<?php echo $categorie; ?>
-						<?php endif; ?>
+							<?php if ($afficherCategorie): ?>
+								<?php echo $categorie; ?>
+							<?php endif; ?>
 						
-						<?php if ($inclureContact): ?>
-							<?php echo $contact; ?>
-						<?php endif; ?>
+							<?php if ($inclureContact): ?>
+								<?php echo $contact; ?>
+							<?php endif; ?>
+						</div><!-- /#milieuInterieurContenu -->
 						
 						<?php if (!empty($blocs[400])): ?>
 							<div id="finInterieurContenu">

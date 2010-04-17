@@ -79,7 +79,7 @@ function T_(msgid)
 /*
 Génère une table des matières pour la page en cours.
 */
-function tableDesMatieres(idParent, baliseTable, baliseTitre)
+function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, niveauArret)
 {
 	$(document).ready(function()
 	{
@@ -101,7 +101,7 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre)
 		oTitre.appendChild(oTitreTexte);
 		
 		oParent.insertBefore(oConteneur, oParent.firstChild);
-		$('#tableDesMatieresBdCorps').tableOfContents(oParent, {startLevel: 2, depth: 6});
+		$('#tableDesMatieresBdCorps').tableOfContents(oParent, {startLevel: niveauDepart, depth: niveauArret});
 		oConteneur.insertBefore(oTitre, oConteneur.firstChild);
 		
 		// S'il n'y a qu'un `li` vide (en fait, ne contenant qu'un retour à la ligne), aucun titre n'a été trouvé, on peut donc supprimer la table des matières, qui ne sert à rien. Note: pour IE6, le `li` est vraiment vide (aucun retour à la ligne).

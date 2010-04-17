@@ -125,41 +125,38 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="configActuelleAdminRss">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-			if (!empty($listeGaleries))
+			if (empty($listeGaleries))
 			{
-				echo "<ul class=\"triable bDcorps afficher\">\n";
-				echo $listeGaleries;
-				echo "</ul>\n";
+				$listeGaleries = '<li>' . T_("Le fichier est vide. Aucune galerie n'y est listée.") . "</li>\n";
+				echo "<ul class=\"bDcorps afficher\">\n";
 			}
 			else
 			{
-				echo '<p>' . T_("Le fichier est vide. Aucune galerie n'y est listée.") . "</p>\n";
+				echo "<ul class=\"triable bDcorps afficher\">\n";
 			}
 			
+			echo $listeGaleries;
+			echo "</ul>\n";
 			echo "</div><!-- /.configActuelleAdminRss -->\n";
 			
 			echo '<h4>' . T_("Ajouter une galerie") . "</h4>\n";
 			
 			echo "<ul>\n";
-			echo '<li>';
-			$listeOption = '';
+			echo '<li><select name="langueAjout">' . "\n";
 			
 			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
 			{
-				$listeOption .= '<option value="' . $langueAccueil . '">' . $langueAccueil . "</option>\n";
+				echo '<option value="' . $langueAccueil . '"';
+				
+				if ($langueAccueil == $langueParDefaut)
+				{
+					echo ' selected="selected"';
+				}
+				
+				echo '>' . $langueAccueil . "</option>\n";
 			}
 			
-			if (!empty($listeOption))
-			{
-				echo '<select name="langueAjout">' . "\n";
-				echo '<option value=""></option>' . "\n";
-				echo $listeOption;
-				echo "</select>\n";
-			}
-			else
-			{
-				echo '<input type="text" name="langueAjout" value="" />';
-			}
+			echo "</select>\n";
 			
 			echo "<ul>\n";
 			echo '<li><input type="text" name="idAjout" value="" /><code>=</code><input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
@@ -290,41 +287,38 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="configActuelleAdminRss">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-			if (!empty($listePages))
+			if (empty($listePages))
 			{
-				echo "<ul class=\"triable bDcorps afficher\">\n";
-				echo $listePages;
-				echo "</ul>\n";
+				$listePages = '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
+				echo "<ul class=\"bDcorps afficher\">\n";
 			}
 			else
 			{
-				echo '<p>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</p>\n";
+				echo "<ul class=\"triable bDcorps afficher\">\n";
 			}
 			
+			echo $listePages;
+			echo "</ul>\n";
 			echo "</div><!-- /.configActuelleAdminRss -->\n";
 			
 			echo '<h4>' . T_("Ajouter une page") . "</h4>\n";
 			
 			echo "<ul>\n";
-			echo '<li>';
-			$listeOption = '';
+			echo '<li><select name="langueAjout">' . "\n";
 			
 			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
 			{
-				$listeOption .= '<option value="' . $langueAccueil . '">' . $langueAccueil . "</option>\n";
+				echo '<option value="' . $langueAccueil . '"';
+				
+				if ($langueAccueil == $langueParDefaut)
+				{
+					echo ' selected="selected"';
+				}
+				
+				echo '>' . $langueAccueil . "</option>\n";
 			}
 			
-			if (!empty($listeOption))
-			{
-				echo '<select name="langueAjout">' . "\n";
-				echo '<option value=""></option>' . "\n";
-				echo $listeOption;
-				echo "</select>\n";
-			}
-			else
-			{
-				echo '<input type="text" name="langueAjout" value="" />';
-			}
+			echo "</select>\n";
 			
 			echo "<ul>\n";
 			echo '<li><label for="inputUrlAjout"><code>pages[]=</code></label><input id="inputUrlAjout" class="long" type="text" name="urlAjout" value="" /></li>' . "\n";

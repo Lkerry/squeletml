@@ -303,6 +303,12 @@ $licenceParDefaut = "";
 */
 $afficherTableDesMatieresParDefaut = FALSE; // TRUE|FALSE
 
+// Options de la table des matières.
+$tDmBaliseTable = 'ul'; // ol|ul
+$tDmBaliseTitre = 'h2';
+$tDmNiveauDepart = '2'; // de 1 à 6
+$tDmNiveauArret = '6'; // de 1 à 6
+
 // Activation de boîtes déroulantes par défaut.
 /*
 Une boîte déroulante permet d'afficher/de masquer un contenu par simple clic, et enregistre, si possible, le choix d'affichage de l'internaute dans un témoin valide durant 365 jours. Ce contenu peut être situé n'importe où dans la page: menu, corps, bas de page, etc. Une boîte déroulante peut être activée seulement pour un contenu constitué d'un conteneur, d'un titre et d'un corps. La représentation générale est la suivante:

@@ -660,44 +660,46 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<p><?php echo T_("Si le site est hors ligne, tous les internautes visitant une page du site seront redirigés vers la page de maintenance."); ?></p>
 
 			<?php if (adminReecritureDurl(FALSE) == 'n'): ?>
-				<p><strong><?php echo T_("Note: la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est pas activée sur votre serveur. La mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
-			<?php elseif (adminReecritureDurl(FALSE) == '?'): ?>
-				<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas."); ?></strong></p>
-			<?php endif; ?>
-
-			<form action="<?php echo $adminAction; ?>#messages" method="post">
-				<div>
-					<fieldset>
-						<legend><?php echo T_("Options"); ?></legend>
-					
-						<?php $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess'); ?>
-					
-						<p><?php echo T_("Le site est présentement:"); ?><br />
-						<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!$siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
-						<input id="inputEtatHorsLigne" type="radio" name="etat" value="horsLigne" <?php if ($siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatHorsLigne"><?php echo T_("en maintenance (hors ligne)."); ?></label> <?php if ($siteEstEnMaintenance): ?>
-							<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
-								<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
-							<?php else: ?>
-								<?php echo T_("Aucune IP n'a accès au site hors ligne."); ?>
-							<?php endif; ?>
-						<?php endif; ?>
-						</p>
-			
-						<p><label for="inputIp"><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
-						<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
-					
-						<?php if ($ip): ?>
-							<?php $valeurChampIp = $ip; ?>
-						<?php else: ?>
-							<?php $valeurChampIp = ipInternaute(); ?>
-						<?php endif; ?>
-					
-						<input id="inputIp" type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
-					</fieldset>
+				<p><strong><?php echo T_("La réécriture d'URL (module <code>mod_rewrite</code> d'Apache) n'est pas activée sur votre serveur. La fonction de mise hors ligne du site ne peut donc pas être utilisée."); ?></strong></p>
+			<?php else: ?>
+				<?php if (adminReecritureDurl(FALSE) == '?'): ?>
+					<p><strong><?php echo T_("Note: impossible de savoir si la réécriture d'URL (module <code>mod_rewrite</code> d'Apache) est activée sur votre serveur. Si tel n'est pas le cas, la mise hors ligne du site ne fonctionnera pas et risque de provoquer une erreur 500."); ?></strong></p>
+				<?php endif; ?>
 				
-					<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
-				</div>
-			</form>
+				<form action="<?php echo $adminAction; ?>#messages" method="post">
+					<div>
+						<fieldset>
+							<legend><?php echo T_("Options"); ?></legend>
+				
+							<?php $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess'); ?>
+				
+							<p><?php echo T_("Le site est présentement:"); ?><br />
+							<input id="inputEtatEnLigne" type="radio" name="etat" value="enLigne" <?php if (!$siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatEnLigne"><?php echo T_("en ligne."); ?></label><br />
+							<input id="inputEtatHorsLigne" type="radio" name="etat" value="horsLigne" <?php if ($siteEstEnMaintenance) {echo 'checked="checked"';} ?> /> <label for="inputEtatHorsLigne"><?php echo T_("en maintenance (hors ligne)."); ?></label> <?php if ($siteEstEnMaintenance): ?>
+								<?php if ($ip = adminSiteEnMaintenanceIp($racine . '/.htaccess')): ?>
+									<?php echo sprintf(T_("L'IP %1\$s a accès au site hors ligne."), $ip); ?>
+								<?php else: ?>
+									<?php echo T_("Aucune IP n'a accès au site hors ligne."); ?>
+								<?php endif; ?>
+							<?php endif; ?>
+							</p>
+		
+							<p><label for="inputIp"><?php echo T_("IP ayant droit d'accès au site en maintenance (optionnel; laisser vide pour désactiver cette option):"); ?></label><br />
+							<?php $ip = adminSiteEnMaintenanceIp($racine . '/.htaccess'); ?>
+				
+							<?php if ($ip): ?>
+								<?php $valeurChampIp = $ip; ?>
+							<?php else: ?>
+								<?php $valeurChampIp = ipInternaute(); ?>
+							<?php endif; ?>
+				
+							<input id="inputIp" type="text" name="ip" value="<?php echo $valeurChampIp; ?>" /></p>
+						</fieldset>
+			
+						<p><input type="submit" name="changerEtat" value="<?php echo T_('Changer l\'état du site'); ?>" /></p>
+					</div>
+				</form>
+			<?php endif; ?>
 		</div><!-- /.boite -->
 	
 		<div class="boite">

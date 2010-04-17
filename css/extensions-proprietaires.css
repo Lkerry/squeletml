@@ -4,7 +4,7 @@ pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-display
 	white-space: -o-pre-wrap; /* Opera 7. */
 }
 
-body.tableDesMatieresArrondie #tableDesMatieres {
+#modeleMessageDecouvrir, body.tableDesMatieresArrondie #tableDesMatieres {
 	-moz-border-radius: 8px; /* Gecko. */
 	-webkit-border-radius: 8px; /* Webkit. */
 }

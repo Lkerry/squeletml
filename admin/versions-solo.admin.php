@@ -15,7 +15,7 @@ else
 			$explicationSite = "Cette page ne nécessite aucune dépendance par rapport à Squeletml. Elle permet donc de récolter facilement certaines informations lorsqu'un bogue empêche le bon fonctionnement du logiciel. <a href=\"versions.admin.php\">Consulter l'accueil de l'administration.</a>";
 			$titreApercu = "Aperçu";
 			$versionSqueletml = "Version de Squeletml:";
-			$versionPph = "Version de PHP:";
+			$versionPhp = "Version de PHP:";
 			$versionApache = "Version d'Apache:";
 			$reecritureDurlO = "La réécriture d'URL est activée.";
 			$reecritureDurlN = "La réécriture d'URL n'est pas activée.";
@@ -59,7 +59,7 @@ else
 		
 		<ul>
 			<li><?php echo $versionSqueletml; ?> <?php echo $version; ?></li>
-			<li><?php echo $versionPph; ?> <?php echo PHP_VERSION; ?></li>
+			<li><?php echo $versionPhp; ?> <?php echo PHP_VERSION; ?></li>
 			<li><?php echo $versionApache; ?> <?php echo htmlspecialchars($_SERVER['SERVER_SOFTWARE'], ENT_COMPAT, 'UTF-8'); ?></li>
 			<li>
 				<?php if (function_exists('apache_get_modules')): ?>
@@ -72,7 +72,7 @@ else
 					<?php echo $reecritureDurlI; ?>
 				<?php endif; ?>
 			</li>
-			<li><?php echo $versionSysteme; ?> <?php echo PHP_OS; ?></li>
+			<li><?php echo $versionSysteme; ?> <?php echo php_uname(); ?></li>
 		</ul>
 		
 		<ul>

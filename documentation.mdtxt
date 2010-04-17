@@ -2,16 +2,27 @@
 
 ## Prérequis
 
-Squeletml requiert un serveur Apache avec PHP 5, sans plus. Aucune base de données n'est utilisée.
+Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est utilisée.
 
-**Notes:**
+### Notes
 
-- pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur;
-- pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé;
-- pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible;
-- la récupération de contenu externe se fait par `cURL` si disponible, sinon par `file_get_contents()`;
-- la détection du type MIME peut se faire par `Fileinfo` de PHP ou par la commande `file` sur le système;
-- la rotation automatique et sans perte de qualité des images JPG peut se faire avec la commande `exiftran` sur le système, ou bien avec la commande `jpegtran` sur le système et la fonction PHP `exif_read_data()`.
+- Pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur.
+
+- Pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
+
+- Pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible.
+
+- La détection du type MIME peut se faire par `Fileinfo` de PHP ou par la commande `file` sur le système.
+
+- La rotation automatique et sans perte de qualité des images JPG peut se faire avec la commande `exiftran` sur le système, ou bien avec la commande `jpegtran` sur le système et la fonction PHP `exif_read_data()`.
+
+- La récupération de contenu externe se fait par `cURL` si disponible, sinon par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.squeletml.net/');` retourne ceci:
+
+		HTTP/1.0 403 Forbidden
+
+	Selon la [FAQ du site «Les Pages Perso Chez Free»](http://les.pages.perso.chez.free.fr/index.php?post/2010/01/22/FAQ), il faut demander sur le forum d'aide de Free.fr de mettre sur la liste blanche les URL que l'on souhaite atteindre.
+
+	Dans ces conditions, sans un déblocage par Free de l'URL de votre site, les catégories, les flux RSS et la génération automatique du cache par le cron ne sont pas fonctionnels.
 
 ## Installation automatisée
 
@@ -29,13 +40,11 @@ Si tout se passe bien, Squeletml créera automatiquement les fichiers nécessair
 
 ## Installation à la main
 
-Par défaut, l'installation se fait via une page web. Cependant, il est possible d'installer Squeletml à la main.
+Par défaut, l'installation se fait en passant par une page web. Cependant, il est possible d'installer Squeletml à la main.
 
 Seulement quatre fichiers doivent obligatoirement être créés et configurés, bien que vous voudrez probablement personnaliser ensuite le reste du site.
 
-Tant que l'installation n'est pas terminée, la page d'accueil de votre site Squeletml dirigera vers la procédure d'installation par défaut via une page web.
-
-**Note: les personnes installant Squeletml sur un serveur de Free.fr doivent effectuer quelques manipulations supplémentaires. Voir un peu plus bas.**
+Tant que l'installation n'est pas terminée, la page d'accueil de votre site Squeletml dirigera vers la procédure d'installation par défaut passant par une page web.
 
 ### Le fichier `init.inc.php`
 
@@ -69,6 +78,12 @@ pour:
 
 	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
 
+#### Cas des serveurs de Free.fr
+
+Pour une installation de Squeletml sur un serveur de Free.fr, il faut effectuer en plus l'action suivante:
+
+- trouver la variable `$serveurFreeFr` et modifier sa valeur pour `TRUE`.
+
 ### Protection de l'administration (fichiers `.htaccess` et `.acces`)
 
 Trouver le fichier `.htaccess.defaut`, situé à la racine de votre site Squeletml, le copier et le coller sous le nom `.htaccess` (il faut donc enlever le `defaut` final du nom). Ensuite, visiter la page suivante:
@@ -76,6 +91,10 @@ Trouver le fichier `.htaccess.defaut`, situé à la racine de votre site Squelet
 	http://www.nomDeDomaine.ext/admin/acces.admin.php
 
 et ajouter un utilisateur. Un fichier `.acces` sera créé à la racine de votre site Squeletml. Ce fichier contient la liste des utilisateurs.
+
+#### Cas des serveurs de Free.fr
+
+Si Squeletml est installé sur un serveur de Free.fr, le fichier à trouver est `.htaccess.defaut.free.fr`. La suite est la même (copie et collage sous le nom `.htaccess`).
 
 #### Chemin des pages d'erreur
 
@@ -93,21 +112,7 @@ Créer un fichier vide `squeletml-est-installe.txt` dans le dossier `site/inc`, 
 
 	site/inc/squeletml-est-installe.txt
 
-L'installation par défaut via une page web sera ainsi désactivée.
-
-### Actions obligatoires supplémentaires sur un serveur de Free.fr
-
-Pour une installation de Squeletml sur un serveur de Free.fr, il faut effectuer en plus les deux actions obligatoires suivantes:
-
-- Ouvrir le fichier `init.inc.php` situé à la racine de votre site Squeletml. Trouver la variable `$serveurFreeFr` et modifier sa valeur pour `TRUE`.
-
-- Ouvrir le fichier `.htaccess` situé à la racine de votre site Squeletml. Trouver la ligne suivante:
-
-		#php 1
-
-et la décommenter, ce qui donne:
-
-		php 1
+L'installation par défaut passant par une page web sera ainsi désactivée.
 
 ### Le fichier `robots.txt`
 
@@ -337,7 +342,9 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 								Vide par défaut, donc `div` pas incluse.
 							</div><!-- /#debutInterieurContenu -->
 							
-							Contenu entré directement par l'utilisateur.
+							<div id="milieuInterieurContenu">
+								Contenu entré directement par l'utilisateur.
+							</div><!-- /#milieuInterieurContenu -->
 							
 							<div id="finInterieurContenu">
 								Vide par défaut, donc `div` pas incluse.

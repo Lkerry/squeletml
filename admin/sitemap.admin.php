@@ -28,7 +28,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 		if (!empty($_POST['locAjout']))
 		{
-			$_POST['loc'] += $_POST['locAjout'];
+			if (!empty($_POST['loc']))
+			{
+				$_POST['loc'] += $_POST['locAjout'];
+			}
+			else
+			{
+				$_POST['loc'] = $_POST['locAjout'];
+			}
+			
 			$urlAjout = array_shift($_POST['locAjout']);
 		}
 	
@@ -155,11 +163,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
-	
-		if (isset($_POST['rssAjout']) && !empty($urlAjout) && !empty($_POST['rssLangueAjout']))
+		
+		$urlAjoutRss = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', $urlAjout);
+		
+		if (isset($_POST['rssAjout']) && !empty($urlAjoutRss) && !empty($_POST['rssLangueAjout']))
 		{
 			$messagesScript = '';
-			$urlAjout = securiseTexte($urlAjout);
+			$urlAjoutRss = securiseTexte($urlAjoutRss);
 			$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
 			$contenuFichierRssTableau = array ();
 			$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site');
@@ -200,7 +210,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFichierRssTableau[$rssLangueAjout] = array ();
 			}
 		
-			array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjout\n");
+			array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjoutRss\n");
 		
 			$contenuFichierRss = '';
 		
@@ -505,6 +515,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
 				echo "<div class=\"bDcorps afficher\">\n";
+				echo '<p>' . sprintf(T_("L'URL du champ %1\$s doit être absolue, par exemple %2\$s, et non simplement %3\$s."), '<code>loc</code>', "<code>$urlRacine/exemple.php</code>", '<code>exemple.php</code>') . "</p>\n";
+				
 				echo '<p>' . T_("Pour enlever une page, simplement supprimer son URL du champ.") . "</p>\n";
 			
 				echo '<p>' . T_("Aussi, chaque page est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
@@ -517,17 +529,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo '<div id="configActuelleAdminSitemapSite">' . "\n";
 				echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 			
-				if (!empty($listePages))
+				if (empty($listePages))
 				{
-					echo "<ul class=\"triable bDcorps afficher\">\n";
-					echo $listePages;
-					echo "</ul>\n";
+					$listePages = '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
+					echo "<ul class=\"bDcorps afficher\">\n";
 				}
 				else
 				{
-					echo '<p>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</p>\n";
+					echo "<ul class=\"triable bDcorps afficher\">\n";
 				}
-			
+				
+				echo $listePages;
+				echo "</ul>\n";
 				echo "</div><!-- /#configActuelleAdminSitemapSite -->\n";
 			
 				echo '<h4>' . T_("Ajouter une page") . "</h4>\n";
@@ -596,37 +609,34 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo "</ul></li>\n";
 				echo "</ul></li>\n";
 				echo "</ul>\n";
-			
+				
 				echo "<fieldset id=\"optionsAjoutAdminSitemap\">\n";
 				echo '<legend class="bDtitre">' . T_("Options d'ajout") . "</legend>\n";
-			
+	
 				echo '<div class="bDcorps afficher">' . "\n";
 				echo "<ul>\n";
-				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site');
+				$rssListeLangues = '';
+				$rssListeLangues .= '<select name="rssLangueAjout">' . "\n";
 			
-				if ($cheminFichierRss)
+				foreach ($accueil as $langueAccueil => $urlLangueAccueil)
 				{
-					$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+					$rssListeLangues .= '<option value="' . $langueAccueil . '"';
 				
-					if (!empty($rssPages))
+					if ($langueAccueil == $langueParDefaut)
 					{
-						$rssListeLangues = '';
-						$rssListeLangues .= '<select name="rssLangueAjout">' . "\n";
-					
-						foreach ($rssPages as $rssCodeLangue => $rssLangueInfos)
-						{
-							$rssListeLangues .= "<option value=\"$rssCodeLangue\">$rssCodeLangue</option>\n";
-						}
-					
-						$rssListeLangues .= "</select>";
-					
-						echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
+						$rssListeLangues .= ' selected="selected"';
 					}
+				
+					$rssListeLangues .= '>' . $langueAccueil . "</option>\n";
 				}
 			
+				$rssListeLangues .= "</select>";
+			
+				echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
 				echo "</ul>\n";
 				echo "</div><!-- /.bDcorps -->\n";
 				echo "</fieldset>\n";
+				
 				echo "</fieldset>\n";
 			
 				echo '<p><input type="submit" name="modifsSitemapSite" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
