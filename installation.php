@@ -162,7 +162,7 @@ else
 			
 			if ($serveurFreeFr)
 			{
-				$modeleHtaccess = '.htaccess.defaut.free.fr';
+				$modeleHtaccess = '.htaccess.free.fr.defaut';
 				$cheminModeleHtaccess = $racine . '/' . $modeleHtaccess;
 			}
 			else
