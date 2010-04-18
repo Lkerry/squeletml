@@ -55,7 +55,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 		$rotationSansPerteActivee = FALSE;
 	
-		if (is_executable($adminCheminExiftran) || (is_executable($adminCheminJpegtran) && function_exists('exif_read_data')))
+		if (@is_executable($adminCheminExiftran) || (@is_executable($adminCheminJpegtran) && function_exists('exif_read_data')))
 		{
 			$rotationSansPerteActivee = TRUE;
 		}
