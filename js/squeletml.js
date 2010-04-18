@@ -34,6 +34,7 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2, hauteur
 	
 	if (oIdAegaliser && (oIdDeComparaison1 || oIdDeComparaison2))
 	{
+		oIdAegaliser.style.height = 'auto';
 		var hauteurIdAegaliser = oIdAegaliser.offsetHeight;
 		
 		if (oIdDeComparaison1)
@@ -63,7 +64,7 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2, hauteur
 		
 		if (hauteurMax > hauteurIdAegaliser)
 		{
-			oIdAegaliser.style.height = hauteurMax + "px";
+			oIdAegaliser.style.height = hauteurMax + 'px';
 		}
 	}
 }
