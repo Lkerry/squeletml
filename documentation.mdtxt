@@ -154,7 +154,7 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 - `categorie.inc.php`: construit et analyse la liste des articles faisant partie de la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/categorie.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-- `config.inc.php`: contient presque toute la configuration du site, autant pour le formulaire de contact, les galeries photos, le titre du site, etc. Pour modifier une variable de ce fichier, créer le fichier `site/inc/config.inc.php` et y réaffecter les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
+- `config.inc.php`: contient presque toute la configuration du site, autant pour le formulaire de contact, les galeries photo, le titre du site, etc. Pour modifier une variable de ce fichier, créer le fichier `site/inc/config.inc.php` et y réaffecter les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
 
 	Quelques variables peuvent être utilisées dans le fichier de configuration personnalisé pour aider à construire des liens:
 
