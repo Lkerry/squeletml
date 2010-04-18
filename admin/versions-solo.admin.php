@@ -6,7 +6,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'phpinfo')
 else
 {
 	$langue = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-	$langue = strtolower(substr(chop($langue[0]), 0, 2));
+	$langue = strtolower(substr(rtrim($langue[0]), 0, 2));
 	
 	switch ($langue)
 	{
@@ -30,7 +30,7 @@ else
 			break;
 	}
 	?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $langue; ?>" lang="<?php echo $langue; ?>">
 	<head>
 		<title><?php echo $titreSite; ?></title>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -45,11 +45,19 @@ else
 		
 		<?php
 		$version = @file_get_contents('../version.txt');
-		$version = explode('-', $version);
 		
-		if (isset($version[1]))
+		if ($version !== FALSE)
 		{
-			$version = trim($version[1]);
+			$version = explode('-', $version);
+			
+			if (isset($version[1]))
+			{
+				$version = trim($version[1]);
+			}
+			else
+			{
+				$version = '';
+			}
 		}
 		else
 		{

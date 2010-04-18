@@ -1,6 +1,6 @@
 <?php
 $langue = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-$langue = strtolower(substr(chop($langue[0]), 0, 2));
+$langue = strtolower(substr(rtrim($langue[0]), 0, 2));
 
 if (file_exists('maintenance.inc.php'))
 {

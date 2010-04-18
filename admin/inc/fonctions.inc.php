@@ -960,6 +960,25 @@ function adminFichiersAinclureAuDebut($racineAdmin)
 }
 
 /*
+Retourne la version formatée de Squeletml.
+*/
+function adminFormateVersionSqueletml($version)
+{
+	$version = explode('-', $version);
+	
+	if (isset($version[1]))
+	{
+		$version = trim($version[1]);
+	}
+	else
+	{
+		$version = '';
+	}
+	
+	return $version;
+}
+
+/*
 Génère le fichier Sitemap des galeries et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits)
@@ -2326,26 +2345,6 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 	{
 		return 'inconnu';
 	}
-}
-
-/*
-Retourne la version de Squeletml.
-*/
-function adminVersionSqueletml($adresse)
-{
-	$version = contenuUrl($adresse);
-	$version = explode('-', $version);
-	
-	if (isset($version[1]))
-	{
-		$version = trim($version[1]);
-	}
-	else
-	{
-		$version = '';
-	}
-	
-	return $version;
 }
 
 /*

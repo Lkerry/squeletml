@@ -2382,7 +2382,7 @@ function langue($langue, $langueParDefaut)
 	if ($langue == 'navigateur')
 	{
 		$langue = explode(',', securiseTexte($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-		$langue = strtolower(substr(chop($langue[0]), 0, 2));
+		$langue = strtolower(substr(rtrim($langue[0]), 0, 2));
 		
 		return $langue;
 	}

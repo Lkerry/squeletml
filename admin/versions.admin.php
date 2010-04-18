@@ -4,7 +4,12 @@ $baliseTitle = T_("Version de Squeletml et autres informations");
 include $racineAdmin . '/inc/premier.inc.php';
 
 $contenuLiVersion = '';
-$versionActuelleSqueletml = adminVersionSqueletml($racine . '/version.txt');
+$versionActuelleSqueletml = @file_get_contents($racine . '/version.txt');
+
+if ($versionActuelleSqueletml !== FALSE)
+{
+	$versionActuelleSqueletml = adminFormateVersionSqueletml($versionActuelleSqueletml);
+}
 
 if (!empty($versionActuelleSqueletml))
 {
@@ -15,8 +20,13 @@ if (!empty($versionActuelleSqueletml))
 	{
 		$tableauVersionActuelleSqueletml[2] = 0;
 	}
-	
-	$derniereVersionSqueletml = adminVersionSqueletml(URL_DERNIERE_VERSION_SQUELETML);
+
+	$derniereVersionSqueletml = contenuUrl(URL_DERNIERE_VERSION_SQUELETML);
+
+	if ($derniereVersionSqueletml !== FALSE)
+	{
+		$derniereVersionSqueletml = adminFormateVersionSqueletml($derniereVersionSqueletml);
+	}
 	
 	if (!empty($derniereVersionSqueletml))
 	{
