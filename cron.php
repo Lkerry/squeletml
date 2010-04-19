@@ -38,7 +38,9 @@ if (file_exists($racine . '/init.inc.php'))
 		$dateJour = date('Y-m-d', $timestamp);
 		$dateHeure = date('H:i:s', $timestamp);
 		$rapport .= '<h1>' . sprintf(T_("Rapport d'exécution du cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . "</h1>\n";
-	
+		
+		$rapport .= '<p><em>' . sprintf(T_("Note: pour ne plus recevoir le rapport d'exécution du cron, modifier la variable %1\$s dans le fichier de configuration du site."), '<code>$envoyerRapportCron</code>') . "</em></p>\n";
+		
 		$rapport .= "<ul>\n";
 		$rapport .= '<li><a href="' . $urlRacine . '/cron.php">' . T_("Page de lancement du cron") . "</a></li>\n";
 		$rapport .= '<li><a href="' . $urlRacineAdmin . '/">' . T_("Section d'administration du site") . "</a></li>\n";
@@ -335,7 +337,16 @@ if (file_exists($racine . '/init.inc.php'))
 
 		$rapport .= "</ul>\n";
 
-		if ($adminActiverSitemapGaleries)
+		if (file_exists($cheminFichierSitemapSite) && $ajouterPagesParCronDansSitemapSite)
+		{
+			$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap du site") . "</h3>\n";
+			
+			$rapport .= "<ul>\n";
+			$rapport .= adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine, $adminPorteDocumentsDroits);
+			$rapport .= "</ul>\n";
+		}
+
+		if ($activerSitemapGaleries)
 		{
 			$rapport .= '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n";
 
@@ -353,7 +364,7 @@ if (file_exists($racine . '/init.inc.php'))
 		{
 			$rapport .= '<li>' . sprintf(T_("Le fichier d'index Sitemap (%1\$s) existe."), "<code>$cheminFichierSitemapIndex</code>") . "</li>\n";
 		}
-		elseif (@file_put_contents($cheminFichierSitemapIndex, adminPlanSitemapIndexXml($urlRacine, $adminActiverSitemapGaleries)) !== FALSE)
+		elseif (@file_put_contents($cheminFichierSitemapIndex, adminPlanSitemapIndexXml($urlRacine, $activerSitemapGaleries)) !== FALSE)
 		{
 			$rapport .= '<li>' . sprintf(T_("Le fichier d'index Sitemap (%1\$s) n'existait pas, donc un plan modèle vide a été créé."), "<code>$cheminFichierSitemapIndex</code>") . "</li>\n";
 		}

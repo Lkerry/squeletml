@@ -1,5 +1,67 @@
 <?php
 /*
+Ajoute dans le fichier Sitemap du site les pages présentes dans le fichier de configuration des catégories et dans le flux RSS des dernières publications, et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine, $adminPorteDocumentsDroits)
+{
+	$messagesScript = '';
+	$tableauUrlSitemap = array ();
+	
+	if (cheminConfigCategories($racine))
+	{
+		$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
+	
+		if (!empty($categories))
+		{
+			foreach ($categories as $categorie => $categorieInfos)
+			{
+				foreach ($categorieInfos['pages'] as $page)
+				{
+					$page = $urlRacine . '/' . superRawurlencode($page);
+					$tableauUrlSitemap[$page] = array ();
+				}
+			}
+		}
+	}
+	else
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Le fichier de configuration des catégories n'existe pas. Aucune page ne peut donc y être extraite pour ajout dans le fichier Sitemap du site.") . "</li>\n";
+	}
+	
+	if (cheminConfigFluxRssGlobal($racine, 'site'))
+	{
+		$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+
+		if (!empty($pages))
+		{
+			foreach ($pages as $codeLangue => $langueInfos)
+			{
+				foreach ($langueInfos['pages'] as $page)
+				{
+					$page = $urlRacine . '/' . superRawurlencode($page);
+					$tableauUrlSitemap[$page] = array ();
+				}
+			}
+		}
+	}
+	else
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Le fichier de configuration du flux RSS global du site n'existe pas. Aucune page ne peut donc y être extraite pour ajout dans le fichier Sitemap du site.") . "</li>\n";
+	}
+	
+	if (!empty($tableauUrlSitemap))
+	{
+		$messagesScript .= adminAjouteUrlDansSitemap($racine, 'site', $tableauUrlSitemap, $adminPorteDocumentsDroits);
+	}
+	else
+	{
+		$messagesScript .= '<li>' . T_("Aucune page à ajouter.") . "</li>\n";
+	}
+	
+	return $messagesScript;
+}
+
+/*
 Ajoute les URL fournies au fichier Sitemap demandé (du site ou des galeries) et retourne le résultat sous forme de message concaténable dans `$messagesScript`. Si une URL est déjà présente dans le fichier Sitemap, ses informations seront mises à jour, s'il y a lieu.
 */
 function adminAjouteUrlDansSitemap($racine, $type, $tableauUrl, $adminPorteDocumentsDroits)

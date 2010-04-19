@@ -244,7 +244,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo '<h3>' . T_("Enregistrement des modifications du fichier d'index Sitemap") . "</h3>\n" ;
 
 		$contenuFichier = '';
-		$contenuFichier .= adminPlanSitemapIndexXml($urlRacine, $adminActiverSitemapGaleries, FALSE);
+		$contenuFichier .= adminPlanSitemapIndexXml($urlRacine, $activerSitemapGaleries, FALSE);
 		$contenuFichier .= "  <sitemap>\n";
 		$contenuFichier .= "    <loc>$urlRacine/sitemap_site.xml</loc>\n";
 		
@@ -255,7 +255,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		$contenuFichier .= "  </sitemap>\n";
 
-		if ($adminActiverSitemapGaleries)
+		if ($activerSitemapGaleries)
 		{
 			$contenuFichier .= "  <sitemap>\n";
 			$contenuFichier .= "    <loc>$urlRacine/sitemap_galeries.xml</loc>\n";
@@ -654,7 +654,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			echo adminMessagesScript($messagesScript);
 		}
-		elseif ($_POST['sitemap'] == 'galeries' && $adminActiverSitemapGaleries)
+		elseif ($_POST['sitemap'] == 'ajoutAutomatiqueSite')
+		{
+			$messagesScript = '';
+			echo '<div class="sousBoite">' . "\n";
+			echo '<h3>' . T_("Ajout automatique des pages des catégories et du flux RSS des dernières publications dans le fichier Sitemap du site") . "</h3>\n";
+			
+			$messagesScript .= adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine, $adminPorteDocumentsDroits);
+			echo adminMessagesScript($messagesScript);
+			echo "</div><!-- /.sousBoite -->\n";
+		}
+		elseif ($_POST['sitemap'] == 'galeries' && $activerSitemapGaleries)
 		{
 			$messagesScript = '';
 			echo '<div class="sousBoite">' . "\n";
@@ -673,7 +683,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if ($adminPorteDocumentsDroits['creer'])
 				{
-					@file_put_contents($cheminFichier, adminPlanSitemapIndexXml($urlRacine, $adminActiverSitemapGaleries));
+					@file_put_contents($cheminFichier, adminPlanSitemapIndexXml($urlRacine, $activerSitemapGaleries));
 					
 					if (!file_exists($cheminFichier))
 					{
@@ -716,7 +726,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								$contenuLastmodSite = $eLastmodListe->item(0)->firstChild->nodeValue;
 							}
 						}
-						elseif ($loc == $urlRacine . '/sitemap_galeries.xml' && $adminActiverSitemapGaleries)
+						elseif ($loc == $urlRacine . '/sitemap_galeries.xml' && $activerSitemapGaleries)
 						{
 							$eLastmodListe = $eSitemap->getElementsByTagName('lastmod');
 							
@@ -733,7 +743,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$listePages .= '<li><label for="inputLastmodSite"><code>lastmod=</code></label><input id="inputLastmodSite" type="text" name="lastmodSite" value="' . $contenuLastmodSite . '" /></li>' . "\n";
 				$listePages .= "</ul></li>\n";
 				
-				if ($adminActiverSitemapGaleries)
+				if ($activerSitemapGaleries)
 				{
 					$listePages .= '<li class="liParent"><code>loc=' . $urlRacine . '/sitemap_galeries.xml</code>';
 					$listePages .= "<ul>\n";
@@ -784,10 +794,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
 	
 	<ul>
-		<?php if ($adminActiverSitemapGaleries): ?>
-			<li><?php echo T_("Le Sitemap des galeries est activé") . ' (<code>$adminActiverSitemapGaleries = TRUE;</code>).'; ?></li>
+		<?php if ($ajouterPagesParCronDansSitemapSite): ?>
+			<li><?php echo T_("L'ajout de pages par le cron dans le fichier Sitemap du site est activé") . ' (<code>$ajouterPagesParCronDansSitemapSite = TRUE;</code>).'; ?></li>
 		<?php else: ?>
-			<li><?php echo T_("Le Sitemap des galeries n'est pas activé") . ' (<code>$adminActiverSitemapGaleries = FALSE;</code>).'; ?></li>
+			<li><?php echo T_("L'ajout de pages par le cron dans le fichier Sitemap du site n'est pas activé") . ' (<code>$ajouterPagesParCronDansSitemapSite = FALSE;</code>).'; ?></li>
+		<?php endif; ?>
+		
+		<?php if ($activerSitemapGaleries): ?>
+			<li><?php echo T_("Le Sitemap des galeries est activé") . ' (<code>$activerSitemapGaleries = TRUE;</code>).'; ?></li>
+		<?php else: ?>
+			<li><?php echo T_("Le Sitemap des galeries n'est pas activé") . ' (<code>$activerSitemapGaleries = FALSE;</code>).'; ?></li>
 		<?php endif; ?>
 	</ul>
 	
@@ -806,8 +822,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				<ul>
 					<li><input id="inputSitemapSite" type="radio" name="sitemap" value="site" checked="checked" /> <label for="inputSitemapSite"><?php echo T_("Lister les pages du fichier Sitemap du site"); ?></label></li>
-
-					<?php if ($adminActiverSitemapGaleries): ?>
+					
+					<li><input id="inputSitemapAjoutAutomatiqueSite" type="radio" name="sitemap" value="ajoutAutomatiqueSite" /> <label for="inputSitemapAjoutAutomatiqueSite"><?php echo T_("Ajouter automatiquement les pages des catégories et du flux RSS des dernières publications dans le fichier Sitemap du site"); ?></label></li>
+					
+					<?php if ($activerSitemapGaleries): ?>
 						<li><input id="inputSitemapGaleries" type="radio" name="sitemap" value="galeries" /> <label for="inputSitemapGaleries"><?php echo T_("Générer automatiquement le fichier Sitemap des galeries"); ?></label></li>
 					<?php endif; ?>
 					

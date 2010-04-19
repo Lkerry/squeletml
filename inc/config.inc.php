@@ -29,11 +29,19 @@ $langueRapports = "";
 // Activation de la page du cron.
 /*
 - Si la page du cron est activée, le cron pourra être lancé en visitant `cron.php` à la racine du site.
+- Le cron pourra toujours être lancé à partir de la section d'administration du site.
 */
 $activerPageCron = TRUE; // TRUE|FALSE
 
+// Ajout par le cron de pages dans le fichier Sitemap du site.
+/*
+- Si l'ajout est activé, la liste des pages délcarées dans le flux RSS des dernières publications et dans le fichier de configuration des catégories sera comparée à celle des pages déjà présentes dans le fichier Sitemap du site. Toute page manquante y sera ajoutée.
+- Si l'ajout est désactivé, la composition du fichier Sitemap du site ne dépendra que des pages ajoutées en passant par l'interface d'administration ou à la main avec un éditeur de texte.
+*/
+$ajouterPagesParCronDansSitemapSite = TRUE; // TRUE|FALSE
+
 // Envoi d'un rapport par courriel après l'exécution du cron.
-$envoyerRapportCron = FALSE; // TRUE|FALSE
+$envoyerRapportCron = TRUE; // TRUE|FALSE
 
 // Activation de la demande de création de compte à partir du site.
 /*
@@ -722,6 +730,9 @@ $contactNombreLiensMax = 5; // Nombre maximal de liens dans un message
 ########################################################################
 
 /* ____________________ Général. ____________________ */
+
+// Activation du Sitemap des galeries.
+$activerSitemapGaleries = TRUE; // TRUE|FALSE
 
 // Génération automatisée du titre principal des pages d'une galerie.
 /*

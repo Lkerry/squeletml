@@ -1252,8 +1252,8 @@ Il est possible de recevoir un rapport par courriel au format HTML après l'exé
 
 Trois [fichiers Sitemap au format XML](http://www.sitemaps.org/fr/) sont potentiellement utilisés par Squeletml:
 
-- `sitemap_site.xml`: contient les pages du site, et est géré dans la section d'administration;
-- `sitemap_galeries.xml`: si `$adminActiverSitemapGaleries` du fichier de configuration de l'administration vaut `TRUE`, contient la page d'acceuil de chaque galerie ainsi que chaque page individuelle d'une image dans une galerie. Ce fichier est généré automatiquement dans la section d'administration ou par le cron;
+- `sitemap_site.xml`: contient les pages du site, et est géré dans la section d'administration. Si `$ajouterPagesParCronDansSitemapSite` du fichier de configuration du site vaut `TRUE`, les pages présentes dans le fichier de configuration des catégories et dans le flux RSS des dernières publications seront éventuellement ajoutées dans le fichier Sitemap du site par le cron;
+- `sitemap_galeries.xml`: si `$activerSitemapGaleries` du fichier de configuration du site vaut `TRUE`, contient la page d'acceuil de chaque galerie ainsi que chaque page individuelle d'une image dans une galerie. Ce fichier est généré automatiquement dans la section d'administration ou par le cron;
 - `sitemap_index.xml`: fichier d'index Sitemap regroupant les deux fichiers mentionnés ci-dessus. Ce fichier est généré automatiquement dans la section d'administration ou par le cron.
 
 Ces trois fichiers se trouvent à la racine du site. Les fichiers Sitemap du site et des galeries supportent la nouvelle fonction (avril 2010) d'ajout pour chaque page listée dans un fichier Sitemap classique des informations au sujet des images importantes apparaissant dans la page. Voir <a href="http://www.google.com/support/webmasters/bin/answer.py?answer=178636" hreflang="en" lang="en">«Adding image information to a Sitemap»</a>.
