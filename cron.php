@@ -39,7 +39,7 @@ if (file_exists($racine . '/init.inc.php'))
 		$dateHeure = date('H:i:s', $timestamp);
 		$rapport .= '<h1>' . sprintf(T_("Rapport d'exécution du cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . "</h1>\n";
 		
-		$rapport .= '<p><em>' . sprintf(T_("Note: pour ne plus recevoir le rapport d'exécution du cron, modifier la variable %1\$s dans le fichier de configuration du site."), '<code>$envoyerRapportCron</code>') . "</em></p>\n";
+		$rapport .= '<p><em>' . sprintf(T_("Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1\$s\">modifier la variable %2\$s dans le fichier de configuration du site</a>."), $urlRacineAdmin . '/porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php&amp;dossierCourant=../site/inc#messages', '<code>$envoyerRapportCron</code>') . "</em></p>\n";
 		
 		$rapport .= "<ul>\n";
 		$rapport .= '<li><a href="' . $urlRacine . '/cron.php">' . T_("Page de lancement du cron") . "</a></li>\n";
