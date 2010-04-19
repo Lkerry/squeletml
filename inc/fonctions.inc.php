@@ -4210,12 +4210,23 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 		else
 		{
 			$itemsFluxRss = array ();
+			$lienDesactive = FALSE;
 			$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 			
 			if (!empty($categories) && isset($categories[$id]))
 			{
 				$nombreReel = count($categories[$id]);
-				$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+				
+				if ($nombreVoulu >= $nombreReel)
+				{
+					$lienDesactive = TRUE;
+				}
+				
+				if ($nombreVoulu > $nombreReel)
+				{
+					$nombreVoulu = $nombreReel;
+				}
+				
 				$i = 0;
 				
 				foreach ($categories[$id]['pages'] as $page)
@@ -4245,14 +4256,18 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					
 					if (!empty($html))
 					{
-						if ($ajouterLien)
+						if ($ajouterLien && !$lienDesactive)
 						{
 							$categories[$id]['urlCat'] = urlCat($categories[$id], $id, $langueParDefaut);
 							$lien = $urlRacine . '/' . $categories[$id]['urlCat'];
-							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
+							$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
+						}
+						else
+						{
+							$codeLien = '';
 						}
 						
-						$html = "<div class=\"publicationsRecentes publicationsRecentesCategorie\">\n<ul>\n$html</ul>\n</div>\n";
+						$html = "<div class=\"publicationsRecentes publicationsRecentesCategorie\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
 					}
 				}
 			}
@@ -4285,6 +4300,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 		}
 		else
 		{
+			$lienDesactive = FALSE;
 			$urlGalerie = '';
 			$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
 			
@@ -4361,7 +4377,16 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					array_multisort($vignettesDate, SORT_DESC, $vignettes);
 					
 					$nombreReel = count($vignettes);
-					$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+					
+					if ($nombreVoulu >= $nombreReel)
+					{
+						$lienDesactive = TRUE;
+					}
+					
+					if ($nombreVoulu > $nombreReel)
+					{
+						$nombreVoulu = $nombreReel;
+					}
 					
 					for ($i = 0; $i < $nombreVoulu; $i++)
 					{
@@ -4370,12 +4395,16 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					
 					if (!empty($html))
 					{
-						if ($ajouterLien)
+						if ($ajouterLien && !$lienDesactive)
 						{
-							$html .= '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'images") . "</a></p>\n";
+							$codeLien = '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'images") . "</a></p>\n";
 						}
-				
-						$html = "<div class=\"publicationsRecentes publicationsRecentesGalerie\">\n<ul>\n$html</ul>\n</div>\n";
+						else
+						{
+							$codeLien = '';
+						}
+						
+						$html = "<div class=\"publicationsRecentes publicationsRecentesGalerie\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
 					}
 				}
 			}
@@ -4408,12 +4437,23 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 		}
 		else
 		{
+			$lienDesactive = FALSE;
 			$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
 			
 			if (!empty($itemsFluxRss))
 			{
 				$nombreReel = count($itemsFluxRss);
-				$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+				
+				if ($nombreVoulu >= $nombreReel)
+				{
+					$lienDesactive = TRUE;
+				}
+				
+				if ($nombreVoulu > $nombreReel)
+				{
+					$nombreVoulu = $nombreReel;
+				}
+				
 				$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu);
 			}
 			
@@ -4464,7 +4504,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 			
 				if (!empty($html))
 				{
-					if ($ajouterLien)
+					if ($ajouterLien && !$lienDesactive)
 					{
 						$cheminFichier = cheminConfigCategories($racine);
 					
@@ -4479,10 +4519,14 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					
 						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('galeries'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 						$lien = $urlRacine . '/' . $categories['galeries']['urlCat'];
-						$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'images") . "</a></p>\n";
+						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'images") . "</a></p>\n";
 					}
-				
-					$html = "<div class=\"publicationsRecentes publicationsRecentesGaleries\">\n<ul>\n$html</ul>\n</div>\n";
+					else
+					{
+						$codeLien = '';
+					}
+					
+					$html = "<div class=\"publicationsRecentes publicationsRecentesGaleries\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
 				}
 			}
 			
@@ -4514,13 +4558,24 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 		}
 		else
 		{
+			$lienDesactive = FALSE;
 			$itemsFluxRss = array ();
 			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
 			
 			if (!empty($pages) && isset($pages[$langue]['pages']))
 			{
 				$nombreReel = count($pages[$langue]['pages']);
-				$nombreVoulu = $nombreVoulu > $nombreReel ? $nombreReel : $nombreVoulu;
+				
+				if ($nombreVoulu >= $nombreReel)
+				{
+					$lienDesactive = TRUE;
+				}
+				
+				if ($nombreVoulu > $nombreReel)
+				{
+					$nombreVoulu = $nombreReel;
+				}
+				
 				$i = 0;
 				
 				foreach ($pages[$langue]['pages'] as $page)
@@ -4550,7 +4605,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					
 					if (!empty($html))
 					{
-						if ($ajouterLien)
+						if ($ajouterLien && !$lienDesactive)
 						{
 							$cheminFichier = cheminConfigCategories($racine);
 							
@@ -4565,10 +4620,14 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 							
 							$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('site'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 							$lien = $urlRacine . '/' . $categories['site']['urlCat'];
-							$html .= '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
+							$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
+						}
+						else
+						{
+							$codeLien = '';
 						}
 						
-						$html = "<div class=\"publicationsRecentes publicationsRecentesSite\">\n<ul>\n$html</ul>\n</div>\n";
+						$html = "<div class=\"publicationsRecentes publicationsRecentesSite\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
 					}
 				}
 			}

@@ -396,6 +396,10 @@ h1#titrePage404 {
 
 /* Publications récentes (voir la fonction `publicationsRecentes()`). */
 
+p.publicationsRecentesLien {
+	margin-left: 20px;
+}
+
 div.publicationsRecentesGalerie ul, div.publicationsRecentesGaleries ul {
 	list-style-type: none;
 }
