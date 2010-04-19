@@ -538,6 +538,13 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 		<div id="milieuInterieurContenu">
 			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada<!-- /aperçu --> et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam.</p>
 
+	Les espaces dans le commentaire `<!-- /aperçu -->` sont optionnelles, et le «c» peut s'écrire sans cédille. Voici des exemples de commentaire valide:
+
+	- `<!-- /aperçu -->`
+	- `<!--/aperçu-->`
+	- `<!-- /apercu -->`
+	- `<!--/apercu-->`
+
 	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
 
 	Sinon si `$apercu` vaut exactement `automatique` (`$apercu = "automatique";`), le commentaire HTML inséré sera donc `<!-- APERÇU: automatique -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu les premiers caractères de la `div` `milieuInterieurContenu`. Le nombre de caractères correspond à la valeur de la variable `$tailleApercuAutomatique` du fichier de configuration du site.
