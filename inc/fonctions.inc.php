@@ -2145,7 +2145,7 @@ function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique, $html = '
 		{
 			if ($resultatApercu[1] == 'interne')
 			{
-				if (preg_match('|^(.+?)<!-- ?/aper[çc]u ?-->|s', $infosPage['contenu'], $resultatInterne))
+				if (preg_match('#^(.+?)<!-- ?/aper(ç|c)u ?-->#s', $infosPage['contenu'], $resultatInterne))
 				{
 					$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]) . ' […]');
 					$commentairesHtmlSupprimes = TRUE;
