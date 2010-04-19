@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-18 14:54-0400\n"
+"POT-Creation-Date: 2010-04-19 09:09-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -298,11 +298,11 @@ msgstr "L'utilisateur <em>%1$s</em> a déjà les droits."
 #: installation.php:335 admin/categories.admin.php:281
 #: admin/categories.admin.php:482 admin/categories.admin.php:528
 #: admin/sitemap.admin.php:193 admin/sitemap.admin.php:652
-#: admin/sitemap.admin.php:764 admin/rss.admin.php:174 admin/rss.admin.php:339
+#: admin/sitemap.admin.php:774 admin/rss.admin.php:174 admin/rss.admin.php:339
 #: admin/galeries.admin.php:1070 admin/galeries.admin.php:1278
-#: admin/inc/fonctions.inc.php:39 admin/inc/fonctions.inc.php:468
-#: admin/inc/fonctions.inc.php:752 admin/inc/fonctions.inc.php:811
-#: admin/inc/fonctions.inc.php:880 admin/acces.admin.php:117
+#: admin/inc/fonctions.inc.php:101 admin/inc/fonctions.inc.php:530
+#: admin/inc/fonctions.inc.php:814 admin/inc/fonctions.inc.php:873
+#: admin/inc/fonctions.inc.php:942 admin/acces.admin.php:117
 #: admin/acces.admin.php:147 admin/acces.admin.php:157
 #: admin/acces.admin.php:198 admin/acces.admin.php:208
 #: admin/acces.admin.php:245 admin/acces.admin.php:255
@@ -698,7 +698,7 @@ msgstr ""
 "l'intérieur de la liste."
 
 #: admin/categories.admin.php:196 admin/sitemap.admin.php:530
-#: admin/sitemap.admin.php:748 admin/sitemap.admin.php:805
+#: admin/sitemap.admin.php:758 admin/sitemap.admin.php:821
 #: admin/rss.admin.php:123 admin/rss.admin.php:285 admin/rss.admin.php:514
 #: admin/galeries.admin.php:1567 admin/galeries.admin.php:1645
 #: admin/galeries.admin.php:1739 admin/galeries.admin.php:1806
@@ -713,7 +713,7 @@ msgid "Options"
 msgstr "Options"
 
 #: admin/categories.admin.php:199 admin/sitemap.admin.php:533
-#: admin/sitemap.admin.php:750 admin/sitemap.admin.php:784
+#: admin/sitemap.admin.php:760 admin/sitemap.admin.php:794
 #: admin/rss.admin.php:126 admin/rss.admin.php:288 admin/rss.admin.php:487
 msgid "Configuration actuelle"
 msgstr "Configuration actuelle"
@@ -795,7 +795,7 @@ msgid "Ajouter la page dans le <a href=\"%1$s\">fichier Sitemap du site</a>."
 msgstr "Ajouter la page dans le <a href=\"%1$s\">fichier Sitemap du site</a>."
 
 #: admin/categories.admin.php:274 admin/sitemap.admin.php:645
-#: admin/sitemap.admin.php:757 admin/rss.admin.php:167 admin/rss.admin.php:331
+#: admin/sitemap.admin.php:767 admin/rss.admin.php:167 admin/rss.admin.php:331
 msgid "Enregistrer les modifications"
 msgstr "Enregistrer les modifications"
 
@@ -804,36 +804,36 @@ msgid "Enregistrement des modifications des catégories"
 msgstr "Enregistrement des modifications des catégories"
 
 #: admin/categories.admin.php:476 admin/galeries.admin.php:1272
-#: admin/inc/fonctions.inc.php:746 admin/inc/fonctions.inc.php:805
-#: admin/inc/fonctions.inc.php:874
+#: admin/inc/fonctions.inc.php:808 admin/inc/fonctions.inc.php:867
+#: admin/inc/fonctions.inc.php:936
 msgid "Les modifications ont été enregistrées."
 msgstr "Les modifications ont été enregistrées."
 
 #: admin/categories.admin.php:478 admin/galeries.admin.php:1274
-#: admin/inc/fonctions.inc.php:748 admin/inc/fonctions.inc.php:807
-#: admin/inc/fonctions.inc.php:876
+#: admin/inc/fonctions.inc.php:810 admin/inc/fonctions.inc.php:869
+#: admin/inc/fonctions.inc.php:938
 #, php-format
 msgid "Voici le contenu qui a été enregistré dans le fichier %1$s:"
 msgstr "Voici le contenu qui a été enregistré dans le fichier %1$s:"
 
 #: admin/categories.admin.php:484 admin/categories.admin.php:489
 #: admin/galeries.admin.php:1280 admin/galeries.admin.php:1285
-#: admin/inc/fonctions.inc.php:495 admin/inc/fonctions.inc.php:754
-#: admin/inc/fonctions.inc.php:759 admin/inc/fonctions.inc.php:813
-#: admin/inc/fonctions.inc.php:818 admin/inc/fonctions.inc.php:882
-#: admin/inc/fonctions.inc.php:887
+#: admin/inc/fonctions.inc.php:557 admin/inc/fonctions.inc.php:816
+#: admin/inc/fonctions.inc.php:821 admin/inc/fonctions.inc.php:875
+#: admin/inc/fonctions.inc.php:880 admin/inc/fonctions.inc.php:944
+#: admin/inc/fonctions.inc.php:949
 msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
 msgstr "Voici le contenu qui aurait été enregistré dans le fichier:"
 
 #: admin/categories.admin.php:496 admin/galeries.admin.php:1292
-#: admin/galeries.admin.php:1385 admin/inc/fonctions.inc.php:502
-#: admin/inc/fonctions.inc.php:766 admin/inc/fonctions.inc.php:825
-#: admin/inc/fonctions.inc.php:894
+#: admin/galeries.admin.php:1385 admin/inc/fonctions.inc.php:564
+#: admin/inc/fonctions.inc.php:828 admin/inc/fonctions.inc.php:887
+#: admin/inc/fonctions.inc.php:956
 msgid "Sélectionner le résultat."
 msgstr "Sélectionner le résultat."
 
 #: admin/categories.admin.php:522 admin/sitemap.admin.php:187
-#: admin/rss.admin.php:202 admin/inc/fonctions.inc.php:795
+#: admin/rss.admin.php:202 admin/inc/fonctions.inc.php:857
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du flux RSS des dernières publications "
@@ -949,7 +949,7 @@ msgstr "Aller au contenu"
 msgid "Haut"
 msgstr "Haut"
 
-#: admin/sitemap.admin.php:3 admin/sitemap.admin.php:800 cron.php:316
+#: admin/sitemap.admin.php:3 admin/sitemap.admin.php:816 cron.php:318
 msgid "Fichiers Sitemap"
 msgstr "Fichiers Sitemap"
 
@@ -965,8 +965,8 @@ msgstr "Enregistrement des modifications du fichier Sitemap du site"
 msgid "Enregistrement des modifications du fichier d'index Sitemap"
 msgstr "Enregistrement des modifications du fichier d'index Sitemap"
 
-#: admin/sitemap.admin.php:293 admin/sitemap.admin.php:680
-#: admin/inc/fonctions.inc.php:979
+#: admin/sitemap.admin.php:293 admin/sitemap.admin.php:690
+#: admin/inc/fonctions.inc.php:1060
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1$s "
@@ -977,8 +977,8 @@ msgstr ""
 "n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier "
 "manuellement."
 
-#: admin/sitemap.admin.php:298 admin/sitemap.admin.php:685
-#: admin/inc/fonctions.inc.php:984
+#: admin/sitemap.admin.php:298 admin/sitemap.admin.php:695
+#: admin/inc/fonctions.inc.php:1065
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1$s "
@@ -1014,15 +1014,23 @@ msgstr ""
 "correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à "
 "l'intérieur de la liste."
 
-#: admin/sitemap.admin.php:661 cron.php:340
+#: admin/sitemap.admin.php:661
+msgid ""
+"Ajout automatique des pages des catégories et du flux RSS des dernières "
+"publications dans le fichier Sitemap du site"
+msgstr ""
+"Ajout automatique des pages des catégories et du flux RSS des dernières "
+"publications dans le fichier Sitemap du site"
+
+#: admin/sitemap.admin.php:671 cron.php:351
 msgid "Génération automatique du fichier Sitemap des galeries"
 msgstr "Génération automatique du fichier Sitemap des galeries"
 
-#: admin/sitemap.admin.php:745
+#: admin/sitemap.admin.php:755
 msgid "Liste des fichiers Sitemap regroupés dans le fichier d'index Sitemap"
 msgstr "Liste des fichiers Sitemap regroupés dans le fichier d'index Sitemap"
 
-#: admin/sitemap.admin.php:773 cron.php:367
+#: admin/sitemap.admin.php:783 cron.php:378
 msgid ""
 "Vérification de la déclaration du fichier d'index Sitemap dans le fichier "
 "<code>robots.txt</code>"
@@ -1030,37 +1038,56 @@ msgstr ""
 "Vérification de la déclaration du fichier d'index Sitemap dans le fichier "
 "<code>robots.txt</code>"
 
-#: admin/sitemap.admin.php:788
+#: admin/sitemap.admin.php:798
+msgid "L'ajout de pages par le cron dans le fichier Sitemap du site est activé"
+msgstr ""
+"L'ajout de pages par le cron dans le fichier Sitemap du site est activé"
+
+#: admin/sitemap.admin.php:800
+msgid ""
+"L'ajout de pages par le cron dans le fichier Sitemap du site n'est pas activé"
+msgstr ""
+"L'ajout de pages par le cron dans le fichier Sitemap du site n'est pas activé"
+
+#: admin/sitemap.admin.php:804
 msgid "Le Sitemap des galeries est activé"
 msgstr "Le Sitemap des galeries est activé"
 
-#: admin/sitemap.admin.php:790
+#: admin/sitemap.admin.php:806
 msgid "Le Sitemap des galeries n'est pas activé"
 msgstr "Le Sitemap des galeries n'est pas activé"
 
-#: admin/sitemap.admin.php:795 admin/rss.admin.php:504
+#: admin/sitemap.admin.php:811 admin/rss.admin.php:504
 msgid "Modifier cette configuration."
 msgstr "Modifier cette configuration."
 
-#: admin/sitemap.admin.php:808
+#: admin/sitemap.admin.php:824
 msgid "Lister les pages du fichier Sitemap du site"
 msgstr "Lister les pages du fichier Sitemap du site"
 
-#: admin/sitemap.admin.php:811
+#: admin/sitemap.admin.php:826
+msgid ""
+"Ajouter automatiquement les pages des catégories et du flux RSS des "
+"dernières publications dans le fichier Sitemap du site"
+msgstr ""
+"Ajouter automatiquement les pages des catégories et du flux RSS des "
+"dernières publications dans le fichier Sitemap du site"
+
+#: admin/sitemap.admin.php:829
 msgid "Générer automatiquement le fichier Sitemap des galeries"
 msgstr "Générer automatiquement le fichier Sitemap des galeries"
 
-#: admin/sitemap.admin.php:814
+#: admin/sitemap.admin.php:832
 msgid "Lister les fichiers Sitemap regroupés dans le fichier d'index Sitemap"
 msgstr "Lister les fichiers Sitemap regroupés dans le fichier d'index Sitemap"
 
-#: admin/sitemap.admin.php:815
+#: admin/sitemap.admin.php:833
 #, php-format
 msgid "Vérifier la déclaration du fichier d'index Sitemap dans le fichier %1$s"
 msgstr ""
 "Vérifier la déclaration du fichier d'index Sitemap dans le fichier %1$s"
 
-#: admin/sitemap.admin.php:819
+#: admin/sitemap.admin.php:837
 msgid "Choisir"
 msgstr "Choisir"
 
@@ -1072,7 +1099,7 @@ msgstr "Flux RSS globaux"
 msgid "Gestion des flux RSS globaux"
 msgstr "Gestion des flux RSS globaux"
 
-#: admin/rss.admin.php:38 admin/inc/fonctions.inc.php:731
+#: admin/rss.admin.php:38 admin/inc/fonctions.inc.php:793
 #, php-format
 msgid ""
 "Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux "
@@ -1084,7 +1111,7 @@ msgstr ""
 "échoué. Veuillez créer ce fichier manuellement."
 
 #: admin/rss.admin.php:43 admin/galeries.admin.php:1064
-#: admin/inc/fonctions.inc.php:736
+#: admin/inc/fonctions.inc.php:798
 #, php-format
 msgid ""
 "Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux "
@@ -1139,7 +1166,7 @@ msgstr "Le fichier est vide. Aucune galerie n'y est listée."
 msgid "Ajouter une galerie"
 msgstr "Ajouter une galerie"
 
-#: admin/rss.admin.php:197 admin/inc/fonctions.inc.php:790
+#: admin/rss.admin.php:197 admin/inc/fonctions.inc.php:852
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du flux RSS des dernières publications "
@@ -1263,7 +1290,7 @@ msgstr "Redimensionner"
 msgid "Supprimer"
 msgstr "Supprimer"
 
-#: admin/galeries.admin.php:18 admin/inc/fonctions.inc.php:1402
+#: admin/galeries.admin.php:18 admin/inc/fonctions.inc.php:1483
 #: admin/porte-documents.admin.php:823 admin/porte-documents.admin.php:1615
 #: admin/porte-documents.admin.php:1619
 msgid "Renommer"
@@ -1427,7 +1454,7 @@ msgstr ""
 "Renommage de %1$s impossible, car un fichier %2$s existe déjà dans le "
 "dossier %3$s."
 
-#: admin/galeries.admin.php:381 admin/inc/fonctions.inc.php:1905
+#: admin/galeries.admin.php:381 admin/inc/fonctions.inc.php:1986
 #, php-format
 msgid "Renommage de %1$s en %2$s impossible."
 msgstr "Renommage de %1$s en %2$s impossible."
@@ -2273,7 +2300,27 @@ msgstr ""
 msgid "Afficher un fichier de configuration"
 msgstr "Afficher un fichier de configuration"
 
-#: admin/inc/fonctions.inc.php:24 admin/inc/fonctions.inc.php:859
+#: admin/inc/fonctions.inc.php:28
+msgid ""
+"Le fichier de configuration des catégories n'existe pas. Aucune page ne peut "
+"donc y être extraite pour ajout dans le fichier Sitemap du site."
+msgstr ""
+"Le fichier de configuration des catégories n'existe pas. Aucune page ne peut "
+"donc y être extraite pour ajout dans le fichier Sitemap du site."
+
+#: admin/inc/fonctions.inc.php:49
+msgid ""
+"Le fichier de configuration du flux RSS global du site n'existe pas. Aucune "
+"page ne peut donc y être extraite pour ajout dans le fichier Sitemap du site."
+msgstr ""
+"Le fichier de configuration du flux RSS global du site n'existe pas. Aucune "
+"page ne peut donc y être extraite pour ajout dans le fichier Sitemap du site."
+
+#: admin/inc/fonctions.inc.php:58
+msgid "Aucune page à ajouter."
+msgstr "Aucune page à ajouter."
+
+#: admin/inc/fonctions.inc.php:86 admin/inc/fonctions.inc.php:921
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du fichier Sitemap puisque %1$s n'existe "
@@ -2284,7 +2331,7 @@ msgstr ""
 "pas, et sa création automatique a échoué. Veuillez créer ce fichier "
 "manuellement."
 
-#: admin/inc/fonctions.inc.php:29 admin/inc/fonctions.inc.php:864
+#: admin/inc/fonctions.inc.php:91 admin/inc/fonctions.inc.php:926
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du fichier Sitemap puisque %1$s n'existe "
@@ -2293,17 +2340,17 @@ msgstr ""
 "Aucune page ne peut faire partie du fichier Sitemap puisque %1$s n'existe "
 "pas."
 
-#: admin/inc/fonctions.inc.php:67
+#: admin/inc/fonctions.inc.php:129
 #, php-format
 msgid "La page %1$s se trouve déjà dans le fichier Sitemap."
 msgstr "La page %1$s se trouve déjà dans le fichier Sitemap."
 
-#: admin/inc/fonctions.inc.php:88
+#: admin/inc/fonctions.inc.php:150
 #, php-format
 msgid "L'image %1$s se trouve déjà dans le fichier Sitemap pour la page %2$s."
 msgstr "L'image %1$s se trouve déjà dans le fichier Sitemap pour la page %2$s."
 
-#: admin/inc/fonctions.inc.php:104
+#: admin/inc/fonctions.inc.php:166
 #, php-format
 msgid ""
 "Mise à jour de la balise %1$s (de %2$s vers %3$s) pour l'image %4$s de la "
@@ -2312,7 +2359,7 @@ msgstr ""
 "Mise à jour de la balise %1$s (de %2$s vers %3$s) pour l'image %4$s de la "
 "page %5$s."
 
-#: admin/inc/fonctions.inc.php:110
+#: admin/inc/fonctions.inc.php:172
 #, php-format
 msgid ""
 "Suppression de la balise %1$s (qui valait %2$s) pour l'image %3$s de la page "
@@ -2321,8 +2368,8 @@ msgstr ""
 "Suppression de la balise %1$s (qui valait %2$s) pour l'image %3$s de la page "
 "%4$s."
 
-#: admin/inc/fonctions.inc.php:119 admin/inc/fonctions.inc.php:144
-#: admin/inc/fonctions.inc.php:223
+#: admin/inc/fonctions.inc.php:181 admin/inc/fonctions.inc.php:206
+#: admin/inc/fonctions.inc.php:285
 #, php-format
 msgid ""
 "Ajout de la balise %1$s (dont la valeur est %2$s) pour l'image %3$s de la "
@@ -2331,44 +2378,44 @@ msgstr ""
 "Ajout de la balise %1$s (dont la valeur est %2$s) pour l'image %3$s de la "
 "page %4$s."
 
-#: admin/inc/fonctions.inc.php:129 admin/inc/fonctions.inc.php:208
+#: admin/inc/fonctions.inc.php:191 admin/inc/fonctions.inc.php:270
 #, php-format
 msgid ""
 "Ajout dans le fichier Sitemap de l'image %1$s pour la page %2$s effectué."
 msgstr ""
 "Ajout dans le fichier Sitemap de l'image %1$s pour la page %2$s effectué."
 
-#: admin/inc/fonctions.inc.php:167
+#: admin/inc/fonctions.inc.php:229
 #, php-format
 msgid "Mise à jour de la balise %1$s (de %2$s vers %3$s) pour l'URL %4$s."
 msgstr "Mise à jour de la balise %1$s (de %2$s vers %3$s) pour l'URL %4$s."
 
-#: admin/inc/fonctions.inc.php:173
+#: admin/inc/fonctions.inc.php:235
 #, php-format
 msgid "Suppression de la balise %1$s (qui valait %2$s) pour l'URL %3$s."
 msgstr "Suppression de la balise %1$s (qui valait %2$s) pour l'URL %3$s."
 
-#: admin/inc/fonctions.inc.php:182 admin/inc/fonctions.inc.php:237
+#: admin/inc/fonctions.inc.php:244 admin/inc/fonctions.inc.php:299
 #, php-format
 msgid "Ajout de la balise %1$s (dont la valeur est %2$s) pour l'URL %3$s."
 msgstr "Ajout de la balise %1$s (dont la valeur est %2$s) pour l'URL %3$s."
 
-#: admin/inc/fonctions.inc.php:193
+#: admin/inc/fonctions.inc.php:255
 #, php-format
 msgid "Ajout de l'URL %1$s dans le fichier Sitemap effectué."
 msgstr "Ajout de l'URL %1$s dans le fichier Sitemap effectué."
 
-#: admin/inc/fonctions.inc.php:328
+#: admin/inc/fonctions.inc.php:390
 #, php-format
 msgid "Modification des permissions de %1$s effectuée (de %2$s vers %3$s)."
 msgstr "Modification des permissions de %1$s effectuée (de %2$s vers %3$s)."
 
-#: admin/inc/fonctions.inc.php:332
+#: admin/inc/fonctions.inc.php:394
 #, php-format
 msgid "Modification des permissions de %1$s impossible (de %2$s vers %3$s)."
 msgstr "Modification des permissions de %1$s impossible (de %2$s vers %3$s)."
 
-#: admin/inc/fonctions.inc.php:337
+#: admin/inc/fonctions.inc.php:399
 #, php-format
 msgid ""
 "Modification des permissions de %1$s non nécessaire (demande de %2$s vers %3"
@@ -2377,23 +2424,23 @@ msgstr ""
 "Modification des permissions de %1$s non nécessaire (demande de %2$s vers %3"
 "$s)."
 
-#: admin/inc/fonctions.inc.php:374 admin/inc/fonctions.inc.php:432
-#: admin/inc/fonctions.inc.php:1954
+#: admin/inc/fonctions.inc.php:436 admin/inc/fonctions.inc.php:494
+#: admin/inc/fonctions.inc.php:2035
 #, php-format
 msgid "Accès au dossier %1$s impossible."
 msgstr "Accès au dossier %1$s impossible."
 
-#: admin/inc/fonctions.inc.php:389
+#: admin/inc/fonctions.inc.php:451
 #, php-format
 msgid "Copie de %1$s vers %2$s effectuée."
 msgstr "Copie de %1$s vers %2$s effectuée."
 
-#: admin/inc/fonctions.inc.php:393
+#: admin/inc/fonctions.inc.php:455
 #, php-format
 msgid "Copie de %1$s vers %2$s impossible."
 msgstr "Copie de %1$s vers %2$s impossible."
 
-#: admin/inc/fonctions.inc.php:453
+#: admin/inc/fonctions.inc.php:515
 #, php-format
 msgid ""
 "Le fichier d'index Sitemap ne peut être déclaré puisque %1$s n'existe pas, "
@@ -2402,38 +2449,38 @@ msgstr ""
 "Le fichier d'index Sitemap ne peut être déclaré puisque %1$s n'existe pas, "
 "et sa création automatique a échoué. Veuillez créer ce fichier manuellement."
 
-#: admin/inc/fonctions.inc.php:458
+#: admin/inc/fonctions.inc.php:520
 #, php-format
 msgid ""
 "Le fichier d'index Sitemap ne peut être déclaré puisque %1$s n'existe pas."
 msgstr ""
 "Le fichier d'index Sitemap ne peut être déclaré puisque %1$s n'existe pas."
 
-#: admin/inc/fonctions.inc.php:477
+#: admin/inc/fonctions.inc.php:539
 #, php-format
 msgid "Le fichier d'index Sitemap est déjà déclaré dans le fichier %1$s."
 msgstr "Le fichier d'index Sitemap est déjà déclaré dans le fichier %1$s."
 
-#: admin/inc/fonctions.inc.php:486
+#: admin/inc/fonctions.inc.php:548
 #, php-format
 msgid "Déclaration du fichier d'index Sitemap dans le fichier %1$s effectuée."
 msgstr "Déclaration du fichier d'index Sitemap dans le fichier %1$s effectuée."
 
-#: admin/inc/fonctions.inc.php:489
+#: admin/inc/fonctions.inc.php:551
 msgid "Voici le contenu qui a été enregistré dans le fichier:"
 msgstr "Voici le contenu qui a été enregistré dans le fichier:"
 
-#: admin/inc/fonctions.inc.php:493
+#: admin/inc/fonctions.inc.php:555
 #, php-format
 msgid "Déclaration du fichier d'index Sitemap dans le fichier %1$s impossible."
 msgstr ""
 "Déclaration du fichier d'index Sitemap dans le fichier %1$s impossible."
 
-#: admin/inc/fonctions.inc.php:1067
+#: admin/inc/fonctions.inc.php:1148
 msgid "Aucune page à ajouter dans le fichier Sitemap des galeries."
 msgstr "Aucune page à ajouter dans le fichier Sitemap des galeries."
 
-#: admin/inc/fonctions.inc.php:1073
+#: admin/inc/fonctions.inc.php:1154
 msgid ""
 "Le fichier Sitemap des galeries ne peut pas être généré puisque le fichier "
 "de configuration du flux RSS global des galerie n'existe pas, et c'est dans "
@@ -2443,91 +2490,91 @@ msgstr ""
 "de configuration du flux RSS global des galerie n'existe pas, et c'est dans "
 "ce fichier que la liste des galeries existantes est extraite."
 
-#: admin/inc/fonctions.inc.php:1182
+#: admin/inc/fonctions.inc.php:1263
 msgid "dossier"
 msgstr "dossier"
 
-#: admin/inc/fonctions.inc.php:1224
+#: admin/inc/fonctions.inc.php:1305
 #, php-format
 msgid "Aperçu de l'image %1$s"
 msgstr "Aperçu de l'image %1$s"
 
-#: admin/inc/fonctions.inc.php:1228
+#: admin/inc/fonctions.inc.php:1309
 msgid "Propriétés"
 msgstr "Propriétés"
 
-#: admin/inc/fonctions.inc.php:1229
+#: admin/inc/fonctions.inc.php:1310
 #, php-format
 msgid "<strong>Type MIME:</strong> %1$s"
 msgstr "<strong>Type MIME:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1233
+#: admin/inc/fonctions.inc.php:1314
 #, php-format
 msgid "<strong>Taille:</strong> %1$s Kio (%2$s octets)"
 msgstr "<strong>Taille:</strong> %1$s Kio (%2$s octets)"
 
-#: admin/inc/fonctions.inc.php:1237
+#: admin/inc/fonctions.inc.php:1318
 #, php-format
 msgid "<strong>Dimensions:</strong> %1$s"
 msgstr "<strong>Dimensions:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1242
+#: admin/inc/fonctions.inc.php:1323
 #, php-format
 msgid "<strong>Aperçu:</strong> %1$s"
 msgstr "<strong>Aperçu:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1245
+#: admin/inc/fonctions.inc.php:1326
 #, php-format
 msgid "<strong>Dernier accès:</strong> %1$s"
 msgstr "<strong>Dernier accès:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1246
+#: admin/inc/fonctions.inc.php:1327
 #, php-format
 msgid "<strong>Dernière modification:</strong> %1$s"
 msgstr "<strong>Dernière modification:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1250
+#: admin/inc/fonctions.inc.php:1331
 #, php-format
 msgid "<strong>uid:</strong> %1$s"
 msgstr "<strong>uid:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1255
+#: admin/inc/fonctions.inc.php:1336
 #, php-format
 msgid "<strong>gid:</strong> %1$s"
 msgstr "<strong>gid:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1259
+#: admin/inc/fonctions.inc.php:1340
 #, php-format
 msgid "<strong>Permissions:</strong> %1$s"
 msgstr "<strong>Permissions:</strong> %1$s"
 
-#: admin/inc/fonctions.inc.php:1367
+#: admin/inc/fonctions.inc.php:1448
 msgid "Vide."
 msgstr "Vide."
 
-#: admin/inc/fonctions.inc.php:1371
+#: admin/inc/fonctions.inc.php:1452
 #, php-format
 msgid "Affichage désactivé. <a href=\"%1$s\">Lister ce dossier.</a>"
 msgstr "Affichage désactivé. <a href=\"%1$s\">Lister ce dossier.</a>"
 
-#: admin/inc/fonctions.inc.php:1390 admin/porte-documents.admin.php:1607
+#: admin/inc/fonctions.inc.php:1471 admin/porte-documents.admin.php:1607
 msgid "Télécharger"
 msgstr "Télécharger"
 
-#: admin/inc/fonctions.inc.php:1396
+#: admin/inc/fonctions.inc.php:1477
 msgid "Éditer"
 msgstr "Éditer"
 
-#: admin/inc/fonctions.inc.php:1412
+#: admin/inc/fonctions.inc.php:1493
 #, php-format
 msgid "Afficher «%1$s»"
 msgstr "Afficher «%1$s»"
 
-#: admin/inc/fonctions.inc.php:1632
+#: admin/inc/fonctions.inc.php:1713
 msgid "Aucune erreur, le téléchargement est correct."
 msgstr "Aucune erreur, le téléchargement est correct."
 
-#: admin/inc/fonctions.inc.php:1636
+#: admin/inc/fonctions.inc.php:1717
 msgid ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
 "configurée dans le <code>php.ini</code>."
@@ -2535,7 +2582,7 @@ msgstr ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
 "configurée dans le <code>php.ini</code>."
 
-#: admin/inc/fonctions.inc.php:1640
+#: admin/inc/fonctions.inc.php:1721
 msgid ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
 "été spécifiée dans le formulaire HTML."
@@ -2543,79 +2590,79 @@ msgstr ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
 "été spécifiée dans le formulaire HTML."
 
-#: admin/inc/fonctions.inc.php:1644
+#: admin/inc/fonctions.inc.php:1725
 msgid "Le fichier n'a été que partiellement téléchargé."
 msgstr "Le fichier n'a été que partiellement téléchargé."
 
-#: admin/inc/fonctions.inc.php:1648
+#: admin/inc/fonctions.inc.php:1729
 msgid "Aucun fichier n'a été téléchargé."
 msgstr "Aucun fichier n'a été téléchargé."
 
-#: admin/inc/fonctions.inc.php:1652
+#: admin/inc/fonctions.inc.php:1733
 msgid "Un dossier temporaire est manquant."
 msgstr "Un dossier temporaire est manquant."
 
-#: admin/inc/fonctions.inc.php:1656
+#: admin/inc/fonctions.inc.php:1737
 msgid "Échec de l'écriture du fichier sur le disque."
 msgstr "Échec de l'écriture du fichier sur le disque."
 
-#: admin/inc/fonctions.inc.php:1660
+#: admin/inc/fonctions.inc.php:1741
 msgid "L'envoi de fichier est arrêté par l'extension."
 msgstr "L'envoi de fichier est arrêté par l'extension."
 
-#: admin/inc/fonctions.inc.php:1709
+#: admin/inc/fonctions.inc.php:1790
 #, php-format
 msgid "Création du dossier %1$s effectuée."
 msgstr "Création du dossier %1$s effectuée."
 
-#: admin/inc/fonctions.inc.php:1713
+#: admin/inc/fonctions.inc.php:1794
 #, php-format
 msgid "Création du dossier %1$s impossible."
 msgstr "Création du dossier %1$s impossible."
 
-#: admin/inc/fonctions.inc.php:1857
+#: admin/inc/fonctions.inc.php:1938
 msgid "La réécriture d'URL est activée."
 msgstr "La réécriture d'URL est activée."
 
-#: admin/inc/fonctions.inc.php:1862
+#: admin/inc/fonctions.inc.php:1943
 msgid "La réécriture d'URL n'est pas activée."
 msgstr "La réécriture d'URL n'est pas activée."
 
-#: admin/inc/fonctions.inc.php:1868
+#: admin/inc/fonctions.inc.php:1949
 msgid "Impossible de déterminer si la réécriture d'URL est activée."
 msgstr "Impossible de déterminer si la réécriture d'URL est activée."
 
-#: admin/inc/fonctions.inc.php:1890
+#: admin/inc/fonctions.inc.php:1971
 #, php-format
 msgid "Déplacement de %1$s vers %2$s effectué."
 msgstr "Déplacement de %1$s vers %2$s effectué."
 
-#: admin/inc/fonctions.inc.php:1894
+#: admin/inc/fonctions.inc.php:1975
 #, php-format
 msgid "Renommage de %1$s en %2$s effectué."
 msgstr "Renommage de %1$s en %2$s effectué."
 
-#: admin/inc/fonctions.inc.php:1901
+#: admin/inc/fonctions.inc.php:1982
 #, php-format
 msgid "Déplacement de %1$s vers %2$s impossible."
 msgstr "Déplacement de %1$s vers %2$s impossible."
 
-#: admin/inc/fonctions.inc.php:1917 admin/inc/fonctions.inc.php:2222
+#: admin/inc/fonctions.inc.php:1998 admin/inc/fonctions.inc.php:2303
 #, php-format
 msgid "Suppression de %1$s effectuée."
 msgstr "Suppression de %1$s effectuée."
 
-#: admin/inc/fonctions.inc.php:1921 admin/inc/fonctions.inc.php:2226
+#: admin/inc/fonctions.inc.php:2002 admin/inc/fonctions.inc.php:2307
 #, php-format
 msgid "Suppression de %1$s impossible."
 msgstr "Suppression de %1$s impossible."
 
-#: admin/inc/fonctions.inc.php:2000
+#: admin/inc/fonctions.inc.php:2081
 #, php-format
 msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
 msgstr "Aucune rotation automatique à effectuer pour l'image %1$s."
 
-#: admin/inc/fonctions.inc.php:2008 admin/inc/fonctions.inc.php:2057
+#: admin/inc/fonctions.inc.php:2089 admin/inc/fonctions.inc.php:2138
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
@@ -2624,7 +2671,7 @@ msgstr ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
 "l'image %2$s."
 
-#: admin/inc/fonctions.inc.php:2012 admin/inc/fonctions.inc.php:2061
+#: admin/inc/fonctions.inc.php:2093 admin/inc/fonctions.inc.php:2142
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
@@ -2633,7 +2680,7 @@ msgstr ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 
-#: admin/inc/fonctions.inc.php:2068
+#: admin/inc/fonctions.inc.php:2149
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une rotation automatique et "
@@ -2780,25 +2827,25 @@ msgstr "Vidéo"
 msgid "vidéo"
 msgstr "vidéo"
 
-#: admin/versions.admin.php:3 admin/versions.admin.php:54
+#: admin/versions.admin.php:3 admin/versions.admin.php:64
 msgid "Version de Squeletml et autres informations"
 msgstr "Version de Squeletml et autres informations"
 
-#: admin/versions.admin.php:11 admin/versions.admin.php:50
+#: admin/versions.admin.php:16 admin/versions.admin.php:60
 #, php-format
 msgid "Version de Squeletml: %1$s"
 msgstr "Version de Squeletml: %1$s"
 
-#: admin/versions.admin.php:32
+#: admin/versions.admin.php:42
 #, php-format
 msgid "(<a href=\"%1$s\">la version %2$s est disponible</a>)"
 msgstr "(<a href=\"%1$s\">la version %2$s est disponible</a>)"
 
-#: admin/versions.admin.php:36
+#: admin/versions.admin.php:46
 msgid "(il s'agit de la dernière version publiée)"
 msgstr "(il s'agit de la dernière version publiée)"
 
-#: admin/versions.admin.php:40 admin/versions.admin.php:45
+#: admin/versions.admin.php:50 admin/versions.admin.php:55
 #, php-format
 msgid ""
 "(impossible de vérifier si une version plus récente a été publiée; <a href="
@@ -2807,42 +2854,42 @@ msgstr ""
 "(impossible de vérifier si une version plus récente a été publiée; <a href="
 "\"%1$s\">vérifier manuellement</a>)"
 
-#: admin/versions.admin.php:50
+#: admin/versions.admin.php:60
 msgid "impossible de déterminer la version"
 msgstr "impossible de déterminer la version"
 
-#: admin/versions.admin.php:56
+#: admin/versions.admin.php:66
 msgid "Aperçu"
 msgstr "Aperçu"
 
-#: admin/versions.admin.php:60
+#: admin/versions.admin.php:70
 #, php-format
 msgid "Version de PHP: %1$s"
 msgstr "Version de PHP: %1$s"
 
-#: admin/versions.admin.php:61
+#: admin/versions.admin.php:71
 #, php-format
 msgid "Version d'Apache: %1$s"
 msgstr "Version d'Apache: %1$s"
 
-#: admin/versions.admin.php:63
+#: admin/versions.admin.php:73
 #, php-format
 msgid "Système d'exploitation: %1$s"
 msgstr "Système d'exploitation: %1$s"
 
-#: admin/versions.admin.php:67
+#: admin/versions.admin.php:77
 msgid "Afficher le <code>phpinfo()</code>"
 msgstr "Afficher le <code>phpinfo()</code>"
 
-#: admin/versions.admin.php:68
+#: admin/versions.admin.php:78
 msgid "Afficher la liste des fonctions internes de PHP"
 msgstr "Afficher la liste des fonctions internes de PHP"
 
-#: admin/versions.admin.php:72
+#: admin/versions.admin.php:82
 msgid "Fonctions internes de PHP"
 msgstr "Fonctions internes de PHP"
 
-#: admin/versions.admin.php:78
+#: admin/versions.admin.php:88
 #, php-format
 msgid ""
 "Il y a %1$s fonctions internes réparties entre %2$s modules. En voici la "
@@ -3420,7 +3467,7 @@ msgstr "Droits d'accès"
 msgid "Maintenance"
 msgstr "Maintenance"
 
-#: admin/acces.admin.php:13 cron.php:53
+#: admin/acces.admin.php:13 cron.php:55
 msgid "Cache"
 msgstr "Cache"
 
@@ -4525,28 +4572,37 @@ msgstr "La galerie %1$s est introuvable"
 msgid "Rapport d'exécution du cron du %1$s à %2$s"
 msgstr "Rapport d'exécution du cron du %1$s à %2$s"
 
-#: cron.php:43
+#: cron.php:42
+#, php-format
+msgid ""
+"Note: pour ne plus recevoir le rapport d'exécution du cron, modifier la "
+"variable %1$s dans le fichier de configuration du site."
+msgstr ""
+"Note: pour ne plus recevoir le rapport d'exécution du cron, modifier la "
+"variable %1$s dans le fichier de configuration du site."
+
+#: cron.php:45
 msgid "Page de lancement du cron"
 msgstr "Page de lancement du cron"
 
-#: cron.php:44
+#: cron.php:46
 msgid "Section d'administration du site"
 msgstr "Section d'administration du site"
 
-#: cron.php:303
+#: cron.php:305
 msgid "Aucune action à effectuer."
 msgstr "Aucune action à effectuer."
 
-#: cron.php:318
+#: cron.php:320
 msgid "Vérification de l'existence du fichier Sitemap du site"
 msgstr "Vérification de l'existence du fichier Sitemap du site"
 
-#: cron.php:325
+#: cron.php:327
 #, php-format
 msgid "Le fichier Sitemap du site (%1$s) existe."
 msgstr "Le fichier Sitemap du site (%1$s) existe."
 
-#: cron.php:329
+#: cron.php:331
 #, php-format
 msgid ""
 "Le fichier Sitemap du site (%1$s) n'existait pas, donc un plan modèle vide a "
@@ -4555,7 +4611,7 @@ msgstr ""
 "Le fichier Sitemap du site (%1$s) n'existait pas, donc un plan modèle vide a "
 "été créé."
 
-#: cron.php:333
+#: cron.php:335
 #, php-format
 msgid ""
 "Le fichier Sitemap du site (%1$s) n'existe pas, et la création automatique "
@@ -4564,16 +4620,20 @@ msgstr ""
 "Le fichier Sitemap du site (%1$s) n'existe pas, et la création automatique "
 "d'un plan modèle vide a échoué. Veuillez créer ce fichier manuellement."
 
-#: cron.php:347
+#: cron.php:342
+msgid "Ajout de pages dans le fichier Sitemap du site"
+msgstr "Ajout de pages dans le fichier Sitemap du site"
+
+#: cron.php:358
 msgid "Vérification de l'existence du fichier d'index Sitemap"
 msgstr "Vérification de l'existence du fichier d'index Sitemap"
 
-#: cron.php:354
+#: cron.php:365
 #, php-format
 msgid "Le fichier d'index Sitemap (%1$s) existe."
 msgstr "Le fichier d'index Sitemap (%1$s) existe."
 
-#: cron.php:358
+#: cron.php:369
 #, php-format
 msgid ""
 "Le fichier d'index Sitemap (%1$s) n'existait pas, donc un plan modèle vide a "
@@ -4582,7 +4642,7 @@ msgstr ""
 "Le fichier d'index Sitemap (%1$s) n'existait pas, donc un plan modèle vide a "
 "été créé."
 
-#: cron.php:362
+#: cron.php:373
 #, php-format
 msgid ""
 "Le fichier d'index Sitemap (%1$s) n'existe pas, et la création automatique "
@@ -4591,7 +4651,7 @@ msgstr ""
 "Le fichier d'index Sitemap (%1$s) n'existe pas, et la création automatique "
 "d'un plan modèle vide a échoué. Veuillez créer ce fichier manuellement."
 
-#: cron.php:393
+#: cron.php:404
 #, php-format
 msgid "Cron du %1$s à %2$s"
 msgstr "Cron du %1$s à %2$s"
