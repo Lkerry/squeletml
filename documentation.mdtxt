@@ -531,16 +531,16 @@ Voici l'anatomie d'une page:
 
 Voici les différentes variables optionnelles avant l'inclusion du premier fichier PHP:
 
-- `$apercu`: aperçu de la page en cours, si la valeur est différente de `$apercuParDefaut` du fichier de configuration du site. Le contenu de `$apercu` est inséré en tant que commentaire HTML au début de la `div` `interieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration du site vaut TRUE.
+- `$apercu`: aperçu de la page en cours, si la valeur est différente de `$apercuParDefaut` du fichier de configuration du site. Le contenu de `$apercu` est inséré en tant que commentaire HTML au début de la `div` `milieuInterieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration du site vaut TRUE.
 
-	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la `div` `interieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
+	Si `$apercu` vaut exactement `interne` (`$apercu = "interne";`), le commentaire HTML inséré sera donc `<!-- APERÇU: interne -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu tout le texte situé entre l'ouverture de la `div` `milieuInterieurContenu` et le commentaire `<!-- /aperçu -->`. S'il y a lieu, des balises HTML seront fermées pour rendre le code de l'aperçu valide. Exemple:
 
-		<div id="interieurContenu">
+		<div id="milieuInterieurContenu">
 			<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada<!-- /aperçu --> et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam.</p>
 
 	Sinon si `$apercu` vaut exactement `description` (`$apercu = "description";`), le commentaire HTML inséré sera donc `<!-- APERÇU: description -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu le contenu de la métabalise `description`.
 
-	Sinon si `$apercu` vaut exactement `automatique` (`$apercu = "automatique";`), le commentaire HTML inséré sera donc `<!-- APERÇU: automatique -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu les premiers caractères de la `div` `interieurContenu`. Le nombre de caractères correspond à la valeur de la variable `$tailleApercuAutomatique` du fichier de configuration du site.
+	Sinon si `$apercu` vaut exactement `automatique` (`$apercu = "automatique";`), le commentaire HTML inséré sera donc `<!-- APERÇU: automatique -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu les premiers caractères de la `div` `milieuInterieurContenu`. Le nombre de caractères correspond à la valeur de la variable `$tailleApercuAutomatique` du fichier de configuration du site.
 
 - `$auteur`: nom ou noms à inclure dans la métabalise `author`, si la valeur est différente de `$auteurParDefaut` du fichier de configuration du site. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le bloc des informations de publication.
 
@@ -617,7 +617,11 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$rssGalerie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la galerie en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration du site.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée par Javascript. Son contenu correspond à tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` `interieurContenu`. La table est ajoutée au début de cette `div`.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée par Javascript.
+
+	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée.
+
+	Par défaut, tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` analysée constituent la table des matières. Il est possible de configurer la table des matières dans le fichier de configuration du site.
 
 ### Inclusion du premier fichier PHP
 

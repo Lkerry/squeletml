@@ -91,10 +91,6 @@
 				<!-- ____________________ #contenu ____________________ -->
 				<div id="contenu"<?php echo $classesContenu; ?>>
 					<div id="interieurContenu">
-						<?php if ($inclureApercu): ?>
-							<?php echo $apercu; ?>
-						<?php endif; ?>
-						
 						<?php if (!empty($blocs[300])): ?>
 							<div id="debutInterieurContenu">
 								<?php echo $blocs[300]; ?>
@@ -102,6 +98,10 @@
 						<?php endif; ?>
 						
 						<div id="milieuInterieurContenu">
+							<?php if ($inclureApercu): ?>
+								<?php echo $apercu; ?>
+							<?php endif; ?>
+							
 							<?php if (!empty($idGalerie)): ?>
 								<div id="galerie">
 							<?php endif; ?>

@@ -2060,7 +2060,7 @@ Retourne un tableau d'informations au sujet du contenu accessible à l'URL `$url
     - contenu de la balise `title`;
     - URL de la page.
 
-  - `$infosPage['contenu']`: vaut tout le contenu de la `div` `interieurContenu`, la première balise `h1` en moins;
+  - `$infosPage['contenu']`: vaut tout le contenu de la `div` `milieuInterieurContenu`, la première balise `h1` en moins;
 
   - `$infosPage['apercu']`: est vide par défaut. Selon les valeurs de `$inclureApercu` et `$apercu` pour la page demandée, la description peut correspondre à un extrait de la page ou au contenu de la métabalise `description`;
 
@@ -2118,24 +2118,14 @@ function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique, $html = '
 			
 			if ($contenu = $dom->find('div#galerieIntermediaireLegende'))
 			{
-				$infosPage['contenu'] .= $contenu[0]->outertext;
+				$infosPage['contenu'] .= $contenu[0]->innertext;
 			}
 		}
-		elseif ($contenu = $dom->find('div#interieurContenu'))
+		elseif ($contenu = $dom->find('div#milieuInterieurContenu'))
 		{
 			if ($h1 = $contenu[0]->find('h1'))
 			{
 				$h1[0]->outertext = '';
-			}
-			
-			if ($debutInterieurContenu = $contenu[0]->find('div#debutInterieurContenu'))
-			{
-				$debutInterieurContenu[0]->outertext = '';
-			}
-			
-			if ($finInterieurContenu = $contenu[0]->find('div#finInterieurContenu'))
-			{
-				$finInterieurContenu[0]->outertext = '';
 			}
 			
 			$infosPage['contenu'] = $contenu[0]->innertext;
@@ -4063,7 +4053,7 @@ function pagination($racine, $urlRacine, $type, $nombreElements, $elementsParPag
 		{
 			if ($cle != 'page')
 			{
-				$lien .= $cle . '=' . $valeur . '&';
+				$lien .= $cle . '=' . $valeur . '&amp;';
 			}
 		}
 	}
@@ -4077,10 +4067,10 @@ function pagination($racine, $urlRacine, $type, $nombreElements, $elementsParPag
 		{
 			$lienPrecedent = $lien . 'page=' . $numeroPagePrecedent;
 		}
-		// Sinon on n'ajoute pas de variable GET `page` et on supprime le dernier caractère (`&` ou `?`).
+		// Sinon on n'ajoute pas de variable GET `page` et on supprime le dernier `&amp;` ou `?`.
 		else
 		{
-			$lienPrecedent = substr($lien, 0, -1);
+			$lienPrecedent = preg_replace('/(\?|&amp;)$/', '', $lien);
 		}
 		
 		$pagination['pagination'] .= '<a href="' . $lienPrecedent . '">';
