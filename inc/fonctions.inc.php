@@ -2826,7 +2826,7 @@ function limiteProfondeurListe($html)
 /*
 Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
 */
-function linkScript($balisesBrutes, $versionParDefautLinkScript = '')
+function linkScript($balisesBrutes, $versionParDefautLinkScriptCss = '', $versionParDefautLinkScriptNonCss = '')
 {
 	$balisesBrutesAinclure = linkScriptAinclure($balisesBrutes);
 	$balisesFormatees = '';
@@ -2850,27 +2850,27 @@ function linkScript($balisesBrutes, $versionParDefautLinkScript = '')
 		{
 			case 'favicon':
 				// On ne conserve qu'une déclaration de favicon.
-				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" />' . "\n";
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
 				break;
 	
 			case 'css':
-				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n";
+				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n";
 				break;
 	
 			case 'cssltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 		
 			case 'cssIE7':
-				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'csslteIE7':
-				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 	
 			case 'js':
-				$balisesFormatees .= '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScript) . '"></script>' . "\n";
+				$balisesFormatees .= '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
 				break;
 				
 			case 'jsDirect':
@@ -2883,7 +2883,7 @@ $fichier\n//]]>\n</script>\n";
 				break;
 				
 			case 'jsltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScript) . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'rss':
@@ -2892,11 +2892,11 @@ $fichier\n//]]>\n</script>\n";
 					$title = ' title="' . $title . '"';
 				}
 				
-				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '"' . $title . ' />' . "\n";
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"' . $title . ' />' . "\n";
 				break;
 				
 			case 'po':
-				$balisesFormatees .= '<link type="application/x-po" rel="gettext" href="' . ajouteGet($fichier, $versionParDefautLinkScript) . '" />' . "\n";
+				$balisesFormatees .= '<link type="application/x-po" rel="gettext" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
 				break;
 		}
 	}

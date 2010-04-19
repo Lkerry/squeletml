@@ -99,15 +99,21 @@ $balisesLinkScript[5] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
 $balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
 $balisesLinkScript[7] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
 
-// Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`.
+// Version par défaut des fichiers CSS déclarés dans le tableau `$balisesLinkScript`.
 /*
 - La version est ajoutée à la suite du nom des fichiers en tant que variable GET.
 - Laisser vide pour désactiver l'ajout de version.
-- Exemple de sortie HTML lorsque `$versionParDefautLinkScript` vaut `1`:
-  <script type="text/javascript" src="/js/squeletml.js?1"></script>
+- Exemple de sortie HTML lorsque `$versionParDefautLinkScriptCss` vaut `1`:
+  <link rel="stylesheet" type="text/css" href="http://localhost/serveur_local/squeletml/css/squeletml.css?1" media="screen" />
 - Voir la fonction `linkScript()`.
 */
-$versionParDefautLinkScript = "";
+$versionParDefautLinkScriptCss = "";
+
+// Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`, à l'exception des fichiers CSS.
+/*
+- Voir les explications de la variable `$versionParDefautLinkScriptCss` dans le présent fichier de configuration pour plus de détails.
+*/
+$versionParDefautLinkScriptNonCss = "";
 
 // Inclusion des feuilles de style par défaut de Squeletml (dossier `css`).
 /*
