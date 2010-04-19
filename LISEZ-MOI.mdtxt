@@ -134,9 +134,11 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Bannières**: les bannières de 80px × 15px de Squeletml et des licences utilisent la police de caractères [Picopixel](http://www.dafont.com/FR/micropixel.font) de Sebastian Weber. Sur le site de Dafont, la licence est précisée ainsi: «Domaine public / GNU GPL». J'ai écrit à l'auteur pour obtenir des précisions, sans réponse pour l'instant. Les bannières des licences Copyleft utilisent également une image de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Copyleft.svg?uselang=fr) dans le domaine public. La bannière du domaine public utilise également une image de [Wikimedia Commons](http://fr.wikipedia.org/wiki/Fichier:PD-icon.svg) dans le domaine public.
 
-- **Images utilisées dans la galerie démo**: les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/).
+- **Images utilisées dans les galeries**:
+  - les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/);
+  - la petite icône proposant la navigation sans fenêtre Javascript provient du [module QuickJava pour Firefox](https://addons.mozilla.org/fr/firefox/addon/1237), sous licence Mozilla Public License version 1.1;
+  - la petite icône offrant un lien vers le format original d'une image provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
-	La petite icône offrant un lien vers le format original d'une image provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
 - **Icône utilisée dans le lien de déconnexion**: cette icône provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
@@ -158,7 +160,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Image en triangle dans la page d'erreur 404**: modification d'une image provenant de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Attention_Sign.svg?uselang=fr) et étant dans le domaine public.
 
-### Scripts externes
+### Scripts intégrés
 
 - [**BUEditor**](http://ufku.com/drupal/bueditor): sous licence GPL.
 

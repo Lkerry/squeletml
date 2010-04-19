@@ -841,6 +841,11 @@ div.sepGalerieMinivignettes {
 	margin-bottom: 15px;
 }
 
+#galerieLienSansJavascript a {
+	padding-left: 22px;
+	background: url('../fichiers/sans-javascript.png') no-repeat left center;
+}
+
 #galerieIntermediaireTexte ul {
 	margin-left: 25px;
 }
