@@ -884,6 +884,7 @@ $galerieMinivignettesNombre = 0;
   - `minivignettes`;
   - `divImage`: la `div` comprenant l'image en version intermédiaire;
   - `image`: l'image en version intermédiaire.
+- Laisser vide pour ne pas ajouter d'ancre.
 */
 $galerieAncreDeNavigation = 'titre';
 
