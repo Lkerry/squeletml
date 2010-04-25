@@ -4,7 +4,7 @@ error_reporting(E_ALL);
 
 ########################################################################
 ##
-## Ajout du contenu du fichier de configuration à la documentation.
+## Ajout des fichiers de configuration à la documentation convertie en HTML.
 ##
 ########################################################################
 
@@ -14,6 +14,7 @@ if ($argv[1] == 'annexes-doc')
 	
 	include 'init.inc.php';
 	include $racine . '/inc/fonctions.inc.php';
+	include $racine . '/inc/php-markdown/markdown.php';
 	
 	eval(variablesAvantConfig());
 	
@@ -24,9 +25,10 @@ if ($argv[1] == 'annexes-doc')
 	
 	phpGettext('.', 'fr'); // Nécessaire à la traduction.
 	
-	$ajout = annexesDocumentation($racineAdmin);
+	$documentationAvecConfig = mdtxt($racine . '/documentation.mdtxt');
+	$documentationAvecConfig .= annexesDocumentation($racineAdmin);
 	
-	file_put_contents($cheminDocumentation, $ajout, FILE_APPEND);
+	file_put_contents($cheminDocumentation, $documentationAvecConfig);
 }
 ########################################################################
 ##

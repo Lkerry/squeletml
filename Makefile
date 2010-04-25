@@ -60,8 +60,7 @@ archives: menage-archives ChangeLog version.txt
 	rm -rf $(tag)
 	mv squeletml.tar.bz2 $(bureau)/
 	mv squeletml.zip $(bureau)/
-	cp documentation.mdtxt $(bureau)/documentation-avec-config.mdtxt
-	php ./scripts.cli.php annexes-doc $(bureau)/documentation-avec-config.mdtxt
+	php ./scripts.cli.php annexes-doc $(bureau)/documentation-avec-config.html
 
 ChangeLog: menage-ChangeLog
 	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
