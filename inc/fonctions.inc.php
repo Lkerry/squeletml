@@ -311,6 +311,29 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 }
 
 /*
+Coupe en segments la partie de l'URL à la suite du serveur, et retourne le segment (argument) demandé, si ce dernier existe, sinon retourne le tableau de segments.
+
+Par exemple, pour l'URL `http://www.NomDeDomaine.ext/dossier1/dossier2/fichier.php?a=2&b=3#ancre`, `arg()` va retourner `array (0 => 'dossier1', 1 => 'dossier2', 3 => 'fichier.php')`.
+
+Inspirée de <http://api.drupal.org/api/function/arg/6>.
+*/
+function arg($index = NULL)
+{
+	$urlArg = url(FALSE, FALSE);
+	$urlArg = preg_replace('/^\//', '', $urlArg);
+	$args = explode('/', $urlArg);
+	
+	if (isset($index) && isset($args[$index]))
+	{
+		return $args[$index];
+	}
+	else
+	{
+		return $args;
+	}
+}
+
+/*
 Retourne le contenu de la balise `title`.
 */
 function baliseTitle($baliseTitle, $baliseH1)

@@ -35,6 +35,8 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 		
 		<li>le nom de la présente page est <code><?php echo $nomPage; ?></code>;</li>
 		
+		<li>le premier argument dans l'URL est <code><?php echo arg(0); ?></code>;</li>
+		
 		<li>
 			<?php if (estAccueil($accueil)): ?>
 				la présente page est la page d'accueil;
