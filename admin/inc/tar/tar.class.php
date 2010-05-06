@@ -2,15 +2,15 @@
 /**
  * @package PHPClassCollection
  * @subpackage Tar
- * @link classes
+ * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
  */
 /**
  * @package PHPClassCollection
  * @subpackage Tar
- * @link classes
+ * @link http://php-classes.sourceforge.net/ PHP Class Collection
  * @author Dennis Wronka <reptiler@users.sourceforge.net>
- * @version 1.1
+ * @version 1.1.3
  * @license http://www.gnu.org/licenses/old-licenses/lgpl-2.1.html LGPL 2.1
  */
 class tar
@@ -49,6 +49,16 @@ class tar
 		{
 			$this->filelist[]=$filename;
 		}
+	}
+
+	/**
+	 * Set the filelist.
+	 *
+	 * @param array $filelist
+	 */
+	public function setfilelist($filelist)
+	{
+		$this->filelist=$filelist;
 	}
 
 	/**
@@ -182,8 +192,16 @@ class tar
 			fwrite($tarfile,$header);
 			if ($indicator==0)
 			{
-				$contentfile=fopen($this->filelist[$x],'r');
-				$data=@fread($contentfile,filesize($this->filelist[$x]));
+				if (filesize($this->filelist[$x])>0)
+				{
+					$contentfile=fopen($this->filelist[$x],'r');
+					$data=fread($contentfile,filesize($this->filelist[$x]));
+					fclose($contentfile);
+				}
+				else
+				{
+					$data='';
+				}
 				while (strlen($data)%512!=0)
 				{
 					$data.=chr(0);
