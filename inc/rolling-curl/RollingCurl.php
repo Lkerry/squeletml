@@ -316,7 +316,7 @@ class RollingCurl {
     private function get_options($request) {
         // options for this entire curl object
         $options = $this->__get('options');
-        if (ini_get('safe_mode') == 'Off' || !ini_get('safe_mode')) {
+        if ((ini_get('safe_mode') == 'Off' || !ini_get('safe_mode')) && !ini_get('open_basedir')) {
             $options[CURLOPT_FOLLOWLOCATION] = 1;
             $options[CURLOPT_MAXREDIRS] = 5;
         }
