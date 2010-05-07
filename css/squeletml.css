@@ -333,12 +333,12 @@ div.chapeau div.contenuChapeau {
 	margin-bottom: 10px;
 }
 
-.titreApercu a {
-	text-decoration: none;
+.titreApercu a, .titreApercu a:visited {
+	color: inherit;
 }
 
-.titreApercu a:visited {
-	color: inherit;
+.titreApercu a {
+	text-decoration: none;
 }
 
 .descriptionApercu {
