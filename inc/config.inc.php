@@ -494,10 +494,12 @@ $afficherNombreArticlesCategorie = TRUE; // TRUE|FALSE
 
 // Activation s'il y a lieu des catégories spéciales.
 /*
-- Les catégories spéciales sont les dernières publications et les derniers ajouts aux galeries.
+- Les catégories spéciales sont les dernières publications (`site`) et les derniers ajouts aux galeries (`galeries`).
+- Chaque valeur peut valoir TRUE ou FALSE.
 - Par défaut, l'URL est `$urlRacine/categorie.php?id=(site|galeries)`.
 */
-$activerCategoriesGlobales = TRUE; // TRUE|FALSE
+$activerCategoriesGlobales['site']     = TRUE;
+$activerCategoriesGlobales['galeries'] = TRUE;
 
 // Pagination par défaut de la liste des articles faisant partie d'une catégorie.
 /*

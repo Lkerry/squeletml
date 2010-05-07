@@ -907,9 +907,9 @@ Si une page fait partie d'une catégorie au moins, les informations de publicati
 
 ### Catégories spéciales
 
-Les catégories spéciales sont `site ` (les dernières publications) et `galeries` (les derniers ajouts aux galeries). Par défaut, l'URL est `$urlRacine/categorie.php?id=(site|galeries)&amp;langue=$langue`. Il n'y a pas de flux RSS associé à ces catégories puisque les flux RSS globaux remplissent déjà cette tâche.
+Les catégories spéciales sont les dernières publications (`site`) et les derniers ajouts aux galeries (`galeries`). Par défaut, l'URL est `$urlRacine/categorie.php?id=(site|galeries)&amp;langue=$langue`. Il n'y a pas de flux RSS associé à ces catégories puisque les flux RSS globaux remplissent déjà cette tâche.
 
-Pour que les catégories spéciales soient activées, la variable `$activerCategoriesGlobales` du fichier de configuration du site doit valoir `TRUE`.
+Une catégorie spéciale est utilisée seulement si elle est activée dans le tableau `$activerCategoriesGlobales` du fichier de configuration du site.
 
 ### Bloc de menu des catégories
 

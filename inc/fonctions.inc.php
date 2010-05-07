@@ -3215,9 +3215,21 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, $langue
 	$menuCategoriesAutomatise = '';
 	ksort($categories);
 	
-	if ($activerCategoriesGlobales)
+	$categoriesGlobalesAactiver = array ();
+	
+	if ($activerCategoriesGlobales['site'])
 	{
-		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array('site', 'galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+		$categoriesGlobalesAactiver[] = 'site';
+	}
+	
+	if ($activerCategoriesGlobales['galeries'])
+	{
+		$categoriesGlobalesAactiver[] = 'galeries';
+	}
+	
+	if (!empty($categoriesGlobalesAactiver))
+	{
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesGlobalesAactiver, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 	}
 	
 	foreach ($categories as $categorie => $categorieInfos)
