@@ -170,7 +170,7 @@ function actionFormContact($decouvrir)
 }
 
 /*
-Ajoute au tableau des catégories la catégorie spéciale `site` (si elle n'existe pas déjà) contenant les dernières publications du site (pages déclarées dans le fichier de configuration du flux RSS des dernières publications), et retourne le tableau résultant.
+Ajoute au tableau des catégories les catégories spéciales demandées (si elles n'existent pas déjà), et retourne le tableau résultant.
 */
 function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $categoriesSpecialesAajouter, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
