@@ -56,7 +56,7 @@ Ce fichier contient deux variables obligatoires à renseigner:
 
 - `$accueil`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site.
 
-	Vous pouvez ajouter autant de langues que vous le désirez, dans la mesure où cette langue est offerte par défaut avec Squeletml ou que vous en effectuiez la traduction. Le français est la langue par défaut. Ainsi, l'interface de Squeletml sera toujours disponible à 100% dans cette langue. Pour l'instant, une traduction partielle en anglais accompagne Squeletml.
+	Vous pouvez ajouter autant de langues que vous le désirez, dans la mesure où cette langue est offerte par défaut avec Squeletml ou que vous en effectuiez la traduction. Le français est la langue par défaut. Ainsi, l'interface de Squeletml sera toujours entièrement disponible dans cette langue. Pour l'instant, une traduction partielle en anglais accompagne Squeletml.
 
 	Vous pouvez également commenter les langues dont vous ne vous servez pas. Seules les langues existant dans le tableau `$accueil` apparaissent dans le menu des langues généré automatiquement par Squeletml.
 
@@ -69,6 +69,12 @@ Ce fichier contient deux variables obligatoires à renseigner:
 
 		$accueil['fr'] = $urlRacine;
 		$accueil['en'] = $urlRacine . '/en';
+
+	Si une langue n'est pas utilisée, il est conseillé de supprimer son dossier d'accueil ou de créer dans ce dossier un fichier interdisant son accès. Par exemple, si le site n'utilise pas l'anglais, nous pourrions supprimer le dossier d'accueil par défaut de cette langue, c'est-à-dire `$urlRacine/en`, ou y mettre un fichier `.htaccess` (donc `$urlRacine/en/.htaccess`) contenant ceci:
+
+		Deny from all
+
+	D'ailleurs, un tel fichier `.htaccess` est ajouté par l'installateur automatisé dans chaque dossier d'accueil d'une langue non activée.
 
 **Note: il est possible de renommer le dossier d'administration pour plus de sécurité, qui est par défaut `admin`. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `init.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation. Par exemple, modifier ceci:**
 

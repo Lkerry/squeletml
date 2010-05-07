@@ -1,5 +1,187 @@
 <?php
 /*
+Met à jour les langues actives dans le fichier `init.inc.php`. Si `$initIncPhpFourni` est vide, enregistre les modifications et retourne le résultat sous forme de message concaténable dans `$messagesScript`, sinon retourne un tableau dont le premier élément contient le message concaténable dans `$messagesScript`; et le second, le contenu du fichier `init.inc.php` modifié.
+*/
+function majLanguesActives($racine, $urlRacine, $langues, $initIncPhpFourni = '')
+{
+	$messagesScript = '';
+	
+	if (empty($initIncPhpFourni) && !file_exists($racine . '/init.inc.php'))
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Mise à jour des langues actives impossible, puisque le fichier %1\$s n'existe pas."), '<code>init.inc.php</code>') . "</li>\n";
+	}
+	elseif (empty($langues))
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Mise à jour des langues actives impossible, puisqu'aucune langue n'a été fournie.") . "</li>\n";
+	}
+	else
+	{
+		if (empty($initIncPhpFourni))
+		{
+			$initIncPhp = @file_get_contents($racine . '/init.inc.php');
+		}
+		else
+		{
+			$initIncPhp = $initIncPhpFourni;
+		}
+		
+		if ($initIncPhp === FALSE)
+		{
+			if (empty($initIncPhpFourni))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>init.inc.php</code>') . "</li>\n";
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Le contenu fourni ne peut être analysé.") . "</li>\n";
+			}
+		}
+		else
+		{
+			$erreurInit = FALSE;
+			preg_match_all('/^\s*(#|\/\/)?\s*\$accueil\[\'([a-z]{2})\'\]\s*=\s*([^;]+);/m', $initIncPhp, $resultatAccueil, PREG_SET_ORDER);
+			$languesAccueil = array ();
+			
+			foreach ($resultatAccueil as $resultatAccueilTableauLangue)
+			{
+				$resultatAccueilLangue = $resultatAccueilTableauLangue[2];
+				$languesAccueil[$resultatAccueilLangue] = eval('return ' . $resultatAccueilTableauLangue[3] . ';');
+			}
+			
+			$langueAccueilChoisie = FALSE;
+			
+			foreach ($languesAccueil as $langueAccueil => $urlLangueAccueil)
+			{
+				if (in_array($langueAccueil, $langues))
+				{
+					$langueAccueilChoisie = TRUE;
+					break;
+				}
+			}
+			
+			if (!$langueAccueilChoisie)
+			{
+				$erreurInit = TRUE;
+				$messagesScript .= '<li class="erreur">' . T_("Mise à jour des langues actives impossible, puisqu'aucune langue n'a été fournie.") . "</li>\n";
+			}
+			else
+			{
+				foreach ($languesAccueil as $langueAccueil => $urlLangueAccueil)
+				{
+					if (in_array($langueAccueil, $langues))
+					{
+						$initIncPhp = preg_replace('/^\s*(#|\/\/)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']') . ')/m', '$2', $initIncPhp);
+
+					}
+					else
+					{
+						$initIncPhp = preg_replace('/^\s*(#|\/\/)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']') . ')/m', '#$2', $initIncPhp);
+					}
+					
+					$cheminLangueAccueil = preg_replace('/^' . preg_quote($urlRacine, '/') . '\/?/', '', $urlLangueAccueil);
+					
+					if (!empty($cheminLangueAccueil))
+					{
+						$cheminLangueAccueil = $racine . '/' . $cheminLangueAccueil;
+					}
+					else
+					{
+						$cheminLangueAccueil = $racine;
+					}
+					
+					if (file_exists($cheminLangueAccueil) && $cheminLangueAccueil != $racine)
+					{
+						if (file_exists($cheminLangueAccueil . '/.htaccess'))
+						{
+							$htaccess = @file_get_contents($cheminLangueAccueil . '/.htaccess');
+						}
+						else
+						{
+							$htaccess = '';
+						}
+					
+						if ($htaccess !== FALSE)
+						{
+							if (in_array($langueAccueil, $langues))
+							{
+								$htaccess = preg_replace('/\s*Deny from all/', '', $htaccess);
+							}
+							elseif (!preg_match('/^\s*Deny from all/m', $htaccess))
+							{
+								if (!empty($htaccess))
+								{
+									$htaccess .= "\n";
+								}
+							
+								$htaccess .= 'Deny from all';
+							}
+						
+							if (!empty($htaccess))
+							{
+								if (@file_put_contents($cheminLangueAccueil . '/.htaccess', $htaccess) === FALSE)
+								{
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("Mise à jour du fichier %1\$s impossible."), "<code>$cheminLangueAccueil/.htaccess</code>") . "</li>\n";
+								}
+								else
+								{
+									$messagesScript .= '<li>' . sprintf(T_("Mise à jour du fichier %1\$s effectuée."), "<code>$cheminLangueAccueil/.htaccess</code>") . "</li>\n";
+								}
+							}
+							elseif (file_exists($cheminLangueAccueil . '/.htaccess'))
+							{
+								if (@unlink($cheminLangueAccueil . '/.htaccess'))
+								{
+									$messagesScript .= '<li>' . sprintf(T_("Suppression du fichier %1\$s effectuée."), "<code>$cheminLangueAccueil/.htaccess</code>") . "</li>\n";
+								}
+								else
+								{
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("Suppression du fichier %1\$s impossible. Ce fichier est maintenant inutile."), "<code>$cheminLangueAccueil/.htaccess</code>") . "</li>\n";
+								}
+							}
+						}
+						else
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Mise à jour du fichier %1\$s impossible."), "<code>$cheminLangueAccueil/.htaccess</code>") . "</li>\n";
+						}
+					}
+				}
+			}
+			
+			if (empty($initIncPhpFourni) && !$erreurInit)
+			{
+				if (@file_put_contents($racine . '/init.inc.php', $initIncPhp) === FALSE)
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>init.inc.php</code>') . "</li>\n";
+				}
+				else
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Mise à jour des langues actives dans le fichier %1\$s effectuée."), '<code>init.inc.php</code>') . "</li>\n";
+				}
+			}
+		}
+	}
+	
+	if (empty($initIncPhpFourni))
+	{
+		return $messagesScript;
+	}
+	else
+	{
+		return array ($messagesScript, $initIncPhp);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+/*
 Retourne TRUE si l'administration est protégée, sinon retourne FALSE.
 
 À noter une restriction importante de cette fonction: une vérification est effectuée pour savoir si le fichier `.acces` contient au moins un utilisateur et si une directive `AuthUserFile` pointe vers ce fichier dans `.htaccess`, mais aucune vérification n'est effectuée pour savoir si la directive `AuthUserFile` est bien prise en compte par le serveur.

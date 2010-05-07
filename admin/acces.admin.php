@@ -9,6 +9,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<li><a href="#messages"><?php echo T_("Messages"); ?></a></li>
 		<li><a href="#utilisateurs"><?php echo T_("Utilisateurs"); ?></a></li>
 		<li><a href="#droits"><?php echo T_("Droits d'accès"); ?></a></li>
+		<li><a href="#langues"><?php echo T_("Langues"); ?></a></li>
 		<li><a href="#maintenance"><?php echo T_("Maintenance"); ?></a></li>
 		<li><a href="#cache"><?php echo T_("Cache"); ?></a></li>
 		<li><a href="#cron"><?php echo T_("Cron"); ?></a></li>
@@ -332,7 +333,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul>\n";
 			echo "</div><!-- /.sousBoite -->\n";
 		}
-
+		
+		########################################################################
+		##
+		## Gestion des langues livrées par défaut.
+		##
+		########################################################################
+		
+		if (isset($_POST['activerLangues']))
+		{
+			$messagesScript = '';
+			$messagesScript .= majLanguesActives($racine, $urlRacine, $_POST['langues']);
+			
+			echo adminMessagesScript($messagesScript, T_("Gestion des langues livrées par défaut"));
+		}
+		
 		########################################################################
 		##
 		## Mise hors ligne du site pour maintenance.
@@ -654,6 +669,53 @@ include $racineAdmin . '/inc/premier.inc.php';
 			</form>
 		</div><!-- /.boite -->
 
+		<div class="boite">
+			<h2 id="langues"><?php echo T_("Gérer les langues livrées par défaut"); ?></h2>
+			
+			<p><?php echo T_("Une langue non activée n'apparaîtra pas dans le menu des langues par défaut, et son dossier d'accueil par défaut ne sera pas accessible sur le web. Prendre note que cela n'empêche pas de pouvoir créer des pages dans cette langue."); ?></p>
+			
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<fieldset>
+						<legend><?php echo T_("Options"); ?></legend>
+					
+						<p><label for="inputLangues"><?php echo T_("Langues à activer:"); ?></label><br />
+						<select id="inputLangues" name="langues[]" multiple="multiple">
+							<?php $initIncPhp = @file_get_contents($racine . '/init.inc.php'); ?>
+							
+							<?php if ($initIncPhp !== FALSE): ?>
+								<?php preg_match_all('/^\s*(#|\/\/)?\s*\$accueil\[\'([a-z]{2})\'\]\s*=\s*([^;]+);/m', $initIncPhp, $resultatAccueil, PREG_SET_ORDER); ?>
+								<?php $languesAccueil = array (); ?>
+								
+								<?php foreach ($resultatAccueil as $resultatAccueilTableauLangue): ?>
+									<?php $languesAccueil[] = $resultatAccueilTableauLangue[2]; ?>
+								<?php endforeach; ?>
+								
+								<?php preg_match_all('/^\s*\$accueil\[\'([a-z]{2})\'\][^;]+;/m', $initIncPhp, $resultatAccueilApresModif, PREG_SET_ORDER); ?>
+								<?php $languesAccueilApresModif = array (); ?>
+								
+								<?php foreach ($resultatAccueilApresModif as $resultatAccueilApresModifTableauLangue): ?>
+									<?php $languesAccueilApresModif[] = $resultatAccueilApresModifTableauLangue[1]; ?>
+								<?php endforeach; ?>
+								
+								<?php foreach ($languesAccueil as $langueAccueil): ?>
+									<?php if (in_array($langueAccueil, $languesAccueilApresModif)): ?>
+										<?php $selected = ' selected="selected"'; ?>
+									<?php else: ?>
+										<?php $selected = ''; ?>
+									<?php endif; ?>
+									
+									<option value="<?php echo $langueAccueil; ?>"<?php echo $selected; ?>><?php echo $langueAccueil; ?></option>
+								<?php endforeach; ?>
+							<?php endif; ?>
+						</select></p>
+					</fieldset>
+				
+					<p><input type="submit" name="activerLangues" value="<?php echo T_('Activer les langues sélectionnées'); ?>" /></p>
+				</div>
+			</form>
+		</div><!-- /.boite -->
+		
 		<div class="boite">
 			<h2 id="maintenance"><?php echo T_("Mettre le site hors ligne pour maintenance"); ?></h2>
 

@@ -1,8 +1,18 @@
 <?php
 $racine = dirname(__FILE__);
 include_once $racine . '/inc/fonctions.inc.php';
+
+if (file_exists($racine . '/init.inc.php'))
+{
+	include_once $racine . '/init.inc.php';
+}
+
+if (!isset($urlRacine))
+{
+	$urlRacine = urlParente();
+}
+
 $urlSansGet = url(FALSE);
-$urlParente = urlParente();
 
 if (!isset($_POST['ajouter']) && !file_exists($racine . '/site/inc/squeletml-est-installe.txt') && file_exists($racine . '/init.inc.php') && accesAdminEstProtege($racine))
 {
@@ -11,7 +21,7 @@ if (!isset($_POST['ajouter']) && !file_exists($racine . '/site/inc/squeletml-est
 
 if (file_exists($racine . '/site/inc/squeletml-est-installe.txt'))
 {
-	header("Location: $urlParente/", TRUE, 301);
+	header("Location: $urlRacine/", TRUE, 301);
 }
 else
 {
@@ -58,37 +68,33 @@ else
 		$urlSansServeur = url(FALSE, FALSE);
 		$urlSansServeurRacine = preg_replace('|/[^/]+$|', '', $urlSansServeur);
 		
+		if (!isset($_POST['langues']))
+		{
+			$_POST['langues'] = array ();
+		}
+		
 		if (!file_exists($racine . '/init.inc.php') && file_exists($racine . '/init.inc.php.defaut'))
 		{
 			if (@copy($racine . '/init.inc.php.defaut', $racine . '/init.inc.php'))
 			{
 				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>init.inc.php</code>', '<code>init.inc.php.defaut</code>') . "</li>\n";
 				$initIncPhp = @file_get_contents($racine . '/init.inc.php');
-		
+				
 				if ($initIncPhp !== FALSE)
 				{
-					$initIncPhp = preg_replace('|^(\$urlRacine \= ")[^"]+(";)|m', '$1' . $urlParente . '$2', $initIncPhp);
+					$initIncPhp = preg_replace('|^(\$urlRacine \= ")[^"]+(";)|m', '$1' . $urlRacine . '$2', $initIncPhp);
 		
 					if ($serveurFreeFr)
 					{
 						$initIncPhp = preg_replace('|^(\$serveurFreeFr \= )FALSE(;)|m', '$1TRUE$2', $initIncPhp);
 					}
-
-					if (isset($_POST['langues']))
+					
+					list ($messagesScriptActiveLangues, $initIncPhp) = majLanguesActives($racine, $urlRacine, $_POST['langues'], $initIncPhp);
+					$messagesScript .= $messagesScriptActiveLangues;
+					
+					if (strpos($messagesScriptActiveLangues, '<li class="erreur">'))
 					{
-						if (!in_array('fr', $_POST['langues']) && !in_array('en', $_POST['langues']))
-						{
-							$passerAlEtape2 = FALSE;
-						$messagesScript .= '<li class="erreur">' . T_("Veuillez choisir au moins une langue.") . "</li>\n";
-						}
-						elseif (!in_array('fr', $_POST['langues']))
-						{
-							$initIncPhp = preg_replace('/^(' . preg_quote('$accueil[\'fr\']') . ')/m', '#$1', $initIncPhp);
-						}
-						elseif (!in_array('en', $_POST['langues']))
-						{
-							$initIncPhp = preg_replace('/^(' . preg_quote('$accueil[\'en\']') . ')/m', '#$1', $initIncPhp);
-						}
+						$passerAlEtape2 = FALSE;
 					}
 					
 					if (@file_put_contents($racine . '/init.inc.php', $initIncPhp) === FALSE)
@@ -112,8 +118,15 @@ else
 		else
 		{
 			$messagesScript .= '<li>' . sprintf(T_("Le fichier %1\$s existe."), '<code>init.inc.php</code>') . "</li>\n";
+			$messagesScriptActiveLangues = majLanguesActives($racine, $urlRacine, $_POST['langues']);
+			$messagesScript .= $messagesScriptActiveLangues;
+			
+			if (strpos($messagesScriptActiveLangues, '<li class="erreur">'))
+			{
+				$passerAlEtape2 = FALSE;
+			}
 		}
-	
+		
 		if (!file_exists($racine . '/robots.txt') && file_exists($racine . '/robots.txt.defaut'))
 		{
 			if (@copy($racine . '/robots.txt.defaut', $racine . '/robots.txt'))
@@ -238,7 +251,6 @@ else
 	
 	if (isset($_POST['ajouter']) && file_exists($racine . '/init.inc.php') && file_exists($racine . '/.htaccess') && file_exists($racine . '/.acces'))
 	{
-		include_once $racine . '/init.inc.php';
 		$installationTerminee = TRUE;
 		$accesAvecUtilisateur = FALSE;
 		
@@ -348,7 +360,7 @@ else
 	echo '<title>' . T_("Installation de Squeletml") . "</title>\n";
 	echo '<meta http-equiv="content-type" content="text/html; charset=UTF-8" />' . "\n";
 	echo '<meta name="robots" content="noindex, nofollow, noarchive" />' . "\n";
-	echo '<link rel="shortcut icon" type="images/x-icon" href="' . $urlParente . '/fichiers/favicon.png" />' . "\n";
+	echo '<link rel="shortcut icon" type="images/x-icon" href="' . $urlRacine . '/fichiers/favicon.png" />' . "\n";
 	echo '<style type="text/css">' . "\n";
 	echo "html, body { margin: 0px; padding: 0px;}\n";
 	echo "body {font-family: Arial, Helvetica, \"Liberation Sans\", FreeSans, sans-serif; font-size: 0.96em; margin: 0}\n";
@@ -391,27 +403,47 @@ else
 		echo '<form action="' . $urlSansGet . '" method="post">' . "\n";
 		echo "<div>\n";
 		echo '<p><label for="inputLangues">' . T_("Langues à activer dans le menu:") . "</label><br />\n" . '<select id="inputLangues" name="langues[]" multiple="multiple">' . "\n";
-	
-		$selectedFr = ' selected="selected"';
-		$selectedEn = ' selected="selected"';
-	
-		if (isset($_POST['langues']))
+		
+		if (!isset($languesAccueil))
 		{
-			if (!in_array('fr', $_POST['langues']))
+			if (!isset($initIncPhp))
 			{
-				$selectedFr = '';
+				$initIncPhp = FALSE;
+				
+				if (file_exists($racine . '/init.inc.php'))
+				{
+					$initIncPhp = @file_get_contents($racine . '/init.inc.php');
+				}
+				elseif (file_exists($racine . '/init.inc.php.defaut'))
+				{
+					$initIncPhp = @file_get_contents($racine . '/init.inc.php.defaut');
+				}
 			}
-
-			if (!in_array('en', $_POST['langues']))
+			
+			if ($initIncPhp !== FALSE)
 			{
-				$selectedEn = '';
+				preg_match_all('/^\s*(#|\/\/)?\s*\$accueil\[\'([a-z]{2})\'\][^;]+;/m', $initIncPhp, $resultatAccueil);
+				$languesAccueil = $resultatAccueil[2];
 			}
 		}
 		
-		echo "<option value=\"fr\"$selectedFr>fr</option>\n";
-		echo "<option value=\"en\"$selectedEn>en</option>\n";
+		if (isset($languesAccueil))
+		{
+			foreach ($languesAccueil as $langueAccueil)
+			{
+				echo "<option value=\"$langueAccueil\"";
+				
+				if ((isset($accueil) && isset($accueil[$langueAccueil])) || (isset($_POST['langues']) && in_array($langueAccueil, $_POST['langues'])) || (!isset($accueil) && !isset($_POST['langues'])))
+				{
+					echo ' selected="selected"';
+				}
+				
+				echo ">$langueAccueil</option>\n";
+			}
+		}
+		
 		echo '</select></p>' . "\n";
-
+		
 		echo '<p><input type="submit" name="creer" value="' . T_("Créer les fichiers") . '" /></p>' . "\n";
 		echo "</div>\n";
 		echo "</form>\n";
