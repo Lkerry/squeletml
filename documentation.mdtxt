@@ -1255,11 +1255,19 @@ Le cron permet d'effectuer certaines tâches de maintenance:
 
 Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où `$activerPageCron` dans le fichier de configuration du site vaut `TRUE` et que la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
 
-	* */12 * * * lynx -source $urlRacine/cron.php > /dev/null 2>&1
+	0 4 * * * lynx -source $urlRacine/cron.php
 
-Grâce à la commande ci-dessus, la page `cron.php` est visitée toutes les 12 heures. Bien sûr, ne pas oublier de remplacer `$urlRacine` par la bonne valeur, par exemple:
+Grâce à la commande ci-dessus, la page `cron.php` est visitée une fois par jour à 4h00. Bien sûr, ne pas oublier de remplacer `$urlRacine` par la bonne valeur, par exemple:
 
-	* */12 * * * lynx -source http://www.nomDeDomaine.ext/cron.php > /dev/null 2>&1
+	0 4 * * * lynx -source http://www.nomDeDomaine.ext/cron.php
+
+Lynx est un navigateur en mode texte. S'il n'est pas installé sur votre système, vous pouvez utiliser GNU Wget:
+
+	0 4 * * * wget -O - -q -t 1 http://www.nomDeDomaine.ext/cron.php
+
+ou encore cURL:
+
+	0 4 * * * curl --silent --compressed http://www.nomDeDomaine.ext/cron.php
 
 ### Rapport par courriel
 
