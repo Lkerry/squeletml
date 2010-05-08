@@ -22,8 +22,8 @@ if (file_exists($racine . '/init.inc.php'))
 	
 	if ($activerPageCron)
 	{
-		$timestamp = time();
-		@file_put_contents("$racine/site/inc/cron.txt", $timestamp);
+		$t1 = time();
+		@file_put_contents("$racine/site/inc/cron.txt", $t1);
 
 		$langueRapports = !empty($langueRapports) ? $langueRapports : $langueParDefaut;
 		phpGettext($racine, $langueRapports); // Nécessaire à la traduction.
@@ -35,8 +35,8 @@ if (file_exists($racine . '/init.inc.php'))
 			$adminPorteDocumentsDroits = array ('creer' => TRUE);
 		}
 		
-		$dateJour = date('Y-m-d', $timestamp);
-		$dateHeure = date('H:i:s', $timestamp);
+		$dateJour = date('Y-m-d', $t1);
+		$dateHeure = date('H:i:s', $t1);
 		$rapport .= '<h1>' . sprintf(T_("Rapport d'exécution du cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . "</h1>\n";
 		
 		$rapport .= '<p><em>' . sprintf(T_("Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1\$s\">modifier la variable %2\$s dans le fichier de configuration du site</a>."), $urlRacineAdmin . '/porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php&amp;dossierCourant=../site/inc#messages', '<code>$envoyerRapportCron</code>') . "</em></p>\n";
@@ -381,6 +381,11 @@ if (file_exists($racine . '/init.inc.php'))
 		$rapport .= adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocumentsDroits);
 		$rapport .= "</ul>\n";
 		
+		$t2 = time();
+		$t = $t2 - $t1;
+		$rapport .= "<hr />\n";
+		$rapport .= '<p>' . sprintf(T_ngettext("Cron exécuté en %1\$s seconde.", "Cron exécuté en %1\$s secondes.", $t), $t) . "</p>\n";
+		
 		########################################################################
 		##
 		## Envoi du rapport.
@@ -388,6 +393,8 @@ if (file_exists($racine . '/init.inc.php'))
 		########################################################################
 		
 		$rapport = str_replace('class="erreur"', 'style="color: #630000;"', $rapport);
+		$rapport = str_replace('<code>', '<code style="background-color: #F2F2F2;">', $rapport);
+		$rapport = str_replace('<pre ', '<pre style="overflow: auto; padding: 5px; border: 1px solid #B3B3B3; background-color: #F2F2F2;" ', $rapport);
 		$rapport = preg_replace("#<ul>\n<li><a href=\"javascript:adminSelectionneTexte\('[^']+'\);\">[^<]+</a></li>\n</ul>#", '', $rapport);
 		
 		if ($envoyerRapportCron && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
