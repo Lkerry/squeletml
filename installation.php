@@ -422,7 +422,7 @@ else
 			
 			if ($initIncPhp !== FALSE)
 			{
-				preg_match_all('/^\s*(#|\/\/)?\s*\$accueil\[\'([a-z]{2})\'\][^;]+;/m', $initIncPhp, $resultatAccueil);
+				preg_match_all('/^\s*(#|\/\/)?\s*\$accueil\[\'([a-z]{2})\'\]\s*=/m', $initIncPhp, $resultatAccueil);
 				$languesAccueil = $resultatAccueil[2];
 			}
 		}

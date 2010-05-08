@@ -74,7 +74,7 @@ Ce fichier contient deux variables obligatoires à renseigner:
 
 		Deny from all
 
-	D'ailleurs, un tel fichier `.htaccess` est ajouté par l'installateur automatisé dans chaque dossier d'accueil d'une langue non activée.
+	D'ailleurs, un tel fichier `.htaccess` est ajouté par l'installateur automatisé dans chaque dossier d'accueil d'une langue inactive.
 
 **Note: il est possible de renommer le dossier d'administration pour plus de sécurité, qui est par défaut `admin`. La variable à modifier, `$adminDossierAdmin`, se trouve dans le fichier `init.inc.php`. Le cas échéant, modifier le chemin vers l'administration dans les exemples de cette documentation. Par exemple, modifier ceci:**
 

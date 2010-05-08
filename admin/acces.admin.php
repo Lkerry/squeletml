@@ -672,7 +672,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<div class="boite">
 			<h2 id="langues"><?php echo T_("Gérer les langues livrées par défaut"); ?></h2>
 			
-			<p><?php echo T_("Une langue non activée n'apparaîtra pas dans le menu des langues par défaut, et son dossier d'accueil par défaut ne sera pas accessible sur le web. Prendre note que cela n'empêche pas de pouvoir créer des pages dans cette langue."); ?></p>
+			<p><?php echo T_("Une langue inactive n'apparaîtra pas dans le menu des langues par défaut, et son dossier d'accueil par défaut ne sera pas accessible sur le web. Prendre note que cela n'empêche pas de pouvoir créer des pages dans cette langue."); ?></p>
 			
 			<form action="<?php echo $adminAction; ?>#messages" method="post">
 				<div>
@@ -684,22 +684,22 @@ include $racineAdmin . '/inc/premier.inc.php';
 							<?php $initIncPhp = @file_get_contents($racine . '/init.inc.php'); ?>
 							
 							<?php if ($initIncPhp !== FALSE): ?>
-								<?php preg_match_all('/^\s*(#|\/\/)?\s*\$accueil\[\'([a-z]{2})\'\]\s*=\s*([^;]+);/m', $initIncPhp, $resultatAccueil, PREG_SET_ORDER); ?>
+								<?php preg_match_all('/^\s*(#|\/\/)?\s*\$accueil\[\'([a-z]{2})\'\]\s*=/m', $initIncPhp, $resultatAccueil, PREG_SET_ORDER); ?>
 								<?php $languesAccueil = array (); ?>
 								
 								<?php foreach ($resultatAccueil as $resultatAccueilTableauLangue): ?>
 									<?php $languesAccueil[] = $resultatAccueilTableauLangue[2]; ?>
 								<?php endforeach; ?>
 								
-								<?php preg_match_all('/^\s*\$accueil\[\'([a-z]{2})\'\][^;]+;/m', $initIncPhp, $resultatAccueilApresModif, PREG_SET_ORDER); ?>
-								<?php $languesAccueilApresModif = array (); ?>
+								<?php preg_match_all('/^\s*\$accueil\[\'([a-z]{2})\'\]\s*=/m', $initIncPhp, $resultatLanguesActivesApresModif, PREG_SET_ORDER); ?>
+								<?php $languesActivesApresModif = array (); ?>
 								
-								<?php foreach ($resultatAccueilApresModif as $resultatAccueilApresModifTableauLangue): ?>
-									<?php $languesAccueilApresModif[] = $resultatAccueilApresModifTableauLangue[1]; ?>
+								<?php foreach ($resultatLanguesActivesApresModif as $resultatLanguesActivesApresModifTableau): ?>
+									<?php $languesActivesApresModif[] = $resultatLanguesActivesApresModifTableau[1]; ?>
 								<?php endforeach; ?>
 								
 								<?php foreach ($languesAccueil as $langueAccueil): ?>
-									<?php if (in_array($langueAccueil, $languesAccueilApresModif)): ?>
+									<?php if (in_array($langueAccueil, $languesActivesApresModif)): ?>
 										<?php $selected = ' selected="selected"'; ?>
 									<?php else: ?>
 										<?php $selected = ''; ?>
