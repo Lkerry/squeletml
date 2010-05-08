@@ -105,7 +105,7 @@ elseif ($argv[1] == 'message-accueil')
 		{
 			$ligne = fgets($fic);
 			
-			if (preg_match('/^## /', $ligne))
+			if (strpos($ligne, '## ') === 0)
 			{
 				$ligne = fgets($fic);
 				
@@ -117,7 +117,7 @@ elseif ($argv[1] == 'message-accueil')
 					}
 					
 					$ligne = fgets($fic);
-				} while (!preg_match('/^## /', $ligne));
+				} while (strpos($ligne, '## ') !== 0);
 				
 				break;
 			}

@@ -248,7 +248,7 @@ if (!empty($classesBody))
 	$classesBody = ' class="' . trim($classesBody) . '"';
 }
 
-if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrielContact) && !isset($accueil[LANGUE]) && preg_match('/^' . preg_quote(urlRacineLangueInactive($racine, $urlRacine, LANGUE), '/') . '/', $url)))
+if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrielContact) && !isset($accueil[LANGUE]) && strpos($url, urlRacineLangueInactive($racine, $urlRacine, LANGUE)) === 0))
 {
 	$robots = 'noindex, follow, noarchive';
 }

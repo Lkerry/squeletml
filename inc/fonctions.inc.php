@@ -39,7 +39,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			{
 				$ligne = rtrim(fgets($fic));
 			
-				if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
+				if (strpos($ligne, '# Ajout automatique de Squeletml (accès admin). Ne pas modifier.') === 0)
 				{
 					$lienAccesDansHtaccess = TRUE;
 					break;
@@ -4886,7 +4886,7 @@ function siteEstEnMaintenance($cheminHtaccess)
 		{
 			$ligne = rtrim(fgets($fic));
 			
-			if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
+			if (strpos($ligne, '# Ajout automatique de Squeletml (maintenance). Ne pas modifier.') === 0)
 			{
 				return TRUE;
 			}

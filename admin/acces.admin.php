@@ -94,7 +94,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
+						if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
 						{
 							$utilisateurAbsent = FALSE;
 							break;
@@ -132,7 +132,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
+						if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
 						{
 							$utilisateurAbsent = FALSE;
 							$ligne = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
@@ -182,7 +182,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
+						if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
 						{
 							$utilisateurAbsent = FALSE;
 						}
@@ -226,9 +226,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 						{
 							$ligne = rtrim(fgets($fic2));
 						
-							if (preg_match('/^# Ajout automatique de Squeletml \(accès admin\). Ne pas modifier./', $ligne))
+							if (strpos($ligne, '# Ajout automatique de Squeletml (accès admin). Ne pas modifier.') === 0)
 							{
-								while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(accès admin\)./', $ligne))
+								while (strpos($ligne, '# Fin de l\'ajout automatique de Squeletml (accès admin).') !== 0)
 								{
 									$ligne = fgets($fic2);
 								}
@@ -365,7 +365,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$ligne = rtrim(fgets($fic));
 				
-					if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
+					if (strpos($ligne, '# Ajout automatique de Squeletml (maintenance). Ne pas modifier.') === 0)
 					{
 						$maintenanceDansHtaccess = TRUE;
 						break;
@@ -421,11 +421,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = rtrim(fgets($fic2));
 					
-						if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
+						if (strpos($ligne, '# Ajout automatique de Squeletml (maintenance). Ne pas modifier.') === 0)
 						{
 							$fichierHtaccess[] = $ligne;
 						
-							while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
+							while (strpos($ligne, '# Fin de l\'ajout automatique de Squeletml (maintenance).') !== 0)
 							{
 								$ligne = rtrim(fgets($fic2));
 							
@@ -476,9 +476,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = rtrim(fgets($fic2));
 					
-						if (preg_match('/^# Ajout automatique de Squeletml \(maintenance\). Ne pas modifier./', $ligne))
+						if (strpos($ligne, '# Ajout automatique de Squeletml (maintenance). Ne pas modifier.') === 0)
 						{
-							while (!preg_match('/^# Fin de l\'ajout automatique de Squeletml \(maintenance\)./', $ligne))
+							while (strpos($ligne, '# Fin de l\'ajout automatique de Squeletml (maintenance).') !== 0)
 							{
 								$ligne = fgets($fic2);
 							}

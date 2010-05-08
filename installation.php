@@ -310,7 +310,7 @@ else
 			{
 				$ligne = fgets($fic);
 
-				if (preg_match('/^' . securiseTexte($_POST['identifiant']) . ':/', $ligne))
+				if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
 				{
 					$utilisateurAbsent = FALSE;
 					break;
