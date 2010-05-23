@@ -352,7 +352,11 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 	background-color: #f7f7f7;
 }
 
-#galeriesAdminConfigGraphique div.configGraphiqueLienMaj {
+#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
+	margin: 0px;
+}
+
+#galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
 	text-align: right;
 }
 

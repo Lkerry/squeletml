@@ -1126,6 +1126,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['configGraphique']) || (isset($_GET['action']) && $_GET['action'] == 'configGraphique'))
 		{
 			$messagesScript = '';
+			$messagesScript .= '<p>' . T_("<strong>Important:</strong> ne pas oublier de cliquer sur le bouton «Mettre à jour» pour sauvegarder les modifications.") . "</p>\n";
 			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
 			$cheminConfigGalerie = cheminConfigGalerie($racine, $id);
 
@@ -1203,7 +1204,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$corpsGalerie .= '<li class="configGraphiqueListeVignettes">';
 					$corpsGalerie .= $vignette;
 					$corpsGalerie .= $config;
-					$corpsGalerie .= '<div class="configGraphiqueLienMaj"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></div>\n";
+					
+					$corpsGalerie .= '<p class="configGraphiqueSuppressionImage"><input id="configGraphiqueInputSupprimer-' . $i . '" class="long" type="checkbox" name="configGraphiqueInputSupprimer-' . $i . '" value="supprimer" /> <label for="configGraphiqueInputSupprimer-' . $i . '">' . T_("Supprimer") . "</label></p>\n";
+					
+					$corpsGalerie .= '<p class="configGraphiqueLienMaj"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></p>\n";
 					$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
 				}
 				
@@ -1216,7 +1220,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$corpsGalerie .= "</form>\n";
 				$corpsGalerie .= "</div><!-- /#galeriesAdminConfigGraphique -->\n";
 			}
-			
 			
 			$messagesScript .= $corpsGalerie;
 			
@@ -1248,17 +1251,59 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$intermediaireNom = securiseTexte($intermediaireNom);
 					$i = $_POST['indiceIntermediaireNom'][$intermediaireNom];
-					$contenuFichier .= "[$intermediaireNom]\n";
 					
-					foreach ($_POST['parametres'][$i] as $parametre => $valeur)
+					if (isset($_POST['configGraphiqueInputSupprimer-' . $i]))
 					{
-						if (!empty($valeur))
+						$imagesAsupprimer = array ();
+						$imagesAsupprimer[] = $cheminGalerie . '/' . $intermediaireNom;
+						
+						if (!empty($_POST['parametres'][$i]['originalNom']))
 						{
-							$contenuFichier .= securiseTexte($parametre) . '=' . securiseTexte($valeur) . "\n";
+							$imagesAsupprimer[] = $cheminGalerie . '/' . securiseTexte($_POST['parametres'][$i]['originalNom']);
+						}
+						else
+						{
+							$nomOriginal = nomSuffixe($intermediaireNom, '-original');
+							
+							if (file_exists($cheminGalerie . '/' . $nomOriginal))
+							{
+								$imagesAsupprimer[] = $cheminGalerie . '/' . $nomOriginal;
+							}
+						}
+						
+						if (!empty($_POST['parametres'][$i]['vignetteNom']))
+						{
+							$imagesAsupprimer[] = $cheminGalerie . '/' . securiseTexte($_POST['parametres'][$i]['vignetteNom']);
+						}
+						else
+						{
+							$nomVignette = nomSuffixe($intermediaireNom, '-vignette');
+							
+							if (file_exists($cheminGalerie . '/' . $nomVignette))
+							{
+								$imagesAsupprimer[] = $cheminGalerie . '/' . $nomVignette;
+							}
+						}
+						
+						foreach ($imagesAsupprimer as $imageAsupprimer)
+						{
+							$messagesScript .= adminUnlink($imageAsupprimer);
 						}
 					}
-					
-					$contenuFichier .= "\n";
+					else
+					{
+						$contenuFichier .= "[$intermediaireNom]\n";
+						
+						foreach ($_POST['parametres'][$i] as $parametre => $valeur)
+						{
+							if (!empty($valeur))
+							{
+								$contenuFichier .= securiseTexte($parametre) . '=' . securiseTexte($valeur) . "\n";
+							}
+						}
+						
+						$contenuFichier .= "\n";
+					}
 				}
 				
 				$contenuFichier = trim($contenuFichier);
