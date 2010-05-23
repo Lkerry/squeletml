@@ -140,6 +140,7 @@ else
 					if ($robotsTxt !== FALSE)
 					{
 						$robotsTxt = preg_replace('|^(Disallow: )(/telecharger\.php)|m', '$1' . $urlSansServeurRacine . '$2', $robotsTxt);
+						$robotsTxt = preg_replace("/\n{2,}/", "\n", $robotsTxt);
 						
 						if (@file_put_contents($racine . '/robots.txt', $robotsTxt) === FALSE)
 						{

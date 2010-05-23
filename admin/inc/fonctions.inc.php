@@ -541,6 +541,7 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocuments
 			else
 			{
 				$contenuRobots .= "\n$declaration";
+				$contenuRobots = preg_replace("/\n{2,}/", "\n", $contenuRobots);
 				$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
 
 				if (@file_put_contents($cheminFichierRobots, $contenuRobots) !== FALSE)
