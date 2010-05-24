@@ -561,8 +561,9 @@ elseif (!empty($idGalerie))
 				{
 					$lienSansJavascript .= '<span id="galerieLienSansJavascript">';
 				}
-
-				$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . '">' . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
+				
+				$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
+				$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . $ancre . '">' . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
 				
 				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
 				{

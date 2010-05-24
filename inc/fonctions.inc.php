@@ -240,6 +240,51 @@ function ajouteGet($adresse, $get)
 }
 
 /*
+Retourne l'ancre de navigation d'une galerie.
+
+Voir les explications de la variable `$galerieAncreDeNavigation` dans le ficher de configuration du site.
+*/
+function ancreDeNavigationGalerie($nomAncre)
+{
+	switch ($nomAncre)
+	{
+		case 'galerie':
+			$ancre = '#galerie';
+			break;
+			
+		case 'titre':
+			$ancre = '#galerieTitre';
+			break;
+			
+		case 'sousTitre':
+			$ancre = '#galerieSousTitre';
+			break;
+			
+		case 'info':
+			$ancre = '#galerieInfo';
+			break;
+			
+		case 'minivignettes':
+			$ancre = '#galerieMinivignettes';
+			break;
+			
+		case 'divImage':
+			$ancre = '#galerieIntermediaire';
+			break;
+			
+		case 'image':
+			$ancre = '#galerieIntermediaireImg';
+			break;
+			
+		default:
+			$ancre = '';
+			break;
+	}
+	
+	return $ancre;
+}
+
+/*
 Retourne les annexes de la documentation.
 */
 function annexesDocumentation($racineAdmin)
@@ -4127,41 +4172,7 @@ function image(
 			$classAccueil = ' ';
 		}
 		
-		switch ($galerieAncreDeNavigation)
-		{
-			case 'galerie':
-				$ancre = '#galerie';
-				break;
-				
-			case 'titre':
-				$ancre = '#galerieTitre';
-				break;
-				
-			case 'sousTitre':
-				$ancre = '#galerieSousTitre';
-				break;
-				
-			case 'info':
-				$ancre = '#galerieInfo';
-				break;
-				
-			case 'minivignettes':
-				$ancre = '#galerieMinivignettes';
-				break;
-				
-			case 'divImage':
-				$ancre = '#galerieIntermediaire';
-				break;
-				
-			case 'image':
-				$ancre = '#galerieIntermediaireImg';
-				break;
-				
-			default:
-				$ancre = '';
-				break;
-		}
-		
+		$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
 		$id = idImage($racine, $infosImage);
 		$hrefPageIndividuelleImage = url(FALSE, FALSE) . '?image=' . $id . $ancre;
 		
