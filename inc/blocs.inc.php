@@ -454,7 +454,7 @@ if (!empty($blocsAinsererTemp))
 						
 						$blocs[$region] .= '<div id="rechercheGoogle" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<h2>' . T_("Recherche dans le site") . "</h2>\n";
+						$blocs[$region] .= '<h2>' . T_("Rechercher dans le site") . "</h2>\n";
 						$blocs[$region] .= '<form method="get" action="http://www.google.' . $rechercheGoogleExtension . '/search">' . "\n";
 						$blocs[$region] .= "<div>\n";
 						$blocs[$region] .= '<input id="inputMotsCles" type="text" name="as_q" maxlength="255" />' . "\n";
