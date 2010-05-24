@@ -2047,7 +2047,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 }
 
 /*
-Si nécessaire, effectue une rotation automatique et sans perte de qualité d'une image JPG. La rotation à effectuer est trouvée à partir de l'orientation déclarée dans les données Exif, si cette information existe. Retourne le résultat de l'opération sous forme de message concaténable dans `$messagesScript`.
+Si nécessaire, effectue une rotation automatique et sans perte de qualité d'une image JPG. La rotation à effectuer est trouvée à partir de l'orientation déclarée dans les données Exif, si cette information existe. Si `$supprimerExif` vaut TRUE, tente de supprimer les données Exif. Retourne le résultat de l'opération sous forme de message concaténable dans `$messagesScript`.
 
 La vérification du type MIME de l'image n'est pas effectuée, donc la fonction suppose que l'image dont le chemin est passé en paramètre est de type MIME `image/jpeg`. Aussi, pour que la rotation puisse avoir lieu, une des deux configurations suivantes doit être vérifiée:
 
@@ -2058,10 +2058,11 @@ Si `exiftran` est exécutable, il sera utilisé en priorité.
 
 Fonction inspirée au départ par `acidfree_rotate_image()`, fonction présente dans le fichier `image_manip.inc` du module Acidfree Albums pour Drupal (<http://drupal.org/project/acidfree>).
 */
-function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtran)
+function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtran, $supprimerExif)
 {
 	$messagesScript = '';
 	$cheminEchapeImage = adminSuperEscapeshellarg($cheminImage);
+	$suppressionExifGeree = FALSE;
 	
 	if (function_exists('exif_read_data'))
 	{
@@ -2079,7 +2080,7 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 	
 	if (isset($orientation) && $orientation == 1)
 	{
-		$messagesScript = '<li>' . sprintf(T_("Aucune rotation automatique à effectuer pour l'image %1\$s."), "<code>$cheminImage</code>") . "</li>\n";
+		$messagesScript .= '<li>' . sprintf(T_("Aucune rotation automatique à effectuer pour l'image %1\$s."), "<code>$cheminImage</code>") . "</li>\n";
 	}
 	elseif (is_executable($cheminExiftran))
 	{
@@ -2087,11 +2088,11 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 		
 		if (!$ret)
 		{
-			$messagesScript = '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
 		}
 		else
 		{
-			$messagesScript = '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
 		}
 	}
 	elseif (is_executable($cheminJpegtran) && isset($orientation))
@@ -2130,24 +2131,49 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 				break;
 		}
 		
-		$cheminImageTmp = tempnam(dirname($cheminImage), 'jpg');
-		$cheminEchapeImageTmp = adminSuperEscapeshellarg($cheminImageTmp);
-		exec("$cheminJpegtran -copy all $parametresJpegtran -outfile $cheminEchapeImageTmp $cheminEchapeImage", $sortie, $ret);
-		
-		if (!$ret && @copy($cheminImageTmp, $cheminImage))
+		if ($supprimerExif)
 		{
-			$messagesScript = '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$valeurParametreCopy = 'none';
 		}
 		else
 		{
-			$messagesScript = '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$valeurParametreCopy = 'all';
+		}
+		
+		$cheminImageTmp = tempnam(dirname($cheminImage), 'jpg');
+		$cheminEchapeImageTmp = adminSuperEscapeshellarg($cheminImageTmp);
+		exec("$cheminJpegtran -copy $valeurParametreCopy $parametresJpegtran -outfile $cheminEchapeImageTmp $cheminEchapeImage", $sortie, $ret);
+		$suppressionExifGeree = TRUE;
+		
+		if (!$ret && @copy($cheminImageTmp, $cheminImage))
+		{
+			$messagesScript .= '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			
+			if ($supprimerExif)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Suppression sans perte de qualité des données Exif effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			
+			if ($supprimerExif)
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Suppression sans perte de qualité des données Exif par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			}
 		}
 		
 		@unlink($cheminImageTmp);
 	}
 	else
 	{
-		$messagesScript = '<li class="erreur">' . sprintf(T_("Votre environnement ne permet pas d'effectuer une rotation automatique et sans perte de qualité. La configuration nécessaire est soit un accès à l'exécutable %1\$s, soit un accès à l'exécutable %2\$s ainsi qu'à la fonction PHP %3\$s."), '<code>exiftran</code>', '<code>jpegtran</code>', '<code>exif_read_data()</code>') . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Votre environnement ne permet pas d'effectuer une rotation automatique et sans perte de qualité. La configuration nécessaire est soit un accès à l'exécutable %1\$s, soit un accès à l'exécutable %2\$s ainsi qu'à la fonction PHP %3\$s."), '<code>exiftran</code>', '<code>jpegtran</code>', '<code>exif_read_data()</code>') . "</li>\n";
+	}
+	
+	if ($supprimerExif && !$suppressionExifGeree)
+	{
+		$messagesScript .= adminSupprimeExif($cheminImage, $cheminJpegtran);
 	}
 	
 	return $messagesScript;
@@ -2182,6 +2208,41 @@ Reproduit la fonction `escapeshellarg()`, mais sans dépendre de la locale. Par 
 function adminSuperEscapeshellarg($arg)
 {
 	return "'" . str_replace("'", "'\''", $arg) . "'";
+}
+
+/*
+Supprime les données Exif d'une image JPG. L'opération est sans perte de qualité. Retourne le résultat de l'opération sous forme de message concaténable dans `$messagesScript`.
+
+La vérification du type MIME de l'image n'est pas effectuée, donc la fonction suppose que l'image dont le chemin est passé en paramètre est de type MIME `image/jpeg`. Aussi, pour que la suppression puisse avoir lieu, l'exécutable `jpegtran` (dont le chemin est passé en paramètre dans la variable `$cheminJpegtran`) doit être accessible.
+*/
+function adminSupprimeExif($cheminImage, $cheminJpegtran)
+{
+	$messagesScript = '';
+	
+	if (is_executable($cheminJpegtran))
+	{
+		$cheminEchapeImage = adminSuperEscapeshellarg($cheminImage);
+		$cheminImageTmp = tempnam(dirname($cheminImage), 'jpg');
+		$cheminEchapeImageTmp = adminSuperEscapeshellarg($cheminImageTmp);
+		exec("$cheminJpegtran -copy none -outfile $cheminEchapeImageTmp $cheminEchapeImage", $sortie, $ret);
+		
+		if (!$ret && @copy($cheminImageTmp, $cheminImage))
+		{
+			$messagesScript .= '<li>' . sprintf(T_("Suppression sans perte de qualité des données Exif effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Suppression sans perte de qualité des données Exif par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+		}
+		
+		@unlink($cheminImageTmp);
+	}
+	else
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Votre environnement ne permet pas d'effectuer une suppression sans perte de qualité des données Exif. La configuration nécessaire est un accès à l'exécutable %1\$s."), '<code>jpegtran</code>') . "</li>\n";
+	}
+	
+	return $messagesScript;
 }
 
 /*

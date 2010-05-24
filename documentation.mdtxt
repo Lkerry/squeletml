@@ -16,6 +16,8 @@ Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est u
 
 - La rotation automatique et sans perte de qualité des images JPG peut se faire avec la commande `exiftran` sur le système, ou bien avec la commande `jpegtran` sur le système et la fonction PHP `exif_read_data()`.
 
+- La suppression sans perte de qualité des données Exif des images JPG peut se faire avec la commande `jpegtran` sur le système.
+
 - La récupération de contenu externe se fait par `cURL` si disponible, sinon par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.squeletml.net/');` retourne ceci:
 
 		HTTP/1.0 403 Forbidden
