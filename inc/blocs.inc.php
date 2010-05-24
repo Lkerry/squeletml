@@ -116,7 +116,7 @@ if (!empty($blocsAinsererTemp))
 						
 						$blocs[$region] .= '<div id="fluxRss" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<h2>' . T_("Syndication") . "</h2>\n";
+						$blocs[$region] .= '<h2>' . T_("Flux RSS") . "</h2>\n";
 						
 						$blocs[$region] .= "<ul>\n";
 						

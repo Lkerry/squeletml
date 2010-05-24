@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-24 11:56-0400\n"
+"POT-Creation-Date: 2010-05-24 12:28-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -770,7 +770,7 @@ msgstr ""
 msgid "Galeries"
 msgstr ""
 
-#: admin/xhtml/menu.inc.php:10
+#: admin/xhtml/menu.inc.php:10 inc/blocs.inc.php:119
 msgid "Flux RSS"
 msgstr ""
 
@@ -3880,10 +3880,6 @@ msgstr ""
 #: inc/blocs.inc.php:96 inc/contact.inc.php:20
 msgid "Faire découvrir à des ami-e-s"
 msgstr "Share with friends"
-
-#: inc/blocs.inc.php:119
-msgid "Syndication"
-msgstr ""
 
 #: inc/blocs.inc.php:142 inc/blocs.inc.php:146 inc/premier.inc.php:335
 #, fuzzy, php-format
