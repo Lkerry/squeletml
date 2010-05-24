@@ -3,8 +3,8 @@
 Ce fichier construit le code des blocs. Après son inclusion, le tableau `$blocs` est prêt à être utilisé. Aucun code XHTML n'est envoyé au navigateur.
 */
 
-// Vérification de l'état du module «Faire découvrir».
-include $racine . '/inc/faire-decouvrir.inc.php';
+// Vérification de l'état du module «Envoyer à des amis».
+include $racine . '/inc/envoyer-amis.inc.php';
 
 $blocsAinsererTemp = blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier);
 $blocs = array (
@@ -77,8 +77,8 @@ if (!empty($blocsAinsererTemp))
 					
 					break;
 					
-				case 'faire-decouvrir':
-					if ($faireDecouvrir && $decouvrir)
+				case 'envoyer-amis':
+					if ($envoyerAmis && $envoyerAmisEstActif)
 					{
 						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
@@ -91,11 +91,11 @@ if (!empty($blocsAinsererTemp))
 							$classeBlocArrondi = '';
 						}
 						
-						$blocs[$region] .= '<div id="faireDecouvrir" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= '<div id="envoyerAmis" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<a href="' . urlPageAvecDecouvrir() . '">' . T_("Faire découvrir à des ami-e-s") . '</a>';
+						$blocs[$region] .= '<a href="' . urlPageAvecEnvoyerAmis() . '">' . T_("Envoyer à des amis") . '</a>';
 						$blocs[$region] .= $codeInterieurBlocBas;
-						$blocs[$region] .= '</div><!-- /#faireDecouvrir -->' . "\n";
+						$blocs[$region] .= '</div><!-- /#envoyerAmis -->' . "\n";
 					}
 					
 					break;
@@ -262,7 +262,7 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= $codeInterieurBlocHaut;
 						$blocs[$region] .= '<h2>' . T_("Faire un lien vers cette page") . "</h2>\n";
 						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
-						$codeLienPage = '<a href="' . urlPageSansDecouvrir() . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
+						$codeLienPage = '<a href="' . urlPageSansEnvoyerAmis() . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
 						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";

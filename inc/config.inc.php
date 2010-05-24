@@ -213,7 +213,7 @@ $ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
 $ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
 $ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
-$ordreBlocsDansFluxHtml['faire-decouvrir']       = array (550, 550, 550);
+$ordreBlocsDansFluxHtml['envoyer-amis']       = array (550, 550, 550);
 $ordreBlocsDansFluxHtml['marque-pages-sociaux']  = array (560, 560, 560);
 $ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 
@@ -221,13 +221,13 @@ $ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 /*
 - Il est possible d'ajouter des conditions à l'insertion d'un bloc de contenu. Les conditions doivent être du code PHP valide. Elles seront exécutées par la fonction PHP `eval()`. Un bloc sera inclus seulement si le code PHP retourne TRUE. Exemple:
 	
-		$conditionsBlocs['faire-decouvrir'] = 'return strpos($url, "/dossier/") ? TRUE : FALSE;';
+		$conditionsBlocs['envoyer-amis'] = 'return strpos($url, "/dossier/") ? TRUE : FALSE;';
 	
 	Voici la même condition, écrite autrement:
 	
-		$conditionsBlocs['faire-decouvrir'] = 'if (strpos($url, "/dossier/")) {return TRUE;} else {return FALSE;}';
+		$conditionsBlocs['envoyer-amis'] = 'if (strpos($url, "/dossier/")) {return TRUE;} else {return FALSE;}';
 	
-	Dans cet exemple, le bloc «Faire découvrir» sera inclus seulement si l'URL contient `/dossier/`.
+	Dans cet exemple, le bloc «Envoyer à des amis» sera inclus seulement si l'URL contient `/dossier/`.
 	
 - Si aucune condition n'est donnée pour un bloc, le retour est automatiquement évalué à TRUE.
 */
@@ -258,8 +258,8 @@ $inclureSousTitre = TRUE; // TRUE|FALSE
 // Inclusion du bas de page.
 $inclureBasDePage = TRUE; // TRUE|FALSE
 
-// Activation par défaut de l'option «Faire découvrir à des ami-e-s».
-$activerFaireDecouvrirParDefaut = TRUE; // TRUE|FALSE
+// Activation par défaut de l'option «Envoyer à des amis».
+$activerEnvoyerAmisParDefaut = TRUE; // TRUE|FALSE
 
 // Activation par défaut des marque-pages ou réseaux sociaux.
 $activerMarquePagesSociauxParDefaut = TRUE; // TRUE|FALSE
@@ -528,7 +528,7 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Voir la fonction `lienActif()`.
 */
 $liensActifsBlocs['balise-h1']             = NULL;
-$liensActifsBlocs['faire-decouvrir']       = NULL;
+$liensActifsBlocs['envoyer-amis']       = NULL;
 $liensActifsBlocs['flux-rss']              = NULL;
 $liensActifsBlocs['infos-publication']     = NULL;
 $liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
@@ -591,7 +591,7 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
 $limiterProfondeurListesBlocs['balise-h1']             = NULL;
-$limiterProfondeurListesBlocs['faire-decouvrir']       = NULL;
+$limiterProfondeurListesBlocs['envoyer-amis']       = NULL;
 $limiterProfondeurListesBlocs['flux-rss']              = NULL;
 $limiterProfondeurListesBlocs['infos-publication']     = NULL;
 $limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE;

@@ -11,7 +11,7 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 
 if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 {
-	$faireDecouvrir = FALSE;
+	$envoyerAmis = FALSE;
 	$infosPublication = FALSE;
 	$licence = '';
 	$lienPage = FALSE;

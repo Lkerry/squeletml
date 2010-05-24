@@ -187,7 +187,7 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
   - vous pouvez créer le fichier `site/inc/dernier-pre.inc.php`, qui sera inséré au début de `inc/dernier.inc.php`;
   - vous pouvez également créer le fichier `site/inc/dernier.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-- `faire-decouvrir.inc.php`: crée les variables nécessaires à l'incorporation au formulaire de contact du module «Faire découvrir». Vous pouvez modifier ces variables en créant le fichier `site/inc/faire-decouvrir.inc.php`, qui sera inséré à la fin de celui par défaut.
+- `envoyer-amis.inc.php`: crée les variables nécessaires à l'incorporation au formulaire de contact du module «Envoyer à des amis». Vous pouvez modifier ces variables en créant le fichier `site/inc/envoyer-amis.inc.php`, qui sera inséré à la fin de celui par défaut.
 
 - `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
 
@@ -370,9 +370,9 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 							...
 						</div><!-- /#menu -->
 						
-						<div id="faireDecouvrir" class="bloc">
+						<div id="envoyerAmis" class="bloc">
 							...
-						</div><!-- /#faireDecouvrir -->
+						</div><!-- /#envoyerAmis -->
 						
 						<div id="fluxRss" class="bloc">
 							...
@@ -436,8 +436,8 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 	- Si `$idGalerie` n'est pas vide: `inc/galerie.inc.php`
 		- *`site/inc/galerie.inc.php`*
 	- `inc/blocs.inc.php`
-		- `inc/faire-decouvrir.inc.php`
-			- *`site/inc/faire-decouvrir.inc.php`*
+		- `inc/envoyer-amis.inc.php`
+			- *`site/inc/envoyer-amis.inc.php`*
 		- Inclusions selon les blocs configurés. Exemple pour le menu des langues:  
 		*`site/xhtml/$langueDeLaPage/menu-langues.inc.php`* **||** *`xhtml/$langueDeLaPage/menu-langues.inc.php`* **||** *`site/xhtml/$langueParDefaut/menu-langues.inc.php`* **||** *`xhtml/$langueParDefaut/menu-langues.inc.php`* **||** *`site/xhtml/menu-langues.inc.php`* **||** *`xhtml/menu-langues.inc.php`*
 		- *`site/inc/blocs.inc.php`*
@@ -448,10 +448,10 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 	- *`site/inc/dernier-pre.inc.php`*
 	- `inc/blocs.inc.php` (voir les détails plus haut)
 	- `inc/contact.inc.php`
-		- `inc/faire-decouvrir.inc.php` (voir les détails plus haut)
+		- `inc/envoyer-amis.inc.php` (voir les détails plus haut)
 		- *`site/inc/contact.inc.php`* après le traitement des champs par défaut
 		- *`site/inc/contact.inc.php`* avant l'envoi du message
-		- `inc/faire-decouvrir.inc.php` (voir les détails plus haut)
+		- `inc/envoyer-amis.inc.php` (voir les détails plus haut)
 		- *`site/inc/contact.inc.php`* avant l'inclusion du code XHTML du formulaire
 		- *`site/xhtml/(LANGUE/)form-contact.inc.php`* **||** (`xhtml/(LANGUE/)form-contact.inc.php` && *`site/xhtml/(LANGUE/)form-contact-champs-apres-nom.inc.php`* && *`site/xhtml/(LANGUE/)form-contact-champs-apres-message.inc.php`*)
 		- *`site/inc/contact.inc.php`* à la fin du fichier
@@ -602,7 +602,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
-- `$faireDecouvrir`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante, si la valeur est différente de `$activerFaireDecouvrirParDefaut` du fichier de configuration du site.
+- `$envoyerAmis`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante, si la valeur est différente de `$activerEnvoyerAmisParDefaut` du fichier de configuration du site.
 
 - `$idCategorie`: un nombre, un mot ou une phrase identifiant la catégorie à chercher pour afficher la liste des articles en faisant partie. Voir la section «Catégories».
 
@@ -1150,9 +1150,9 @@ Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de 
 
 Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
 
-## Lien «Faire découvrir à des ami-e-s»
+## Lien «Envoyer à des amis»
 
-Une option «Faire découvrir à des ami-e-s» est activée par défaut. Concrètement, un lien est inséré dans le menu pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
+Une option «Envoyer à des amis» est activée par défaut. Concrètement, un lien est inséré dans le menu pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
 
 Si la page visitée est la page individuelle d'une image dans une galerie, le modèle de message contiendra une vignette de l'image et, si possible, une description, qui est formée par une de ces informations (en ordre de priorité):
 

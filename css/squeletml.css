@@ -549,20 +549,20 @@ div#baliseH1 .contenuBloc {
 	border: none;
 }
 
-/* Module «Faire découvrir». */
+/* Module «Envoyer à des amis». */
 
-#modeleMessageDecouvrir {
+#modeleMessageEnvoyerAmis {
 	margin: 25px;
 	padding: 5px;
 	background-color: #f2f2f2;
 	border-radius: 8px; /* CSS 3. */
 }
 
-h2#formulaireFaireDecouvrir {
+h2#formulaireEnvoyerAmis {
 	clear: both;
 }
 
-#faireDecouvrir a {
+#envoyerAmis a {
 	display: block;
 	padding-left: 22px;
 	background: url('../fichiers/enveloppe.png') no-repeat left center;

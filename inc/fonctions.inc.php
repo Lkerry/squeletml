@@ -153,13 +153,13 @@ function accueil($accueil, $langues)
 /*
 Retourne le contenu de l'attribut `action` du formulaire de contact.
 */
-function actionFormContact($decouvrir)
+function actionFormContact($envoyerAmisEstActif)
 {
 	$action = url();
 	
-	if ($decouvrir)
+	if ($envoyerAmisEstActif)
 	{
-		$action .= '#formulaireFaireDecouvrir';
+		$action .= '#formulaireEnvoyerAmis';
 	}
 	else
 	{
@@ -391,7 +391,7 @@ function baliseTitle($baliseTitle, $baliseH1)
 		}
 		else
 		{
-			return urlPageSansDecouvrir();
+			return urlPageSansEnvoyerAmis();
 		}
 	}
 	else
@@ -1473,99 +1473,6 @@ function dateVersTimestamp($date)
 }
 
 /*
-Retourne le texte supplémentaire d'une image pour le message envoyé par le module «Faire découvrir».
-*/
-function decouvrirSupplementImage($urlRacine, $idGalerie, $image, $galerieLegendeMarkdown)
-{
-	$messageDecouvrirSupplement = '';
-	$titreImage = titreImage($image);
-	
-	if (!empty($image['vignetteNom']))
-	{
-		$vignetteNom = $image['vignetteNom'];
-	}
-	else
-	{
-		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
-	}
-	
-	if (!empty($image['vignetteAlt']))
-	{
-		$vignetteAlt = $image['vignetteAlt'];
-	}
-	elseif (!empty($image['intermediaireAlt']))
-	{
-		$vignetteAlt = $image['intermediaireAlt'];
-	}
-	else
-	{
-		$vignetteAlt = sprintf(T_("Image %1\$s"), $titreImage);
-	}
-	
-	$messageDecouvrirSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
-	
-	if (!empty($image['titre']))
-	{
-		$messageDecouvrirSupplement .= '<p>' . $image['titre'] . "</p>\n";
-	}
-	
-	if (!empty($image['intermediaireLegende']))
-	{
-		$messageDecouvrirSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['intermediaireAlt']))
-	{
-		$messageDecouvrirSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['vignetteAlt']))
-	{
-		$messageDecouvrirSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['pageIntermediaireDescription']))
-	{
-		$messageDecouvrirSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
-	}
-	elseif (!empty($image['pageIntermediaireBaliseTitle']))
-	{
-		$messageDecouvrirSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
-	}
-	
-	$messageDecouvrirSupplement = "<div style=\"font-style: italic;\">$messageDecouvrirSupplement</div>\n";
-	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
-	
-	return $messageDecouvrirSupplement;
-}
-
-/*
-Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Faire découvrir».
-*/
-function decouvrirSupplementPage($description, $baliseTitle)
-{
-	$messageDecouvrirSupplement = '';
-	
-	if (!empty($baliseTitle))
-	{
-		$messageDecouvrirSupplement .= '<p>' . $baliseTitle . "</p>\n";
-	}
-	
-	if (!empty($description))
-	{
-		$messageDecouvrirSupplement .= '<p>' . $description . "</p>\n";
-	}
-	
-	if (!empty($messageDecouvrirSupplement))
-	{
-		$messageDecouvrirSupplement = "<div style=\"font-style: italic;\">$messageDecouvrirSupplement</div>\n";
-	}
-	
-	$messageDecouvrirSupplement .= '<p><a href="' . urlPageSansDecouvrir() . '">' . urlPageSansDecouvrir() . "</a></p>\n";
-	
-	$messageDecouvrirSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
-	
-	return $messageDecouvrirSupplement;
-}
-
-/*
 Retourne un tableau dont le premier élément contient le contenu du DTD (Définition de Type de Document); et le second élément, le contenu de la balise `html`.
 */
 function doctype($doctype, $langue)
@@ -1596,6 +1503,99 @@ function doctype($doctype, $langue)
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n", '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langue . '" lang="' . $langue . '">' . "\n");
 			break;
 	}
+}
+
+/*
+Retourne le texte supplémentaire d'une image pour le message envoyé par le module «Envoyer à des amis».
+*/
+function envoyerAmisSupplementImage($urlRacine, $idGalerie, $image, $galerieLegendeMarkdown)
+{
+	$messageEnvoyerAmisSupplement = '';
+	$titreImage = titreImage($image);
+	
+	if (!empty($image['vignetteNom']))
+	{
+		$vignetteNom = $image['vignetteNom'];
+	}
+	else
+	{
+		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
+	}
+	
+	if (!empty($image['vignetteAlt']))
+	{
+		$vignetteAlt = $image['vignetteAlt'];
+	}
+	elseif (!empty($image['intermediaireAlt']))
+	{
+		$vignetteAlt = $image['intermediaireAlt'];
+	}
+	else
+	{
+		$vignetteAlt = sprintf(T_("Image %1\$s"), $titreImage);
+	}
+	
+	$messageEnvoyerAmisSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
+	
+	if (!empty($image['titre']))
+	{
+		$messageEnvoyerAmisSupplement .= '<p>' . $image['titre'] . "</p>\n";
+	}
+	
+	if (!empty($image['intermediaireLegende']))
+	{
+		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['intermediaireAlt']))
+	{
+		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['vignetteAlt']))
+	{
+		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['pageIntermediaireDescription']))
+	{
+		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
+	}
+	elseif (!empty($image['pageIntermediaireBaliseTitle']))
+	{
+		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
+	}
+	
+	$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplement</div>\n";
+	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
+	
+	return $messageEnvoyerAmisSupplement;
+}
+
+/*
+Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Envoyer à des amis».
+*/
+function envoyerAmisSupplementPage($description, $baliseTitle)
+{
+	$messageEnvoyerAmisSupplement = '';
+	
+	if (!empty($baliseTitle))
+	{
+		$messageEnvoyerAmisSupplement .= '<p>' . $baliseTitle . "</p>\n";
+	}
+	
+	if (!empty($description))
+	{
+		$messageEnvoyerAmisSupplement .= '<p>' . $description . "</p>\n";
+	}
+	
+	if (!empty($messageEnvoyerAmisSupplement))
+	{
+		$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplement</div>\n";
+	}
+	
+	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . urlPageSansEnvoyerAmis() . "</a></p>\n";
+	
+	$messageEnvoyerAmisSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
+	
+	return $messageEnvoyerAmisSupplement;
 }
 
 /*
@@ -5302,67 +5302,67 @@ function urlExiste($url)
 }
 
 /*
-Retourne l'URL de la page en cours avec la variable GET `action=faireDecouvrir`.
+Retourne l'URL de la page en cours avec la variable GET `action=envoyerAmis`.
 */
-function urlPageAvecDecouvrir()
+function urlPageAvecEnvoyerAmis()
 {
 	$url = url();
 	
-	if (preg_match('/(\?|&amp;)action=faireDecouvrir/', $url))
+	if (preg_match('/(\?|&amp;)action=envoyerAmis/', $url))
 	{
-		return $url . '#formulaireFaireDecouvrir';
+		return $url . '#formulaireEnvoyerAmis';
 	}
 	elseif (strstr($url, '?'))
 	{
-		return "$url&amp;action=faireDecouvrir#formulaireFaireDecouvrir";
+		return "$url&amp;action=envoyerAmis#formulaireEnvoyerAmis";
 	}
 	else
 	{
-		return "$url?action=faireDecouvrir#formulaireFaireDecouvrir";
+		return "$url?action=envoyerAmis#formulaireEnvoyerAmis";
 	}
 }
 
 /*
-Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=faireDecouvrir` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=faireDecouvrir`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
+Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=envoyerAmis` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=envoyerAmis`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
 */
-function urlPageSansDecouvrir($retourneTableau = FALSE)
+function urlPageSansEnvoyerAmis($retourneTableau = FALSE)
 {
-	$urlPageSansDecouvrir = array ();
+	$urlPageSansEnvoyerAmis = array ();
 	$url = url();
 	
-	if (strstr($url, '?action=faireDecouvrir&amp;'))
+	if (strstr($url, '?action=envoyerAmis&amp;'))
 	{
-		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir&amp;', '?', $url);
+		$urlPageSansEnvoyerAmis[0] = str_replace('?action=envoyerAmis&amp;', '?', $url);
 	}
-	elseif (preg_match('/\?action=faireDecouvrir$/', $url))
+	elseif (preg_match('/\?action=envoyerAmis$/', $url))
 	{
-		$urlPageSansDecouvrir[0] = str_replace('?action=faireDecouvrir', '', $url);
+		$urlPageSansEnvoyerAmis[0] = str_replace('?action=envoyerAmis', '', $url);
 	}
-	elseif (strstr($url, '&amp;action=faireDecouvrir'))
+	elseif (strstr($url, '&amp;action=envoyerAmis'))
 	{
-		$urlPageSansDecouvrir[0] = str_replace('&amp;action=faireDecouvrir', '', $url);
+		$urlPageSansEnvoyerAmis[0] = str_replace('&amp;action=envoyerAmis', '', $url);
 	}
 	else
 	{
-		$urlPageSansDecouvrir[0] = $url;
+		$urlPageSansEnvoyerAmis[0] = $url;
 	}
 	
 	if ($retourneTableau)
 	{
 		if (strstr($url, '?'))
 		{
-			$urlPageSansDecouvrir[1] = TRUE;
+			$urlPageSansEnvoyerAmis[1] = TRUE;
 		}
 		else
 		{
-			$urlPageSansDecouvrir[1] = FALSE;
+			$urlPageSansEnvoyerAmis[1] = FALSE;
 		}
 		
-		return $urlPageSansDecouvrir;
+		return $urlPageSansEnvoyerAmis;
 	}
 	else
 	{
-		return $urlPageSansDecouvrir[0];
+		return $urlPageSansEnvoyerAmis[0];
 	}
 }
 

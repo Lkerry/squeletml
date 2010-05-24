@@ -1,5 +1,5 @@
 <?php
-$faireDecouvrir = FALSE;
+$envoyerAmis = FALSE;
 $infosPublication = FALSE;
 $licence = '';
 $lienPage = FALSE;

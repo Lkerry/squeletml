@@ -1171,14 +1171,14 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 										$contenu .= '$description = "' . T_("Description de la page.") . '";' . "\n";
 										break;
 										
-									case 'faireDecouvrir':
-										if ($activerFaireDecouvrirParDefaut)
+									case 'envoyerAmis':
+										if ($activerEnvoyerAmisParDefaut)
 										{
-											$contenu .= '$faireDecouvrir = FALSE;' . "\n";
+											$contenu .= '$envoyerAmis = FALSE;' . "\n";
 										}
 										else
 										{
-											$contenu .= '$faireDecouvrir = TRUE;' . "\n";
+											$contenu .= '$envoyerAmis = TRUE;' . "\n";
 										}
 										
 										break;
@@ -1792,7 +1792,7 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<option value="dateCreation">$dateCreation</option>' . "\n";
 	echo '<option value="dateRevision">$dateRevision</option>' . "\n";
 	echo '<option value="description">$description</option>' . "\n";
-	echo '<option value="faireDecouvrir">$faireDecouvrir</option>' . "\n";
+	echo '<option value="envoyerAmis">$envoyerAmis</option>' . "\n";
 	echo '<option value="idCategorie">$idCategorie</option>' . "\n";
 	echo '<option value="idGalerie">$idGalerie</option>' . "\n";
 	echo '<option value="infosPublication">$infosPublication</option>' . "\n";

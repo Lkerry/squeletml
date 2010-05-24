@@ -77,7 +77,7 @@ if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 // Affectations 2 de 3.
 
 extract(init('', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'decouvrir', 'decouvrirInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
+extract(init(FALSE, 'envoyerAmisEstActif', 'envoyerAmisInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
 
 if (!isset($apercu))
 {
@@ -112,7 +112,7 @@ if (!isset($boitesDeroulantesAlaMain))
 }
 
 $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres');
-$cheminFaireDecouvrir = $racine . '/inc/faire-decouvrir.inc.php';
+$cheminEnvoyerAmis = $racine . '/inc/envoyer-amis.inc.php';
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
 $listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
@@ -131,9 +131,9 @@ if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 	$courrielContact = $contactCourrielParDefaut;
 }
 
-if (!isset($faireDecouvrir))
+if (!isset($envoyerAmis))
 {
-	$faireDecouvrir = $activerFaireDecouvrirParDefaut;
+	$envoyerAmis = $activerEnvoyerAmisParDefaut;
 }
 
 if (!isset($infosPublication))

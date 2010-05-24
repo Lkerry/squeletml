@@ -44,7 +44,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Ajout d'un nombre illimité de formulaires de contact, et ce avec options d'antipourriel et de copie à l'expéditeur.
 
-- Lien «Faire découvrir à des ami-e-s» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une image dans une galerie, une vignette de l'image et une description (si cette dernière existe) sont insérées dans le message.
+- Lien «Envoyer à des amis» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une image dans une galerie, une vignette de l'image et une description (si cette dernière existe) sont insérées dans le message.
 
 - Liens de marque-pages ou de réseaux sociaux pour la page en cours.
 
@@ -142,7 +142,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Icône utilisée dans le lien de déconnexion**: cette icône provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
-- **Icône utilisée pour le lien «Faire découvrir à des ami-e-s»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
+- **Icône utilisée pour le lien «Envoyer à des amis»**: cette petite icône est une version modifiée du fichier `scalable/actions/mail-forward.svg`, provenant du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), et est sous licence GPL.
 
 - **Icône utilisée pour les informations de publication**: cette icône est une version modifiée d'une image provenant de l'[Open Clip Art Library](http://www.openclipart.org/) et est dans le domaine public.
 
