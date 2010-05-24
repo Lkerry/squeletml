@@ -4127,58 +4127,59 @@ function image(
 			$classAccueil = ' ';
 		}
 		
+		switch ($galerieAncreDeNavigation)
+		{
+			case 'galerie':
+				$ancre = '#galerie';
+				break;
+				
+			case 'titre':
+				$ancre = '#galerieTitre';
+				break;
+				
+			case 'sousTitre':
+				$ancre = '#galerieSousTitre';
+				break;
+				
+			case 'info':
+				$ancre = '#galerieInfo';
+				break;
+				
+			case 'minivignettes':
+				$ancre = '#galerieMinivignettes';
+				break;
+				
+			case 'divImage':
+				$ancre = '#galerieIntermediaire';
+				break;
+				
+			case 'image':
+				$ancre = '#galerieIntermediaireImg';
+				break;
+				
+			default:
+				$ancre = '';
+				break;
+		}
+		
+		$id = idImage($racine, $infosImage);
+		$hrefPageIndividuelleImage = url(FALSE, FALSE) . '?image=' . $id . $ancre;
+		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
+			$title = '<a href="' . $hrefPageIndividuelleImage . '">' . T_("Voir plus d'information pour cette image.") . '</a>';
+			
 			if (!empty($infosImage['intermediaireLegende']))
 			{
-				$title = ' title="' . preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $infosImage['intermediaireLegende']) . '"';
-			}
-			else
-			{
-				$title = '';
+				$title = $infosImage['intermediaireLegende'] . '<br />' . $title;
 			}
 			
-			$aHref = '<a href="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '" rel="lightbox-galerie"' . $title . '>';
+			$title = preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $title);
+			$aHref = '<a href="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '" rel="lightbox-galerie" title="' . $title . '">';
 		}
 		else
 		{
-			switch ($galerieAncreDeNavigation)
-			{
-				case 'galerie':
-					$ancre = '#galerie';
-					break;
-					
-				case 'titre':
-					$ancre = '#galerieTitre';
-					break;
-					
-				case 'sousTitre':
-					$ancre = '#galerieSousTitre';
-					break;
-					
-				case 'info':
-					$ancre = '#galerieInfo';
-					break;
-					
-				case 'minivignettes':
-					$ancre = '#galerieMinivignettes';
-					break;
-					
-				case 'divImage':
-					$ancre = '#galerieIntermediaire';
-					break;
-					
-				case 'image':
-					$ancre = '#galerieIntermediaireImg';
-					break;
-					
-				default:
-					$ancre = '';
-					break;
-			}
-			
-			$id = idImage($racine, $infosImage);
-			$aHref = '<a href="' . url(FALSE, FALSE) . '?image=' . $id . $ancre . '" title="' . $titreImage . '">';
+			$aHref = '<a href="' . $hrefPageIndividuelleImage . '" title="' . $titreImage . '">';
 		}
 		
 		if ($minivignetteImageEnCours)

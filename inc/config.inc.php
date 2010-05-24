@@ -888,7 +888,7 @@ $galerieMinivignettesNombre = 0;
   - `image`: l'image en version intermédiaire.
 - Laisser vide pour ne pas ajouter d'ancre.
 */
-$galerieAncreDeNavigation = 'titre';
+$galerieAncreDeNavigation = '';
 
 // Ajout automatique d'une légende dans le cas où aucune légende n'a été précisée.
 $galerieLegendeAutomatique = TRUE; // TRUE|FALSE

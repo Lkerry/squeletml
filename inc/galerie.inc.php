@@ -562,7 +562,7 @@ elseif (!empty($idGalerie))
 					$lienSansJavascript .= '<span id="galerieLienSansJavascript">';
 				}
 
-				$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . '">' . T_("Naviguer dans la galerie sans fenêtre Javascript.") . "</a>";
+				$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . '">' . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
 				
 				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
 				{
