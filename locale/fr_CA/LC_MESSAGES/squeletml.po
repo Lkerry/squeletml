@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-24 16:31-0400\n"
+"POT-Creation-Date: 2010-05-24 16:54-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -159,23 +159,23 @@ msgstr ""
 msgid ""
 "<p>Enfin, Squeletml fournit plusieurs modules prêts à l'emploi: formulaires "
 "de contact, galeries photo, classement par catégories, flux RSS, partage de "
-"la page par courriel ou par des services de marque-pages et de réseaux "
-"sociaux, cron, fichiers Sitemap, interface d'administration reproduisant les "
-"principales actions normalement effectuées par FTP, etc. Un site Squeletml "
-"peut être géré autant par l'interface graphique de l'administration que par "
-"un  simple éditeur de texte. Le tout peut facilement être traduit puisque "
-"Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript "
-"Gettext) pour l'affichage de l'interface.</p>"
+"la page par courriel ou en passant par des services de marque-pages et de "
+"réseaux sociaux, cron, fichiers Sitemap, interface d'administration "
+"reproduisant les principales actions normalement effectuées par FTP, etc. Un "
+"site Squeletml peut être géré autant par l'interface graphique de "
+"l'administration que par un  simple éditeur de texte. Le tout peut "
+"facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une "
+"moindre mesure JavaScript Gettext) pour l'affichage de l'interface.</p>"
 msgstr ""
 "<p>Enfin, Squeletml fournit plusieurs modules prêts à l'emploi: formulaires "
 "de contact, galeries photo, classement par catégories, flux RSS, partage de "
-"la page par courriel ou par des services de marque-pages et de réseaux "
-"sociaux, cron, fichiers Sitemap, interface d'administration reproduisant les "
-"principales actions normalement effectuées par FTP, etc. Un site Squeletml "
-"peut être géré autant par l'interface graphique de l'administration que par "
-"un  simple éditeur de texte. Le tout peut facilement être traduit puisque "
-"Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript "
-"Gettext) pour l'affichage de l'interface.</p>"
+"la page par courriel ou en passant par des services de marque-pages et de "
+"réseaux sociaux, cron, fichiers Sitemap, interface d'administration "
+"reproduisant les principales actions normalement effectuées par FTP, etc. Un "
+"site Squeletml peut être géré autant par l'interface graphique de "
+"l'administration que par un  simple éditeur de texte. Le tout peut "
+"facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une "
+"moindre mesure JavaScript Gettext) pour l'affichage de l'interface.</p>"
 
 #: xhtml/message-accueil-par-defaut.inc.php:12
 msgid ""
@@ -245,7 +245,7 @@ msgstr "Création du fichier %1$s à partir du modèle %2$s effectuée."
 
 #: installation.php:103 installation.php:109 installation.php:148
 #: installation.php:154 installation.php:206 installation.php:212
-#: inc/fonctions.inc.php:3121 inc/fonctions.inc.php:3243
+#: inc/fonctions.inc.php:3517 inc/fonctions.inc.php:3639
 #, php-format
 msgid "Renseignement du fichier %1$s impossible."
 msgstr "Renseignement du fichier %1$s impossible."
@@ -3882,7 +3882,7 @@ msgid "Légende de l'image"
 msgstr "Légende de l'image"
 
 #: inc/fonctions.inc.php:1535 inc/fonctions.inc.php:1883
-#: inc/fonctions.inc.php:3876 inc/fonctions.inc.php:4154
+#: inc/fonctions.inc.php:2186 inc/fonctions.inc.php:2464
 #, php-format
 msgid "Image %1$s"
 msgstr "Image %1$s"
@@ -3923,7 +3923,7 @@ msgstr "Dernières publications dans la catégorie «%1$s»"
 msgid "%1$s – Galerie %2$s"
 msgstr "%1$s – Galerie %2$s"
 
-#: inc/fonctions.inc.php:1907 inc/fonctions.inc.php:3928
+#: inc/fonctions.inc.php:1907 inc/fonctions.inc.php:2238
 #, php-format
 msgid ""
 "Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
@@ -3932,7 +3932,7 @@ msgstr ""
 "Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
 "Kio)."
 
-#: inc/fonctions.inc.php:1912 inc/fonctions.inc.php:3934
+#: inc/fonctions.inc.php:1912 inc/fonctions.inc.php:2244
 #, php-format
 msgid ""
 "Voir l'image %1$s au format original (extension: %2$s; taille: %3$s Kio)."
@@ -3955,34 +3955,81 @@ msgstr "Lire la suite de %1$s."
 msgid " (%1$s)"
 msgstr " (%1$s)"
 
+#: inc/fonctions.inc.php:2239
+#, php-format
+msgid "Télécharger l'image %1$s au format original"
+msgstr "Télécharger l'image %1$s au format original"
+
+#: inc/fonctions.inc.php:2245
+#, php-format
+msgid "Voir l'image %1$s au format original"
+msgstr "Voir l'image %1$s au format original"
+
+#: inc/fonctions.inc.php:2284
+#, php-format
+msgid "Image %1$s (extension: %2$s; taille: %3$s Kio)."
+msgstr "Image %1$s (extension: %2$s; taille: %3$s Kio)."
+
 #: inc/fonctions.inc.php:2314
+msgid "Modèle d'appareil photo"
+msgstr "Modèle d'appareil photo"
+
+#: inc/fonctions.inc.php:2318
+msgid "Date et heure"
+msgstr "Date et heure"
+
+#: inc/fonctions.inc.php:2328
+msgid "Durée d'exposition"
+msgstr "Durée d'exposition"
+
+#: inc/fonctions.inc.php:2332
+msgid "Sensibilité ISO"
+msgstr "Sensibilité ISO"
+
+#: inc/fonctions.inc.php:2336
+msgid "Ouverture"
+msgstr "Ouverture"
+
+#: inc/fonctions.inc.php:2340
+msgid "Distance focale"
+msgstr "Distance focale"
+
+#: inc/fonctions.inc.php:2344
+msgid "Fabriquant"
+msgstr "Fabriquant"
+
+#: inc/fonctions.inc.php:2491
+msgid "Voir plus d'information pour cette image."
+msgstr "Voir plus d'information pour cette image."
+
+#: inc/fonctions.inc.php:2710
 #, php-format
 msgid "Publié par %1$s le %2$s."
 msgstr "Publié par %1$s le %2$s."
 
-#: inc/fonctions.inc.php:2318
+#: inc/fonctions.inc.php:2714
 #, php-format
 msgid "Publié par %1$s."
 msgstr "Publié par %1$s."
 
-#: inc/fonctions.inc.php:2323
+#: inc/fonctions.inc.php:2719
 #, php-format
 msgid "Publié le %1$s."
 msgstr "Publié le %1$s."
 
-#: inc/fonctions.inc.php:2328
+#: inc/fonctions.inc.php:2724
 #, php-format
 msgid "Dernière révision le %1$s."
 msgstr "Dernière révision le %1$s."
 
-#: inc/fonctions.inc.php:2341
+#: inc/fonctions.inc.php:2737
 #, php-format
 msgid "Catégorie: %1$s."
 msgid_plural "Catégories: %1$s."
 msgstr[0] "Catégorie: %1$s."
 msgstr[1] "Catégories: %1$s."
 
-#: inc/fonctions.inc.php:2582
+#: inc/fonctions.inc.php:2978
 #, php-format
 msgid ""
 "<a href=\"http://artlibre.org/licence/lal\"><img %1$s alt=\"Licence Art Libre"
@@ -3993,7 +4040,7 @@ msgstr ""
 "\" /></a> Mis à disposition sous la <a href=\"http://artlibre.org/licence/lal"
 "\">licence Art Libre</a>."
 
-#: inc/fonctions.inc.php:2586
+#: inc/fonctions.inc.php:2982
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1$s alt="
@@ -4006,7 +4053,7 @@ msgstr ""
 "disposition sous un <a href=\"http://creativecommons.org/licenses/by/3.0/"
 "deed.fr\">contrat Creative Commons</a>."
 
-#: inc/fonctions.inc.php:2590
+#: inc/fonctions.inc.php:2986
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1$s "
@@ -4021,7 +4068,7 @@ msgstr ""
 "\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\">contrat Creative "
 "Commons</a>."
 
-#: inc/fonctions.inc.php:2594
+#: inc/fonctions.inc.php:2990
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1$s "
@@ -4034,7 +4081,7 @@ msgstr ""
 "\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/"
 "licenses/by-nd/3.0/deed.fr\">contrat Creative Commons</a>."
 
-#: inc/fonctions.inc.php:2598
+#: inc/fonctions.inc.php:2994
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1$s "
@@ -4049,7 +4096,7 @@ msgstr ""
 "creativecommons.org/licenses/by-nc/3.0/deed.fr\">contrat Creative Commons</"
 "a>."
 
-#: inc/fonctions.inc.php:2602
+#: inc/fonctions.inc.php:2998
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img %1"
@@ -4064,7 +4111,7 @@ msgstr ""
 "à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nc-"
 "sa/3.0/deed.fr\">contrat Creative Commons</a>."
 
-#: inc/fonctions.inc.php:2606
+#: inc/fonctions.inc.php:3002
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img %1"
@@ -4079,7 +4126,7 @@ msgstr ""
 "href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\">contrat "
 "Creative Commons</a>."
 
-#: inc/fonctions.inc.php:2610
+#: inc/fonctions.inc.php:3006
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/publicdomain/deed.fr\"><img %1"
@@ -4090,7 +4137,7 @@ msgstr ""
 "$s alt=\"Domaine public\" /></a> Mis à disposition dans le <a href=\"http://"
 "creativecommons.org/licenses/publicdomain/deed.fr\">domaine public</a>."
 
-#: inc/fonctions.inc.php:2614
+#: inc/fonctions.inc.php:3010
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-2.0.html\"><img %1$s alt=\"Licence "
@@ -4103,7 +4150,7 @@ msgstr ""
 "href=\"http://www.gnu.org/licenses/gpl-2.0.html\">licence publique générale "
 "de GNU, version 2</a>."
 
-#: inc/fonctions.inc.php:2618
+#: inc/fonctions.inc.php:3014
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -4118,7 +4165,7 @@ msgstr ""
 "\">licence publique générale de GNU, version 2 ou toute version ultérieure</"
 "a>."
 
-#: inc/fonctions.inc.php:2622
+#: inc/fonctions.inc.php:3018
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\"><img %1$s alt=\"Licence "
@@ -4131,7 +4178,7 @@ msgstr ""
 "href=\"http://www.gnu.org/licenses/gpl-3.0.html\">licence publique générale "
 "de GNU, version 3</a>."
 
-#: inc/fonctions.inc.php:2626
+#: inc/fonctions.inc.php:3022
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -4146,7 +4193,7 @@ msgstr ""
 "\">licence publique générale de GNU, version 3 ou toute version ultérieure</"
 "a>."
 
-#: inc/fonctions.inc.php:2630
+#: inc/fonctions.inc.php:3026
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\"><img %1$s alt="
@@ -4159,7 +4206,7 @@ msgstr ""
 "sous la <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\">licence "
 "publique générale GNU Affero, version 3</a>."
 
-#: inc/fonctions.inc.php:2634
+#: inc/fonctions.inc.php:3030
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl.html\"><img %1$s alt=\"Licence "
@@ -4174,7 +4221,7 @@ msgstr ""
 "\">licence publique générale GNU Affero, version 3 ou toute version "
 "ultérieure</a>."
 
-#: inc/fonctions.inc.php:2638
+#: inc/fonctions.inc.php:3034
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\"><img %1$s alt="
@@ -4187,7 +4234,7 @@ msgstr ""
 "disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-2.1.html"
 "\">licence publique générale amoindrie de GNU, version 2.1</a>."
 
-#: inc/fonctions.inc.php:2642
+#: inc/fonctions.inc.php:3038
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -4202,7 +4249,7 @@ msgstr ""
 "lgpl.html\">licence publique générale amoindrie de GNU, version 2.1 ou toute "
 "version ultérieure</a>."
 
-#: inc/fonctions.inc.php:2646
+#: inc/fonctions.inc.php:3042
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\"><img %1$s alt="
@@ -4215,7 +4262,7 @@ msgstr ""
 "disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-3.0.html"
 "\">licence publique générale amoindrie de GNU, version 3</a>."
 
-#: inc/fonctions.inc.php:2650
+#: inc/fonctions.inc.php:3046
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -4230,7 +4277,7 @@ msgstr ""
 "html\">licence publique générale amoindrie de GNU, version 3 ou toute "
 "version ultérieure</a>."
 
-#: inc/fonctions.inc.php:2654
+#: inc/fonctions.inc.php:3050
 #, php-format
 msgid ""
 "<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
@@ -4243,7 +4290,7 @@ msgstr ""
 "<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
 "\">licence BSD modifiée</a>."
 
-#: inc/fonctions.inc.php:2658
+#: inc/fonctions.inc.php:3054
 #, php-format
 msgid ""
 "<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1$s alt="
@@ -4254,7 +4301,7 @@ msgstr ""
 "\"Licence MIT\" /></a> Mis à disposition sous la <a href=\"http://www."
 "opensource.org/licenses/mit-license.php\">licence MIT</a>."
 
-#: inc/fonctions.inc.php:2662
+#: inc/fonctions.inc.php:3058
 msgid ""
 "La reproduction exacte et la distribution intégrale de cet article est "
 "permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
@@ -4264,7 +4311,7 @@ msgstr ""
 "permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
 "préservée."
 
-#: inc/fonctions.inc.php:3100
+#: inc/fonctions.inc.php:3496
 #, php-format
 msgid ""
 "Mise à jour des langues actives impossible, puisque le fichier %1$s n'existe "
@@ -4273,7 +4320,7 @@ msgstr ""
 "Mise à jour des langues actives impossible, puisque le fichier %1$s n'existe "
 "pas."
 
-#: inc/fonctions.inc.php:3104 inc/fonctions.inc.php:3154
+#: inc/fonctions.inc.php:3500 inc/fonctions.inc.php:3550
 msgid ""
 "Mise à jour des langues actives impossible, puisqu'aucune langue n'a été "
 "fournie."
@@ -4281,38 +4328,38 @@ msgstr ""
 "Mise à jour des langues actives impossible, puisqu'aucune langue n'a été "
 "fournie."
 
-#: inc/fonctions.inc.php:3125
+#: inc/fonctions.inc.php:3521
 msgid "Le contenu fourni ne peut être analysé."
 msgstr "Le contenu fourni ne peut être analysé."
 
-#: inc/fonctions.inc.php:3212 inc/fonctions.inc.php:3233
+#: inc/fonctions.inc.php:3608 inc/fonctions.inc.php:3629
 #, php-format
 msgid "Mise à jour du fichier %1$s impossible."
 msgstr "Mise à jour du fichier %1$s impossible."
 
-#: inc/fonctions.inc.php:3216
+#: inc/fonctions.inc.php:3612
 #, php-format
 msgid "Mise à jour du fichier %1$s effectuée."
 msgstr "Mise à jour du fichier %1$s effectuée."
 
-#: inc/fonctions.inc.php:3223
+#: inc/fonctions.inc.php:3619
 #, php-format
 msgid "Suppression du fichier %1$s effectuée."
 msgstr "Suppression du fichier %1$s effectuée."
 
-#: inc/fonctions.inc.php:3227
+#: inc/fonctions.inc.php:3623
 #, php-format
 msgid ""
 "Suppression du fichier %1$s impossible. Ce fichier est maintenant inutile."
 msgstr ""
 "Suppression du fichier %1$s impossible. Ce fichier est maintenant inutile."
 
-#: inc/fonctions.inc.php:3247
+#: inc/fonctions.inc.php:3643
 #, php-format
 msgid "Mise à jour des langues actives dans le fichier %1$s effectuée."
 msgstr "Mise à jour des langues actives dans le fichier %1$s effectuée."
 
-#: inc/fonctions.inc.php:3471
+#: inc/fonctions.inc.php:3719
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
@@ -4320,7 +4367,7 @@ msgstr ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 
-#: inc/fonctions.inc.php:3473
+#: inc/fonctions.inc.php:3721
 msgid ""
 "<strong>Pour naviguer de la manière la plus satisfaisante et sécuritaire, "
 "nous recommandons d'utiliser Firefox</strong>, un navigateur libre, "
@@ -4334,11 +4381,11 @@ msgstr ""
 "basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au "
 "travail, vous pouvez faire la suggestion à votre service informatique."
 
-#: inc/fonctions.inc.php:3475
+#: inc/fonctions.inc.php:3723
 msgid "Télécharger Firefox"
 msgstr "Télécharger Firefox"
 
-#: inc/fonctions.inc.php:3607
+#: inc/fonctions.inc.php:3855
 msgid ""
 "Le site est présentement hors ligne pour maintenance. Certaines pages "
 "peuvent ne pas s'afficher correctement."
@@ -4346,86 +4393,39 @@ msgstr ""
 "Le site est présentement hors ligne pour maintenance. Certaines pages "
 "peuvent ne pas s'afficher correctement."
 
-#: inc/fonctions.inc.php:3700
+#: inc/fonctions.inc.php:3948
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
 msgstr "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
 
-#: inc/fonctions.inc.php:3704
+#: inc/fonctions.inc.php:3952
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
 msgstr "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
 
-#: inc/fonctions.inc.php:3747 inc/fonctions.inc.php:3760
-#: inc/fonctions.inc.php:3773
+#: inc/fonctions.inc.php:3995 inc/fonctions.inc.php:4008
+#: inc/fonctions.inc.php:4021
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
 msgstr "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
 
-#: inc/fonctions.inc.php:3751 inc/fonctions.inc.php:3764
-#: inc/fonctions.inc.php:3777
+#: inc/fonctions.inc.php:3999 inc/fonctions.inc.php:4012
+#: inc/fonctions.inc.php:4025
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
 msgstr ""
 "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
 
-#: inc/fonctions.inc.php:3929
-#, php-format
-msgid "Télécharger l'image %1$s au format original"
-msgstr "Télécharger l'image %1$s au format original"
-
-#: inc/fonctions.inc.php:3935
-#, php-format
-msgid "Voir l'image %1$s au format original"
-msgstr "Voir l'image %1$s au format original"
-
-#: inc/fonctions.inc.php:3974
-#, php-format
-msgid "Image %1$s (extension: %2$s; taille: %3$s Kio)."
-msgstr "Image %1$s (extension: %2$s; taille: %3$s Kio)."
-
-#: inc/fonctions.inc.php:4004
-msgid "Modèle d'appareil photo"
-msgstr "Modèle d'appareil photo"
-
-#: inc/fonctions.inc.php:4008
-msgid "Date et heure"
-msgstr "Date et heure"
-
-#: inc/fonctions.inc.php:4018
-msgid "Durée d'exposition"
-msgstr "Durée d'exposition"
-
-#: inc/fonctions.inc.php:4022
-msgid "Sensibilité ISO"
-msgstr "Sensibilité ISO"
-
-#: inc/fonctions.inc.php:4026
-msgid "Ouverture"
-msgstr "Ouverture"
-
-#: inc/fonctions.inc.php:4030
-msgid "Distance focale"
-msgstr "Distance focale"
-
-#: inc/fonctions.inc.php:4034
-msgid "Fabriquant"
-msgstr "Fabriquant"
-
-#: inc/fonctions.inc.php:4181
-msgid "Voir plus d'information pour cette image."
-msgstr "Voir plus d'information pour cette image."
-
-#: inc/fonctions.inc.php:4254 inc/fonctions.inc.php:4255
+#: inc/fonctions.inc.php:4106 inc/fonctions.inc.php:4107
 #, php-format
 msgid "%1$s – Page %2$s"
 msgstr "%1$s – Page %2$s"
 
-#: inc/fonctions.inc.php:4308 inc/fonctions.inc.php:4312
+#: inc/fonctions.inc.php:4160 inc/fonctions.inc.php:4164
 msgid "Page précédente"
 msgstr "Page précédente"
 
-#: inc/fonctions.inc.php:4341 inc/fonctions.inc.php:4345
+#: inc/fonctions.inc.php:4193 inc/fonctions.inc.php:4197
 msgid "Page suivante"
 msgstr "Page suivante"
 
@@ -4455,8 +4455,8 @@ msgid "Ajoutez le code ci-dessous sur votre site:"
 msgstr "Ajoutez le code ci-dessous sur votre site:"
 
 #: inc/blocs.inc.php:291
-msgid "Réseaux sociaux"
-msgstr "Réseaux sociaux"
+msgid "Partager"
+msgstr "Partager"
 
 #: inc/blocs.inc.php:457
 msgid "Recherche dans le site"

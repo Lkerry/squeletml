@@ -151,16 +151,6 @@ if (!isset($lienPage))
 	$lienPage = $afficherLienPageParDefaut;
 }
 
-if (!isset($marquePagesSociaux))
-{
-	$marquePagesSociaux = $activerMarquePagesSociauxParDefaut;
-}
-
-if ($marquePagesSociaux)
-{
-	$boitesDeroulantesAlaMain .= TRUE;
-}
-
 if ($afficherMessageIe6)
 {
 	$messageIe6 = messageIe6($urlRacine);
@@ -178,6 +168,16 @@ $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 if ($siteEstEnMaintenance)
 {
 	$noticeMaintenance = noticeMaintenance();
+}
+
+if (!isset($partage))
+{
+	$partage = $activerPartageParDefaut;
+}
+
+if ($partage)
+{
+	$boitesDeroulantesAlaMain .= TRUE;
 }
 
 $premierOuDernier = 'premier';

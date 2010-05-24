@@ -2121,6 +2121,402 @@ function idImage($racine, $image)
 }
 
 /*
+Construit et retourne le code pour afficher une image dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
+*/
+function image(
+	// Infos sur le site.
+	$racine, $urlRacine, $racineImgSrc, $urlImgSrc, $estAccueil, $nombreDeColonnes,
+	
+	// Infos sur l'image à générer.
+	$infosImage, $typeMime, $taille, $sens, $galerieQualiteJpg, $galerieCouleurAlloueeImage,
+	
+	// Exif.
+	$galerieExifAjout, $galerieExifDonnees,
+	
+	// Légende.
+	$galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown,
+	
+	// Lien vers l'image originale.
+	$galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger,
+	
+	// Navigation.
+	$galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation,
+	
+	// Vignettes.
+	$galerieDimensionsVignette, $galerieForcerDimensionsVignette, $vignetteAvecDimensions, $minivignetteImageEnCours
+)
+{
+	####################################################################
+	#
+	# Taille intermédiaire.
+	#
+	####################################################################
+	
+	if ($taille == 'intermediaire')
+	{
+		$titreImage = titreImage($infosImage);
+		
+		if (!empty($infosImage['intermediaireLargeur']) || !empty($infosImage['intermediaireHauteur']))
+		{
+			if (!empty($infosImage['intermediaireLargeur']))
+			{
+				$width = 'width="' . $infosImage['intermediaireLargeur'] . '"';
+			}
+			
+			if (!empty($infosImage['intermediaireHauteur']))
+			{
+				$height = 'height="' . $infosImage['intermediaireHauteur'] . '"';
+			}
+		}
+		else
+		{
+			list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $infosImage['intermediaireNom']);
+			{
+				$width = 'width="' . $larg . '"';
+				$height = 'height="' . $haut . '"';
+			}
+		}
+		
+		if (!empty($infosImage['intermediaireAlt']))
+		{
+			$alt = 'alt="' . $infosImage['intermediaireAlt'] . '"';
+		}
+		else
+		{
+			$alt = 'alt="' . sprintf(T_("Image %1\$s"), $titreImage) . '"';
+		}
+		
+		if (!empty($infosImage['intermediaireAttributTitle']))
+		{
+			$attributTitle = 'title="' . $infosImage['intermediaireAttributTitle'] . '"';
+		}
+		else
+		{
+			$attributTitle = '';
+		}
+		
+		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
+		if (!empty($infosImage['originalNom']))
+		{
+			$originalNom = $infosImage['originalNom'];
+		}
+		// Sinon on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
+		else
+		{
+			$originalNom = nomSuffixe($infosImage['intermediaireNom'], '-original');
+		}
+		
+		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on récupère certaines informations.
+		
+		$divLienOriginalIcone = '';
+		$divLienOriginalLegende = '';
+		$aLienOriginalDebut = '';
+		$aLienOriginalFin = '';
+		$aLienOriginalImgIntermediaireDebut = '';
+		$aLienOriginalImgIntermediaireFin = '';
+		$relLienOriginal = '';
+		
+		if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
+		{
+			$relLienOriginal = ' rel="lightbox"';
+		}
+		
+		$originalExiste = FALSE;
+		
+		if (file_exists($racineImgSrc . '/' . $originalNom))
+		{
+			$originalExiste = TRUE;
+		}
+		
+		if ($originalExiste)
+		{
+			$originalExtension = extension($originalNom);
+			
+			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
+			{
+				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
+				$texteLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", "<em>$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteAltLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original"), $titreImage);
+			}
+			else
+			{
+				$urlLienOriginal = $urlImgSrc . '/' . $originalNom;
+				$texteLienOriginal = sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", "<em>$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteAltLienOriginal = sprintf(T_("Voir l'image %1\$s au format original"), $titreImage);
+			}
+			
+			$aLienOriginalDebut = '<a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>';
+			$aLienOriginalFin = '</a>';
+			
+			if ($galerieLienOriginalEmplacement['legende'])
+			{
+				$divLienOriginalLegende = '<div id="galerieLienOriginalLegende"><a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>' . $texteLienOriginal . "</a></div><!-- /#galerieLienOriginalLegende -->\n";
+			}
+			
+			if ($galerieLienOriginalEmplacement['image'])
+			{
+				$aLienOriginalImgIntermediaireDebut = $aLienOriginalDebut;
+				$aLienOriginalImgIntermediaireFin = $aLienOriginalFin;
+			}
+			
+			if ($galerieLienOriginalEmplacement['icone'])
+			{
+				if (file_exists($racine . '/site/fichiers/agrandir.png'))
+				{
+					$iconeLienOriginalSrc = $urlRacine . '/site/fichiers/agrandir.png';
+				}
+				else
+				{
+					$iconeLienOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
+				}
+			
+				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . $texteAltLienOriginal . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
+			}
+		}
+		
+		// Légende.
+		if (!empty($infosImage['intermediaireLegende']))
+		{
+			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosImage['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
+		}
+		elseif ($galerieLegendeAutomatique && (!$originalExiste || ($originalExiste && !$galerieLienOriginalEmplacement['legende'])))
+		{
+			$legende = '<div id="galerieIntermediaireLegende">' . sprintf(T_("Image %1\$s (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", '<em>' . extension($infosImage['intermediaireNom']) . '</em>', octetsVersKio(filesize($racineImgSrc . '/' . $infosImage['intermediaireNom']))) . "</div>\n";
+		}
+		else
+		{
+			$legende = '';
+		}
+		
+		// Exif.
+		
+		$exif = '';
+		
+		if ($galerieExifAjout && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
+		{
+			$tableauExif = @exif_read_data($racineImgSrc . '/' . $infosImage['intermediaireNom'], 'IFD0', 0);
+			
+			// Si aucune donnée Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
+			if (!$tableauExif && $originalExiste && $typeMime == 'image/jpeg')
+			{
+				$tableauExif = @exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
+			}
+			
+			if ($tableauExif)
+			{
+				foreach ($galerieExifDonnees as $cle => $valeur)
+				{
+					if ($valeur && !empty($tableauExif[$cle]))
+					{
+						switch ($cle)
+						{
+							case 'Model':
+								$exifTrad = T_("Modèle d'appareil photo");
+								break;
+							
+							case 'DateTime':
+								$exifTrad = T_("Date et heure");
+								
+								if (preg_match('/^\d{4}:\d{2}:\d{2} /', $tableauExif[$cle]))
+								{
+									$tableauExif[$cle] = preg_replace('/(\d{4}):(\d{2}):(\d{2}) /', '$1-$2-$3 ', $tableauExif[$cle]);
+								}
+								
+								break;
+							
+							case 'ExposureTime':
+								$exifTrad = T_("Durée d'exposition");
+								break;
+							
+							case 'ISOSpeedRatings':
+								$exifTrad = T_("Sensibilité ISO");
+								break;
+							
+							case 'FNumber':
+								$exifTrad = T_("Ouverture");
+								break;
+							
+							case 'FocalLength':
+								$exifTrad = T_("Distance focale");
+								break;
+							
+							case 'Make':
+								$exifTrad = T_("Fabriquant");
+								break;
+							
+							default:
+								$exifTrad = $cle;
+								break;
+						}
+						
+						$exif .= "<li><em>$exifTrad:</em> " . $tableauExif[$cle] . "</li>\n";
+					}
+				}
+			}
+			
+			if (!empty($exif))
+			{
+				$exif = "<div id=\"galerieIntermediaireExif\">\n<ul>\n" . $exif . "</ul>\n</div><!-- /#galerieIntermediaireExif -->\n";
+			}
+		}
+		
+		// Code de retour.
+		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
+		{
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
+		}
+		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
+		{
+			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
+		}
+		else
+		{
+			return '';
+		}
+	}
+	####################################################################
+	#
+	# Taille vignette.
+	#
+	####################################################################
+	elseif ($taille == 'vignette')
+	{
+		$class = '';
+		
+		if ($galerieNavigation == 'fleches' && ($sens == 'precedent' || $sens == 'suivant'))
+		{
+			$class .= ' galerieFleche';
+			$width = 'width="80"';
+			$height = 'height="80"';
+			
+			if (file_exists($racine . '/site/fichiers/' . $sens . '.png'))
+			{
+				$src = 'src="' . $urlRacine . '/site/fichiers/' . $sens . '.png"';
+			}
+			else
+			{
+				$src = 'src="' . $urlRacine . '/fichiers/' . $sens . '.png"';
+			}
+		}
+		elseif (($galerieNavigation == 'fleches' && empty($sens)) || $galerieNavigation == 'vignettes')
+		{
+			// Si le nom de la vignette a été renseigné, on prend pour acquis que le fichier existe avec ce nom. On assigne donc une valeur à l'attribut `src`.
+			if (!empty($infosImage['vignetteNom']))
+			{
+				$src = 'src="' . $urlImgSrc . '/' . $infosImage['vignetteNom'] . '"';
+			}
+			// Sinon on génère un nom automatique selon le nom de la version intermediaire de l'image.
+			else
+			{
+				$vignetteNom = nomSuffixe($infosImage['intermediaireNom'], '-vignette');
+				
+				// On vérifie si un fichier existe avec ce nom.
+				// Si oui, on assigne une valeur à l'attribut `src`.
+				if (file_exists($racineImgSrc . '/' . $vignetteNom))
+				{
+					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
+				}
+				// Sinon on génère une vignette.
+				else
+				{
+					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, array ('nettete' => FALSE));
+					
+					// On assigne l'attribut `src`.
+					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
+				}
+			}
+			
+			if ($vignetteAvecDimensions)
+			{
+				if (!empty($infosImage['vignetteLargeur']) || !empty($infosImage['vignetteHauteur']))
+				{
+					if (!empty($infosImage['vignetteLargeur']))
+					{
+						$width = 'width="' . $infosImage['vignetteLargeur'] . '"';
+					}
+				
+					if (!empty($infosImage['vignetteHauteur']))
+					{
+						$height = 'height="' . $infosImage['vignetteHauteur'] . '"';
+					}
+				}
+				else
+				{
+					list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $vignetteNom);
+					$width = 'width="' . $larg . '"';
+					$height = 'height="' . $haut . '"';
+				}
+			}
+			else
+			{
+				$width = '';
+				$height = '';
+			}
+		}
+		
+		if (!empty($infosImage['vignetteAlt']))
+		{
+			$alt = 'alt="' . $infosImage['vignetteAlt'] . '"';
+		}
+		else
+		{
+			$titreImage = titreImage($infosImage);
+			$alt = 'alt="' . sprintf(T_("Image %1\$s"), $titreImage) . '"';
+		}
+		
+		if (!empty($infosImage['vignetteAttributTitle']))
+		{
+			$attributTitle = 'title="' . $infosImage['vignetteAttributTitle'] . '"';
+		}
+		else
+		{
+			$attributTitle = '';
+		}
+		
+		if ($estAccueil)
+		{
+			$classAccueil = 'Accueil ';
+		}
+		else
+		{
+			$classAccueil = ' ';
+		}
+		
+		$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
+		$id = idImage($racine, $infosImage);
+		$hrefPageIndividuelleImage = url(FALSE, FALSE) . '?image=' . $id . $ancre;
+		
+		if ($estAccueil && $galerieAccueilJavascript)
+		{
+			$title = '<a href="' . $hrefPageIndividuelleImage . '">' . T_("Voir plus d'information pour cette image.") . '</a>';
+			
+			if (!empty($infosImage['intermediaireLegende']))
+			{
+				$title = $infosImage['intermediaireLegende'] . '<br />' . $title;
+			}
+			
+			$title = preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $title);
+			$aHref = '<a href="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '" rel="lightbox-galerie" title="' . $title . '">';
+		}
+		else
+		{
+			$aHref = '<a href="' . $hrefPageIndividuelleImage . '" title="' . $titreImage . '">';
+		}
+		
+		if ($minivignetteImageEnCours)
+		{
+			$class .= ' minivignetteImageEnCours';
+		}
+		
+		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt $attributTitle /></a></div>\n";
+	}
+	else
+	{
+		return '';
+	}
+}
+
+/*
 Retourne un tableau d'informations au sujet du contenu accessible à l'URL `$urlPage`, ou directement au sujet du contenu fourni si `$html` n'est pas vide. Le tableau contient les informations suivantes:
 
   - `$infosPage['titre']`: titre de la page. Prend comme valeur la première information trouvée parmi les suivantes:
@@ -3261,154 +3657,6 @@ function majLanguesActives($racine, $urlRacine, $langues, $initIncPhpFourni = ''
 }
 
 /*
-Retourne un tableau de liens de marque-pages ou réseaux sociaux pour la page en cours. Les liens ont été en partie récupérés dans le module Service links pour Drupal, sous licence GPL. Voir <http://drupal.org/project/service_links>.
-*/
-function marquePagesSociaux($url, $titre)
-{
-	$url = urlencode($url);
-	$titre = urlencode($titre);
-	
-	if ($titre == $url)
-	{
-		$titre = '';
-	}
-	
-	$liens = array();
-	
-	$liens['Bebo'] = array(
-		'nom' => 'Bebo',
-		'lien' => "http://www.bebo.com/share.php?Url=$url&amp;Title=$titre",
-	);
-	
-	$liens['BlogMemes'] = array(
-		'nom' => 'BlogMemes',
-		'lien' => "http://blogmemes.net/fr/post.php?url=$url&amp;title=$titre",
-	);
-	
-	$liens['Delicious'] = array(
-		'nom' => 'Delicious',
-		'lien' => "http://delicious.com/post?url=$url&amp;title=$titre",
-	);
-	
-	$liens['Digg'] = array(
-		'nom' => 'Digg',
-		'lien' => "http://digg.com/submit?phase=2&amp;url=$url&amp;title=$titre",
-	);
-	
-	$liens['Facebook'] = array(
-		'nom' => 'Facebook',
-		'lien' => "http://www.facebook.com/sharer.php?u=$url&amp;t=$titre",
-	);
-	
-	$liens['Furl'] = array(
-		'nom' => 'Furl',
-		'lien' => "http://www.furl.net/storeIt.jsp?u=$url&amp;t=$titre",
-	);
-	
-	$liens['Fuzz'] = array(
-		'nom' => 'Fuzz',
-		'lien' => "http://www.fuzz.fr/?nws_article?link=$url&amp;title=$titre",
-	);
-	
-	$liens['Gnolia'] = array(
-		'nom' => 'Gnolia',
-		'lien' => "http://gnolia.com/bookmarklet/add?url=$url&amp;title=$titre",
-	);
-	
-	$liens['GoogleBookmarks'] = array(
-		'nom' => 'Google Bookmarks',
-		'lien' => "http://www.google.com/bookmarks/mark?op=add&amp;bkmk=$url&amp;title=$titre",
-	);
-	
-	$liens['Identica'] = array(
-		'nom' => 'Identi.ca',
-		'lien' => "http://identi.ca/index.php?action=newnotice&amp;status_textarea=$titre $url",
-	);
-	
-	$liens['Linkedin'] = array(
-		'nom' => 'LinkedIn',
-		'lien' => "http://www.linkedin.com/shareArticle?mini=true&amp;url=$url&amp;title=$titre",
-	);
-	
-	$liens['MisterWong'] = array(
-		'nom' => 'Mister Wong',
-		'lien' => "http://www.mister-wong.com/addurl/?bm_url=$url&amp;bm_description=$titre",
-	);
-	
-	$liens['Mixx'] = array(
-		'nom' => 'Mixx',
-		'lien' => "http://www.mixx.com/submit?page_url=$url",
-	);
-	
-	$liens['MySpace'] = array(
-		'nom' => 'MySpace',
-		'lien' => "http://www.myspace.com/index.cfm?fuseaction=postto&amp;t=$titre&amp;u=$url",
-	);
-	
-	$liens['Newsvine'] = array(
-		'nom' => 'Newsvine',
-		'lien' => "http://www.newsvine.com/_tools/seed&amp;save?u=$url&amp;h=$titre",
-	);
-	
-	$liens['Propeller'] = array(
-		'nom' => 'Propeller',
-		'lien' => "http://www.propeller.com/submit/?U=$url&amp;T=$titre",
-	);
-	
-	$liens['Reddit'] = array(
-		'nom' => 'Reddit',
-		'lien' => "http://reddit.com/submit?url=$url&amp;title=$titre",
-	);
-	
-	$liens['Scoopeo'] = array(
-		'nom' => 'Scoopeo',
-		'lien' => "http://www.scoopeo.com/scoop/new?newurl=$url&amp;title=$titre",
-	);
-	
-	$liens['SlashDot'] = array(
-		'nom' => 'SlashDot',
-		'lien' => "http://slashdot.org/bookmark.pl?url=$url&amp;title=$titre",
-	);
-	
-	$liens['StumbleUpon'] = array (
-		'nom' => 'StumbleUpon',
-		'lien' => "http://www.stumbleupon.com/submit?url=$url&amp;title=$titre",
-	);
-	
-	$liens['Tapemoi'] = array(
-		'nom' => 'Tapemoi',
-		'lien' => "http://www.tapemoi.com/submit.php?lien=$url",
-	);
-	
-	$liens['Technorati'] = array(
-		'nom' => 'Technorati',
-		'lien' => "http://technorati.com/search/$url",
-	);
-	
-	$liens['Twitter'] = array(
-		'nom' => 'Twitter',
-		'lien' => "http://twitter.com/home/?status=$url+--+$titre",
-	);
-	
-	$liens['Wikio'] = array(
-		'nom' => 'Wikio',
-		'lien' => "http://www.wikio.fr/vote?url=$url",
-	);
-	
-	$liens['YahooBookmarks'] = array(
-		'nom' => 'Yahoo! Bookmarks',
-		'lien' => "http://bookmarks.yahoo.com/myresults/bookmarklet?u=$url&amp;t=$titre",
-	);
-	
-	$liens['YahooBuzz'] = array(
-		'nom' => 'Yahoo! Buzz',
-		'lien' => "http://buzz.yahoo.com/buzz?targetUrl=$url&amp;headline=$titre",
-	);
-	
-	return $liens;
-}
-
-/*
 Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
 function mdtxt($fichier)
@@ -3811,402 +4059,6 @@ function octetsVersMio($octets)
 }
 
 /*
-Construit et retourne le code pour afficher une image dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
-*/
-function image(
-	// Infos sur le site.
-	$racine, $urlRacine, $racineImgSrc, $urlImgSrc, $estAccueil, $nombreDeColonnes,
-	
-	// Infos sur l'image à générer.
-	$infosImage, $typeMime, $taille, $sens, $galerieQualiteJpg, $galerieCouleurAlloueeImage,
-	
-	// Exif.
-	$galerieExifAjout, $galerieExifDonnees,
-	
-	// Légende.
-	$galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown,
-	
-	// Lien vers l'image originale.
-	$galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger,
-	
-	// Navigation.
-	$galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation,
-	
-	// Vignettes.
-	$galerieDimensionsVignette, $galerieForcerDimensionsVignette, $vignetteAvecDimensions, $minivignetteImageEnCours
-)
-{
-	####################################################################
-	#
-	# Taille intermédiaire.
-	#
-	####################################################################
-	
-	if ($taille == 'intermediaire')
-	{
-		$titreImage = titreImage($infosImage);
-		
-		if (!empty($infosImage['intermediaireLargeur']) || !empty($infosImage['intermediaireHauteur']))
-		{
-			if (!empty($infosImage['intermediaireLargeur']))
-			{
-				$width = 'width="' . $infosImage['intermediaireLargeur'] . '"';
-			}
-			
-			if (!empty($infosImage['intermediaireHauteur']))
-			{
-				$height = 'height="' . $infosImage['intermediaireHauteur'] . '"';
-			}
-		}
-		else
-		{
-			list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $infosImage['intermediaireNom']);
-			{
-				$width = 'width="' . $larg . '"';
-				$height = 'height="' . $haut . '"';
-			}
-		}
-		
-		if (!empty($infosImage['intermediaireAlt']))
-		{
-			$alt = 'alt="' . $infosImage['intermediaireAlt'] . '"';
-		}
-		else
-		{
-			$alt = 'alt="' . sprintf(T_("Image %1\$s"), $titreImage) . '"';
-		}
-		
-		if (!empty($infosImage['intermediaireAttributTitle']))
-		{
-			$attributTitle = 'title="' . $infosImage['intermediaireAttributTitle'] . '"';
-		}
-		else
-		{
-			$attributTitle = '';
-		}
-		
-		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
-		if (!empty($infosImage['originalNom']))
-		{
-			$originalNom = $infosImage['originalNom'];
-		}
-		// Sinon on génère automatiquement un nom selon le nom de la version intermediaire de l'image.
-		else
-		{
-			$originalNom = nomSuffixe($infosImage['intermediaireNom'], '-original');
-		}
-		
-		// On vérifie maintenant si le fichier `$originalNom` existe. S'il existe, on récupère certaines informations.
-		
-		$divLienOriginalIcone = '';
-		$divLienOriginalLegende = '';
-		$aLienOriginalDebut = '';
-		$aLienOriginalFin = '';
-		$aLienOriginalImgIntermediaireDebut = '';
-		$aLienOriginalImgIntermediaireFin = '';
-		$relLienOriginal = '';
-		
-		if ($galerieLienOriginalJavascript && $typeMime != 'image/svg+xml')
-		{
-			$relLienOriginal = ' rel="lightbox"';
-		}
-		
-		$originalExiste = FALSE;
-		
-		if (file_exists($racineImgSrc . '/' . $originalNom))
-		{
-			$originalExiste = TRUE;
-		}
-		
-		if ($originalExiste)
-		{
-			$originalExtension = extension($originalNom);
-			
-			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
-			{
-				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom);
-				$texteLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", "<em>$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
-				$texteAltLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original"), $titreImage);
-			}
-			else
-			{
-				$urlLienOriginal = $urlImgSrc . '/' . $originalNom;
-				$texteLienOriginal = sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", "<em>$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
-				$texteAltLienOriginal = sprintf(T_("Voir l'image %1\$s au format original"), $titreImage);
-			}
-			
-			$aLienOriginalDebut = '<a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>';
-			$aLienOriginalFin = '</a>';
-			
-			if ($galerieLienOriginalEmplacement['legende'])
-			{
-				$divLienOriginalLegende = '<div id="galerieLienOriginalLegende"><a href="' . $urlLienOriginal . '"' . $relLienOriginal . '>' . $texteLienOriginal . "</a></div><!-- /#galerieLienOriginalLegende -->\n";
-			}
-			
-			if ($galerieLienOriginalEmplacement['image'])
-			{
-				$aLienOriginalImgIntermediaireDebut = $aLienOriginalDebut;
-				$aLienOriginalImgIntermediaireFin = $aLienOriginalFin;
-			}
-			
-			if ($galerieLienOriginalEmplacement['icone'])
-			{
-				if (file_exists($racine . '/site/fichiers/agrandir.png'))
-				{
-					$iconeLienOriginalSrc = $urlRacine . '/site/fichiers/agrandir.png';
-				}
-				else
-				{
-					$iconeLienOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
-				}
-			
-				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . $texteAltLienOriginal . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
-			}
-		}
-		
-		// Légende.
-		if (!empty($infosImage['intermediaireLegende']))
-		{
-			$legende = '<div id="galerieIntermediaireLegende">' . intermediaireLegende($infosImage['intermediaireLegende'], $galerieLegendeMarkdown) . "</div>\n";
-		}
-		elseif ($galerieLegendeAutomatique && (!$originalExiste || ($originalExiste && !$galerieLienOriginalEmplacement['legende'])))
-		{
-			$legende = '<div id="galerieIntermediaireLegende">' . sprintf(T_("Image %1\$s (extension: %2\$s; taille: %3\$s Kio)."), "<em>$titreImage</em>", '<em>' . extension($infosImage['intermediaireNom']) . '</em>', octetsVersKio(filesize($racineImgSrc . '/' . $infosImage['intermediaireNom']))) . "</div>\n";
-		}
-		else
-		{
-			$legende = '';
-		}
-		
-		// Exif.
-		
-		$exif = '';
-		
-		if ($galerieExifAjout && $typeMime == 'image/jpeg' && function_exists('exif_read_data'))
-		{
-			$tableauExif = @exif_read_data($racineImgSrc . '/' . $infosImage['intermediaireNom'], 'IFD0', 0);
-			
-			// Si aucune donnée Exif n'a été récupérée, on essaie d'en récupérer dans l'image en version originale, si elle existe et si son format est JPG.
-			if (!$tableauExif && $originalExiste && $typeMime == 'image/jpeg')
-			{
-				$tableauExif = @exif_read_data($racineImgSrc . '/' . $originalNom, 'IFD0', 0);
-			}
-			
-			if ($tableauExif)
-			{
-				foreach ($galerieExifDonnees as $cle => $valeur)
-				{
-					if ($valeur && !empty($tableauExif[$cle]))
-					{
-						switch ($cle)
-						{
-							case 'Model':
-								$exifTrad = T_("Modèle d'appareil photo");
-								break;
-							
-							case 'DateTime':
-								$exifTrad = T_("Date et heure");
-								
-								if (preg_match('/^\d{4}:\d{2}:\d{2} /', $tableauExif[$cle]))
-								{
-									$tableauExif[$cle] = preg_replace('/(\d{4}):(\d{2}):(\d{2}) /', '$1-$2-$3 ', $tableauExif[$cle]);
-								}
-								
-								break;
-							
-							case 'ExposureTime':
-								$exifTrad = T_("Durée d'exposition");
-								break;
-							
-							case 'ISOSpeedRatings':
-								$exifTrad = T_("Sensibilité ISO");
-								break;
-							
-							case 'FNumber':
-								$exifTrad = T_("Ouverture");
-								break;
-							
-							case 'FocalLength':
-								$exifTrad = T_("Distance focale");
-								break;
-							
-							case 'Make':
-								$exifTrad = T_("Fabriquant");
-								break;
-							
-							default:
-								$exifTrad = $cle;
-								break;
-						}
-						
-						$exif .= "<li><em>$exifTrad:</em> " . $tableauExif[$cle] . "</li>\n";
-					}
-				}
-			}
-			
-			if (!empty($exif))
-			{
-				$exif = "<div id=\"galerieIntermediaireExif\">\n<ul>\n" . $exif . "</ul>\n</div><!-- /#galerieIntermediaireExif -->\n";
-			}
-		}
-		
-		// Code de retour.
-		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
-		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
-		}
-		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
-		{
-			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
-		}
-		else
-		{
-			return '';
-		}
-	}
-	####################################################################
-	#
-	# Taille vignette.
-	#
-	####################################################################
-	elseif ($taille == 'vignette')
-	{
-		$class = '';
-		
-		if ($galerieNavigation == 'fleches' && ($sens == 'precedent' || $sens == 'suivant'))
-		{
-			$class .= ' galerieFleche';
-			$width = 'width="80"';
-			$height = 'height="80"';
-			
-			if (file_exists($racine . '/site/fichiers/' . $sens . '.png'))
-			{
-				$src = 'src="' . $urlRacine . '/site/fichiers/' . $sens . '.png"';
-			}
-			else
-			{
-				$src = 'src="' . $urlRacine . '/fichiers/' . $sens . '.png"';
-			}
-		}
-		elseif (($galerieNavigation == 'fleches' && empty($sens)) || $galerieNavigation == 'vignettes')
-		{
-			// Si le nom de la vignette a été renseigné, on prend pour acquis que le fichier existe avec ce nom. On assigne donc une valeur à l'attribut `src`.
-			if (!empty($infosImage['vignetteNom']))
-			{
-				$src = 'src="' . $urlImgSrc . '/' . $infosImage['vignetteNom'] . '"';
-			}
-			// Sinon on génère un nom automatique selon le nom de la version intermediaire de l'image.
-			else
-			{
-				$vignetteNom = nomSuffixe($infosImage['intermediaireNom'], '-vignette');
-				
-				// On vérifie si un fichier existe avec ce nom.
-				// Si oui, on assigne une valeur à l'attribut `src`.
-				if (file_exists($racineImgSrc . '/' . $vignetteNom))
-				{
-					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
-				}
-				// Sinon on génère une vignette.
-				else
-				{
-					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, array ('nettete' => FALSE));
-					
-					// On assigne l'attribut `src`.
-					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
-				}
-			}
-			
-			if ($vignetteAvecDimensions)
-			{
-				if (!empty($infosImage['vignetteLargeur']) || !empty($infosImage['vignetteHauteur']))
-				{
-					if (!empty($infosImage['vignetteLargeur']))
-					{
-						$width = 'width="' . $infosImage['vignetteLargeur'] . '"';
-					}
-				
-					if (!empty($infosImage['vignetteHauteur']))
-					{
-						$height = 'height="' . $infosImage['vignetteHauteur'] . '"';
-					}
-				}
-				else
-				{
-					list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $vignetteNom);
-					$width = 'width="' . $larg . '"';
-					$height = 'height="' . $haut . '"';
-				}
-			}
-			else
-			{
-				$width = '';
-				$height = '';
-			}
-		}
-		
-		if (!empty($infosImage['vignetteAlt']))
-		{
-			$alt = 'alt="' . $infosImage['vignetteAlt'] . '"';
-		}
-		else
-		{
-			$titreImage = titreImage($infosImage);
-			$alt = 'alt="' . sprintf(T_("Image %1\$s"), $titreImage) . '"';
-		}
-		
-		if (!empty($infosImage['vignetteAttributTitle']))
-		{
-			$attributTitle = 'title="' . $infosImage['vignetteAttributTitle'] . '"';
-		}
-		else
-		{
-			$attributTitle = '';
-		}
-		
-		if ($estAccueil)
-		{
-			$classAccueil = 'Accueil ';
-		}
-		else
-		{
-			$classAccueil = ' ';
-		}
-		
-		$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-		$id = idImage($racine, $infosImage);
-		$hrefPageIndividuelleImage = url(FALSE, FALSE) . '?image=' . $id . $ancre;
-		
-		if ($estAccueil && $galerieAccueilJavascript)
-		{
-			$title = '<a href="' . $hrefPageIndividuelleImage . '">' . T_("Voir plus d'information pour cette image.") . '</a>';
-			
-			if (!empty($infosImage['intermediaireLegende']))
-			{
-				$title = $infosImage['intermediaireLegende'] . '<br />' . $title;
-			}
-			
-			$title = preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $title);
-			$aHref = '<a href="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '" rel="lightbox-galerie" title="' . $title . '">';
-		}
-		else
-		{
-			$aHref = '<a href="' . $hrefPageIndividuelleImage . '" title="' . $titreImage . '">';
-		}
-		
-		if ($minivignetteImageEnCours)
-		{
-			$class .= ' minivignetteImageEnCours';
-		}
-		
-		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt $attributTitle /></a></div>\n";
-	}
-	else
-	{
-		return '';
-	}
-}
-
-/*
 Construit le code HTML pour afficher une pagination, et retourne un tableau contenant les informations suivantes:
 
   - `$pagination['pagination']`: code HTML de la pagination;
@@ -4351,6 +4203,154 @@ function pagination($racine, $urlRacine, $type, $nombreElements, $elementsParPag
 	$pagination['pagination'] .= '</div><!-- /.pagination -->' . "\n";
 	
 	return $pagination;
+}
+
+/*
+Retourne un tableau de liens de marque-pages et de réseaux sociaux pour la page en cours. Les liens ont été en partie récupérés dans le module Service links pour Drupal, sous licence GPL. Voir <http://drupal.org/project/service_links>.
+*/
+function partage($url, $titre)
+{
+	$url = urlencode($url);
+	$titre = urlencode($titre);
+	
+	if ($titre == $url)
+	{
+		$titre = '';
+	}
+	
+	$liens = array();
+	
+	$liens['Bebo'] = array(
+		'nom' => 'Bebo',
+		'lien' => "http://www.bebo.com/share.php?Url=$url&amp;Title=$titre",
+	);
+	
+	$liens['BlogMemes'] = array(
+		'nom' => 'BlogMemes',
+		'lien' => "http://blogmemes.net/fr/post.php?url=$url&amp;title=$titre",
+	);
+	
+	$liens['Delicious'] = array(
+		'nom' => 'Delicious',
+		'lien' => "http://delicious.com/post?url=$url&amp;title=$titre",
+	);
+	
+	$liens['Digg'] = array(
+		'nom' => 'Digg',
+		'lien' => "http://digg.com/submit?phase=2&amp;url=$url&amp;title=$titre",
+	);
+	
+	$liens['Facebook'] = array(
+		'nom' => 'Facebook',
+		'lien' => "http://www.facebook.com/sharer.php?u=$url&amp;t=$titre",
+	);
+	
+	$liens['Furl'] = array(
+		'nom' => 'Furl',
+		'lien' => "http://www.furl.net/storeIt.jsp?u=$url&amp;t=$titre",
+	);
+	
+	$liens['Fuzz'] = array(
+		'nom' => 'Fuzz',
+		'lien' => "http://www.fuzz.fr/?nws_article?link=$url&amp;title=$titre",
+	);
+	
+	$liens['Gnolia'] = array(
+		'nom' => 'Gnolia',
+		'lien' => "http://gnolia.com/bookmarklet/add?url=$url&amp;title=$titre",
+	);
+	
+	$liens['GoogleBookmarks'] = array(
+		'nom' => 'Google Bookmarks',
+		'lien' => "http://www.google.com/bookmarks/mark?op=add&amp;bkmk=$url&amp;title=$titre",
+	);
+	
+	$liens['Identica'] = array(
+		'nom' => 'Identi.ca',
+		'lien' => "http://identi.ca/index.php?action=newnotice&amp;status_textarea=$titre $url",
+	);
+	
+	$liens['Linkedin'] = array(
+		'nom' => 'LinkedIn',
+		'lien' => "http://www.linkedin.com/shareArticle?mini=true&amp;url=$url&amp;title=$titre",
+	);
+	
+	$liens['MisterWong'] = array(
+		'nom' => 'Mister Wong',
+		'lien' => "http://www.mister-wong.com/addurl/?bm_url=$url&amp;bm_description=$titre",
+	);
+	
+	$liens['Mixx'] = array(
+		'nom' => 'Mixx',
+		'lien' => "http://www.mixx.com/submit?page_url=$url",
+	);
+	
+	$liens['MySpace'] = array(
+		'nom' => 'MySpace',
+		'lien' => "http://www.myspace.com/index.cfm?fuseaction=postto&amp;t=$titre&amp;u=$url",
+	);
+	
+	$liens['Newsvine'] = array(
+		'nom' => 'Newsvine',
+		'lien' => "http://www.newsvine.com/_tools/seed&amp;save?u=$url&amp;h=$titre",
+	);
+	
+	$liens['Propeller'] = array(
+		'nom' => 'Propeller',
+		'lien' => "http://www.propeller.com/submit/?U=$url&amp;T=$titre",
+	);
+	
+	$liens['Reddit'] = array(
+		'nom' => 'Reddit',
+		'lien' => "http://reddit.com/submit?url=$url&amp;title=$titre",
+	);
+	
+	$liens['Scoopeo'] = array(
+		'nom' => 'Scoopeo',
+		'lien' => "http://www.scoopeo.com/scoop/new?newurl=$url&amp;title=$titre",
+	);
+	
+	$liens['SlashDot'] = array(
+		'nom' => 'SlashDot',
+		'lien' => "http://slashdot.org/bookmark.pl?url=$url&amp;title=$titre",
+	);
+	
+	$liens['StumbleUpon'] = array (
+		'nom' => 'StumbleUpon',
+		'lien' => "http://www.stumbleupon.com/submit?url=$url&amp;title=$titre",
+	);
+	
+	$liens['Tapemoi'] = array(
+		'nom' => 'Tapemoi',
+		'lien' => "http://www.tapemoi.com/submit.php?lien=$url",
+	);
+	
+	$liens['Technorati'] = array(
+		'nom' => 'Technorati',
+		'lien' => "http://technorati.com/search/$url",
+	);
+	
+	$liens['Twitter'] = array(
+		'nom' => 'Twitter',
+		'lien' => "http://twitter.com/home/?status=$url+--+$titre",
+	);
+	
+	$liens['Wikio'] = array(
+		'nom' => 'Wikio',
+		'lien' => "http://www.wikio.fr/vote?url=$url",
+	);
+	
+	$liens['YahooBookmarks'] = array(
+		'nom' => 'Yahoo! Bookmarks',
+		'lien' => "http://bookmarks.yahoo.com/myresults/bookmarklet?u=$url&amp;t=$titre",
+	);
+	
+	$liens['YahooBuzz'] = array(
+		'nom' => 'Yahoo! Buzz',
+		'lien' => "http://buzz.yahoo.com/buzz?targetUrl=$url&amp;headline=$titre",
+	);
+	
+	return $liens;
 }
 
 /*

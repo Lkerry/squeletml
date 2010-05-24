@@ -15,7 +15,7 @@ if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourriel
 	$infosPublication = FALSE;
 	$licence = '';
 	$lienPage = FALSE;
-	$marquePagesSociaux = FALSE;
+	$partage = FALSE;
 	$robots = 'noindex, nofollow, noarchive';
 	include $racine . '/inc/premier.inc.php';
 	

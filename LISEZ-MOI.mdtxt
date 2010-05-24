@@ -8,7 +8,7 @@ En effet, seulement deux fichiers doivent être inclus dans chaque page (un au d
 
 Aussi, un fichier de configuration permet de paramétrer, par simple affectation de variables, le flux HTML ainsi que plusieurs aspects visuels sans devoir bidouiller dans les feuilles de style CSS, la structure de page XHTML ou la programmation PHP. Bien sûr, il est également possible d'utiliser ses propres styles ou structure de page.
 
-Enfin, Squeletml fournit plusieurs modules prêts à l'emploi: formulaires de contact, galeries photo, classement par catégories, flux RSS, partage de la page par courriel ou par des services de marque-pages et de réseaux sociaux, cron, fichiers Sitemap, interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Un site Squeletml peut être géré autant par l'interface graphique de l'administration que par un  simple éditeur de texte. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
+Enfin, Squeletml fournit plusieurs modules prêts à l'emploi: formulaires de contact, galeries photo, classement par catégories, flux RSS, partage de la page par courriel ou en passant par des services de marque-pages et de réseaux sociaux, cron, fichiers Sitemap, interface d'administration reproduisant les principales actions normalement effectuées par FTP, etc. Un site Squeletml peut être géré autant par l'interface graphique de l'administration que par un  simple éditeur de texte. Le tout peut facilement être traduit puisque Squeletml utilise PHP Gettext (et dans une moindre mesure JavaScript Gettext) pour l'affichage de l'interface.
 
 Le fonctionnement de Squeletml est indéniablement inspiré de systèmes de gestion de contenu comme [Drupal](http://www.drupalfr.org/).
 
@@ -46,7 +46,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Lien «Envoyer à des amis» offrant la possibilité à l'internaute d'envoyer un courriel à plusieurs contacts pour leur faire découvrir la page visitée. Si cette dernière est une page individuelle d'une image dans une galerie, une vignette de l'image et une description (si cette dernière existe) sont insérées dans le message.
 
-- Liens de marque-pages ou de réseaux sociaux pour la page en cours.
+- Liens de marque-pages et de réseaux sociaux pour la page en cours.
 
 - Syndication de contenu (flux RSS):
 
@@ -202,4 +202,4 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
 
-- Les liens de marque-pages et réseaux sociaux ont été en partie récupérés dans le [module Service links pour Drupal](http://drupal.org/project/service_links), sous licence GPL.
+- Les liens de marque-pages et de réseaux sociaux ont été en partie récupérés dans le [module Service links pour Drupal](http://drupal.org/project/service_links), sous licence GPL.

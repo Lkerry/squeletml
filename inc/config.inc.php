@@ -213,8 +213,8 @@ $ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
 $ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
 $ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
-$ordreBlocsDansFluxHtml['envoyer-amis']       = array (550, 550, 550);
-$ordreBlocsDansFluxHtml['marque-pages-sociaux']  = array (560, 560, 560);
+$ordreBlocsDansFluxHtml['envoyer-amis']          = array (550, 550, 550);
+$ordreBlocsDansFluxHtml['partage']               = array (560, 560, 560);
 $ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 
 // Conditions d'insertion des blocs.
@@ -261,8 +261,8 @@ $inclureBasDePage = TRUE; // TRUE|FALSE
 // Activation par défaut de l'option «Envoyer à des amis».
 $activerEnvoyerAmisParDefaut = TRUE; // TRUE|FALSE
 
-// Activation par défaut des marque-pages ou réseaux sociaux.
-$activerMarquePagesSociauxParDefaut = TRUE; // TRUE|FALSE
+// Activation par défaut du partage en passant par des marque-pages et des réseaux sociaux.
+$activerPartageParDefaut = TRUE; // TRUE|FALSE
 
 // Activation de la recherche Google.
 /*
@@ -528,17 +528,17 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Voir la fonction `lienActif()`.
 */
 $liensActifsBlocs['balise-h1']             = NULL;
-$liensActifsBlocs['envoyer-amis']       = NULL;
+$liensActifsBlocs['envoyer-amis']          = NULL;
 $liensActifsBlocs['flux-rss']              = NULL;
 $liensActifsBlocs['infos-publication']     = NULL;
 $liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
 $liensActifsBlocs['licence']               = NULL;
 $liensActifsBlocs['lien-page']             = NULL;
-$liensActifsBlocs['marque-pages-sociaux']  = NULL;
 $liensActifsBlocs['menu']                  = TRUE;
 $liensActifsBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $liensActifsBlocs['menu-langues']          = TRUE;
-$liensActifsBlocs['recherche-google']  = NULL;
+$liensActifsBlocs['partage']               = NULL;
+$liensActifsBlocs['recherche-google']      = NULL;
 
 // Limite de la profondeur d'une liste dans un bloc.
 /*
@@ -591,17 +591,17 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
 $limiterProfondeurListesBlocs['balise-h1']             = NULL;
-$limiterProfondeurListesBlocs['envoyer-amis']       = NULL;
+$limiterProfondeurListesBlocs['envoyer-amis']          = NULL;
 $limiterProfondeurListesBlocs['flux-rss']              = NULL;
 $limiterProfondeurListesBlocs['infos-publication']     = NULL;
 $limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE;
 $limiterProfondeurListesBlocs['licence']               = NULL;
 $limiterProfondeurListesBlocs['lien-page']             = NULL;
-$limiterProfondeurListesBlocs['marque-pages-sociaux']  = NULL;
 $limiterProfondeurListesBlocs['menu']                  = TRUE;
 $limiterProfondeurListesBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $limiterProfondeurListesBlocs['menu-langues']          = FALSE;
-$limiterProfondeurListesBlocs['recherche-google']  = NULL;
+$limiterProfondeurListesBlocs['partage']               = NULL;
+$limiterProfondeurListesBlocs['recherche-google']      = NULL;
 
 // Nombre de colonnes.
 /*

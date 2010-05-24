@@ -270,10 +270,10 @@ if (!empty($blocsAinsererTemp))
 					
 					break;
 					
-				case 'marque-pages-sociaux':
-					$listeMarquePagesSociaux = marquePagesSociaux($url, $baliseTitle . $baliseTitleComplement);
+				case 'partage':
+					$listePartage = partage($url, $baliseTitle . $baliseTitleComplement);
 					
-					if ($marquePagesSociaux && !empty($listeMarquePagesSociaux) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					if ($partage && !empty($listePartage) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
 						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
@@ -286,23 +286,23 @@ if (!empty($blocsAinsererTemp))
 							$classeBlocArrondi = '';
 						}
 						
-						$blocs[$region] .= '<div id="marquePagesSociaux" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= '<div id="partage" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Réseaux sociaux") . "</h2>\n";
+						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
 						
 						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
 						
-						foreach ($listeMarquePagesSociaux as $service)
+						foreach ($listePartage as $service)
 						{
 							$blocs[$region] .= '<li><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
 						}
 						
 						$blocs[$region] .= "</ul>\n";
 						$blocs[$region] .= $codeInterieurBlocBas;
-						$blocs[$region] .= '</div><!-- /#marquePagesSociaux -->' . "\n";
+						$blocs[$region] .= '</div><!-- /#partage -->' . "\n";
 						$blocs[$region] .= '<script type="text/javascript">' . "\n";
 						$blocs[$region] .= "//<![CDATA[\n";
-						$blocs[$region] .= "boiteDeroulante('#marquePagesSociaux', \"$aExecuterApresClicBd\");\n";
+						$blocs[$region] .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
 						$blocs[$region] .= "//]]>\n";
 						$blocs[$region] .= "</script>\n";
 					}
