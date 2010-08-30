@@ -1287,13 +1287,13 @@ Ces trois fichiers se trouvent à la racine du site. Les fichiers Sitemap du sit
 
 ## Développement
 
-Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers. [La version de développement est disponible sur Launchpad](https://code.launchpad.net/squeletml).
+Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers.
 
 ### Téléchargement de la version de développement
 
-Pour récupérer la version de développement, simnplement saisir cette commande dans une console:
+Pour récupérer la version de développement, simplement saisir cette commande dans une console:
 
-	bzr branch lp:squeletml
+	
 
 ### Fichier `Makefile`
 

@@ -62,6 +62,9 @@ archives: menage-archives ChangeLog version.txt
 	mv squeletml.zip $(bureau)/
 	php ./scripts.cli.php annexes-doc $(bureau)/documentation-avec-config.html
 
+branche:
+	bzr push ftp://jpfleury.net_bzr@ftp.koumbit.net/squeletml
+
 ChangeLog: menage-ChangeLog
 	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
 	# Ne pas oublier de mettre ce fichier dans le dossier de plugins de bzr,
@@ -77,9 +80,6 @@ exif: menage-exif
 ini: menage-ini
 	mkdir -p $(cheminLanguageSpecs)/
 	cp src/ini-squeletml/ini-squeletml.lang $(cheminLanguageSpecs)/
-
-lp:
-	bzr push lp:~jpfle/squeletml/trunk
 
 menage-archives:
 	rm -f squeletml.tar.bz2

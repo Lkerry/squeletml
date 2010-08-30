@@ -99,11 +99,7 @@ Voir le fichier `documentation.mdtxt` dans l'archive du logiciel, ou bien visite
 
 ## Problèmes ou suggestions
 
-Pour faire part d'un problème d'utilisation avec Squeletml, proposer une fonctionnalité ou poser une question, il y a quelques possibilités:
-
-- envoyer un [message à partir du formulaire de contact](http://www.squeletml.net/contact.php);
-- faire un [rapport de bogue sur Launchpad](https://bugs.launchpad.net/squeletml);
-- ou poser une [question sur Launchpad](https://answers.launchpad.net/squeletml).
+Pour faire part d'un problème d'utilisation avec Squeletml, proposer une fonctionnalité ou poser une question, vous pouvez envoyer un [message à partir du formulaire de contact](http://www.squeletml.net/contact.php).
 
 N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`. (S'il y a lieu, modifier le nom du dossier d'administration.)
 

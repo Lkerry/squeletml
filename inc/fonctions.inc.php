@@ -2488,7 +2488,7 @@ function image(
 		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
-			$title = '<a href="' . $hrefPageIndividuelleImage . '">' . T_("Voir plus d'information pour cette image.") . '</a>';
+			$title = '<a href="' . $hrefPageIndividuelleImage . '">' . T_("Voir plus d'information sur cette image.") . '</a>';
 			
 			if (!empty($infosImage['intermediaireLegende']))
 			{
