@@ -62,9 +62,6 @@ archives: menage-archives ChangeLog version.txt
 	mv squeletml.zip $(bureau)/
 	php ./scripts.cli.php annexes-doc $(bureau)/documentation-avec-config.html
 
-branche:
-	bzr push lp:~jpfle/+junk/squeletml
-
 ChangeLog: menage-ChangeLog
 	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
 	# Ne pas oublier de mettre ce fichier dans le dossier de plugins de bzr,
@@ -137,6 +134,9 @@ pofr:
 pot: menage-pot
 	find ./ -iname "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
 	find ./ -iname "squeletml.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \; # xgettext n'offre pas le Javascript dans les langages à parser, donc on déclare les fichiers .js comme étant du Perl
+
+push:
+	bzr push lp:~jpfle/+junk/squeletml
 
 version.txt: menage-version.txt
 	echo $(tag) > version.txt
