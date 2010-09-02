@@ -1293,7 +1293,7 @@ Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le
 
 Pour récupérer la version de développement, simplement saisir cette commande dans une console:
 
-	
+	bzr branch lp:~jpfle/+junk/squeletml
 
 ### Fichier `Makefile`
 

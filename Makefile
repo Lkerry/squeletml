@@ -63,7 +63,7 @@ archives: menage-archives ChangeLog version.txt
 	php ./scripts.cli.php annexes-doc $(bureau)/documentation-avec-config.html
 
 branche:
-	bzr push ftp://jpfleury.net_bzr@ftp.koumbit.net/squeletml
+	bzr push lp:~jpfle/+junk/squeletml
 
 ChangeLog: menage-ChangeLog
 	# Est basé sur http://telecom.inescporto.pt/~gjc/gnulog.py
