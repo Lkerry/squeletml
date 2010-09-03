@@ -27,6 +27,8 @@ div#noticeMaintenance {
 div#noticeMaintenance p {
 	margin: 0px;
 	padding: 0px;
+	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
+	font-size: 0.96em;
 	font-weight: bold;
 }
 
