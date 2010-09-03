@@ -1,13 +1,13 @@
 .acces
+doc/version.txt
 .htaccess
-*.mo
 init.inc.php
+*.mo
+robots.txt
 site/admin/cache/*
 site/cache/*
 site/fichiers/galeries/*
 site/inc/*
-robots.txt
 sitemap_galeries.xml
 sitemap_index.xml
 sitemap_site.xml
-version.txt

@@ -59,7 +59,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 			$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
-			$htaccessFilesModele = "(ChangeLog|ChangeLog-version-actuelle|ChangeLog-version-actuelle-fichiers|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.defaut|\.ini|\.mdtxt|\.sauv|\.txt)$";
+			$htaccessFilesModele = "(ChangeLog|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.ini|\.mdtxt|\.modele|\.sauv|\.txt)$";
 		
 			if ($serveurFreeFr)
 			{

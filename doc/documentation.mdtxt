@@ -1,6 +1,4 @@
-# Documentation de Squeletml
-
-## Prérequis
+## Dépendances
 
 Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est utilisée.
 
@@ -50,7 +48,7 @@ Tant que l'installation n'est pas terminée, la page d'accueil de votre site Squ
 
 ### Le fichier `init.inc.php`
 
-Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouver le fichier `init.inc.php.defaut`, situé à la racine de votre site Squeletml, le copier et le coller sous le nom `init.inc.php` (il faut donc enlever le `defaut` final du nom).
+Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouver le fichier `modeles/init.inc.php.modele`, le copier et le coller sous le nom `init.inc.php` (il faut donc enlever le `.modele` final du nom) à la racine du site.
 
 Ce fichier contient deux variables obligatoires à renseigner:
 
@@ -94,7 +92,7 @@ Pour une installation de Squeletml sur un serveur de Free.fr, il faut effectuer 
 
 ### Protection de l'administration (fichiers `.htaccess` et `.acces`)
 
-Trouver le fichier `.htaccess.defaut`, situé à la racine de votre site Squeletml, le copier et le coller sous le nom `.htaccess` (il faut donc enlever le `defaut` final du nom). Ensuite, visiter la page suivante:
+Trouver le fichier `modeles/.htaccess.modele`, le copier et le coller sous le nom `.htaccess` (il faut donc enlever le `.modele` final du nom) à la racine du site. Ensuite, visiter la page suivante:
 
 	http://www.nomDeDomaine.ext/admin/acces.admin.php
 
@@ -102,7 +100,7 @@ et ajouter un utilisateur. Un fichier `.acces` sera créé à la racine de votre
 
 #### Cas des serveurs de Free.fr
 
-Si Squeletml est installé sur un serveur de Free.fr, le fichier à trouver est `.htaccess.free.fr.defaut`. La suite est la même (copie et collage sous le nom `.htaccess`).
+Si Squeletml est installé sur un serveur de Free.fr, le fichier à trouver est `modeles/.htaccess.free.fr.modele`. La suite est la même (copie et collage sous le nom `.htaccess` à la racine du site).
 
 #### Chemin des pages d'erreur
 
@@ -124,7 +122,7 @@ L'installation par défaut passant par une page web sera ainsi désactivée.
 
 ### Le fichier `robots.txt`
 
-Vous pouvez trouver le fichier `robots.txt.defaut`, situé à la racine de votre site Squeletml, le copier et le coller sous le nom `robots.txt` (il faut donc enlever le `defaut` final du nom).
+Vous pouvez trouver le fichier `modeles/robots.txt.modele`, le copier et le coller sous le nom `robots.txt` (il faut donc enlever le `.modele` final du nom) à la racine du site.
 
 Vous pouvez personnaliser ce fichier ou le laisser tel quel.
 
@@ -489,8 +487,8 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 - `xhtml/fr/page.contact.inc.php`
 - `xhtml/fr/page.galerie.inc.php`
 - `xhtml/fr/page.index.inc.php`
-- `documentation.mdtxt`
-- `LISEZ-MOI.mdtxt`
+- `doc/documentation.mdtxt`
+- `doc/LISEZ-MOI.mdtxt`
 - `maintenance.php`
 
 ## Mise à jour de Squeletml
@@ -515,7 +513,6 @@ Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichie
 
 **Notes:**
 
-- le fichier `ChangeLog-version-actuelle-fichiers` contient la liste des fichiers ajoutés, modifiés ou supprimés entre la version actuelle et la version précédente de Squeletml;
 - si vous avez modifié le nom du dossier d'administration, ne pas oublier de supprimer l'ancien dossier et de renommer le nouveau;
 - il est bon de vérifier si les fichiers de configuration à la racine par défaut ont été modifiés dans la nouvelle version de Squeletml et, si tel est le cas, les éditer à la main pour y appliquer les changements;
 - la lecture de la section «Dossiers inutiles pour une configuration donnée» est suggérée en complément à cette explication sur la mise à jour de Squeletml.
@@ -1299,13 +1296,13 @@ Pour récupérer la version de développement, simplement saisir cette commande 
 
 Les principales commandes du fichier `Makefile` sont:
 
-- `make generer`: met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main, par exemple les fichiers de langue. Est utilisée en général avant la dernière révision d'une prochaine version.
+- `make generer`: met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. Est utilisée en général avant la dernière révision d'une prochaine version.
 
-- `make publier`: crée des archives `.bz2` et `.zip`; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles; copie certains fichiers utiles (comme le `ChangeLog`) sur le bureau; et déplace les archives également sur le bureau. Est utilisée après un `bzr tag...` pour la sortie d'une nouvelle version.
+- `make publier`: crée les archives; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. Est utilisée après un `bzr tag ...` pour la sortie d'une nouvelle version.
 
-	Par défaut, le dernier tag (qui correspond à la dernière version) est utilisé par cette commande. Pour publier une version différente, préciser les variables `tag` et `derniereRevAvantDernierTag` dans la ligne de commande. Exemple:
+	Par défaut, la dernière version (représentée par la dernière étiquette) est utilisée par cette commande. Pour publier une version différente, préciser la variable `version` dans la ligne de commande. Exemple:
 
-		make publier tag=squeletml-2.2.1 derniereRevAvantDernierTag=505
+		make publier version=squeletml-2.2.1
 
 - `make ini`: installe pour l'utilisateur courant la coloration syntaxique dans l'[éditeur de texte gedit](http://gedit.org/) (sous GNU/Linux) pour les fichiers de configuration utilisés par Squeletml (configuration des galeries et des flux RSS globaux). Ces fichiers sont au format `.ini`. Contrairement à la coloration par défaut dans gedit, celle installée par `make ini` ne colore pas de délimiteurs de caractères (habituellement les guillemets et les apostrophes), ce qui évite par exemple qu'une apostrophe présente dans la valeur d'un paramètre, comme ceci:
 

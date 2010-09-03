@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-05-24 16:58-0400\n"
+"POT-Creation-Date: 2010-09-03 11:54-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -1273,8 +1273,8 @@ msgstr "Messages"
 msgid "Lister"
 msgstr "Lister"
 
-#: admin/galeries.admin.php:15 admin/inc/premier.inc.php:129
-#: admin/inc/premier.inc.php:141 admin/porte-documents.admin.php:1459
+#: admin/galeries.admin.php:15 admin/inc/premier.inc.php:136
+#: admin/inc/premier.inc.php:148 admin/porte-documents.admin.php:1459
 #: admin/porte-documents.admin.php:1724
 msgid "Ajouter"
 msgstr "Ajouter"
@@ -2736,123 +2736,123 @@ msgstr ""
 "qualité des données Exif. La configuration nécessaire est un accès à "
 "l'exécutable %1$s."
 
-#: admin/inc/premier.inc.php:24
+#: admin/inc/premier.inc.php:26
 msgid "Administration de Squeletml"
 msgstr "Administration de Squeletml"
 
-#: admin/inc/premier.inc.php:117
+#: admin/inc/premier.inc.php:124
 msgid "Prévisualisation"
 msgstr "Prévisualisation"
 
-#: admin/inc/premier.inc.php:119
+#: admin/inc/premier.inc.php:126
 msgid "Emphase forte"
 msgstr "Emphase forte"
 
-#: admin/inc/premier.inc.php:121
+#: admin/inc/premier.inc.php:128
 msgid "Emphase légère"
 msgstr "Emphase légère"
 
-#: admin/inc/premier.inc.php:126
+#: admin/inc/premier.inc.php:133
 msgid "Attribut «href» (adresse)"
 msgstr "Attribut «href» (adresse)"
 
-#: admin/inc/premier.inc.php:127
+#: admin/inc/premier.inc.php:134
 msgid "Attribut «title» (optionnel)"
 msgstr "Attribut «title» (optionnel)"
 
-#: admin/inc/premier.inc.php:129 admin/inc/premier.inc.php:130
+#: admin/inc/premier.inc.php:136 admin/inc/premier.inc.php:137
 msgid "Lien"
 msgstr "Lien"
 
-#: admin/inc/premier.inc.php:135
+#: admin/inc/premier.inc.php:142
 msgid "Classe (style)"
 msgstr "Classe (style)"
 
-#: admin/inc/premier.inc.php:135
+#: admin/inc/premier.inc.php:142
 msgid "Gauche"
 msgstr "Gauche"
 
-#: admin/inc/premier.inc.php:135
+#: admin/inc/premier.inc.php:142
 msgid "Centre"
 msgstr "Centre"
 
-#: admin/inc/premier.inc.php:135
+#: admin/inc/premier.inc.php:142
 msgid "Droite"
 msgstr "Droite"
 
-#: admin/inc/premier.inc.php:136
+#: admin/inc/premier.inc.php:143
 msgid "URL"
 msgstr "URL"
 
-#: admin/inc/premier.inc.php:137
+#: admin/inc/premier.inc.php:144
 msgid "Largeur × hauteur"
 msgstr "Largeur × hauteur"
 
-#: admin/inc/premier.inc.php:137
+#: admin/inc/premier.inc.php:144
 msgid " × "
 msgstr " × "
 
-#: admin/inc/premier.inc.php:139
+#: admin/inc/premier.inc.php:146
 msgid "Texte alternatif"
 msgstr "Texte alternatif"
 
-#: admin/inc/premier.inc.php:141 admin/inc/premier.inc.php:142
+#: admin/inc/premier.inc.php:148 admin/inc/premier.inc.php:149
 msgid "Image"
 msgstr "Image"
 
-#: admin/inc/premier.inc.php:144
+#: admin/inc/premier.inc.php:151
 msgid "Liste non ordonnée"
 msgstr "Liste non ordonnée"
 
-#: admin/inc/premier.inc.php:146
+#: admin/inc/premier.inc.php:153
 msgid "Liste ordonnée"
 msgstr "Liste ordonnée"
 
-#: admin/inc/premier.inc.php:148
+#: admin/inc/premier.inc.php:155
 msgid "Fin de l\\'aperçu"
 msgstr "Fin de l\\'aperçu"
 
-#: admin/inc/premier.inc.php:150 admin/porte-documents.admin.php:1121
+#: admin/inc/premier.inc.php:157 admin/porte-documents.admin.php:1121
 msgid "Titre de premier niveau"
 msgstr "Titre de premier niveau"
 
-#: admin/inc/premier.inc.php:152
+#: admin/inc/premier.inc.php:159
 msgid "Titre de deuxième niveau"
 msgstr "Titre de deuxième niveau"
 
-#: admin/inc/premier.inc.php:154
+#: admin/inc/premier.inc.php:161
 msgid "Titre de troisième niveau"
 msgstr "Titre de troisième niveau"
 
-#: admin/inc/premier.inc.php:156
+#: admin/inc/premier.inc.php:163
 msgid "Titre de quatrième niveau"
 msgstr "Titre de quatrième niveau"
 
-#: admin/inc/premier.inc.php:158
+#: admin/inc/premier.inc.php:165
 msgid "Titre de cinquième niveau"
 msgstr "Titre de cinquième niveau"
 
-#: admin/inc/premier.inc.php:160
+#: admin/inc/premier.inc.php:167
 msgid "Titre de sixième niveau"
 msgstr "Titre de sixième niveau"
 
-#: admin/inc/premier.inc.php:162
+#: admin/inc/premier.inc.php:169
 msgid "Division"
 msgstr "Division"
 
-#: admin/inc/premier.inc.php:164
+#: admin/inc/premier.inc.php:171
 msgid "Ligne horizontale"
 msgstr "Ligne horizontale"
 
-#: admin/inc/premier.inc.php:166
+#: admin/inc/premier.inc.php:173
 msgid "Paragraphe"
 msgstr "Paragraphe"
 
-#: admin/inc/premier.inc.php:169 admin/inc/premier.inc.php:172
+#: admin/inc/premier.inc.php:176 admin/inc/premier.inc.php:179
 msgid "Balise personnalisée"
 msgstr "Balise personnalisée"
 
-#: admin/inc/premier.inc.php:175
+#: admin/inc/premier.inc.php:182
 msgid ""
 "Insérer le code proposé pour intégrer la vidéo. Ce dernier sera modifié pour "
 "devenir valide XHTML 1.0 Strict. Testé avec blip.tv, Dailymotion, Google "
@@ -2862,11 +2862,11 @@ msgstr ""
 "devenir valide XHTML 1.0 Strict. Testé avec blip.tv, Dailymotion, Google "
 "Vidéos, Metacafe, Vimeo et Youtube."
 
-#: admin/inc/premier.inc.php:204
+#: admin/inc/premier.inc.php:211
 msgid "Vidéo"
 msgstr "Vidéo"
 
-#: admin/inc/premier.inc.php:204
+#: admin/inc/premier.inc.php:211
 msgid "vidéo"
 msgstr "vidéo"
 
@@ -3999,8 +3999,8 @@ msgid "Fabriquant"
 msgstr "Fabriquant"
 
 #: inc/fonctions.inc.php:2491
-msgid "Voir plus d'information pour cette image."
-msgstr "Voir plus d'information pour cette image."
+msgid "Voir plus d'information sur cette image."
+msgstr "Voir plus d'information sur cette image."
 
 #: inc/fonctions.inc.php:2710
 #, php-format

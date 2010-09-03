@@ -73,11 +73,11 @@ else
 			$_POST['langues'] = array ();
 		}
 		
-		if (!file_exists($racine . '/init.inc.php') && file_exists($racine . '/init.inc.php.defaut'))
+		if (!file_exists($racine . '/init.inc.php') && file_exists($racine . '/modeles/init.inc.php.modele'))
 		{
-			if (@copy($racine . '/init.inc.php.defaut', $racine . '/init.inc.php'))
+			if (@copy($racine . '/modeles/init.inc.php.modele', $racine . '/init.inc.php'))
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>init.inc.php</code>', '<code>init.inc.php.defaut</code>') . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>init.inc.php</code>', '<code>modeles/init.inc.php.modele</code>') . "</li>\n";
 				$initIncPhp = @file_get_contents($racine . '/init.inc.php');
 				
 				if ($initIncPhp !== FALSE)
@@ -112,7 +112,7 @@ else
 			else
 			{
 				$passerAlEtape2 = FALSE;
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>init.inc.php</code>', '<code>init.inc.php.defaut</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>init.inc.php</code>', '<code>modeles/init.inc.php.modele</code>') . "</li>\n";
 			}
 		}
 		else
@@ -127,11 +127,11 @@ else
 			}
 		}
 		
-		if (!file_exists($racine . '/robots.txt') && file_exists($racine . '/robots.txt.defaut'))
+		if (!file_exists($racine . '/robots.txt') && file_exists($racine . '/modeles/robots.txt.modele'))
 		{
-			if (@copy($racine . '/robots.txt.defaut', $racine . '/robots.txt'))
+			if (@copy($racine . '/modeles/robots.txt.modele', $racine . '/robots.txt'))
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>robots.txt</code>', '<code>robots.txt.defaut</code>') . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>robots.txt</code>', '<code>modeles/robots.txt.modele</code>') . "</li>\n";
 
 				if (!empty($urlSansServeurRacine))
 				{
@@ -158,7 +158,7 @@ else
 			else
 			{
 				$passerAlEtape2 = FALSE;
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>robots.txt</code>', '<code>robots.txt.defaut</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>robots.txt</code>', '<code>modeles/robots.txt.modele</code>') . "</li>\n";
 			}
 		}
 		else
@@ -176,12 +176,12 @@ else
 			
 			if ($serveurFreeFr)
 			{
-				$modeleHtaccess = '.htaccess.free.fr.defaut';
+				$modeleHtaccess = 'modeles/.htaccess.free.fr.modele';
 				$cheminModeleHtaccess = $racine . '/' . $modeleHtaccess;
 			}
 			else
 			{
-				$modeleHtaccess = '.htaccess.defaut';
+				$modeleHtaccess = 'modeles/.htaccess.modele';
 				$cheminModeleHtaccess = $racine . '/' . $modeleHtaccess;
 			}
 			
@@ -415,9 +415,9 @@ else
 				{
 					$initIncPhp = @file_get_contents($racine . '/init.inc.php');
 				}
-				elseif (file_exists($racine . '/init.inc.php.defaut'))
+				elseif (file_exists($racine . '/modeles/init.inc.php.modele'))
 				{
-					$initIncPhp = @file_get_contents($racine . '/init.inc.php.defaut');
+					$initIncPhp = @file_get_contents($racine . '/modeles/init.inc.php.modele');
 				}
 			}
 			

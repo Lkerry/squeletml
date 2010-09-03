@@ -25,7 +25,7 @@ if ($argv[1] == 'annexes-doc')
 	
 	phpGettext('.', 'fr'); // Nécessaire à la traduction.
 	
-	$documentationAvecConfig = mdtxt($racine . '/documentation.mdtxt');
+	$documentationAvecConfig = mdtxt($racine . '/doc/documentation.mdtxt');
 	$documentationAvecConfig .= annexesDocumentation($racineAdmin);
 	
 	file_put_contents($cheminDocumentation, $documentationAvecConfig);
@@ -37,17 +37,17 @@ if ($argv[1] == 'annexes-doc')
 ########################################################################
 elseif ($argv[1] == 'config')
 {
-	$cheminTag = $argv[2];
+	$cheminDossier = $argv[2];
 	
 	$config = file_get_contents('inc/config.inc.php');
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
-	file_put_contents($cheminTag . '/site/inc/config.inc.php.defaut', $ajout);
+	file_put_contents($cheminDossier . '/modeles/site/inc/config.inc.php.modele', $ajout);
 	
 	$config = file_get_contents('admin/inc/config.inc.php');
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
-	file_put_contents($cheminTag . '/site/admin/inc/config.inc.php.defaut', $ajout);
+	file_put_contents($cheminDossier . '/modeles/site/admin/inc/config.inc.php.modele', $ajout);
 }
 ########################################################################
 ##
@@ -56,37 +56,12 @@ elseif ($argv[1] == 'config')
 ########################################################################
 elseif ($argv[1] == 'css')
 {
-	$cheminTag = $argv[2];
+	$cheminDossier = $argv[2];
 	
 	$css = file_get_contents('css/squeletml.css');
 	preg_match_all('|^(/\*.*?\*/)|ms', $css, $resultat);
 	$ajout = implode("\n\n", $resultat[1]) . "\n\n";
-	file_put_contents($cheminTag . '/site/css/style.css.defaut', $ajout);
-}
-########################################################################
-##
-## ChangeLog vers Markdown.
-##
-########################################################################
-elseif ($argv[1] == 'mdtxt')
-{
-	$cheminFichier = $argv[2];
-	$fic = fopen($cheminFichier . '.mdtxt', 'w');
-	
-	$fichier = file_get_contents($cheminFichier);
-	$fichier = preg_replace('/^/m', "\t\t", $fichier);
-	$fichier = preg_replace('/^\t\t=== ([^=]+) ===$/m', '- $1' . "\n", $fichier);
-	$fichier = preg_replace('/^\t\t([0-9]{4}(-[0-9]{2}){2})  /m', "\t" . '- $1&nbsp;&nbsp;', $fichier);
-	$fichier = preg_replace('/^\t\t\t\* (.+)$/em', "\"\t\t- \" . str_replace('_', '\_', '\$1')", $fichier);
-	$fichier = preg_replace('/,\n\t\t- (?! )/m', ",  \n\t\t", $fichier);
-	$fichier = preg_replace('/\.\n\t\t- (?! )/m', ".\n\n\t\t- ", $fichier);
-	$fichier = preg_replace('/^\t$/m', '', $fichier);
-	$fichier = preg_replace('/^(\t\t.+: \[[0-9]+\]) /m', '$1' . "\n\n\t\t\t", $fichier);
-	// Supprime l'adresse courriel (optionnel).
-	$fichier = preg_replace('/^(\t- [0-9]{4}(-[0-9]{2}){2}[^<]+) <[^@]+@[^>]+>/m', '$1', $fichier);
-	
-	fwrite($fic, $fichier);
-	fclose($fic);
+	file_put_contents($cheminDossier . '/modeles/site/css/style.css.modele', $ajout);
 }
 ########################################################################
 ##
@@ -97,7 +72,7 @@ elseif ($argv[1] == 'message-accueil')
 {
 	include 'inc/php-markdown/markdown.php';
 	
-	if ($fic = fopen('LISEZ-MOI.mdtxt', 'r'))
+	if ($fic = fopen('doc/LISEZ-MOI.mdtxt', 'r'))
 	{
 		$fichierLisezMoi = array ();
 		

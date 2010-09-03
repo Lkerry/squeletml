@@ -52,3 +52,5 @@
 					<div id="lienBas">
 						<?php include_once $cheminLienBas; ?>
 					</div><!-- /#lienBas -->
+					
+					<?php echo $h1; ?>

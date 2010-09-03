@@ -44,7 +44,7 @@ else
 		<h2><?php echo $titreApercu; ?></h2>
 		
 		<?php
-		$version = @file_get_contents('../version.txt');
+		$version = @file_get_contents('../doc/version.txt');
 		
 		if ($version !== FALSE)
 		{

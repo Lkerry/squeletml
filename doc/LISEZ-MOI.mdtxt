@@ -1,5 +1,3 @@
-# Squeletml, squelette de site XHTML et PHP
-
 ## Qu'est-ce que Squeletml?
 
 Le logiciel libre Squeletml est un système de gestion de contenu sans base de données, utilisant un squelette de site valide XHTML 1.0 Strict et géré par inclusion de fichiers PHP, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but d'optimiser la création et la maintenance de ce genre de site.
@@ -95,7 +93,7 @@ Visitez la [galerie de captures d'écran de Squeletml](http://www.squeletml.net/
 
 ## Documentation
 
-Voir le fichier `documentation.mdtxt` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.squeletml.net/documentation.php).
+Voir le fichier `doc/documentation.mdtxt` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.squeletml.net/documentation.php).
 
 ## Problèmes ou suggestions
 
@@ -103,12 +101,10 @@ Pour faire part d'un problème d'utilisation avec Squeletml, proposer une foncti
 
 N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`. (S'il y a lieu, modifier le nom du dossier d'administration.)
 
-## Licence de Squeletml
+## Licence
 
-### Squeletml
-
-Auteur: [Jean-Philippe Fleury](http://www.jpfleury.net/contact)  
-Copyright © Jean-Philippe Fleury, 2009.
+Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
+Copyright © Jean-Philippe Fleury
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 modifier suivant les termes de la GNU Affero General Public License telle que
@@ -124,7 +120,9 @@ Vous devriez avoir reçu une copie de la Licence publique générale GNU Affero
 avec ce programme; si ce n'est pas le cas, consultez
 <http://www.gnu.org/licenses/>.
 
-### Visuel
+### Matériel tierce
+
+#### Visuel
 
 - **Logo de Squeletml**: le logo a été fait à partir de l'image `clipart/animals/lizard_guillaume_boitel_.svg` de l'[Open Clip Art Library](http://www.openclipart.org/) et de la police de caractères [*Architext*](http://www.dafont.com/FR/architext.font). Les deux sont dans le domaine public.
 
@@ -156,7 +154,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Image en triangle dans la page d'erreur 404**: modification d'une image provenant de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Attention_Sign.svg?uselang=fr) et étant dans le domaine public.
 
-### Scripts intégrés
+#### Code
 
 - [**BUEditor**](http://ufku.com/drupal/bueditor): sous licence GPL.
 
@@ -199,3 +197,4 @@ avec ce programme; si ce n'est pas le cas, consultez
 - La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
 
 - Les liens de marque-pages et de réseaux sociaux ont été en partie récupérés dans le [module Service links pour Drupal](http://drupal.org/project/service_links), sous licence GPL.
+

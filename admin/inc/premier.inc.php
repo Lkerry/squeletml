@@ -16,12 +16,14 @@ if (file_exists("$racine/site/$dossierAdmin/inc/premier-pre.inc.php"))
 ##
 ########################################################################
 
+extract(init('', 'baliseH1', 'h1'), EXTR_SKIP);
+
 if (!isset($adminBalisesLinkScriptFinales))
 {
 	$adminBalisesLinkScriptFinales = array ();
 }
 
-$baliseTitle .= ' | ' . T_("Administration de Squeletml");
+$baliseTitle = baliseTitle($baliseTitle, $baliseH1) . ' | ' . T_("Administration de Squeletml");
 
 if (!isset($boitesDeroulantes))
 {
@@ -49,6 +51,11 @@ $cheminLienBas = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParD
 $cheminRaccourcis = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
 list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($adminDoctype, LANGUE_ADMIN);
 $idBody = adminIdBody();
+
+if (!empty($baliseH1))
+{
+	$h1 = '<h1>' . $baliseH1 . '</h1>';
+}
 
 if (!empty($idBody))
 {

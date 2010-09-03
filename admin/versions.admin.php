@@ -4,7 +4,7 @@ $baliseTitle = T_("Version de Squeletml et autres informations");
 include $racineAdmin . '/inc/premier.inc.php';
 
 $contenuLiVersion = '';
-$versionActuelleSqueletml = @file_get_contents($racine . '/version.txt');
+$versionActuelleSqueletml = @file_get_contents($racine . '/doc/version.txt');
 
 if ($versionActuelleSqueletml !== FALSE)
 {
