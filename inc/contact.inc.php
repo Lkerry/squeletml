@@ -17,7 +17,8 @@ include $racine . '/inc/envoyer-amis.inc.php';
 
 if ($envoyerAmisEstActif)
 {
-	$contact .= '<h2 id="formulaireEnvoyerAmis">' . T_("Envoyer à des amis") . "</h2>\n";
+	$contact .= '<div id="formulaireEnvoyerAmis">' . "\n";
+	$contact .= '<h2 id="titreEnvoyerAmis">' . T_("Envoyer à des amis") . "</h2>\n";
 }
 
 // L'envoi du message est demandé.
@@ -235,6 +236,11 @@ ob_start();
 include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact');
 $contact .= ob_get_contents();
 ob_end_clean();
+
+if ($envoyerAmisEstActif)
+{
+	$contact .= '</div><!-- /#formulaireEnvoyerAmis -->' . "\n";
+}
 
 // Traitement personnalisé optionnel 4 de 4.
 if (file_exists($racine . '/site/inc/contact.inc.php'))

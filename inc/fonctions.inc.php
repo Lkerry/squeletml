@@ -159,7 +159,7 @@ function actionFormContact($envoyerAmisEstActif)
 	
 	if ($envoyerAmisEstActif)
 	{
-		$action .= '#formulaireEnvoyerAmis';
+		$action .= '#titreEnvoyerAmis';
 	}
 	else
 	{
@@ -5310,15 +5310,15 @@ function urlPageAvecEnvoyerAmis()
 	
 	if (preg_match('/(\?|&amp;)action=envoyerAmis/', $url))
 	{
-		return $url . '#formulaireEnvoyerAmis';
+		return $url . '#titreEnvoyerAmis';
 	}
 	elseif (strstr($url, '?'))
 	{
-		return "$url&amp;action=envoyerAmis#formulaireEnvoyerAmis";
+		return "$url&amp;action=envoyerAmis#titreEnvoyerAmis";
 	}
 	else
 	{
-		return "$url?action=envoyerAmis#formulaireEnvoyerAmis";
+		return "$url?action=envoyerAmis#titreEnvoyerAmis";
 	}
 }
 
