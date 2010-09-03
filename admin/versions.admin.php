@@ -6,11 +6,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 $contenuLiVersion = '';
 $versionActuelleSqueletml = @file_get_contents($racine . '/doc/version.txt');
 
-if ($versionActuelleSqueletml !== FALSE)
-{
-	$versionActuelleSqueletml = adminFormateVersionSqueletml($versionActuelleSqueletml);
-}
-
 if (!empty($versionActuelleSqueletml))
 {
 	$contenuLiVersion .= sprintf(T_("Version de Squeletml: %1\$s"), $versionActuelleSqueletml) . "\n";
@@ -23,11 +18,6 @@ if (!empty($versionActuelleSqueletml))
 
 	$derniereVersionSqueletml = contenuUrl(URL_DERNIERE_VERSION_SQUELETML);
 
-	if ($derniereVersionSqueletml !== FALSE)
-	{
-		$derniereVersionSqueletml = adminFormateVersionSqueletml($derniereVersionSqueletml);
-	}
-	
 	if (!empty($derniereVersionSqueletml))
 	{
 		$tableauDerniereVersionSqueletml = explode('.', $derniereVersionSqueletml);
