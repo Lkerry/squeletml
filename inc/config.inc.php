@@ -215,6 +215,7 @@ $ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
 $ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
 $ordreBlocsDansFluxHtml['envoyer-amis']          = array (550, 550, 550);
 $ordreBlocsDansFluxHtml['partage']               = array (560, 560, 560);
+$ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 $ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 
 // Conditions d'insertion des blocs.
@@ -538,6 +539,7 @@ $liensActifsBlocs['menu']                  = TRUE;
 $liensActifsBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $liensActifsBlocs['menu-langues']          = TRUE;
 $liensActifsBlocs['partage']               = NULL;
+$liensActifsBlocs['piwik']                 = NULL;
 $liensActifsBlocs['recherche-google']      = NULL;
 
 // Limite de la profondeur d'une liste dans un bloc.
@@ -601,6 +603,7 @@ $limiterProfondeurListesBlocs['menu']                  = TRUE;
 $limiterProfondeurListesBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $limiterProfondeurListesBlocs['menu-langues']          = FALSE;
 $limiterProfondeurListesBlocs['partage']               = NULL;
+$limiterProfondeurListesBlocs['piwik']                 = NULL;
 $limiterProfondeurListesBlocs['recherche-google']      = NULL;
 
 // Nombre de colonnes.

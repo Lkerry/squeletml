@@ -134,11 +134,13 @@ L'arborescence de Squeletml est la suivante:
 
 - `admin` (le cas échéant, modifier le nom du dossier d'administration)
 - `css`
+- `doc`
 - `en`
 - `fichiers`
 - `inc`
 - `js`
 - `locale`
+- `modeles`
 - **`site`**
 - `xhtml`
 
@@ -197,6 +199,10 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
   - vous pouvez également créer le fichier `site/inc/premier.inc.php`, qui sera inséré à la fin de celui par défaut.
 
 **Note: le principe de personnalisation des fichiers du dossier `inc` est applicable également à la section d'administration. La structure répliquée à l'intérieur du dossier `site` doit être contenue dans un dossier de même nom que celui de l'administration, qui est `admin` par défaut. Par exemple, pour modifier des variables du fichier de configuration `admin/inc/config.inc.php`, créer le fichier `site/admin/inc/config.inc.php`.**
+
+#### Le dossier `modeles`
+
+Le dossier `modeles` contient des modèles qui sont utilisés par l'installateur automatisé ou utilisable lors d'une installation manuelle, mais contient aussi des structures de fichier CSS et de fichiers de configuration (configuration du site et de l'administration).
 
 #### Le dossier `xhtml`
 
@@ -282,6 +288,10 @@ Il y a enfin les fichiers des pages par défaut:
 	**Il s'agit des pages livrées par défaut avec Squeletml.** C'est pour cette raison que leur contenu se trouve dans un fichier à inclure, sinon la mise à jour du logiciel risquerait de supprimer les modifications effectuées. **Toute autre page créée dans le site n'aura pas à utiliser ce système d'inclusion.** Pour personnaliser une page livrée par défaut, par exemple la page d'accueil, créer le fichier `site/xhtml/fr/page.index.inc.php`, qui sera inclus à la place du fichier par défaut.
 
 	La seule page que vous voudrez sans aucun doute personnaliser est la page d'accueil. Le système d'inclusion expliqué ci-dessus est donc tout indiqué. Cependant, pour les autres pages, il ne s'agit pas d'une nécessité absolue. En effet, les pages d'erreur 401 et 404 affichent un message standard et propose un lien vers l'accueil, et pour sa part, la page de contact peut utiliser un courriel par défaut si vous renseignez la variable `$contactCourrielParDefaut` dans le fichier de configuration.
+
+###### Fichier `piwik.inc.php`
+
+Piwik est un logiciel libre de statistiques web. Lorsqu'un site est ajouté dans Piwik, un code est généré et doit être inséré dans chaque page du site en question. Squeletml permet d'ajouter rapidement ce code. En effet, si un fichier `piwik.inc.php` existe dans le dossier `site/xhtml`, il sera automatiquement inclus comme bloc dans les pages, par défaut à la fin du bas de page. La région peut être modifiée dans le fichier de configuration comme tout autre bloc de contenu (voir la section «Nombre de colonnes et blocs de contenu»).
 
 #### Dossiers inutiles pour une configuration donnée
 

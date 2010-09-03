@@ -270,45 +270,6 @@ if (!empty($blocsAinsererTemp))
 					
 					break;
 					
-				case 'partage':
-					$listePartage = partage($url, $baliseTitle . $baliseTitleComplement);
-					
-					if ($partage && !empty($listePartage) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
-					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
-						
-						$blocs[$region] .= '<div id="partage" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
-						
-						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
-						
-						foreach ($listePartage as $service)
-						{
-							$blocs[$region] .= '<li><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
-						}
-						
-						$blocs[$region] .= "</ul>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
-						$blocs[$region] .= '</div><!-- /#partage -->' . "\n";
-						$blocs[$region] .= '<script type="text/javascript">' . "\n";
-						$blocs[$region] .= "//<![CDATA[\n";
-						$blocs[$region] .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
-						$blocs[$region] .= "//]]>\n";
-						$blocs[$region] .= "</script>\n";
-					}
-					
-					break;
-					
 				case 'menu':
 					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
 				
@@ -437,7 +398,77 @@ if (!empty($blocsAinsererTemp))
 					}
 						
 					break;
-
+					
+				case 'partage':
+					$listePartage = partage($url, $baliseTitle . $baliseTitleComplement);
+					
+					if ($partage && !empty($listePartage) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
+						$blocs[$region] .= '<div id="partage" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
+						
+						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
+						
+						foreach ($listePartage as $service)
+						{
+							$blocs[$region] .= '<li><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
+						}
+						
+						$blocs[$region] .= "</ul>\n";
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#partage -->' . "\n";
+						$blocs[$region] .= '<script type="text/javascript">' . "\n";
+						$blocs[$region] .= "//<![CDATA[\n";
+						$blocs[$region] .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
+						$blocs[$region] .= "//]]>\n";
+						$blocs[$region] .= "</script>\n";
+					}
+					
+					break;
+					
+				case 'piwik':
+					$cheminPiwik = cheminXhtml($racine, array ($langue, $langueParDefaut), 'piwik');
+					
+					if (!empty($cheminPiwik))
+					{
+						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+				
+						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						{
+							$classeBlocArrondi = ' blocArrondi';
+						}
+						else
+						{
+							$classeBlocArrondi = '';
+						}
+						
+						$blocs[$region] .= '<div id="piwik" class="bloc' . $classeBlocArrondi . '">' . "\n";
+						$blocs[$region] .= $codeInterieurBlocHaut;
+						
+						ob_start();
+						include_once $cheminPiwik;
+						$bloc = ob_get_contents();
+						ob_end_clean();
+						
+						$blocs[$region] .= $bloc;
+						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= '</div><!-- /#piwik -->' . "\n";
+					}
+					
+					break;
+					
 				case 'recherche-google':
 					if ($activerRechercheGoogle)
 					{
