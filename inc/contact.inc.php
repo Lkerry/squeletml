@@ -29,6 +29,7 @@ if (isset($_POST['envoyer']))
 	$message = securiseTexte($_POST['message']);
 	$messagesScript = '';
 	$erreurFormulaire = FALSE;
+	$erreurEnvoiFormulaire = FALSE;
 	$formulaireValide = FALSE;
 	
 	if (isset($_POST['copie']))
@@ -193,6 +194,7 @@ if (isset($_POST['envoyer']))
 		}
 		else
 		{
+			$erreurEnvoiFormulaire = TRUE;
 			$messagesScript .= '<li class="erreur">' . T_("Erreur: votre message n'a pas pu être envoyé. Essayez un peu plus tard.") . "</li>\n";
 		}
 	}
@@ -201,7 +203,19 @@ if (isset($_POST['envoyer']))
 	if (!empty($messagesScript))
 	{
 		$blocMessagesScript = '';
-		$blocMessagesScript .= '<div id="messages" class="blocMessagesScript">' . "\n";
+		$classesBlocMessagesScript = '';
+		$classesBlocMessagesScript .= 'blocMessagesScript';
+		
+		if ($erreurFormulaire || $erreurEnvoiFormulaire)
+		{
+			$classesBlocMessagesScript .= ' messagesErreur';
+		}
+		else
+		{
+			$classesBlocMessagesScript .= ' messagesSucces';
+		}
+		
+		$blocMessagesScript .= '<div id="messages" class="' . $classesBlocMessagesScript . '">' . "\n";
 		
 		if ($erreurFormulaire)
 		{
