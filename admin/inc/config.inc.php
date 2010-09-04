@@ -188,7 +188,7 @@ $adminListerSousDossiers = FALSE; // TRUE|FALSE
 - Si la variable `$adminTypeFiltreAffichageDossiers` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageDossiers = '../admin|../css|../fichiers|../inc|../js|../locale|../site/cache|../site/fichiers/galeries|../src|../xhtml';
+$adminFiltreAffichageDossiers = '../admin|../css|../doc|../fichiers|../inc|../js|../locale|../modeles|../site/cache|../site/fichiers/galeries|../src|../xhtml';
 
 /* ____________________ Ajout de fichiers. ____________________ */
 
