@@ -1,4 +1,5 @@
 .acces
+doc/ChangeLog
 doc/version.txt
 .htaccess
 init.inc.php
