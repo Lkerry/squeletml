@@ -59,7 +59,7 @@ changelog:
 	# Est basé sur <http://telecom.inescporto.pt/~gjc/gnulog.py>. Ne pas oublier de mettre ce fichier dans le dossier des extensions de bazaar, par exemple `~/.bazaar/plugins/`.
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(version) > doc/ChangeLog
 
-changelogHtml:
+changelogHtml: changelog
 	php scripts/scripts.cli.php changelogMdtxt doc
 	# PHP Markdown n'est pas utilisé, car il y a un bogue avec la conversion de longues listes (le contenu retourné est vide).
 	python scripts/python-markdown2/lib/markdown2.py doc/ChangeLog.mdtxt > doc/ChangeLog.html
