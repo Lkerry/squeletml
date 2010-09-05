@@ -70,6 +70,7 @@ exif:
 	cp src/exiftran-rotation/exiftran-rotation $(cheminNautilusScripts)
 
 fichiersSurBureau: annexesDoc archives changelogHtml
+	cp doc/version.txt $(cheminBureau)
 	mv doc/ChangeLog.html $(cheminBureau)
 	mv doc/documentation-avec-config.html $(cheminBureau)
 	mv squeletml.tar.bz2 $(cheminBureau)
