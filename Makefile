@@ -29,7 +29,7 @@ version:=$(shell bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1)
 generer: messageAccueil po mo
 
 # Crée les archives; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. À faire après un `bzr tag ...` pour la sortie d'une nouvelle version.
-publier: archives fichiersSurBureau
+publier: fichiersSurBureau
 
 ########################################################################
 ##
@@ -37,16 +37,19 @@ publier: archives fichiersSurBureau
 ##
 ########################################################################
 
+annexesDoc:
+	php scripts/scripts.cli.php annexesDoc doc
+
 archives: changelog versionTxt
 	bzr export -r tag:$(version) $(dossierPub)
 	cp doc/ChangeLog $(dossierPub)/doc
 	cp doc/version.txt $(dossierPub)/doc
-	php ./scripts.cli.php config $(dossierPub)
-	php ./scripts.cli.php css $(dossierPub)
+	php scripts/scripts.cli.php config $(dossierPub)
+	php scripts/scripts.cli.php css $(dossierPub)
 	$(MAKE) moArchives
 	rm -f $(dossierPub)/inc/devel.inc.php
 	rm -f $(dossierPub)/Makefile
-	rm -f $(dossierPub)/scripts.cli.php
+	rm -rf $(dossierPub)/scripts
 	rm -rf $(dossierPub)/src
 	tar -cjf squeletml.tar.bz2 $(dossierPub)
 	zip -qr squeletml.zip $(dossierPub)
@@ -56,15 +59,21 @@ changelog:
 	# Est basé sur <http://telecom.inescporto.pt/~gjc/gnulog.py>. Ne pas oublier de mettre ce fichier dans le dossier des extensions de bazaar, par exemple `~/.bazaar/plugins/`.
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(version) > doc/ChangeLog
 
+changelogHtml:
+	php scripts/scripts.cli.php changelogMdtxt doc
+	# PHP Markdown n'est pas utilisé, car il y a un bogue avec la conversion de longues listes (le contenu retourné est vide).
+	python scripts/python-markdown2/lib/markdown2.py doc/ChangeLog.mdtxt > doc/ChangeLog.html
+	rm doc/ChangeLog.mdtxt
+
 exif:
 	mkdir -p $(cheminNautilusScripts)
 	cp src/exiftran-rotation/exiftran-rotation $(cheminNautilusScripts)
 
-fichiersSurBureau:
+fichiersSurBureau: annexesDoc archives changelogHtml
+	mv doc/ChangeLog.html $(cheminBureau)
+	mv doc/documentation-avec-config.html $(cheminBureau)
 	mv squeletml.tar.bz2 $(cheminBureau)
 	mv squeletml.zip $(cheminBureau)
-	php ./scripts.cli.php annexesDoc $(cheminBureau)
-	php ./scripts.cli.php changelogHtml $(cheminBureau)
 
 ini:
 	mkdir -p $(cheminLanguageSpecs)
@@ -76,7 +85,7 @@ menagePot:
 	touch locale/squeletml.pot
 
 messageAccueil:
-	php ./scripts.cli.php messageAccueil
+	php scripts/scripts.cli.php messageAccueil
 
 mo:
 	for po in $(shell find locale/ -iname *.po);\
