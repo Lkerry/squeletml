@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-03 11:54-0400\n"
+"POT-Creation-Date: 2010-09-05 14:59-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Aucun identifiant spécifié."
 msgstr ""
 
-#: compte.php:36 inc/contact.inc.php:54
+#: compte.php:36 inc/contact.inc.php:56
 msgid ""
 "Votre adresse courriel ne semble pas avoir une forme valide. Veuillez "
 "vérifier."
@@ -37,7 +37,7 @@ msgstr ""
 msgid "Veuillez confirmer correctement le mot de passe."
 msgstr ""
 
-#: compte.php:64 inc/contact.inc.php:107
+#: compte.php:64 inc/contact.inc.php:109
 msgid "Veuillez répondre correctement à la question antipourriel."
 msgstr ""
 
@@ -464,7 +464,7 @@ msgid "Lien de déconnexion"
 msgstr ""
 
 #: admin/categories.admin.php:3 admin/xhtml/menu.inc.php:8
-#: inc/blocs.inc.php:365
+#: inc/blocs.inc.php:326
 msgid "Catégories"
 msgstr ""
 
@@ -824,7 +824,7 @@ msgid "Enregistrement des modifications du fichier d'index Sitemap"
 msgstr ""
 
 #: admin/sitemap.admin.php:293 admin/sitemap.admin.php:690
-#: admin/inc/fonctions.inc.php:1061
+#: admin/inc/fonctions.inc.php:1042
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1$s "
@@ -833,7 +833,7 @@ msgid ""
 msgstr ""
 
 #: admin/sitemap.admin.php:298 admin/sitemap.admin.php:695
-#: admin/inc/fonctions.inc.php:1066
+#: admin/inc/fonctions.inc.php:1047
 #, php-format
 msgid ""
 "Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1$s "
@@ -1109,7 +1109,7 @@ msgstr ""
 msgid "Supprimer"
 msgstr ""
 
-#: admin/galeries.admin.php:18 admin/inc/fonctions.inc.php:1484
+#: admin/galeries.admin.php:18 admin/inc/fonctions.inc.php:1465
 #: admin/porte-documents.admin.php:823 admin/porte-documents.admin.php:1615
 #: admin/porte-documents.admin.php:1619
 msgid "Renommer"
@@ -1263,7 +1263,7 @@ msgid ""
 "dossier %3$s."
 msgstr ""
 
-#: admin/galeries.admin.php:435 admin/inc/fonctions.inc.php:1987
+#: admin/galeries.admin.php:435 admin/inc/fonctions.inc.php:1968
 #, php-format
 msgid "Renommage de %1$s en %2$s impossible."
 msgstr ""
@@ -2084,7 +2084,7 @@ msgid ""
 msgstr ""
 
 #: admin/inc/fonctions.inc.php:436 admin/inc/fonctions.inc.php:494
-#: admin/inc/fonctions.inc.php:2036
+#: admin/inc/fonctions.inc.php:2017
 #, php-format
 msgid "Accès au dossier %1$s impossible."
 msgstr ""
@@ -2131,214 +2131,214 @@ msgstr ""
 msgid "Déclaration du fichier d'index Sitemap dans le fichier %1$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1149
+#: admin/inc/fonctions.inc.php:1130
 msgid "Aucune page à ajouter dans le fichier Sitemap des galeries."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1155
+#: admin/inc/fonctions.inc.php:1136
 msgid ""
 "Le fichier Sitemap des galeries ne peut pas être généré puisque le fichier "
 "de configuration du flux RSS global des galerie n'existe pas, et c'est dans "
 "ce fichier que la liste des galeries existantes est extraite."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1264
+#: admin/inc/fonctions.inc.php:1245
 msgid "dossier"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1306
+#: admin/inc/fonctions.inc.php:1287
 #, php-format
 msgid "Aperçu de l'image %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1310
+#: admin/inc/fonctions.inc.php:1291
 msgid "Propriétés"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1311
+#: admin/inc/fonctions.inc.php:1292
 #, php-format
 msgid "<strong>Type MIME:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1315
+#: admin/inc/fonctions.inc.php:1296
 #, php-format
 msgid "<strong>Taille:</strong> %1$s Kio (%2$s octets)"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1319
+#: admin/inc/fonctions.inc.php:1300
 #, php-format
 msgid "<strong>Dimensions:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1324
+#: admin/inc/fonctions.inc.php:1305
 #, php-format
 msgid "<strong>Aperçu:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1327
+#: admin/inc/fonctions.inc.php:1308
 #, php-format
 msgid "<strong>Dernier accès:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1328
+#: admin/inc/fonctions.inc.php:1309
 #, php-format
 msgid "<strong>Dernière modification:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1332
+#: admin/inc/fonctions.inc.php:1313
 #, php-format
 msgid "<strong>uid:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1337
+#: admin/inc/fonctions.inc.php:1318
 #, php-format
 msgid "<strong>gid:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1341
+#: admin/inc/fonctions.inc.php:1322
 #, php-format
 msgid "<strong>Permissions:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1449
+#: admin/inc/fonctions.inc.php:1430
 msgid "Vide."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1453
+#: admin/inc/fonctions.inc.php:1434
 #, php-format
 msgid "Affichage désactivé. <a href=\"%1$s\">Lister ce dossier.</a>"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1472 admin/porte-documents.admin.php:1607
+#: admin/inc/fonctions.inc.php:1453 admin/porte-documents.admin.php:1607
 msgid "Télécharger"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1478
+#: admin/inc/fonctions.inc.php:1459
 msgid "Éditer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1494
+#: admin/inc/fonctions.inc.php:1475
 #, php-format
 msgid "Afficher «%1$s»"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1714
+#: admin/inc/fonctions.inc.php:1695
 msgid "Aucune erreur, le téléchargement est correct."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1718
+#: admin/inc/fonctions.inc.php:1699
 msgid ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
 "configurée dans le <code>php.ini</code>."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1722
+#: admin/inc/fonctions.inc.php:1703
 msgid ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
 "été spécifiée dans le formulaire HTML."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1726
+#: admin/inc/fonctions.inc.php:1707
 msgid "Le fichier n'a été que partiellement téléchargé."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1730
+#: admin/inc/fonctions.inc.php:1711
 msgid "Aucun fichier n'a été téléchargé."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1734
+#: admin/inc/fonctions.inc.php:1715
 msgid "Un dossier temporaire est manquant."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1738
+#: admin/inc/fonctions.inc.php:1719
 msgid "Échec de l'écriture du fichier sur le disque."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1742
+#: admin/inc/fonctions.inc.php:1723
 msgid "L'envoi de fichier est arrêté par l'extension."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1791
+#: admin/inc/fonctions.inc.php:1772
 #, php-format
 msgid "Création du dossier %1$s effectuée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1795
+#: admin/inc/fonctions.inc.php:1776
 #, php-format
 msgid "Création du dossier %1$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1939
+#: admin/inc/fonctions.inc.php:1920
 msgid "La réécriture d'URL est activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1944
+#: admin/inc/fonctions.inc.php:1925
 msgid "La réécriture d'URL n'est pas activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1950
+#: admin/inc/fonctions.inc.php:1931
 msgid "Impossible de déterminer si la réécriture d'URL est activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1972
+#: admin/inc/fonctions.inc.php:1953
 #, php-format
 msgid "Déplacement de %1$s vers %2$s effectué."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1976
+#: admin/inc/fonctions.inc.php:1957
 #, php-format
 msgid "Renommage de %1$s en %2$s effectué."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1983
+#: admin/inc/fonctions.inc.php:1964
 #, php-format
 msgid "Déplacement de %1$s vers %2$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1999 admin/inc/fonctions.inc.php:2365
+#: admin/inc/fonctions.inc.php:1980 admin/inc/fonctions.inc.php:2346
 #, php-format
 msgid "Suppression de %1$s effectuée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2003 admin/inc/fonctions.inc.php:2369
+#: admin/inc/fonctions.inc.php:1984 admin/inc/fonctions.inc.php:2350
 #, php-format
 msgid "Suppression de %1$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2083
+#: admin/inc/fonctions.inc.php:2064
 #, php-format
 msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2091 admin/inc/fonctions.inc.php:2150
+#: admin/inc/fonctions.inc.php:2072 admin/inc/fonctions.inc.php:2131
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
 "l'image %2$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2095 admin/inc/fonctions.inc.php:2159
+#: admin/inc/fonctions.inc.php:2076 admin/inc/fonctions.inc.php:2140
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2154 admin/inc/fonctions.inc.php:2231
+#: admin/inc/fonctions.inc.php:2135 admin/inc/fonctions.inc.php:2212
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
 "l'image %2$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2163 admin/inc/fonctions.inc.php:2235
+#: admin/inc/fonctions.inc.php:2144 admin/inc/fonctions.inc.php:2216
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2171
+#: admin/inc/fonctions.inc.php:2152
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une rotation automatique et "
@@ -2347,7 +2347,7 @@ msgid ""
 "PHP %3$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2242
+#: admin/inc/fonctions.inc.php:2223
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une suppression sans perte de "
@@ -2486,67 +2486,67 @@ msgstr ""
 msgid "vidéo"
 msgstr ""
 
-#: admin/versions.admin.php:3 admin/versions.admin.php:64
+#: admin/versions.admin.php:3 admin/versions.admin.php:54
 msgid "Version de Squeletml et autres informations"
 msgstr ""
 
-#: admin/versions.admin.php:16 admin/versions.admin.php:60
+#: admin/versions.admin.php:11 admin/versions.admin.php:50
 #, php-format
 msgid "Version de Squeletml: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:42
+#: admin/versions.admin.php:32
 #, php-format
 msgid "(<a href=\"%1$s\">la version %2$s est disponible</a>)"
 msgstr ""
 
-#: admin/versions.admin.php:46
+#: admin/versions.admin.php:36
 msgid "(il s'agit de la dernière version publiée)"
 msgstr ""
 
-#: admin/versions.admin.php:50 admin/versions.admin.php:55
+#: admin/versions.admin.php:40 admin/versions.admin.php:45
 #, php-format
 msgid ""
 "(impossible de vérifier si une version plus récente a été publiée; <a href="
 "\"%1$s\">vérifier manuellement</a>)"
 msgstr ""
 
-#: admin/versions.admin.php:60
+#: admin/versions.admin.php:50
 msgid "impossible de déterminer la version"
 msgstr ""
 
-#: admin/versions.admin.php:66
+#: admin/versions.admin.php:56
 msgid "Aperçu"
 msgstr ""
 
-#: admin/versions.admin.php:70
+#: admin/versions.admin.php:60
 #, php-format
 msgid "Version de PHP: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:71
+#: admin/versions.admin.php:61
 #, php-format
 msgid "Version d'Apache: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:73
+#: admin/versions.admin.php:63
 #, php-format
 msgid "Système d'exploitation: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:77
+#: admin/versions.admin.php:67
 msgid "Afficher le <code>phpinfo()</code>"
 msgstr ""
 
-#: admin/versions.admin.php:78
+#: admin/versions.admin.php:68
 msgid "Afficher la liste des fonctions internes de PHP"
 msgstr ""
 
-#: admin/versions.admin.php:82
+#: admin/versions.admin.php:72
 msgid "Fonctions internes de PHP"
 msgstr ""
 
-#: admin/versions.admin.php:88
+#: admin/versions.admin.php:78
 #, php-format
 msgid ""
 "Il y a %1$s fonctions internes réparties entre %2$s modules. En voici la "
@@ -3853,7 +3853,7 @@ msgstr ""
 msgid "Voir plus d'images"
 msgstr ""
 
-#: inc/blocs.inc.php:96 inc/contact.inc.php:20
+#: inc/blocs.inc.php:96 inc/contact.inc.php:21
 msgid "Envoyer à des amis"
 msgstr ""
 
@@ -3870,15 +3870,15 @@ msgstr ""
 msgid "Ajoutez le code ci-dessous sur votre site:"
 msgstr ""
 
-#: inc/blocs.inc.php:291
+#: inc/blocs.inc.php:420
 msgid "Partager"
 msgstr ""
 
-#: inc/blocs.inc.php:457
+#: inc/blocs.inc.php:488
 msgid "Rechercher dans le site"
 msgstr ""
 
-#: inc/blocs.inc.php:461
+#: inc/blocs.inc.php:492
 msgid "Rechercher"
 msgstr ""
 
@@ -3938,7 +3938,7 @@ msgstr ""
 msgid "La catégorie %1$s est introuvable"
 msgstr ""
 
-#: inc/envoyer-amis.inc.php:21 inc/contact.inc.php:223
+#: inc/envoyer-amis.inc.php:21 inc/contact.inc.php:238
 msgid "VOTRE NOM"
 msgstr ""
 
@@ -3970,15 +3970,15 @@ msgid ""
 "découvrir la page suivante:"
 msgstr ""
 
-#: inc/contact.inc.php:46
+#: inc/contact.inc.php:48
 msgid "Vous n'avez pas inscrit de nom."
 msgstr ""
 
-#: inc/contact.inc.php:60
+#: inc/contact.inc.php:62
 msgid "Vous n'avez pas inscrit de courriel."
 msgstr ""
 
-#: inc/contact.inc.php:81
+#: inc/contact.inc.php:83
 #, php-format
 msgid ""
 "L'adresse suivante ne semble pas avoir une forme valide; veuillez la "
@@ -3989,25 +3989,25 @@ msgid_plural ""
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/contact.inc.php:88
+#: inc/contact.inc.php:90
 msgid "Vous n'avez pas écrit de message."
 msgstr ""
 
-#: inc/contact.inc.php:116
+#: inc/contact.inc.php:118
 msgid ""
 "Votre message a une forme qui le fait malheureusement classer comme du "
 "pourriel en raison de ses liens trop nombreux. Veuillez le modifier."
 msgstr ""
 
-#: inc/contact.inc.php:186
+#: inc/contact.inc.php:188
 msgid "Votre message a bien été envoyé."
 msgstr ""
 
-#: inc/contact.inc.php:195
+#: inc/contact.inc.php:198
 msgid "Erreur: votre message n'a pas pu être envoyé. Essayez un peu plus tard."
 msgstr ""
 
-#: inc/contact.inc.php:207
+#: inc/contact.inc.php:222
 msgid "Le formulaire n'a pas été rempli correctement"
 msgstr ""
 
