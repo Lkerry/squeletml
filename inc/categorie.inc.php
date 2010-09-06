@@ -1,6 +1,6 @@
 <?php
 /*
-Ce fichier construit et analyse la liste des articles faisant partie de la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
+Ce fichier construit et analyse la liste des articles classés dans la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
 */
 
 // Nom pour le cache.
@@ -96,7 +96,7 @@ if (!empty($idCategorie))
 		}
 		else
 		{
-			$baliseTitle = sprintf(T_("%1\$s – Tous les articles faisant partie de la catégorie %2\$s"), $idCategorie, $idCategorie);
+			$baliseTitle = sprintf(T_("%1\$s – Tous les articles classés dans la catégorie %2\$s"), $idCategorie, $idCategorie);
 		}
 	}
 	

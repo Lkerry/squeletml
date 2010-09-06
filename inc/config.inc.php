@@ -287,7 +287,7 @@ $afficherMessageIe6 = TRUE; // TRUE|FALSE
 // Auteur par défaut.
 /*
 - Auteur par défaut si aucune autre précision n'est apportée. Si la variable `$auteur` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
-- L'auteur est inséré en tant que métabalise `author`. Cette information est également utilisée dans le bloc des informations de publication, lors du listage des articles faisant partie d'une catégorie ainsi que dans les flux RSS.
+- L'auteur est inséré en tant que métabalise `author`. Cette information est également utilisée dans le bloc des informations de publication, lors du listage des articles classés dans une catégorie ainsi que dans les flux RSS.
 */
 $auteurParDefaut = "";
 
@@ -470,7 +470,7 @@ $dureeCache['publications-recentes'] = 0; // Voir la fonction `publicationsRecen
 
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*
-- Si vaut `TRUE`, un titre `h1` sera ajouté avant la liste des pages faisant partie de la catégorie affichée.
+- Si vaut `TRUE`, un titre `h1` sera ajouté avant la liste des articles classés dans la catégorie affichée.
 */
 $genererTitrePageCategories = TRUE; // TRUE|FALSE
 
@@ -502,7 +502,7 @@ $afficherNombreArticlesCategorie = TRUE; // TRUE|FALSE
 $activerCategoriesGlobales['site']     = TRUE;
 $activerCategoriesGlobales['galeries'] = TRUE;
 
-// Pagination par défaut de la liste des articles faisant partie d'une catégorie.
+// Pagination par défaut de la liste des articles classés dans une catégorie.
 /*
 - Nombre d'articles par page par défaut (0 pour désactiver la pagination).
 */

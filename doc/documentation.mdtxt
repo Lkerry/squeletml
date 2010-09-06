@@ -160,7 +160,7 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 - `blocs.inc.php`: construit le code XHTML des blocs (menu des langues, menu principal, liens vers les flux RSS, etc.) pour une région spécifique. Après son inclusion, la variable `$blocs` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/blocs.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-- `categorie.inc.php`: construit et analyse la liste des articles faisant partie de la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/categorie.inc.php`, qui sera inséré à la fin de celui par défaut.
+- `categorie.inc.php`: construit et analyse la liste des articles classés dans la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/categorie.inc.php`, qui sera inséré à la fin de celui par défaut.
 
 - `config.inc.php`: contient presque toute la configuration du site, autant pour le formulaire de contact, les galeries photo, le titre du site, etc. Pour modifier une variable de ce fichier, créer le fichier `site/inc/config.inc.php` et y réaffecter les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
 
@@ -564,7 +564,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Sinon si `$apercu` vaut exactement `automatique` (`$apercu = "automatique";`), le commentaire HTML inséré sera donc `<!-- APERÇU: automatique -->`, ce qui signifiera à Squeletml d'utiliser comme aperçu les premiers caractères de la `div` `milieuInterieurContenu`. Le nombre de caractères correspond à la valeur de la variable `$tailleApercuAutomatique` du fichier de configuration du site.
 
-- `$auteur`: nom ou noms à inclure dans la métabalise `author`, si la valeur est différente de `$auteurParDefaut` du fichier de configuration du site. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie ainsi que dans le bloc des informations de publication.
+- `$auteur`: nom ou noms à inclure dans la métabalise `author`, si la valeur est différente de `$auteurParDefaut` du fichier de configuration du site. Si elle existe, cette variable sera utilisée dans le listage des articles classés dans une catégorie ainsi que dans le bloc des informations de publication.
 
 - `$baliseH1`: contenu de la balise `h1`. Il s'agit donc du titre de premier niveau pour la page courante. Exemple:
 
@@ -603,15 +603,15 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Note: dans le formulaire de contact livré par défaut avec Squeletml, cette variable vaut simplement `@`. Puisqu'elle n'est pas vide, un formulaire de contact s'affiche. Cependant, le formulaire par défaut n'est pas utilisable en ce sens que la valeur de `$courrielContact` n'est pas une adresse réelle. Toutefois, si la variable `$contactCourrielParDefaut` est renseignée dans le fichier de configuration du site, toutes les variables `$courrielContact` valant exactement `@` prendront la valeur de `$contactCourrielParDefaut`, ce qui évite de devoir créer une page de contact personnalisée simplement parce que le formulaire par défaut n'a pas une adresse valide.
 
-- `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles faisant partie d'une catégorie, dans le classement des items des flux RSS et dans le bloc des informations de publication.
+- `$dateCreation`: date de création de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-creation-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le listage des articles classés dans une catégorie, dans le classement des items des flux RSS et dans le bloc des informations de publication.
 
-- `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le bloc des informations de publication, dans le listage des articles faisant partie d'une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
+- `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le bloc des informations de publication, dans le listage des articles classés dans une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
 - `$envoyerAmis`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante, si la valeur est différente de `$activerEnvoyerAmisParDefaut` du fichier de configuration du site.
 
-- `$idCategorie`: un nombre, un mot ou une phrase identifiant la catégorie à chercher pour afficher la liste des articles en faisant partie. Voir la section «Catégories».
+- `$idCategorie`: un nombre, un mot ou une phrase identifiant la catégorie à chercher pour afficher la liste des articles y étant classés. Voir la section «Catégories».
 
 - `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section «Galeries»), une galerie sera insérée dans la page.
 

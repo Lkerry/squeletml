@@ -89,7 +89,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			}
 			else
 			{
-				$description = sprintf(T_("Voir l'image %1\$s, faisant partie de la galerie %2\$s."), $titreImage, $idGalerie) . $baliseTitleComplement;
+				$description = sprintf(T_("Voir l'image %1\$s, classée dans la galerie %2\$s."), $titreImage, $idGalerie) . $baliseTitleComplement;
 			}
 			
 			if ($inclureMotsCles)

@@ -173,6 +173,10 @@ div#noticeMaintenance p {
 	margin-bottom: 5px;
 }
 
+.imgSansBordure {
+	border: none;
+}
+
 .masquer {
 	display: none;
 }
