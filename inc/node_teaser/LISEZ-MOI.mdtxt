@@ -1,0 +1,27 @@
+La fonction `node_teaser()` provient de Drupal, sous licence GPL version 2 ou toute version ultérieure, et retourne un aperçu d'un contenu passé en paramètre. Cette fonction est présente dans le fichier `modules/node/node.module` de Drupal. Voir en ligne:
+
+- <http://api.drupal.org/api/function/node_teaser/6>
+- <http://api.drupal.org/api/drupal/modules--node--node.module/6/source>
+
+Il y a une dépendance aux fonctions `drupal_strlen()`, `truncate_utf8()` et `drupal_substr()` présents dans le fichier `includes/unicode.inc` de Drupal. Voir en ligne:
+
+- <http://api.drupal.org/api/function/drupal_strlen/6>
+- <http://api.drupal.org/api/function/truncate_utf8/6>
+- <http://api.drupal.org/api/function/drupal_substr/6>
+- <http://api.drupal.org/api/drupal/includes--unicode.inc/6/source>
+
+J'ai effectué quelques modifications. Le résultat est sous licence GPL version 3 ou toute version ultérieure:
+
+Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
+modifier suivant les termes de la GNU General Public License telle que
+publiée par la Free Software Foundation: soit la version 3 de cette
+licence, soit (à votre gré) toute version ultérieure.
+
+Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
+AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
+ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
+générale GNU pour plus de détails.
+
+Vous devriez avoir reçu une copie de la Licence publique générale GNU avec
+ce programme; si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>.

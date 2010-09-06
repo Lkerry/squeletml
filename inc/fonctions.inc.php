@@ -1685,6 +1685,8 @@ function fichiersAinclureAuDebut($racine, $idCategorie)
 	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
+	$fichiers[] = $racine . '/inc/node_teaser/node.inc.php';
+	$fichiers[] = $racine . '/inc/node_teaser/unicode.inc.php';
 	
 	if (!empty($idCategorie))
 	{
@@ -2622,28 +2624,13 @@ function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique, $html = '
 			}
 			elseif ($resultatApercu[1] == 'automatique')
 			{
-				// Merci à <http://mydrupalblog.lhmdesign.com/drupal-php-how-auto-truncate-content-end-word>.
-				
-				$mots = explode(' ', supprimeCommentairesHtml($infosPage['contenu']));
+				list ($infosPage['apercu'], $apercuEstToutLeTexte) = tronqueTexte(supprimeCommentairesHtml($infosPage['contenu']), $tailleApercuAutomatique);
 				$commentairesHtmlSupprimes = TRUE;
-				$apercu = '';
 				
-				foreach ($mots as $mot)
+				if (!$apercuEstToutLeTexte)
 				{
-					if (strlen($apercu) < $tailleApercuAutomatique)
-					{
-						$apercu .= ' ' . $mot;
-					}
-					else
-					{
-						$apercu .= ' […]';
-						break;
-					}
+					$infosPage['apercu'] .= ' […]';
 				}
-				
-				unset($mots);
-				$infosPage['apercu'] = corrigeHtml($apercu);
-				unset($apercu);
 			}
 			else
 			{
@@ -5134,6 +5121,14 @@ function titreSite($tableauTitreSite, $langues)
 	}
 	
 	return '';
+}
+
+/*
+Tronque le texte à la taille spécifiée. Il s'agit d'un alias de la fonction `node_teaser()`.
+*/
+function tronqueTexte($texte, $taille)
+{
+	return node_teaser($texte, $taille);
 }
 
 /*
