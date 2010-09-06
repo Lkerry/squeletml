@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-06 18:24-0400\n"
+"POT-Creation-Date: 2010-09-06 19:24-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -3425,8 +3425,8 @@ msgid "En espérant que cette page vous intéresse!"
 msgstr ""
 
 #: inc/fonctions.inc.php:1793 inc/blocs.inc.php:135 inc/premier.inc.php:321
-#: inc/galerie.inc.php:123 inc/galerie.inc.php:407 inc/galerie.inc.php:452
-#: inc/galerie.inc.php:470 inc/galerie.inc.php:654
+#: inc/galerie.inc.php:123 inc/galerie.inc.php:407 inc/galerie.inc.php:470
+#: inc/galerie.inc.php:654
 #, php-format
 msgid "Galerie %1$s"
 msgstr ""
@@ -4043,6 +4043,11 @@ msgstr ""
 #: inc/galerie.inc.php:430
 #, php-format
 msgid "L'image %1$s est introuvable dans la galerie %2$s"
+msgstr ""
+
+#: inc/galerie.inc.php:452
+#, php-format
+msgid "%1$s – Toutes les images classées dans la galerie %2$s"
 msgstr ""
 
 #: inc/galerie.inc.php:457

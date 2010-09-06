@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-06 18:24-0400\n"
+"POT-Creation-Date: 2010-09-06 19:24-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -3901,8 +3901,8 @@ msgid "En espérant que cette page vous intéresse!"
 msgstr "En espérant que cette page vous intéresse!"
 
 #: inc/fonctions.inc.php:1793 inc/blocs.inc.php:135 inc/premier.inc.php:321
-#: inc/galerie.inc.php:123 inc/galerie.inc.php:407 inc/galerie.inc.php:452
-#: inc/galerie.inc.php:470 inc/galerie.inc.php:654
+#: inc/galerie.inc.php:123 inc/galerie.inc.php:407 inc/galerie.inc.php:470
+#: inc/galerie.inc.php:654
 #, php-format
 msgid "Galerie %1$s"
 msgstr "Galerie %1$s"
@@ -4645,6 +4645,11 @@ msgstr ""
 #, php-format
 msgid "L'image %1$s est introuvable dans la galerie %2$s"
 msgstr "L'image %1$s est introuvable dans la galerie %2$s"
+
+#: inc/galerie.inc.php:452
+#, php-format
+msgid "%1$s – Toutes les images classées dans la galerie %2$s"
+msgstr "%1$s – Toutes les images classées dans la galerie %2$s"
 
 #: inc/galerie.inc.php:457
 #, php-format

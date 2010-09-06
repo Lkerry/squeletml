@@ -449,7 +449,7 @@ elseif (!empty($idGalerie))
 	
 	if (empty($baliseTitle))
 	{
-		$baliseTitle = sprintf(T_("Galerie %1\$s"), $idGalerie);
+		$baliseTitle = sprintf(T_("%1\$s – Toutes les images classées dans la galerie %2\$s"), $idGalerie, $idGalerie);
 	}
 	
 	if (empty($description))
