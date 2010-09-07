@@ -4409,9 +4409,9 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 			$lienDesactive = FALSE;
 			$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 			
-			if (!empty($categories) && isset($categories[$id]))
+			if (!empty($categories) && isset($categories[$id]['pages']))
 			{
-				$nombreReel = count($categories[$id]);
+				$nombreReel = count($categories[$id]['pages']);
 				
 				if ($nombreVoulu >= $nombreReel)
 				{
