@@ -5,6 +5,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 $contenuLiVersion = '';
 $versionActuelleSqueletml = @file_get_contents($racine . '/doc/version.txt');
+$versionActuelleSqueletml = trim($versionActuelleSqueletml);
 
 if (!empty($versionActuelleSqueletml))
 {
@@ -17,6 +18,7 @@ if (!empty($versionActuelleSqueletml))
 	}
 
 	$derniereVersionSqueletml = contenuUrl(URL_DERNIERE_VERSION_SQUELETML);
+	$derniereVersionSqueletml = trim($derniereVersionSqueletml);
 
 	if (!empty($derniereVersionSqueletml))
 	{
