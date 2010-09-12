@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-06 19:24-0400\n"
+"POT-Creation-Date: 2010-09-12 11:48-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -208,7 +208,7 @@ msgstr ""
 
 #: installation.php:103 installation.php:109 installation.php:148
 #: installation.php:154 installation.php:206 installation.php:212
-#: inc/fonctions.inc.php:3504 inc/fonctions.inc.php:3626
+#: inc/fonctions.inc.php:3535 inc/fonctions.inc.php:3657
 #, php-format
 msgid "Renseignement du fichier %1$s impossible."
 msgstr ""
@@ -259,7 +259,7 @@ msgstr ""
 #: admin/categories.admin.php:482 admin/categories.admin.php:528
 #: admin/sitemap.admin.php:193 admin/sitemap.admin.php:652
 #: admin/sitemap.admin.php:774 admin/rss.admin.php:174 admin/rss.admin.php:339
-#: admin/galeries.admin.php:1131 admin/galeries.admin.php:1384
+#: admin/galeries.admin.php:1131 admin/galeries.admin.php:1392
 #: admin/inc/fonctions.inc.php:101 admin/inc/fonctions.inc.php:530
 #: admin/inc/fonctions.inc.php:815 admin/inc/fonctions.inc.php:874
 #: admin/inc/fonctions.inc.php:943 admin/acces.admin.php:118
@@ -504,7 +504,7 @@ msgstr ""
 
 #: admin/categories.admin.php:165 admin/xhtml/menu.inc.php:14
 #: admin/sitemap.admin.php:518 admin/rss.admin.php:102 admin/rss.admin.php:264
-#: admin/galeries.admin.php:1830
+#: admin/galeries.admin.php:1842
 msgid "Aide"
 msgstr ""
 
@@ -580,11 +580,11 @@ msgstr ""
 #: admin/categories.admin.php:196 admin/sitemap.admin.php:530
 #: admin/sitemap.admin.php:758 admin/sitemap.admin.php:821
 #: admin/rss.admin.php:123 admin/rss.admin.php:285 admin/rss.admin.php:514
-#: admin/galeries.admin.php:1673 admin/galeries.admin.php:1762
-#: admin/galeries.admin.php:1856 admin/galeries.admin.php:1923
-#: admin/galeries.admin.php:1956 admin/galeries.admin.php:1989
-#: admin/galeries.admin.php:2052 admin/galeries.admin.php:2082
-#: admin/galeries.admin.php:2120 admin/porte-documents.admin.php:140
+#: admin/galeries.admin.php:1681 admin/galeries.admin.php:1771
+#: admin/galeries.admin.php:1868 admin/galeries.admin.php:1935
+#: admin/galeries.admin.php:1968 admin/galeries.admin.php:2001
+#: admin/galeries.admin.php:2064 admin/galeries.admin.php:2094
+#: admin/galeries.admin.php:2132 admin/porte-documents.admin.php:140
 #: admin/porte-documents.admin.php:283 admin/porte-documents.admin.php:509
 #: admin/porte-documents.admin.php:803 admin/porte-documents.admin.php:1695
 #: admin/porte-documents.admin.php:1747 admin/acces.admin.php:655
@@ -668,13 +668,13 @@ msgstr ""
 msgid "Enregistrement des modifications des catégories"
 msgstr ""
 
-#: admin/categories.admin.php:476 admin/galeries.admin.php:1378
+#: admin/categories.admin.php:476 admin/galeries.admin.php:1386
 #: admin/inc/fonctions.inc.php:809 admin/inc/fonctions.inc.php:868
 #: admin/inc/fonctions.inc.php:937
 msgid "Les modifications ont été enregistrées."
 msgstr ""
 
-#: admin/categories.admin.php:478 admin/galeries.admin.php:1380
+#: admin/categories.admin.php:478 admin/galeries.admin.php:1388
 #: admin/inc/fonctions.inc.php:811 admin/inc/fonctions.inc.php:870
 #: admin/inc/fonctions.inc.php:939
 #, php-format
@@ -682,7 +682,7 @@ msgid "Voici le contenu qui a été enregistré dans le fichier %1$s:"
 msgstr ""
 
 #: admin/categories.admin.php:484 admin/categories.admin.php:489
-#: admin/galeries.admin.php:1386 admin/galeries.admin.php:1391
+#: admin/galeries.admin.php:1394 admin/galeries.admin.php:1399
 #: admin/inc/fonctions.inc.php:558 admin/inc/fonctions.inc.php:817
 #: admin/inc/fonctions.inc.php:822 admin/inc/fonctions.inc.php:876
 #: admin/inc/fonctions.inc.php:881 admin/inc/fonctions.inc.php:945
@@ -690,8 +690,8 @@ msgstr ""
 msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
 msgstr ""
 
-#: admin/categories.admin.php:496 admin/galeries.admin.php:1398
-#: admin/galeries.admin.php:1491 admin/inc/fonctions.inc.php:565
+#: admin/categories.admin.php:496 admin/galeries.admin.php:1406
+#: admin/galeries.admin.php:1499 admin/inc/fonctions.inc.php:565
 #: admin/inc/fonctions.inc.php:829 admin/inc/fonctions.inc.php:888
 #: admin/inc/fonctions.inc.php:957
 msgid "Sélectionner le résultat."
@@ -746,7 +746,7 @@ msgstr ""
 msgid "Ajouter des images à une galerie"
 msgstr ""
 
-#: admin/xhtml/raccourcis.inc.php:14 admin/galeries.admin.php:1982
+#: admin/xhtml/raccourcis.inc.php:14 admin/galeries.admin.php:1994
 msgid "Créer une page web de galerie"
 msgstr ""
 
@@ -1051,7 +1051,7 @@ msgid "Pages ajoutées aux flux RSS globaux"
 msgstr ""
 
 #: admin/rss.admin.php:517 inc/fonctions.inc.php:1815
-#: inc/fonctions.inc.php:1817 inc/fonctions.inc.php:2068 inc/blocs.inc.php:125
+#: inc/fonctions.inc.php:1817 inc/fonctions.inc.php:2083 inc/blocs.inc.php:125
 #: inc/premier.inc.php:300 inc/categorie.inc.php:33 inc/categorie.inc.php:91
 #: inc/categorie.inc.php:161 inc/categorie.inc.php:206
 #: inc/categorie.inc.php:301
@@ -1059,7 +1059,7 @@ msgid "Dernières publications"
 msgstr ""
 
 #: admin/rss.admin.php:518 inc/fonctions.inc.php:1810
-#: inc/fonctions.inc.php:2072 inc/blocs.inc.php:130 inc/premier.inc.php:314
+#: inc/fonctions.inc.php:2087 inc/blocs.inc.php:130 inc/premier.inc.php:314
 #: inc/categorie.inc.php:49 inc/categorie.inc.php:95 inc/categorie.inc.php:165
 #: inc/categorie.inc.php:210 inc/categorie.inc.php:305
 msgid "Derniers ajouts aux galeries"
@@ -1109,12 +1109,12 @@ msgstr ""
 msgid "Redimensionner"
 msgstr ""
 
-#: admin/galeries.admin.php:17 admin/galeries.admin.php:1269
+#: admin/galeries.admin.php:17 admin/galeries.admin.php:1277
 #: admin/porte-documents.admin.php:416 admin/porte-documents.admin.php:1484
 msgid "Supprimer"
 msgstr ""
 
-#: admin/galeries.admin.php:18 admin/inc/fonctions.inc.php:1465
+#: admin/galeries.admin.php:18 admin/inc/fonctions.inc.php:1470
 #: admin/porte-documents.admin.php:823 admin/porte-documents.admin.php:1615
 #: admin/porte-documents.admin.php:1619
 msgid "Renommer"
@@ -1144,11 +1144,11 @@ msgstr ""
 msgid "Gestion des galeries"
 msgstr ""
 
-#: admin/galeries.admin.php:95 admin/galeries.admin.php:1612
+#: admin/galeries.admin.php:95 admin/galeries.admin.php:1620
 msgid "Modifier graphiquement le fichier de configuration."
 msgstr ""
 
-#: admin/galeries.admin.php:99 admin/galeries.admin.php:1616
+#: admin/galeries.admin.php:99 admin/galeries.admin.php:1624
 msgid ""
 "Modifier manuellement le fichier de configuration dans le porte-documents."
 msgstr ""
@@ -1188,7 +1188,7 @@ msgstr ""
 
 #: admin/galeries.admin.php:187 admin/galeries.admin.php:663
 #: admin/galeries.admin.php:769 admin/galeries.admin.php:894
-#: admin/galeries.admin.php:912 admin/galeries.admin.php:1496
+#: admin/galeries.admin.php:912 admin/galeries.admin.php:1504
 #, php-format
 msgid "Ouverture du dossier %1$s impossible."
 msgstr ""
@@ -1270,7 +1270,7 @@ msgid ""
 "dossier %3$s."
 msgstr ""
 
-#: admin/galeries.admin.php:435 admin/inc/fonctions.inc.php:1968
+#: admin/galeries.admin.php:435 admin/inc/fonctions.inc.php:1973
 #, php-format
 msgid "Renommage de %1$s en %2$s impossible."
 msgstr ""
@@ -1307,8 +1307,8 @@ msgstr ""
 #: admin/galeries.admin.php:774 admin/galeries.admin.php:921
 #: admin/galeries.admin.php:951 admin/galeries.admin.php:975
 #: admin/galeries.admin.php:1105 admin/galeries.admin.php:1195
-#: admin/galeries.admin.php:1404 admin/galeries.admin.php:1505
-#: admin/galeries.admin.php:1585
+#: admin/galeries.admin.php:1412 admin/galeries.admin.php:1513
+#: admin/galeries.admin.php:1593
 #, php-format
 msgid "Galerie sélectionnée: %1$s"
 msgstr ""
@@ -1320,8 +1320,8 @@ msgstr ""
 #: admin/galeries.admin.php:589 admin/galeries.admin.php:791
 #: admin/galeries.admin.php:940 admin/galeries.admin.php:968
 #: admin/galeries.admin.php:1033 admin/galeries.admin.php:1200
-#: admin/galeries.admin.php:1305 admin/galeries.admin.php:1421
-#: admin/galeries.admin.php:1524
+#: admin/galeries.admin.php:1313 admin/galeries.admin.php:1429
+#: admin/galeries.admin.php:1532
 #, php-format
 msgid "La galerie %1$s n'existe pas."
 msgstr ""
@@ -1437,91 +1437,91 @@ msgid ""
 "jour» pour sauvegarder les modifications."
 msgstr ""
 
-#: admin/galeries.admin.php:1246 admin/galeries.admin.php:1735
+#: admin/galeries.admin.php:1254 admin/galeries.admin.php:1743
 msgid "Afficher plus de paramètres"
 msgstr ""
 
-#: admin/galeries.admin.php:1271
+#: admin/galeries.admin.php:1279
 msgid "Lien vers «Mettre à jour»"
 msgstr ""
 
-#: admin/galeries.admin.php:1279
+#: admin/galeries.admin.php:1287
 msgid "Mettre à jour"
 msgstr ""
 
-#: admin/galeries.admin.php:1288 admin/galeries.admin.php:1405
+#: admin/galeries.admin.php:1296 admin/galeries.admin.php:1413
 msgid "Mise à jour graphique d'une galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:1502
+#: admin/galeries.admin.php:1510
 msgid "Aucune image dans la galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:1506
+#: admin/galeries.admin.php:1514
 msgid "Modèle de fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:1568
+#: admin/galeries.admin.php:1576
 #, php-format
 msgid "Mise à jour automatique du fichier de configuration %1$s effectuée."
 msgstr ""
 
-#: admin/galeries.admin.php:1572
+#: admin/galeries.admin.php:1580
 #, php-format
 msgid "Création du fichier de configuration %1$s effectuée."
 msgstr ""
 
-#: admin/galeries.admin.php:1577
+#: admin/galeries.admin.php:1585
 #, php-format
 msgid ""
 "Erreur lors de la création ou de la mise à jour automatique du fichier de "
 "configuration %1$s. Veuillez vérifier manuellement son contenu."
 msgstr ""
 
-#: admin/galeries.admin.php:1583 admin/galeries.admin.php:1600
-#: admin/galeries.admin.php:1714 admin/galeries.admin.php:1807
-#: admin/galeries.admin.php:1898 admin/galeries.admin.php:2100
-#: admin/galeries.admin.php:2149
+#: admin/galeries.admin.php:1591 admin/galeries.admin.php:1608
+#: admin/galeries.admin.php:1722 admin/galeries.admin.php:1816
+#: admin/galeries.admin.php:1910 admin/galeries.admin.php:2112
+#: admin/galeries.admin.php:2161
 msgid "Fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:1587
+#: admin/galeries.admin.php:1595
 msgid "Actions effectuées"
 msgstr ""
 
-#: admin/galeries.admin.php:1606
+#: admin/galeries.admin.php:1614
 msgid "Information"
 msgstr ""
 
-#: admin/galeries.admin.php:1610
+#: admin/galeries.admin.php:1618
 msgid "Un fichier de configuration existe pour cette galerie:"
 msgstr ""
 
-#: admin/galeries.admin.php:1640
+#: admin/galeries.admin.php:1648
 msgid "Lister les galeries existantes"
 msgstr ""
 
-#: admin/galeries.admin.php:1645
+#: admin/galeries.admin.php:1653
 msgid ""
 "Vous pouvez afficher la liste des galeries existantes. Si la galerie a un "
 "fichier de configuration, un lien vous permettra de modifier ce dernier."
 msgstr ""
 
-#: admin/galeries.admin.php:1647
+#: admin/galeries.admin.php:1655
 msgid ""
 "Vous pouvez afficher la liste des galeries existantes, qu'elles aient ou non "
 "un fichier de configuration."
 msgstr ""
 
-#: admin/galeries.admin.php:1650
+#: admin/galeries.admin.php:1658
 msgid "Lister les galeries"
 msgstr ""
 
-#: admin/galeries.admin.php:1658 admin/galeries.admin.php:1747
+#: admin/galeries.admin.php:1666 admin/galeries.admin.php:1755
 msgid "Ajouter des images"
 msgstr ""
 
-#: admin/galeries.admin.php:1661
+#: admin/galeries.admin.php:1669
 msgid ""
 "Vous pouvez téléverser vers votre site en une seule fois plusieurs images "
 "contenues dans une archive de format TAR (<code>.tar</code>) ou ZIP (<code>."
@@ -1529,7 +1529,7 @@ msgid ""
 "soient à la racine, et non contenues dans un dossier."
 msgstr ""
 
-#: admin/galeries.admin.php:1663
+#: admin/galeries.admin.php:1671
 msgid ""
 "Vous pouvez téléverser vers votre site en une seule fois plusieurs images "
 "contenues dans une archive de format TAR (<code>.tar</code>). Veuillez créer "
@@ -1537,33 +1537,33 @@ msgid ""
 "contenues dans un dossier."
 msgstr ""
 
-#: admin/galeries.admin.php:1666
+#: admin/galeries.admin.php:1674
 msgid ""
 "Vous pouvez également ajouter une seule image en choisissant un fichier "
 "image au lieu d'une archive."
 msgstr ""
 
-#: admin/galeries.admin.php:1668
+#: admin/galeries.admin.php:1676
 #, php-format
 msgid ""
 "<strong>Taille maximale d'un transfert de fichier:</strong> %1$s Mio (%2$s "
 "octets)."
 msgstr ""
 
-#: admin/galeries.admin.php:1675
+#: admin/galeries.admin.php:1683
 msgid ""
 "Identifiant de la galerie (il est possible de créer une nouvelle galerie):"
 msgstr ""
 
-#: admin/galeries.admin.php:1677
+#: admin/galeries.admin.php:1685
 msgid "Nouvelle galerie:"
 msgstr ""
 
-#: admin/galeries.admin.php:1687 admin/porte-documents.admin.php:1697
+#: admin/galeries.admin.php:1695 admin/porte-documents.admin.php:1697
 msgid "Fichier:"
 msgstr ""
 
-#: admin/galeries.admin.php:1691
+#: admin/galeries.admin.php:1699
 #, php-format
 msgid ""
 "Filtrer le nom de chaque image. Le filtre convertit automatiquement les "
@@ -1571,35 +1571,35 @@ msgid ""
 "devient «e») et ensuite les caractères différents de %1$s par un tiret."
 msgstr ""
 
-#: admin/galeries.admin.php:1693 admin/galeries.admin.php:2011
+#: admin/galeries.admin.php:1701 admin/galeries.admin.php:2023
 #: admin/porte-documents.admin.php:1721 admin/porte-documents.admin.php:1771
 msgid "Filtrer également les majuscules en minuscules."
 msgstr ""
 
-#: admin/galeries.admin.php:1699
+#: admin/galeries.admin.php:1707
 msgid "S'applique aux fichiers JPG:"
 msgstr ""
 
-#: admin/galeries.admin.php:1702
+#: admin/galeries.admin.php:1710
 msgid ""
 "Tenter d'effectuer une rotation automatique et sans perte de qualité, basée "
 "sur l'orientation déclarée dans les données Exif, si cette information "
 "existe."
 msgstr ""
 
-#: admin/galeries.admin.php:1706
+#: admin/galeries.admin.php:1714
 msgid "Supprimer sans perte de qualité les données Exif, si elles existent."
 msgstr ""
 
-#: admin/galeries.admin.php:1718 admin/galeries.admin.php:1810
-#: admin/galeries.admin.php:1901
+#: admin/galeries.admin.php:1726 admin/galeries.admin.php:1819
+#: admin/galeries.admin.php:1913
 msgid ""
 "Créer ou mettre à jour automatiquement le fichier de configuration de cette "
 "galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:1720 admin/galeries.admin.php:1812
-#: admin/galeries.admin.php:1903 admin/galeries.admin.php:2104
+#: admin/galeries.admin.php:1728 admin/galeries.admin.php:1821
+#: admin/galeries.admin.php:1915 admin/galeries.admin.php:2116
 msgid ""
 "Ignorer dans la liste des images intermédiaires les images dont le nom "
 "satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original."
@@ -1607,48 +1607,48 @@ msgid ""
 "dernières dans le fichier de configuration, s'il existe."
 msgstr ""
 
-#: admin/galeries.admin.php:1725
+#: admin/galeries.admin.php:1733
 msgid "Paramètres"
 msgstr ""
 
-#: admin/galeries.admin.php:1728
+#: admin/galeries.admin.php:1736
 msgid ""
 "Ajouter les paramètres suivants pour chaque image (un paramètre vide ne sera "
 "pas ajouté):"
 msgstr ""
 
-#: admin/galeries.admin.php:1755
+#: admin/galeries.admin.php:1763
 msgid "Créer des images de taille intermédiaire à partir des images originales"
 msgstr ""
 
-#: admin/galeries.admin.php:1757
+#: admin/galeries.admin.php:1766
 msgid ""
 "Vous pouvez générer automatiquement une copie réduite (qui sera utilisée "
 "comme étant la version intermédiaire dans la galerie) de chaque image "
 "originale. Aucune image au format original ne sera modifiée."
 msgstr ""
 
-#: admin/galeries.admin.php:1764 admin/galeries.admin.php:1858
-#: admin/galeries.admin.php:1958 admin/galeries.admin.php:2054
-#: admin/galeries.admin.php:2084 admin/galeries.admin.php:2122
+#: admin/galeries.admin.php:1773 admin/galeries.admin.php:1870
+#: admin/galeries.admin.php:1970 admin/galeries.admin.php:2066
+#: admin/galeries.admin.php:2096 admin/galeries.admin.php:2134
 msgid "Identifiant de la galerie:"
 msgstr ""
 
-#: admin/galeries.admin.php:1774 admin/galeries.admin.php:1868
-#: admin/galeries.admin.php:1935 admin/galeries.admin.php:1968
-#: admin/galeries.admin.php:2064 admin/galeries.admin.php:2094
-#: admin/galeries.admin.php:2132
+#: admin/galeries.admin.php:1783 admin/galeries.admin.php:1880
+#: admin/galeries.admin.php:1947 admin/galeries.admin.php:1980
+#: admin/galeries.admin.php:2076 admin/galeries.admin.php:2106
+#: admin/galeries.admin.php:2144
 msgid "Veuillez auparavant créer une galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:1778
+#: admin/galeries.admin.php:1787
 #, php-format
 msgid ""
 "Taille maximale de la version intermédiaire (<label for=\"%1$s\">largeur</"
 "label> × <label for=\"%2$s\">hauteur</label>):"
 msgstr ""
 
-#: admin/galeries.admin.php:1779
+#: admin/galeries.admin.php:1788
 msgid ""
 "La plus grande taille possible contenable dans les dimensions données sera "
 "utilisée, sans toutefois dépasser la taille originale. Si une seule "
@@ -1657,61 +1657,61 @@ msgid ""
 "l'image sont conservées. Au moins une dimension doit être donnée."
 msgstr ""
 
-#: admin/galeries.admin.php:1780
+#: admin/galeries.admin.php:1789
 msgid "px de largeur"
 msgstr ""
 
-#: admin/galeries.admin.php:1780
+#: admin/galeries.admin.php:1789
 msgid "×"
 msgstr ""
 
-#: admin/galeries.admin.php:1780
+#: admin/galeries.admin.php:1789
 msgid "px de hauteur"
 msgstr ""
 
-#: admin/galeries.admin.php:1782
+#: admin/galeries.admin.php:1791
 msgid "S'il y a lieu, qualité des images JPG générées (0-100):"
 msgstr ""
 
-#: admin/galeries.admin.php:1786
+#: admin/galeries.admin.php:1795
 msgid ""
 "Renforcer la netteté des images redimensionnées (donne de mauvais résultats "
 "pour des images PNG avec transparence)."
 msgstr ""
 
-#: admin/galeries.admin.php:1788
+#: admin/galeries.admin.php:1797
 msgid "Gain:"
 msgstr "Amount:"
 
-#: admin/galeries.admin.php:1789
+#: admin/galeries.admin.php:1798
 msgid "Rayon:"
 msgstr "Radius:"
 
-#: admin/galeries.admin.php:1790
+#: admin/galeries.admin.php:1799
 msgid "Seuil:"
 msgstr "Threshold:"
 
-#: admin/galeries.admin.php:1794
+#: admin/galeries.admin.php:1803
 msgid ""
 "La liste des images originales redimensionnables est consitituée des images "
 "dont le nom satisfait le motif <code>nom-original.extension</code>. Voici "
 "des options relatives à cette liste:"
 msgstr ""
 
-#: admin/galeries.admin.php:1796
+#: admin/galeries.admin.php:1805
 msgid ""
 "Renommer préalablement les images de la galerie en <code>nom-original."
 "extension</code>."
 msgstr ""
 
-#: admin/galeries.admin.php:1798
+#: admin/galeries.admin.php:1807
 msgid ""
 "S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le "
 "motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</"
 "code>."
 msgstr ""
 
-#: admin/galeries.admin.php:1800
+#: admin/galeries.admin.php:1809
 msgid ""
 "Ignorer lors du renommage (s'il y a lieu) ainsi que lors du "
 "redimensionnement les images déclarées dans le fichier de configuration "
@@ -1721,14 +1721,14 @@ msgid ""
 "intermédiaire ou a nécessairement une version intermédiaire associée."
 msgstr ""
 
-#: admin/galeries.admin.php:1803
+#: admin/galeries.admin.php:1812
 msgid ""
 "Dans tous les cas, il n'y a pas de création d'image intermédiaire si les "
 "fichiers <code>nom-original.extension</code> et <code>nom.extension</code> "
 "existent déjà tous les deux."
 msgstr ""
 
-#: admin/galeries.admin.php:1817
+#: admin/galeries.admin.php:1826
 msgid ""
 "Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le "
 "dossier, vous allez peut-être rencontrer une erreur de dépassement du temps "
@@ -1736,21 +1736,27 @@ msgid ""
 "navigateur."
 msgstr ""
 
-#: admin/galeries.admin.php:1819
+#: admin/galeries.admin.php:1828
 msgid "redimensionner les images originales"
 msgstr ""
 
-#: admin/galeries.admin.php:1827
+#: admin/galeries.admin.php:1832
+msgid ""
+"La bibliothèque GD doit être installée pour pouvoir utiliser cette "
+"fonctionnalité."
+msgstr ""
+
+#: admin/galeries.admin.php:1839
 msgid "Supprimer des images"
 msgstr ""
 
-#: admin/galeries.admin.php:1833
+#: admin/galeries.admin.php:1845
 msgid ""
 "La liste des images potentiellement supprimables peut être générée de trois "
 "manières différentes:"
 msgstr ""
 
-#: admin/galeries.admin.php:1836
+#: admin/galeries.admin.php:1848
 msgid ""
 "seulement par analyse du fichier de configuration, s'il existe. Les images "
 "intermédiaires sont les images déclarées par le paramètre "
@@ -1766,7 +1772,7 @@ msgid ""
 "une image intermédiaire sans le motif <code>-original</code> existe;"
 msgstr ""
 
-#: admin/galeries.admin.php:1838
+#: admin/galeries.admin.php:1850
 msgid ""
 "par reconnaissance d'un motif dans le nom des fichiers. Le fichier de "
 "configuration n'est pas analysé. Les vignettes sont les images dont le nom "
@@ -1777,20 +1783,20 @@ msgid ""
 "original.extension</code>)."
 msgstr ""
 
-#: admin/galeries.admin.php:1840
+#: admin/galeries.admin.php:1852
 msgid ""
 "sans reconnaissance d'un motif dans le nom des fichiers. Le fichier de "
 "configuration n'est pas analysé. Toutes les images sont considérées comme "
 "étant des images intermédiaires."
 msgstr ""
 
-#: admin/galeries.admin.php:1843
+#: admin/galeries.admin.php:1855
 msgid ""
 "Tout d'abord, vous pouvez supprimer les vignettes d'une galerie pour forcer "
 "leur regénération automatique."
 msgstr ""
 
-#: admin/galeries.admin.php:1845
+#: admin/galeries.admin.php:1857
 msgid ""
 "Aussi, si la navigation entre les images d'une galerie est réalisée avec des "
 "vignettes et si <code>$galerieNavigationTatouerVignettes</code> vaut "
@@ -1800,117 +1806,117 @@ msgid ""
 "navigation avec tatouage."
 msgstr ""
 
-#: admin/galeries.admin.php:1847
+#: admin/galeries.admin.php:1859
 msgid ""
 "Vous pouvez également supprimer les images de taille intermédiaires ou au "
 "format original."
 msgstr ""
 
-#: admin/galeries.admin.php:1849
+#: admin/galeries.admin.php:1861
 msgid ""
 "Il est aussi possible de supprimer le fichier de configuration de la galerie "
 "ainsi que le dossier de la galerie si ce dernier est vide."
 msgstr ""
 
-#: admin/galeries.admin.php:1872
+#: admin/galeries.admin.php:1884
 msgid "Génération de la liste des images potentiellement supprimables:"
 msgstr ""
 
-#: admin/galeries.admin.php:1875
+#: admin/galeries.admin.php:1887
 msgid "seulement par analyse du fichier de configuration;"
 msgstr ""
 
-#: admin/galeries.admin.php:1877
+#: admin/galeries.admin.php:1889
 msgid "par reconnaissance d'un motif dans le nom des fichiers;"
 msgstr ""
 
-#: admin/galeries.admin.php:1879
+#: admin/galeries.admin.php:1891
 msgid "sans reconnaissance de motif dans le nom des fichiers."
 msgstr ""
 
-#: admin/galeries.admin.php:1883
+#: admin/galeries.admin.php:1895
 msgid "Supprimer les vignettes."
 msgstr ""
 
-#: admin/galeries.admin.php:1885
+#: admin/galeries.admin.php:1897
 msgid "Supprimer les vignettes de navigation avec tatouage."
 msgstr ""
 
-#: admin/galeries.admin.php:1887
+#: admin/galeries.admin.php:1899
 msgid "Supprimer les images intermédiaires."
 msgstr ""
 
-#: admin/galeries.admin.php:1889
+#: admin/galeries.admin.php:1901
 msgid "Supprimer les images originales."
 msgstr ""
 
-#: admin/galeries.admin.php:1891
+#: admin/galeries.admin.php:1903
 msgid "Supprimer le fichier de configuration."
 msgstr ""
 
-#: admin/galeries.admin.php:1893
+#: admin/galeries.admin.php:1905
 msgid "Supprimer le dossier de la galerie s'il est vide."
 msgstr ""
 
-#: admin/galeries.admin.php:1908
+#: admin/galeries.admin.php:1920
 msgid "Supprimer les images"
 msgstr ""
 
-#: admin/galeries.admin.php:1916
+#: admin/galeries.admin.php:1928
 msgid "Renommer une galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:1918
+#: admin/galeries.admin.php:1930
 msgid ""
 "Vous pouvez renommer une galerie. S'il s'agit d'une galerie déjà utilisée "
 "sur votre site, ne pas oublier de modifier la valeur de la variable <code>"
 "$idGalerie</code> dans la page web de votre galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:1925
+#: admin/galeries.admin.php:1937
 #, php-format
 msgid ""
 "<label for=\"%1$s\">Identifiant actuel de la galerie</label> et son <label "
 "for=\"%2$s\">nouvel identifiant</label>:"
 msgstr ""
 
-#: admin/galeries.admin.php:1940
+#: admin/galeries.admin.php:1952
 msgid "Renommer la galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:1949
+#: admin/galeries.admin.php:1961
 msgid "Sauvegarder une galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:1951
+#: admin/galeries.admin.php:1963
 msgid ""
 "Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-"
 "dessous."
 msgstr ""
 
-#: admin/galeries.admin.php:1973
+#: admin/galeries.admin.php:1985
 msgid "Sauvegarder la galerie"
 msgstr ""
 
-#: admin/galeries.admin.php:1984
+#: admin/galeries.admin.php:1996
 msgid "Vous pouvez ajouter une page sur votre site pour présenter une galerie."
 msgstr ""
 
-#: admin/galeries.admin.php:1991
+#: admin/galeries.admin.php:2003
 msgid "Identifiant de la galerie (ayant un fichier de configuration):"
 msgstr ""
 
-#: admin/galeries.admin.php:2001
+#: admin/galeries.admin.php:2013
 msgid ""
 "Veuillez auparavant créer au moins une galerie ayant un fichier de "
 "configuration."
 msgstr ""
 
-#: admin/galeries.admin.php:2005
+#: admin/galeries.admin.php:2017
 msgid "Emplacement de la page web:"
 msgstr ""
 
-#: admin/galeries.admin.php:2009 admin/porte-documents.admin.php:1721
+#: admin/galeries.admin.php:2021 admin/porte-documents.admin.php:1721
 #: admin/porte-documents.admin.php:1771
 #, php-format
 msgid ""
@@ -1919,22 +1925,22 @@ msgid ""
 "caractères différents de %1$s par un tiret."
 msgstr ""
 
-#: admin/galeries.admin.php:2031
+#: admin/galeries.admin.php:2043
 #, php-format
 msgid ""
 "Ajouter la page dans le <a href=\"%1$s\">flux RSS des derniers ajouts aux "
 "galeries</a> pour la langue %2$s."
 msgstr ""
 
-#: admin/galeries.admin.php:2035
+#: admin/galeries.admin.php:2047
 msgid "Créer une page web"
 msgstr ""
 
-#: admin/galeries.admin.php:2043
+#: admin/galeries.admin.php:2055
 msgid "Mettre à jour graphiquement un fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:2045
+#: admin/galeries.admin.php:2057
 #, php-format
 msgid ""
 "Note: il est possible de modifier manuellement dans le porte-documents le "
@@ -1942,45 +1948,45 @@ msgid ""
 "des galeries</a> pour obtenir les liens de modification à la main."
 msgstr ""
 
-#: admin/galeries.admin.php:2047
+#: admin/galeries.admin.php:2059
 msgid ""
 "Vous pouvez modifier en passant par une interface graphique la configuration "
 "d'une galerie en réordonnant les images par glisser-déposer et en modifiant "
 "les paramètres de chaque image."
 msgstr ""
 
-#: admin/galeries.admin.php:2069
+#: admin/galeries.admin.php:2081
 msgid "Mettre à jour graphiquement"
 msgstr ""
 
-#: admin/galeries.admin.php:2077
+#: admin/galeries.admin.php:2089
 msgid "Créer ou mettre à jour automatiquement un fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:2107
+#: admin/galeries.admin.php:2119
 msgid "Créer ou mettre à jour automatiquement"
 msgstr ""
 
-#: admin/galeries.admin.php:2115
+#: admin/galeries.admin.php:2127
 msgid "Afficher un modèle de fichier de configuration"
 msgstr ""
 
-#: admin/galeries.admin.php:2136
+#: admin/galeries.admin.php:2148
 msgid "Pour chaque image intermédiaire, ajouter des paramètres:"
 msgstr ""
 
-#: admin/galeries.admin.php:2138 admin/acces.admin.php:330
+#: admin/galeries.admin.php:2150 admin/acces.admin.php:330
 msgid "Aucun"
 msgstr ""
 
-#: admin/galeries.admin.php:2151
+#: admin/galeries.admin.php:2163
 msgid ""
 "Ignorer dans la liste des images intermédiaires les images dont le nom "
 "satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original."
 "extension</code>."
 msgstr ""
 
-#: admin/galeries.admin.php:2154
+#: admin/galeries.admin.php:2166
 msgid "Afficher un fichier de configuration"
 msgstr ""
 
@@ -2091,7 +2097,7 @@ msgid ""
 msgstr ""
 
 #: admin/inc/fonctions.inc.php:436 admin/inc/fonctions.inc.php:494
-#: admin/inc/fonctions.inc.php:2017
+#: admin/inc/fonctions.inc.php:2022
 #, php-format
 msgid "Accès au dossier %1$s impossible."
 msgstr ""
@@ -2153,88 +2159,88 @@ msgstr ""
 msgid "dossier"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1287
+#: admin/inc/fonctions.inc.php:1292
 #, php-format
 msgid "Aperçu de l'image %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1291
+#: admin/inc/fonctions.inc.php:1296
 msgid "Propriétés"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1292
+#: admin/inc/fonctions.inc.php:1297
 #, php-format
 msgid "<strong>Type MIME:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1296
+#: admin/inc/fonctions.inc.php:1301
 #, php-format
 msgid "<strong>Taille:</strong> %1$s Kio (%2$s octets)"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1300
+#: admin/inc/fonctions.inc.php:1305
 #, php-format
 msgid "<strong>Dimensions:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1305
+#: admin/inc/fonctions.inc.php:1310
 #, php-format
 msgid "<strong>Aperçu:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1308
+#: admin/inc/fonctions.inc.php:1313
 #, php-format
 msgid "<strong>Dernier accès:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1309
+#: admin/inc/fonctions.inc.php:1314
 #, php-format
 msgid "<strong>Dernière modification:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1313
+#: admin/inc/fonctions.inc.php:1318
 #, php-format
 msgid "<strong>uid:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1318
+#: admin/inc/fonctions.inc.php:1323
 #, php-format
 msgid "<strong>gid:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1322
+#: admin/inc/fonctions.inc.php:1327
 #, php-format
 msgid "<strong>Permissions:</strong> %1$s"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1430
+#: admin/inc/fonctions.inc.php:1435
 msgid "Vide."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1434
+#: admin/inc/fonctions.inc.php:1439
 #, php-format
 msgid "Affichage désactivé. <a href=\"%1$s\">Lister ce dossier.</a>"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1453 admin/porte-documents.admin.php:1607
+#: admin/inc/fonctions.inc.php:1458 admin/porte-documents.admin.php:1607
 #, fuzzy
 msgid "Télécharger"
 msgstr "Download Firefox"
 
-#: admin/inc/fonctions.inc.php:1459
+#: admin/inc/fonctions.inc.php:1464
 msgid "Éditer"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1475
+#: admin/inc/fonctions.inc.php:1480
 #, php-format
 msgid "Afficher «%1$s»"
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1695
+#: admin/inc/fonctions.inc.php:1700
 msgid "Aucune erreur, le téléchargement est correct."
 msgstr "There is no error, the file uploaded with success."
 
-#: admin/inc/fonctions.inc.php:1699
+#: admin/inc/fonctions.inc.php:1704
 #, fuzzy
 msgid ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
@@ -2242,7 +2248,7 @@ msgid ""
 msgstr ""
 "The uploaded file exceeds the upload_max_filesize directive in php.ini."
 
-#: admin/inc/fonctions.inc.php:1703
+#: admin/inc/fonctions.inc.php:1708
 #, fuzzy
 msgid ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
@@ -2251,107 +2257,107 @@ msgstr ""
 "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in "
 "the HTML form."
 
-#: admin/inc/fonctions.inc.php:1707
+#: admin/inc/fonctions.inc.php:1712
 msgid "Le fichier n'a été que partiellement téléchargé."
 msgstr "The uploaded file was only partially uploaded."
 
-#: admin/inc/fonctions.inc.php:1711
+#: admin/inc/fonctions.inc.php:1716
 msgid "Aucun fichier n'a été téléchargé."
 msgstr "No file was uploaded."
 
-#: admin/inc/fonctions.inc.php:1715
+#: admin/inc/fonctions.inc.php:1720
 msgid "Un dossier temporaire est manquant."
 msgstr "Missing a temporary folder."
 
-#: admin/inc/fonctions.inc.php:1719
+#: admin/inc/fonctions.inc.php:1724
 msgid "Échec de l'écriture du fichier sur le disque."
 msgstr "Failed to write file to disk."
 
-#: admin/inc/fonctions.inc.php:1723
+#: admin/inc/fonctions.inc.php:1728
 msgid "L'envoi de fichier est arrêté par l'extension."
 msgstr "File upload stopped by extension."
 
-#: admin/inc/fonctions.inc.php:1772
+#: admin/inc/fonctions.inc.php:1777
 #, php-format
 msgid "Création du dossier %1$s effectuée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1776
+#: admin/inc/fonctions.inc.php:1781
 #, php-format
 msgid "Création du dossier %1$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1920
+#: admin/inc/fonctions.inc.php:1925
 msgid "La réécriture d'URL est activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1925
+#: admin/inc/fonctions.inc.php:1930
 msgid "La réécriture d'URL n'est pas activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1931
+#: admin/inc/fonctions.inc.php:1936
 msgid "Impossible de déterminer si la réécriture d'URL est activée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1953
+#: admin/inc/fonctions.inc.php:1958
 #, php-format
 msgid "Déplacement de %1$s vers %2$s effectué."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1957
+#: admin/inc/fonctions.inc.php:1962
 #, php-format
 msgid "Renommage de %1$s en %2$s effectué."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1964
+#: admin/inc/fonctions.inc.php:1969
 #, php-format
 msgid "Déplacement de %1$s vers %2$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1980 admin/inc/fonctions.inc.php:2346
+#: admin/inc/fonctions.inc.php:1985 admin/inc/fonctions.inc.php:2351
 #, php-format
 msgid "Suppression de %1$s effectuée."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:1984 admin/inc/fonctions.inc.php:2350
+#: admin/inc/fonctions.inc.php:1989 admin/inc/fonctions.inc.php:2355
 #, php-format
 msgid "Suppression de %1$s impossible."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2064
+#: admin/inc/fonctions.inc.php:2069
 #, php-format
 msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2072 admin/inc/fonctions.inc.php:2131
+#: admin/inc/fonctions.inc.php:2077 admin/inc/fonctions.inc.php:2136
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
 "l'image %2$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2076 admin/inc/fonctions.inc.php:2140
+#: admin/inc/fonctions.inc.php:2081 admin/inc/fonctions.inc.php:2145
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2135 admin/inc/fonctions.inc.php:2212
+#: admin/inc/fonctions.inc.php:2140 admin/inc/fonctions.inc.php:2217
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
 "l'image %2$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2144 admin/inc/fonctions.inc.php:2216
+#: admin/inc/fonctions.inc.php:2149 admin/inc/fonctions.inc.php:2221
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2152
+#: admin/inc/fonctions.inc.php:2157
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une rotation automatique et "
@@ -2360,7 +2366,7 @@ msgid ""
 "PHP %3$s."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2223
+#: admin/inc/fonctions.inc.php:2228
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une suppression sans perte de "
@@ -2499,67 +2505,75 @@ msgstr ""
 msgid "vidéo"
 msgstr ""
 
-#: admin/versions.admin.php:3 admin/versions.admin.php:54
+#: admin/versions.admin.php:3 admin/versions.admin.php:65
 msgid "Version de Squeletml et autres informations"
 msgstr ""
 
-#: admin/versions.admin.php:11 admin/versions.admin.php:50
+#: admin/versions.admin.php:12 admin/versions.admin.php:52
 #, php-format
 msgid "Version de Squeletml: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:32
+#: admin/versions.admin.php:34
 #, php-format
 msgid "(<a href=\"%1$s\">la version %2$s est disponible</a>)"
 msgstr ""
 
-#: admin/versions.admin.php:36
+#: admin/versions.admin.php:38
 msgid "(il s'agit de la dernière version publiée)"
 msgstr ""
 
-#: admin/versions.admin.php:40 admin/versions.admin.php:45
+#: admin/versions.admin.php:42 admin/versions.admin.php:47
 #, php-format
 msgid ""
 "(impossible de vérifier si une version plus récente a été publiée; <a href="
 "\"%1$s\">vérifier manuellement</a>)"
 msgstr ""
 
-#: admin/versions.admin.php:50
+#: admin/versions.admin.php:52
 msgid "impossible de déterminer la version"
 msgstr ""
 
-#: admin/versions.admin.php:56
+#: admin/versions.admin.php:57
+msgid "La bibliothèque GD est installée."
+msgstr ""
+
+#: admin/versions.admin.php:61
+msgid "La bibliothèque GD n'est pas installée."
+msgstr ""
+
+#: admin/versions.admin.php:67
 msgid "Aperçu"
 msgstr ""
 
-#: admin/versions.admin.php:60
+#: admin/versions.admin.php:71
 #, php-format
 msgid "Version de PHP: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:61
+#: admin/versions.admin.php:72
 #, php-format
 msgid "Version d'Apache: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:63
+#: admin/versions.admin.php:75
 #, php-format
 msgid "Système d'exploitation: %1$s"
 msgstr ""
 
-#: admin/versions.admin.php:67
+#: admin/versions.admin.php:79
 msgid "Afficher le <code>phpinfo()</code>"
 msgstr ""
 
-#: admin/versions.admin.php:68
+#: admin/versions.admin.php:80
 msgid "Afficher la liste des fonctions internes de PHP"
 msgstr ""
 
-#: admin/versions.admin.php:72
+#: admin/versions.admin.php:84
 msgid "Fonctions internes de PHP"
 msgstr ""
 
-#: admin/versions.admin.php:78
+#: admin/versions.admin.php:90
 #, php-format
 msgid ""
 "Il y a %1$s fonctions internes réparties entre %2$s modules. En voici la "
@@ -3422,7 +3436,7 @@ msgid "Légende de l'image"
 msgstr ""
 
 #: inc/fonctions.inc.php:1535 inc/fonctions.inc.php:1885
-#: inc/fonctions.inc.php:2188 inc/fonctions.inc.php:2466
+#: inc/fonctions.inc.php:2205 inc/fonctions.inc.php:2497
 #, fuzzy, php-format
 msgid "Image %1$s"
 msgstr "Category: %1$s."
@@ -3464,14 +3478,14 @@ msgstr ""
 msgid "%1$s – Galerie %2$s"
 msgstr "Work %1$s | Gallery %2$s"
 
-#: inc/fonctions.inc.php:1909 inc/fonctions.inc.php:2240
+#: inc/fonctions.inc.php:1909 inc/fonctions.inc.php:2257
 #, php-format
 msgid ""
 "Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
 "Kio)."
 msgstr ""
 
-#: inc/fonctions.inc.php:1914 inc/fonctions.inc.php:2246
+#: inc/fonctions.inc.php:1914 inc/fonctions.inc.php:2263
 #, php-format
 msgid ""
 "Voir l'image %1$s au format original (extension: %2$s; taille: %3$s Kio)."
@@ -3487,86 +3501,86 @@ msgstr ""
 msgid "Lire la suite de %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2084
+#: inc/fonctions.inc.php:2099
 #, php-format
 msgid " (%1$s)"
 msgstr ""
 
-#: inc/fonctions.inc.php:2241
+#: inc/fonctions.inc.php:2258
 #, php-format
 msgid "Télécharger l'image %1$s au format original"
 msgstr ""
 
-#: inc/fonctions.inc.php:2247
+#: inc/fonctions.inc.php:2264
 #, php-format
 msgid "Voir l'image %1$s au format original"
 msgstr ""
 
-#: inc/fonctions.inc.php:2286
+#: inc/fonctions.inc.php:2303
 #, php-format
 msgid "Image %1$s (extension: %2$s; taille: %3$s Kio)."
 msgstr ""
 
-#: inc/fonctions.inc.php:2316
+#: inc/fonctions.inc.php:2333
 msgid "Modèle d'appareil photo"
 msgstr ""
 
-#: inc/fonctions.inc.php:2320
+#: inc/fonctions.inc.php:2337
 msgid "Date et heure"
 msgstr ""
 
-#: inc/fonctions.inc.php:2330
+#: inc/fonctions.inc.php:2347
 msgid "Durée d'exposition"
 msgstr ""
 
-#: inc/fonctions.inc.php:2334
+#: inc/fonctions.inc.php:2351
 msgid "Sensibilité ISO"
 msgstr ""
 
-#: inc/fonctions.inc.php:2338
+#: inc/fonctions.inc.php:2355
 msgid "Ouverture"
 msgstr ""
 
-#: inc/fonctions.inc.php:2342
+#: inc/fonctions.inc.php:2359
 msgid "Distance focale"
 msgstr ""
 
-#: inc/fonctions.inc.php:2346
+#: inc/fonctions.inc.php:2363
 msgid "Fabriquant"
 msgstr "Manufacturer"
 
-#: inc/fonctions.inc.php:2493
+#: inc/fonctions.inc.php:2524
 msgid "Voir plus d'information sur cette image."
 msgstr ""
 
-#: inc/fonctions.inc.php:2697
+#: inc/fonctions.inc.php:2728
 #, php-format
 msgid "Publié par %1$s le %2$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2701
+#: inc/fonctions.inc.php:2732
 #, php-format
 msgid "Publié par %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2706
+#: inc/fonctions.inc.php:2737
 #, php-format
 msgid "Publié le %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2711
+#: inc/fonctions.inc.php:2742
 #, php-format
 msgid "Dernière révision le %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:2724
+#: inc/fonctions.inc.php:2755
 #, php-format
 msgid "Catégorie: %1$s."
 msgid_plural "Catégories: %1$s."
 msgstr[0] "Category: %1$s."
 msgstr[1] "Categories: %1$s."
 
-#: inc/fonctions.inc.php:2965
+#: inc/fonctions.inc.php:2996
 #, php-format
 msgid ""
 "<a href=\"http://artlibre.org/licence/lal\"><img %1$s alt=\"Licence Art Libre"
@@ -3574,7 +3588,7 @@ msgid ""
 "\">licence Art Libre</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2969
+#: inc/fonctions.inc.php:3000
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1$s alt="
@@ -3583,7 +3597,7 @@ msgid ""
 "deed.fr\">contrat Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2973
+#: inc/fonctions.inc.php:3004
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1$s "
@@ -3593,7 +3607,7 @@ msgid ""
 "Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2977
+#: inc/fonctions.inc.php:3008
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1$s "
@@ -3602,7 +3616,7 @@ msgid ""
 "licenses/by-nd/3.0/deed.fr\">contrat Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2981
+#: inc/fonctions.inc.php:3012
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1$s "
@@ -3612,7 +3626,7 @@ msgid ""
 "a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2985
+#: inc/fonctions.inc.php:3016
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img %1"
@@ -3622,7 +3636,7 @@ msgid ""
 "sa/3.0/deed.fr\">contrat Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2989
+#: inc/fonctions.inc.php:3020
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img %1"
@@ -3632,7 +3646,7 @@ msgid ""
 "Creative Commons</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2993
+#: inc/fonctions.inc.php:3024
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/publicdomain/deed.fr\"><img %1"
@@ -3640,7 +3654,7 @@ msgid ""
 "creativecommons.org/licenses/publicdomain/deed.fr\">domaine public</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:2997
+#: inc/fonctions.inc.php:3028
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-2.0.html\"><img %1$s alt=\"Licence "
@@ -3649,7 +3663,7 @@ msgid ""
 "de GNU, version 2</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3001
+#: inc/fonctions.inc.php:3032
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -3659,7 +3673,7 @@ msgid ""
 "a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3005
+#: inc/fonctions.inc.php:3036
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\"><img %1$s alt=\"Licence "
@@ -3668,7 +3682,7 @@ msgid ""
 "de GNU, version 3</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3009
+#: inc/fonctions.inc.php:3040
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -3678,7 +3692,7 @@ msgid ""
 "a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3013
+#: inc/fonctions.inc.php:3044
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\"><img %1$s alt="
@@ -3687,7 +3701,7 @@ msgid ""
 "publique générale GNU Affero, version 3</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3017
+#: inc/fonctions.inc.php:3048
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl.html\"><img %1$s alt=\"Licence "
@@ -3697,7 +3711,7 @@ msgid ""
 "ultérieure</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3021
+#: inc/fonctions.inc.php:3052
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\"><img %1$s alt="
@@ -3706,7 +3720,7 @@ msgid ""
 "\">licence publique générale amoindrie de GNU, version 2.1</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3025
+#: inc/fonctions.inc.php:3056
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -3716,7 +3730,7 @@ msgid ""
 "version ultérieure</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3029
+#: inc/fonctions.inc.php:3060
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\"><img %1$s alt="
@@ -3725,7 +3739,7 @@ msgid ""
 "\">licence publique générale amoindrie de GNU, version 3</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3033
+#: inc/fonctions.inc.php:3064
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -3735,7 +3749,7 @@ msgid ""
 "version ultérieure</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3037
+#: inc/fonctions.inc.php:3068
 #, php-format
 msgid ""
 "<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
@@ -3744,7 +3758,7 @@ msgid ""
 "\">licence BSD modifiée</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3041
+#: inc/fonctions.inc.php:3072
 #, php-format
 msgid ""
 "<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1$s alt="
@@ -3752,7 +3766,7 @@ msgid ""
 "opensource.org/licenses/mit-license.php\">licence MIT</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3045
+#: inc/fonctions.inc.php:3076
 msgid ""
 "La reproduction exacte et la distribution intégrale de cet article est "
 "permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
@@ -3761,50 +3775,50 @@ msgstr ""
 "Verbatim copying and distribution of this entire article are permitted "
 "worldwide without royalty in any medium, provided this notice is preserved."
 
-#: inc/fonctions.inc.php:3483
+#: inc/fonctions.inc.php:3514
 #, php-format
 msgid ""
 "Mise à jour des langues actives impossible, puisque le fichier %1$s n'existe "
 "pas."
 msgstr ""
 
-#: inc/fonctions.inc.php:3487 inc/fonctions.inc.php:3537
+#: inc/fonctions.inc.php:3518 inc/fonctions.inc.php:3568
 msgid ""
 "Mise à jour des langues actives impossible, puisqu'aucune langue n'a été "
 "fournie."
 msgstr ""
 
-#: inc/fonctions.inc.php:3508
+#: inc/fonctions.inc.php:3539
 msgid "Le contenu fourni ne peut être analysé."
 msgstr ""
 
-#: inc/fonctions.inc.php:3595 inc/fonctions.inc.php:3616
+#: inc/fonctions.inc.php:3626 inc/fonctions.inc.php:3647
 #, php-format
 msgid "Mise à jour du fichier %1$s impossible."
 msgstr ""
 
-#: inc/fonctions.inc.php:3599
+#: inc/fonctions.inc.php:3630
 #, php-format
 msgid "Mise à jour du fichier %1$s effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3606
+#: inc/fonctions.inc.php:3637
 #, php-format
 msgid "Suppression du fichier %1$s effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3610
+#: inc/fonctions.inc.php:3641
 #, php-format
 msgid ""
 "Suppression du fichier %1$s impossible. Ce fichier est maintenant inutile."
 msgstr ""
 
-#: inc/fonctions.inc.php:3630
+#: inc/fonctions.inc.php:3661
 #, php-format
 msgid "Mise à jour des langues actives dans le fichier %1$s effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3706
+#: inc/fonctions.inc.php:3737
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
@@ -3812,7 +3826,7 @@ msgstr ""
 "Do you know that Internet&nbsp;Explorer&nbsp;6 (with which you are visiting "
 "this site) is out of date?"
 
-#: inc/fonctions.inc.php:3708
+#: inc/fonctions.inc.php:3739
 #, fuzzy
 msgid ""
 "<strong>Pour naviguer de la manière la plus satisfaisante et sécuritaire, "
@@ -3826,56 +3840,56 @@ msgstr ""
 "performance and respect of web standards. Firefox is totally free. If you "
 "are using a computer at work you should contact your IT administrator."
 
-#: inc/fonctions.inc.php:3710
+#: inc/fonctions.inc.php:3741
 msgid "Télécharger Firefox"
 msgstr "Download Firefox"
 
-#: inc/fonctions.inc.php:3842
+#: inc/fonctions.inc.php:3873
 msgid ""
 "Le site est présentement hors ligne pour maintenance. Certaines pages "
 "peuvent ne pas s'afficher correctement."
 msgstr ""
 
-#: inc/fonctions.inc.php:3935
+#: inc/fonctions.inc.php:3970
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3939
+#: inc/fonctions.inc.php:3974
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
 msgstr ""
 
-#: inc/fonctions.inc.php:3982 inc/fonctions.inc.php:3995
-#: inc/fonctions.inc.php:4008
+#: inc/fonctions.inc.php:4017 inc/fonctions.inc.php:4030
+#: inc/fonctions.inc.php:4043
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3986 inc/fonctions.inc.php:3999
-#: inc/fonctions.inc.php:4012
+#: inc/fonctions.inc.php:4021 inc/fonctions.inc.php:4034
+#: inc/fonctions.inc.php:4047
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
 msgstr ""
 
-#: inc/fonctions.inc.php:4093 inc/fonctions.inc.php:4094
+#: inc/fonctions.inc.php:4128 inc/fonctions.inc.php:4129
 #, fuzzy, php-format
 msgid "%1$s – Page %2$s"
 msgstr "%1$s and %2$s"
 
-#: inc/fonctions.inc.php:4147 inc/fonctions.inc.php:4151
+#: inc/fonctions.inc.php:4182 inc/fonctions.inc.php:4186
 msgid "Page précédente"
 msgstr ""
 
-#: inc/fonctions.inc.php:4180 inc/fonctions.inc.php:4184
+#: inc/fonctions.inc.php:4215 inc/fonctions.inc.php:4219
 msgid "Page suivante"
 msgstr ""
 
-#: inc/fonctions.inc.php:4459 inc/fonctions.inc.php:4819
+#: inc/fonctions.inc.php:4494 inc/fonctions.inc.php:4854
 msgid "Voir plus de titres"
 msgstr ""
 
-#: inc/fonctions.inc.php:4596 inc/fonctions.inc.php:4718
+#: inc/fonctions.inc.php:4631 inc/fonctions.inc.php:4753
 msgid "Voir plus d'images"
 msgstr ""
 

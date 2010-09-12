@@ -51,6 +51,15 @@ else
 {
 	$contenuLiVersion .= sprintf(T_("Version de Squeletml: %1\$s"), T_("impossible de déterminer la version"));
 }
+
+if (gdEstInstallee())
+{
+	$contenuLiGd = T_("La bibliothèque GD est installée.");
+}
+else
+{
+	$contenuLiGd = T_("La bibliothèque GD n'est pas installée.");
+}
 ?>
 
 <h1><?php echo T_("Version de Squeletml et autres informations"); ?></h1>
@@ -62,6 +71,7 @@ else
 	<li><?php printf(T_("Version de PHP: %1\$s"), PHP_VERSION); ?></li>
 	<li><?php printf(T_("Version d'Apache: %1\$s"), securiseTexte($_SERVER['SERVER_SOFTWARE'])); ?></li>
 	<li><?php echo adminReecritureDurl(TRUE); ?></li>
+	<li><?php echo $contenuLiGd; ?></li>
 	<li><?php printf(T_("Système d'exploitation: %1\$s"), php_uname()); ?></li>
 </ul>
 

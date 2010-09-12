@@ -20,6 +20,8 @@ else
 			$reecritureDurlO = "La réécriture d'URL est activée.";
 			$reecritureDurlN = "La réécriture d'URL n'est pas activée.";
 			$reecritureDurlI = "Impossible de savoir si la réécriture d'URL est activée.";
+			$gdO = "La bibliothèque GD est installée.";
+			$gdN = "La bibliothèque GD n'est pas installée.";
 			$versionSysteme = "Système d'exploitation:";
 			$afficherPhpinfo = "Afficher le <code>phpinfo()</code>";
 			$afficherFonctions = "Afficher la liste des fonctions internes de PHP";
@@ -78,6 +80,13 @@ else
 					<?php endif; ?>
 				<?php else: ?>
 					<?php echo $reecritureDurlI; ?>
+				<?php endif; ?>
+			</li>
+			<li>
+				<?php if (function_exists('gd_info')): ?>
+					<?php echo $gdO; ?>
+				<?php else: ?>
+					<?php echo $gdN; ?>
 				<?php endif; ?>
 			</li>
 			<li><?php echo $versionSysteme; ?> <?php echo php_uname(); ?></li>
