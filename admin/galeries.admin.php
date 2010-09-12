@@ -110,7 +110,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 						$parcoursDossier = '<li><a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers">' . T_("Parcourir le dossier.") . "</a></li>\n";
 					
-						if ($cheminConfigGalerie)
+						if ($cheminConfigGalerie && gdEstInstallee())
 						{
 							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $fichier), TRUE);
 							$racineImgSrc = $racine . '/site/fichiers/galeries/' . $fichier;
@@ -578,7 +578,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		##
 		########################################################################
 
-		if (isset($_POST['redimensionner']))
+		if (isset($_POST['redimensionner']) && gdEstInstallee())
 		{
 			$messagesScript = '';
 			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
@@ -1217,10 +1217,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				for ($i = 0; $i <= ($nombreDimages - 1) && $i < $nombreDimages; $i++)
 				{
-					$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-					$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $id, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
-					preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
-					$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
+					if (gdEstInstallee())
+					{
+						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $id, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+						preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
+						$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
+					}
+					else
+					{
+						$vignette = '';
+					}
+					
 					$intermediaireNom = $tableauGalerie[$i]['intermediaireNom'];
 					
 					$config = '';
@@ -1753,72 +1761,76 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	<div class="boite">
 		<h2 id="redimensionner"><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
+		
+		<?php if (gdEstInstallee()): ?>
+			<p><?php echo T_("Vous pouvez générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermédiaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
 
-		<p><?php echo T_("Vous pouvez générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermédiaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
-
-		<form action="<?php echo $adminAction; ?>#messages" method="post">
-			<div>
-				<fieldset>
-					<legend><?php echo T_("Options"); ?></legend>
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<fieldset>
+						<legend><?php echo T_("Options"); ?></legend>
 				
-					<p><label for="redimensionnerSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-					<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
+						<p><label for="redimensionnerSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
+						<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
 				
-					<?php if (!empty($listeGaleries)): ?>
-						<select id="redimensionnerSelectId" name="id">
-							<?php foreach ($listeGaleries as $listeGalerie): ?>
-								<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
-							<?php endforeach; ?>
-						</select>
-					<?php else: ?>
-						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
-					<?php endif; ?>
-					</p>
+						<?php if (!empty($listeGaleries)): ?>
+							<select id="redimensionnerSelectId" name="id">
+								<?php foreach ($listeGaleries as $listeGalerie): ?>
+									<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
+								<?php endforeach; ?>
+							</select>
+						<?php else: ?>
+							<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+						<?php endif; ?>
+						</p>
 			
-					<p><?php printf(T_("Taille maximale de la version intermédiaire (<label for=\"%1\$s\">largeur</label> × <label for=\"%2\$s\">hauteur</label>):"), "redimensionnerInputLargeur", "redimensionnerInputHauteur"); ?><br />
-					<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Si une seule dimension est précisée, l'autre sera calculée à partir de la dimension donnée ainsi que des dimensions de l'image source. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée."); ?><br />
-					<input id="redimensionnerInputLargeur" type="text" name="largeur" size="4" value="500" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input id="redimensionnerInputHauteur" type="text" name="hauteur" size="4" value="500" /> <?php echo T_("px de hauteur"); ?></p>
+						<p><?php printf(T_("Taille maximale de la version intermédiaire (<label for=\"%1\$s\">largeur</label> × <label for=\"%2\$s\">hauteur</label>):"), "redimensionnerInputLargeur", "redimensionnerInputHauteur"); ?><br />
+						<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Si une seule dimension est précisée, l'autre sera calculée à partir de la dimension donnée ainsi que des dimensions de l'image source. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée."); ?><br />
+						<input id="redimensionnerInputLargeur" type="text" name="largeur" size="4" value="500" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input id="redimensionnerInputHauteur" type="text" name="hauteur" size="4" value="500" /> <?php echo T_("px de hauteur"); ?></p>
 				
-					<p><label for="redimensionnerInputQualiteJpg"><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
-					<input id="redimensionnerInputQualiteJpg" type="text" name="qualiteJpg" value="<?php echo $galerieQualiteJpg; ?>" size="2" /></p>
+						<p><label for="redimensionnerInputQualiteJpg"><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
+						<input id="redimensionnerInputQualiteJpg" type="text" name="qualiteJpg" value="<?php echo $galerieQualiteJpg; ?>" size="2" /></p>
 
-					<ul>
-						<li><input id="redimensionnerInputNettete" type="checkbox" name="nettete" value="renforcerNettete" /> <label for="redimensionnerInputNettete"><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label>
 						<ul>
-							<li><label for="redimensionnerInputNetteteGain"><?php echo T_("Gain:"); ?></label> <input id="redimensionnerInputNetteteGain" type="text" name="netteteGain" size="4" value="100" /></li>
-							<li><label for="redimensionnerInputNetteteRayon"><?php echo T_("Rayon:"); ?></label> <input id="redimensionnerInputNetteteRayon" type="text" name="netteteRayon" size="4" value="1" /></li>
-							<li><label for="redimensionnerInputNetteteSeuil"><?php echo T_("Seuil:"); ?></label> <input id="redimensionnerInputNetteteSeuil" type="text" name="netteteSeuil" size="4" value="3" /></li>
-						</ul></li>
-					</ul>
+							<li><input id="redimensionnerInputNettete" type="checkbox" name="nettete" value="renforcerNettete" /> <label for="redimensionnerInputNettete"><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label>
+							<ul>
+								<li><label for="redimensionnerInputNetteteGain"><?php echo T_("Gain:"); ?></label> <input id="redimensionnerInputNetteteGain" type="text" name="netteteGain" size="4" value="100" /></li>
+								<li><label for="redimensionnerInputNetteteRayon"><?php echo T_("Rayon:"); ?></label> <input id="redimensionnerInputNetteteRayon" type="text" name="netteteRayon" size="4" value="1" /></li>
+								<li><label for="redimensionnerInputNetteteSeuil"><?php echo T_("Seuil:"); ?></label> <input id="redimensionnerInputNetteteSeuil" type="text" name="netteteSeuil" size="4" value="3" /></li>
+							</ul></li>
+						</ul>
 				
-					<p><?php echo T_("La liste des images originales redimensionnables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
-					<ul>
-						<li><input id="redimensionnerInputRenommer" type="checkbox" name="redimensionnerRenommer[]" value="renommer" checked="checked" /> <label for="redimensionnerInputRenommer"><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
+						<p><?php echo T_("La liste des images originales redimensionnables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
+						<ul>
+							<li><input id="redimensionnerInputRenommer" type="checkbox" name="redimensionnerRenommer[]" value="renommer" checked="checked" /> <label for="redimensionnerInputRenommer"><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
 					
-						<li><input id="redimensionnerInputNePasRenommerMotifs" type="checkbox" name="redimensionnerRenommer[]" value="nePasRenommerMotifs" checked="checked" /> <label for="redimensionnerInputNePasRenommerMotifs"><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
+							<li><input id="redimensionnerInputNePasRenommerMotifs" type="checkbox" name="redimensionnerRenommer[]" value="nePasRenommerMotifs" checked="checked" /> <label for="redimensionnerInputNePasRenommerMotifs"><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
 					
-						<li><input id="redimensionnerInputAnalyserConfig" type="checkbox" name="redimensionnerRenommer[]" value="analyserConfig" /> <label for="redimensionnerInputAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme titre de section ou comme valeur d'un des paramètres <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
-					</ul>
+							<li><input id="redimensionnerInputAnalyserConfig" type="checkbox" name="redimensionnerRenommer[]" value="analyserConfig" /> <label for="redimensionnerInputAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme titre de section ou comme valeur d'un des paramètres <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
+						</ul>
 				
-					<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
-				</fieldset>
+						<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
+					</fieldset>
 
-				<fieldset class="fichierConfigAdminGaleries">
-					<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
+					<fieldset class="fichierConfigAdminGaleries">
+						<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-					<ul class="bDcorps afficher">
-						<li><input id="redimensionnerInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="redimensionnerInputConfig"><?php echo T_("Créer ou mettre à jour automatiquement le fichier de configuration de cette galerie."); ?></label>
-						<ul>
-							<li><input id="redimensionnerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="redimensionnerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
-						</ul></li>
-					</ul>
-				</fieldset>
+						<ul class="bDcorps afficher">
+							<li><input id="redimensionnerInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="redimensionnerInputConfig"><?php echo T_("Créer ou mettre à jour automatiquement le fichier de configuration de cette galerie."); ?></label>
+							<ul>
+								<li><input id="redimensionnerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="redimensionnerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
+							</ul></li>
+						</ul>
+					</fieldset>
 			
-				<p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
+					<p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
-				<p><input type="submit" name="redimensionner" value="<?php echo T_('redimensionner les images originales'); ?>" /></p>
-			</div>
-		</form>
+					<p><input type="submit" name="redimensionner" value="<?php echo T_('redimensionner les images originales'); ?>" /></p>
+				</div>
+			</form>
+		<?php else: ?>
+			<p><?php echo T_("La bibliothèque GD doit être installée pour pouvoir utiliser cette fonctionnalité."); ?></p>
+		<?php endif; ?>
 	</div><!-- /.boite -->
 
 	<!-- .boite -->

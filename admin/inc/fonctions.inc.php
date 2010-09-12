@@ -1261,6 +1261,11 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		$dimensionsImage = FALSE;
 	}
 	
+	if ($apercu && !gdEstInstallee())
+	{
+		$apercu = FALSE;
+	}
+	
 	if ($apercu && ($typeMime == 'image/gif' || $typeMime == 'image/jpeg' || $typeMime == 'image/png'))
 	{
 		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite dépassée).

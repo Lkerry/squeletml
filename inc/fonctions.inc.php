@@ -2057,6 +2057,21 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
+Retourne TRUE si la bibliothèque GD est installée, sinon retourne FALSE.
+*/
+function gdEstInstallee()
+{
+	if (function_exists('gd_info'))
+	{
+		return TRUE;
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
 function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie)
@@ -2124,6 +2139,8 @@ function idImage($racine, $image)
 
 /*
 Construit et retourne le code pour afficher une image dans la galerie. Si la taille de l'image n'est pas valide, retourne une chaîne vide.
+
+Si une vignette doit être créée et que la bibliothèque GD n'est pas installée, la vignette utilisée est une image par défaut livrée avec Squeletml.
 */
 function image(
 	// Infos sur le site.
@@ -2412,20 +2429,34 @@ function image(
 			{
 				$vignetteNom = nomSuffixe($infosImage['intermediaireNom'], '-vignette');
 				
-				// On vérifie si un fichier existe avec ce nom.
-				// Si oui, on assigne une valeur à l'attribut `src`.
-				if (file_exists($racineImgSrc . '/' . $vignetteNom))
+				if (!file_exists($racineImgSrc . '/' . $vignetteNom))
 				{
-					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
+					// Si la bibliothèque GD est installée, on génère une vignette.
+					if (gdEstInstallee())
+					{
+						nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, array ('nettete' => FALSE));
+					}
+					// Sinon on utilise une image par défaut livrée avec Squeletml.
+					else
+					{
+						switch ($typeMime)
+						{
+							case 'image/gif':
+								@copy($racine . '/fichiers/vignette-par-defaut.gif', $racineImgSrc . '/' . $vignetteNom);
+								break;
+								
+							case 'image/jpeg':
+								@copy($racine . '/fichiers/vignette-par-defaut.jpg', $racineImgSrc . '/' . $vignetteNom);
+								break;
+								
+							case 'image/png':
+								@copy($racine . '/fichiers/vignette-par-defaut.png', $racineImgSrc . '/' . $vignetteNom);
+								break;
+						}
+					}
 				}
-				// Sinon on génère une vignette.
-				else
-				{
-					nouvelleImage($racineImgSrc . '/' . $infosImage['intermediaireNom'], $racineImgSrc . '/' . $vignetteNom, $typeMime, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, array ('nettete' => FALSE));
-					
-					// On assigne l'attribut `src`.
-					$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
-				}
+				
+				$src = 'src="' . $urlImgSrc . '/' . $vignetteNom . '"';
 			}
 			
 			if ($vignetteAvecDimensions)
@@ -3846,7 +3877,11 @@ function noticeMaintenance()
 }
 
 /*
-Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+Génère une image de dimensions données à partir d'une image source. Si les dimensions voulues de la nouvelle image sont au moins aussi grandes que celles de l'image source, il y a seulement copie et non génération, à moins que `$galerieForcerDimensionsVignette` vaille TRUE. Dans ce cas, il y a ajout de bordures blanches (ou transparentes pour les PNG) pour compléter l'espace manquant.
+
+Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+
+La fonction ne vérifie pas si la bibliothèque GD est bien installée.
 */
 function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouvelleImageDimensionsVoulues, $galerieForcerDimensionsVignette, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $nettete)
 {
@@ -3940,7 +3975,7 @@ function nouvelleImage($cheminImageSource, $cheminNouvelleImage, $typeMime,$nouv
 			$erreur = TRUE;
 		}
 	}
-	// Sinon on génère une nouvelle image avec gd.
+	// Sinon on génère une nouvelle image avec la bibliothèque GD.
 	else
 	{
 		// On crée une nouvelle image vide.
@@ -5485,6 +5520,8 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 
 /*
 Modifie la source de la vignette pour la remplacer par une vignette tatouée d'une autre image (une flèche de navigation par défaut).
+
+Si la vignette tatouée n'existe pas déjà et que la bibliothèque GD n'est pas installée, la vignette utilisée est celle sans tatouage.
 */
 function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
 {
@@ -5493,11 +5530,7 @@ function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc,
 	$nomImgSrcContenu = superBasename($srcContenu);
 	$vignetteNom = nomSuffixe($nomImgSrcContenu, '-' . $sens);
 	
-	if (file_exists($racineImgSrc . '/tatouage/' . $vignetteNom))
-	{
-		$srcContenu = $urlImgSrc . '/tatouage/' . $vignetteNom;
-	}
-	else
+	if (!file_exists($racineImgSrc . '/tatouage/' . $vignetteNom))
 	{
 		if (!file_exists($racineImgSrc . '/tatouage'))
 		{
@@ -5506,54 +5539,57 @@ function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc,
 	
 		@copy($racineImgSrc . '/' . $nomImgSrcContenu, $racineImgSrc . '/tatouage/' . $vignetteNom);
 		
-		if (file_exists($racine . '/site/fichiers/' . $sens . '-tatouage.png'))
+		if (gdEstInstallee())
 		{
-			$imgSrc = imagecreatefrompng($racine . '/site/fichiers/' . $sens . '-tatouage.png');
-		}
-		else
-		{
-			$imgSrc = imagecreatefrompng($racine . '/fichiers/' . $sens . '-tatouage.png');
-		}
+			if (file_exists($racine . '/site/fichiers/' . $sens . '-tatouage.png'))
+			{
+				$imgSrc = imagecreatefrompng($racine . '/site/fichiers/' . $sens . '-tatouage.png');
+			}
+			else
+			{
+				$imgSrc = imagecreatefrompng($racine . '/fichiers/' . $sens . '-tatouage.png');
+			}
 		
-		$typeMime = typeMime($racineImgSrc . '/tatouage/' . $vignetteNom, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			$typeMime = typeMime($racineImgSrc . '/tatouage/' . $vignetteNom, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
 		
-		switch ($typeMime)
-		{
-			case 'image/gif':
-				$imgDest = imagecreatefromgif($racineImgSrc . '/tatouage/' . $vignetteNom);
-				break;
+			switch ($typeMime)
+			{
+				case 'image/gif':
+					$imgDest = imagecreatefromgif($racineImgSrc . '/tatouage/' . $vignetteNom);
+					break;
 	
-			case 'image/jpeg':
-				$imgDest = imagecreatefromjpeg($racineImgSrc . '/tatouage/' . $vignetteNom);
-				break;
+				case 'image/jpeg':
+					$imgDest = imagecreatefromjpeg($racineImgSrc . '/tatouage/' . $vignetteNom);
+					break;
 		
-			case 'image/png':
-				$imgDest = imagecreatefrompng($racineImgSrc . '/tatouage/' . $vignetteNom);
-				imagealphablending($imgDest, true);
-				imagesavealpha($imgDest, true);
-				break;
-		}
+				case 'image/png':
+					$imgDest = imagecreatefrompng($racineImgSrc . '/tatouage/' . $vignetteNom);
+					imagealphablending($imgDest, true);
+					imagesavealpha($imgDest, true);
+					break;
+			}
 	
-		$largSrc = imagesx($imgSrc);
-		$hautSrc = imagesy($imgSrc);
-		$largDest = imagesx($imgDest);
-		$hautDest = imagesy($imgDest);
+			$largSrc = imagesx($imgSrc);
+			$hautSrc = imagesy($imgSrc);
+			$largDest = imagesx($imgDest);
+			$hautDest = imagesy($imgDest);
 	
-		imagecopy($imgDest, $imgSrc, ($largDest / 2) - ($largSrc / 2), ($hautDest / 2) - ($hautSrc / 2), 0, 0, $largSrc, $hautSrc);
+			imagecopy($imgDest, $imgSrc, ($largDest / 2) - ($largSrc / 2), ($hautDest / 2) - ($hautSrc / 2), 0, 0, $largSrc, $hautSrc);
 	
-		switch ($typeMime)
-		{
-			case 'image/gif':
-				imagegif($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
-				break;
+			switch ($typeMime)
+			{
+				case 'image/gif':
+					imagegif($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom);
+					break;
 	
-			case 'image/jpeg':
-				imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, $galerieQualiteJpg);
-				break;
+				case 'image/jpeg':
+					imagejpeg($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, $galerieQualiteJpg);
+					break;
 		
-			case 'image/png':
-				imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 9);
-				break;
+				case 'image/png':
+					imagepng($imgDest, $racineImgSrc . '/tatouage/' . $vignetteNom, 9);
+					break;
+			}
 		}
 	}
 	

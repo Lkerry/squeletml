@@ -335,7 +335,6 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 	background: url('../../fichiers/ombre-vignette.png') no-repeat right bottom;
 	padding: 5px 10px 10px 5px;
 	border: none;
-	margin: 10px;
 }
 
 #galeriesAdminConfigGraphique p.bDtitre {
@@ -349,7 +348,7 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 
 #galeriesAdminConfigGraphique li.configGraphiqueListeVignettes {
 	margin-bottom: 20px;
-	padding: 5px;
+	padding: 5px 5px 5px 20px;
 	border: 1px solid #b3b3b3;
 	background-color: #f7f7f7;
 }
