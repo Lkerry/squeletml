@@ -285,23 +285,23 @@ function ancreDeNavigationGalerie($nomAncre)
 }
 
 /*
-Retourne les annexes de la documentation.
+Retourne au format HTML les annexes de la documentation.
 */
 function annexesDocumentation($racineAdmin)
 {
 	$racine = dirname($racineAdmin);
 	$texte = '';
-	$texte .= "\n\n## " . T_("Annexes") . "\n\n";
+	$texte .= '<h2>' . T_("Annexes") . "</h2>\n";
 	
-	$texte .= '### ' . T_("Contenu du fichier de configuration de Squeletml") . "\n\n";
+	$texte .= '<h3>' . T_("Contenu du fichier de configuration de Squeletml") . "</h3>\n";
 	
-	$texte .= T_("Voici le contenu du fichier de configuration, largement commenté, et constituant ainsi un bon complément à la documentation, pour ne pas dire une seconde documentation en parallèle.") . "\n\n";
+	$texte .= '<p>' . T_("Voici le contenu du fichier de configuration, largement commenté, et constituant ainsi un bon complément à la documentation, pour ne pas dire une seconde documentation en parallèle.") . "</p>\n";
 	
-	$texte .= '<pre class="fichierDeConfiguration">' . coloreFichierPhp($racine . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
+	$texte .= '<pre class="fichierDeConfiguration">' . coloreFichierPhp($racine . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n";
 	
-	$texte .= '### ' . T_("Contenu du fichier de configuration de l'administration de Squeletml") . "\n\n";
+	$texte .= '<h3>' . T_("Contenu du fichier de configuration de l'administration de Squeletml") . "</h3>\n";
 	
-	$texte .= '<pre class="fichierDeConfiguration">' . coloreFichierPhp($racineAdmin . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n\n";
+	$texte .= '<pre class="fichierDeConfiguration">' . coloreFichierPhp($racineAdmin . '/inc/config.inc.php', TRUE, TRUE) . "</pre>\n";
 	
 	return $texte;
 }

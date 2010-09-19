@@ -37,7 +37,7 @@ Si tout se passe bien, Squeletml créera automatiquement les fichiers nécessair
 
 ### Mise en situation
 
-1. On extrait l'archive, ce qui crée par exemple le dossier `squeletml-2.0`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-2.0` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-2.0`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+1. On extrait l'archive, ce qui crée le dossier `squeletml`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
 2. On visite dans notre navigateur la page d'accueil du nouveau site, ce qui nous donne `http://www.nomDeDomaine.ext/monSiteSqueletml/` ou `http://www.nomDeDomaine.ext/` selon le choix effectué à l'étape 1, et on suit les indications affichées.
 
 ## Installation à la main
@@ -478,9 +478,9 @@ Voici quelques exemples:
 - nombre de colonnes;
 - emplacement d'une colonne unique;
 - arrière-plan d'une colonne;
-contenu affichable ou masquable par un clic sur le titre;
+- contenu affichable ou masquable par un clic sur le titre;
 - ajout d'une classe `actif` aux liens pointant vers la page en cours dans les blocs de contenu;
--limite de la profondeur d'une liste dans les blocs de contenu (classe `masquer` ajoutée aux sous-listes inactives);
+- limite de la profondeur d'une liste dans les blocs de contenu (classe `masquer` ajoutée aux sous-listes inactives);
 - etc.
 
 ## Traduction de Squeletml
@@ -517,7 +517,7 @@ Pour mettre à jour Squeletml:
 
 	**Note: la réécriture d'URL doit être activée sur votre serveur pour utiliser cette fonctionnalité. Si tel n'est pas le cas, ignorez le mode maintenance et passez à l'étape suivante.**
 
-- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom ressemble à `squeletml-2.0`.
+- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom est `squeletml`.
 
 - Ensuite, sélectionnez et copiez tout le contenu de ce dossier, et collez la sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
 
@@ -936,11 +936,11 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 
 - si ce fichier n'existe pas et que `$genererMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
 
-	[Chiens]
-	urlCat=animaux/chiens/
-	catParente=Animaux
-	pages[]=animaux/chiens/husky.php
-	pages[]=animaux/chiens/malamute.php
+		[Chiens]
+		urlCat=animaux/chiens/
+		catParente=Animaux
+		pages[]=animaux/chiens/husky.php
+		pages[]=animaux/chiens/malamute.php
 
 Dans l'un ou l'autre des cas, les catégories actives seront marquées comme telles, si cette option est activée dans le fichier de configuration du site.
 
@@ -1314,7 +1314,7 @@ Les principales commandes du fichier `Makefile` sont:
 
 	Par défaut, la dernière version (représentée par la dernière étiquette) est utilisée par cette commande. Pour publier une version différente, préciser la variable `version` dans la ligne de commande. Exemple:
 
-		make publier version=squeletml-2.2.1
+		make publier version=2.2.1
 
 - `make ini`: installe pour l'utilisateur courant la coloration syntaxique dans l'[éditeur de texte gedit](http://gedit.org/) (sous GNU/Linux) pour les fichiers de configuration utilisés par Squeletml (configuration des galeries et des flux RSS globaux). Ces fichiers sont au format `.ini`. Contrairement à la coloration par défaut dans gedit, celle installée par `make ini` ne colore pas de délimiteurs de caractères (habituellement les guillemets et les apostrophes), ce qui évite par exemple qu'une apostrophe présente dans la valeur d'un paramètre, comme ceci:
 
