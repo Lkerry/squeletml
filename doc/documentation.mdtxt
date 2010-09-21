@@ -26,21 +26,35 @@ Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est u
 
 	Dans ces conditions, sans un déblocage par Free de l'URL de votre site, les catégories, les flux RSS et la génération automatique du cache par le cron ne sont pas fonctionnels.
 
-## Installation automatisée
+## Installation
 
-La procédure d'installation par défaut est très simple. Seulement deux petites étapes sont nécessaires:
-
-1. télécharger l'archive de la dernière version sur la [page de téléchargement du logiciel](http://www.squeletml.net/telechargement.php), extraire l'archive et placer les fichiers sur votre serveur, par exemple par ftp;
-2. visiter la page d'accueil de votre nouveau site et suivre les quelques indications.
-
-Si tout se passe bien, Squeletml créera automatiquement les fichiers nécessaires et la structure par défaut de votre site sera accessible.
+La procédure d'installation est très simple. Il faut commencer par télécharger l'archive de la dernière version sur la [page de téléchargement du logiciel](http://www.squeletml.net/telechargement.php), extraire cette archive et placer les fichiers sur votre serveur, par exemple par ftp.
 
 ### Mise en situation
 
-1. On extrait l'archive, ce qui crée le dossier `squeletml`. Pour avoir un site situé dans un répertoire, copier le dossier `squeletml` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`. Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
-2. On visite dans notre navigateur la page d'accueil du nouveau site, ce qui nous donne `http://www.nomDeDomaine.ext/monSiteSqueletml/` ou `http://www.nomDeDomaine.ext/` selon le choix effectué à l'étape 1, et on suit les indications affichées.
+On télécharge et extrait l'archive, ce qui crée le dossier `squeletml`.
 
-## Installation à la main
+- Pour avoir un site situé dans un répertoire, copier le dossier `squeletml` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`.
+
+- Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+
+	**Important:** à la racine du dossier créé par l'extraction de l'archive, il y a au moins un fichier dont le nom débute par un point. De tels fichiers sont dits «cachés» (à tout le moins sur les systèmes de type Unix), et pour les voir, il faut généralement que le gestionnaire de fichiers soit configuré en conséquence ou que la ligne de commande comporte un argument conséquent. Par exemple, dans Nautilus, on peut afficher les fichiers cachés en allant dans *Affichage* et en cochant *Afficher les fichiers cachés*. En ligne de commande, `ls` accepte l'argument `-a`:
+
+		ls -a
+
+On termine l'installation de façon automatisée ou à la main.
+
+### Installation automatisée
+
+Visiter la page d'accueil de votre nouveau site et suivre les quelques indications.
+
+Si tout se passe bien, Squeletml créera automatiquement les fichiers nécessaires et la structure par défaut de votre site sera accessible.
+
+#### Mise en situation
+
+On visite dans notre navigateur la page d'accueil du nouveau site, ce qui nous donne `http://www.nomDeDomaine.ext/monSiteSqueletml/` ou `http://www.nomDeDomaine.ext/` selon le choix effectué à l'étape 1, et on suit les indications affichées.
+
+### Installation à la main
 
 Par défaut, l'installation se fait en passant par une page web. Cependant, il est possible d'installer Squeletml à la main.
 
@@ -48,7 +62,7 @@ Seulement quatre fichiers doivent obligatoirement être créés et configurés, 
 
 Tant que l'installation n'est pas terminée, la page d'accueil de votre site Squeletml dirigera vers la procédure d'installation par défaut passant par une page web.
 
-### Le fichier `init.inc.php`
+#### Le fichier `init.inc.php`
 
 Avec la méthode de votre choix (par exemple en vous connectant par ftp au serveur hébergeant votre site), trouver le fichier `modeles/init.inc.php.modele`, le copier et le coller sous le nom `init.inc.php` (il faut donc enlever le `.modele` final du nom) à la racine du site.
 
@@ -86,13 +100,13 @@ pour:
 
 	http://www.nomDeDomaine.ext/$dossierAdmin/acces.admin.php
 
-#### Cas des serveurs de Free.fr
+##### Cas des serveurs de Free.fr
 
 Pour une installation de Squeletml sur un serveur de Free.fr, il faut effectuer en plus l'action suivante:
 
 - trouver la variable `$serveurFreeFr` et modifier sa valeur pour `TRUE`.
 
-### Protection de l'administration (fichiers `.htaccess` et `.acces`)
+#### Protection de l'administration (fichiers `.htaccess` et `.acces`)
 
 Trouver le fichier `modeles/.htaccess.modele`, le copier et le coller sous le nom `.htaccess` (il faut donc enlever le `.modele` final du nom) à la racine du site. Ensuite, visiter la page suivante:
 
@@ -100,11 +114,11 @@ Trouver le fichier `modeles/.htaccess.modele`, le copier et le coller sous le no
 
 et ajouter un utilisateur. Un fichier `.acces` sera créé à la racine de votre site Squeletml. Ce fichier contient la liste des utilisateurs.
 
-#### Cas des serveurs de Free.fr
+##### Cas des serveurs de Free.fr
 
 Si Squeletml est installé sur un serveur de Free.fr, le fichier à trouver est `modeles/.htaccess.free.fr.modele`. La suite est la même (copie et collage sous le nom `.htaccess` à la racine du site).
 
-#### Chemin des pages d'erreur
+##### Chemin des pages d'erreur
 
 Le fichier `.htaccess` contient entre autres l'adresse URL vers la page d'erreur 404 (toute personne tentant de visiter une page qui n'existe pas ou qui n'existe plus sur votre site sera redirigée vers cette page explicative). Si en visitant une page inexistante, vous ne voyez pas le contenu de la page d'erreur, ouvrez le fichier `.htaccess`, trouvez la ligne:
 
@@ -114,7 +128,7 @@ et modifiez `/404.php` par la bonne adresse URL, par exemple `http://www.nomDeDo
 
 D'autres pages d'erreur sont déclarées dans le `.htaccess`, comme celle pour l'erreur 401. Au besoin, modifier dans le `.htaccess` le chemin de toutes les pages d'erreur.
 
-### Déclaration de l'installation terminée
+#### Déclaration de l'installation terminée
 
 Créer un fichier vide `squeletml-est-installe.txt` dans le dossier `site/inc`, ce qui donne:
 
@@ -122,7 +136,7 @@ Créer un fichier vide `squeletml-est-installe.txt` dans le dossier `site/inc`, 
 
 L'installation par défaut passant par une page web sera ainsi désactivée.
 
-### Le fichier `robots.txt`
+#### Le fichier `robots.txt`
 
 Vous pouvez trouver le fichier `modeles/robots.txt.modele`, le copier et le coller sous le nom `robots.txt` (il faut donc enlever le `.modele` final du nom) à la racine du site.
 
@@ -520,6 +534,8 @@ Pour mettre à jour Squeletml:
 - Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom est `squeletml`.
 
 - Ensuite, sélectionnez et copiez tout le contenu de ce dossier, et collez la sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
+
+		**Important**: ne pas oublier d'afficher les fichiers cachés pour bien les sélectionner. Voir la section «Installation» pour plus de détails.
 
 Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer** les quelques fichiers de configuration à la racine (`.acces`, `.htaccess`, `init.inc.php` et `robots.txt`), le dossier `site`, qui contient votre configuration personnalisée, éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`) ainsi que les pages que vous avez vous-même ajoutées.
 
@@ -1260,7 +1276,7 @@ Le cron permet d'effectuer certaines tâches de maintenance:
 
 - génération du cache des flux RSS des dernières publications et des derniers ajouts aux galeries, ainsi que de chaque catégorie et galerie. Chaque page individuelle d'une image dans une galerie est également mise en cache. Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site.
 
-- génération du fichier Sitemap des galeries. Les galeries prises en compte sont celles listées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries (`site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`). Si le fichier d'index Sitemap n'existe pas, il sera créé. De même, si le fichier d'index Sitemap n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
+- génération des fichiers Sitemap du site et des galeries. Les galeries prises en compte sont celles listées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries (`site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`). Si le fichier d'index Sitemap n'existe pas, il sera créé. De même, si le fichier d'index Sitemap n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
 
 ### Lancement du cron
 
