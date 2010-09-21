@@ -39,8 +39,8 @@ $adminBoitesDeroulantesAlaMainParDefaut = TRUE; // TRUE|FALSE
 - L'infobulle apparaît lors du survol du curseur au-dessus de l'icône des propriétés d'un dossier ou d'un fichier, et contient plusieurs informations sur ce dernier.
 - Note: lors du listage de dossiers contenant beaucoup de fichiers, cette option peut ralentir considérablement l'affichage de la page. C'est la raison pour laquelle il peut être intéressant de la désactiver.
 */
-$adminActiverInfobulle['contenuDossier']   = TRUE; // TRUE|FALSE
-$adminActiverInfobulle['listeDesDossiers'] = TRUE; // TRUE|FALSE
+$adminActiverInfobulle['contenuDossier']   = FALSE; // TRUE|FALSE
+$adminActiverInfobulle['listeDesDossiers'] = FALSE; // TRUE|FALSE
 $adminActiverInfobulle['apercuGalerie']    = TRUE; // TRUE|FALSE
 
 // Inclusion du bas de page.
@@ -171,7 +171,7 @@ $adminTypeFiltreAccesDossiers = 'dossiersExclus';
 $adminFiltreAccesDossiers = '../.bzr';
 
 // Listage des sous-dossiers dans la liste des dossiers.
-$adminListerSousDossiersDansListe = FALSE; // TRUE|FALSE
+$adminListerSousDossiersDansListe = TRUE; // TRUE|FALSE
 
 // Listage du contenu des sous-dossiers lors de l'affichage du contenu d'un dossier.
 $adminListerSousDossiersDansContenu = FALSE; // TRUE|FALSE
