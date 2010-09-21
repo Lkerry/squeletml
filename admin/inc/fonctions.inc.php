@@ -1261,12 +1261,12 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		$dimensionsImage = FALSE;
 	}
 	
-	if ($apercu && !gdEstInstallee())
+	if ($apercu && (!gdEstInstallee() || ($typeMime != 'image/gif' && $typeMime != 'image/jpeg' && $typeMime != 'image/png')))
 	{
 		$apercu = FALSE;
 	}
 	
-	if ($apercu && ($typeMime == 'image/gif' || $typeMime == 'image/jpeg' || $typeMime == 'image/png'))
+	if ($apercu)
 	{
 		// S'il n'existe pas déjà, l'aperçu est enregistré dans le dossier de cache de l'administration. On vérifie toutefois avant si on doit vider le cache (taille limite dépassée).
 		
