@@ -47,9 +47,9 @@ else
 	$tableauFiltresAccesDossiers = array ();
 }
 
-if (!empty($adminFiltreAffichageDossiers))
+if (!empty($adminFiltreAffichageContenuDossiers))
 {
-	$tableauFiltresAffichageDossiers = explode('|', $adminFiltreAffichageDossiers);
+	$tableauFiltresAffichageDossiers = explode('|', $adminFiltreAffichageContenuDossiers);
 	$tableauFiltresAffichageDossiers = adminTableauCheminsCanoniques($tableauFiltresAffichageDossiers);
 }
 else
@@ -88,6 +88,21 @@ else
 {
 	$dossierCourantDansUrl = '';
 }
+
+// Liste des dossiers.
+
+$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, TRUE);
+
+if ($adminListerSousDossiersDansListe)
+{
+	$listeDossiersPourListe = $listeDossiers;
+}
+else
+{
+	$listeDossiersPourListe = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansListe);
+}
+
+$majListeDossiers = FALSE;
 
 /* ____________________ Début de l'affichage du porte-documents. ____________________ */
 
@@ -140,7 +155,6 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie'])
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
 		echo '<p><label for="selectPorteDocumentsCopieChemin">' . T_("Emplacement:") . '</label><br />' . "\n" . '<select id="selectPorteDocumentsCopieChemin" name="porteDocumentsCopieChemin" size="1">' . "\n";
-		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		
 		foreach ($listeDossiers as $valeur)
 		{
@@ -203,6 +217,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 	}
 	else
 	{
+		$majListeDossiers = TRUE;
 		$fichiersAcopier = securiseTexte($_POST['porteDocumentsFichiers']);
 		$fichiersAcopier = adminEmplacementsPermis($fichiersAcopier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAcopier = adminEmplacementsModifiables($fichiersAcopier, $adminDossierRacinePorteDocuments);
@@ -283,7 +298,6 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
 		echo '<p><label for="selectPorteDocumentsDeplacementChemin">' . T_("Emplacement:") . '</label><br />' . "\n" . '<select id="selectPorteDocumentsDeplacementChemin" name="porteDocumentsDeplacementChemin" size="1">' . "\n";
-		$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		
 		foreach ($listeDossiers as $valeur)
 		{
@@ -345,6 +359,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 	}
 	else
 	{
+		$majListeDossiers = TRUE;
 		$fichiersAdeplacer = securiseTexte($_POST['porteDocumentsFichiers']);
 		$fichiersAdeplacer = adminEmplacementsPermis($fichiersAdeplacer, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAdeplacer = adminEmplacementsModifiables($fichiersAdeplacer, $adminDossierRacinePorteDocuments);
@@ -440,6 +455,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 	}
 	else
 	{
+		$majListeDossiers = TRUE;
 		$fichiersAsupprimer = securiseTexte($_POST['porteDocumentsFichiers']);
 		$fichiersAsupprimer = adminEmplacementsPermis($fichiersAsupprimer, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 		$fichiersAsupprimer = adminEmplacementsModifiables($fichiersAsupprimer, $adminDossierRacinePorteDocuments);
@@ -889,6 +905,8 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 	}
 	else
 	{
+		$majListeDossiers = TRUE;
+		
 		if (!file_exists(dirname($nouveauNom)))
 		{
 			$messagesScript .= adminMkdir(dirname($nouveauNom), octdec(755), TRUE);
@@ -995,6 +1013,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 		{
 			if ($fichierAcreerType == 'Dossier')
 			{
+				$majListeDossiers = TRUE;
 				$messagesScript .= adminMkdir($fichierAcreerNom, octdec(755), TRUE);
 			}
 			elseif ($fichierAcreerType == 'FichierVide' || $fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
@@ -1436,6 +1455,20 @@ echo "</div><!-- /#boiteMessages -->\n";
 ##
 ########################################################################
 
+if ($majListeDossiers)
+{
+	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, TRUE);
+	
+	if ($adminListerSousDossiersDansListe)
+	{
+		$listeDossiersPourListe = $listeDossiers;
+	}
+	else
+	{
+		$listeDossiersPourListe = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansListe);
+	}
+}
+
 echo '<form action="' . $adminAction . '#messages" method="post">' . "\n";
 echo "<div>\n";
 
@@ -1530,7 +1563,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	else
 	{
 		$dossierDeDepartAparcourir = $dossierAparcourir;
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiers, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansContenu, $adminTypeFiltreAffichageContenuDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1574,15 +1607,24 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 
 echo '<div class="sousBoite">' . "\n";
 echo '<div id="divListeDossiersAdminPorteDoc">' . "\n";
-echo '<h3 id="listeDossiers" class="bDtitre">' . T_("Liste des dossiers") . "</h3>\n";
+echo '<h3 id="listeDossiers" class="bDtitre">';
 
-$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
+if ($adminListerSousDossiersDansListe)
+{
+	echo T_("Liste des dossiers");
+}
+else
+{
+	echo T_("Liste des dossiers de premier niveau");
+}
+
+echo "</h3>\n";
 
 echo "<ul class=\"bDcorps afficher porteDocumentsListe porteDocumentsListeDernierNiveau\">\n";
 
 $classe = 'impair';
 
-foreach ($listeDossiers as $listeDossier)
+foreach ($listeDossiersPourListe as $listeDossier)
 {
 	$dossierMisEnForme = '';
 	$dossierMisEnForme .= "<li class=\"$classe\">";
@@ -1697,7 +1739,6 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	echo '<p><label for="inputPorteDocumentsAjouterFichier">' . T_("Fichier:") . "</label><br />\n" . '<input id="inputPorteDocumentsAjouterFichier" type="file" name="porteDocumentsAjouterFichier" size="25"/>' . "</p>\n";
 	
 	echo '<p><label for="selectPorteDocumentsAjouterDossier">' . T_("Dossier:") . "</label><br />\n" . '<select id="selectPorteDocumentsAjouterDossier" name="porteDocumentsAjouterDossier" size="1">' . "\n";
-	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 	
 	foreach ($listeDossiers as $valeur)
 	{
@@ -1749,7 +1790,6 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<p>' . sprintf(T_("<label for=\"%1\$s\">Chemin</label> et <label for=\"%2\$s\">nom</label>:"), "selectPorteDocumentsCreationChemin", "inputPorteDocumentsCreationNom") . "<br />\n";
 
 	echo '<select id="selectPorteDocumentsCreationChemin" name="porteDocumentsCreationChemin" size="1">' . "\n";
-	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
 	
 	foreach ($listeDossiers as $valeur)
 	{

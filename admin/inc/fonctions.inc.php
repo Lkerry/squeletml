@@ -616,7 +616,7 @@ function adminDossierEstVide($cheminDossier)
 /*
 Retourne TRUE si le dossier fourni est affichable, sinon retourne FALSE.
 */
-function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers)
+function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageContenuDossiers, $tableauFiltresAffichageDossiers)
 {
 	$adminDossierRacinePorteDocuments = realpath($adminDossierRacinePorteDocuments);
 	
@@ -625,11 +625,11 @@ function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorte
 		$emplacement = realpath($dossierAparcourir);
 	} while ($emplacement === FALSE && $dossierAparcourir = dirname($dossierAparcourir));
 	
-	if ($emplacement == $adminDossierRacinePorteDocuments || empty($adminTypeFiltreAffichageDossiers))
+	if ($emplacement == $adminDossierRacinePorteDocuments || empty($adminTypeFiltreAffichageContenuDossiers))
 	{
 		return TRUE;
 	}
-	elseif ($adminTypeFiltreAffichageDossiers == 'dossiersAffiches')
+	elseif ($adminTypeFiltreAffichageContenuDossiers == 'dossiersAffiches')
 	{
 		foreach ($tableauFiltresAffichageDossiers as $dossierFiltre)
 		{
@@ -639,7 +639,7 @@ function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorte
 			}
 		}
 	}
-	elseif ($adminTypeFiltreAffichageDossiers == 'dossiersNonAffiches')
+	elseif ($adminTypeFiltreAffichageContenuDossiers == 'dossiersNonAffiches')
 	{
 		$aAjouter = TRUE;
 		
@@ -1333,10 +1333,8 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 /*
 Retourne sous forme de tableau la liste des dossiers et fichiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Les dossiers ou fichiers dont l'accès a échoué ne sont pas retournés.
 */
-function adminListeFichiers($dossier)
+function adminListeFichiers($dossier, $liste = array ())
 {
-	static $liste = array ();
-	
 	if (is_dir($dossier) && $fic = @opendir($dossier))
 	{
 		$liste[] = $dossier;
@@ -1347,7 +1345,7 @@ function adminListeFichiers($dossier)
 			{
 				if (is_dir($dossier . '/' . $fichier))
 				{
-					adminListeFichiers($dossier . '/' . $fichier);
+					$liste = adminListeFichiers($dossier . '/' . $fichier, $liste);
 				}
 				else
 				{
@@ -1365,12 +1363,10 @@ function adminListeFichiers($dossier)
 }
 
 /*
-Retourne la liste filtrée des dossiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
+Retourne la liste filtrée des dossiers contenus dans un emplacement fourni en paramètre. L'analyse est potentiellement récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers)
+function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiers, $liste = array ())
 {
-	static $liste = array ();
-	
 	if (adminEmplacementPermis($dossierAlister, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		if (!in_array($dossierAlister, $liste))
@@ -1389,7 +1385,10 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 						$liste[] = $dossierAlister . '/' . $fichier;
 					}
 					
-					adminListeFiltreeDossiers($dossierAlister . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers);
+					if ($adminListerSousDossiers)
+					{
+						$liste = adminListeFiltreeDossiers($dossierAlister . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiers, $liste);
+					}
 				}
 			}
 		
@@ -1408,10 +1407,9 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 /*
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient s'il y a lieu les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiers, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage)
+function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansContenu, $adminTypeFiltreAffichageContenuDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste = array ())
 {
 	$racine = dirname($racineAdmin);
-	static $liste = array ();
 	
 	if (adminEmplacementPermis($dossierAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers) && $dossier = @opendir($dossierAparcourir))
 	{
@@ -1434,13 +1432,13 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					{
 						$liste[$dossierAparcourir . '/' . $fichier][] = T_("Vide.");
 					}
-					elseif (!$adminListerSousDossiers || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers)))
+					elseif (!$adminListerSousDossiersDansContenu || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageContenuDossiers, $tableauFiltresAffichageDossiers) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageContenuDossiers, $tableauFiltresAffichageDossiers)))
 					{
 						$liste[$dossierAparcourir . '/' . $fichier][] = sprintf(T_("Affichage désactivé. <a href=\"%1\$s\">Lister ce dossier.</a>"), "porte-documents.admin.php?action=parcourir&valeur=$dossierAparcourir/$fichier&amp;dossierCourant=$dossierAparcourir/$fichier#fichiersEtDossiers");
 					}
 					else
 					{
-						adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir . '/' . $fichier, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiers, $adminTypeFiltreAffichageDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+						$liste = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir . '/' . $fichier, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansContenu, $adminTypeFiltreAffichageContenuDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste);
 					}
 				}
 				else
