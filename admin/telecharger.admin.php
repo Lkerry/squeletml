@@ -25,14 +25,28 @@ if ($adminPorteDocumentsDroits['telecharger'] && adminEmplacementPermis($_GET['f
 			if (is_dir($chemin))
 			{
 				$dossierDeSauvegarde = $racine . '/site/' . $dossierAdmin . '/cache';
-				$date = '';
+				$nomArchive = '';
+				
+				if (preg_match('/^\.+$/', $nom))
+				{
+					$nomArchive .= '_' . $nom . '_';
+				}
+				else
+				{
+					$nomArchive .= $nom;
+				}
 				
 				if (isset($_GET['action']) && $_GET['action'] == 'date')
 				{
-					$date = '_' . date('Y-m-d_H:i:s');
+					if (substr($nomArchive, -1) !== '_')
+					{
+						$nomArchive .= '_';
+					}
+					
+					$nomArchive .= date('Y-m-d_H:i:s');
 				}
 				
-				$nomArchive = $nom . $date . '.tar';
+				$nomArchive .= '.tar';
 				$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
 				$archive = new tar($cheminArchive);
 				$listeFichiers = adminListeFichiers($chemin);
