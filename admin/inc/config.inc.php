@@ -138,8 +138,6 @@ $adminAction = $_SERVER['SCRIPT_NAME'];
 */
 $adminSymboleUrl = '?';
 
-/* ____________________ Liste des fichiers et dossiers. ____________________ */
-
 // Dossier racine contenant les fichiers (sans / à la fin).
 /*
 - Le chemin peut être absolu ou bien relatif à partir du dossier racine de l'administration (valeur de `$racineAdmin`).
@@ -149,6 +147,8 @@ $adminSymboleUrl = '?';
   $adminDossierRacinePorteDocuments = '../site';
 */
 $adminDossierRacinePorteDocuments = '..';
+
+/* ____________________ Accès aux dossiers. ____________________ */
 
 // Filtre d'accès aux dossiers.
 /*
@@ -170,28 +170,46 @@ $adminTypeFiltreAccesDossiers = 'dossiersExclus';
 */
 $adminFiltreAccesDossiers = '../.bzr';
 
-// Listage des sous-dossiers dans la liste des dossiers.
-$adminListerSousDossiersDansListe = TRUE; // TRUE|FALSE
+/* ____________________ Liste des dossiers. ____________________ */
 
-// Listage du contenu des sous-dossiers lors de l'affichage du contenu d'un dossier.
-$adminListerSousDossiersDansContenu = FALSE; // TRUE|FALSE
+// Affichage des sous-dossiers dans la liste des dossiers.
+$adminAfficherSousDossiersDansListe = TRUE; // TRUE|FALSE
 
-// Si `$adminListerSousDossiersDansContenu` vaut TRUE, filtre d'affichage du contenu des dossiers.
+// Filtre d'affichage de la liste des dossiers.
 /*
-- Il est possible d'appliquer un filtre d'affichage du contenu des dossiers du site. Un dossier dont l'affichage de son contenu est désactivé est quand même accessible par le porte-documents et téléchargeable; son contenu n'est simplement pas listé par défaut dans le porte-documents, ce qui allège l'utilisation de cet outil.
+- Il est possible d'appliquer un filtre d'affichage de la liste des dossiers. Un dossier dont l'affichage est désactivé est quand même accessible par le porte-documents et téléchargeable; il n'est simplement pas listé par défaut dans la liste des dossiers, ce qui allège l'utilisation de cet outil.
 - Pour ne préciser que les dossiers à prendre en compte, mettre 'dossiersAffiches'
 - Pour ne préciser que les dossiers à exclure, mettre 'dossiersNonAffiches'
 - Pour ne pas appliquer de filtre, laisser la variable vide, c'est-à-dire:
-  $adminTypeFiltreAffichageContenuDossiers = '';
+  $adminTypeFiltreAffichageDansListe = '';
 */
-$adminTypeFiltreAffichageContenuDossiers = 'dossiersNonAffiches';
+$adminTypeFiltreAffichageDansListe = 'dossiersNonAffiches';
+
+// Dossiers à prendre en compte dans le filtre d'affichage de la liste des dossiers.
+/*
+- Si la variable `$adminTypeFiltreAffichageDansListe` est vide, aucun filtre ne sera appliqué.
+- Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
+*/
+$adminFiltreAffichageDansListe = '../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../fichiers/coins|../fichiers/galeries|../inc/filter_htmlcorrector|../inc/htmlpurifier|../inc/mimedetect|../inc/node_teaser|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/rolling-curl|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale/en_US|../locale/fr_CA|../modeles/site|../piwik|../scripts|../src';
+
+/* ____________________ Sous-dossiers dans le contenu d'un dossier. ____________________ */
+
+// Lors de l'affichage du contenu d'un dossier, affichage du contenu des sous-dossiers.
+$adminAfficherSousDossiersDansContenu = TRUE; // TRUE|FALSE
+
+// Si `$adminAfficherSousDossiersDansContenu` vaut TRUE, filtre d'affichage du contenu des dossiers.
+/*
+- Il est possible d'appliquer un filtre d'affichage du contenu des dossiers. Un dossier dont l'affichage de son contenu est désactivé est quand même accessible par le porte-documents et téléchargeable; son contenu n'est simplement pas listé par défaut dans le porte-documents.
+- Voir les explication de la variable `$adminTypeFiltreAffichageDansListe` dans le présent fichier de configuration pour la syntaxe à utiliser.
+*/
+$adminTypeFiltreAffichageDansContenu = 'dossiersNonAffiches';
 
 // Dossiers à prendre en compte dans le filtre d'affichage du contenu des dossiers.
 /*
-- Si la variable `$adminTypeFiltreAffichageContenuDossiers` est vide, aucun filtre ne sera appliqué.
+- Si la variable `$adminTypeFiltreAffichageDansContenu` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageContenuDossiers = '../admin|../css|../doc|../fichiers|../inc|../js|../locale|../modeles|../scripts|../site/admin/cache|../site/cache|../site/fichiers/galeries|../src|../xhtml';
+$adminFiltreAffichageDansContenu = '../admin|../css|../doc|../fichiers|../inc|../js|../locale|../modeles|../piwik|../scripts|../site/admin/cache|../site/cache|../site/fichiers/galeries|../src|../xhtml';
 
 /* ____________________ Ajout de fichiers. ____________________ */
 

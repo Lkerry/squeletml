@@ -47,14 +47,24 @@ else
 	$tableauFiltresAccesDossiers = array ();
 }
 
-if (!empty($adminFiltreAffichageContenuDossiers))
+if (!empty($adminFiltreAffichageDansListe))
 {
-	$tableauFiltresAffichageDossiers = explode('|', $adminFiltreAffichageContenuDossiers);
-	$tableauFiltresAffichageDossiers = adminTableauCheminsCanoniques($tableauFiltresAffichageDossiers);
+	$tableauFiltresAffichageDansListe = explode('|', $adminFiltreAffichageDansListe);
+	$tableauFiltresAffichageDansListe = adminTableauCheminsCanoniques($tableauFiltresAffichageDansListe);
 }
 else
 {
-	$tableauFiltresAffichageDossiers = array ();
+	$tableauFiltresAffichageDansListe = array ();
+}
+
+if (!empty($adminFiltreAffichageDansContenu))
+{
+	$tableauFiltresAffichageDansContenu = explode('|', $adminFiltreAffichageDansContenu);
+	$tableauFiltresAffichageDansContenu = adminTableauCheminsCanoniques($tableauFiltresAffichageDansContenu);
+}
+else
+{
+	$tableauFiltresAffichageDansContenu = array ();
 }
 
 if (isset($_GET['valeur']))
@@ -91,15 +101,15 @@ else
 
 // Liste des dossiers.
 
-$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, TRUE);
+$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminTypeFiltreAffichageDansListe, $tableauFiltresAffichageDansListe, TRUE);
 
-if ($adminListerSousDossiersDansListe)
+if ($adminAfficherSousDossiersDansListe)
 {
 	$listeDossiersPourListe = $listeDossiers;
 }
 else
 {
-	$listeDossiersPourListe = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansListe);
+	$listeDossiersPourListe = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminTypeFiltreAffichageDansListe, $tableauFiltresAffichageDansListe, $adminAfficherSousDossiersDansListe);
 }
 
 $majListeDossiers = FALSE;
@@ -1457,15 +1467,15 @@ echo "</div><!-- /#boiteMessages -->\n";
 
 if ($majListeDossiers)
 {
-	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, TRUE);
+	$listeDossiers = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminTypeFiltreAffichageDansListe, $tableauFiltresAffichageDansListe, TRUE);
 	
-	if ($adminListerSousDossiersDansListe)
+	if ($adminAfficherSousDossiersDansListe)
 	{
 		$listeDossiersPourListe = $listeDossiers;
 	}
 	else
 	{
-		$listeDossiersPourListe = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansListe);
+		$listeDossiersPourListe = adminListeFiltreeDossiers($adminDossierRacinePorteDocuments, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminTypeFiltreAffichageDansListe, $tableauFiltresAffichageDansListe, $adminAfficherSousDossiersDansListe);
 	}
 }
 
@@ -1563,7 +1573,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	else
 	{
 		$dossierDeDepartAparcourir = $dossierAparcourir;
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminListerSousDossiersDansContenu, $adminTypeFiltreAffichageContenuDossiers, $tableauFiltresAffichageDossiers, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1609,7 +1619,7 @@ echo '<div class="sousBoite">' . "\n";
 echo '<div id="divListeDossiersAdminPorteDoc">' . "\n";
 echo '<h3 id="listeDossiers" class="bDtitre">';
 
-if ($adminListerSousDossiersDansListe)
+if ($adminAfficherSousDossiersDansListe)
 {
 	echo T_("Liste des dossiers");
 }
