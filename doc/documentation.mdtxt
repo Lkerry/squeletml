@@ -8,7 +8,7 @@ Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est u
 
 - Pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
 
-- Pour générer automatiquement des vignettes ou redimensionner des images d'une galerie, la bibliothèque GD doit être installée.
+- Pour générer automatiquement des vignettes ou redimensionner des images d'une galerie, la bibliothèque GD doit être installée (par exemple, sous Ubuntu 10.04, vérifier que le paquet `php5-gd` est installé).
 
 - Pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible.
 
@@ -827,7 +827,7 @@ La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières pu
 
 	$dernieresImages = publicationsRecentes($racine, $urlRacine, $langueParDefaut, LANGUE, 'galerie', "chiens", 5, TRUE, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 
-Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième paramètre vaut `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
+Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième argument vaut `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
 Pour les types de publication `categorie` et `site`, la fonction renvoie une liste de titres pointant vers la page en question.
 

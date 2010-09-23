@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-09-22 14:11-0400\n"
+"POT-Creation-Date: 2010-09-23 12:44-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -2889,8 +2889,8 @@ msgstr "Version de Squeletml: %1$s"
 
 #: admin/versions.admin.php:34
 #, php-format
-msgid "(<a href=\"%1$s\">la version %2$s est disponible</a>)"
-msgstr "(<a href=\"%1$s\">la version %2$s est disponible</a>)"
+msgid "(<a href=\"%1$s\"><strong>la version %2$s est disponible</strong></a>)"
+msgstr "(<a href=\"%1$s\"><strong>la version %2$s est disponible</strong></a>)"
 
 #: admin/versions.admin.php:38
 msgid "(il s'agit de la dernière version publiée)"

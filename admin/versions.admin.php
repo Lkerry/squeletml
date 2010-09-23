@@ -31,7 +31,7 @@ if (!empty($versionActuelleSqueletml))
 		
 		if (($tableauDerniereVersionSqueletml[0] > $tableauVersionActuelleSqueletml[0]) || ($tableauDerniereVersionSqueletml[1] > $tableauVersionActuelleSqueletml[1]) || ($tableauDerniereVersionSqueletml[2] > $tableauVersionActuelleSqueletml[2]))
 		{
-			$contenuLiVersion .= sprintf(T_("(<a href=\"%1\$s\">la version %2\$s est disponible</a>)"), URL_TELECHARGEMENT_SQUELETML, $derniereVersionSqueletml);
+			$contenuLiVersion .= sprintf(T_("(<a href=\"%1\$s\"><strong>la version %2\$s est disponible</strong></a>)"), URL_TELECHARGEMENT_SQUELETML, $derniereVersionSqueletml);
 		}
 		elseif ($derniereVersionSqueletml == $versionActuelleSqueletml)
 		{

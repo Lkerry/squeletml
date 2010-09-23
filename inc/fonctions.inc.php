@@ -462,7 +462,7 @@ function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier)
 }
 
 /*
-Prend en argument un contenu qui sera retourné balisé pour apparaître dans une boîte avec des coins arrondis.
+Prend en paramètre une chaîne de caractères, qui sera retournée balisée pour apparaître dans une boîte avec des coins arrondis.
 */
 function boiteArrondie($contenu)
 {
