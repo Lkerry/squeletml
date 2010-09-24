@@ -5092,9 +5092,9 @@ devient:
 
 	$tableauGalerie = array (
 		array (
-		'intermediaireNom' => 'image1.png',
-		'id' => 1,
-		'vignetteNom' => 'image1Mini.png',
+			'intermediaireNom' => 'image1.png',
+			'id' => 1,
+			'vignetteNom' => 'image1Mini.png',
 		),
 	);
 

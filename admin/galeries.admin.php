@@ -1205,7 +1205,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $id), TRUE);
+				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $id));
 				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $id;
 				$nombreDimages = count($tableauGalerie);
 				$corpsGalerie = '';
