@@ -8,7 +8,7 @@ if (
 	$adminPorteDocumentsDroits['editer'] &&
 	(
 		(isset($_GET['action']) && $_GET['action'] == 'editer') ||
-		isset($_POST['porteDocumentsEditionAnnulation']) || isset($_POST['porteDocumentsEditionSauvegarder'])
+		isset($_POST['porteDocumentsEditionAnnuler']) || isset($_POST['porteDocumentsEditionSauvegarder'])
 	)
 )
 {
@@ -698,7 +698,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 		
 		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 		echo "<div>\n";
-		echo '<p><input type="submit" name="porteDocumentsEditionAnnulation" value="' . T_("Annuler") . '" />' . "</p>\n";
+		echo '<p><input type="submit" name="porteDocumentsEditionAnnuler" value="' . T_("Annuler") . '" />' . "</p>\n";
 		
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . $getValeur . '" />' . "\n";
 		
@@ -717,7 +717,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 
 /* ____________________ Annulation d'édition. ____________________ */
 
-if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionAnnulation']))
+if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionAnnuler']))
 {
 	$messagesScript = '';
 	$porteDocumentsEditionNom = securiseTexte($_POST['porteDocumentsEditionNom']);
@@ -756,7 +756,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 		if ($_POST['porteDocumentsEditionJeton'] != $_SESSION['jeton'])
 		{
 			$messageErreurEditionAafficher = TRUE;
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("La demande de modification du fichier %1\$s ne peut aboutir. Il peut y avoir deux raisons à ce problème:\n<ul>\n<li>votre session a expiré. Dans ce cas, copiez le contenu qui devait être sauvegardé et tentez à nouveau d'éditer le fichier;</li>\n<li>la demande ne provient pas du serveur hébergeant le porte-documents. Vérifiez dans ce cas que vous n'êtes pas la cible d'une attaque de type <acronym lang=\"en\" title=\"Cross-site request forgery\">CSRF</acronym> (<a href=\"http://fr.wikipedia.org/wiki/CSRF\">voir la définition de «<acronym lang=\"en\">CSRF</acronym>» sur Wikipédia</a>). Vérifiez entre autre que le contenu qui allait être sauvegardé ne renferme pas de code malicieux.</li>\n</ul>\n"), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La demande de modification du fichier %1\$s ne peut aboutir. Il peut y avoir deux raisons à ce problème:\n<ul>\n<li>votre session a expiré. Dans ce cas, copiez le contenu qui devait être sauvegardé et tentez à nouveau d'éditer le fichier;</li>\n<li>la demande ne provient pas du serveur hébergeant l'administration de votre site. Vérifiez dans ce cas que vous n'êtes pas la cible d'une attaque de type <acronym lang=\"en\" title=\"Cross-site request forgery\">CSRF</acronym> (<a href=\"http://fr.wikipedia.org/wiki/CSRF\">voir la définition de «<acronym lang=\"en\">CSRF</acronym>» sur Wikipédia</a>). Vérifiez entre autre que le contenu qui allait être sauvegardé ne renferme pas de code malicieux.</li>\n</ul>\n"), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 		}
 		elseif ($fic = @fopen($porteDocumentsEditionNom, 'w'))
 		{

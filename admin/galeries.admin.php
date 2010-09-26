@@ -1,5 +1,26 @@
 <?php
 include 'inc/zero.inc.php';
+
+// Jeton utilisé pour vérifier la provenance d'un formulaire complété de configuration graphique d'une galerie.
+if ((isset($_GET['action']) && $_GET['action'] == 'editer') || isset($_POST['porteDocumentsEditionAnnuler']) || isset($_POST['porteDocumentsEditionSauvegarder']))
+{
+	session_start();
+	
+	if (!isset($_SESSION['jeton']))
+	{
+		$_SESSION['jeton'] = md5(uniqid(mt_rand(), TRUE));
+		
+		if (isset($_POST['id']))
+		{
+			$_SESSION['jeton'] .= md5($_POST['id']);
+		}
+		elseif (isset($_GET['id']))
+		{
+			$_SESSION['jeton'] .= md5($_GET['id']);
+		}
+	}
+}
+
 $baliseTitle = T_("Galeries");
 $boitesDeroulantes = '#ajoutParametresAdminGaleries';
 $boitesDeroulantes .= ' .aideAdminGaleries .autresParametres .configGraphiqueListeParametres';
@@ -113,6 +134,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						if ($cheminConfigGalerie && gdEstInstallee())
 						{
 							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $fichier), TRUE);
+							$tableauGalerie = securiseTexte($tableauGalerie);
 							$racineImgSrc = $racine . '/site/fichiers/galeries/' . $fichier;
 							$nombreDimages = count($tableauGalerie);
 							$corpsMinivignettes = '';
@@ -1229,7 +1251,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$vignette = '';
 					}
 					
-					$intermediaireNom = $tableauGalerie[$i]['intermediaireNom'];
+					$intermediaireNom = securiseTexte($tableauGalerie[$i]['intermediaireNom']);
 					
 					$config = '';
 					$config .= "<div class=\"configGraphiqueListeParametres\">\n";
@@ -1245,7 +1267,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 						if (!empty($tableauGalerie[$i][$parametre]))
 						{
-							$contenuParametre = $tableauGalerie[$i][$parametre];
+							$contenuParametre = securiseTexte($tableauGalerie[$i][$parametre]);
 						}
 					
 						$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . $contenuParametre . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '">' . "<code>$parametre</code></label></li>\n";
@@ -1260,7 +1282,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 						if (!empty($tableauGalerie[$i][$parametre]))
 						{
-							$contenuParametre = $tableauGalerie[$i][$parametre];
+							$contenuParametre = securiseTexte($tableauGalerie[$i][$parametre]);
 						}
 					
 						$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . $contenuParametre . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '">' . "<code>$parametre</code></label></li>\n";
@@ -1283,7 +1305,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$corpsGalerie .= "</ul>\n";
 				
 				$corpsGalerie .= "<div class=\"sep\"></div>\n";
-
+				
+				$corpsGalerie .= '<input type="hidden" name="configGraphiqueJeton" value="' . $_SESSION['jeton'] . '" />' . "\n";
+				
 				$corpsGalerie .= '<p><input id="configGraphiqueMaj" type="submit" name="configGraphiqueMaj" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
 				$corpsGalerie .= "</div>\n";
 				$corpsGalerie .= "</form>\n";
@@ -1315,6 +1339,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			else
 			{
 				$contenuFichier = '';
+				$contenuFichierAafficher = '';
 				
 				foreach ($_POST['configGraphiqueVignettes'] as $intermediaireNom)
 				{
@@ -1362,24 +1387,32 @@ include $racineAdmin . '/inc/premier.inc.php';
 					else
 					{
 						$contenuFichier .= "[$intermediaireNom]\n";
+						$contenuFichierAafficher .= "[$intermediaireNom]\n";
 						
 						foreach ($_POST['parametres'][$i] as $parametre => $valeur)
 						{
 							if (!empty($valeur))
 							{
-								$contenuFichier .= securiseTexte($parametre) . '=' . securiseTexte($valeur) . "\n";
+								$contenuFichier .= securiseTexte($parametre) . '=' . $valeur . "\n";
+								$contenuFichierAafficher .= securiseTexte($parametre) . '=' . securiseTexte($valeur) . "\n";
 							}
 						}
 						
 						$contenuFichier .= "\n";
+						$contenuFichierAafficher .= "\n";
 					}
 				}
 				
 				$contenuFichier = trim($contenuFichier);
+				$contenuFichierAafficher = trim($contenuFichierAafficher);
 				
 				$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
 				
-				if (file_exists($cheminConfigGalerie))
+				if ($_POST['configGraphiqueJeton'] != $_SESSION['jeton'])
+				{
+					$messagesScript .= '<div class="erreur">' . sprintf(T_("La demande de modification du fichier %1\$s ne peut aboutir. Il peut y avoir deux raisons à ce problème:\n<ul>\n<li>votre session a expiré. Dans ce cas, copiez le contenu qui devait être sauvegardé et tentez à nouveau d'éditer le fichier;</li>\n<li>la demande ne provient pas du serveur hébergeant l'administration de votre site. Vérifiez dans ce cas que vous n'êtes pas la cible d'une attaque de type <acronym lang=\"en\" title=\"Cross-site request forgery\">CSRF</acronym> (<a href=\"http://fr.wikipedia.org/wiki/CSRF\">voir la définition de «<acronym lang=\"en\">CSRF</acronym>» sur Wikipédia</a>). Vérifiez entre autre que le contenu qui allait être sauvegardé ne renferme pas de code malicieux.</li>\n</ul>\n"), "<code>$cheminConfigGalerie</code>") . "</div>\n";
+				}
+				elseif (file_exists($cheminConfigGalerie))
 				{
 					if (@file_put_contents($cheminConfigGalerie, $contenuFichier) !== FALSE)
 					{
@@ -1400,7 +1433,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 
 				$messagesScript .= "<div class=\"bDcorps afficher\">\n";
-				$messagesScript .= '<pre id="contenuFichierConfigGraphique">' . $contenuFichier . "</pre>\n";
+				$messagesScript .= '<pre id="contenuFichierConfigGraphique">' . $contenuFichierAafficher . "</pre>\n";
 		
 				$messagesScript .= "<ul>\n";
 				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierConfigGraphique');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
