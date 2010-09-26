@@ -113,29 +113,38 @@ $codePhp = "<?php
 
 <?php
 $chaine = <<<CHAINE
+<div style="margin-left: 50px;">
 <p>L'<strong>hiver</strong> arrive à grands pas!</p><!-- Fin du premier paragraphe. -->
 
 <p>Le <strong>printemps</strong> suivra.
+</div>
 CHAINE;
 
-$codeSansCommentaire = supprimeCommentairesHtml($chaine);
+$chaineSecurisee = securiseTexte($chaine);
+$chaineSansCom = supprimeCommentairesHtml($chaine);
+$chaineSansComCorrigee = corrigeHtml($chaineSansCom);
+$chaineSansComCorrigeeEtSecurisee = securiseTexte($chaineSansComCorrigee);
 ?>
 
 <p>Voici maintenant une chaîne de caractères sécurisée:</p>
 
-<p><?php echo securiseTexte($chaine) ?></p>
+<p><?php echo $chaineSecurisee ?></p>
 
 <p>Affichons un peu mieux la chaîne:</p>
 
-<pre><?php echo securiseTexte($chaine) ?></pre>
+<pre><?php echo $chaineSecurisee ?></pre>
 
 <p>Et si on ne voulait pas de commentaire HTML?</p>
 
-<pre><?php echo securiseTexte($codeSansCommentaire); ?></pre>
+<pre><?php echo securiseTexte($chaineSansCom); ?></pre>
 
 <p>Oups! On remarque qu'un parapraphe n'a pas été fermé. Voici le code HTML corrigé:</p>
 
-<pre><?php echo securiseTexte(corrigeHtml($codeSansCommentaire)); ?></pre>
+<pre><?php echo $chaineSansComCorrigeeEtSecurisee; ?></pre>
+
+<p>Pour terminer, désécurisons la chaîne précédemment sécurisée:</p>
+
+<?php echo desecuriseTexte($chaineSansComCorrigeeEtSecurisee); ?>
 
 <?php
 $phrase = "L'hiver arrive, le vent se lève";
@@ -160,7 +169,7 @@ MARKDOWN;
 
 <p>Voici un texte écrit avec la syntaxe Markdown:</p>
 
-<pre><?php echo $markdown; ?></pre>
+<pre><?php echo securiseTexte($markdown); ?></pre>
 
 <p>Ce qui donne:</p>
 

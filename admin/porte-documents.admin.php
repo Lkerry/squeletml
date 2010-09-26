@@ -654,6 +654,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 		{
 			$fic = @fopen($getValeur, 'r');
 			$contenuFichier = fread($fic, filesize($getValeur));
+			$contenuFichier = securiseTexte($contenuFichier);
 			fclose($fic);
 		}
 		else

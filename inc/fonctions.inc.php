@@ -1473,6 +1473,25 @@ function dateVersTimestamp($date)
 }
 
 /*
+Fonction opposée à `securiseTexte()`. Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour que les entités HTML spéciales soient converties en caractères, sinon si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été désécurisé, sinon si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
+*/
+function desecuriseTexte($texte)
+{
+	if (is_array($texte))
+	{
+		return array_map('desecuriseTexte', $texte);
+	}
+	elseif (is_string($texte))
+	{
+		return htmlspecialchars_decode($texte, ENT_COMPAT);
+	}
+	else
+	{
+		return '';
+	}
+}
+
+/*
 Retourne un tableau dont le premier élément contient le contenu du DTD (Définition de Type de Document); et le second élément, le contenu de la balise `html`.
 */
 function doctype($doctype, $langue)
@@ -4892,6 +4911,8 @@ function sansEchappement($chaine)
 
 /*
 Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour un affichage sécuritaire à l'écran, sinon si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été sécurisé, sinon si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
+
+La fonction opposée est `desecuriseTexte()`.
 */
 function securiseTexte($texte)
 {
