@@ -8,7 +8,7 @@ Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est u
 
 - Pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
 
-- Pour générer automatiquement des vignettes ou redimensionner des images d'une galerie, la bibliothèque GD doit être installée (par exemple, sous Ubuntu 10.04, vérifier que le paquet `php5-gd` est installé).
+- Pour générer automatiquement des vignettes ou redimensionner des images d'une galerie, la bibliothèque GD doit être installée (par exemple, sous Ubuntu 10.10, vérifier que le paquet `php5-gd` est installé).
 
 - Pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible.
 
@@ -18,7 +18,7 @@ Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est u
 
 - La suppression sans perte de qualité des données Exif des images JPG peut se faire avec la commande `jpegtran` sur le système.
 
-- La récupération de contenu externe se fait par `cURL` si disponible, sinon par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.squeletml.net/');` retourne ceci:
+- La récupération de contenu externe se fait par `cURL` si disponible (par exemple, sous Ubuntu 10.10, vérifier que le paquet `php5-curl` est installé), sinon par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.squeletml.net/');` retourne ceci:
 
 		HTTP/1.0 403 Forbidden
 

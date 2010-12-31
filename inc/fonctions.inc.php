@@ -2676,6 +2676,7 @@ function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique, $html = '
 			{
 				list ($infosPage['apercu'], $apercuEstToutLeTexte) = tronqueTexte(supprimeCommentairesHtml($infosPage['contenu']), $tailleApercuAutomatique);
 				$commentairesHtmlSupprimes = TRUE;
+				$infosPage['apercu'] = corrigeHtml($infosPage['apercu']);
 				
 				if (!$apercuEstToutLeTexte)
 				{

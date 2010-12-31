@@ -87,7 +87,7 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 - Dans le fichier de configuration personnalisé, ajouter tout simplement des éléments au tableau `$balisesLinkScript`, par exemple:
   $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/site/css/style-general.css";
   $balisesLinkScript[] = "$urlRacine/page.php#css#$urlRacine/site/css/style-page.css";
-- Ci-dessous, la clé est spécifiée (par exemple `$balisesLinkScript[5]`) pour permettre de modifier facilement une inclusion par défaut dans le fichier de configuration personnalisé. Pour ajouter de nouvelles inclusions, il n'est pas nécessaire de rensigner la clé (voir les exemples ci-dessus).
+- Ci-dessous, la clé est spécifiée (par exemple `$balisesLinkScript[5]`) pour permettre de modifier facilement une inclusion par défaut dans le fichier de configuration personnalisé. Pour ajouter de nouvelles inclusions, il n'est pas nécessaire de renseigner la clé (voir les exemples ci-dessus).
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
