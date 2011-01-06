@@ -137,6 +137,10 @@ div#noticeMaintenance p {
 	visibility: hidden;
 }
 
+span.licence img {
+	border: none;
+}
+
 /* Classes générales. */
 
 .erreur {
@@ -547,12 +551,6 @@ div#baliseH1 .contenuBloc {
 #infosPublication div.contenuBloc, div.infosPublicationApercu {
 	padding-left: 19px;
 	background: url('../fichiers/info.png') no-repeat left center;
-}
-
-/* Licence. */
-
-#licence img {
-	border: none;
 }
 
 /* Module «Envoyer à des amis». */
