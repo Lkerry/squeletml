@@ -234,6 +234,8 @@ if (!empty($blocsAinsererTemp))
 					
 							$blocs[$region] .= '<div id="licence" class="bloc' . $classeBlocArrondi . '">' . "\n";
 							$blocs[$region] .= $codeInterieurBlocHaut;
+							$blocs[$region] .= T_("Sauf avis contraire:") . "\n";
+							
 							$blocs[$region] .= "<ul>\n";
 							$blocs[$region] .= $bloc;
 							$blocs[$region] .= "</ul>\n";

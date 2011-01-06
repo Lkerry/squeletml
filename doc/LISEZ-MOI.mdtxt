@@ -22,7 +22,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Structure valide XHTML 1.0 Strict (si nécessaire, il est possible de choisir la définition de type de document ou tout simplement d'utiliser sa propre structure de page).
 
-- Utilisation possible de la [syntaxe Markdown](http://michelf.com/projets/php-markdown/) pour le texte des pages.
+- Possibilité d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/) pour le texte des pages et d'imbriquer du code PHP dans le Markdown.
 
 - Fichier de configuration offrant une syntaxe simple pour:
 

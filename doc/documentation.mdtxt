@@ -753,6 +753,30 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 		echo mdtxtChaine($chaine);
 		?>
 
+##### Syntaxe Markdown avec imbrication de code PHP
+
+Il est possible d'imbriquer du code PHP dans un fichier écrit en Markdown. Le code PHP sera évalué avant la conversion du Markdown en HTML. Pour ce faire:
+
+1. Créer un fichier Markdown, par exemple `ma-page.php.mdtxt`, et y insérer du code PHP entre les balises `[php]` et `[/php]`. Exemple:
+
+		Les **licences présentées dans cet article** sont les suivantes:
+		
+		- [php]echo licence($urlRacine, 'art-libre');[/php]
+		- [php]echo licence($urlRacine, 'cc-by-sa');[/php]
+		
+		Les autres licences le seront dans un prochain article.
+
+2. Créer la page PHP, par exemple `ma-page.php`, comme n'importe quelle autre page du site.
+
+3. À l'intérieur de `ma-page.php`, à l'endroit où on insère habituellement le contenu, insérer le code suivant:
+
+		<?php
+		$cheminMdtxtPhp = $racine . '/chemin/vers/ma-page.php.mdtxt';
+		eval(MDTXT_PHP);
+		?>
+
+	Ne pas oublier de modifier la valeur de la variable `$cheminMdtxtPhp` pour préciser le bon chemin vers le fichier Markdown.
+
 #### Fonctions diverses
 
 Voir la page `exemple.php` située à la racine de votre site Squeletml pour voir plusieurs exemples d'utilisation de fonctions aidant à la rédaction du contenu.
