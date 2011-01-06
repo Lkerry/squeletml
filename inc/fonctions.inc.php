@@ -3057,7 +3057,7 @@ function licence($urlRacine, $choixLicence)
 			break;
 
 		case 'gplv3+':
-			$licence = '<span class="licence">' . (T_("<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1\$s alt=\"Licence publique générale de GNU, version 3 ou toute version ultérieure\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html\">licence publique générale de GNU, version 3 ou toute version ultérieure</a>."), "src=\"$urlRacine/fichiers/licence-gnu-gpl-80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1\$s alt=\"Licence publique générale de GNU, version 3 ou toute version ultérieure\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html\">licence publique générale de GNU, version 3 ou toute version ultérieure</a>."), "src=\"$urlRacine/fichiers/licence-gnu-gpl-80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'agplv3':
@@ -3093,7 +3093,7 @@ function licence($urlRacine, $choixLicence)
 			break;
 
 		case 'verbatim':
-			$licence = T_("La reproduction exacte et la distribution intégrale de cet article est permise sur n'importe quel support d'archivage, pourvu que cette notice soit préservée.");
+			$licence = '<span class="licence">' . T_("La reproduction exacte et la distribution intégrale de cet article est permise sur n'importe quel support d'archivage, pourvu que cette notice soit préservée.") . '</span>';
 			break;
 
 		default:
