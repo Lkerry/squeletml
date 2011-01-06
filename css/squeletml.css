@@ -177,12 +177,16 @@ span.licence img {
 	margin-bottom: 5px;
 }
 
-.imgSansBordure {
+.masquer {
+	display: none;
+}
+
+.sansBordure, /* forme obsolete: */.imgSansBordure {
 	border: none;
 }
 
-.masquer {
-	display: none;
+.sansDecoration {
+	text-decoration: none;
 }
 
 .sep {
