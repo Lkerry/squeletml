@@ -703,7 +703,10 @@ Mettre tout ce que vous désirez. Du texte, du code HTML, du code PHP, etc.
 
 #### Utilisation de la syntaxe Markdown
 
-Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/syntaxe/). Pour ce faire, il y a deux fonctions mises à disposition:
+Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/syntaxe/). Pour ce faire, deux fonctions sont mises à disposition:
+
+- `mdtxt()`, permettant de convertir en HTML un fichier écrit en Markdown;
+- `mdtxtChaine()`, permettant de convertir en HTML une chaîne de caractères écrite en Markdown.
 
 ##### Fonction `mdtxt()`
 
@@ -755,7 +758,9 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 
 ##### Syntaxe Markdown avec imbrication de code PHP
 
-Il est possible d'imbriquer du code PHP dans un fichier écrit en Markdown. Le code PHP sera évalué avant la conversion du Markdown en HTML. Pour ce faire:
+Il est possible d'imbriquer du code PHP dans un fichier ou une chaîne utilisant la syntaxe Markdown. Le code PHP sera évalué avant la conversion du Markdown en HTML.
+
+**Pour insérer du PHP dans un fichier écrit en Markdown:**
 
 1. Créer un fichier Markdown, par exemple `ma-page.php.mdtxt`, et y insérer du code PHP entre les balises `[php]` et `[/php]`. Exemple:
 
@@ -776,6 +781,28 @@ Il est possible d'imbriquer du code PHP dans un fichier écrit en Markdown. Le c
 		?>
 
 	Ne pas oublier de modifier la valeur de la variable `$cheminMdtxtPhp` pour préciser le bon chemin vers le fichier Markdown.
+
+**Maintenant, pour insérer du PHP dans une chaîne écrite en Markdown:**
+
+1. Créer une page pour le site, par exemple `une-page.php`.
+
+2. À l'endoit où on insère habituellement le contenu, insérer le code suivant:
+
+		<?php
+		$chaineMdtxtPhp = 'Voici une liste de **1 à 5**:
+		
+		[php]
+		for ($i = 1; $i <= 5; $i++)
+		{
+			echo "- $i\n";
+		}
+		[/php]';
+		eval(MDTXT_PHP);
+		?>
+
+	Modifier la valeur de la variable `$chaineMdtxtPhp` pour correspondre au contenu voulu.
+
+**Note: si les variables `$chaineMdtxtPhp` et `$cheminMdtxtPhp` existent toutes les deux, la variable `$chaineMdtxtPhp` a préséance.**
 
 #### Fonctions diverses
 
