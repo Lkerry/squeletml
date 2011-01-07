@@ -14,19 +14,22 @@ define('MDTXT_PHP', <<<CODE
 		\$chaineMdtxtPhp = @file_get_contents(\$cheminMdtxtPhp);
 	}
 	
-	if (isset(\$chaineMdtxtPhp) && \$chaineMdtxtPhp !== FALSE && preg_match_all('/\[php\](.+?)\[\/php\]/s', \$chaineMdtxtPhp, \$resultatMdtxtPhp))
+	if (isset(\$chaineMdtxtPhp) && \$chaineMdtxtPhp !== FALSE)
 	{
-		\$iMdtxtPhp = 0;
-		
-		foreach (\$resultatMdtxtPhp[1] as \$phpAevaluerMdtxtPhp)
+		if (preg_match_all('/\[php\](.+?)\[\/php\]/s', \$chaineMdtxtPhp, \$resultatMdtxtPhp))
 		{
-			ob_start();
-			eval(\$phpAevaluerMdtxtPhp);
-			\$phpEvalueMdtxtPhp = ob_get_contents();
-			ob_end_clean();
+			\$iMdtxtPhp = 0;
 			
-			\$chaineMdtxtPhp = str_replace(\$resultatMdtxtPhp[0][\$iMdtxtPhp], \$phpEvalueMdtxtPhp, \$chaineMdtxtPhp);
-			\$iMdtxtPhp++;
+			foreach (\$resultatMdtxtPhp[1] as \$phpAevaluerMdtxtPhp)
+			{
+				ob_start();
+				eval(\$phpAevaluerMdtxtPhp);
+				\$phpEvalueMdtxtPhp = ob_get_contents();
+				ob_end_clean();
+				
+				\$chaineMdtxtPhp = str_replace(\$resultatMdtxtPhp[0][\$iMdtxtPhp], \$phpEvalueMdtxtPhp, \$chaineMdtxtPhp);
+				\$iMdtxtPhp++;
+			}
 		}
 		
 		echo mdtxtChaine(\$chaineMdtxtPhp);
