@@ -38,7 +38,7 @@ div#messageIe6 {
 	border: 3px solid #ff6d00;
 	margin: 0px;
 	padding: 0px;
-	background: #f2f2f2;
+	background: #ebebeb;
 	color: #000;
 }
 
@@ -47,7 +47,7 @@ div#messageIe6 a {
 }
 
 div#messageIe6 a:visited {
-	color: #4C177D;
+	color: #4c177d;
 }
 
 div#messageIe6 p.bDtitre a {

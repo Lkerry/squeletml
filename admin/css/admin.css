@@ -21,7 +21,7 @@ body {
 div#noticeMaintenance {
 	margin: 0px;
 	padding: 10px;
-	background: #f2f2f2;
+	background: #ebebeb;
 }
 
 div#noticeMaintenance p {
@@ -36,9 +36,9 @@ div#noticeMaintenance p {
 	max-width: 950px;
 	margin: 0px auto;
 	padding: 0px;
-	border-right: 1px solid #f2f2f2;
-	border-bottom: 1px solid #f2f2f2;
-	border-left: 1px solid #f2f2f2;
+	border-right: 1px solid #ebebeb;
+	border-bottom: 1px solid #ebebeb;
+	border-left: 1px solid #ebebeb;
 }
 
 #ancres {
@@ -49,7 +49,7 @@ div#noticeMaintenance p {
 #enTete {
 	padding: 5px 5px 0px 5px;
 	background: url('../fichiers/rayures.png') repeat left top;
-	border-bottom: 1px solid #f2f2f2;
+	border-bottom: 1px solid #ebebeb;
 	text-align: center;
 }
 
@@ -82,7 +82,7 @@ div#sousMenu {
 	margin-left: 1px;
 	padding: 5px;
 	background: url('../fichiers/rayures.png') repeat left top;
-	border: 1px solid #f2f2f2;
+	border: 1px solid #ebebeb;
 }
 
 div#sousMenu ul {
@@ -104,7 +104,7 @@ div#contenuPrincipal {
 }
 
 div#tableDesMatieres {
-	border-color: #f2f2f2 !important;
+	border-color: #ebebeb !important;
 }
 
 h1, h2, h3, h4, h5, h6, a {
@@ -146,7 +146,7 @@ a, a code {
 }
 
 a:visited {
-	color: #4C177D;
+	color: #441570;
 }
 
 a:hover, a:hover code {
@@ -187,7 +187,7 @@ fieldset {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	border: 1px solid #b3b3b3;
-	background-color: #f7f7f7;
+	background-color: #f0f0f0;
 }
 
 fieldset ul {
@@ -282,14 +282,14 @@ ul.nonTriable li {
 .boite {
 	margin: 25px 0px;
 	padding: 5px;
-	background-color: #f2f2f2;
+	background-color: #ebebeb;
 }
 
 .sousBoite {
 	margin: 25px;
 	border: 1px solid #b3b3b3;
 	padding: 5px;
-	background-color: #f7f7f7;
+	background-color: #f0f0f0;
 }
 
 /* Rapport du cron. */
@@ -314,7 +314,7 @@ ul.nonTriable li {
 ***********************************************************************/
 
 body#documentation-admin-php pre {
-	background-color: #f2f2f2;
+	background-color: #ebebeb;
 }
 
 body#documentation-admin-php em code {
@@ -350,7 +350,7 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 	margin-bottom: 20px;
 	padding: 5px 5px 5px 20px;
 	border: 1px solid #b3b3b3;
-	background-color: #f7f7f7;
+	background-color: #f0f0f0;
 }
 
 #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
@@ -424,7 +424,7 @@ pre.consulterModifications {
 }
 
 .porteDocumentsListe li.impair {
-	background-color: #f2f2f2;
+	background-color: #ebebeb;
 }
 
 .porteDocumentsListeDernierNiveau li:hover {
@@ -463,7 +463,7 @@ a.lienInfobulle:hover span {
 	top: 20px;
 	left: 20px;
 	border: 1px solid #b3b3b3;
-	background: #f2f2f2;
+	background: #ebebeb;
 	text-align: left;
 	color: black;
 	padding: 2px;

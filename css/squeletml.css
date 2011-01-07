@@ -52,7 +52,7 @@ h6 {
 }
 
 .liensVisitesDifferencies a:visited {
-	color: #4C177D;
+	color: #441570;
 }
 
 a, a code {
@@ -79,7 +79,7 @@ li {
 
 pre, code {
 	font-family: Courier, "Courier New", FreeMono, "Liberation Mono", monospace;
-	background-color: #f2f2f2;
+	background-color: #ebebeb;
 }
 
 pre {
@@ -99,7 +99,7 @@ pre {
 div#noticeMaintenance {
 	margin: 0px;
 	padding: 10px;
-	background: #f2f2f2;
+	background: #ebebeb;
 }
 
 div#noticeMaintenance p {
@@ -213,15 +213,15 @@ span.licence img {
 }
 
 body.bordureDroitePage #page {
-	border-right: 1px solid #f2f2f2;
+	border-right: 1px solid #ebebeb;
 }
 
 body.bordureBasPage #page {
-	border-bottom: 1px solid #f2f2f2;
+	border-bottom: 1px solid #ebebeb;
 }
 
 body.bordureGauchePage #page {
-	border-left: 1px solid #f2f2f2;
+	border-left: 1px solid #ebebeb;
 }
 
 /***********************************************************************
@@ -300,7 +300,7 @@ div#sousTitre p {
 }
 
 body.tableDesMatieresArrondie #tableDesMatieres {
-	border-color: #f2f2f2;
+	border-color: #ebebeb;
 	border-radius: 8px; /* CSS 3. */
 }
 
@@ -502,7 +502,7 @@ li.parent {
 /* Coins arrondis. */
 
 .blocArrondi {
-	background-color: #f2f2f2;
+	background-color: #ebebeb;
 }
 
 div.haut-gauche {
@@ -562,7 +562,7 @@ div#baliseH1 .contenuBloc {
 #modeleMessageEnvoyerAmis {
 	margin: 25px;
 	padding: 5px;
-	background-color: #f2f2f2;
+	background-color: #ebebeb;
 	border-radius: 8px; /* CSS 3. */
 }
 
@@ -814,7 +814,7 @@ body.aucuneColonne #menu li {
 body.enTetePleineLargeur div#enTete {
 	background-color: white;
 	margin-left: 0px;
-	border-bottom: 1px solid #f2f2f2;
+	border-bottom: 1px solid #ebebeb;
 }
 
 /***********************************************************************
