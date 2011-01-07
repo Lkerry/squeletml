@@ -65,9 +65,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
 			}
-			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && strlen($_POST['motDePasse']) < 8)
+			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && (strlen($_POST['motDePasse']) < 8 || !preg_match('/\d+/', $_POST['motDePasse']) || !preg_match('/[A-Za-z]+/', $_POST['motDePasse'])))
 			{
-				$messagesScript .= '<li class="erreur">' . T_("Pour une question de sécurité, le mot de passe doit contenir au moins huit caractères.") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . T_("Pour une question de sécurité, le mot de passe doit contenir au moins huit caractères ainsi qu'au moins un chiffre et une lettre.") . "</li>\n";
 			}
 			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && $_POST['motDePasse'] != $_POST['motDePasse2'])
 			{

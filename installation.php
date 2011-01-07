@@ -283,10 +283,10 @@ else
 			$installationTerminee = FALSE;
 			$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
 		}
-		elseif (strlen($_POST['motDePasse']) < 8)
+		elseif (strlen($_POST['motDePasse']) < 8 || !preg_match('/\d+/', $_POST['motDePasse']) || !preg_match('/[A-Za-z]+/', $_POST['motDePasse']))
 		{
 			$installationTerminee = FALSE;
-			$messagesScript .= '<li class="erreur">' . T_("Pour une question de sécurité, le mot de passe doit contenir au moins huit caractères.") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Pour une question de sécurité, le mot de passe doit contenir au moins huit caractères ainsi qu'au moins un chiffre et une lettre.") . "</li>\n";
 		}
 		elseif ($_POST['motDePasse'] != $_POST['motDePasse2'])
 		{
