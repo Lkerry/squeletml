@@ -703,7 +703,12 @@ Mettre tout ce que vous désirez. Du texte, du code HTML, du code PHP, etc.
 
 #### Utilisation de la syntaxe Markdown
 
-Il est possible d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/syntaxe/). Pour ce faire, deux fonctions sont mises à disposition:
+Il est possible d'utiliser la syntaxe Markdown Extra:
+
+- [syntaxe Markdown officielle](http://michelf.com/projets/php-markdown/syntaxe/);
+- [options supplémentaires apportées par la version Extra](http://michelf.com/projets/php-markdown/extra/).
+
+Pour ce faire, deux fonctions sont mises à disposition:
 
 - `mdtxt()`, permettant de convertir en HTML un fichier écrit en Markdown;
 - `mdtxtChaine()`, permettant de convertir en HTML une chaîne de caractères écrite en Markdown.

@@ -22,7 +22,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Structure valide XHTML 1.0 Strict (si nécessaire, il est possible de choisir la définition de type de document ou tout simplement d'utiliser sa propre structure de page).
 
-- Possibilité d'utiliser la [syntaxe Markdown](http://michelf.com/projets/php-markdown/) pour le texte des pages et d'imbriquer du code PHP dans le Markdown.
+- Possibilité d'utiliser la [syntaxe Markdown Extra](http://michelf.com/projets/php-markdown/extra/) pour le texte des pages et d'imbriquer du code PHP dans le Markdown.
 
 - Fichier de configuration offrant une syntaxe simple pour:
 
@@ -62,7 +62,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
     - avec les vignettes des images précédente et suivante (possibilité de tatouer ou d'accompagner les vignettes de miniflèches), ou
     - à l'aide d'un aperçu de toutes les images de la galerie grâce à des minivignettes.
   - Information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique, évitant ainsi le contenu dupliqué d'une manière ou d'une autre.
-  - Syntaxe Markdown en option pour les légendes.
+  - Syntaxe Markdown Extra en option pour les légendes.
   - Affichage par défaut des données Exif des images au format JPG.
   - Choix de l'emplacement de la légende et des données Exif (au-dessus ou au-dessous de l'image, ou dans une colonne du site).
   - Réordonnement d'une image dans une galerie sans modification de l'URL de cette image.
@@ -182,7 +182,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**PHPJS**](http://phpjs.org/): sous double licence MIT et GPL.
 
-- [**PHP Markdown**](http://michelf.com/projets/php-markdown/): sous licence de style BSD.
+- [**PHP Markdown Extra**](http://michelf.com/projets/php-markdown/extra/): sous licence de style BSD.
 
 - [**PHP Simple HTML DOM Parser**](http://simplehtmldom.sourceforge.net/): sous licence MIT.
 
