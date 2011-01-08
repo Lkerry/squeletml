@@ -4111,7 +4111,7 @@ Construit le code HTML pour afficher une pagination, et retourne un tableau cont
   - `$pagination['description']`: contenu de la métabalise `description` modifié pour prendre en compte la pagination;
   - `$pagination['estPageDerreur']`: informe si la page demandée par la variable GET `page` existe. Vaut TRUE si la page n'existe pas.
 */
-function pagination($racine, $urlRacine, $type, $nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
+function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
 {
 	$pagination = array ();
 	$pagination['pagination'] = '';
@@ -4154,8 +4154,6 @@ function pagination($racine, $urlRacine, $type, $nombreElements, $elementsParPag
 	
 	// Construction de la pagination.
 	
-	$pagination['pagination'] .= '<div class="pagination">' . "\n";
-
 	// `$lien` va être utilisée pour construire l'URL de la page précédente ou suivante.
 	$lien = $urlSansGet . '?';
 
@@ -4242,7 +4240,12 @@ function pagination($racine, $urlRacine, $type, $nombreElements, $elementsParPag
 		$pagination['pagination'] .= '</a>';
 	}
 	
-	$pagination['pagination'] .= '</div><!-- /.pagination -->' . "\n";
+	if ($insererDansBoiteArrondie)
+	{
+		$pagination['pagination'] = boiteArrondie($pagination['pagination']);
+	}
+	
+	$pagination['pagination'] = '<div class="pagination">' . "\n" . $pagination['pagination'] . '</div><!-- /.pagination -->' . "\n";
 	
 	return $pagination;
 }

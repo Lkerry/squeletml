@@ -120,9 +120,10 @@ div#noticeMaintenance p {
 }
 
 .pagination {
-	margin-top: 25px;
-	margin-bottom: 25px;
+	margin-top: 35px;
+	margin-bottom: 35px;
 	text-align: center;
+	font-weight: bold;
 }
 
 .pagination img {
