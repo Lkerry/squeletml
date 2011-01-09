@@ -120,8 +120,8 @@ div#noticeMaintenance p {
 }
 
 .pagination {
-	margin-top: 35px;
-	margin-bottom: 35px;
+	margin-top: 25px;
+	margin-bottom: 25px;
 	text-align: center;
 	font-weight: bold;
 }
@@ -343,8 +343,13 @@ div.chapeau div.contenuChapeau {
 
 /* Catégories. */
 
+.apercu {
+	border-bottom: 1px solid #ebebeb;
+	padding-bottom: 25px;
+}
+
 .titreApercu {
-	margin-top: 35px;
+	margin-top: 20px;
 	margin-bottom: 10px;
 }
 
