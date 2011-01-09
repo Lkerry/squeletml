@@ -331,16 +331,20 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 
 	$apercu .= "<div class=\"descriptionApercu\">\n";
-
+	
 	if (!empty($infosPage['apercu']))
 	{
-		$apercu .= $infosPage['apercu'] . "\n";
+		$texteApercu = $infosPage['apercu'];
 	}
 	else
 	{
-		$apercu .= $infosPage['contenu'] . "\n";
+		$texteApercu = $infosPage['contenu'];
 	}
-
+	
+	// Incrémentation des niveaux de titre 2 à 5 (par exemple, `<h2 class="classe">Sous-titre</h2>` devient `<h3 class="classe">Sous-titre</h3>`). Le but est d'éviter que des sous-titres affichés dans l'aperçu aient le même niveau (2) que le titre de l'aperçu lui-même. Cela découle du fait que le titre d'une page est habituellement de niveau 1 alors que dans l'aperçu, le même titre est de niveau 2.
+	$texteApercu = preg_replace('|<h([2-5])(.*?>.*?</h)\1\b|e', '"<h" . ("$1" + 1) . "$2" . ("$1" + 1)', $texteApercu);
+	
+	$apercu .= $texteApercu . "\n";
 	$apercu .= "</div><!-- /.descriptionApercu -->\n";
 
 	if (!empty($infosPage['apercu']))
