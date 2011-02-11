@@ -917,7 +917,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$messagesScript .= adminUnlink($configAsupprimer);
 					}
-				
+					
+					if (isset($_POST['supprimer']) && in_array('id', $_POST['supprimer']))
+					{
+						$messagesScript .= adminUnlink($cheminGalerie . '/id.txt');
+					}
+					
 					if (isset($_POST['supprimer']) && in_array('vignettesAvecTatouage', $_POST['supprimer']))
 					{
 						$cheminTatouage = $racine . '/site/fichiers/galeries/' . $idNomDossier . '/tatouage';
@@ -2025,6 +2030,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<li><input id="supprimerInputOriginal" type="checkbox" name="supprimer[]" value="original" /> <label for="supprimerInputOriginal"><?php echo T_("Supprimer les images originales."); ?></label></li>
 					
 						<li><input id="supprimerInputFichierConfig" type="checkbox" name="supprimer[]" value="config" /> <label for="supprimerInputFichierConfig"><?php echo T_("Supprimer le fichier de configuration."); ?></label></li>
+					
+						<li><input id="supprimerInputFichierId" type="checkbox" name="supprimer[]" value="id" /> <label for="supprimerInputFichierId"><?php echo T_("Supprimer le fichier d'identification."); ?></label></li>
 					
 						<li><input id="supprimerInputDossier" type="checkbox" name="supprimer[]" value="dossier" /> <label for="supprimerInputDossier"><?php echo T_("Supprimer le dossier de la galerie s'il est vide."); ?></label></li>
 					</ul>
