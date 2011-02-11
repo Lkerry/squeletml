@@ -1,0 +1,9 @@
+Voici quelques notes au sujet de possibles incompatibilités entre versions:
+
+## Squeletml 2.6
+
+- Le nom du dossier d'une galerie est maintenant filtré. Par exemple, auparavant, une galerie «Ma première galerie» avait comme dossier `site/fichiers/galeries/Ma première galerie`. Maintenant, le dossier doit être `site/fichiers/galeries/Ma-premiere-galerie`. Voir la section «Galeries» de la documentation pour plus de détails.
+
+- Pour être gérée à partir de l'administration de Squeletml, une galerie doit maintenant avoir dans son dossier un fichier d'identification `id.txt` contenant seulement son identifiant non filtré. Par exemple, une galerie «Ma première galerie» doit avoir un fichier `site/fichiers/galeries/Ma-premiere-galerie/id.txt` ne contenant que `Ma première galerie`.
+
+- Un paramètre utilisé dans une URL pour identifier une page de catégorie ou de flux RSS est maintenant filtré. Par exemple, le lien `categorie.php?id=Ma catégorie` est maintenant `categorie.php?id=Ma-categorie`.
