@@ -513,8 +513,8 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 - `xhtml/fr/page.contact.inc.php`
 - `xhtml/fr/page.galerie.inc.php`
 - `xhtml/fr/page.index.inc.php`
-- `doc/AVANT-MISE-A-JOUR.mdtxt`
 - `doc/documentation.mdtxt`
+- `doc/INCOMPATIBILITES.mdtxt`
 - `doc/LISEZ-MOI.mdtxt`
 - `maintenance.php`
 

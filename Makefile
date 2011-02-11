@@ -70,7 +70,7 @@ exif:
 	cp src/exiftran-rotation/exiftran-rotation $(cheminNautilusScripts)
 
 fichiersSurBureau: annexesDoc archives changelogHtml
-	cp doc/AVANT-MISE-A-JOUR.mdtxt $(cheminBureau)
+	cp doc/INCOMPATIBILITES.mdtxt $(cheminBureau)
 	cp doc/ChangeLog $(cheminBureau)
 	cp doc/version.txt $(cheminBureau)
 	python scripts/python-markdown2/lib/markdown2.py doc/LISEZ-MOI.mdtxt > $(cheminBureau)/LISEZ-MOI.html
