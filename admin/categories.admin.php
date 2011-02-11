@@ -184,7 +184,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<p>' . sprintf(T_("Si la langue d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, la langue sera celle déclarée par défaut dans le fichier de configuration du site."), '<code>langueCat</code>') . "</p>\n";
 			
-			echo '<p>' . sprintf(T_("Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s. Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque %3\$s est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie."), '<code>urlCat</code>', '<code>$urlRacine/categorie.php?id=$idCategorie</code>', '<code>categorie.php</code>') . "</p>\n";
+			echo '<p>' . sprintf(T_("Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s (%3\$s représente la variable %4\$s filtrée). Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque %5\$s est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie."), '<code>urlCat</code>', '<code>$urlRacine/categorie.php?id=idCategorieFiltre</code>', '<code>idCategorieFiltre</code>', '<code>$idCategorie</code>', '<code>categorie.php</code>') . "</p>\n";
 			
 			echo '<p>' . T_("Pour enlever une catégorie ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
 			
@@ -321,7 +321,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$urlCat = "urlCat=categorie.php?id=$cat";
+						$urlCat = 'urlCat=categorie.php?id=' . filtreChaine($racine, $cat);
 						
 						if (estCatSpeciale($cat))
 						{

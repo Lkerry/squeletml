@@ -83,7 +83,7 @@ if (file_exists($racine . '/init.inc.php'))
 					
 						if (empty($categorieInfos['urlCat']) || strpos($categorieInfos['urlCat'], 'categorie.php?id=') !== FALSE)
 						{
-							$tableauUrlCache[] = array ('url' => "$urlRacine/rss.php?type=categorie&amp;id=$categorie", 'cache' => $nomFichierCache);
+							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($racine, $categorie), 'cache' => $nomFichierCache);
 						}
 						else
 						{

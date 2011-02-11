@@ -976,7 +976,7 @@ La page d'accueil d'une catégorie peut être située n'importe où sur le site.
 
 En visitant cette page, un aperçu pour chaque page listée dans le fichier de configuration pour la catégorie donnée sera généré. Un titre de premier niveau (`h1`) sera également généré par défaut (voir la variable `$genererTitrePageCategories` dans le fichier de configuration du site).
 
-Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre `urlCat`, l'URL sera générée automatiquement, et ce sous la forme `$urlRacine/categorie.php?id=$idCategorie`. Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque `categorie.php` est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie. Pour éviter le contenu dupliqué dans les moteurs de recherche, seules les catégories pour lesquelles aucune valeur n'a été donnée au paramètre `urlCat` sont accessibles sur la page `$urlRacine/categorie.php`.
+Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre `urlCat`, l'URL sera générée automatiquement, et ce sous la forme `$urlRacine/categorie.php?id=idCategorieFiltre` (`idCategorieFiltre` représente la variable `$idCategorie` filtrée). Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque `categorie.php` est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie. Pour éviter le contenu dupliqué dans les moteurs de recherche, seules les catégories pour lesquelles aucune valeur n'a été donnée au paramètre `urlCat` sont accessibles sur la page `$urlRacine/categorie.php`.
 
 Voici un exemple d'aperçu qui pourrait être généré pour la page sur le husky:
 

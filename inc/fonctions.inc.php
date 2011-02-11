@@ -597,7 +597,7 @@ function categories($racine, $urlRacine, $url, $langueParDefaut)
 				
 				if (superRawurlencode($urlPage) == $url)
 				{
-					$listeCategories[$categorie] = urlCat($categorieInfos, $categorie, $langueParDefaut);
+					$listeCategories[$categorie] = urlCat($racine, $categorieInfos, $categorie, $langueParDefaut);
 				}
 			}
 		}
@@ -1362,7 +1362,7 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 	}
 	
 	$categorie['langueCat'] = langueCat($categorie, $langueParDefaut);
-	$categorie['urlCat'] = urlCat($categorie, $idCategorie, $langueParDefaut);
+	$categorie['urlCat'] = urlCat($racine, $categorie, $idCategorie, $langueParDefaut);
 	$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie-page-1-" . $categorie['langueCat'] . '.cache.html');
 $tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache' => $nomFichierCache);
 	
@@ -2098,7 +2098,7 @@ function gdEstInstallee()
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie)
+function htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie)
 {
 	$nomCategorie = $categorie;
 	
@@ -2114,7 +2114,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $a
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
 	
-	$categories[$categorie]['urlCat'] = urlCat($categories[$categorie], $categorie, $langueParDefaut);
+	$categories[$categorie]['urlCat'] = urlCat($racine, $categories[$categorie], $categorie, $langueParDefaut);
 	
 	$htmlCategorie .= '<a href="' . $urlRacine . '/' . superRawurlencode($categories[$categorie]['urlCat']) . '">' . $nomCategorie . '</a>';
 	
@@ -2131,7 +2131,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $a
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $langueParDefaut, $afficherNombreArticlesCategorie);
+			$htmlCategorie .= htmlCategorie($racine, $urlRacine, $categories, $enfant, $langueParDefaut, $afficherNombreArticlesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -2140,6 +2140,25 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $a
 	$htmlCategorie .= "</li>\n";
 	
 	return $htmlCategorie;
+}
+
+/*
+Retourne l'`id` réel d'une catégorie à partir de l'`id` filtré. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
+*/
+function idCategorie($racine, $categories, $idCategorieFiltre)
+{
+	$idReel = '';
+	
+	foreach($categories as $idCategorie => $infosCategorie)
+	{
+		if ($idCategorieFiltre == filtreChaine($racine, $idCategorie))
+		{
+			$idReel = $idCategorie;
+			break;
+		}
+	}
+	
+	return $idReel;
 }
 
 /*
@@ -3752,7 +3771,7 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, $langue
 	{
 		if (empty($categorieInfos['catParente']) && langueCat($categorieInfos, $langueParDefaut) == $langue)
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie);
 		}
 	}
 	
@@ -4530,7 +4549,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					{
 						if ($ajouterLien && !$lienDesactive)
 						{
-							$categories[$id]['urlCat'] = urlCat($categories[$id], $id, $langueParDefaut);
+							$categories[$id]['urlCat'] = urlCat($racine, $categories[$id], $id, $langueParDefaut);
 							$lien = $urlRacine . '/' . $categories[$id]['urlCat'];
 							$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 						}
@@ -5320,7 +5339,7 @@ function urlAvecIndex($url)
 /*
 Retourne l'URL relative d'une catégorie.
 */
-function urlCat($categorie, $idCategorie, $langueParDefaut)
+function urlCat($racine, $categorie, $idCategorie, $langueParDefaut)
 {
 	$langue = langueCat($categorie, $langueParDefaut);
 	
@@ -5333,7 +5352,7 @@ function urlCat($categorie, $idCategorie, $langueParDefaut)
 	}
 	else
 	{
-		$categorie['urlCat'] = "categorie.php?id=$idCategorie";
+		$categorie['urlCat'] = 'categorie.php?id=' . filtreChaine($racine, $idCategorie);
 		
 		if (estCatSpeciale($idCategorie) && !empty($langue))
 		{

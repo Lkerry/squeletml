@@ -326,7 +326,7 @@ if (!empty($idCategorie) && $rssCategorie)
 {
 	if (strpos($url, $urlRacine . '/categorie.php?id=') !== FALSE)
 	{
-		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=$idCategorie";
+		$urlFlux = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($racine, $idCategorie);
 	}
 	else
 	{

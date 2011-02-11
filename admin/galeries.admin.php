@@ -63,6 +63,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 		elseif (isset($_GET['id']))
 		{
 			$id = securiseTexte(superBasename($_GET['id']));
+			$idReel = adminIdGalerie($racine, $id);
+			
+			if (!empty($idReel))
+			{
+				$id = $idReel;
+			}
 		}
 		
 		$idNomDossier = '';
@@ -124,7 +130,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if ($cheminConfigGalerie)
 						{
-							$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . $idLien . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
+							$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $fichier) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
 							
 							if ($adminPorteDocumentsDroits['editer'])
 							{
@@ -1709,7 +1715,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		
 			$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
-			$id = rawurlencode($id);
+			$id = filtreChaine($racine, $id);
 			$idNomDossier = rawurlencode($idNomDossier);
 		
 			echo '<h4>' . T_("Information") . "</h4>\n" ;

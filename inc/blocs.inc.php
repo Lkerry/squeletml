@@ -139,7 +139,7 @@ if (!empty($blocsAinsererTemp))
 						{
 							if (strpos($url, $urlRacine . '/categorie.php?id=') !== FALSE)
 							{
-								$blocs[$region] .= "<li><a href=\"$urlRacine/rss.php?type=categorie&amp;id=$idCategorie" . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+								$blocs[$region] .= '<li><a href="' . $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 							}
 							else
 							{

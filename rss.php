@@ -233,7 +233,21 @@ elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && emp
 				$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
 			}
 			
-			if (isset($categories[$idCategorie]) && ((!empty($getId) && (empty($categories[$idCategorie]['urlCat']) || strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') !== FALSE)) || (!empty($getChemin) && !empty($categories[$idCategorie]['urlCat']) && strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') === FALSE)))
+			if (!empty($getId) && !empty($categories))
+			{
+				$idReel = idCategorie($racine, $categories, $getId);
+				
+				if (!empty($idReel))
+				{
+					$idCategorie = $idReel;
+				}
+			}
+			
+			if (
+				isset($categories[$idCategorie]) &&
+				(!empty($getId) && ($getId == filtreChaine($racine, $getId))) && // Pour éviter la duplication de contenu dans les moteurs de recherche.
+				((!empty($getId) && (empty($categories[$idCategorie]['urlCat']) || strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') !== FALSE)) || (!empty($getChemin) && !empty($categories[$idCategorie]['urlCat']) && strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') === FALSE))
+			)
 			{
 				// A: le flux RSS est activé.
 				
@@ -281,7 +295,7 @@ elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && emp
 					}
 					else
 					{
-						$urlCategorie = $urlRacine . '/' . urlCat($categories[$idCategorie], $idCategorie, $langueParDefaut);
+						$urlCategorie = $urlRacine . '/' . urlCat($racine, $categories[$idCategorie], $idCategorie, $langueParDefaut);
 					}
 					
 					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), FALSE), '', $idCategorie);

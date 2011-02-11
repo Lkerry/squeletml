@@ -1787,7 +1787,7 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 }
 
 /*
-Retourne l'`id` d'une galerie à partir du nom de son dossier. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
+Retourne l'`id` réel d'une galerie à partir du nom de son dossier. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
 */
 function adminIdGalerie($racine, $idGalerieNomDossier)
 {
