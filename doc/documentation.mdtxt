@@ -1040,7 +1040,7 @@ Concrètement, pour créer une galerie à partir de l'administration de Squeletm
 
 	Cliquer sur «Ajouter des images».
 
-2. Toujours dans la page `admin/galeries.admin.php`, se rendre à la section «Créer une page web de galerie».
+2. Toujours dans la page `admin/galeries.admin.php`, se rendre à la section «Mettre en ligne une galerie».
 
 	Dans le champ «Identifiant de la galerie», choisir la galerie voulue.
 

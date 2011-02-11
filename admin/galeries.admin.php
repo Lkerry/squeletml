@@ -34,14 +34,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<li><a href="#messages"><?php echo T_("Messages"); ?></a></li>
 		<li><a href="#lister"><?php echo T_("Lister"); ?></a></li>
 		<li><a href="#ajouter"><?php echo T_("Ajouter"); ?></a></li>
+		<li><a href="#mettreEnLigne"><?php echo T_("Mettre en ligne"); ?></a></li>
 		<li><a href="#redimensionner"><?php echo T_("Redimensionner"); ?></a></li>
 		<li><a href="#supprimer"><?php echo T_("Supprimer"); ?></a></li>
 		<li><a href="#renommer"><?php echo T_("Renommer"); ?></a></li>
-		<li><a href="#sauvegarder"><?php echo T_("Sauvegarder"); ?></a></li>
-		<li><a href="#pageWeb"><?php echo T_("Page web"); ?></a></li>
 		<li><a href="#configGraphique"><?php echo T_("Configuration graphique"); ?></a></li>
 		<li><a href="#configAutomatique"><?php echo T_("Configuration automatique"); ?></a></li>
 		<li><a href="#modele"><?php echo T_("Modèle"); ?></a></li>
+		<li><a href="#sauvegarder"><?php echo T_("Sauvegarder"); ?></a></li>
 	</ul>
 </div>
 
@@ -235,7 +235,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$messagesScript .= '<li>' . T_("Aucune galerie.") . "</li>\n";
 			}
 			
-			$messagesScript = '<li><strong>' . sprintf(T_("Note: seules les galeries ayant un fichier d'identification %1\$s dans leur dossier sont administrables par cette page. <a href=\"%2\$s\">Voir la documentation</a> pour plus de détails."), '<code>id.txt</code>', 'documentation.admin.php') . "</strong></li>\n" . $messagesScript;
+			$messagesScript = '<li>' . sprintf(T_("<strong>Note:</strong> seules les galeries ayant un fichier d'identification %1\$s dans leur dossier sont administrables par cette page. <a href=\"%2\$s\">Voir la documentation</a> pour plus de détails."), '<code>id.txt</code>', 'documentation.admin.php') . "</li>\n" . '<li>' . sprintf(T_("<strong>Note:</strong> n'oubliez pas de <a href=\"%1\$s\">mettre en ligne vos galeries</a>."), '#mettreEnLigne') . "</li>\n" . $messagesScript;
 			
 			echo adminMessagesScript($messagesScript, T_("Liste des galeries"));
 		}
@@ -633,7 +633,211 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			echo adminMessagesScript($messagesScript, T_("Ajout d'images"));
 		}
+		
+		########################################################################
+		##
+		## Mise en ligne d'une galerie.
+		##
+		########################################################################
 
+		if (isset($_POST['creerPage']))
+		{
+			$messagesScript = '';
+			$actionValide = FALSE;
+			$page = superBasename(securiseTexte($_POST['page']));
+		
+			if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+			{
+				$pageAncienNom = $page;
+				$casse = '';
+			
+				if (in_array('min', $_POST['filtrerNom']))
+				{
+					$casse = 'min';
+				}
+			
+				$page = filtreChaine($racine, $page, $casse);
+			
+				if ($page != $pageAncienNom)
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$pageAncienNom</code>", "<code>$page</code>") . "</li>\n";
+				}
+			}
+		
+			$cheminPage = '../' . dirname(securiseTexte($_POST['page']));
+		
+			if ($cheminPage == '../.')
+			{
+				$cheminPage = '..';
+			}
+		
+			$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
+			$cheminInclude = dirname($cheminInclude);
+		
+			if ($cheminInclude == '.')
+			{
+				$cheminInclude = '';
+			}
+		
+			if (!empty($cheminInclude))
+			{
+				$cheminInclude .= '/';
+			}
+		
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			
+			if (empty($id))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
+			}
+			elseif (!file_exists($cheminGalerie))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			}
+			elseif (!adminEmplacementPermis($cheminPage, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la création d'une page web de galerie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminPage</code>") . "</li>\n";
+			}
+			else
+			{
+				$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
+		
+				if (!$cheminConfigGalerie)
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</li>\n";
+				}
+				else
+				{
+					if (!file_exists($cheminPage))
+					{
+						$messagesScript .= adminMkdir($cheminPage, octdec(0755), TRUE);
+					}
+				
+					if (file_exists($cheminPage))
+					{
+						$urlGalerie = $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3));
+						$urlAjoutDansRss = substr($cheminPage . '/' . $page, 3);
+						
+						if (file_exists($cheminPage . '/' . $page))
+						{
+							$actionValide = TRUE;
+							
+							if ($adminPorteDocumentsDroits['editer'])
+							{
+								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
+							}
+							else
+							{
+								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlGalerie) . "</li>\n";
+							}
+						}
+						else
+						{
+							if ($fic = @fopen($cheminPage . '/' . $page, 'a'))
+							{
+								$actionValide = TRUE;
+								$contenu = '';
+								$contenu .= '<?php' . "\n";
+								$contenu .= '$idGalerie = "' . $id . '";' . "\n";
+								$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
+								$contenu .= '?>' . "\n";
+								$contenu .= "\n";
+								$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
+								fputs($fic, $contenu);
+								fclose($fic);
+							
+								if ($adminPorteDocumentsDroits['editer'])
+								{
+									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
+								}
+								else
+								{
+									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">visiter la page</a>."), $urlGalerie) . "</li>\n";
+								}
+							}
+							else
+							{
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
+							}
+						}
+					}
+				}
+			}
+		
+			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
+			echo adminMessagesScript($messagesScript, T_("Création d'une page web de galerie"));
+
+			if (isset($_POST['rssAjout']) && !empty($urlAjoutDansRss) && !empty($_POST['rssLangueAjout']) && $actionValide)
+			{
+				$messagesScript = '';
+				$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
+				$contenuFichierRssTableau = array ();
+				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries');
+		
+				if (!$cheminFichierRss)
+				{
+					$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
+			
+					if ($adminPorteDocumentsDroits['creer'])
+					{
+						@touch($cheminFichierRss);
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichierRss</code>") . "</li>\n";
+					}
+				}
+		
+				if (file_exists($cheminFichierRss) && ($galeries = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierRss . '</code>') . "</li>\n";
+				}
+				elseif (!empty($galeries))
+				{
+					foreach ($galeries as $codeLangue => $langueInfos)
+					{
+						$contenuFichierRssTableau[$codeLangue] = array ();
+
+						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
+						{
+							$contenuFichierRssTableau[$codeLangue][] = "$idGalerie=$urlRelativeGalerie\n";
+						}
+					}
+				}
+		
+				if (!isset($contenuFichierRssTableau[$rssLangueAjout]))
+				{
+					$contenuFichierRssTableau[$rssLangueAjout] = array ();
+				}
+
+				if (!preg_grep('/^' . preg_quote($id, '/') . '=/', $contenuFichierRssTableau[$rssLangueAjout]))
+				{
+					array_unshift($contenuFichierRssTableau[$rssLangueAjout], "$id=$urlAjoutDansRss\n");
+				}
+				
+				$contenuFichierRss = '';
+		
+				foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
+				{
+					if (!empty($langueInfos))
+					{
+						$contenuFichierRss .= "[$codeLangue]\n";
+				
+						foreach ($langueInfos as $ligne)
+						{
+							$contenuFichierRss .= $ligne;
+						}
+				
+						$contenuFichierRss .= "\n";
+					}
+				}
+				
+				$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
+		
+				echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des derniers ajouts aux galeries"));
+			}
+		}
+		
 		########################################################################
 		##
 		## Redimensionnement des images originales.
@@ -1042,238 +1246,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 			echo adminMessagesScript($messagesScript, T_("Renommage d'une galerie"));
-		}
-		
-		########################################################################
-		##
-		## Sauvegarde d'une galerie.
-		##
-		########################################################################
-
-		if ($adminPorteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
-		{
-			$messagesScript = '';
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
-			
-			if (empty($id))
-			{
-				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
-			}
-			elseif (!file_exists($cheminGalerie))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . $cheminGalerie . '&amp;action=date">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), "<code>$id</code>") . "</a></li>\n";
-			}
-		
-			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
-			echo adminMessagesScript($messagesScript, T_("Sauvegarde d'une galerie"));
-		}
-	
-		########################################################################
-		##
-		## Création d'une page web de galerie.
-		##
-		########################################################################
-
-		if (isset($_POST['creerPage']))
-		{
-			$messagesScript = '';
-			$actionValide = FALSE;
-			$page = superBasename(securiseTexte($_POST['page']));
-		
-			if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
-			{
-				$pageAncienNom = $page;
-				$casse = '';
-			
-				if (in_array('min', $_POST['filtrerNom']))
-				{
-					$casse = 'min';
-				}
-			
-				$page = filtreChaine($racine, $page, $casse);
-			
-				if ($page != $pageAncienNom)
-				{
-					$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), "<code>$pageAncienNom</code>", "<code>$page</code>") . "</li>\n";
-				}
-			}
-		
-			$cheminPage = '../' . dirname(securiseTexte($_POST['page']));
-		
-			if ($cheminPage == '../.')
-			{
-				$cheminPage = '..';
-			}
-		
-			$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
-			$cheminInclude = dirname($cheminInclude);
-		
-			if ($cheminInclude == '.')
-			{
-				$cheminInclude = '';
-			}
-		
-			if (!empty($cheminInclude))
-			{
-				$cheminInclude .= '/';
-			}
-		
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
-			
-			if (empty($id))
-			{
-				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
-			}
-			elseif (!file_exists($cheminGalerie))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
-			}
-			elseif (!adminEmplacementPermis($cheminPage, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour la création d'une page web de galerie (%1\$s) n'est pas gérable par le porte-documents."), "<code>$cheminPage</code>") . "</li>\n";
-			}
-			else
-			{
-				$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
-		
-				if (!$cheminConfigGalerie)
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</li>\n";
-				}
-				else
-				{
-					if (!file_exists($cheminPage))
-					{
-						$messagesScript .= adminMkdir($cheminPage, octdec(0755), TRUE);
-					}
-				
-					if (file_exists($cheminPage))
-					{
-						$urlGalerie = $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3));
-						$urlAjoutDansRss = substr($cheminPage . '/' . $page, 3);
-						
-						if (file_exists($cheminPage . '/' . $page))
-						{
-							$actionValide = TRUE;
-							
-							if ($adminPorteDocumentsDroits['editer'])
-							{
-								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
-							}
-							else
-							{
-								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlGalerie) . "</li>\n";
-							}
-						}
-						else
-						{
-							if ($fic = @fopen($cheminPage . '/' . $page, 'a'))
-							{
-								$actionValide = TRUE;
-								$contenu = '';
-								$contenu .= '<?php' . "\n";
-								$contenu .= '$idGalerie = "' . $id . '";' . "\n";
-								$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
-								$contenu .= '?>' . "\n";
-								$contenu .= "\n";
-								$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
-								fputs($fic, $contenu);
-								fclose($fic);
-							
-								if ($adminPorteDocumentsDroits['editer'])
-								{
-									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
-								}
-								else
-								{
-									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">visiter la page</a>."), $urlGalerie) . "</li>\n";
-								}
-							}
-							else
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . $page . '</code>') . "</li>\n";
-							}
-						}
-					}
-				}
-			}
-		
-			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
-			echo adminMessagesScript($messagesScript, T_("Création d'une page web de galerie"));
-
-			if (isset($_POST['rssAjout']) && !empty($urlAjoutDansRss) && !empty($_POST['rssLangueAjout']) && $actionValide)
-			{
-				$messagesScript = '';
-				$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
-				$contenuFichierRssTableau = array ();
-				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries');
-		
-				if (!$cheminFichierRss)
-				{
-					$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
-			
-					if ($adminPorteDocumentsDroits['creer'])
-					{
-						@touch($cheminFichierRss);
-					}
-					else
-					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichierRss</code>") . "</li>\n";
-					}
-				}
-		
-				if (file_exists($cheminFichierRss) && ($galeries = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierRss . '</code>') . "</li>\n";
-				}
-				elseif (!empty($galeries))
-				{
-					foreach ($galeries as $codeLangue => $langueInfos)
-					{
-						$contenuFichierRssTableau[$codeLangue] = array ();
-
-						foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
-						{
-							$contenuFichierRssTableau[$codeLangue][] = "$idGalerie=$urlRelativeGalerie\n";
-						}
-					}
-				}
-		
-				if (!isset($contenuFichierRssTableau[$rssLangueAjout]))
-				{
-					$contenuFichierRssTableau[$rssLangueAjout] = array ();
-				}
-
-				if (!preg_grep('/^' . preg_quote($id, '/') . '=/', $contenuFichierRssTableau[$rssLangueAjout]))
-				{
-					array_unshift($contenuFichierRssTableau[$rssLangueAjout], "$id=$urlAjoutDansRss\n");
-				}
-				
-				$contenuFichierRss = '';
-		
-				foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
-				{
-					if (!empty($langueInfos))
-					{
-						$contenuFichierRss .= "[$codeLangue]\n";
-				
-						foreach ($langueInfos as $ligne)
-						{
-							$contenuFichierRss .= $ligne;
-						}
-				
-						$contenuFichierRss .= "\n";
-					}
-				}
-				
-				$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
-		
-				echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des derniers ajouts aux galeries"));
-			}
 		}
 		
 		########################################################################
@@ -1762,6 +1734,34 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			echo "</div><!-- /.sousBoite -->\n";
 		}
+		
+		########################################################################
+		##
+		## Sauvegarde d'une galerie.
+		##
+		########################################################################
+
+		if ($adminPorteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
+		{
+			$messagesScript = '';
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			
+			if (empty($id))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
+			}
+			elseif (!file_exists($cheminGalerie))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			}
+			else
+			{
+				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . $cheminGalerie . '&amp;action=date">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), "<code>$id</code>") . "</a></li>\n";
+			}
+		
+			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
+			echo adminMessagesScript($messagesScript, T_("Sauvegarde d'une galerie"));
+		}
 		?>
 	</div><!-- /#boiteMessages -->
 
@@ -1882,6 +1882,67 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</fieldset>
 			
 				<p><input type="submit" name="ajouter" value="<?php echo T_('Ajouter des images'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /.boite -->
+
+	<!-- .boite -->
+
+	<div class="boite">
+		<h2 id="mettreEnLigne"><?php echo T_("Mettre en ligne une galerie"); ?></h2>
+
+		<p><?php echo T_("Vous pouvez ajouter une page sur votre site pour présenter une galerie."); ?></p>
+
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
+			<div>
+				<fieldset>
+					<legend><?php echo T_("Options"); ?></legend>
+				
+					<p><label for="mettreEnLigneSelectId"><?php echo T_("Identifiant de la galerie (ayant un fichier de configuration):"); ?></label><br />
+					<?php $listeGaleries = adminListeGaleries($racine, TRUE); ?>
+				
+					<?php if (!empty($listeGaleries)): ?>
+						<select id="mettreEnLigneSelectId" name="id">
+							<?php foreach ($listeGaleries as $listeGalerie): ?>
+								<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
+							<?php endforeach; ?>
+						</select>
+					<?php else: ?>
+						<strong><?php echo T_("Veuillez auparavant créer au moins une galerie ayant un fichier de configuration."); ?></strong>
+					<?php endif; ?>
+					</p>
+
+					<p><label for="mettreEnLigneInputPage"><?php echo T_("Emplacement de la page web:"); ?></label><br />
+					<?php echo $urlRacine . '/'; ?><input id="mettreEnLigneInputPage" type="text" name="page" /></p>
+				
+					<ul>
+						<li><input id="mettreEnLigneInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="mettreEnLigneInputFiltrerNom"><?php printf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
+						<ul>
+							<li><input id="mettreEnLigneInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="mettreEnLigneInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
+						</ul></li>
+					</ul>
+					
+					<?php $rssListeLangues = ''; ?>
+					<?php $rssListeLangues .= '<select name="rssLangueAjout">' . "\n"; ?>
+					
+					<?php foreach ($accueil as $langueAccueil => $urlLangueAccueil): ?>
+						<?php $rssListeLangues .= '<option value="' . $langueAccueil . '"'; ?>
+				
+						<?php if ($langueAccueil == $langueParDefaut): ?>
+							<?php $rssListeLangues .= ' selected="selected"'; ?>
+						<?php endif; ?>
+				
+						<?php $rssListeLangues .= '>' . $langueAccueil . "</option>\n"; ?>
+					<?php endforeach; ?>
+					
+					<?php $rssListeLangues .= "</select>"; ?>
+
+					<ul>
+						<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout"><?php printf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des derniers ajouts aux galeries</a> pour la langue %2\$s."), "rss.admin.php?global=galeries", $rssListeLangues); ?></label></li>
+					</ul>
+				</fieldset>
+				
+				<p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->
@@ -2084,101 +2145,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			</div>
 		</form>
 	</div><!-- /.boite -->
-
-	<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
-		<!-- .boite -->
-
-		<div class="boite">
-			<h2 id="sauvegarder"><?php echo T_("Sauvegarder une galerie"); ?></h2>
-
-			<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
-
-			<form action="<?php echo $adminAction; ?>#messages" method="post">
-				<div>
-					<fieldset>
-						<legend><?php echo T_("Options"); ?></legend>
-				
-						<p><label for="sauvegarderSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-						<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
-					
-						<?php if (!empty($listeGaleries)): ?>
-							<select id="sauvegarderSelectId" name="id">
-								<?php foreach ($listeGaleries as $listeGalerie): ?>
-									<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
-								<?php endforeach; ?>
-							</select>
-						<?php else: ?>
-							<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
-						<?php endif; ?>
-						</p>
-					</fieldset>
-			
-					<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>" /></p>
-				</div>
-			</form>
-		</div><!-- /.boite -->
-	<?php endif; ?>
-
-	<!-- .boite -->
-
-	<div class="boite">
-		<h2 id="pageWeb"><?php echo T_("Créer une page web de galerie"); ?></h2>
-
-		<p><?php echo T_("Vous pouvez ajouter une page sur votre site pour présenter une galerie."); ?></p>
-
-		<form action="<?php echo $adminAction; ?>#messages" method="post">
-			<div>
-				<fieldset>
-					<legend><?php echo T_("Options"); ?></legend>
-				
-					<p><label for="pageWebSelectId"><?php echo T_("Identifiant de la galerie (ayant un fichier de configuration):"); ?></label><br />
-					<?php $listeGaleries = adminListeGaleries($racine, TRUE); ?>
-				
-					<?php if (!empty($listeGaleries)): ?>
-						<select id="pageWebSelectId" name="id">
-							<?php foreach ($listeGaleries as $listeGalerie): ?>
-								<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
-							<?php endforeach; ?>
-						</select>
-					<?php else: ?>
-						<strong><?php echo T_("Veuillez auparavant créer au moins une galerie ayant un fichier de configuration."); ?></strong>
-					<?php endif; ?>
-					</p>
-
-					<p><label for="pageWebInputPage"><?php echo T_("Emplacement de la page web:"); ?></label><br />
-					<?php echo $urlRacine . '/'; ?><input id="pageWebInputPage" type="text" name="page" /></p>
-				
-					<ul>
-						<li><input id="pageWebInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="pageWebInputFiltrerNom"><?php printf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
-						<ul>
-							<li><input id="pageWebInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="pageWebInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
-						</ul></li>
-					</ul>
-					
-					<?php $rssListeLangues = ''; ?>
-					<?php $rssListeLangues .= '<select name="rssLangueAjout">' . "\n"; ?>
-					
-					<?php foreach ($accueil as $langueAccueil => $urlLangueAccueil): ?>
-						<?php $rssListeLangues .= '<option value="' . $langueAccueil . '"'; ?>
-				
-						<?php if ($langueAccueil == $langueParDefaut): ?>
-							<?php $rssListeLangues .= ' selected="selected"'; ?>
-						<?php endif; ?>
-				
-						<?php $rssListeLangues .= '>' . $langueAccueil . "</option>\n"; ?>
-					<?php endforeach; ?>
-					
-					<?php $rssListeLangues .= "</select>"; ?>
-
-					<ul>
-						<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout"><?php printf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des derniers ajouts aux galeries</a> pour la langue %2\$s."), "rss.admin.php?global=galeries", $rssListeLangues); ?></label></li>
-					</ul>
-				</fieldset>
-				
-				<p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>
-			</div>
-		</form>
-	</div><!-- /.boite -->
 	
 	<!-- .boite -->
 	
@@ -2298,6 +2264,40 @@ include $racineAdmin . '/inc/premier.inc.php';
 			</div>
 		</form>
 	</div><!-- /.boite -->
+	
+	<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
+		<!-- .boite -->
+
+		<div class="boite">
+			<h2 id="sauvegarder"><?php echo T_("Sauvegarder une galerie"); ?></h2>
+
+			<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
+
+			<form action="<?php echo $adminAction; ?>#messages" method="post">
+				<div>
+					<fieldset>
+						<legend><?php echo T_("Options"); ?></legend>
+				
+						<p><label for="sauvegarderSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
+						<?php $listeGaleries = adminListeGaleries($racine, FALSE); ?>
+					
+						<?php if (!empty($listeGaleries)): ?>
+							<select id="sauvegarderSelectId" name="id">
+								<?php foreach ($listeGaleries as $listeGalerie): ?>
+									<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
+								<?php endforeach; ?>
+							</select>
+						<?php else: ?>
+							<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+						<?php endif; ?>
+						</p>
+					</fieldset>
+			
+					<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>" /></p>
+				</div>
+			</form>
+		</div><!-- /.boite -->
+	<?php endif; ?>
 </div><!-- /#contenuPrincipal -->
 
 <?php include $racineAdmin . '/inc/dernier.inc.php'; ?>
