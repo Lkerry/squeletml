@@ -4253,12 +4253,15 @@ function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nomb
 		$pagination['pagination'] .= '</a>';
 	}
 	
-	if ($insererDansBoiteArrondie)
+	if (!empty($pagination['pagination']) && $insererDansBoiteArrondie)
 	{
 		$pagination['pagination'] = boiteArrondie($pagination['pagination']);
 	}
 	
-	$pagination['pagination'] = '<div class="pagination">' . "\n" . $pagination['pagination'] . '</div><!-- /.pagination -->' . "\n";
+	if (!empty($pagination['pagination']))
+	{
+		$pagination['pagination'] = '<div class="pagination">' . "\n" . $pagination['pagination'] . '</div><!-- /.pagination -->' . "\n";
+	}
 	
 	return $pagination;
 }
