@@ -815,19 +815,19 @@ function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FAL
 /*
 Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function cheminConfigGalerie($racine, $idGalerie, $retourneCheminParDefaut = FALSE)
+function cheminConfigGalerie($racine, $idGalerieNomDossier, $retourneCheminParDefaut = FALSE)
 {
-	if (!empty($idGalerie) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt'))
+	if (!empty($idGalerieNomDossier) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/config.ini.txt'))
 	{
-		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt';
+		return $racine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/config.ini.txt';
 	}
-	elseif (!empty($idGalerie) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini'))
+	elseif (!empty($idGalerieNomDossier) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/config.ini'))
 	{
-		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini';
+		return $racine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/config.ini';
 	}
 	elseif ($retourneCheminParDefaut)
 	{
-		return $racine . '/site/fichiers/galeries/' . $idGalerie . '/config.ini.txt';
+		return $racine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/config.ini.txt';
 	}
 	else
 	{
@@ -1531,7 +1531,7 @@ function doctype($doctype, $langue)
 /*
 Retourne le texte supplémentaire d'une image pour le message envoyé par le module «Envoyer à des amis».
 */
-function envoyerAmisSupplementImage($urlRacine, $idGalerie, $image, $galerieLegendeMarkdown)
+function envoyerAmisSupplementImage($urlRacine, $idGalerieNomDossier, $image, $galerieLegendeMarkdown)
 {
 	$messageEnvoyerAmisSupplement = '';
 	$titreImage = titreImage($image);
@@ -1558,7 +1558,7 @@ function envoyerAmisSupplementImage($urlRacine, $idGalerie, $image, $galerieLege
 		$vignetteAlt = sprintf(T_("Image %1\$s"), $titreImage);
 	}
 	
-	$messageEnvoyerAmisSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
+	$messageEnvoyerAmisSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieNomDossier) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
 	
 	if (!empty($image['titre']))
 	{
@@ -1871,7 +1871,8 @@ Retourne un tableau listant les images d'une galerie, chaque image constituant e
 */
 function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
-	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
+	$idGalerieNomDossier = idGalerieNomDossier($racine, $idGalerie);
+	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieNomDossier), TRUE);
 	$itemsFluxRss = array ();
 	
 	if ($tableauGalerie !== FALSE)
@@ -1881,8 +1882,8 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$id = idImage($racine, $image);
 			$titreImage = titreImage($image);
 			$title = sprintf(T_("%1\$s – Galerie %2\$s"), $titreImage, $idGalerie);
-			$cheminImage = "$racine/site/fichiers/galeries/$idGalerie/" . $image['intermediaireNom'];
-			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($image['intermediaireNom']);
+			$cheminImage = "$racine/site/fichiers/galeries/$idGalerieNomDossier/" . $image['intermediaireNom'];
+			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieNomDossier) . '/' . rawurlencode($image['intermediaireNom']);
 			$urlGalerieImage = superRawurlencode("$urlGalerie?image=$id");
 			
 			if (!empty($image['intermediaireLargeur']))
@@ -1920,11 +1921,11 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 				$nomOriginal = nomSuffixe($image['intermediaireNom'], '-original');
 			}
 			
-			$cheminOriginal = "$racine/site/fichiers/galeries/$idGalerie/$nomOriginal";
+			$cheminOriginal = "$racine/site/fichiers/galeries/$idGalerieNomDossier/$nomOriginal";
 			
 			if (file_exists($cheminOriginal))
 			{
-				$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerie) . '/' . rawurlencode($nomOriginal);
+				$urlOriginal = "site/fichiers/galeries/" . rawurlencode($idGalerieNomDossier) . '/' . rawurlencode($nomOriginal);
 				
 				if ($galerieLienOriginalTelecharger)
 				{
@@ -2139,6 +2140,14 @@ function htmlCategorie($urlRacine, $categories, $categorie, $langueParDefaut, $a
 	$htmlCategorie .= "</li>\n";
 	
 	return $htmlCategorie;
+}
+
+/*
+Retourne l'`id` filtré d'une galerie, qui sera utilisé comme nom de dossier.
+*/
+function idGalerieNomDossier($racine, $idGalerie)
+{
+	return filtreChaine($racine, $idGalerie);
 }
 
 /*
@@ -4574,7 +4583,8 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 			
 			if (!empty($urlGalerie))
 			{
-				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $id), TRUE);
+				$idNomDossier = idGalerieNomDossier($racine, $id);
+				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idNomDossier), TRUE);
 				
 				if ($tableauGalerie !== FALSE)
 				{
@@ -4592,7 +4602,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						}
 						else
 						{
-							$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idGalerie/" . $image['intermediaireNom']));
+							$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idNomDossier/" . $image['intermediaireNom']));
 						}
 						
 						if (isset($image['vignetteNom']))
@@ -4618,11 +4628,11 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						}
 						else
 						{
-							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $id . '/' . $vignetteNom);
+							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idNomDossier . '/' . $vignetteNom);
 						}
 						
 						$vignettes[] = array (
-							'code' => '<li><a href="' . superRawurlencode($urlGalerie . '?image=' . idImage($racine, $image)) . '" title="' . $title . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($id) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
+							'code' => '<li><a href="' . superRawurlencode($urlGalerie . '?image=' . idImage($racine, $image)) . '" title="' . $title . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idNomDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
 							'date' => $date,
 						);
 					}
@@ -4722,11 +4732,11 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					preg_match('/<img src="([^"]+)"/', htmlspecialchars_decode($itemsFluxRss[$i]['description']), $resultat);
 					$intermediaireSrc = rawurldecode($resultat[1]);
 					$intermediaireNom = superBasename($intermediaireSrc);
-					$idGalerie = superBasename(str_replace("/$intermediaireNom", '', $intermediaireSrc));
+					$idGalerieNomDossier = superBasename(str_replace("/$intermediaireNom", '', $intermediaireSrc));
 				
-					if (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerie))
+					if (!empty($idGalerieNomDossier) && cheminConfigGalerie($racine, $idGalerieNomDossier))
 					{
-						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
+						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieNomDossier), TRUE);
 					
 						if (isset($tableauGalerie[$intermediaireNom]['vignetteNom']))
 						{
@@ -4751,10 +4761,10 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						}
 						else
 						{
-							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idGalerie . '/' . $vignetteNom);
+							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/' . $vignetteNom);
 						}
 					
-						$vignetteImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie) . '/' . $vignetteNom . '" alt="' . $itemsFluxRss[$i]['title'] . '" width="' . $width . '" height="' . $height . '" />';
+						$vignetteImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieNomDossier) . '/' . $vignetteNom . '" alt="' . $itemsFluxRss[$i]['title'] . '" width="' . $width . '" height="' . $height . '" />';
 					}
 				
 					$html .= '<li><a href="' . $itemsFluxRss[$i]['link'] . '" title="' . $itemsFluxRss[$i]['title'] . '">' . "$vignetteImg</a></li>\n";

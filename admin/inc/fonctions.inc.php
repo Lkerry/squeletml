@@ -1059,9 +1059,11 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 				{
 					foreach ($langueInfos as $idGalerie => $urlGalerie)
 					{
-						if (cheminConfigGalerie($racine, $idGalerie))
+						$idGalerieNomDossier = idGalerieNomDossier($racine, $idGalerie);
+						
+						if (cheminConfigGalerie($racine, $idGalerieNomDossier))
 						{
-							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
+							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieNomDossier), TRUE);
 						
 							if ($galerieVignettesParPage)
 							{
@@ -1093,7 +1095,7 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 								$loc = superRawurlencode($loc);
 								$tableauUrlSitemap[$loc] = array ();
 								$tableauUrlSitemap[$loc]['image'] = array ();
-								$urlImage = $urlRacine . '/site/fichiers/galeries/' . $idGalerie . '/' . $image['intermediaireNom'];
+								$urlImage = $urlRacine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/' . $image['intermediaireNom'];
 								$urlImage = superRawurlencode($urlImage);
 								$tableauUrlSitemap[$loc]['image'][$urlImage] = array ();
 							
@@ -1493,7 +1495,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 }
 
 /*
-Retourne un tableau dont chaque élément contient le nom d'une galerie. Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration, sinon retourne le nom de tous les dossiers de `$racine/site/fichiers/galeries/`. Si une erreur survient, retourne FALSE.
+Retourne un tableau trié en ordre alphabétique dont chaque élément contient le nom d'une galerie. Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration. Dans tous les cas, une galerie doit obligatoirement avoir un fichier d'identification `id.txt` pour être prise en compte. Si une erreur survient, retourne FALSE.
 */
 function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 {
@@ -1503,11 +1505,13 @@ function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 		
 		while ($fichier = @readdir($fic))
 		{
-			if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
+			$idGalerie = adminIdGalerie($racine, $fichier);
+			
+			if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && !empty($idGalerie))
 			{
 				if (($avecConfigSeulement && cheminConfigGalerie($racine, $fichier)) || !$avecConfigSeulement)
 				{
-					$galeries[] = sansEchappement($fichier);
+					$galeries[] = $idGalerie;
 				}
 			}
 		}
@@ -1517,6 +1521,8 @@ function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 	
 	if (isset($galeries))
 	{
+		natcasesort($galeries);
+		
 		return $galeries;
 	}
 	else
@@ -1528,10 +1534,10 @@ function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 /*
 Met à jour le fichier de configuration d'une galerie. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
-function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages = array ())
+function adminMajConfigGalerie($racine, $idNomDossier, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages = array ())
 {
-	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $id;
-	$cheminConfigGalerie = cheminConfigGalerie($racine, $id);
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+	$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
 	
 	if (!empty($listeAjouts))
 	{
@@ -1547,7 +1553,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 		else
 		{
 			$listeExistant = '';
-			$cheminConfigGalerie = cheminConfigGalerie($racine, $id, TRUE);
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier, TRUE);
 		}
 		
 		if (@file_put_contents($cheminConfigGalerie, $listeAjouts . $listeExistant) === FALSE)
@@ -1672,7 +1678,7 @@ function adminMajConfigGalerie($racine, $id, $listeAjouts, $analyserConfig, $exc
 	
 	if (!$cheminConfigGalerie)
 	{
-		$cheminConfigGalerie = cheminConfigGalerie($racine, $id, TRUE);
+		$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier, TRUE);
 	}
 	
 	if (@file_put_contents($cheminConfigGalerie, $contenuConfig) === FALSE)
@@ -1778,6 +1784,23 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 	{
 		return '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), "<code>$fichier</code>") . "</li>\n";
 	}
+}
+
+/*
+Retourne l'`id` d'une galerie à partir du nom de son dossier. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
+*/
+function adminIdGalerie($racine, $idGalerieNomDossier)
+{
+	$fichierId = "$racine/site/fichiers/galeries/$idGalerieNomDossier/id.txt";
+	$idGalerie = '';
+	
+	if (file_exists($fichierId))
+	{
+		$idGalerie = @file_get_contents("$racine/site/fichiers/galeries/$idGalerieNomDossier/id.txt");
+		$idGalerie = trim($idGalerie);
+	}
+	
+	return $idGalerie;
 }
 
 /*

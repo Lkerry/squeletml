@@ -7,20 +7,21 @@ Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'u
 if ($idGalerie == 'démo')
 {
 	// Galerie démo par défaut.
-	$tableauGalerie = tableauGalerie($racine . '/fichiers/galeries/démo/config.ini.txt', TRUE);
-	$urlImgSrc = $urlRacine . '/fichiers/galeries/démo';
-	$racineImgSrc = $racine . '/fichiers/galeries/démo';
+	$tableauGalerie = tableauGalerie($racine . '/fichiers/galeries/' . $idGalerieNomDossier . '/config.ini.txt', TRUE);
+	$urlImgSrc = $urlRacine . '/fichiers/galeries/' . $idGalerieNomDossier;
+	$racineImgSrc = $racine . '/fichiers/galeries/' . $idGalerieNomDossier;
 }
-elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerie))
+elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerieNomDossier))
 {
-	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerie), TRUE);
-	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerie);
-	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerie;
+	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieNomDossier), TRUE);
+	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieNomDossier);
+	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerieNomDossier;
 }
 else
 {
 	$nomGalerie = $idGalerie;
 	$idGalerie = '';
+	$idGalerieNomDossier = '';
 }
 
 // Initialisation du titre et du corps de la galerie.

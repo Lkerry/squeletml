@@ -16,7 +16,7 @@ if (file_exists("$racine/site/$dossierAdmin/inc/premier-pre.inc.php"))
 ##
 ########################################################################
 
-extract(init('', 'baliseH1', 'h1'), EXTR_SKIP);
+extract(init('', 'baliseH1', 'baliseTitle', 'h1'), EXTR_SKIP);
 
 if (!isset($adminBalisesLinkScriptFinales))
 {

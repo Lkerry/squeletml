@@ -113,7 +113,9 @@ elseif ($getType == 'galerie' && !empty($getChemin) && empty($getLangue))
 				$rssGalerie = $galerieActiverFluxRssParDefaut;
 			}
 			
-			if ($rssGalerie && file_exists("$racine/site/fichiers/galeries/" . $idGalerie) && cheminConfigGalerie($racine, $idGalerie))
+			$idGalerieNomDossier = idGalerieNomDossier($racine, $idGalerie);
+			
+			if ($rssGalerie && file_exists("$racine/site/fichiers/galeries/$idGalerieNomDossier") && cheminConfigGalerie($racine, $idGalerieNomDossier))
 			{
 				// A: le flux RSS est activé.
 				

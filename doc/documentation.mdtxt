@@ -631,9 +631,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$idCategorie`: un nombre, un mot ou une phrase identifiant la catégorie à chercher pour afficher la liste des articles y étant classés. Voir la section «Catégories».
 
-- `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Représente le nom du répertoire qui sera lu dans `site/fichiers/galeries` pour lister les images. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section «Galeries»), une galerie sera insérée dans la page.
+- `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Le nom du dossier de la galerie dans `site/fichiers/galeries` correspond à l'identifiant filtré. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section «Galeries»), une galerie sera insérée dans la page.
 
-	Par exemple, si nous avons `$idGalerie = "mes-voyages";`, Squeletml va rechercher le dossier `site/fichiers/galeries/mes-voyages`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
+	Par exemple, si nous avons `$idGalerie = "Promenade en forêt";`, Squeletml va rechercher le dossier `site/fichiers/galeries/Promenade-en-foret`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
 
 - `$infosPublication`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut afficher ou non les informations de publication (auteur, date de création, date de dernière révision) pour la page courante, si la valeur est différente de `$afficherInfosPublicationParDefaut` du fichier de configuration du site.
 
@@ -1018,29 +1018,55 @@ Dans l'un ou l'autre des cas, les catégories actives seront marquées comme tel
 
 ## Galeries
 
-Chaque galerie possède son propre identifiant unique, aussi appelé *id*, qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'identifiant vaut `galerie1`. Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible:
+Chaque galerie possède son propre titre, aussi appelé «identifiant unique» (ou *id*), qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'identifiant vaut `Ma première galerie`.
 
-- un dossier contenant les images, présent dans `site/fichiers/galeries/` et dont le nom correspond à l'identifiant de la galerie, ce qui donne pour notre exemple `site/fichiers/galeries/galerie1/`;
+Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible (**toutes ces étapes peuvent être réalisées facilement dans la section d'administration**):
 
-- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/fichiers/galeries/identifiantDeLaGalerie`. Il y a deux noms possibles pour le fichier de configuration: `config.ini.txt` ou `config.ini`. Le premier fichier existant trouvé est utilisé, `config.ini.txt` étant cherché en premier. Cela donne pour notre exemple `site/fichiers/galeries/galerie1/config.ini.txt` ou `site/fichiers/galeries/galerie1/config.ini`;
+- un dossier contenant les images, présent dans `site/fichiers/galeries/` et dont le nom correspond à l'identifiant filtré de la galerie, ce qui donne `site/fichiers/galeries/idGalerieNomDossier/`. Pour notre exemple, nous obtenons `site/fichiers/galeries/Ma-premiere-galerie/`. Le filtrage de l'identifiant est effectué automatiquement lorsque la galerie est créée à partir de l'administration de Squeletml. Pour effectuer le filtrage soi-même lors de la création manuelle d'une galerie, se référer à la fonction `idGalerieNomDossier()` dans le fichier `inc/fonctions.inc.php`. En gros, les espaces et les apostrophes deviennent des tirets et les lettres accentuées sont remplacées par leur équivalent non accentué;
 
-- une page à visiter sur le site pour afficher la galerie, par exemple `ma-galerie-de-test.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la galerie que vous voulez afficher.
+- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/fichiers/galeries/idGalerieNomDossier/`. Il y a deux noms possibles pour le fichier de configuration: `config.ini.txt` ou `config.ini`. Le premier fichier existant trouvé est utilisé, `config.ini.txt` étant cherché en premier. Cela donne pour notre exemple `site/fichiers/galeries/Ma-premiere-galerie/config.ini.txt` ou `site/fichiers/galeries/Ma-premiere-galerie/config.ini`;
 
-Concrètement, pour créer une galerie, voici les étapes à suivre:
+- une page à visiter sur le site pour afficher la galerie, par exemple `ma-premiere-galerie.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la galerie que vous voulez afficher.
 
-1. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie, et l'assigner avec l'identifiant voulu (`$idGalerie = "ce qu'on veut";`).
+Concrètement, pour créer une galerie à partir de l'administration de Squeletml, voici les étapes à suivre:
 
-2. Créer un dossier `site/fichiers/galeries/$idGalerie` et y mettre les images.
+1. Visiter la page `admin/galeries.admin.php` et se rendre à la section «Ajouter des images».
 
-3. Créer un fichier de configuration `site/fichiers/galeries/$idGalerie/config.ini.txt` ou `site/fichiers/galeries/$idGalerie/config.ini`. Cette étape est développée ci-dessous.
+	Dans le champ «Identifiant de la galerie», inscrire l'identifiant voulu.
 
-**Note: toutes ces étapes peuvent être réalisées facilement dans la section d'administration.**
+	Dans le champ «Fichier», préciser un fichier image ou une archive de format TAR (`.tar`) ou ZIP (`.zip`).
+
+	Choisir d'autres options selon les besoins.
+
+	Cliquer sur «Ajouter des images».
+
+2. Toujours dans la page `admin/galeries.admin.php`, se rendre à la section «Créer une page web de galerie».
+
+	Dans le champ «Identifiant de la galerie», choisir la galerie voulue.
+
+	Dans le champ «Emplacement de la page web», préciser la page web voulue.
+
+	Choisir d'autres options selon les besoins.
+
+	Cliquer sur «Créer une page web».
+
+Pour créer manuellement une galerie, donc sans passer par l'administration de Squeletml, les étapes sont les suivantes:
+
+1. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie (par exemple, la page `ma-premiere-galerie.php`), et l'assigner avec l'identifiant voulu (`$idGalerie = "ce qu'on veut";`).
+
+2. Créer un dossier `site/fichiers/galeries/idGalerieNomDossier` et y mettre les images.
+
+3. Créer un fichier de configuration `site/fichiers/galeries/idGalerieNomDossier/config.ini.txt` ou `site/fichiers/galeries/idGalerieNomDossier/config.ini`. Cette étape est développée dans la prochaine section.
+
+4. Optionnel: pour gérer la galerie à partir de l'administration de Squeletml (`admin/galeries.admin.php`), créer un fichier d'identification `site/fichiers/galeries/idGalerieNomDossier/id.txt` et y inscrire seulement l'identifiant non filtré (par exemple `Ma première galerie`) de la galerie, ce qui donne donc un fichier d'une seule ligne.
+
+	Explications: à partir de l'identifiant d'une galerie (par exemple `Ma première galerie`), il est facile de trouver son dossier (par exemple `Ma-premiere-galerie`); un simple filtrage de l'identifiant le permet. Cependant, l'inverse n'est pas vrai. Par exemple, est-ce que la lettre «e» représente une lettre non accentuée ou bien une lettre accentuée telle que «é», «è», «ê», etc.? Pour cette raison, le script de gestion des galeries dans la section d'administration de Squeletml crée automatiquement un fichier d'identification `id.txt` ne contenant que l'identifiant de la galerie.
 
 ### Fichier de configuration d'une galerie
 
 Chaque image d'une galerie est déclinée en au moins deux versions: vignette et intermédiaire. Une troisième version peut être offerte en téléchargement: le format original. Chacune des images peut se voir assigner différentes informations optionnelles, par exemple la valeur de chaque attribut (`width`, `height`, `alt`, `src`) de la balise `img`. En fait, **une seule information est obligatoire dans le fichier de configuration: le nom du fichier de l'image en version intermédiaire.**
 
-Cette information doit se retrouver dans le fichier de configuration `site/fichiers/galeries/$idGalerie/config.ini.txt` ou `site/fichiers/galeries/$idGalerie/config.ini`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier en utilisant le script de gestion des galeries dans la section d'administration. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
+Cette information doit se retrouver dans le fichier de configuration `site/fichiers/galeries/idGalerieNomDossier/config.ini.txt` ou `site/fichiers/galeries/idGalerieNomDossier/config.ini`. Vous pouvez générer et mettre à jour automatiquement le contenu de ce fichier à partir de l'administration de Squeletml. Vous pouvez également le créer et le modifier à la main à l'aide d'un simple éditeur de texte.
 
 Chaque image de la galerie possède sa propre section dans le fichier de configuration. La section commence par un titre entre crochets représentant le nom du fichier de l'image en version intermédiaire (et se termine par le début d'une autre section ou par la fin du fichier):
 
