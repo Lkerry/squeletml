@@ -245,7 +245,7 @@ elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && emp
 			
 			if (
 				isset($categories[$idCategorie]) &&
-				(!empty($getId) && ($getId == filtreChaine($racine, $getId))) && // Pour éviter la duplication de contenu dans les moteurs de recherche.
+				(empty($getId) || ($getId == filtreChaine($racine, $getId))) && // Pour éviter la duplication de contenu dans les moteurs de recherche.
 				((!empty($getId) && (empty($categories[$idCategorie]['urlCat']) || strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') !== FALSE)) || (!empty($getChemin) && !empty($categories[$idCategorie]['urlCat']) && strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') === FALSE))
 			)
 			{

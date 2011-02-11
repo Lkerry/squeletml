@@ -1,4 +1,4 @@
-Voici quelques notes au sujet de possibles incompatibilités entre versions:
+Voici des notes au sujet de quelques changements ou de possibles incompatibilités entre versions:
 
 ## Squeletml 2.6
 
@@ -7,3 +7,5 @@ Voici quelques notes au sujet de possibles incompatibilités entre versions:
 - Pour être gérée à partir de l'administration de Squeletml, une galerie doit maintenant avoir dans son dossier un fichier d'identification `id.txt` contenant seulement son identifiant non filtré. Par exemple, une galerie «Ma première galerie» doit avoir un fichier `site/fichiers/galeries/Ma-premiere-galerie/id.txt` ne contenant que `Ma première galerie`.
 
 - Un paramètre utilisé dans une URL pour identifier une page de catégorie ou de flux RSS est maintenant filtré. Par exemple, le lien `categorie.php?id=Ma catégorie` est maintenant `categorie.php?id=Ma-categorie`.
+
+- Le dossier `fichiers/galeries/démo` a été renommé `fichiers/galeries/demo`. Après la mise à jour, l'ancien dossier peut être supprimé.
