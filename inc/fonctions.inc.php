@@ -29,7 +29,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 {
 	$messagesScript = '';
 	
-	if (file_exists($racine . '/.acces') && strpos(file_get_contents($racine . '/.acces'), ':') !== FALSE)
+	if (file_exists($racine . '/.acces') && strpos(@file_get_contents($racine . '/.acces'), ':') !== FALSE)
 	{
 		$lienAccesDansHtaccess = FALSE;
 	
@@ -1162,7 +1162,7 @@ Personnalise la coloration syntaxique par défaut de la fonction `highlight_file
 */
 function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir = FALSE)
 {
-	$code = file_get_contents($fichier);
+	$code = @file_get_contents($fichier);
 	$codeColore = coloreCodePhp($code, TRUE, $commentairesEnNoir);
 	
 	if ($retourneCode)
@@ -2081,6 +2081,60 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
+Retourne un tableau listant les galeries sous la forme `"idGalerie" => "idGalerieDossier"`. Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
+*/
+function galeries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE)
+{
+	$galeries = array ();
+	
+	if ($fic = @opendir($racine . '/site/fichiers/galeries'))
+	{
+		while ($fichier = @readdir($fic))
+		{
+			if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
+			{
+				$cheminIdTxt = $racine . '/site/fichiers/galeries/' . $fichier . '/id.txt';
+				
+				if (!file_exists($cheminIdTxt))
+				{
+					@file_put_contents($cheminIdTxt, filtreChaine($racine, $fichier));
+				}
+				
+				if (file_exists($cheminIdTxt))
+				{
+					$contenuIdTxt = @file_get_contents($racine . '/site/fichiers/galeries/' . $fichier . '/id.txt');
+				
+					if ($contenuIdTxt !== FALSE && (($avecConfigSeulement && cheminConfigGalerie($racine, $fichier)) || !$avecConfigSeulement))
+					
+					{
+						$idGalerie = trim($contenuIdTxt);
+						
+						if (!empty($galerieSpecifique))
+						{
+							if ($galerieSpecifique == $idGalerie)
+							{
+								$galeries[$idGalerie] = $fichier;
+								break;
+							}
+						}
+						else
+						{
+							$galeries[$idGalerie] = $fichier;
+						}
+					}
+				}
+			}
+		}
+		
+		closedir($fic);
+	}
+	
+	natcasesort($galeries);
+	
+	return $galeries;
+}
+
+/*
 Retourne TRUE si la bibliothèque GD est installée, sinon retourne FALSE.
 */
 function gdEstInstallee()
@@ -2162,11 +2216,23 @@ function idCategorie($racine, $categories, $idCategorieFiltre)
 }
 
 /*
-Retourne l'`id` filtré d'une galerie, qui sera utilisé comme nom de dossier.
+Retourne le nom du dossier d'une galerie. Si aucun dossier n'a été trouvé, retourne un nom qui pourra être utilisé pour en créer un.
 */
 function idGalerieDossier($racine, $idGalerie)
 {
-	return filtreChaine($racine, $idGalerie);
+	$dossier = '';
+	$galeries = galeries($racine, $idGalerie);
+	
+	if (!empty($galeries[$idGalerie]))
+	{
+		$dossier = $galeries[$idGalerie];
+	}
+	else
+	{
+		$dossier = filtreChaine($racine, $idGalerie);
+	}
+	
+	return $dossier;
 }
 
 /*
@@ -3731,7 +3797,7 @@ Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et re
 */
 function mdtxt($fichier)
 {
-	return Markdown(file_get_contents($fichier));
+	return Markdown(@file_get_contents($fichier));
 }
 
 /*

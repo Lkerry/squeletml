@@ -1495,43 +1495,6 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 }
 
 /*
-Retourne un tableau trié en ordre alphabétique dont chaque élément contient le nom d'une galerie. Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration. Dans tous les cas, une galerie doit obligatoirement avoir un fichier d'identification `id.txt` pour être prise en compte. Si une erreur survient, retourne FALSE.
-*/
-function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
-{
-	if ($fic = @opendir($racine . '/site/fichiers/galeries'))
-	{
-		$galeries = array ();
-		
-		while ($fichier = @readdir($fic))
-		{
-			$idGalerie = adminIdGalerie($racine, $fichier);
-			
-			if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..' && !empty($idGalerie))
-			{
-				if (($avecConfigSeulement && cheminConfigGalerie($racine, $fichier)) || !$avecConfigSeulement)
-				{
-					$galeries[] = $idGalerie;
-				}
-			}
-		}
-		
-		closedir($fic);
-	}
-	
-	if (isset($galeries))
-	{
-		natcasesort($galeries);
-		
-		return $galeries;
-	}
-	else
-	{
-		return FALSE;
-	}
-}
-
-/*
 Met à jour le fichier de configuration d'une galerie. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
 function adminMajConfigGalerie($racine, $idDossier, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages = array ())
@@ -1543,7 +1506,7 @@ function adminMajConfigGalerie($racine, $idDossier, $listeAjouts, $analyserConfi
 	{
 		if ($cheminConfigGalerie)
 		{
-			$listeExistant = file_get_contents($cheminConfigGalerie);
+			$listeExistant = @file_get_contents($cheminConfigGalerie);
 			
 			if ($listeExistant === FALSE)
 			{
