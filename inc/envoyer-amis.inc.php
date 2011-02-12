@@ -33,7 +33,7 @@ if (!$erreur404 && !$estPageDerreur)
 		$messageEnvoyerAmis = '';
 	}
 
-	$cheminConfigGalerie = cheminConfigGalerie($racine, $idGalerieNomDossier);
+	$cheminConfigGalerie = cheminConfigGalerie($racine, $idGalerieDossier);
 
 	if (!empty($idGalerie) && isset($_GET['image']) && $cheminConfigGalerie)
 	{
@@ -51,7 +51,7 @@ if (!$erreur404 && !$estPageDerreur)
 				if (isset($_GET['action']) && $_GET['action'] == 'envoyerAmis')
 				{
 					$envoyerAmisInclureContact = TRUE;
-					$messageEnvoyerAmisSupplement = envoyerAmisSupplementImage($urlRacine, $idGalerieNomDossier, $image, $galerieLegendeMarkdown);
+					$messageEnvoyerAmisSupplement = envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown);
 					$titreImage = titreImage($image);
 					$messageEnvoyerAmis = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'image %3\$s, qui fait partie de la galerie %4\$s:"), '<em>' . $nom . '</em>', '<a href="' . ACCUEIL . '">' . ACCUEIL . '</a>', '<em>' . $titreImage . '</em>', '<em>' . $idGalerie . '</em>') . "</p>\n" . $messageEnvoyerAmisSupplement . $petitMot;
 				}

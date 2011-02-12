@@ -7,21 +7,21 @@ Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'u
 if ($idGalerie == 'démo')
 {
 	// Galerie démo par défaut.
-	$tableauGalerie = tableauGalerie($racine . '/fichiers/galeries/' . $idGalerieNomDossier . '/config.ini.txt', TRUE);
-	$urlImgSrc = $urlRacine . '/fichiers/galeries/' . $idGalerieNomDossier;
-	$racineImgSrc = $racine . '/fichiers/galeries/' . $idGalerieNomDossier;
+	$tableauGalerie = tableauGalerie($racine . '/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt', TRUE);
+	$urlImgSrc = $urlRacine . '/fichiers/galeries/' . $idGalerieDossier;
+	$racineImgSrc = $racine . '/fichiers/galeries/' . $idGalerieDossier;
 }
-elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerieNomDossier))
+elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerieDossier))
 {
-	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieNomDossier), TRUE);
-	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieNomDossier);
-	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerieNomDossier;
+	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
+	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieDossier);
+	$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idGalerieDossier;
 }
 else
 {
 	$nomGalerie = $idGalerie;
 	$idGalerie = '';
-	$idGalerieNomDossier = '';
+	$idGalerieDossier = '';
 }
 
 // Initialisation du titre et du corps de la galerie.

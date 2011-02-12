@@ -143,11 +143,11 @@ if (file_exists($racine . '/init.inc.php'))
 				{
 					foreach ($langueInfos as $idGalerie => $urlGalerie)
 					{
-						$idGalerieNomDossier = idGalerieNomDossier($racine, $idGalerie);
+						$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 						
-						if (cheminConfigGalerie($racine, $idGalerieNomDossier))
+						if (cheminConfigGalerie($racine, $idGalerieDossier))
 						{
-							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieNomDossier), TRUE);
+							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
 						
 							if ($galerieVignettesParPage)
 							{

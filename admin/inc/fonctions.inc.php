@@ -1059,11 +1059,11 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 				{
 					foreach ($langueInfos as $idGalerie => $urlGalerie)
 					{
-						$idGalerieNomDossier = idGalerieNomDossier($racine, $idGalerie);
+						$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 						
-						if (cheminConfigGalerie($racine, $idGalerieNomDossier))
+						if (cheminConfigGalerie($racine, $idGalerieDossier))
 						{
-							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieNomDossier), TRUE);
+							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
 						
 							if ($galerieVignettesParPage)
 							{
@@ -1095,7 +1095,7 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 								$loc = superRawurlencode($loc);
 								$tableauUrlSitemap[$loc] = array ();
 								$tableauUrlSitemap[$loc]['image'] = array ();
-								$urlImage = $urlRacine . '/site/fichiers/galeries/' . $idGalerieNomDossier . '/' . $image['intermediaireNom'];
+								$urlImage = $urlRacine . '/site/fichiers/galeries/' . $idGalerieDossier . '/' . $image['intermediaireNom'];
 								$urlImage = superRawurlencode($urlImage);
 								$tableauUrlSitemap[$loc]['image'][$urlImage] = array ();
 							
@@ -1534,10 +1534,10 @@ function adminListeGaleries($racine, $avecConfigSeulement = TRUE)
 /*
 Met à jour le fichier de configuration d'une galerie. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
-function adminMajConfigGalerie($racine, $idNomDossier, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages = array ())
+function adminMajConfigGalerie($racine, $idDossier, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages = array ())
 {
-	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
-	$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
+	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
+	$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 	
 	if (!empty($listeAjouts))
 	{
@@ -1553,7 +1553,7 @@ function adminMajConfigGalerie($racine, $idNomDossier, $listeAjouts, $analyserCo
 		else
 		{
 			$listeExistant = '';
-			$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier, TRUE);
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier, TRUE);
 		}
 		
 		if (@file_put_contents($cheminConfigGalerie, $listeAjouts . $listeExistant) === FALSE)
@@ -1678,7 +1678,7 @@ function adminMajConfigGalerie($racine, $idNomDossier, $listeAjouts, $analyserCo
 	
 	if (!$cheminConfigGalerie)
 	{
-		$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier, TRUE);
+		$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier, TRUE);
 	}
 	
 	if (@file_put_contents($cheminConfigGalerie, $contenuConfig) === FALSE)
@@ -1789,14 +1789,14 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 /*
 Retourne l'`id` réel d'une galerie à partir du nom de son dossier. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
 */
-function adminIdGalerie($racine, $idGalerieNomDossier)
+function adminIdGalerie($racine, $idGalerieDossier)
 {
-	$fichierId = "$racine/site/fichiers/galeries/$idGalerieNomDossier/id.txt";
+	$fichierId = "$racine/site/fichiers/galeries/$idGalerieDossier/id.txt";
 	$idGalerie = '';
 	
 	if (file_exists($fichierId))
 	{
-		$idGalerie = @file_get_contents("$racine/site/fichiers/galeries/$idGalerieNomDossier/id.txt");
+		$idGalerie = @file_get_contents("$racine/site/fichiers/galeries/$idGalerieDossier/id.txt");
 		$idGalerie = trim($idGalerie);
 	}
 	

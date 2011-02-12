@@ -71,11 +71,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		$idNomDossier = '';
+		$idDossier = '';
 		
 		if (!empty($id))
 		{
-			$idNomDossier = idGalerieNomDossier($racine, $id);
+			$idDossier = idGalerieDossier($racine, $id);
 		}
 		
 		if (!empty($adminFiltreAccesDossiers))
@@ -294,11 +294,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				if ($id == 'nouvelleGalerie')
 				{
 					$id = securiseTexte(superBasename($_POST['idNouvelleGalerie']));
-					$idNomDossier = idGalerieNomDossier($racine, $id);
+					$idDossier = idGalerieDossier($racine, $id);
 				}
 				
 				$cheminGaleries = $racine . '/site/fichiers/galeries';
-				$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+				$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			
 				if (!file_exists($cheminGalerie))
 				{
@@ -397,7 +397,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						{
 							$resultatArchive = 0;
 							$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
-							$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $idNomDossier . '/');
+							$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $idDossier . '/');
 				
 							if ($resultatArchive == 0)
 							{
@@ -415,8 +415,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 										$nomFiltreFichier = filtreChaine($racine, $nomFichier, $casse);
 									}
 								
-									$cheminFichier = $cheminGaleries . '/' . $idNomDossier . '/' . $nomFichier;
-									$cheminFiltreFichier = $cheminGaleries . '/' . $idNomDossier . '/' . $nomFiltreFichier;
+									$cheminFichier = $cheminGaleries . '/' . $idDossier . '/' . $nomFichier;
+									$cheminFiltreFichier = $cheminGaleries . '/' . $idDossier . '/' . $nomFiltreFichier;
 								
 									if ($infoImage['status'] == 'ok')
 									{
@@ -429,7 +429,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 										}
 										elseif ($nomFiltreFichier == $nomFichier)
 										{
-											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idNomDossier . '</code>') . "</li>\n";
+											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idDossier . '</code>') . "</li>\n";
 										
 											if ($typeMimeFichier == 'image/jpeg')
 											{
@@ -449,7 +449,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 										
 											if (file_exists($cheminFiltreFichier))
 											{
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idNomDossier . '</code>') . "</li>\n";
+												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idDossier . '</code>') . "</li>\n";
 												
 												if ($typeMimeFichier == 'image/jpeg')
 												{
@@ -464,12 +464,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 												}
 												
 												$messagesScript .= $messagesScriptFiltre;
-												$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s impossible, car un fichier %2\$s existe déjà dans le dossier %3\$s."), '<code>' . $nomFichier . '</code>', '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idNomDossier . '</code>') . "</li>\n";
+												$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s impossible, car un fichier %2\$s existe déjà dans le dossier %3\$s."), '<code>' . $nomFichier . '</code>', '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idDossier . '</code>') . "</li>\n";
 											}
 											elseif (@rename($cheminFichier, $cheminFiltreFichier))
 											{
 												$messagesScript .= $messagesScriptFiltre;
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idNomDossier . '</code>') . "</li>\n";
+												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFiltreFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idDossier . '</code>') . "</li>\n";
 												
 												if ($typeMimeFichier == 'image/jpeg')
 												{
@@ -485,7 +485,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 											}
 											else
 											{
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idNomDossier . '</code>') . "</li>\n";
+												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . $nomFichier . '</code>', '<code>' . $cheminGaleries . '/' . $idDossier . '</code>') . "</li>\n";
 												
 												if ($typeMimeFichier == 'image/jpeg')
 												{
@@ -690,7 +690,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$cheminInclude .= '/';
 			}
 		
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			
 			if (empty($id))
 			{
@@ -706,7 +706,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
+				$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 		
 				if (!$cheminConfigGalerie)
 				{
@@ -853,7 +853,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['redimensionner']) && gdEstInstallee())
 		{
 			$messagesScript = '';
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			$erreur = FALSE;
 			
 			if (empty($id))
@@ -1060,7 +1060,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['supprimerImages']))
 		{
 			$messagesScript = '';
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			
 			if (empty($id))
 			{
@@ -1135,7 +1135,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (isset($_POST['supprimer']) && in_array('vignettesAvecTatouage', $_POST['supprimer']))
 					{
-						$cheminTatouage = $racine . '/site/fichiers/galeries/' . $idNomDossier . '/tatouage';
+						$cheminTatouage = $racine . '/site/fichiers/galeries/' . $idDossier . '/tatouage';
 				
 						if (!file_exists($cheminTatouage))
 						{
@@ -1217,9 +1217,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$nouvelId = securiseTexte($_POST['idNouveauNomGalerie']);
-			$nouvelIdNomDossier = idGalerieNomDossier($racine, $nouvelId);
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
-			$nouveauCheminGalerie = $racine . '/site/fichiers/galeries/' . $nouvelIdNomDossier;
+			$nouvelIdDossier = idGalerieDossier($racine, $nouvelId);
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
+			$nouveauCheminGalerie = $racine . '/site/fichiers/galeries/' . $nouvelIdDossier;
 			
 			if (empty($id))
 			{
@@ -1266,8 +1266,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$messagesScript .= '<p>' . T_("<strong>Important:</strong> ne pas oublier de cliquer sur le bouton «Mettre à jour» pour sauvegarder les modifications.") . "</p>\n";
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
-			$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 
 			$messagesScript .= "<ul>\n";
 			$messagesScript .= '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n";
@@ -1287,8 +1287,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idNomDossier));
-				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idDossier));
+				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idDossier;
 				$nombreDimages = count($tableauGalerie);
 				$corpsGalerie = '';
 				$corpsGalerie .= '<div id="galeriesAdminConfigGraphique">';
@@ -1302,7 +1302,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if (gdEstInstallee())
 					{
 						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $idNomDossier, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $idDossier, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 						preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
 						$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
 					}
@@ -1389,9 +1389,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$id = securiseTexte($_POST['configGraphiqueIdGalerie']);
-			$idNomDossier = idGalerieNomDossier($racine, $id);
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
-			$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
+			$idDossier = idGalerieDossier($racine, $id);
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 			
 			if (empty($id))
 			{
@@ -1520,7 +1520,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['modeleConf']))
 		{
 			$messagesScript = '';
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			
 			if (empty($id))
 			{
@@ -1627,7 +1627,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['config']) && in_array('maj', $_POST['config']))
 		{
 			$messagesScript = '';
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			
 			if (empty($id))
 			{
@@ -1648,7 +1648,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$exclureMotifsCommeIntermediaires = FALSE;
 				}
 			
-				$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
+				$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 		
 				if ($cheminConfigGalerie)
 				{
@@ -1657,7 +1657,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				else
 				{
 					$configExisteAuDepart = FALSE;
-					$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier, TRUE);
+					$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier, TRUE);
 				}
 			
 				$parametresNouvellesImages = array ();
@@ -1675,7 +1675,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 				}
 			
-				if (adminMajConfigGalerie($racine, $idNomDossier, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages))
+				if (adminMajConfigGalerie($racine, $idDossier, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages))
 				{
 					if ($configExisteAuDepart)
 					{
@@ -1705,7 +1705,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul>\n";
 		}
 	
-		if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && in_array('maj', $_POST['config']))) && cheminConfigGalerie($racine, $idNomDossier))
+		if ((isset($_POST['modeleConf']) || (isset($_POST['config']) && in_array('maj', $_POST['config']))) && cheminConfigGalerie($racine, $idDossier))
 		{
 			if (!$sousBoiteFichierConfigDebut)
 			{
@@ -1714,9 +1714,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo '<h3>' . T_("Fichier de configuration") . "</h3>\n";
 			}
 		
-			$cheminConfigGalerie = cheminConfigGalerie($racine, $idNomDossier);
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 			$id = filtreChaine($racine, $id);
-			$idNomDossier = rawurlencode($idNomDossier);
+			$idDossier = rawurlencode($idDossier);
 		
 			echo '<h4>' . T_("Information") . "</h4>\n" ;
 		
@@ -1728,7 +1728,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 			if ($adminPorteDocumentsDroits['editer'])
 			{
-				echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idNomDossier . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idNomDossier . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
+				echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idDossier . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idDossier . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 			}
 
 			echo "</ul></li>\n";
@@ -1750,7 +1750,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if ($adminPorteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
 		{
 			$messagesScript = '';
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idNomDossier;
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			
 			if (empty($id))
 			{
