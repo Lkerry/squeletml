@@ -241,7 +241,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$messagesScript .= '<li>' . T_("Aucune galerie.") . "</li>\n";
 			}
 			
-			$messagesScript = '<li>' . sprintf(T_("<strong>Note:</strong> seules les galeries ayant un fichier d'identification %1\$s dans leur dossier sont administrables par cette page. <a href=\"%2\$s\">Voir la documentation</a> pour plus de détails."), '<code>id.txt</code>', 'documentation.admin.php') . "</li>\n" . '<li>' . sprintf(T_("<strong>Note:</strong> n'oubliez pas de <a href=\"%1\$s\">mettre en ligne vos galeries</a>."), '#mettreEnLigne') . "</li>\n" . $messagesScript;
+			$messagesScript = '<li>' . sprintf(T_("<strong>Note:</strong> n'oubliez pas de <a href=\"%1\$s\">mettre en ligne vos galeries</a>."), '#mettreEnLigne') . "</li>\n" . $messagesScript;
 			
 			echo adminMessagesScript($messagesScript, T_("Liste des galeries"));
 		}
