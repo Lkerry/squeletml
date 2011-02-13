@@ -129,7 +129,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if ($cheminConfigGalerie)
 				{
-					$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $idGalerieDossier) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
+					$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $idGalerie) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
 					
 					if ($adminPorteDocumentsDroits['editer'])
 					{
@@ -1309,21 +1309,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				if (!empty($nouvelId))
 				{
-					$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
+					$messagesScript .= '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n";
 					
 					if (@file_put_contents($racine . '/site/fichiers/galeries/' . $idDossier . '/id.txt', $nouvelId) !== FALSE)
 					{
-						$messagesScript .= '<li>' . sprintf(T_("Mise à jour du fichier d'identification %1\$s effectuée."), '<code>' . $racine . '/site/fichiers/galeries/' . $idDossier . '/id.txt</code>') . "</li>\n";
+						$messagesScript .= '<li>' . sprintf(T_("Renommage de la galerie %1\$s en %2\$s effectué."), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
 					}
 					else
 					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de la mise à jour du fichier d'identification %1\$s. Veuillez vérifier manuellement son contenu."), '<code>' . $racine . '/site/fichiers/galeries/' . $idDossier . '/id.txt</code>') . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de la galerie %1\$s en %2\$s impossible. Veuillez vérifier manuellement le contenu du fichier d'identification %3\$s."), "<code>$id</code>", "<code>$nouvelId</code>", '<code>' . $racine . '/site/fichiers/galeries/' . $idDossier . '/id.txt</code>') . "</li>\n";
 					}
 				}
 				
 				if (!empty($nouveauNomDossier))
 				{
-					$messagesScript = '<li>' . sprintf(T_("Dossier sélectionné: %1\$s"), '<code>' . $dossierActuel . '</code>') . "</li>\n" . $messagesScript;
+					$messagesScript .= '<li>' . sprintf(T_("Dossier sélectionné: %1\$s"), '<code>' . $dossierActuel . '</code>') . "</li>\n";
 					$messagesScript .= adminRename($racine . '/site/fichiers/galeries/' . $dossierActuel, $racine . '/site/fichiers/galeries/' . $nouveauNomDossier);
 				}
 			}
