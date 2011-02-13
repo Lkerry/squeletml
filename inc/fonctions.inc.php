@@ -5595,7 +5595,8 @@ function variablesAaffecterAuDebut()
 	$variables = '$nomPage = nomPage();
 	$url = url();
 	$urlSansGet = url(FALSE);
-	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);';
+	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
+	$urlSansIndexSansGet = preg_replace("|(?<=/)index\.php$|", "", $urlSansGet);';
 	$variables .= variablesAvantConfig();
 	
 	return $variables;

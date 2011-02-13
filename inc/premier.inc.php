@@ -318,7 +318,7 @@ if ($galerieActiverFluxRssGlobal)
 
 if (!empty($idGalerie) && $rssGalerie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
+	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Galerie %1$s'), $idGalerie);
 }
 
@@ -330,7 +330,7 @@ if (!empty($idCategorie) && $rssCategorie)
 	}
 	else
 	{
-		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet);
+		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet);
 	}
 	
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);

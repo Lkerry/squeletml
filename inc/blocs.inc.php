@@ -132,7 +132,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
@@ -143,7 +143,7 @@ if (!empty($blocsAinsererTemp))
 							}
 							else
 							{
-								$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansGet) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+								$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 							}
 						}
 						

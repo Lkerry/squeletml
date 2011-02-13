@@ -37,12 +37,13 @@ else
 
 if (isset($_GET['chemin']))
 {
-	$getChemin = sansEchappement($_GET['chemin']);
-	$getChemin = urlAvecIndex($urlRacine . '/' . $getChemin);
+	$getCheminOriginal = sansEchappement($_GET['chemin']);
+	$getChemin = urlAvecIndex($urlRacine . '/' . $getCheminOriginal);
 	$getChemin = str_replace($urlRacine . '/', '', $getChemin);
 }
 else
 {
+	$getCheminOriginal = '';
 	$getChemin = '';
 }
 
@@ -66,7 +67,7 @@ else
 
 $erreur404 = FALSE;
 
-if (!empty($getChemin) && !empty($getId))
+if ((!empty($getChemin) && !empty($getId)) || preg_match('|(?<=/)index\.php$|', $getCheminOriginal))
 {
 	$erreur404 = TRUE;
 }
