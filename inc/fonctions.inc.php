@@ -2097,7 +2097,7 @@ function galeries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE
 				
 				if (!file_exists($cheminIdTxt))
 				{
-					@file_put_contents($cheminIdTxt, filtreChaine($racine, $fichier));
+					@file_put_contents($cheminIdTxt, $fichier);
 				}
 				
 				if (file_exists($cheminIdTxt))
