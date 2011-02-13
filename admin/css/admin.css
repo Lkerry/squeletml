@@ -370,6 +370,10 @@ body#galeries-admin-php div.galerieMinivignettes {
 	width: 50%;
 }
 
+div.aide .bDtitre {
+	font-size: 1em;
+}
+
 .galerieMinivignettes img {
 	float: left;
 	height: 35px;

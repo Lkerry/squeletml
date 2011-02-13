@@ -98,10 +98,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Liste des pages du flux RSS des derniers ajouts aux galeries") . "</h3>\n";
 			
-			echo '<div class="aideAdminRss">' . "\n";
+			echo '<div class="aideAdminRss aide">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
-			echo "<div class=\"bDcorps afficher\">\n";
+			echo "<div class=\"bDcorps\">\n";
 			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>' . T_("identifiant de la galerie") . '=' . T_("URL relative de la galerie") . '</code>') . "</p>\n";
 			
 			echo "<ul>\n";
@@ -128,11 +128,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (empty($listeGaleries))
 			{
 				$listeGaleries = '<li>' . T_("Le fichier est vide. Aucune galerie n'y est listée.") . "</li>\n";
-				echo "<ul class=\"bDcorps afficher\">\n";
+				echo "<ul class=\"bDcorps\">\n";
 			}
 			else
 			{
-				echo "<ul class=\"triable bDcorps afficher\">\n";
+				echo "<ul class=\"triable bDcorps\">\n";
 			}
 			
 			echo $listeGaleries;
@@ -260,10 +260,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Liste des pages du flux RSS des dernières publications") . "</h3>\n";
 			
-			echo '<div class="aideAdminRss">' . "\n";
+			echo '<div class="aideAdminRss aide">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
-			echo "<div class=\"bDcorps afficher\">\n";
+			echo "<div class=\"bDcorps\">\n";
 			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>') . "</p>\n";
 			
 			echo "<ul>\n";
@@ -290,11 +290,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (empty($listePages))
 			{
 				$listePages = '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
-				echo "<ul class=\"bDcorps afficher\">\n";
+				echo "<ul class=\"bDcorps\">\n";
 			}
 			else
 			{
-				echo "<ul class=\"triable bDcorps afficher\">\n";
+				echo "<ul class=\"triable bDcorps\">\n";
 			}
 			
 			echo $listePages;

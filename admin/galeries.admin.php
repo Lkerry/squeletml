@@ -26,6 +26,7 @@ $boitesDeroulantes = '#ajoutParametresAdminGaleries';
 $boitesDeroulantes .= ' .aideAdminGaleries .autresParametres .configGraphiqueListeParametres';
 $boitesDeroulantes .= ' .contenuFichierPourSauvegarde';
 $boitesDeroulantes .= ' .fichierConfigAdminGaleries .galeriesAdminModifierConfig';
+$boitesDeroulantes .= ' .optionsAvanceesAdminGaleries';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -1577,7 +1578,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 				}
 
-				$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+				$messagesScript .= "<div class=\"bDcorps\">\n";
 				$messagesScript .= '<pre id="contenuFichierConfigGraphique">' . $contenuFichierAafficher . "</pre>\n";
 		
 				$messagesScript .= "<ul>\n";
@@ -1752,7 +1753,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 				}
 
-				$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+				$messagesScript .= "<div class=\"bDcorps\">\n";
 				$messagesScript .= '<pre id="contenuFichierConfigGraphiqueSimplifiee">' . $contenuFichierAafficher . "</pre>\n";
 		
 				$messagesScript .= "<ul>\n";
@@ -2039,12 +2040,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
-				<?php if ($adminPorteDocumentsDroits['editer']): ?>
-					<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie a un fichier de configuration, un lien vous permettra de modifier ce dernier."); ?></p>
-				<?php else: ?>
-					<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes, qu'elles aient ou non un fichier de configuration."); ?></p>
-				<?php endif; ?>
-
+				<div class="aideAdminGaleries aide">
+					<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+					
+					<div class="bDcorps">
+						<?php if ($adminPorteDocumentsDroits['editer']): ?>
+							<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie a un fichier de configuration, un lien vous permettra de modifier ce dernier."); ?></p>
+						<?php else: ?>
+							<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes, qu'elles aient ou non un fichier de configuration."); ?></p>
+						<?php endif; ?>
+					</div><!-- .bDcorps -->
+				</div><!-- .aideAdminGaleries -->
 				<p><input type="submit" name="lister" value="<?php echo T_('Lister les galeries'); ?>" /></p>
 			</div>
 		</form>
@@ -2054,23 +2060,29 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	<div class="boite">
 		<h2 id="ajouter"><?php echo T_("Ajouter des images"); ?></h2>
+		
+		<div class="aideAdminGaleries aide">
+			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+			
+			<div class="bDcorps">
+				<?php if (function_exists('gzopen')): ?>
+					<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>) ou ZIP (<code>.zip</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
+				<?php else: ?>
+					<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
+				<?php endif; ?>
 	
-		<?php if (function_exists('gzopen')): ?>
-			<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>) ou ZIP (<code>.zip</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
-		<?php else: ?>
-			<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
-		<?php endif; ?>
-	
-		<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
-
+				<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
+			</div><!-- .bDcorps -->
+		</div><!-- .aideAdminGaleries -->
+		
 		<p><?php printf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier); ?></p>
-
+		
 		<form action="<?php echo $adminAction; ?>#messages" method="post" enctype="multipart/form-data">
 			<div>
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
-				
-					<p><label for="ajouterSelectId"><?php echo T_("Identifiant de la galerie (il est possible de créer une nouvelle galerie):"); ?></label><br />
+					
+					<p><?php printf(T_("<label for=\"%1\$s\">Identifiant de la galerie</label> ou <label for=\"%2\$s\">création d'une nouvelle galerie</label>:"), "ajouterSelectId", "ajouterInputIdNouvelleGalerie"); ?><br />
 					<select id="ajouterSelectId" name="id">
 						<option value="nouvelleGalerie"><?php echo T_("Nouvelle galerie:"); ?></option>
 						<?php $listeGaleries = galeries($racine); ?>
@@ -2080,41 +2092,47 @@ include $racineAdmin . '/inc/premier.inc.php';
 								<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
 							<?php endforeach; ?>
 						<?php endif; ?>
-					</select> <input type="text" name="idNouvelleGalerie" /></p>
+					</select> <input id="ajouterInputIdNouvelleGalerie" type="text" name="idNouvelleGalerie" /></p>
 					
 					<p><label for="idNouvelleGalerieDossier"><?php echo T_("Si nouvelle galerie, nom du dossier (laisser vide pour génération automatique):"); ?></label><br />
 					<input type="text" name="idNouvelleGalerieDossier" /></p>
 
-					<p><label for="ajouterInputFichier"><?php echo T_("Fichier:"); ?></label><br />
+					<p><label for="ajouterInputFichier"><?php echo T_("Fichier (archive <code>.tar</code> ou <code>.zip</code>, ou fichier image unique):"); ?></label><br />
 					<input id="ajouterInputFichier" type="file" name="fichier" size="25"/></p>
 				
-					<ul>
-						<li><input id="ajouterInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="ajouterInputFiltrerNom"><?php printf(T_("Filtrer le nom de chaque image. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
-						<ul>
-							<li><input id="ajouterInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="ajouterInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
-						</ul></li>
-					</ul>
+					<fieldset class="optionsAvanceesAdminGaleries">
+						<legend class="bDtitre"><?php echo T_("Options avancées"); ?></legend>
 				
-					<?php if ($rotationSansPerteActivee || $suppressionExifActivee): ?>
-						<ul>
-							<li><?php echo T_("S'applique aux fichiers JPG:"); ?>
+						<div class="bDcorps">
 							<ul>
-								<?php if ($rotationSansPerteActivee): ?>
-									<li><input id="ajouterInputRotationAuto" type="checkbox" name="rotationAuto" value="rotation" checked="checked" /> <label for="ajouterInputRotationAuto"><?php echo T_("Tenter d'effectuer une rotation automatique et sans perte de qualité, basée sur l'orientation déclarée dans les données Exif, si cette information existe."); ?></label></li>
-								<?php endif; ?>
+								<li><input id="ajouterInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="ajouterInputFiltrerNom"><?php printf(T_("Filtrer le nom de chaque image. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
+								<ul>
+									<li><input id="ajouterInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="ajouterInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
+								</ul></li>
+							</ul>
+				
+							<?php if ($rotationSansPerteActivee || $suppressionExifActivee): ?>
+								<ul>
+									<li><?php echo T_("S'applique aux fichiers JPG:"); ?>
+									<ul>
+										<?php if ($rotationSansPerteActivee): ?>
+											<li><input id="ajouterInputRotationAuto" type="checkbox" name="rotationAuto" value="rotation" checked="checked" /> <label for="ajouterInputRotationAuto"><?php echo T_("Tenter d'effectuer une rotation automatique et sans perte de qualité, basée sur l'orientation déclarée dans les données Exif, si cette information existe."); ?></label></li>
+										<?php endif; ?>
 							
-								<?php if ($suppressionExifActivee): ?>
-									<li><input id="ajouterInputSuppressionExif" type="checkbox" name="suppressionExif" value="suppression" /> <label for="ajouterInputSuppressionExif"><?php echo T_("Supprimer sans perte de qualité les données Exif, si elles existent."); ?></label></li>
-								<?php endif; ?>
-							</ul></li>
-						</ul>
-					<?php endif; ?>
+										<?php if ($suppressionExifActivee): ?>
+											<li><input id="ajouterInputSuppressionExif" type="checkbox" name="suppressionExif" value="suppression" /> <label for="ajouterInputSuppressionExif"><?php echo T_("Supprimer sans perte de qualité les données Exif, si elles existent."); ?></label></li>
+										<?php endif; ?>
+									</ul></li>
+								</ul>
+							<?php endif; ?>
+						</div><!-- /.bDcorps -->
+					</fieldset>
 				</fieldset>
 
 				<fieldset class="fichierConfigAdminGaleries">
 					<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-					<div class="bDcorps afficher">
+					<div class="bDcorps">
 						<ul>
 							<li><input id="ajouterInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="ajouterInputConfig"><?php echo T_("Créer ou mettre à jour automatiquement le fichier de configuration de cette galerie."); ?></label>
 							<ul>
@@ -2154,9 +2172,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	<div class="boite">
 		<h2 id="mettreEnLigne"><?php echo T_("Mettre en ligne une galerie"); ?></h2>
-
-		<p><?php echo T_("Vous pouvez ajouter une page sur votre site pour présenter une galerie."); ?></p>
-
+		
+		<div class="aideAdminGaleries aide">
+			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+			
+			<div class="bDcorps">
+				<p><?php echo T_("Vous pouvez ajouter une page sur votre site pour présenter une galerie."); ?></p>
+			</div><!-- .bDcorps -->
+		</div><!-- .aideAdminGaleries -->
+		
 		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
 				<fieldset>
@@ -2179,13 +2203,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<p><label for="mettreEnLigneInputPage"><?php echo T_("Emplacement de la page web:"); ?></label><br />
 					<?php echo $urlRacine . '/'; ?><input id="mettreEnLigneInputPage" type="text" name="page" /></p>
 				
-					<ul>
-						<li><input id="mettreEnLigneInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="mettreEnLigneInputFiltrerNom"><?php printf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
-						<ul>
-							<li><input id="mettreEnLigneInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="mettreEnLigneInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
-						</ul></li>
-					</ul>
-					
 					<?php $rssListeLangues = ''; ?>
 					<?php $rssListeLangues .= '<select name="rssLangueAjout">' . "\n"; ?>
 					
@@ -2204,6 +2221,19 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<ul>
 						<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout"><?php printf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des derniers ajouts aux galeries</a> pour la langue %2\$s."), "rss.admin.php?global=galeries", $rssListeLangues); ?></label></li>
 					</ul>
+					
+					<fieldset class="optionsAvanceesAdminGaleries">
+						<legend class="bDtitre"><?php echo T_("Options avancées"); ?></legend>
+					
+						<div class="bDcorps">
+							<ul>
+								<li><input id="mettreEnLigneInputFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="mettreEnLigneInputFiltrerNom"><?php printf(T_("Filtrer le nom de la page web. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>'); ?></label>
+								<ul>
+									<li><input id="mettreEnLigneInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="mettreEnLigneInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
+								</ul></li>
+							</ul>
+						</div><!-- /.bDcorps -->
+					</fieldset>
 				</fieldset>
 				
 				<p><input type="submit" name="creerPage" value="<?php echo T_('Créer une page web'); ?>" /></p>
@@ -2217,7 +2247,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<h2 id="redimensionner"><?php echo T_("Créer des images de taille intermédiaire à partir des images originales"); ?></h2>
 		
 		<?php if (gdEstInstallee()): ?>
-			<p><?php echo T_("Vous pouvez générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermédiaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
+			<div class="aideAdminGaleries aide">
+				<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+			
+				<div class="bDcorps">
+					<p><?php echo T_("Vous pouvez générer automatiquement une copie réduite (qui sera utilisée comme étant la version intermédiaire dans la galerie) de chaque image originale. Aucune image au format original ne sera modifiée."); ?></p>
+				</div><!-- .bDcorps -->
+			</div><!-- .aideAdminGaleries -->
 
 			<form action="<?php echo $adminAction; ?>#messages" method="post">
 				<div>
@@ -2241,35 +2277,41 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<p><?php printf(T_("Taille maximale de la version intermédiaire (<label for=\"%1\$s\">largeur</label> × <label for=\"%2\$s\">hauteur</label>):"), "redimensionnerInputLargeur", "redimensionnerInputHauteur"); ?><br />
 						<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Si une seule dimension est précisée, l'autre sera calculée à partir de la dimension donnée ainsi que des dimensions de l'image source. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée."); ?><br />
 						<input id="redimensionnerInputLargeur" type="text" name="largeur" size="4" value="500" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input id="redimensionnerInputHauteur" type="text" name="hauteur" size="4" value="500" /> <?php echo T_("px de hauteur"); ?></p>
-				
-						<p><label for="redimensionnerInputQualiteJpg"><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
-						<input id="redimensionnerInputQualiteJpg" type="text" name="qualiteJpg" value="<?php echo $galerieQualiteJpg; ?>" size="2" /></p>
+						
+						<fieldset class="optionsAvanceesAdminGaleries">
+							<legend class="bDtitre"><?php echo T_("Options avancées"); ?></legend>
+							
+							<div class="bDcorps">
+								<p><label for="redimensionnerInputQualiteJpg"><?php echo T_("S'il y a lieu, qualité des images JPG générées (0-100):"); ?></label><br />
+								<input id="redimensionnerInputQualiteJpg" type="text" name="qualiteJpg" value="<?php echo $galerieQualiteJpg; ?>" size="2" /></p>
 
-						<ul>
-							<li><input id="redimensionnerInputNettete" type="checkbox" name="nettete" value="renforcerNettete" /> <label for="redimensionnerInputNettete"><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label>
-							<ul>
-								<li><label for="redimensionnerInputNetteteGain"><?php echo T_("Gain:"); ?></label> <input id="redimensionnerInputNetteteGain" type="text" name="netteteGain" size="4" value="100" /></li>
-								<li><label for="redimensionnerInputNetteteRayon"><?php echo T_("Rayon:"); ?></label> <input id="redimensionnerInputNetteteRayon" type="text" name="netteteRayon" size="4" value="1" /></li>
-								<li><label for="redimensionnerInputNetteteSeuil"><?php echo T_("Seuil:"); ?></label> <input id="redimensionnerInputNetteteSeuil" type="text" name="netteteSeuil" size="4" value="3" /></li>
-							</ul></li>
-						</ul>
+								<ul>
+									<li><input id="redimensionnerInputNettete" type="checkbox" name="nettete" value="renforcerNettete" /> <label for="redimensionnerInputNettete"><?php echo T_("Renforcer la netteté des images redimensionnées (donne de mauvais résultats pour des images PNG avec transparence)."); ?></label>
+									<ul>
+										<li><label for="redimensionnerInputNetteteGain"><?php echo T_("Gain:"); ?></label> <input id="redimensionnerInputNetteteGain" type="text" name="netteteGain" size="4" value="100" /></li>
+										<li><label for="redimensionnerInputNetteteRayon"><?php echo T_("Rayon:"); ?></label> <input id="redimensionnerInputNetteteRayon" type="text" name="netteteRayon" size="4" value="1" /></li>
+										<li><label for="redimensionnerInputNetteteSeuil"><?php echo T_("Seuil:"); ?></label> <input id="redimensionnerInputNetteteSeuil" type="text" name="netteteSeuil" size="4" value="3" /></li>
+									</ul></li>
+								</ul>
 				
-						<p><?php echo T_("La liste des images originales redimensionnables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
-						<ul>
-							<li><input id="redimensionnerInputRenommer" type="checkbox" name="redimensionnerRenommer[]" value="renommer" checked="checked" /> <label for="redimensionnerInputRenommer"><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
+								<p><?php echo T_("La liste des images originales redimensionnables est consitituée des images dont le nom satisfait le motif <code>nom-original.extension</code>. Voici des options relatives à cette liste:"); ?></p>
+								<ul>
+									<li><input id="redimensionnerInputRenommer" type="checkbox" name="redimensionnerRenommer[]" value="renommer" checked="checked" /> <label for="redimensionnerInputRenommer"><?php echo T_("Renommer préalablement les images de la galerie en <code>nom-original.extension</code>."); ?></label></li>
 					
-							<li><input id="redimensionnerInputNePasRenommerMotifs" type="checkbox" name="redimensionnerRenommer[]" value="nePasRenommerMotifs" checked="checked" /> <label for="redimensionnerInputNePasRenommerMotifs"><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
+									<li><input id="redimensionnerInputNePasRenommerMotifs" type="checkbox" name="redimensionnerRenommer[]" value="nePasRenommerMotifs" checked="checked" /> <label for="redimensionnerInputNePasRenommerMotifs"><?php echo T_("S'il y a lieu, ignorer lors du renommage les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></li>
 					
-							<li><input id="redimensionnerInputAnalyserConfig" type="checkbox" name="redimensionnerRenommer[]" value="analyserConfig" /> <label for="redimensionnerInputAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme titre de section ou comme valeur d'un des paramètres <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
-						</ul>
+									<li><input id="redimensionnerInputAnalyserConfig" type="checkbox" name="redimensionnerRenommer[]" value="analyserConfig" /> <label for="redimensionnerInputAnalyserConfig"><?php echo T_("Ignorer lors du renommage (s'il y a lieu) ainsi que lors du redimensionnement les images déclarées dans le fichier de configuration (s'il existe). Toute image déjà présente comme titre de section ou comme valeur d'un des paramètres <code>vignetteNom</code> ou <code>originalNom</code> du fichier de configuration est nécessairement une version intermédiaire ou a nécessairement une version intermédiaire associée."); ?></label></li>
+								</ul>
 				
-						<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
+								<p><?php echo T_("Dans tous les cas, il n'y a pas de création d'image intermédiaire si les fichiers <code>nom-original.extension</code> et <code>nom.extension</code> existent déjà tous les deux."); ?></p>
+							</div><!-- /.bDcorps -->
+						</fieldset>
 					</fieldset>
 
 					<fieldset class="fichierConfigAdminGaleries">
 						<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-						<ul class="bDcorps afficher">
+						<ul class="bDcorps">
 							<li><input id="redimensionnerInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="redimensionnerInputConfig"><?php echo T_("Créer ou mettre à jour automatiquement le fichier de configuration de cette galerie."); ?></label>
 							<ul>
 								<li><input id="redimensionnerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="redimensionnerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
@@ -2279,7 +2321,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 					<p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
-					<p><input type="submit" name="redimensionner" value="<?php echo T_('redimensionner les images originales'); ?>" /></p>
+					<p><input type="submit" name="redimensionner" value="<?php echo T_('Redimensionner les images originales'); ?>" /></p>
 				</div>
 			</form>
 		<?php else: ?>
@@ -2292,10 +2334,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<div class="boite">
 		<h2 id="supprimer"><?php echo T_("Supprimer des images"); ?></h2>
 	
-		<div class="aideAdminGaleries">
+		<div class="aideAdminGaleries aide">
 			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 	
-			<div class="bDcorps afficher">
+			<div class="bDcorps">
 				<p><?php echo T_("La liste des images potentiellement supprimables peut être générée de trois manières différentes:"); ?></p>
 		
 				<ul>
@@ -2365,7 +2407,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<fieldset class="fichierConfigAdminGaleries">
 					<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-					<ul class="bDcorps afficher">
+					<ul class="bDcorps">
 						<li><input id="supprimerInputConfig" type="checkbox" name="config[]" value="maj" checked="checked" /> <label for="supprimerInputConfig"><?php echo T_("Créer ou mettre à jour automatiquement le fichier de configuration de cette galerie."); ?></label>
 						<ul>
 							<li><input id="supprimerInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="supprimerInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></li>
@@ -2382,8 +2424,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 	<div class="boite">
 		<h2 id="renommer"><?php echo T_("Renommer une galerie ou un dossier"); ?></h2>
-
-		<p><?php echo T_("Vous pouvez renommer une galerie ou un dossier. S'il s'agit du renommage d'une galerie déjà utilisée sur votre site, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page web de la galerie."); ?></p>
+		
+		<div class="aideAdminGaleries aide">
+			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+			
+			<div class="bDcorps">
+				<p><?php echo T_("Vous pouvez renommer une galerie ou un dossier. S'il s'agit du renommage d'une galerie déjà utilisée sur votre site, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page web de la galerie."); ?></p>
+			</div><!-- .bDcorps -->
+		</div><!-- .aideAdminGaleries -->
 
 		<form action="<?php echo $adminAction; ?>#messages" method="post">
 			<div>
@@ -2429,10 +2477,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<div class="boite">
 		<h2 id="configGraphique"><?php echo T_("Mettre à jour graphiquement un fichier de configuration"); ?></h2>
 		
-		<p><em><?php printf(T_("Note: il est possible de modifier manuellement dans le porte-documents le fichier de configuration d'une galerie. Consulter la <a href=\"%1\$s\">liste des galeries</a> pour obtenir les liens de modification à la main."), 'galeries.admin.php?action=lister#messages'); ?></em></p>
+		<div class="aideAdminGaleries aide">
+			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+			
+			<div class="bDcorps">
+				<p><em><?php printf(T_("Note: il est possible de modifier manuellement dans le porte-documents le fichier de configuration d'une galerie. Consulter la <a href=\"%1\$s\">liste des galeries</a> pour obtenir les liens de modification à la main."), 'galeries.admin.php?action=lister#messages'); ?></em></p>
 		
-		<p><?php echo T_("Vous pouvez modifier la configuration d'une galerie en passant par une interface graphique."); ?></p>
-
+				<p><?php echo T_("Vous pouvez modifier la configuration d'une galerie en passant par une interface graphique."); ?></p>
+			</div><!-- .bDcorps -->
+		</div><!-- .aideAdminGaleries -->
+		
 		<form action="<?php echo $adminAction; ?>#messages" method="post">
 				<div>
 					<fieldset>
@@ -2453,9 +2507,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 						</p>
 						
 						<ul>
-							<li><input id="configGraphiqueInputConfigGraphique" type="radio" name="listeConfigGraphique" value="configGraphique" checked="checked" /> <label for="configGraphiqueInputConfigGraphique"><?php echo T_("Configuration graphique complète avec réordonnement des images par glisser-déposer et modification des paramètres de chaque image."); ?></label></li>
+							<li><input id="configGraphiqueInputConfigGraphique" type="radio" name="listeConfigGraphique" value="configGraphique" checked="checked" /> <label for="configGraphiqueInputConfigGraphique"><?php echo T_("Configuration graphique complète avec réordonnement par glisser-déposer et modification des paramètres de chaque image."); ?></label></li>
 					
-							<li><input id="configGraphiqueInputConfigGraphiqueSimplifiee" type="radio" name="listeConfigGraphique" value="configGraphiqueSimplifiee" /> <label for="configGraphiqueInputConfigGraphiqueSimplifiee"><?php echo T_("Configuration graphique simplifiée pour réordonnement rapide des images."); ?></label></li>
+							<li><input id="configGraphiqueInputConfigGraphiqueSimplifiee" type="radio" name="listeConfigGraphique" value="configGraphiqueSimplifiee" /> <label for="configGraphiqueInputConfigGraphiqueSimplifiee"><?php echo T_("Configuration graphique simplifiée utile pour réordonner rapidement les images par glisser-déposer."); ?></label></li>
 						</ul>
 					</fieldset>
 					
@@ -2492,7 +2546,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<fieldset class="fichierConfigAdminGaleries">
 					<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-					<p class="bDcorps afficher">
+					<p class="bDcorps">
 					<input type="hidden" name="config[]" value="maj" />
 					<input id="configInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="configInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
 				</fieldset>
@@ -2541,7 +2595,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<fieldset class="fichierConfigAdminGaleries">
 					<legend class="bDtitre"><?php echo T_("Fichier de configuration"); ?></legend>
 				
-					<p class="bDcorps afficher"><input id="modeleInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="modeleInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></p>
+					<p class="bDcorps"><input id="modeleInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="modeleInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></p>
 				</fieldset>
 			
 				<p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>
@@ -2554,8 +2608,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 		<div class="boite">
 			<h2 id="sauvegarder"><?php echo T_("Sauvegarder une galerie"); ?></h2>
-
-			<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
+			
+			<div class="aideAdminGaleries aide">
+				<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+				
+				<div class="bDcorps">
+					<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
+				</div><!-- .bDcorps -->
+			</div><!-- .aideAdminGaleries -->
 
 			<form action="<?php echo $adminAction; ?>#messages" method="post">
 				<div>

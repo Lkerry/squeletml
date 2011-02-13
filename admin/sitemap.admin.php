@@ -514,7 +514,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				echo '<div class="sousBoite">' . "\n";
 				echo '<h3>' . T_("Liste des pages contenues dans le fichier Sitemap du site") . "</h3>\n";
 			
-				echo '<div class="aideAdminSitemap">' . "\n";
+				echo '<div class="aideAdminSitemap aide">' . "\n";
 				echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
 				echo "<div class=\"bDcorps afficher\">\n";
@@ -535,11 +535,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				if (empty($listePages))
 				{
 					$listePages = '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
-					echo "<ul class=\"bDcorps afficher\">\n";
+					echo "<ul class=\"bDcorps\">\n";
 				}
 				else
 				{
-					echo "<ul class=\"triable bDcorps afficher\">\n";
+					echo "<ul class=\"triable bDcorps\">\n";
 				}
 				
 				echo $listePages;

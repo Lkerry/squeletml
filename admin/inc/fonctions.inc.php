@@ -558,7 +558,7 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocuments
 					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 				}
 
-				$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+				$messagesScript .= "<div class=\"bDcorps\">\n";
 				$messagesScript .= '<pre id="contenuFichierRobots">' . securiseTexte($contenuRobots) . "</pre>\n";
 	
 				$messagesScript .= "<ul>\n";
@@ -822,7 +822,7 @@ function adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier, $a
 		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 	}
 
-	$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+	$messagesScript .= "<div class=\"bDcorps\">\n";
 	$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 	
 	$messagesScript .= "<ul>\n";
@@ -881,7 +881,7 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $admin
 		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 	}
 
-	$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+	$messagesScript .= "<div class=\"bDcorps\">\n";
 	$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
 	
 	$messagesScript .= "<ul>\n";
@@ -950,7 +950,7 @@ function adminEnregistreSitemap($racine, $type, $contenuFichier, $adminPorteDocu
 		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 	}
 
-	$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+	$messagesScript .= "<div class=\"bDcorps\">\n";
 	$messagesScript .= '<pre id="contenuFichierSitemap">' . securiseTexte($contenuFichier) . "</pre>\n";
 	
 	$messagesScript .= "<ul>\n";

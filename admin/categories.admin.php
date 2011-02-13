@@ -161,10 +161,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Liste des pages classées par catégorie") . "</h3>\n";
 			
-			echo '<div class="aideAdminCat">' . "\n";
+			echo '<div class="aideAdminCat aide">' . "\n";
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
-			echo "<div class=\"bDcorps afficher\">\n";
+			echo "<div class=\"bDcorps\">\n";
 			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser la langue à laquelle appartient une catégorie, et ce à l'aide du paramètre %2\$s. Vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %3\$s (dans ce cas, vous devez créer la page d'accueil manuellement) ainsi que la catégorie parente, s'il y a lieu, grâce à %4\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>langueCat=' . T_("langue à laquelle appartient la catégorie") . '</code>', '<code>urlCat=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>catParente=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
 			
 			echo "<ul>\n";
@@ -201,11 +201,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (empty($listePages))
 			{
 				$listePages = '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
-				echo "<ul class=\"bDcorps afficher\">\n";
+				echo "<ul class=\"bDcorps\">\n";
 			}
 			else
 			{
-				echo "<ul class=\"triable bDcorps afficher\">\n";
+				echo "<ul class=\"triable bDcorps\">\n";
 			}
 			
 			echo $listePages;
@@ -489,7 +489,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 		}
 
-		$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+		$messagesScript .= "<div class=\"bDcorps\">\n";
 		$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
 		
 		$messagesScript .= "<ul>\n";

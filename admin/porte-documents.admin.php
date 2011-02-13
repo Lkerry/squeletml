@@ -27,6 +27,7 @@ if (
 
 $baliseTitle = T_("Porte-documents");
 $boitesDeroulantes = '#divContenuDossierAdminPorteDoc #divListeDossiersAdminPorteDoc #varPageModele';
+$boitesDeroulantes .= ' .aideAdminPorteDocuments .optionsAvanceesAdminPorteDocuments';
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {
@@ -1706,40 +1707,46 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	echo '<div class="boite">' . "\n";
 	echo '<h2 id="ajouter">' . T_("Ajouter un fichier") . "</h2>\n";
 	
-	echo "<p>Choisir le fichier à ajouter et le dossier parent. Optionnellement, vous pouvez renommer le fichier.</p>\n";
+	echo '<div class="aideAdminPorteDocuments aide">' . "\n";
+	echo '<h3 class="bDtitre">' . T_("Aide") . "</h3>\n";
 	
-	echo '<p>' . sprintf(T_("La taille maximale d'un transfert de fichier est %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier) . "</p>\n";
+	echo '<div class="bDcorps">' . "\n";
+	echo "<p>Choisir le fichier à ajouter et le dossier parent. Optionnellement, vous pouvez renommer le fichier.</p>\n";
 	
 	if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 	{
 		$affichageTypesMimePermis = ' ';
-		
+
 		foreach ($adminTypesMimePermis as $extensions => $type)
 		{
 			$extensions = str_replace('|', ', ', $extensions);
 			$affichageTypesMimePermis .= "$extensions, ";
 		}
-		
+
 		$affichageTypesMimePermis = substr($affichageTypesMimePermis, 0, -2);
 		echo '<p>' . sprintf(T_("Les types de fichier permis sont: %1\$s."), $affichageTypesMimePermis) . "</p>\n";
-	
+		echo "</div><!-- .bDcorps -->\n";
+		echo "</div><!-- .aideAdminPorteDocuments -->\n";
+		
 		echo '<div id="typesMimePermisAdminPorteDoc">' . "\n";
-		echo '<p class="bDtitre"><strong>' . T_("Liste détaillée des types MIME permis") . "</strong></p>\n";
-	
+		echo '<p class="bDtitre"><strong>' . T_("Liste détaillée des types de fichier permis") . "</strong></p>\n";
+
 		echo '<div class="bDcorps">' . "\n";
 		echo "<ul>\n";
-	
+
 		$typesMimePermisAdminPorteDoc = '';
-		
+
 		foreach ($adminTypesMimePermis as $extensions => $type)
 		{
 			$typesMimePermisAdminPorteDoc .= "<li>$type ($extensions)</li>";
 		}
-	
+
 		echo $typesMimePermisAdminPorteDoc;
 		echo "</ul>\n";
 		echo "</div>\n";
 		echo "</div>\n";
+		
+		echo '<p>' . sprintf(T_("<strong>Taille maximale d'un transfert de fichier:</strong> %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier) . "</p>\n";
 	}
 	
 	echo '<form action="' . $adminAction . '#messages" method="post" enctype="multipart/form-data">' . "\n";
@@ -1770,7 +1777,12 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 	echo "<p><label for=\"inputPorteDocumentsAjouterNom\">Nouveau nom du fichier (optionnel):</label><br />\n";
 	echo '<input id="inputPorteDocumentsAjouterNom" type="text" name="porteDocumentsAjouterNom" size="25" value="" /></p>' . "\n";;
 	
+	echo '<fieldset class="optionsAvanceesAdminPorteDocuments">' . "\n";
+	echo '<legend class="bDtitre">' . T_("Options avancées") . "</legend>\n";
+	echo '<div class="bDcorps">' . "\n";
 	echo "<ul>\n" . '<li><input id="inputPorteDocumentsAjouterFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="inputPorteDocumentsAjouterFiltrerNom">' . sprintf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>') . "</label>\n<ul>\n" . '<li><input id="inputPorteDocumentsAjouterFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="inputPorteDocumentsAjouterFiltrerCasse">' . T_("Filtrer également les majuscules en minuscules.") . "</label></li>\n</ul>\n</li>\n</ul>\n";
+	echo "</div><!-- /.bDcorps -->\n";
+	echo "</fieldset>\n";
 	echo "</fieldset>\n";
 	
 	echo '<p><input type="submit" name="porteDocumentsAjouter" value="' . T_("Ajouter") . '" />' . "</p>\n";
@@ -1790,9 +1802,15 @@ if ($adminPorteDocumentsDroits['creer'])
 {
 	echo '<div class="boite">' . "\n";
 	echo '<h2 id="creer">' . T_("Créer un fichier ou un dossier") . "</h2>\n";
-
+	
+	echo '<div class="aideAdminPorteDocuments aide">' . "\n";
+	echo '<h3 class="bDtitre">' . T_("Aide") . "</h3>\n";
+	
+	echo '<div class="bDcorps">' . "\n";
 	echo '<p>' . T_("Choisir le dossier parent et spécifier le nom du nouveau fichier ou dossier à créer. De nouveaux dossiers parents peuvent être ajoutés dans le nom, séparés par des barres obliques (<code>/</code>). Ils seront créés en même temps que le fichier ou le dossier.") . "</p>\n";
-
+	echo "</div><!-- .bDcorps -->\n";
+	echo "</div><!-- .aideAdminPorteDocuments -->\n";
+	
 	echo '<form action="' . $adminAction . '#messages" method="post">' . "\n";
 	echo "<div>\n";
 	echo "<fieldset>\n";
@@ -1819,8 +1837,6 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '</select>';
 	echo ' / <input id="inputPorteDocumentsCreationNom" type="text" name="porteDocumentsCreationNom" size="25" value="" /></p>' . "\n";
 	
-	echo "<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="inputPorteDocumentsCreationFiltrerNom">' . sprintf(T_("Filtrer le nom. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>') . "</label>\n<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="inputPorteDocumentsCreationFiltrerCasse">' . T_("Filtrer également les majuscules en minuscules.") . "</label></li>\n</ul>\n</li>\n</ul>\n";
-	
 	echo '<p><label for="selectPorteDocumentsCreationType">' . T_("Type:") . "</label><br />\n";
 	echo '<select id="selectPorteDocumentsCreationType" name="porteDocumentsCreationType" size="1">' . "\n";
 	echo '<option value="FichierModeleHtml">' .  T_("Page web modèle") . "</option>\n";
@@ -1829,6 +1845,9 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
 	echo "</select></p>\n";
 	
+	echo '<fieldset class="optionsAvanceesAdminPorteDocuments">' . "\n";
+	echo '<legend class="bDtitre">' . T_("Options avancées") . "</legend>\n";
+	echo '<div class="bDcorps">' . "\n";
 	echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page web modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
 	echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
 	echo '<option value="apercu">$apercu</option>' . "\n";
@@ -1856,6 +1875,10 @@ if ($adminPorteDocumentsDroits['creer'])
 	echo '<option value="rssGalerie">$rssGalerie</option>' . "\n";
 	echo '<option value="tableDesMatieres">$tableDesMatieres</option>' . "\n";
 	echo "</select></p>\n";
+	
+	echo "<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="inputPorteDocumentsCreationFiltrerNom">' . sprintf(T_("Filtrer le nom du fichier ou du dossier créé. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>') . "</label>\n<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="inputPorteDocumentsCreationFiltrerCasse">' . T_("Filtrer également les majuscules en minuscules.") . "</label></li>\n</ul>\n</li>\n</ul>\n";
+	echo "</div><!-- /.bDcorps -->\n";
+	echo "</fieldset>\n";
 	echo "</fieldset>\n";
 	
 	echo '<p><input type="submit" name="porteDocumentsCreation" value="' . T_("Créer") . '" />' . "</p>\n";
