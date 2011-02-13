@@ -2282,6 +2282,8 @@ function image(
 	$galerieDimensionsVignette, $galerieForcerDimensionsVignette, $vignetteAvecDimensions, $minivignetteImageEnCours
 )
 {
+	$titreImage = titreImage($infosImage);
+	
 	####################################################################
 	#
 	# Taille intermédiaire.
@@ -2290,8 +2292,6 @@ function image(
 	
 	if ($taille == 'intermediaire')
 	{
-		$titreImage = titreImage($infosImage);
-		
 		if (!empty($infosImage['intermediaireLargeur']) || !empty($infosImage['intermediaireHauteur']))
 		{
 			if (!empty($infosImage['intermediaireLargeur']))
@@ -2610,7 +2610,6 @@ function image(
 		}
 		else
 		{
-			$titreImage = titreImage($infosImage);
 			$alt = 'alt="' . sprintf(T_("Image %1\$s"), $titreImage) . '"';
 		}
 		

@@ -99,7 +99,7 @@ div#contenuPrincipal {
 	text-align: right;
 }
 
-#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
+#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
 	border-radius: 8px; /* CSS 3. */
 }
 
@@ -331,7 +331,7 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 **
 ***********************************************************************/
 
-#galeriesAdminConfigGraphique img {
+#galeriesAdminConfigGraphique img, #galeriesAdminConfigGraphiqueSimplifiee img {
 	background: url('../../fichiers/ombre-vignette.png') no-repeat right bottom;
 	padding: 5px 10px 10px 5px;
 	border: none;
@@ -341,16 +341,21 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 	margin-top: 0px;
 }
 
-#galeriesAdminConfigGraphique ul {
+#galeriesAdminConfigGraphique ul, #galeriesAdminConfigGraphiqueSimplifiee ul {
 	list-style-type: none;
 	margin-left: 0px;
 }
 
-#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes {
+#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes {
 	margin-bottom: 20px;
 	padding: 5px 5px 5px 20px;
 	border: 1px solid #b3b3b3;
 	background-color: #f0f0f0;
+}
+
+#galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes {
+	float: left;
+	margin-right: 10px;
 }
 
 #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {

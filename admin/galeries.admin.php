@@ -2,7 +2,7 @@
 include 'inc/zero.inc.php';
 
 // Jeton utilisé pour vérifier la provenance d'un formulaire complété de configuration graphique d'une galerie.
-if ((isset($_POST['configGraphique']) || (isset($_GET['action']) && $_GET['action'] == 'configGraphique')) || isset($_POST['configGraphiqueMaj']))
+if (((isset($_POST['listeConfigGraphique']) && $_POST['listeConfigGraphique'] == 'configGraphique') || (isset($_GET['action']) && $_GET['action'] == 'configGraphique')) || isset($_POST['configGraphiqueMaj']))
 {
 	session_start();
 	
@@ -1339,10 +1339,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		/* Formulaire. */
 		
-		if (isset($_POST['configGraphique']) || (isset($_GET['action']) && $_GET['action'] == 'configGraphique'))
+		if ((isset($_POST['listeConfigGraphique']) && $_POST['listeConfigGraphique'] == 'configGraphique') || (isset($_GET['action']) && $_GET['action'] == 'configGraphique'))
 		{
 			$messagesScript = '';
 			$messagesScript .= '<p>' . T_("<strong>Important:</strong> ne pas oublier de cliquer sur le bouton «Mettre à jour» pour sauvegarder les modifications.") . "</p>\n";
+			
+			$messagesScript .= '<p><a href="galeries.admin.php?action=configGraphiqueSimplifiee&amp;id=' . filtreChaine($racine, $id) . '#messages">' . T_("Utiliser la version simplifiée du formulaire de mise à jour graphique.") . "</a></p>\n";
+			
 			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 
@@ -1586,6 +1589,181 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 			echo adminMessagesScript($messagesScript, T_("Mise à jour graphique d'une galerie"));
+		}
+		
+		########################################################################
+		##
+		## Mise à jour graphique simplifiée d'une galerie.
+		##
+		########################################################################
+		
+		/* Formulaire. */
+		
+		if ((isset($_POST['listeConfigGraphique']) && $_POST['listeConfigGraphique'] == 'configGraphiqueSimplifiee') || (isset($_GET['action']) && $_GET['action'] == 'configGraphiqueSimplifiee'))
+		{
+			$messagesScript = '';
+			$messagesScript .= '<p>' . T_("<strong>Important:</strong> ne pas oublier de cliquer sur le bouton «Mettre à jour» pour sauvegarder les modifications.") . "</p>\n";
+			
+			$messagesScript .= '<p><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $id) . '#messages">' . T_("Utiliser la version complète du formulaire de mise à jour graphique.") . "</a></p>\n";
+			
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
+
+			$messagesScript .= "<ul>\n";
+			$messagesScript .= '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n";
+			$messagesScript .= "</ul>\n";
+			$corpsGalerie = '';
+			
+			if (empty($id))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
+			}
+			elseif (!file_exists($cheminGalerie))
+			{
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</p>\n";
+			}
+			elseif (!file_exists($cheminConfigGalerie))
+			{
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("La galerie %1\$s n'a pas de fichier de configuration."), "<code>$id</code>") . "</p>\n";
+			}
+			else
+			{
+				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idDossier));
+				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idDossier;
+				$nombreDimages = count($tableauGalerie);
+				$corpsGalerie .= '<div id="galeriesAdminConfigGraphiqueSimplifiee">';
+				$corpsGalerie .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
+				$corpsGalerie .= '<div>';
+				$corpsGalerie .= '<input type="hidden" name="configGraphiqueSimplifieeIdGalerie" value="' . $id . '" />' . "\n";
+				$corpsGalerie .= '<ul class="triable">';
+				
+				for ($i = 0; $i <= ($nombreDimages - 1) && $i < $nombreDimages; $i++)
+				{
+					if (gdEstInstallee())
+					{
+						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $idDossier, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+						preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
+						$vignette = '<div class="configGraphiqueSimplifieeVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueSimplifieeVignette -->\n";
+					}
+					else
+					{
+						$vignette = '';
+					}
+					
+					$intermediaireNom = securiseTexte($tableauGalerie[$i]['intermediaireNom']);
+					
+					$config = '';
+					$config .= '<input type="hidden" name="configGraphiqueSimplifieeVignettes[]" value="' . $intermediaireNom . '" />' . "\n";
+					$config .= '<input type="hidden" name="indiceIntermediaireNom[' . $intermediaireNom . ']" value="' . $i . '" />' . "\n";
+					
+					$corpsGalerie .= '<li class="configGraphiqueListeVignettes">';
+					$corpsGalerie .= $vignette;
+					$corpsGalerie .= $config;
+					$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
+				}
+				
+				$corpsGalerie .= "</ul>\n";
+				
+				$corpsGalerie .= "<div class=\"sep\"></div>\n";
+				
+				$corpsGalerie .= '<p><input id="configGraphiqueSimplifieeMaj" type="submit" name="configGraphiqueSimplifieeMaj" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
+				$corpsGalerie .= "</div>\n";
+				$corpsGalerie .= "</form>\n";
+				$corpsGalerie .= "</div><!-- /#galeriesAdminConfigGraphiqueSimplifiee -->\n";
+			}
+			
+			$messagesScript .= $corpsGalerie;
+			
+			echo '<div class="sousBoite">' . "\n";
+			echo '<h3>' . T_("Mise à jour graphique simplifiée d'une galerie") . "</h3>\n";
+
+			echo $messagesScript;
+			echo "</div><!-- /.sousBoite -->\n";
+		}
+		
+		/* Mise en action. */
+		
+		if (isset($_POST['configGraphiqueSimplifieeMaj']))
+		{
+			$messagesScript = '';
+			$id = securiseTexte($_POST['configGraphiqueSimplifieeIdGalerie']);
+			$idDossier = idGalerieDossier($racine, $id);
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
+			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
+			
+			if (empty($id))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
+			}
+			elseif (!file_exists($cheminGalerie))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
+			}
+			else
+			{
+				$contenuFichier = '';
+				$contenuFichierAafficher = '';
+				$tableauGalerie = super_parse_ini_file($cheminConfigGalerie, TRUE);
+				
+				foreach ($_POST['configGraphiqueSimplifieeVignettes'] as $intermediaireNom)
+				{
+					$intermediaireNom = securiseTexte($intermediaireNom);
+					$i = $_POST['indiceIntermediaireNom'][$intermediaireNom];
+					
+					$contenuFichier .= "[$intermediaireNom]\n";
+					$contenuFichierAafficher .= "[$intermediaireNom]\n";
+					
+					if (isset($tableauGalerie[$intermediaireNom]))
+					{
+						foreach ($tableauGalerie[$intermediaireNom] as $parametre => $valeur)
+						{
+							$contenuFichier .= $parametre . '=' . $valeur . "\n";
+							$contenuFichierAafficher .= $parametre . '=' . $valeur . "\n";
+						}
+					}
+					
+					$contenuFichier .= "\n";
+					$contenuFichierAafficher .= "\n";
+				}
+				
+				$contenuFichier = trim($contenuFichier);
+				$contenuFichierAafficher = trim($contenuFichierAafficher);
+				
+				$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
+				
+				if (file_exists($cheminConfigGalerie))
+				{
+					if (@file_put_contents($cheminConfigGalerie, $contenuFichier) !== FALSE)
+					{
+						$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+
+						$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminConfigGalerie . '</code>') . "</p>\n";
+					}
+					else
+					{
+						$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminConfigGalerie . '</code>') . "</p>\n";
+				
+						$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+					}
+				}
+				else
+				{
+					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+				}
+
+				$messagesScript .= "<div class=\"bDcorps afficher\">\n";
+				$messagesScript .= '<pre id="contenuFichierConfigGraphiqueSimplifiee">' . $contenuFichierAafficher . "</pre>\n";
+		
+				$messagesScript .= "<ul>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierConfigGraphique');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "</ul>\n";
+				$messagesScript .= "</div><!-- /.bDcorps -->\n";
+				$messagesScript .= "</li>\n";
+			}
+			
+			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
+			echo adminMessagesScript($messagesScript, T_("Mise à jour graphique simplifiée d'une galerie"));
 		}
 		
 		########################################################################
@@ -2253,7 +2431,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		<p><em><?php printf(T_("Note: il est possible de modifier manuellement dans le porte-documents le fichier de configuration d'une galerie. Consulter la <a href=\"%1\$s\">liste des galeries</a> pour obtenir les liens de modification à la main."), 'galeries.admin.php?action=lister#messages'); ?></em></p>
 		
-		<p><?php echo T_("Vous pouvez modifier en passant par une interface graphique la configuration d'une galerie en réordonnant les images par glisser-déposer et en modifiant les paramètres de chaque image."); ?></p>
+		<p><?php echo T_("Vous pouvez modifier la configuration d'une galerie en passant par une interface graphique."); ?></p>
 
 		<form action="<?php echo $adminAction; ?>#messages" method="post">
 				<div>
@@ -2273,8 +2451,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 							<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 						<?php endif; ?>
 						</p>
+						
+						<ul>
+							<li><input id="configGraphiqueInputConfigGraphique" type="radio" name="listeConfigGraphique" value="configGraphique" checked="checked" /> <label for="configGraphiqueInputConfigGraphique"><?php echo T_("Configuration graphique complète avec réordonnement des images par glisser-déposer et modification des paramètres de chaque image."); ?></label></li>
+					
+							<li><input id="configGraphiqueInputConfigGraphiqueSimplifiee" type="radio" name="listeConfigGraphique" value="configGraphiqueSimplifiee" /> <label for="configGraphiqueInputConfigGraphiqueSimplifiee"><?php echo T_("Configuration graphique simplifiée pour réordonnement rapide des images."); ?></label></li>
+						</ul>
 					</fieldset>
-			
+					
 					<p><input type="submit" name="configGraphique" value="<?php echo T_('Mettre à jour graphiquement'); ?>" /></p>
 				</div>
 			</form>
