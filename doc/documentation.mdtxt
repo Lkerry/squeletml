@@ -2,6 +2,17 @@
 
 Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est utilisée.
 
+Certains dossiers doivent être accessibles en écriture:
+
+- lors de l'installation, des fichiers sont créés dans le dossier racine de Squeletml, et possiblement dans des dossiers de langue (pour l'instant, seulement `en/`);
+
+- l'administration de Squeletml peut devoir créer des fichiers dans différents sous-dossiers de `site/`, principalement les suivants:
+
+	- `site/admin/cache/`
+	- `site/cache/`
+	- `site/fichiers/galeries/`
+	- `site/inc/`
+
 ### Notes
 
 - Pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur.
@@ -1021,11 +1032,13 @@ Dans l'un ou l'autre des cas, les catégories actives seront marquées comme tel
 
 Chaque galerie possède son propre titre, aussi appelé «identifiant unique» (ou *id*), qui peut être un nombre ou une chaîne de caractères que vous choisissez lors de sa création, et qui est utilisé par Squeletml pour différencier les galeries. Pour l'explication qui suit, disons que l'identifiant vaut `Ma première galerie`.
 
-Les trois points suivants doivent être satisfaits pour qu'une galerie soit accessible (**toutes ces étapes peuvent être réalisées facilement dans la section d'administration**):
+Les points suivants doivent être satisfaits pour qu'une galerie soit accessible (**toutes ces étapes peuvent être réalisées facilement dans la section d'administration**):
 
-- un dossier contenant les images, présent dans `site/fichiers/galeries/` et dont le nom correspond à l'identifiant filtré de la galerie, ce qui donne `site/fichiers/galeries/idGalerieDossier/`. Pour notre exemple, nous obtenons `site/fichiers/galeries/Ma-premiere-galerie/`. Le filtrage de l'identifiant est effectué automatiquement lorsque la galerie est créée à partir de l'administration de Squeletml. Pour effectuer le filtrage soi-même lors de la création manuelle d'une galerie, se référer à la fonction `idGalerieDossier()` dans le fichier `inc/fonctions.inc.php`. En gros, les espaces et les apostrophes deviennent des tirets et les lettres accentuées sont remplacées par leur équivalent non accentué;
+- un dossier contenant les images, présent dans `site/fichiers/galeries/`. Le nom du dossier importe peu. Pour notre exemple, disons que le dossier est `site/fichiers/galeries/galerie-1/`;
 
-- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/fichiers/galeries/idGalerieDossier/`. Il y a deux noms possibles pour le fichier de configuration: `config.ini.txt` ou `config.ini`. Le premier fichier existant trouvé est utilisé, `config.ini.txt` étant cherché en premier. Cela donne pour notre exemple `site/fichiers/galeries/Ma-premiere-galerie/config.ini.txt` ou `site/fichiers/galeries/Ma-premiere-galerie/config.ini`;
+- un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/fichiers/galeries/galerie-1/`. Il y a deux noms possibles pour le fichier de configuration: `config.ini.txt` ou `config.ini`. Le premier fichier existant trouvé est utilisé, `config.ini.txt` étant cherché en premier. Cela donne pour notre exemple `site/fichiers/galeries/galerie-1/config.ini.txt` ou `site/fichiers/galeries/galerie-1/config.ini`;
+
+- un fichier d'identification `site/fichiers/galeries/galerie-1/id.txt` ne contenant que l'identifiant de la galerie. Dans notre exemple, le fichier ne contient que `Ma première galerie`;
 
 - une page à visiter sur le site pour afficher la galerie, par exemple `ma-premiere-galerie.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la galerie que vous voulez afficher.
 
@@ -1033,7 +1046,7 @@ Concrètement, pour créer une galerie à partir de l'administration de Squeletm
 
 1. Visiter la page `admin/galeries.admin.php` et se rendre à la section «Ajouter des images».
 
-	Dans le champ «Identifiant de la galerie», inscrire l'identifiant voulu.
+	Dans le champ «Identifiant de la galerie», inscrire l'identifiant voulu, par exemple `Ma première galerie`.
 
 	Dans le champ «Fichier», préciser un fichier image ou une archive de format TAR (`.tar`) ou ZIP (`.zip`).
 
@@ -1045,7 +1058,7 @@ Concrètement, pour créer une galerie à partir de l'administration de Squeletm
 
 	Dans le champ «Identifiant de la galerie», choisir la galerie voulue.
 
-	Dans le champ «Emplacement de la page web», préciser la page web voulue.
+	Dans le champ «Emplacement de la page web», préciser la page web à créer, par exemple `ma-premiere-galerie.php`.
 
 	Choisir d'autres options selon les besoins.
 
@@ -1053,15 +1066,13 @@ Concrètement, pour créer une galerie à partir de l'administration de Squeletm
 
 Pour créer manuellement une galerie, donc sans passer par l'administration de Squeletml, les étapes sont les suivantes:
 
-1. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie (par exemple, la page `ma-premiere-galerie.php`), et l'assigner avec l'identifiant voulu (`$idGalerie = "ce qu'on veut";`).
+1. Créer un dossier dans `site/fichiers/galeries/`, par exemple `site/fichiers/galeries/galerie-1/`, et y mettre les images.
 
-2. Créer un dossier `site/fichiers/galeries/idGalerieDossier` et y mettre les images.
+2. Créer un fichier de configuration `site/fichiers/galeries/galerie-1/config.ini.txt` ou `site/fichiers/galeries/galerie-1/config.ini`. Cette étape est développée dans la prochaine section.
 
-3. Créer un fichier de configuration `site/fichiers/galeries/idGalerieDossier/config.ini.txt` ou `site/fichiers/galeries/idGalerieDossier/config.ini`. Cette étape est développée dans la prochaine section.
+3. Créer un fichier d'identification `site/fichiers/galeries/galerie-1/id.txt` et y inscrire seulement l'identifiant de la galerie (par exemple `Ma première galerie`), ce qui donne donc un fichier d'une seule ligne.
 
-4. Optionnel: pour gérer la galerie à partir de l'administration de Squeletml (`admin/galeries.admin.php`), créer un fichier d'identification `site/fichiers/galeries/idGalerieDossier/id.txt` et y inscrire seulement l'identifiant non filtré (par exemple `Ma première galerie`) de la galerie, ce qui donne donc un fichier d'une seule ligne.
-
-	Explications: à partir de l'identifiant d'une galerie (par exemple `Ma première galerie`), il est facile de trouver son dossier (par exemple `Ma-premiere-galerie`); un simple filtrage de l'identifiant le permet. Cependant, l'inverse n'est pas vrai. Par exemple, est-ce que la lettre «e» représente une lettre non accentuée ou bien une lettre accentuée telle que «é», «è», «ê», etc.? Pour cette raison, le script de gestion des galeries dans la section d'administration de Squeletml crée automatiquement un fichier d'identification `id.txt` ne contenant que l'identifiant de la galerie.
+4. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie (par exemple, la page `ma-premiere-galerie.php`), et l'assigner avec l'identifiant voulu (par exemple, `$idGalerie = "Ma première galerie";`).
 
 ### Fichier de configuration d'une galerie
 
