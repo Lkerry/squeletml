@@ -55,6 +55,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		$tableauParametres = adminParametresImage();
 		$tailleMaxFichier = adminPhpIniOctets(ini_get('upload_max_filesize'));
 		$id = '';
+		$idDossier = '';
 		
 		if (isset($_POST['id']))
 		{
@@ -63,17 +64,20 @@ include $racineAdmin . '/inc/premier.inc.php';
 		elseif (isset($_GET['id']))
 		{
 			$id = securiseTexte(superBasename($_GET['id']));
-			$idReel = adminIdGalerie($racine, $id);
+			$galeries = galeries($racine);
 			
-			if (!empty($idReel))
+			foreach ($galeries as $idGalerie => $idGalerieDossier)
 			{
-				$id = $idReel;
+				if ($id == filtreChaine($racine, $idGalerie))
+				{
+					$id = $idGalerie;
+					$idDossier = $idGalerieDossier;
+					break;
+				}
 			}
 		}
 		
-		$idDossier = '';
-		
-		if (!empty($id))
+		if (!empty($id) && empty($idDossier))
 		{
 			$idDossier = idGalerieDossier($racine, $id);
 		}
@@ -1345,6 +1349,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= "<ul>\n";
 			$messagesScript .= '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n";
 			$messagesScript .= "</ul>\n";
+			$corpsGalerie = '';
 			
 			if (empty($id))
 			{
@@ -1363,7 +1368,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idDossier));
 				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idDossier;
 				$nombreDimages = count($tableauGalerie);
-				$corpsGalerie = '';
 				$corpsGalerie .= '<div id="galeriesAdminConfigGraphique">';
 				$corpsGalerie .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
 				$corpsGalerie .= '<div>';

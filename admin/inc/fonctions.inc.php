@@ -1750,23 +1750,6 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 }
 
 /*
-Retourne l'`id` réel d'une galerie à partir du nom de son dossier. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
-*/
-function adminIdGalerie($racine, $idGalerieDossier)
-{
-	$fichierId = "$racine/site/fichiers/galeries/$idGalerieDossier/id.txt";
-	$idGalerie = '';
-	
-	if (file_exists($fichierId))
-	{
-		$idGalerie = @file_get_contents("$racine/site/fichiers/galeries/$idGalerieDossier/id.txt");
-		$idGalerie = trim($idGalerie);
-	}
-	
-	return $idGalerie;
-}
-
-/*
 Retourne un tableau de deux éléments tableau dont chaque élément contient le nom d'un paramètre d'une image de galerie. Le premier tableau contient les paramètres les plus utilisés; le second, ceux qui le sont moins.
 */
 function adminParametresImage()
