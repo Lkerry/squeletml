@@ -101,6 +101,8 @@ div#contenuPrincipal {
 
 #galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
 	border-radius: 8px; /* CSS 3. */
+	-moz-border-radius: 8px; /* Gecko. */
+	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 div#tableDesMatieres {

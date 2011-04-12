@@ -91,7 +91,6 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
-$balisesLinkScript[1] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
 $balisesLinkScript[2] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
 $balisesLinkScript[3] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
 $balisesLinkScript[4] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
