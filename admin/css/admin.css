@@ -34,11 +34,12 @@ div#noticeMaintenance p {
 
 #page {
 	max-width: 950px;
-	margin: 0px auto;
+	margin: 10px auto;
 	padding: 0px;
-	border-right: 1px solid #ebebeb;
-	border-bottom: 1px solid #ebebeb;
-	border-left: 1px solid #ebebeb;
+	border: 1px solid #ebebeb;
+	box-shadow: 1px 1px 12px #e0e0e0; /* CSS 3. */
+	-moz-box-shadow: 1px 1px 12px #e0e0e0; /* Gecko. */
+	-webkit-box-shadow: 1px 1px 12px #e0e0e0; /* Webkit. */
 }
 
 #ancres {

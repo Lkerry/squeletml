@@ -82,6 +82,15 @@ pre, code {
 	background-color: #ebebeb;
 }
 
+code {
+	border-top: 1px solid #b3b3b3;
+	border-bottom: 1px solid #b3b3b3;
+}
+
+pre code {
+	border: none;
+}
+
 pre {
 	display: block;
 	overflow: auto;
@@ -217,6 +226,18 @@ span.licence img {
 	position: relative;
 }
 
+body.margeHautPage #page {
+	margin-top: 10px;
+}
+
+body.margeBasPage #page {
+	margin-bottom: 10px;
+}
+
+body.margeHautPage #page {
+	margin: 10px auto;
+}
+
 body.bordureDroitePage #page {
 	border-right: 1px solid #ebebeb;
 }
@@ -227,6 +248,16 @@ body.bordureBasPage #page {
 
 body.bordureGauchePage #page {
 	border-left: 1px solid #ebebeb;
+}
+
+body.bordureHautPage #page {
+	border-top: 1px solid #ebebeb;
+}
+
+body.ombrePage #page {
+	box-shadow: 1px 1px 12px #e0e0e0; /* CSS 3. */
+	-moz-box-shadow: 1px 1px 12px #e0e0e0; /* Gecko. */
+	-webkit-box-shadow: 1px 1px 12px #e0e0e0; /* Webkit. */
 }
 
 /***********************************************************************

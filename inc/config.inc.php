@@ -79,7 +79,7 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
-- Les types possibles sont: css, cssltIE7, cssIE7, csslteIE7, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
+- Les types possibles sont: css, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
 - Syntaxe pour tous les types:
   $balisesLinkScript[] = "URL#TYPE#fichier à inclure#contenu de l'attribut `title`";
   Le contenu de l'attribut `title` est optionnel, et est utilisé seulement pour le type rss.
@@ -91,6 +91,7 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
+$balisesLinkScript[1] = "$urlRacine/*#csslteIE8#$urlRacine/css/ie6-7-8.css";
 $balisesLinkScript[2] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
 $balisesLinkScript[3] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
 $balisesLinkScript[4] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
@@ -630,6 +631,13 @@ $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 // S'il y a lieu, arrière-plan d'une colonne.
 $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
 
+// Div `page` avec marges.
+/*
+- Les valeurs possibles sont TRUE ou FALSE.
+*/
+$margesPage['haut'] = TRUE;
+$margesPage['bas']  = TRUE;
+
 // Div `page` avec bordures.
 /*
 - Les valeurs possibles sont TRUE ou FALSE.
@@ -637,6 +645,10 @@ $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBord
 $borduresPage['droite'] = TRUE;
 $borduresPage['bas']    = TRUE;
 $borduresPage['gauche'] = TRUE;
+$borduresPage['haut']   = TRUE;
+
+// Div `page` avec ombre.
+$ombrePage = TRUE; // TRUE|FALSE
 
 // S'il y a au moins une colonne, étendre l'en-tête sur toute la largeur du site.
 /*

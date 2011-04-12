@@ -894,7 +894,7 @@ function chiffreMotDePasse($motDePasse)
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
+function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
 {
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -1005,6 +1005,16 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		$classesBody .= "aucuneColonne ";
 	}
 	
+	if ($margesPage['haut'])
+	{
+		$classesBody .= 'margeHautPage ';
+	}
+	
+	if ($margesPage['bas'])
+	{
+		$classesBody .= 'margeBasPage ';
+	}
+	
 	if ($borduresPage['droite'])
 	{
 		$classesBody .= 'bordureDroitePage ';
@@ -1018,6 +1028,16 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 	if ($borduresPage['gauche'])
 	{
 		$classesBody .= 'bordureGauchePage ';
+	}
+	
+	if ($borduresPage['haut'])
+	{
+		$classesBody .= 'bordureHautPage ';
+	}
+	
+	if ($ombrePage)
+	{
+		$classesBody .= 'ombrePage ';
 	}
 	
 	if ($enTetePleineLargeur && ($nombreDeColonnes == 1 || $nombreDeColonnes == 2))
@@ -3467,7 +3487,15 @@ function linkScript($balisesBrutes, $versionParDefautLinkScriptCss = '', $versio
 			case 'csslteIE7':
 				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
-	
+				
+			case 'cssIE8':
+				$balisesFormatees .= '<!--[if IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'csslteIE8':
+				$balisesFormatees .= '<!--[if lte IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
 			case 'js':
 				$balisesFormatees .= '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
 				break;
