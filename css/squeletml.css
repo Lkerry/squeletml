@@ -83,8 +83,7 @@ pre, code {
 }
 
 code {
-	border-top: 1px solid #b3b3b3;
-	border-bottom: 1px solid #b3b3b3;
+	border: 1px solid #b3b3b3;
 }
 
 pre code {
