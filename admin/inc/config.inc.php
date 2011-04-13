@@ -75,9 +75,10 @@ $adminLangueParDefaut = 'fr';
 - Voir les explications de la variable `$balisesLinkScript` dans le fichier de configuration du site.
 */
 $adminBalisesLinkScript[0] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/admin.css";
-$adminBalisesLinkScript[1] = "$urlRacineAdmin/*#csslteIE8#$urlRacineAdmin/css/ie6-7-8.css";
-$adminBalisesLinkScript[2] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
-$adminBalisesLinkScript[3] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";
+$adminBalisesLinkScript[1] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/extensions-proprietaires.css";
+$adminBalisesLinkScript[2] = "$urlRacineAdmin/*#csslteIE8#$urlRacineAdmin/css/ie6-7-8.css";
+$adminBalisesLinkScript[3] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
+$adminBalisesLinkScript[4] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";
 $adminBalisesLinkScript[5] = "$urlRacineAdmin/*#js#$urlRacine/js/phpjs/php.min.js";
 $adminBalisesLinkScript[6] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
 $adminBalisesLinkScript[7] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
@@ -106,6 +107,12 @@ $adminBalisesLinkScript[21] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/
 $adminBalisesLinkScript[22] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
 $adminBalisesLinkScript[23] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
 $adminBalisesLinkScript[24] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
+
+// Fusion des fichiers CSS et des scripts Javascript.
+/*
+- Voir les explications de la variable `$fusionnerCssJs` dans le fichier de configuration du site.
+*/
+$adminFusionnerCssJs = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##

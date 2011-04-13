@@ -85,7 +85,7 @@ JS;
 }
 
 // Variable finale.
-$linkScriptFin = linkScript($adminBalisesLinkScriptFinales);
+$linkScriptFin = linkScript($racine, $urlRacine, $adminFusionnerCssJs, $dossierAdmin, $adminBalisesLinkScriptFinales);
 
 ########################################################################
 ##

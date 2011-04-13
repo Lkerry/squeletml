@@ -391,7 +391,7 @@ if (!$inclureCssParDefaut)
 	supprimeInclusionCssParDefaut($balisesLinkScript);
 }
 
-$linkScript = linkScript($balisesLinkScript, $versionParDefautLinkScriptCss, $versionParDefautLinkScriptNonCss);
+$linkScript = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLinkScript, $versionParDefautLinkScriptCss, $versionParDefautLinkScriptNonCss);
 
 ########################################################################
 ##

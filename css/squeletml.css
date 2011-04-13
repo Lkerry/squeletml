@@ -97,11 +97,7 @@ pre {
 	padding: 5px;
 	margin: 5px 0px;
 	border: 1px solid #b3b3b3;
-	/* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
-	white-space: pre-wrap; /* CSS 3. */
-	white-space: -moz-pre-wrap !important; /* Mozilla. */
-	white-space: -pre-wrap; /* Opera 4-6. */
-	white-space: -o-pre-wrap; /* Opera 7. */
+	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
 #ancres {
@@ -338,8 +334,6 @@ div#sousTitre p {
 body.tableDesMatieresArrondie #tableDesMatieres {
 	border-color: #ebebeb;
 	border-radius: 8px; /* CSS 3. */
-	-moz-border-radius: 8px; /* Gecko. */
-	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 #infosPublication {
@@ -607,8 +601,6 @@ div#baliseH1 .contenuBloc {
 	padding: 5px;
 	background-color: #ebebeb;
 	border-radius: 8px; /* CSS 3. */
-	-moz-border-radius: 8px; /* Gecko. */
-	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 h2#titreEnvoyerAmis {

@@ -3443,13 +3443,182 @@ function limiteProfondeurListe($html)
 }
 
 /*
-Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
+
 */
-function linkScript($balisesBrutes, $versionParDefautLinkScriptCss = '', $versionParDefautLinkScriptNonCss = '')
+function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomCache, $listeFichiers, $balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure)
+{
+	if (!empty($listeFichiers))
+	{
+		$nomCache = $type . '-' . dechex(crc32(implode("\n", $listeFichiers))) . '.cache.' . $extensionNomCache;
+		
+		if (!empty($dossierAdmin))
+		{
+			$cheminCache = "$racine/site/$dossierAdmin/cache/$nomCache";
+			$urlCache = "$urlRacine/site/$dossierAdmin/cache/$nomCache";
+		}
+		else
+		{
+			$cheminCache = "$racine/site/cache/$nomCache";
+			$urlCache = "$urlRacine/site/cache/$nomCache";
+		}
+		
+		if (!file_exists($cheminCache))
+		{
+			$contenuCache = '';
+			
+			foreach ($listeFichiers as $fichier)
+			{
+				if (strpos($fichier, $urlRacine) === 0)
+				{
+					$contenuFichier = @file_get_contents(str_replace($urlRacine, $racine, $fichier));
+					
+					// Ajustement des chemins relatifs dans les feuilles de style.
+					if (strpos($type, 'css') === 0 && (strpos($fichier, "$urlRacine/css/") === 0 || (!empty($dossierAdmin) && strpos($fichier, "$urlRacine/$dossierAdmin/css/") === 0)))
+					{
+						$contenuFichier = preg_replace("#(\.\./)+#", '$1../', $contenuFichier);
+					}
+				}
+				else
+				{
+					$contenuFichier = contenuUrl(superRawurlencode($fichier));
+				}
+				
+				if ($contenuFichier !== FALSE)
+				{
+					$enTete = '/* Fichier `' . superBasename($fichier) . "`. */\n\n";
+					$contenuCache .= $enTete . $contenuFichier . "\n";
+				}
+			}
+			
+			if (!empty($contenuCache))
+			{
+				@file_put_contents($cheminCache, $contenuCache);
+			}
+		}
+		
+		if (file_exists($cheminCache))
+		{
+			array_unshift($balisesBrutesFusionneesAinclure, "$type#$urlCache");
+		}
+		else
+		{
+			$balisesBrutesFusionneesAinclure = array_merge($balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure);
+		}
+	}
+	
+	return $balisesBrutesFusionneesAinclure;
+}
+
+/*
+Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
+
+Le paramètre `$dossierAdmin` doit être vide si la fonction est utilisée pour le site et non pour la section d'administration.
+*/
+function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScriptCss = '', $versionParDefautLinkScriptNonCss = '')
 {
 	$balisesBrutesAinclure = linkScriptAinclure($balisesBrutes);
 	$balisesFormatees = '';
 	$favicon = '';
+	
+	if ($fusionnerCssJs)
+	{
+		$balisesBrutesFusionneesAinclure = array ();
+		$balisesBrutesCssAinclure = array ();
+		$balisesBrutesCssIe6Ainclure = array ();
+		$balisesBrutesCssIe7Ainclure = array ();
+		$balisesBrutesCssIe8Ainclure = array ();
+		$balisesBrutesJsAinclure = array ();
+		$balisesBrutesJsIe6Ainclure = array ();
+		$listeFichiersCss = array ();
+		$listeFichiersCssIe6 = array ();
+		$listeFichiersCssIe7 = array ();
+		$listeFichiersCssIe8 = array ();
+		$listeFichiersJs = array ();
+		$listeFichiersJsIe6 = array ();
+		
+		foreach ($balisesBrutesAinclure as $fichierBrut)
+		{
+			// On récupère les infos.
+			list ($type, $fichier) = explode('#', $fichierBrut, 2);
+			
+			if (strpos($type, 'css') === 0)
+			{
+				if ($type == 'css')
+				{
+					$listeFichiersCss[] = $fichier;
+					$balisesBrutesCssAinclure[] = $fichierBrut;
+				}
+				else
+				{
+					if ($type == 'cssltIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
+					{
+						$listeFichiersCssIe6[] = $fichier;
+						$balisesBrutesCssIe6Ainclure[] = $fichierBrut;
+					}
+					
+					if ($type == 'cssIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
+					{
+						$listeFichiersCssIe7[] = $fichier;
+						$balisesBrutesCssIe7Ainclure[] = $fichierBrut;
+					}
+					
+					if ($type == 'cssIE8' || $type == 'csslteIE8')
+					{
+						$listeFichiersCssIe8[] = $fichier;
+						$balisesBrutesCssIe8Ainclure[] = $fichierBrut;
+					}
+				}
+			}
+			elseif ($type == 'js')
+			{
+				$listeFichiersJs[] = $fichier;
+				$balisesBrutesJsAinclure[] = $fichierBrut;
+			}
+			elseif ($type == 'jsltIE7')
+			{
+				$listeFichiersJsIe6[] = $fichier;
+				$balisesBrutesJsIe6Ainclure[] = $fichierBrut;
+			}
+			else
+			{
+				$balisesBrutesFusionneesAinclure[] = $fichierBrut;
+			}
+		}
+		
+		if (!empty($listeFichiersJsIe6))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'jsltIE7', 'js', $listeFichiersJsIe6, $balisesBrutesJsIe6Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersJs))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'js', 'js', $listeFichiersJs, $balisesBrutesJsAinclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCssIe6))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'cssltIE7', 'css', $listeFichiersCssIe6, $balisesBrutesCssIe6Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCssIe7))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'cssIE7', 'css', $listeFichiersCssIe7, $balisesBrutesCssIe7Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCssIe8))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'cssIE8', 'css', $listeFichiersCssIe8, $balisesBrutesCssIe8Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCss))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'css', 'css', $listeFichiersCss, $balisesBrutesCssAinclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		$balisesBrutesAinclure = $balisesBrutesFusionneesAinclure;
+	}
+	
+	// TODO: gérer les doublons dans balises brutes.
 	
 	foreach ($balisesBrutesAinclure as $fichierBrut)
 	{

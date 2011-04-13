@@ -1364,6 +1364,18 @@ Dans certains cas, le cache peut être long à générer, ce qui a comme conséq
 
 *Note: si `cURL` est disponible sur le serveur, des requêtes en parallèle sont effectuées pour construire une page de catégorie, ce qui diminue le temps nécessaire à l'opération. Dans ce cas, il est moins critique d'activer le cache, même si cela demeure conseillé.*
 
+### Fusion des feuilles de style CSS et des scripts Javascript
+
+Si la variable `$fusionnerCssJs` dans le fichier de configuration du site vaut `TRUE`, les feuilles de style seront fusionnées dans un seul fichier, tout comme les scripts Javascript, ce qui permet de réduire le nombre de requêtes HTTP lors de la visite d'une page.
+
+Les fichiers uniques sont enregistrés dans le dossier de cache (`site/cache/`). Selon la configuration du site, il peut y avoir plusieurs fichiers uniques. En effet, un fichier unique est créé pour chaque ensemble différent de fichiers. Par exemple, si le site inclut normalement les feuilles de style A, B, C et D, un fichier unique sera créé pour contenir le code CSS de toutes ces feuilles et sera inclus à la place de ces dernières. Maintenant, si une section particulière du site nécessite en plus la feuille de style E, un autre fichier unique sera créé pour cette section et contiendra le code CSS des feuilles A, B, C, D et E. Le bon fichier unique sera inclus selon la page visitée. Le même principe s'applique aux scripts Javascript.
+
+La fusion prend également en compte les fichiers inclus par [commentaires conditionnels](http://www.alsacreations.com/astuce/lire/48-commentaires-conditionnels.html) pour le navigateur Internet Explorer. Ainsi, un fichier unique est créé pour le code visant tous les navigateurs; un autre pour Internet Explorer 6; un autre pour Internet Explorer 7; et un autre pour Internet Explorer 8.
+
+Une fois qu'un fichier unique a été créé pour un ensemble différent de fichiers, il ne sera pas recréé, même si les fichiers CSS ou Javascript originaux ont été modifiés. Pour forcer la regénération des fichiers uniques, supprimer simplement les fichiers CSS et Javascript dans le dossier de cache. Pour cette raison, il est conseillé d'activer cette option seulement pour les sites en production et non pour ceux en développement.
+
+À noter que la section d'administration possède également une option similaire (variable `$adminFusionnerCssJs` dans le fichier de configuration de l'administration). Les fichiers uniques sont alors enregistrés dans le dossier de cache de l'administration.
+
 ## Cron
 
 Le cron permet d'effectuer certaines tâches de maintenance:

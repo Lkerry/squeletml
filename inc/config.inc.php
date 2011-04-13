@@ -91,13 +91,24 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
-$balisesLinkScript[1] = "$urlRacine/*#csslteIE8#$urlRacine/css/ie6-7-8.css";
-$balisesLinkScript[2] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
-$balisesLinkScript[3] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
-$balisesLinkScript[4] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
-$balisesLinkScript[5] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
-$balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
-$balisesLinkScript[7] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
+$balisesLinkScript[1] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
+$balisesLinkScript[2] = "$urlRacine/*#csslteIE8#$urlRacine/css/ie6-7-8.css";
+$balisesLinkScript[3] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
+$balisesLinkScript[4] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
+$balisesLinkScript[5] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
+$balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
+$balisesLinkScript[7] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
+$balisesLinkScript[8] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
+
+// Fusion des fichiers CSS et des scripts Javascript.
+/*
+- Cette option permet de fusionner les feuilles de style CSS dans un seul fichier, qui sera inclus dans une balise `link` à la place des autres feuilles, et de fusionner les scripts Javascript dans un seul fichier, qui sera inclus dans une balise `script` à la place des autres fichiers Javascript.
+- Cette option permet donc de réduire le nombre de requêtes HTTP lors de la visite d'une page.
+- Les fichiers fusionnés sont autant ceux inclus par défaut que ceux ajoutés dans le fichier de configuration personnalisé.
+- Le fichier unique résultant est enregistré dans le dossier de cache. Pour forcer la regénération du fichier, supprimer les fichiers CSS et Javascript présents dans le dossier de cache.
+- Voir la section «Cache» dans la documentation ainsi que la fonction `linkScript()` pour plus de détails.
+*/
+$fusionnerCssJs = TRUE; // TRUE|FALSE
 
 // Version par défaut des fichiers CSS déclarés dans le tableau `$balisesLinkScript`.
 /*

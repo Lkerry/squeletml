@@ -55,7 +55,7 @@ else
 	$afficherGalerie = FALSE;
 }
 
-$linkScriptFin = linkScript($balisesLinkScriptFinales);
+$linkScriptFin = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLinkScriptFinales);
 
 // Inclusions.
 
