@@ -86,6 +86,10 @@ code {
 	border: 1px solid #b3b3b3;
 }
 
+em code {
+	font-style: normal;
+}
+
 pre code {
 	border: none;
 }
