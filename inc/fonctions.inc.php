@@ -1142,6 +1142,8 @@ function coloreCodePhp($code, $retourneCode = FALSE, $commentairesEnNoir = FALSE
 {
 	$codeColore = highlight_string($code, TRUE);
 	$codeColore = str_replace('&nbsp;', ' ', $codeColore);
+	$codeColore = str_replace('<code><span style="color: #000000">' . "\n", '<code><span style="color: #000000">', $codeColore);
+	$codeColore = str_replace("</span>\n</code>", '</span></code>', $codeColore);
 	$codeColore = str_replace('<br />', "\n", $codeColore);
 	
 	// Commentaires vers bleu primaire ou vers noir.
@@ -3443,7 +3445,9 @@ function limiteProfondeurListe($html)
 }
 
 /*
+Fusionne plusieurs fichiers CSS ou Javascript en un seul, et crée le fichier résultant dans le dossier de cache.
 
+Retourne un tableau de balises brutes à inclure, utilisable par la fonction `linkScript()`.
 */
 function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomCache, $listeFichiers, $balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure)
 {

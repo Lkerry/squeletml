@@ -94,6 +94,10 @@ pre code {
 	border: none;
 }
 
+strong code {
+	font-weight: normal;
+}
+
 pre {
 	display: block;
 	overflow: auto;
