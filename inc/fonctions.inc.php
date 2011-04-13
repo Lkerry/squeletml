@@ -3618,7 +3618,8 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 		$balisesBrutesAinclure = $balisesBrutesFusionneesAinclure;
 	}
 	
-	// TODO: gérer les doublons dans balises brutes.
+	// Si une tentative de fusion de fichiers CSS pour IE a échoué, il risque d'y avoir des doublons dans le tableau des balises brutes à inclure (par exemple, un style `csslteIE7` s'applique à la fois à IE 6 et à IE 7). Tout doublon potentiel est donc supprimé.
+	$balisesBrutesAinclure = array_unique($balisesBrutesAinclure);
 	
 	foreach ($balisesBrutesAinclure as $fichierBrut)
 	{
