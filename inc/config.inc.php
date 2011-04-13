@@ -108,7 +108,7 @@ $balisesLinkScript[8] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
 - Le fichier unique résultant est enregistré dans le dossier de cache. Pour forcer la regénération du fichier, supprimer les fichiers CSS et Javascript présents dans le dossier de cache.
 - Voir la section «Cache» dans la documentation ainsi que la fonction `linkScript()` pour plus de détails.
 */
-$fusionnerCssJs = TRUE; // TRUE|FALSE
+$fusionnerCssJs = FALSE; // TRUE|FALSE
 
 // Version par défaut des fichiers CSS déclarés dans le tableau `$balisesLinkScript`.
 /*
