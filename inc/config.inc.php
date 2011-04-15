@@ -79,7 +79,7 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
-- Les types possibles sont: css, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
+- Les types possibles sont: css, cssDirectlteIE8, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
 - Syntaxe pour tous les types:
   $balisesLinkScript[] = "URL#TYPE#fichier à inclure#contenu de l'attribut `title`";
   Le contenu de l'attribut `title` est optionnel, et est utilisé seulement pour le type rss.
@@ -92,13 +92,12 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 */
 $balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
 $balisesLinkScript[1] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
-$balisesLinkScript[2] = "$urlRacine/*#csslteIE8#$urlRacine/css/ie6-7-8.css";
-$balisesLinkScript[3] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
-$balisesLinkScript[4] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
-$balisesLinkScript[5] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
-$balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
-$balisesLinkScript[7] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
-$balisesLinkScript[8] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
+$balisesLinkScript[2] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
+$balisesLinkScript[3] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
+$balisesLinkScript[4] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
+$balisesLinkScript[5] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
+$balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
+$balisesLinkScript[7] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
 
 // Fusion des fichiers CSS et des scripts Javascript.
 /*

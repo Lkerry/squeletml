@@ -3649,7 +3649,11 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 			case 'css':
 				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n";
 				break;
-	
+				
+			case 'cssDirectlteIE8':
+				$balisesFormatees .= "<!--[if lte IE 8]>\n<style type=\"text/css\">\n$fichier\n</style>\n<![endif]-->\n";
+				break;
+				
 			case 'cssltIE7':
 				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
@@ -4720,6 +4724,31 @@ function phpGettext($racine, $langue)
 	T_textdomain($domain);
 	
 	return TRUE;
+}
+
+/*
+Retourne la profondeur d'une page par rapport à l'URL racine du site. Par exemple, si l'URL racine est:
+
+	http://localhost/serveur_local/squeletml
+
+et que l'URL de la page est:
+
+	http://localhost/serveur_local/squeletml/categories/sous-categorie/page.php
+
+la fonction va retourner `2`.
+*/
+function profondeurPage($urlRacine, $url)
+{
+	$masque = preg_quote($urlRacine, '|');
+	
+	if (substr($masque, -1) !== '/')
+	{
+		$masque .= '/';
+	}
+	
+	$urlRelative = preg_replace("|^$masque|", '', $url);
+	
+	return substr_count($urlRelative, '/');
 }
 
 /*

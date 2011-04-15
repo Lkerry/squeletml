@@ -4,7 +4,7 @@ $description = "Plusieurs options de Squeletml sont présentées dans cette page
 $robots = "noindex, follow, noarchive"; // Empêche la présence du modèle dans les moteurs de recherche.
 $tableDesMatieres = TRUE;
 $apercu = "interne";
-$boitesDeroulantes = "#testBoiteDeroulante1 .testBoiteDeroulante2";
+$boitesDeroulantes = "#testBoiteDeroulante2 .testBoiteDeroulante1";
 $auteur = "Squeletml";
 $dateCreation = "2010-03-01";
 $dateRevision = "2010-03-02";
@@ -25,8 +25,8 @@ $urlTestExistance2 = URL_SQUELETML;
 $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle page.php?a=1&amp;b=2&amp;c=3";
 ?>
 
-<div class="testBoiteDeroulante2">
-	<p class="bDtitre">Voici une boîte déroulante de classe <code>.testBoiteDeroulante2</code>:</p>
+<div class="testBoiteDeroulante1">
+	<p class="bDtitre">Voici une boîte déroulante de classe <code>testBoiteDeroulante1</code>:</p>
 
 	<ul class="bDcorps">
 		<li><p>La variable <code>$url</code> fournit l'adresse de la page courante, qui vaut dans ce cas-ci <code><?php echo $url; ?></code>.</p></li>
@@ -34,7 +34,13 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 		<li><p>La variable <code>$nomPage</code> fournit le nom de la page courante, qui vaut dans ce cas-ci <code><?php echo $nomPage; ?></code>.</p></li>
 		
 		<li><p>La fonction <code>arg()</code> permet de séparer l'URL en différents arguments. Par exemple, le premier argument est donné par <code>arg(0)</code> et vaut dans ce cas-ci <code><?php echo arg(0); ?></code>.</p></li>
-		
+	</ul>
+</div>
+
+<div id="testBoiteDeroulante2">
+	<p class="bDtitre">Voici une boîte déroulante d'<code>id</code> <code>testBoiteDeroulante2</code>:</p>
+	
+	<ul class="bDcorps">
 		<li><p>Voici un exemple d'utilisation de la fonction <code>estAccueil()</code> et de la constante <code>ACCUEIL</code>:</p>
 			
 			<?php if (estAccueil($accueil)): ?>
@@ -72,7 +78,13 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 				<p>l'URL <code><?php echo $urlTestExistance2; ?></code> n'existe pas.</p>
 			<?php endif; ?>
 		</li>
-		
+	</ul>
+</div>
+
+<div class="testBoiteDeroulante1">
+	<p class="bDtitre">Voici une autre boîte déroulante de classe <code>testBoiteDeroulante1</code>:</p>
+	
+	<ul class="bDcorps">
 		<li><p>Prenons maintenant cette adresse:</p>
 			
 			<pre><?php echo $urlTestEncodage; ?></pre>
@@ -81,17 +93,9 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 			
 			<pre><?php echo superRawurlencode($urlTestEncodage); ?></pre>
 		</li>
+		
+		<li><p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p></li>
 	</ul>
-</div>
-
-<div id="testBoiteDeroulante1">
-	
-</div>
-
-<div class="testBoiteDeroulante2">
-	<p class="bDtitre">Voici une autre boîte déroulante de classe <code>.testBoiteDeroulante2</code>:</p>
-	
-	<p class="bDcorps">La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p>
 </div>
 
 <h2>Chaînes de caractères</h2>

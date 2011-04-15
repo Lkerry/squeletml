@@ -336,6 +336,29 @@ if (!empty($idCategorie) && $rssCategorie)
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
 }
 
+// PIE (Progressive Internet Explorer).
+
+if ($ombrePage)
+{
+	$profondeur = profondeurPage($urlRacine, $url);
+	$cheminPie = '';
+	
+	for ($i = 0; $i < $profondeur; $i++)
+	{
+		$cheminPie .= '../';
+	}
+	
+	$cheminPie .= 'inc/PIE/PIE.php';
+	
+	$cssDirectlteIE8 = '';
+	$cssDirectlteIE8 .= "body.ombrePage #page {\n";
+	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
+	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
+	$cssDirectlteIE8 .= "}";
+	
+	$balisesLinkScript[] = "$url#cssDirectlteIE8#$cssDirectlteIE8";
+}
+
 // Slimbox2.
 
 if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && !empty($idGalerie))

@@ -1354,7 +1354,7 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 	**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
 
-## Cache
+## Cache et optimisation
 
 Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. La durée du cache peut être précisée pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une image) et des catégories ainsi que pour les flux RSS.
 

@@ -23,6 +23,7 @@ h1, h2, h3, h4, h5, h6, a, a:visited {
 }
 
 h1, h2, h3, h4, h5, h6 {
+	font-weight: normal;
 	margin: 20px 0px;
 }
 
@@ -271,6 +272,7 @@ body.ombrePage #page {
 
 div#enTete {
 	padding: 2px 5px;
+	border-bottom: 1px solid #ebebeb;
 }
 
 div#titre h1, div#titre p {
@@ -549,6 +551,11 @@ li.parent {
 	background-color: #ebebeb;
 }
 
+.blocArrondi .contenuBloc {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
 div.haut-gauche {
 	background: url(../fichiers/coins/haut-gauche.gif);
 }
@@ -599,6 +606,10 @@ div#baliseH1 .contenuBloc {
 #infosPublication div.contenuBloc, div.infosPublicationApercu {
 	padding-left: 19px;
 	background: url('../fichiers/info.png') no-repeat left center;
+}
+
+#infosPublication.blocArrondi .contenuBloc {
+	margin-left: 8px;
 }
 
 /* Module «Envoyer à des amis». */
