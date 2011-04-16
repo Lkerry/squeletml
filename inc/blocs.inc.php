@@ -262,12 +262,19 @@ if (!empty($blocsAinsererTemp))
 						
 						$blocs[$region] .= '<div id="lienPage" class="bloc' . $classeBlocArrondi . '">' . "\n";
 						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<h2>' . T_("Faire un lien vers cette page") . "</h2>\n";
+						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
+						$blocs[$region] .= "<div class=\"bDcorps\">\n";
 						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
 						$codeLienPage = '<a href="' . urlPageSansEnvoyerAmis() . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
 						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
+						$blocs[$region] .= "</div>\n";
 						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
+						$blocs[$region] .= '<script type="text/javascript">' . "\n";
+						$blocs[$region] .= "//<![CDATA[\n";
+						$blocs[$region] .= "boiteDeroulante('#lienPage', \"$aExecuterApresClicBd\");\n";
+						$blocs[$region] .= "//]]>\n";
+						$blocs[$region] .= "</script>\n";
 					}
 					
 					break;
