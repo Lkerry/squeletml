@@ -3,7 +3,7 @@ div#tableDesMatieres {
 	min-width: 204px;
 	max-width: 304px;
 	margin: 5px 0px 5px 5px;
-	padding: 5px 8px 0px;
+	padding: 5px 8px 5px 5px;
 	background: #ebebeb;
 	border: 1px solid #b3b3b3;
 }

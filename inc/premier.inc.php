@@ -270,6 +270,7 @@ if ($erreur404)
 if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 {
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = "$url#cssIE7#$urlRacine/css/boites-deroulantes-ie7.css";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.cookie.js";
 	
@@ -375,6 +376,7 @@ if ($tableDesMatieres)
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$balisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
+	$balisesLinkScript[] = "$url#csslteIE8#$urlRacine/css/table-des-matieres-ie6-7-8.css";
 	
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/Gettext/lib/Gettext.js";
 	

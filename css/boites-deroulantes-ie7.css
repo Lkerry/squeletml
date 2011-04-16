@@ -1,0 +1,3 @@
+.bDtitre a {
+	color: expression(this.parentNode.currentStyle.color) !important; /* Palliatif à `inherit`. */
+}

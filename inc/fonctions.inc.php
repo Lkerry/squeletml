@@ -899,6 +899,11 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
 	
+	if ($arrierePlanColonne == 'AvecAucun')
+	{
+		$arrierePlanColonne = 'SansArrierePlan';
+	}
+	
 	if ($estAccueil)
 	{
 		$classesBody .= 'accueil ';
@@ -962,11 +967,7 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 	if ($nombreDeColonnes == 2)
 	{
 		$classesBody .= 'deuxColonnes colonneAgauche colonneAdroite ';
-		
-		if ($arrierePlanColonne != 'Aucun')
-		{
-			$classesBody .= "deuxColonnes$arrierePlanColonne ";
-		}
+		$classesBody .= "deuxColonnes$arrierePlanColonne ";
 		
 		if ($deuxColonnesSousContenuAgauche)
 		{
@@ -984,20 +985,12 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		if ($uneColonneAgauche)
 		{
 			$classesBody .= "colonneAgauche uneColonneAgauche ";
-			
-			if ($arrierePlanColonne != 'Aucun')
-			{
-				$classesBody .= "colonneAgauche$arrierePlanColonne ";
-			}
+			$classesBody .= "colonneAgauche$arrierePlanColonne ";
 		}
 		else
 		{
 			$classesBody .= "colonneAdroite uneColonneAdroite ";
-			
-			if ($arrierePlanColonne != 'Aucun')
-			{
-				$classesBody .= "colonneAdroite$arrierePlanColonne ";
-			}
+			$classesBody .= "colonneAdroite$arrierePlanColonne ";
 		}
 	}
 	elseif ($nombreDeColonnes == 0)

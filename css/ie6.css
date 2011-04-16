@@ -1,3 +1,7 @@
+pre {
+	zoom: 1; /* À cause d'un bogue avec `word-wrap: break-word`. */
+}
+
 #page {
 	zoom: 1; /* À cause d'un bogue avec `position: absolute`. */
 	width: 750px;
@@ -12,10 +16,6 @@ body.aucuneColonne #page {
 	width: expression( document.body.clientWidth > 750? "750px": "auto" );
 }
 
-.titreApercu a:visited {
-	color: expression(this.parentNode.currentStyle.color); /* Palliatif à `inherit`. */
-}
-
 #infosPublication div.contenuBloc, div.infosPublicationApercu {
 	background: url('../fichiers/info.gif') no-repeat left center;
 }
@@ -28,8 +28,22 @@ body.aucuneColonne #page {
 	background: url('../fichiers/rss.gif') no-repeat left center;
 }
 
+.blocArrondi #inputMotsCles {
+	width: 173px;
+}
+
 li.actif {
 	list-style-image: url('../fichiers/puce.gif');
+}
+
+div.galerieNavigationSuivant {
+	float: none;
+	zoom: 1; /* Pour bien prendre en compte le `float: left` de la flèche de navigation précédente. */
+}
+
+.pagination .blocArrondi {
+	zoom: 1; /* À cause d'un bogue avec la couleur d'arrière-plan. */
+	
 }
 
 /* Message pour IE6. */

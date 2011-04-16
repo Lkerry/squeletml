@@ -1,0 +1,42 @@
+body.colonneAgaucheAvecRayures #page {
+	background: url('../fichiers/rayures-204px.png') white repeat-y 0% top !important;
+}
+body.colonneAgaucheAvecRayuresEtBordure #page {
+	background: url('../fichiers/rayures-avec-bordure-droite-205px.png') white repeat-y 0% top !important;
+}
+body.colonneAgaucheAvecFondUni #page {
+	background: url('../fichiers/uni-204px.png') white repeat-y 0% top !important;
+}
+body.colonneAgaucheAvecBordure #page {
+	background: url('../fichiers/bordure-1px.png') white repeat-y 203px top !important;
+}
+
+/* */
+
+body.colonneAdroiteAvecRayures #page {
+	background: url('../fichiers/rayures-204px.png') white repeat-y 100% top !important;
+}
+body.colonneAdroiteAvecRayuresEtBordure #page {
+	background: url('../fichiers/rayures-avec-bordure-gauche-205px.png') white repeat-y 100% top !important;
+}
+body.colonneAdroiteAvecFondUni #page {
+	background: url('../fichiers/uni-204px.png') white repeat-y 100% top !important;
+}
+body.colonneAdroiteAvecBordure #page {
+	background: url('../fichiers/bordure-gauche-205px.gif') white repeat-y 100% top !important;
+}
+
+/* */
+
+body.deuxColonnesAvecRayures #page {
+	background: url('../fichiers/rayures-204px.png') white repeat-y 0% top !important;
+}
+body.deuxColonnesAvecRayuresEtBordure #page {
+	background: url('../fichiers/rayures-avec-bordure-droite-205px.png') white repeat-y 0% top !important;
+}
+body.deuxColonnesAvecFondUni #page {
+	background: url('../fichiers/uni-204px.png') white repeat-y 0% top !important;
+}
+body.deuxColonnesAvecBordure #page {
+	background: url('../fichiers/bordure-1px.png') white repeat-y 203px top !important;
+}

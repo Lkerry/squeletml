@@ -23,8 +23,11 @@ h1, h2, h3, h4, h5, h6, a, a:visited {
 }
 
 h1, h2, h3, h4, h5, h6 {
-	font-weight: normal;
 	margin: 20px 0px;
+}
+
+#contenu h1, #contenu h2, #contenu h3, #contenu h4, #contenu h5, #contenu h6 {
+	font-weight: normal;
 }
 
 h1 {
@@ -81,9 +84,6 @@ li {
 pre, code {
 	font-family: Courier, "Courier New", FreeMono, "Liberation Mono", monospace;
 	background-color: #ebebeb;
-}
-
-code {
 	border: 1px solid #b3b3b3;
 }
 
@@ -104,7 +104,6 @@ pre {
 	overflow: auto;
 	padding: 5px;
 	margin: 5px 0px;
-	border: 1px solid #b3b3b3;
 	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
@@ -145,8 +144,8 @@ div#noticeMaintenance p {
 
 .pagination img {
 	border: none;
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 }
 
 .pagination .separateurPaginationTypeImage {
@@ -273,6 +272,10 @@ body.ombrePage #page {
 div#enTete {
 	padding: 2px 5px;
 	border-bottom: 1px solid #ebebeb;
+}
+
+body.colonneAgaucheSansArrierePlan div#enTete, body.colonneAdroiteAvecRayures div#enTete, body.colonneAdroiteAvecRayuresEtBordure div#enTete, body.deuxColonnesSansArrierePlan div#enTete, body.deuxColonnesAvecBordure div#enTete, body.deuxColonnesAvecRayures div#enTete, body.deuxColonnesAvecRayuresEtBordure div#enTete {
+	border-bottom: none;
 }
 
 div#titre h1, div#titre p {
@@ -518,6 +521,11 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 	padding-right: 2px;
 }
 
+.blocArrondi .contenuBloc {
+	padding-left: 8px;
+	padding-right: 8px;
+}
+
 .bloc h2 {
 	margin: 0px 0px 5px 0px;
 	padding: 0px;
@@ -549,11 +557,6 @@ li.parent {
 
 .blocArrondi {
 	background-color: #ebebeb;
-}
-
-.blocArrondi .contenuBloc {
-	padding-left: 8px;
-	padding-right: 8px;
 }
 
 div.haut-gauche {
@@ -635,6 +638,10 @@ h2#titreEnvoyerAmis {
 
 #rechercheGoogle #inputMotsCles {
 	width: 184px;
+}
+
+#rechercheGoogle.blocArrondi #inputMotsCles {
+	width: 173px;
 }
 
 /***********************************************************************
@@ -846,6 +853,10 @@ body.aucuneColonne #menuLangues {
 
 body.aucuneColonne #menuLangues ul {
 	list-style-type: none;
+}
+
+body.aucuneColonne #menuLangues h2, body.aucuneColonne #menu h2 {
+	display: none;
 }
 
 body.aucuneColonne #menu {
