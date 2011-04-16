@@ -26,10 +26,6 @@ h1, h2, h3, h4, h5, h6 {
 	margin: 20px 0px;
 }
 
-#contenu h1, #contenu h2, #contenu h3, #contenu h4, #contenu h5, #contenu h6 {
-	font-weight: normal;
-}
-
 h1 {
 	font-size: 1.9em;
 }
