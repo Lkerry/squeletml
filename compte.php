@@ -108,13 +108,13 @@ if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourriel
 	if (!empty($messagesScript))
 	{
 		$blocMessagesScript = '';
-		$blocMessagesScript .= '<div class="blocMessagesScript">' . "\n";
+		$blocMessagesScript .= '<div class="blocAvecFond blocArrondi blocMessagesScript">' . "\n";
 		
 		$blocMessagesScript .= "<ul>\n";
 		$blocMessagesScript .= $messagesScript;
 		$blocMessagesScript .= "</ul>\n";
 		$blocMessagesScript .= "</div><!-- /.blocMessagesScript -->\n";
-		echo boiteArrondie($blocMessagesScript);
+		echo $blocMessagesScript;
 	}
 	
 	if (!isset($_POST['demander']) || (isset($_POST['demander']) && $erreurFormulaire))

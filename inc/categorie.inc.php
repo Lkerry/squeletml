@@ -125,7 +125,7 @@ if (!empty($idCategorie))
 	
 	if ($nombreArticlesParPageCategorie)
 	{
-		$pagination = pagination($racine, $urlRacine, $typePaginationCategorie, $paginationDansBoiteArrondie, $nombreArticles, $nombreArticlesParPageCategorie, $urlSansGet, $baliseTitle, $description);
+		$pagination = pagination($racine, $urlRacine, $typePaginationCategorie, $paginationAvecFond, $paginationArrondie, $nombreArticles, $nombreArticlesParPageCategorie, $urlSansGet, $baliseTitle, $description);
 		
 		if ($pagination['estPageDerreur'])
 		{

@@ -466,22 +466,6 @@ function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier)
 }
 
 /*
-Prend en paramètre une chaîne de caractères, qui sera retournée balisée pour apparaître dans une boîte avec des coins arrondis.
-*/
-function boiteArrondie($contenu)
-{
-	$code = '';
-	list ($codeInterieurHaut, $codeInterieurBas) = codeInterieurBloc(FALSE, array (), '', 0, TRUE);
-	$code .= '<div class="blocArrondi">' . "\n";
-	$code .= $codeInterieurHaut;
-	$code .= "$contenu\n";
-	$code .= $codeInterieurBas;
-	$code .= '</div><!-- /.blocArrondi -->' . "\n";
-	
-	return $code;
-}
-
-/*
 Retourne un tableau dont chaque élément contient le code d'activation d'une boîte déroulante.
 */
 function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
@@ -892,9 +876,29 @@ function chiffreMotDePasse($motDePasse)
 }
 
 /*
+Retourne les classes du bloc (`blocAvecFond` ou `blocArrondi` ou les deux). Si aucune classe ne s'applique, retourne une chaîne vide.
+*/
+function classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $bloc, $nombreDeColonnes)
+{
+	$classes = '';
+	
+	if ((isset($blocsAvecFondSpecifiques[$bloc][$nombreDeColonnes]) && $blocsAvecFondSpecifiques[$bloc][$nombreDeColonnes]) || (!isset($blocsAvecFondSpecifiques[$bloc][$nombreDeColonnes]) && $blocsAvecFondParDefaut))
+	{
+		$classes .= 'blocAvecFond ';
+	}
+	
+	if ($blocsArrondis)
+	{
+		$classes .= 'blocArrondi';
+	}
+	
+	return rtrim($classes);
+}
+
+/*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
+function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
 {
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -1043,6 +1047,11 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		$classesBody .= 'liensVisitesDifferencies ';
 	}
 	
+	if ($tableDesMatieresAvecFond)
+	{
+		$classesBody .= 'tableDesMatieresAvecFond ';
+	}
+	
 	if ($tableDesMatieresArrondie)
 	{
 		$classesBody .= 'tableDesMatieresArrondie ';
@@ -1095,27 +1104,6 @@ function classesContenu($differencierLiensVisitesHorsContenu, $classesSupplement
 	}
 	
 	return $classesContenu;
-}
-
-/*
-Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une `div` de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une `div` de classe `bloc`). Si `$forcerBlocArrondi` vaut TRUE, le code retourné sera nécessairement celui pour un bloc arrondi.
-*/
-function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes, $forcerBlocArrondi = FALSE)
-{
-	$codeInterieurBloc = array ();
-	$codeInterieurBloc[0] = "\n\t";
-	$codeInterieurBloc[1] = "\n\t" . '</div><!-- /.contenuBloc -->';
-	
-	if ($forcerBlocArrondi || estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes))
-	{
-		$codeInterieurBloc[0] .= '<div class="haut-droit"></div><div class="haut-gauche"></div>';
-		$codeInterieurBloc[1] .= '<div class="bas-droit"></div><div class="bas-gauche"></div>';
-	}
-	
-	$codeInterieurBloc[0] .= '<div class="contenuBloc">' . "\n";
-	$codeInterieurBloc[1] .= "\n";
-	
-	return $codeInterieurBloc;
 }
 
 /*
@@ -1226,7 +1214,7 @@ function corrigeHtml($html)
 /*
 Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire s'il y a lieu, sinon est vide.
 */
-function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
+function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes)
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $resultat))
 	{
@@ -1234,18 +1222,9 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
 			
-			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes);
+			$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, 'legende-image-galerie', $nombreDeColonnes);
 			
-			if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes))
-			{
-				$classeBlocArrondi = ' blocArrondi';
-			}
-			else
-			{
-				$classeBlocArrondi = '';
-			}
-			
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc' . $classeBlocArrondi . '">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'image") . "</h2>\n" . $resultat[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc ' . $classesBloc . '">' . "\n<h2>" . T_("Légende de l'image") . "</h2>\n" . $resultat[1] . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
@@ -1660,21 +1639,6 @@ function estAccueil($accueil)
 	}
 	
 	return FALSE;
-}
-
-/*
-Returne TRUE si le bloc a des coins arrondis, sinon retourne FALSE.
-*/
-function estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
-{
-	if ((isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) || (!isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisParDefaut))
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
 }
 
 /*
@@ -2421,7 +2385,7 @@ function image(
 					$iconeLienOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
 				}
 			
-				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . $texteAltLienOriginal . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
+				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . $texteAltLienOriginal . '" title="' . $texteAltLienOriginal . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
 			}
 		}
 		
@@ -2533,12 +2497,12 @@ function image(
 	elseif ($taille == 'vignette')
 	{
 		$class = '';
+		$width = '';
+		$height = '';
 		
 		if ($galerieNavigation == 'fleches' && ($sens == 'precedent' || $sens == 'suivant'))
 		{
 			$class .= ' galerieFleche';
-			$width = 'width="80"';
-			$height = 'height="80"';
 			
 			if (file_exists($racine . '/site/fichiers/' . $sens . '.png'))
 			{
@@ -2611,11 +2575,6 @@ function image(
 					$width = 'width="' . $larg . '"';
 					$height = 'height="' . $haut . '"';
 				}
-			}
-			else
-			{
-				$width = '';
-				$height = '';
 			}
 		}
 		
@@ -4407,7 +4366,7 @@ Construit le code HTML pour afficher une pagination, et retourne un tableau cont
   - `$pagination['description']`: contenu de la métabalise `description` modifié pour prendre en compte la pagination;
   - `$pagination['estPageDerreur']`: informe si la page demandée par la variable GET `page` existe. Vaut TRUE si la page n'existe pas.
 */
-function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
+function pagination($racine, $urlRacine, $type, $paginationAvecFond, $paginationArrondie, $nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
 {
 	$pagination = array ();
 	$pagination['pagination'] = '';
@@ -4493,7 +4452,7 @@ function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nomb
 				$srcPrecedent = $urlRacine . '/fichiers/precedent.png';
 			}
 			
-			$pagination['pagination'] .= '<img class="paginationPrecedent" src="' . $srcPrecedent . '" alt="' . T_("Page précédente") . '" width="80" height="80" />';
+			$pagination['pagination'] .= '<img class="paginationPrecedent" src="' . $srcPrecedent . '" alt="' . T_("Page précédente") . '" />';
 		}
 		elseif ($type == 'texte')
 		{
@@ -4526,7 +4485,7 @@ function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nomb
 				$srcSuivant = $urlRacine . '/fichiers/suivant.png';
 			}
 			
-			$pagination['pagination'] .= '<img class="paginationSuivant" src="' . $srcSuivant . '" alt="' . T_("Page suivante") . '" width="80" height="80" />';
+			$pagination['pagination'] .= '<img class="paginationSuivant" src="' . $srcSuivant . '" alt="' . T_("Page suivante") . '" />';
 		}
 		elseif ($type == 'texte')
 		{
@@ -4536,14 +4495,24 @@ function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nomb
 		$pagination['pagination'] .= '</a>';
 	}
 	
-	if (!empty($pagination['pagination']) && $insererDansBoiteArrondie)
+	$classesPagination = '';
+	
+	if (!empty($pagination['pagination']))
 	{
-		$pagination['pagination'] = boiteArrondie($pagination['pagination']);
+		if ($paginationAvecFond)
+		{
+			$classesPagination = 'blocAvecFond ';
+		}
+		
+		if ($paginationArrondie)
+		{
+			$classesPagination = 'blocArrondi';
+		}
 	}
 	
 	if (!empty($pagination['pagination']))
 	{
-		$pagination['pagination'] = '<div class="pagination">' . "\n" . $pagination['pagination'] . '</div><!-- /.pagination -->' . "\n";
+		$pagination['pagination'] = "<div class=\"pagination $classesPagination\">\n" . $pagination['pagination'] . '</div><!-- /.pagination -->' . "\n";
 	}
 	
 	return $pagination;

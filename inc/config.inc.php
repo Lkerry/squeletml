@@ -91,7 +91,7 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
-$balisesLinkScript[1] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
+$balisesLinkScript[1] = "$urlRacine/*#csslteIE8#$urlRacine/css/ie6-7-8.css";
 $balisesLinkScript[2] = "$urlRacine/*#cssIE8#$urlRacine/css/ie8.css";
 $balisesLinkScript[3] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
 $balisesLinkScript[4] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
@@ -435,14 +435,14 @@ $boitesDeroulantesAlaMainParDefaut = FALSE; // TRUE|FALSE
 /*
 - Voir le deuxième paramètre de la fonction Javascript `boiteDeroulante()`.
 */
-$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 87);";
+$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 185);";
 
 // Balises `link` et `script` finales, ajoutées juste avant `</body>`.
 /*
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 87);});";
+$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 185);});";
 
 // Inclusion de l'aperçu d'une page.
 /*
@@ -522,8 +522,11 @@ $nombreArticlesParPageCategorie = 5;
 // S'il y a pagination, type de liens.
 $typePaginationCategorie = 'texte'; // image|texte
 
-// S'il y a pagination, insertion dans une boîte arrondie.
-$paginationDansBoiteArrondie = TRUE; // TRUE|FALSE
+// S'il y a pagination, ajout d'une couleur de fond.
+$paginationAvecFond = TRUE; // TRUE|FALSE
+
+// Si `$paginationAvecFond` vaut TRUE, arrondir les coins.
+$paginationArrondie = TRUE; // TRUE|FALSE
 
 /* ____________________ Style CSS. ____________________ */
 
@@ -640,7 +643,7 @@ $uneColonneAgauche = TRUE; // TRUE|FALSE
 $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 
 // S'il y a lieu, arrière-plan d'une colonne.
-$arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
+$arrierePlanColonne = 'bordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
 
 // Div `page` avec marges.
 /*
@@ -667,25 +670,30 @@ $ombrePage = TRUE; // TRUE|FALSE
 */ 
 $enTetePleineLargeur = FALSE; // TRUE|FALSE
 
-// Table des matières avec coins arrondis.
+// Table des matières avec couleur de fond.
+$tableDesMatieresAvecFond = TRUE; // TRUE|FALSE
+
+// Si `$tableDesMatieresAvecFond` vaut TRUE, arrondir les coins.
 $tableDesMatieresArrondie = TRUE; // TRUE|FALSE
 
-// Blocs de contenu avec coins arrondis par défaut.
-$blocsArrondisParDefaut = FALSE; // TRUE|FALSE
+// Blocs de contenu avec couleur de fond par défaut.
+$blocsAvecFondParDefaut = TRUE; // TRUE|FALSE
 
-// Blocs de contenu spécifiques avec coins arrondis.
+// Si `$blocsAvecFondParDefaut` vaut TRUE, arrondir les coins.
+$blocsArrondis = TRUE; // TRUE|FALSE
+
+// Blocs de contenu spécifiques avec couleur de fond.
 /*
-Il est possible de modifier la configuration par défaut des blocs arrondis pour un bloc en particulier selon le nombre de colonnes. Par exemple, la ligne suivante:
+Il est possible de modifier la configuration par défaut des blocs avec couleur de fond pour un bloc en particulier selon le nombre de colonnes. Par exemple, la ligne suivante:
 
-	$blocsArrondisSpecifiques['menu'] = array (TRUE, FALSE, FALSE);
+	$blocsAvecFondSpecifiques['menu'] = array (TRUE, FALSE, FALSE);
 
-précise que le bloc de menu principal devra avoir des coins arrondis lorsqu'il n'y a pas de colonne, mais ne devra pas en avoir lorsqu'il y en a une ou deux. Nous pouvons donc dégager la syntaxe générale suivante:
+précise que le bloc de menu principal devra avoir une couleur de fond lorsqu'il n'y a pas de colonne, mais ne devra pas en avoir lorsqu'il y en a une ou deux. Nous pouvons donc dégager la syntaxe générale suivante:
 
-	$blocsArrondisSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
+	$blocsAvecFondSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
 */
-$blocsArrondisSpecifiques['balise-h1'] = array (FALSE, FALSE, FALSE);
-$blocsArrondisSpecifiques['menu']      = array (TRUE, FALSE, FALSE);
-$blocsArrondisSpecifiques['licence']   = array (TRUE, TRUE, TRUE);
+$blocsAvecFondSpecifiques['balise-h1'] = array (FALSE, FALSE, FALSE);
+$blocsAvecFondSpecifiques['licence']   = array (TRUE, TRUE, TRUE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
@@ -841,8 +849,11 @@ $galeriePagination['au-dessous'] = FALSE;
 // S'il y a pagination, type de liens.
 $galerieTypePagination = 'texte'; // image|texte
 
-// S'il y a pagination, insertion dans une boîte arrondie.
-$galeriePaginationDansBoiteArrondie = TRUE; // TRUE|FALSE
+// S'il y a pagination, ajout d'une couleur de fond.
+$galeriePaginationAvecFond = TRUE; // TRUE|FALSE
+
+// Si `$galeriePaginationAvecFond` vaut TRUE, arrondir les coins.
+$galeriePaginationArrondie = TRUE; // TRUE|FALSE
 
 // Affichage d'informations au sujet de la galerie.
 $galerieInfoAjout = TRUE; // TRUE|FALSE
@@ -919,7 +930,7 @@ $galerieMinivignettesNombre = 0;
   - `image`: l'image en version intermédiaire.
 - Laisser vide pour ne pas ajouter d'ancre.
 */
-$galerieAncreDeNavigation = '';
+$galerieAncreDeNavigation = 'titre';
 
 // Ajout automatique d'une légende dans le cas où aucune légende n'a été précisée.
 $galerieLegendeAutomatique = TRUE; // TRUE|FALSE

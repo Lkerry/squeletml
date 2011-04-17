@@ -499,7 +499,7 @@ Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe 
 
 Voici quelques exemples:
 
-- ajout de coins arrondis aux blocs de contenu;
+- ajout d'une couleur de fond et de coins arrondis aux blocs de contenu;
 - nombre de colonnes;
 - emplacement d'une colonne unique;
 - arrière-plan d'une colonne;

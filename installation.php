@@ -368,7 +368,7 @@ else
 	echo "#page {width: 50%; margin: 0px auto; padding: 5px; border: 1px solid #f2f2f2; border-top: 0px;}\n";
 	echo "h1 {margin-top: 0px; font-size: 1.9em;}\n";
 	echo "h2 {font-size: 1.6em;}\n";
-	echo "h1, h2 {color: #007070;}\n";
+	echo "h1, h2 {color: #005959;}\n";
 	echo "a:visited {color: #4c177d;}\n";
 	echo "a:hover {text-decoration: none;}\n";
 	echo "code {color: #0000e2;}\n";

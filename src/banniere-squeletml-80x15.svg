@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -12,9 +13,9 @@
    height="15"
    id="svg3158"
    sodipodi:version="0.32"
-   inkscape:version="0.46"
+   inkscape:version="0.48.1 r9760"
    version="1.0"
-   sodipodi:docname="bouton-squeletml.svg"
+   sodipodi:docname="banniere-squeletml-80x15.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    inkscape:export-filename="/home/jp/bureau/bouton-squeletml.png"
    inkscape:export-xdpi="90"
@@ -51,15 +52,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="7.23125"
-     inkscape:cx="49.424826"
+     inkscape:cx="35.995166"
      inkscape:cy="7.4022151"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
+     inkscape:window-width="1272"
      inkscape:window-height="894"
      inkscape:window-x="0"
-     inkscape:window-y="52" />
+     inkscape:window-y="49"
+     inkscape:window-maximized="0" />
   <metadata
      id="metadata3163">
     <rdf:RDF>
@@ -68,6 +70,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -81,21 +84,30 @@
        width="79.505241"
        height="14.50524"
        x="0.2473793"
-       y="0.24737978" />
+       y="0.24737978"
+       inkscape:export-filename="/home/jp/Bureau/banniere.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.234;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3952"
        width="18"
        height="11"
        x="2"
-       y="2" />
+       y="2"
+       inkscape:export-filename="/home/jp/Bureau/banniere.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <g
        transform="matrix(0.1569298,0,0,0.1569298,-10.564817,-66.386757)"
        id="g3885"
        inkscape:label="Calque 1"
-       style="fill:#007070;fill-opacity:1;stroke:#007070;stroke-opacity:1">
+       style="fill:#005959;fill-opacity:1;stroke:#005959;stroke-opacity:1;stroke-width:1.00044733;stroke-miterlimit:4;stroke-dasharray:none"
+       inkscape:export-filename="/home/jp/Bureau/banniere.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <a
-         style="fill:#007070;fill-opacity:1;stroke:#007070;stroke-opacity:1"
+         style="fill:#005959;fill-opacity:1;stroke:#005959;stroke-opacity:1;stroke-width:1.00044733;stroke-miterlimit:4;stroke-dasharray:none"
          inkscape:export-filename="/tmp/puce.png"
          inkscape:export-ydpi="19.259567"
          inkscape:export-xdpi="19.259567"
@@ -104,22 +116,28 @@
            d="M 146.00139,476.91175 C 143.57544,491.9914 154.53124,500.02595 145.50991,503.33533 C 136.9804,505.84167 138.33886,486.79501 134.08076,481.42605 C 128.46918,482.77466 120.05196,499.52244 112.97468,493.34702 C 108.25815,485.12038 124.89883,481.69213 128.26335,472.89329 C 121.89882,468.25884 102.78038,471.82601 105.59616,461.21849 C 108.81843,453.25283 127.84673,465.45978 133.38799,460.0188 C 135.45757,451.53112 128.26653,440.13232 135.44077,438.6365 C 144.53071,433.7125 139.79002,463.85484 151.10844,462.50461 C 159.56779,463.0028 168.38848,456.99697 169.50899,464.50072 C 170.03911,474.62566 148.9787,470.56617 146.00139,476.91175 z"
            id="path1188"
            sodipodi:nodetypes="ccccccccccc"
-           style="fill:#007070;fill-opacity:1;fill-rule:evenodd;stroke:#007070;stroke-width:4.62586546;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1" />
+           style="fill:#005959;fill-opacity:1;fill-rule:evenodd;stroke:#005959;stroke-width:1.00044733;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
       </a>
     </g>
     <rect
-       style="opacity:1;fill:#007070;fill-opacity:1;stroke:none;stroke-width:1.00800002;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#005959;fill-opacity:1;stroke:none;stroke-width:1.00800002000000011;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3893"
        width="56"
        height="11"
        x="22"
-       y="2" />
+       y="2"
+       inkscape:export-filename="/home/jp/Bureau/banniere.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90" />
     <text
        xml:space="preserve"
        style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Picopixel;-inkscape-font-specification:Picopixel"
        x="28.302469"
        y="10.097656"
-       id="text3889"><tspan
+       id="text3889"
+       inkscape:export-filename="/home/jp/Bureau/banniere.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90"><tspan
          sodipodi:role="line"
          id="tspan3891"
          x="28.302469"

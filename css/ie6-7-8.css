@@ -1,0 +1,3 @@
+.bloc ul { /* Paliatif à `last-child`. */
+	margin-bottom: 0px;
+}

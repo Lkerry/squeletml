@@ -109,7 +109,7 @@ div#tableDesMatieres {
 }
 
 h1, h2, h3, h4, h5, h6, a {
-	color: #007070;
+	color: #005959;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -147,7 +147,7 @@ a, a code {
 }
 
 a:visited {
-	color: #441570;
+	color: #031641;
 }
 
 a:hover, a:hover code {

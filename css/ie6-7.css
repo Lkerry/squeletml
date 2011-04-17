@@ -2,18 +2,6 @@ pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-display
 	word-wrap: break-word; /* Internet Explorer 5.5+. */
 }
 
-#modeleMessageEnvoyerAmis {
-	border: 1px solid #b3b3b3;
-}
-
-.pagination {
-	text-align: left;
-}
-
-.pagination .contenuBloc {
-	text-align: center;
-}
-
 .titreApercu a:visited {
 	color: expression(this.parentNode.currentStyle.color); /* Palliatif à `inherit`. */
 }

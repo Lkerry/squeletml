@@ -2,15 +2,25 @@ div#tableDesMatieres {
 	float: right;
 	min-width: 204px;
 	max-width: 304px;
-	margin: 5px 0px 5px 5px;
-	padding: 5px 8px 5px 5px;
+	margin: 7px 0px 10px 10px;
+	padding: 10px;
+}
+
+body.tableDesMatieresAvecFond #tableDesMatieres {
 	background: #ebebeb;
-	border: 1px solid #b3b3b3;
+	border: 3px solid white;
+}
+
+body.tableDesMatieresArrondie #tableDesMatieres {
+	border-radius: 8px; /* CSS 3. */
+	-moz-border-radius: 8px; /* Gecko. */
+	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 div#tableDesMatieres h2 {
 	margin-top: 0px;
 	margin-bottom: 0px;
+	border-bottom: none;
 }
 
 div#tableDesMatieres ul {

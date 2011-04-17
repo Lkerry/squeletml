@@ -19,19 +19,22 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6, a, a:visited {
-	color: #007070;
+	color: #005959;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	margin: 20px 0px;
+	margin: 40px 0px 20px 0px;
+	font-family: ubuntu;
 }
 
 h1 {
 	font-size: 1.9em;
+	margin-bottom: 30px;
 }
 
 h2 {
 	font-size: 1.6em;
+	border-bottom: 3px solid #005959;
 }
 
 h3 {
@@ -43,16 +46,22 @@ h4 {
 }
 
 h5 {
-	font-size: 1em;
+	font-size: 1.15em;
+	font-weight: normal;
 }
 
 h6 {
 	font-size: 1em;
+	font-weight: normal;
 	font-style: italic;
 }
 
+h4, h5, h6 {
+	margin-left: 20px;
+}
+
 .liensVisitesDifferencies a:visited {
-	color: #441570;
+	color: #031641;
 }
 
 a, a code {
@@ -65,7 +74,7 @@ a:hover, a:hover code {
 
 ol, ul {
 	padding: 0px;
-	margin-left: 20px;
+	margin-left: 40px;
 }
 
 ul {
@@ -77,10 +86,13 @@ li {
 	margin-bottom: 5px;
 }
 
+p, li {
+	line-height: 130%;
+}
+
 pre, code {
 	font-family: Courier, "Courier New", FreeMono, "Liberation Mono", monospace;
 	background-color: #ebebeb;
-	border: 1px solid #b3b3b3;
 }
 
 em code {
@@ -88,7 +100,7 @@ em code {
 }
 
 pre code {
-	border: none;
+	background-color: transparent;
 }
 
 strong code {
@@ -98,9 +110,15 @@ strong code {
 pre {
 	display: block;
 	overflow: auto;
-	padding: 5px;
-	margin: 5px 0px;
-	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+	border: 1px solid #b3b3b3;
+	border-left: 3px solid #b3b3b3;
+	padding: 10px;
+	margin: 20px 0px;
+	/* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+	white-space: pre-wrap; /* CSS 3. */
+	white-space: -moz-pre-wrap !important; /* Mozilla. */
+	white-space: -pre-wrap; /* Opera 4-6. */
+	white-space: -o-pre-wrap; /* Opera 7. */
 }
 
 #ancres {
@@ -117,7 +135,6 @@ div#noticeMaintenance {
 div#noticeMaintenance p {
 	margin: 0px;
 	padding: 0px;
-	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
 	font-size: 0.96em;
 	font-weight: bold;
 }
@@ -194,7 +211,7 @@ span.licence img {
 	display: none;
 }
 
-.sansBordure, /* forme obsolete: */.imgSansBordure {
+.sansBordure {
 	border: none;
 }
 
@@ -219,7 +236,7 @@ span.licence img {
 ***********************************************************************/
 
 #page {
-	max-width: 900px;
+	max-width: 1000px;
 	margin: 0px auto;
 	padding: 0px;
 	position: relative;
@@ -233,8 +250,8 @@ body.margeBasPage #page {
 	margin-bottom: 10px;
 }
 
-body.margeHautPage #page {
-	margin: 10px auto;
+body.bordureHautPage #page {
+	border-top: 1px solid #ebebeb;
 }
 
 body.bordureDroitePage #page {
@@ -247,10 +264,6 @@ body.bordureBasPage #page {
 
 body.bordureGauchePage #page {
 	border-left: 1px solid #ebebeb;
-}
-
-body.bordureHautPage #page {
-	border-top: 1px solid #ebebeb;
 }
 
 body.ombrePage #page {
@@ -266,7 +279,7 @@ body.ombrePage #page {
 ***********************************************************************/
 
 div#enTete {
-	padding: 2px 5px;
+	padding: 10px;
 	border-bottom: 1px solid #ebebeb;
 }
 
@@ -294,7 +307,7 @@ div#titre h1 span#logoSupplement, div#titre p span#logoSupplement {
 }
 
 div#titre p a, div#titre p a:hover, div#titre p a:visited {
-	color: #007070;
+	color: #005959;
 	text-decoration: none;
 	border-bottom: none;
 }
@@ -317,7 +330,19 @@ div#sousTitre p {
 
 #surContenu {
 	width: 194px;
-	padding: 5px;
+	padding: 10px;
+}
+
+#surContenu .blocAvecFond:hover {
+	background-color: #f5f5f5;
+}
+
+#surContenu a, #surContenu a code {
+	text-decoration: none;
+}
+
+#surContenu a:hover, #surContenu a:hover code {
+	text-decoration: underline;
 }
 
 /***********************************************************************
@@ -326,22 +351,14 @@ div#sousTitre p {
 **
 ***********************************************************************/
 
-#contenu h1, #contenu .accueilPremierH2 {
-	margin-top: 0px;
-	padding-top: 0px;
-}
-
-#contenu .accueilPremierH2 {
-	font-size: 1.9em;
-}
-
 #interieurContenu {
-	padding: 5px;
+	padding: 0px 50px 50px 50px;
 }
 
-body.tableDesMatieresArrondie #tableDesMatieres {
-	border-color: #ebebeb;
-	border-radius: 8px; /* CSS 3. */
+div#milieuInterieurContenu > h2:first-child {
+	font-size: 1.9em;
+	margin-bottom: 30px;
+	border-bottom: none;
 }
 
 #infosPublication {
@@ -478,7 +495,19 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 
 #sousContenu {
 	width: 194px;
-	padding: 5px;
+	padding: 10px;
+}
+
+#sousContenu .blocAvecFond:hover {
+	background-color: #f5f5f5;
+}
+
+#sousContenu a, #sousContenu a code {
+	text-decoration: none;
+}
+
+#sousContenu a:hover, #sousContenu a:hover code {
+	text-decoration: underline;
 }
 
 /***********************************************************************
@@ -489,7 +518,7 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 
 #basDePage {
 	text-align: center;
-	padding: 5px;
+	padding: 10px;
 }
 
 #basDePage img {
@@ -504,33 +533,15 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 ***********************************************************************/
 
 .bloc {
-	margin-top: 0px;
+	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-#finInterieurContenu .bloc {
-	margin-top: 30px;
-}
-
-.contenuBloc {
-	padding-left: 2px;
-	padding-right: 2px;
-}
-
-.blocArrondi .contenuBloc {
-	padding-left: 8px;
-	padding-right: 8px;
-}
-
 .bloc h2 {
-	margin: 0px 0px 5px 0px;
+	margin: 0px 0px 15px 0px;
 	padding: 0px;
 	font-size: 1em;
-}
-
-.bloc ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
+	border-bottom: none;
 }
 
 a.actif {
@@ -549,42 +560,42 @@ li.parent {
 	list-style-type: disc;
 }
 
-/* Coins arrondis. */
+/* Avec couleur de fond. */
 
-.blocArrondi {
+.blocAvecFond {
+	padding: 10px;
 	background-color: #ebebeb;
 }
 
-div.haut-gauche {
-	background: url(../fichiers/coins/haut-gauche.gif);
+#lienPage.blocAvecFond pre {
+	margin-bottom: 0px;
 }
 
-div.haut-droit {
-	float: right;
-	background: url(../fichiers/coins/haut-droit.gif);
+.blocAvecFond > p:first-child, .blocAvecFond > ul:first-child, .blocAvecFond > ul:first-child > li:first-child {
+	margin-top: 0px;
 }
 
-div.bas-gauche {
-	background: url(../fichiers/coins/bas-gauche.gif);
+.blocAvecFond > p:last-child, .blocAvecFond > ul:last-child, .blocAvecFond > ul:last-child > li:last-child {
+	margin-bottom: 0px;
 }
 
-div.bas-droit {
-	float: right;
-	background: url(../fichiers/coins/bas-droit.gif);
-}
+/* Avec coins arrondis. */
 
-div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
-	height: 8px;
-	width: 8px;
-	background-repeat: no-repeat;
-	font-size: 1px; /* À cause d'un bogue d'IE. */
+.blocArrondi {
+	border-radius: 8px; /* CSS 3. */
+	-moz-border-radius: 8px; /* Gecko. */
+	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 /* Balise `h1`. */
 
-div#baliseH1 .contenuBloc {
-	padding-left: 0px;
-	padding-right: 0px;
+div#baliseH1 {
+	margin-top: 44px;
+	margin-bottom: 30px;
+}
+
+div#baliseH1 h1 {
+	margin: 0px;
 }
 
 /* Flux RSS. */
@@ -602,22 +613,25 @@ div#baliseH1 .contenuBloc {
 
 /* Informations de publication. */
 
-#infosPublication div.contenuBloc, div.infosPublicationApercu {
+#infosPublication, div.infosPublicationApercu {
 	padding-left: 19px;
 	background: url('../fichiers/info.png') no-repeat left center;
 }
 
-#infosPublication.blocArrondi .contenuBloc {
-	margin-left: 8px;
+#infosPublication.blocAvecFond {
+	padding-left: 29px;
+	background: url('../fichiers/info.png') #ebebeb no-repeat 10px center;
 }
 
 /* Module «Envoyer à des amis». */
 
 #modeleMessageEnvoyerAmis {
-	margin: 25px;
-	padding: 5px;
+	margin: 20px;
+	padding: 10px;
 	background-color: #ebebeb;
 	border-radius: 8px; /* CSS 3. */
+	-moz-border-radius: 8px; /* Gecko. */
+	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 h2#titreEnvoyerAmis {
@@ -636,8 +650,8 @@ h2#titreEnvoyerAmis {
 	width: 184px;
 }
 
-#rechercheGoogle.blocArrondi #inputMotsCles {
-	width: 173px;
+#rechercheGoogle.blocAvecFond #inputMotsCles {
+	width: 170px;
 }
 
 /***********************************************************************
@@ -676,7 +690,11 @@ body.colonneAgaucheAvecFondUni #page {
 body.colonneAgaucheAvecBordure #page {
 	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;
 }
-
+body.colonneAgaucheAvecBordure #surContenu .blocArrondi, body.colonneAgaucheAvecBordure #sousContenu .blocArrondi {
+	border-radius: 8px 0px 0px 8px; /* CSS 3. */
+	-moz-border-radius: 8px 0px 0px 8px; /* Gecko. */
+	-webkit-border-radius: 8px 0px 0px 8px; /* Webkit. */
+}
 /* */
 
 body.colonneAdroiteAvecRayures #page {
@@ -690,6 +708,11 @@ body.colonneAdroiteAvecFondUni #page {
 }
 body.colonneAdroiteAvecBordure #page {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
+}
+body.colonneAdroiteAvecBordure #surContenu .blocArrondi, body.colonneAdroiteAvecBordure #sousContenu .blocArrondi {
+	border-radius: 0px 8px 8px 0px; /* CSS 3. */
+	-moz-border-radius: 0px 8px 8px 0px; /* Gecko. */
+	-webkit-border-radius: 0px 8px 8px 0px; /* Webkit. */
 }
 
 /* */
@@ -723,6 +746,7 @@ body.deuxColonnesAvecBordure #interieurPage {
 
 body.colonneAgauche #enTete {
 	margin-left: 205px;
+	padding-left: 50px;
 }
 
 body.colonneAgauche div#sousTitre {
@@ -730,16 +754,16 @@ body.colonneAgauche div#sousTitre {
 }
 
 body.colonneAgauche #contenu {
-	margin-left: 204px;
+	margin-left: 205px;
 }
 
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	position: absolute;
-	top: 87px;
+	top: 110px;
 }
 
 body.colonneAgauche #basDePage {
-	margin: 25px 0px 0px 204px;
+	margin: 20px 0px 0px 205px;
 }
 
 /* body.uneColonneAgauche */
@@ -755,17 +779,17 @@ body.colonneAdroite div#sousTitre {
 }
 
 body.colonneAdroite #contenu {
-	margin-right: 204px;
+	margin-right: 205px;
 	text-align: justify;
 }
 
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
-	top: 87px;
+	top: 110px;
 }
 
 body.colonneAdroite #basDePage {
-	margin: 25px 204px 0px 0px;
+	margin: 20px 205px 0px 0px;
 }
 
 /* body.uneColonneAdroite */
@@ -781,11 +805,11 @@ body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
 /* body.deuxColonnes */
 
 body.deuxColonnes #basDePage {
-	margin: 25px 204px 0 204px;
+	margin: 20px 205px 0 205px;
 }
 
 body.deuxColonnes #contenu {
-	margin-right: 204px;
+	margin-right: 205px;
 	text-align: justify;
 }
 
@@ -810,7 +834,7 @@ body.deuxColonnesSousContenuAdroite #page {
 }
 
 body.deuxColonnesSousContenuAdroite #contenu {
-	margin-left: 204px;
+	margin-left: 205px;
 }
 
 body.deuxColonnesSousContenuAdroite #surContenu {
@@ -876,6 +900,7 @@ body.aucuneColonne #menu li {
 body.enTetePleineLargeur div#enTete {
 	background-color: white;
 	margin-left: 0px;
+	padding-left: 10px;
 	border-bottom: 1px solid #ebebeb;
 }
 
@@ -884,10 +909,6 @@ body.enTetePleineLargeur div#enTete {
 ** Galerie.
 **
 ***********************************************************************/
-
-body.galerie #page {
-	max-width: 1000px;
-}
 
 body.galerieAucuneColonne #page {
 	max-width: 750px;
@@ -898,7 +919,7 @@ p#galerieSousTitre {
 }
 
 div#galerieIntermediaire div#galerieIntermediaireTexte {
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 }
 
 div.minivignetteImageEnCours img {
@@ -908,7 +929,7 @@ div.minivignetteImageEnCours img {
 
 div.sepGalerieMinivignettes {
 	clear: both;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
 }
 
 #galerieLienSansJavascript a {
@@ -916,13 +937,9 @@ div.sepGalerieMinivignettes {
 	background: url('../fichiers/sans-javascript.png') no-repeat left center;
 }
 
-#galerieIntermediaireTexte ul {
-	margin-left: 25px;
-}
-
 #galerieIntermediaireTexteHorsContenu #galerieIntermediaireTexte {
 	padding-left: 5px;
-	border-left: 3px solid #007070;
+	border-left: 3px solid #005959;
 }
 
 #galerieIntermediaireTexteHorsContenu ul {
@@ -933,7 +950,7 @@ div.sepGalerieMinivignettes {
 }
 
 #galerieLienOriginalLegende {
-	margin-top: 15px;
+	margin-top: 20px;
 }
 
 div.galerieNavigationPrecedent {
@@ -993,7 +1010,7 @@ div#galerieAccompagnementVignetteSuivant img {
 
 div#galerieIntermediaireExif {
 	text-align: left;
-	margin-top: 15px;
+	margin-top: 20px;
 }
 
 div#galerieIntermediaireExif ul {

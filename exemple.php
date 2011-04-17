@@ -14,7 +14,43 @@ include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusi
 
 <h1>Modèle de page</h1>
 
-<?php echo chapeau("<p><em>Note: ce résumé a été mis en forme avec la fonction <code>chapeau()</code>.</em></p>\n<p>Cette page présente des exemples d'utilisation de variables, de constantes, de fonctions, etc. de Squeletml pour la création d'une page.<!-- /aperçu --> Regarder le fichier source pour bien comprendre de quelle manière les différentes options ont été utilisées, et <a href=\"$urlRacineAdmin/documentation.admin.php\">se référer à la documentation</a> pour plus de détails.</p>\n<p>Voir aussi cet <a href=\"$urlRacine/exemple2.php\">autre exemple de page</a> beaucoup plus simple.</p>"); ?>
+<?php echo chapeau("<p><em>Note: ce résumé a été mis en forme avec la fonction <code>chapeau()</code>.</em></p>\n<p>Cette page présente une liste non exhaustive d'outils (variables, constantes, fonctions, styles CSS, etc.) offerts par Squeletml pour la création d'une page.<!-- /aperçu --> Regardez le fichier source pour bien comprendre de quelle manière les différentes options ont été utilisées,. Vous pouvez également <a href=\"$urlRacineAdmin/documentation.admin.php\">vous référer à la documentation</a> pour plus de détails.</p>\n<p>Voir aussi cet <a href=\"$urlRacine/exemple2.php\">autre exemple de page</a> beaucoup plus simple.</p>"); ?>
+
+<h2>Fichiers et styles CSS généraux</h2>
+
+<?php
+$cheminImage = "$racine/fichiers/squeletml-logo.png";
+$urlImage = "$urlRacine/fichiers/squeletml-logo.png";
+$nomImage = superBasename($cheminImage);
+$vignetteNom = nomSuffixe($nomImage, '-vignette');
+$extensionImage = extension($cheminImage);
+$nomImageSansExtension = extension($cheminImage, TRUE);
+$typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+?>
+
+<p><img class="imgGauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> La présente image est le logo de Squeletml et a été positionnée avec la classe <code>imgGauche</code>. La fonction <code>superBasename()</code> fournit le nom de l'image, qui vaut dans ce cas-ci <code><?php echo $nomImage; ?></code>. Son extension peut être obtenue avec la fonction <code>extension()</code>; le résultat est <code><?php echo $extensionImage; ?></code> (ce qui donne <code><?php echo $nomImageSansExtension; ?></code> si on demande un retour sans l'extension). Le type MIME, obtenu avec la fonction <code>typeMime()</code>, est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code> (suffixe ajouté avec la fonction <code>nomSuffixe()</code>).</p>
+
+<div class="sep"></div>
+
+<p>Voici la bannière de Squeletml, centrée avec la classe <code>imgCentre</code>:</p>
+
+<img class="imgCentre" src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80x15.png" alt="Squeletml" width="80" height="15" />
+
+<p><img class="imgDroite" src="<?php echo $urlRacine; ?>/fichiers/Deer_Park_Globe.png" alt="Firefox" width="52" height="52" /> Voici maintenant un logo positionné à droite du paragraphe avec la classe <code>imgDroite</code>. Lorem ipsum dolor sit am et, con sec tet iere adi pis cin ga el ita. In sap en anten; dic tum id, pha re tra ut, mal es uada et, ma na. Class ap tent taci ti sociosqu ad lito ra tor quent per conu bia nos ral, per ince tos hime naos. Pra sent tem us; odio ac sagit is vehi ula; mau ris pede tinci dunt lacus, in eis mod orci mau ris a quam. Sed usto. Nun diam. Fus ce eros leo, feug at nec, vive ra eu, tris ique pelen esque, nunc.</p>
+
+<div class="sep"></div>
+
+<p class="gauche">Tiens, alignons du texte à gauche avec la classe <code>gauche</code>.</p>
+
+<p class="centre">Et au centre, avec la classe <code>centre</code>.</p>
+
+<p class="droite">À droite maintenant, avec la classe <code>droite</code>.</p>
+
+<div class="blocAvecFond blocArrondi">
+	<p><em>Note: ce texte a été mis en forme avec les classes <code>blocAvecFond</code> et <code>blocArrondi</code>.</em></p>
+	
+	<p>Quisque sit amet mi sit amet magna faucibus luctus. Ut pellentesque sodales arcu. Phasellus a elit. Maecenas rhoncus lorem id quam. Sed sed arcu et quam fermentum ultrices. Aenean pulvinar molestie magna. Vestibulum bibendum? Nullam libero arcu, ultrices a; aliquet quis, adipiscing sit amet, neque.</p>
+</div>
 
 <h2>Boîtes déroulantes</h2>
 
@@ -162,19 +198,13 @@ $phraseFiltree = filtreChaine($racine, $phrase);
 
 <?php
 $markdown = <<<MARKDOWN
-----
+- Une *emphase* en HTML:
 
-Une *emphase* en HTML:
+		<em>Bonjour.</em>
 
-	<em>Bonjour.</em>
+- Une **emphase forte** en HTML:
 
-Une **emphase forte** en HTML:
-
-	<strong>Bonjour.</strong>
-
-Fin de l'exemple en Markdown.
-
-----
+		<strong>Bonjour.</strong>
 MARKDOWN;
 ?>
 
@@ -185,37 +215,5 @@ MARKDOWN;
 <p>Ce qui donne, une fois traité avec la fonction <code>mdtxtChaine()</code>:</p>
 
 <?php echo mdtxtChaine($markdown); ?>
-
-<h2>Fichiers et styles CSS généraux</h2>
-
-<?php
-$cheminImage = "$racine/fichiers/squeletml-logo.png";
-$urlImage = "$urlRacine/fichiers/squeletml-logo.png";
-$nomImage = superBasename($cheminImage);
-$vignetteNom = nomSuffixe($nomImage, '-vignette');
-$extensionImage = extension($cheminImage);
-$nomImageSansExtension = extension($cheminImage, TRUE);
-$typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-?>
-
-<p><img class="imgGauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> La présente image est le logo de Squeletml et a été positionnée avec la classe <code>imgGauche</code>. La fonction <code>superBasename()</code> fournit le nom de l'image, qui vaut dans ce cas-ci <code><?php echo $nomImage; ?></code>. Son extension peut être obtenue avec la fonction <code>extension()</code>; le résultat est <code><?php echo $extensionImage; ?></code> (ce qui donne <code><?php echo $nomImageSansExtension; ?></code> sans l'extension). Le type MIME, obtenu avec la fonction <code>typeMime()</code>, est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code> (résultat obtenu avec <code>nomSuffixe($nomImage, '-vignette')</code>).</p>
-
-<div class="sep"></div>
-
-<p>Voici la bannière de Squeletml, centrée avec la classe <code>imgCentre</code>:</p>
-
-<img class="imgCentre" src="<?php echo $urlRacine; ?>/fichiers/banniere-squeletml-80x15.png" alt="Squeletml" width="80" height="15" />
-
-<p><img class="imgDroite" src="<?php echo $urlRacine; ?>/fichiers/Deer_Park_Globe.png" alt="Firefox" width="52" height="52" /> Voici maintenant un petit logo positionné à droite du paragraphe grâce à la classe <code>imgDroite</code>. Lorem ipsum dolor sit amet, consec tetier adipis cing elit. In sapien ante; dictum id, phare tra ut, males uada et, magna. Class aptent taci ti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>
-
-<div class="sep"></div>
-
-<p class="gauche">Tiens, alignons du texte à gauche avec la classe <code>gauche</code>.</p>
-
-<p class="centre">Et au centre, avec la classe <code>centre</code>.</p>
-
-<p class="droite">À droite maintenant, avec la classe <code>droite</code>.</p>
-
-<?php echo boiteArrondie("Note: ce texte a été mis en forme avec la fonction <code>boiteArrondie()</code>. Quisque sit amet mi sit amet magna faucibus luctus. Ut pellentesque sodales arcu. Phasellus a elit. Maecenas rhoncus lorem id quam. Sed sed arcu et quam fermentum ultrices. Aenean pulvinar molestie magna. Vestibulum bibendum? Nullam libero arcu, ultrices a; aliquet quis, adipiscing sit amet, neque."); ?>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

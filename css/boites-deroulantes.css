@@ -1,3 +1,7 @@
+h2.bDtitre {
+	margin-bottom: 0px;
+}
+
 .bDtitre a, .bDtitre a code {
 	text-decoration: none !important;
 }

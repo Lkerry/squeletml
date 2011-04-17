@@ -5,7 +5,7 @@ pre {
 #page {
 	zoom: 1; /* À cause d'un bogue avec `position: absolute`. */
 	width: 750px;
-	width: expression( document.body.clientWidth > 900? "900px": "auto" );
+	width: expression( document.body.clientWidth > 1000? "1000px": "auto" );
 }
 
 body.enTetePleineLargeur div#enTete {
@@ -16,8 +16,14 @@ body.aucuneColonne #page {
 	width: expression( document.body.clientWidth > 750? "750px": "auto" );
 }
 
-#infosPublication div.contenuBloc, div.infosPublicationApercu {
-	background: url('../fichiers/info.gif') no-repeat left center;
+#milieuInterieurContenu h2 { /* Paliatif à `> h2:first-child`. */
+	font-size: 1.9em;
+	margin-bottom: 30px;
+	border-bottom: none;
+}
+
+#infosPublication, div.infosPublicationApercu {
+	background: url('../fichiers/info.gif') #ebebeb no-repeat 10px center;
 }
 
 #envoyerAmis a {
@@ -28,8 +34,12 @@ body.aucuneColonne #page {
 	background: url('../fichiers/rss.gif') no-repeat left center;
 }
 
-.blocArrondi #inputMotsCles {
-	width: 173px;
+.bloc ul { /* Paliatif à `ul:first-child`. */
+	margin-top: 0px;
+}
+
+.blocAvecFond #inputMotsCles {
+	width: 170px;
 }
 
 li.actif {
@@ -41,7 +51,7 @@ div.galerieNavigationSuivant {
 	zoom: 1; /* Pour bien prendre en compte le `float: left` de la flèche de navigation précédente. */
 }
 
-.pagination .blocArrondi {
+.pagination .blocAvecFond {
 	zoom: 1; /* À cause d'un bogue avec la couleur d'arrière-plan. */
 	
 }
@@ -57,7 +67,7 @@ div#messageIe6 {
 }
 
 div#messageIe6 a {
-	color: #007070;
+	color: #005959;
 }
 
 div#messageIe6 a:visited {

@@ -480,7 +480,7 @@ elseif (!empty($idGalerie))
 	
 	if ($galerieVignettesParPage)
 	{
-		$pagination = pagination($racine, $urlRacine, $galerieTypePagination, $galeriePaginationDansBoiteArrondie, $nombreDimages, $galerieVignettesParPage, $urlSansGet, $baliseTitle, $description);
+		$pagination = pagination($racine, $urlRacine, $galerieTypePagination, $galeriePaginationAvecFond, $galeriePaginationArrondie, $nombreDimages, $galerieVignettesParPage, $urlSansGet, $baliseTitle, $description);
 	
 		if ($pagination['estPageDerreur'])
 		{
@@ -677,7 +677,7 @@ else
 	$robots = "noindex, follow, noarchive";
 }
 
-$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes);
+$tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes);
 
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/galerie.inc.php'))

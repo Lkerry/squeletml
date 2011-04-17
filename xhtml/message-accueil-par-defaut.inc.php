@@ -1,5 +1,5 @@
 <?php
-echo '<h2 class="accueilPremierH2">' . T_("Bienvenue sur votre site Squeletml") . "</h2>\n";
+echo '<h2>' . T_("Bienvenue sur votre site Squeletml") . "</h2>\n";
 
 echo T_("<p>Le logiciel libre Squeletml est un système de gestion de contenu sans base de données, utilisant un squelette de site valide XHTML 1.0 Strict et géré par inclusion de fichiers PHP, c'est-à-dire un site dont le corps de chaque page se trouve dans un fichier unique et dont les principaux éléments de structuration comme l'en-tête, le bas de page, etc. sont partagés entre toutes les pages. Il a pour but d'optimiser la création et la maintenance de ce genre de site.</p>") . "\n";
 

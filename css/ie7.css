@@ -7,13 +7,9 @@
 }
 
 body.deuxColonnes .galerieNavigationAccueil, body.deuxColonnes .galerieNavigationAccueil {
-	margin-right: 204px;
+	margin-right: 205px;
 }
 
 body.deuxColonnes .galerieNavigationSuivant, body.deuxColonnes .galerieNavigationSuivant {
-	margin-right: 204px;
-}
-
-body.margeHautPage {
-	margin-top: 10px;
+	margin-right: 205px;
 }

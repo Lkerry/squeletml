@@ -215,7 +215,7 @@ if (isset($_POST['envoyer']))
 			$classesBlocMessagesScript .= ' messagesSucces';
 		}
 		
-		$blocMessagesScript .= '<div id="messages" class="' . $classesBlocMessagesScript . '">' . "\n";
+		$blocMessagesScript .= '<div id="messages" class="blocAvecFond blocArrondi ' . $classesBlocMessagesScript . '">' . "\n";
 		
 		if ($erreurFormulaire)
 		{
@@ -226,7 +226,7 @@ if (isset($_POST['envoyer']))
 		$blocMessagesScript .= $messagesScript;
 		$blocMessagesScript .= "</ul>\n";
 		$blocMessagesScript .= "</div><!-- /#messages -->\n";
-		$contact .= boiteArrondie($blocMessagesScript);
+		$contact .= $blocMessagesScript;
 	}
 }
 

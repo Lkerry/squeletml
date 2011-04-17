@@ -129,7 +129,7 @@ elseif ($argv[1] == 'messageAccueil')
 	if ($fic = fopen($racine . '/xhtml/message-accueil-par-defaut.inc.php', 'w'))
 	{
 		fputs($fic, '<?php' . "\n");
-		fputs($fic, 'echo \'<h2 class="accueilPremierH2">\' . T_("Bienvenue sur votre site Squeletml") . "</h2>\n";' . "\n\n");
+		fputs($fic, 'echo \'<h2>\' . T_("Bienvenue sur votre site Squeletml") . "</h2>\n";' . "\n\n");
 		
 		foreach ($fichierLisezMoi as $ligne)
 		{

@@ -42,19 +42,9 @@ if (!empty($blocsAinsererTemp))
 				case 'balise-h1':
 					if (!empty($baliseH1))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="baliseH1" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="baliseH1" class="bloc ' . $classesBloc . '">' . "\n";
 						
 						if ($titreGalerieGenere)
 						{
@@ -71,7 +61,6 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$blocs[$region] .= $h1;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#baliseH1 -->' . "\n";
 					}
 					
@@ -80,21 +69,10 @@ if (!empty($blocsAinsererTemp))
 				case 'envoyer-amis':
 					if ($envoyerAmis && $envoyerAmisEstActif)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="envoyerAmis" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="envoyerAmis" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<a href="' . urlPageAvecEnvoyerAmis() . '">' . T_("Envoyer à des amis") . '</a>';
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#envoyerAmis -->' . "\n";
 					}
 					
@@ -103,19 +81,9 @@ if (!empty($blocsAinsererTemp))
 				case 'flux-rss':
 					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGaleriesActif || $fluxRssGlobalSiteActif)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-					
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="fluxRss" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="fluxRss" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2>' . T_("Flux RSS") . "</h2>\n";
 						
 						$blocs[$region] .= "<ul>\n";
@@ -148,7 +116,6 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$blocs[$region] .= "</ul>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#fluxRss -->' . "\n";
 					}
 					
@@ -162,21 +129,10 @@ if (!empty($blocsAinsererTemp))
 					
 						if (!empty($bloc))
 						{
-							list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+							$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 				
-							if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-							{
-								$classeBlocArrondi = ' blocArrondi';
-							}
-							else
-							{
-								$classeBlocArrondi = '';
-							}
-				
-							$blocs[$region] .= '<div id="infosPublication" class="bloc' . $classeBlocArrondi . '">' . "\n";
-							$blocs[$region] .= $codeInterieurBlocHaut;
+							$blocs[$region] .= '<div id="infosPublication" class="bloc ' . $classesBloc . '">' . "\n";
 							$blocs[$region] .= $bloc;
-							$blocs[$region] .= $codeInterieurBlocBas;
 							$blocs[$region] .= '</div><!-- /#infosPublication -->' . "\n";
 						}
 					}
@@ -221,25 +177,14 @@ if (!empty($blocsAinsererTemp))
 					
 						if (!empty($bloc))
 						{
-							list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+							$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 					
-							if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-							{
-								$classeBlocArrondi = ' blocArrondi';
-							}
-							else
-							{
-								$classeBlocArrondi = '';
-							}
-					
-							$blocs[$region] .= '<div id="licence" class="bloc' . $classeBlocArrondi . '">' . "\n";
-							$blocs[$region] .= $codeInterieurBlocHaut;
+							$blocs[$region] .= '<div id="licence" class="bloc ' . $classesBloc . '">' . "\n";
 							$blocs[$region] .= T_("Sauf avis contraire:") . "\n";
 							
 							$blocs[$region] .= "<ul>\n";
 							$blocs[$region] .= $bloc;
 							$blocs[$region] .= "</ul>\n";
-							$blocs[$region] .= $codeInterieurBlocBas;
 							$blocs[$region] .= '</div><!-- /#licence -->' . "\n";
 						}
 					}
@@ -249,26 +194,15 @@ if (!empty($blocsAinsererTemp))
 				case 'lien-page':
 					if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="lienPage" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="lienPage" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
 						$blocs[$region] .= "<div class=\"bDcorps\">\n";
 						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
 						$codeLienPage = '<a href="' . urlPageSansEnvoyerAmis() . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
 						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
 						$blocs[$region] .= "</div>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
 						$blocs[$region] .= '<script type="text/javascript">' . "\n";
 						$blocs[$region] .= "//<![CDATA[\n";
@@ -280,19 +214,9 @@ if (!empty($blocsAinsererTemp))
 					break;
 					
 				case 'menu':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+					$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 				
-					if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-				
-					$blocs[$region] .= '<div id="menu" class="bloc' . $classeBlocArrondi . '">' . "\n";
-					$blocs[$region] .= $codeInterieurBlocHaut;
+					$blocs[$region] .= '<div id="menu" class="bloc ' . $classesBloc . '">' . "\n";
 				
 					ob_start();
 					include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu');
@@ -310,7 +234,6 @@ if (!empty($blocsAinsererTemp))
 					}
 				
 					$blocs[$region] .= $bloc;
-					$blocs[$region] .= $codeInterieurBlocBas;
 					$blocs[$region] .= '</div><!-- /#menu -->' . "\n";
 					break;
 					
@@ -338,19 +261,9 @@ if (!empty($blocsAinsererTemp))
 					
 					if (!empty($bloc))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="menuCategories" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="menuCategories" class="bloc ' . $classesBloc . '">' . "\n";
 						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
@@ -363,7 +276,6 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuCategories -->' . "\n";
 					}
 						
@@ -372,19 +284,9 @@ if (!empty($blocsAinsererTemp))
 				case 'menu-langues':
 					if (count($accueil) > 1)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="menuLangues" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="menuLangues" class="bloc ' . $classesBloc . '">' . "\n";
 					
 						ob_start();
 						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
@@ -402,7 +304,6 @@ if (!empty($blocsAinsererTemp))
 						}
 					
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuLangues -->' . "\n";
 					}
 						
@@ -413,19 +314,9 @@ if (!empty($blocsAinsererTemp))
 					
 					if ($partage && !empty($listePartage) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="partage" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="partage" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
 						
 						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
@@ -436,7 +327,6 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$blocs[$region] .= "</ul>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#partage -->' . "\n";
 						$blocs[$region] .= '<script type="text/javascript">' . "\n";
 						$blocs[$region] .= "//<![CDATA[\n";
@@ -452,19 +342,9 @@ if (!empty($blocsAinsererTemp))
 					
 					if (!empty($cheminPiwik))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="piwik" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="piwik" class="bloc ' . $classesBloc . '">' . "\n";
 						
 						ob_start();
 						include_once $cheminPiwik;
@@ -472,7 +352,6 @@ if (!empty($blocsAinsererTemp))
 						ob_end_clean();
 						
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#piwik -->' . "\n";
 					}
 					
@@ -481,19 +360,9 @@ if (!empty($blocsAinsererTemp))
 				case 'recherche-google':
 					if ($activerRechercheGoogle)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="rechercheGoogle" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="rechercheGoogle" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2>' . T_("Rechercher dans le site") . "</h2>\n";
 						$blocs[$region] .= '<form method="get" action="http://www.google.' . $rechercheGoogleExtension . '/search">' . "\n";
 						$blocs[$region] .= "<div>\n";
@@ -502,7 +371,6 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '<input type="hidden" name="as_sitesearch" value="' . securiseTexte($_SERVER['SERVER_NAME']) . '" />' . "\n";
 						$blocs[$region] .= "</div>\n";
 						$blocs[$region] .= "</form>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#rechercheGoogle -->' . "\n";
 					}
 					
@@ -512,19 +380,9 @@ if (!empty($blocsAinsererTemp))
 				default:
 					if (cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 					
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
-					
-						$blocs[$region] .= "<div class=\"bloc$classeBlocArrondi $blocAinserer\">\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= "<div class=\"bloc $classesBloc $blocAinserer\">\n";
 					
 						ob_start();
 						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer);
@@ -542,7 +400,6 @@ if (!empty($blocsAinsererTemp))
 						}
 					
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= "</div><!-- /.$blocAinserer -->\n";
 					}
 					

@@ -116,7 +116,7 @@ $cheminEnvoyerAmis = $racine . '/inc/envoyer-amis.inc.php';
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
 $listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
-$classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesBody);
+$classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
 if (!empty($classesContenu))
@@ -339,26 +339,30 @@ if (!empty($idCategorie) && $rssCategorie)
 
 // PIE (Progressive Internet Explorer).
 
+$profondeur = profondeurPage($urlRacine, $url);
+$cheminPie = '';
+
+for ($i = 0; $i < $profondeur; $i++)
+{
+	$cheminPie .= '../';
+}
+
+$cheminPie .= 'inc/PIE/PIE.php';
+
+$cssDirectlteIE8 = '';
+$cssDirectlteIE8 .= "body.tableDesMatieresArrondie #tableDesMatieres, .blocArrondi {\n";
+$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
+$cssDirectlteIE8 .= "}\n";
+
 if ($ombrePage)
 {
-	$profondeur = profondeurPage($urlRacine, $url);
-	$cheminPie = '';
-	
-	for ($i = 0; $i < $profondeur; $i++)
-	{
-		$cheminPie .= '../';
-	}
-	
-	$cheminPie .= 'inc/PIE/PIE.php';
-	
-	$cssDirectlteIE8 = '';
 	$cssDirectlteIE8 .= "body.ombrePage #page {\n";
 	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
 	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
-	$cssDirectlteIE8 .= "}";
-	
-	$balisesLinkScript[] = "$url#cssDirectlteIE8#$cssDirectlteIE8";
+	$cssDirectlteIE8 .= "}\n";
 }
+
+$balisesLinkScript[] = "$url#cssDirectlteIE8#$cssDirectlteIE8";
 
 // Slimbox2.
 
@@ -376,7 +380,6 @@ if ($tableDesMatieres)
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$balisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
-	$balisesLinkScript[] = "$url#csslteIE8#$urlRacine/css/table-des-matieres-ie6-7-8.css";
 	
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/Gettext/lib/Gettext.js";
 	
@@ -400,13 +403,6 @@ if ($afficherMessageIe6)
 	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.cookie.js";
 	$balisesLinkScript[] = "$url#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('#messageIe6', '');});";
-}
-
-if ($estAccueil)
-{
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
-	$jsDirect = "ajouteEvenementLoad(function(){var oH2 = \$('body.accueil #interieurContenu').find('h2'); if (oH2.length > 0){\$(oH2[0]).addClass('accueilPremierH2');}});\n";
-	$balisesLinkScript[] = "$urlRacine/*#jsDirect#$jsDirect";
 }
 
 // Variable finale.
