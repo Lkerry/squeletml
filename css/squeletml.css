@@ -24,28 +24,28 @@ h1, h2, h3, h4, h5, h6, a, a:visited {
 
 h1, h2, h3, h4, h5, h6 {
 	margin: 40px 0px 20px 0px;
-	font-family: ubuntu;
 }
 
-h1 {
+h1, body.accueil div#milieuInterieurContenu h2 { /* Sur les pages d'accueil de chaque langue, le titre du site dans l'en-tête est contenu dans une balise `h1`, mais sans être stylé comme tel. Le style du titre `h2` est donc simulé pour apparaître comme un `h1`. Il en va de même pour les autres niveaux ci-dessous. */
 	font-size: 1.9em;
 	margin-bottom: 30px;
+	border-bottom: none;
 }
 
-h2 {
+h2, body.accueil div#milieuInterieurContenu h3 {
 	font-size: 1.6em;
 	border-bottom: 3px solid #005959;
 }
 
-h3 {
+h3, body.accueil div#milieuInterieurContenu h4 {
 	font-size: 1.3em;
 }
 
-h4 {
+h4, body.accueil div#milieuInterieurContenu h5 {
 	font-size: 1.15em;
 }
 
-h5 {
+h5, body.accueil div#milieuInterieurContenu h6 {
 	font-size: 1.15em;
 	font-weight: normal;
 }
@@ -116,9 +116,9 @@ pre {
 	margin: 20px 0px;
 	/* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 	white-space: pre-wrap; /* CSS 3. */
-	white-space: -moz-pre-wrap !important; /* Mozilla. */
-	white-space: -pre-wrap; /* Opera 4-6. */
-	white-space: -o-pre-wrap; /* Opera 7. */
+	white-space: -moz-pre-wrap !important; /* Gecko. */
+	white-space: -pre-wrap; /* Elektra. */
+	white-space: -o-pre-wrap; /* Presto. */
 }
 
 #ancres {
@@ -137,15 +137,6 @@ div#noticeMaintenance p {
 	padding: 0px;
 	font-size: 0.96em;
 	font-weight: bold;
-}
-
-.blocMessagesScript p {
-	margin-top: 0px;
-}
-
-.blocMessagesScript ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
 }
 
 .pagination {
@@ -335,6 +326,7 @@ div#sousTitre p {
 
 #surContenu .blocAvecFond:hover {
 	background-color: #f5f5f5;
+	background-image: none;
 }
 
 #surContenu a, #surContenu a code {
@@ -345,20 +337,22 @@ div#sousTitre p {
 	text-decoration: underline;
 }
 
+#surContenu ul {
+	margin-left: 20px;
+}
+
 /***********************************************************************
 **
 ** Contenu.
 **
 ***********************************************************************/
 
-#interieurContenu {
-	padding: 0px 50px 50px 50px;
+#contenu {
+	margin-top: 40px;
 }
 
-div#milieuInterieurContenu > h2:first-child {
-	font-size: 1.9em;
-	margin-bottom: 30px;
-	border-bottom: none;
+#interieurContenu {
+	padding: 0px 50px 50px 50px;
 }
 
 #infosPublication {
@@ -500,6 +494,7 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 
 #sousContenu .blocAvecFond:hover {
 	background-color: #f5f5f5;
+	background-image: none;
 }
 
 #sousContenu a, #sousContenu a code {
@@ -508,6 +503,10 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 
 #sousContenu a:hover, #sousContenu a:hover code {
 	text-decoration: underline;
+}
+
+#sousContenu ul {
+	margin-left: 20px;
 }
 
 /***********************************************************************
@@ -565,6 +564,9 @@ li.parent {
 .blocAvecFond {
 	padding: 10px;
 	background-color: #ebebeb;
+	background-image: -moz-linear-gradient(-45deg, #f0f0f0, #ebebeb); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f0f0f0, #ebebeb); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f0f0f0), color-stop(1, #ebebeb)); /* Webkit. */
 }
 
 #lienPage.blocAvecFond pre {
@@ -590,7 +592,7 @@ li.parent {
 /* Balise `h1`. */
 
 div#baliseH1 {
-	margin-top: 44px;
+	margin-top: 40px;
 	margin-bottom: 30px;
 }
 
@@ -627,11 +629,6 @@ div#baliseH1 h1 {
 
 #modeleMessageEnvoyerAmis {
 	margin: 20px;
-	padding: 10px;
-	background-color: #ebebeb;
-	border-radius: 8px; /* CSS 3. */
-	-moz-border-radius: 8px; /* Gecko. */
-	-webkit-border-radius: 8px; /* Webkit. */
 }
 
 h2#titreEnvoyerAmis {
@@ -930,6 +927,17 @@ div.minivignetteImageEnCours img {
 div.sepGalerieMinivignettes {
 	clear: both;
 	margin-bottom: 20px;
+}
+
+div.galerieInfoEtMinivignettesEnsemble div#galerieInfo {
+	float: left;
+	width: 45%;
+}
+
+div.galerieInfoEtMinivignettesEnsemble div#galerieMinivignettes {
+	float: right;
+	margin-top: 15px;
+	width: 45%;
 }
 
 #galerieLienSansJavascript a {

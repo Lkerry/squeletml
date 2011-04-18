@@ -244,7 +244,20 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			{
 				$corpsGalerie .= $imageIntermediaire . $imagePrecedente . $imageSuivante . "<div class=\"sep\"></div>\n";
 			}
-		
+			
+			$infoEtMinivignettesEnsemble = FALSE;
+			$infoEtMinivignettesEnsembleCodeDebut = '';
+			$infoEtMinivignettesEnsembleCodeFin = '';
+			
+			if ($galerieInfoAjout && $galerieAfficherMinivignettes && (($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut') || ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'bas')))
+			{
+				$infoEtMinivignettesEnsemble = TRUE;
+				$infoEtMinivignettesEnsembleCodeDebut .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+				$infoEtMinivignettesEnsembleCodeDebut .= '<div class="galerieInfoEtMinivignettesEnsemble">' . "\n";
+				$infoEtMinivignettesEnsembleCodeFin .= "</div><!-- /.galerieInfoEtMinivignettesEnsemble -->\n";
+				$infoEtMinivignettesEnsembleCodeFin .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+			}
+			
 			// `$galerieInfo`.
 			$galerieInfo = '';
 		
@@ -260,7 +273,11 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		
 			if ($galerieAfficherMinivignettes)
 			{
-				$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+				if (!$infoEtMinivignettesEnsemble)
+				{
+					$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+				}
+				
 				$corpsMinivignettes .= '<div id="galerieMinivignettes">' . "\n";
 			
 				// Calcul des minivignettes à afficher.
@@ -361,13 +378,17 @@ if (!empty($idGalerie) && isset($_GET['image']))
 				}
 			
 				$corpsMinivignettes .= '</div><!-- /#galerieMinivignettes -->' . "\n";
-				$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+				
+				if (!$infoEtMinivignettesEnsemble)
+				{
+					$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+				}
 			}
 		
 			// Variable `$corpsGalerie` finale.
 			if ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut')
 			{
-				$corpsGalerie = $galerieInfo . $corpsMinivignettes . $corpsGalerie;
+				$corpsGalerie = $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin . $corpsGalerie;
 			}
 			elseif ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'bas')
 			{
@@ -379,7 +400,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			}
 			elseif ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'bas')
 			{
-				$corpsGalerie = $corpsGalerie . $corpsMinivignettes . $galerieInfo;
+				$corpsGalerie = $corpsGalerie . $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin;
 			}
 			
 			if ($dureeCache['galerie'])

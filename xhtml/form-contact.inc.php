@@ -18,7 +18,7 @@
 			
 			<p><?php echo T_("Modèle du message qui sera envoyé à vos amis:"); ?></p>
 			
-			<div id="modeleMessageEnvoyerAmis">
+			<div id="modeleMessageEnvoyerAmis" class="bloc blocAvecFond blocArrondi">
 				<?php echo $messageEnvoyerAmis; ?>
 			</div><!-- /#modeleMessageEnvoyerAmis -->
 			

@@ -4501,12 +4501,12 @@ function pagination($racine, $urlRacine, $type, $paginationAvecFond, $pagination
 	{
 		if ($paginationAvecFond)
 		{
-			$classesPagination = 'blocAvecFond ';
+			$classesPagination .= 'blocAvecFond ';
 		}
 		
 		if ($paginationArrondie)
 		{
-			$classesPagination = 'blocArrondi';
+			$classesPagination .= 'blocArrondi';
 		}
 	}
 	

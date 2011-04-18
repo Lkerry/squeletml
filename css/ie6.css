@@ -16,12 +16,6 @@ body.aucuneColonne #page {
 	width: expression( document.body.clientWidth > 750? "750px": "auto" );
 }
 
-#milieuInterieurContenu h2 { /* Paliatif à `> h2:first-child`. */
-	font-size: 1.9em;
-	margin-bottom: 30px;
-	border-bottom: none;
-}
-
 #infosPublication, div.infosPublicationApercu {
 	background: url('../fichiers/info.gif') #ebebeb no-repeat 10px center;
 }
@@ -49,11 +43,6 @@ li.actif {
 div.galerieNavigationSuivant {
 	float: none;
 	zoom: 1; /* Pour bien prendre en compte le `float: left` de la flèche de navigation précédente. */
-}
-
-.pagination .blocAvecFond {
-	zoom: 1; /* À cause d'un bogue avec la couleur d'arrière-plan. */
-	
 }
 
 /* Message pour IE6. */

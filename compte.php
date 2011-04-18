@@ -108,12 +108,12 @@ if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourriel
 	if (!empty($messagesScript))
 	{
 		$blocMessagesScript = '';
-		$blocMessagesScript .= '<div class="blocAvecFond blocArrondi blocMessagesScript">' . "\n";
+		$blocMessagesScript .= '<div class="bloc blocAvecFond blocArrondi">' . "\n";
 		
 		$blocMessagesScript .= "<ul>\n";
 		$blocMessagesScript .= $messagesScript;
 		$blocMessagesScript .= "</ul>\n";
-		$blocMessagesScript .= "</div><!-- /.blocMessagesScript -->\n";
+		$blocMessagesScript .= "</div><!-- /.bloc -->\n";
 		echo $blocMessagesScript;
 	}
 	
