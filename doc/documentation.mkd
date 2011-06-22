@@ -794,7 +794,7 @@ Il est possible d'imbriquer du code PHP dans un fichier ou une chaîne utilisant
 
 		<?php
 		$cheminMkdPhp = $racine . '/chemin/vers/ma-page.php.mkd';
-		eval(MDTXT_PHP);
+		eval(MKD_PHP);
 		?>
 
 	Ne pas oublier de modifier la valeur de la variable `$cheminMkdPhp` pour préciser le bon chemin vers le fichier Markdown.
@@ -814,7 +814,7 @@ Il est possible d'imbriquer du code PHP dans un fichier ou une chaîne utilisant
 			echo "- $i\n";
 		}
 		[/php]';
-		eval(MDTXT_PHP);
+		eval(MKD_PHP);
 		?>
 
 	Modifier la valeur de la variable `$chaineMkdPhp` pour correspondre au contenu voulu.
