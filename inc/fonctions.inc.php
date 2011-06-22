@@ -59,7 +59,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 			$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
-			$htaccessFilesModele = "(ChangeLog|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.ini|\.mdtxt|\.modele|\.sauv|\.text|\.txt)$";
+			$htaccessFilesModele = "(ChangeLog|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.ini|\.mkd|\.modele|\.sauv|\.text|\.txt)$";
 		
 			if ($serveurFreeFr)
 			{
@@ -740,7 +740,7 @@ function chapeau($contenuChapeau, $chapeauEnMarkdown = FALSE)
 	
 	if ($chapeauEnMarkdown)
 	{
-		$contenuChapeau = mdtxtChaine($contenuChapeau);
+		$contenuChapeau = mkdChaine($contenuChapeau);
 	}
 	
 	$chapeau .= $contenuChapeau;
@@ -3952,7 +3952,7 @@ function majLanguesActives($racine, $urlRacine, $langues, $initIncPhpFourni = ''
 /*
 Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
-function mdtxt($fichier)
+function mkd($fichier)
 {
 	return Markdown(@file_get_contents($fichier));
 }
@@ -3960,7 +3960,7 @@ function mdtxt($fichier)
 /*
 Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaîne convertie en HTML.
 */
-function mdtxtChaine($chaine)
+function mkdChaine($chaine)
 {
 	return Markdown($chaine);
 }

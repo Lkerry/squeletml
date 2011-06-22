@@ -25,7 +25,7 @@ if ($argv[1] == 'annexesDoc')
 	
 	phpGettext($racine, 'fr'); // Nécessaire à la traduction.
 	
-	$contenuDocAvecConfig = mdtxt($racine . '/doc/documentation.mdtxt');
+	$contenuDocAvecConfig = mkd($racine . '/doc/documentation.mkd');
 	$contenuDocAvecConfig .= annexesDocumentation($racineAdmin);
 	
 	file_put_contents($cheminFichierSauvegarde, $contenuDocAvecConfig);
@@ -35,9 +35,9 @@ if ($argv[1] == 'annexesDoc')
 ## ChangeLog vers Markdown.
 ##
 ########################################################################
-elseif ($argv[1] == 'changelogMdtxt')
+elseif ($argv[1] == 'changelogMkd')
 {
-	$cheminFichierSauvegarde = $argv[2] . '/ChangeLog.mdtxt';
+	$cheminFichierSauvegarde = $argv[2] . '/ChangeLog.mkd';
 	
 	$fichier = file_get_contents($racine . '/doc/ChangeLog');
 	$fichier = preg_replace('/^/m', "\t\t", $fichier);
@@ -97,7 +97,7 @@ elseif ($argv[1] == 'messageAccueil')
 {
 	include $racine . '/inc/php-markdown/markdown.php';
 	
-	if ($fic = fopen($racine . '/doc/LISEZ-MOI.mdtxt', 'r'))
+	if ($fic = fopen($racine . '/doc/LISEZ-MOI.mkd', 'r'))
 	{
 		$fichierLisezMoi = array ();
 		

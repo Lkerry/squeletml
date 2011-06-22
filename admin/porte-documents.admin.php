@@ -1006,7 +1006,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 		
 		if ($fichierAcreerType == 'FichierModeleMarkdown')
 		{
-			$fichierMarkdownAcreerNom = $fichierAcreerNom . '.mdtxt';
+			$fichierMarkdownAcreerNom = $fichierAcreerNom . '.mkd';
 		}
 		
 		if (file_exists($fichierAcreerNom))
@@ -1082,11 +1082,11 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 						
 							if ($adminPorteDocumentsDroits['editer'])
 							{
-								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mkd"), 3));
 							}
 							else
 							{
-								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mdtxt"), 3));
+								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mkd"), 3));
 							}
 						
 							$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
@@ -1316,7 +1316,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							}
 							elseif ($fichierAcreerType == 'FichierModeleMarkdown')
 							{
-								$contenu .= '<?php echo mdtxt("' . superBasename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
+								$contenu .= '<?php echo mkd("' . superBasename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
 							}
 							
 							$contenu .= "\n";
@@ -1331,7 +1331,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 						
 						if ($fichierAcreerType == 'FichierModeleMarkdown')
 						{
-							if ($fic = @fopen($cheminPage . '/' . "$page.mdtxt", 'a'))
+							if ($fic = @fopen($cheminPage . '/' . "$page.mkd", 'a'))
 							{
 								$contenu = '';
 								
@@ -1347,7 +1347,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 							}
 							else
 							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec syntaxe Markdown dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . "$page.mdtxt" . '</code>') . "</li>\n";
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec syntaxe Markdown dans le fichier %1\$s impossible."), '<code>' . $cheminPage . '/' . "$page.mkd" . '</code>') . "</li>\n";
 							}
 						}
 					}

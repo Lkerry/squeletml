@@ -94,7 +94,7 @@ Visitez la [galerie de captures d'écran de Squeletml](http://www.squeletml.net/
 
 ## Documentation
 
-Voir le fichier `doc/documentation.mdtxt` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.squeletml.net/documentation.php).
+Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.squeletml.net/documentation.php).
 
 ## Problèmes ou suggestions
 
@@ -105,7 +105,7 @@ N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolt
 ## Licence
 
 Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
-Copyright © Jean-Philippe Fleury
+Copyright © Jean-Philippe Fleury, 2008-2011.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 modifier suivant les termes de la GNU Affero General Public License telle que

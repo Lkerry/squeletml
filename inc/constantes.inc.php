@@ -9,30 +9,30 @@ define('LANGUE', langue($langue, $langueParDefaut));
 
 // Le code de la constante `MDTXT_PHP` est utilisé pour évaluer du code PHP imbriqué dans du Markdown (voir la section «Syntaxe Markdown avec imbrication de code PHP» dans la documentation). La raison pour laquelle une fonction n'a pas été utilisée est de pouvoir profiter de la même portée pour les variables que celle dans le corps d'une page de Squeletml sans devoir passer par des variables globales.
 define('MDTXT_PHP', <<<CODE
-	if (!isset(\$chaineMdtxtPhp) && isset(\$cheminMdtxtPhp))
+	if (!isset(\$chaineMkdPhp) && isset(\$cheminMkdPhp))
 	{
-		\$chaineMdtxtPhp = @file_get_contents(\$cheminMdtxtPhp);
+		\$chaineMkdPhp = @file_get_contents(\$cheminMkdPhp);
 	}
 	
-	if (isset(\$chaineMdtxtPhp) && \$chaineMdtxtPhp !== FALSE)
+	if (isset(\$chaineMkdPhp) && \$chaineMkdPhp !== FALSE)
 	{
-		if (preg_match_all('/\[php\](.+?)\[\/php\]/s', \$chaineMdtxtPhp, \$resultatMdtxtPhp))
+		if (preg_match_all('/\[php\](.+?)\[\/php\]/s', \$chaineMkdPhp, \$resultatMkdPhp))
 		{
-			\$iMdtxtPhp = 0;
+			\$iMkdPhp = 0;
 			
-			foreach (\$resultatMdtxtPhp[1] as \$phpAevaluerMdtxtPhp)
+			foreach (\$resultatMkdPhp[1] as \$phpAevaluerMkdPhp)
 			{
 				ob_start();
-				eval(\$phpAevaluerMdtxtPhp);
-				\$phpEvalueMdtxtPhp = ob_get_contents();
+				eval(\$phpAevaluerMkdPhp);
+				\$phpEvalueMkdPhp = ob_get_contents();
 				ob_end_clean();
 				
-				\$chaineMdtxtPhp = str_replace(\$resultatMdtxtPhp[0][\$iMdtxtPhp], \$phpEvalueMdtxtPhp, \$chaineMdtxtPhp);
-				\$iMdtxtPhp++;
+				\$chaineMkdPhp = str_replace(\$resultatMkdPhp[0][\$iMkdPhp], \$phpEvalueMkdPhp, \$chaineMkdPhp);
+				\$iMkdPhp++;
 			}
 		}
 		
-		echo mdtxtChaine(\$chaineMdtxtPhp);
+		echo mkdChaine(\$chaineMkdPhp);
 	}
 CODE
 );

@@ -60,20 +60,20 @@ changelog:
 	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(version) > doc/ChangeLog
 
 changelogHtml: changelog
-	php scripts/scripts.cli.php changelogMdtxt doc
+	php scripts/scripts.cli.php changelogMkd doc
 	# PHP Markdown n'est pas utilisé, car il y a un bogue avec la conversion de longues listes (le contenu retourné est vide).
-	python scripts/python-markdown2/lib/markdown2.py doc/ChangeLog.mdtxt > doc/ChangeLog.html
-	rm doc/ChangeLog.mdtxt
+	python scripts/python-markdown2/lib/markdown2.py doc/ChangeLog.mkd > doc/ChangeLog.html
+	rm doc/ChangeLog.mkd
 
 exif:
 	mkdir -p $(cheminNautilusScripts)
 	cp src/exiftran-rotation/exiftran-rotation $(cheminNautilusScripts)
 
 fichiersSurBureau: annexesDoc archives changelogHtml
-	cp doc/INCOMPATIBILITES.mdtxt $(cheminBureau)
+	cp doc/INCOMPATIBILITES.mkd $(cheminBureau)
 	cp doc/ChangeLog $(cheminBureau)
 	cp doc/version.txt $(cheminBureau)
-	python scripts/python-markdown2/lib/markdown2.py doc/LISEZ-MOI.mdtxt > $(cheminBureau)/LISEZ-MOI.html
+	python scripts/python-markdown2/lib/markdown2.py doc/LISEZ-MOI.mkd > $(cheminBureau)/LISEZ-MOI.html
 	mv doc/ChangeLog.html $(cheminBureau)
 	mv doc/documentation-avec-config.html $(cheminBureau)
 	mv squeletml.tar.bz2 $(cheminBureau)
@@ -92,19 +92,19 @@ messageAccueil:
 	php scripts/scripts.cli.php messageAccueil
 
 mo:
-	for po in $(shell find locale/ -iname *.po);\
+	for po in $(shell find locale/ -name *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 
 moArchives:
-	for po in $(shell find $(dossierPub)/locale/ -iname *.po);\
+	for po in $(shell find $(dossierPub)/locale/ -name *.po);\
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
 
 po: pot poFr
-	for po in $(shell find ./ -iname *.po);\
+	for po in $(shell find ./ -name *.po);\
 	do\
 		msgmerge -o tempo $$po locale/squeletml.pot;\
 		rm $$po;\
@@ -117,9 +117,9 @@ poFr:
 	rm -f locale/fr_CA/LC_MESSAGES/tempo.po
 
 pot: menagePot
-	find ./ -iname "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
+	find ./ -name "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
 	# `xgettext` n'offre pas le Javascript dans les langages à parser, donc on déclare les fichiers `.js` comme étant du Perl.
-	find ./ -iname "squeletml.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \;
+	find ./ -name "squeletml.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \;
 
 push:
 	bzr push lp:~jpfle/+junk/squeletml

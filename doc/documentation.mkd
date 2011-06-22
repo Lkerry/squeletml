@@ -524,9 +524,9 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 - `xhtml/fr/page.contact.inc.php`
 - `xhtml/fr/page.galerie.inc.php`
 - `xhtml/fr/page.index.inc.php`
-- `doc/documentation.mdtxt`
-- `doc/INCOMPATIBILITES.mdtxt`
-- `doc/LISEZ-MOI.mdtxt`
+- `doc/documentation.mkd`
+- `doc/INCOMPATIBILITES.mkd`
+- `doc/LISEZ-MOI.mkd`
 - `maintenance.php`
 
 ## Mise à jour de Squeletml
@@ -722,38 +722,38 @@ Il est possible d'utiliser la syntaxe Markdown Extra:
 
 Pour ce faire, deux fonctions sont mises à disposition:
 
-- `mdtxt()`, permettant de convertir en HTML un fichier écrit en Markdown;
-- `mdtxtChaine()`, permettant de convertir en HTML une chaîne de caractères écrite en Markdown.
+- `mkd()`, permettant de convertir en HTML un fichier écrit en Markdown;
+- `mkdChaine()`, permettant de convertir en HTML une chaîne de caractères écrite en Markdown.
 
-##### Fonction `mdtxt()`
+##### Fonction `mkd()`
 
 Écrire le contenu en Markdown dans un fichier. Ensuite, faire appel à cette fonction dans la page du site. Exemple:
 
-1. Création du fichier Markdown, par exemple `ma-page.php.mdtxt`.
+1. Création du fichier Markdown, par exemple `ma-page.php.mkd`.
 
-2. Création de la page PHP, par exemple `ma-page.php`, comme n'importe quelle autre page du site. On suppose dans cet exemple que le fichier `ma-page.php.mdtxt` et la page `ma-page.php` sont dans le même dossier (ce n'est pas obligatoire).
+2. Création de la page PHP, par exemple `ma-page.php`, comme n'importe quelle autre page du site. On suppose dans cet exemple que le fichier `ma-page.php.mkd` et la page `ma-page.php` sont dans le même dossier (ce n'est pas obligatoire).
 
 3. À l'intérieur de `ma-page.php`, à l'endroit où on insère habituellement le contenu, faire appel à la fonction suivante:
 
-		<?php echo mdtxt('ma-page.php.mdtxt'); ?>
+		<?php echo mkd('ma-page.php.mkd'); ?>
 
 **Note: si la page a été créée dans le porte-documents de la section d'administration avec le type «Fichier modèle HTML de page web avec syntaxe Markdown», tout ceci est effectué automatiquement.**
 
-##### Fonction `mdtxtChaine()`
+##### Fonction `mkdChaine()`
 
-On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxtChaine()`. Exemple:
+On peut passer directement une chaîne écrite en Markdown à la fonction `mkdChaine()`. Exemple:
 
 1. Création d'une page pour le site, par exemple `une-page.php`.
 
 2. À l'endoit où on insère habituellement le contenu, utiliser la fonction suivante:
 
-		<?php echo mdtxtChaine("Du texte écrit en *Markdown*."); ?>
+		<?php echo mkdChaine("Du texte écrit en *Markdown*."); ?>
 
 	Même exemple, mais avec une variable:
 
 		<?php
 		$chaine = "Du texte écrit en *Markdown*.";
-		echo mdtxtChaine($chaine);
+		echo mkdChaine($chaine);
 		?>
 
 	Autre exemple avec une variable dont le contenu est plus long:
@@ -770,7 +770,7 @@ On peut passer directement une chaîne écrite en Markdown à la fonction `mdtxt
 		Paragraphe.
 		TEXTE;
 		
-		echo mdtxtChaine($chaine);
+		echo mkdChaine($chaine);
 		?>
 
 ##### Syntaxe Markdown avec imbrication de code PHP
@@ -779,7 +779,7 @@ Il est possible d'imbriquer du code PHP dans un fichier ou une chaîne utilisant
 
 **Pour insérer du PHP dans un fichier écrit en Markdown:**
 
-1. Créer un fichier Markdown, par exemple `ma-page.php.mdtxt`, et y insérer du code PHP entre les balises `[php]` et `[/php]`. Exemple:
+1. Créer un fichier Markdown, par exemple `ma-page.php.mkd`, et y insérer du code PHP entre les balises `[php]` et `[/php]`. Exemple:
 
 		Les **licences présentées dans cet article** sont les suivantes:
 		
@@ -793,11 +793,11 @@ Il est possible d'imbriquer du code PHP dans un fichier ou une chaîne utilisant
 3. À l'intérieur de `ma-page.php`, à l'endroit où on insère habituellement le contenu, insérer le code suivant:
 
 		<?php
-		$cheminMdtxtPhp = $racine . '/chemin/vers/ma-page.php.mdtxt';
+		$cheminMkdPhp = $racine . '/chemin/vers/ma-page.php.mkd';
 		eval(MDTXT_PHP);
 		?>
 
-	Ne pas oublier de modifier la valeur de la variable `$cheminMdtxtPhp` pour préciser le bon chemin vers le fichier Markdown.
+	Ne pas oublier de modifier la valeur de la variable `$cheminMkdPhp` pour préciser le bon chemin vers le fichier Markdown.
 
 **Maintenant, pour insérer du PHP dans une chaîne écrite en Markdown:**
 
@@ -806,7 +806,7 @@ Il est possible d'imbriquer du code PHP dans un fichier ou une chaîne utilisant
 2. À l'endoit où on insère habituellement le contenu, insérer le code suivant:
 
 		<?php
-		$chaineMdtxtPhp = 'Voici une liste de **1 à 5**:
+		$chaineMkdPhp = 'Voici une liste de **1 à 5**:
 		
 		[php]
 		for ($i = 1; $i <= 5; $i++)
@@ -817,9 +817,9 @@ Il est possible d'imbriquer du code PHP dans un fichier ou une chaîne utilisant
 		eval(MDTXT_PHP);
 		?>
 
-	Modifier la valeur de la variable `$chaineMdtxtPhp` pour correspondre au contenu voulu.
+	Modifier la valeur de la variable `$chaineMkdPhp` pour correspondre au contenu voulu.
 
-**Note: si les variables `$chaineMdtxtPhp` et `$cheminMdtxtPhp` existent toutes les deux, la variable `$chaineMdtxtPhp` a préséance.**
+**Note: si les variables `$chaineMkdPhp` et `$cheminMkdPhp` existent toutes les deux, la variable `$chaineMkdPhp` a préséance.**
 
 #### Fonctions diverses
 
