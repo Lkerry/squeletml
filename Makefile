@@ -106,6 +106,9 @@ pot: menagePot
 	# `xgettext` n'offre pas le Javascript dans les langages à parser, donc on déclare les fichiers `.js` comme étant du Perl.
 	find ./ -name "squeletml.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \;
 
+push:
+	git push origin --tags :
+
 versionTxt:
 	echo $(version) > doc/version.txt
 
