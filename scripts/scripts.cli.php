@@ -32,31 +32,6 @@ if ($argv[1] == 'annexesDoc')
 }
 ########################################################################
 ##
-## ChangeLog vers Markdown.
-##
-########################################################################
-elseif ($argv[1] == 'changelogMkd')
-{
-	$cheminFichierSauvegarde = $argv[2] . '/ChangeLog.mkd';
-	
-	$fichier = file_get_contents($racine . '/doc/ChangeLog');
-	$fichier = preg_replace('/^/m', "\t\t", $fichier);
-	$fichier = preg_replace('/^\t\t=== ([^=]+) ===$/m', '- $1' . "\n", $fichier);
-	$fichier = preg_replace('/^\t\t([0-9]{4}(-[0-9]{2}){2})  /m', "\t" . '- $1&nbsp;&nbsp;', $fichier);
-	$fichier = preg_replace('/^\t\t\t\* (.+)$/em', "\"\t\t- \" . str_replace('_', '\_', '\$1')", $fichier);
-	$fichier = preg_replace('/,\n\t\t- (?! )/m', ",  \n\t\t", $fichier);
-	$fichier = preg_replace('/\.\n\t\t- (?! )/m', ".\n\n\t\t- ", $fichier);
-	$fichier = preg_replace('/^\t$/m', '', $fichier);
-	$fichier = preg_replace('/^(\t\t.+: \[[0-9]+\]) /m', '$1' . "\n\n\t\t\t", $fichier);
-	// Supprime l'adresse courriel (optionnel).
-	$fichier = preg_replace('/^(\t- [0-9]{4}(-[0-9]{2}){2}[^<]+) <[^@]+@[^>]+>/m', '$1', $fichier);
-	
-	$fic = fopen($cheminFichierSauvegarde, 'w');
-	fwrite($fic, $fichier);
-	fclose($fic);
-}
-########################################################################
-##
 ## Modèles de fichiers de configuration (du site et de l'administration) personnalisés.
 ##
 ########################################################################

@@ -8,7 +8,7 @@
 cheminBureau:=$(shell xdg-user-dir DESKTOP)
 
 # Chemin vers le dossier local de définition des languages pour GtkSourceView.
-cheminLanguageSpecs=~/.local/share/gtksourceview-2.0/language-specs
+cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
 
 # Chemin vers le dossier local de scripts pour Nautilus.
 cheminNautilusScripts=~/.gnome2/nautilus-scripts
@@ -17,7 +17,7 @@ cheminNautilusScripts=~/.gnome2/nautilus-scripts
 dossierPub=squeletml
 
 # Récupère la dernière version, représentée par la dernière étiquette.
-version:=$(shell bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1)
+version:=$(shell git describe)
 
 ########################################################################
 ##
@@ -28,7 +28,7 @@ version:=$(shell bzr tags | sort -k2n,2n | tail -n 1 | cut -d ' ' -f 1)
 # Met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. À faire par exemple avant la dernière révision d'une prochaine version.
 generer: messageAccueil po mo
 
-# Crée les archives; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. À faire après un `bzr tag ...` pour la sortie d'une nouvelle version.
+# Crée les archives; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. À faire après un `git tag -a ...` pour la sortie d'une nouvelle version.
 publier: fichiersSurBureau
 
 ########################################################################
@@ -40,9 +40,8 @@ publier: fichiersSurBureau
 annexesDoc:
 	php scripts/scripts.cli.php annexesDoc doc
 
-archives: changelog versionTxt
+archives: versionTxt
 	bzr export -r tag:$(version) $(dossierPub)
-	cp doc/ChangeLog $(dossierPub)/doc
 	cp doc/version.txt $(dossierPub)/doc
 	php scripts/scripts.cli.php config $(dossierPub)
 	php scripts/scripts.cli.php css $(dossierPub)
@@ -55,26 +54,14 @@ archives: changelog versionTxt
 	zip -qr squeletml.zip $(dossierPub)
 	rm -rf $(dossierPub)
 
-changelog:
-	# Est basé sur <http://telecom.inescporto.pt/~gjc/gnulog.py>. Ne pas oublier de mettre ce fichier dans le dossier des extensions de bazaar, par exemple `~/.bazaar/plugins/`.
-	BZR_GNULOG_SPLIT_ON_BLANK_LINES=0 bzr log -v --log-format 'gnu' -r1..tag:$(version) > doc/ChangeLog
-
-changelogHtml: changelog
-	php scripts/scripts.cli.php changelogMkd doc
-	# PHP Markdown n'est pas utilisé, car il y a un bogue avec la conversion de longues listes (le contenu retourné est vide).
-	python scripts/python-markdown2/lib/markdown2.py doc/ChangeLog.mkd > doc/ChangeLog.html
-	rm doc/ChangeLog.mkd
-
 exif:
 	mkdir -p $(cheminNautilusScripts)
 	cp src/exiftran-rotation/exiftran-rotation $(cheminNautilusScripts)
 
-fichiersSurBureau: annexesDoc archives changelogHtml
+fichiersSurBureau: annexesDoc archives
 	cp doc/INCOMPATIBILITES.mkd $(cheminBureau)
-	cp doc/ChangeLog $(cheminBureau)
 	cp doc/version.txt $(cheminBureau)
 	python scripts/python-markdown2/lib/markdown2.py doc/LISEZ-MOI.mkd > $(cheminBureau)/LISEZ-MOI.html
-	mv doc/ChangeLog.html $(cheminBureau)
 	mv doc/documentation-avec-config.html $(cheminBureau)
 	mv squeletml.tar.bz2 $(cheminBureau)
 	mv squeletml.zip $(cheminBureau)
@@ -120,9 +107,6 @@ pot: menagePot
 	find ./ -name "*.php" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L PHP {} \;
 	# `xgettext` n'offre pas le Javascript dans les langages à parser, donc on déclare les fichiers `.js` comme étant du Perl.
 	find ./ -name "squeletml.js" -exec xgettext -j -o locale/squeletml.pot --from-code=UTF-8 -kT_ngettext:1,2 -kT_ -L Perl {} \;
-
-push:
-	bzr push lp:~jpfle/+junk/squeletml
 
 versionTxt:
 	echo $(version) > doc/version.txt

@@ -1418,13 +1418,9 @@ Ces trois fichiers se trouvent à la racine du site. Les fichiers Sitemap du sit
 
 ## Développement
 
-Le [logiciel Bazaar](http://bazaar-vcs.org/PageD%27Accueil) est utilisé pour le versionnage des fichiers.
-
 ### Téléchargement de la version de développement
 
-Pour récupérer la version de développement, simplement saisir cette commande dans une console:
-
-	bzr branch lp:~jpfle/+junk/squeletml
+Le logiciel [Git](http://git-scm.com/) est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](http://jpfleury.indefero.net/p/squeletml/source/tree/master/)
 
 ### Fichier `Makefile`
 
@@ -1432,7 +1428,7 @@ Les principales commandes du fichier `Makefile` sont:
 
 - `make generer`: met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. Est utilisée en général avant la dernière révision d'une prochaine version.
 
-- `make publier`: crée les archives; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. Est utilisée après un `bzr tag ...` pour la sortie d'une nouvelle version.
+- `make publier`: crée les archives; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. Est utilisée après un `git tag -a ...` pour la sortie d'une nouvelle version.
 
 	Par défaut, la dernière version (représentée par la dernière étiquette) est utilisée par cette commande. Pour publier une version différente, préciser la variable `version` dans la ligne de commande. Exemple:
 

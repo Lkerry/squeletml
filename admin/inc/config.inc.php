@@ -174,7 +174,7 @@ $adminTypeFiltreAccesDossiers = 'dossiersExclus';
 - Exemple:
   $adminFiltreAccesDossiers = '../rep|../rep2|../rep3/sous-rep4';
 */
-$adminFiltreAccesDossiers = '../.bzr';
+$adminFiltreAccesDossiers = '../.git';
 
 /* ____________________ Liste des dossiers. ____________________ */
 

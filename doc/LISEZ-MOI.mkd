@@ -96,11 +96,14 @@ Visitez la [galerie de captures d'écran de Squeletml](http://www.squeletml.net/
 
 Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou bien visiter la [documentation en ligne](http://www.squeletml.net/documentation.php).
 
-## Problèmes ou suggestions
+## Développement
 
-Pour faire part d'un problème d'utilisation avec Squeletml, proposer une fonctionnalité ou poser une question, vous pouvez envoyer un [message à partir du formulaire de contact](http://www.squeletml.net/contact.php).
+Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
 
-N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`. (S'il y a lieu, modifier le nom du dossier d'administration.)
+Squeletml dispose également d'un [système de suivi], sur lequel les rapports de bogues et les suggestions peuvent être soumis. N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`. (S'il y a lieu, modifier le nom du dossier d'administration.)
+
+[git]: http://jpfleury.indefero.net/p/squeletml/source/tree/master/
+[système de suivi]: http://jpfleury.indefero.net/p/squeletml/issues/
 
 ## Licence
 
