@@ -41,15 +41,13 @@ annexesDoc:
 	php scripts/scripts.cli.php annexesDoc doc
 
 archives: versionTxt
-	git checkout $(version) && git checkout-index --prefix=$(dossierPub)/ -a && git checkout master
+	git archive $(version) --format=tar --prefix=$(dossierPub)/ --output $(dossierPub).tar
+	tar -xf $(dossierPub).tar
+	rm $(dossierPub).tar
 	cp doc/version.txt $(dossierPub)/doc
 	php scripts/scripts.cli.php config $(dossierPub)
 	php scripts/scripts.cli.php css $(dossierPub)
 	$(MAKE) moArchives
-	rm -f $(dossierPub)/inc/devel.inc.php
-	rm -f $(dossierPub)/Makefile
-	rm -rf $(dossierPub)/scripts
-	rm -rf $(dossierPub)/src
 	tar -cjf squeletml.tar.bz2 $(dossierPub)
 	zip -qr squeletml.zip $(dossierPub)
 	rm -rf $(dossierPub)
