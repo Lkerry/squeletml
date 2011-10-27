@@ -41,7 +41,7 @@ annexesDoc:
 	php scripts/scripts.cli.php annexesDoc doc
 
 archives: versionTxt
-	bzr export -r tag:$(version) $(dossierPub)
+	git checkout $(version) && git checkout-index --prefix=$(dossierPub)/ -a && git checkout master
 	cp doc/version.txt $(dossierPub)/doc
 	php scripts/scripts.cli.php config $(dossierPub)
 	php scripts/scripts.cli.php css $(dossierPub)
