@@ -2,7 +2,6 @@
 doc/version.txt
 .htaccess
 init.inc.php
-*.mo
 robots.txt
 site/admin/cache/
 site/cache/
