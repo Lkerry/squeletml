@@ -27,8 +27,11 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 - Fichier de configuration offrant une syntaxe simple pour:
 
   - insérer des fichiers CSS ou Javascipt dans l'en-tête de certaines pages en particulier, ou bien pour toutes les pages du site;
+  
   - fusionner les feuilles de style dans un seul fichier, tout comme les scripts Javascript, permettant ainsi de réduire le nombre de requêtes HTTP lors de la visite d'une page;
+  
   - choisir diverses structures et styles possibles pour le site: nombre de colonnes et arrière-plan, position des blocs de contenu (comme les menus) dans le flux HTML (et par conséquent leur ordre dans les colonnes), présence ou non de certaines structures comme le bas de page, ajout de blocs de contenu personnalisés, blocs avec couleur de fond et coins arrondis, activation de boîtes déroulantes sur les contenus spécifiés (affichant ou masquant le corps du contenu par simple clic sur le titre, et enregistrant la préférence de l'internaute), etc.;
+  
   - configurer finement les galeries et les formulaires de contact.
 
 - Création aisée d'une page: seulement deux fichiers PHP à inclure pour chaque page, un au début et un à la fin, et toujours les deux mêmes fichiers, peu importe la langue ou le type de la page (texte, galerie, catégorie, formulaire de contact, etc.).
@@ -50,26 +53,43 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 - Syndication de contenu (flux RSS):
 
   - Par défaut, un flux RSS pour chaque catégorie et chaque galerie, et un flux RSS global activable contenant les dernières images de toutes les galeries.
+  
   - Un flux RSS global activable pour chaque langue du site.
 
 - Galeries photo:
 
   - Nombre illimité de galeries.
+  
   - Formats d'image PNG, JPG ou GIF.
+  
   - Pagination configurable des vignettes constituant l'accueil de la galerie.
+  
   - Choix de la navigation (et de son emplacement) entre chaque image d'une galerie:
+  
     - avec une fenêtre Javascript permettant de naviguer d'une image à une autre sans rechargement de page, ou
+    
     - avec des flèches, ou
+    
     - avec les vignettes des images précédente et suivante (possibilité de tatouer ou d'accompagner les vignettes de miniflèches), ou
+    
     - à l'aide d'un aperçu de toutes les images de la galerie grâce à des minivignettes.
+    
   - Information personnalisable pour chaque image (légende, attributs de la balise `img`, en-tête HTML, etc.), ou génération automatique, évitant ainsi le contenu dupliqué d'une manière ou d'une autre.
+  
   - Syntaxe Markdown Extra en option pour les légendes.
+  
   - Affichage par défaut des données Exif des images au format JPG.
+  
   - Choix de l'emplacement de la légende et des données Exif (au-dessus ou au-dessous de l'image, ou dans une colonne du site).
+  
   - Réordonnement d'une image dans une galerie sans modification de l'URL de cette image.
+  
   - Génération automatique des vignettes ou utilisation de vignettes personnalisées.
+  
   - Script offert pour redimensionner automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
+  
   - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
+  
   - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette).
 
 - Activation par défaut d'un message pour les internautes utilisant Internet Explorer 6, les invitant à télécharger Firefox. Squeletml fonctionne avec Internet Explorer 6, mais il est clairement optimisé pour les navigateurs modernes (testé sur plusieurs navigateurs).
@@ -83,9 +103,13 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par FTP:
 
   - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor) ou coloration syntaxique du code en direct à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie), ajout, téléchargement...
+  
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration; mise en maintenance du site; suppression du cache; lancement du cron; sauvegarde du site.
+  
   - Gestion des galeries: listage de toutes les galeries existantes, création et mise à jour du fichier de configuration pour chaque galerie, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
+  
   - Gestion des catégories, des flux RSS globaux et des fichiers Sitemap.
+  
   - Documentation: consultation de l'aide directement en local.
 
 ## Captures d'écran
@@ -133,10 +157,12 @@ avec ce programme; si ce n'est pas le cas, consultez
 - **Bannières**: les bannières de 80px × 15px de Squeletml et des licences utilisent la police de caractères [Picopixel](http://www.dafont.com/FR/micropixel.font) de Sebastian Weber. Sur le site de Dafont, la licence est précisée ainsi: «Domaine public / GNU GPL». J'ai écrit à l'auteur pour obtenir des précisions, sans réponse pour l'instant. Les bannières des licences Copyleft utilisent également une image de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Image:Copyleft.svg?uselang=fr) dans le domaine public. La bannière du domaine public utilise également une image de [Wikimedia Commons](http://fr.wikipedia.org/wiki/Fichier:PD-icon.svg) dans le domaine public.
 
 - **Images utilisées dans les galeries**:
-  - les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/);
-  - la petite icône proposant la navigation sans fenêtre Javascript provient du [module QuickJava pour Firefox](https://addons.mozilla.org/fr/firefox/addon/1237), sous licence Mozilla Public License version 1.1;
-  - la petite icône offrant un lien vers le format original d'une image provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
+  - les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/);
+  
+  - la petite icône proposant la navigation sans fenêtre Javascript provient du [module QuickJava pour Firefox](https://addons.mozilla.org/fr/firefox/addon/1237), sous licence Mozilla Public License version 1.1;
+  
+  - la petite icône offrant un lien vers le format original d'une image provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
 - **Icône utilisée dans le lien de déconnexion**: cette icône provient du [thème d'icônes Gnome](http://packages.ubuntu.com/jaunty/gnome-icon-theme), sous licence GPL.
 
