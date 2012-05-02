@@ -132,7 +132,7 @@ Squeletml dispose également d'un [système de suivi], sur lequel les rapports d
 ## Licence
 
 Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
-Copyright © Jean-Philippe Fleury, 2008-2011.
+Copyright © Jean-Philippe Fleury, 2008-2012.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 modifier suivant les termes de la GNU Affero General Public License telle que
@@ -148,7 +148,7 @@ Vous devriez avoir reçu une copie de la Licence publique générale GNU Affero
 avec ce programme; si ce n'est pas le cas, consultez
 <http://www.gnu.org/licenses/>.
 
-### Matériel tierce
+### Matériel tiers
 
 #### Visuel
 
