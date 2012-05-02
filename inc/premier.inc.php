@@ -350,7 +350,7 @@ for ($i = 0; $i < $profondeur; $i++)
 $cheminPie .= 'inc/PIE/PIE.php';
 
 $cssDirectlteIE8 = '';
-$cssDirectlteIE8 .= "body.tableDesMatieresArrondie #tableDesMatieres, .blocArrondi {\n";
+$cssDirectlteIE8 .= "body.tableDesMatieresArrondie #tableDesMatieres, .blocArrondi, .blocAvecFond {\n";
 $cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
 $cssDirectlteIE8 .= "}\n";
 

@@ -1,3 +1,9 @@
+.blocAvecFond {
+	position: relative;
+}
+
+/* */
+
 body.colonneAgaucheAvecRayures #page {
 	background: url('../fichiers/rayures-204px.png') white repeat-y 0% top !important;
 }

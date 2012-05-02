@@ -564,6 +564,7 @@ li.parent {
 .blocAvecFond {
 	padding: 10px;
 	background-color: #ebebeb;
+	background-image: linear-gradient(-45deg, #f0f0f0, #ebebeb); /* CSS 3. */
 	background-image: -moz-linear-gradient(-45deg, #f0f0f0, #ebebeb); /* Gecko. */
 	background-image: -o-linear-gradient(-45deg, #f0f0f0, #ebebeb); /* Presto. */
 	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f0f0f0), color-stop(1, #ebebeb)); /* Webkit. */
