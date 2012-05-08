@@ -1444,9 +1444,11 @@ Les principales commandes du fichier `Makefile` sont:
 
 	La désinstallation de la coloration se fait grâce à la commande `make menage-ini`.
 
-- `make exif`: installe pour l'utilisateur courant un script Nautilus (sous GNU/Linux et Gnome) qui tente d'effectuer la rotation automatique d'images JPG. `exiftran` doit être installé. La rotation automatique est sans perte de qualité et est basée sur l'orientation déclarée dans les données Exif de l'image, si cette information existe. Pour utiliser le script, sélectionner les images JPG dans Nautilus, cliquer droit, aller dans *Scripts* et choisir `exiftran-rotation`.
+### Dossier `scripts`
 
-	Cette fonctionnalité est accessible directement en ligne dans la section d'administration de Squeletml lors de l'ajout d'images dans une galerie si `exiftran` est accessible sur le serveur ou si `jpegtran` est accessible et que la fonction PHP `exif_read_data()` existe. L'intérêt du script Nautilus `exiftran` est quand le serveur sur lequel le site Squeletml est installé ne possède pas cette configuration.
+- `exiftran-rotation`: ce dossier contient un script du même nom qui tente d'effectuer la rotation automatique d'images JPG. Le paquet `exiftran` doit être installé. La rotation automatique est sans perte de qualité et est basée sur l'orientation déclarée dans les données Exif de l'image, si cette information existe. Pour utiliser le script, fournir en argument les images JPG à analyser, par exemple:
 
-	La désinstallation du script se fait grâce à la commande `make menage-exif`.
+		./exiftran-rotation /chemin/vers/image/1.jpg /chemin/vers/image/2.jpg /chemin/vers/image/3.jpg
+
+	Cette fonctionnalité est accessible directement en ligne dans la section d'administration de Squeletml lors de l'ajout d'images dans une galerie si `exiftran` est accessible sur le serveur ou si `jpegtran` est accessible et que la fonction PHP `exif_read_data()` existe. L'intérêt du script `exiftran-rotation` est quand le serveur sur lequel le site Squeletml est installé ne possède pas cette configuration.
 

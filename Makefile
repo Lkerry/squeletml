@@ -10,9 +10,6 @@ cheminBureau:=$(shell xdg-user-dir DESKTOP)
 # Chemin vers le dossier local de définition des languages pour GtkSourceView.
 cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
 
-# Chemin vers le dossier local de scripts pour Nautilus.
-cheminNautilusScripts=~/.gnome2/nautilus-scripts
-
 # Dossier de publication.
 dossierPub=squeletml
 
@@ -50,10 +47,6 @@ archives: versionTxt
 	tar -cjf squeletml.tar.bz2 $(dossierPub)
 	zip -qr squeletml.zip $(dossierPub)
 	rm -rf $(dossierPub)
-
-exif:
-	mkdir -p $(cheminNautilusScripts)
-	cp src/exiftran-rotation/exiftran-rotation $(cheminNautilusScripts)
 
 fichiersSurBureau: annexesDoc archives
 	cp doc/INCOMPATIBILITES.mkd $(cheminBureau)

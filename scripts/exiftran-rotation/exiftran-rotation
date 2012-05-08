@@ -3,7 +3,7 @@
 # exiftran-rotation: si possible, effectue une rotation automatique et sans perte de qualité d'une image JPG. La rotation à effectuer est trouvée à partir de l'orientation déclarée dans les données Exif, si cette information existe.
 
 # Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
-# Copyright © Jean-Philippe Fleury, 2010.
+# Copyright © Jean-Philippe Fleury, 2010, 2012.
 
 # Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 # modifier suivant les termes de la GNU General Public License telle que
@@ -19,21 +19,22 @@
 # ce programme; si ce n'est pas le cas, consultez
 # <http://www.gnu.org/licenses/>.
 
-# Merci à <http://stackoverflow.com/questions/592620/check-if-a-program-exists-from-a-bash-script/677212#677212>.
-type -P exiftran &>/dev/null || { zenity --error --text="exiftran n'est pas installé. Fin du script." >&2; exit 1; }
+if ! type -p exiftran > /dev/null; then
+	echo "exiftran n'est pas installé. Fin du script." >&2
+	
+	exit 1
+fi
 
-printf %s "$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS" |
-(
-	messagesScript=''
+messages=
+
+for image in "$@"; do
+	typeMime=$(file --mime-type "$image" | rev | cut -d ' ' -f1 | rev)
 	
-	while read -r image; do
-		typeMime=$(file --mime-type "$image" | rev | cut -d ' ' -f1 | rev)
-		
-		if [ $typeMime == 'image/jpeg' ]; then
-			exiftran -aip "$image"
-			messagesScript="$messagesScript$image\n"
-		fi
-	done
-	
-	zenity --info --text="Rotation automatique terminée:\n\n$messagesScript"
-)
+	if [[ $typeMime == image/jpeg ]]; then
+		exiftran -aip "$image"
+		messages+="$image\n"
+	fi
+done
+
+echo "Rotation automatique terminée:\n\n$messages"
+
