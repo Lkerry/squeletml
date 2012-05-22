@@ -46,15 +46,17 @@ else
 		<h2><?php echo $titreApercu; ?></h2>
 		
 		<?php
-		$version = @file_get_contents('../doc/version.txt');
+		$contenuFichierVersionTxt = @file_get_contents('../doc/version.txt');
 		
-		if ($version !== FALSE)
+		if ($contenuFichierVersionTxt !== FALSE)
 		{
-			$version = explode('-', $version);
-			
-			if (isset($version[1]))
+			if (preg_match('/^(.+) \(\d{4}(-\d{2}){2}\)$/', $contenuFichierVersionTxt, $resultat))
 			{
-				$version = trim($version[1]);
+				$version = $resultat[1];
+			}
+			elseif (preg_match('/^.+\+$/', $contenuFichierVersionTxt, $resultat))
+			{
+				$version = $resultat[0];
 			}
 			else
 			{

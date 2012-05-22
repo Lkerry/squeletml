@@ -4,8 +4,17 @@ $baliseTitle = T_("Version de Squeletml et autres informations");
 include $racineAdmin . '/inc/premier.inc.php';
 
 $contenuLiVersion = '';
-$versionActuelleSqueletml = @file_get_contents($racine . '/doc/version.txt');
-$versionActuelleSqueletml = trim($versionActuelleSqueletml);
+$versionActuelleSqueletml = '';
+$contenuFichierVersionTxt = @file_get_contents($racine . '/doc/version.txt');
+
+if (preg_match('/^(.+) \(\d{4}(-\d{2}){2}\)$/', $contenuFichierVersionTxt, $resultat))
+{
+	$versionActuelleSqueletml = $resultat[1];
+}
+elseif (preg_match('/^.+\+$/', $contenuFichierVersionTxt, $resultat))
+{
+	$versionActuelleSqueletml = $resultat[0];
+}
 
 if (!empty($versionActuelleSqueletml))
 {
@@ -16,10 +25,10 @@ if (!empty($versionActuelleSqueletml))
 	{
 		$tableauVersionActuelleSqueletml[2] = 0;
 	}
-
+	
 	$derniereVersionSqueletml = contenuUrl(URL_DERNIERE_VERSION_SQUELETML);
 	$derniereVersionSqueletml = trim($derniereVersionSqueletml);
-
+	
 	if (!empty($derniereVersionSqueletml))
 	{
 		$tableauDerniereVersionSqueletml = explode('.', $derniereVersionSqueletml);

@@ -14,7 +14,7 @@ cheminLanguageSpecs=~/.local/share/gtksourceview-3.0/language-specs
 dossierPub=squeletml
 
 # Récupère la dernière version, représentée par la dernière étiquette.
-version:=$(shell git describe)
+version:=$(shell git describe | rev | cut -d '-' -f 3- | rev)
 
 ########################################################################
 ##
@@ -37,11 +37,10 @@ publier: fichiersSurBureau
 annexesDoc:
 	php scripts/scripts.cli.php annexesDoc doc
 
-archives: versionTxt
+archives:
 	git archive $(version) --format=tar --prefix=$(dossierPub)/ --output $(dossierPub).tar
 	tar -xf $(dossierPub).tar
 	rm $(dossierPub).tar
-	cp doc/version.txt $(dossierPub)/doc
 	php scripts/scripts.cli.php config $(dossierPub)
 	php scripts/scripts.cli.php css $(dossierPub)
 	tar -cjf squeletml.tar.bz2 $(dossierPub)
@@ -50,7 +49,7 @@ archives: versionTxt
 
 fichiersSurBureau: annexesDoc archives
 	cp doc/INCOMPATIBILITES.mkd $(cheminBureau)
-	cp doc/version.txt $(cheminBureau)
+	echo "$(version)" > $(cheminBureau)/version.txt
 	python scripts/python-markdown2/lib/markdown2.py doc/LISEZ-MOI.mkd > $(cheminBureau)/LISEZ-MOI.html
 	mv doc/documentation-avec-config.html $(cheminBureau)
 	mv squeletml.tar.bz2 $(cheminBureau)
@@ -94,7 +93,4 @@ pot: menagePot
 
 push:
 	git push origin --tags :
-
-versionTxt:
-	echo $(version) > doc/version.txt
 
