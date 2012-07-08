@@ -585,9 +585,9 @@ li.parent {
 /* Avec coins arrondis. */
 
 .blocArrondi {
-	border-radius: 8px; /* CSS 3. */
-	-moz-border-radius: 8px; /* Gecko. */
-	-webkit-border-radius: 8px; /* Webkit. */
+	border-radius: 5px; /* CSS 3. */
+	-moz-border-radius: 5px; /* Gecko. */
+	-webkit-border-radius: 5px; /* Webkit. */
 }
 
 /* Balise `h1`. */
@@ -689,9 +689,9 @@ body.colonneAgaucheAvecBordure #page {
 	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;
 }
 body.colonneAgaucheAvecBordure #surContenu .blocArrondi, body.colonneAgaucheAvecBordure #sousContenu .blocArrondi {
-	border-radius: 8px 0px 0px 8px; /* CSS 3. */
-	-moz-border-radius: 8px 0px 0px 8px; /* Gecko. */
-	-webkit-border-radius: 8px 0px 0px 8px; /* Webkit. */
+	border-radius: 5px 0px 0px 5px; /* CSS 3. */
+	-moz-border-radius: 5px 0px 0px 5px; /* Gecko. */
+	-webkit-border-radius: 5px 0px 0px 5px; /* Webkit. */
 }
 /* */
 
@@ -708,9 +708,9 @@ body.colonneAdroiteAvecBordure #page {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
 }
 body.colonneAdroiteAvecBordure #surContenu .blocArrondi, body.colonneAdroiteAvecBordure #sousContenu .blocArrondi {
-	border-radius: 0px 8px 8px 0px; /* CSS 3. */
-	-moz-border-radius: 0px 8px 8px 0px; /* Gecko. */
-	-webkit-border-radius: 0px 8px 8px 0px; /* Webkit. */
+	border-radius: 0px 5px 5px 0px; /* CSS 3. */
+	-moz-border-radius: 0px 5px 5px 0px; /* Gecko. */
+	-webkit-border-radius: 0px 5px 5px 0px; /* Webkit. */
 }
 
 /* */

@@ -100,7 +100,11 @@ div#contenuPrincipal {
 	text-align: right;
 }
 
-#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
+#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes, #sousMenu, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
+	border-radius: 5px; /* CSS 3. */
+}
+
+#tableDesMatieres {
 	border-radius: 8px; /* CSS 3. */
 }
 
