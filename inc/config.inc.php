@@ -671,13 +671,13 @@ $enTetePleineLargeur = FALSE; // TRUE|FALSE
 $tableDesMatieresAvecFond = TRUE; // TRUE|FALSE
 
 // Si `$tableDesMatieresAvecFond` vaut TRUE, arrondir les coins.
-$tableDesMatieresArrondie = TRUE; // TRUE|FALSE
+$tableDesMatieresArrondie = FALSE; // TRUE|FALSE
 
 // Blocs de contenu avec couleur de fond par défaut.
 $blocsAvecFondParDefaut = TRUE; // TRUE|FALSE
 
 // Si `$blocsAvecFondParDefaut` vaut TRUE, arrondir les coins.
-$blocsArrondis = TRUE; // TRUE|FALSE
+$blocsArrondis = FALSE; // TRUE|FALSE
 
 // Blocs de contenu spécifiques avec couleur de fond.
 /*

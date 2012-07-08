@@ -21,7 +21,7 @@ body {
 div#noticeMaintenance {
 	margin: 0px;
 	padding: 10px;
-	background: #ebebeb;
+	background: #f5f5f5;
 }
 
 div#noticeMaintenance p {
@@ -36,7 +36,7 @@ div#noticeMaintenance p {
 	max-width: 950px;
 	margin: 10px auto;
 	padding: 0px;
-	border: 1px solid #ebebeb;
+	border: 1px solid #f2f2f2;
 	box-shadow: 1px 1px 12px #e0e0e0; /* CSS 3. */
 	-moz-box-shadow: 1px 1px 12px #e0e0e0; /* Gecko. */
 	-webkit-box-shadow: 1px 1px 12px #e0e0e0; /* Webkit. */
@@ -50,7 +50,7 @@ div#noticeMaintenance p {
 #enTete {
 	padding: 5px 5px 0px 5px;
 	background: url('../fichiers/rayures.png') repeat left top;
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid #f2f2f2;
 	text-align: center;
 }
 
@@ -83,7 +83,7 @@ div#sousMenu {
 	margin-left: 1px;
 	padding: 5px;
 	background: url('../fichiers/rayures.png') repeat left top;
-	border: 1px solid #ebebeb;
+	border: 1px solid #f2f2f2;
 }
 
 div#sousMenu ul {
@@ -109,7 +109,7 @@ div#contenuPrincipal {
 }
 
 div#tableDesMatieres {
-	border-color: #ebebeb !important;
+	border-color: #f5f5f5 !important;
 }
 
 h1, h2, h3, h4, h5, h6, a {
@@ -180,7 +180,7 @@ pre {
 	overflow: auto;
 	padding: 5px;
 	margin: 5px 0px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
@@ -191,7 +191,7 @@ pre, code {
 fieldset {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 	background-color: #f0f0f0;
 }
 
@@ -287,12 +287,12 @@ ul.nonTriable li {
 .boite {
 	margin: 25px 0px;
 	padding: 5px;
-	background-color: #ebebeb;
+	background-color: #f5f5f5;
 }
 
 .sousBoite {
 	margin: 25px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 	padding: 5px;
 	background-color: #f0f0f0;
 }
@@ -319,7 +319,7 @@ ul.nonTriable li {
 ***********************************************************************/
 
 body#documentation-admin-php pre {
-	background-color: #ebebeb;
+	background-color: #f5f5f5;
 }
 
 body#documentation-admin-php em code {
@@ -354,7 +354,7 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 #galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes {
 	margin-bottom: 20px;
 	padding: 5px 5px 5px 20px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 	background-color: #f0f0f0;
 }
 
@@ -382,7 +382,7 @@ div.aide .bDtitre {
 .galerieMinivignettes img {
 	float: left;
 	height: 35px;
-	border: 1px solid #b3b3b3 !important;
+	border: 1px solid #cccccc !important;
 	margin: 2px;
 }
 
@@ -438,7 +438,7 @@ pre.consulterModifications {
 }
 
 .porteDocumentsListe li.impair {
-	background-color: #ebebeb;
+	background-color: #f5f5f5;
 }
 
 .porteDocumentsListeDernierNiveau li:hover {
@@ -451,7 +451,7 @@ pre.consulterModifications {
 
 .porteDocumentsSep {
 	font-weight: bold;
-	color: #b3b3b3;
+	color: #cccccc;
 }
 
 /* Infobulle. Inspirée de <http://www.alsacreations.com/astuce/lire/1-comment-contrler-et-modifier-lapparence-dune-infobullenbsp.html>. */
@@ -476,8 +476,8 @@ a.lienInfobulle:hover span {
 	position: absolute;
 	top: 20px;
 	left: 20px;
-	border: 1px solid #b3b3b3;
-	background: #ebebeb;
+	border: 1px solid #cccccc;
+	background: #f5f5f5;
 	text-align: left;
 	color: black;
 	padding: 2px;
@@ -488,7 +488,7 @@ a.lienInfobulle img {
 }
 
 img.infobulleApercuImage {
-	border: 1px solid #b3b3b3 !important;
+	border: 1px solid #cccccc !important;
 }
 
 /* BUEditor. */

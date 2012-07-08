@@ -92,7 +92,13 @@ p, li {
 
 pre, code {
 	font-family: Courier, "Courier New", FreeMono, "Liberation Mono", monospace;
-	background-color: #ebebeb;
+	background-color: #f5f5f5;
+}
+
+pre {
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 em code {
@@ -110,8 +116,8 @@ strong code {
 pre {
 	display: block;
 	overflow: auto;
-	border: 1px solid #b3b3b3;
-	border-left: 3px solid #b3b3b3;
+	border: 1px solid #cccccc;
+	border-left: 3px solid #cccccc;
 	padding: 10px;
 	margin: 20px 0px;
 	/* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
@@ -129,7 +135,7 @@ pre {
 div#noticeMaintenance {
 	margin: 0px;
 	padding: 10px;
-	background: #ebebeb;
+	background: #f5f5f5;
 }
 
 div#noticeMaintenance p {
@@ -242,19 +248,19 @@ body.margeBasPage #page {
 }
 
 body.bordureHautPage #page {
-	border-top: 1px solid #ebebeb;
+	border-top: 1px solid #f2f2f2;
 }
 
 body.bordureDroitePage #page {
-	border-right: 1px solid #ebebeb;
+	border-right: 1px solid #f2f2f2;
 }
 
 body.bordureBasPage #page {
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid #f2f2f2;
 }
 
 body.bordureGauchePage #page {
-	border-left: 1px solid #ebebeb;
+	border-left: 1px solid #f2f2f2;
 }
 
 body.ombrePage #page {
@@ -271,7 +277,7 @@ body.ombrePage #page {
 
 div#enTete {
 	padding: 10px;
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid #f2f2f2;
 }
 
 body.colonneAgaucheSansArrierePlan div#enTete, body.colonneAdroiteAvecRayures div#enTete, body.colonneAdroiteAvecRayuresEtBordure div#enTete, body.deuxColonnesSansArrierePlan div#enTete, body.deuxColonnesAvecBordure div#enTete, body.deuxColonnesAvecRayures div#enTete, body.deuxColonnesAvecRayuresEtBordure div#enTete {
@@ -325,7 +331,7 @@ div#sousTitre p {
 }
 
 #surContenu .blocAvecFond:hover {
-	background-color: #f5f5f5;
+	background-color: #fafafa;
 	background-image: none;
 }
 
@@ -364,7 +370,7 @@ div#sousTitre p {
 div.chapeau {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 }
 
 div.chapeau p {
@@ -394,7 +400,7 @@ div.chapeau div.contenuChapeau {
 /* Catégories. */
 
 .apercu {
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid #f2f2f2;
 	padding-bottom: 25px;
 }
 
@@ -493,7 +499,7 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 }
 
 #sousContenu .blocAvecFond:hover {
-	background-color: #f5f5f5;
+	background-color: #fafafa;
 	background-image: none;
 }
 
@@ -563,11 +569,15 @@ li.parent {
 
 .blocAvecFond {
 	padding: 10px;
-	background-color: #ebebeb;
-	background-image: linear-gradient(-45deg, #f0f0f0, #ebebeb); /* CSS 3. */
-	background-image: -moz-linear-gradient(-45deg, #f0f0f0, #ebebeb); /* Gecko. */
-	background-image: -o-linear-gradient(-45deg, #f0f0f0, #ebebeb); /* Presto. */
-	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f0f0f0), color-stop(1, #ebebeb)); /* Webkit. */
+	border: 3px solid white;
+	background-color: #f5f5f5;
+	background-image: linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* CSS 3. */
+	background-image: -moz-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f0f0f0, #f5f5f5); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f7f7f7), color-stop(1, #f5f5f5)); /* Webkit. */
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 #lienPage.blocAvecFond pre {
@@ -623,7 +633,7 @@ div#baliseH1 h1 {
 
 #infosPublication.blocAvecFond {
 	padding-left: 29px;
-	background: url('../fichiers/info.png') #ebebeb no-repeat 10px center;
+	background: url('../fichiers/info.png') #f5f5f5 no-repeat 10px center;
 }
 
 /* Module «Envoyer à des amis». */
@@ -821,8 +831,20 @@ body.deuxColonnesSousContenuAgauche #surContenu {
 	right: 0px;
 }
 
+body.deuxColonnesSousContenuAgauche #surContenu .blocArrondi {
+	border-radius: 0px 5px 5px 0px; /* CSS 3. */
+	-moz-border-radius: 0px 5px 5px 0px; /* Gecko. */
+	-webkit-border-radius: 0px 5px 5px 0px; /* Webkit. */
+}
+
 body.deuxColonnesSousContenuAgauche #sousContenu {
 	left: 0px;
+}
+
+body.deuxColonnesSousContenuAgauche #sousContenu .blocArrondi {
+	border-radius: 5px 0px 0px 5px; /* CSS 3. */
+	-moz-border-radius: 5px 0px 0px 5px; /* Gecko. */
+	-webkit-border-radius: 5px 0px 0px 5px; /* Webkit. */
 }
 
 /* body.deuxColonnesSousContenuAdroite */
@@ -839,8 +861,20 @@ body.deuxColonnesSousContenuAdroite #surContenu {
 	left: 0px;
 }
 
+body.deuxColonnesSousContenuAdroite #surContenu .blocArrondi {
+	border-radius: 5px 0px 0px 5px; /* CSS 3. */
+	-moz-border-radius: 5px 0px 0px 5px; /* Gecko. */
+	-webkit-border-radius: 5px 0px 0px 5px; /* Webkit. */
+}
+
 body.deuxColonnesSousContenuAdroite #sousContenu {
 	right: 0px;
+}
+
+body.deuxColonnesSousContenuAdroite #sousContenu .blocArrondi {
+	border-radius: 0px 5px 5px 0px; /* CSS 3. */
+	-moz-border-radius: 0px 5px 5px 0px; /* Gecko. */
+	-webkit-border-radius: 0px 5px 5px 0px; /* Webkit. */
 }
 
 /* body.aucuneColonne */
@@ -899,7 +933,7 @@ body.enTetePleineLargeur div#enTete {
 	background-color: white;
 	margin-left: 0px;
 	padding-left: 10px;
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid #f2f2f2;
 }
 
 /***********************************************************************
@@ -921,8 +955,8 @@ div#galerieIntermediaire div#galerieIntermediaireTexte {
 }
 
 div.minivignetteImageEnCours img {
-	border-left: 5px solid #b3b3b3 !important;
-	border-right: 5px solid #b3b3b3 !important;
+	border-left: 5px solid #cccccc !important;
+	border-right: 5px solid #cccccc !important;
 }
 
 div.sepGalerieMinivignettes {
@@ -1003,7 +1037,7 @@ div#galerieMinivignettes {
 div#galerieMinivignettes img {
 	float: left;
 	height: 35px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 	margin: 2px;
 }
 

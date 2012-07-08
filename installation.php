@@ -376,7 +376,7 @@ else
 	echo "ul {list-style-type: circle;}\n";
 	echo ".blocMessagesScript ul {margin-top: 0px; margin-bottom: 0px;}\n";
 	echo "li {margin-top: 5px; margin-bottom: 5px;}\n";
-	echo ".blocMessagesScript {padding: 10px; -moz-border-radius: 5px; /* Gecko. */ -webkit-border-radius: 5px; /* Webkit. */ border-radius: 5px; /* CSS 3. */ background-color: #f2f2f2;}\n";
+	echo ".blocMessagesScript {padding: 10px; background-color: #f5f5f5;}\n";
 	echo ".erreur {color: #630000;}\n";
 	echo "</style>\n";
 	echo "</head>\n";
