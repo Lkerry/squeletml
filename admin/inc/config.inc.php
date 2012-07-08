@@ -196,7 +196,7 @@ $adminTypeFiltreAffichageDansListe = 'dossiersNonAffiches';
 - Si la variable `$adminTypeFiltreAffichageDansListe` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageDansListe = '../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../fichiers/coins|../fichiers/galeries|../inc/filter_htmlcorrector|../inc/htmlpurifier|../inc/mimedetect|../inc/node_teaser|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/rolling-curl|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale/en_US|../locale/fr_CA|../modeles/site|../piwik|../scripts|../src';
+$adminFiltreAffichageDansListe = '../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../fichiers/galeries|../inc/filter_htmlcorrector|../inc/mimedetect|../inc/node_teaser|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale/en_US|../locale/fr_CA|../modeles/site|../piwik|../src';
 
 /* ____________________ Sous-dossiers dans le contenu d'un dossier. ____________________ */
 

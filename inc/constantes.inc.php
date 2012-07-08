@@ -37,7 +37,7 @@ define('MKD_PHP', <<<CODE
 CODE
 );
 
-define('URL_SQUELETML', 'http://www.squeletml.net/');
-define('URL_DERNIERE_VERSION_SQUELETML', 'http://www.squeletml.net/site/fichiers/version.txt');
-define('URL_TELECHARGEMENT_SQUELETML', 'http://www.squeletml.net/telechargement.php');
+define('URL_SQUELETML', 'http://www.jpfleury.net/logiciels/squeletml.php');
+define('URL_DERNIERE_VERSION_SQUELETML', 'http://jpfleury.indefero.net/p/squeletml/source/file/master/doc/version.txt');
+define('URL_TELECHARGEMENT_SQUELETML', 'http://www.jpfleury.net/logiciels/squeletml.php#Telechargement');
 ?>

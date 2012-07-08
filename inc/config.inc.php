@@ -474,10 +474,7 @@ $tailleApercuAutomatique = 750;
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
 */
-$dureeCache['fluxRss']               = 0;
-$dureeCache['categorie']             = 0;
-$dureeCache['galerie']               = 0;
-$dureeCache['publications-recentes'] = 0; // Voir la fonction `publicationsRecentes()`.
+$dureeCache = 0;
 
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*

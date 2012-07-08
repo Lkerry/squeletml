@@ -93,6 +93,6 @@ if ($envoyerAmisEstActif && $envoyerAmisInclureContact)
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/envoyer-amis.inc.php'))
 {
-	include_once $racine . '/site/inc/envoyer-amis.inc.php';
+	include $racine . '/site/inc/envoyer-amis.inc.php';
 }
 ?>

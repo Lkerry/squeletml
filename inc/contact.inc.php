@@ -246,7 +246,7 @@ if (file_exists($racine . '/site/inc/contact.inc.php'))
 }
 
 ob_start();
-include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact');
+include cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact');
 $contact .= ob_get_contents();
 ob_end_clean();
 

@@ -3,21 +3,6 @@
 Ce fichier construit et analyse la liste des articles classés dans la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
 */
 
-// Nom pour le cache.
-if ($dureeCache['categorie'])
-{
-	if (!empty($_GET['page']))
-	{
-		$getPage = securiseTexte($_GET['page']);
-	}
-	else
-	{
-		$getPage = '1';
-	}
-	
-	$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie-page-$getPage-" . LANGUE . '.cache.html');
-}
-
 // Liste des articles à afficher.
 if ($idCategorie == 'site')
 {
@@ -219,69 +204,19 @@ if (!empty($idCategorie))
 			}
 		}
 		
-		// On vérifie si la catégorie existe en cache ou si le cache est expiré.
-		if ($dureeCache['categorie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['categorie']))
+		for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 		{
-			$categorie .= file_get_contents("$racine/site/cache/$nomFichierCache");
-		}
-		else
-		{
-			if (function_exists('curl_init'))
-			{
-				$ch = new RollingCurl('cUrlCategorie');
-				$ch->options = array(CURLOPT_FAILONERROR => TRUE);
-				
-				for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
-				{
-					$adresse = $urlRacine . '/' . superRawurlencode($categories[$idCategorie]['pages'][$indice]);
-					$requete = new Request($adresse);
-					$ch->add($requete);
-				}
-				
-				ob_start();
-				$ch->execute();
-				$cUrlCategorie = ob_get_contents();
-				ob_end_clean();
-				
-				for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
-				{
-					$adresseNonEncodee = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
-					$adresse = superRawurlencode($adresseNonEncodee);
-					
-					if (preg_match('/' . preg_quote("<!-- `cUrlCategorie()`: $adresse -->", '/') . '(.+?)' . preg_quote("<!-- /`cUrlCategorie()`: $adresse -->", '/') . '/s', $cUrlCategorie, $resultat))
-					{
-						$infosPage = infosPage($adresseNonEncodee, $inclureApercu, $tailleApercuAutomatique, $resultat[1]);
-						
-						if (!empty($infosPage))
-						{
-							$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut);
-						}
-					}
-				}
-			}
-			else
-			{
-				for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
-				{
-					$adresseNonEncodee = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
-					$adresse = superRawurlencode($adresseNonEncodee);
-					$infosPage = infosPage($adresseNonEncodee, $inclureApercu, $tailleApercuAutomatique);
-	
-					if (!empty($infosPage))
-					{
-						$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut);
-					}
-				}
-			}
+			$adresseNonEncodee = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
+			$adresse = superRawurlencode($adresseNonEncodee);
+			$infosPage = infosPage($racine, $urlRacine, $adresseNonEncodee, $inclureApercu, $tailleApercuAutomatique, $dureeCache);
 			
-			$categorie .= $pagination;
-			
-			if ($dureeCache['categorie'])
+			if (!empty($infosPage))
 			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $categorie);
+				$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut);
 			}
 		}
+		
+		$categorie .= $pagination;
 	}
 }
 ########################################################################
@@ -332,6 +267,6 @@ else
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/categorie.inc.php'))
 {
-	include_once $racine . '/site/inc/categorie.inc.php';
+	include $racine . '/site/inc/categorie.inc.php';
 }
 ?>

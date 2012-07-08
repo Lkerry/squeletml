@@ -18,7 +18,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 if (file_exists($racine . '/site/inc/dernier-pre.inc.php'))
 {
-	include_once $racine . '/site/inc/dernier-pre.inc.php';
+	include $racine . '/site/inc/dernier-pre.inc.php';
 }
 
 // Affectations.
@@ -60,13 +60,13 @@ $linkScriptFin = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLi
 // Inclusions.
 
 include $racine . '/inc/blocs.inc.php';
-include_once $racine . '/inc/contact.inc.php';
+include $racine . '/inc/contact.inc.php';
 
 // Traitement personnalisé optionnel 2 de 2.
 
 if (file_exists($racine . '/site/inc/dernier.inc.php'))
 {
-	include_once $racine . '/site/inc/dernier.inc.php';
+	include $racine . '/site/inc/dernier.inc.php';
 }
 
 ########################################################################
@@ -75,5 +75,14 @@ if (file_exists($racine . '/site/inc/dernier.inc.php'))
 ##
 ########################################################################
 
-include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.dernier');
+include cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.dernier');
+
+if ($dureeCache)
+{
+	$codePage = ob_get_contents();
+	ob_end_clean();
+	creeDossierCache($racine);
+	@file_put_contents("$racine/site/cache/$nomFichierCache", $codePage);
+	echo $codePage;
+}
 ?>

@@ -978,51 +978,6 @@ function adminEstIe()
 }
 
 /*
-Retourne un tableau contenant les fichiers à inclure au début du script.
-*/
-function adminFichiersAinclureAuDebut($racineAdmin)
-{
-	$racine = dirname($racineAdmin);
-	
-	$fichiers = array ();
-	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
-	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
-	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
-	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
-	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
-	$fichiers[] = $racineAdmin . '/inc/pclzip/pclzip.lib.php';
-	$fichiers[] = $racineAdmin . '/inc/tar/tar.class.php';
-	$fichiers[] = $racineAdmin . '/inc/untar/untar.class.php';
-	
-	if (nomPage() == 'galeries.admin.php')
-	{
-		$fichiers[] = $racineAdmin . '/inc/UnsharpMask/UnsharpMask.inc.php';
-	}
-	
-	foreach (cheminsInc($racine, 'config') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	foreach (adminCheminsInc($racineAdmin, 'config') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	foreach (cheminsInc($racine, 'constantes') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	foreach (adminCheminsInc($racineAdmin, 'constantes') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	return $fichiers;
-}
-
-/*
 Génère le fichier Sitemap des galeries et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits)
@@ -1230,6 +1185,63 @@ function adminImageValide($typeMime)
 	{
 		return FALSE;
 	}
+}
+
+/*
+Retourne un tableau contenant les fichiers à inclure au début du script.
+*/
+function adminInclureAuDebut($racineAdmin)
+{
+	$racine = dirname($racineAdmin);
+	
+	$fichiers = array ();
+	
+	foreach (cheminsInc($racine, 'config') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	foreach (adminCheminsInc($racineAdmin, 'config') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	return $fichiers;
+}
+
+/*
+Retourne un tableau contenant les fichiers à inclure une seule fois au début du script.
+*/
+function adminInclureUneFoisAuDebut($racineAdmin)
+{
+	$racine = dirname($racineAdmin);
+	
+	$fichiers = array ();
+	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
+	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
+	$fichiers[] = $racineAdmin . '/inc/pclzip/pclzip.lib.php';
+	$fichiers[] = $racineAdmin . '/inc/tar/tar.class.php';
+	$fichiers[] = $racineAdmin . '/inc/untar/untar.class.php';
+	
+	if (nomPage() == 'galeries.admin.php')
+	{
+		$fichiers[] = $racineAdmin . '/inc/UnsharpMask/UnsharpMask.inc.php';
+	}
+	
+	foreach (cheminsInc($racine, 'constantes') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	foreach (adminCheminsInc($racineAdmin, 'constantes') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	return $fichiers;
 }
 
 /*
@@ -2422,6 +2434,26 @@ function adminVersionImage($racine, $image, $analyserConfig, $exclureMotifsComme
 	{
 		return 'inconnu';
 	}
+}
+
+/*
+Retourne la version de Squeletml. Si aucune version n'est trouvée, retourne une chaîne vide.
+*/
+function adminVersionSqueletml($cheminFichierVersionTxt)
+{
+	$version = '';
+	$contenuFichierVersionTxt = @file_get_contents($cheminFichierVersionTxt);
+	
+	if (preg_match('/^(.+) \(\d{4}(-\d{2}){2}\)$/', $contenuFichierVersionTxt, $resultat))
+	{
+		$version = $resultat[1];
+	}
+	elseif (preg_match('/^.+\+$/', $contenuFichierVersionTxt, $resultat))
+	{
+		$version = $resultat[0];
+	}
+	
+	return $version;
 }
 
 /*

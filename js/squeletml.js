@@ -80,7 +80,7 @@ function T_(msgid)
 /*
 Génère une table des matières pour la page en cours.
 */
-function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, niveauArret)
+function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, niveauArret, langue, langueParDefaut)
 {
 	$(document).ready(function()
 	{
@@ -93,7 +93,25 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, nive
 		oConteneur.setAttribute('id', 'tableDesMatieres');
 		oTitre.setAttribute('id', 'tableDesMatieresBdTitre');
 		oTitre.setAttribute('class', 'bDtitre');
-		oTitreTexte = document.createTextNode(T_("Table des matières"));
+		
+		var oTraductionsTitre = {
+			'fr': 'Table des matières',
+			'en': 'Table of contents',
+		};
+		
+		var titreTexte = oTraductionsTitre['fr'];
+		
+		if (oTraductionsTitre.hasOwnProperty(langue))
+		{
+			titreTexte = oTraductionsTitre[langue];
+		}
+		else if (oTraductionsTitre.hasOwnProperty(langueParDefaut))
+		{
+			titreTexte = oTraductionsTitre[langueParDefaut];
+		}
+		
+		oTitreTexte = document.createTextNode(titreTexte);
+		
 		oTable.setAttribute('id', 'tableDesMatieresBdCorps');
 		oTable.setAttribute('class', 'bDcorps');
 		$(oTable).addClass('afficher');

@@ -589,7 +589,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 			if ($activerPageCron)
 			{
-				if (contenuUrl("$urlRacine/cron.php") !== FALSE)
+				if (@file_get_contents("$urlRacine/cron.php") !== FALSE)
 				{
 					$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
 				}

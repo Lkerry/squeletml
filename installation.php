@@ -4,7 +4,7 @@ include_once $racine . '/inc/fonctions.inc.php';
 
 if (file_exists($racine . '/init.inc.php'))
 {
-	include_once $racine . '/init.inc.php';
+	include $racine . '/init.inc.php';
 }
 
 if (!isset($urlRacine))

@@ -19,7 +19,7 @@
 	<body<?php echo $idBody; ?>>
 		<!-- ____________________ #ancres ____________________ -->
 		<div id="ancres">
-			<?php include_once $cheminAncres; ?>
+			<?php include $cheminAncres; ?>
 		</div><!-- /#ancres -->
 		
 		<?php if ($siteEstEnMaintenance): ?>
@@ -36,7 +36,7 @@
 				</div><!-- /#menu -->
 				
 				<div id="raccourcis">
-					<?php include_once $cheminRaccourcis; ?>
+					<?php include $cheminRaccourcis; ?>
 				</div><!-- /#raccourcis -->
 			</div><!-- /#enTete -->
 			
@@ -50,7 +50,7 @@
 			<div id="contenu">
 				<div id="interieurContenu">
 					<div id="lienBas">
-						<?php include_once $cheminLienBas; ?>
+						<?php include $cheminLienBas; ?>
 					</div><!-- /#lienBas -->
 					
 					<?php echo $h1; ?>

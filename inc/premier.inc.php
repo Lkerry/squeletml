@@ -25,7 +25,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 // Inclusions 1 de 3.
 
-include_once dirname(__FILE__) . '/../init.inc.php';
+include dirname(__FILE__) . '/../init.inc.php';
 
 if (file_exists($racine . '/inc/devel.inc.php'))
 {
@@ -61,7 +61,12 @@ if (!isset($idCategorie))
 
 // Inclusions 2 de 3.
 
-foreach (fichiersAinclureAuDebut($racine, $idCategorie) as $fichier)
+foreach (inclureAuDebut($racine) as $fichier)
+{
+	include $fichier;
+}
+
+foreach (inclureUneFoisAuDebut($racine) as $fichier)
 {
 	include_once $fichier;
 }
@@ -71,7 +76,7 @@ phpGettext($racine, LANGUE); // Nécessaire à la traduction.
 // Traitement personnalisé optionnel 1 de 2.
 if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 {
-	include_once $racine . '/site/inc/premier-pre.inc.php';
+	include $racine . '/site/inc/premier-pre.inc.php';
 }
 
 // Affectations 2 de 3.
@@ -218,13 +223,13 @@ if ($tableDesMatieres)
 
 if (!empty($idCategorie))
 {
-	include_once $racine . '/inc/categorie.inc.php';
+	include $racine . '/inc/categorie.inc.php';
 }
 
 if (!empty($idGalerie))
 {
 	$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
-	include_once $racine . '/inc/galerie.inc.php';
+	include $racine . '/inc/galerie.inc.php';
 }
 
 include $racine . '/inc/blocs.inc.php';
@@ -381,18 +386,9 @@ if ($tableDesMatieres)
 	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$balisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
 	
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/Gettext/lib/Gettext.js";
-	
-	if (file_exists($racine . '/locale/' . $locale))
-	{
-		$balisesLinkScript[] = "$url#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
-	}
-	
-	$balisesLinkScript[] = "$url#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
-	
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
-	$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('milieuInterieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret);";
+	$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('milieuInterieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$langueParDefaut');";
 }
 
 // Message pour IE6.
@@ -422,7 +418,7 @@ $linkScript = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLinkS
 
 if (file_exists($racine . '/site/inc/premier.inc.php'))
 {
-	include_once $racine . '/site/inc/premier.inc.php';
+	include $racine . '/site/inc/premier.inc.php';
 }
 
 ########################################################################
@@ -442,5 +438,23 @@ if (!empty($enTetesHttp))
 ##
 ########################################################################
 
-include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.premier');
+if ($dureeCache)
+{
+	// On vérifie si la page existe en cache ou si le cache est expiré.
+	
+	$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
+	
+	if (file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+	{
+		@readfile("$racine/site/cache/$nomFichierCache");
+		
+		exit(0);
+	}
+	else
+	{
+		ob_start();
+	}
+}
+
+include cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.premier');
 ?>

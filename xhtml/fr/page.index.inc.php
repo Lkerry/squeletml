@@ -6,6 +6,6 @@ $robots = "noindex, follow, noarchive"; // Empêche la présence de la page par 
 include $racine . '/inc/premier.inc.php';
 ?>
 
-<?php include_once $racine . '/xhtml/message-accueil-par-defaut.inc.php'; ?>
+<?php include $racine . '/xhtml/message-accueil-par-defaut.inc.php'; ?>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

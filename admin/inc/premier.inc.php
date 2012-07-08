@@ -7,7 +7,7 @@
 
 if (file_exists("$racine/site/$dossierAdmin/inc/premier-pre.inc.php"))
 {
-	include_once "$racine/site/$dossierAdmin/inc/premier-pre.inc.php";
+	include "$racine/site/$dossierAdmin/inc/premier-pre.inc.php";
 }
 
 ########################################################################
@@ -73,7 +73,7 @@ if ($siteEstEnMaintenance)
 
 // Menu.
 ob_start();
-include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
+include adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
 $menu = ob_get_contents();
 ob_end_clean();
 $menu = lienActif($menu, FALSE);
@@ -237,7 +237,7 @@ if ($tableDesMatieres)
 	
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
-	$adminBalisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret);";
+	$adminBalisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$adminLangueParDefaut');";
 }
 
 // Variable finale.
@@ -252,7 +252,7 @@ $linkScript = linkScript($racine, $urlRacine, $adminFusionnerCssJs, $dossierAdmi
 
 if (file_exists("$racine/site/$dossierAdmin/inc/premier.inc.php"))
 {
-	include_once "$racine/site/$dossierAdmin/inc/premier.inc.php";
+	include "$racine/site/$dossierAdmin/inc/premier.inc.php";
 }
 
 ########################################################################
@@ -261,5 +261,5 @@ if (file_exists("$racine/site/$dossierAdmin/inc/premier.inc.php"))
 ##
 ########################################################################
 
-include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.premier');
+include adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.premier');
 ?>

@@ -7,7 +7,7 @@
 
 if (file_exists("$racine/site/$dossierAdmin/inc/dernier-pre.inc.php"))
 {
-	include_once "$racine/site/$dossierAdmin/inc/dernier-pre.inc.php";
+	include "$racine/site/$dossierAdmin/inc/dernier-pre.inc.php";
 }
 
 ########################################################################
@@ -95,7 +95,7 @@ $linkScriptFin = linkScript($racine, $urlRacine, $adminFusionnerCssJs, $dossierA
 
 if (file_exists("$racine/site/$dossierAdmin/inc/dernier.inc.php"))
 {
-	include_once "$racine/site/$dossierAdmin/inc/dernier.inc.php";
+	include "$racine/site/$dossierAdmin/inc/dernier.inc.php";
 }
 
 ########################################################################
@@ -104,5 +104,5 @@ if (file_exists("$racine/site/$dossierAdmin/inc/dernier.inc.php"))
 ##
 ########################################################################
 
-include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.dernier');
+include adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.dernier');
 ?>

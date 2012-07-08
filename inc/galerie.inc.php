@@ -140,274 +140,257 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			$titreGalerieGenere = TRUE;
 		}
 		
-		// On vérifie si l'image existe en cache ou si le cache est expiré.
-		
-		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-image-$id-" . LANGUE . '.cache.html');
-		
-		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
+		$indiceImageEnCours = $indice;
+		$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	
+		// On récupère le code de l'image demandée en version intermediaire.
+		$imageIntermediaire = '<div id="galerieIntermediaire">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'intermediaire', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+
+		// On recherche l'image précédente pour la navigation (si l'image demandée est la première, il n'y a pas d'image précédente), et on récupère son code.
+		if (array_key_exists($indice - 1, $tableauGalerie))
 		{
-			$corpsGalerie .= file_get_contents("$racine/site/cache/$nomFichierCache");
+			$indiceImagePrecedente = $indice - 1; // `$indiceImagePrecedente` contient l'indice de l'image précédente.
+			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceImagePrecedente]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			$imagePrecedente = '<div class="galerieNavigationPrecedent">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImagePrecedente], $typeMime, 'vignette', 'precedent', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+		
+			// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
+			if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
+			{
+				$imagePrecedente = vignetteTatouee($imagePrecedente, 'precedent', $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			}
+			// Sinon si une flèche est souhaitée à côté des vignettes, on ajoute une image.
+			elseif ($galerieNavigationAccompagnerVignettes && $galerieNavigation == 'vignettes')
+			{
+				$imagePrecedente = vignetteAccompagnee($imagePrecedente, 'precedent', $racine, $urlRacine);
+			}
 		}
 		else
 		{
-			$indiceImageEnCours = $indice;
-			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-		
-			// On récupère le code de l'image demandée en version intermediaire.
-			$imageIntermediaire = '<div id="galerieIntermediaire">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'intermediaire', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+			$imagePrecedente = '';
+		}
 
-			// On recherche l'image précédente pour la navigation (si l'image demandée est la première, il n'y a pas d'image précédente), et on récupère son code.
-			if (array_key_exists($indice - 1, $tableauGalerie))
+		// On recherche l'image suivante pour la navigation (si l'image demandée est la dernière, il n'y a pas d'image suivante), et on récupère son code.
+		if (array_key_exists($indice + 1, $tableauGalerie))
+		{
+			$indiceImageSuivante = $indice + 1; // `$indiceImageSuivante` est l'indice de l'image suivante.
+			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceImageSuivante]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			$imageSuivante = '<div class="galerieNavigationSuivant">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImageSuivante], $typeMime, 'vignette', 'suivant', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+		
+			// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
+			if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
 			{
-				$indiceImagePrecedente = $indice - 1; // `$indiceImagePrecedente` contient l'indice de l'image précédente.
-				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceImagePrecedente]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$imagePrecedente = '<div class="galerieNavigationPrecedent">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImagePrecedente], $typeMime, 'vignette', 'precedent', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+				$imageSuivante = vignetteTatouee($imageSuivante, 'suivant', $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			}
+			// Sinon si une flèche est souhaitée à côté des vignettes, on ajoute une image.
+			elseif ($galerieNavigationAccompagnerVignettes && $galerieNavigation == 'vignettes')
+			{
+				$imageSuivante = vignetteAccompagnee($imageSuivante, 'suivant', $racine, $urlRacine);
+			}
+		}
+		else
+		{
+			$imageSuivante = '';
+		}
+	
+		// On simule l'espace de la flèche de navigation pour que l'image demeure centrée dans le cas où on se trouve à une extrémité de la galerie (début ou fin).
+		if (empty($imagePrecedente))
+		{
+			$class = "galerieNavigationPrecedent";
+		
+			if ($galerieNavigation == 'vignettes')
+			{
+				$class .= " galerieNavigationVideVignette";
+			}
+			elseif ($galerieNavigation == 'fleches')
+			{
+				$class .= " galerieNavigationVideFleche";
+			}
+		
+			$imagePrecedente = "<div class=\"$class\"></div>\n";
+		}
+	
+		if (empty($imageSuivante))
+		{
+			$class = "galerieNavigationSuivant";
+		
+			if ($galerieNavigation == 'vignettes')
+			{
+				$class .= " galerieNavigationVideVignette";
+			}
+			elseif ($galerieNavigation == 'fleches')
+			{
+				$class .= " galerieNavigationVideFleche";
+			}
+		
+			$imageSuivante = "<div class=\"$class\"></div>\n";
+		}
+	
+		// On crée le corps de la galerie.
+		if ($galerieNavigationEmplacement == 'haut')
+		{
+			$corpsGalerie .= $imagePrecedente . $imageSuivante . $imageIntermediaire;
+		}
+		elseif ($galerieNavigationEmplacement == 'bas')
+		{
+			$corpsGalerie .= $imageIntermediaire . $imagePrecedente . $imageSuivante . "<div class=\"sep\"></div>\n";
+		}
+		
+		$infoEtMinivignettesEnsemble = FALSE;
+		$infoEtMinivignettesEnsembleCodeDebut = '';
+		$infoEtMinivignettesEnsembleCodeFin = '';
+		
+		if ($galerieInfoAjout && $galerieAfficherMinivignettes && (($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut') || ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'bas')))
+		{
+			$infoEtMinivignettesEnsemble = TRUE;
+			$infoEtMinivignettesEnsembleCodeDebut .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+			$infoEtMinivignettesEnsembleCodeDebut .= '<div class="galerieInfoEtMinivignettesEnsemble">' . "\n";
+			$infoEtMinivignettesEnsembleCodeFin .= "</div><!-- /.galerieInfoEtMinivignettesEnsemble -->\n";
+			$infoEtMinivignettesEnsembleCodeFin .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+		}
+		
+		// `$galerieInfo`.
+		$galerieInfo = '';
+	
+		if ($galerieInfoAjout)
+		{
+			$galerieInfo .= '<div id="galerieInfo">' . "\n";
+			$galerieInfo .= '<p>' . sprintf(T_ngettext("Affichage de l'image %1\$s sur un total de %2\$s image.", "Affichage de l'image %1\$s sur un total de %2\$s images.", $nombreDimages), $indice + 1, $nombreDimages) . ' <a href="' . $urlSansGet . '">' . sprintf(T_("Aller à l'accueil de la galerie %1\$s."), "<em>$idGalerie</em>") . "</a></p>\n";
+			$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
+		}
+	
+		// `$corpsMinivignettes`.
+		$corpsMinivignettes = '';
+	
+		if ($galerieAfficherMinivignettes)
+		{
+			if (!$infoEtMinivignettesEnsemble)
+			{
+				$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+			}
 			
-				// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
-				if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
-				{
-					$imagePrecedente = vignetteTatouee($imagePrecedente, 'precedent', $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				}
-				// Sinon si une flèche est souhaitée à côté des vignettes, on ajoute une image.
-				elseif ($galerieNavigationAccompagnerVignettes && $galerieNavigation == 'vignettes')
-				{
-					$imagePrecedente = vignetteAccompagnee($imagePrecedente, 'precedent', $racine, $urlRacine);
-				}
+			$corpsMinivignettes .= '<div id="galerieMinivignettes">' . "\n";
+		
+			// Calcul des minivignettes à afficher.
+			if (!$galerieMinivignettesNombre)
+			{
+				$indicePremiereImage = 0;
+				$indiceDerniereImage = $nombreDimages - 1;
 			}
 			else
 			{
-				$imagePrecedente = '';
-			}
-
-			// On recherche l'image suivante pour la navigation (si l'image demandée est la dernière, il n'y a pas d'image suivante), et on récupère son code.
-			if (array_key_exists($indice + 1, $tableauGalerie))
-			{
-				$indiceImageSuivante = $indice + 1; // `$indiceImageSuivante` est l'indice de l'image suivante.
-				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indiceImageSuivante]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$imageSuivante = '<div class="galerieNavigationSuivant">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indiceImageSuivante], $typeMime, 'vignette', 'suivant', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
+				$imageCourante = $indice + 1;
 			
-				// Si une flèche de navigation par-dessus la vignette est souhaitée, on modifie l'attribut `src` de l'image.
-				if ($galerieNavigationTatouerVignettes && $galerieNavigation == 'vignettes')
-				{
-					$imageSuivante = vignetteTatouee($imageSuivante, 'suivant', $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				}
-				// Sinon si une flèche est souhaitée à côté des vignettes, on ajoute une image.
-				elseif ($galerieNavigationAccompagnerVignettes && $galerieNavigation == 'vignettes')
-				{
-					$imageSuivante = vignetteAccompagnee($imageSuivante, 'suivant', $racine, $urlRacine);
-				}
-			}
-			else
-			{
-				$imageSuivante = '';
-			}
-		
-			// On simule l'espace de la flèche de navigation pour que l'image demeure centrée dans le cas où on se trouve à une extrémité de la galerie (début ou fin).
-			if (empty($imagePrecedente))
-			{
-				$class = "galerieNavigationPrecedent";
-			
-				if ($galerieNavigation == 'vignettes')
-				{
-					$class .= " galerieNavigationVideVignette";
-				}
-				elseif ($galerieNavigation == 'fleches')
-				{
-					$class .= " galerieNavigationVideFleche";
-				}
-			
-				$imagePrecedente = "<div class=\"$class\"></div>\n";
-			}
-		
-			if (empty($imageSuivante))
-			{
-				$class = "galerieNavigationSuivant";
-			
-				if ($galerieNavigation == 'vignettes')
-				{
-					$class .= " galerieNavigationVideVignette";
-				}
-				elseif ($galerieNavigation == 'fleches')
-				{
-					$class .= " galerieNavigationVideFleche";
-				}
-			
-				$imageSuivante = "<div class=\"$class\"></div>\n";
-			}
-		
-			// On crée le corps de la galerie.
-			if ($galerieNavigationEmplacement == 'haut')
-			{
-				$corpsGalerie .= $imagePrecedente . $imageSuivante . $imageIntermediaire;
-			}
-			elseif ($galerieNavigationEmplacement == 'bas')
-			{
-				$corpsGalerie .= $imageIntermediaire . $imagePrecedente . $imageSuivante . "<div class=\"sep\"></div>\n";
-			}
-			
-			$infoEtMinivignettesEnsemble = FALSE;
-			$infoEtMinivignettesEnsembleCodeDebut = '';
-			$infoEtMinivignettesEnsembleCodeFin = '';
-			
-			if ($galerieInfoAjout && $galerieAfficherMinivignettes && (($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut') || ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'bas')))
-			{
-				$infoEtMinivignettesEnsemble = TRUE;
-				$infoEtMinivignettesEnsembleCodeDebut .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-				$infoEtMinivignettesEnsembleCodeDebut .= '<div class="galerieInfoEtMinivignettesEnsemble">' . "\n";
-				$infoEtMinivignettesEnsembleCodeFin .= "</div><!-- /.galerieInfoEtMinivignettesEnsemble -->\n";
-				$infoEtMinivignettesEnsembleCodeFin .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-			}
-			
-			// `$galerieInfo`.
-			$galerieInfo = '';
-		
-			if ($galerieInfoAjout)
-			{
-				$galerieInfo .= '<div id="galerieInfo">' . "\n";
-				$galerieInfo .= '<p>' . sprintf(T_ngettext("Affichage de l'image %1\$s sur un total de %2\$s image.", "Affichage de l'image %1\$s sur un total de %2\$s images.", $nombreDimages), $indice + 1, $nombreDimages) . ' <a href="' . $urlSansGet . '">' . sprintf(T_("Aller à l'accueil de la galerie %1\$s."), "<em>$idGalerie</em>") . "</a></p>\n";
-				$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
-			}
-		
-			// `$corpsMinivignettes`.
-			$corpsMinivignettes = '';
-		
-			if ($galerieAfficherMinivignettes)
-			{
-				if (!$infoEtMinivignettesEnsemble)
-				{
-					$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-				}
-				
-				$corpsMinivignettes .= '<div id="galerieMinivignettes">' . "\n";
-			
-				// Calcul des minivignettes à afficher.
-				if (!$galerieMinivignettesNombre)
+				if ($galerieMinivignettesNombre >= $nombreDimages)
 				{
 					$indicePremiereImage = 0;
 					$indiceDerniereImage = $nombreDimages - 1;
 				}
 				else
 				{
-					$imageCourante = $indice + 1;
+					$indiceMilieu = $indice;
 				
-					if ($galerieMinivignettesNombre >= $nombreDimages)
+					if ($galerieMinivignettesNombre % 2)
 					{
-						$indicePremiereImage = 0;
-						$indiceDerniereImage = $nombreDimages - 1;
-					}
-					else
-					{
-						$indiceMilieu = $indice;
+						// A: nombre impair.
 					
-						if ($galerieMinivignettesNombre % 2)
+						$nombreAgauche = floor($galerieMinivignettesNombre / 2); // Arrondi à la baisse.
+						$nombreAdroite = $nombreAgauche;
+					
+						$indiceGauche = $indiceMilieu - $nombreAgauche;
+					
+						if ($indiceGauche >= 0)
 						{
-							// A: nombre impair.
-						
-							$nombreAgauche = floor($galerieMinivignettesNombre / 2); // Arrondi à la baisse.
-							$nombreAdroite = $nombreAgauche;
-						
-							$indiceGauche = $indiceMilieu - $nombreAgauche;
-						
-							if ($indiceGauche >= 0)
-							{
-								$indicePremiereImage = $indiceGauche;
-							}
-							else
-							{
-								$indicePremiereImage = 0;
-								$nombreAdroite += abs($indiceGauche);
-							}
-						
-							$indiceDroit = $indiceMilieu + $nombreAdroite;
-						
-							if ($indiceDroit <= ($nombreDimages - 1))
-							{
-								$indiceDerniereImage = $indiceDroit;
-							}
-							else
-							{
-								$indiceDerniereImage = $nombreDimages - 1;
-								$indicePremiereImage -= $indiceDroit - ($nombreDimages - 1);
-							}
+							$indicePremiereImage = $indiceGauche;
 						}
 						else
 						{
-							// A: nombre pair.
-						
-							$nombreAgauche = $galerieMinivignettesNombre / 2;
-							$nombreAdroite = $nombreAgauche - 1;
-							$indiceGauche = $indiceMilieu - $nombreAgauche;
-						
-							if ($indiceGauche >= 0)
-							{
-								$indicePremiereImage = $indiceGauche;
-							}
-							else
-							{
-								$indicePremiereImage = 0;
-								$nombreAdroite += abs($indiceGauche);
-							}
-						
-							$indiceDroit = $indiceMilieu + $nombreAdroite;
-						
-							if ($indiceDroit <= ($nombreDimages - 1))
-							{
-								$indiceDerniereImage = $indiceDroit;
-							}
-							else
-							{
-								$indiceDerniereImage = $nombreDimages - 1;
-								$indicePremiereImage -= $indiceDroit - ($nombreDimages - 1);
-							}
+							$indicePremiereImage = 0;
+							$nombreAdroite += abs($indiceGauche);
+						}
+					
+						$indiceDroit = $indiceMilieu + $nombreAdroite;
+					
+						if ($indiceDroit <= ($nombreDimages - 1))
+						{
+							$indiceDerniereImage = $indiceDroit;
+						}
+						else
+						{
+							$indiceDerniereImage = $nombreDimages - 1;
+							$indicePremiereImage -= $indiceDroit - ($nombreDimages - 1);
+						}
+					}
+					else
+					{
+						// A: nombre pair.
+					
+						$nombreAgauche = $galerieMinivignettesNombre / 2;
+						$nombreAdroite = $nombreAgauche - 1;
+						$indiceGauche = $indiceMilieu - $nombreAgauche;
+					
+						if ($indiceGauche >= 0)
+						{
+							$indicePremiereImage = $indiceGauche;
+						}
+						else
+						{
+							$indicePremiereImage = 0;
+							$nombreAdroite += abs($indiceGauche);
+						}
+					
+						$indiceDroit = $indiceMilieu + $nombreAdroite;
+					
+						if ($indiceDroit <= ($nombreDimages - 1))
+						{
+							$indiceDerniereImage = $indiceDroit;
+						}
+						else
+						{
+							$indiceDerniereImage = $nombreDimages - 1;
+							$indicePremiereImage -= $indiceDroit - ($nombreDimages - 1);
 						}
 					}
 				}
-			
-				$minivignetteImageEnCours = FALSE;
-			
-				for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
-				{
-					if ($indice == $indiceImageEnCours)
-					{
-						$minivignetteImageEnCours = TRUE;
-					}
-				
-					$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-					$corpsMinivignettes .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours);
-					$minivignetteImageEnCours = FALSE;
-				}
-			
-				$corpsMinivignettes .= '</div><!-- /#galerieMinivignettes -->' . "\n";
-				
-				if (!$infoEtMinivignettesEnsemble)
-				{
-					$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-				}
 			}
 		
-			// Variable `$corpsGalerie` finale.
-			if ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut')
+			$minivignetteImageEnCours = FALSE;
+		
+			for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
 			{
-				$corpsGalerie = $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin . $corpsGalerie;
-			}
-			elseif ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'bas')
-			{
-				$corpsGalerie = $corpsMinivignettes . $corpsGalerie . $galerieInfo;
-			}
-			elseif ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'haut')
-			{
-				$corpsGalerie = $galerieInfo . $corpsGalerie . $corpsMinivignettes;
-			}
-			elseif ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'bas')
-			{
-				$corpsGalerie = $corpsGalerie . $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin;
-			}
+				if ($indice == $indiceImageEnCours)
+				{
+					$minivignetteImageEnCours = TRUE;
+				}
 			
-			if ($dureeCache['galerie'])
-			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $corpsGalerie);
+				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$corpsMinivignettes .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours);
+				$minivignetteImageEnCours = FALSE;
 			}
+		
+			$corpsMinivignettes .= '</div><!-- /#galerieMinivignettes -->' . "\n";
+			
+			if (!$infoEtMinivignettesEnsemble)
+			{
+				$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+			}
+		}
+	
+		// Variable `$corpsGalerie` finale.
+		if ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut')
+		{
+			$corpsGalerie = $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin . $corpsGalerie;
+		}
+		elseif ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'bas')
+		{
+			$corpsGalerie = $corpsMinivignettes . $corpsGalerie . $galerieInfo;
+		}
+		elseif ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'haut')
+		{
+			$corpsGalerie = $galerieInfo . $corpsGalerie . $corpsMinivignettes;
+		}
+		elseif ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'bas')
+		{
+			$corpsGalerie = $corpsGalerie . $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin;
 		}
 	}
 	// Si l'image n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie dans le but d'éviter le contenu dupliqué.
@@ -546,116 +529,92 @@ elseif (!empty($idGalerie))
 	}
 	else
 	{
-		if (!empty($_GET['page']))
+		for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
 		{
-			$getPage = securiseTexte($_GET['page']);
+			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			$corpsGalerie .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 		}
-		else
+
+		$corpsGalerie .= "<div class=\"sep\"></div>\n";
+		$lienSansJavascript = '';
+		
+		if ($galerieAccueilJavascript && $galerieAccueilLienSansJavascript)
 		{
-			$getPage = '1';
+			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+			{
+				$lienSansJavascript .= '<div id="galerieLienSansJavascript">' . "\n";
+				$lienSansJavascript .= "<p>";
+			}
+			elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
+			{
+				$lienSansJavascript .= '<span id="galerieLienSansJavascript">';
+			}
+			
+			$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
+			$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . $ancre . '">' . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
+			
+			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+			{
+				$lienSansJavascript .= "</p>\n";
+				$lienSansJavascript .= '</div><!-- /#galerieLienSansJavascript -->' . "\n";
+			}
+			elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
+			{
+				$lienSansJavascript .= '</span>';
+			}
+
+			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut')
+			{
+				$corpsGalerie = $lienSansJavascript . $corpsGalerie;
+			}
+			elseif ($galerieAccueilLienSansJavascriptEmplacement == 'bas')
+			{
+				$corpsGalerie .= $lienSansJavascript;
+			}
 		}
 		
-		$nomFichierCache = filtreChaine($racine, "galerie-$idGalerie-page-$getPage-" . LANGUE . '.cache.html');
-	
-		if ($dureeCache['galerie'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['galerie']))
+		if ($galerieVignettesParPage)
 		{
-			$corpsGalerie .= file_get_contents("$racine/site/cache/$nomFichierCache");
+			if ($galeriePagination['au-dessus'])
+			{
+				$corpsGalerie = $pagination . $corpsGalerie;
+			}
+
+			if ($galeriePagination['au-dessous'])
+			{
+				$corpsGalerie .= $pagination;
+			}
 		}
-		else
+
+		$galerieInfo = '';
+
+		if ($galerieInfoAjout)
 		{
-			for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
+			$galerieInfo .= '<div id="galerieInfo">' . "\n";
+			$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s image", "Cette galerie contient %1\$s images", $nombreDimages), $nombreDimages) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
+
+			if ($url != $urlSansGet)
 			{
-				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$corpsGalerie .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+				$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a>";
 			}
 
-			$corpsGalerie .= "<div class=\"sep\"></div>\n";
-			$lienSansJavascript = '';
-			
-			if ($galerieAccueilJavascript && $galerieAccueilLienSansJavascript)
+			if (!empty($lienSansJavascript) && $galerieAccueilLienSansJavascriptEmplacement == 'info')
 			{
-				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
-				{
-					$lienSansJavascript .= '<div id="galerieLienSansJavascript">' . "\n";
-					$lienSansJavascript .= "<p>";
-				}
-				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
-				{
-					$lienSansJavascript .= '<span id="galerieLienSansJavascript">';
-				}
-				
-				$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-				$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . $ancre . '">' . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
-				
-				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
-				{
-					$lienSansJavascript .= "</p>\n";
-					$lienSansJavascript .= '</div><!-- /#galerieLienSansJavascript -->' . "\n";
-				}
-				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
-				{
-					$lienSansJavascript .= '</span>';
-				}
-
-				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut')
-				{
-					$corpsGalerie = $lienSansJavascript . $corpsGalerie;
-				}
-				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'bas')
-				{
-					$corpsGalerie .= $lienSansJavascript;
-				}
+				$galerieInfo .= " $lienSansJavascript";
 			}
 			
-			if ($galerieVignettesParPage)
-			{
-				if ($galeriePagination['au-dessus'])
-				{
-					$corpsGalerie = $pagination . $corpsGalerie;
-				}
-	
-				if ($galeriePagination['au-dessous'])
-				{
-					$corpsGalerie .= $pagination;
-				}
-			}
-
-			$galerieInfo = '';
-
-			if ($galerieInfoAjout)
-			{
-				$galerieInfo .= '<div id="galerieInfo">' . "\n";
-				$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s image", "Cette galerie contient %1\$s images", $nombreDimages), $nombreDimages) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
-	
-				if ($url != $urlSansGet)
-				{
-					$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a>";
-				}
-
-				if (!empty($lienSansJavascript) && $galerieAccueilLienSansJavascriptEmplacement == 'info')
-				{
-					$galerieInfo .= " $lienSansJavascript";
-				}
-				
-				$galerieInfo .= "</p>\n";
-				$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
-			}
-			
-			// Variable `$corpsGalerie` finale.
-			if ($galerieInfoEmplacement == 'haut')
-			{
-				$corpsGalerie = $galerieInfo . $corpsGalerie;
-			}
-			elseif ($galerieInfoEmplacement == 'bas')
-			{
-				$corpsGalerie .= $galerieInfo;
-			}
+			$galerieInfo .= "</p>\n";
+			$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
+		}
 		
-			if ($dureeCache['galerie'])
-			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $corpsGalerie);
-			}
+		// Variable `$corpsGalerie` finale.
+		if ($galerieInfoEmplacement == 'haut')
+		{
+			$corpsGalerie = $galerieInfo . $corpsGalerie;
+		}
+		elseif ($galerieInfoEmplacement == 'bas')
+		{
+			$corpsGalerie .= $galerieInfo;
 		}
 	}
 }
@@ -703,6 +662,6 @@ $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplaceme
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/galerie.inc.php'))
 {
-	include_once $racine . '/site/inc/galerie.inc.php';
+	include $racine . '/site/inc/galerie.inc.php';
 }
 ?>

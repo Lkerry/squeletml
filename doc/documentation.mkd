@@ -29,13 +29,11 @@ Certains dossiers doivent être accessibles en écriture:
 
 - La suppression sans perte de qualité des données Exif des images JPG peut se faire avec la commande `jpegtran` sur le système.
 
-- La récupération de contenu externe se fait par `cURL` si disponible (par exemple, sous Ubuntu 10.10, vérifier que le paquet `php5-curl` est installé), sinon par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.squeletml.net/');` retourne ceci:
+- La récupération de contenu externe se fait par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.squeletml.net/');` retourne ceci:
 
 		HTTP/1.0 403 Forbidden
 
 	Selon la [FAQ du site «Les Pages Perso Chez Free»](http://les.pages.perso.chez.free.fr/index.php?post/2010/01/22/FAQ), il faut demander sur le forum d'aide de Free.fr de mettre sur la liste blanche les URL que l'on souhaite atteindre.
-
-	Dans ces conditions, sans un déblocage par Free de l'URL de votre site, les catégories, les flux RSS et la génération automatique du cache par le cron ne sont pas fonctionnels.
 
 ## Installation
 
@@ -81,7 +79,7 @@ Ce fichier contient deux variables obligatoires à renseigner:
 
 - `$urlRacine`: il s'agit de l'adresse URL vers votre site Squeletml. Par exemple, `http://www.nomDeDomaine.ext/monSiteSqueletml` ou `http://www.nomDeDomaine.ext`.
 
-- `$accueil`: il s'agit d'un tableau contenant l'adresse url de l'accueil pour chaque langue de votre site.
+- `$accueil`: il s'agit d'un tableau contenant l'adresse URL de l'accueil pour chaque langue de votre site.
 
 	Vous pouvez ajouter autant de langues que vous le désirez, dans la mesure où cette langue est offerte par défaut avec Squeletml ou que vous en effectuiez la traduction. Le français est la langue par défaut. Ainsi, l'interface de Squeletml sera toujours entièrement disponible dans cette langue. Pour l'instant, une traduction partielle en anglais accompagne Squeletml.
 
@@ -513,6 +511,10 @@ Voici quelques exemples:
 Il est possible de traduire Squeletml dans la langue désirée. Le principal fichier est `locale/squeletml.pot`. Il contient la plupart des phrases à traduire. Les autres fichiers sont:
 
 - `admin/versions-solo.admin.php` (le cas échéant, modifier le nom du dossier d'administration)
+- `doc/documentation.mkd`
+- `doc/INCOMPATIBILITES.mkd`
+- `doc/LISEZ-MOI.mkd`
+- `js/squeletml.js` (fonction `tableDesMatieres()`)
 - `xhtml/fr/ancres.inc.php`
 - `xhtml/fr/bas-de-page.inc.php`
 - `xhtml/fr/menu.inc.php`
@@ -524,9 +526,6 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 - `xhtml/fr/page.contact.inc.php`
 - `xhtml/fr/page.galerie.inc.php`
 - `xhtml/fr/page.index.inc.php`
-- `doc/documentation.mkd`
-- `doc/INCOMPATIBILITES.mkd`
-- `doc/LISEZ-MOI.mkd`
 - `maintenance.php`
 
 ## Mise à jour de Squeletml
@@ -893,7 +892,7 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresImages = publicationsRecentes($racine, $urlRacine, $langueParDefaut, LANGUE, 'galerie', "chiens", 5, TRUE, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+	$dernieresImages = publicationsRecentes($racine, $urlRacine, $langueParDefaut, LANGUE, 'galerie', "chiens", 5, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache);
 
 Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième argument vaut `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
@@ -1356,13 +1355,9 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 ## Cache et optimisation
 
-Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. La durée du cache peut être précisée pour le corps des galeries (page d'accueil d'une galerie ou pages individuelles d'une image) et des catégories ainsi que pour les flux RSS.
-
-Il est particulièrement recommandé d'activer le cache des catégories si ces dernières sont utilisées, car le temps de construction d'une page de catégorie peut être réduit de l'ordre de 90% en utilisant le cache.
+Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site.
 
 Dans certains cas, le cache peut être long à générer, ce qui a comme conséquence qu'un internaute visitant une page dont le cache n'a pas encore été généré ou est expiré peut attendre assez longtemps avant de voir le contenu s'afficher. Cependant, il est possible de générer le cache automatiquement sans attendre la visite d'internautes. Voir la section «Cron» pour plus de détails.
-
-*Note: si `cURL` est disponible sur le serveur, des requêtes en parallèle sont effectuées pour construire une page de catégorie, ce qui diminue le temps nécessaire à l'opération. Dans ce cas, il est moins critique d'activer le cache, même si cela demeure conseillé.*
 
 ### Fusion des feuilles de style CSS et des scripts Javascript
 
@@ -1380,7 +1375,7 @@ Une fois qu'un fichier unique a été créé pour un ensemble différent de fich
 
 Le cron permet d'effectuer certaines tâches de maintenance:
 
-- génération du cache des flux RSS des dernières publications et des derniers ajouts aux galeries, ainsi que de chaque catégorie et galerie. Chaque page individuelle d'une image dans une galerie est également mise en cache. Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site.
+- génération du cache (flux RSS, galeries et catégories). Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site.
 
 - génération des fichiers Sitemap du site et des galeries. Les galeries prises en compte sont celles listées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries (`site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`). Si le fichier d'index Sitemap n'existe pas, il sera créé. De même, si le fichier d'index Sitemap n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
 
@@ -1418,37 +1413,15 @@ Ces trois fichiers se trouvent à la racine du site. Les fichiers Sitemap du sit
 
 ## Développement
 
-### Téléchargement de la version de développement
-
-Le logiciel [Git](http://git-scm.com/) est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](http://jpfleury.indefero.net/p/squeletml/source/tree/master/)
-
 ### Fichier `Makefile`
 
 Les principales commandes du fichier `Makefile` sont:
 
-- `make generer`: met à jour les fichiers qui sont versionnés, mais pas créés ni gérés à la main. Est utilisée en général avant la dernière révision d'une prochaine version.
+- `make langues`: met à jour les fichiers de langues.
 
-- `make publier`: crée les archives; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires; supprime les fichiers versionnés, mais inutiles. Est utilisée après un `git tag -a ...` pour la sortie d'une nouvelle version.
+- `make archive`: crée une archive au format ZIP; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires.
 
 	Par défaut, la dernière version (représentée par la dernière étiquette) est utilisée par cette commande. Pour publier une version différente, préciser la variable `version` dans la ligne de commande. Exemple:
 
-		make publier version=2.2.1
-
-- `make ini`: installe pour l'utilisateur courant la coloration syntaxique dans l'[éditeur de texte gedit](http://gedit.org/) (sous GNU/Linux) pour les fichiers de configuration utilisés par Squeletml (configuration des galeries et des flux RSS globaux). Ces fichiers sont au format `.ini`. Contrairement à la coloration par défaut dans gedit, celle installée par `make ini` ne colore pas de délimiteurs de caractères (habituellement les guillemets et les apostrophes), ce qui évite par exemple qu'une apostrophe présente dans la valeur d'un paramètre, comme ceci:
-
-		parametre=Lorem ipsum l'orem
-
-	colore (sans raison) tout le texte qui suit.
-
-	Pour utiliser la coloration, démarrer ou redémarrer gedit et ouvrir un fichier de configuration. Si l'extension du fichier est `.ini.txt`, la coloration s'activera automatiquement, sinon aller dans le menu *Affichage > Mode de coloration > Autres* et choisir *.ini Squeletml*.
-
-	La désinstallation de la coloration se fait grâce à la commande `make menage-ini`.
-
-### Dossier `scripts`
-
-- `exiftran-rotation`: ce dossier contient un script du même nom qui tente d'effectuer la rotation automatique d'images JPG. Le paquet `exiftran` doit être installé. La rotation automatique est sans perte de qualité et est basée sur l'orientation déclarée dans les données Exif de l'image, si cette information existe. Pour utiliser le script, fournir en argument les images JPG à analyser, par exemple:
-
-		./exiftran-rotation /chemin/vers/image/1.jpg /chemin/vers/image/2.jpg /chemin/vers/image/3.jpg
-
-	Cette fonctionnalité est accessible directement en ligne dans la section d'administration de Squeletml lors de l'ajout d'images dans une galerie si `exiftran` est accessible sur le serveur ou si `jpegtran` est accessible et que la fonction PHP `exif_read_data()` existe. L'intérêt du script `exiftran-rotation` est quand le serveur sur lequel le site Squeletml est installé ne possède pas cette configuration.
+		make archive version=2.2.1
 

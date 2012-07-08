@@ -4,7 +4,7 @@
 			<?php if ($adminInclureBasDePage): ?>
 				<!-- ____________________ #basDePage ____________________ -->
 				<div id="basDePage">
-					<?php include_once $cheminBasDePage; ?>
+					<?php include $cheminBasDePage; ?>
 				</div><!-- /#basDePage -->
 			<?php endif; ?>
 		</div><!-- /#page -->

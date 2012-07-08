@@ -35,7 +35,7 @@
 					<div id="basDePage">
 						<?php echo $blocs[600]; ?>
 						<div class="sep"></div>
-						<?php include_once $cheminBasDePage; ?>
+						<?php include $cheminBasDePage; ?>
 					</div><!-- /#basDePage -->
 				<?php endif; ?>
 			</div><!-- /#interieurPage -->

@@ -6,32 +6,6 @@ include 'init.inc.php';
 
 ########################################################################
 ##
-## Ajout des fichiers de configuration à la documentation convertie en HTML.
-##
-########################################################################
-
-if ($argv[1] == 'annexesDoc')
-{
-	include $racine . '/inc/fonctions.inc.php';
-	include $racine . '/inc/php-markdown/markdown.php';
-	
-	$cheminFichierSauvegarde = $argv[2] . '/documentation-avec-config.html';
-	eval(variablesAvantConfig());
-	
-	foreach (cheminsInc($racine, 'config') as $cheminFichier)
-	{
-		include_once $cheminFichier;
-	}
-	
-	phpGettext($racine, 'fr'); // Nécessaire à la traduction.
-	
-	$contenuDocAvecConfig = mkd($racine . '/doc/documentation.mkd');
-	$contenuDocAvecConfig .= annexesDocumentation($racineAdmin);
-	
-	file_put_contents($cheminFichierSauvegarde, $contenuDocAvecConfig);
-}
-########################################################################
-##
 ## Modèles de fichiers de configuration (du site et de l'administration) personnalisés.
 ##
 ########################################################################

@@ -219,7 +219,7 @@ if (!empty($blocsAinsererTemp))
 					$blocs[$region] .= '<div id="menu" class="bloc ' . $classesBloc . '">' . "\n";
 				
 					ob_start();
-					include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu');
+					include cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu');
 					$bloc = ob_get_contents();
 					ob_end_clean();
 				
@@ -245,7 +245,7 @@ if (!empty($blocsAinsererTemp))
 					if (!empty($cheminMenuCategories))
 					{
 						ob_start();
-						include_once $cheminMenuCategories;
+						include $cheminMenuCategories;
 						$bloc = ob_get_contents();
 						ob_end_clean();
 					}
@@ -289,7 +289,7 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '<div id="menuLangues" class="bloc ' . $classesBloc . '">' . "\n";
 					
 						ob_start();
-						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
+						include cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
 						$bloc = ob_get_contents();
 						ob_end_clean();
 					
@@ -347,7 +347,7 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '<div id="piwik" class="bloc ' . $classesBloc . '">' . "\n";
 						
 						ob_start();
-						include_once $cheminPiwik;
+						include $cheminPiwik;
 						$bloc = ob_get_contents();
 						ob_end_clean();
 						
@@ -385,7 +385,7 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= "<div class=\"bloc $classesBloc $blocAinserer\">\n";
 					
 						ob_start();
-						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer);
+						include cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer);
 						$bloc = ob_get_contents();
 						ob_end_clean();
 					
@@ -412,6 +412,6 @@ if (!empty($blocsAinsererTemp))
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/blocs.inc.php'))
 {
-	include_once $racine . '/site/inc/blocs.inc.php';
+	include $racine . '/site/inc/blocs.inc.php';
 }
 ?>

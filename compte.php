@@ -1,12 +1,12 @@
 <?php
-include_once 'init.inc.php';
+include 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
 eval(variablesAvantConfig());
 
 foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {
-	include_once $cheminFichier;
+	include $cheminFichier;
 }
 
 if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))

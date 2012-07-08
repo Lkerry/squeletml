@@ -10,6 +10,4 @@ sitemap_galeries.xml
 sitemap_index.xml
 sitemap_site.xml
 TODO/
-
-inc/htmlpurifier/
-css/ubuntu-font-family/
+0-*
