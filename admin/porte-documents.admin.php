@@ -3,25 +3,6 @@
 
 include 'inc/zero.inc.php';
 
-// Jeton utilisé pour vérifier la provenance d'un formulaire complété d'édition de fichier.
-if (
-	(isset($_GET['action']) && $_GET['action'] == 'editer') ||
-	isset($_POST['porteDocumentsEditionAnnuler']) || isset($_POST['porteDocumentsEditionSauvegarder'])
-)
-{
-	session_start();
-	
-	if (!isset($_SESSION['jeton']))
-	{
-		$_SESSION['jeton'] = md5(uniqid(mt_rand(), TRUE));
-		
-		if (isset($_GET['valeur']))
-		{
-			$_SESSION['jeton'] .= md5($_GET['valeur']);
-		}
-	}
-}
-
 $baliseTitle = T_("Porte-documents");
 $boitesDeroulantes = '#divContenuDossierAdminPorteDoc #divListeDossiersAdminPorteDoc #varPageModele';
 $boitesDeroulantes .= ' .aideAdminPorteDocuments .optionsAvanceesAdminPorteDocuments';
@@ -686,7 +667,6 @@ if (isset($_GET['action']) && $_GET['action'] == 'editer')
 		echo '<div id="redimensionnable"><textarea id="code" ' . $classTextarea . ' cols="80" rows="25" ' . $styleTextarea . ' name="porteDocumentsContenuFichier">' . $contenuFichier . '</textarea>' . $imageRedimensionner . "</div>\n";
 	
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . $getValeur . '" />' . "\n";
-		echo '<input type="hidden" name="porteDocumentsEditionJeton" value="' . $_SESSION['jeton'] . '" />' . "\n";
 		
 		echo '<p><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
 		
@@ -743,12 +723,7 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 		
 		$messageErreurEditionAafficher = FALSE;
 		
-		if ($_POST['porteDocumentsEditionJeton'] != $_SESSION['jeton'])
-		{
-			$messageErreurEditionAafficher = TRUE;
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("La demande de modification du fichier %1\$s ne peut aboutir. Il peut y avoir deux raisons à ce problème:\n<ul>\n<li>votre session a expiré. Dans ce cas, copiez le contenu qui devait être sauvegardé et tentez à nouveau d'éditer le fichier;</li>\n<li>la demande ne provient pas du serveur hébergeant l'administration de votre site. Vérifiez dans ce cas que vous n'êtes pas la cible d'une attaque de type <acronym lang=\"en\" title=\"Cross-site request forgery\">CSRF</acronym> (<a href=\"http://fr.wikipedia.org/wiki/CSRF\">voir la définition de «<acronym lang=\"en\">CSRF</acronym>» sur Wikipédia</a>). Vérifiez entre autre que le contenu qui allait être sauvegardé ne renferme pas de code malicieux.</li>\n</ul>\n"), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
-		}
-		elseif ($fic = @fopen($porteDocumentsEditionNom, 'w'))
+		if ($fic = @fopen($porteDocumentsEditionNom, 'w'))
 		{
 			if (@fwrite($fic, sansEchappement($_POST['porteDocumentsContenuFichier'])) !== FALSE)
 			{
