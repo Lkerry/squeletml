@@ -24,17 +24,11 @@ if (file_exists($racine . '/init.inc.php'))
 	{
 		$t1 = time();
 		@file_put_contents("$racine/site/inc/cron.txt", $t1);
-
+		
 		$langueRapports = !empty($langueRapports) ? $langueRapports : $langueParDefaut;
 		phpGettext($racine, $langueRapports); // Nécessaire à la traduction.
 		
 		$rapport = '';
-
-		if (!isset($adminPorteDocumentsDroits))
-		{
-			$adminPorteDocumentsDroits = array ('creer' => TRUE);
-		}
-		
 		$dateJour = date('Y-m-d', $t1);
 		$dateHeure = date('H:i:s', $t1);
 		$rapport .= '<h1>' . sprintf(T_("Rapport d'exécution du cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . "</h1>\n";
@@ -311,7 +305,7 @@ if (file_exists($racine . '/init.inc.php'))
 			$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap du site") . "</h3>\n";
 			
 			$rapport .= "<ul>\n";
-			$rapport .= adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine, $adminPorteDocumentsDroits);
+			$rapport .= adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine);
 			$rapport .= "</ul>\n";
 		}
 
@@ -320,7 +314,7 @@ if (file_exists($racine . '/init.inc.php'))
 			$rapport .= '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n";
 
 			$rapport .= "<ul>\n";
-			$rapport .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits);
+			$rapport .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage);
 			$rapport .= "</ul>\n";
 		}
 		
@@ -347,7 +341,7 @@ if (file_exists($racine . '/init.inc.php'))
 		$rapport .= '<h3>' . T_("Vérification de la déclaration du fichier d'index Sitemap dans le fichier <code>robots.txt</code>") . "</h3>\n" ;
 
 		$rapport .= "<ul>\n";
-		$rapport .= adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocumentsDroits);
+		$rapport .= adminDeclareSitemapDansRobots($racine, $urlRacine);
 		$rapport .= "</ul>\n";
 		
 		$t2 = time();

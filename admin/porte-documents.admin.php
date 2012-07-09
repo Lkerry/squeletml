@@ -5,11 +5,8 @@ include 'inc/zero.inc.php';
 
 // Jeton utilisé pour vérifier la provenance d'un formulaire complété d'édition de fichier.
 if (
-	$adminPorteDocumentsDroits['editer'] &&
-	(
-		(isset($_GET['action']) && $_GET['action'] == 'editer') ||
-		isset($_POST['porteDocumentsEditionAnnuler']) || isset($_POST['porteDocumentsEditionSauvegarder'])
-	)
+	(isset($_GET['action']) && $_GET['action'] == 'editer') ||
+	isset($_POST['porteDocumentsEditionAnnuler']) || isset($_POST['porteDocumentsEditionSauvegarder'])
 )
 {
 	session_start();
@@ -130,7 +127,7 @@ echo '<h2 id="messages">' . T_("Messages d'avancement, de confirmation ou d'erre
 
 /* ____________________ Confirmation. ____________________ */
 
-if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie']))
+if (isset($_POST['porteDocumentsCopie']))
 {
 	$messagesScript = '';
 	
@@ -201,7 +198,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopie'])
 
 /* ____________________ Mise en action. ____________________ */
 
-if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieConfirmation']))
+if (isset($_POST['porteDocumentsCopieConfirmation']))
 {
 	$messagesScript = '';
 	$cheminDeCopie = securiseTexte($_POST['porteDocumentsCopieChemin']);
@@ -273,7 +270,7 @@ if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsCopieCon
 
 /* ____________________ Confirmation. ____________________ */
 
-if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplacement']))
+if (isset($_POST['porteDocumentsDeplacement']))
 {
 	$messagesScript = '';
 	
@@ -343,7 +340,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 
 /* ____________________ Mise en action. ____________________ */
 
-if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplacementConfirmation']))
+if (isset($_POST['porteDocumentsDeplacementConfirmation']))
 {
 	$messagesScript = '';
 	$cheminDeDeplacement = securiseTexte($_POST['porteDocumentsDeplacementChemin']);
@@ -407,7 +404,7 @@ if ($adminPorteDocumentsDroits['deplacer'] && isset($_POST['porteDocumentsDeplac
 
 /* ____________________ Confirmation. ____________________ */
 
-if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppression']))
+if (isset($_POST['porteDocumentsSuppression']))
 {
 	$messagesScript = '';
 	
@@ -456,7 +453,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 
 /* ____________________ Mise en action. ____________________ */
 
-if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppressionConfirmation']))
+if (isset($_POST['porteDocumentsSuppressionConfirmation']))
 {
 	$messagesScript = '';
 	
@@ -500,7 +497,7 @@ if ($adminPorteDocumentsDroits['supprimer'] && isset($_POST['porteDocumentsSuppr
 
 /* ____________________ Confirmation. ____________________ */
 
-if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDocumentsPermissions']))
+if (isset($_POST['porteDocumentsPermissions']))
 {
 	$messagesScript = '';
 	
@@ -557,7 +554,7 @@ if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDoc
 
 /* ____________________ Mise en action. ____________________ */
 
-if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDocumentsPermissionsConfirmation']))
+if (isset($_POST['porteDocumentsPermissionsConfirmation']))
 {
 	$messagesScript = '';
 	
@@ -621,18 +618,14 @@ if ($adminPorteDocumentsDroits['modifier-permissions'] && isset($_POST['porteDoc
 
 /* ____________________ Formulaire d'édition. ____________________ */
 
-if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['action'] == 'editer')
+if (isset($_GET['action']) && $_GET['action'] == 'editer')
 {
 	$messagesScript = '';
 	
 	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . T_("Édition d'un fichier") . "</h3>\n";
 	
-	if (!file_exists($getValeur) && !$adminPorteDocumentsDroits['creer'])
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
-	}
-	elseif (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+	if (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$getValeur</code>") . "</li>\n";
 	}
@@ -718,7 +711,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_GET['action']) && $_GET['act
 
 /* ____________________ Annulation d'édition. ____________________ */
 
-if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionAnnuler']))
+if (isset($_POST['porteDocumentsEditionAnnuler']))
 {
 	$messagesScript = '';
 	$porteDocumentsEditionNom = securiseTexte($_POST['porteDocumentsEditionNom']);
@@ -730,16 +723,12 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionA
 
 /* ____________________ Sauvegarde des modifications. ____________________ */
 
-if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionSauvegarder']))
+if (isset($_POST['porteDocumentsEditionSauvegarder']))
 {
 	$messagesScript = '';
 	$porteDocumentsEditionNom = securiseTexte($_POST['porteDocumentsEditionNom']);
 	
-	if (!file_exists($porteDocumentsEditionNom) && !$adminPorteDocumentsDroits['creer'])
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'existe pas."), "<code>$getValeur</code>") . "</li>\n";
-	}
-	elseif (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+	if (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 	}
@@ -798,7 +787,7 @@ if ($adminPorteDocumentsDroits['editer'] && isset($_POST['porteDocumentsEditionS
 
 /* ____________________ Formulaire de renommage. ____________________ */
 
-if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['action'] == 'renommer')
+if (isset($_GET['action']) && $_GET['action'] == 'renommer')
 {
 	$messagesScript = '';
 	$ancienNom = $getValeur;
@@ -815,46 +804,28 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 	}
 	else
 	{
-		if ($adminPorteDocumentsDroits['deplacer'])
-		{
-			echo '<p>' . sprintf(T_("Pour renommer %1\$s, spécifier le nouveau nom dans le champ. Il est possible de déplacer le fichier en insérant un chemin dans le nom, par exemple <code>dossier1/dossier2/fichier.txt</code>."), "<code>$ancienNom</code>") . "</p>\n";
-		}
-		else
-		{
-			echo '<p>' . sprintf(T_("Pour renommer %1\$s, spécifier le nouveau nom dans le champ."), "<code>$ancienNom</code>") . "</p>\n";
-		}
-	
+		echo '<p>' . sprintf(T_("Pour renommer %1\$s, spécifier le nouveau nom dans le champ. Il est possible de déplacer le fichier en insérant un chemin dans le nom, par exemple <code>dossier1/dossier2/fichier.txt</code>."), "<code>$ancienNom</code>") . "</p>\n";
+		
 		echo "<form action=\"$adminAction\" method=\"post\">\n";
 		echo "<div>\n";
-	
+		
 		echo "<fieldset>\n";
 		echo '<legend>' . T_("Options") . "</legend>\n";
 		
-		if ($adminPorteDocumentsDroits['copier'])
-		{
-			echo '<p><input id="inputPorteDocumentsRenommageCopie" type="checkbox" name="porteDocumentsRenommageCopie" value="copie" /><label for="inputPorteDocumentsRenommageCopie">' . T_("Copier avant de renommer") . "</label></p>\n";
-		}
-	
+		echo '<p><input id="inputPorteDocumentsRenommageCopie" type="checkbox" name="porteDocumentsRenommageCopie" value="copie" /><label for="inputPorteDocumentsRenommageCopie">' . T_("Copier avant de renommer") . "</label></p>\n";
+		
 		echo '<input type="hidden" name="porteDocumentsAncienNom" value="' . $ancienNom . '" />';
-	
-		if ($adminPorteDocumentsDroits['deplacer'])
-		{
-			echo '<p><label for="inputPorteDocumentsNouveauNom">' . T_("Nouveau nom:") . "</label><br />\n" . '<input id="inputPorteDocumentsNouveauNom" type="text" name="porteDocumentsNouveauNom" value="' . $ancienNom . '" size="50" />' . "</p>\n";
-		}
-		else
-		{
-			echo '<p><label for="inputPorteDocumentsNouveauNom">' . T_("Nouveau nom:") . "</label><br />\n" . dirname($ancienNom) . '/<input id="inputPorteDocumentsNouveauNom" type="text" name="porteDocumentsNouveauNom" value="' . superBasename($ancienNom) . '" size="50" />' . "</p>\n";
-		}
-	
+		
+		echo '<p><label for="inputPorteDocumentsNouveauNom">' . T_("Nouveau nom:") . "</label><br />\n" . '<input id="inputPorteDocumentsNouveauNom" type="text" name="porteDocumentsNouveauNom" value="' . $ancienNom . '" size="50" />' . "</p>\n";
 		echo "</fieldset>\n";
-	
+		
 		echo '<p><input type="submit" name="porteDocumentsRenommage" value="' . T_("Renommer") . '" />' . "</p>\n";
-	
+		
 		if (!empty($dossierCourant))
 		{
 			echo '<input type="hidden" name="porteDocumentsDossierCourant" value="' . $dossierCourant . '" />' . "\n";
 		}
-	
+		
 		echo "</div>\n";
 		echo "</form>\n";
 	}
@@ -864,21 +835,13 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_GET['action']) && $_GET['a
 
 /* ____________________ Mise en action. ____________________ */
 
-if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenommage']))
+if (isset($_POST['porteDocumentsRenommage']))
 {
 	$messagesScript = '';
 	$ancienNom = securiseTexte($_POST['porteDocumentsAncienNom']);
+	$nouveauNom = securiseTexte($_POST['porteDocumentsNouveauNom']);
 	
-	if ($adminPorteDocumentsDroits['deplacer'])
-	{
-		$nouveauNom = securiseTexte($_POST['porteDocumentsNouveauNom']);
-	}
-	else
-	{
-		$nouveauNom = securiseTexte(dirname($_POST['porteDocumentsAncienNom']) . '/' . superBasename($_POST['porteDocumentsNouveauNom']));
-	}
-	
-	if ($adminPorteDocumentsDroits['copier'] && isset($_POST['porteDocumentsRenommageCopie']) && $_POST['porteDocumentsRenommageCopie'] == 'copie')
+	if (isset($_POST['porteDocumentsRenommageCopie']) && $_POST['porteDocumentsRenommageCopie'] == 'copie')
 	{
 		$copie = TRUE;
 	}
@@ -957,7 +920,7 @@ if ($adminPorteDocumentsDroits['renommer'] && isset($_POST['porteDocumentsRenomm
 ##
 ########################################################################
 
-if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation']))
+if (isset($_POST['porteDocumentsCreation']))
 {
 	$messagesScript = '';
 	
@@ -1052,16 +1015,9 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 						
 						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 						{
-							if ($adminPorteDocumentsDroits['editer'])
-							{
-								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
-							}
-							else
-							{
-								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
-							}
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode($page), 3));
 						}
-						elseif ($adminPorteDocumentsDroits['editer'])
+						else
 						{
 							$messagesScript .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . $fichierAcreerNom . $dossierCourantDansUrl . '#messages">' . T_("Vous pouvez l'éditer.") . "</a>";
 						}
@@ -1079,16 +1035,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 						{
 							$messagesScript .= '<li>'; // Ouverture de `<li>`.
 							$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), "<code>$fichierMarkdownAcreerNom</code>");
-						
-							if ($adminPorteDocumentsDroits['editer'])
-							{
-								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mkd"), 3));
-							}
-							else
-							{
-								$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'afficher</a>."), $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mkd"), 3));
-							}
-						
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . $fichierMarkdownAcreerNom . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . substr($cheminPage . '/' . rawurlencode("$page.mkd"), 3));
 							$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
 						}
 						else
@@ -1365,7 +1312,7 @@ if ($adminPorteDocumentsDroits['creer'] && isset($_POST['porteDocumentsCreation'
 ##
 ########################################################################
 
-if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis))) && (isset($_POST['porteDocumentsAjouter']) || (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))))
+if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis))) && (isset($_POST['porteDocumentsAjouter']) || (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))))
 {
 	$messagesScript = '';
 	
@@ -1492,55 +1439,26 @@ if (!empty($dossierCourant))
 echo '<div class="boite">' . "\n";
 echo '<h2 id="fichiersEtDossiers">' . T_("Liste des fichiers et dossiers") . "</h2>\n";
 
-if ($adminPorteDocumentsDroits['ajouter'] || $adminPorteDocumentsDroits['creer'] || $adminPorteDocumentsDroits['copier'] || $adminPorteDocumentsDroits['deplacer'] || $adminPorteDocumentsDroits['modifier-permissions'] || $adminPorteDocumentsDroits['supprimer'])
-{
-	$afficherBoiteActions = TRUE;
-	$boiteActions = '';
-	$boiteActions .= "<fieldset>\n";
-	$boiteActions .= '<legend>' . T_("Actions") . "</legend>";
-	
-	if ($adminPorteDocumentsDroits['ajouter'])
-	{
-		$boiteActions .= ' <a href="#ajouter">' . T_("Ajouter") . '</a> |';
-	}
-	
-	if ($adminPorteDocumentsDroits['creer'])
-	{
-		$boiteActions .= ' <a href="#creer">' . T_("Créer") . '</a> |';
-	}
-	
-	if ($adminPorteDocumentsDroits['copier'])
-	{
-		$boiteActions .= ' <input type="submit" name="porteDocumentsCopie" value="' . T_("Copier") . '" /> |';
-	}
-	
-	if ($adminPorteDocumentsDroits['deplacer'])
-	{
-		$boiteActions .= ' <input type="submit" name="porteDocumentsDeplacement" value="' . T_("Déplacer") . '" /> |';
-	}
-	
-	if ($adminPorteDocumentsDroits['modifier-permissions'])
-	{
-		$boiteActions .= ' <input type="submit" name="porteDocumentsPermissions" value="' . T_("Permissions") . '" /> |';
-	}
-	
-	if ($adminPorteDocumentsDroits['supprimer'])
-	{
-		$boiteActions .= ' <input type="submit" name="porteDocumentsSuppression" value="' . T_("Supprimer") . '" /> |';
-	}
-	
-	$boiteActions = substr($boiteActions, 0, -2);
-	$boiteActions .= "</fieldset>\n";
-}
-else
-{
-	$afficherBoiteActions = FALSE;
-}
+$boiteActions = '';
+$boiteActions .= "<fieldset>\n";
+$boiteActions .= '<legend>' . T_("Actions") . "</legend>";
 
-if ($afficherBoiteActions)
-{
-	echo $boiteActions;
-}
+$boiteActions .= ' <a href="#ajouter">' . T_("Ajouter") . '</a> |';
+
+$boiteActions .= ' <a href="#creer">' . T_("Créer") . '</a> |';
+
+$boiteActions .= ' <input type="submit" name="porteDocumentsCopie" value="' . T_("Copier") . '" /> |';
+
+$boiteActions .= ' <input type="submit" name="porteDocumentsDeplacement" value="' . T_("Déplacer") . '" /> |';
+
+$boiteActions .= ' <input type="submit" name="porteDocumentsPermissions" value="' . T_("Permissions") . '" /> |';
+
+$boiteActions .= ' <input type="submit" name="porteDocumentsSuppression" value="' . T_("Supprimer") . '" /> |';
+
+$boiteActions = substr($boiteActions, 0, -2);
+$boiteActions .= "</fieldset>\n";
+
+echo $boiteActions;
 
 /* ____________________ Parcours d'un dossier. ____________________ */
 
@@ -1575,7 +1493,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	else
 	{
 		$dossierDeDepartAparcourir = $dossierAparcourir;
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1641,40 +1559,31 @@ foreach ($listeDossiersPourListe as $listeDossier)
 	$dossierMisEnForme = '';
 	$dossierMisEnForme .= "<li class=\"$classe\">";
 	
-	if ($adminPorteDocumentsDroits['copier'] || $adminPorteDocumentsDroits['deplacer'] || $adminPorteDocumentsDroits['modifier-permissions'] || $adminPorteDocumentsDroits['supprimer'])
+	if (adminEmplacementModifiable($listeDossier, $adminDossierRacinePorteDocuments))
 	{
-		if (adminEmplacementModifiable($listeDossier, $adminDossierRacinePorteDocuments))
-		{
-			$disabled = '';
-		}
-		else
-		{
-			$disabled = " disabled=\"disabled\"";
-		}
-		
-		$dossierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$listeDossier\"$disabled />";
-		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+		$disabled = '';
+	}
+	else
+	{
+		$disabled = " disabled=\"disabled\"";
 	}
 	
-	if ($adminPorteDocumentsDroits['telecharger'])
+	$dossierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$listeDossier\"$disabled />";
+	$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+	
+	$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$listeDossier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+	$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+	
+	if (adminEmplacementModifiable($listeDossier, $adminDossierRacinePorteDocuments))
 	{
-		$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$listeDossier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
-		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+		$dossierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$listeDossier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+	}
+	else
+	{
+		$dossierMisEnForme .= "<img src=\"$urlRacineAdmin/fichiers/renommer-desactive.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" />\n";
 	}
 	
-	if ($adminPorteDocumentsDroits['renommer'])
-	{
-		if (adminEmplacementModifiable($listeDossier, $adminDossierRacinePorteDocuments))
-		{
-			$dossierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$listeDossier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
-		}
-		else
-		{
-			$dossierMisEnForme .= "<img src=\"$urlRacineAdmin/fichiers/renommer-desactive.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" />\n";
-		}
-		
-		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
-	}
+	$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	
 	if ($adminActiverInfobulle['listeDesDossiers'])
 	{
@@ -1702,7 +1611,7 @@ echo "</form>\n";
 
 /* ____________________ Ajout. ____________________ */
 
-if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis))))
+if (!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis)))
 {
 	echo '<div class="boite">' . "\n";
 	echo '<h2 id="ajouter">' . T_("Ajouter un fichier") . "</h2>\n";
@@ -1798,100 +1707,97 @@ if ($adminPorteDocumentsDroits['ajouter'] && (!$adminFiltreTypesMime || ($adminF
 
 /* ____________________ Création. ____________________ */
 
-if ($adminPorteDocumentsDroits['creer'])
-{
-	echo '<div class="boite">' . "\n";
-	echo '<h2 id="creer">' . T_("Créer un fichier ou un dossier") . "</h2>\n";
-	
-	echo '<div class="aideAdminPorteDocuments aide">' . "\n";
-	echo '<h3 class="bDtitre">' . T_("Aide") . "</h3>\n";
-	
-	echo '<div class="bDcorps">' . "\n";
-	echo '<p>' . T_("Choisir le dossier parent et spécifier le nom du nouveau fichier ou dossier à créer. De nouveaux dossiers parents peuvent être ajoutés dans le nom, séparés par des barres obliques (<code>/</code>). Ils seront créés en même temps que le fichier ou le dossier.") . "</p>\n";
-	echo "</div><!-- .bDcorps -->\n";
-	echo "</div><!-- .aideAdminPorteDocuments -->\n";
-	
-	echo '<form action="' . $adminAction . '#messages" method="post">' . "\n";
-	echo "<div>\n";
-	echo "<fieldset>\n";
-	echo '<legend>' . T_("Options") . "</legend>\n";
-	
-	echo '<p>' . sprintf(T_("<label for=\"%1\$s\">Chemin</label> et <label for=\"%2\$s\">nom</label>:"), "selectPorteDocumentsCreationChemin", "inputPorteDocumentsCreationNom") . "<br />\n";
+echo '<div class="boite">' . "\n";
+echo '<h2 id="creer">' . T_("Créer un fichier ou un dossier") . "</h2>\n";
 
-	echo '<select id="selectPorteDocumentsCreationChemin" name="porteDocumentsCreationChemin" size="1">' . "\n";
-	
-	foreach ($listeDossiers as $valeur)
+echo '<div class="aideAdminPorteDocuments aide">' . "\n";
+echo '<h3 class="bDtitre">' . T_("Aide") . "</h3>\n";
+
+echo '<div class="bDcorps">' . "\n";
+echo '<p>' . T_("Choisir le dossier parent et spécifier le nom du nouveau fichier ou dossier à créer. De nouveaux dossiers parents peuvent être ajoutés dans le nom, séparés par des barres obliques (<code>/</code>). Ils seront créés en même temps que le fichier ou le dossier.") . "</p>\n";
+echo "</div><!-- .bDcorps -->\n";
+echo "</div><!-- .aideAdminPorteDocuments -->\n";
+
+echo '<form action="' . $adminAction . '#messages" method="post">' . "\n";
+echo "<div>\n";
+echo "<fieldset>\n";
+echo '<legend>' . T_("Options") . "</legend>\n";
+
+echo '<p>' . sprintf(T_("<label for=\"%1\$s\">Chemin</label> et <label for=\"%2\$s\">nom</label>:"), "selectPorteDocumentsCreationChemin", "inputPorteDocumentsCreationNom") . "<br />\n";
+
+echo '<select id="selectPorteDocumentsCreationChemin" name="porteDocumentsCreationChemin" size="1">' . "\n";
+
+foreach ($listeDossiers as $valeur)
+{
+	if (!empty($dossierCourant) && $valeur == $dossierCourant)
 	{
-		if (!empty($dossierCourant) && $valeur == $dossierCourant)
-		{
-			$selected = ' selected="selected"';
-		}
-		else
-		{
-			$selected = '';
-		}
-		
-		echo '<option value="' . $valeur . '"' . $selected. '>' . $valeur . "</option>\n";
+		$selected = ' selected="selected"';
+	}
+	else
+	{
+		$selected = '';
 	}
 	
-	echo '</select>';
-	echo ' / <input id="inputPorteDocumentsCreationNom" type="text" name="porteDocumentsCreationNom" size="25" value="" /></p>' . "\n";
-	
-	echo '<p><label for="selectPorteDocumentsCreationType">' . T_("Type:") . "</label><br />\n";
-	echo '<select id="selectPorteDocumentsCreationType" name="porteDocumentsCreationType" size="1">' . "\n";
-	echo '<option value="FichierModeleHtml">' .  T_("Page web modèle") . "</option>\n";
-	echo '<option value="FichierModeleMarkdown">' .  T_("Page web modèle avec syntaxe Markdown") . "</option>\n";
-	echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
-	echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
-	echo "</select></p>\n";
-	
-	echo '<fieldset class="optionsAvanceesAdminPorteDocuments">' . "\n";
-	echo '<legend class="bDtitre">' . T_("Options avancées") . "</legend>\n";
-	echo '<div class="bDcorps">' . "\n";
-	echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page web modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
-	echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
-	echo '<option value="apercu">$apercu</option>' . "\n";
-	echo '<option value="auteur">$auteur</option>' . "\n";
-	echo '<option value="baliseH1">$baliseH1</option>' . "\n";
-	echo '<option value="baliseTitle">$baliseTitle</option>' . "\n";
-	echo '<option value="boitesDeroulantes">$boitesDeroulantes</option>' . "\n";
-	echo '<option value="boitesDeroulantesAlaMain">$boitesDeroulantesAlaMain</option>' . "\n";
-	echo '<option value="classesBody">$classesBody</option>' . "\n";
-	echo '<option value="classesContenu">$classesContenu</option>' . "\n";
-	echo '<option value="courrielContact">$courrielContact</option>' . "\n";
-	echo '<option value="dateCreation">$dateCreation</option>' . "\n";
-	echo '<option value="dateRevision">$dateRevision</option>' . "\n";
-	echo '<option value="description">$description</option>' . "\n";
-	echo '<option value="envoyerAmis">$envoyerAmis</option>' . "\n";
-	echo '<option value="idCategorie">$idCategorie</option>' . "\n";
-	echo '<option value="idGalerie">$idGalerie</option>' . "\n";
-	echo '<option value="infosPublication">$infosPublication</option>' . "\n";
-	echo '<option value="langue">$langue</option>' . "\n";
-	echo '<option value="licence">$licence</option>' . "\n";
-	echo '<option value="lienPage">$lienPage</option>' . "\n";
-	echo '<option value="motsCles">$motsCles</option>' . "\n";
-	echo '<option value="robots">$robots</option>' . "\n";
-	echo '<option value="rssCategorie">$rssCategorie</option>' . "\n";
-	echo '<option value="rssGalerie">$rssGalerie</option>' . "\n";
-	echo '<option value="tableDesMatieres">$tableDesMatieres</option>' . "\n";
-	echo "</select></p>\n";
-	
-	echo "<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="inputPorteDocumentsCreationFiltrerNom">' . sprintf(T_("Filtrer le nom du fichier ou du dossier créé. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>') . "</label>\n<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="inputPorteDocumentsCreationFiltrerCasse">' . T_("Filtrer également les majuscules en minuscules.") . "</label></li>\n</ul>\n</li>\n</ul>\n";
-	echo "</div><!-- /.bDcorps -->\n";
-	echo "</fieldset>\n";
-	echo "</fieldset>\n";
-	
-	echo '<p><input type="submit" name="porteDocumentsCreation" value="' . T_("Créer") . '" />' . "</p>\n";
-	
-	if (!empty($dossierCourant))
-	{
-		echo '<input type="hidden" name="porteDocumentsDossierCourant" value="' . $dossierCourant . '" />' . "\n";
-	}
-	
-	echo "</div>\n";
-	echo "</form>\n";
-	echo "</div><!-- /.boite -->\n";
+	echo '<option value="' . $valeur . '"' . $selected. '>' . $valeur . "</option>\n";
 }
+
+echo '</select>';
+echo ' / <input id="inputPorteDocumentsCreationNom" type="text" name="porteDocumentsCreationNom" size="25" value="" /></p>' . "\n";
+
+echo '<p><label for="selectPorteDocumentsCreationType">' . T_("Type:") . "</label><br />\n";
+echo '<select id="selectPorteDocumentsCreationType" name="porteDocumentsCreationType" size="1">' . "\n";
+echo '<option value="FichierModeleHtml">' .  T_("Page web modèle") . "</option>\n";
+echo '<option value="FichierModeleMarkdown">' .  T_("Page web modèle avec syntaxe Markdown") . "</option>\n";
+echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
+echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
+echo "</select></p>\n";
+
+echo '<fieldset class="optionsAvanceesAdminPorteDocuments">' . "\n";
+echo '<legend class="bDtitre">' . T_("Options avancées") . "</legend>\n";
+echo '<div class="bDcorps">' . "\n";
+echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page web modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
+echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
+echo '<option value="apercu">$apercu</option>' . "\n";
+echo '<option value="auteur">$auteur</option>' . "\n";
+echo '<option value="baliseH1">$baliseH1</option>' . "\n";
+echo '<option value="baliseTitle">$baliseTitle</option>' . "\n";
+echo '<option value="boitesDeroulantes">$boitesDeroulantes</option>' . "\n";
+echo '<option value="boitesDeroulantesAlaMain">$boitesDeroulantesAlaMain</option>' . "\n";
+echo '<option value="classesBody">$classesBody</option>' . "\n";
+echo '<option value="classesContenu">$classesContenu</option>' . "\n";
+echo '<option value="courrielContact">$courrielContact</option>' . "\n";
+echo '<option value="dateCreation">$dateCreation</option>' . "\n";
+echo '<option value="dateRevision">$dateRevision</option>' . "\n";
+echo '<option value="description">$description</option>' . "\n";
+echo '<option value="envoyerAmis">$envoyerAmis</option>' . "\n";
+echo '<option value="idCategorie">$idCategorie</option>' . "\n";
+echo '<option value="idGalerie">$idGalerie</option>' . "\n";
+echo '<option value="infosPublication">$infosPublication</option>' . "\n";
+echo '<option value="langue">$langue</option>' . "\n";
+echo '<option value="licence">$licence</option>' . "\n";
+echo '<option value="lienPage">$lienPage</option>' . "\n";
+echo '<option value="motsCles">$motsCles</option>' . "\n";
+echo '<option value="robots">$robots</option>' . "\n";
+echo '<option value="rssCategorie">$rssCategorie</option>' . "\n";
+echo '<option value="rssGalerie">$rssGalerie</option>' . "\n";
+echo '<option value="tableDesMatieres">$tableDesMatieres</option>' . "\n";
+echo "</select></p>\n";
+
+echo "<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerNom" type="checkbox" name="filtrerNom[]" value="filtrer" /> <label for="inputPorteDocumentsCreationFiltrerNom">' . sprintf(T_("Filtrer le nom du fichier ou du dossier créé. Le filtre convertit automatiquement les caractères accentués par leur équivalent non accentué (par exemple «é» devient «e») et ensuite les caractères différents de %1\$s par un tiret."), '<code>a-zA-Z0-9.-_+</code>') . "</label>\n<ul>\n" . '<li><input id="inputPorteDocumentsCreationFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="inputPorteDocumentsCreationFiltrerCasse">' . T_("Filtrer également les majuscules en minuscules.") . "</label></li>\n</ul>\n</li>\n</ul>\n";
+echo "</div><!-- /.bDcorps -->\n";
+echo "</fieldset>\n";
+echo "</fieldset>\n";
+
+echo '<p><input type="submit" name="porteDocumentsCreation" value="' . T_("Créer") . '" />' . "</p>\n";
+
+if (!empty($dossierCourant))
+{
+	echo '<input type="hidden" name="porteDocumentsDossierCourant" value="' . $dossierCourant . '" />' . "\n";
+}
+
+echo "</div>\n";
+echo "</form>\n";
+echo "</div><!-- /.boite -->\n";
 
 include $racineAdmin . '/inc/dernier.inc.php';
 ?>

@@ -20,16 +20,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$cheminFichier = cheminConfigCategories($racine, TRUE);
 			
-			if ($adminPorteDocumentsDroits['creer'])
+			if (!@touch($cheminFichier))
 			{
-				if (!@touch($cheminFichier))
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-				}
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -454,16 +447,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$cheminFichier = cheminConfigCategories($racine, TRUE);
 			
-			if ($adminPorteDocumentsDroits['creer'])
+			if (!@touch($cheminFichier))
 			{
-				if (!@touch($cheminFichier))
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-				}
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -512,15 +498,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (!$cheminFichierRss)
 			{
 				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
-				
-				if ($adminPorteDocumentsDroits['creer'])
-				{
-					@touch($cheminFichierRss);
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichierRss</code>") . "</li>\n";
-				}
+				@touch($cheminFichierRss);
 			}
 			
 			if (file_exists($cheminFichierRss) && ($rssPages = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
@@ -567,7 +545,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 			}
 			
-			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
+			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
 			
 			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des dernières publications"));
 		}
@@ -575,7 +553,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['sitemapAjout']) && !empty($_POST['urlAjout']))
 		{
 			$urlAjout = $urlRacine . '/' . superRawurlencode($_POST['urlAjout']);
-			$messagesScript = adminAjouteUrlDansSitemap($racine, 'site', array ($urlAjout => array ()), $adminPorteDocumentsDroits);
+			$messagesScript = adminAjouteUrlDansSitemap($racine, 'site', array ($urlAjout => array ()));
 			
 			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap du site"));
 		}

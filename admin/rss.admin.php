@@ -31,16 +31,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
 			
-			if ($adminPorteDocumentsDroits['creer'])
+			if (!@touch($cheminFichier))
 			{
-				if (!@touch($cheminFichier))
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-				}
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -190,16 +183,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
 			
-			if ($adminPorteDocumentsDroits['creer'])
+			if (!@touch($cheminFichier))
 			{
-				if (!@touch($cheminFichier))
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-				}
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 			}
 		}
 		
@@ -403,7 +389,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier, $adminPorteDocumentsDroits);
+		$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier);
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
@@ -467,7 +453,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $adminPorteDocumentsDroits);
+		$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier);
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
@@ -475,7 +461,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (isset($_POST['sitemapAjout']) && !empty($_POST['urlAjout']))
 		{
 			$urlAjout = $urlRacine . '/' . superRawurlencode($_POST['urlAjout']);
-			$messagesScript = adminAjouteUrlDansSitemap($racine, 'site', array ($urlAjout => array ()), $adminPorteDocumentsDroits);
+			$messagesScript = adminAjouteUrlDansSitemap($racine, 'site', array ($urlAjout => array ()));
 			
 			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap du site"));
 		}
@@ -500,9 +486,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<?php endif; ?>
 	</ul>
 	
-	<?php if ($adminPorteDocumentsDroits['editer']): ?>
-		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
-	<?php endif; ?>
+	<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
 </div><!-- /.boite -->
 
 <div class="boite">

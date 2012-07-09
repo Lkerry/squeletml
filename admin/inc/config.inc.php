@@ -276,21 +276,7 @@ $adminTypesMimePermis['qt|mov']                 = 'video/quicktime';
 
 /* ____________________ Actions sur les fichiers. ____________________ */
 
-// Actions à activer dans le porte-documents.
-/*
-- Chaque élément peut valoir TRUE ou FALSE.
-*/
-$adminPorteDocumentsDroits['ajouter']              = TRUE;
-$adminPorteDocumentsDroits['copier']               = TRUE;
-$adminPorteDocumentsDroits['creer']                = TRUE;
-$adminPorteDocumentsDroits['deplacer']             = TRUE;
-$adminPorteDocumentsDroits['editer']               = TRUE;
-$adminPorteDocumentsDroits['modifier-permissions'] = TRUE;
-$adminPorteDocumentsDroits['renommer']             = TRUE;
-$adminPorteDocumentsDroits['supprimer']            = TRUE;
-$adminPorteDocumentsDroits['telecharger']          = TRUE;
-
-// Si `$adminPorteDocumentsDroits['edition']` vaut TRUE, activer une aide lors de l'édition.
+// Aide lors de l'édition.
 /*
 - Il y a deux possibilités:
   - activer l'ajout d'une barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor), qui permet également de visualiser un aperçu du code HTML.

@@ -159,7 +159,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 
 		$contenuFichier .= '</urlset>';
-		$messagesScript .= adminEnregistreSitemap($racine, 'site', $contenuFichier, $adminPorteDocumentsDroits);
+		$messagesScript .= adminEnregistreSitemap($racine, 'site', $contenuFichier);
 	
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
@@ -177,15 +177,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (!$cheminFichierRss)
 			{
 				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
-			
-				if ($adminPorteDocumentsDroits['creer'])
-				{
-					@touch($cheminFichierRss);
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichierRss</code>") . "</li>\n";
-				}
+				@touch($cheminFichierRss);
 			}
 		
 			if (file_exists($cheminFichierRss) && ($rssPages = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
@@ -232,7 +224,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 			}
 		
-			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
+			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
 		
 			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des dernières publications"));
 		}
@@ -270,7 +262,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		$contenuFichier .= '</sitemapindex>';
 		
-		$messagesScript .= adminEnregistreSitemap($racine, 'index', $contenuFichier, $adminPorteDocumentsDroits);
+		$messagesScript .= adminEnregistreSitemap($racine, 'index', $contenuFichier);
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
@@ -281,30 +273,23 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$cheminFichier = $racine . '/sitemap_site.xml';
-		
+			
 			if (!file_exists($cheminFichier))
 			{
-				if ($adminPorteDocumentsDroits['creer'])
-				{
-					adminAjouteUrlDansSitemap($racine, 'site', array (), $adminPorteDocumentsDroits);
+				adminAjouteUrlDansSitemap($racine, 'site', array ());
 				
-					if (!file_exists($cheminFichier))
-					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-					}
-				}
-				else
+				if (!file_exists($cheminFichier))
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
-		
+			
 			if (file_exists($cheminFichier) && ($contenuSitemap = @file_get_contents($cheminFichier)) !== FALSE)
 			{
 				echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 				echo "<div>\n";
 				$i = 0;
-			
+				
 				if (!empty($contenuSitemap))
 				{
 					$dom = new DomDocument();
@@ -660,7 +645,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Ajout automatique des pages des catégories et du flux RSS des dernières publications dans le fichier Sitemap du site") . "</h3>\n";
 			
-			$messagesScript .= adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine, $adminPorteDocumentsDroits);
+			$messagesScript .= adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine);
 			echo adminMessagesScript($messagesScript);
 			echo "</div><!-- /.sousBoite -->\n";
 		}
@@ -670,7 +655,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n";
 			
-			$messagesScript .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits);
+			$messagesScript .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage);
 			echo adminMessagesScript($messagesScript);
 			echo "</div><!-- /.sousBoite -->\n";
 		}
@@ -681,18 +666,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 			if (!file_exists($cheminFichier))
 			{
-				if ($adminPorteDocumentsDroits['creer'])
+				@file_put_contents($cheminFichier, adminPlanSitemapIndexXml($urlRacine, $activerSitemapGaleries));
+				
+				if (!file_exists($cheminFichier))
 				{
-					@file_put_contents($cheminFichier, adminPlanSitemapIndexXml($urlRacine, $activerSitemapGaleries));
-					
-					if (!file_exists($cheminFichier))
-					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-					}
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 				}
 			}
 		
@@ -782,7 +760,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Vérification de la déclaration du fichier d'index Sitemap dans le fichier <code>robots.txt</code>") . "</h3>\n" ;
 			
-			$messagesScript .= adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocumentsDroits);
+			$messagesScript .= adminDeclareSitemapDansRobots($racine, $urlRacine);
 			echo adminMessagesScript($messagesScript);
 			echo "</div><!-- /.sousBoite -->\n";
 		}
@@ -807,9 +785,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<?php endif; ?>
 	</ul>
 	
-	<?php if ($adminPorteDocumentsDroits['editer']): ?>
-		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/<?php echo rawurlencode($dossierAdmin); ?>/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
-	<?php endif; ?>
+	<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/<?php echo rawurlencode($dossierAdmin); ?>/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
 </div><!-- /.boite -->
 
 <div class="boite">

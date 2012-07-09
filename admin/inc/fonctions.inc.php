@@ -2,7 +2,7 @@
 /*
 Ajoute dans le fichier Sitemap du site les pages présentes dans le fichier de configuration des catégories et dans le flux RSS des dernières publications, et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine, $adminPorteDocumentsDroits)
+function adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine)
 {
 	$messagesScript = '';
 	$tableauUrlSitemap = array ();
@@ -51,7 +51,7 @@ function adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine,
 	
 	if (!empty($tableauUrlSitemap))
 	{
-		$messagesScript .= adminAjouteUrlDansSitemap($racine, 'site', $tableauUrlSitemap, $adminPorteDocumentsDroits);
+		$messagesScript .= adminAjouteUrlDansSitemap($racine, 'site', $tableauUrlSitemap);
 	}
 	else
 	{
@@ -64,7 +64,7 @@ function adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine,
 /*
 Ajoute les URL fournies au fichier Sitemap demandé (du site ou des galeries) et retourne le résultat sous forme de message concaténable dans `$messagesScript`. Si une URL est déjà présente dans le fichier Sitemap, ses informations seront mises à jour, s'il y a lieu.
 */
-function adminAjouteUrlDansSitemap($racine, $type, $tableauUrl, $adminPorteDocumentsDroits)
+function adminAjouteUrlDansSitemap($racine, $type, $tableauUrl)
 {
 	$messagesScript = '';
 
@@ -77,19 +77,9 @@ function adminAjouteUrlDansSitemap($racine, $type, $tableauUrl, $adminPorteDocum
 		$cheminFichierSitemap = $racine . '/sitemap_site.xml';
 	}
 	
-	if (!file_exists($cheminFichierSitemap))
+	if (!file_exists($cheminFichierSitemap) && !@touch($cheminFichierSitemap))
 	{
-		if ($adminPorteDocumentsDroits['creer'])
-		{
-			if (!@touch($cheminFichierSitemap))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierSitemap</code>") . "</li>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas."), "<code>$cheminFichierSitemap</code>") . "</li>\n";
-		}
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierSitemap</code>") . "</li>\n";
 	}
 	
 	if (file_exists($cheminFichierSitemap))
@@ -316,7 +306,7 @@ function adminAjouteUrlDansSitemap($racine, $type, $tableauUrl, $adminPorteDocum
 			$dom->formatOutput = TRUE;
 			$contenuSitemap = $dom->saveXML();
 	
-			$messagesScript .= adminEnregistreSitemap($racine, $type, $contenuSitemap, $adminPorteDocumentsDroits);
+			$messagesScript .= adminEnregistreSitemap($racine, $type, $contenuSitemap);
 		}
 	}
 	
@@ -501,24 +491,14 @@ function adminCopyDossier($dossierSource, $dossierDeDestination)
 /*
 Vérifie si le fichier d'index Sitemap est déclaré dans le fichier `robots.txt`, et le déclare au besoin. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminDeclareSitemapDansRobots($racine, $urlRacine, $adminPorteDocumentsDroits)
+function adminDeclareSitemapDansRobots($racine, $urlRacine)
 {
 	$messagesScript = '';
 	$cheminFichierRobots = $racine . '/robots.txt';
 	
-	if (!file_exists($cheminFichierRobots))
+	if (!file_exists($cheminFichierRobots) && !@touch($cheminFichierRobots))
 	{
-		if ($adminPorteDocumentsDroits['creer'])
-		{
-			if (!@touch($cheminFichierRobots))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier d'index Sitemap ne peut être déclaré puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierRobots</code>") . "</li>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier d'index Sitemap ne peut être déclaré puisque %1\$s n'existe pas."), "<code>$cheminFichierRobots</code>") . "</li>\n";
-		}
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier d'index Sitemap ne peut être déclaré puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierRobots</code>") . "</li>\n";
 	}
 	
 	if (file_exists($cheminFichierRobots))
@@ -778,7 +758,7 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 /*
 Enregistre la configuration du flux RSS des derniers ajouts aux galeries et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier, $adminPorteDocumentsDroits)
+function adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier)
 {
 	$messagesScript = '';
 	$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
@@ -787,16 +767,9 @@ function adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier, $a
 	{
 		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
 		
-		if ($adminPorteDocumentsDroits['creer'])
+		if (!@touch($cheminFichier))
 		{
-			if (!@touch($cheminFichier))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 		}
 	}
 	
@@ -837,7 +810,7 @@ function adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier, $a
 /*
 Enregistre la configuration du flux RSS des dernières publications et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $adminPorteDocumentsDroits)
+function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier)
 {
 	$messagesScript = '';
 	$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
@@ -846,16 +819,9 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $admin
 	{
 		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
 		
-		if ($adminPorteDocumentsDroits['creer'])
+		if (!@touch($cheminFichier))
 		{
-			if (!@touch($cheminFichier))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 		}
 	}
 	
@@ -896,7 +862,7 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier, $admin
 /*
 Enregistre le contenu du fichier Sitemap (du site, des galeries ou d'index) et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminEnregistreSitemap($racine, $type, $contenuFichier, $adminPorteDocumentsDroits)
+function adminEnregistreSitemap($racine, $type, $contenuFichier)
 {
 	$messagesScript = '';
 	
@@ -915,16 +881,9 @@ function adminEnregistreSitemap($racine, $type, $contenuFichier, $adminPorteDocu
 	
 	if (!file_exists($cheminFichier))
 	{
-		if ($adminPorteDocumentsDroits['creer'])
+		if (!@touch($cheminFichier))
 		{
-			if (!@touch($cheminFichier))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 		}
 	}
 	
@@ -980,7 +939,7 @@ function adminEstIe()
 /*
 Génère le fichier Sitemap des galeries et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage, $adminPorteDocumentsDroits)
+function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage)
 {
 	$messagesScript = '';
 	$cheminFichier = $racine . '/sitemap_galeries.xml';
@@ -988,19 +947,9 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 	
 	if (cheminConfigFluxRssGlobal($racine, 'galeries'))
 	{
-		if (!file_exists($cheminFichier))
+		if (!file_exists($cheminFichier) && !@touch($cheminFichier))
 		{
-			if ($adminPorteDocumentsDroits['creer'])
-			{
-				if (!@touch($cheminFichier))
-				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-				}
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichier</code>") . "</li>\n";
-			}
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
 		}
 		
 		if (file_exists($cheminFichier))
@@ -1080,7 +1029,7 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 					}
 				}
 				
-				$messagesScript .= adminAjouteUrlDansSitemap($racine, 'galeries', $tableauUrlSitemap, $adminPorteDocumentsDroits);
+				$messagesScript .= adminAjouteUrlDansSitemap($racine, 'galeries', $tableauUrlSitemap);
 			}
 			else
 			{
@@ -1419,9 +1368,9 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 }
 
 /*
-Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient s'il y a lieu les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
+Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste = array ())
+function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste = array ())
 {
 	$racine = dirname($racineAdmin);
 	
@@ -1452,36 +1401,24 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					}
 					else
 					{
-						$liste = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir . '/' . $fichier, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminPorteDocumentsDroits, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste);
+						$liste = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir . '/' . $fichier, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste);
 					}
 				}
 				else
 				{
 					$fichierMisEnForme = '';
-				
-					if ($adminPorteDocumentsDroits['copier'] || $adminPorteDocumentsDroits['deplacer'] || $adminPorteDocumentsDroits['modifier-permissions'] || $adminPorteDocumentsDroits['supprimer'])
-					{
-						$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$dossierAparcourir/$fichier\" />\n";
-						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
-					}
-				
-					if ($adminPorteDocumentsDroits['telecharger'])
-					{
-						$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$dossierAparcourir/$fichier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
-						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
-					}
-				
-					if ($adminPorteDocumentsDroits['editer'])
-					{
-						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=editer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
-						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
-					}
-				
-					if ($adminPorteDocumentsDroits['renommer'])
-					{
-						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
-						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
-					}
+					
+					$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$dossierAparcourir/$fichier\" />\n";
+					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+					
+					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$dossierAparcourir/$fichier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+					
+					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=editer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+					
+					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
 					if ($adminActiverInfobulle['contenuDossier'])
 					{

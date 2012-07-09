@@ -131,15 +131,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				if ($cheminConfigGalerie)
 				{
 					$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $idGalerie) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
-					
-					if ($adminPorteDocumentsDroits['editer'])
-					{
-						$fichierDeConfiguration .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
-					}
-					else
-					{
-						$fichierDeConfiguration .= '<li>' . T_("La galerie a un fichier de configuration.") . "</li>\n";
-					}
+					$fichierDeConfiguration .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 				}
 				else
 				{
@@ -761,15 +753,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						if (file_exists($cheminPage . '/' . $page))
 						{
 							$actionValide = TRUE;
-							
-							if ($adminPorteDocumentsDroits['editer'])
-							{
-								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
-							}
-							else
-							{
-								$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', $urlGalerie) . "</li>\n";
-							}
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . $cheminPage . '/' . $page . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
 						}
 						else
 						{
@@ -785,15 +769,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 								fputs($fic, $contenu);
 								fclose($fic);
-							
-								if ($adminPorteDocumentsDroits['editer'])
-								{
-									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
-								}
-								else
-								{
-									$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">visiter la page</a>."), $urlGalerie) . "</li>\n";
-								}
+								$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . rawurlencode($cheminPage . '/' . $page) . '&amp;dossierCourant=' . rawurlencode(dirname($cheminPage . '/' . $page)) . '#messages', $urlGalerie) . "</li>\n";
 							}
 							else
 							{
@@ -817,15 +793,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				if (!$cheminFichierRss)
 				{
 					$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
-			
-					if ($adminPorteDocumentsDroits['creer'])
-					{
-						@touch($cheminFichierRss);
-					}
-					else
-					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas."), "<code>$cheminFichierRss</code>") . "</li>\n";
-					}
+					@touch($cheminFichierRss);
 				}
 		
 				if (file_exists($cheminFichierRss) && ($galeries = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
@@ -872,7 +840,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 				}
 				
-				$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichierRss, $adminPorteDocumentsDroits);
+				$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichierRss);
 		
 				echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des derniers ajouts aux galeries"));
 			}
@@ -1981,12 +1949,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie:");
 			echo "<ul>\n";
 			echo '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . $id . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
-
-			if ($adminPorteDocumentsDroits['editer'])
-			{
-				echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idDossier . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idDossier . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
-			}
-
+			echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idDossier . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idDossier . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 			echo "</ul></li>\n";
 		
 			echo "</ul>\n";
@@ -2003,7 +1966,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		##
 		########################################################################
 
-		if ($adminPorteDocumentsDroits['telecharger'] && isset($_POST['sauvegarder']))
+		if (isset($_POST['sauvegarder']))
 		{
 			$messagesScript = '';
 			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
@@ -2044,11 +2007,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 					
 					<div class="bDcorps">
-						<?php if ($adminPorteDocumentsDroits['editer']): ?>
-							<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie a un fichier de configuration, un lien vous permettra de modifier ce dernier."); ?></p>
-						<?php else: ?>
-							<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes, qu'elles aient ou non un fichier de configuration."); ?></p>
-						<?php endif; ?>
+						<p><?php echo T_("Vous pouvez afficher la liste des galeries existantes. Si la galerie a un fichier de configuration, un lien vous permettra de modifier ce dernier."); ?></p>
 					</div><!-- .bDcorps -->
 				</div><!-- .aideAdminGaleries -->
 				<p><input type="submit" name="lister" value="<?php echo T_('Lister les galeries'); ?>" /></p>
@@ -2603,45 +2562,43 @@ include $racineAdmin . '/inc/premier.inc.php';
 		</form>
 	</div><!-- /.boite -->
 	
-	<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
-		<!-- .boite -->
+	<!-- .boite -->
 
-		<div class="boite">
-			<h2 id="sauvegarder"><?php echo T_("Sauvegarder une galerie"); ?></h2>
+	<div class="boite">
+		<h2 id="sauvegarder"><?php echo T_("Sauvegarder une galerie"); ?></h2>
+		
+		<div class="aideAdminGaleries aide">
+			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 			
-			<div class="aideAdminGaleries aide">
-				<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
-				
-				<div class="bDcorps">
-					<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
-				</div><!-- .bDcorps -->
-			</div><!-- .aideAdminGaleries -->
+			<div class="bDcorps">
+				<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
+			</div><!-- .bDcorps -->
+		</div><!-- .aideAdminGaleries -->
 
-			<form action="<?php echo $adminAction; ?>#messages" method="post">
-				<div>
-					<fieldset>
-						<legend><?php echo T_("Options"); ?></legend>
-				
-						<p><label for="sauvegarderSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-						<?php $listeGaleries = galeries($racine); ?>
-					
-						<?php if (!empty($listeGaleries)): ?>
-							<select id="sauvegarderSelectId" name="id">
-								<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieDossier): ?>
-									<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
-								<?php endforeach; ?>
-							</select>
-						<?php else: ?>
-							<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
-						<?php endif; ?>
-						</p>
-					</fieldset>
+		<form action="<?php echo $adminAction; ?>#messages" method="post">
+			<div>
+				<fieldset>
+					<legend><?php echo T_("Options"); ?></legend>
 			
-					<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>" /></p>
-				</div>
-			</form>
-		</div><!-- /.boite -->
-	<?php endif; ?>
+					<p><label for="sauvegarderSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
+					<?php $listeGaleries = galeries($racine); ?>
+				
+					<?php if (!empty($listeGaleries)): ?>
+						<select id="sauvegarderSelectId" name="id">
+							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieDossier): ?>
+								<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>
+							<?php endforeach; ?>
+						</select>
+					<?php else: ?>
+						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
+					<?php endif; ?>
+					</p>
+				</fieldset>
+		
+				<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>" /></p>
+			</div>
+		</form>
+	</div><!-- /.boite -->
 </div><!-- /#contenuPrincipal -->
 
 <?php include $racineAdmin . '/inc/dernier.inc.php'; ?>
