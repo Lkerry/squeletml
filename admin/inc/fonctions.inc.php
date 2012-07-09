@@ -554,16 +554,6 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine)
 }
 
 /*
-Détruit une session, et retourne le résultat de `session_destroy()`.
-*/
-function adminDetruitSession()
-{
-	$_SESSION = array();
-	
-	return session_destroy();
-}
-
-/*
 Retourne TRUE si le dossier est vide, sinon retourne FALSE.
 */
 function adminDossierEstVide($cheminDossier)

@@ -74,7 +74,7 @@ div#noticeMaintenance p {
 }
 
 #contenu {
-	margin: 10px;
+	margin: 20px;
 }
 
 div#sousMenu {
@@ -103,7 +103,7 @@ div#contenuPrincipal {
 }
 
 #basDePage {
-	margin: 25px 10px 10px;
+	margin: 25px 20px 20px;
 	text-align: right;
 }
 
@@ -445,7 +445,7 @@ pre.consulterModifications {
 }
 
 .porteDocumentsListeDernierNiveau li:hover {
-	background-color: #ffab00;
+	background-color: #ffffff;
 }
 
 .porteDocumentsListeContenuDossier {

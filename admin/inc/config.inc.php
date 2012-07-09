@@ -178,7 +178,7 @@ $adminFiltreAccesDossiers = '../.git';
 /* ____________________ Liste des dossiers. ____________________ */
 
 // Affichage des sous-dossiers dans la liste des dossiers.
-$adminAfficherSousDossiersDansListe = TRUE; // TRUE|FALSE
+$adminAfficherSousDossiersDansListe = FALSE; // TRUE|FALSE
 
 // Filtre d'affichage de la liste des dossiers.
 /*
@@ -188,7 +188,7 @@ $adminAfficherSousDossiersDansListe = TRUE; // TRUE|FALSE
 - Pour ne pas appliquer de filtre, laisser la variable vide, c'est-à-dire:
   $adminTypeFiltreAffichageDansListe = '';
 */
-$adminTypeFiltreAffichageDansListe = 'dossiersNonAffiches';
+$adminTypeFiltreAffichageDansListe = '';
 
 // Dossiers à prendre en compte dans le filtre d'affichage de la liste des dossiers.
 /*
@@ -200,14 +200,14 @@ $adminFiltreAffichageDansListe = '../admin/inc/pclzip|../admin/inc/tar|../admin/
 /* ____________________ Sous-dossiers dans le contenu d'un dossier. ____________________ */
 
 // Lors de l'affichage du contenu d'un dossier, affichage du contenu des sous-dossiers.
-$adminAfficherSousDossiersDansContenu = TRUE; // TRUE|FALSE
+$adminAfficherSousDossiersDansContenu = FALSE; // TRUE|FALSE
 
 // Si `$adminAfficherSousDossiersDansContenu` vaut TRUE, filtre d'affichage du contenu des dossiers.
 /*
 - Il est possible d'appliquer un filtre d'affichage du contenu des dossiers. Un dossier dont l'affichage de son contenu est désactivé est quand même accessible par le porte-documents et téléchargeable; son contenu n'est simplement pas listé par défaut dans le porte-documents.
 - Voir les explication de la variable `$adminTypeFiltreAffichageDansListe` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminTypeFiltreAffichageDansContenu = 'dossiersNonAffiches';
+$adminTypeFiltreAffichageDansContenu = '';
 
 // Dossiers à prendre en compte dans le filtre d'affichage du contenu des dossiers.
 /*

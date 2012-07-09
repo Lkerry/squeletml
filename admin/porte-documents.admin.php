@@ -621,7 +621,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'editer')
 			echo '<p>' . sprintf(T_("Le fichier %1\$s n'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisie (qui peut être vide)."), "<code>$getValeur</code>") . "</p>\n";
 		}
 		
-		echo '<form action="' . ajouteGet($adminAction, securiseTexte(SID)) . '#messages" method="post">' . "\n";
+		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 		echo "<div>\n";
 		clearstatcache();
 		
@@ -697,7 +697,6 @@ if (isset($_POST['porteDocumentsEditionAnnuler']))
 	$porteDocumentsEditionNom = securiseTexte($_POST['porteDocumentsEditionNom']);
 	$messagesScript .= '<li>' . sprintf(T_("Aucune modification apportée au fichier %1\$s."), "<code>$porteDocumentsEditionNom</code>") . "</li>\n";
 	
-	adminDetruitSession();
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
 }
 
@@ -750,7 +749,6 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 		}
 	}
 	
-	adminDetruitSession();
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
 }
 
