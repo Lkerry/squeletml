@@ -75,7 +75,6 @@ $adminLangueParDefaut = 'fr';
 - Voir les explications de la variable `$balisesLinkScript` dans le fichier de configuration du site.
 */
 $adminBalisesLinkScript[0] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/admin.css";
-$adminBalisesLinkScript[1] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/extensions-proprietaires.css";
 $adminBalisesLinkScript[2] = "$urlRacineAdmin/*#csslteIE8#$urlRacineAdmin/css/ie6-7-8.css";
 $adminBalisesLinkScript[3] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
 $adminBalisesLinkScript[4] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";

@@ -49,7 +49,7 @@ div#noticeMaintenance p {
 
 #enTete {
 	padding: 5px 5px 0px 5px;
-	background: url('../fichiers/rayures.png') repeat left top;
+	background-color: #f5f5f5;
 	border-bottom: 1px solid #f2f2f2;
 	text-align: center;
 }
@@ -74,7 +74,7 @@ div#noticeMaintenance p {
 }
 
 #contenu {
-	margin: 5px;
+	margin: 10px;
 }
 
 div#sousMenu {
@@ -82,8 +82,15 @@ div#sousMenu {
 	width: 140px;
 	margin-left: 1px;
 	padding: 5px;
-	background: url('../fichiers/rayures.png') repeat left top;
-	border: 1px solid #f2f2f2;
+	border: 3px solid white;
+	background-color: #f5f5f5;
+	background-image: linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* CSS 3. */
+	background-image: -moz-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f0f0f0, #f5f5f5); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f7f7f7), color-stop(1, #f5f5f5)); /* Webkit. */
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 div#sousMenu ul {
@@ -92,24 +99,12 @@ div#sousMenu ul {
 }
 
 div#contenuPrincipal {
-	margin-left: 160px;
+	margin-left: 170px;
 }
 
 #basDePage {
-	margin: 25px 5px 5px;
+	margin: 25px 10px 10px;
 	text-align: right;
-}
-
-#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes, #sousMenu, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
-	border-radius: 5px; /* CSS 3. */
-}
-
-#tableDesMatieres {
-	border-radius: 8px; /* CSS 3. */
-}
-
-div#tableDesMatieres {
-	border-color: #f5f5f5 !important;
 }
 
 h1, h2, h3, h4, h5, h6, a {
@@ -286,15 +281,23 @@ ul.nonTriable li {
 
 .boite {
 	margin: 25px 0px;
-	padding: 5px;
-	background-color: #f5f5f5;
 }
 
 .sousBoite {
 	margin: 25px;
-	border: 1px solid #cccccc;
+}
+
+.boite, .sousBoite {
 	padding: 5px;
-	background-color: #f0f0f0;
+	border: 3px solid white;
+	background-color: #f5f5f5;
+	background-image: linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* CSS 3. */
+	background-image: -moz-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f0f0f0, #f5f5f5); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f7f7f7), color-stop(1, #f5f5f5)); /* Webkit. */
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 /* Rapport du cron. */
