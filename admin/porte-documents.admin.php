@@ -1575,10 +1575,7 @@ echo "</ul>\n";
 echo "</div><!-- /#divListeDossiersAdminPorteDoc -->\n";
 echo "</div><!-- /.sousBoite -->\n";
 
-if ($afficherBoiteActions)
-{
-	echo $boiteActions;
-}
+echo $boiteActions;
 
 echo "</div><!-- /.boite -->\n";
 echo "</div>\n";
