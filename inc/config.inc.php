@@ -270,6 +270,9 @@ $inclureSousTitre = TRUE; // TRUE|FALSE
 // Inclusion du bas de page.
 $inclureBasDePage = TRUE; // TRUE|FALSE
 
+// Si `$inclureBasDePage` vaut TRUE, positionner le bas de page à l'intérieur de la `div` `page`.
+$basDePageInterieurPage = FALSE; // TRUE|FALSE
+
 // Activation par défaut de l'option «Envoyer à des amis».
 $activerEnvoyerAmisParDefaut = TRUE; // TRUE|FALSE
 

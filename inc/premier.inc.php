@@ -367,6 +367,14 @@ if ($ombrePage)
 	$cssDirectlteIE8 .= "}\n";
 }
 
+if ($inclureBasDePage && !$basDePageInterieurPage)
+{
+	$cssDirectlteIE8 .= "#basDePageHorsPage {\n";
+	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
+	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
+	$cssDirectlteIE8 .= "}\n";
+}
+
 $balisesLinkScript[] = "$url#cssDirectlteIE8#$cssDirectlteIE8";
 
 // Slimbox2.

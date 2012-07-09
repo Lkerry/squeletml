@@ -30,16 +30,25 @@
 					</div><!-- /#sousContenu -->
 				<?php endif; ?>
 				
-				<?php if ($inclureBasDePage): ?>
-					<!-- ____________________ #basDePage ____________________ -->
-					<div id="basDePage">
+				<?php if ($inclureBasDePage && $basDePageInterieurPage): ?>
+					<!-- ____________________ #basDePageInterieurPage ____________________ -->
+					<div id="basDePageInterieurPage">
 						<?php echo $blocs[600]; ?>
 						<div class="sep"></div>
 						<?php include $cheminBasDePage; ?>
-					</div><!-- /#basDePage -->
+					</div><!-- /#basDePageInterieurPage -->
 				<?php endif; ?>
 			</div><!-- /#interieurPage -->
 		</div><!-- /#page -->
+		
+		<?php if ($inclureBasDePage && !$basDePageInterieurPage): ?>
+			<!-- ____________________ #basDePageHorsPage ____________________ -->
+			<div id="basDePageHorsPage">
+				<?php echo $blocs[600]; ?>
+				<div class="sep"></div>
+				<?php include $cheminBasDePage; ?>
+			</div><!-- /#basDePageHorsPage -->
+		<?php endif; ?>
 		
 		<?php echo $linkScriptFin; ?>
 	</body>

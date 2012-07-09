@@ -358,7 +358,7 @@ div#sousTitre p {
 }
 
 #interieurContenu {
-	padding: 0px 50px 50px 50px;
+	padding: 0px 50px 30px 50px;
 }
 
 #infosPublication {
@@ -521,14 +521,27 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 **
 ***********************************************************************/
 
-#basDePage {
+#basDePageInterieurPage, #basDePageHorsPage {
 	text-align: center;
+}
+
+#basDePageInterieurPage img, #basDePageHorsPage img {
+	border: none;
+	vertical-align: bottom;
+}
+
+#basDePageInterieurPage {
 	padding: 10px;
 }
 
-#basDePage img {
-	border: none;
-	vertical-align: bottom;
+#basDePageHorsPage {
+	max-width: 1000px;
+	margin: 25px auto;
+	padding: 0px;
+	border: 1px solid #f2f2f2;
+	box-shadow: 1px 1px 12px #e0e0e0; /* CSS 3. */
+	-moz-box-shadow: 1px 1px 12px #e0e0e0; /* Gecko. */
+	-webkit-box-shadow: 1px 1px 12px #e0e0e0; /* Webkit. */
 }
 
 /***********************************************************************
@@ -770,7 +783,7 @@ body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	top: 110px;
 }
 
-body.colonneAgauche #basDePage {
+body.colonneAgauche #basDePageInterieurPage {
 	margin: 20px 0px 0px 205px;
 }
 
@@ -796,7 +809,7 @@ body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	top: 110px;
 }
 
-body.colonneAdroite #basDePage {
+body.colonneAdroite #basDePageInterieurPage {
 	margin: 20px 205px 0px 0px;
 }
 
@@ -812,7 +825,7 @@ body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
 
 /* body.deuxColonnes */
 
-body.deuxColonnes #basDePage {
+body.deuxColonnes #basDePageInterieurPage {
 	margin: 20px 205px 0 205px;
 }
 
