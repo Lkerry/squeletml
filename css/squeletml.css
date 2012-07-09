@@ -299,7 +299,7 @@ div#titre h1 img#logo, div#titre p img#logo {
 
 div#titre h1 span#logoSupplement, div#titre p span#logoSupplement {
 	display: block;
-	padding-top: 18px;
+	padding-top: 16px;
 	padding-bottom: 5px;
 }
 
@@ -897,21 +897,29 @@ body.aucuneColonne #page {
 }
 
 body.aucuneColonne #interieurContenu {
-	padding-bottom: 0px;
+	padding: 0px 50px;
 }
 
 body.aucuneColonne #surContenu, body.aucuneColonne #sousContenu {
 	width: auto;
+	padding-left: 50px;
+	padding-right: 50px;
 }
 
 body.aucuneColonne #surContenu {
 	margin-bottom: 10px;
+	padding-bottom: 0px;
+}
+
+body.aucuneColonne #sousContenu {
+	padding-top: 0px;
+	margin-bottom: 20px;
 }
 
 body.aucuneColonne #menuLangues {
 	position: absolute;
 	top: 0px;
-	right: 5px;
+	right: 10px;
 	margin-top: 0px;
 	text-align: right;
 }
@@ -938,6 +946,10 @@ body.aucuneColonne #menu ul {
 body.aucuneColonne #menu li {
 	display: inline;
 	margin-right: 20px;
+}
+
+body.aucuneColonne #basDePageHorsPage {
+	max-width: 750px;
 }
 
 /* body.enTetePleineLargeur */

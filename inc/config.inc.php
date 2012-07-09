@@ -167,7 +167,7 @@ $langueParDefaut = 'fr';
 // Titre du site en en-tête.
 /*
 - Contenu (balises HTML permises) qui sera inséré comme titre de site dans un `h1` sur la page d'accueil, et dans un `p` sur toutes les autres pages.
-- Astuce: si vous ne voulez pas bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 75px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site.
+- Astuce: si vous ne voulez pas bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 70px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site.
 */
 $titreSite['fr'] = "<img id=\"logo\" src=\"$urlRacine/fichiers/squeletml-logo.png\" alt=\"Squeletml\" /><span id=\"logoSupplement\"><img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" /></span>";
 $titreSite['en'] = $titreSite['fr'];
@@ -692,8 +692,9 @@ précise que le bloc de menu principal devra avoir une couleur de fond lorsqu'il
 
 	$blocsAvecFondSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
 */
-$blocsAvecFondSpecifiques['balise-h1'] = array (FALSE, FALSE, FALSE);
-$blocsAvecFondSpecifiques['licence']   = array (TRUE, TRUE, TRUE);
+$blocsAvecFondSpecifiques['balise-h1']      = array (FALSE, FALSE, FALSE);
+$blocsAvecFondSpecifiques['licence']        = array (TRUE, TRUE, TRUE);
+$blocsAvecFondSpecifiques['menu-langues']   = array (FALSE, TRUE, TRUE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
