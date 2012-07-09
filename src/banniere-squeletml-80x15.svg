@@ -13,11 +13,11 @@
    height="15"
    id="svg3158"
    sodipodi:version="0.32"
-   inkscape:version="0.48.1 r9760"
+   inkscape:version="0.48.3.1 r9886"
    version="1.0"
    sodipodi:docname="banniere-squeletml-80x15.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
-   inkscape:export-filename="/home/jp/bureau/bouton-squeletml.png"
+   inkscape:export-filename="/home/jp/Bureau/bouton-squeletml.png"
    inkscape:export-xdpi="90"
    inkscape:export-ydpi="90">
   <defs
@@ -51,17 +51,17 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="7.23125"
-     inkscape:cx="35.995166"
-     inkscape:cy="7.4022151"
+     inkscape:zoom="8"
+     inkscape:cx="11.733481"
+     inkscape:cy="7.4005384"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1272"
-     inkscape:window-height="894"
+     inkscape:window-width="1280"
+     inkscape:window-height="949"
      inkscape:window-x="0"
-     inkscape:window-y="49"
-     inkscape:window-maximized="0" />
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
   <metadata
      id="metadata3163">
     <rdf:RDF>
@@ -98,27 +98,6 @@
        inkscape:export-filename="/home/jp/Bureau/banniere.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90" />
-    <g
-       transform="matrix(0.1569298,0,0,0.1569298,-10.564817,-66.386757)"
-       id="g3885"
-       inkscape:label="Calque 1"
-       style="fill:#005959;fill-opacity:1;stroke:#005959;stroke-opacity:1;stroke-width:1.00044733;stroke-miterlimit:4;stroke-dasharray:none"
-       inkscape:export-filename="/home/jp/Bureau/banniere.png"
-       inkscape:export-xdpi="90"
-       inkscape:export-ydpi="90">
-      <a
-         style="fill:#005959;fill-opacity:1;stroke:#005959;stroke-opacity:1;stroke-width:1.00044733;stroke-miterlimit:4;stroke-dasharray:none"
-         inkscape:export-filename="/tmp/puce.png"
-         inkscape:export-ydpi="19.259567"
-         inkscape:export-xdpi="19.259567"
-         id="a3201">
-        <path
-           d="M 146.00139,476.91175 C 143.57544,491.9914 154.53124,500.02595 145.50991,503.33533 C 136.9804,505.84167 138.33886,486.79501 134.08076,481.42605 C 128.46918,482.77466 120.05196,499.52244 112.97468,493.34702 C 108.25815,485.12038 124.89883,481.69213 128.26335,472.89329 C 121.89882,468.25884 102.78038,471.82601 105.59616,461.21849 C 108.81843,453.25283 127.84673,465.45978 133.38799,460.0188 C 135.45757,451.53112 128.26653,440.13232 135.44077,438.6365 C 144.53071,433.7125 139.79002,463.85484 151.10844,462.50461 C 159.56779,463.0028 168.38848,456.99697 169.50899,464.50072 C 170.03911,474.62566 148.9787,470.56617 146.00139,476.91175 z"
-           id="path1188"
-           sodipodi:nodetypes="ccccccccccc"
-           style="fill:#005959;fill-opacity:1;fill-rule:evenodd;stroke:#005959;stroke-width:1.00044733;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none" />
-      </a>
-    </g>
     <rect
        style="opacity:1;fill:#005959;fill-opacity:1;stroke:none;stroke-width:1.00800002000000011;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect3893"
@@ -153,5 +132,23 @@
          id="tspan3956"
          x="32.526913"
          y="7.0450487" /></text>
+    <path
+       sodipodi:type="star"
+       style="fill:#005959;fill-opacity:1;stroke:none"
+       id="path3003"
+       sodipodi:sides="5"
+       sodipodi:cx="29.850334"
+       sodipodi:cy="7.4394083"
+       sodipodi:r1="6.1615"
+       sodipodi:r2="3.3075337"
+       sodipodi:arg1="-1.5526165"
+       sodipodi:arg2="-0.92429798"
+       inkscape:flatsided="false"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 29.962343,1.2789265 1.880433,3.5204148 3.901137,0.8429002 -2.767027,2.8762663 0.403871,3.9706722 -3.59055,-1.742785 -3.65153,1.611111 0.547945,-3.9533667 -2.660642,-2.9749513 3.9292,-0.7005303 z"
+       inkscape:transform-center-x="-0.032491611"
+       inkscape:transform-center-y="-0.54493919"
+       transform="matrix(0.93873214,0,0,0.98124454,-17.05396,0.74506035)" />
   </g>
 </svg>
