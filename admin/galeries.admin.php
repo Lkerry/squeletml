@@ -1792,7 +1792,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$urlGalerie = $urlRacine . '/' . superRawurlencode(substr($cheminPage . '/' . $page, 3));
+				$urlRelativeGalerie = superRawurlencode(substr($cheminPage . '/' . $page, 3));
+				$urlGalerie = $urlRacine . '/' . $urlRelativeGalerie;
 				$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 				
 				if (!$cheminConfigGalerie)
@@ -1803,7 +1804,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$cheminConfigGaleries = cheminConfigGaleries($racine, TRUE);
 					
-					if (adminMajConfigGaleries($racine, array($id => array('dossier' => $idDossier, 'url' => $urlGalerie))))
+					if (adminMajConfigGaleries($racine, array($id => array('dossier' => $idDossier, 'url' => $urlRelativeGalerie))))
 					{
 						$messagesScript .= '<li>' . sprintf(T_("Ajout de la galerie %1\$s dans le fichier de configuration des galeries %2\$s effectué."), "<code>$id</code>", "<code>$cheminConfigGaleries</code>") . "</li>\n";
 					}
