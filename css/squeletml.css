@@ -1091,11 +1091,12 @@ div#galerieIntermediaireExif li {
 
 div.galerieNavigationAccueil img {
 	float: left;
-	background: url('../fichiers/ombre-vignette.png') no-repeat right bottom;
 }
 
-div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
-	background: url('../fichiers/ombre.png') no-repeat right bottom;
+div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 div#galerieLienOriginalIcone {
@@ -1107,7 +1108,7 @@ div#galerieLienOriginalIcone img {
 }
 
 div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
-	padding: 5px 10px 10px 5px;
+	padding: 5px;
 	border: none;
 	margin: 10px;
 }

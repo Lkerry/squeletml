@@ -357,17 +357,26 @@ $cssDirectlteIE8 .= "body.tableDesMatieresArrondie #tableDesMatieres, .blocArron
 $cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
 $cssDirectlteIE8 .= "}\n";
 
-if ($ombrePage)
+$selecteursOmbre = array ();
+
+if ($idGalerie)
 {
-	$cssDirectlteIE8 .= "body.ombrePage #page {\n";
-	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
-	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
-	$cssDirectlteIE8 .= "}\n";
+	$selecteursOmbre[] = 'div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img';
 }
 
 if ($inclureBasDePage && !$basDePageInterieurPage)
 {
-	$cssDirectlteIE8 .= "#basDePageHorsPage {\n";
+	$selecteursOmbre[] = '#basDePageHorsPage';
+}
+
+if ($ombrePage)
+{
+	$selecteursOmbre[] = 'body.ombrePage #page';
+}
+
+if (!empty($selecteursOmbre))
+{
+	$cssDirectlteIE8 .= implode(', ', $selecteursOmbre) . " {\n";
 	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
 	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
 	$cssDirectlteIE8 .= "}\n";
