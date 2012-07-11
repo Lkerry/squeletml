@@ -3,6 +3,19 @@
 Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une image. Aucun code XHTML n'est envoyé au navigateur.
 */
 
+// Dossier.
+$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
+
+// URL.
+if ($pageGlobaleGalerie)
+{
+	$urlGalerie = ajouteGet($urlSansGet, "id=$idGalerie");
+}
+else
+{
+	$urlGalerie = $urlSansGet;
+}
+
 // Liste des images à afficher.
 if ($idGalerie == 'démo')
 {
@@ -11,7 +24,7 @@ if ($idGalerie == 'démo')
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/' . $idGalerieDossier;
 	$racineImgSrc = $racine . '/fichiers/galeries/' . $idGalerieDossier;
 }
-elseif (!empty($idGalerie) && cheminConfigGalerie($racine, $idGalerieDossier))
+elseif (!$erreur404 && !empty($idGalerie) && cheminConfigGalerie($racine, $idGalerieDossier))
 {
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
 	$urlImgSrc = $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieDossier);
@@ -254,7 +267,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		if ($galerieInfoAjout)
 		{
 			$galerieInfo .= '<div id="galerieInfo">' . "\n";
-			$galerieInfo .= '<p>' . sprintf(T_ngettext("Affichage de l'image %1\$s sur un total de %2\$s image.", "Affichage de l'image %1\$s sur un total de %2\$s images.", $nombreDimages), $indice + 1, $nombreDimages) . ' <a href="' . $urlSansGet . '">' . sprintf(T_("Aller à l'accueil de la galerie %1\$s."), "<em>$idGalerie</em>") . "</a></p>\n";
+			$galerieInfo .= '<p>' . sprintf(T_ngettext("Affichage de l'image %1\$s sur un total de %2\$s image.", "Affichage de l'image %1\$s sur un total de %2\$s images.", $nombreDimages), $indice + 1, $nombreDimages) . ' <a href="' . $urlGalerie . '">' . sprintf(T_("Aller à l'accueil de la galerie %1\$s."), "<em>$idGalerie</em>") . "</a></p>\n";
 			$galerieInfo .= '</div><!-- /#galerieInfo -->' . "\n";
 		}
 	
@@ -551,7 +564,8 @@ elseif (!empty($idGalerie))
 			}
 			
 			$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-			$lienSansJavascript .= "<a href=\"$urlSansGet?image=" . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage])) . $ancre . '">' . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
+			$hrefSansJavascript = ajouteGet($urlGalerie, 'image=' . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage]))) . $ancre;
+			$lienSansJavascript .= "<a href=\"$hrefSansJavascript\">" . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
 			
 			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
 			{
@@ -593,9 +607,9 @@ elseif (!empty($idGalerie))
 			$galerieInfo .= '<div id="galerieInfo">' . "\n";
 			$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s image", "Cette galerie contient %1\$s images", $nombreDimages), $nombreDimages) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
 
-			if ($url != $urlSansGet)
+			if ($url != $urlGalerie)
 			{
-				$galerieInfo .= ' <a href="' . $urlSansGet . '">' . T_("Voir l'accueil de la galerie."). "</a>";
+				$galerieInfo .= ' <a href="' . $urlGalerie . '">' . T_("Voir l'accueil de la galerie."). "</a>";
 			}
 
 			if (!empty($lienSansJavascript) && $galerieAccueilLienSansJavascriptEmplacement == 'info')

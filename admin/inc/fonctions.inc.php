@@ -1592,6 +1592,61 @@ function adminMajConfigGalerie($racine, $idDossier, $listeAjouts, $analyserConfi
 }
 
 /*
+Met à jour le fichier de configuration des galeries. Retourne FALSE si une erreur survient, sinon retourne TRUE.
+*/
+function adminMajConfigGaleries($racine, $listeModifs)
+{
+	$galeries = galeries($racine);
+	
+	foreach ($listeModifs as $idGalerie => $infosGalerie)
+	{
+		if (isset($galeries[$idGalerie]))
+		{
+			if (empty($infosGalerie))
+			{
+				unset($galeries[$idGalerie]);
+			}
+			else
+			{
+				$galeries[$idGalerie] = $infosGalerie;
+			}
+		}
+		elseif (!empty($infosGalerie))
+		{
+			$galeries[$idGalerie] = $infosGalerie;
+		}
+	}
+	
+	$cheminConfigGaleries = cheminConfigGaleries($racine, TRUE);
+	
+	if (!file_exists($cheminConfigGaleries) && !@touch($cheminConfigGaleries))
+	{
+		return FALSE;
+	}
+	
+	$contenuConfig = '';
+	
+	foreach ($galeries as $idGalerie => $infosGalerie)
+	{
+		$contenuConfig .= "[$idGalerie]\n";
+		
+		foreach ($infosGalerie as $cle => $valeur)
+		{
+			$contenuConfig .= "$cle=$valeur\n";
+		}
+		
+		$contenuConfig .= "\n";
+	}
+	
+	if (@file_put_contents($cheminConfigGaleries, $contenuConfig) === FALSE)
+	{
+		return FALSE;
+	}
+	
+	return TRUE;
+}
+
+/*
 Retourne la transcription en texte d'une erreur `$_FILES['fichier']['error']` sous forme de message concaténable dans `$messagesScript`.
 */
 function adminMessageFilesError($erreur)

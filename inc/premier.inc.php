@@ -82,7 +82,7 @@ if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 // Affectations 2 de 3.
 
 extract(init('', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'envoyerAmisEstActif', 'envoyerAmisInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
+extract(init(FALSE, 'envoyerAmisEstActif', 'envoyerAmisInclureContact', 'erreur404', 'estPageDerreur', 'pageGlobaleGalerie', 'titreGalerieGenere'), EXTR_SKIP);
 
 if (!isset($apercu))
 {
@@ -228,7 +228,6 @@ if (!empty($idCategorie))
 
 if (!empty($idGalerie))
 {
-	$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 	include $racine . '/inc/galerie.inc.php';
 }
 

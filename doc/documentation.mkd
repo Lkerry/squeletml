@@ -1037,31 +1037,29 @@ Les points suivants doivent être satisfaits pour qu'une galerie soit accessible
 
 - un fichier de configuration listant les images à afficher et éventuellement diverses informations optionnelles, et situé dans `site/fichiers/galeries/galerie-1/`. Il y a deux noms possibles pour le fichier de configuration: `config.ini.txt` ou `config.ini`. Le premier fichier existant trouvé est utilisé, `config.ini.txt` étant cherché en premier. Cela donne pour notre exemple `site/fichiers/galeries/galerie-1/config.ini.txt` ou `site/fichiers/galeries/galerie-1/config.ini`;
 
-- un fichier d'identification `site/fichiers/galeries/galerie-1/id.txt` ne contenant que l'identifiant de la galerie. Dans notre exemple, le fichier ne contient que `Ma première galerie`;
+- une page à visiter sur le site pour afficher la galerie. Il y a deux possibilités:
 
-- une page à visiter sur le site pour afficher la galerie, par exemple `ma-premiere-galerie.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la galerie que vous voulez afficher.
+  - la page globale des galeries, `galerie.php?id=identifiant-filtré`, ce qui donne pour notre exemple `galerie.php?id=Ma-premiere-galerie`;
+
+  - une page personnalisée, par exemple `page-de-ma-premiere-galerie.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la galerie (variable `$idGalerie`) que vous voulez afficher.
+
+- un fichier de configuration des galeries, `site/inc/galeries.ini` ou `site/inc/galeries.ini.txt`, listant la galerie en question;
 
 Concrètement, pour créer une galerie à partir de l'administration de Squeletml, voici les étapes à suivre:
 
 1. Visiter la page `admin/galeries.admin.php` et se rendre à la section «Ajouter des images».
 
-	Dans le champ «Identifiant de la galerie», inscrire l'identifiant voulu, par exemple `Ma première galerie`.
+2. Dans le champ «Identifiant de la galerie», inscrire l'identifiant voulu, par exemple `Ma première galerie`.
 
-	Dans le champ «Fichier», préciser un fichier image ou une archive de format TAR (`.tar`) ou ZIP (`.zip`).
+3. Le champ «Si nouvelle galerie, nom du dossier» peut être rempli avec la valeur désirée ou laissé vide pour génération automatique à partir de l'identifiant.
 
-	Choisir d'autres options selon les besoins.
+4. Le champ «Si nouvelle galerie, emplacement de la page Web» peut être rempli avec la valeur désirée ou laissé vide pour utilisation de la page globale des galeries (`galerie.php`).
 
-	Cliquer sur «Ajouter des images».
+5. Dans le champ «Fichier», préciser un fichier image ou une archive de format TAR (`.tar`) ou ZIP (`.zip`).
 
-2. Toujours dans la page `admin/galeries.admin.php`, se rendre à la section «Mettre en ligne une galerie».
+6. Choisir d'autres options selon les besoins.
 
-	Dans le champ «Identifiant de la galerie», choisir la galerie voulue.
-
-	Dans le champ «Emplacement de la page web», préciser la page web à créer, par exemple `ma-premiere-galerie.php`.
-
-	Choisir d'autres options selon les besoins.
-
-	Cliquer sur «Créer une page web».
+7. Cliquer sur «Ajouter des images».
 
 Pour créer manuellement une galerie, donc sans passer par l'administration de Squeletml, les étapes sont les suivantes:
 
@@ -1069,9 +1067,21 @@ Pour créer manuellement une galerie, donc sans passer par l'administration de S
 
 2. Créer un fichier de configuration `site/fichiers/galeries/galerie-1/config.ini.txt` ou `site/fichiers/galeries/galerie-1/config.ini`. Cette étape est développée dans la prochaine section.
 
-3. Créer un fichier d'identification `site/fichiers/galeries/galerie-1/id.txt` et y inscrire seulement l'identifiant de la galerie (par exemple `Ma première galerie`), ce qui donne donc un fichier d'une seule ligne.
+3. Ajouter la nouvelle galerie dans le fichier de configuration des galeries (`site/inc/galeries.ini` ou `site/inc/galeries.ini.txt`), avec la syntaxe suivante:
 
-4. Ajouter une variable `$idGalerie` au début de la page qu'on veut utiliser comme galerie (par exemple, la page `ma-premiere-galerie.php`), et l'assigner avec l'identifiant voulu (par exemple, `$idGalerie = "Ma première galerie";`).
+		[identifiant de la galerie]
+		dossier=dossier de la galerie
+		url=URL de la galerie
+
+	Exemple:
+
+		[Ma première galerie]
+		dossier=site/fichiers/galeries/galerie-1
+		url=page-de-ma-premiere-galerie.php
+
+	L'URL peut être la page globale des galeries (`galerie.php?id=identifiant-filtré`, ce qui donne pour notre exemple `galerie.php?id=Ma-premiere-galerie`) ou une page personnalisée.
+
+4. Si l'URL de la galerie est une page personnalisée, ajouter une variable `$idGalerie` au début de la page en question (par exemple, `page-de-ma-premiere-galerie.php`), et l'assigner avec l'identifiant voulu (par exemple, `$idGalerie = "Ma première galerie";`).
 
 ### Fichier de configuration d'une galerie
 

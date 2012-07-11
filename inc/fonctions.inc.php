@@ -820,6 +820,29 @@ function cheminConfigGalerie($racine, $idGalerieDossier, $retourneCheminParDefau
 }
 
 /*
+Retourne le chemin vers le fichier de configuration des galeries. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function cheminConfigGaleries($racine, $retourneCheminParDefaut = FALSE)
+{
+	if (file_exists("$racine/site/inc/galeries.ini.txt"))
+	{
+		return "$racine/site/inc/galeries.ini.txt";
+	}
+	elseif (file_exists("$racine/site/inc/galeries.ini"))
+	{
+		return "$racine/site/inc/galeries.ini";
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return "$racine/site/inc/galeries.ini.txt";
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/*
 Si `$retourneChemin` vaut TRUE, retourne le chemin vers le fichier `(site/)xhtml/(LANGUE/)$nom.inc.php` demandé. Si aucun fichier n'a été trouvé, retourne une chaîne vide. Si `$retourneChemin` vaut FALSE, retourne TRUE si un fichier a été trouvé, sinon retourne FALSE.
 */
 function cheminXhtml($racine, $langues, $nom, $retourneChemin = TRUE)
@@ -1824,7 +1847,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$title = sprintf(T_("%1\$s – Galerie %2\$s"), $titreImage, $idGalerie);
 			$cheminImage = "$racine/site/fichiers/galeries/$idGalerieDossier/" . $image['intermediaireNom'];
 			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieDossier) . '/' . rawurlencode($image['intermediaireNom']);
-			$urlGalerieImage = superRawurlencode("$urlGalerie?image=$id");
+			$urlGalerieImage = superRawurlencode(ajouteGet($urlGalerie, "image=$id"));
 			
 			if (!empty($image['intermediaireLargeur']))
 			{
@@ -2021,55 +2044,45 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
-Retourne un tableau listant les galeries sous la forme `"idGalerie" => "idGalerieDossier"`. Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
+Retourne un tableau listant les galeries sous la forme suivante:
+
+	"$idGalerie" => array("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
+
+Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
 */
 function galeries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE)
 {
 	$galeries = array ();
+	$configGaleries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
 	
-	if ($fic = @opendir($racine . '/site/fichiers/galeries'))
+	if (!empty($configGaleries))
 	{
-		while ($fichier = @readdir($fic))
+		if (!empty($galerieSpecifique) && isset($configGaleries[$galerieSpecifique]))
 		{
-			if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
+			$galeriesTmp = array($galerieSpecifique => $configGaleries[$galerieSpecifique]);
+		}
+		else
+		{
+			$galeriesTmp = $configGaleries;
+		}
+		
+		if ($avecConfigSeulement)
+		{
+			foreach ($galeriesTmp as $idGalerie => $infosGalerie)
 			{
-				$cheminIdTxt = $racine . '/site/fichiers/galeries/' . $fichier . '/id.txt';
-				
-				if (!file_exists($cheminIdTxt))
+				if (isset($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
 				{
-					@file_put_contents($cheminIdTxt, $fichier);
-				}
-				
-				if (file_exists($cheminIdTxt))
-				{
-					$contenuIdTxt = @file_get_contents($racine . '/site/fichiers/galeries/' . $fichier . '/id.txt');
-				
-					if ($contenuIdTxt !== FALSE && (($avecConfigSeulement && cheminConfigGalerie($racine, $fichier)) || !$avecConfigSeulement))
-					
-					{
-						$idGalerie = trim($contenuIdTxt);
-						
-						if (!empty($galerieSpecifique))
-						{
-							if ($galerieSpecifique == $idGalerie)
-							{
-								$galeries[$idGalerie] = $fichier;
-								break;
-							}
-						}
-						else
-						{
-							$galeries[$idGalerie] = $fichier;
-						}
-					}
+					$galeries[$idGalerie] = $infosGalerie;
 				}
 			}
 		}
-		
-		closedir($fic);
+		else
+		{
+			$galeries = $galeriesTmp;
+		}
 	}
 	
-	natcasesort($galeries);
+	ksort($galeries, SORT_LOCALE_STRING);
 	
 	return $galeries;
 }
@@ -2156,6 +2169,25 @@ function idCategorie($racine, $categories, $idCategorieFiltre)
 }
 
 /*
+Retourne l'`id` réel d'une galerie à partir de l'`id` filtré. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
+*/
+function idGalerie($racine, $galeries, $idGalerieFiltre)
+{
+	$idReel = '';
+	
+	foreach($galeries as $idGalerie => $infosGalerie)
+	{
+		if ($idGalerieFiltre == filtreChaine($racine, $idGalerie))
+		{
+			$idReel = $idGalerie;
+			break;
+		}
+	}
+	
+	return $idReel;
+}
+
+/*
 Retourne le nom du dossier d'une galerie. Si aucun dossier n'a été trouvé, retourne un nom qui pourra être utilisé pour en créer un.
 */
 function idGalerieDossier($racine, $idGalerie)
@@ -2163,9 +2195,9 @@ function idGalerieDossier($racine, $idGalerie)
 	$dossier = '';
 	$galeries = galeries($racine, $idGalerie);
 	
-	if (!empty($galeries[$idGalerie]))
+	if (!empty($galeries[$idGalerie]['dossier']))
 	{
-		$dossier = $galeries[$idGalerie];
+		$dossier = $galeries[$idGalerie]['dossier'];
 	}
 	else
 	{
@@ -2568,7 +2600,7 @@ function image(
 		
 		$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
 		$id = idImage($racine, $infosImage);
-		$hrefPageIndividuelleImage = url(FALSE, FALSE) . '?image=' . $id . $ancre;
+		$hrefPageIndividuelleImage = ajouteGet(url(TRUE, FALSE), "image=$id") . $ancre;
 		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
@@ -4896,8 +4928,9 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
 					}
 					
+					$lienVignette = ajouteGet($urlGalerie, 'image=' . idImage($racine, $image));
 					$vignettes[] = array (
-						'code' => '<li><a href="' . superRawurlencode($urlGalerie . '?image=' . idImage($racine, $image)) . '" title="' . $title . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
+						'code' => '<li><a href="' . $lienVignette . '" title="' . $title . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
 						'date' => $date,
 					);
 				}
