@@ -167,7 +167,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$corpsMinivignettes = '<div class="sepGalerieMinivignettes"></div>' . "\n" . '<div class="galerieMinivignettes">' . "\n" . $corpsMinivignettes;
 						$corpsMinivignettes .= '</div><!-- /.galerieMinivignettes -->' . "\n";
 						$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
-						$apercu = '<li>' . sprintf(T_ngettext("Aperçu (%1\$s image): %2\$s", "Aperçu (%1\$s images): %2\$s", $nombreDimages), $nombreDimages, $corpsMinivignettes) . "</li>\n";
+						$apercu = '<li class="apercuGalerie">' . sprintf(T_ngettext("Aperçu (%1\$s image): %2\$s", "Aperçu (%1\$s images): %2\$s", $nombreDimages), $nombreDimages, $corpsMinivignettes) . "</li>\n";
 					}
 					else
 					{
@@ -179,7 +179,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$apercu = '';
 				}
 				
-				$tableauInfosGaleries[$idGalerieDossier] = '<li>' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
+				$tableauInfosGaleries[$idGalerieDossier] = '<li class="listeGaleriesTitre">' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= "<ul>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Identifiant: %1\$s"), $idGalerie) . "</li>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Dossier: %1\$s"), '<a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers"><code>' . $idGalerieDossier . '</code></a>') . "</li>\n";
