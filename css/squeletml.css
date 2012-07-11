@@ -780,7 +780,7 @@ body.colonneAgauche #contenu {
 
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	position: absolute;
-	top: 110px;
+	top: 105px;
 }
 
 body.colonneAgauche #basDePageInterieurPage {
@@ -806,7 +806,7 @@ body.colonneAdroite #contenu {
 
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
-	top: 110px;
+	top: 105px;
 }
 
 body.colonneAdroite #basDePageInterieurPage {
