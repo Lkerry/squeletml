@@ -411,13 +411,13 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 							...
 						</div><!-- /#fluxRss -->
 					</div><!-- /#sousContenu -->
-					
-					<!-- ____________________ #basDePage ____________________ -->
-					<div id="basDePage">
-						...
-					</div><!-- /#basDePage -->
 				</div><!-- /#interieurPage -->
 			</div><!-- /#page -->
+			
+			<!-- ____________________ #basDePageHorsPage ____________________ -->
+			<div id="basDePageHorsPage">
+				...
+			</div><!-- /#basDePage -->
 			
 			Balises `script` finales.
 		</body>
