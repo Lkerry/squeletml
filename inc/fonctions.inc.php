@@ -4618,16 +4618,6 @@ function partage($url, $titre)
 	
 	$liens = array ();
 	
-	$liens['Bebo'] = array (
-		'nom' => 'Bebo',
-		'lien' => "http://www.bebo.com/share.php?Url=$url&amp;Title=$titre",
-	);
-	
-	$liens['BlogMemes'] = array (
-		'nom' => 'BlogMemes',
-		'lien' => "http://blogmemes.net/fr/post.php?url=$url&amp;title=$titre",
-	);
-	
 	$liens['Delicious'] = array (
 		'nom' => 'Delicious',
 		'lien' => "http://delicious.com/post?url=$url&amp;title=$titre",
@@ -4643,24 +4633,9 @@ function partage($url, $titre)
 		'lien' => "http://www.facebook.com/sharer.php?u=$url&amp;t=$titre",
 	);
 	
-	$liens['Furl'] = array (
-		'nom' => 'Furl',
-		'lien' => "http://www.furl.net/storeIt.jsp?u=$url&amp;t=$titre",
-	);
-	
-	$liens['Fuzz'] = array (
-		'nom' => 'Fuzz',
-		'lien' => "http://www.fuzz.fr/?nws_article?link=$url&amp;title=$titre",
-	);
-	
-	$liens['Gnolia'] = array (
-		'nom' => 'Gnolia',
-		'lien' => "http://gnolia.com/bookmarklet/add?url=$url&amp;title=$titre",
-	);
-	
-	$liens['GoogleBookmarks'] = array (
-		'nom' => 'Google Bookmarks',
-		'lien' => "http://www.google.com/bookmarks/mark?op=add&amp;bkmk=$url&amp;title=$titre",
+	$liens['GooglePlus'] = array (
+		'nom' => 'Google+',
+		'lien' => "https://plus.google.com/share?url=$url",
 	);
 	
 	$liens['Identica'] = array (
@@ -4673,44 +4648,14 @@ function partage($url, $titre)
 		'lien' => "http://www.linkedin.com/shareArticle?mini=true&amp;url=$url&amp;title=$titre",
 	);
 	
-	$liens['MisterWong'] = array (
-		'nom' => 'Mister Wong',
-		'lien' => "http://www.mister-wong.com/addurl/?bm_url=$url&amp;bm_description=$titre",
-	);
-	
-	$liens['Mixx'] = array (
-		'nom' => 'Mixx',
-		'lien' => "http://www.mixx.com/submit?page_url=$url",
-	);
-	
 	$liens['MySpace'] = array (
 		'nom' => 'MySpace',
 		'lien' => "http://www.myspace.com/index.cfm?fuseaction=postto&amp;t=$titre&amp;u=$url",
 	);
 	
-	$liens['Newsvine'] = array (
-		'nom' => 'Newsvine',
-		'lien' => "http://www.newsvine.com/_tools/seed&amp;save?u=$url&amp;h=$titre",
-	);
-	
-	$liens['Propeller'] = array (
-		'nom' => 'Propeller',
-		'lien' => "http://www.propeller.com/submit/?U=$url&amp;T=$titre",
-	);
-	
 	$liens['Reddit'] = array (
 		'nom' => 'Reddit',
-		'lien' => "http://reddit.com/submit?url=$url&amp;title=$titre",
-	);
-	
-	$liens['Scoopeo'] = array (
-		'nom' => 'Scoopeo',
-		'lien' => "http://www.scoopeo.com/scoop/new?newurl=$url&amp;title=$titre",
-	);
-	
-	$liens['SlashDot'] = array (
-		'nom' => 'SlashDot',
-		'lien' => "http://slashdot.org/bookmark.pl?url=$url&amp;title=$titre",
+		'lien' => "http://www.reddit.com/submit?url=$url&amp;title=$titre",
 	);
 	
 	$liens['StumbleUpon'] = array (
@@ -4718,34 +4663,9 @@ function partage($url, $titre)
 		'lien' => "http://www.stumbleupon.com/submit?url=$url&amp;title=$titre",
 	);
 	
-	$liens['Tapemoi'] = array (
-		'nom' => 'Tapemoi',
-		'lien' => "http://www.tapemoi.com/submit.php?lien=$url",
-	);
-	
-	$liens['Technorati'] = array (
-		'nom' => 'Technorati',
-		'lien' => "http://technorati.com/search/$url",
-	);
-	
 	$liens['Twitter'] = array (
 		'nom' => 'Twitter',
 		'lien' => "http://twitter.com/home/?status=$url+--+$titre",
-	);
-	
-	$liens['Wikio'] = array (
-		'nom' => 'Wikio',
-		'lien' => "http://www.wikio.fr/vote?url=$url",
-	);
-	
-	$liens['YahooBookmarks'] = array (
-		'nom' => 'Yahoo! Bookmarks',
-		'lien' => "http://bookmarks.yahoo.com/myresults/bookmarklet?u=$url&amp;t=$titre",
-	);
-	
-	$liens['YahooBuzz'] = array (
-		'nom' => 'Yahoo! Buzz',
-		'lien' => "http://buzz.yahoo.com/buzz?targetUrl=$url&amp;headline=$titre",
 	);
 	
 	return $liens;
