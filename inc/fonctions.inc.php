@@ -1473,6 +1473,10 @@ function doctype($doctype, $langue)
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n", '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langue . '" lang="' . $langue . '">' . "\n");
 			break;
 			
+		case 'HTML 5':
+			return array ("<!DOCTYPE html>\n", "<html lang=\"$langue\">\n");
+			break;
+			
 		case 'HTML 4.01 Strict':
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . "\n", '<html lang="' . $langue . '">' . "\n");
 			break;
