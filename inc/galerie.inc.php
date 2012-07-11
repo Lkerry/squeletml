@@ -16,8 +16,14 @@ else
 	$urlGalerie = $urlSansGet;
 }
 
+// Empêcher la duplication de contenu dans les moteurs de recherche.
+if (!$pageGlobaleGalerie && isset($_GET['id']))
+{
+	$erreur404 = TRUE;
+}
+
 // Liste des images à afficher.
-if ($idGalerie == 'démo')
+if (!$erreur404 && $idGalerie == 'démo')
 {
 	// Galerie démo par défaut.
 	$tableauGalerie = tableauGalerie($racine . '/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt', TRUE);
