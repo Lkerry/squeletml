@@ -801,7 +801,11 @@ Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fich
 */
 function cheminConfigGalerie($racine, $idGalerieDossier, $retourneCheminParDefaut = FALSE)
 {
-	if (!empty($idGalerieDossier) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt'))
+	if ($idGalerieDossier == 'demo')
+	{
+		return $racine . '/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt';
+	}
+	elseif (!empty($idGalerieDossier) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt'))
 	{
 		return $racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt';
 	}
@@ -1496,7 +1500,8 @@ Retourne le texte supplémentaire d'une image pour le message envoyé par le mod
 */
 function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown)
 {
-	$messageEnvoyerAmisSupplement = '';
+	$messageEnvoyerAmisSupplementImage = '';
+	$messageEnvoyerAmisSupplementTexte = '';
 	$titreImage = titreImage($image);
 	
 	if (!empty($image['vignetteNom']))
@@ -1521,35 +1526,49 @@ function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $gale
 		$vignetteAlt = sprintf(T_("Image %1\$s"), $titreImage);
 	}
 	
-	$messageEnvoyerAmisSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
+	$imgSrc = $urlRacine;
+	
+	if ($idGalerieDossier != 'demo')
+	{
+		$imgSrc .= '/site';
+	}
+	
+	$imgSrc .= '/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom);
+	
+	$messageEnvoyerAmisSupplementImage .= "<p style=\"text-align: center;\"><img src=\"$imgSrc\" alt=\"$vignetteAlt\" /></p>\n";
 	
 	if (!empty($image['titre']))
 	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['titre'] . "</p>\n";
+		$messageEnvoyerAmisSupplementTexte .= '<p>' . $image['titre'] . "</p>\n";
 	}
 	
 	if (!empty($image['intermediaireLegende']))
 	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
+		$messageEnvoyerAmisSupplementTexte .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
 	}
 	elseif (!empty($image['intermediaireAlt']))
 	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
+		$messageEnvoyerAmisSupplementTexte .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
 	}
 	elseif (!empty($image['vignetteAlt']))
 	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
+		$messageEnvoyerAmisSupplementTexte .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
 	}
 	elseif (!empty($image['pageIntermediaireDescription']))
 	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
+		$messageEnvoyerAmisSupplementTexte .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
 	}
 	elseif (!empty($image['pageIntermediaireBaliseTitle']))
 	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
+		$messageEnvoyerAmisSupplementTexte .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
 	}
 	
-	$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplement</div>\n";
+	if (!empty($messageEnvoyerAmisSupplementTexte))
+	{
+		$messageEnvoyerAmisSupplementTexte = "<div style=\"margin-left: 50px;\">$messageEnvoyerAmisSupplementTexte</div>\n";
+	}
+	
+	$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplementImage$messageEnvoyerAmisSupplementTexte</div>\n";
 	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageEnvoyerAmisSupplement;

@@ -117,7 +117,6 @@ if (!isset($boitesDeroulantesAlaMain))
 }
 
 $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres');
-$cheminEnvoyerAmis = $racine . '/inc/envoyer-amis.inc.php';
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
 $listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
