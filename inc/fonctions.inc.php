@@ -495,7 +495,7 @@ function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
 	}
 	else
 	{
-		$boitesDeroulantesTableau = array();
+		$boitesDeroulantesTableau = array ();
 	}
 	
 	return $boitesDeroulantesTableau;
@@ -1803,7 +1803,7 @@ function fluxRssConfigCategorie($cheminFichier)
 	include $cheminFichier;
 	ob_end_clean();
 	
-	$valeursRetour = array();
+	$valeursRetour = array ();
 	$valeursRetour[0] = NULL;
 	$valeursRetour[1] = NULL;
 	
@@ -1829,7 +1829,7 @@ function fluxRssConfigGalerie($cheminFichier)
 	include $cheminFichier;
 	ob_end_clean();
 	
-	$valeursRetour = array();
+	$valeursRetour = array ();
 	$valeursRetour[0] = NULL;
 	$valeursRetour[1] = NULL;
 	$valeursRetour[2] = NULL;
@@ -2069,7 +2069,7 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 /*
 Retourne un tableau listant les galeries sous la forme suivante:
 
-	"$idGalerie" => array("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
+	"$idGalerie" => array ("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
 
 Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
 */
@@ -2082,7 +2082,7 @@ function galeries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE
 	{
 		if (!empty($galerieSpecifique) && isset($configGaleries[$galerieSpecifique]))
 		{
-			$galeriesTmp = array($galerieSpecifique => $configGaleries[$galerieSpecifique]);
+			$galeriesTmp = array ($galerieSpecifique => $configGaleries[$galerieSpecifique]);
 		}
 		else
 		{
@@ -4167,7 +4167,7 @@ function nomFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 		$nomFichierCache = 'index';
 	}
 	
-	$nomFichierCache = str_replace(array('/', '\\'), '-', $nomFichierCache);
+	$nomFichierCache = str_replace(array ('/', '\\'), '-', $nomFichierCache);
 	$nomFichierCache = str_replace('&amp;amp;', '-', $nomFichierCache);
 	$nomFichierCache = str_replace('&amp;', '-', $nomFichierCache);
 	$nomFichierCache = filtreChaine($racine, "$nomFichierCache.cache");
@@ -4616,99 +4616,99 @@ function partage($url, $titre)
 		$titre = '';
 	}
 	
-	$liens = array();
+	$liens = array ();
 	
-	$liens['Bebo'] = array(
+	$liens['Bebo'] = array (
 		'nom' => 'Bebo',
 		'lien' => "http://www.bebo.com/share.php?Url=$url&amp;Title=$titre",
 	);
 	
-	$liens['BlogMemes'] = array(
+	$liens['BlogMemes'] = array (
 		'nom' => 'BlogMemes',
 		'lien' => "http://blogmemes.net/fr/post.php?url=$url&amp;title=$titre",
 	);
 	
-	$liens['Delicious'] = array(
+	$liens['Delicious'] = array (
 		'nom' => 'Delicious',
 		'lien' => "http://delicious.com/post?url=$url&amp;title=$titre",
 	);
 	
-	$liens['Digg'] = array(
+	$liens['Digg'] = array (
 		'nom' => 'Digg',
 		'lien' => "http://digg.com/submit?phase=2&amp;url=$url&amp;title=$titre",
 	);
 	
-	$liens['Facebook'] = array(
+	$liens['Facebook'] = array (
 		'nom' => 'Facebook',
 		'lien' => "http://www.facebook.com/sharer.php?u=$url&amp;t=$titre",
 	);
 	
-	$liens['Furl'] = array(
+	$liens['Furl'] = array (
 		'nom' => 'Furl',
 		'lien' => "http://www.furl.net/storeIt.jsp?u=$url&amp;t=$titre",
 	);
 	
-	$liens['Fuzz'] = array(
+	$liens['Fuzz'] = array (
 		'nom' => 'Fuzz',
 		'lien' => "http://www.fuzz.fr/?nws_article?link=$url&amp;title=$titre",
 	);
 	
-	$liens['Gnolia'] = array(
+	$liens['Gnolia'] = array (
 		'nom' => 'Gnolia',
 		'lien' => "http://gnolia.com/bookmarklet/add?url=$url&amp;title=$titre",
 	);
 	
-	$liens['GoogleBookmarks'] = array(
+	$liens['GoogleBookmarks'] = array (
 		'nom' => 'Google Bookmarks',
 		'lien' => "http://www.google.com/bookmarks/mark?op=add&amp;bkmk=$url&amp;title=$titre",
 	);
 	
-	$liens['Identica'] = array(
+	$liens['Identica'] = array (
 		'nom' => 'Identi.ca',
 		'lien' => "http://identi.ca/index.php?action=newnotice&amp;status_textarea=$titre $url",
 	);
 	
-	$liens['Linkedin'] = array(
+	$liens['Linkedin'] = array (
 		'nom' => 'LinkedIn',
 		'lien' => "http://www.linkedin.com/shareArticle?mini=true&amp;url=$url&amp;title=$titre",
 	);
 	
-	$liens['MisterWong'] = array(
+	$liens['MisterWong'] = array (
 		'nom' => 'Mister Wong',
 		'lien' => "http://www.mister-wong.com/addurl/?bm_url=$url&amp;bm_description=$titre",
 	);
 	
-	$liens['Mixx'] = array(
+	$liens['Mixx'] = array (
 		'nom' => 'Mixx',
 		'lien' => "http://www.mixx.com/submit?page_url=$url",
 	);
 	
-	$liens['MySpace'] = array(
+	$liens['MySpace'] = array (
 		'nom' => 'MySpace',
 		'lien' => "http://www.myspace.com/index.cfm?fuseaction=postto&amp;t=$titre&amp;u=$url",
 	);
 	
-	$liens['Newsvine'] = array(
+	$liens['Newsvine'] = array (
 		'nom' => 'Newsvine',
 		'lien' => "http://www.newsvine.com/_tools/seed&amp;save?u=$url&amp;h=$titre",
 	);
 	
-	$liens['Propeller'] = array(
+	$liens['Propeller'] = array (
 		'nom' => 'Propeller',
 		'lien' => "http://www.propeller.com/submit/?U=$url&amp;T=$titre",
 	);
 	
-	$liens['Reddit'] = array(
+	$liens['Reddit'] = array (
 		'nom' => 'Reddit',
 		'lien' => "http://reddit.com/submit?url=$url&amp;title=$titre",
 	);
 	
-	$liens['Scoopeo'] = array(
+	$liens['Scoopeo'] = array (
 		'nom' => 'Scoopeo',
 		'lien' => "http://www.scoopeo.com/scoop/new?newurl=$url&amp;title=$titre",
 	);
 	
-	$liens['SlashDot'] = array(
+	$liens['SlashDot'] = array (
 		'nom' => 'SlashDot',
 		'lien' => "http://slashdot.org/bookmark.pl?url=$url&amp;title=$titre",
 	);
@@ -4718,32 +4718,32 @@ function partage($url, $titre)
 		'lien' => "http://www.stumbleupon.com/submit?url=$url&amp;title=$titre",
 	);
 	
-	$liens['Tapemoi'] = array(
+	$liens['Tapemoi'] = array (
 		'nom' => 'Tapemoi',
 		'lien' => "http://www.tapemoi.com/submit.php?lien=$url",
 	);
 	
-	$liens['Technorati'] = array(
+	$liens['Technorati'] = array (
 		'nom' => 'Technorati',
 		'lien' => "http://technorati.com/search/$url",
 	);
 	
-	$liens['Twitter'] = array(
+	$liens['Twitter'] = array (
 		'nom' => 'Twitter',
 		'lien' => "http://twitter.com/home/?status=$url+--+$titre",
 	);
 	
-	$liens['Wikio'] = array(
+	$liens['Wikio'] = array (
 		'nom' => 'Wikio',
 		'lien' => "http://www.wikio.fr/vote?url=$url",
 	);
 	
-	$liens['YahooBookmarks'] = array(
+	$liens['YahooBookmarks'] = array (
 		'nom' => 'Yahoo! Bookmarks',
 		'lien' => "http://bookmarks.yahoo.com/myresults/bookmarklet?u=$url&amp;t=$titre",
 	);
 	
-	$liens['YahooBuzz'] = array(
+	$liens['YahooBuzz'] = array (
 		'nom' => 'Yahoo! Buzz',
 		'lien' => "http://buzz.yahoo.com/buzz?targetUrl=$url&amp;headline=$titre",
 	);

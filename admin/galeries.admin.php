@@ -968,7 +968,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$messagesScript .= adminRmdir($cheminGalerie);
 						$cheminConfigGaleries = cheminConfigGaleries($racine, TRUE);
 						
-						if (adminMajConfigGaleries($racine, array($id => array())))
+						if (adminMajConfigGaleries($racine, array ($id => array ())))
 						{
 							$messagesScript .= '<li>' . sprintf(T_("La galerie %1\$s a été supprimée du fichier de configuration des galeries %2\$s."), "<code>$id</code>", "<code>$cheminConfigGaleries</code>") . "</li>\n";
 						}
@@ -1045,7 +1045,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			else
 			{
 				$messagesScript .= '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n";
-				$listeModifs = array();
+				$listeModifs = array ();
 				$listeModifs[$id] = $galeries[$id];
 				
 				if (!empty($nouveauNomDossier))
@@ -1064,7 +1064,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$messagesScript .= '<li>' . sprintf(T_("Identifiant %1\$s modifié pour %2\$s."), "<code>$id</code>", "<code>$nouvelId</code>") . "</li>\n";
 					$listeModifs[$nouvelId] = $listeModifs[$id];
-					$listeModifs[$id] = array();
+					$listeModifs[$id] = array ();
 				}
 				
 				$cheminConfigGaleries = cheminConfigGaleries($racine, TRUE);
@@ -1804,7 +1804,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$cheminConfigGaleries = cheminConfigGaleries($racine, TRUE);
 					
-					if (adminMajConfigGaleries($racine, array($id => array('dossier' => $idDossier, 'url' => $urlRelativeGalerie))))
+					if (adminMajConfigGaleries($racine, array ($id => array ('dossier' => $idDossier, 'url' => $urlRelativeGalerie))))
 					{
 						$messagesScript .= '<li>' . sprintf(T_("Ajout de la galerie %1\$s dans le fichier de configuration des galeries %2\$s effectué."), "<code>$id</code>", "<code>$cheminConfigGaleries</code>") . "</li>\n";
 					}

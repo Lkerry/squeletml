@@ -169,11 +169,11 @@ if (isset($_POST['envoyer']))
 		
 		if ($envoyerAmisEstActif)
 		{
-			$infosCourriel['message'] = str_replace(array("\r\n", "\r"), "\n", $messageEnvoyerAmis) . "\n";
+			$infosCourriel['message'] = str_replace(array ("\r\n", "\r"), "\n", $messageEnvoyerAmis) . "\n";
 		}
 		else
 		{
-			$infosCourriel['message'] = str_replace(array("\r\n", "\r"), "\n", $message) . "\n";
+			$infosCourriel['message'] = str_replace(array ("\r\n", "\r"), "\n", $message) . "\n";
 		}
 		
 		// Traitement personnalisé optionnel 2 de 4.

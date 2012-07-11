@@ -48,7 +48,7 @@ if (!empty($_GET['id']))
 	
 	if ($categories !== FALSE && estCatSpeciale($idCategorie) && !empty($getLangue))
 	{
-		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $getLangue, $categories, array($idCategorie), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $getLangue, $categories, array ($idCategorie), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 	}
 }
 

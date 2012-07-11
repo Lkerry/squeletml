@@ -12,5 +12,5 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 $estPageDerreur = TRUE;
 $codeLangue = langue('navigateur', $langueParDefaut);
 
-include cheminXhtml($racine, array($codeLangue, $langueParDefaut), 'page.404');
+include cheminXhtml($racine, array ($codeLangue, $langueParDefaut), 'page.404');
 ?>

@@ -191,7 +191,7 @@ if (file_exists($racine . '/init.inc.php'))
 					{
 						foreach ($pages as $codeLangue => $langueInfos)
 						{
-							$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+							$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 							
 							if (!empty($categorie))
 							{
@@ -209,7 +209,7 @@ if (file_exists($racine . '/init.inc.php'))
 					{
 						foreach ($pages as $codeLangue => $langueInfos)
 						{
-							$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+							$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 							
 							if (!empty($categorie))
 							{
