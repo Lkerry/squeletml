@@ -1501,7 +1501,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$messagesScript .= '<pre id="contenuFichierConfigGraphiqueSimplifiee">' . $contenuFichierAafficher . "</pre>\n";
 		
 				$messagesScript .= "<ul>\n";
-				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierConfigGraphique');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+				$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierConfigGraphiqueSimplifiee');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
 				$messagesScript .= "</ul>\n";
 				$messagesScript .= "</div><!-- /.bDcorps -->\n";
 				$messagesScript .= "</li>\n";
