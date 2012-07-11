@@ -10,22 +10,29 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 if (!empty($_GET['id']))
 {
 	$getId = securiseTexte($_GET['id']);
-	$idGalerie = $getId;
 	
-	$galeries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
-	
-	if (!empty($galeries))
+	if ($getId == 'demo')
 	{
-		$idReel = idGalerie($racine, $categories, $idCategorie);
+		$idGalerie = 'démo';
+	}
+	else
+	{
+		$idGalerie = $getId;
+		$galeries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
 		
-		if (!empty($idReel))
+		if (!empty($galeries))
 		{
-			$idGalerie = $idReel;
+			$idReel = idGalerie($racine, $galeries, $idGalerie);
+			
+			if (!empty($idReel))
+			{
+				$idGalerie = $idReel;
+			}
 		}
 	}
 }
 
-if ($idGalerie == 'démo')
+if ($getId != 'démo' && $idGalerie == 'démo')
 {
 	$rssGalerie = FALSE;
 	$robots = "noindex, follow, noarchive"; // Empêche la présence de la galerie démo dans les moteurs de recherche.

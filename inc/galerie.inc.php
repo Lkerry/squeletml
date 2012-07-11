@@ -9,7 +9,7 @@ $idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 // URL.
 if ($pageGlobaleGalerie)
 {
-	$urlGalerie = ajouteGet($urlSansGet, "id=$idGalerie");
+	$urlGalerie = ajouteGet($urlSansGet, 'id=' . filtreChaine($racine, $idGalerie));
 }
 else
 {
