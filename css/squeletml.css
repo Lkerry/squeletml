@@ -1107,16 +1107,16 @@ div#galerieLienOriginalIcone img {
 	border: none;
 }
 
-ul.galerieNavigationAccueilListe {
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
-}
-
 div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
 	padding: 5px;
 	border: none;
 	margin: 10px;
+}
+
+ul.galerieListeImages {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
 }
 
 body.galerie div.pagination {

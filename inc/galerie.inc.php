@@ -373,7 +373,8 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			}
 		
 			$minivignetteImageEnCours = FALSE;
-		
+			$corpsMinivignettes .= "<ul class=\"galerieListeImages\">\n";
+			
 			for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
 			{
 				if ($indice == $indiceImageEnCours)
@@ -382,7 +383,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 				}
 			
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-				$corpsMinivignettes .= image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours);
+				$corpsMinivignettes .= '<li>' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours) . "</li>\n";
 				$minivignetteImageEnCours = FALSE;
 			}
 		
@@ -548,7 +549,7 @@ elseif (!empty($idGalerie))
 	}
 	else
 	{
-		$corpsGalerie .= "<ul class=\"galerieNavigationAccueilListe\">\n";
+		$corpsGalerie .= "<ul class=\"galerieListeImages\">\n";
 		
 		for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
 		{
