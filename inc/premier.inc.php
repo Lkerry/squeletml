@@ -1,6 +1,6 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.premier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML est envoyé au navigateur lors de la vérification du cache ou à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.premier.inc.php`.
 
 Étapes dans ce fichier:
 
@@ -8,13 +8,14 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 2. Première série d'affectations.
 3. Deuxième série d'inclusions.
 4. Première série de traitement personnalisé optionnel.
-5. Deuxième série d'affectations.
-6. Troisième série d'inclusions.
-7. Troisième série d'affectations.
-8. Ajouts dans `$balisesLinkScript`.
-9. Deuxième série de traitement personnalisé optionnel.
-10. En-têtes HTTP.
-11. Inclusion de code XHTML.
+5. Vérification du cache.
+6. Deuxième série d'affectations.
+7. Troisième série d'inclusions.
+8. Troisième série d'affectations.
+9. Ajouts dans `$balisesLinkScript`.
+10. Deuxième série de traitement personnalisé optionnel.
+11. En-têtes HTTP.
+12. Inclusion de code XHTML.
 */
 
 ########################################################################
@@ -77,6 +78,36 @@ phpGettext($racine, LANGUE); // Nécessaire à la traduction.
 if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 {
 	include $racine . '/site/inc/premier-pre.inc.php';
+}
+
+// Vérification du cache.
+if ($dureeCache)
+{
+	// On vérifie si la page existe en cache ou si le cache est expiré.
+	
+	$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
+	$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+	
+	if (file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+	{
+		if (file_exists("$racine/site/cache/$nomFichierCacheEnTete"))
+		{
+			$contenuFichierCacheEnTete = @file_get_contents("$racine/site/cache/$nomFichierCacheEnTete");
+			
+			if ($contenuFichierCacheEnTete !== FALSE)
+			{
+				eval($contenuFichierCacheEnTete);
+			}
+		}
+		
+		@readfile("$racine/site/cache/$nomFichierCache");
+		
+		exit(0);
+	}
+	else
+	{
+		ob_start();
+	}
 }
 
 // Affectations 2 de 3.
@@ -444,6 +475,11 @@ if (file_exists($racine . '/site/inc/premier.inc.php'))
 
 if (!empty($enTetesHttp))
 {
+	if ($dureeCache)
+	{
+		@file_put_contents("$racine/site/cache/$nomFichierCacheEnTete", $enTetesHttp);
+	}
+	
 	eval($enTetesHttp);
 }
 
@@ -452,24 +488,6 @@ if (!empty($enTetesHttp))
 ## Code XHTML 1 de 2.
 ##
 ########################################################################
-
-if ($dureeCache)
-{
-	// On vérifie si la page existe en cache ou si le cache est expiré.
-	
-	$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-	
-	if (file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
-	{
-		@readfile("$racine/site/cache/$nomFichierCache");
-		
-		exit(0);
-	}
-	else
-	{
-		ob_start();
-	}
-}
 
 include cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.premier');
 ?>

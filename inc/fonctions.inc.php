@@ -4259,6 +4259,14 @@ function nomFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 }
 
 /*
+Retourne le nom du fichier cache contenant les informations d'en-tête HTTP.
+*/
+function nomFichierCacheEnTete($nomFichierCache)
+{
+	return "en-tete-$nomFichierCache";
+}
+
+/*
 Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
 */
 function nomPage()
