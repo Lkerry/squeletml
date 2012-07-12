@@ -1,4 +1,5 @@
 <?php
+$desactiverCache = TRUE;
 include 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
