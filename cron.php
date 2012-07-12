@@ -68,12 +68,14 @@ if (file_exists($racine . '/init.inc.php'))
 						if (empty($categorieInfos['urlCat']) || strpos($categorieInfos['urlCat'], 'categorie.php?id=') !== FALSE)
 						{
 							$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=categorie&id=$categorie", FALSE);
-							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), 'cache' => $nomFichierCache);
+							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 						}
 						else
 						{
 							$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=categorie&chemin=' . $categorieInfos['urlCat'], FALSE);
-							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&chemin=' . $categorieInfos['urlCat'], 'cache' => $nomFichierCache);
+							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&chemin=' . $categorieInfos['urlCat'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 						}
 					}
 				}
@@ -88,7 +90,8 @@ if (file_exists($racine . '/init.inc.php'))
 					foreach ($pages as $codeLangue => $langueInfos)
 					{
 						$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=galeries&langue=$codeLangue", FALSE);
-						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&langue=' . $codeLangue, 'cache' => $nomFichierCache);
+						$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 						
 						foreach ($langueInfos as $idGalerie => $urlGalerie)
 						{
@@ -112,7 +115,8 @@ if (file_exists($racine . '/init.inc.php'))
 					foreach ($pages as $codeLangue => $langueInfos)
 					{
 						$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=site&langue=$codeLangue", FALSE);
-						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=site&langue=' . $codeLangue, 'cache' => $nomFichierCache);
+						$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=site&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 					}
 				}
 			}
@@ -145,7 +149,8 @@ if (file_exists($racine . '/init.inc.php'))
 								}
 								
 								$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlGalerie);
-								$tableauUrlCache[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache);
+								$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+								$tableauUrlCache[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 								
 								if ($nombreDePages > 1)
 								{
@@ -153,7 +158,8 @@ if (file_exists($racine . '/init.inc.php'))
 									{
 										$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "page=$i");
 										$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-										$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+										$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+										$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 									}
 								}
 								
@@ -162,7 +168,8 @@ if (file_exists($racine . '/init.inc.php'))
 									$id = idImage($racine, $image);
 									$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "image=$id");
 									$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-									$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+									$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+									$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 								}
 							}
 						}
@@ -253,6 +260,20 @@ if (file_exists($racine . '/init.inc.php'))
 				}
 				
 				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $url['cache'] . '");</code>' . "</li>\n";
+			}
+			
+			if (!empty($url['cacheEnTete']))
+			{
+				if (@unlink($racine . '/site/cache/' . $url['cacheEnTete']))
+				{
+					$rapportLi .= '<li>1: ';
+				}
+				else
+				{
+					$rapportLi .= '<li class="erreur">0: ';
+				}
+				
+				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $url['cacheEnTete'] . '");</code>' . "</li>\n";
 			}
 			
 			if (empty($url['cache']) || !file_exists($racine . '/site/cache/' . $url['cache']))

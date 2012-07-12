@@ -1362,7 +1362,8 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 	$categorie['langueCat'] = langueCat($categorie, $langueParDefaut);
 	$categorie['urlCat'] = urlCat($racine, $categorie, $idCategorie, $langueParDefaut);
 	$nomFichierCache = nomFichierCache($racine, $urlRacine, $categorie['urlCat']);
-$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache' => $nomFichierCache);
+	$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 	
 	if ($nombreDePages > 1)
 	{
@@ -1370,7 +1371,8 @@ $tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache'
 		{
 			$adresse = ajouteGet($urlRacine . '/' . $categorie['urlCat'], "page=$i");
 			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 		}
 	}
 	
