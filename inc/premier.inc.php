@@ -55,6 +55,11 @@ elseif (!isset($langue))
 	$langue = '';
 }
 
+if (!isset($desactiverCache))
+{
+	$desactiverCache = FALSE;
+}
+
 if (!isset($idCategorie))
 {
 	$idCategorie = '';
@@ -81,7 +86,7 @@ if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 }
 
 // Vérification du cache.
-if ($dureeCache)
+if ($dureeCache && !$desactiverCache)
 {
 	// On vérifie si la page existe en cache ou si le cache est expiré.
 	
@@ -475,7 +480,7 @@ if (file_exists($racine . '/site/inc/premier.inc.php'))
 
 if (!empty($enTetesHttp))
 {
-	if ($dureeCache)
+	if ($dureeCache && !$desactiverCache)
 	{
 		@file_put_contents("$racine/site/cache/$nomFichierCacheEnTete", $enTetesHttp);
 	}

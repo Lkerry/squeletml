@@ -636,6 +636,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le bloc des informations de publication, dans le listage des articles classés dans une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
 
+- `$desactiverCache`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut désactiver ou non le cache pour la page courante (dans le cas où le cache est activé avec la variable `$dureeCache` du fichier de configuration du site).
+
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
 - `$envoyerAmis`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non cette option pour la page courante, si la valeur est différente de `$activerEnvoyerAmisParDefaut` du fichier de configuration du site.

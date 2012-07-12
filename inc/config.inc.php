@@ -476,6 +476,7 @@ $tailleApercuAutomatique = 750;
   - `86400` équivaut à 1 jour;
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
+Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
 */
 $dureeCache = 0;
 

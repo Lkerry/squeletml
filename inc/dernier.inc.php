@@ -77,7 +77,7 @@ if (file_exists($racine . '/site/inc/dernier.inc.php'))
 
 include cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.dernier');
 
-if ($dureeCache)
+if ($dureeCache && !$desactiverCache)
 {
 	$codePage = ob_get_contents();
 	ob_end_clean();
