@@ -195,7 +195,7 @@ $adminTypeFiltreAffichageDansListe = '';
 - Si la variable `$adminTypeFiltreAffichageDansListe` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageDansListe = '../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../fichiers/galeries|../inc/filter_htmlcorrector|../inc/mimedetect|../inc/node_teaser|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale/en_US|../locale/fr_CA|../modeles/site|../piwik|../src';
+$adminFiltreAffichageDansListe = '';
 
 /* ____________________ Sous-dossiers dans le contenu d'un dossier. ____________________ */
 
@@ -214,7 +214,7 @@ $adminTypeFiltreAffichageDansContenu = '';
 - Si la variable `$adminTypeFiltreAffichageDansContenu` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageDansContenu = '../admin|../css|../doc|../fichiers|../inc|../js|../locale|../modeles|../piwik|../scripts|../site/admin/cache|../site/cache|../site/fichiers/galeries|../src|../xhtml';
+$adminFiltreAffichageDansContenu = '';
 
 /* ____________________ Ajout de fichiers. ____________________ */
 

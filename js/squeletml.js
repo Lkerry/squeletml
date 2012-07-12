@@ -70,14 +70,6 @@ function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2, hauteur
 }
 
 /*
-Crée un alias identique pour le `gettext` de JSGettext à ce qui est utilisé dans Squeletml avec PHP Gettext.
-*/
-function T_(msgid)
-{
-	return gt.gettext(msgid);
-}
-
-/*
 Génère une table des matières pour la page en cours.
 */
 function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, niveauArret, langue, langueParDefaut)

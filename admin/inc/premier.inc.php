@@ -62,8 +62,6 @@ if (!empty($idBody))
 	$idBody = ' id="' . $idBody . '"';
 }
 
-$locale = locale(LANGUE_ADMIN);
-
 $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 
 if ($siteEstEnMaintenance)
@@ -225,16 +223,6 @@ if ($tableDesMatieres)
 	$adminBalisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$adminBalisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$adminBalisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
-	
-	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/Gettext/lib/Gettext.js";
-	
-	if (file_exists($racine . '/locale/' . $locale))
-	{
-		$adminBalisesLinkScript[] = "$url#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
-	}
-	
-	$adminBalisesLinkScript[] = "$url#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
-	
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
 	$adminBalisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$adminLangueParDefaut');";

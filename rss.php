@@ -12,7 +12,6 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 if (isset($_GET['langue']))
 {
 	$getLangue = sansEchappement($_GET['langue']);
-	
 	phpGettext('.', $getLangue); // Nécessaire à la traduction.
 }
 else
@@ -230,7 +229,6 @@ elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && emp
 				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 				
 				$langue = langueCat($categories[$idCategorie], $langueParDefaut);
-				
 				phpGettext('.', $langue); // Nécessaire à la traduction.
 				
 				if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))

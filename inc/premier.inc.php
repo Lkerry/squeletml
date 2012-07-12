@@ -251,7 +251,6 @@ if (!empty($idCategorie))
 if ($tableDesMatieres)
 {
 	$boitesDeroulantes .= ' #tableDesMatieres';
-	$locale = locale(LANGUE);
 }
 
 // Inclusions 3 de 3.
