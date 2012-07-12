@@ -1496,12 +1496,20 @@ function doctype($doctype, $langue)
 }
 
 /*
+Retourne le texte supplémentaire d'une catégorie pour le message envoyé par le module «Envoyer à des amis».
+*/
+function envoyerAmisSupplementCategorie($racine, $urlRacine, $langueParDefaut, $langue, $dureeCache, $idCategorie)
+{
+	$messageEnvoyerAmisSupplement = publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, '', FALSE, $dureeCache);
+	return envoyerAmisSupplementPage('', '', $messageEnvoyerAmisSupplement);
+}
+
+/*
 Retourne le texte supplémentaire d'une image pour le message envoyé par le module «Envoyer à des amis».
 */
 function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown)
 {
-	$messageEnvoyerAmisSupplementImage = '';
-	$messageEnvoyerAmisSupplementTexte = '';
+	$messageEnvoyerAmisSupplement = '';
 	$titreImage = titreImage($image);
 	
 	if (!empty($image['vignetteNom']))
@@ -1513,19 +1521,7 @@ function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $gale
 		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
 	}
 	
-	if (!empty($image['vignetteAlt']))
-	{
-		$vignetteAlt = $image['vignetteAlt'];
-	}
-	elseif (!empty($image['intermediaireAlt']))
-	{
-		$vignetteAlt = $image['intermediaireAlt'];
-	}
-	else
-	{
-		$vignetteAlt = sprintf(T_("Image %1\$s"), $titreImage);
-	}
-	
+	$vignetteAlt = envoyerAmisSupplementImageAlt($image);
 	$imgSrc = $urlRacine;
 	
 	if ($idGalerieDossier != 'demo')
@@ -1535,49 +1531,66 @@ function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $gale
 	
 	$imgSrc .= '/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom);
 	
-	$messageEnvoyerAmisSupplementImage .= "<p style=\"text-align: center;\"><img src=\"$imgSrc\" alt=\"$vignetteAlt\" /></p>\n";
+	$messageEnvoyerAmisSupplement .= "<p style=\"text-align: center;\"><img src=\"$imgSrc\" alt=\"$vignetteAlt\" /></p>\n";
 	
 	if (!empty($image['titre']))
 	{
-		$messageEnvoyerAmisSupplementTexte .= '<p>' . $image['titre'] . "</p>\n";
+		$messageEnvoyerAmisSupplement .= '<p>' . $image['titre'] . "</p>\n";
 	}
 	
 	if (!empty($image['intermediaireLegende']))
 	{
-		$messageEnvoyerAmisSupplementTexte .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
+		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
 	}
 	elseif (!empty($image['intermediaireAlt']))
 	{
-		$messageEnvoyerAmisSupplementTexte .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
+		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
 	}
 	elseif (!empty($image['vignetteAlt']))
 	{
-		$messageEnvoyerAmisSupplementTexte .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
+		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
 	}
 	elseif (!empty($image['pageIntermediaireDescription']))
 	{
-		$messageEnvoyerAmisSupplementTexte .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
+		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
 	}
 	elseif (!empty($image['pageIntermediaireBaliseTitle']))
 	{
-		$messageEnvoyerAmisSupplementTexte .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
+		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
 	}
 	
-	if (!empty($messageEnvoyerAmisSupplementTexte))
-	{
-		$messageEnvoyerAmisSupplementTexte = "<div style=\"margin-left: 50px;\">$messageEnvoyerAmisSupplementTexte</div>\n";
-	}
-	
-	$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplementImage$messageEnvoyerAmisSupplementTexte</div>\n";
+	$messageEnvoyerAmisSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messageEnvoyerAmisSupplement</div>\n";
 	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageEnvoyerAmisSupplement;
 }
 
 /*
+Retourne le texte alternatif d'une image pour le message envoyé par le module «Envoyer à des amis».
+*/
+function envoyerAmisSupplementImageAlt($image)
+{
+	if (!empty($image['vignetteAlt']))
+	{
+		$imgAlt = $image['vignetteAlt'];
+	}
+	elseif (!empty($image['intermediaireAlt']))
+	{
+		$imgAlt = $image['intermediaireAlt'];
+	}
+	else
+	{
+		$titreImage = titreImage($image);
+		$imgAlt = sprintf(T_("Image %1\$s"), $titreImage);
+	}
+	
+	return $imgAlt;
+}
+
+/*
 Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Envoyer à des amis».
 */
-function envoyerAmisSupplementPage($description, $baliseTitle)
+function envoyerAmisSupplementPage($description, $baliseTitle, $extra = '')
 {
 	$messageEnvoyerAmisSupplement = '';
 	
@@ -1591,13 +1604,13 @@ function envoyerAmisSupplementPage($description, $baliseTitle)
 		$messageEnvoyerAmisSupplement .= '<p>' . $description . "</p>\n";
 	}
 	
-	if (!empty($messageEnvoyerAmisSupplement))
+	if (!empty($extra))
 	{
-		$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplement</div>\n";
+		$messageEnvoyerAmisSupplement .= "$extra\n";
 	}
 	
-	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . urlPageSansEnvoyerAmis() . "</a></p>\n";
-	
+	$urlPageSansEnvoyerAmis = '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . urlPageSansEnvoyerAmis() . "</a></p>\n";
+	$messageEnvoyerAmisSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messageEnvoyerAmisSupplement$urlPageSansEnvoyerAmis</div>\n";
 	$messageEnvoyerAmisSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
 	
 	return $messageEnvoyerAmisSupplement;
@@ -4793,11 +4806,13 @@ Le paramètre `$id` n'est utile que pour les types `categorie` (fournir la valeu
 
 Le paramètre `$nombreVoulu` correspond au nombre de publications dans la liste retournée.
 
-Le paramètre `$ajouterLien` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien est ajouté vers la liste complète des publications pour le type donné (par exemple vers la liste de toutes les pages appartenant à une catégorie).
+Le paramètre `$ajouterLienVersPublication` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien est ajouté vers la page Web de la publication en question.
+
+Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien est ajouté vers la liste complète des publications pour le type donné (par exemple vers la liste de toutes les pages appartenant à une catégorie).
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $type, $id, $nombreVoulu, $ajouterLien, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
+function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
 {
 	$html = '';
 	
@@ -4845,12 +4860,23 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 				
 				foreach ($itemsFluxRss as $cle => $valeur)
 				{
-					$html .= '<li><a href="' . $valeur['link'] . '">' . $valeur['title'] . "</a></li>\n";
+					$html .= '<li>';
+					
+					if ($ajouterLienVersPublication)
+					{
+						$html .= '<a href="' . $valeur['link'] . '">' . $valeur['title'] . '</a>';
+					}
+					else
+					{
+						$html .= $valeur['title'];
+					}
+					
+					$html .= "</li>\n";
 				}
 				
 				if (!empty($html))
 				{
-					if ($ajouterLien && !$lienDesactive)
+					if ($ajouterLienPlus && !$lienDesactive)
 					{
 						$categories[$id]['urlCat'] = urlCat($racine, $categories[$id], $id, $langueParDefaut);
 						$lien = $urlRacine . '/' . $categories[$id]['urlCat'];
@@ -4933,8 +4959,21 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					}
 					
 					$lienVignette = ajouteGet($urlGalerie, 'image=' . idImage($racine, $image));
+					$vignettesImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
+					$vignettesCode = '<li>';
+					
+					if ($ajouterLienVersPublication)
+					{
+						$vignettesCode .= '<a href="' . $lienVignette . '" title="' . $title . '">' . $vignettesImg . '</a>';
+					}
+					else
+					{
+						$vignettesCode .= $vignettesImg;
+					}
+					
+					$vignettesCode .= "</li>\n";
 					$vignettes[] = array (
-						'code' => '<li><a href="' . $lienVignette . '" title="' . $title . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
+						'code' => $vignettesCode,
 						'date' => $date,
 					);
 				}
@@ -4965,7 +5004,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 				
 				if (!empty($html))
 				{
-					if ($ajouterLien && !$lienDesactive)
+					if ($ajouterLienPlus && !$lienDesactive)
 					{
 						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'images") . "</a></p>\n";
 					}
@@ -5039,16 +5078,27 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					{
 						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom);
 					}
-				
+					
 					$vignetteImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . $vignetteNom . '" alt="' . $itemsFluxRss[$i]['title'] . '" width="' . $width . '" height="' . $height . '" />';
 				}
-			
-				$html .= '<li><a href="' . $itemsFluxRss[$i]['link'] . '" title="' . $itemsFluxRss[$i]['title'] . '">' . "$vignetteImg</a></li>\n";
+				
+				$html .= '<li>';
+				
+				if ($ajouterLienVersPublication)
+				{
+					$html .= '<a href="' . $itemsFluxRss[$i]['link'] . '" title="' . $itemsFluxRss[$i]['title'] . '">' . "$vignetteImg</a>";
+				}
+				else
+				{
+					$html .= $vignetteImg;
+				}
+				
+				$html .= "</li>\n";
 			}
 		
 			if (!empty($html))
 			{
-				if ($ajouterLien && !$lienDesactive)
+				if ($ajouterLienPlus && !$lienDesactive)
 				{
 					$cheminFichier = cheminConfigCategories($racine);
 				
@@ -5118,12 +5168,23 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 				
 				foreach ($itemsFluxRss as $cle => $valeur)
 				{
-					$html .= '<li><a href="' . $valeur['link'] . '">' . $valeur['title'] . "</a></li>\n";
+					$html .= '<li>';
+					
+					if ($ajouterLienVersPublication)
+					{
+						$html .= '<a href="' . $valeur['link'] . '">' . $valeur['title'] . '</a>';
+					}
+					else
+					{
+						$html .= $valeur['title'];
+					}
+					
+					$html .= "</li>\n";
 				}
 				
 				if (!empty($html))
 				{
-					if ($ajouterLien && !$lienDesactive)
+					if ($ajouterLienPlus && !$lienDesactive)
 					{
 						$cheminFichier = cheminConfigCategories($racine);
 						

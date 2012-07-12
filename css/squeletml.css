@@ -655,6 +655,10 @@ div#baliseH1 h1 {
 	margin: 20px;
 }
 
+#modeleMessageEnvoyerAmis code {
+	background-color: transparent;
+}
+
 h2#titreEnvoyerAmis {
 	clear: both;
 }
