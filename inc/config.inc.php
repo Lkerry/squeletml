@@ -546,7 +546,7 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Voir la fonction `lienActif()`.
 */
 $liensActifsBlocs['balise-h1']             = NULL;
-$liensActifsBlocs['envoyer-amis']          = NULL;
+$liensActifsBlocs['envoyer-amis']          = TRUE;
 $liensActifsBlocs['flux-rss']              = NULL;
 $liensActifsBlocs['infos-publication']     = NULL;
 $liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).

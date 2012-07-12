@@ -3236,23 +3236,84 @@ function licence($urlRacine, $choixLicence)
 }
 
 /*
+
+*/
+function lienActifEnvoyerAmis($urlRacine, $html, $inclureGet, $parent = '')
+{
+	return $html;
+}
+
+/*
 Ajoute la classe `actif` à tous les liens (balises `a`) du code passé en paramètre et pointant vers la page en cours ainsi qu'à un parent (s'il existe) spécifié avec le paramètre optionnel `$parent`, qui doit être le nom d'une balise (par exemple `li`). Si `$inclureGet` vaut FALSE, les variables GET ne sont pas prises en considération dans la comparaison des adresses. Retourne le code résultant.
 */
-function lienActif($html, $inclureGet = TRUE, $parent = '')
+function lienActif($urlRacine, $html, $inclureGet, $parent = '')
 {
-	$url = url($inclureGet);
+	$url = url();
+	$urlRelative = preg_replace('#^' . preg_quote($urlRacine) . '/?#', '', $url);
+	$infosUrlRelative = parse_url($urlRelative);
 	$dom = str_get_html($html);
 	
 	foreach ($dom->find('a') as $a)
 	{
+		$lienActif = FALSE;
 		$aHref = $a->href;
+		$aHref = preg_replace('/#.+$/', '', $aHref);
+		$aHrefRelatif = preg_replace('#^' . preg_quote($urlRacine) . '/?#', '', $aHref);
+		$infosAhrefRelatif = parse_url($aHrefRelatif);
 		
-		if (!$inclureGet)
+		if ($infosAhrefRelatif['path'] == $infosUrlRelative['path'])
 		{
-			$aHref = preg_replace('/\?.*/', '', $aHref);
+			// A: même nom de page (mais pas nécessairement mêmes variables `GET`).
+			
+			$getUrlRelative = array ();
+			
+			if (isset($infosUrlRelative['query']))
+			{
+				parse_str(str_replace('&amp;', '&', $infosUrlRelative['query']), $getUrlRelative);
+				ksort($getUrlRelative);
+			}
+			
+			$getAhrefRelatif = array ();
+			
+			if (isset($infosAhrefRelatif['query']))
+			{
+				parse_str(str_replace('&amp;', '&', $infosAhrefRelatif['query']), $getAhrefRelatif);
+				ksort($getAhrefRelatif);
+			}
+			
+			if ($getUrlRelative == $getAhrefRelatif)
+			{
+				$lienActif = TRUE;
+			}
+			elseif (isset($getAhrefRelatif['action']))
+			{
+				$lienActif = FALSE;
+			}
+			else
+			{
+				if (isset($getUrlRelative['image']))
+				{
+					unset($getUrlRelative['image']);
+				}
+				
+				if (isset($getUrlRelative['action']))
+				{
+					unset($getUrlRelative['action']);
+				}
+				
+				if (isset($getAhrefRelatif['image']))
+				{
+					unset($getAhrefRelatif['image']);
+				}
+				
+				if (($getUrlRelative == $getAhrefRelatif) || !$inclureGet)
+				{
+					$lienActif = TRUE;
+				}
+			}
 		}
 		
-		if ($aHref == $url)
+		if ($lienActif)
 		{
 			$class = 'actif';
 			

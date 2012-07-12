@@ -70,10 +70,16 @@ if (!empty($blocsAinsererTemp))
 					if ($envoyerAmis && $envoyerAmisEstActif)
 					{
 						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						$bloc = '<div id="envoyerAmis" class="bloc ' . $classesBloc . '">' . "\n";
+						$bloc .= '<a href="' . urlPageAvecEnvoyerAmis() . '">' . T_("Envoyer à des amis") . '</a>';
+						$bloc .= '</div><!-- /#envoyerAmis -->' . "\n";
 						
-						$blocs[$region] .= '<div id="envoyerAmis" class="bloc ' . $classesBloc . '">' . "\n";
-						$blocs[$region] .= '<a href="' . urlPageAvecEnvoyerAmis() . '">' . T_("Envoyer à des amis") . '</a>';
-						$blocs[$region] .= '</div><!-- /#envoyerAmis -->' . "\n";
+						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+						{
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
+						}
+						
+						$blocs[$region] .= $bloc;
 					}
 					
 					break;
@@ -146,7 +152,7 @@ if (!empty($blocsAinsererTemp))
 					
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
-							$bloc = lienActif($bloc, FALSE, 'li');
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 						}
 					
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
@@ -225,7 +231,7 @@ if (!empty($blocsAinsererTemp))
 				
 					if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 					{
-						$bloc = lienActif($bloc, FALSE, 'li');
+						$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 					}
 				
 					if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
@@ -391,7 +397,7 @@ if (!empty($blocsAinsererTemp))
 					
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
-							$bloc = lienActif($bloc, FALSE, 'li');
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 						}
 					
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])

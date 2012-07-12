@@ -76,7 +76,7 @@ ob_start();
 include adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
 $menu = ob_get_contents();
 ob_end_clean();
-$menu = lienActif($menu, FALSE);
+$menu = lienActif($urlRacine, $menu, FALSE);
 
 ########################################################################
 ##
