@@ -156,7 +156,7 @@ if (file_exists($racine . '/init.inc.php'))
 								{
 									for ($i = 2; $i <= $nombreDePages; $i++)
 									{
-										$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "page=$i");
+										$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'page', $i);
 										$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
 										$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 										$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
@@ -166,7 +166,7 @@ if (file_exists($racine . '/init.inc.php'))
 								foreach ($tableauGalerie as $image)
 								{
 									$id = idImage($racine, $image);
-									$adresse = ajouteGet($urlRacine . '/' . $urlGalerie, "image=$id");
+									$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', $id);
 									$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
 									$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 									$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);

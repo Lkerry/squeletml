@@ -220,26 +220,6 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 }
 
 /*
-Ajoute la variable GET à l'adresse fournie, et retourne le résultat. `$get` doit être sous la forme `cle=valeur` ou `cle`.
-*/
-function ajouteGet($adresse, $get)
-{
-	if (!empty($get))
-	{
-		if (strpos($adresse, '?') !== FALSE)
-		{
-			$adresse .= '&amp;' . $get;
-		}
-		else
-		{
-			$adresse .= '?' . $get;
-		}
-	}
-	
-	return $adresse;
-}
-
-/*
 Retourne l'ancre de navigation d'une galerie.
 
 Voir les explications de la variable `$galerieAncreDeNavigation` dans le ficher de configuration du site.
@@ -395,7 +375,7 @@ function baliseTitle($baliseTitle, $baliseH1)
 		}
 		else
 		{
-			return urlPageSansEnvoyerAmis();
+			return variableGet(0, url(), 'action');
 		}
 	}
 	else
@@ -1369,7 +1349,7 @@ $tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache'
 	{
 		for ($i = 2; $i <= $nombreDePages; $i++)
 		{
-			$adresse = ajouteGet($urlRacine . '/' . $categorie['urlCat'], "page=$i");
+			$adresse = variableGet(2, $urlRacine . '/' . $categorie['urlCat'], 'page', $i);
 			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
 			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
@@ -1562,7 +1542,7 @@ function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $gale
 	}
 	
 	$messageEnvoyerAmisSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messageEnvoyerAmisSupplement</div>\n";
-	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
+	$messageEnvoyerAmisSupplement .= '<p><a href="' . variableGet(0, url(), 'action') . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
 	
 	return $messageEnvoyerAmisSupplement;
 }
@@ -1611,8 +1591,9 @@ function envoyerAmisSupplementPage($description, $baliseTitle, $extra = '')
 		$messageEnvoyerAmisSupplement .= "$extra\n";
 	}
 	
-	$urlPageSansEnvoyerAmis = '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . urlPageSansEnvoyerAmis() . "</a></p>\n";
-	$messageEnvoyerAmisSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messageEnvoyerAmisSupplement$urlPageSansEnvoyerAmis</div>\n";
+	$urlPageSansEnvoyerAmis = variableGet(0, url(), 'action');
+	$urlPageSansEnvoyerAmisCode = '<p><a href="' . $urlPageSansEnvoyerAmis . '">' . $urlPageSansEnvoyerAmis . "</a></p>\n";
+	$messageEnvoyerAmisSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messageEnvoyerAmisSupplement$urlPageSansEnvoyerAmisCode</div>\n";
 	$messageEnvoyerAmisSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
 	
 	return $messageEnvoyerAmisSupplement;
@@ -1885,7 +1866,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$title = sprintf(T_("%1\$s – Galerie %2\$s"), $titreImage, $idGalerie);
 			$cheminImage = "$racine/site/fichiers/galeries/$idGalerieDossier/" . $image['intermediaireNom'];
 			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieDossier) . '/' . rawurlencode($image['intermediaireNom']);
-			$urlGalerieImage = superRawurlencode(ajouteGet($urlGalerie, "image=$id"));
+			$urlGalerieImage = superRawurlencode(variableGet(2, $urlGalerie, 'image', $id));
 			
 			if (!empty($image['intermediaireLargeur']))
 			{
@@ -2638,7 +2619,8 @@ function image(
 		
 		$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
 		$id = idImage($racine, $infosImage);
-		$hrefPageIndividuelleImage = ajouteGet(url(TRUE, FALSE), "image=$id") . $ancre;
+		$hrefPageIndividuelleImage = variableGet(1, url(), 'image', filtreChaine($racine, $id)) . $ancre;
+		$hrefPageIndividuelleImage = variableGet(0, $hrefPageIndividuelleImage, 'action');
 		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
@@ -3731,11 +3713,11 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 		{
 			case 'favicon':
 				// On ne conserve qu'une déclaration de favicon.
-				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
 				break;
 	
 			case 'css':
-				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n";
+				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n";
 				break;
 				
 			case 'cssDirectlteIE8':
@@ -3743,27 +3725,27 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 				break;
 				
 			case 'cssltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 		
 			case 'cssIE7':
-				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'csslteIE7':
-				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'cssIE8':
-				$balisesFormatees .= '<!--[if IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'csslteIE8':
-				$balisesFormatees .= '<!--[if lte IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lte IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'js':
-				$balisesFormatees .= '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
+				$balisesFormatees .= '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
 				break;
 				
 			case 'jsDirect':
@@ -3776,7 +3758,7 @@ $fichier\n//]]>\n</script>\n";
 				break;
 				
 			case 'jsltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'rss':
@@ -3785,7 +3767,7 @@ $fichier\n//]]>\n</script>\n";
 					$title = ' title="' . $title . '"';
 				}
 				
-				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"' . $title . ' />' . "\n";
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"' . $title . ' />' . "\n";
 				break;
 		}
 	}
@@ -4968,7 +4950,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
 					}
 					
-					$lienVignette = ajouteGet($urlGalerie, 'image=' . idImage($racine, $image));
+					$lienVignette = variableGet(2, $urlGalerie, 'image', idImage($racine, $image));
 					$vignettesImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
 					$vignettesCode = '<li>';
 					
@@ -5765,71 +5747,6 @@ function urlExiste($url)
 }
 
 /*
-Retourne l'URL de la page en cours avec la variable GET `action=envoyerAmis`.
-*/
-function urlPageAvecEnvoyerAmis()
-{
-	$url = url();
-	
-	if (preg_match('/(\?|&amp;)action=envoyerAmis/', $url))
-	{
-		return $url . '#titreEnvoyerAmis';
-	}
-	elseif (strstr($url, '?'))
-	{
-		return "$url&amp;action=envoyerAmis#titreEnvoyerAmis";
-	}
-	else
-	{
-		return "$url?action=envoyerAmis#titreEnvoyerAmis";
-	}
-}
-
-/*
-Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=envoyerAmis` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=envoyerAmis`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
-*/
-function urlPageSansEnvoyerAmis($retourneTableau = FALSE)
-{
-	$urlPageSansEnvoyerAmis = array ();
-	$url = url();
-	
-	if (strstr($url, '?action=envoyerAmis&amp;'))
-	{
-		$urlPageSansEnvoyerAmis[0] = str_replace('?action=envoyerAmis&amp;', '?', $url);
-	}
-	elseif (preg_match('/\?action=envoyerAmis$/', $url))
-	{
-		$urlPageSansEnvoyerAmis[0] = str_replace('?action=envoyerAmis', '', $url);
-	}
-	elseif (strstr($url, '&amp;action=envoyerAmis'))
-	{
-		$urlPageSansEnvoyerAmis[0] = str_replace('&amp;action=envoyerAmis', '', $url);
-	}
-	else
-	{
-		$urlPageSansEnvoyerAmis[0] = $url;
-	}
-	
-	if ($retourneTableau)
-	{
-		if (strstr($url, '?'))
-		{
-			$urlPageSansEnvoyerAmis[1] = TRUE;
-		}
-		else
-		{
-			$urlPageSansEnvoyerAmis[1] = FALSE;
-		}
-		
-		return $urlPageSansEnvoyerAmis;
-	}
-	else
-	{
-		return $urlPageSansEnvoyerAmis[0];
-	}
-}
-
-/*
 Retourne l'URL parente de la page courante. En d'autres mots, supprime la page courante de l'URL et retourne le résultat. Exemples:
 
 - si l'URL est `http://www.NomDeDomaine.ext/dossier/fichier.php?a=2&b=3#ancre`, la fonction retourne `http://www.NomDeDomaine.ext/dossier`;
@@ -5889,6 +5806,69 @@ function urlRacineLangueInactive($racine, $urlRacine, $langue)
 	}
 	
 	return $urlRacineLangue;
+}
+
+/*
+Effectue l'action demandée à la variable GET `$cle` de l'adresse fournie et retourne le résultat.
+*/
+function variableGet($action, $adresse, $cle, $valeur = '')
+{
+	if (!empty($cle))
+	{
+		$infosAdresse = parse_url($adresse);
+		$adresseGet = array ();
+		
+		if (isset($infosAdresse['query']))
+		{
+			parse_str(str_replace('&amp;', '&', $infosAdresse['query']), $adresseGet);
+		}
+		
+		# Supprimer.
+		if ($action == 0 && isset($adresseGet[$cle]))
+		{
+			unset($adresseGet[$cle]);
+		}
+		# Écraser.
+		elseif ($action == 1)
+		{
+			$adresseGet[$cle] = $valeur;
+		}
+		# Ajouter
+		elseif ($action == 2 && !isset($adresseGet[$cle]))
+		{
+			$adresseGet[$cle] = $valeur;
+		}
+		
+		$adresse = preg_replace('/(\?|#).*$/', '', $adresse);
+		$premierGet = TRUE;
+		
+		foreach ($adresseGet as $c => $v)
+		{
+			if ($premierGet)
+			{
+				$adresse .= '?';
+				$premierGet = FALSE;
+			}
+			else
+			{
+				$adresse .= '&amp;';
+			}
+			
+			$adresse .= $c;
+			
+			if (!empty($v))
+			{
+				$adresse .= "=$v";
+			}
+		}
+		
+		if (isset($infosAdresse['fragment']))
+		{
+			$adresse .= '#' . $infosAdresse['fragment'];
+		}
+	}
+	
+	return $adresse;
 }
 
 /*

@@ -976,7 +976,7 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 							{
 								for ($i = 2; $i <= $nombreDePages; $i++)
 								{
-									$loc = ajouteGet($urlRacine . '/' . $urlGalerie, "page=$i");
+									$loc = variableGet(2, $urlRacine . '/' . $urlGalerie, 'page', $i);
 									$loc = superRawurlencode($loc);
 									$tableauUrlSitemap[$loc] = array ();
 								}
@@ -985,7 +985,7 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 							foreach ($tableauGalerie as $image)
 							{
 								$id = idImage($racine, $image);
-								$loc = ajouteGet($urlRacine . '/' . $urlGalerie, "image=$id");
+								$loc = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', $id);
 								$loc = superRawurlencode($loc);
 								$tableauUrlSitemap[$loc] = array ();
 								$tableauUrlSitemap[$loc]['image'] = array ();

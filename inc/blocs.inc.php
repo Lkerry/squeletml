@@ -71,7 +71,7 @@ if (!empty($blocsAinsererTemp))
 					{
 						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						$bloc = '<div id="envoyerAmis" class="bloc ' . $classesBloc . '">' . "\n";
-						$bloc .= '<a href="' . urlPageAvecEnvoyerAmis() . '">' . T_("Envoyer à des amis") . '</a>';
+						$bloc .= '<a href="' . variableGet(2, $url, 'action', 'envoyerAmis') . '#titreEnvoyerAmis">' . T_("Envoyer à des amis") . '</a>';
 						$bloc .= '</div><!-- /#envoyerAmis -->' . "\n";
 						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
@@ -206,7 +206,7 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
 						$blocs[$region] .= "<div class=\"bDcorps\">\n";
 						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
-						$codeLienPage = '<a href="' . urlPageSansEnvoyerAmis() . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
+						$codeLienPage = '<a href="' . variableGet(0, $url, 'action') . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
 						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
 						$blocs[$region] .= "</div>\n";
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";

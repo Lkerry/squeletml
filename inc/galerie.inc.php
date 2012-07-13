@@ -9,7 +9,7 @@ $idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 // URL.
 if ($pageGlobaleGalerie)
 {
-	$urlGalerie = ajouteGet($urlSansGet, 'id=' . filtreChaine($racine, $idGalerie));
+	$urlGalerie = variableGet(2, $urlSansGet, 'id', filtreChaine($racine, $idGalerie));
 }
 else
 {
@@ -574,7 +574,7 @@ elseif (!empty($idGalerie))
 			}
 			
 			$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-			$hrefSansJavascript = ajouteGet($urlGalerie, 'image=' . filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage]))) . $ancre;
+			$hrefSansJavascript = variableGet(2, $urlGalerie, 'image', filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage]))) . $ancre;
 			$lienSansJavascript .= "<a href=\"$hrefSansJavascript\">" . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
 			
 			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
