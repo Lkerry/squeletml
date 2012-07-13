@@ -649,6 +649,12 @@ div#baliseH1 h1 {
 	background: url('../fichiers/info.png') #f5f5f5 no-repeat 10px center;
 }
 
+/* Bloc «licence». */
+
+#licence ul {
+	margin-top: 10px;
+}
+
 /* Module «Envoyer à des amis». */
 
 #modeleMessageEnvoyerAmis {
