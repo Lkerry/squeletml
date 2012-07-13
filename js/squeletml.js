@@ -24,7 +24,7 @@ function ajouteEvenementLoad(fonction)
 }
 
 /*
-Ajuste la hauteur de `idAegaliser` pour la plus grande entre celle de `idDeComparaison1` et celle de `idDeComparaison2` plus `hauteurEnPlus`, et ce si `idAegaliser` n'est pas déjà aussi haut.
+Si `idAegaliser` n'est pas déjà aussi haut, ajuste sa hauteur à la valeur de la plus grande hauteur entre celle de `idDeComparaison1` et celle de `idDeComparaison2`, plus `hauteurEnPlus`.
 */
 function egaliseHauteur(idAegaliser, idDeComparaison1, idDeComparaison2, hauteurEnPlus)
 {
