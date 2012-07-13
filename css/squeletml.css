@@ -361,8 +361,8 @@ div#sousTitre p {
 	padding: 0px 50px 30px 50px;
 }
 
-#infosPublication {
-	font-style: italic;
+#finInterieurContenu {
+	margin-top: 40px;
 }
 
 /* Chapeau, style `fieldset`. */
@@ -429,9 +429,11 @@ div.descriptionApercu div.galerieIntermediaireImgApercu {
 	text-align: center;
 }
 
-.infosPublicationApercu {
+div.infosPublicationApercu {
 	font-style: italic;
 	margin-bottom: 10px;
+	padding-left: 19px;
+	background: url('../fichiers/info.png') no-repeat left center;
 }
 
 .lienApercu {
@@ -639,7 +641,11 @@ div#baliseH1 h1 {
 
 /* Informations de publication. */
 
-#infosPublication, div.infosPublicationApercu {
+#infosPublication {
+	font-style: italic;
+}
+
+#infosPublication {
 	padding-left: 19px;
 	background: url('../fichiers/info.png') no-repeat left center;
 }
@@ -790,7 +796,7 @@ body.colonneAgauche #contenu {
 
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	position: absolute;
-	top: 105px;
+	top: 100px;
 }
 
 body.colonneAgauche #basDePageInterieurPage {
@@ -816,7 +822,7 @@ body.colonneAdroite #contenu {
 
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
-	top: 105px;
+	top: 100px;
 }
 
 body.colonneAdroite #basDePageInterieurPage {
