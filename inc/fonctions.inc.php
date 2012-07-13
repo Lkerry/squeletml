@@ -1866,7 +1866,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$title = sprintf(T_("%1\$s – Galerie %2\$s"), $titreImage, $idGalerie);
 			$cheminImage = "$racine/site/fichiers/galeries/$idGalerieDossier/" . $image['intermediaireNom'];
 			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieDossier) . '/' . rawurlencode($image['intermediaireNom']);
-			$urlGalerieImage = superRawurlencode(variableGet(2, $urlGalerie, 'image', $id));
+			$urlGalerieImage = superRawurlencode(variableGet(2, $urlGalerie, 'image', filtreChaine($racine, $id)));
 			
 			if (!empty($image['intermediaireLargeur']))
 			{
@@ -4950,7 +4950,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
 					}
 					
-					$lienVignette = variableGet(2, $urlGalerie, 'image', idImage($racine, $image));
+					$lienVignette = variableGet(2, $urlGalerie, 'image', filtreChaine($racine, idImage($racine, $image)));
 					$vignettesImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
 					$vignettesCode = '<li>';
 					

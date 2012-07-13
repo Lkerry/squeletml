@@ -73,7 +73,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		// On récupère l'`id` de chaque image.
 		$id = idImage($racine, $image);
 		
-		if ($id == sansEchappement($_GET['image']))
+		if (filtreChaine($racine, $id) == sansEchappement($_GET['image']))
 		{
 			// A: l'image existe.
 			

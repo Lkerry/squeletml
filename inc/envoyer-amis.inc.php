@@ -44,7 +44,7 @@ if (!$erreur404 && !$estPageDerreur)
 		{
 			$id = idImage($racine, $image);
 			
-			if ($id == sansEchappement($_GET['image']))
+			if (filtreChaine($racine, $id) == sansEchappement($_GET['image']))
 			{
 				$envoyerAmisEstActif = TRUE;
 				

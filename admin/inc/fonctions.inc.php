@@ -985,7 +985,7 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 							foreach ($tableauGalerie as $image)
 							{
 								$id = idImage($racine, $image);
-								$loc = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', $id);
+								$loc = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', filtreChaine($racine, $id));
 								$loc = superRawurlencode($loc);
 								$tableauUrlSitemap[$loc] = array ();
 								$tableauUrlSitemap[$loc]['image'] = array ();

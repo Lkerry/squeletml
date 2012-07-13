@@ -166,7 +166,7 @@ if (file_exists($racine . '/init.inc.php'))
 								foreach ($tableauGalerie as $image)
 								{
 									$id = idImage($racine, $image);
-									$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', $id);
+									$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', filtreChaine($racine, $id));
 									$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
 									$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 									$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
