@@ -315,7 +315,14 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($partageCourriel && $partageCourrielActif)
 						{
-							$bloc .= '<li id="partageCourriel"><a href="' . variableGet(2, $url, 'action', 'partageCourriel') . '#titrePartageCourriel">' . T_("Par courriel") . "</a></li>\n";
+							$blocPartageCourriel = '<li id="partageCourriel"><a href="' . variableGet(2, $url, 'action', 'partageCourriel') . '#titrePartageCourriel">' . T_("Par courriel") . "</a></li>\n";
+							
+							if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+							{
+								$blocPartageCourriel = lienActif($urlRacine, $blocPartageCourriel, TRUE, 'li');
+							}
+							
+							$bloc .= $blocPartageCourriel;
 						}
 						
 						if ($partageReseaux && empty($courrielContact))
@@ -335,12 +342,6 @@ if (!empty($blocsAinsererTemp))
 						$bloc .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
 						$bloc .= "//]]>\n";
 						$bloc .= "</script>\n";
-						
-						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
-						{
-							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
-						}
-						
 						$blocs[$region] .= $bloc;
 					}
 					
