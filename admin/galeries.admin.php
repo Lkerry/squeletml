@@ -1854,6 +1854,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
+						$urlAjoutDansRss = substr($cheminPage . '/' . $page, 3);
+						$actionValide = TRUE;
 						$messagesScript .= '<li>' . sprintf(T_("La galerie est accessible sur la <a href=\"%1\$s\">page Web globale des galeries</a>."), $urlGalerie) . "</li>\n";
 					}
 				}
@@ -1861,7 +1863,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n" . $messagesScript;
 			echo adminMessagesScript($messagesScript, T_("Mise en ligne d'une nouvelle galerie"));
-
+			
 			if (isset($_POST['rssAjout']) && !empty($urlAjoutDansRss) && !empty($_POST['rssLangueAjout']) && $actionValide)
 			{
 				$messagesScript = '';
