@@ -661,24 +661,18 @@ div#baliseH1 h1 {
 	margin-top: 10px;
 }
 
-/* Module «Envoyer à des amis». */
+/* Module de partage. */
 
-#modeleMessageEnvoyerAmis {
+#modeleMessagePartageCourriel {
 	margin: 20px;
 }
 
-#modeleMessageEnvoyerAmis code {
+#modeleMessagePartageCourriel code {
 	background-color: transparent;
 }
 
-h2#titreEnvoyerAmis {
+h2#titrePartageCourriel {
 	clear: both;
-}
-
-#envoyerAmis a {
-	display: block;
-	padding-left: 22px;
-	background: url('../fichiers/enveloppe.png') no-repeat left center;
 }
 
 /* Recherche Google. */

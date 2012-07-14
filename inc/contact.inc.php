@@ -8,17 +8,17 @@ $nom = '';
 $courriel = '';
 $message = '';
 $copie = FALSE;
-$courrielsEnvoyerAmis = '';
+$courrielsPartageCourriel = '';
 $messageEnvoye = FALSE;
 $contact = '';
 
-// Vérification de l'état du module «Envoyer à des amis».
-include $racine . '/inc/envoyer-amis.inc.php';
+// Vérification de l'état du module de partage (par courriel).
+include $racine . '/inc/partage-courriel.inc.php';
 
-if ($envoyerAmisEstActif)
+if ($partageCourrielActif)
 {
-	$contact .= '<div id="formulaireEnvoyerAmis">' . "\n";
-	$contact .= '<h2 id="titreEnvoyerAmis">' . T_("Envoyer à des amis") . "</h2>\n";
+	$contact .= '<div id="formulairePartageCourriel">' . "\n";
+	$contact .= '<h2 id="titrePartageCourriel">' . T_("Partager par courriel") . "</h2>\n";
 }
 
 // L'envoi du message est demandé.
@@ -38,9 +38,9 @@ if (isset($_POST['envoyer']))
 		$copie = TRUE;
 	}
 	
-	if ($envoyerAmisEstActif)
+	if ($partageCourrielActif)
 	{
-		$courrielsEnvoyerAmis = securiseTexte($_POST['courrielsEnvoyerAmis']);
+		$courrielsPartageCourriel = securiseTexte($_POST['courrielsPartageCourriel']);
 	}
 	
 	if (empty($nom) && $contactChampsObligatoires['nom'])
@@ -63,29 +63,29 @@ if (isset($_POST['envoyer']))
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas inscrit de courriel.") . "</li>\n";
 	}
 	
-	if ($contactVerifierCourriel && !empty($courrielsEnvoyerAmis))
+	if ($contactVerifierCourriel && !empty($courrielsPartageCourriel))
 	{
-		$tableauCourrielsEnvoyerAmis = explode(',', str_replace(' ', '', $courrielsEnvoyerAmis));
-		$courrielsEnvoyerAmisErreur = '';
+		$tableauCourrielsPartageCourriel = explode(',', str_replace(' ', '', $courrielsPartageCourriel));
+		$courrielsPartageCourrielErreur = '';
 		$i = 0;
 		
-		foreach ($tableauCourrielsEnvoyerAmis as $courrielEnvoyerAmis)
+		foreach ($tableauCourrielsPartageCourriel as $courrielPartageCourriel)
 		{
-			if (!courrielValide($courrielEnvoyerAmis))
+			if (!courrielValide($courrielPartageCourriel))
 			{
-				$courrielsEnvoyerAmisErreur .= $courrielEnvoyerAmis . ', ';
+				$courrielsPartageCourrielErreur .= $courrielPartageCourriel . ', ';
 				$i++;
 			}
 		}
 		
-		if (!empty($courrielsEnvoyerAmisErreur))
+		if (!empty($courrielsPartageCourrielErreur))
 		{
 			$erreurFormulaire = TRUE;
-			$messagesScript .= '<li class="erreur">' . sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsEnvoyerAmisErreur, 0, -2)) . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_ngettext("L'adresse suivante ne semble pas avoir une forme valide; veuillez la vérifier: %1\$s", "Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les vérifier: %1\$s", $i), substr($courrielsPartageCourrielErreur, 0, -2)) . "</li>\n";
 		}
 	}
 	
-	if (empty($message) && !$envoyerAmisEstActif && $contactChampsObligatoires['message'])
+	if (empty($message) && !$partageCourrielActif && $contactChampsObligatoires['message'])
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
@@ -138,16 +138,16 @@ if (isset($_POST['envoyer']))
 		$infosCourriel['From'] = "$nom <$courriel>";
 		$infosCourriel['ReplyTo'] = $infosCourriel['From'];
 		
-		if ($envoyerAmisEstActif && $contactCopieCourriel && $copie)
+		if ($partageCourrielActif && $contactCopieCourriel && $copie)
 		{
 			$infosCourriel['destinataire'] = $infosCourriel['From'];
-			$infosCourriel['Bcc'] = $courrielsEnvoyerAmis;
+			$infosCourriel['Bcc'] = $courrielsPartageCourriel;
 		}
-		elseif ($envoyerAmisEstActif)
+		elseif ($partageCourrielActif)
 		{
-			$infosCourriel['destinataire'] = $courrielsEnvoyerAmis;
+			$infosCourriel['destinataire'] = $courrielsPartageCourriel;
 		}
-		elseif (!$envoyerAmisEstActif && $contactCopieCourriel && $copie)
+		elseif (!$partageCourrielActif && $contactCopieCourriel && $copie)
 		{
 			$infosCourriel['destinataire'] = $infosCourriel['From'];
 			$infosCourriel['Bcc'] = $courrielContact;
@@ -157,7 +157,7 @@ if (isset($_POST['envoyer']))
 			$infosCourriel['destinataire'] = $courrielContact;
 		}
 		
-		if ($envoyerAmisEstActif)
+		if ($partageCourrielActif)
 		{
 			$infosCourriel['format'] = 'html';
 		}
@@ -168,9 +168,9 @@ if (isset($_POST['envoyer']))
 		
 		$infosCourriel['objet'] = $contactCourrielIdentifiantObjet . "Message de $nom <$courriel>";
 		
-		if ($envoyerAmisEstActif)
+		if ($partageCourrielActif)
 		{
-			$infosCourriel['message'] = str_replace(array ("\r\n", "\r"), "\n", $messageEnvoyerAmis) . "\n";
+			$infosCourriel['message'] = str_replace(array ("\r\n", "\r"), "\n", $messagePartageCourriel) . "\n";
 		}
 		else
 		{
@@ -191,7 +191,7 @@ if (isset($_POST['envoyer']))
 			$courriel = '';
 			$message = '';
 			$copie = FALSE;
-			$courrielsEnvoyerAmis = '';
+			$courrielsPartageCourriel = '';
 		}
 		else
 		{
@@ -232,8 +232,8 @@ if (isset($_POST['envoyer']))
 
 // Code du formulaire.
 
-include $racine . '/inc/envoyer-amis.inc.php';
-$actionFormContact = actionFormContact($envoyerAmisEstActif);
+include $racine . '/inc/partage-courriel.inc.php';
+$actionFormContact = actionFormContact($partageCourrielActif);
 
 if ($nom == T_("VOTRE NOM"))
 {
@@ -251,9 +251,9 @@ include cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact');
 $contact .= ob_get_contents();
 ob_end_clean();
 
-if ($envoyerAmisEstActif)
+if ($partageCourrielActif)
 {
-	$contact .= '</div><!-- /#formulaireEnvoyerAmis -->' . "\n";
+	$contact .= '</div><!-- /#formulairePartageCourriel -->' . "\n";
 }
 
 // Traitement personnalisé optionnel 4 de 4.

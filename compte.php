@@ -12,11 +12,11 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 
 if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 {
-	$envoyerAmis = FALSE;
 	$infosPublication = FALSE;
 	$licence = '';
 	$lienPage = FALSE;
-	$partage = FALSE;
+	$partageCourriel = FALSE;
+	$partageReseaux = FALSE;
 	$robots = 'noindex, nofollow, noarchive';
 	include $racine . '/inc/premier.inc.php';
 	

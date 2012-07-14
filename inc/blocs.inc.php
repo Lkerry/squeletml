@@ -3,8 +3,8 @@
 Ce fichier construit le code des blocs. Après son inclusion, le tableau `$blocs` est prêt à être utilisé. Aucun code XHTML n'est envoyé au navigateur.
 */
 
-// Vérification de l'état du module «Envoyer à des amis».
-include $racine . '/inc/envoyer-amis.inc.php';
+// Vérification de l'état du module de partage (par courriel).
+include $racine . '/inc/partage-courriel.inc.php';
 
 $blocsAinsererTemp = blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier);
 $blocs = array (
@@ -62,24 +62,6 @@ if (!empty($blocsAinsererTemp))
 						
 						$blocs[$region] .= $h1;
 						$blocs[$region] .= '</div><!-- /#baliseH1 -->' . "\n";
-					}
-					
-					break;
-					
-				case 'envoyer-amis':
-					if ($envoyerAmis && $envoyerAmisEstActif)
-					{
-						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
-						$bloc = '<div id="envoyerAmis" class="bloc ' . $classesBloc . '">' . "\n";
-						$bloc .= '<a href="' . variableGet(2, $url, 'action', 'envoyerAmis') . '#titreEnvoyerAmis">' . T_("Envoyer à des amis") . '</a>';
-						$bloc .= '</div><!-- /#envoyerAmis -->' . "\n";
-						
-						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
-						{
-							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
-						}
-						
-						$blocs[$region] .= $bloc;
 					}
 					
 					break;
@@ -316,29 +298,50 @@ if (!empty($blocsAinsererTemp))
 					break;
 					
 				case 'partage':
-					$listePartage = partage($url, $baliseTitle . $baliseTitleComplement);
-					
-					if ($partage && !empty($listePartage) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					if (
+						(
+							($partageCourriel && $partageCourrielActif) ||
+							($partageReseaux && empty($courrielContact))
+						) &&
+						!$erreur404 &&
+						!$estPageDerreur
+					)
 					{
 						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						$bloc = '<div id="partage" class="bloc ' . $classesBloc . '">' . "\n";
+						$bloc .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
 						
-						$blocs[$region] .= '<div id="partage" class="bloc ' . $classesBloc . '">' . "\n";
-						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
+						$bloc .= "<ul class=\"bDcorps\">\n";
 						
-						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
-						
-						foreach ($listePartage as $service)
+						if ($partageCourriel && $partageCourrielActif)
 						{
-							$blocs[$region] .= '<li><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
+							$bloc .= '<li id="partageCourriel"><a href="' . variableGet(2, $url, 'action', 'partageCourriel') . '#titrePartageCourriel">' . T_("Par courriel") . "</a></li>\n";
 						}
 						
-						$blocs[$region] .= "</ul>\n";
-						$blocs[$region] .= '</div><!-- /#partage -->' . "\n";
-						$blocs[$region] .= '<script type="text/javascript">' . "\n";
-						$blocs[$region] .= "//<![CDATA[\n";
-						$blocs[$region] .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
-						$blocs[$region] .= "//]]>\n";
-						$blocs[$region] .= "</script>\n";
+						if ($partageReseaux && empty($courrielContact))
+						{
+							$listePartage = partageReseaux($url, $baliseTitle . $baliseTitleComplement);
+							
+							foreach ($listePartage as $service)
+							{
+								$bloc .= '<li id="' . $service['id'] . '"><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
+							}
+						}
+						
+						$bloc .= "</ul>\n";
+						$bloc .= '</div><!-- /#partage -->' . "\n";
+						$bloc .= '<script type="text/javascript">' . "\n";
+						$bloc .= "//<![CDATA[\n";
+						$bloc .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
+						$bloc .= "//]]>\n";
+						$bloc .= "</script>\n";
+						
+						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+						{
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
+						}
+						
+						$blocs[$region] .= $bloc;
 					}
 					
 					break;

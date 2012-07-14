@@ -224,8 +224,7 @@ $ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
 $ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
 $ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
-$ordreBlocsDansFluxHtml['envoyer-amis']          = array (550, 550, 550);
-$ordreBlocsDansFluxHtml['partage']               = array (560, 560, 560);
+$ordreBlocsDansFluxHtml['partage']               = array (550, 550, 550);
 $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 $ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 
@@ -233,13 +232,13 @@ $ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 /*
 - Il est possible d'ajouter des conditions à l'insertion d'un bloc de contenu. Les conditions doivent être du code PHP valide. Elles seront exécutées par la fonction PHP `eval()`. Un bloc sera inclus seulement si le code PHP retourne TRUE. Exemple:
 	
-		$conditionsBlocs['envoyer-amis'] = 'return strpos($url, "/dossier/") ? TRUE : FALSE;';
+		$conditionsBlocs['partage'] = 'return strpos($url, "/dossier/") ? TRUE : FALSE;';
 	
 	Voici la même condition, écrite autrement:
 	
-		$conditionsBlocs['envoyer-amis'] = 'if (strpos($url, "/dossier/")) {return TRUE;} else {return FALSE;}';
+		$conditionsBlocs['partage'] = 'if (strpos($url, "/dossier/")) {return TRUE;} else {return FALSE;}';
 	
-	Dans cet exemple, le bloc «Envoyer à des amis» sera inclus seulement si l'URL contient `/dossier/`.
+	Dans cet exemple, le bloc «Partage» sera inclus seulement si l'URL contient `/dossier/`.
 	
 - Si aucune condition n'est donnée pour un bloc, le retour est automatiquement évalué à TRUE.
 */
@@ -273,11 +272,11 @@ $inclureBasDePage = TRUE; // TRUE|FALSE
 // Si `$inclureBasDePage` vaut TRUE, positionner le bas de page à l'intérieur de la `div` `page`.
 $basDePageInterieurPage = FALSE; // TRUE|FALSE
 
-// Activation par défaut de l'option «Envoyer à des amis».
-$activerEnvoyerAmisParDefaut = TRUE; // TRUE|FALSE
+// Activation par défaut du partage par courriel.
+$activerPartageCourrielParDefaut = TRUE; // TRUE|FALSE
 
-// Activation par défaut du partage en passant par des marque-pages et des réseaux sociaux.
-$activerPartageParDefaut = TRUE; // TRUE|FALSE
+// Activation par défaut du partage par marque-pages et réseaux sociaux.
+$activerPartageReseauxParDefaut = TRUE; // TRUE|FALSE
 
 // Activation de la recherche Google.
 /*
@@ -547,7 +546,6 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Voir la fonction `lienActif()`.
 */
 $liensActifsBlocs['balise-h1']             = NULL;
-$liensActifsBlocs['envoyer-amis']          = TRUE;
 $liensActifsBlocs['flux-rss']              = NULL;
 $liensActifsBlocs['infos-publication']     = NULL;
 $liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
@@ -556,7 +554,7 @@ $liensActifsBlocs['lien-page']             = NULL;
 $liensActifsBlocs['menu']                  = TRUE;
 $liensActifsBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $liensActifsBlocs['menu-langues']          = TRUE;
-$liensActifsBlocs['partage']               = NULL;
+$liensActifsBlocs['partage']               = TRUE;
 $liensActifsBlocs['piwik']                 = NULL;
 $liensActifsBlocs['recherche-google']      = NULL;
 
@@ -611,7 +609,6 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
 $limiterProfondeurListesBlocs['balise-h1']             = NULL;
-$limiterProfondeurListesBlocs['envoyer-amis']          = NULL;
 $limiterProfondeurListesBlocs['flux-rss']              = NULL;
 $limiterProfondeurListesBlocs['infos-publication']     = NULL;
 $limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE;

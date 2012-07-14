@@ -1,9 +1,9 @@
 <?php
-$envoyerAmis = FALSE;
 $infosPublication = FALSE;
 $licence = '';
 $lienPage = FALSE;
-$partage = FALSE;
+$partageCourriel = FALSE;
+$partageReseaux = FALSE;
 $robots = 'noindex, nofollow, noarchive';
 $enTetesHttp = "header('Cache-Control: no-cache, must-revalidate'); /* HTTP/1.1. */ header('Expires: Sat, 26 Jul 1997 05:00:00 GMT'); /* Date dans le passé. */";
 include 'inc/premier.inc.php';

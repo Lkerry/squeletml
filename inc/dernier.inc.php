@@ -25,7 +25,7 @@ if (file_exists($racine . '/site/inc/dernier-pre.inc.php'))
 
 $cheminBasDePage = cheminXhtml($racine, array ($langue, $langueParDefaut), 'bas-de-page');
 
-if (!empty($courrielContact) || ($envoyerAmisEstActif && $envoyerAmisInclureContact))
+if (!empty($courrielContact) || ($partageCourrielActif && $partageCourrielInclureContact))
 {
 	$inclureContact = TRUE;
 }

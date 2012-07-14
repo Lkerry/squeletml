@@ -1126,18 +1126,6 @@ if (isset($_POST['porteDocumentsCreation']))
 										$contenu .= '$description = "' . T_("Description de la page.") . '";' . "\n";
 										break;
 										
-									case 'envoyerAmis':
-										if ($activerEnvoyerAmisParDefaut)
-										{
-											$contenu .= '$envoyerAmis = FALSE;' . "\n";
-										}
-										else
-										{
-											$contenu .= '$envoyerAmis = TRUE;' . "\n";
-										}
-										
-										break;
-										
 									case 'idCategorie':
 										$contenu .= '$idCategorie = "";' . "\n";
 										break;
@@ -1180,6 +1168,30 @@ if (isset($_POST['porteDocumentsCreation']))
 										
 									case 'motsCles':
 										$contenu .= '$motsCles = "";' . "\n";
+										break;
+										
+									case 'partageCourriel':
+										if ($activerPartageCourrielParDefaut)
+										{
+											$contenu .= '$partageCourriel = FALSE;' . "\n";
+										}
+										else
+										{
+											$contenu .= '$partageCourriel = TRUE;' . "\n";
+										}
+										
+										break;
+										
+									case 'partageReseaux':
+										if ($activerPartageReseauxParDefaut)
+										{
+											$contenu .= '$partageReseaux = FALSE;' . "\n";
+										}
+										else
+										{
+											$contenu .= '$partageReseaux = TRUE;' . "\n";
+										}
+										
 										break;
 										
 									case 'robots':
@@ -1744,7 +1756,6 @@ echo '<option value="dateCreation">$dateCreation</option>' . "\n";
 echo '<option value="dateRevision">$dateRevision</option>' . "\n";
 echo '<option value="desactiverCache">$desactiverCache</option>' . "\n";
 echo '<option value="description">$description</option>' . "\n";
-echo '<option value="envoyerAmis">$envoyerAmis</option>' . "\n";
 echo '<option value="idCategorie">$idCategorie</option>' . "\n";
 echo '<option value="idGalerie">$idGalerie</option>' . "\n";
 echo '<option value="infosPublication">$infosPublication</option>' . "\n";
@@ -1752,6 +1763,8 @@ echo '<option value="langue">$langue</option>' . "\n";
 echo '<option value="licence">$licence</option>' . "\n";
 echo '<option value="lienPage">$lienPage</option>' . "\n";
 echo '<option value="motsCles">$motsCles</option>' . "\n";
+echo '<option value="partageCourriel">$partageCourriel</option>' . "\n";
+echo '<option value="partageReseaux">$partageReseaux</option>' . "\n";
 echo '<option value="robots">$robots</option>' . "\n";
 echo '<option value="rssCategorie">$rssCategorie</option>' . "\n";
 echo '<option value="rssGalerie">$rssGalerie</option>' . "\n";

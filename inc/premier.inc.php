@@ -123,7 +123,7 @@ if ($dureeCache && !$desactiverCache)
 // Affectations 2 de 3.
 
 extract(init('', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'envoyerAmisEstActif', 'envoyerAmisInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
+extract(init(FALSE, 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
 
 if (!isset($apercu))
 {
@@ -176,9 +176,9 @@ if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 	$courrielContact = $contactCourrielParDefaut;
 }
 
-if (!isset($envoyerAmis))
+if (!isset($partageCourriel))
 {
-	$envoyerAmis = $activerEnvoyerAmisParDefaut;
+	$partageCourriel = $activerPartageCourrielParDefaut;
 }
 
 if (!isset($infosPublication))
@@ -215,12 +215,12 @@ if ($siteEstEnMaintenance)
 	$noticeMaintenance = noticeMaintenance();
 }
 
-if (!isset($partage))
+if (!isset($partageReseaux))
 {
-	$partage = $activerPartageParDefaut;
+	$partageReseaux = $activerPartageReseauxParDefaut;
 }
 
-if ($partage)
+if ($partageCourriel || $partageReseaux)
 {
 	$boitesDeroulantesAlaMain .= TRUE;
 }

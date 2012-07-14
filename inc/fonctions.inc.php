@@ -153,13 +153,13 @@ function accueil($accueil, $langues)
 /*
 Retourne le contenu de l'attribut `action` du formulaire de contact.
 */
-function actionFormContact($envoyerAmisEstActif)
+function actionFormContact($partageCourrielActif)
 {
 	$action = url();
 	
-	if ($envoyerAmisEstActif)
+	if ($partageCourrielActif)
 	{
-		$action .= '#titreEnvoyerAmis';
+		$action .= '#titrePartageCourriel';
 	}
 	else
 	{
@@ -1475,128 +1475,6 @@ function doctype($doctype, $langue)
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n", '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langue . '" lang="' . $langue . '">' . "\n");
 			break;
 	}
-}
-
-/*
-Retourne le texte supplémentaire d'une catégorie pour le message envoyé par le module «Envoyer à des amis».
-*/
-function envoyerAmisSupplementCategorie($racine, $urlRacine, $langueParDefaut, $langue, $dureeCache, $idCategorie)
-{
-	$messageEnvoyerAmisSupplement = publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, '', FALSE, $dureeCache);
-	return envoyerAmisSupplementPage('', '', $messageEnvoyerAmisSupplement);
-}
-
-/*
-Retourne le texte supplémentaire d'une image pour le message envoyé par le module «Envoyer à des amis».
-*/
-function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown)
-{
-	$messageEnvoyerAmisSupplement = '';
-	$titreImage = titreImage($image);
-	
-	if (!empty($image['vignetteNom']))
-	{
-		$vignetteNom = $image['vignetteNom'];
-	}
-	else
-	{
-		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
-	}
-	
-	$vignetteAlt = envoyerAmisSupplementImageAlt($image);
-	$imgSrc = $urlRacine;
-	
-	if ($idGalerieDossier != 'demo')
-	{
-		$imgSrc .= '/site';
-	}
-	
-	$imgSrc .= '/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom);
-	
-	$messageEnvoyerAmisSupplement .= "<p style=\"text-align: center;\"><img src=\"$imgSrc\" alt=\"$vignetteAlt\" /></p>\n";
-	
-	if (!empty($image['titre']))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['titre'] . "</p>\n";
-	}
-	
-	if (!empty($image['intermediaireLegende']))
-	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['intermediaireAlt']))
-	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['vignetteAlt']))
-	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['pageIntermediaireDescription']))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
-	}
-	elseif (!empty($image['pageIntermediaireBaliseTitle']))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
-	}
-	
-	$messageEnvoyerAmisSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messageEnvoyerAmisSupplement</div>\n";
-	$messageEnvoyerAmisSupplement .= '<p><a href="' . variableGet(0, url(), 'action') . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
-	
-	return $messageEnvoyerAmisSupplement;
-}
-
-/*
-Retourne le texte alternatif d'une image pour le message envoyé par le module «Envoyer à des amis».
-*/
-function envoyerAmisSupplementImageAlt($image)
-{
-	if (!empty($image['vignetteAlt']))
-	{
-		$imgAlt = $image['vignetteAlt'];
-	}
-	elseif (!empty($image['intermediaireAlt']))
-	{
-		$imgAlt = $image['intermediaireAlt'];
-	}
-	else
-	{
-		$titreImage = titreImage($image);
-		$imgAlt = sprintf(T_("Image %1\$s"), $titreImage);
-	}
-	
-	return $imgAlt;
-}
-
-/*
-Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Envoyer à des amis».
-*/
-function envoyerAmisSupplementPage($description, $baliseTitle, $extra = '')
-{
-	$messageEnvoyerAmisSupplement = '';
-	
-	if (!empty($baliseTitle))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $baliseTitle . "</p>\n";
-	}
-	
-	if (!empty($description))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $description . "</p>\n";
-	}
-	
-	if (!empty($extra))
-	{
-		$messageEnvoyerAmisSupplement .= "$extra\n";
-	}
-	
-	$urlPageSansEnvoyerAmis = variableGet(0, url(), 'action');
-	$urlPageSansEnvoyerAmisCode = '<p><a href="' . $urlPageSansEnvoyerAmis . '">' . $urlPageSansEnvoyerAmis . "</a></p>\n";
-	$messageEnvoyerAmisSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messageEnvoyerAmisSupplement$urlPageSansEnvoyerAmisCode</div>\n";
-	$messageEnvoyerAmisSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
-	
-	return $messageEnvoyerAmisSupplement;
 }
 
 /*
@@ -3233,14 +3111,6 @@ function licence($urlRacine, $choixLicence)
 }
 
 /*
-
-*/
-function lienActifEnvoyerAmis($urlRacine, $html, $inclureGet, $parent = '')
-{
-	return $html;
-}
-
-/*
 Ajoute la classe `actif` à tous les liens (balises `a`) du code passé en paramètre et pointant vers la page en cours ainsi qu'à un parent (s'il existe) spécifié avec le paramètre optionnel `$parent`, qui doit être le nom d'une balise (par exemple `li`). Si `$inclureGet` vaut FALSE, les variables GET ne sont pas prises en considération dans la comparaison des adresses. Retourne le code résultant.
 */
 function lienActif($urlRacine, $html, $inclureGet, $parent = '')
@@ -4670,9 +4540,131 @@ function pagination($racine, $urlRacine, $type, $paginationAvecFond, $pagination
 }
 
 /*
+Retourne le texte supplémentaire d'une catégorie pour le message envoyé par le module de partage (par courriel).
+*/
+function partageCourrielSupplementCategorie($racine, $urlRacine, $langueParDefaut, $langue, $dureeCache, $idCategorie)
+{
+	$messagePartageCourrielSupplement = publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, '', FALSE, $dureeCache);
+	return partageCourrielSupplementPage('', '', $messagePartageCourrielSupplement);
+}
+
+/*
+Retourne le texte supplémentaire d'une image pour le message envoyé par le module de partage (par courriel).
+*/
+function partageCourrielSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown)
+{
+	$messagePartageCourrielSupplement = '';
+	$titreImage = titreImage($image);
+	
+	if (!empty($image['vignetteNom']))
+	{
+		$vignetteNom = $image['vignetteNom'];
+	}
+	else
+	{
+		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
+	}
+	
+	$vignetteAlt = partageCourrielSupplementImageAlt($image);
+	$imgSrc = $urlRacine;
+	
+	if ($idGalerieDossier != 'demo')
+	{
+		$imgSrc .= '/site';
+	}
+	
+	$imgSrc .= '/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom);
+	
+	$messagePartageCourrielSupplement .= "<p style=\"text-align: center;\"><img src=\"$imgSrc\" alt=\"$vignetteAlt\" /></p>\n";
+	
+	if (!empty($image['titre']))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $image['titre'] . "</p>\n";
+	}
+	
+	if (!empty($image['intermediaireLegende']))
+	{
+		$messagePartageCourrielSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['intermediaireAlt']))
+	{
+		$messagePartageCourrielSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['vignetteAlt']))
+	{
+		$messagePartageCourrielSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['pageIntermediaireDescription']))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
+	}
+	elseif (!empty($image['pageIntermediaireBaliseTitle']))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
+	}
+	
+	$messagePartageCourrielSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messagePartageCourrielSupplement</div>\n";
+	$messagePartageCourrielSupplement .= '<p><a href="' . variableGet(0, url(), 'action') . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
+	
+	return $messagePartageCourrielSupplement;
+}
+
+/*
+Retourne le texte alternatif d'une image pour le message envoyé par le module de partage (par courriel).
+*/
+function partageCourrielSupplementImageAlt($image)
+{
+	if (!empty($image['vignetteAlt']))
+	{
+		$imgAlt = $image['vignetteAlt'];
+	}
+	elseif (!empty($image['intermediaireAlt']))
+	{
+		$imgAlt = $image['intermediaireAlt'];
+	}
+	else
+	{
+		$titreImage = titreImage($image);
+		$imgAlt = sprintf(T_("Image %1\$s"), $titreImage);
+	}
+	
+	return $imgAlt;
+}
+
+/*
+Retourne le texte supplémentaire d'une page pour le message envoyé par le module de partage (par courriel).
+*/
+function partageCourrielSupplementPage($description, $baliseTitle, $extra = '')
+{
+	$messagePartageCourrielSupplement = '';
+	
+	if (!empty($baliseTitle))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $baliseTitle . "</p>\n";
+	}
+	
+	if (!empty($description))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $description . "</p>\n";
+	}
+	
+	if (!empty($extra))
+	{
+		$messagePartageCourrielSupplement .= "$extra\n";
+	}
+	
+	$urlPageSansAction = variableGet(0, url(), 'action');
+	$urlPageSansActionCode = '<p><a href="' . $urlPageSansAction . '">' . $urlPageSansAction . "</a></p>\n";
+	$messagePartageCourrielSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messagePartageCourrielSupplement$urlPageSansActionCode</div>\n";
+	$messagePartageCourrielSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
+	
+	return $messagePartageCourrielSupplement;
+}
+
+/*
 Retourne un tableau de liens de marque-pages et de réseaux sociaux pour la page en cours. Les liens ont été en partie récupérés dans le module Service links pour Drupal, sous licence GPL. Voir <http://drupal.org/project/service_links>.
 */
-function partage($url, $titre)
+function partageReseaux($url, $titre)
 {
 	$url = urlencode($url);
 	$titre = urlencode($titre);
@@ -4685,51 +4677,61 @@ function partage($url, $titre)
 	$liens = array ();
 	
 	$liens['Delicious'] = array (
+		'id' => 'partageDelicious',
 		'nom' => 'Delicious',
 		'lien' => "http://delicious.com/post?url=$url&amp;title=$titre",
 	);
 	
 	$liens['Digg'] = array (
+		'id' => 'partageDigg',
 		'nom' => 'Digg',
 		'lien' => "http://digg.com/submit?phase=2&amp;url=$url&amp;title=$titre",
 	);
 	
 	$liens['Facebook'] = array (
+		'id' => 'partageFacebook',
 		'nom' => 'Facebook',
 		'lien' => "http://www.facebook.com/sharer.php?u=$url&amp;t=$titre",
 	);
 	
 	$liens['GooglePlus'] = array (
+		'id' => 'partageGooglePlus',
 		'nom' => 'Google+',
 		'lien' => "https://plus.google.com/share?url=$url",
 	);
 	
 	$liens['Identica'] = array (
+		'id' => 'partageIdentica',
 		'nom' => 'Identi.ca',
 		'lien' => "http://identi.ca/index.php?action=newnotice&amp;status_textarea=$titre $url",
 	);
 	
 	$liens['Linkedin'] = array (
+		'id' => 'partageLinkedin',
 		'nom' => 'LinkedIn',
 		'lien' => "http://www.linkedin.com/shareArticle?mini=true&amp;url=$url&amp;title=$titre",
 	);
 	
 	$liens['MySpace'] = array (
+		'id' => 'partageMySpace',
 		'nom' => 'MySpace',
 		'lien' => "http://www.myspace.com/index.cfm?fuseaction=postto&amp;t=$titre&amp;u=$url",
 	);
 	
 	$liens['Reddit'] = array (
+		'id' => 'partageReddit',
 		'nom' => 'Reddit',
 		'lien' => "http://www.reddit.com/submit?url=$url&amp;title=$titre",
 	);
 	
 	$liens['StumbleUpon'] = array (
+		'id' => 'partageStumbleUpon',
 		'nom' => 'StumbleUpon',
 		'lien' => "http://www.stumbleupon.com/submit?url=$url&amp;title=$titre",
 	);
 	
 	$liens['Twitter'] = array (
+		'id' => 'partageTwitter',
 		'nom' => 'Twitter',
 		'lien' => "http://twitter.com/home/?status=$url+--+$titre",
 	);
