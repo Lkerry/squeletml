@@ -256,6 +256,7 @@ if (!empty($blocsAinsererTemp))
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
 							$bloc = categoriesActives($bloc, $listeCategoriesPage, $idCategorie);
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 						}
 						
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
