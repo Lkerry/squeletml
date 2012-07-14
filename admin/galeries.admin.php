@@ -1715,8 +1715,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		
 			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
-			$id = filtreChaine($racine, $id);
-			$idDossier = rawurlencode($idDossier);
+			$idDossierEncode = rawurlencode($idDossier);
 		
 			echo '<h4>' . T_("Information") . "</h4>\n" ;
 		
@@ -1724,8 +1723,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie:");
 			echo "<ul>\n";
-			echo '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . $id . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
-			echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idDossier . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idDossier . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
+			echo '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $id) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
+			echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idDossierEncode . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idDossierEncode . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 			echo "</ul></li>\n";
 		
 			echo "</ul>\n";
