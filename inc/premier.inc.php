@@ -222,7 +222,7 @@ if (!isset($partageReseaux))
 
 if ($partageCourriel || $partageReseaux)
 {
-	$boitesDeroulantesAlaMain .= TRUE;
+	$boitesDeroulantesAlaMain = TRUE;
 }
 
 $premierOuDernier = 'premier';

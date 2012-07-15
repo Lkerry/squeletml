@@ -575,7 +575,6 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 
 .bloc h3 {
 	font-size: 0.9em;
-	font-style: italic;
 }
 
 a.actif {
@@ -647,7 +646,7 @@ div#baliseH1 h1 {
 	margin-left: 0px;
 }
 
-#fluxRss a {
+#fluxRss a.fluxRssLien {
 	display: block;
 	padding-left: 19px;
 	background: url('../fichiers/rss.png') no-repeat left center;

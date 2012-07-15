@@ -69,6 +69,7 @@ if (!empty($blocsAinsererTemp))
 				case 'flux-rss':
 					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGaleriesActif || $fluxRssGlobalSiteActif)
 					{
+						$boiteDeroulanteAjoutee = FALSE;
 						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
 						$blocs[$region] .= '<div id="fluxRss" class="bloc ' . $classesBloc . '">' . "\n";
@@ -78,12 +79,12 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocFluxIndividuels .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocFluxIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
 						{
-							$blocFluxIndividuels .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+							$blocFluxIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($blocFluxIndividuels))
@@ -99,21 +100,38 @@ if (!empty($blocsAinsererTemp))
 							
 							if ($fluxRssGlobalSiteActif)
 							{
-								$blocLangue .= "<li><a href=\"$urlRacine/rss.php?type=site&amp;langue=$codeLangue\">" . T_("Dernières publications") . "</a></li>\n";
+								$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=site&amp;langue=$codeLangue\">" . T_("Dernières publications") . "</a></li>\n";
 							}
 							
 							if ($fluxRssGlobalGaleriesActif)
 							{
-								$blocLangue .= "<li><a href=\"$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue\">" . T_("Derniers ajouts aux galeries") . "</a></li>\n";
+								$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue\">" . T_("Derniers ajouts aux galeries") . "</a></li>\n";
 							}
 							
 							if (!empty($blocLangue))
 							{
-								$blocs[$region] .= '<h3>' . codeLangueVersNom($codeLangue) . "</h3>\n<ul>\n$blocLangue</ul>\n";
+								if ($codeLangue != LANGUE)
+								{
+									$boiteDeroulanteAjoutee = TRUE;
+									$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
+								}
+								else
+								{
+									$blocs[$region] .= "<ul>\n$blocLangue</ul>\n";
+								}
 							}
 						}
 						
 						$blocs[$region] .= '</div><!-- /#fluxRss -->' . "\n";
+						
+						if ($boiteDeroulanteAjoutee)
+						{
+							$blocs[$region] .= '<script type="text/javascript">' . "\n";
+							$blocs[$region] .= "//<![CDATA[\n";
+							$blocs[$region] .= "boiteDeroulante('.fluxRssLangueAutre', \"$aExecuterApresClicBd\");\n";
+							$blocs[$region] .= "//]]>\n";
+							$blocs[$region] .= "</script>\n";
+						}
 					}
 					
 					break;
@@ -236,6 +254,7 @@ if (!empty($blocsAinsererTemp))
 					
 				case 'menu-categories':
 					$bloc = '';
+					$boiteDeroulanteAjoutee = FALSE;
 					$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
 					$cheminConfigCategories = cheminConfigCategories($racine);
 					
@@ -251,7 +270,15 @@ if (!empty($blocsAinsererTemp))
 								
 								if (!empty($blocLangue))
 								{
-									$bloc .= '<h3>' . codeLangueVersNom($codeLangue) . "</h3>\n<ul>\n$blocLangue</ul>\n";
+									if ($codeLangue != LANGUE)
+									{
+										$boiteDeroulanteAjoutee = TRUE;
+										$bloc .= "<div class=\"menuCategoriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuCategoriesLangue -->\n";
+									}
+									else
+									{
+										$bloc .= "<ul>\n$blocLangue</ul>\n";
+									}
 								}
 							}
 							
@@ -288,6 +315,15 @@ if (!empty($blocsAinsererTemp))
 						
 						$blocs[$region] .= $bloc;
 						$blocs[$region] .= '</div><!-- /#menuCategories -->' . "\n";
+						
+						if ($boiteDeroulanteAjoutee)
+						{
+							$blocs[$region] .= '<script type="text/javascript">' . "\n";
+							$blocs[$region] .= "//<![CDATA[\n";
+							$blocs[$region] .= "boiteDeroulante('.menuCategoriesLangueAutre', \"$aExecuterApresClicBd\");\n";
+							$blocs[$region] .= "//]]>\n";
+							$blocs[$region] .= "</script>\n";
+						}
 					}
 						
 					break;
