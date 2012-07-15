@@ -1127,7 +1127,7 @@ function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 			}
 			else
 			{
-				$nom = 'English';
+				$nom = '<span lang="en">English</span>';
 			}
 			
 			break;
@@ -1139,13 +1139,13 @@ function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 			}
 			else
 			{
-				$nom = 'Français';
+				$nom = '<span lang="fr">Français</span>';
 			}
 			
 			break;
 			
 		default:
-			$nom = $codeLangue;
+			$nom = "<code class=\"codeLangue\">$codeLangue</code>";
 			break;
 	}
 	

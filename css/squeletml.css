@@ -557,6 +557,12 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 	margin-bottom: 20px;
 }
 
+.bloc code.codeLangue {
+	background-color: transparent;
+	background-image: none;
+	font-family: inherit;
+}
+
 .bloc h2, .bloc h3 {
 	margin: 0px 0px 15px 0px;
 	padding: 0px;
