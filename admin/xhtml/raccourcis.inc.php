@@ -11,8 +11,6 @@
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/galeries.admin.php#ajouter"><?php echo T_("Ajouter des images à une galerie"); ?></a> | </li>
 	
-	<li><a href="<?php echo $urlRacineAdmin; ?>/galeries.admin.php#mettreEnLigne"><?php echo T_("Mettre en ligne une galerie"); ?></a> | </li>
-	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/acces.admin.php#sauvegarde"><?php echo T_("Sauvegarder le site"); ?></a> | </li>
 	
 	<li><a href="<?php echo $urlRacineAdmin; ?>/acces.admin.php#maintenance"><?php echo T_("Mettre le site hors ligne"); ?></a></li>
