@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Catégories");
-$boitesDeroulantes = '#configActuelleAdminCat #optionsAjoutAdminCat .aideAdminCat .contenuFichierPourSauvegarde .pagesCategorie';
+$boitesDeroulantes = '#configActuelleAdminCat #optionsNouvelleCatAdminCat #optionsAjoutAdminCat .aideAdminCat .contenuFichierPourSauvegarde .pagesCategorie';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -42,42 +42,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$listeCategories[] = $categorie;
 					$listePages .= '<li class="liParent"><input type="text" name="cat[' . $i . ']" value="' . $categorie . '" />';
 					$listePages .= "<ul class=\"nonTriable\">\n";
-					
-					// Langue.
-					
-					if (!isset($categorieInfos['langue']))
-					{
-						$categorieInfos['langue'] = $langueParDefaut;
-					}
-					
-					$listePages .= '<li><label for="langue-' . $i . '"><code>langue=</code></label>';
-					$listeOption = '';
-					
-					foreach ($accueil as $codeLangue => $urlLangue)
-					{
-						$listeOption .= '<option value="' . $codeLangue . '"';
-						
-						if ($codeLangue == $categorieInfos['langue'])
-						{
-							$listeOption .= ' selected="selected"';
-						}
-						
-						$listeOption .= '>' . $codeLangue . "</option>\n";
-					}
-					
-					if (!empty($listeOption))
-					{
-						$listePages .= '<select id="langue-' . $i . '" name="langue[' . $i . ']">' . "\n";
-						$listePages .= '<option value=""></option>' . "\n";
-						$listePages .= $listeOption;
-						$listePages .= "</select>\n";
-					}
-					else
-					{
-						$listePages .= '<input id="langue-' . $i . '" type="text" name="langue[' . $i . ']" value="' . $categorieInfos['langue'] . '" />';
-					}
-					
-					$listePages .= "</li>\n";
 					
 					// URL.
 					
@@ -125,6 +89,70 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$listePages .= '<input id="parent-' . $i . '" type="text" name="parent[' . $i . ']" value="' . $categorieInfos['parent'] . '" />';
 					}
 					
+					$listePages .= "</li>\n";
+					
+					// Langue.
+					
+					if (!isset($categorieInfos['langue']))
+					{
+						$categorieInfos['langue'] = $langueParDefaut;
+					}
+					
+					$listePages .= '<li><label for="langue-' . $i . '"><code>langue=</code></label>';
+					$listeOption = '';
+					
+					foreach ($accueil as $codeLangue => $urlLangue)
+					{
+						$listeOption .= '<option value="' . $codeLangue . '"';
+						
+						if ($codeLangue == $categorieInfos['langue'])
+						{
+							$listeOption .= ' selected="selected"';
+						}
+						
+						$listeOption .= '>' . $codeLangue . "</option>\n";
+					}
+					
+					if (!empty($listeOption))
+					{
+						$listePages .= '<select id="langue-' . $i . '" name="langue[' . $i . ']">' . "\n";
+						$listePages .= '<option value=""></option>' . "\n";
+						$listePages .= $listeOption;
+						$listePages .= "</select>\n";
+					}
+					else
+					{
+						$listePages .= '<input id="langue-' . $i . '" type="text" name="langue[' . $i . ']" value="' . $categorieInfos['langue'] . '" />';
+					}
+					
+					$listePages .= "</li>\n";
+					
+					// RSS.
+					
+					if (!isset($categorieInfos['rss']))
+					{
+						$categorieInfos['rss'] = 1;
+					}
+					
+					$listePages .= '<li><label for="rss-' . $i . '"><code>rss=</code></label>';
+					$listePages .= '<select id="rss-' . $i . '" name="rss[' . $i . ']">' . "\n";
+					$listePages .= '<option value="1"';
+					
+					if ($categorieInfos['rss'] == 1)
+					{
+						$listePages .= ' selected="selected"';
+					}
+					
+					$listePages .= '>' . T_("Activé") . "</option>\n";
+					$listePages .= '<option value="0"';
+					
+					if ($categorieInfos['rss'] != 1)
+					{
+						$listePages .= ' selected="selected"';
+					}
+					
+					$listePages .= '>' . T_("Désactivé") . "</option>\n";
+					$listePages .= "</select>\n";
 					$listePages .= "</li>\n";
 					
 					// Pages.
@@ -227,6 +255,41 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
+			echo "<fieldset id=\"optionsNouvelleCatAdminCat\">\n";
+			echo '<legend class="bDtitre">' . T_("Nouvelle catégorie") . "</legend>\n";
+			
+			echo '<div class="bDcorps afficher">' . "\n";
+			echo '<p><label for="nouvelleCatInputPage">' . T_("Si nouvelle catégorie, emplacement de la page Web (laisser vide pour génération automatique):") . "</label><br />\n";
+			echo "$urlRacine/";
+			echo '<input id="nouvelleCatInputPage" type="text" name="page" /></p>' . "\n";
+			
+			$listeLangues = '';
+			$listeLangues .= '<select name="mettreEnLigneLangue">' . "\n";
+			
+			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
+			{
+				$listeLangues .= '<option value="' . $langueAccueil . '"';
+				
+				if ($langueAccueil == $langueParDefaut)
+				{
+					$listeLangues .= ' selected="selected"';
+				}
+				
+				$listeLangues .= '>' . $langueAccueil . "</option>\n";
+			}
+			
+			$listeLangues .= "</select>";
+			
+			echo '<p><label for="nouvelleCatLangue">' . T_("Si nouvelle catégorie, langue:") . "</label><br />\n$listeLangues</p>\n";
+			
+			echo '<p><label for="nouvelleCatRss">' . T_("Si nouvelle catégorie, RSS:") . "</label><br />\n";
+			echo '<select name="nouvelleCatRss">' . "\n";
+			echo '<option value="1" selected="selected">' . T_("Activé") . "</option>\n";
+			echo '<option value="0">' . T_("Désactivé") . "</option>\n";
+			echo "</select></p>\n";
+			echo "</div><!-- /.bDcorps -->\n";
+			echo "</fieldset>\n";
+			
 			echo "<fieldset id=\"optionsAjoutAdminCat\">\n";
 			echo '<legend class="bDtitre">' . T_("Options d'ajout") . "</legend>\n";
 			
@@ -297,17 +360,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$contenuFichierTableau[$cat]['infos'] = array ();
 					$contenuFichierTableau[$cat]['pages'] = array ();
 					
-					if (!empty($_POST['langue'][$cle]))
-					{
-						$langueCat = securiseTexte($_POST['langue'][$cle]);
-						$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
-					}
-					else
-					{
-						$langueCat = $langueParDefaut;
-						$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
-					}
-					
 					if (!empty($_POST['url'][$cle]))
 					{
 						$contenuFichierTableau[$cat]['infos'][] = 'url=' . securiseTexte($_POST['url'][$cle]) . "\n";
@@ -327,6 +379,28 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if (!empty($_POST['parent'][$cle]))
 					{
 						$contenuFichierTableau[$cat]['infos'][] = 'parent=' . securiseTexte($_POST['parent'][$cle]) . "\n";
+					}
+					
+					if (!empty($_POST['langue'][$cle]))
+					{
+						$langueCat = securiseTexte($_POST['langue'][$cle]);
+						$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
+					}
+					else
+					{
+						$langueCat = $langueParDefaut;
+						$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
+					}
+					
+					if (!empty($_POST['rss'][$cle]))
+					{
+						$rssCat = securiseTexte($_POST['rss'][$cle]);
+						$contenuFichierTableau[$cat]['infos'][] = "rss=$rssCat\n";
+					}
+					else
+					{
+						$rssCat = 0;
+						$contenuFichierTableau[$cat]['infos'][] = "rss=0\n";
 					}
 					
 					if (!empty($_POST['urlPages'][$cle]))

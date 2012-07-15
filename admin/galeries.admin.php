@@ -7,7 +7,7 @@ $boitesDeroulantes .= ' .aideAdminGaleries .autresParametres .configGraphiqueLis
 $boitesDeroulantes .= ' .contenuFichierPourSauvegarde';
 $boitesDeroulantes .= ' .fichierConfigAdminGaleries .galeriesAdminModifierConfig';
 $boitesDeroulantes .= ' .optionsAvanceesAdminGaleries';
-$boitesDeroulantes .= ' .optionsNouvelleGalerieAdminGaleries';
+$boitesDeroulantes .= ' #optionsNouvelleGalerieAdminGaleries';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -1826,9 +1826,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$langueGalerie = $langueParDefaut;
 					}
 					
-					if (isset($_POST['mettreEnLigneRss']) && $_POST['mettreEnLigneRss'] == 'active')
+					if (!empty($_POST['mettreEnLigneRss']))
 					{
-						$rssGalerie = 1;
+						$rssGalerie = securiseTexte($_POST['mettreEnLigneRss']);
 					}
 					else
 					{
@@ -1983,10 +1983,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<?php endif; ?>
 					</select> <input id="ajouterInputIdNouvelleGalerie" type="text" name="idNouvelleGalerie" /></p>
 					
-					<fieldset class="optionsNouvelleGalerieAdminGaleries">
+					<fieldset id="optionsNouvelleGalerieAdminGaleries">
 						<legend class="bDtitre"><?php echo T_("Nouvelle galerie"); ?></legend>
 						
-						<div class="bDcorps">
+						<div class="bDcorps afficher">
 							<p><label for="idNouvelleGalerieDossier"><?php echo T_("Si nouvelle galerie, nom du dossier (laisser vide pour génération automatique):"); ?></label><br />
 							<input type="text" name="idNouvelleGalerieDossier" /></p>
 					
@@ -2013,8 +2013,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 							<p><label for="mettreEnLigneRss"><?php echo T_("Si nouvelle galerie, RSS:"); ?></label><br />
 							<select name="mettreEnLigneRss">
-								<option value="active" selected="selected"><?php echo T_("Activé"); ?></option>
-								<option value="desactive"><?php echo T_("Désactivé"); ?></option>
+								<option value="1" selected="selected"><?php echo T_("Activé"); ?></option>
+								<option value="0"><?php echo T_("Désactivé"); ?></option>
 							</select></p>
 						</div><!-- /.bDcorps -->
 					</fieldset>
