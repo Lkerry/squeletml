@@ -168,7 +168,7 @@ if (!empty($blocsAinsererTemp))
 							$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 					
 							$blocs[$region] .= '<div id="licence" class="bloc ' . $classesBloc . '">' . "\n";
-							$blocs[$region] .= T_("Sauf avis contraire:") . "\n";
+							$blocs[$region] .= T_("Sauf mention contraire:") . "\n";
 							
 							$blocs[$region] .= "<ul>\n";
 							$blocs[$region] .= $bloc;
