@@ -49,7 +49,6 @@ if (file_exists($racine . '/init.inc.php'))
 		$rapport .= '<h2>' . T_("Cache") . "</h2>\n";
 		
 		$tableauUrlCache = array ();
-		$extraAsupprimer = array ();
 		
 		if ($dureeCache)
 		{
@@ -98,12 +97,9 @@ if (file_exists($racine . '/init.inc.php'))
 				
 				foreach ($langueInfos as $idGalerie => $urlGalerie)
 				{
-					$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), 'cache' => '');
-					
-					foreach ($accueil as $langueCache => $infosLangueCache)
-					{
-						$extraAsupprimer[] = filtreChaine($racine, "rss-galerie-$idGalerie-$langueCache.cache.xml");
-					}
+					$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), FALSE);
+					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+					$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 				}
 			}
 			
@@ -217,20 +213,6 @@ if (file_exists($racine . '/init.inc.php'))
 		// Mise en action.
 		
 		$rapportLi = '';
-		
-		foreach ($extraAsupprimer as $aSupprimer)
-		{
-			if (@unlink($racine . '/site/cache/' . $aSupprimer))
-			{
-				$rapportLi .= '<li>1: ';
-			}
-			else
-			{
-				$rapportLi .= '<li class="erreur">0: ';
-			}
-			
-			$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $aSupprimer . '");</code>' . "</li>\n";
-		}
 		
 		foreach ($tableauUrlCache as $url)
 		{
