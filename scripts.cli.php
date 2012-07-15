@@ -9,7 +9,7 @@ include 'init.inc.php';
 ## Modèles de fichiers de configuration (du site et de l'administration) personnalisés.
 ##
 ########################################################################
-elseif ($argv[1] == 'config')
+if ($argv[1] == 'config')
 {
 	$cheminDossierSauvegarde = $argv[2];
 	
