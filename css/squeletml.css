@@ -557,11 +557,19 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 	margin-bottom: 20px;
 }
 
-.bloc h2 {
+.bloc h2, .bloc h3 {
 	margin: 0px 0px 15px 0px;
 	padding: 0px;
-	font-size: 1em;
 	border-bottom: none;
+}
+
+.bloc h2 {
+	font-size: 1em;
+}
+
+.bloc h3 {
+	font-size: 0.9em;
+	font-style: italic;
 }
 
 a.actif {

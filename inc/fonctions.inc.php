@@ -1114,6 +1114,29 @@ function classesContenu($differencierLiensVisitesHorsContenu, $classesSupplement
 }
 
 /*
+Retourne le nom complet d'une langue (ex.: «Français») à partir du code de langue (ex.: «fr»). Si aucun nom n'a été trouvé, retourne le code de langue.
+*/
+function codeLangueVersNom($codeLangue)
+{
+	switch ($codeLangue)
+	{
+		case 'en':
+			$nom = T_("Anglais");
+			break;
+			
+		case 'fr':
+			$nom = T_("Français");
+			break;
+			
+		default:
+			$nom = $codeLangue;
+			break;
+	}
+	
+	return $nom;
+}
+
+/*
 Personnalise la coloration syntaxique par défaut de la fonction `highlight_string()`.
 
 La coloration est modifiée dans le but d'améliorer le contraste des commentaires. En effet, par défaut, la couleur utilisée pour les commentaires n'offre pas un contraste suffisant sous fond blanc (voir <http://www.britoweb.net/outils/contraste-couleurs.php>).
@@ -3084,7 +3107,7 @@ function lienActif($urlRacine, $html, $inclureGet, $parent = '')
 		$aHrefRelatif = preg_replace('#^' . preg_quote($urlRacine) . '/?#', '', $aHref);
 		$infosAhrefRelatif = parse_url($aHrefRelatif);
 		
-		if ($infosAhrefRelatif['path'] == $infosUrlRelative['path'])
+		if (isset($infosAhrefRelatif['path']) && isset($infosUrlRelative['path']) && $infosAhrefRelatif['path'] == $infosUrlRelative['path'])
 		{
 			// A: même nom de page (mais pas nécessairement mêmes variables `GET`).
 			

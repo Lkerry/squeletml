@@ -239,11 +239,29 @@ if (!empty($blocsAinsererTemp))
 					}
 					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 					{
-						$bloc = menuCategoriesAutomatise($racine, $urlRacine, LANGUE, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+						$bloc = '';
+						$menuCategoriesLangues = $accueil;
+						
+						// On s'assure que la langue actuelle de la page soit en premier dans le tableau.
+						if (isset($menuCategoriesLangues[LANGUE]))
+						{
+							unset($menuCategoriesLangues[LANGUE]);
+							$menuCategoriesLangues = array_merge(array (LANGUE => $accueil[LANGUE]), $menuCategoriesLangues);
+						}
+						
+						foreach ($menuCategoriesLangues as $codeLangue => $infosLangue)
+						{
+							$blocLangue = menuCategoriesAutomatise($racine, $urlRacine, $codeLangue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+							
+							if (!empty($blocLangue))
+							{
+								$bloc .= '<h3>' . codeLangueVersNom($codeLangue) . "</h3>\n<ul>\n$blocLangue</ul>\n";
+							}
+						}
 						
 						if (!empty($bloc))
 						{
-							$bloc = '<h2>' . T_("Catégories") . "</h2>\n<ul>\n$bloc</ul>\n";
+							$bloc = '<h2>' . T_("Catégories") . "</h2>\n$bloc";
 						}
 					}
 					
