@@ -526,7 +526,7 @@ $typePaginationCategorie = 'texte'; // image|texte
 $paginationAvecFond = TRUE; // TRUE|FALSE
 
 // Si `$paginationAvecFond` vaut TRUE, arrondir les coins.
-$paginationArrondie = TRUE; // TRUE|FALSE
+$paginationArrondie = FALSE; // TRUE|FALSE
 
 /* ____________________ Style CSS. ____________________ */
 
