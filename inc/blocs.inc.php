@@ -230,39 +230,34 @@ if (!empty($blocsAinsererTemp))
 					$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
 					$cheminConfigCategories = cheminConfigCategories($racine);
 					
-					if (!empty($cheminMenuCategories))
+					if ($genererMenuCategories)
+					{
+						if ($cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
+						{
+							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							
+							foreach ($tableauAccueilTrie as $codeLangue => $infosLangue)
+							{
+								$blocLangue = menuCategoriesAutomatise($racine, $urlRacine, $codeLangue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+								
+								if (!empty($blocLangue))
+								{
+									$bloc .= '<h3>' . codeLangueVersNom($codeLangue) . "</h3>\n<ul>\n$blocLangue</ul>\n";
+								}
+							}
+							
+							if (!empty($bloc))
+							{
+								$bloc = '<h2>' . T_("Catégories") . "</h2>\n$bloc";
+							}
+						}
+					}
+					elseif (!empty($cheminMenuCategories))
 					{
 						ob_start();
 						include $cheminMenuCategories;
 						$bloc = ob_get_contents();
 						ob_end_clean();
-					}
-					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
-					{
-						$bloc = '';
-						$menuCategoriesLangues = $accueil;
-						
-						// On s'assure que la langue actuelle de la page soit en premier dans le tableau.
-						if (isset($menuCategoriesLangues[LANGUE]))
-						{
-							unset($menuCategoriesLangues[LANGUE]);
-							$menuCategoriesLangues = array_merge(array (LANGUE => $accueil[LANGUE]), $menuCategoriesLangues);
-						}
-						
-						foreach ($menuCategoriesLangues as $codeLangue => $infosLangue)
-						{
-							$blocLangue = menuCategoriesAutomatise($racine, $urlRacine, $codeLangue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-							
-							if (!empty($blocLangue))
-							{
-								$bloc .= '<h3>' . codeLangueVersNom($codeLangue) . "</h3>\n<ul>\n$blocLangue</ul>\n";
-							}
-						}
-						
-						if (!empty($bloc))
-						{
-							$bloc = '<h2>' . T_("Catégories") . "</h2>\n$bloc";
-						}
 					}
 					
 					if (!empty($bloc))
@@ -289,17 +284,43 @@ if (!empty($blocsAinsererTemp))
 					break;
 					
 				case 'menu-langues':
+					$bloc = '';
+					
 					if (count($accueil) > 1)
 					{
+						if ($genererMenuLangues)
+						{
+							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							
+							foreach ($tableauAccueilTrie as $codeLangue => $infosLangue)
+							{
+								$bloc .= '<li><a href="' . $infosLangue . '/">' . codeLangueVersNom($codeLangue, FALSE) . "</a></li>\n";
+							}
+							
+							if (!empty($bloc))
+							{
+								$bloc = '<h2>' . T_("Langues") . "</h2>\n<ul>\n$bloc</ul>\n";
+							}
+						}
+						else
+						{
+							$cheminMenuLangues = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
+							
+							if (!empty($cheminMenuLangues))
+							{
+								ob_start();
+								include $cheminMenuLangues;
+								$bloc = ob_get_contents();
+								ob_end_clean();
+							}
+						}
+					}
+					
+					if (!empty($bloc))
+					{
 						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
-						
 						$blocs[$region] .= '<div id="menuLangues" class="bloc ' . $classesBloc . '">' . "\n";
-					
-						ob_start();
-						include cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
-						$bloc = ob_get_contents();
-						ob_end_clean();
-					
+						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
 							$bloc = langueActive($bloc, LANGUE, $accueil);
@@ -309,11 +330,11 @@ if (!empty($blocsAinsererTemp))
 						{
 							$bloc = limiteProfondeurListe($bloc);
 						}
-					
+						
 						$blocs[$region] .= $bloc;
 						$blocs[$region] .= '</div><!-- /#menuLangues -->' . "\n";
 					}
-						
+					
 					break;
 					
 				case 'partage':

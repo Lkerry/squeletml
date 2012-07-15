@@ -479,6 +479,12 @@ Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `
 */
 $dureeCache = 0;
 
+// Génération automatisée du bloc de menu des langues.
+/*
+- Le bloc de menu des langues peut être réalisé à la main dans le fichier `menu-langues.inc.php` ou généré automatiquement.
+*/
+$genererMenuLangues = TRUE; // TRUE|FALSE
+
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*
 - Si vaut `TRUE`, un titre `h1` sera ajouté avant la liste des articles classés dans la catégorie affichée.

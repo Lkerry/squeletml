@@ -295,7 +295,6 @@ Ensuite, il y a les fichiers de division XHTML, qui sont, pour le français:
 - `fr/ancres.inc.php`
 - `fr/bas-de-page.inc.php`
 - `fr/menu.inc.php`
-- `fr/menu-langues.inc.php`
 - `fr/sous-titre.inc.php`
 - `fr/sur-titre.inc.php`
 
@@ -471,8 +470,8 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 	- `inc/blocs.inc.php`
 		- `inc/partage-courriel.inc.php`
 			- *`site/inc/partage-courriel.inc.php`*
-		- Inclusions selon les blocs configurés. Exemple pour le menu des langues:  
-		*`site/xhtml/$langueDeLaPage/menu-langues.inc.php`* **||** *`xhtml/$langueDeLaPage/menu-langues.inc.php`* **||** *`site/xhtml/$langueParDefaut/menu-langues.inc.php`* **||** *`xhtml/$langueParDefaut/menu-langues.inc.php`* **||** *`site/xhtml/menu-langues.inc.php`* **||** *`xhtml/menu-langues.inc.php`*
+		- Inclusions selon les blocs configurés. Exemple pour le menu:  
+		*`site/xhtml/$langueDeLaPage/menu.inc.php`* **||** *`xhtml/$langueDeLaPage/menu.inc.php`* **||** *`site/xhtml/$langueParDefaut/menu.inc.php`* **||** *`xhtml/$langueParDefaut/menu.inc.php`* **||** *`site/xhtml/menu.inc.php`* **||** *`xhtml/menu.inc.php`*
 		- *`site/inc/blocs.inc.php`*
 	- *`site/inc/premier.inc.php`*
 	- *`site/xhtml/(LANGUE/)page.premier.inc.php`* **||** `xhtml/(LANGUE/)page.premier.inc.php`
@@ -518,7 +517,6 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 - `xhtml/fr/ancres.inc.php`
 - `xhtml/fr/bas-de-page.inc.php`
 - `xhtml/fr/menu.inc.php`
-- `xhtml/fr/menu-langues.inc.php`
 - `xhtml/fr/sous-titre.inc.php`
 - `xhtml/fr/sur-titre.inc.php`
 - `xhtml/fr/page.401.inc.php`
@@ -1015,7 +1013,7 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 
 - créer le fichier `site/xhtml/(LANGUE/)menu-categories.inc.php`;
 
-- si ce fichier n'existe pas et que `$genererMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
+- utiliser le menu généré automatiquement en affectantla variable `$genererMenuCategories` à TRUE dans le fichier de configuration du site. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
 
 		[Chiens]
 		url=animaux/chiens/

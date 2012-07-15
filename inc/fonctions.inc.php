@@ -1116,16 +1116,32 @@ function classesContenu($differencierLiensVisitesHorsContenu, $classesSupplement
 /*
 Retourne le nom complet d'une langue (ex.: «Français») à partir du code de langue (ex.: «fr»). Si aucun nom n'a été trouvé, retourne le code de langue.
 */
-function codeLangueVersNom($codeLangue)
+function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 {
 	switch ($codeLangue)
 	{
 		case 'en':
-			$nom = T_("Anglais");
+			if ($traduireNom)
+			{
+				$nom = T_("Anglais");
+			}
+			else
+			{
+				$nom = 'English';
+			}
+			
 			break;
 			
 		case 'fr':
-			$nom = T_("Français");
+			if ($traduireNom)
+			{
+				$nom = T_("Français");
+			}
+			else
+			{
+				$nom = 'Français';
+			}
+			
 			break;
 			
 		default:
@@ -5568,6 +5584,22 @@ function titreSite($tableauTitreSite, $langues)
 	}
 	
 	return '';
+}
+
+/*
+S'assure que la langue fournie soit en premier dans le tableau `$accueil`. Retourne le tableau trié.
+*/
+function triTableauAccueil($accueil, $langue)
+{
+	$tableauTrie = $accueil;
+	
+	if (isset($tableauTrie[$langue]))
+	{
+		unset($tableauTrie[$langue]);
+		$tableauTrie = array_merge(array ($langue => $accueil[$langue]), $tableauTrie);
+	}
+	
+	return $tableauTrie;
 }
 
 /*
