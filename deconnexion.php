@@ -1,4 +1,5 @@
 <?php
+$desactiverCache = TRUE;
 $infosPublication = FALSE;
 $licence = '';
 $lienPage = FALSE;
