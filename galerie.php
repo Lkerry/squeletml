@@ -47,6 +47,11 @@ elseif (
 	$erreur404 = TRUE;
 }
 
+if (isset($galeries[$idGalerie]['langue']))
+{
+	$langue = $galeries[$idGalerie]['langue'];
+}
+
 $pageGlobaleGalerie = TRUE;
 include $racine . '/inc/premier.inc.php';
 include $racine . '/inc/dernier.inc.php';

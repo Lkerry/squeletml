@@ -51,7 +51,7 @@ if (!isset($pageGlobaleGalerie))
 	$pageGlobaleGalerie = FALSE;
 }
 
-if ($estPageCompte || $estPageDeconnexion || $pageGlobaleGalerie)
+if ($estPageCompte || $estPageDeconnexion)
 {
 	$langue = langue('navigateur', '');
 }
