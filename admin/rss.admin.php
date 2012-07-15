@@ -24,150 +24,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	if (isset($_POST['global']) && $_POST['global'] == 'galeries')
 	{
-		$messagesScript = '';
-		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
+		echo '<div class="sousBoite">' . "\n";
+		echo '<h3>' . T_("Liste des pages du flux RSS des derniers ajouts aux galeries") . "</h3>\n";
 		
-		if (!$cheminFichier)
-		{
-			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
-			
-			if (!@touch($cheminFichier))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-			}
-		}
-		
-		if (file_exists($cheminFichier) && ($galeries = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
-		{
-			echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
-			echo "<div>\n";
-			$listeGaleries = '';
-			
-			if (!empty($galeries))
-			{
-				$i = 0;
-				
-				foreach ($galeries as $codeLangue => $langueInfos)
-				{
-					$listeGaleries .= '<li class="liParent">';
-					$listeOption = '';
-					
-					foreach ($accueil as $langueAccueil => $urlLangueAccueil)
-					{
-						$listeOption .= '<option value="' . $langueAccueil . '"';
-						
-						if ($langueAccueil == $codeLangue)
-						{
-							$listeOption .= ' selected="selected"';
-						}
-						
-						$listeOption .= '>' . $langueAccueil . "</option>\n";
-					}
-					
-					if (!empty($listeOption))
-					{
-						$listeGaleries .= '<select name="langue[' . $i . ']">' . "\n";
-						$listeGaleries .= '<option value=""></option>' . "\n";
-						$listeGaleries .= $listeOption;
-						$listeGaleries .= "</select>\n";
-					}
-					else
-					{
-						$listeGaleries .= '<input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
-					}
-					
-					$listeGaleries .= "<ul class=\"triable\">\n";
-					
-					foreach ($langueInfos as $idGalerie => $urlRelativeGalerie)
-					{
-						$listeGaleries .= '<li><input type="text" name="id[' . $i . '][]" value="' . $idGalerie . '" /><code>=</code><input class="long" type="text" name="url[' . $i . '][]" value="' . $urlRelativeGalerie . '" /></li>' . "\n";
-					}
-					
-					$listeGaleries .= "</ul></li>\n";
-					$i++;
-				}
-			}
-			
-			echo '<div class="sousBoite">' . "\n";
-			echo '<h3>' . T_("Liste des pages du flux RSS des derniers ajouts aux galeries") . "</h3>\n";
-			
-			echo '<div class="aideAdminRss aide">' . "\n";
-			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
-			
-			echo "<div class=\"bDcorps\">\n";
-			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>' . T_("identifiant de la galerie") . '=' . T_("URL relative de la galerie") . '</code>') . "</p>\n";
-			
-			echo "<ul>\n";
-			echo "<li>fr\n";
-			echo "<ul>\n";
-			echo "<li><code>chiens=animaux/chiens.php</code></li>\n";
-			echo "</ul></li>\n";
-			echo "</ul>\n";
-			
-			echo '<p>' . sprintf(T_("Cet exemple fait référence à une galerie en français dont l'identifiant est %1\$s et dont l'URL est %2\$s."), "<code>chiens</code>", "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
-			
-			echo '<p>' . T_("Pour enlever une langue ou une galerie, simplement supprimer le contenu du champ.") . "</p>\n";
-			
-			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
-			echo "</div><!-- /.bDcorps -->\n";
-			echo "</div><!-- /.aideAdminRss -->\n";
-			
-			echo "<fieldset>\n";
-			echo '<legend>' . T_("Options") . "</legend>\n";
-			
-			echo '<div class="configActuelleAdminRss">' . "\n";
-			echo '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
-			
-			if (empty($listeGaleries))
-			{
-				$listeGaleries = '<li>' . T_("Le fichier est vide. Aucune galerie n'y est listée.") . "</li>\n";
-				echo "<ul class=\"bDcorps\">\n";
-			}
-			else
-			{
-				echo "<ul class=\"triable bDcorps\">\n";
-			}
-			
-			echo $listeGaleries;
-			echo "</ul>\n";
-			echo "</div><!-- /.configActuelleAdminRss -->\n";
-			
-			echo '<h4>' . T_("Ajouter une galerie") . "</h4>\n";
-			
-			echo "<ul>\n";
-			echo '<li><select name="langueAjout">' . "\n";
-			
-			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
-			{
-				echo '<option value="' . $langueAccueil . '"';
-				
-				if ($langueAccueil == $langueParDefaut)
-				{
-					echo ' selected="selected"';
-				}
-				
-				echo '>' . $langueAccueil . "</option>\n";
-			}
-			
-			echo "</select>\n";
-			
-			echo "<ul>\n";
-			echo '<li><input type="text" name="idAjout" value="" /><code>=</code><input class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
-			echo "</ul></li>\n";
-			echo "</ul>\n";
-			echo "</fieldset>\n";
-			
-			echo '<p><input type="submit" name="modifsGaleries" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
-			echo "</div>\n";
-			echo "</form>\n";
-			echo "</div><!-- /.sousBoite -->\n";
-		}
-		elseif (file_exists($cheminFichier))
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
-		}
-		
-		echo adminMessagesScript($messagesScript);
+		echo '<p>';
+		printf(T_("Cette liste est générée à partir des galeries dont le flux RSS est activé dans le <a href=\"%1\$s\">fichier de configuration des galeries</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/' . superBasename(cheminConfigGaleries($racine, TRUE)) . "&amp;dossierCourant=../site/inc#messages");
+		echo "</p>\n";
+		echo "</div><!-- /.sousBoite -->\n";
 	}
 	##################################################################
 	#
@@ -177,11 +40,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 	elseif (isset($_POST['global']) && $_POST['global'] == 'site')
 	{
 		$messagesScript = '';
-		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+		$cheminFichier = cheminConfigFluxRssGlobalSite($racine);
 		
 		if (!$cheminFichier)
 		{
-			$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
+			$cheminFichier = cheminConfigFluxRssGlobalSite($racine, TRUE);
 			
 			if (!@touch($cheminFichier))
 			{
@@ -328,73 +191,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo adminMessagesScript($messagesScript);
 	}
 	
-	if (isset($_POST['modifsGaleries']))
-	{
-		$messagesScript = '';
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Enregistrement des modifications pour les galeries") . "</h3>\n" ;
-		
-		$contenuFichierTableau = array ();
-		
-		if (isset($_POST['langue']))
-		{
-			foreach ($_POST['langue'] as $cle => $postLangueValeur)
-			{
-				$postLangueValeur = securiseTexte($postLangueValeur);
-				
-				if (!empty($postLangueValeur) && !empty($_POST['id'][$cle]) && !empty($_POST['url'][$cle]))
-				{
-					$contenuFichierTableau[$postLangueValeur] = array ();
-					
-					foreach ($_POST['id'][$cle] as $cle2 => $idGalerie)
-					{
-						if (!empty($idGalerie) && !empty($_POST['url'][$cle][$cle2]) && !preg_grep('/^' . preg_quote(securiseTexte($idGalerie), '/') . '=/', $contenuFichierTableau[$postLangueValeur]))
-						{
-							$contenuFichierTableau[$postLangueValeur][] = securiseTexte($idGalerie) . '=' . securiseTexte($_POST['url'][$cle][$cle2]) . "\n";
-						}
-					}
-				}
-			}
-		}
-		
-		if (!empty($_POST['langueAjout']) && !empty($_POST['idAjout']) && !empty($_POST['urlAjout']))
-		{
-			$langueAjout = securiseTexte($_POST['langueAjout']);
-			
-			if (!isset($contenuFichierTableau[$langueAjout]))
-			{
-				$contenuFichierTableau[$langueAjout] = array ();
-			}
-			
-			if (!preg_grep('/^' . preg_quote(securiseTexte($_POST['idAjout']), '/') . '=/', $contenuFichierTableau[$langueAjout]))
-			{
-				array_unshift($contenuFichierTableau[$langueAjout], securiseTexte($_POST['idAjout']) . '=' . securiseTexte($_POST['urlAjout']) . "\n");
-			}
-		}
-		
-		$contenuFichier = '';
-		
-		foreach ($contenuFichierTableau as $codeLangue => $langueInfos)
-		{
-			if (!empty($langueInfos))
-			{
-				$contenuFichier .= "[$codeLangue]\n";
-				
-				foreach ($langueInfos as $ligne)
-				{
-					$contenuFichier .= $ligne;
-				}
-				
-				$contenuFichier .= "\n";
-			}
-		}
-		
-		$messagesScript .= adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier);
-		
-		echo adminMessagesScript($messagesScript);
-		echo "</div><!-- /.sousBoite -->\n";
-	}
-	elseif (isset($_POST['modifsSite']))
+	if (isset($_POST['modifsSite']))
 	{
 		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";

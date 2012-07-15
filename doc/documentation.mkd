@@ -666,10 +666,6 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$robots`: contenu de la métabalise `robots`, si la valeur est différente de `$robotsParDefaut` du fichier de configuration du site.
 
-- `$rssCategorie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la catégorie en question, si la valeur est différente de `$activerFluxRssCategorieParDefaut` du fichier de configuration du site.
-
-- `$rssGalerie`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non la syndication de contenu individuelle pour la galerie en question, si la valeur est différente de `$galerieActiverFluxRssParDefaut` du fichier de configuration du site.
-
 - `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée par Javascript.
 
 	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée.
@@ -894,9 +890,9 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresImages = publicationsRecentes($racine, $urlRacine, $langueParDefaut, LANGUE, 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache);
+	$dernieresImages = publicationsRecentes($racine, $urlRacine, LANGUE, 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache);
 
-Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le huitième argument vaut `TRUE`, donc un lien est ajouté sur chaque vignette vers la page Web de l'image en question. Le neuvième argument vaut également `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
+Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième argument vaut `TRUE`, donc un lien est ajouté sur chaque vignette vers la page Web de l'image en question. Le huitième argument vaut également `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
 Pour les types de publication `categorie` et `site`, la fonction renvoie une liste de titres (pointant vers la page en question si le huitième argument vaut `TRUE`).
 
@@ -959,21 +955,21 @@ et:
 
 	$urlRacine/animaux/chiens/malamute.php
 
-Optionnellement, la langue à laquelle appartient chaque catégorie peut être précisée avec le paramètre `langueCat`:
+Optionnellement, la langue à laquelle appartient chaque catégorie peut être précisée avec le paramètre `langue`:
 
-	langueCat=fr
+	langue=fr
 
 Si aucune langue n'est précisée, la langue par défaut du site est utilisée.
 
-Aussi, un lien vers la page d'accueil de chaque catégorie peut optionnellement être précisé grâce au paramètre `urlCat`:
+Aussi, un lien vers la page d'accueil de chaque catégorie peut optionnellement être précisé grâce au paramètre `url`:
 
-	urlCat=l'URL relative de la page d'accueil de la catégorie
+	url=l'URL relative de la page d'accueil de la catégorie
 
 Exemple:
 
 	[Chiens]
-	langueCat=fr
-	urlCat=animaux/chiens/
+	langue=fr
+	url=animaux/chiens/
 	pages[]=animaux/chiens/husky.php
 	pages[]=animaux/chiens/malamute.php
 
@@ -989,7 +985,7 @@ La page d'accueil d'une catégorie peut être située n'importe où sur le site.
 
 En visitant cette page, un aperçu pour chaque page listée dans le fichier de configuration pour la catégorie donnée sera généré. Un titre de premier niveau (`h1`) sera également généré par défaut (voir la variable `$genererTitrePageCategories` dans le fichier de configuration du site).
 
-Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre `urlCat`, l'URL sera générée automatiquement, et ce sous la forme `$urlRacine/categorie.php?id=idCategorieFiltre` (`idCategorieFiltre` représente la variable `$idCategorie` filtrée). Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque `categorie.php` est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie. Pour éviter le contenu dupliqué dans les moteurs de recherche, seules les catégories pour lesquelles aucune valeur n'a été donnée au paramètre `urlCat` sont accessibles sur la page `$urlRacine/categorie.php`.
+Si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre `url`, l'URL sera générée automatiquement, et ce sous la forme `$urlRacine/categorie.php?id=idCategorieFiltre` (`idCategorieFiltre` représente la variable `$idCategorie` filtrée). Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque `categorie.php` est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie. Pour éviter le contenu dupliqué dans les moteurs de recherche, seules les catégories pour lesquelles aucune valeur n'a été donnée au paramètre `url` sont accessibles sur la page `$urlRacine/categorie.php`.
 
 Voici un exemple d'aperçu qui pourrait être généré pour la page sur le husky:
 
@@ -1022,8 +1018,8 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 - si ce fichier n'existe pas et que `$genererMenuCategories` vaut TRUE dans le fichier de configuration du site, le menu des catégories sera généré automatiquement. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
 
 		[Chiens]
-		urlCat=animaux/chiens/
-		catParente=Animaux
+		url=animaux/chiens/
+		parent=Animaux
 		pages[]=animaux/chiens/husky.php
 		pages[]=animaux/chiens/malamute.php
 
@@ -1303,11 +1299,11 @@ Si la page visitée est autre chose qu'une page individuelle d'image, le modèle
 
 #### Syndication par catégorie
 
-Par défaut, chaque catégorie possède son propre flux RSS, généré automatiquement. Dans la configuration, il est possible de désactiver par défaut la syndication individuelle des catégories. Dans tous les cas, la variable optionnelle `$rssCategorie` peut être renseignée dans le fichier PHP de la catégorie pour activer (`TRUE`) ou désactiver (`FALSE`) la syndication pour la catégorie en question.
+Chaque catégorie possède son propre flux RSS, généré automatiquement, si son paramètre `rss` vaut `1` dans le fichier de configuration des catégories.
 
 #### Syndication par galerie
 
-Par défaut, chaque galerie possède son propre flux RSS, généré automatiquement. Dans la configuration, il est possible de désactiver par défaut la syndication individuelle des galeries. Dans tous les cas, la variable optionnelle `$rssGalerie` peut être renseignée dans le fichier PHP de la galerie pour activer (`TRUE`) ou désactiver (`FALSE`) la syndication pour la galerie en question.
+Chaque galerie possède son propre flux RSS, généré automatiquement, si son paramètre `rss` vaut `1` dans le fichier de configuration des galeries.
 
 ### Syndication globale
 
@@ -1344,26 +1340,7 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 - que la variable `$galerieActiverFluxRssGlobal` dans le fichier de configuration du site vaille TRUE;
 
-- qu'un fichier `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini` soit créé à la main ou à l'aide du script de gestion des flux globaux dans la section d'administration de Squeletml. Ce fichier doit contenir la liste des galeries du site sous la forme suivante:
-
-		[code de la langue]
-		id de la galerie=URL relative de la galerie
-
-	Le code de la langue précise la langue de la syndication globale. L'`id` correspond à la valeur donnée à la variable `$idGalerie`, et l'URL relative est le chemin de la galerie à partir de l'URL racine du site. Exemple pour un site de deux galeries:
-
-		[fr]
-		mes voyages=voyages.php
-		animaux=dossier/galerie-animaux.php
-
-	Les deux galeries en question sont accessibles respectivement à l'adresse:
-
-		$urlRacine/voyages.php
-
-	et:
-
-		$urlRacine/dossier/galerie-animaux.php
-
-	**Note: puisque le script ne lit que la liste du fichier de configuration `site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`, le fait d'avoir désactivé la syndication individuelle d'une galerie avec `$rssGalerie = FALSE;` n'aura aucun effet sur la présence de cette galerie dans le flux global. Pour ne pas inclure une galerie dans le flux global, ne pas la lister dans le fichier de configuration tout simplement.**
+- qu'aun moins une galerie dans le fichier de configuration des galeries ait un paramètre `rss` avec une valeur de `1`. La valeur de la clé `langue` va indiquer la langue de la syndication globale.
 
 ## Cache et optimisation
 
@@ -1389,7 +1366,7 @@ Le cron permet d'effectuer certaines tâches de maintenance:
 
 - génération du cache (flux RSS, galeries et catégories). Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site.
 
-- génération des fichiers Sitemap du site et des galeries. Les galeries prises en compte sont celles listées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries (`site/inc/rss-galeries.ini.txt` ou `site/inc/rss-galeries.ini`). Si le fichier d'index Sitemap n'existe pas, il sera créé. De même, si le fichier d'index Sitemap n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
+- génération des fichiers Sitemap du site et des galeries. Si le fichier d'index Sitemap n'existe pas, il sera créé. De même, si le fichier d'index Sitemap n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
 
 ### Lancement du cron
 

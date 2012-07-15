@@ -703,12 +703,6 @@ $blocsAvecFondSpecifiques['menu-langues']   = array (FALSE, TRUE, TRUE);
 */
 $activerFluxRssGlobalSite = TRUE; // TRUE|FALSE
 
-// Syndication individuelle par défaut des catégories.
-/*
-- Note: il est possible de configurer la syndication pour chaque catégorie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssCategorie` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
-*/
-$activerFluxRssCategorieParDefaut = TRUE; // TRUE|FALSE
-
 // Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 25;
 
@@ -986,12 +980,6 @@ $galerieLienOriginalTelecharger = FALSE; // TRUE|FALSE
 $galerieLegendeEmplacement = array ('bas', 'bas', 'bas');
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
-
-// Syndication individuelle par défaut des galeries.
-/*
-- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssGalerie` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
-*/
-$galerieActiverFluxRssParDefaut = TRUE; // TRUE|FALSE
 
 // Syndication globale des galeries (derniers ajouts aux galeries).
 /*

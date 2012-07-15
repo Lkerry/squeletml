@@ -182,20 +182,20 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 		{
 			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss);
 			$categories = array ('galeries' => array ()) + $categories;
-			$categories['galeries']['langueCat'] = $langue;
-			$categories['galeries']['urlCat'] = "categorie.php?id=galeries&amp;langue=$langue";
+			$categories['galeries']['langue'] = $langue;
+			$categories['galeries']['url'] = "categorie.php?id=galeries&amp;langue=$langue";
 			$categories['galeries']['pages'] = array ();
 			
 			foreach ($itemsFluxRss as $item => $infosItem)
 			{
-				$categories['galeries']['pages'][] = str_replace($urlRacine . '/', '', rawurldecode($infosItem['link']));
+				$categories['galeries']['pages'][] = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', rawurldecode($infosItem['link']));
 			}
 		}
 	}
 	
 	if (in_array('site', $categoriesSpecialesAajouter) && !isset($categories['site']))
 	{
-		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+		$cheminFichier = cheminConfigFluxRssGlobalSite($racine);
 	
 		if ($cheminFichier)
 		{
@@ -205,8 +205,8 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 		if (isset($pages[$langue]))
 		{
 			$categories = array ('site' => array ()) + $categories;
-			$categories['site']['langueCat'] = $langue;
-			$categories['site']['urlCat'] = "categorie.php?id=site&amp;langue=$langue";
+			$categories['site']['langue'] = $langue;
+			$categories['site']['url'] = "categorie.php?id=site&amp;langue=$langue";
 			$categories['site']['pages'] = array ();
 		
 			foreach ($pages[$langue]['pages'] as $page)
@@ -289,7 +289,7 @@ function annexesDocumentation($racineAdmin)
 /*
 Retourne le code HTML de l'aperçu d'une page apparaissant dans une page de catégorie.
 */
-function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut)
+function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement)
 {
 	$apercu = '';
 	$apercu .= "<div class=\"apercu\">\n";
@@ -300,7 +300,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 
 	$apercu .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-	$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse, $langueParDefaut);
+	$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse);
 	$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesAdresse);
 
 	if (!empty($infosPublication))
@@ -542,11 +542,11 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
 /*
 Retourne un tableau des catégories auxquelles appartient l'URL fournie. La structure est:
 
-	$listeCategories['idCategorie'] = 'urlCat';
+	$listeCategories['idCategorie'] = 'url';
 
 Fournir une URL traitée par `superRawurlencode()`.
 */
-function categories($racine, $urlRacine, $url, $langueParDefaut)
+function categories($racine, $urlRacine, $url)
 {
 	$listeCategories = array ();
 	$cheminFichier = cheminConfigCategories($racine);
@@ -561,7 +561,7 @@ function categories($racine, $urlRacine, $url, $langueParDefaut)
 				
 				if (superRawurlencode($urlPage) == $url)
 				{
-					$listeCategories[$categorie] = urlCat($racine, $categorieInfos, $categorie, $langueParDefaut);
+					$listeCategories[$categorie] = urlCat($racine, $categorieInfos, $categorie);
 				}
 			}
 		}
@@ -649,15 +649,15 @@ function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategor
 /*
 Retourne un tableau contenant la liste des catégories enfants d'une catégorie donnée. Les catégories enfants doivent avoir la même langue que la catégorie parente.
 */
-function categoriesEnfants($categories, $categorie, $langueParDefaut)
+function categoriesEnfants($categories, $categorie)
 {
 	$categoriesEnfants = array ();
 	
 	foreach ($categories as $cat => $catInfos)
 	{
-		if (isset($catInfos['catParente']) && $catInfos['catParente'] == $categorie)
+		if (isset($catInfos['parent']) && $catInfos['parent'] == $categorie)
 		{
-			if (langueCat($catInfos, $langueParDefaut) == langueCat($categories[$categorie], $langueParDefaut))
+			if ($catInfos['langue'] == $categories[$categorie]['langue'])
 			{
 				$categoriesEnfants[] = $cat;
 			}
@@ -672,23 +672,23 @@ Retourne un tableau contenant la liste des catégories parentes indirectes d'une
 
 Note: chaque catégorie parente doit avoir la même langue que la catégorie donnée.
 */
-function categoriesParentesIndirectes($categories, $categorie, $langueParDefaut)
+function categoriesParentesIndirectes($categories, $categorie)
 {
 	$categoriesParentesIndirectes = array ();
 	
-	if (isset($categories[$categorie]['catParente']))
+	if (isset($categories[$categorie]['parent']))
 	{
-		$idCatParente = $categories[$categorie]['catParente'];
+		$idCatParente = $categories[$categorie]['parent'];
 	}
 	else
 	{
 		$idCatParente = '';
 	}
 	
-	if (!empty($idCatParente) && langueCat($categories[$idCatParente], $langueParDefaut) == langueCat($categories[$categorie], $langueParDefaut))
+	if (!empty($idCatParente) && $categories[$idCatParente]['langue'] == $categories[$categorie]['langue'])
 	{
 		$categoriesParentesIndirectes[] = $idCatParente;
-		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $idCatParente, $langueParDefaut));
+		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $idCatParente));
 	}
 	
 	return array_unique($categoriesParentesIndirectes);
@@ -754,21 +754,21 @@ function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 }
 
 /*
-Retourne le chemin vers le fichier de configuration du flux RSS global des galeries ou du site, selon le nom passé en paramètre. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+Retourne le chemin vers le fichier de configuration du flux RSS global du site. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FALSE)
+function cheminConfigFluxRssGlobalSite($racine, $retourneCheminParDefaut = FALSE)
 {
-	if (file_exists("$racine/site/inc/rss-$nom.ini.txt"))
+	if (file_exists("$racine/site/inc/rss-site.ini.txt"))
 	{
-		return "$racine/site/inc/rss-$nom.ini.txt";
+		return "$racine/site/inc/rss-site.ini.txt";
 	}
-	elseif (file_exists("$racine/site/inc/rss-$nom.ini"))
+	elseif (file_exists("$racine/site/inc/rss-site.ini"))
 	{
-		return "$racine/site/inc/rss-$nom.ini";
+		return "$racine/site/inc/rss-site.ini";
 	}
 	elseif ($retourneCheminParDefaut)
 	{
-		return "$racine/site/inc/rss-$nom.ini.txt";
+		return "$racine/site/inc/rss-site.ini.txt";
 	}
 	else
 	{
@@ -1325,7 +1325,7 @@ function creeDossierCache($racine)
 /*
 Retourne un tableau d'URL à visiter par le cron pour une catégorie donnée.
 */
-function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombreArticlesParPageCategorie, $langueParDefaut)
+function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombreArticlesParPageCategorie)
 {
 	$tableauUrl = array ();
 	
@@ -1339,17 +1339,16 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 		$nombreDePages = 1;
 	}
 	
-	$categorie['langueCat'] = langueCat($categorie, $langueParDefaut);
-	$categorie['urlCat'] = urlCat($racine, $categorie, $idCategorie, $langueParDefaut);
-	$nomFichierCache = nomFichierCache($racine, $urlRacine, $categorie['urlCat']);
+	$categorie['url'] = urlCat($racine, $categorie, $idCategorie);
+	$nomFichierCache = nomFichierCache($racine, $urlRacine, $categorie['url']);
 	$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['url'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 	
 	if ($nombreDePages > 1)
 	{
 		for ($i = 2; $i <= $nombreDePages; $i++)
 		{
-			$adresse = variableGet(2, $urlRacine . '/' . $categorie['urlCat'], 'page', $i);
+			$adresse = variableGet(2, $urlRacine . '/' . $categorie['url'], 'page', $i);
 			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
 			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
@@ -1669,69 +1668,12 @@ function fluxRss($type, $itemsFluxRss, $urlRss, $url, $baliseTitleComplement, $i
 }
 
 /*
-Retourne un tableau de deux éléments: le premier correspond à la valeur de `$rssCategorie`; le deuxième, à la valeur de `$idCategorie`. Si une valeur n'a pas été trouvée, l'élément de tableau correspondant vaut NULL.
-*/
-function fluxRssConfigCategorie($cheminFichier)
-{
-	ob_start();
-	include $cheminFichier;
-	ob_end_clean();
-	
-	$valeursRetour = array ();
-	$valeursRetour[0] = NULL;
-	$valeursRetour[1] = NULL;
-	
-	if (isset($rssCategorie))
-	{
-		$valeursRetour[0] = $rssCategorie;
-	}
-	
-	if (isset($idCategorie))
-	{
-		$valeursRetour[1] = $idCategorie;
-	}
-	
-	return $valeursRetour;
-}
-
-/*
-Retourne un tableau de trois éléments: le premier correspond à la valeur de `$rssGalerie`; le deuxième, à la valeur de `$idGalerie`; le troisième, à la valeur de `$langue`. Si une valeur n'a pas été trouvée, l'élément de tableau correspondant vaut NULL.
-*/
-function fluxRssConfigGalerie($cheminFichier)
-{
-	ob_start();
-	include $cheminFichier;
-	ob_end_clean();
-	
-	$valeursRetour = array ();
-	$valeursRetour[0] = NULL;
-	$valeursRetour[1] = NULL;
-	$valeursRetour[2] = NULL;
-	
-	if (isset($rssGalerie))
-	{
-		$valeursRetour[0] = $rssGalerie;
-	}
-	
-	if (isset($idGalerie))
-	{
-		$valeursRetour[1] = $idGalerie;
-	}
-	
-	if (isset($langue))
-	{
-		$valeursRetour[2] = $langue;
-	}
-	
-	return $valeursRetour;
-}
-
-/*
 Retourne un tableau listant les images d'une galerie, chaque image constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
-function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
+function fluxRssGalerieTableauBrut($racine, $urlRacine, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
+	$urlGalerie = urlGalerie($racine, $urlRacine, $idGalerie);
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
 	$itemsFluxRss = array ();
 	
@@ -1852,24 +1794,46 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 }
 
 /*
-Retourne un tableau listant les images de toutes les galeries déclarées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries.
+Retourne un tableau listant les images de toutes les galeries dont le flux RSS est activé.
 
 Voir la fonction `fluxRssGalerieTableauBrut()` pour plus de détails.
 */
 function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$itemsFluxRss = array ();
-	$galeries = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+	$listeGaleriesRss = fluxRssGlobalGaleries($racine, $langue);
 	
-	if (isset($galeries[$langue]))
+	if (!empty($listeGaleriesRss))
 	{
-		foreach ($galeries[$langue] as $idGalerie => $urlRelativeGalerie)
+		foreach ($listeGaleriesRss as $idGalerie)
 		{
-			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown));
+			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown));
 		}
 	}
 	
 	return $itemsFluxRss;
+}
+
+/*
+Retourne la liste des galeries dont le flux RSS est activé pour la langue donnée Si aucune galerie n'a été trouvée, retourne un tableau vide.
+*/
+function fluxRssGlobalGaleries($racine, $langue)
+{
+	$listeGaleriesRss = array ();
+	$galeries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
+	
+	if (!empty($galeries))
+	{
+		foreach ($galeries as $idGalerie => $infosGalerie)
+		{
+			if ($infosGalerie['rss'] == 1 && $infosGalerie['langue'] == $langue)
+			{
+				$listeGaleriesRss[] = $idGalerie;
+			}
+		}
+	}
+	
+	return $listeGaleriesRss;
 }
 
 /*
@@ -2002,7 +1966,7 @@ function gdEstInstallee()
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie)
+function htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
 {
 	$nomCategorie = $categorie;
 	
@@ -2018,16 +1982,16 @@ function htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParD
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
 	
-	$categories[$categorie]['urlCat'] = urlCat($racine, $categories[$categorie], $categorie, $langueParDefaut);
+	$categories[$categorie]['url'] = urlCat($racine, $categories[$categorie], $categorie);
 	
-	$htmlCategorie .= '<a href="' . $urlRacine . '/' . superRawurlencode($categories[$categorie]['urlCat']) . '">' . $nomCategorie . '</a>';
+	$htmlCategorie .= '<a href="' . $urlRacine . '/' . superRawurlencode($categories[$categorie]['url']) . '">' . $nomCategorie . '</a>';
 	
 	if ($afficherNombreArticlesCategorie)
 	{
 		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
 	}
 	
-	$categoriesEnfants = categoriesEnfants($categories, $categorie, $langueParDefaut);
+	$categoriesEnfants = categoriesEnfants($categories, $categorie);
 	
 	if (!empty($categoriesEnfants))
 	{
@@ -2035,7 +1999,7 @@ function htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParD
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($racine, $urlRacine, $categories, $enfant, $langueParDefaut, $afficherNombreArticlesCategorie);
+			$htmlCategorie .= htmlCategorie($racine, $urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -2945,14 +2909,6 @@ function langueActive($codeMenuLangues, $langue, $accueil)
 }
 
 /*
-Retourne la langue d'une catégorie.
-*/
-function langueCat($categorie, $langueParDefaut)
-{
-	return !empty($categorie['langueCat']) ? $categorie['langueCat'] : $langueParDefaut;
-}
-
-/*
 Retourne une lettre (a-zA-Z) au hasard. Optionnellement, il est possible de préciser des lettres à exclure.
 */
 function lettreAuHasard($lettresExclues = '')
@@ -3414,7 +3370,7 @@ function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomC
 			{
 				if (strpos($fichier, $urlRacine) === 0)
 				{
-					$contenuFichier = @file_get_contents(str_replace($urlRacine, $racine, $fichier));
+					$contenuFichier = @file_get_contents(preg_replace('#^' . preg_quote($urlRacine) . '#', $racine, $fichier));
 					
 					// Ajustement des chemins relatifs dans les feuilles de style.
 					if (strpos($type, 'css') === 0 && (strpos($fichier, "$urlRacine/css/") === 0 || (!empty($dossierAdmin) && strpos($fichier, "$urlRacine/$dossierAdmin/css/") === 0)))
@@ -3952,7 +3908,7 @@ function mkdChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$menuCategoriesAutomatise = '';
 	ksort($categories);
@@ -3976,9 +3932,9 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, $langue
 	
 	foreach ($categories as $categorie => $categorieInfos)
 	{
-		if (empty($categorieInfos['catParente']) && langueCat($categorieInfos, $langueParDefaut) == $langue)
+		if (empty($categorieInfos['parent']) && $categorieInfos['langue'] == $langue)
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
 		}
 	}
 	
@@ -4540,15 +4496,6 @@ function pagination($racine, $urlRacine, $type, $paginationAvecFond, $pagination
 }
 
 /*
-Retourne le texte supplémentaire d'une catégorie pour le message envoyé par le module de partage (par courriel).
-*/
-function partageCourrielSupplementCategorie($racine, $urlRacine, $langueParDefaut, $langue, $dureeCache, $idCategorie)
-{
-	$messagePartageCourrielSupplement = publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, '', FALSE, $dureeCache);
-	return partageCourrielSupplementPage('', '', $messagePartageCourrielSupplement);
-}
-
-/*
 Retourne le texte supplémentaire d'une image pour le message envoyé par le module de partage (par courriel).
 */
 function partageCourrielSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown)
@@ -4806,7 +4753,7 @@ Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un l
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
 {
 	$html = '';
 	
@@ -4872,8 +4819,8 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 				{
 					if ($ajouterLienPlus && !$lienDesactive)
 					{
-						$categories[$id]['urlCat'] = urlCat($racine, $categories[$id], $id, $langueParDefaut);
-						$lien = $urlRacine . '/' . $categories[$id]['urlCat'];
+						$categories[$id]['url'] = urlCat($racine, $categories[$id], $id);
+						$lien = $urlRacine . '/' . $categories[$id]['url'];
 						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 					}
 					else
@@ -4890,16 +4837,11 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 	{
 		$lienDesactive = FALSE;
 		$urlGalerie = '';
-		$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
+		$listeGaleriesRss = fluxRssGlobalGaleries($racine, $langue);
 		
-		if ($cheminConfigFluxRssGlobalGaleries)
+		if (in_array($id, $listeGaleriesRss))
 		{
-			$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
-			
-			if (!empty($galeries) && isset($galeries[$langue][$id]))
-			{
-				$urlGalerie = $urlRacine . '/' . $galeries[$langue][$id];
-			}
+			$urlGalerie = $urlRacine . '/' . urlGalerie($racine, $urlRacine, $id);
 		}
 		
 		if (!empty($urlGalerie))
@@ -5106,7 +5048,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					}
 				
 					$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('galeries'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-					$lien = $urlRacine . '/' . $categories['galeries']['urlCat'];
+					$lien = $urlRacine . '/' . $categories['galeries']['url'];
 					$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'images") . "</a></p>\n";
 				}
 				else
@@ -5122,7 +5064,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 	{
 		$lienDesactive = FALSE;
 		$itemsFluxRss = array ();
-		$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+		$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 		
 		if (!empty($pages) && isset($pages[$langue]['pages']))
 		{
@@ -5192,7 +5134,7 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						}
 						
 						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('site'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-						$lien = $urlRacine . '/' . $categories['site']['urlCat'];
+						$lien = $urlRacine . '/' . $categories['site']['url'];
 						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 					}
 					else
@@ -5215,6 +5157,22 @@ Retourne le contenu de la métabalise `robots`.
 function robots($robotsParDefaut, $robots)
 {
 	return !empty($robots) ? $robots : $robotsParDefaut;
+}
+
+/*
+Retourne TRUE si le RSS est activé pour la galerie demandée, sinon retourne FALSE.
+*/
+function rssGalerieActif($racine, $idGalerie)
+{
+	$rssGalerie = FALSE;
+	$galeries = galeries($racine, $idGalerie);
+	
+	if (isset($galeries[$idGalerie]['rss']) && $galeries[$idGalerie]['rss'] == 1)
+	{
+		$rssGalerie = TRUE;
+	}
+	
+	return $rssGalerie;
 }
 
 /*
@@ -5707,28 +5665,26 @@ function urlAvecIndex($url)
 /*
 Retourne l'URL relative d'une catégorie.
 */
-function urlCat($racine, $categorie, $idCategorie, $langueParDefaut)
+function urlCat($racine, $categorie, $idCategorie)
 {
-	$langue = langueCat($categorie, $langueParDefaut);
-	
-	if (!empty($categorie['urlCat']))
+	if (!empty($categorie['url']))
 	{
-		if (strpos($categorie['urlCat'], 'categorie.php?id=') !== FALSE && !preg_match('/\blangue=/', $categorie['urlCat']) && estCatSpeciale($idCategorie) && !empty($langue))
+		if (preg_match('/^categorie\.php\b/', $categorie['url']) && estCatSpeciale($idCategorie) && !empty($categorie['langue']))
 		{
-			$categorie['urlCat'] .= "&amp;langue=$langue";
+			$categorie['url'] = variableGet(1, $categorie['url'], 'langue', $categorie['langue']);
 		}
 	}
 	else
 	{
-		$categorie['urlCat'] = 'categorie.php?id=' . filtreChaine($racine, $idCategorie);
+		$categorie['url'] = 'categorie.php?id=' . filtreChaine($racine, $idCategorie);
 		
-		if (estCatSpeciale($idCategorie) && !empty($langue))
+		if (estCatSpeciale($idCategorie) && !empty($categorie['langue']))
 		{
-			$categorie['urlCat'] .= "&amp;langue=$langue";
+			$categorie['url'] .= '&amp;langue=' . $categorie['langue'];
 		}
 	}
 	
-	return $categorie['urlCat'];
+	return $categorie['url'];
 }
 
 /*
@@ -5746,6 +5702,25 @@ function urlExiste($url)
 	}
 	
 	return preg_match('~^HTTP/\d+\.\d+\s+[23]~', $enTetes);
+}
+
+/*
+Retourne l'URL d'une galerie. Si aucune URL n'a été trouvée, retourne une URL par défaut.
+*/
+function urlGalerie($racine, $urlRacine, $idGalerie)
+{
+	$galeries = galeries($racine, $idGalerie);
+	
+	if (!empty($galeries[$idGalerie]['url']))
+	{
+		$urlGalerie = $galeries[$idGalerie]['url'];
+	}
+	else
+	{
+		$urlGalerie = "$urlRacine/galerie.php?id=" . filtreChaine($racine, $idGalerie);
+	}
+	
+	return $urlGalerie;
 }
 
 /*

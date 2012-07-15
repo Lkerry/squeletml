@@ -160,7 +160,7 @@ if (!isset($boitesDeroulantesAlaMain))
 $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
-$listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
+$listeCategoriesPage = categories($racine, $urlRacine, $url);
 $classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
@@ -227,21 +227,6 @@ if ($partageCourriel || $partageReseaux)
 
 $premierOuDernier = 'premier';
 $robots = robots($robotsParDefaut, $robots);
-
-if (!isset($rssCategorie))
-{
-	$rssCategorie = $activerFluxRssCategorieParDefaut;
-}
-
-if (isset($idCategorie) && ($idCategorie == 'site' || $idCategorie == 'galeries'))
-{
-	$rssCategorie = FALSE;
-}
-
-if (!isset($rssGalerie))
-{
-	$rssGalerie = $galerieActiverFluxRssParDefaut;
-}
 
 if (!isset($tableDesMatieres))
 {
@@ -336,7 +321,7 @@ $fluxRssGlobalSiteActif = FALSE;
 
 if ($activerFluxRssGlobalSite)
 {
-	$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+	$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 	
 	if (isset($pages[LANGUE]))
 	{
@@ -350,9 +335,9 @@ $fluxRssGlobalGaleriesActif = FALSE;
 
 if ($galerieActiverFluxRssGlobal)
 {
-	$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+	$fluxRssGlobalGaleries = fluxRssGlobalGaleries($racine, LANGUE);
 	
-	if (isset($pages[LANGUE]))
+	if (!empty($fluxRssGlobalGaleries))
 	{
 		$fluxRssGlobalGaleriesActif = TRUE;
 		$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . LANGUE;
@@ -362,21 +347,13 @@ if ($galerieActiverFluxRssGlobal)
 
 if (!empty($idGalerie) && $rssGalerie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet);
+	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Galerie %1$s'), $idGalerie);
 }
 
 if (!empty($idCategorie) && $rssCategorie)
 {
-	if (strpos($url, $urlRacine . '/categorie.php?id=') !== FALSE)
-	{
-		$urlFlux = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($racine, $idCategorie);
-	}
-	else
-	{
-		$urlFlux = "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet);
-	}
-	
+	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
 }
 

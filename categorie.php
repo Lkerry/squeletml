@@ -37,7 +37,7 @@ if (!empty($_GET['id']))
 	}
 	elseif (isset($categories[$idCategorie]))
 	{
-		$langue = langueCat($categories[$idCategorie], $langueParDefaut);
+		$langue = $categories[$idCategorie]['langue'];
 	}
 	else
 	{
@@ -57,7 +57,7 @@ if (
 	!isset($categories[$idCategorie]) ||
 	(empty($getLangue) && estCatSpeciale($idCategorie)) ||
 	(!empty($getLangue) && !estCatSpeciale($idCategorie)) ||
-	(!empty($categories[$idCategorie]['urlCat']) && strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=' . filtreChaine($racine, $idCategorie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
+	(!empty($categories[$idCategorie]['url']) && strpos($categories[$idCategorie]['url'], 'categorie.php?id=' . filtreChaine($racine, $idCategorie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
 	($getId != filtreChaine($racine, $getId)) // Idem.
 )
 {

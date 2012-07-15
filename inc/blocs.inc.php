@@ -88,7 +88,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
@@ -99,7 +99,7 @@ if (!empty($blocsAinsererTemp))
 							}
 							else
 							{
-								$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+								$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 							}
 						}
 						
@@ -112,7 +112,7 @@ if (!empty($blocsAinsererTemp))
 				case 'infos-publication':
 					if ($infosPublication && !$erreur404 && !$estPageDerreur && empty($courrielContact) && empty($idCategorie) && empty($idGalerie))
 					{
-						$listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
+						$listeCategoriesPage = categories($racine, $urlRacine, $url);
 						$bloc = infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
 					
 						if (!empty($bloc))
@@ -239,7 +239,7 @@ if (!empty($blocsAinsererTemp))
 					}
 					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 					{
-						$bloc = menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, LANGUE, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+						$bloc = menuCategoriesAutomatise($racine, $urlRacine, LANGUE, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 						
 						if (!empty($bloc))
 						{

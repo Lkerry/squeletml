@@ -3,6 +3,9 @@
 Ce fichier construit et analyse la liste des articles classés dans la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Aucun code XHTML n'est envoyé au navigateur.
 */
 
+// Par défaut, on suppose que le RSS est désactivé. On ajustera plus loin s'il y a lieu.
+$rssCategorie = FALSE;
+
 // Liste des articles à afficher.
 if ($idCategorie == 'site')
 {
@@ -43,7 +46,12 @@ else
 	{
 		$categories = super_parse_ini_file($cheminFichier, TRUE);
 	}
-
+	
+	if (isset($categories[$idCategorie]['rss']) && $categories[$idCategorie]['rss'] == 1)
+	{
+		$rssCategorie = TRUE;
+	}
+	
 	if (!isset($categories[$idCategorie]))
 	{
 		$nomCategorie = $idCategorie;
@@ -212,7 +220,7 @@ if (!empty($idCategorie))
 			
 			if (!empty($infosPage))
 			{
-				$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut);
+				$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement);
 			}
 		}
 		

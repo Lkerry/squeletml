@@ -172,11 +172,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$urlAjoutRss = securiseTexte($urlAjoutRss);
 			$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
 			$contenuFichierRssTableau = array ();
-			$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site');
+			$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine);
 		
 			if (!$cheminFichierRss)
 			{
-				$cheminFichierRss = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
+				$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
 				@touch($cheminFichierRss);
 			}
 		

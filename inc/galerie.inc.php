@@ -6,6 +6,9 @@ Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'u
 // Dossier.
 $idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 
+// RSS.
+$rssGalerie = rssGalerieActif($racine, $idGalerie);
+
 // URL.
 if ($pageGlobaleGalerie)
 {

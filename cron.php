@@ -63,9 +63,7 @@ if (file_exists($racine . '/init.inc.php'))
 				{
 					foreach ($categories as $categorie => $categorieInfos)
 					{
-						$langueCat = langueCat($categorieInfos, $langueParDefaut);
-						
-						if (empty($categorieInfos['urlCat']) || strpos($categorieInfos['urlCat'], 'categorie.php?id=') !== FALSE)
+						if (empty($categorieInfos['url']) || strpos($categorieInfos['url'], 'categorie.php?id=') !== FALSE)
 						{
 							$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=categorie&id=$categorie", FALSE);
 							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
@@ -73,42 +71,45 @@ if (file_exists($racine . '/init.inc.php'))
 						}
 						else
 						{
-							$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=categorie&chemin=' . $categorieInfos['urlCat'], FALSE);
+							$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), FALSE);
 							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&chemin=' . $categorieInfos['urlCat'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 						}
 					}
 				}
 			}
 			
-			if (cheminConfigFluxRssGlobal($racine, 'galeries'))
+			$galeries = galeries($racine);
+			$listeGaleriesRss = array ();
+			
+			foreach ($galeries as $idGalerie => $infosGalerie)
 			{
-				$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
-				
-				if (!empty($pages))
+				if (!empty($infosGalerie['langue']) && isset($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 				{
-					foreach ($pages as $codeLangue => $langueInfos)
+					$listeGaleriesRss[$infosGalerie['langue']][$idGalerie] = $infosGalerie['url'];
+				}
+			}
+			
+			foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
+			{
+				$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=galeries&langue=$codeLangue", FALSE);
+				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+				$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+				
+				foreach ($langueInfos as $idGalerie => $urlGalerie)
+				{
+					$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), 'cache' => '');
+					
+					foreach ($accueil as $langueCache => $infosLangueCache)
 					{
-						$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=galeries&langue=$codeLangue", FALSE);
-						$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-						
-						foreach ($langueInfos as $idGalerie => $urlGalerie)
-						{
-							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galerie&chemin=' . $urlGalerie, 'cache' => '');
-							
-							foreach ($accueil as $langueCache => $infosLangueCache)
-							{
-								$extraAsupprimer[] = filtreChaine($racine, "rss-galerie-$idGalerie-$langueCache.cache.xml");
-							}
-						}
+						$extraAsupprimer[] = filtreChaine($racine, "rss-galerie-$idGalerie-$langueCache.cache.xml");
 					}
 				}
 			}
 			
-			if (cheminConfigFluxRssGlobal($racine, 'site'))
+			if (cheminConfigFluxRssGlobalSite($racine))
 			{
-				$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+				$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 				
 				if (!empty($pages))
 				{
@@ -122,56 +123,49 @@ if (file_exists($racine . '/init.inc.php'))
 			}
 			
 			// Galeries.
-			if (cheminConfigFluxRssGlobal($racine, 'galeries'))
+			
+			foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
 			{
-				$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
-				
-				if (!empty($pages))
+				foreach ($langueInfos as $idGalerie => $urlGalerie)
 				{
-					foreach ($pages as $codeLangue => $langueInfos)
+					$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
+					
+					if (cheminConfigGalerie($racine, $idGalerieDossier))
 					{
-						foreach ($langueInfos as $idGalerie => $urlGalerie)
+						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
+						
+						if ($galerieVignettesParPage)
 						{
-							$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
-							
-							if (cheminConfigGalerie($racine, $idGalerieDossier))
+							$nombreDimages = count($tableauGalerie);
+							$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
+						}
+						else
+						{
+							$nombreDePages = 1;
+						}
+						
+						$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlGalerie);
+						$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+						$tableauUrlCache[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+						
+						if ($nombreDePages > 1)
+						{
+							for ($i = 2; $i <= $nombreDePages; $i++)
 							{
-								$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
-								
-								if ($galerieVignettesParPage)
-								{
-									$nombreDimages = count($tableauGalerie);
-									$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
-								}
-								else
-								{
-									$nombreDePages = 1;
-								}
-								
-								$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlGalerie);
+								$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'page', $i);
+								$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
 								$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-								$tableauUrlCache[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-								
-								if ($nombreDePages > 1)
-								{
-									for ($i = 2; $i <= $nombreDePages; $i++)
-									{
-										$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'page', $i);
-										$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-										$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-										$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-									}
-								}
-								
-								foreach ($tableauGalerie as $image)
-								{
-									$id = idImage($racine, $image);
-									$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', filtreChaine($racine, $id));
-									$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-									$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-									$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-								}
+								$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 							}
+						}
+						
+						foreach ($tableauGalerie as $image)
+						{
+							$id = idImage($racine, $image);
+							$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', filtreChaine($racine, $id));
+							$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
+							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+							$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 						}
 					}
 				}
@@ -186,31 +180,23 @@ if (file_exists($racine . '/init.inc.php'))
 				{
 					foreach ($categories as $categorie => $categorieInfos)
 					{
-						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorieInfos, $categorie, $nombreArticlesParPageCategorie, $langueParDefaut));
+						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorieInfos, $categorie, $nombreArticlesParPageCategorie));
 					}
 				}
 				
-				if (cheminConfigFluxRssGlobal($racine, 'galeries'))
+				foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
 				{
-					$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+					$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 					
-					if (!empty($pages))
+					if (!empty($categorie))
 					{
-						foreach ($pages as $codeLangue => $langueInfos)
-						{
-							$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-							
-							if (!empty($categorie))
-							{
-								$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['galeries'], 'galeries', $nombreArticlesParPageCategorie, $langueParDefaut));
-							}
-						}
+						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['galeries'], 'galeries', $nombreArticlesParPageCategorie));
 					}
 				}
 				
-				if (cheminConfigFluxRssGlobal($racine, 'site'))
+				if (cheminConfigFluxRssGlobalSite($racine))
 				{
-					$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+					$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 					
 					if (!empty($pages))
 					{
@@ -220,7 +206,7 @@ if (file_exists($racine . '/init.inc.php'))
 							
 							if (!empty($categorie))
 							{
-								$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['site'], 'site', $nombreArticlesParPageCategorie, $langueParDefaut));
+								$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['site'], 'site', $nombreArticlesParPageCategorie));
 							}
 						}
 					}

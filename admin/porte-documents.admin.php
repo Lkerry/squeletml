@@ -1198,30 +1198,6 @@ if (isset($_POST['porteDocumentsCreation']))
 										$contenu .= '$robots = ' . var_export($robotsParDefaut, TRUE) . ";\n";
 										break;
 										
-									case 'rssCategorie':
-										if ($activerFluxRssCategorieParDefaut)
-										{
-											$contenu .= '$rssCategorie = FALSE;' . "\n";
-										}
-										else
-										{
-											$contenu .= '$rssCategorie = TRUE;' . "\n";
-										}
-										
-										break;
-										
-									case 'rssGalerie':
-										if ($galerieActiverFluxRssParDefaut)
-										{
-											$contenu .= '$rssGalerie = FALSE;' . "\n";
-										}
-										else
-										{
-											$contenu .= '$rssGalerie = TRUE;' . "\n";
-										}
-										
-										break;
-										
 									case 'tableDesMatieres':
 										if ($afficherTableDesMatieresParDefaut)
 										{
@@ -1766,8 +1742,6 @@ echo '<option value="motsCles">$motsCles</option>' . "\n";
 echo '<option value="partageCourriel">$partageCourriel</option>' . "\n";
 echo '<option value="partageReseaux">$partageReseaux</option>' . "\n";
 echo '<option value="robots">$robots</option>' . "\n";
-echo '<option value="rssCategorie">$rssCategorie</option>' . "\n";
-echo '<option value="rssGalerie">$rssGalerie</option>' . "\n";
 echo '<option value="tableDesMatieres">$tableDesMatieres</option>' . "\n";
 echo "</select></p>\n";
 

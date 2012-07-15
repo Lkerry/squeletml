@@ -28,9 +28,9 @@ function adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine)
 		$messagesScript .= '<li class="erreur">' . T_("Le fichier de configuration des catégories n'existe pas. Aucune page ne peut donc y être extraite pour ajout dans le fichier Sitemap du site.") . "</li>\n";
 	}
 	
-	if (cheminConfigFluxRssGlobal($racine, 'site'))
+	if (cheminConfigFluxRssGlobalSite($racine))
 	{
-		$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+		$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 
 		if (!empty($pages))
 		{
@@ -746,68 +746,16 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 }
 
 /*
-Enregistre la configuration du flux RSS des derniers ajouts aux galeries et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
-*/
-function adminEnregistreConfigFluxRssGlobalGaleries($racine, $contenuFichier)
-{
-	$messagesScript = '';
-	$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries');
-	
-	if (!$cheminFichier)
-	{
-		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'galeries', TRUE);
-		
-		if (!@touch($cheminFichier))
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune galerie ne peut faire partie du flux RSS des derniers ajouts aux galeries puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
-		}
-	}
-	
-	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
-	
-	if (file_exists($cheminFichier))
-	{
-		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
-		{
-			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
-
-			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-		}
-		else
-		{
-			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
-			
-			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-		}
-	}
-	else
-	{
-		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-	}
-
-	$messagesScript .= "<div class=\"bDcorps\">\n";
-	$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
-	
-	$messagesScript .= "<ul>\n";
-	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-	$messagesScript .= "</ul>\n";
-	$messagesScript .= "</div><!-- /.bDcorps -->\n";
-	$messagesScript .= "</li>\n";
-
-	return $messagesScript;
-}
-
-/*
 Enregistre la configuration du flux RSS des dernières publications et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier)
 {
 	$messagesScript = '';
-	$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+	$cheminFichier = cheminConfigFluxRssGlobalSite($racine);
 	
 	if (!$cheminFichier)
 	{
-		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site', TRUE);
+		$cheminFichier = cheminConfigFluxRssGlobalSite($racine, TRUE);
 		
 		if (!@touch($cheminFichier))
 		{
@@ -934,8 +882,9 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 	$messagesScript = '';
 	$cheminFichier = $racine . '/sitemap_galeries.xml';
 	$tableauUrlSitemap = array ();
+	$cheminConfigGaleries = cheminConfigGaleries($racine);
 	
-	if (cheminConfigFluxRssGlobal($racine, 'galeries'))
+	if ($cheminConfigGaleries !== FALSE)
 	{
 		if (!file_exists($cheminFichier) && !@touch($cheminFichier))
 		{
@@ -945,74 +894,69 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 		if (file_exists($cheminFichier))
 		{
 			@file_put_contents($cheminFichier, adminPlanSitemapXml());
-			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+			$galeries = galeries($racine);
 			
-			if (!empty($pages))
+			if (!empty($galeries))
 			{
-				foreach ($pages as $codeLangue => $langueInfos)
+				foreach ($galeries as $idGalerie => $infosGalerie)
 				{
-					foreach ($langueInfos as $idGalerie => $urlGalerie)
+					if (cheminConfigGalerie($racine, $infosGalerie['dossier']))
 					{
-						$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
-						
-						if (cheminConfigGalerie($racine, $idGalerieDossier))
+						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $infosGalerie['dossier']), TRUE);
+					
+						if ($galerieVignettesParPage)
 						{
-							$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
-						
-							if ($galerieVignettesParPage)
+							$nombreDimages = count($tableauGalerie);
+							$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
+						}
+						else
+						{
+							$nombreDePages = 1;
+						}
+					
+						$loc = $urlRacine . '/' . superRawurlencode($infosGalerie['url']);
+						$tableauUrlSitemap[$loc] = array ();
+			
+						if ($nombreDePages > 1)
+						{
+							for ($i = 2; $i <= $nombreDePages; $i++)
 							{
-								$nombreDimages = count($tableauGalerie);
-								$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
-							}
-							else
-							{
-								$nombreDePages = 1;
-							}
-						
-							$loc = $urlRacine . '/' . superRawurlencode($urlGalerie);
-							$tableauUrlSitemap[$loc] = array ();
-				
-							if ($nombreDePages > 1)
-							{
-								for ($i = 2; $i <= $nombreDePages; $i++)
-								{
-									$loc = variableGet(2, $urlRacine . '/' . $urlGalerie, 'page', $i);
-									$loc = superRawurlencode($loc);
-									$tableauUrlSitemap[$loc] = array ();
-								}
-							}
-						
-							foreach ($tableauGalerie as $image)
-							{
-								$id = idImage($racine, $image);
-								$loc = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', filtreChaine($racine, $id));
+								$loc = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'page', $i);
 								$loc = superRawurlencode($loc);
 								$tableauUrlSitemap[$loc] = array ();
-								$tableauUrlSitemap[$loc]['image'] = array ();
-								$urlImage = $urlRacine . '/site/fichiers/galeries/' . $idGalerieDossier . '/' . $image['intermediaireNom'];
-								$urlImage = superRawurlencode($urlImage);
-								$tableauUrlSitemap[$loc]['image'][$urlImage] = array ();
+							}
+						}
+					
+						foreach ($tableauGalerie as $image)
+						{
+							$id = idImage($racine, $image);
+							$loc = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'image', filtreChaine($racine, $id));
+							$loc = superRawurlencode($loc);
+							$tableauUrlSitemap[$loc] = array ();
+							$tableauUrlSitemap[$loc]['image'] = array ();
+							$urlImage = $urlRacine . '/site/fichiers/galeries/' . $infosGalerie['dossier'] . '/' . $image['intermediaireNom'];
+							$urlImage = superRawurlencode($urlImage);
+							$tableauUrlSitemap[$loc]['image'][$urlImage] = array ();
+						
+							if (!empty($image['intermediaireLegende']))
+							{
+								$tableauUrlSitemap[$loc]['image'][$urlImage]['caption'] = securiseTexte($image['intermediaireLegende']);
+							}
+						
+							if (!empty($image['titre']))
+							{
+								$tableauUrlSitemap[$loc]['image'][$urlImage]['title'] = securiseTexte($image['titre']);
+							}
+						
+							if (!empty($image['licence']))
+							{
+								$tableauLicence = explode(' ', $image['licence'], 2);
+								$codeLicence = licence($urlRacine, $tableauLicence[0]);
+								preg_match('/href="([^"]+)"/', $codeLicence, $resultat);
 							
-								if (!empty($image['intermediaireLegende']))
+								if (!empty($resultat[1]))
 								{
-									$tableauUrlSitemap[$loc]['image'][$urlImage]['caption'] = securiseTexte($image['intermediaireLegende']);
-								}
-							
-								if (!empty($image['titre']))
-								{
-									$tableauUrlSitemap[$loc]['image'][$urlImage]['title'] = securiseTexte($image['titre']);
-								}
-							
-								if (!empty($image['licence']))
-								{
-									$tableauLicence = explode(' ', $image['licence'], 2);
-									$codeLicence = licence($urlRacine, $tableauLicence[0]);
-									preg_match('/href="([^"]+)"/', $codeLicence, $resultat);
-								
-									if (!empty($resultat[1]))
-									{
-										$tableauUrlSitemap[$loc]['image'][$urlImage]['license'] = $resultat[1];
-									}
+									$tableauUrlSitemap[$loc]['image'][$urlImage]['license'] = $resultat[1];
 								}
 							}
 						}
@@ -1029,7 +973,7 @@ function adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPag
 	}
 	else
 	{
-		$messagesScript .= '<li class="erreur">' . T_("Le fichier Sitemap des galeries ne peut pas être généré puisque le fichier de configuration du flux RSS global des galerie n'existe pas, et c'est dans ce fichier que la liste des galeries existantes est extraite.") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . T_("Le fichier Sitemap des galeries ne peut pas être généré puisque le fichier de configuration des galerie n'existe pas, et c'est dans ce fichier que la liste des galeries existantes est extraite.") . "</li>\n";
 	}
 	
 	return $messagesScript;
