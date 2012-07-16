@@ -67,6 +67,26 @@ if (!empty($blocsAinsererTemp))
 					break;
 					
 				case 'flux-rss':
+					$fluxRssGlobalSiteActif = FALSE;
+					$pagesFluxRssGlobalSite = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
+					
+					if (!empty($pagesFluxRssGlobalSite[$codeLangue]))
+					{
+						$fluxRssGlobalSiteActif = TRUE;
+					}
+					
+					$fluxRssGlobalGaleriesActif = FALSE;
+					
+					foreach ($accueil as $codeLangue => $infosLangue)
+					{
+						$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+						if (!empty($itemsFluxRssGaleriesLangue))
+						{
+							$fluxRssGlobalGaleriesActif = TRUE;
+							break;
+						}
+					}
+					
 					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGaleriesActif || $fluxRssGlobalSiteActif)
 					{
 						$boiteDeroulanteAjoutee = FALSE;
@@ -75,49 +95,57 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '<div id="fluxRss" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2>' . T_("Flux RSS") . "</h2>\n";
 						
-						$blocFluxIndividuels = '';
+						$blocFluxRssIndividuels = '';
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocFluxIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
 						{
-							$blocFluxIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
 						}
 						
-						if (!empty($blocFluxIndividuels))
+						if (!empty($blocFluxRssIndividuels))
 						{
-							$blocs[$region] .= "<ul>\n$blocFluxIndividuels</ul>\n";
+							$blocs[$region] .= "<ul>\n$blocFluxRssIndividuels</ul>\n";
 						}
 						
-						$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
-						
-						foreach ($tableauAccueilTrie as $codeLangue => $infosLangue)
+						if ($fluxRssGlobalSiteActif || $fluxRssGlobalGaleriesActif)
 						{
-							$blocLangue = '';
+							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
 							
-							if ($fluxRssGlobalSiteActif)
+							foreach ($tableauAccueilTrie as $codeLangue => $infosLangue)
 							{
-								$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=site&amp;langue=$codeLangue\">" . T_("Dernières publications") . "</a></li>\n";
-							}
-							
-							if ($fluxRssGlobalGaleriesActif)
-							{
-								$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue\">" . T_("Derniers ajouts aux galeries") . "</a></li>\n";
-							}
-							
-							if (!empty($blocLangue))
-							{
-								if ($codeLangue != LANGUE)
+								$blocLangue = '';
+								
+								if ($fluxRssGlobalSiteActif && isset($pagesFluxRssGlobalSite[$codeLangue]))
 								{
-									$boiteDeroulanteAjoutee = TRUE;
-									$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
+									$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=site&amp;langue=$codeLangue\">" . T_("Dernières publications") . "</a></li>\n";
 								}
-								else
+								
+								if ($fluxRssGlobalGaleriesActif)
 								{
-									$blocs[$region] .= "<ul>\n$blocLangue</ul>\n";
+									$itemsFluxRssLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+									
+									if (!empty($itemsFluxRssLangue))
+									{
+										$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue\">" . T_("Derniers ajouts aux galeries") . "</a></li>\n";
+									}
+								}
+								
+								if (!empty($blocLangue))
+								{
+									if ($codeLangue != LANGUE)
+									{
+										$boiteDeroulanteAjoutee = TRUE;
+										$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
+									}
+									else
+									{
+										$blocs[$region] .= "<ul>\n$blocLangue</ul>\n";
+									}
 								}
 							}
 						}

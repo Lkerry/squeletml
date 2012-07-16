@@ -1854,7 +1854,7 @@ function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRs
 }
 
 /*
-Retourne la liste des galeries dont le flux RSS est activé pour la langue donnée Si aucune galerie n'a été trouvée, retourne un tableau vide.
+Retourne la liste des galeries dont le flux RSS est activé pour la langue donnée. Si aucune galerie n'a été trouvée, retourne un tableau vide.
 */
 function fluxRssGlobalGaleries($racine, $langue)
 {
