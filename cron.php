@@ -85,7 +85,7 @@ if (file_exists($racine . '/init.inc.php'))
 			{
 				if (!empty($infosGalerie['langue']) && isset($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 				{
-					$listeGaleriesRss[$infosGalerie['langue']][$idGalerie] = $infosGalerie['url'];
+					$listeGaleriesRss[$infosGalerie['langue']][] = $idGalerie;
 				}
 			}
 			
@@ -95,7 +95,7 @@ if (file_exists($racine . '/init.inc.php'))
 				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 				$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 				
-				foreach ($langueInfos as $idGalerie => $urlGalerie)
+				foreach ($langueInfos as $idGalerie)
 				{
 					$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), FALSE);
 					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
@@ -120,51 +120,18 @@ if (file_exists($racine . '/init.inc.php'))
 			
 			// Galeries.
 			
-			foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
+			if ($activerGalerieDemo)
 			{
-				foreach ($langueInfos as $idGalerie => $urlGalerie)
+				foreach ($accueil as $codeLangue => $urlAccueilLangue)
 				{
-					$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
-					
-					if (cheminConfigGalerie($racine, $idGalerieDossier))
-					{
-						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
-						
-						if ($galerieVignettesParPage)
-						{
-							$nombreDimages = count($tableauGalerie);
-							$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
-						}
-						else
-						{
-							$nombreDePages = 1;
-						}
-						
-						$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlGalerie);
-						$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-						$tableauUrlCache[] = array ('url' => $urlRacine . '/' . $urlGalerie, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-						
-						if ($nombreDePages > 1)
-						{
-							for ($i = 2; $i <= $nombreDePages; $i++)
-							{
-								$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'page', $i);
-								$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-								$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-								$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-							}
-						}
-						
-						foreach ($tableauGalerie as $image)
-						{
-							$id = idImage($racine, $image);
-							$adresse = variableGet(2, $urlRacine . '/' . $urlGalerie, 'image', filtreChaine($racine, $id));
-							$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-							$tableauUrlCache[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-						}
-					}
+					$infosGalerie = array ('dossier' => 'demo', 'url' => "galerie.php?id=demo&amp;langue=$codeLangue");
+					$tableauUrlCache = array_merge($tableauUrlCache, cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGalerie));
 				}
+			}
+			
+			foreach ($galeries as $idGalerie => $infosGalerie)
+			{
+				$tableauUrlCache = array_merge($tableauUrlCache, cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGalerie));
 			}
 			
 			// Catégories.
@@ -180,6 +147,7 @@ if (file_exists($racine . '/init.inc.php'))
 					}
 				}
 				
+				// On parcourt la liste des langues ayant au moins une galerie avec flux RSS activé.
 				foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
 				{
 					$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);

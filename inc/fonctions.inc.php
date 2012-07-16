@@ -1398,6 +1398,55 @@ $tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['url'], 'cache' =>
 }
 
 /*
+Retourne un tableau d'URL à visiter par le cron pour une galerie donnée.
+*/
+function cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGalerie)
+{
+	$tableauUrl = array ();
+	
+	if (cheminConfigGalerie($racine, $infosGalerie['dossier']))
+	{
+		$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $infosGalerie['dossier']), TRUE);
+		
+		if ($galerieVignettesParPage)
+		{
+			$nombreDimages = count($tableauGalerie);
+			$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
+		}
+		else
+		{
+			$nombreDePages = 1;
+		}
+		
+		$nomFichierCache = nomFichierCache($racine, $urlRacine, $infosGalerie['url']);
+		$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+		$tableauUrl[] = array ('url' => $urlRacine . '/' . $infosGalerie['url'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+		
+		if ($nombreDePages > 1)
+		{
+			for ($i = 2; $i <= $nombreDePages; $i++)
+			{
+				$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'page', $i);
+				$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
+				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+				$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+			}
+		}
+		
+		foreach ($tableauGalerie as $image)
+		{
+			$id = idImage($racine, $image);
+			$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'image', filtreChaine($racine, $id));
+			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
+			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+		}
+	}
+	
+	return $tableauUrl;
+}
+
+/*
 Le paramètre `$date` doit être une date sous une des formes suivantes:
 
   - `année` (exemple: `2010`);
