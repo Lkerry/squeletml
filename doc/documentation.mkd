@@ -1013,7 +1013,7 @@ Les catégories peuvent être listées dans un menu qui leur est propre. Deux m�
 
 - créer le fichier `site/xhtml/(LANGUE/)menu-categories.inc.php`;
 
-- utiliser le menu généré automatiquement en affectantla variable `$genererMenuCategories` à TRUE dans le fichier de configuration du site. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
+- utiliser le menu généré automatiquement en affectant la variable `$genererMenuCategories` à TRUE dans le fichier de configuration du site. Il est possible de préciser la catégorie parente d'une catégorie, et ainsi obtenir un menu structuré en conséquence. Exemple:
 
 		[Chiens]
 		url=animaux/chiens/
@@ -1273,6 +1273,16 @@ Les fichiers par défaut pour les flèches accompagnant les vignettes sont `fich
 Il est possible d'ajouter au système de flèches ou de vignettes un aperçu de la galerie, composé de minivignettes des images de la galerie. Chaque minivignette est cliquable. Par défaut, la hauteur d'une minivignette est de 35 pixels. Ceci peut être modifié par CSS.
 
 Il est possible de choisir l'emplacement des minivignettes (haut ou bas).
+
+### Bloc de menu des galeries
+
+Les galeries peuvent être listées dans un menu qui leur est propre. Deux méthodes existent pour obtenir un tel menu:
+
+- créer le fichier `site/xhtml/(LANGUE/)menu-galeries.inc.php`;
+
+- utiliser le menu généré automatiquement en affectant la variable `$genererMenuGaleries` à TRUE dans le fichier de configuration du site.
+
+Dans l'un ou l'autre des cas, les galeries actives seront marquées comme telles, si cette option est activée dans le fichier de configuration du site.
 
 ## Partage par courriel
 

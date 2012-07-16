@@ -215,18 +215,19 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 
 Voir la fonction `blocs()`.
 */
+$ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['balise-h1']             = array (300, 300, 300);
 $ordreBlocsDansFluxHtml['infos-publication']     = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']               = array (410, 410, 410);
 $ordreBlocsDansFluxHtml['lien-page']             = array (420, 420, 420);
 $ordreBlocsDansFluxHtml['menu-langues']          = array (500, 500, 200);
-$ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
-$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
-$ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
-$ordreBlocsDansFluxHtml['partage']               = array (550, 550, 550);
-$ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
+$ordreBlocsDansFluxHtml['menu-galeries']         = array (530, 530, 530);
+$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (540, 540, 540);
+$ordreBlocsDansFluxHtml['flux-rss']              = array (550, 550, 550);
+$ordreBlocsDansFluxHtml['partage']               = array (560, 560, 560);
 $ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
+$ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 
 // Conditions d'insertion des blocs.
 /*
@@ -485,6 +486,12 @@ $dureeCache = 0;
 */
 $genererMenuLangues = TRUE; // TRUE|FALSE
 
+// Génération automatisée du bloc de menu des galeries.
+/*
+- Le bloc de menu des galeries peut être réalisé à la main dans le fichier `menu-galeries.inc.php` ou généré automatiquement.
+*/
+$genererMenuGaleries = TRUE; // TRUE|FALSE
+
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*
 - Si vaut `TRUE`, un titre `h1` sera ajouté avant la liste des articles classés dans la catégorie affichée.
@@ -559,6 +566,7 @@ $liensActifsBlocs['licence']               = NULL;
 $liensActifsBlocs['lien-page']             = NULL;
 $liensActifsBlocs['menu']                  = TRUE;
 $liensActifsBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$liensActifsBlocs['menu-galeries']         = TRUE;
 $liensActifsBlocs['menu-langues']          = TRUE;
 $liensActifsBlocs['partage']               = TRUE;
 $liensActifsBlocs['piwik']                 = NULL;
@@ -622,6 +630,7 @@ $limiterProfondeurListesBlocs['licence']               = NULL;
 $limiterProfondeurListesBlocs['lien-page']             = NULL;
 $limiterProfondeurListesBlocs['menu']                  = TRUE;
 $limiterProfondeurListesBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$limiterProfondeurListesBlocs['menu-galeries']         = FALSE;
 $limiterProfondeurListesBlocs['menu-langues']          = FALSE;
 $limiterProfondeurListesBlocs['partage']               = NULL;
 $limiterProfondeurListesBlocs['piwik']                 = NULL;

@@ -116,7 +116,7 @@ if (!empty($blocsAinsererTemp))
 						{
 							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
 							
-							foreach ($tableauAccueilTrie as $codeLangue => $infosLangue)
+							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
 								$blocLangue = '';
 								
@@ -292,7 +292,7 @@ if (!empty($blocsAinsererTemp))
 						{
 							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
 							
-							foreach ($tableauAccueilTrie as $codeLangue => $infosLangue)
+							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
 								$blocLangue = menuCategoriesAutomatise($racine, $urlRacine, $codeLangue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 								
@@ -356,6 +356,99 @@ if (!empty($blocsAinsererTemp))
 						
 					break;
 					
+				case 'menu-galeries':
+					$bloc = '';
+					$boiteDeroulanteAjoutee = FALSE;
+					$cheminMenuGaleries = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-galeries');
+					$cheminConfigGaleries = cheminConfigGaleries($racine);
+					
+					if ($genererMenuGaleries)
+					{
+						if ($cheminConfigGaleries && ($listeGaleries = super_parse_ini_file($cheminConfigGaleries, TRUE)) !== FALSE)
+						{
+							$listeGaleriesParLangue = array ();
+							
+							foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
+							{
+								if (!empty($listeInfosGalerie['langue']) && cheminConfigGalerie($racine, $listeInfosGalerie['dossier']))
+								{
+									$listeGaleriesParLangue[$listeInfosGalerie['langue']][$listeIdGalerie] = $listeInfosGalerie['url'];
+								}
+							}
+							
+							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							
+							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
+							{
+								$blocLangue = '';
+								
+								if (!empty($listeGaleriesParLangue[$codeLangue]))
+								{
+									foreach ($listeGaleriesParLangue[$codeLangue] as $listeIdGalerie => $listeUrlGalerie)
+									{
+										$blocLangue .= '<li><a href="' . $urlRacine . '/' . $listeUrlGalerie . '">' . $listeIdGalerie . "</a></li>\n";
+									}
+								}
+								
+								if (!empty($blocLangue))
+								{
+									if ($codeLangue != LANGUE)
+									{
+										$boiteDeroulanteAjoutee = TRUE;
+										$bloc .= "<div class=\"menuGaleriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuGaleriesLangue -->\n";
+									}
+									else
+									{
+										$bloc .= "<ul>\n$blocLangue</ul>\n";
+									}
+								}
+							}
+							
+							if (!empty($bloc))
+							{
+								$bloc = '<h2>' . T_("Galeries") . "</h2>\n$bloc";
+							}
+						}
+					}
+					elseif (!empty($cheminMenuGaleries))
+					{
+						ob_start();
+						include $cheminMenuGaleries;
+						$bloc = ob_get_contents();
+						ob_end_clean();
+					}
+					
+					if (!empty($bloc))
+					{
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						
+						$blocs[$region] .= '<div id="menuGaleries" class="bloc ' . $classesBloc . '">' . "\n";
+						
+						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+						{
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
+						}
+						
+						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+						{
+							$bloc = limiteProfondeurListe($bloc);
+						}
+						
+						$blocs[$region] .= $bloc;
+						$blocs[$region] .= '</div><!-- /#menuGaleries -->' . "\n";
+						
+						if ($boiteDeroulanteAjoutee)
+						{
+							$blocs[$region] .= '<script type="text/javascript">' . "\n";
+							$blocs[$region] .= "//<![CDATA[\n";
+							$blocs[$region] .= "boiteDeroulante('.menuGaleriesLangueAutre', \"$aExecuterApresClicBd\");\n";
+							$blocs[$region] .= "//]]>\n";
+							$blocs[$region] .= "</script>\n";
+						}
+					}
+						
+					break;
+					
 				case 'menu-langues':
 					$bloc = '';
 					
@@ -365,9 +458,9 @@ if (!empty($blocsAinsererTemp))
 						{
 							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
 							
-							foreach ($tableauAccueilTrie as $codeLangue => $infosLangue)
+							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
-								$bloc .= '<li><a href="' . $infosLangue . '/">' . codeLangueVersNom($codeLangue, FALSE) . "</a></li>\n";
+								$bloc .= '<li><a href="' . $urlAccueilLangue . '/">' . codeLangueVersNom($codeLangue, FALSE) . "</a></li>\n";
 							}
 							
 							if (!empty($bloc))
