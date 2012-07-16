@@ -783,6 +783,9 @@ $contactNombreLiensMax = 5; // Nombre maximal de liens dans un message
 
 /* ____________________ Général. ____________________ */
 
+// Activation de la galerie démo.
+$activerGalerieDemo = TRUE; // TRUE|FALSE
+
 // Activation du Sitemap des galeries.
 $activerSitemapGaleries = TRUE; // TRUE|FALSE
 

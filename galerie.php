@@ -32,12 +32,24 @@ if (!empty($_GET['id']))
 	}
 }
 
-if ($getId != 'démo' && $idGalerie == 'démo')
+if (!empty($_GET['langue']))
+{
+	$getLangue = securiseTexte($_GET['langue']);
+	
+	if (isset($accueil[$getLangue]))
+	{
+		$langue = $getLangue;
+	}
+}
+
+if ($activerGalerieDemo && $getId != 'démo' && $idGalerie == 'démo' && isset($langue))
 {
 	$rssGalerie = FALSE;
 	$robots = "noindex, follow, noarchive"; // Empêche la présence de la galerie démo dans les moteurs de recherche.
 }
 elseif (
+	($getId != 'démo' && $idGalerie == 'démo') ||
+	isset($_GET['langue']) ||
 	empty($idGalerie) ||
 	!isset($galeries[$idGalerie]) ||
 	(!empty($galeries[$idGalerie]['url']) && strpos($galeries[$idGalerie]['url'], 'galerie.php?id=' . filtreChaine($racine, $idGalerie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.

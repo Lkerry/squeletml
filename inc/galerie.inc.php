@@ -28,7 +28,7 @@ if (!$pageGlobaleGalerie && isset($_GET['id']))
 // Liste des images à afficher.
 if (!$erreur404 && $idGalerie == 'démo')
 {
-	// Galerie démo par défaut.
+	// Galerie démo.
 	$tableauGalerie = tableauGalerie($racine . '/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt', TRUE);
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/' . $idGalerieDossier;
 	$racineImgSrc = $racine . '/fichiers/galeries/' . $idGalerieDossier;

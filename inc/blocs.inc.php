@@ -364,10 +364,15 @@ if (!empty($blocsAinsererTemp))
 					
 					if ($genererMenuGaleries)
 					{
+						$listeGaleriesParLangue = array ();
+						
+						if ($activerGalerieDemo)
+						{
+							$listeGaleriesParLangue[LANGUE]['démo'] = 'galerie.php?id=demo&amp;langue=' . LANGUE;
+						}
+						
 						if ($cheminConfigGaleries && ($listeGaleries = super_parse_ini_file($cheminConfigGaleries, TRUE)) !== FALSE)
 						{
-							$listeGaleriesParLangue = array ();
-							
 							foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
 							{
 								if (!empty($listeInfosGalerie['langue']) && cheminConfigGalerie($racine, $listeInfosGalerie['dossier']))
@@ -375,39 +380,39 @@ if (!empty($blocsAinsererTemp))
 									$listeGaleriesParLangue[$listeInfosGalerie['langue']][$listeIdGalerie] = $listeInfosGalerie['url'];
 								}
 							}
+						}
+						
+						$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+						
+						foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
+						{
+							$blocLangue = '';
 							
-							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
-							
-							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
+							if (!empty($listeGaleriesParLangue[$codeLangue]))
 							{
-								$blocLangue = '';
-								
-								if (!empty($listeGaleriesParLangue[$codeLangue]))
+								foreach ($listeGaleriesParLangue[$codeLangue] as $listeIdGalerie => $listeUrlGalerie)
 								{
-									foreach ($listeGaleriesParLangue[$codeLangue] as $listeIdGalerie => $listeUrlGalerie)
-									{
-										$blocLangue .= '<li><a href="' . $urlRacine . '/' . $listeUrlGalerie . '">' . $listeIdGalerie . "</a></li>\n";
-									}
-								}
-								
-								if (!empty($blocLangue))
-								{
-									if ($codeLangue != LANGUE)
-									{
-										$boiteDeroulanteAjoutee = TRUE;
-										$bloc .= "<div class=\"menuGaleriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuGaleriesLangue -->\n";
-									}
-									else
-									{
-										$bloc .= "<ul>\n$blocLangue</ul>\n";
-									}
+									$blocLangue .= '<li><a href="' . $urlRacine . '/' . $listeUrlGalerie . '">' . $listeIdGalerie . "</a></li>\n";
 								}
 							}
 							
-							if (!empty($bloc))
+							if (!empty($blocLangue))
 							{
-								$bloc = '<h2>' . T_("Galeries") . "</h2>\n$bloc";
+								if ($codeLangue != LANGUE)
+								{
+									$boiteDeroulanteAjoutee = TRUE;
+									$bloc .= "<div class=\"menuGaleriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuGaleriesLangue -->\n";
+								}
+								else
+								{
+									$bloc .= "<ul>\n$blocLangue</ul>\n";
+								}
 							}
+						}
+						
+						if (!empty($bloc))
+						{
+							$bloc = '<h2>' . T_("Galeries") . "</h2>\n$bloc";
 						}
 					}
 					elseif (!empty($cheminMenuGaleries))
