@@ -375,7 +375,7 @@ $selecteursOmbre = 'pre, table';
 
 if ($idGalerie)
 {
-	$selecteursOmbre .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img';
+	$selecteursOmbre .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte';
 }
 
 if ($inclureBasDePage && !$basDePageInterieurPage)
