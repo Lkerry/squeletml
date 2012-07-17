@@ -69,6 +69,19 @@ if ($siteEstEnMaintenance)
 	$noticeMaintenance = noticeMaintenance();
 }
 
+$lienPiwik = '';
+$cheminPiwik = cheminXhtml($racine, array ($langue, $langueParDefaut), 'piwik');
+
+if (!empty($cheminPiwik))
+{
+	$contenuPiwik = @file_get_contents($cheminPiwik);
+	
+	if ($contenuPiwik !== FALSE && preg_match('#var pkBaseURL.+?' . preg_quote($urlRacine) . '/([^/]+)#', $contenuPiwik, $resultat))
+	{
+		$lienPiwik = '<li><a href="' . $urlRacine . '/' . $resultat[1] . '">' . T_("Piwik") . "</a> | </li>\n";
+	}
+}
+
 // Menu.
 ob_start();
 include adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
