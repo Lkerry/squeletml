@@ -40,6 +40,27 @@ $typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMime
 
 <div class="sep"></div>
 
+<p>Voici un tableau:</p>
+
+<table>
+	<thead>
+		<tr>
+			<th>Titre</th>
+			<th>Titre</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Cellule</td>
+			<td>Cellule</td>
+		</tr>
+		<tr>
+			<td>Cellule</td>
+			<td>Cellule</td>
+		</tr>
+	</tbody>
+</table>
+
 <p class="gauche">Tiens, alignons du texte à gauche avec la classe <code>gauche</code>.</p>
 
 <p class="centre">Et au centre, avec la classe <code>centre</code>.</p>

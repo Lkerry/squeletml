@@ -371,26 +371,26 @@ $cssDirectlteIE8 .= "body.tableDesMatieresArrondie #tableDesMatieres, .blocArron
 $cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
 $cssDirectlteIE8 .= "}\n";
 
-$selecteursOmbre = array ();
+$selecteursOmbre = 'pre, table';
 
 if ($idGalerie)
 {
-	$selecteursOmbre[] = 'div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img';
+	$selecteursOmbre .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img';
 }
 
 if ($inclureBasDePage && !$basDePageInterieurPage)
 {
-	$selecteursOmbre[] = '#basDePageHorsPage';
+	$selecteursOmbre .= ', #basDePageHorsPage';
 }
 
 if ($ombrePage)
 {
-	$selecteursOmbre[] = 'body.ombrePage #page';
+	$selecteursOmbre .= ', body.ombrePage #page';
 }
 
 if (!empty($selecteursOmbre))
 {
-	$cssDirectlteIE8 .= implode(', ', $selecteursOmbre) . " {\n";
+	$cssDirectlteIE8 .= "$selecteursOmbre {\n";
 	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
 	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
 	$cssDirectlteIE8 .= "}\n";
