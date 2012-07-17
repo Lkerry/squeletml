@@ -92,7 +92,7 @@ else
 					list ($messagesScriptActiveLangues, $initIncPhp) = majLanguesActives($racine, $urlRacine, $_POST['langues'], $initIncPhp);
 					$messagesScript .= $messagesScriptActiveLangues;
 					
-					if (strpos($messagesScriptActiveLangues, '<li class="erreur">'))
+					if (strpos($messagesScriptActiveLangues, '<li class="erreur">') !== FALSE)
 					{
 						$passerAlEtape2 = FALSE;
 					}
@@ -121,7 +121,7 @@ else
 			$messagesScriptActiveLangues = majLanguesActives($racine, $urlRacine, $_POST['langues']);
 			$messagesScript .= $messagesScriptActiveLangues;
 			
-			if (strpos($messagesScriptActiveLangues, '<li class="erreur">'))
+			if (strpos($messagesScriptActiveLangues, '<li class="erreur">') !== FALSE)
 			{
 				$passerAlEtape2 = FALSE;
 			}

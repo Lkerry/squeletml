@@ -233,11 +233,11 @@ $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 /*
 - Il est possible d'ajouter des conditions à l'insertion d'un bloc de contenu. Les conditions doivent être du code PHP valide. Elles seront exécutées par la fonction PHP `eval()`. Un bloc sera inclus seulement si le code PHP retourne TRUE. Exemple:
 	
-		$conditionsBlocs['partage'] = 'return strpos($url, "/dossier/") ? TRUE : FALSE;';
+		$conditionsBlocs['partage'] = 'return strpos($url, "/dossier/") !== FALSE ? TRUE : FALSE;';
 	
 	Voici la même condition, écrite autrement:
 	
-		$conditionsBlocs['partage'] = 'if (strpos($url, "/dossier/")) {return TRUE;} else {return FALSE;}';
+		$conditionsBlocs['partage'] = 'if (strpos($url, "/dossier/") !== FALSE) {return TRUE;} else {return FALSE;}';
 	
 	Dans cet exemple, le bloc «Partage» sera inclus seulement si l'URL contient `/dossier/`.
 	
