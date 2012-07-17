@@ -16,6 +16,7 @@ body, html {
 body {
 	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
 	font-size: 0.96em;
+	color: #000000;
 }
 
 div#noticeMaintenance {
