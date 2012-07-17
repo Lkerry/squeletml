@@ -380,6 +380,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$contenuFichierTableau[$cat]['infos'][] = 'parent=' . securiseTexte($_POST['parent'][$cle]) . "\n";
 					}
+					else
+					{
+						$contenuFichierTableau[$cat]['infos'][] = "parent=\n";
+					}
 					
 					if (!empty($_POST['langue'][$cle]))
 					{
