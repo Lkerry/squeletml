@@ -1394,6 +1394,8 @@ ou encore cURL:
 
 	0 4 * * * curl --silent --compressed http://www.nomDeDomaine.ext/cron.php
 
+Certains scripts permettent aussi d'émuler cron en PHP. Voir par exemple [pseudo-cron](http://www.bitfolge.de/index.php?option=com_content&view=article&id=61%3Aphp&catid=38%3Aeigene&Itemid=59&limitstart=3) (non testé).
+
 ### Rapport par courriel
 
 Il est possible de recevoir un rapport par courriel au format HTML après l'exécution du cron. Pour ce faire, la variable `$envoyerRapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
