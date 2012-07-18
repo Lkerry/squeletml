@@ -354,6 +354,18 @@ if (!empty($idCategorie) && $rssCategorie)
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
 }
 
+// Langues.
+if ($estAccueil)
+{
+	foreach ($accueil as $codeLangue => $urlAccueilLangue)
+	{
+		if ($codeLangue != LANGUE)
+		{
+			$balisesLinkScript[] = "$url#hreflang#$urlAccueilLangue/#$codeLangue";
+		}
+	}
+}
+
 // PIE (Progressive Internet Explorer).
 
 $profondeur = profondeurPage($urlRacine, $url);

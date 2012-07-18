@@ -79,10 +79,10 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
-- Les types possibles sont: css, cssDirectlteIE8, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
+- Les types possibles sont: css, cssDirectlteIE8, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, hreflang, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
 - Syntaxe pour tous les types:
-  $balisesLinkScript[] = "URL#TYPE#fichier à inclure#contenu de l'attribut `title`";
-  Le contenu de l'attribut `title` est optionnel, et est utilisé seulement pour le type rss.
+  $balisesLinkScript[] = "URL#TYPE#fichier à inclure#extra";
+  La valeur `extra` correspond au contenu de l'attribut `title` pour le type `rss` (optionnelle dans ce cas), ou au code de langue pour le type `hreflang` (obligatoire dans ce cas).
 - Ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants.
 - Dans le fichier de configuration personnalisé, ajouter tout simplement des éléments au tableau `$balisesLinkScript`, par exemple:
   $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/site/css/style-general.css";

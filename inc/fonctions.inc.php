@@ -3618,13 +3618,13 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 		// On récupère les infos.
 		list ($type, $fichier) = explode('#', $fichierBrut, 2);
 		
-		if ($type == 'rss' && strpos($fichier, '#') !== FALSE)
+		if (($type == 'rss' || $type == 'hreflang') && strpos($fichier, '#') !== FALSE)
 		{
-			list ($fichier, $title) = explode('#', $fichier, 2);
+			list ($fichier, $extra) = explode('#', $fichier, 2);
 		}
 		else
 		{
-			$title = '';
+			$extra = '';
 		}
 		
 		switch ($type)
@@ -3662,6 +3662,14 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 				$balisesFormatees .= '<!--[if lte IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
+			case 'hreflang':
+				if (!empty($extra))
+				{
+					$balisesFormatees .= '<link rel="alternate" hreflang="' . $extra . '" href="' . $fichier . '" />' . "\n";
+				}
+				
+				break;
+				
 			case 'js':
 				$balisesFormatees .= '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
 				break;
@@ -3680,9 +3688,13 @@ $fichier\n//]]>\n</script>\n";
 				break;
 				
 			case 'rss':
-				if (!empty($title))
+				if (!empty($extra))
 				{
-					$title = ' title="' . $title . '"';
+					$title = ' title="' . $extra . '"';
+				}
+				else
+				{
+					$title = '';
 				}
 				
 				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"' . $title . ' />' . "\n";
