@@ -52,8 +52,7 @@ if (file_exists($racine . '/init.inc.php'))
 		
 		if ($dureeCache)
 		{
-			// Flux RSS.
-			
+			// Flux RSS des catégories.
 			if (cheminConfigCategories($racine))
 			{
 				$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
@@ -62,13 +61,7 @@ if (file_exists($racine . '/init.inc.php'))
 				{
 					foreach ($categories as $categorie => $categorieInfos)
 					{
-						if (empty($categorieInfos['url']) || strpos($categorieInfos['url'], 'categorie.php?id=') !== FALSE)
-						{
-							$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=categorie&id=$categorie", FALSE);
-							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-						}
-						else
+						if (isset($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
 						{
 							$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), FALSE);
 							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
@@ -77,6 +70,8 @@ if (file_exists($racine . '/init.inc.php'))
 					}
 				}
 			}
+			
+			// Flux RSS des galeries.
 			
 			$galeries = galeries($racine);
 			$listeGaleriesRss = array ();
@@ -91,18 +86,21 @@ if (file_exists($racine . '/init.inc.php'))
 			
 			foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
 			{
+				// Flux RSS global des galeries.
 				$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=galeries&langue=$codeLangue", FALSE);
 				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 				$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 				
 				foreach ($langueInfos as $idGalerie)
 				{
+					// Flux RSS individuel d'une galerie.
 					$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), FALSE);
 					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
 					$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 				}
 			}
 			
+			// Flux RSS global du site.
 			if (cheminConfigFluxRssGlobalSite($racine))
 			{
 				$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
@@ -143,10 +141,12 @@ if (file_exists($racine . '/init.inc.php'))
 				{
 					foreach ($categories as $categorie => $categorieInfos)
 					{
+						// Catégorie.
 						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorieInfos, $categorie, $nombreArticlesParPageCategorie));
 					}
 				}
 				
+				// Catégorie spéciale: derniers ajouts aux galeries pour chaque langue.
 				// On parcourt la liste des langues ayant au moins une galerie avec flux RSS activé.
 				foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
 				{
@@ -158,6 +158,7 @@ if (file_exists($racine . '/init.inc.php'))
 					}
 				}
 				
+				// Catégorie spéciale: dernières publications pour chaque langue.
 				if (cheminConfigFluxRssGlobalSite($racine))
 				{
 					$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
