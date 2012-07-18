@@ -360,52 +360,54 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$contenuFichierTableau[$cat]['infos'] = array ();
 					$contenuFichierTableau[$cat]['pages'] = array ();
 					
-					if (!empty($_POST['url'][$cle]))
+					if (!empty($_POST['langue'][$cle]))
 					{
-						$contenuFichierTableau[$cat]['infos'][] = 'url=' . securiseTexte($_POST['url'][$cle]) . "\n";
+						$langueCat = securiseTexte($_POST['langue'][$cle]);
 					}
 					else
 					{
-						$urlCat = 'url=categorie.php?id=' . filtreChaine($racine, $cat);
+						$langueCat = $langueParDefaut;
+					}
+					
+					$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
+					
+					if (!empty($_POST['url'][$cle]))
+					{
+						$urlCat = securiseTexte($_POST['url'][$cle]);
+					}
+					else
+					{
+						$urlCat = 'categorie.php?id=' . filtreChaine($racine, $cat);
 						
 						if (estCatSpeciale($cat))
 						{
 							$urlCat .= "&amp;langue=$langueCat";
 						}
-						
-						$contenuFichierTableau[$cat]['infos'][] = "$urlCat\n";
 					}
+					
+					$contenuFichierTableau[$cat]['infos'][] = "url=$urlCat\n";
 					
 					if (!empty($_POST['parent'][$cle]))
 					{
-						$contenuFichierTableau[$cat]['infos'][] = 'parent=' . securiseTexte($_POST['parent'][$cle]) . "\n";
+						$parentCat = securiseTexte($_POST['parent'][$cle]);
 					}
 					else
 					{
-						$contenuFichierTableau[$cat]['infos'][] = "parent=\n";
+						$parentCat = '';
 					}
 					
-					if (!empty($_POST['langue'][$cle]))
-					{
-						$langueCat = securiseTexte($_POST['langue'][$cle]);
-						$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
-					}
-					else
-					{
-						$langueCat = $langueParDefaut;
-						$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
-					}
+					$contenuFichierTableau[$cat]['infos'][] = "parent=$parentCat\n";
 					
-					if (!empty($_POST['rss'][$cle]))
+					if (isset($_POST['rss'][$cle]) && $_POST['rss'][$cle] == 1)
 					{
-						$rssCat = securiseTexte($_POST['rss'][$cle]);
-						$contenuFichierTableau[$cat]['infos'][] = "rss=$rssCat\n";
+						$rssCat = 1;
 					}
 					else
 					{
 						$rssCat = 0;
-						$contenuFichierTableau[$cat]['infos'][] = "rss=0\n";
 					}
+					
+					$contenuFichierTableau[$cat]['infos'][] = "rss=$rssCat\n";
 					
 					if (!empty($_POST['urlPages'][$cle]))
 					{
@@ -489,7 +491,46 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$contenuFichierTableau[$c]['infos'] = array ();
 					$contenuFichierTableau[$c]['pages'] = array ();
 				}
-
+				
+				if (!empty($_POST['mettreEnLigneLangue']))
+				{
+					$langueCat = securiseTexte($_POST['mettreEnLigneLangue']);
+				}
+				else
+				{
+					$langueCat = $langueParDefaut;
+				}
+				
+				$contenuFichierTableau[$c]['infos'][] = "langue=$langueCat\n";
+				
+				if (!empty($_POST['page']))
+				{
+					$urlCat = securiseTexte($_POST['page']);
+				}
+				else
+				{
+					$urlCat = 'categorie.php?id=' . filtreChaine($racine, $c);
+					
+					if (estCatSpeciale($c))
+					{
+						$urlCat .= "&amp;langue=$langueCat";
+					}
+				}
+				
+				$contenuFichierTableau[$c]['infos'][] = "url=$urlCat\n";
+				$contenuFichierTableau[$c]['infos'][] = "parent=\n";
+				
+				if (isset($_POST['nouvelleCatRss']) && $_POST['nouvelleCatRss'] == 1)
+				{
+					$rssCat = 1;
+				}
+				else
+				{
+					$rssCat = 0;
+				}
+				
+				$contenuFichierTableau[$c]['infos'][] = "rss=$rssCat\n";
+				
 				if (!preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($_POST['urlAjout']), '/') . "\n/", $contenuFichierTableau[$c]['pages']))
 				{
 					array_unshift($contenuFichierTableau[$c]['pages'], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
