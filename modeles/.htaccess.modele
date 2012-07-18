@@ -59,6 +59,14 @@ Options -Indexes
 ##
 ########################################################################
 
+# Type MIME des polices de caractères.
+<IfModule mod_mime.c>
+	AddType application/vnd.ms-fontobject .eot
+	AddType font/opentype .otf
+	AddType font/truetype .ttf
+	AddType application/font-woff .woff
+</IfModule>
+
 # Activer la compression des données envoyées si Apache le permet:
 # pour Apache 1:
 <IfModule mod_gzip.c>
@@ -71,10 +79,13 @@ Options -Indexes
 	
 	mod_gzip_item_include mime ^application/javascript$
 	mod_gzip_item_include mime ^application/rss+xml$
+	mod_gzip_item_include mime ^application/vnd.ms-fontobject$
 	mod_gzip_item_include mime ^application/xhtml+xml$
 	mod_gzip_item_include mime ^application/x-httpd-php
 	mod_gzip_item_include mime ^application/x-javascript$
 	mod_gzip_item_include mime ^application/xml$
+	mod_gzip_item_include mime ^font/opentype$
+	mod_gzip_item_include mime ^font/truetype$
 	mod_gzip_item_include mime ^httpd/unix-directory$
 	mod_gzip_item_include mime ^text/
 	
@@ -82,6 +93,7 @@ Options -Indexes
 	mod_gzip_item_exclude file \.t?gz$
 	mod_gzip_item_exclude file \.zip$
 	mod_gzip_item_exclude mime ^image/
+	mod_gzip_item_exclude file \.woff$
 	mod_gzip_item_exclude reqheader "User-Agent: .*Mozilla/4\..*\["
 	
 	mod_gzip_send_vary On
@@ -92,10 +104,13 @@ Options -Indexes
 	
 	AddOutputFilterByType DEFLATE application/javascript
 	AddOutputFilterByType DEFLATE application/rss+xml
+	AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
 	AddOutputFilterByType DEFLATE application/xhtml+xml
 	AddOutputFilterByType DEFLATE application/x-httpd-php
 	AddOutputFilterByType DEFLATE application/x-javascript
 	AddOutputFilterByType DEFLATE application/xml
+	AddOutputFilterByType DEFLATE font/opentype
+	AddOutputFilterByType DEFLATE font/truetype
 	AddOutputFilterByType DEFLATE httpd/unix-directory
 	AddOutputFilterByType DEFLATE image/svg+xml
 	AddOutputFilterByType DEFLATE text/css
@@ -105,17 +120,9 @@ Options -Indexes
 	AddOutputFilterByType DEFLATE text/x-gettext-translation
 	AddOutputFilterByType DEFLATE text/xml
 	
-#	# TODO.
-#	AddType application/vnd.ms-fontobject .eot
-#	AddType font/opentype .otf
-#	AddType font/truetype .ttf
-#	
-#	AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
-#	AddOutputFilterByType DEFLATE font/opentype
-#	AddOutputFilterByType DEFLATE font/truetype
-	
 	SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
 	SetEnvIfNoCase Request_URI \.(?:bz2|t?gz|zip)$ no-gzip dont-vary
+	SetEnvIfNoCase Request_URI \.woff$ no-gzip dont-vary
 	
 	BrowserMatch ^Mozilla/4 gzip-only-text/html
 	BrowserMatch ^Mozilla/4\.0[678] no-gzip
