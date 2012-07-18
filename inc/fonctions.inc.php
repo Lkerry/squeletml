@@ -4036,7 +4036,7 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $af
 	
 	foreach ($categories as $categorie => $categorieInfos)
 	{
-		if (empty($categorieInfos['parent']) && $categorieInfos['langue'] == $langue)
+		if (empty($categorieInfos['parent']) && isset($categorieInfos['langue']) && $categorieInfos['langue'] == $langue)
 		{
 			$menuCategoriesAutomatise .= htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
 		}
@@ -4860,6 +4860,15 @@ Aussi, une galerie doit être présente dans le flux RSS global des galeries pou
 function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
 {
 	$html = '';
+	$nomFichierTmp = "$racine/site/cache/publications-recentes-$langue-$type-$id";
+	
+	// Éviter une boucle infinie.
+	if (file_exists($nomFichierTmp))
+	{
+		return $html;
+	}
+	
+	@touch($nomFichierTmp);
 	
 	if ($type == 'categorie')
 	{
@@ -5250,6 +5259,11 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				}
 			}
 		}
+	}
+	
+	if (file_exists($nomFichierTmp))
+	{
+		@unlink($nomFichierTmp);
 	}
 	
 	return $html;
