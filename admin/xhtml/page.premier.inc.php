@@ -16,7 +16,7 @@
 		<?php echo $linkScript; ?>
 	</head>
 	<!-- ____________________ <body> ____________________ -->
-	<body<?php echo $idBody; ?>>
+	<body<?php echo "$idBody $classesBody"; ?>>
 		<!-- ____________________ #ancres ____________________ -->
 		<div id="ancres">
 			<?php include $cheminAncres; ?>

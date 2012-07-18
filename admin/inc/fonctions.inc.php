@@ -432,6 +432,26 @@ function adminChmodRecursif($dossierAmodifier, $permissions)
 }
 
 /*
+Retourne une liste de classes pour `body`.
+*/
+function adminClassesBody($tableDesMatieresAvecFond, $tableDesMatieresArrondie)
+{
+	$classesBody = '';
+	
+	if ($tableDesMatieresAvecFond)
+	{
+		$classesBody .= 'tableDesMatieresAvecFond ';
+	}
+	
+	if ($tableDesMatieresArrondie)
+	{
+		$classesBody .= 'tableDesMatieresArrondie ';
+	}
+	
+	return $classesBody;
+}
+
+/*
 Simule `copy()` et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminCopy($fichierSource, $fichierDeDestination)

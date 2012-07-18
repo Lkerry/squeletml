@@ -50,11 +50,17 @@ $cheminAncres = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDe
 $cheminLienBas = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
 $cheminRaccourcis = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
 list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($adminDoctype, LANGUE_ADMIN);
+$classesBody = adminClassesBody($tableDesMatieresAvecFond, $tableDesMatieresArrondie);
 $idBody = adminIdBody();
 
 if (!empty($baliseH1))
 {
 	$h1 = '<h1>' . $baliseH1 . '</h1>';
+}
+
+if (!empty($classesBody))
+{
+	$classesBody = ' class="' . $classesBody . '"';
 }
 
 if (!empty($idBody))
