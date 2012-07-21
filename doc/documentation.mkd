@@ -29,7 +29,7 @@ Certains dossiers doivent être accessibles en écriture:
 
 - La suppression sans perte de qualité des données Exif des images JPG peut se faire avec la commande `jpegtran` sur le système.
 
-- La récupération de contenu externe se fait par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.squeletml.net/');` retourne ceci:
+- La récupération de contenu externe se fait par `file_get_contents()`. À ce sujet, il semble que **Free.fr** a modifié au début 2010 la configuration de ses serveurs, et une requête HTTP retourne systématiquement un code d'erreur 403. Par exemple, `file_get_contents('http://www.site.ext/');` retourne ceci:
 
 		HTTP/1.0 403 Forbidden
 
@@ -37,7 +37,7 @@ Certains dossiers doivent être accessibles en écriture:
 
 ## Installation
 
-La procédure d'installation est très simple. Il faut commencer par télécharger l'archive de la dernière version sur la [page de téléchargement du logiciel](http://www.squeletml.net/telechargement.php), extraire cette archive et placer les fichiers sur votre serveur, par exemple par ftp.
+La procédure d'installation est très simple. Il faut commencer par [télécharger l'archive de la dernière version](http://jpfleury.indefero.net/p/squeletml/source/download/master/), extraire cette archive et placer les fichiers sur votre serveur, par exemple par ftp.
 
 ### Mise en situation
 

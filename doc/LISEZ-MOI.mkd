@@ -104,7 +104,7 @@ Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou visiter l
 
 ## Téléchargement
 
-[Télécharger l'archive de la dernière version.](http://jpfleury.indefero.net/p/squeletml/downloads/)
+[Télécharger l'archive de la dernière version.](http://jpfleury.indefero.net/p/squeletml/source/download/master/)
 
 ## Développement
 
