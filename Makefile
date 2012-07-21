@@ -1,33 +1,4 @@
-########################################################################
-##
-## Variables.
-##
-########################################################################
-
-# Chemin vers le bureau.
-cheminBureau:=$(shell xdg-user-dir DESKTOP)
-
-# Dossier de publication.
-dossierPub=squeletml
-
-# Récupère la dernière version, représentée par la dernière étiquette.
-version:=$(shell git describe | rev | cut -d '-' -f 3- | rev)
-
-########################################################################
-##
-## Cibles.
-##
-########################################################################
-
-archive:
-	git archive $(version) --format=tar --prefix=$(dossierPub)/ --output $(dossierPub).tar
-	tar -xf $(dossierPub).tar
-	rm $(dossierPub).tar
-	php scripts.cli.php config $(dossierPub)
-	php scripts.cli.php css $(dossierPub)
-	zip -qr squeletml-$(version).zip $(dossierPub)
-	mv squeletml-$(version).zip $(cheminBureau)
-	rm -rf $(dossierPub)
+all: langues fichiersModeles
 
 langues: messageAccueil po mo
 
@@ -44,6 +15,10 @@ mo:
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
+
+fichiersModeles:
+	php scripts.cli.php config
+	php scripts.cli.php css
 
 po: pot poFr
 	for po in $(shell find ./ -name *.po);\

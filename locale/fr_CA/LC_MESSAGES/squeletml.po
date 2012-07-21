@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-07-21 02:14-0400\n"
+"POT-Creation-Date: 2012-07-21 19:17-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -24,75 +24,75 @@ msgstr "Demande de création d'un compte utilisateur"
 msgid "Déconnexion de la section d'administration de Squeletml"
 msgstr "Déconnexion de la section d'administration de Squeletml"
 
-#: inc/premier.inc.php:330 inc/blocs.inc.php:125 inc/fonctions.inc.php:1727
+#: inc/premier.inc.php:330 inc/blocs.inc.php:133 inc/fonctions.inc.php:1727
 #: inc/fonctions.inc.php:1729 inc/fonctions.inc.php:2063
 #: inc/categorie.inc.php:21 inc/categorie.inc.php:84 inc/categorie.inc.php:154
-#: inc/categorie.inc.php:199 inc/categorie.inc.php:244 admin/rss.admin.php:298
+#: inc/categorie.inc.php:199 inc/categorie.inc.php:244 admin/rss.admin.php:288
 msgid "Dernières publications"
 msgstr "Dernières publications"
 
-#: inc/premier.inc.php:341 inc/blocs.inc.php:134 inc/fonctions.inc.php:1722
+#: inc/premier.inc.php:341 inc/blocs.inc.php:142 inc/fonctions.inc.php:1722
 #: inc/fonctions.inc.php:2067 inc/categorie.inc.php:37
 #: inc/categorie.inc.php:88 inc/categorie.inc.php:158
-#: inc/categorie.inc.php:203 inc/categorie.inc.php:248 admin/rss.admin.php:299
+#: inc/categorie.inc.php:203 inc/categorie.inc.php:248 admin/rss.admin.php:289
 msgid "Derniers ajouts aux galeries"
 msgstr "Derniers ajouts aux galeries"
 
-#: inc/premier.inc.php:348 inc/blocs.inc.php:102 inc/fonctions.inc.php:1705
+#: inc/premier.inc.php:348 inc/blocs.inc.php:110 inc/fonctions.inc.php:1705
 #: inc/galerie.inc.php:146 inc/galerie.inc.php:435 inc/galerie.inc.php:498
 #: inc/galerie.inc.php:662
 #, php-format
 msgid "Galerie %1$s"
 msgstr "Galerie %1$s"
 
-#: inc/premier.inc.php:354 inc/blocs.inc.php:107
+#: inc/premier.inc.php:354 inc/blocs.inc.php:115
 #, php-format
 msgid "Catégorie %1$s"
 msgstr "Catégorie %1$s"
 
-#: inc/blocs.inc.php:96 admin/xhtml/menu.inc.php:10
+#: inc/blocs.inc.php:104 admin/xhtml/menu.inc.php:10
 msgid "Flux RSS"
 msgstr "Flux RSS"
 
-#: inc/blocs.inc.php:226
+#: inc/blocs.inc.php:234
 msgid "Sauf mention contraire:"
 msgstr "Sauf mention contraire:"
 
-#: inc/blocs.inc.php:243
+#: inc/blocs.inc.php:251
 msgid "Faire un lien vers cette page"
 msgstr "Faire un lien vers cette page"
 
-#: inc/blocs.inc.php:245
+#: inc/blocs.inc.php:253
 msgid "Ajoutez le code ci-dessous sur votre site:"
 msgstr "Ajoutez le code ci-dessous sur votre site:"
 
-#: inc/blocs.inc.php:315 admin/categories.admin.php:3
+#: inc/blocs.inc.php:323 admin/categories.admin.php:3
 #: admin/xhtml/menu.inc.php:8
 msgid "Catégories"
 msgstr "Catégories"
 
-#: inc/blocs.inc.php:396 inc/fonctions.inc.php:1720 admin/xhtml/menu.inc.php:6
+#: inc/blocs.inc.php:392 inc/fonctions.inc.php:1720 admin/xhtml/menu.inc.php:6
 #: admin/galeries.admin.php:4
 msgid "Galeries"
 msgstr "Galeries"
 
-#: inc/blocs.inc.php:445 admin/acces.admin.php:12
+#: inc/blocs.inc.php:446 admin/acces.admin.php:12
 msgid "Langues"
 msgstr "Langues"
 
-#: inc/blocs.inc.php:495
+#: inc/blocs.inc.php:496
 msgid "Partager"
 msgstr "Partager"
 
-#: inc/blocs.inc.php:501
+#: inc/blocs.inc.php:502
 msgid "Par courriel"
 msgstr "Par courriel"
 
-#: inc/blocs.inc.php:559
+#: inc/blocs.inc.php:560
 msgid "Rechercher dans le site"
 msgstr "Rechercher dans le site"
 
-#: inc/blocs.inc.php:563
+#: inc/blocs.inc.php:564
 msgid "Rechercher"
 msgstr "Rechercher"
 
@@ -154,9 +154,9 @@ msgstr ""
 #: admin/acces.admin.php:324 admin/acces.admin.php:378
 #: admin/acces.admin.php:411 admin/acces.admin.php:456
 #: admin/acces.admin.php:466 admin/acces.admin.php:496
-#: admin/acces.admin.php:506 admin/categories.admin.php:337
-#: admin/categories.admin.php:587 admin/categories.admin.php:625
-#: admin/rss.admin.php:188 admin/galeries.admin.php:1328
+#: admin/acces.admin.php:506 admin/categories.admin.php:336
+#: admin/categories.admin.php:586 admin/categories.admin.php:624
+#: admin/rss.admin.php:186 admin/galeries.admin.php:1328
 #: admin/galeries.admin.php:1503
 #, php-format
 msgid "Ouverture du fichier %1$s impossible."
@@ -1347,7 +1347,7 @@ msgstr ""
 "%3$s)."
 
 #: admin/inc/fonctions.inc.php:112 admin/inc/fonctions.inc.php:190
-#: admin/inc/fonctions.inc.php:1863
+#: admin/inc/fonctions.inc.php:1868
 #, php-format
 msgid "Accès au dossier %1$s impossible."
 msgstr "Accès au dossier %1$s impossible."
@@ -1392,15 +1392,15 @@ msgstr "Déclaration du fichier Sitemap dans le fichier %1$s impossible."
 
 #: admin/inc/fonctions.inc.php:244 admin/inc/fonctions.inc.php:486
 #: admin/inc/fonctions.inc.php:491 admin/inc/fonctions.inc.php:536
-#: admin/inc/fonctions.inc.php:541 admin/categories.admin.php:589
-#: admin/categories.admin.php:594 admin/galeries.admin.php:1330
+#: admin/inc/fonctions.inc.php:541 admin/categories.admin.php:588
+#: admin/categories.admin.php:593 admin/galeries.admin.php:1330
 #: admin/galeries.admin.php:1335 admin/galeries.admin.php:1505
 #: admin/galeries.admin.php:1510
 msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
 msgstr "Voici le contenu qui aurait été enregistré dans le fichier:"
 
 #: admin/inc/fonctions.inc.php:251 admin/inc/fonctions.inc.php:498
-#: admin/inc/fonctions.inc.php:548 admin/categories.admin.php:601
+#: admin/inc/fonctions.inc.php:548 admin/categories.admin.php:600
 #: admin/galeries.admin.php:1342 admin/galeries.admin.php:1517
 #: admin/galeries.admin.php:1614
 msgid "Sélectionner le résultat."
@@ -1418,13 +1418,13 @@ msgstr ""
 "Veuillez créer ce fichier manuellement."
 
 #: admin/inc/fonctions.inc.php:478 admin/inc/fonctions.inc.php:528
-#: admin/categories.admin.php:581 admin/galeries.admin.php:1322
+#: admin/categories.admin.php:580 admin/galeries.admin.php:1322
 #: admin/galeries.admin.php:1497
 msgid "Les modifications ont été enregistrées."
 msgstr "Les modifications ont été enregistrées."
 
 #: admin/inc/fonctions.inc.php:480 admin/inc/fonctions.inc.php:530
-#: admin/categories.admin.php:583 admin/galeries.admin.php:1324
+#: admin/categories.admin.php:582 admin/galeries.admin.php:1324
 #: admin/galeries.admin.php:1499
 #, php-format
 msgid "Voici le contenu qui a été enregistré dans le fichier %1$s:"
@@ -1527,11 +1527,11 @@ msgstr "Renommer"
 msgid "Afficher «%1$s»"
 msgstr "Afficher «%1$s»"
 
-#: admin/inc/fonctions.inc.php:1569
+#: admin/inc/fonctions.inc.php:1574
 msgid "Aucune erreur, le téléchargement est correct."
 msgstr "Aucune erreur, le téléchargement est correct."
 
-#: admin/inc/fonctions.inc.php:1573
+#: admin/inc/fonctions.inc.php:1578
 msgid ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
 "configurée dans le <code>php.ini</code>."
@@ -1539,7 +1539,7 @@ msgstr ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
 "configurée dans le <code>php.ini</code>."
 
-#: admin/inc/fonctions.inc.php:1577
+#: admin/inc/fonctions.inc.php:1582
 msgid ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
 "été spécifiée dans le formulaire HTML."
@@ -1547,84 +1547,84 @@ msgstr ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
 "été spécifiée dans le formulaire HTML."
 
-#: admin/inc/fonctions.inc.php:1581
+#: admin/inc/fonctions.inc.php:1586
 msgid "Le fichier n'a été que partiellement téléchargé."
 msgstr "Le fichier n'a été que partiellement téléchargé."
 
-#: admin/inc/fonctions.inc.php:1585
+#: admin/inc/fonctions.inc.php:1590
 msgid "Aucun fichier n'a été téléchargé."
 msgstr "Aucun fichier n'a été téléchargé."
 
-#: admin/inc/fonctions.inc.php:1589
+#: admin/inc/fonctions.inc.php:1594
 msgid "Un dossier temporaire est manquant."
 msgstr "Un dossier temporaire est manquant."
 
-#: admin/inc/fonctions.inc.php:1593
+#: admin/inc/fonctions.inc.php:1598
 msgid "Échec de l'écriture du fichier sur le disque."
 msgstr "Échec de l'écriture du fichier sur le disque."
 
-#: admin/inc/fonctions.inc.php:1597
+#: admin/inc/fonctions.inc.php:1602
 msgid "L'envoi de fichier est arrêté par l'extension."
 msgstr "L'envoi de fichier est arrêté par l'extension."
 
-#: admin/inc/fonctions.inc.php:1646
+#: admin/inc/fonctions.inc.php:1651
 #, php-format
 msgid "Création du dossier %1$s effectuée."
 msgstr "Création du dossier %1$s effectuée."
 
-#: admin/inc/fonctions.inc.php:1650
+#: admin/inc/fonctions.inc.php:1655
 #, php-format
 msgid "Création du dossier %1$s impossible."
 msgstr "Création du dossier %1$s impossible."
 
-#: admin/inc/fonctions.inc.php:1766
+#: admin/inc/fonctions.inc.php:1771
 msgid "La réécriture d'URL est activée."
 msgstr "La réécriture d'URL est activée."
 
-#: admin/inc/fonctions.inc.php:1771
+#: admin/inc/fonctions.inc.php:1776
 msgid "La réécriture d'URL n'est pas activée."
 msgstr "La réécriture d'URL n'est pas activée."
 
-#: admin/inc/fonctions.inc.php:1777
+#: admin/inc/fonctions.inc.php:1782
 msgid "Impossible de déterminer si la réécriture d'URL est activée."
 msgstr "Impossible de déterminer si la réécriture d'URL est activée."
 
-#: admin/inc/fonctions.inc.php:1799
+#: admin/inc/fonctions.inc.php:1804
 #, php-format
 msgid "Déplacement de %1$s vers %2$s effectué."
 msgstr "Déplacement de %1$s vers %2$s effectué."
 
-#: admin/inc/fonctions.inc.php:1803
+#: admin/inc/fonctions.inc.php:1808
 #, php-format
 msgid "Renommage de %1$s en %2$s effectué."
 msgstr "Renommage de %1$s en %2$s effectué."
 
-#: admin/inc/fonctions.inc.php:1810
+#: admin/inc/fonctions.inc.php:1815
 #, php-format
 msgid "Déplacement de %1$s vers %2$s impossible."
 msgstr "Déplacement de %1$s vers %2$s impossible."
 
-#: admin/inc/fonctions.inc.php:1814 admin/galeries.admin.php:508
+#: admin/inc/fonctions.inc.php:1819 admin/galeries.admin.php:508
 #, php-format
 msgid "Renommage de %1$s en %2$s impossible."
 msgstr "Renommage de %1$s en %2$s impossible."
 
-#: admin/inc/fonctions.inc.php:1826 admin/inc/fonctions.inc.php:2192
+#: admin/inc/fonctions.inc.php:1831 admin/inc/fonctions.inc.php:2197
 #, php-format
 msgid "Suppression de %1$s effectuée."
 msgstr "Suppression de %1$s effectuée."
 
-#: admin/inc/fonctions.inc.php:1830 admin/inc/fonctions.inc.php:2196
+#: admin/inc/fonctions.inc.php:1835 admin/inc/fonctions.inc.php:2201
 #, php-format
 msgid "Suppression de %1$s impossible."
 msgstr "Suppression de %1$s impossible."
 
-#: admin/inc/fonctions.inc.php:1910
+#: admin/inc/fonctions.inc.php:1915
 #, php-format
 msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
 msgstr "Aucune rotation automatique à effectuer pour l'image %1$s."
 
-#: admin/inc/fonctions.inc.php:1918 admin/inc/fonctions.inc.php:1977
+#: admin/inc/fonctions.inc.php:1923 admin/inc/fonctions.inc.php:1982
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
@@ -1633,7 +1633,7 @@ msgstr ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
 "l'image %2$s."
 
-#: admin/inc/fonctions.inc.php:1922 admin/inc/fonctions.inc.php:1986
+#: admin/inc/fonctions.inc.php:1927 admin/inc/fonctions.inc.php:1991
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
@@ -1642,7 +1642,7 @@ msgstr ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 
-#: admin/inc/fonctions.inc.php:1981 admin/inc/fonctions.inc.php:2058
+#: admin/inc/fonctions.inc.php:1986 admin/inc/fonctions.inc.php:2063
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
@@ -1651,7 +1651,7 @@ msgstr ""
 "Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
 "l'image %2$s."
 
-#: admin/inc/fonctions.inc.php:1990 admin/inc/fonctions.inc.php:2062
+#: admin/inc/fonctions.inc.php:1995 admin/inc/fonctions.inc.php:2067
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif par %1$s impossible pour "
@@ -1660,7 +1660,7 @@ msgstr ""
 "Suppression sans perte de qualité des données Exif par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 
-#: admin/inc/fonctions.inc.php:1998
+#: admin/inc/fonctions.inc.php:2003
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une rotation automatique et "
@@ -1673,7 +1673,7 @@ msgstr ""
 "l'exécutable %1$s, soit un accès à l'exécutable %2$s ainsi qu'à la fonction "
 "PHP %3$s."
 
-#: admin/inc/fonctions.inc.php:2069
+#: admin/inc/fonctions.inc.php:2074
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une suppression sans perte de "
@@ -1739,7 +1739,7 @@ msgstr "Choisir l'emplacement vers lequel copier les fichiers ci-dessous."
 #: admin/sitemap.admin.php:63 admin/acces.admin.php:655
 #: admin/acces.admin.php:680 admin/acces.admin.php:734
 #: admin/acces.admin.php:773 admin/categories.admin.php:217
-#: admin/rss.admin.php:134 admin/rss.admin.php:295
+#: admin/rss.admin.php:134 admin/rss.admin.php:285
 #: admin/galeries.admin.php:1963 admin/galeries.admin.php:2083
 #: admin/galeries.admin.php:2186 admin/galeries.admin.php:2255
 #: admin/galeries.admin.php:2310 admin/galeries.admin.php:2346
@@ -2184,7 +2184,7 @@ msgstr "Ajout d'un fichier"
 msgid "Liste des fichiers et dossiers"
 msgstr "Liste des fichiers et dossiers"
 
-#: admin/porte-documents.admin.php:1409 admin/categories.admin.php:685
+#: admin/porte-documents.admin.php:1409 admin/categories.admin.php:676
 msgid "Actions"
 msgstr "Actions"
 
@@ -2376,7 +2376,7 @@ msgstr ""
 "<code>robots.txt</code>"
 
 #: admin/sitemap.admin.php:44 admin/categories.admin.php:220
-#: admin/rss.admin.php:137 admin/rss.admin.php:270
+#: admin/rss.admin.php:137 admin/rss.admin.php:260
 msgid "Configuration actuelle"
 msgstr "Configuration actuelle"
 
@@ -2388,7 +2388,7 @@ msgstr "L'ajout de pages par le cron dans le fichier Sitemap est activé"
 msgid "L'ajout de pages par le cron dans le fichier Sitemap n'est pas activé"
 msgstr "L'ajout de pages par le cron dans le fichier Sitemap n'est pas activé"
 
-#: admin/sitemap.admin.php:54 admin/rss.admin.php:286
+#: admin/sitemap.admin.php:54 admin/rss.admin.php:276
 msgid "Modifier cette configuration."
 msgstr "Modifier cette configuration."
 
@@ -2821,7 +2821,7 @@ msgstr "Télécharger une copie de sauvegarde du site."
 msgid "Gestion des catégories"
 msgstr "Gestion des catégories"
 
-#: admin/categories.admin.php:25 admin/categories.admin.php:571
+#: admin/categories.admin.php:25 admin/categories.admin.php:570
 #, php-format
 msgid ""
 "La gestion des catégories est impossible puisque le fichier %1$s n'existe "
@@ -3029,28 +3029,19 @@ msgstr ""
 "Ajouter la page dans le <a href=\"%1$s\">flux RSS des dernières "
 "publications</a> pour la langue %2$s."
 
-#: admin/categories.admin.php:324 admin/rss.admin.php:177
-#, php-format
-msgid "Ajouter la page dans le <a href=\"%1$s\">fichier Sitemap du site</a>."
-msgstr "Ajouter la page dans le <a href=\"%1$s\">fichier Sitemap du site</a>."
-
-#: admin/categories.admin.php:330 admin/rss.admin.php:180
+#: admin/categories.admin.php:329 admin/rss.admin.php:178
 msgid "Enregistrer les modifications"
 msgstr "Enregistrer les modifications"
 
-#: admin/categories.admin.php:347
+#: admin/categories.admin.php:346
 msgid "Enregistrement des modifications des catégories"
 msgstr "Enregistrement des modifications des catégories"
 
-#: admin/categories.admin.php:669
+#: admin/categories.admin.php:668
 msgid "Ajout dans le flux RSS des dernières publications"
 msgstr "Ajout dans le flux RSS des dernières publications"
 
-#: admin/categories.admin.php:677 admin/rss.admin.php:263
-msgid "Ajout dans le fichier Sitemap du site"
-msgstr "Ajout dans le fichier Sitemap du site"
-
-#: admin/categories.admin.php:688
+#: admin/categories.admin.php:679
 msgid "Lister les pages classées par catégorie."
 msgstr "Lister les pages classées par catégorie."
 
@@ -3162,31 +3153,31 @@ msgstr ""
 "Pour enlever une langue ou une page, simplement supprimer le contenu du "
 "champ."
 
-#: admin/rss.admin.php:198
+#: admin/rss.admin.php:196
 msgid "Enregistrement des modifications pour les pages du site"
 msgstr "Enregistrement des modifications pour les pages du site"
 
-#: admin/rss.admin.php:274
+#: admin/rss.admin.php:264
 msgid "Le flux RSS des dernières publications est activé"
 msgstr "Le flux RSS des dernières publications est activé"
 
-#: admin/rss.admin.php:276
+#: admin/rss.admin.php:266
 msgid "Le flux RSS des dernières publications n'est pas activé"
 msgstr "Le flux RSS des dernières publications n'est pas activé"
 
-#: admin/rss.admin.php:280
+#: admin/rss.admin.php:270
 msgid "Le flux RSS des derniers ajouts aux galeries est activé"
 msgstr "Le flux RSS des derniers ajouts aux galeries est activé"
 
-#: admin/rss.admin.php:282
+#: admin/rss.admin.php:272
 msgid "Le flux RSS des derniers ajouts aux galeries n'est pas activé"
 msgstr "Le flux RSS des derniers ajouts aux galeries n'est pas activé"
 
-#: admin/rss.admin.php:290
+#: admin/rss.admin.php:280
 msgid "Pages ajoutées aux flux RSS globaux"
 msgstr "Pages ajoutées aux flux RSS globaux"
 
-#: admin/rss.admin.php:303
+#: admin/rss.admin.php:293
 msgid "Lister les pages"
 msgstr "Lister les pages"
 

@@ -11,17 +11,15 @@ include 'init.inc.php';
 ########################################################################
 if ($argv[1] == 'config')
 {
-	$cheminDossierSauvegarde = $argv[2];
-	
 	$config = file_get_contents($racine . '/inc/config.inc.php');
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
-	file_put_contents($cheminDossierSauvegarde . '/modeles/site/inc/config.inc.php.modele', $ajout);
+	file_put_contents($racine . '/modeles/site/inc/config.inc.php.modele', $ajout);
 	
 	$config = file_get_contents($racine . '/admin/inc/config.inc.php');
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
-	file_put_contents($cheminDossierSauvegarde . '/modeles/site/admin/inc/config.inc.php.modele', $ajout);
+	file_put_contents($racine . '/modeles/site/admin/inc/config.inc.php.modele', $ajout);
 }
 ########################################################################
 ##
@@ -30,12 +28,10 @@ if ($argv[1] == 'config')
 ########################################################################
 elseif ($argv[1] == 'css')
 {
-	$cheminFichierSauvegarde = $argv[2] . '/modeles/site/css/style.css.modele';
-	
 	$css = file_get_contents($racine . '/css/squeletml.css');
 	preg_match_all('|^(/\*.*?\*/)|ms', $css, $resultat);
 	$ajout = implode("\n\n", $resultat[1]) . "\n\n";
-	file_put_contents($cheminFichierSauvegarde, $ajout);
+	file_put_contents($racine . '/modeles/site/css/style.css.modele', $ajout);
 }
 ########################################################################
 ##

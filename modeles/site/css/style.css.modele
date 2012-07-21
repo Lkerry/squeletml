@@ -1,0 +1,128 @@
+/***********************************************************************
+**
+** `html`, `body` et général.
+**
+***********************************************************************/
+
+/* Classes générales. */
+
+/***********************************************************************
+**
+** Page.
+**
+***********************************************************************/
+
+/***********************************************************************
+**
+** En-tête.
+**
+***********************************************************************/
+
+/***********************************************************************
+**
+** Sur-contenu.
+**
+***********************************************************************/
+
+/***********************************************************************
+**
+** Contenu.
+**
+***********************************************************************/
+
+/* Chapeau, style `fieldset`. */
+
+/* Catégories. */
+
+/* Contact. */
+
+/* Pages d'erreur. */
+
+/* Publications récentes (voir la fonction `publicationsRecentes()`). */
+
+/***********************************************************************
+**
+** Sous-contenu.
+**
+***********************************************************************/
+
+/***********************************************************************
+**
+** Bas de page.
+**
+***********************************************************************/
+
+/***********************************************************************
+**
+** Blocs.
+**
+***********************************************************************/
+
+/* Avec couleur de fond. */
+
+/* Avec coins arrondis. */
+
+/* Balise `h1`. */
+
+/* Flux RSS. */
+
+/* Informations de publication. */
+
+/* Bloc «licence». */
+
+/* Module de partage. */
+
+/* Recherche Google. */
+
+/***********************************************************************
+**
+** Arrière-plans des colonnes.
+**
+***********************************************************************/
+
+/*
+Note: il y a beaucoup de classes CSS ci-dessous pour la gestion des arrière-plans. Ceci est pour conserver une compatibilité avec IE6. En effet, malheureusement, ce navigateur ne gère pas les classes multiples dans les sélecteurs d'une feuille de style.
+
+Par exemple, on peut normalement faire référence dans une feuille de style à la div suivante:
+
+	<div class="deuxColonnes sousContenuAgauche avecRayures">
+	...
+	</div>
+
+en utilisant le sélecteur qui suit:
+
+	div.deuxColonnes.sousContenuAgauche.avecRayures {...}
+
+ce qui permet de diminuer le nombre de classes à créer. Cependant, IE6 ne reconnaît que la dernière classe d'un sélecteur contenant une chaîne de classes...
+*/
+
+/* Général. */
+
+/* */
+
+/* */
+
+/* body.colonneAgauche */
+
+/* body.uneColonneAgauche */
+
+/* body.colonneAdroite */
+
+/* body.uneColonneAdroite */
+
+/* body.deuxColonnes */
+
+/* body.deuxColonnesSousContenuAgauche */
+
+/* body.deuxColonnesSousContenuAdroite */
+
+/* body.aucuneColonne */
+
+/* body.enTetePleineLargeur */
+
+/***********************************************************************
+**
+** Galerie.
+**
+***********************************************************************/
+
