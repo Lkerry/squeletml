@@ -354,15 +354,12 @@ if (!empty($idCategorie) && $rssCategorie)
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
 }
 
-// Langues.
-if ($estAccueil)
+// Versions en d'autres langues.
+if ($estAccueil && count($accueil) > 1)
 {
 	foreach ($accueil as $codeLangue => $urlAccueilLangue)
 	{
-		if ($codeLangue != LANGUE)
-		{
-			$balisesLinkScript[] = "$url#hreflang#$urlAccueilLangue/#$codeLangue";
-		}
+		$balisesLinkScript[] = "$url#hreflang#$urlAccueilLangue/#$codeLangue";
 	}
 }
 

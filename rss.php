@@ -59,7 +59,7 @@ if ($dureeCache)
 
 $erreur404 = FALSE;
 
-if ($getType == 'galerie' && !empty($getId) && empty($getLangue))
+if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 {
 	$galeries = galeries($racine);
 	
@@ -91,16 +91,13 @@ if ($getType == 'galerie' && !empty($getId) && empty($getLangue))
 			// A: le flux RSS est activé.
 			
 			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-			
-			phpGettext('.', $infosGalerie['langue']); // Nécessaire à la traduction.
-			
 			if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
 			{
 				@readfile("$racine/site/cache/$nomFichierCache");
 			}
 			else
 			{
-				$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
+				$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $langueParDefaut, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 				
 				if (!empty($itemsFluxRss))
 				{
@@ -108,7 +105,7 @@ if ($getType == 'galerie' && !empty($getId) && empty($getLangue))
 				}
 				
 				$urlGalerie = $urlRacine . '/' . $infosGalerie['url'];
-				$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($infosGalerie['langue'], $langueParDefaut), FALSE), $idGalerie, '');
+				$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), $idGalerie, '');
 				
 				if ($dureeCache)
 				{
@@ -224,7 +221,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 	
 	foreach ($galeries as $idGalerie => $infosGalerie)
 	{
-		if ($getLangue == $infosGalerie['langue'] && $infosGalerie['rss'] == 1)
+		if ($infosGalerie['rss'] == 1)
 		{
 			$listeGaleriesRss[$idGalerie] = $infosGalerie;
 		}

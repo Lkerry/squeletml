@@ -6,7 +6,5 @@ site/admin/cache/
 site/cache/
 site/fichiers/galeries/
 site/inc/
-sitemap_galeries.xml
-sitemap_index.xml
-sitemap_site.xml
+sitemap.xml
 TODO.mkd

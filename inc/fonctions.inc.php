@@ -567,7 +567,7 @@ function categories($racine, $urlRacine, $url)
 		}
 	}
 	
-	ksort($listeCategories);
+	uksort($listeCategories, 'strnatcasecmp');
 	
 	return $listeCategories;
 }
@@ -1758,10 +1758,10 @@ function fluxRss($type, $itemsFluxRss, $urlRss, $url, $baliseTitleComplement, $i
 /*
 Retourne un tableau listant les images d'une galerie, chaque image constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
-function fluxRssGalerieTableauBrut($racine, $urlRacine, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
+function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
-	$urlGalerie = urlGalerie($racine, $urlRacine, $idGalerie);
+	$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, $langue);
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
 	$itemsFluxRss = array ();
 	
@@ -1889,13 +1889,13 @@ Voir la fonction `fluxRssGalerieTableauBrut()` pour plus de détails.
 function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$itemsFluxRss = array ();
-	$listeGaleriesRss = fluxRssGlobalGaleries($racine, $langue);
+	$listeGaleriesRss = fluxRssGlobalGaleries($racine);
 	
 	if (!empty($listeGaleriesRss))
 	{
 		foreach ($listeGaleriesRss as $idGalerie)
 		{
-			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown));
+			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown));
 		}
 	}
 	
@@ -1903,9 +1903,9 @@ function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRs
 }
 
 /*
-Retourne la liste des galeries dont le flux RSS est activé pour la langue donnée. Si aucune galerie n'a été trouvée, retourne un tableau vide.
+Retourne la liste des galeries dont le flux RSS est activé. Si aucune galerie n'a été trouvée, retourne un tableau vide.
 */
-function fluxRssGlobalGaleries($racine, $langue)
+function fluxRssGlobalGaleries($racine)
 {
 	$listeGaleriesRss = array ();
 	$galeries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
@@ -1914,7 +1914,7 @@ function fluxRssGlobalGaleries($racine, $langue)
 	{
 		foreach ($galeries as $idGalerie => $infosGalerie)
 		{
-			if ($infosGalerie['rss'] == 1 && $infosGalerie['langue'] == $langue)
+			if ($infosGalerie['rss'] == 1)
 			{
 				$listeGaleriesRss[] = $idGalerie;
 			}
@@ -2031,7 +2031,7 @@ function galeries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE
 		}
 	}
 	
-	ksort($galeries, SORT_LOCALE_STRING);
+	uksort($galeries, 'strnatcasecmp');
 	
 	return $galeries;
 }
@@ -3185,7 +3185,7 @@ function lienActif($urlRacine, $html, $inclureGet, $parent = '')
 			if (isset($infosUrlRelative['query']))
 			{
 				parse_str(str_replace('&amp;', '&', $infosUrlRelative['query']), $getUrlRelative);
-				ksort($getUrlRelative);
+				uksort($getUrlRelative, 'strnatcasecmp');
 			}
 			
 			$getAhrefRelatif = array ();
@@ -3193,7 +3193,7 @@ function lienActif($urlRacine, $html, $inclureGet, $parent = '')
 			if (isset($infosAhrefRelatif['query']))
 			{
 				parse_str(str_replace('&amp;', '&', $infosAhrefRelatif['query']), $getAhrefRelatif);
-				ksort($getAhrefRelatif);
+				uksort($getAhrefRelatif, 'strnatcasecmp');
 			}
 			
 			if ($getUrlRelative == $getAhrefRelatif)
@@ -4015,7 +4015,7 @@ Retourne le menu des catégories, qui doit être entouré par la balise `ul` (se
 function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$menuCategoriesAutomatise = '';
-	ksort($categories);
+	uksort($categories, 'strnatcasecmp');
 	
 	$categoriesGlobalesAactiver = array ();
 	
@@ -4950,11 +4950,11 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 	{
 		$lienDesactive = FALSE;
 		$urlGalerie = '';
-		$listeGaleriesRss = fluxRssGlobalGaleries($racine, $langue);
+		$listeGaleriesRss = fluxRssGlobalGaleries($racine);
 		
 		if (in_array($id, $listeGaleriesRss))
 		{
-			$urlGalerie = $urlRacine . '/' . urlGalerie($racine, $urlRacine, $id);
+			$urlGalerie = urlGalerie(0, $racine, $urlRacine, $id, $langue);
 		}
 		
 		if (!empty($urlGalerie))
@@ -5840,21 +5840,34 @@ function urlExiste($url)
 
 /*
 Retourne l'URL d'une galerie. Si aucune URL n'a été trouvée, retourne une URL par défaut.
+
+Si le paramètre `$action` vaut `0`, récupère les informations de la galerie `$info` dans le fichier de configuration des galeries, sinon s'il vaut `1`, utilise directement `$info` comme URL brute de la galerie.
 */
-function urlGalerie($racine, $urlRacine, $idGalerie)
+function urlGalerie($action, $racine, $urlRacine, $info, $langue)
 {
-	$galeries = galeries($racine, $idGalerie);
-	
-	if (!empty($galeries[$idGalerie]['url']))
+	if ($action == 0)
 	{
-		$urlGalerie = $galeries[$idGalerie]['url'];
+		$galeries = galeries($racine, $info);
+		
+		if (!empty($galeries[$info]['url']))
+		{
+			$urlGalerie = $galeries[$info]['url'];
+		}
+		else
+		{
+			$urlGalerie = 'galerie.php?id=' . filtreChaine($racine, $info) . "&amp;langue=$langue";
+		}
+	}
+	elseif ($action == 1)
+	{
+		$urlGalerie = $info;
 	}
 	else
 	{
-		$urlGalerie = "$urlRacine/galerie.php?id=" . filtreChaine($racine, $idGalerie);
+		$urlGalerie = '';
 	}
 	
-	return $urlGalerie;
+	return str_replace('{LANGUE}', $langue, $urlRacine . '/' . $urlGalerie);
 }
 
 /*

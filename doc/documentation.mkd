@@ -1035,7 +1035,7 @@ Les points suivants doivent être satisfaits pour qu'une galerie soit accessible
 
 - une page à visiter sur le site pour afficher la galerie. Il y a deux possibilités:
 
-  - la page globale des galeries, `galerie.php?id=identifiant-filtré`, ce qui donne pour notre exemple `galerie.php?id=Ma-premiere-galerie`;
+  - la page globale des galeries, `galerie.php?id=identifiant-filtré&amp;langue={LANGUE}`, ce qui donne pour notre exemple `galerie.php?id=Ma-premiere-galerie&amp;langue={LANGUE}`;
 
   - une page personnalisée, par exemple `page-de-ma-premiere-galerie.php`. Cette page peut être située n'importe où sur le site. L'important est d'insérer dans la page l'identifiant de la galerie (variable `$idGalerie`) que vous voulez afficher.
 
@@ -1075,7 +1075,7 @@ Pour créer manuellement une galerie, donc sans passer par l'administration de S
 		dossier=site/fichiers/galeries/galerie-1
 		url=page-de-ma-premiere-galerie.php
 
-	L'URL peut être la page globale des galeries (`galerie.php?id=identifiant-filtré`, ce qui donne pour notre exemple `galerie.php?id=Ma-premiere-galerie`) ou une page personnalisée.
+	L'URL peut être la page globale des galeries (`galerie.php?id=identifiant-filtré&amp;langue={LANGUE}`, ce qui donne pour notre exemple `galerie.php?id=Ma-premiere-galerie&amp;langue={LANGUE}`; Squeletml va s'occuper automatiquement de remplacer `{LANGUE}` par la bonne valeur lors de l'affichage de la galerie) ou une page personnalisée.
 
 4. Si l'URL de la galerie est une page personnalisée, ajouter une variable `$idGalerie` au début de la page en question (par exemple, `page-de-ma-premiere-galerie.php`), et l'assigner avec l'identifiant voulu (par exemple, `$idGalerie = "Ma première galerie";`).
 
@@ -1372,9 +1372,9 @@ Une fois qu'un fichier unique a été créé pour un ensemble différent de fich
 
 Le cron permet d'effectuer certaines tâches de maintenance:
 
-- génération du cache (flux RSS, galeries et catégories). Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site.
+- génération du cache (flux RSS, galeries et catégories). Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site;
 
-- génération des fichiers Sitemap du site et des galeries. Si le fichier d'index Sitemap n'existe pas, il sera créé. De même, si le fichier d'index Sitemap n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
+- génération du fichier Sitemap. Si ce fichier n'existe pas, il sera créé, et s'il n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
 
 ### Lancement du cron
 
@@ -1400,15 +1400,11 @@ Certains scripts permettent aussi d'émuler cron en PHP. Voir par exemple [pseud
 
 Il est possible de recevoir un rapport par courriel au format HTML après l'exécution du cron. Pour ce faire, la variable `$envoyerRapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
 
-## Fichiers Sitemap
+## Fichier Sitemap
 
-Trois [fichiers Sitemap au format XML](http://www.sitemaps.org/fr/) sont potentiellement utilisés par Squeletml:
+Un [fichier Sitemap au format XML](http://www.sitemaps.org/fr/) peut être généré manuellement dans la section d'administration ou automatiquement par le cron si `$ajouterPagesParCronDansSitemap` du fichier de configuration du site vaut `TRUE`. Toutes les pages connues par Squeletml (URL d'accueil, galeries, flux RSS, catégories, etc.) seront ajoutées dans le fichier Sitemap.
 
-- `sitemap_site.xml`: contient les pages du site, et est géré dans la section d'administration. Si `$ajouterPagesParCronDansSitemapSite` du fichier de configuration du site vaut `TRUE`, les pages présentes dans le fichier de configuration des catégories et dans le flux RSS des dernières publications seront éventuellement ajoutées dans le fichier Sitemap du site par le cron;
-- `sitemap_galeries.xml`: si `$activerSitemapGaleries` du fichier de configuration du site vaut `TRUE`, contient la page d'acceuil de chaque galerie ainsi que chaque page individuelle d'une image dans une galerie. Ce fichier est généré automatiquement dans la section d'administration ou par le cron;
-- `sitemap_index.xml`: fichier d'index Sitemap regroupant les deux fichiers mentionnés ci-dessus. Ce fichier est généré automatiquement dans la section d'administration ou par le cron.
-
-Ces trois fichiers se trouvent à la racine du site. Les fichiers Sitemap du site et des galeries supportent la nouvelle fonction (avril 2010) d'ajout pour chaque page listée dans un fichier Sitemap classique des informations au sujet des images importantes apparaissant dans la page. Voir <a href="http://www.google.com/support/webmasters/bin/answer.py?answer=178636" hreflang="en" lang="en">«Adding image information to a Sitemap»</a>.
+Ce fichier, nommé `sitemap.xml`, se trouve à la racine du site, et supporte pour chaque page listée les balises d'information au sujet des images importantes apparaissant dans la page en question. Voir [Sitemaps pour images](http://support.google.com/webmasters/bin/answer.py?hl=fr&answer=178636). Il supporte également la déclaration de pages équivalentes en d'autres langues. Voir [Sitemaps&amp;: rel="alternate" hreflang="x"](http://support.google.com/webmasters/bin/answer.py?hl=fr&answer=2620865).
 
 ## Développement
 

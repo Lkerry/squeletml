@@ -68,22 +68,30 @@ if (!empty($blocsAinsererTemp))
 					
 				case 'flux-rss':
 					$fluxRssGlobalSiteActif = FALSE;
-					$pagesFluxRssGlobalSite = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 					
-					if (!empty($pagesFluxRssGlobalSite[$codeLangue]))
+					if ($activerFluxRssGlobalSite)
 					{
-						$fluxRssGlobalSiteActif = TRUE;
+						$pagesFluxRssGlobalSite = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
+						
+						if (!empty($pagesFluxRssGlobalSite[$codeLangue]))
+						{
+							$fluxRssGlobalSiteActif = TRUE;
+						}
 					}
 					
 					$fluxRssGlobalGaleriesActif = FALSE;
 					
-					foreach ($accueil as $codeLangue => $infosLangue)
+					if ($galerieActiverFluxRssGlobal)
 					{
-						$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
-						if (!empty($itemsFluxRssGaleriesLangue))
+						foreach ($accueil as $codeLangue => $infosLangue)
 						{
-							$fluxRssGlobalGaleriesActif = TRUE;
-							break;
+							$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+						
+							if (!empty($itemsFluxRssGaleriesLangue))
+							{
+								$fluxRssGlobalGaleriesActif = TRUE;
+								break;
+							}
 						}
 					}
 					
@@ -99,7 +107,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '&amp;langue=' . $langue . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
@@ -283,11 +291,11 @@ if (!empty($blocsAinsererTemp))
 				case 'menu-categories':
 					$bloc = '';
 					$boiteDeroulanteAjoutee = FALSE;
-					$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
-					$cheminConfigCategories = cheminConfigCategories($racine);
 					
 					if ($genererMenuCategories)
 					{
+						$cheminConfigCategories = cheminConfigCategories($racine);
+						
 						if ($cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 						{
 							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
@@ -316,12 +324,17 @@ if (!empty($blocsAinsererTemp))
 							}
 						}
 					}
-					elseif (!empty($cheminMenuCategories))
+					else
 					{
-						ob_start();
-						include $cheminMenuCategories;
-						$bloc = ob_get_contents();
-						ob_end_clean();
+						$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
+						
+						if (!empty($cheminMenuCategories))
+						{
+							ob_start();
+							include $cheminMenuCategories;
+							$bloc = ob_get_contents();
+							ob_end_clean();
+						}
 					}
 					
 					if (!empty($bloc))
@@ -358,69 +371,38 @@ if (!empty($blocsAinsererTemp))
 					
 				case 'menu-galeries':
 					$bloc = '';
-					$boiteDeroulanteAjoutee = FALSE;
-					$cheminMenuGaleries = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-galeries');
-					$cheminConfigGaleries = cheminConfigGaleries($racine);
 					
 					if ($genererMenuGaleries)
 					{
-						$listeGaleriesParLangue = array ();
+						$listeGaleries = galeries($racine, '', TRUE);
+						uksort($listeGaleries, 'strnatcasecmp');
 						
 						if ($activerGalerieDemo)
 						{
-							$listeGaleriesParLangue[LANGUE]['démo'] = 'galerie.php?id=demo&amp;langue=' . LANGUE;
+							$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $listeGaleries);
 						}
 						
-						if ($cheminConfigGaleries && ($listeGaleries = super_parse_ini_file($cheminConfigGaleries, TRUE)) !== FALSE)
+						foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
 						{
-							foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
-							{
-								if (!empty($listeInfosGalerie['langue']) && cheminConfigGalerie($racine, $listeInfosGalerie['dossier']))
-								{
-									$listeGaleriesParLangue[$listeInfosGalerie['langue']][$listeIdGalerie] = $listeInfosGalerie['url'];
-								}
-							}
-						}
-						
-						$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
-						
-						foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
-						{
-							$blocLangue = '';
-							
-							if (!empty($listeGaleriesParLangue[$codeLangue]))
-							{
-								foreach ($listeGaleriesParLangue[$codeLangue] as $listeIdGalerie => $listeUrlGalerie)
-								{
-									$blocLangue .= '<li><a href="' . $urlRacine . '/' . $listeUrlGalerie . '">' . $listeIdGalerie . "</a></li>\n";
-								}
-							}
-							
-							if (!empty($blocLangue))
-							{
-								if ($codeLangue != LANGUE)
-								{
-									$boiteDeroulanteAjoutee = TRUE;
-									$bloc .= "<div class=\"menuGaleriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuGaleriesLangue -->\n";
-								}
-								else
-								{
-									$bloc .= "<ul>\n$blocLangue</ul>\n";
-								}
-							}
+							$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . $listeIdGalerie . "</a></li>\n";
 						}
 						
 						if (!empty($bloc))
 						{
-							$bloc = '<h2>' . T_("Galeries") . "</h2>\n$bloc";
+							$bloc = '<h2>' . T_("Galeries") . "</h2>\n<ul>\n$bloc</ul>\n";
 						}
 					}
-					elseif (!empty($cheminMenuGaleries))
+					else
 					{
-						ob_start();
-						include $cheminMenuGaleries;
-						$bloc = ob_get_contents();
-						ob_end_clean();
+						$cheminMenuGaleries = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-galeries');
+						
+						if (!empty($cheminMenuGaleries))
+						{
+							ob_start();
+							include $cheminMenuGaleries;
+							$bloc = ob_get_contents();
+							ob_end_clean();
+						}
 					}
 					
 					if (!empty($bloc))
@@ -441,15 +423,6 @@ if (!empty($blocsAinsererTemp))
 						
 						$blocs[$region] .= $bloc;
 						$blocs[$region] .= '</div><!-- /#menuGaleries -->' . "\n";
-						
-						if ($boiteDeroulanteAjoutee)
-						{
-							$blocs[$region] .= '<script type="text/javascript">' . "\n";
-							$blocs[$region] .= "//<![CDATA[\n";
-							$blocs[$region] .= "boiteDeroulante('.menuGaleriesLangueAutre', \"$aExecuterApresClicBd\");\n";
-							$blocs[$region] .= "//]]>\n";
-							$blocs[$region] .= "</script>\n";
-						}
 					}
 						
 					break;

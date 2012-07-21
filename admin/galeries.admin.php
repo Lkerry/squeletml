@@ -184,8 +184,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$tableauInfosGaleries[$idGalerieDossier] .= "<ul>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Identifiant: %1\$s"), $idGalerie) . "</li>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Dossier: %1\$s"), '<a href="porte-documents.admin.php?action=parcourir&amp;valeur=../site/fichiers/galeries/' . $idLien . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#fichiersEtDossiers"><code>' . $idGalerieDossier . '</code></a>') . "</li>\n";
-				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a href="' . $urlRacine . '/' . $infosGalerie['url'] . '"><code>' . $infosGalerie['url'] . '</code></a>') . "</li>\n";
-				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Langue: %1\$s"), '<code>' . $infosGalerie['langue'] . '</code>') . "</li>\n";
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a href="' . urlGalerie(1, '', $urlRacine, $infosGalerie['url'], LANGUE_ADMIN) . '"><code>' . $infosGalerie['url'] . '</code></a>') . "</li>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>';
 				
 				if ($infosGalerie['rss'] == 1)
@@ -1785,7 +1784,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$page = 'galerie.php?id=' . filtreChaine($racine, $id);
+				$page = 'galerie.php?id=' . filtreChaine($racine, $id) . '&amp;langue={LANGUE}' ;
 				$cheminPage = '..';
 			}
 			
@@ -1805,8 +1804,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$urlRelativeGalerie = superRawurlencode(substr($cheminPage . '/' . $page, 3));
-				$urlGalerie = $urlRacine . '/' . $urlRelativeGalerie;
+				$urlRelativeGalerie = substr($cheminPage . '/' . $page, 3);
+				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlRelativeGalerie, LANGUE_ADMIN);
+				$urlGalerie = superRawurlencode($urlGalerie);
 				$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 				
 				if (!$cheminConfigGalerie)
@@ -1817,15 +1817,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$cheminConfigGaleries = cheminConfigGaleries($racine, TRUE);
 					
-					if (!empty($_POST['mettreEnLigneLangue']))
-					{
-						$langueGalerie = securiseTexte($_POST['mettreEnLigneLangue']);
-					}
-					else
-					{
-						$langueGalerie = $langueParDefaut;
-					}
-					
 					if (!empty($_POST['mettreEnLigneRss']))
 					{
 						$rssGalerie = securiseTexte($_POST['mettreEnLigneRss']);
@@ -1835,7 +1826,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$rssGalerie = 0;
 					}
 					
-					if (adminMajConfigGaleries($racine, array ($id => array ('dossier' => $idDossier, 'url' => $urlRelativeGalerie, 'langue' => $langueGalerie, 'rss' => $rssGalerie))))
+					if (adminMajConfigGaleries($racine, array ($id => array ('dossier' => $idDossier, 'url' => $urlRelativeGalerie, 'rss' => $rssGalerie))))
 					{
 						$messagesScript .= '<li>' . sprintf(T_("Ajout de la galerie %1\$s dans le fichier de configuration des galeries %2\$s effectué."), "<code>$id</code>", "<code>$cheminConfigGaleries</code>") . "</li>\n";
 					}
@@ -1992,25 +1983,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 							<p><label for="mettreEnLigneInputPage"><?php echo T_("Si nouvelle galerie, emplacement de la page Web (laisser vide pour génération automatique):"); ?></label><br />
 							<?php echo $urlRacine . '/'; ?><input id="mettreEnLigneInputPage" type="text" name="page" /></p>
-					
-							<?php $listeLangues = ''; ?>
-							<?php $listeLangues .= '<select name="mettreEnLigneLangue">' . "\n"; ?>
-					
-							<?php foreach ($accueil as $langueAccueil => $urlLangueAccueil): ?>
-								<?php $listeLangues .= '<option value="' . $langueAccueil . '"'; ?>
-						
-								<?php if ($langueAccueil == $langueParDefaut): ?>
-									<?php $listeLangues .= ' selected="selected"'; ?>
-								<?php endif; ?>
-						
-								<?php $listeLangues .= '>' . $langueAccueil . "</option>\n"; ?>
-							<?php endforeach; ?>
-					
-							<?php $listeLangues .= "</select>"; ?>
-					
-							<p><label for="mettreEnLigneLangue"><?php echo T_("Si nouvelle galerie, langue:"); ?></label><br />
-							<?php echo $listeLangues; ?></p>
-					
+							
 							<p><label for="mettreEnLigneRss"><?php echo T_("Si nouvelle galerie, RSS:"); ?></label><br />
 							<select name="mettreEnLigneRss">
 								<option value="1" selected="selected"><?php echo T_("Activé"); ?></option>
@@ -2286,7 +2259,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 					<?php if (!empty($listeGaleries)): ?>
 						<select id="renommerSelectId" name="id">
-							<option value=""></option>
 							
 							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
 								<option value="<?php echo $listeGalerie; ?>"><?php echo $listeGalerie; ?></option>

@@ -33,12 +33,11 @@ $langueRapports = "";
 */
 $activerPageCron = TRUE; // TRUE|FALSE
 
-// Ajout par le cron de pages dans le fichier Sitemap du site.
+// Ajout par le cron de pages dans le fichier Sitemap.
 /*
-- Si l'ajout est activé, la liste des pages déclarées dans le flux RSS des dernières publications et dans le fichier de configuration des catégories sera comparée à celle des pages déjà présentes dans le fichier Sitemap du site. Toute page manquante y sera ajoutée.
-- Si l'ajout est désactivé, la composition du fichier Sitemap du site ne dépendra que des pages ajoutées en passant par l'interface d'administration ou à la main avec un éditeur de texte.
+- Si l'ajout est activé, toutes les pages connues par Squeletml (URL d'accueil, galeries, flux RSS, catégories, etc.) seront ajoutées dans le fichier Sitemap.
 */
-$ajouterPagesParCronDansSitemapSite = TRUE; // TRUE|FALSE
+$ajouterPagesParCronDansSitemap = TRUE; // TRUE|FALSE
 
 // Envoi d'un rapport par courriel après l'exécution du cron.
 $envoyerRapportCron = TRUE; // TRUE|FALSE
@@ -219,14 +218,14 @@ $ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['balise-h1']             = array (300, 300, 300);
 $ordreBlocsDansFluxHtml['infos-publication']     = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']               = array (410, 410, 410);
-$ordreBlocsDansFluxHtml['lien-page']             = array (420, 420, 420);
+$ordreBlocsDansFluxHtml['partage']               = array (420, 420, 420);
+$ordreBlocsDansFluxHtml['lien-page']             = array (430, 430, 430);
 $ordreBlocsDansFluxHtml['menu-langues']          = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
 $ordreBlocsDansFluxHtml['menu-galeries']         = array (530, 530, 530);
 $ordreBlocsDansFluxHtml['legende-image-galerie'] = array (540, 540, 540);
 $ordreBlocsDansFluxHtml['flux-rss']              = array (550, 550, 550);
-$ordreBlocsDansFluxHtml['partage']               = array (560, 560, 560);
-$ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
+$ordreBlocsDansFluxHtml['recherche-google']      = array (560, 560, 560);
 $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 
 // Conditions d'insertion des blocs.
@@ -785,9 +784,6 @@ $contactNombreLiensMax = 5; // Nombre maximal de liens dans un message
 
 // Activation de la galerie démo.
 $activerGalerieDemo = TRUE; // TRUE|FALSE
-
-// Activation du Sitemap des galeries.
-$activerSitemapGaleries = TRUE; // TRUE|FALSE
 
 // Génération automatisée du titre principal des pages d'une galerie.
 /*

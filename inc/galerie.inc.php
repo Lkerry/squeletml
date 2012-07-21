@@ -12,7 +12,7 @@ $rssGalerie = rssGalerieActif($racine, $idGalerie);
 // URL.
 if ($pageGlobaleGalerie)
 {
-	$urlGalerie = variableGet(2, $urlSansGet, 'id', filtreChaine($racine, $idGalerie));
+	$urlGalerie = "$urlSansGet?id=" . filtreChaine($racine, $idGalerie) . "&amp;langue=$langue";
 }
 else
 {
@@ -20,7 +20,7 @@ else
 }
 
 // Empêcher la duplication de contenu dans les moteurs de recherche.
-if (!$pageGlobaleGalerie && isset($_GET['id']))
+if (!$pageGlobaleGalerie && (isset($_GET['id']) || isset($_GET['langue'])))
 {
 	$erreur404 = TRUE;
 }
@@ -682,6 +682,15 @@ else
 	}
 	
 	$robots = "noindex, follow, noarchive";
+}
+
+if (!$erreur404 && count($accueil) > 1)
+{
+	// Versions en d'autres langues.
+	foreach ($accueil as $codeLangue => $urlAccueilLangue)
+	{
+		$balisesLinkScript[] = "$url#hreflang#" . variableGet(1, $url, 'langue', $codeLangue) . "#$codeLangue";
+	}
 }
 
 $tableauCorpsGalerie = coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes);

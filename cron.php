@@ -48,146 +48,22 @@ if (file_exists($racine . '/init.inc.php'))
 		
 		$rapport .= '<h2>' . T_("Cache") . "</h2>\n";
 		
-		$tableauUrlCache = array ();
+		$listeUrl = array ();
 		
 		if ($dureeCache)
 		{
-			// Flux RSS des catégories.
-			if (cheminConfigCategories($racine))
-			{
-				$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
-				
-				if (!empty($categories))
-				{
-					foreach ($categories as $categorie => $categorieInfos)
-					{
-						if (isset($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
-						{
-							$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), FALSE);
-							$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-							$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=categorie&id=' . filtreChaine($racine, $categorie), 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-						}
-					}
-				}
-			}
-			
-			// Flux RSS des galeries.
-			
-			$galeries = galeries($racine);
-			$listeGaleriesRss = array ();
-			
-			foreach ($galeries as $idGalerie => $infosGalerie)
-			{
-				if (!empty($infosGalerie['langue']) && isset($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
-				{
-					$listeGaleriesRss[$infosGalerie['langue']][] = $idGalerie;
-				}
-			}
-			
-			foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
-			{
-				// Flux RSS global des galeries.
-				$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=galeries&langue=$codeLangue", FALSE);
-				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-				$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galeries&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-				
-				foreach ($langueInfos as $idGalerie)
-				{
-					// Flux RSS individuel d'une galerie.
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, 'rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), FALSE);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=galerie&id=' . filtreChaine($racine, $idGalerie), 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-				}
-			}
-			
-			// Flux RSS global du site.
-			if (cheminConfigFluxRssGlobalSite($racine))
-			{
-				$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
-				
-				if (!empty($pages))
-				{
-					foreach ($pages as $codeLangue => $langueInfos)
-					{
-						$nomFichierCache = nomFichierCache($racine, $urlRacine, "rss.php?type=site&langue=$codeLangue", FALSE);
-						$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-						$tableauUrlCache[] = array ('url' => $urlRacine . '/rss.php?type=site&langue=' . $codeLangue, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
-					}
-				}
-			}
-			
-			// Galeries.
-			
-			if ($activerGalerieDemo)
-			{
-				foreach ($accueil as $codeLangue => $urlAccueilLangue)
-				{
-					$infosGalerie = array ('dossier' => 'demo', 'url' => "galerie.php?id=demo&amp;langue=$codeLangue");
-					$tableauUrlCache = array_merge($tableauUrlCache, cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGalerie));
-				}
-			}
-			
-			foreach ($galeries as $idGalerie => $infosGalerie)
-			{
-				$tableauUrlCache = array_merge($tableauUrlCache, cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGalerie));
-			}
-			
-			// Catégories.
-			if (cheminConfigCategories($racine))
-			{
-				$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
-				
-				if (!empty($categories))
-				{
-					foreach ($categories as $categorie => $categorieInfos)
-					{
-						// Catégorie.
-						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorieInfos, $categorie, $nombreArticlesParPageCategorie));
-					}
-				}
-				
-				// Catégorie spéciale: derniers ajouts aux galeries pour chaque langue.
-				// On parcourt la liste des langues ayant au moins une galerie avec flux RSS activé.
-				foreach ($listeGaleriesRss as $codeLangue => $langueInfos)
-				{
-					$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-					
-					if (!empty($categorie))
-					{
-						$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['galeries'], 'galeries', $nombreArticlesParPageCategorie));
-					}
-				}
-				
-				// Catégorie spéciale: dernières publications pour chaque langue.
-				if (cheminConfigFluxRssGlobalSite($racine))
-				{
-					$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
-					
-					if (!empty($pages))
-					{
-						foreach ($pages as $codeLangue => $langueInfos)
-						{
-							$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-							
-							if (!empty($categorie))
-							{
-								$tableauUrlCache = array_merge($tableauUrlCache, cronUrlCategorie($racine, $urlRacine, $categorie['site'], 'site', $nombreArticlesParPageCategorie));
-							}
-						}
-					}
-				}
-			}
+			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
 		}
 		
 		// Mise en action.
 		
 		$rapportLi = '';
 		
-		foreach ($tableauUrlCache as $url)
+		foreach ($listeUrl as $url => $infosUrl)
 		{
-			if (!empty($url['cache']))
+			if (!empty($infosUrl['cache']))
 			{
-				if (@unlink($racine . '/site/cache/' . $url['cache']))
+				if (@unlink($racine . '/site/cache/' . $infosUrl['cache']))
 				{
 					$rapportLi .= '<li>1: ';
 				}
@@ -196,12 +72,12 @@ if (file_exists($racine . '/init.inc.php'))
 					$rapportLi .= '<li class="erreur">0: ';
 				}
 				
-				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $url['cache'] . '");</code>' . "</li>\n";
+				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $infosUrl['cache'] . '");</code>' . "</li>\n";
 			}
 			
-			if (!empty($url['cacheEnTete']))
+			if (!empty($infosUrl['cacheEnTete']))
 			{
-				if (@unlink($racine . '/site/cache/' . $url['cacheEnTete']))
+				if (@unlink($racine . '/site/cache/' . $infosUrl['cacheEnTete']))
 				{
 					$rapportLi .= '<li>1: ';
 				}
@@ -210,14 +86,14 @@ if (file_exists($racine . '/init.inc.php'))
 					$rapportLi .= '<li class="erreur">0: ';
 				}
 				
-				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $url['cacheEnTete'] . '");</code>' . "</li>\n";
+				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $infosUrl['cacheEnTete'] . '");</code>' . "</li>\n";
 			}
 			
-			if (empty($url['cache']) || !file_exists($racine . '/site/cache/' . $url['cache']))
+			if (empty($infosUrl['cache']) || !file_exists($racine . '/site/cache/' . $infosUrl['cache']))
 			{
-				simuleVisite($racine, $urlRacine, $url['url'], $dureeCache);
+				simuleVisite($racine, $urlRacine, $url, $dureeCache);
 				$rapportLi .= '<li>';
-				$rapportLi .= '<code>simuleVisite("' . $racine . '", "' . $urlRacine . '", "' . $url['url'] . '", "' . $dureeCache . '");</code>' . "</li>\n";
+				$rapportLi .= '<code>simuleVisite("' . $racine . '", "' . $urlRacine . '", "' . $url . '", "' . $dureeCache . '");</code>' . "</li>\n";
 			}
 		}
 		
@@ -236,68 +112,26 @@ if (file_exists($racine . '/init.inc.php'))
 		##
 		########################################################################
 		
-		$rapport .= '<h2>' . T_("Fichiers Sitemap") . "</h2>\n";
+		$rapport .= '<h2>' . T_("Fichier Sitemap") . "</h2>\n";
 		
-		$rapport .= '<h3>' . T_("Vérification de l'existence du fichier Sitemap du site") . "</h3>\n";
-		
-		$cheminFichierSitemapSite = $racine . '/sitemap_site.xml';
-		$rapport .= "<ul>\n";
-		
-		if (file_exists($cheminFichierSitemapSite))
+		if ($ajouterPagesParCronDansSitemap)
 		{
-			$rapport .= '<li>' . sprintf(T_("Le fichier Sitemap du site (%1\$s) existe."), "<code>$cheminFichierSitemapSite</code>") . "</li>\n";
-		}
-		elseif (@file_put_contents($cheminFichierSitemapSite, adminPlanSitemapXml()) !== FALSE)
-		{
-			$rapport .= '<li>' . sprintf(T_("Le fichier Sitemap du site (%1\$s) n'existait pas, donc un plan modèle vide a été créé."), "<code>$cheminFichierSitemapSite</code>") . "</li>\n";
-		}
-		else
-		{
-			$rapport .= '<li class="erreur">' . sprintf(T_("Le fichier Sitemap du site (%1\$s) n'existe pas, et la création automatique d'un plan modèle vide a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierSitemapSite</code>") . "</li>\n";
-		}
-
-		$rapport .= "</ul>\n";
-
-		if (file_exists($cheminFichierSitemapSite) && $ajouterPagesParCronDansSitemapSite)
-		{
-			$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap du site") . "</h3>\n";
+			$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap") . "</h3>\n";
 			
 			$rapport .= "<ul>\n";
-			$rapport .= adminAjoutePagesCategoriesEtFluxRssDansSitemapSite($racine, $urlRacine);
-			$rapport .= "</ul>\n";
-		}
-
-		if ($activerSitemapGaleries)
-		{
-			$rapport .= '<h3>' . T_("Génération automatique du fichier Sitemap des galeries") . "</h3>\n";
-
-			$rapport .= "<ul>\n";
-			$rapport .= adminGenereSitemapGaleries($racine, $urlRacine, $galerieVignettesParPage);
+			
+			if (!isset($listeUrl))
+			{
+				$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
+			}
+			
+			$contenuSitemap = adminGenereContenuSitemap($listeUrl);
+			$rapport .= adminEnregistreSitemap($racine, $contenuSitemap);
 			$rapport .= "</ul>\n";
 		}
 		
-		$rapport .= '<h3>' . T_("Vérification de l'existence du fichier d'index Sitemap") . "</h3>\n";
-
-		$cheminFichierSitemapIndex = $racine . '/sitemap_index.xml';
-		$rapport .= "<ul>\n";
-	
-		if (file_exists($cheminFichierSitemapIndex))
-		{
-			$rapport .= '<li>' . sprintf(T_("Le fichier d'index Sitemap (%1\$s) existe."), "<code>$cheminFichierSitemapIndex</code>") . "</li>\n";
-		}
-		elseif (@file_put_contents($cheminFichierSitemapIndex, adminPlanSitemapIndexXml($urlRacine, $activerSitemapGaleries)) !== FALSE)
-		{
-			$rapport .= '<li>' . sprintf(T_("Le fichier d'index Sitemap (%1\$s) n'existait pas, donc un plan modèle vide a été créé."), "<code>$cheminFichierSitemapIndex</code>") . "</li>\n";
-		}
-		else
-		{
-			$rapport .= '<li class="erreur">' . sprintf(T_("Le fichier d'index Sitemap (%1\$s) n'existe pas, et la création automatique d'un plan modèle vide a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierSitemapIndex</code>") . "</li>\n";
-		}
-
-		$rapport .= "</ul>\n";
-
-		$rapport .= '<h3>' . T_("Vérification de la déclaration du fichier d'index Sitemap dans le fichier <code>robots.txt</code>") . "</h3>\n" ;
-
+		$rapport .= '<h3>' . sprintf(T_("Vérification de la déclaration du fichier Sitemap dans le fichier %1\$s"), '<code>robots.txt</code>') . "</h3>\n" ;
+		
 		$rapport .= "<ul>\n";
 		$rapport .= adminDeclareSitemapDansRobots($racine, $urlRacine);
 		$rapport .= "</ul>\n";

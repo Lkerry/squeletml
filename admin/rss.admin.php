@@ -173,8 +173,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<li><label for="inputUrlAjout"><code>pages[]=</code></label><input id="inputUrlAjout" class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
-			
-			echo '<p><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap du site</a>."), 'sitemap.admin.php?sitemap=site') . "</label></p>\n";
 			echo "</fieldset>\n";
 			
 			echo '<p><input type="submit" name="modifsSite" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
@@ -254,14 +252,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
-		
-		if (isset($_POST['sitemapAjout']) && !empty($_POST['urlAjout']))
-		{
-			$urlAjout = $urlRacine . '/' . superRawurlencode($_POST['urlAjout']);
-			$messagesScript = adminAjouteUrlDansSitemap($racine, 'site', array ($urlAjout => array ()));
-			
-			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap du site"));
-		}
 	}
 	?>
 </div><!-- /#boiteMessages -->

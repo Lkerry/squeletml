@@ -713,6 +713,26 @@ h2#titrePartageCourriel {
 	clear: both;
 }
 
+body.aucuneColonne #partage ul,
+#basDePageInterieurPage #partage ul,
+#basDePageHorsPage #partage ul,
+#debutInterieurContenu #partage ul,
+#finInterieurContenu #partage ul {
+	margin: 5px 0px 0px;
+	padding: 0px;
+	list-style-type: none;
+	text-align: center;
+}
+
+body.aucuneColonne #partage li,
+#basDePageInterieurPage #partage li,
+#basDePageHorsPage #partage li,
+#debutInterieurContenu #partage li,
+#finInterieurContenu #partage li {
+	display: inline;
+	margin-right: 20px;
+}
+
 /* Recherche Google. */
 
 #rechercheGoogle #inputMotsCles {

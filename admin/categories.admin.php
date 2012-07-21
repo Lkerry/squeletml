@@ -321,7 +321,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$rssListeLangues .= "</select>\n";
 			
 			echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
-			echo '<li><input id="inputSitemapAjout" type="checkbox" name="sitemapAjout" value="ajout" checked="checked" /> <label for="inputSitemapAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">fichier Sitemap du site</a>."), 'sitemap.admin.php?sitemap=site') . "</label></li>\n";
 			echo "</ul>\n";
 			echo "</div><!-- /.bDcorps -->\n";
 			echo "</fieldset>\n";
@@ -667,14 +666,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
 			
 			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des dernières publications"));
-		}
-		
-		if (isset($_POST['sitemapAjout']) && !empty($_POST['urlAjout']))
-		{
-			$urlAjout = $urlRacine . '/' . superRawurlencode($_POST['urlAjout']);
-			$messagesScript = adminAjouteUrlDansSitemap($racine, 'site', array ($urlAjout => array ()));
-			
-			echo adminMessagesScript($messagesScript, T_("Ajout dans le fichier Sitemap du site"));
 		}
 	}
 	?>
