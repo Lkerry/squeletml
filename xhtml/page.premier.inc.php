@@ -42,7 +42,7 @@
 		<?php if ($inclureAncres): ?>
 			<!-- ____________________ #ancres ____________________ -->
 			<div id="ancres">
-				<?php include_once $cheminAncres; ?>
+				<?php include $cheminAncres; ?>
 			</div><!-- /#ancres -->
 		<?php endif; ?>
 		
@@ -63,7 +63,7 @@
 				<div id="enTete">
 					<?php if ($inclureSurTitre): ?>
 						<div id="surTitre">
-							<?php include_once $cheminSurTitre; ?>
+							<?php include $cheminSurTitre; ?>
 						</div><!-- /#surTitre -->
 					<?php endif; ?>
 	
@@ -73,7 +73,7 @@
 
 					<?php if ($inclureSousTitre): ?>
 						<div id="sousTitre">
-							<?php include_once $cheminSousTitre; ?>
+							<?php include $cheminSousTitre; ?>
 						</div><!-- /#sousTitre -->
 					<?php endif; ?>
 					

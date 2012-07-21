@@ -1,0 +1,6 @@
+/inc/devel.inc.php export-ignore
+/scripts export-ignore
+/src export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+/Makefile export-ignore

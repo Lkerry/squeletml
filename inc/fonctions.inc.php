@@ -59,7 +59,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 			$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
-			$htaccessFilesModele = "(ChangeLog|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.ini|\.mdtxt|\.modele|\.sauv|\.text|\.txt)$";
+			$htaccessFilesModele = "(\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.ini|\.mkd|\.modele|\.sauv|\.text|\.txt)$";
 		
 			if ($serveurFreeFr)
 			{
@@ -153,13 +153,13 @@ function accueil($accueil, $langues)
 /*
 Retourne le contenu de l'attribut `action` du formulaire de contact.
 */
-function actionFormContact($envoyerAmisEstActif)
+function actionFormContact($partageCourrielActif)
 {
 	$action = url();
 	
-	if ($envoyerAmisEstActif)
+	if ($partageCourrielActif)
 	{
-		$action .= '#titreEnvoyerAmis';
+		$action .= '#titrePartageCourriel';
 	}
 	else
 	{
@@ -182,20 +182,20 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 		{
 			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss);
 			$categories = array ('galeries' => array ()) + $categories;
-			$categories['galeries']['langueCat'] = $langue;
-			$categories['galeries']['urlCat'] = "categorie.php?id=galeries&amp;langue=$langue";
+			$categories['galeries']['langue'] = $langue;
+			$categories['galeries']['url'] = "categorie.php?id=galeries&amp;langue=$langue";
 			$categories['galeries']['pages'] = array ();
 			
 			foreach ($itemsFluxRss as $item => $infosItem)
 			{
-				$categories['galeries']['pages'][] = str_replace($urlRacine . '/', '', rawurldecode($infosItem['link']));
+				$categories['galeries']['pages'][] = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', rawurldecode($infosItem['link']));
 			}
 		}
 	}
 	
 	if (in_array('site', $categoriesSpecialesAajouter) && !isset($categories['site']))
 	{
-		$cheminFichier = cheminConfigFluxRssGlobal($racine, 'site');
+		$cheminFichier = cheminConfigFluxRssGlobalSite($racine);
 	
 		if ($cheminFichier)
 		{
@@ -205,8 +205,8 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 		if (isset($pages[$langue]))
 		{
 			$categories = array ('site' => array ()) + $categories;
-			$categories['site']['langueCat'] = $langue;
-			$categories['site']['urlCat'] = "categorie.php?id=site&amp;langue=$langue";
+			$categories['site']['langue'] = $langue;
+			$categories['site']['url'] = "categorie.php?id=site&amp;langue=$langue";
 			$categories['site']['pages'] = array ();
 		
 			foreach ($pages[$langue]['pages'] as $page)
@@ -217,26 +217,6 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 	}
 	
 	return $categories;
-}
-
-/*
-Ajoute la variable GET à l'adresse fournie, et retourne le résultat. `$get` doit être sous la forme `cle=valeur` ou `cle`.
-*/
-function ajouteGet($adresse, $get)
-{
-	if (!empty($get))
-	{
-		if (strpos($adresse, '?') !== FALSE)
-		{
-			$adresse .= '&amp;' . $get;
-		}
-		else
-		{
-			$adresse .= '?' . $get;
-		}
-	}
-	
-	return $adresse;
 }
 
 /*
@@ -309,7 +289,7 @@ function annexesDocumentation($racineAdmin)
 /*
 Retourne le code HTML de l'aperçu d'une page apparaissant dans une page de catégorie.
 */
-function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement, $langueParDefaut)
+function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement)
 {
 	$apercu = '';
 	$apercu .= "<div class=\"apercu\">\n";
@@ -320,7 +300,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 
 	$apercu .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-	$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse, $langueParDefaut);
+	$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse);
 	$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesAdresse);
 
 	if (!empty($infosPublication))
@@ -395,7 +375,7 @@ function baliseTitle($baliseTitle, $baliseH1)
 		}
 		else
 		{
-			return urlPageSansEnvoyerAmis();
+			return variableGet(0, url(), 'action');
 		}
 	}
 	else
@@ -466,22 +446,6 @@ function blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier)
 }
 
 /*
-Prend en paramètre une chaîne de caractères, qui sera retournée balisée pour apparaître dans une boîte avec des coins arrondis.
-*/
-function boiteArrondie($contenu)
-{
-	$code = '';
-	list ($codeInterieurHaut, $codeInterieurBas) = codeInterieurBloc(FALSE, array (), '', 0, TRUE);
-	$code .= '<div class="blocArrondi">' . "\n";
-	$code .= $codeInterieurHaut;
-	$code .= "$contenu\n";
-	$code .= $codeInterieurBas;
-	$code .= '</div><!-- /.blocArrondi -->' . "\n";
-	
-	return $code;
-}
-
-/*
 Retourne un tableau dont chaque élément contient le code d'activation d'une boîte déroulante.
 */
 function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
@@ -511,7 +475,7 @@ function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
 	}
 	else
 	{
-		$boitesDeroulantesTableau = array();
+		$boitesDeroulantesTableau = array ();
 	}
 	
 	return $boitesDeroulantesTableau;
@@ -578,11 +542,11 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
 /*
 Retourne un tableau des catégories auxquelles appartient l'URL fournie. La structure est:
 
-	$listeCategories['idCategorie'] = 'urlCat';
+	$listeCategories['idCategorie'] = 'url';
 
 Fournir une URL traitée par `superRawurlencode()`.
 */
-function categories($racine, $urlRacine, $url, $langueParDefaut)
+function categories($racine, $urlRacine, $url)
 {
 	$listeCategories = array ();
 	$cheminFichier = cheminConfigCategories($racine);
@@ -597,13 +561,13 @@ function categories($racine, $urlRacine, $url, $langueParDefaut)
 				
 				if (superRawurlencode($urlPage) == $url)
 				{
-					$listeCategories[$categorie] = urlCat($racine, $categorieInfos, $categorie, $langueParDefaut);
+					$listeCategories[$categorie] = urlCat($racine, $categorieInfos, $categorie);
 				}
 			}
 		}
 	}
 	
-	ksort($listeCategories);
+	uksort($listeCategories, 'strnatcasecmp');
 	
 	return $listeCategories;
 }
@@ -685,15 +649,15 @@ function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategor
 /*
 Retourne un tableau contenant la liste des catégories enfants d'une catégorie donnée. Les catégories enfants doivent avoir la même langue que la catégorie parente.
 */
-function categoriesEnfants($categories, $categorie, $langueParDefaut)
+function categoriesEnfants($categories, $categorie)
 {
 	$categoriesEnfants = array ();
 	
 	foreach ($categories as $cat => $catInfos)
 	{
-		if (isset($catInfos['catParente']) && $catInfos['catParente'] == $categorie)
+		if (isset($catInfos['parent']) && $catInfos['parent'] == $categorie)
 		{
-			if (langueCat($catInfos, $langueParDefaut) == langueCat($categories[$categorie], $langueParDefaut))
+			if ($catInfos['langue'] == $categories[$categorie]['langue'])
 			{
 				$categoriesEnfants[] = $cat;
 			}
@@ -708,23 +672,23 @@ Retourne un tableau contenant la liste des catégories parentes indirectes d'une
 
 Note: chaque catégorie parente doit avoir la même langue que la catégorie donnée.
 */
-function categoriesParentesIndirectes($categories, $categorie, $langueParDefaut)
+function categoriesParentesIndirectes($categories, $categorie)
 {
 	$categoriesParentesIndirectes = array ();
 	
-	if (isset($categories[$categorie]['catParente']))
+	if (isset($categories[$categorie]['parent']))
 	{
-		$idCatParente = $categories[$categorie]['catParente'];
+		$idCatParente = $categories[$categorie]['parent'];
 	}
 	else
 	{
 		$idCatParente = '';
 	}
 	
-	if (!empty($idCatParente) && langueCat($categories[$idCatParente], $langueParDefaut) == langueCat($categories[$categorie], $langueParDefaut))
+	if (!empty($idCatParente) && $categories[$idCatParente]['langue'] == $categories[$categorie]['langue'])
 	{
 		$categoriesParentesIndirectes[] = $idCatParente;
-		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $idCatParente, $langueParDefaut));
+		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $idCatParente));
 	}
 	
 	return array_unique($categoriesParentesIndirectes);
@@ -756,7 +720,7 @@ function chapeau($contenuChapeau, $chapeauEnMarkdown = FALSE)
 	
 	if ($chapeauEnMarkdown)
 	{
-		$contenuChapeau = mdtxtChaine($contenuChapeau);
+		$contenuChapeau = mkdChaine($contenuChapeau);
 	}
 	
 	$chapeau .= $contenuChapeau;
@@ -790,21 +754,21 @@ function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 }
 
 /*
-Retourne le chemin vers le fichier de configuration du flux RSS global des galeries ou du site, selon le nom passé en paramètre. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+Retourne le chemin vers le fichier de configuration du flux RSS global du site. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function cheminConfigFluxRssGlobal($racine, $nom, $retourneCheminParDefaut = FALSE)
+function cheminConfigFluxRssGlobalSite($racine, $retourneCheminParDefaut = FALSE)
 {
-	if (file_exists("$racine/site/inc/rss-$nom.ini.txt"))
+	if (file_exists("$racine/site/inc/rss-site.ini.txt"))
 	{
-		return "$racine/site/inc/rss-$nom.ini.txt";
+		return "$racine/site/inc/rss-site.ini.txt";
 	}
-	elseif (file_exists("$racine/site/inc/rss-$nom.ini"))
+	elseif (file_exists("$racine/site/inc/rss-site.ini"))
 	{
-		return "$racine/site/inc/rss-$nom.ini";
+		return "$racine/site/inc/rss-site.ini";
 	}
 	elseif ($retourneCheminParDefaut)
 	{
-		return "$racine/site/inc/rss-$nom.ini.txt";
+		return "$racine/site/inc/rss-site.ini.txt";
 	}
 	else
 	{
@@ -817,7 +781,11 @@ Retourne le chemin vers le fichier de configuration d'une galerie. Si aucun fich
 */
 function cheminConfigGalerie($racine, $idGalerieDossier, $retourneCheminParDefaut = FALSE)
 {
-	if (!empty($idGalerieDossier) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt'))
+	if ($idGalerieDossier == 'demo')
+	{
+		return $racine . '/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt';
+	}
+	elseif (!empty($idGalerieDossier) && file_exists($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt'))
 	{
 		return $racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt';
 	}
@@ -828,6 +796,29 @@ function cheminConfigGalerie($racine, $idGalerieDossier, $retourneCheminParDefau
 	elseif ($retourneCheminParDefaut)
 	{
 		return $racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt';
+	}
+	else
+	{
+		return FALSE;
+	}
+}
+
+/*
+Retourne le chemin vers le fichier de configuration des galeries. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function cheminConfigGaleries($racine, $retourneCheminParDefaut = FALSE)
+{
+	if (file_exists("$racine/site/inc/galeries.ini.txt"))
+	{
+		return "$racine/site/inc/galeries.ini.txt";
+	}
+	elseif (file_exists("$racine/site/inc/galeries.ini"))
+	{
+		return "$racine/site/inc/galeries.ini";
+	}
+	elseif ($retourneCheminParDefaut)
+	{
+		return "$racine/site/inc/galeries.ini.txt";
 	}
 	else
 	{
@@ -892,12 +883,37 @@ function chiffreMotDePasse($motDePasse)
 }
 
 /*
+Retourne les classes du bloc (`blocAvecFond` ou `blocArrondi` ou les deux). Si aucune classe ne s'applique, retourne une chaîne vide.
+*/
+function classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $bloc, $nombreDeColonnes)
+{
+	$classes = '';
+	
+	if ((isset($blocsAvecFondSpecifiques[$bloc][$nombreDeColonnes]) && $blocsAvecFondSpecifiques[$bloc][$nombreDeColonnes]) || (!isset($blocsAvecFondSpecifiques[$bloc][$nombreDeColonnes]) && $blocsAvecFondParDefaut))
+	{
+		$classes .= 'blocAvecFond ';
+	}
+	
+	if ($blocsArrondis)
+	{
+		$classes .= 'blocArrondi';
+	}
+	
+	return rtrim($classes);
+}
+
+/*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $borduresPage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
+function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
 {
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
+	
+	if ($arrierePlanColonne == 'AvecAucun')
+	{
+		$arrierePlanColonne = 'SansArrierePlan';
+	}
 	
 	if ($estAccueil)
 	{
@@ -962,11 +978,7 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 	if ($nombreDeColonnes == 2)
 	{
 		$classesBody .= 'deuxColonnes colonneAgauche colonneAdroite ';
-		
-		if ($arrierePlanColonne != 'Aucun')
-		{
-			$classesBody .= "deuxColonnes$arrierePlanColonne ";
-		}
+		$classesBody .= "deuxColonnes$arrierePlanColonne ";
 		
 		if ($deuxColonnesSousContenuAgauche)
 		{
@@ -984,25 +996,27 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		if ($uneColonneAgauche)
 		{
 			$classesBody .= "colonneAgauche uneColonneAgauche ";
-			
-			if ($arrierePlanColonne != 'Aucun')
-			{
-				$classesBody .= "colonneAgauche$arrierePlanColonne ";
-			}
+			$classesBody .= "colonneAgauche$arrierePlanColonne ";
 		}
 		else
 		{
 			$classesBody .= "colonneAdroite uneColonneAdroite ";
-			
-			if ($arrierePlanColonne != 'Aucun')
-			{
-				$classesBody .= "colonneAdroite$arrierePlanColonne ";
-			}
+			$classesBody .= "colonneAdroite$arrierePlanColonne ";
 		}
 	}
 	elseif ($nombreDeColonnes == 0)
 	{
 		$classesBody .= "aucuneColonne ";
+	}
+	
+	if ($margesPage['haut'])
+	{
+		$classesBody .= 'margeHautPage ';
+	}
+	
+	if ($margesPage['bas'])
+	{
+		$classesBody .= 'margeBasPage ';
 	}
 	
 	if ($borduresPage['droite'])
@@ -1020,6 +1034,16 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		$classesBody .= 'bordureGauchePage ';
 	}
 	
+	if ($borduresPage['haut'])
+	{
+		$classesBody .= 'bordureHautPage ';
+	}
+	
+	if ($ombrePage)
+	{
+		$classesBody .= 'ombrePage ';
+	}
+	
 	if ($enTetePleineLargeur && ($nombreDeColonnes == 1 || $nombreDeColonnes == 2))
 	{
 		$classesBody .= 'enTetePleineLargeur ';
@@ -1028,6 +1052,11 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 	if ($differencierLiensVisitesHorsContenu)
 	{
 		$classesBody .= 'liensVisitesDifferencies ';
+	}
+	
+	if ($tableDesMatieresAvecFond)
+	{
+		$classesBody .= 'tableDesMatieresAvecFond ';
 	}
 	
 	if ($tableDesMatieresArrondie)
@@ -1085,24 +1114,42 @@ function classesContenu($differencierLiensVisitesHorsContenu, $classesSupplement
 }
 
 /*
-Retourne un tableau dont le premier élément contient le code débutant l'intérieur d'un bloc (donc ce qui suit l'ouverture d'une `div` de classe `bloc`); et le deuxième élément, le code terminant l'intérieur d'un bloc (donc ce qui précède la fermeture d'une `div` de classe `bloc`). Si `$forcerBlocArrondi` vaut TRUE, le code retourné sera nécessairement celui pour un bloc arrondi.
+Retourne le nom complet d'une langue (ex.: «Français») à partir du code de langue (ex.: «fr»). Si aucun nom n'a été trouvé, retourne le code de langue.
 */
-function codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes, $forcerBlocArrondi = FALSE)
+function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 {
-	$codeInterieurBloc = array ();
-	$codeInterieurBloc[0] = "\n\t";
-	$codeInterieurBloc[1] = "\n\t" . '</div><!-- /.contenuBloc -->';
-	
-	if ($forcerBlocArrondi || estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes))
+	switch ($codeLangue)
 	{
-		$codeInterieurBloc[0] .= '<div class="haut-droit"></div><div class="haut-gauche"></div>';
-		$codeInterieurBloc[1] .= '<div class="bas-droit"></div><div class="bas-gauche"></div>';
+		case 'en':
+			if ($traduireNom)
+			{
+				$nom = T_("Anglais");
+			}
+			else
+			{
+				$nom = '<span lang="en">English</span>';
+			}
+			
+			break;
+			
+		case 'fr':
+			if ($traduireNom)
+			{
+				$nom = T_("Français");
+			}
+			else
+			{
+				$nom = '<span lang="fr">Français</span>';
+			}
+			
+			break;
+			
+		default:
+			$nom = "<code class=\"codeLangue\">$codeLangue</code>";
+			break;
 	}
 	
-	$codeInterieurBloc[0] .= '<div class="contenuBloc">' . "\n";
-	$codeInterieurBloc[1] .= "\n";
-	
-	return $codeInterieurBloc;
+	return $nom;
 }
 
 /*
@@ -1122,6 +1169,8 @@ function coloreCodePhp($code, $retourneCode = FALSE, $commentairesEnNoir = FALSE
 {
 	$codeColore = highlight_string($code, TRUE);
 	$codeColore = str_replace('&nbsp;', ' ', $codeColore);
+	$codeColore = str_replace('<code><span style="color: #000000">' . "\n", '<code><span style="color: #000000">', $codeColore);
+	$codeColore = str_replace("</span>\n</code>", '</span></code>', $codeColore);
 	$codeColore = str_replace('<br />', "\n", $codeColore);
 	
 	// Commentaires vers bleu primaire ou vers noir.
@@ -1178,29 +1227,6 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 }
 
 /*
-Retourne le contenu accessible à l'URL fournie en paramètre. Si l'URL n'est pas accessible, retourne FALSE.
-
-Fournir une URL traitée par `superRawurlencode()`.
-*/
-function contenuUrl($url)
-{
-	if (function_exists('curl_init'))
-	{
-		$ch = @curl_init($url);
-		@curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		@curl_setopt($ch, CURLOPT_FAILONERROR, TRUE);
-		$contenu = @curl_exec($ch);
-		@curl_close($ch);
-	}
-	else
-	{
-		$contenu = @file_get_contents($url);
-	}
-	
-	return $contenu;
-}
-
-/*
 S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
 */
 function corrigeHtml($html)
@@ -1211,7 +1237,7 @@ function corrigeHtml($html)
 /*
 Retourne un tableau de deux éléments: le premier contient le corps de la galerie prêt à être affiché; le deuxième contient les informations sur l'image en version intermediaire s'il y a lieu, sinon est vide.
 */
-function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsArrondisParDefaut, $blocsArrondisSpecifiques, $nombreDeColonnes)
+function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes)
 {
 	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $resultat))
 	{
@@ -1219,18 +1245,9 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 		{
 			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
 			
-			list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes);
+			$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, 'legende-image-galerie', $nombreDeColonnes);
 			
-			if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, 'legende-image-galerie', $nombreDeColonnes))
-			{
-				$classeBlocArrondi = ' blocArrondi';
-			}
-			else
-			{
-				$classeBlocArrondi = '';
-			}
-			
-			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc' . $classeBlocArrondi . '">' . $codeInterieurBlocHaut . '<h2>' . T_("Légende de l'image") . "</h2>\n" . $resultat[1] . $codeInterieurBlocBas . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
+			$tableauCorpsGalerie['texteIntermediaire'] = '<div id="galerieIntermediaireTexteHorsContenu" class="bloc ' . $classesBloc . '">' . "\n<h2>" . T_("Légende de l'image") . "</h2>\n" . $resultat[1] . '</div><!-- /#galerieIntermediaireTexteHorsContenu -->' . "\n";
 		}
 		else
 		{
@@ -1347,7 +1364,7 @@ function creeDossierCache($racine)
 /*
 Retourne un tableau d'URL à visiter par le cron pour une catégorie donnée.
 */
-function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombreArticlesParPageCategorie, $langueParDefaut)
+function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombreArticlesParPageCategorie)
 {
 	$tableauUrl = array ();
 	
@@ -1361,18 +1378,19 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 		$nombreDePages = 1;
 	}
 	
-	$categorie['langueCat'] = langueCat($categorie, $langueParDefaut);
-	$categorie['urlCat'] = urlCat($racine, $categorie, $idCategorie, $langueParDefaut);
-	$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie-page-1-" . $categorie['langueCat'] . '.cache.html');
-$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache' => $nomFichierCache);
+	$categorie['url'] = urlCat($racine, $categorie, $idCategorie);
+	$nomFichierCache = nomFichierCache($racine, $urlRacine, $categorie['url']);
+	$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['url'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 	
 	if ($nombreDePages > 1)
 	{
 		for ($i = 2; $i <= $nombreDePages; $i++)
 		{
-			$adresse = ajouteGet($urlRacine . '/' . $categorie['urlCat'], "page=$i");
-			$nomFichierCache = filtreChaine($racine, "categorie-$idCategorie-page-$i-" . $categorie['langueCat'] . '.cache.html');
-			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache);
+			$adresse = variableGet(2, $urlRacine . '/' . $categorie['url'], 'page', $i);
+			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
+			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
 		}
 	}
 	
@@ -1380,38 +1398,52 @@ $tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['urlCat'], 'cache'
 }
 
 /*
-S'il ne vaut pas FALSE, le contenu est balisé et ensuite affiché. Retourne une chaîne vide.
+Retourne un tableau d'URL à visiter par le cron pour une galerie donnée.
 */
-function cUrlCategorie($contenu, $infos)
+function cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGalerie)
 {
-	if ($contenu !== FALSE)
+	$tableauUrl = array ();
+	
+	if (cheminConfigGalerie($racine, $infosGalerie['dossier']))
 	{
-		echo "<!-- `cUrlCategorie()`: {$infos['url']} -->$contenu<!-- /`cUrlCategorie()`: {$infos['url']} -->";
+		$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $infosGalerie['dossier']), TRUE);
+		
+		if ($galerieVignettesParPage)
+		{
+			$nombreDimages = count($tableauGalerie);
+			$nombreDePages = ceil($nombreDimages / $galerieVignettesParPage);
+		}
+		else
+		{
+			$nombreDePages = 1;
+		}
+		
+		$nomFichierCache = nomFichierCache($racine, $urlRacine, $infosGalerie['url']);
+		$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+		$tableauUrl[] = array ('url' => $urlRacine . '/' . $infosGalerie['url'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+		
+		if ($nombreDePages > 1)
+		{
+			for ($i = 2; $i <= $nombreDePages; $i++)
+			{
+				$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'page', $i);
+				$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
+				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+				$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+			}
+		}
+		
+		foreach ($tableauGalerie as $image)
+		{
+			$id = idImage($racine, $image);
+			$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'image', filtreChaine($racine, $id));
+			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
+			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+		}
 	}
 	
-	return '';
-}
-
-/*
-Affiche une ligne de rapport cron pour une requête effectuée avec `RollingCurl`. Retourne une chaîne vide.
-*/
-function cUrlCronRapport($contenu, $infos)
-{
-	$rapport = '';
-	
-	if (preg_match('/^[23]/', $infos['http_code']))
-	{
-		$rapport .= '<li>1: ';
-	}
-	else
-	{
-		$rapport .= '<li class="erreur">0: ';
-	}
-	
-	$rapport .= 'RollingCurl: <code>' . $infos['url'] . "</code></li>\n";
-	echo $rapport;
-	
-	return '';
+	return $tableauUrl;
 }
 
 /*
@@ -1514,6 +1546,10 @@ function doctype($doctype, $langue)
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">' . "\n", '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langue . '" lang="' . $langue . '">' . "\n");
 			break;
 			
+		case 'HTML 5':
+			return array ("<!DOCTYPE html>\n", "<html lang=\"$langue\">\n");
+			break;
+			
 		case 'HTML 4.01 Strict':
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">' . "\n", '<html lang="' . $langue . '">' . "\n");
 			break;
@@ -1526,99 +1562,6 @@ function doctype($doctype, $langue)
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n", '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langue . '" lang="' . $langue . '">' . "\n");
 			break;
 	}
-}
-
-/*
-Retourne le texte supplémentaire d'une image pour le message envoyé par le module «Envoyer à des amis».
-*/
-function envoyerAmisSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown)
-{
-	$messageEnvoyerAmisSupplement = '';
-	$titreImage = titreImage($image);
-	
-	if (!empty($image['vignetteNom']))
-	{
-		$vignetteNom = $image['vignetteNom'];
-	}
-	else
-	{
-		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
-	}
-	
-	if (!empty($image['vignetteAlt']))
-	{
-		$vignetteAlt = $image['vignetteAlt'];
-	}
-	elseif (!empty($image['intermediaireAlt']))
-	{
-		$vignetteAlt = $image['intermediaireAlt'];
-	}
-	else
-	{
-		$vignetteAlt = sprintf(T_("Image %1\$s"), $titreImage);
-	}
-	
-	$messageEnvoyerAmisSupplement .= "<p style=\"text-align: center;\"><img src=\"$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom) . "\" alt=\"$vignetteAlt\" /></p>\n";
-	
-	if (!empty($image['titre']))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['titre'] . "</p>\n";
-	}
-	
-	if (!empty($image['intermediaireLegende']))
-	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['intermediaireAlt']))
-	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['vignetteAlt']))
-	{
-		$messageEnvoyerAmisSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
-	}
-	elseif (!empty($image['pageIntermediaireDescription']))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
-	}
-	elseif (!empty($image['pageIntermediaireBaliseTitle']))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
-	}
-	
-	$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplement</div>\n";
-	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
-	
-	return $messageEnvoyerAmisSupplement;
-}
-
-/*
-Retourne le texte supplémentaire d'une page pour le message envoyé par le module «Envoyer à des amis».
-*/
-function envoyerAmisSupplementPage($description, $baliseTitle)
-{
-	$messageEnvoyerAmisSupplement = '';
-	
-	if (!empty($baliseTitle))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $baliseTitle . "</p>\n";
-	}
-	
-	if (!empty($description))
-	{
-		$messageEnvoyerAmisSupplement .= '<p>' . $description . "</p>\n";
-	}
-	
-	if (!empty($messageEnvoyerAmisSupplement))
-	{
-		$messageEnvoyerAmisSupplement = "<div style=\"font-style: italic;\">$messageEnvoyerAmisSupplement</div>\n";
-	}
-	
-	$messageEnvoyerAmisSupplement .= '<p><a href="' . urlPageSansEnvoyerAmis() . '">' . urlPageSansEnvoyerAmis() . "</a></p>\n";
-	
-	$messageEnvoyerAmisSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
-	
-	return $messageEnvoyerAmisSupplement;
 }
 
 /*
@@ -1645,21 +1588,6 @@ function estAccueil($accueil)
 	}
 	
 	return FALSE;
-}
-
-/*
-Returne TRUE si le bloc a des coins arrondis, sinon retourne FALSE.
-*/
-function estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $bloc, $nombreDeColonnes)
-{
-	if ((isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) || (!isset($blocsArrondisSpecifiques[$bloc][$nombreDeColonnes]) && $blocsArrondisParDefaut))
-	{
-		return TRUE;
-	}
-	else
-	{
-		return FALSE;
-	}
 }
 
 /*
@@ -1693,45 +1621,6 @@ function extension($nomFichier, $retourneNomSansExtension = FALSE)
 	{
 		return $extension != $nomFichier ? $extension : '';
 	}
-}
-
-/*
-Retourne un tableau contenant les fichiers à inclure au début du script.
-*/
-function fichiersAinclureAuDebut($racine, $idCategorie)
-{
-	$fichiers = array ();
-	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
-	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
-	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
-	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
-	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
-	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
-	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
-	$fichiers[] = $racine . '/inc/node_teaser/node.inc.php';
-	$fichiers[] = $racine . '/inc/node_teaser/unicode.inc.php';
-	
-	if (!empty($idCategorie))
-	{
-		$fichiers[] = $racine . '/inc/rolling-curl/RollingCurl.php';
-	}
-	
-	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
-	{
-		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
-	}
-	
-	foreach (cheminsInc($racine, 'config') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	foreach (cheminsInc($racine, 'constantes') as $fichier)
-	{
-		$fichiers[] = $fichier;
-	}
-	
-	return $fichiers;
 }
 
 /*
@@ -1869,9 +1758,10 @@ function fluxRss($type, $itemsFluxRss, $urlRss, $url, $baliseTitleComplement, $i
 /*
 Retourne un tableau listant les images d'une galerie, chaque image constituant elle-même un tableau des informations nécessaires à la création d'un fichier RSS.
 */
-function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
+function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
+	$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, $langue);
 	$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
 	$itemsFluxRss = array ();
 	
@@ -1884,7 +1774,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 			$title = sprintf(T_("%1\$s – Galerie %2\$s"), $titreImage, $idGalerie);
 			$cheminImage = "$racine/site/fichiers/galeries/$idGalerieDossier/" . $image['intermediaireNom'];
 			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieDossier) . '/' . rawurlencode($image['intermediaireNom']);
-			$urlGalerieImage = superRawurlencode("$urlGalerie?image=$id");
+			$urlGalerieImage = superRawurlencode(variableGet(2, $urlGalerie, 'image', filtreChaine($racine, $id)));
 			
 			if (!empty($image['intermediaireLargeur']))
 			{
@@ -1992,20 +1882,20 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie,
 }
 
 /*
-Retourne un tableau listant les images de toutes les galeries déclarées dans le fichier de configuration du flux RSS des derniers ajouts aux galeries.
+Retourne un tableau listant les images de toutes les galeries dont le flux RSS est activé.
 
 Voir la fonction `fluxRssGalerieTableauBrut()` pour plus de détails.
 */
 function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$itemsFluxRss = array ();
-	$galeries = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+	$listeGaleriesRss = fluxRssGlobalGaleries($racine);
 	
-	if (isset($galeries[$langue]))
+	if (!empty($listeGaleriesRss))
 	{
-		foreach ($galeries[$langue] as $idGalerie => $urlRelativeGalerie)
+		foreach ($listeGaleriesRss as $idGalerie)
 		{
-			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, "$urlRacine/$urlRelativeGalerie", $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown));
+			$itemsFluxRss = array_merge($itemsFluxRss, fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown));
 		}
 	}
 	
@@ -2013,14 +1903,36 @@ function fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRs
 }
 
 /*
+Retourne la liste des galeries dont le flux RSS est activé. Si aucune galerie n'a été trouvée, retourne un tableau vide.
+*/
+function fluxRssGlobalGaleries($racine)
+{
+	$listeGaleriesRss = array ();
+	$galeries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
+	
+	if (!empty($galeries))
+	{
+		foreach ($galeries as $idGalerie => $infosGalerie)
+		{
+			if ($infosGalerie['rss'] == 1)
+			{
+				$listeGaleriesRss[] = $idGalerie;
+			}
+		}
+	}
+	
+	return $listeGaleriesRss;
+}
+
+/*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 
 Ne pas fournir une URL traitée par `superRawurlencode()`.
 */
-function fluxRssPageTableauBrut($cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique)
+function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique);
+	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
 	$urlPage = superRawurlencode($urlPage);
 	
 	if (!empty($infosPage))
@@ -2081,55 +1993,45 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
-Retourne un tableau listant les galeries sous la forme `"idGalerie" => "idGalerieDossier"`. Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
+Retourne un tableau listant les galeries sous la forme suivante:
+
+	"$idGalerie" => array ("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
+
+Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
 */
 function galeries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE)
 {
 	$galeries = array ();
+	$configGaleries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
 	
-	if ($fic = @opendir($racine . '/site/fichiers/galeries'))
+	if (!empty($configGaleries))
 	{
-		while ($fichier = @readdir($fic))
+		if (!empty($galerieSpecifique) && isset($configGaleries[$galerieSpecifique]))
 		{
-			if (is_dir($racine . '/site/fichiers/galeries/' . $fichier) && $fichier != '.' && $fichier != '..')
+			$galeriesTmp = array ($galerieSpecifique => $configGaleries[$galerieSpecifique]);
+		}
+		else
+		{
+			$galeriesTmp = $configGaleries;
+		}
+		
+		if ($avecConfigSeulement)
+		{
+			foreach ($galeriesTmp as $idGalerie => $infosGalerie)
 			{
-				$cheminIdTxt = $racine . '/site/fichiers/galeries/' . $fichier . '/id.txt';
-				
-				if (!file_exists($cheminIdTxt))
+				if (isset($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
 				{
-					@file_put_contents($cheminIdTxt, $fichier);
-				}
-				
-				if (file_exists($cheminIdTxt))
-				{
-					$contenuIdTxt = @file_get_contents($racine . '/site/fichiers/galeries/' . $fichier . '/id.txt');
-				
-					if ($contenuIdTxt !== FALSE && (($avecConfigSeulement && cheminConfigGalerie($racine, $fichier)) || !$avecConfigSeulement))
-					
-					{
-						$idGalerie = trim($contenuIdTxt);
-						
-						if (!empty($galerieSpecifique))
-						{
-							if ($galerieSpecifique == $idGalerie)
-							{
-								$galeries[$idGalerie] = $fichier;
-								break;
-							}
-						}
-						else
-						{
-							$galeries[$idGalerie] = $fichier;
-						}
-					}
+					$galeries[$idGalerie] = $infosGalerie;
 				}
 			}
 		}
-		
-		closedir($fic);
+		else
+		{
+			$galeries = $galeriesTmp;
+		}
 	}
 	
-	natcasesort($galeries);
+	uksort($galeries, 'strnatcasecmp');
 	
 	return $galeries;
 }
@@ -2152,7 +2054,7 @@ function gdEstInstallee()
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie)
+function htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
 {
 	$nomCategorie = $categorie;
 	
@@ -2168,16 +2070,16 @@ function htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParD
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
 	
-	$categories[$categorie]['urlCat'] = urlCat($racine, $categories[$categorie], $categorie, $langueParDefaut);
+	$categories[$categorie]['url'] = urlCat($racine, $categories[$categorie], $categorie);
 	
-	$htmlCategorie .= '<a href="' . $urlRacine . '/' . superRawurlencode($categories[$categorie]['urlCat']) . '">' . $nomCategorie . '</a>';
+	$htmlCategorie .= '<a href="' . $urlRacine . '/' . superRawurlencode($categories[$categorie]['url']) . '">' . $nomCategorie . '</a>';
 	
 	if ($afficherNombreArticlesCategorie)
 	{
 		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
 	}
 	
-	$categoriesEnfants = categoriesEnfants($categories, $categorie, $langueParDefaut);
+	$categoriesEnfants = categoriesEnfants($categories, $categorie);
 	
 	if (!empty($categoriesEnfants))
 	{
@@ -2185,7 +2087,7 @@ function htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParD
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($racine, $urlRacine, $categories, $enfant, $langueParDefaut, $afficherNombreArticlesCategorie);
+			$htmlCategorie .= htmlCategorie($racine, $urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -2216,6 +2118,25 @@ function idCategorie($racine, $categories, $idCategorieFiltre)
 }
 
 /*
+Retourne l'`id` réel d'une galerie à partir de l'`id` filtré. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
+*/
+function idGalerie($racine, $galeries, $idGalerieFiltre)
+{
+	$idReel = '';
+	
+	foreach($galeries as $idGalerie => $infosGalerie)
+	{
+		if ($idGalerieFiltre == filtreChaine($racine, $idGalerie))
+		{
+			$idReel = $idGalerie;
+			break;
+		}
+	}
+	
+	return $idReel;
+}
+
+/*
 Retourne le nom du dossier d'une galerie. Si aucun dossier n'a été trouvé, retourne un nom qui pourra être utilisé pour en créer un.
 */
 function idGalerieDossier($racine, $idGalerie)
@@ -2223,9 +2144,9 @@ function idGalerieDossier($racine, $idGalerie)
 	$dossier = '';
 	$galeries = galeries($racine, $idGalerie);
 	
-	if (!empty($galeries[$idGalerie]))
+	if (!empty($galeries[$idGalerie]['dossier']))
 	{
-		$dossier = $galeries[$idGalerie];
+		$dossier = $galeries[$idGalerie]['dossier'];
 	}
 	else
 	{
@@ -2406,7 +2327,7 @@ function image(
 					$iconeLienOriginalSrc = $urlRacine . '/fichiers/agrandir.png';
 				}
 			
-				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . $texteAltLienOriginal . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
+				$divLienOriginalIcone = '<div id="galerieLienOriginalIcone">' . $aLienOriginalDebut . '<img src="' . $iconeLienOriginalSrc . '" alt="' . $texteAltLienOriginal . '" title="' . $texteAltLienOriginal . '" width="22" height="22" />' . $aLienOriginalFin . '</div><!-- /#galerieLienOriginalIcone -->' . "\n";
 			}
 		}
 		
@@ -2518,12 +2439,12 @@ function image(
 	elseif ($taille == 'vignette')
 	{
 		$class = '';
+		$width = '';
+		$height = '';
 		
 		if ($galerieNavigation == 'fleches' && ($sens == 'precedent' || $sens == 'suivant'))
 		{
 			$class .= ' galerieFleche';
-			$width = 'width="80"';
-			$height = 'height="80"';
 			
 			if (file_exists($racine . '/site/fichiers/' . $sens . '.png'))
 			{
@@ -2597,11 +2518,6 @@ function image(
 					$height = 'height="' . $haut . '"';
 				}
 			}
-			else
-			{
-				$width = '';
-				$height = '';
-			}
 		}
 		
 		if (!empty($infosImage['vignetteAlt']))
@@ -2633,7 +2549,8 @@ function image(
 		
 		$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
 		$id = idImage($racine, $infosImage);
-		$hrefPageIndividuelleImage = url(FALSE, FALSE) . '?image=' . $id . $ancre;
+		$hrefPageIndividuelleImage = variableGet(1, url(), 'image', filtreChaine($racine, $id)) . $ancre;
+		$hrefPageIndividuelleImage = variableGet(0, $hrefPageIndividuelleImage, 'action');
 		
 		if ($estAccueil && $galerieAccueilJavascript)
 		{
@@ -2666,7 +2583,51 @@ function image(
 }
 
 /*
-Retourne un tableau d'informations au sujet du contenu accessible à l'URL `$urlPage`, ou directement au sujet du contenu fourni si `$html` n'est pas vide. Le tableau contient les informations suivantes:
+Retourne un tableau contenant les fichiers à inclure au début du script.
+*/
+function inclureAuDebut($racine)
+{
+	$fichiers = array ();
+	
+	foreach (cheminsInc($racine, 'config') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	return $fichiers;
+}
+
+/*
+Retourne un tableau contenant les fichiers à inclure une seule fois au début du script.
+*/
+function inclureUneFoisAuDebut($racine)
+{
+	$fichiers = array ();
+	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
+	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
+	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
+	$fichiers[] = $racine . '/inc/node_teaser/node.inc.php';
+	$fichiers[] = $racine . '/inc/node_teaser/unicode.inc.php';
+	
+	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
+	{
+		$fichiers[] = $racine . '/site/inc/fonctions.inc.php';
+	}
+	
+	foreach (cheminsInc($racine, 'constantes') as $fichier)
+	{
+		$fichiers[] = $fichier;
+	}
+	
+	return $fichiers;
+}
+
+/*
+Retourne un tableau d'informations au sujet du contenu local accessible à l'URL `$urlPage`, ou directement au sujet du contenu fourni si `$html` n'est pas vide. Le tableau contient les informations suivantes:
 
   - `$infosPage['titre']`: titre de la page. Prend comme valeur la première information trouvée parmi les suivantes:
     - contenu de la premère balise `h1`;
@@ -2687,13 +2648,13 @@ Si `$html` est vide et que l'URL fournie n'est pas accessible, retourne un table
 
 Ne pas fournir une URL traitée par `superRawurlencode()`.
 */
-function infosPage($urlPage, $inclureApercu, $tailleApercuAutomatique, $html = '')
+function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $html = '')
 {
 	$infosPage = array ();
 	
 	if (empty($html))
 	{
-		$html = contenuUrl(superRawurlencode($urlPage, TRUE));
+		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache);
 	}
 	
 	if ($html !== FALSE)
@@ -3036,14 +2997,6 @@ function langueActive($codeMenuLangues, $langue, $accueil)
 }
 
 /*
-Retourne la langue d'une catégorie.
-*/
-function langueCat($categorie, $langueParDefaut)
-{
-	return !empty($categorie['langueCat']) ? $categorie['langueCat'] : $langueParDefaut;
-}
-
-/*
 Retourne une lettre (a-zA-Z) au hasard. Optionnellement, il est possible de préciser des lettres à exclure.
 */
 function lettreAuHasard($lettresExclues = '')
@@ -3114,31 +3067,27 @@ function licence($urlRacine, $choixLicence)
 			break;
 
 		case 'cc-by':
-			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1\$s alt=\"Licence Creative Commons Attribution 3.0 non transposé (CC BY 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\">licence Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'cc-by-sa':
-			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Partage des conditions initiales à l'identique 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-sa/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1\$s alt=\"Licence Creative Commons Paternité – Partage dans les mêmes conditions 3.0 non transposé (CC BY-SA 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\">licence Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-sa/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'cc-by-nd':
-			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas de modification 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nd/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1\$s alt=\"Licence Creative Commons Attribution – Pas de modification 3.0 non transposé (CC BY-ND 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\">licence Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nd/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'cc-by-nc':
-			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas d'utilisation commerciale 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1\$s alt=\"Licence Creative Commons Attribution – Pas d'utilisation commerciale 3.0 non transposé (CC BY-NC 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\">licence Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'cc-by-nc-sa':
-			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas d'utilisation commerciale – Partage des conditions initiales à l'identique 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img %1\$s alt=\"Licence Creative Commons Attribution – Pas d'utilisation commerciale – Partage dans les mêmes conditions 3.0 non transposé (CC BY-NC-SA 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\">licence Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc-sa/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'cc-by-nc-nd':
-			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img %1\$s alt=\"Contrat Creative Commons Paternité – Pas d'utilisation commerciale – Pas de modification 3.0 Générique\" /></a> Mis à disposition sous un <a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\">contrat Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc-nd/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
-			break;
-
-		case 'dp':
-			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/publicdomain/deed.fr\"><img %1\$s alt=\"Domaine public\" /></a> Mis à disposition dans le <a href=\"http://creativecommons.org/licenses/publicdomain/deed.fr\">domaine public</a>."), "src=\"$urlRacine/fichiers/domaine-public-80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img %1\$s alt=\"Licence Creative Commons Attribution – Pas d'utilisation commerciale – Pas de modification 3.0 non transposé (CC BY-NC-ND 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\">licence Creative Commons</a>."), "src=\"http://i.creativecommons.org/l/by-nc-nd/3.0/80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'gplv2':
@@ -3185,8 +3134,16 @@ function licence($urlRacine, $choixLicence)
 			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence\"><img %1\$s alt=\"Licence BSD modifiée\" /></a> Mis à disposition sous la <a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence\">licence BSD modifiée</a>."), "src=\"$urlRacine/fichiers/licence-bsd-modifiee-80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
+		case 'mdp':
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr\"><img %1\$s alt=\"Marque du domaine public 1.0\" /></a> Identifié comme étant dans le <a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr\">domaine public</a>."), "src=\"$urlRacine/fichiers/domaine-public-80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			break;
+
 		case 'mit':
 			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1\$s alt=\"Licence MIT\" /></a> Mis à disposition sous la <a href=\"http://www.opensource.org/licenses/mit-license.php\">licence MIT</a>."), "src=\"$urlRacine/fichiers/licence-mit-80x15.png\" width=\"80\" height=\"15\"") . '</span>';
+			break;
+
+		case 'tdp':
+			$licence = '<span class="licence">' . sprintf(T_("<a href=\"http://creativecommons.org/publicdomain/zero/1.0/deed.fr\"><img %1\$s alt=\"Transfert dans le domaine public – CC0 1.0 universel (CC0 1.0)\" /></a> Transféré dans le <a href=\"http://creativecommons.org/publicdomain/zero/1.0/deed.fr\">domaine public</a>."), "src=\"$urlRacine/fichiers/domaine-public-80x15.png\" width=\"80\" height=\"15\"") . '</span>';
 			break;
 
 		case 'verbatim':
@@ -3204,21 +3161,74 @@ function licence($urlRacine, $choixLicence)
 /*
 Ajoute la classe `actif` à tous les liens (balises `a`) du code passé en paramètre et pointant vers la page en cours ainsi qu'à un parent (s'il existe) spécifié avec le paramètre optionnel `$parent`, qui doit être le nom d'une balise (par exemple `li`). Si `$inclureGet` vaut FALSE, les variables GET ne sont pas prises en considération dans la comparaison des adresses. Retourne le code résultant.
 */
-function lienActif($html, $inclureGet = TRUE, $parent = '')
+function lienActif($urlRacine, $html, $inclureGet, $parent = '')
 {
-	$url = url($inclureGet);
+	$url = url();
+	$urlRelative = preg_replace('#^' . preg_quote($urlRacine) . '/?#', '', $url);
+	$infosUrlRelative = parse_url($urlRelative);
 	$dom = str_get_html($html);
 	
 	foreach ($dom->find('a') as $a)
 	{
+		$lienActif = FALSE;
 		$aHref = $a->href;
+		$aHref = preg_replace('/#.+$/', '', $aHref);
+		$aHrefRelatif = preg_replace('#^' . preg_quote($urlRacine) . '/?#', '', $aHref);
+		$infosAhrefRelatif = parse_url($aHrefRelatif);
 		
-		if (!$inclureGet)
+		if (isset($infosAhrefRelatif['path']) && isset($infosUrlRelative['path']) && $infosAhrefRelatif['path'] == $infosUrlRelative['path'])
 		{
-			$aHref = preg_replace('/\?.*/', '', $aHref);
+			// A: même nom de page (mais pas nécessairement mêmes variables `GET`).
+			
+			$getUrlRelative = array ();
+			
+			if (isset($infosUrlRelative['query']))
+			{
+				parse_str(str_replace('&amp;', '&', $infosUrlRelative['query']), $getUrlRelative);
+				uksort($getUrlRelative, 'strnatcasecmp');
+			}
+			
+			$getAhrefRelatif = array ();
+			
+			if (isset($infosAhrefRelatif['query']))
+			{
+				parse_str(str_replace('&amp;', '&', $infosAhrefRelatif['query']), $getAhrefRelatif);
+				uksort($getAhrefRelatif, 'strnatcasecmp');
+			}
+			
+			if ($getUrlRelative == $getAhrefRelatif)
+			{
+				$lienActif = TRUE;
+			}
+			elseif (isset($getAhrefRelatif['action']))
+			{
+				$lienActif = FALSE;
+			}
+			else
+			{
+				if (isset($getUrlRelative['image']))
+				{
+					unset($getUrlRelative['image']);
+				}
+				
+				if (isset($getUrlRelative['action']))
+				{
+					unset($getUrlRelative['action']);
+				}
+				
+				if (isset($getAhrefRelatif['image']))
+				{
+					unset($getAhrefRelatif['image']);
+				}
+				
+				if (($getUrlRelative == $getAhrefRelatif) || !$inclureGet)
+				{
+					$lienActif = TRUE;
+				}
+			}
 		}
 		
-		if ($aHref == $url)
+		if ($lienActif)
 		{
 			$class = 'actif';
 			
@@ -3423,53 +3433,245 @@ function limiteProfondeurListe($html)
 }
 
 /*
-Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
+Fusionne plusieurs fichiers CSS ou Javascript en un seul, et crée le fichier résultant dans le dossier de cache.
+
+Retourne un tableau de balises brutes à inclure, utilisable par la fonction `linkScript()`.
 */
-function linkScript($balisesBrutes, $versionParDefautLinkScriptCss = '', $versionParDefautLinkScriptNonCss = '')
+function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomCache, $listeFichiers, $balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure)
+{
+	if (!empty($listeFichiers))
+	{
+		$nomCache = $type . '-' . dechex(crc32(implode("\n", $listeFichiers))) . '.cache.' . $extensionNomCache;
+		
+		if (!empty($dossierAdmin))
+		{
+			$cheminCache = "$racine/site/$dossierAdmin/cache/$nomCache";
+			$urlCache = "$urlRacine/site/$dossierAdmin/cache/$nomCache";
+		}
+		else
+		{
+			$cheminCache = "$racine/site/cache/$nomCache";
+			$urlCache = "$urlRacine/site/cache/$nomCache";
+		}
+		
+		if (!file_exists($cheminCache))
+		{
+			$contenuCache = '';
+			
+			foreach ($listeFichiers as $fichier)
+			{
+				if (strpos($fichier, $urlRacine) === 0)
+				{
+					$contenuFichier = @file_get_contents(preg_replace('#^' . preg_quote($urlRacine) . '#', $racine, $fichier));
+					
+					// Ajustement des chemins relatifs dans les feuilles de style.
+					if (strpos($type, 'css') === 0 && (strpos($fichier, "$urlRacine/css/") === 0 || (!empty($dossierAdmin) && strpos($fichier, "$urlRacine/$dossierAdmin/css/") === 0)))
+					{
+						$contenuFichier = preg_replace("#(\.\./)+#", '$1../', $contenuFichier);
+					}
+				}
+				else
+				{
+					$contenuFichier = @file_get_contents(superRawurlencode($fichier));
+				}
+				
+				if ($contenuFichier !== FALSE)
+				{
+					$enTete = '/* Fichier `' . superBasename($fichier) . "`. */\n\n";
+					$contenuCache .= $enTete . $contenuFichier . "\n";
+				}
+			}
+			
+			if (!empty($contenuCache))
+			{
+				@file_put_contents($cheminCache, $contenuCache);
+			}
+		}
+		
+		if (file_exists($cheminCache))
+		{
+			array_unshift($balisesBrutesFusionneesAinclure, "$type#$urlCache");
+		}
+		else
+		{
+			$balisesBrutesFusionneesAinclure = array_merge($balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure);
+		}
+	}
+	
+	return $balisesBrutesFusionneesAinclure;
+}
+
+/*
+Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
+
+Le paramètre `$dossierAdmin` doit être vide si la fonction est utilisée pour le site et non pour la section d'administration.
+*/
+function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScriptCss = '', $versionParDefautLinkScriptNonCss = '')
 {
 	$balisesBrutesAinclure = linkScriptAinclure($balisesBrutes);
 	$balisesFormatees = '';
 	$favicon = '';
+	
+	if ($fusionnerCssJs)
+	{
+		$balisesBrutesFusionneesAinclure = array ();
+		$balisesBrutesCssAinclure = array ();
+		$balisesBrutesCssIe6Ainclure = array ();
+		$balisesBrutesCssIe7Ainclure = array ();
+		$balisesBrutesCssIe8Ainclure = array ();
+		$balisesBrutesJsAinclure = array ();
+		$balisesBrutesJsIe6Ainclure = array ();
+		$listeFichiersCss = array ();
+		$listeFichiersCssIe6 = array ();
+		$listeFichiersCssIe7 = array ();
+		$listeFichiersCssIe8 = array ();
+		$listeFichiersJs = array ();
+		$listeFichiersJsIe6 = array ();
+		
+		foreach ($balisesBrutesAinclure as $fichierBrut)
+		{
+			// On récupère les infos.
+			list ($type, $fichier) = explode('#', $fichierBrut, 2);
+			
+			if (strpos($type, 'css') === 0)
+			{
+				if ($type == 'css')
+				{
+					$listeFichiersCss[] = $fichier;
+					$balisesBrutesCssAinclure[] = $fichierBrut;
+				}
+				else
+				{
+					if ($type == 'cssltIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
+					{
+						$listeFichiersCssIe6[] = $fichier;
+						$balisesBrutesCssIe6Ainclure[] = $fichierBrut;
+					}
+					
+					if ($type == 'cssIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
+					{
+						$listeFichiersCssIe7[] = $fichier;
+						$balisesBrutesCssIe7Ainclure[] = $fichierBrut;
+					}
+					
+					if ($type == 'cssIE8' || $type == 'csslteIE8')
+					{
+						$listeFichiersCssIe8[] = $fichier;
+						$balisesBrutesCssIe8Ainclure[] = $fichierBrut;
+					}
+				}
+			}
+			elseif ($type == 'js')
+			{
+				$listeFichiersJs[] = $fichier;
+				$balisesBrutesJsAinclure[] = $fichierBrut;
+			}
+			elseif ($type == 'jsltIE7')
+			{
+				$listeFichiersJsIe6[] = $fichier;
+				$balisesBrutesJsIe6Ainclure[] = $fichierBrut;
+			}
+			else
+			{
+				$balisesBrutesFusionneesAinclure[] = $fichierBrut;
+			}
+		}
+		
+		if (!empty($listeFichiersJsIe6))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'jsltIE7', 'js', $listeFichiersJsIe6, $balisesBrutesJsIe6Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersJs))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'js', 'js', $listeFichiersJs, $balisesBrutesJsAinclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCssIe6))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'cssltIE7', 'css', $listeFichiersCssIe6, $balisesBrutesCssIe6Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCssIe7))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'cssIE7', 'css', $listeFichiersCssIe7, $balisesBrutesCssIe7Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCssIe8))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'cssIE8', 'css', $listeFichiersCssIe8, $balisesBrutesCssIe8Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersCss))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'css', 'css', $listeFichiersCss, $balisesBrutesCssAinclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		$balisesBrutesAinclure = $balisesBrutesFusionneesAinclure;
+	}
+	
+	// Si une tentative de fusion de fichiers CSS pour IE a échoué, il risque d'y avoir des doublons dans le tableau des balises brutes à inclure (par exemple, un style `csslteIE7` s'applique à la fois à IE 6 et à IE 7). Tout doublon potentiel est donc supprimé.
+	$balisesBrutesAinclure = array_unique($balisesBrutesAinclure);
 	
 	foreach ($balisesBrutesAinclure as $fichierBrut)
 	{
 		// On récupère les infos.
 		list ($type, $fichier) = explode('#', $fichierBrut, 2);
 		
-		if ($type == 'rss' && strpos($fichier, '#') !== FALSE)
+		if (($type == 'rss' || $type == 'hreflang') && strpos($fichier, '#') !== FALSE)
 		{
-			list ($fichier, $title) = explode('#', $fichier, 2);
+			list ($fichier, $extra) = explode('#', $fichier, 2);
 		}
 		else
 		{
-			$title = '';
+			$extra = '';
 		}
 		
 		switch ($type)
 		{
 			case 'favicon':
 				// On ne conserve qu'une déclaration de favicon.
-				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
 				break;
 	
 			case 'css':
-				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n";
+				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n";
 				break;
-	
+				
+			case 'cssDirectlteIE8':
+				$balisesFormatees .= "<!--[if lte IE 8]>\n<style type=\"text/css\">\n$fichier\n</style>\n<![endif]-->\n";
+				break;
+				
 			case 'cssltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 		
 			case 'cssIE7':
-				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'csslteIE7':
-				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . ajouteGet($fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
-	
+				
+			case 'cssIE8':
+				$balisesFormatees .= '<!--[if IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'csslteIE8':
+				$balisesFormatees .= '<!--[if lte IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'hreflang':
+				if (!empty($extra))
+				{
+					$balisesFormatees .= '<link rel="alternate" hreflang="' . $extra . '" href="' . $fichier . '" />' . "\n";
+				}
+				
+				break;
+				
 			case 'js':
-				$balisesFormatees .= '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
+				$balisesFormatees .= '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
 				break;
 				
 			case 'jsDirect':
@@ -3482,20 +3684,20 @@ $fichier\n//]]>\n</script>\n";
 				break;
 				
 			case 'jsltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'rss':
-				if (!empty($title))
+				if (!empty($extra))
 				{
-					$title = ' title="' . $title . '"';
+					$title = ' title="' . $extra . '"';
+				}
+				else
+				{
+					$title = '';
 				}
 				
-				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '"' . $title . ' />' . "\n";
-				break;
-				
-			case 'po':
-				$balisesFormatees .= '<link type="application/x-po" rel="gettext" href="' . ajouteGet($fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"' . $title . ' />' . "\n";
 				break;
 		}
 	}
@@ -3794,7 +3996,7 @@ function majLanguesActives($racine, $urlRacine, $langues, $initIncPhpFourni = ''
 /*
 Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
-function mdtxt($fichier)
+function mkd($fichier)
 {
 	return Markdown(@file_get_contents($fichier));
 }
@@ -3802,7 +4004,7 @@ function mdtxt($fichier)
 /*
 Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaîne convertie en HTML.
 */
-function mdtxtChaine($chaine)
+function mkdChaine($chaine)
 {
 	return Markdown($chaine);
 }
@@ -3810,10 +4012,10 @@ function mdtxtChaine($chaine)
 /*
 Retourne le menu des catégories, qui doit être entouré par la balise `ul` (seuls les `li` sont retournés).
 */
-function menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
 {
 	$menuCategoriesAutomatise = '';
-	ksort($categories);
+	uksort($categories, 'strnatcasecmp');
 	
 	$categoriesGlobalesAactiver = array ();
 	
@@ -3834,9 +4036,9 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, $langue
 	
 	foreach ($categories as $categorie => $categorieInfos)
 	{
-		if (empty($categorieInfos['catParente']) && langueCat($categorieInfos, $langueParDefaut) == $langue)
+		if (empty($categorieInfos['parent']) && isset($categorieInfos['langue']) && $categorieInfos['langue'] == $langue)
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($racine, $urlRacine, $categories, $categorie, $langueParDefaut, $afficherNombreArticlesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
 		}
 	}
 	
@@ -3939,6 +4141,43 @@ function motsCles($motsCles, $chaine, $melanger = FALSE)
 	{
 		return $motsCles;
 	}
+}
+
+/*
+Retourne le nom du fichier cache.
+*/
+function nomFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
+{
+	$nomFichierCache = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', $nomBrut);
+	
+	if (empty($nomFichierCache))
+	{
+		$nomFichierCache = 'index';
+	}
+	
+	$nomFichierCache = str_replace(array ('/', '\\'), '-', $nomFichierCache);
+	$nomFichierCache = str_replace('&amp;amp;', '-', $nomFichierCache);
+	$nomFichierCache = str_replace('&amp;', '-', $nomFichierCache);
+	$nomFichierCache = filtreChaine($racine, "$nomFichierCache.cache");
+	
+	if ($html)
+	{
+		$nomFichierCache .= '.html';
+	}
+	else
+	{
+		$nomFichierCache .= '.xml';
+	}
+	
+	return $nomFichierCache;
+}
+
+/*
+Retourne le nom du fichier cache contenant les informations d'en-tête HTTP.
+*/
+function nomFichierCacheEnTete($nomFichierCache)
+{
+	return "en-tete-$nomFichierCache";
 }
 
 /*
@@ -4208,7 +4447,7 @@ Construit le code HTML pour afficher une pagination, et retourne un tableau cont
   - `$pagination['description']`: contenu de la métabalise `description` modifié pour prendre en compte la pagination;
   - `$pagination['estPageDerreur']`: informe si la page demandée par la variable GET `page` existe. Vaut TRUE si la page n'existe pas.
 */
-function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
+function pagination($racine, $urlRacine, $type, $paginationAvecFond, $paginationArrondie, $nombreElements, $elementsParPage, $urlSansGet, $baliseTitle, $description)
 {
 	$pagination = array ();
 	$pagination['pagination'] = '';
@@ -4294,7 +4533,7 @@ function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nomb
 				$srcPrecedent = $urlRacine . '/fichiers/precedent.png';
 			}
 			
-			$pagination['pagination'] .= '<img class="paginationPrecedent" src="' . $srcPrecedent . '" alt="' . T_("Page précédente") . '" width="80" height="80" />';
+			$pagination['pagination'] .= '<img class="paginationPrecedent" src="' . $srcPrecedent . '" alt="' . T_("Page précédente") . '" />';
 		}
 		elseif ($type == 'texte')
 		{
@@ -4327,7 +4566,7 @@ function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nomb
 				$srcSuivant = $urlRacine . '/fichiers/suivant.png';
 			}
 			
-			$pagination['pagination'] .= '<img class="paginationSuivant" src="' . $srcSuivant . '" alt="' . T_("Page suivante") . '" width="80" height="80" />';
+			$pagination['pagination'] .= '<img class="paginationSuivant" src="' . $srcSuivant . '" alt="' . T_("Page suivante") . '" />';
 		}
 		elseif ($type == 'texte')
 		{
@@ -4337,23 +4576,146 @@ function pagination($racine, $urlRacine, $type, $insererDansBoiteArrondie, $nomb
 		$pagination['pagination'] .= '</a>';
 	}
 	
-	if (!empty($pagination['pagination']) && $insererDansBoiteArrondie)
+	$classesPagination = '';
+	
+	if (!empty($pagination['pagination']))
 	{
-		$pagination['pagination'] = boiteArrondie($pagination['pagination']);
+		if ($paginationAvecFond)
+		{
+			$classesPagination .= 'blocAvecFond ';
+		}
+		
+		if ($paginationArrondie)
+		{
+			$classesPagination .= 'blocArrondi';
+		}
 	}
 	
 	if (!empty($pagination['pagination']))
 	{
-		$pagination['pagination'] = '<div class="pagination">' . "\n" . $pagination['pagination'] . '</div><!-- /.pagination -->' . "\n";
+		$pagination['pagination'] = "<div class=\"pagination $classesPagination\">\n" . $pagination['pagination'] . '</div><!-- /.pagination -->' . "\n";
 	}
 	
 	return $pagination;
 }
 
 /*
+Retourne le texte supplémentaire d'une image pour le message envoyé par le module de partage (par courriel).
+*/
+function partageCourrielSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown)
+{
+	$messagePartageCourrielSupplement = '';
+	$titreImage = titreImage($image);
+	
+	if (!empty($image['vignetteNom']))
+	{
+		$vignetteNom = $image['vignetteNom'];
+	}
+	else
+	{
+		$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
+	}
+	
+	$vignetteAlt = partageCourrielSupplementImageAlt($image);
+	$imgSrc = $urlRacine;
+	
+	if ($idGalerieDossier != 'demo')
+	{
+		$imgSrc .= '/site';
+	}
+	
+	$imgSrc .= '/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom);
+	
+	$messagePartageCourrielSupplement .= "<p style=\"text-align: center;\"><img src=\"$imgSrc\" alt=\"$vignetteAlt\" /></p>\n";
+	
+	if (!empty($image['titre']))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $image['titre'] . "</p>\n";
+	}
+	
+	if (!empty($image['intermediaireLegende']))
+	{
+		$messagePartageCourrielSupplement .= intermediaireLegende($image['intermediaireLegende'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['intermediaireAlt']))
+	{
+		$messagePartageCourrielSupplement .= intermediaireLegende($image['intermediaireAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['vignetteAlt']))
+	{
+		$messagePartageCourrielSupplement .= intermediaireLegende($image['vignetteAlt'], $galerieLegendeMarkdown);
+	}
+	elseif (!empty($image['pageIntermediaireDescription']))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $image['pageIntermediaireDescription'] . "</p>\n";
+	}
+	elseif (!empty($image['pageIntermediaireBaliseTitle']))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $image['pageIntermediaireBaliseTitle'] . "</p>\n";
+	}
+	
+	$messagePartageCourrielSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messagePartageCourrielSupplement</div>\n";
+	$messagePartageCourrielSupplement .= '<p><a href="' . variableGet(0, url(), 'action') . '">' . sprintf(T_("Voyez l'image %1\$s en plus grande taille!"), "<em>$titreImage</em>") . '</a> ' . T_("En espérant qu'elle vous intéresse!") . "</p>\n";
+	
+	return $messagePartageCourrielSupplement;
+}
+
+/*
+Retourne le texte alternatif d'une image pour le message envoyé par le module de partage (par courriel).
+*/
+function partageCourrielSupplementImageAlt($image)
+{
+	if (!empty($image['vignetteAlt']))
+	{
+		$imgAlt = $image['vignetteAlt'];
+	}
+	elseif (!empty($image['intermediaireAlt']))
+	{
+		$imgAlt = $image['intermediaireAlt'];
+	}
+	else
+	{
+		$titreImage = titreImage($image);
+		$imgAlt = sprintf(T_("Image %1\$s"), $titreImage);
+	}
+	
+	return $imgAlt;
+}
+
+/*
+Retourne le texte supplémentaire d'une page pour le message envoyé par le module de partage (par courriel).
+*/
+function partageCourrielSupplementPage($description, $baliseTitle, $extra = '')
+{
+	$messagePartageCourrielSupplement = '';
+	
+	if (!empty($baliseTitle))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $baliseTitle . "</p>\n";
+	}
+	
+	if (!empty($description))
+	{
+		$messagePartageCourrielSupplement .= '<p>' . $description . "</p>\n";
+	}
+	
+	if (!empty($extra))
+	{
+		$messagePartageCourrielSupplement .= "$extra\n";
+	}
+	
+	$urlPageSansAction = variableGet(0, url(), 'action');
+	$urlPageSansActionCode = '<p><a href="' . $urlPageSansAction . '">' . $urlPageSansAction . "</a></p>\n";
+	$messagePartageCourrielSupplement = "<div style=\"border: 1px solid #cccccc; border-radius: 2px; padding: 10px;\">$messagePartageCourrielSupplement$urlPageSansActionCode</div>\n";
+	$messagePartageCourrielSupplement .= '<p> ' . T_("En espérant que cette page vous intéresse!") . "</p>\n";
+	
+	return $messagePartageCourrielSupplement;
+}
+
+/*
 Retourne un tableau de liens de marque-pages et de réseaux sociaux pour la page en cours. Les liens ont été en partie récupérés dans le module Service links pour Drupal, sous licence GPL. Voir <http://drupal.org/project/service_links>.
 */
-function partage($url, $titre)
+function partageReseaux($url, $titre)
 {
 	$url = urlencode($url);
 	$titre = urlencode($titre);
@@ -4363,136 +4725,66 @@ function partage($url, $titre)
 		$titre = '';
 	}
 	
-	$liens = array();
+	$liens = array ();
 	
-	$liens['Bebo'] = array(
-		'nom' => 'Bebo',
-		'lien' => "http://www.bebo.com/share.php?Url=$url&amp;Title=$titre",
-	);
-	
-	$liens['BlogMemes'] = array(
-		'nom' => 'BlogMemes',
-		'lien' => "http://blogmemes.net/fr/post.php?url=$url&amp;title=$titre",
-	);
-	
-	$liens['Delicious'] = array(
+	$liens['Delicious'] = array (
+		'id' => 'partageDelicious',
 		'nom' => 'Delicious',
 		'lien' => "http://delicious.com/post?url=$url&amp;title=$titre",
 	);
 	
-	$liens['Digg'] = array(
+	$liens['Digg'] = array (
+		'id' => 'partageDigg',
 		'nom' => 'Digg',
 		'lien' => "http://digg.com/submit?phase=2&amp;url=$url&amp;title=$titre",
 	);
 	
-	$liens['Facebook'] = array(
+	$liens['Facebook'] = array (
+		'id' => 'partageFacebook',
 		'nom' => 'Facebook',
 		'lien' => "http://www.facebook.com/sharer.php?u=$url&amp;t=$titre",
 	);
 	
-	$liens['Furl'] = array(
-		'nom' => 'Furl',
-		'lien' => "http://www.furl.net/storeIt.jsp?u=$url&amp;t=$titre",
+	$liens['GooglePlus'] = array (
+		'id' => 'partageGooglePlus',
+		'nom' => 'Google+',
+		'lien' => "https://plus.google.com/share?url=$url",
 	);
 	
-	$liens['Fuzz'] = array(
-		'nom' => 'Fuzz',
-		'lien' => "http://www.fuzz.fr/?nws_article?link=$url&amp;title=$titre",
-	);
-	
-	$liens['Gnolia'] = array(
-		'nom' => 'Gnolia',
-		'lien' => "http://gnolia.com/bookmarklet/add?url=$url&amp;title=$titre",
-	);
-	
-	$liens['GoogleBookmarks'] = array(
-		'nom' => 'Google Bookmarks',
-		'lien' => "http://www.google.com/bookmarks/mark?op=add&amp;bkmk=$url&amp;title=$titre",
-	);
-	
-	$liens['Identica'] = array(
+	$liens['Identica'] = array (
+		'id' => 'partageIdentica',
 		'nom' => 'Identi.ca',
 		'lien' => "http://identi.ca/index.php?action=newnotice&amp;status_textarea=$titre $url",
 	);
 	
-	$liens['Linkedin'] = array(
+	$liens['Linkedin'] = array (
+		'id' => 'partageLinkedin',
 		'nom' => 'LinkedIn',
 		'lien' => "http://www.linkedin.com/shareArticle?mini=true&amp;url=$url&amp;title=$titre",
 	);
 	
-	$liens['MisterWong'] = array(
-		'nom' => 'Mister Wong',
-		'lien' => "http://www.mister-wong.com/addurl/?bm_url=$url&amp;bm_description=$titre",
-	);
-	
-	$liens['Mixx'] = array(
-		'nom' => 'Mixx',
-		'lien' => "http://www.mixx.com/submit?page_url=$url",
-	);
-	
-	$liens['MySpace'] = array(
+	$liens['MySpace'] = array (
+		'id' => 'partageMySpace',
 		'nom' => 'MySpace',
 		'lien' => "http://www.myspace.com/index.cfm?fuseaction=postto&amp;t=$titre&amp;u=$url",
 	);
 	
-	$liens['Newsvine'] = array(
-		'nom' => 'Newsvine',
-		'lien' => "http://www.newsvine.com/_tools/seed&amp;save?u=$url&amp;h=$titre",
-	);
-	
-	$liens['Propeller'] = array(
-		'nom' => 'Propeller',
-		'lien' => "http://www.propeller.com/submit/?U=$url&amp;T=$titre",
-	);
-	
-	$liens['Reddit'] = array(
+	$liens['Reddit'] = array (
+		'id' => 'partageReddit',
 		'nom' => 'Reddit',
-		'lien' => "http://reddit.com/submit?url=$url&amp;title=$titre",
-	);
-	
-	$liens['Scoopeo'] = array(
-		'nom' => 'Scoopeo',
-		'lien' => "http://www.scoopeo.com/scoop/new?newurl=$url&amp;title=$titre",
-	);
-	
-	$liens['SlashDot'] = array(
-		'nom' => 'SlashDot',
-		'lien' => "http://slashdot.org/bookmark.pl?url=$url&amp;title=$titre",
+		'lien' => "http://www.reddit.com/submit?url=$url&amp;title=$titre",
 	);
 	
 	$liens['StumbleUpon'] = array (
+		'id' => 'partageStumbleUpon',
 		'nom' => 'StumbleUpon',
 		'lien' => "http://www.stumbleupon.com/submit?url=$url&amp;title=$titre",
 	);
 	
-	$liens['Tapemoi'] = array(
-		'nom' => 'Tapemoi',
-		'lien' => "http://www.tapemoi.com/submit.php?lien=$url",
-	);
-	
-	$liens['Technorati'] = array(
-		'nom' => 'Technorati',
-		'lien' => "http://technorati.com/search/$url",
-	);
-	
-	$liens['Twitter'] = array(
+	$liens['Twitter'] = array (
+		'id' => 'partageTwitter',
 		'nom' => 'Twitter',
 		'lien' => "http://twitter.com/home/?status=$url+--+$titre",
-	);
-	
-	$liens['Wikio'] = array(
-		'nom' => 'Wikio',
-		'lien' => "http://www.wikio.fr/vote?url=$url",
-	);
-	
-	$liens['YahooBookmarks'] = array(
-		'nom' => 'Yahoo! Bookmarks',
-		'lien' => "http://bookmarks.yahoo.com/myresults/bookmarklet?u=$url&amp;t=$titre",
-	);
-	
-	$liens['YahooBuzz'] = array(
-		'nom' => 'Yahoo! Buzz',
-		'lien' => "http://buzz.yahoo.com/buzz?targetUrl=$url&amp;headline=$titre",
 	);
 	
 	return $liens;
@@ -4521,6 +4813,31 @@ function phpGettext($racine, $langue)
 }
 
 /*
+Retourne la profondeur d'une page par rapport à l'URL racine du site. Par exemple, si l'URL racine est:
+
+	http://localhost/serveur_local/squeletml
+
+et que l'URL de la page est:
+
+	http://localhost/serveur_local/squeletml/categories/sous-categorie/page.php
+
+la fonction va retourner `2`.
+*/
+function profondeurPage($urlRacine, $url)
+{
+	$masque = preg_quote($urlRacine, '|');
+	
+	if (substr($masque, -1) !== '/')
+	{
+		$masque .= '/';
+	}
+	
+	$urlRelative = preg_replace("|^$masque|", '', $url);
+	
+	return substr_count($urlRelative, '/');
+}
+
+/*
 Retourne une liste des publications récentes pour le type de publication donné.
 
 Les types possibles sont:
@@ -4534,272 +4851,190 @@ Le paramètre `$id` n'est utile que pour les types `categorie` (fournir la valeu
 
 Le paramètre `$nombreVoulu` correspond au nombre de publications dans la liste retournée.
 
-Le paramètre `$ajouterLien` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien est ajouté vers la liste complète des publications pour le type donné (par exemple vers la liste de toutes les pages appartenant à une catégorie).
+Le paramètre `$ajouterLienVersPublication` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien est ajouté vers la page Web de la publication en question.
 
-À noter que le code retourné peut ne pas avoir été généré, mais lu dans le cache, si `$dureeCache['publications-recentes']` du fichier de configuration du site vaut plus de 0.
+Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un lien est ajouté vers la liste complète des publications pour le type donné (par exemple vers la liste de toutes les pages appartenant à une catégorie).
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $type, $id, $nombreVoulu, $ajouterLien, $dureeCache, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
 {
 	$html = '';
+	$nomFichierTmp = "$racine/site/cache/publications-recentes-$langue-$type-$id";
+	
+	// Éviter une boucle infinie.
+	if (file_exists($nomFichierTmp))
+	{
+		return $html;
+	}
+	
+	@touch($nomFichierTmp);
 	
 	if ($type == 'categorie')
 	{
-		// On vérifie si la liste existe en cache ou si le cache est expiré.
+		$itemsFluxRss = array ();
+		$lienDesactive = FALSE;
+		$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 		
-		if ($ajouterLien)
+		if (!empty($categories) && isset($categories[$id]['pages']))
 		{
-			$lienCache = 'avec-lien';
-		}
-		else
-		{
-			$lienCache = 'sans-lien';
-		}
-		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-categorie-$id-$nombreVoulu-$lienCache-$langue.cache.html");
-		
-		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
-		{
-			@readfile("$racine/site/cache/$nomFichierCache");
-		}
-		else
-		{
-			$itemsFluxRss = array ();
-			$lienDesactive = FALSE;
-			$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
+			$nombreReel = count($categories[$id]['pages']);
 			
-			if (!empty($categories) && isset($categories[$id]['pages']))
+			if ($nombreVoulu >= $nombreReel)
 			{
-				$nombreReel = count($categories[$id]['pages']);
-				
-				if ($nombreVoulu >= $nombreReel)
-				{
-					$lienDesactive = TRUE;
-				}
-				
-				if ($nombreVoulu > $nombreReel)
-				{
-					$nombreVoulu = $nombreReel;
-				}
-				
-				$i = 0;
-				
-				foreach ($categories[$id]['pages'] as $page)
-				{
-					if ($i < $nombreVoulu)
-					{
-						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", FALSE, 600);
-						
-						if (!empty($fluxRssPageTableauBrut))
-						{
-							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
-						}
-					}
-					
-					$i++;
-				}
-				
-				if (!empty($itemsFluxRss))
-				{
-					$itemsFluxRss = fluxRssTableauFinal('categorie', $itemsFluxRss, $nombreVoulu);
-					
-					foreach ($itemsFluxRss as $cle => $valeur)
-					{
-						$html .= '<li><a href="' . $valeur['link'] . '">' . $valeur['title'] . "</a></li>\n";
-					}
-					
-					if (!empty($html))
-					{
-						if ($ajouterLien && !$lienDesactive)
-						{
-							$categories[$id]['urlCat'] = urlCat($racine, $categories[$id], $id, $langueParDefaut);
-							$lien = $urlRacine . '/' . $categories[$id]['urlCat'];
-							$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
-						}
-						else
-						{
-							$codeLien = '';
-						}
-						
-						$html = "<div class=\"publicationsRecentes publicationsRecentesCategorie\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
-					}
-				}
+				$lienDesactive = TRUE;
 			}
 			
-			if ($dureeCache['publications-recentes'])
+			if ($nombreVoulu > $nombreReel)
 			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
+				$nombreVoulu = $nombreReel;
+			}
+			
+			$i = 0;
+			
+			foreach ($categories[$id]['pages'] as $page)
+			{
+				if ($i < $nombreVoulu)
+				{
+					$page = rtrim($page);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $dureeCache);
+					
+					if (!empty($fluxRssPageTableauBrut))
+					{
+						$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+					}
+				}
+				
+				$i++;
+			}
+			
+			if (!empty($itemsFluxRss))
+			{
+				$itemsFluxRss = fluxRssTableauFinal('categorie', $itemsFluxRss, $nombreVoulu);
+				
+				foreach ($itemsFluxRss as $cle => $valeur)
+				{
+					$html .= '<li>';
+					
+					if ($ajouterLienVersPublication)
+					{
+						$html .= '<a href="' . $valeur['link'] . '">' . $valeur['title'] . '</a>';
+					}
+					else
+					{
+						$html .= $valeur['title'];
+					}
+					
+					$html .= "</li>\n";
+				}
+				
+				if (!empty($html))
+				{
+					if ($ajouterLienPlus && !$lienDesactive)
+					{
+						$categories[$id]['url'] = urlCat($racine, $categories[$id], $id);
+						$lien = $urlRacine . '/' . $categories[$id]['url'];
+						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
+					}
+					else
+					{
+						$codeLien = '';
+					}
+					
+					$html = "<div class=\"publicationsRecentes publicationsRecentesCategorie\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
+				}
 			}
 		}
 	}
 	elseif ($type == 'galerie')
 	{
-		// On vérifie si la liste existe en cache ou si le cache est expiré.
+		$lienDesactive = FALSE;
+		$urlGalerie = '';
+		$listeGaleriesRss = fluxRssGlobalGaleries($racine);
 		
-		if ($ajouterLien)
+		if (in_array($id, $listeGaleriesRss))
 		{
-			$lienCache = 'avec-lien';
-		}
-		else
-		{
-			$lienCache = 'sans-lien';
+			$urlGalerie = urlGalerie(0, $racine, $urlRacine, $id, $langue);
 		}
 		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-galerie-$id-$nombreVoulu-$lienCache-$langue.cache.html");
-		
-		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
+		if (!empty($urlGalerie))
 		{
-			@readfile("$racine/site/cache/$nomFichierCache");
-		}
-		else
-		{
-			$lienDesactive = FALSE;
-			$urlGalerie = '';
-			$cheminConfigFluxRssGlobalGaleries = cheminConfigFluxRssGlobal($racine, 'galeries');
+			$idDossier = idGalerieDossier($racine, $id);
+			$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idDossier), TRUE);
 			
-			if ($cheminConfigFluxRssGlobalGaleries)
+			if ($tableauGalerie !== FALSE)
 			{
-				$galeries = super_parse_ini_file($cheminConfigFluxRssGlobalGaleries, TRUE);
+				$vignettes = array ();
 				
-				if (!empty($galeries) && isset($galeries[$langue][$id]))
+				foreach ($tableauGalerie as $image)
 				{
-					$urlGalerie = $urlRacine . '/' . $galeries[$langue][$id];
-				}
-			}
-			
-			if (!empty($urlGalerie))
-			{
-				$idDossier = idGalerieDossier($racine, $id);
-				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idDossier), TRUE);
+					$titreImage = titreImage($image);
+					$title = $titreImage;
+					$alt = $titreImage;
+					
+					if (!empty($image['dateAjout']))
+					{
+						$date = $image['dateAjout'];
+					}
+					else
+					{
+						$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idDossier/" . $image['intermediaireNom']));
+					}
+					
+					if (isset($image['vignetteNom']))
+					{
+						$vignetteNom = $image['vignetteNom'];
+					}
+					else
+					{
+						$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
+					}
 				
-				if ($tableauGalerie !== FALSE)
+					if (!empty($image['vignetteLargeur']) || !empty($image['vignetteHauteur']))
+					{
+						if (!empty($image['vignetteLargeur']))
+						{
+							$width = $image['vignetteLargeur'];
+						}
+			
+						if (!empty($image['vignetteHauteur']))
+						{
+							$height = $image['vignetteHauteur'];
+						}
+					}
+					else
+					{
+						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
+					}
+					
+					$lienVignette = variableGet(2, $urlGalerie, 'image', filtreChaine($racine, idImage($racine, $image)));
+					$vignettesImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
+					$vignettesCode = '<li>';
+					
+					if ($ajouterLienVersPublication)
+					{
+						$vignettesCode .= '<a href="' . $lienVignette . '" title="' . $title . '">' . $vignettesImg . '</a>';
+					}
+					else
+					{
+						$vignettesCode .= $vignettesImg;
+					}
+					
+					$vignettesCode .= "</li>\n";
+					$vignettes[] = array (
+						'code' => $vignettesCode,
+						'date' => $date,
+					);
+				}
+				
+				foreach ($vignettes as $cle => $valeur)
 				{
-					$vignettes = array ();
-					
-					foreach ($tableauGalerie as $image)
-					{
-						$titreImage = titreImage($image);
-						$title = $titreImage;
-						$alt = $titreImage;
-						
-						if (!empty($image['dateAjout']))
-						{
-							$date = $image['dateAjout'];
-						}
-						else
-						{
-							$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idDossier/" . $image['intermediaireNom']));
-						}
-						
-						if (isset($image['vignetteNom']))
-						{
-							$vignetteNom = $image['vignetteNom'];
-						}
-						else
-						{
-							$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
-						}
-					
-						if (!empty($image['vignetteLargeur']) || !empty($image['vignetteHauteur']))
-						{
-							if (!empty($image['vignetteLargeur']))
-							{
-								$width = $image['vignetteLargeur'];
-							}
-				
-							if (!empty($image['vignetteHauteur']))
-							{
-								$height = $image['vignetteHauteur'];
-							}
-						}
-						else
-						{
-							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
-						}
-						
-						$vignettes[] = array (
-							'code' => '<li><a href="' . superRawurlencode($urlGalerie . '?image=' . idImage($racine, $image)) . '" title="' . $title . '">' . '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />' . "</a></li>\n",
-							'date' => $date,
-						);
-					}
-					
-					foreach ($vignettes as $cle => $valeur)
-					{
-						$vignettesDate[$cle] = $valeur['date'];
-					}
-					
-					array_multisort($vignettesDate, SORT_DESC, $vignettes);
-					
-					$nombreReel = count($vignettes);
-					
-					if ($nombreVoulu >= $nombreReel)
-					{
-						$lienDesactive = TRUE;
-					}
-					
-					if ($nombreVoulu > $nombreReel)
-					{
-						$nombreVoulu = $nombreReel;
-					}
-					
-					for ($i = 0; $i < $nombreVoulu; $i++)
-					{
-						$html .= $vignettes[$i]['code'];
-					}
-					
-					if (!empty($html))
-					{
-						if ($ajouterLien && !$lienDesactive)
-						{
-							$codeLien = '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'images") . "</a></p>\n";
-						}
-						else
-						{
-							$codeLien = '';
-						}
-						
-						$html = "<div class=\"publicationsRecentes publicationsRecentesGalerie\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
-					}
+					$vignettesDate[$cle] = $valeur['date'];
 				}
-			}
-			
-			if ($dureeCache['publications-recentes'])
-			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
-			}
-		}
-	}
-	elseif ($type == 'galeries')
-	{
-		// On vérifie si la liste existe en cache ou si le cache est expiré.
-		
-		if ($ajouterLien)
-		{
-			$lienCache = 'avec-lien';
-		}
-		else
-		{
-			$lienCache = 'sans-lien';
-		}
-		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-galeries-$nombreVoulu-$lienCache-$langue.cache.html");
-		
-		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
-		{
-			@readfile("$racine/site/cache/$nomFichierCache");
-		}
-		else
-		{
-			$lienDesactive = FALSE;
-			$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
-			
-			if (!empty($itemsFluxRss))
-			{
-				$nombreReel = count($itemsFluxRss);
+				
+				array_multisort($vignettesDate, SORT_DESC, $vignettes);
+				
+				$nombreReel = count($vignettes);
 				
 				if ($nombreVoulu >= $nombreReel)
 				{
@@ -4811,60 +5046,197 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 					$nombreVoulu = $nombreReel;
 				}
 				
-				$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu);
+				for ($i = 0; $i < $nombreVoulu; $i++)
+				{
+					$html .= $vignettes[$i]['code'];
+				}
+				
+				if (!empty($html))
+				{
+					if ($ajouterLienPlus && !$lienDesactive)
+					{
+						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $urlGalerie . '">' . T_("Voir plus d'images") . "</a></p>\n";
+					}
+					else
+					{
+						$codeLien = '';
+					}
+					
+					$html = "<div class=\"publicationsRecentes publicationsRecentesGalerie\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
+				}
+			}
+		}
+	}
+	elseif ($type == 'galeries')
+	{
+		$lienDesactive = FALSE;
+		$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+		
+		if (!empty($itemsFluxRss))
+		{
+			$nombreReel = count($itemsFluxRss);
+			
+			if ($nombreVoulu >= $nombreReel)
+			{
+				$lienDesactive = TRUE;
+			}
+			
+			if ($nombreVoulu > $nombreReel)
+			{
+				$nombreVoulu = $nombreReel;
+			}
+			
+			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu);
+		}
+		
+		if (!empty($itemsFluxRss))
+		{
+			for ($i = 0; $i < $nombreVoulu; $i++)
+			{
+				preg_match('/<img src="([^"]+)"/', htmlspecialchars_decode($itemsFluxRss[$i]['description']), $resultat);
+				$intermediaireSrc = rawurldecode($resultat[1]);
+				$intermediaireNom = superBasename($intermediaireSrc);
+				$idGalerieDossier = superBasename(str_replace("/$intermediaireNom", '', $intermediaireSrc));
+			
+				if (!empty($idGalerieDossier) && cheminConfigGalerie($racine, $idGalerieDossier))
+				{
+					$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
+				
+					if (isset($tableauGalerie[$intermediaireNom]['vignetteNom']))
+					{
+						$vignetteNom = $tableauGalerie[$intermediaireNom]['vignetteNom'];
+					}
+					else
+					{
+						$vignetteNom = nomSuffixe($intermediaireNom, '-vignette');
+					}
+				
+					if (!empty($tableauGalerie[$intermediaireNom]['vignetteLargeur']) || !empty($tableauGalerie[$intermediaireNom]['vignetteHauteur']))
+					{
+						if (!empty($tableauGalerie[$intermediaireNom]['vignetteLargeur']))
+						{
+							$width = $tableauGalerie[$intermediaireNom]['vignetteLargeur'];
+						}
+			
+						if (!empty($tableauGalerie[$intermediaireNom]['vignetteHauteur']))
+						{
+							$height = $tableauGalerie[$intermediaireNom]['vignetteHauteur'];
+						}
+					}
+					else
+					{
+						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom);
+					}
+					
+					$vignetteImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . $vignetteNom . '" alt="' . $itemsFluxRss[$i]['title'] . '" width="' . $width . '" height="' . $height . '" />';
+				}
+				
+				$html .= '<li>';
+				
+				if ($ajouterLienVersPublication)
+				{
+					$html .= '<a href="' . $itemsFluxRss[$i]['link'] . '" title="' . $itemsFluxRss[$i]['title'] . '">' . "$vignetteImg</a>";
+				}
+				else
+				{
+					$html .= $vignetteImg;
+				}
+				
+				$html .= "</li>\n";
+			}
+		
+			if (!empty($html))
+			{
+				if ($ajouterLienPlus && !$lienDesactive)
+				{
+					$cheminFichier = cheminConfigCategories($racine);
+				
+					if ($cheminFichier)
+					{
+						$categories = super_parse_ini_file($cheminFichier, TRUE);
+					}
+					else
+					{
+						$categories = array ();
+					}
+				
+					$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('galeries'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+					$lien = $urlRacine . '/' . $categories['galeries']['url'];
+					$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'images") . "</a></p>\n";
+				}
+				else
+				{
+					$codeLien = '';
+				}
+				
+				$html = "<div class=\"publicationsRecentes publicationsRecentesGaleries\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
+			}
+		}
+	}
+	elseif ($type == 'site')
+	{
+		$lienDesactive = FALSE;
+		$itemsFluxRss = array ();
+		$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
+		
+		if (!empty($pages) && isset($pages[$langue]['pages']))
+		{
+			$nombreReel = count($pages[$langue]['pages']);
+			
+			if ($nombreVoulu >= $nombreReel)
+			{
+				$lienDesactive = TRUE;
+			}
+			
+			if ($nombreVoulu > $nombreReel)
+			{
+				$nombreVoulu = $nombreReel;
+			}
+			
+			$i = 0;
+			
+			foreach ($pages[$langue]['pages'] as $page)
+			{
+				if ($i < $nombreVoulu)
+				{
+					$page = rtrim($page);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $dureeCache);
+				
+					if (!empty($fluxRssPageTableauBrut))
+					{
+						$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+					}
+				}
+				
+				$i++;
 			}
 			
 			if (!empty($itemsFluxRss))
 			{
-				for ($i = 0; $i < $nombreVoulu; $i++)
+				$itemsFluxRss = fluxRssTableauFinal('site', $itemsFluxRss, $nombreVoulu);
+				
+				foreach ($itemsFluxRss as $cle => $valeur)
 				{
-					preg_match('/<img src="([^"]+)"/', htmlspecialchars_decode($itemsFluxRss[$i]['description']), $resultat);
-					$intermediaireSrc = rawurldecode($resultat[1]);
-					$intermediaireNom = superBasename($intermediaireSrc);
-					$idGalerieDossier = superBasename(str_replace("/$intermediaireNom", '', $intermediaireSrc));
-				
-					if (!empty($idGalerieDossier) && cheminConfigGalerie($racine, $idGalerieDossier))
+					$html .= '<li>';
+					
+					if ($ajouterLienVersPublication)
 					{
-						$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idGalerieDossier), TRUE);
-					
-						if (isset($tableauGalerie[$intermediaireNom]['vignetteNom']))
-						{
-							$vignetteNom = $tableauGalerie[$intermediaireNom]['vignetteNom'];
-						}
-						else
-						{
-							$vignetteNom = nomSuffixe($intermediaireNom, '-vignette');
-						}
-					
-						if (!empty($tableauGalerie[$intermediaireNom]['vignetteLargeur']) || !empty($tableauGalerie[$intermediaireNom]['vignetteHauteur']))
-						{
-							if (!empty($tableauGalerie[$intermediaireNom]['vignetteLargeur']))
-							{
-								$width = $tableauGalerie[$intermediaireNom]['vignetteLargeur'];
-							}
-				
-							if (!empty($tableauGalerie[$intermediaireNom]['vignetteHauteur']))
-							{
-								$height = $tableauGalerie[$intermediaireNom]['vignetteHauteur'];
-							}
-						}
-						else
-						{
-							list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom);
-						}
-					
-						$vignetteImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . $vignetteNom . '" alt="' . $itemsFluxRss[$i]['title'] . '" width="' . $width . '" height="' . $height . '" />';
+						$html .= '<a href="' . $valeur['link'] . '">' . $valeur['title'] . '</a>';
 					}
-				
-					$html .= '<li><a href="' . $itemsFluxRss[$i]['link'] . '" title="' . $itemsFluxRss[$i]['title'] . '">' . "$vignetteImg</a></li>\n";
+					else
+					{
+						$html .= $valeur['title'];
+					}
+					
+					$html .= "</li>\n";
 				}
-			
+				
 				if (!empty($html))
 				{
-					if ($ajouterLien && !$lienDesactive)
+					if ($ajouterLienPlus && !$lienDesactive)
 					{
 						$cheminFichier = cheminConfigCategories($racine);
-					
+						
 						if ($cheminFichier)
 						{
 							$categories = super_parse_ini_file($cheminFichier, TRUE);
@@ -4873,128 +5245,25 @@ function publicationsRecentes($racine, $urlRacine, $langueParDefaut, $langue, $t
 						{
 							$categories = array ();
 						}
-					
-						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('galeries'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-						$lien = $urlRacine . '/' . $categories['galeries']['urlCat'];
-						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus d'images") . "</a></p>\n";
+						
+						$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('site'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+						$lien = $urlRacine . '/' . $categories['site']['url'];
+						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 					}
 					else
 					{
 						$codeLien = '';
 					}
 					
-					$html = "<div class=\"publicationsRecentes publicationsRecentesGaleries\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
+					$html = "<div class=\"publicationsRecentes publicationsRecentesSite\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
 				}
-			}
-			
-			if ($dureeCache['publications-recentes'])
-			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
 			}
 		}
 	}
-	elseif ($type == 'site')
+	
+	if (file_exists($nomFichierTmp))
 	{
-		// On vérifie si la liste existe en cache ou si le cache est expiré.
-		
-		if ($ajouterLien)
-		{
-			$lienCache = 'avec-lien';
-		}
-		else
-		{
-			$lienCache = 'sans-lien';
-		}
-		
-		$nomFichierCache = filtreChaine($racine, "publications-recentes-site-$nombreVoulu-$lienCache-$langue.cache.html");
-		
-		if ($dureeCache['publications-recentes'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['publications-recentes']))
-		{
-			@readfile("$racine/site/cache/$nomFichierCache");
-		}
-		else
-		{
-			$lienDesactive = FALSE;
-			$itemsFluxRss = array ();
-			$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
-			
-			if (!empty($pages) && isset($pages[$langue]['pages']))
-			{
-				$nombreReel = count($pages[$langue]['pages']);
-				
-				if ($nombreVoulu >= $nombreReel)
-				{
-					$lienDesactive = TRUE;
-				}
-				
-				if ($nombreVoulu > $nombreReel)
-				{
-					$nombreVoulu = $nombreReel;
-				}
-				
-				$i = 0;
-				
-				foreach ($pages[$langue]['pages'] as $page)
-				{
-					if ($i < $nombreVoulu)
-					{
-						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, FALSE, 600);
-					
-						if (!empty($fluxRssPageTableauBrut))
-						{
-							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
-						}
-					}
-					
-					$i++;
-				}
-				
-				if (!empty($itemsFluxRss))
-				{
-					$itemsFluxRss = fluxRssTableauFinal('site', $itemsFluxRss, $nombreVoulu);
-					
-					foreach ($itemsFluxRss as $cle => $valeur)
-					{
-						$html .= '<li><a href="' . $valeur['link'] . '">' . $valeur['title'] . "</a></li>\n";
-					}
-					
-					if (!empty($html))
-					{
-						if ($ajouterLien && !$lienDesactive)
-						{
-							$cheminFichier = cheminConfigCategories($racine);
-							
-							if ($cheminFichier)
-							{
-								$categories = super_parse_ini_file($cheminFichier, TRUE);
-							}
-							else
-							{
-								$categories = array ();
-							}
-							
-							$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, array ('site'), $nombreVoulu, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
-							$lien = $urlRacine . '/' . $categories['site']['urlCat'];
-							$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
-						}
-						else
-						{
-							$codeLien = '';
-						}
-						
-						$html = "<div class=\"publicationsRecentes publicationsRecentesSite\">\n<ul>\n$html</ul>\n$codeLien</div>\n";
-					}
-				}
-			}
-			
-			if ($dureeCache['publications-recentes'])
-			{
-				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $html);
-			}
-		}
+		@unlink($nomFichierTmp);
 	}
 	
 	return $html;
@@ -5006,6 +5275,22 @@ Retourne le contenu de la métabalise `robots`.
 function robots($robotsParDefaut, $robots)
 {
 	return !empty($robots) ? $robots : $robotsParDefaut;
+}
+
+/*
+Retourne TRUE si le RSS est activé pour la galerie demandée, sinon retourne FALSE.
+*/
+function rssGalerieActif($racine, $idGalerie)
+{
+	$rssGalerie = FALSE;
+	$galeries = galeries($racine, $idGalerie);
+	
+	if (isset($galeries[$idGalerie]['rss']) && $galeries[$idGalerie]['rss'] == 1)
+	{
+		$rssGalerie = TRUE;
+	}
+	
+	return $rssGalerie;
 }
 
 /*
@@ -5035,6 +5320,100 @@ function securiseTexte($texte)
 	{
 		return '';
 	}
+}
+
+/*
+Récupère le code XHTML d'une page locale, comme si elle était visitée dans un navigateur.
+*/
+function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
+{
+	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
+	# TODO: tester avec page d'erreur.
+	# TODO: tester si page d'accueil ou si variable GET.
+	$cheminRelatifPage = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', $urlAsimuler);
+	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
+	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
+	$cheminPage = $racine . '/' . $cheminRelatifPage;
+	
+	# Ajustement des variables relatives à l'URL.
+	
+	$infosUrl = parse_url($urlAsimuler);
+	
+	if ($infosUrl !== FALSE)
+	{
+		$_SERVER_TMP = $_SERVER;
+		
+		if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
+		{
+			$_SERVER['HTTPS'] = 1;
+		}
+		else
+		{
+			$_SERVER['HTTPS'] = '';
+		}
+		
+		if (isset($infosUrl['host']))
+		{
+			$_SERVER['SERVER_NAME'] = $infosUrl['host'];
+		}
+		else
+		{
+			$_SERVER['SERVER_NAME'] = '';
+		}
+		
+		if (isset($infosUrl['port']))
+		{
+			$_SERVER['SERVER_PORT'] = $infosUrl['port'];
+		}
+		else
+		{
+			$_SERVER['SERVER_PORT'] = '';
+		}
+		
+		if (isset($infosUrl['path']))
+		{
+			$_SERVER['REQUEST_URI'] = $infosUrl['path'];
+		}
+		else
+		{
+			$_SERVER['REQUEST_URI'] = '';
+		}
+		
+		$_GET_TMP = $_GET;
+		unset($_GET);
+		
+		if (isset($infosUrl['query']))
+		{
+			$_SERVER['REQUEST_URI'] .= '?' . $infosUrl['query'];
+			parse_str($infosUrl['query'], $_GET);
+		}
+	}
+	
+	ob_start();
+	$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlAsimuler);
+	
+	if (file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+	{
+		@readfile("$racine/site/cache/$nomFichierCache");
+	}
+	else
+	{
+		include $cheminPage;
+	}
+	
+	$codePage = ob_get_contents();
+	ob_end_clean();
+	
+	# Restauration des variables relatives à l'URL.
+	if ($infosUrl !== FALSE)
+	{
+		$_SERVER = $_SERVER_TMP;
+		unset($_SERVER_TMP);
+		$_GET = $_GET_TMP;
+		unset($_GET_TMP);
+	}
+	
+	return $codePage;
 }
 
 /*
@@ -5161,7 +5540,7 @@ function superRawurlencode($url, $decoderEsperluette = FALSE)
 	
 	if ($decoderEsperluette)
 	{
-		// Entre autres pour `curl_init()`, `file_get_contents()`, `fopen()`, `get_headers()` et `readfile()`.
+		// Entre autres pour `file_get_contents()`, `fopen()`, `get_headers()` et `readfile()`.
 		$url = str_replace('%26amp%3B', '&', $url);
 	}
 	else
@@ -5287,6 +5666,22 @@ function titreSite($tableauTitreSite, $langues)
 }
 
 /*
+S'assure que la langue fournie soit en premier dans le tableau `$accueil`. Retourne le tableau trié.
+*/
+function triTableauAccueil($accueil, $langue)
+{
+	$tableauTrie = $accueil;
+	
+	if (isset($tableauTrie[$langue]))
+	{
+		unset($tableauTrie[$langue]);
+		$tableauTrie = array_merge(array ($langue => $accueil[$langue]), $tableauTrie);
+	}
+	
+	return $tableauTrie;
+}
+
+/*
 Tronque le texte à la taille spécifiée. Il s'agit d'un alias de la fonction `node_teaser()`.
 */
 function tronqueTexte($texte, $taille)
@@ -5305,9 +5700,9 @@ function typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeC
 /*
 Retourne l'URL de la page courante. Un premier paramètre optionnel, s'il vaut FALSE, permet de ne pas retourner les variables GET. Un deuxième paramètre optionnel, s'il vaut FALSE, permet de retourner seulement l'URL demandée sans la partie serveur. Un troisième paramètre optionnel, s'il vaut TRUE, active la recherche d'un fichier d'index (par exemple `index.php`) pour l'ajouter, s'il y a lieu, à l'URL.
 
-Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonction va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` et `$retourneServeur` vallent TRUE.
+Note: si l'URL contient une ancre, cette dernière sera perdue, car le serveur n'en a pas connaissance. Par exemple, si l'URL fournie est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonction va retourner `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3` si `$retourneVariablesGet` et `$retourneServeur` valent TRUE.
 
-Fonction inspirée de <http://api.drupal.org/api/function/drupal_detect_baseurl>.
+Fonction inspirée de <http://api.drupal.org/api/function/drupal_detect_baseurl> et de <http://www.mediawiki.org/wiki/Manual:$wgServer/fr>.
 */
 function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherIndex = FALSE)
 {
@@ -5322,13 +5717,13 @@ function url($retourneVariablesGet = TRUE, $retourneServeur = TRUE, $rechercherI
 	
 	$serveur = securiseTexte($_SERVER['SERVER_NAME']);
 	
-	if ($_SERVER['SERVER_PORT'] == 80)
+	if (!empty($_SERVER['SERVER_PORT']) && (($protocole == 'https://' && $_SERVER['SERVER_PORT'] != 443) || ($protocole == 'http://' && $_SERVER['SERVER_PORT'] != 80)))
 	{
-		$port = '';
+		$port = ':' . securiseTexte($_SERVER['SERVER_PORT']);
 	}
 	else
 	{
-		$port = ':' . securiseTexte($_SERVER['SERVER_PORT']);
+		$port = '';
 	}
 	
 	$uri = securiseTexte($_SERVER['REQUEST_URI']);
@@ -5404,28 +5799,26 @@ function urlAvecIndex($url)
 /*
 Retourne l'URL relative d'une catégorie.
 */
-function urlCat($racine, $categorie, $idCategorie, $langueParDefaut)
+function urlCat($racine, $categorie, $idCategorie)
 {
-	$langue = langueCat($categorie, $langueParDefaut);
-	
-	if (!empty($categorie['urlCat']))
+	if (!empty($categorie['url']))
 	{
-		if (strpos($categorie['urlCat'], 'categorie.php?id=') !== FALSE && !preg_match('/\blangue=/', $categorie['urlCat']) && estCatSpeciale($idCategorie) && !empty($langue))
+		if (preg_match('/^categorie\.php\b/', $categorie['url']) && estCatSpeciale($idCategorie) && !empty($categorie['langue']))
 		{
-			$categorie['urlCat'] .= "&amp;langue=$langue";
+			$categorie['url'] = variableGet(1, $categorie['url'], 'langue', $categorie['langue']);
 		}
 	}
 	else
 	{
-		$categorie['urlCat'] = 'categorie.php?id=' . filtreChaine($racine, $idCategorie);
+		$categorie['url'] = 'categorie.php?id=' . filtreChaine($racine, $idCategorie);
 		
-		if (estCatSpeciale($idCategorie) && !empty($langue))
+		if (estCatSpeciale($idCategorie) && !empty($categorie['langue']))
 		{
-			$categorie['urlCat'] .= "&amp;langue=$langue";
+			$categorie['url'] .= '&amp;langue=' . $categorie['langue'];
 		}
 	}
 	
-	return $categorie['urlCat'];
+	return $categorie['url'];
 }
 
 /*
@@ -5435,93 +5828,46 @@ function urlExiste($url)
 {
 	$url = superRawurlencode($url, TRUE);
 	$enTetes = '';
+	@file_get_contents($url, 0, NULL, 0, 1);
 	
-	if (function_exists('curl_init'))
+	if (isset($http_response_header[0]))
 	{
-		$ch = @curl_init($url);
-		@curl_setopt($ch, CURLOPT_HEADER, TRUE);
-		@curl_setopt($ch, CURLOPT_NOBODY, TRUE);
-		@curl_setopt($ch, CURLOPT_FOLLOWLOCATION, FALSE);
-		@curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		$enTetes = @curl_exec($ch);
-		@curl_close($ch);
-	}
-	else
-	{
-		@file_get_contents($url, 0, NULL, 0, 1);
-		
-		if (isset($http_response_header[0]))
-		{
-			$enTetes = $http_response_header[0];
-		}
+		$enTetes = $http_response_header[0];
 	}
 	
 	return preg_match('~^HTTP/\d+\.\d+\s+[23]~', $enTetes);
 }
 
 /*
-Retourne l'URL de la page en cours avec la variable GET `action=envoyerAmis`.
-*/
-function urlPageAvecEnvoyerAmis()
-{
-	$url = url();
-	
-	if (preg_match('/(\?|&amp;)action=envoyerAmis/', $url))
-	{
-		return $url . '#titreEnvoyerAmis';
-	}
-	elseif (strstr($url, '?'))
-	{
-		return "$url&amp;action=envoyerAmis#titreEnvoyerAmis";
-	}
-	else
-	{
-		return "$url?action=envoyerAmis#titreEnvoyerAmis";
-	}
-}
+Retourne l'URL d'une galerie. Si aucune URL n'a été trouvée, retourne une URL par défaut.
 
-/*
-Si le paramètre optionnel vaut TRUE, retourne un tableau contenant l'URL de la page en cours sans la variable GET `action=envoyerAmis` (si elle existe) ainsi qu'un boléen informant de la présence ou non d'autres variables GET (peu importe lesquelles) après suppression de `action=envoyerAmis`; sinon retourne une chaîne de caractères équivalant au premier élément du tableau retourné si le paramètre optionnel vaut TRUE.
+Si le paramètre `$action` vaut `0`, récupère les informations de la galerie `$info` dans le fichier de configuration des galeries, sinon s'il vaut `1`, utilise directement `$info` comme URL brute de la galerie.
 */
-function urlPageSansEnvoyerAmis($retourneTableau = FALSE)
+function urlGalerie($action, $racine, $urlRacine, $info, $langue)
 {
-	$urlPageSansEnvoyerAmis = array ();
-	$url = url();
-	
-	if (strstr($url, '?action=envoyerAmis&amp;'))
+	if ($action == 0)
 	{
-		$urlPageSansEnvoyerAmis[0] = str_replace('?action=envoyerAmis&amp;', '?', $url);
-	}
-	elseif (preg_match('/\?action=envoyerAmis$/', $url))
-	{
-		$urlPageSansEnvoyerAmis[0] = str_replace('?action=envoyerAmis', '', $url);
-	}
-	elseif (strstr($url, '&amp;action=envoyerAmis'))
-	{
-		$urlPageSansEnvoyerAmis[0] = str_replace('&amp;action=envoyerAmis', '', $url);
-	}
-	else
-	{
-		$urlPageSansEnvoyerAmis[0] = $url;
-	}
-	
-	if ($retourneTableau)
-	{
-		if (strstr($url, '?'))
+		$galeries = galeries($racine, $info);
+		
+		if (!empty($galeries[$info]['url']))
 		{
-			$urlPageSansEnvoyerAmis[1] = TRUE;
+			$urlGalerie = $galeries[$info]['url'];
 		}
 		else
 		{
-			$urlPageSansEnvoyerAmis[1] = FALSE;
+			$urlGalerie = 'galerie.php?id=' . filtreChaine($racine, $info) . "&amp;langue=$langue";
 		}
-		
-		return $urlPageSansEnvoyerAmis;
+	}
+	elseif ($action == 1)
+	{
+		$urlGalerie = $info;
 	}
 	else
 	{
-		return $urlPageSansEnvoyerAmis[0];
+		$urlGalerie = '';
 	}
+	
+	return str_replace('{LANGUE}', $langue, $urlRacine . '/' . $urlGalerie);
 }
 
 /*
@@ -5584,6 +5930,69 @@ function urlRacineLangueInactive($racine, $urlRacine, $langue)
 	}
 	
 	return $urlRacineLangue;
+}
+
+/*
+Effectue l'action demandée à la variable GET `$cle` de l'adresse fournie et retourne le résultat.
+*/
+function variableGet($action, $adresse, $cle, $valeur = '')
+{
+	if (!empty($cle))
+	{
+		$infosAdresse = parse_url($adresse);
+		$adresseGet = array ();
+		
+		if (isset($infosAdresse['query']))
+		{
+			parse_str(str_replace('&amp;', '&', $infosAdresse['query']), $adresseGet);
+		}
+		
+		# Supprimer.
+		if ($action == 0 && isset($adresseGet[$cle]))
+		{
+			unset($adresseGet[$cle]);
+		}
+		# Écraser.
+		elseif ($action == 1)
+		{
+			$adresseGet[$cle] = $valeur;
+		}
+		# Ajouter
+		elseif ($action == 2 && !isset($adresseGet[$cle]))
+		{
+			$adresseGet[$cle] = $valeur;
+		}
+		
+		$adresse = preg_replace('/(\?|#).*$/', '', $adresse);
+		$premierGet = TRUE;
+		
+		foreach ($adresseGet as $c => $v)
+		{
+			if ($premierGet)
+			{
+				$adresse .= '?';
+				$premierGet = FALSE;
+			}
+			else
+			{
+				$adresse .= '&amp;';
+			}
+			
+			$adresse .= $c;
+			
+			if (!empty($v))
+			{
+				$adresse .= "=$v";
+			}
+		}
+		
+		if (isset($infosAdresse['fragment']))
+		{
+			$adresse .= '#' . $infosAdresse['fragment'];
+		}
+	}
+	
+	return $adresse;
 }
 
 /*

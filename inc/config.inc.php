@@ -33,12 +33,23 @@ $langueRapports = "";
 */
 $activerPageCron = TRUE; // TRUE|FALSE
 
-// Ajout par le cron de pages dans le fichier Sitemap du site.
+// Clé d'accès au cron.
 /*
-- Si l'ajout est activé, la liste des pages déclarées dans le flux RSS des dernières publications et dans le fichier de configuration des catégories sera comparée à celle des pages déjà présentes dans le fichier Sitemap du site. Toute page manquante y sera ajoutée.
-- Si l'ajout est désactivé, la composition du fichier Sitemap du site ne dépendra que des pages ajoutées en passant par l'interface d'administration ou à la main avec un éditeur de texte.
+Si `$activerPageCron` vaut TRUE, utiliser une clé d'accès. Le cron ne pourra être lancé lors d'une visite que si la bonne clé se trouve dans l'URL:
+
+	$urlRacine/cron.php?cle=$cleCron
+
+Exemple:
+
+	$urlRacine/cron.php?cle=S3Fs_MTFyJ-GyPGR4BXj
 */
-$ajouterPagesParCronDansSitemapSite = TRUE; // TRUE|FALSE
+$cleCron = '';
+
+// Ajout par le cron de pages dans le fichier Sitemap.
+/*
+- Si l'ajout est activé, toutes les pages connues par Squeletml (URL d'accueil, galeries, flux RSS, catégories, etc.) seront ajoutées dans le fichier Sitemap.
+*/
+$ajouterPagesParCronDansSitemap = TRUE; // TRUE|FALSE
 
 // Envoi d'un rapport par courriel après l'exécution du cron.
 $envoyerRapportCron = TRUE; // TRUE|FALSE
@@ -79,10 +90,10 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
-- Les types possibles sont: css, cssltIE7, cssIE7, csslteIE7, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
+- Les types possibles sont: css, cssDirectlteIE8, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, hreflang, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
 - Syntaxe pour tous les types:
-  $balisesLinkScript[] = "URL#TYPE#fichier à inclure#contenu de l'attribut `title`";
-  Le contenu de l'attribut `title` est optionnel, et est utilisé seulement pour le type rss.
+  $balisesLinkScript[] = "URL#TYPE#fichier à inclure#extra";
+  La valeur `extra` correspond au contenu de l'attribut `title` pour le type `rss` (optionnelle dans ce cas), ou au code de langue pour le type `hreflang` (obligatoire dans ce cas).
 - Ajouter une étoile à la fin de l'URL pour inclure toutes les pages enfants.
 - Dans le fichier de configuration personnalisé, ajouter tout simplement des éléments au tableau `$balisesLinkScript`, par exemple:
   $balisesLinkScript[] = "$urlRacine/*#css#$urlRacine/site/css/style-general.css";
@@ -91,13 +102,24 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 - Voir la fonction `linkScript()`.
 */
 $balisesLinkScript[0] = "$urlRacine/*#css#$urlRacine/css/squeletml.css";
-$balisesLinkScript[1] = "$urlRacine/*#css#$urlRacine/css/extensions-proprietaires.css";
-$balisesLinkScript[2] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
-$balisesLinkScript[3] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
-$balisesLinkScript[4] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
-$balisesLinkScript[5] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
-$balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
-$balisesLinkScript[7] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
+$balisesLinkScript[1] = "$urlRacine/*#csslteIE8#$urlRacine/css/ie6-7-8.css";
+$balisesLinkScript[2] = "$urlRacine/*#cssIE8#$urlRacine/css/ie8.css";
+$balisesLinkScript[3] = "$urlRacine/*#csslteIE7#$urlRacine/css/ie6-7.css";
+$balisesLinkScript[4] = "$urlRacine/*#cssIE7#$urlRacine/css/ie7.css";
+$balisesLinkScript[5] = "$urlRacine/*#cssltIE7#$urlRacine/css/ie6.css";
+$balisesLinkScript[6] = "$urlRacine/*#js#$urlRacine/js/phpjs/php.min.js";
+$balisesLinkScript[7] = "$urlRacine/*#js#$urlRacine/js/squeletml.js";
+$balisesLinkScript[8] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
+
+// Fusion des fichiers CSS et des scripts Javascript.
+/*
+- Cette option permet de fusionner les feuilles de style CSS dans un seul fichier, qui sera inclus dans une balise `link` à la place des autres feuilles, et de fusionner les scripts Javascript dans un seul fichier, qui sera inclus dans une balise `script` à la place des autres fichiers Javascript.
+- Cette option permet donc de réduire le nombre de requêtes HTTP lors de la visite d'une page.
+- Les fichiers fusionnés sont autant ceux inclus par défaut que ceux ajoutés dans le fichier de configuration personnalisé.
+- Le fichier unique résultant est enregistré dans le dossier de cache. Pour forcer la regénération du fichier, supprimer les fichiers CSS et Javascript présents dans le dossier de cache.
+- Voir la section «Cache» dans la documentation ainsi que la fonction `linkScript()` pour plus de détails.
+*/
+$fusionnerCssJs = FALSE; // TRUE|FALSE
 
 // Version par défaut des fichiers CSS déclarés dans le tableau `$balisesLinkScript`.
 /*
@@ -156,7 +178,7 @@ $langueParDefaut = 'fr';
 // Titre du site en en-tête.
 /*
 - Contenu (balises HTML permises) qui sera inséré comme titre de site dans un `h1` sur la page d'accueil, et dans un `p` sur toutes les autres pages.
-- Astuce: si vous ne voulez pas bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 75px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site.
+- Astuce: si vous ne voulez pas bidouiller dans le style, remplacez la première image (dont l'`id` est `logo`) par une autre image de 75px × 70px, et remplacez le contenu du `span` (dont l'`id` est `logoSupplement`) par le titre de votre site.
 */
 $titreSite['fr'] = "<img id=\"logo\" src=\"$urlRacine/fichiers/squeletml-logo.png\" alt=\"Squeletml\" /><span id=\"logoSupplement\"><img src=\"$urlRacine/fichiers/squeletml.png\" alt=\"Squeletml\" /></span>";
 $titreSite['en'] = $titreSite['fr'];
@@ -204,31 +226,31 @@ Note: le tableau ci-dessous n'a pas de lien avec l'activation ou la désactivati
 
 Voir la fonction `blocs()`.
 */
+$ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['balise-h1']             = array (300, 300, 300);
 $ordreBlocsDansFluxHtml['infos-publication']     = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']               = array (410, 410, 410);
-$ordreBlocsDansFluxHtml['lien-page']             = array (420, 420, 420);
+$ordreBlocsDansFluxHtml['partage']               = array (420, 420, 420);
+$ordreBlocsDansFluxHtml['lien-page']             = array (430, 430, 430);
 $ordreBlocsDansFluxHtml['menu-langues']          = array (500, 500, 200);
-$ordreBlocsDansFluxHtml['menu']                  = array (200, 510, 510);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
-$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (530, 530, 530);
-$ordreBlocsDansFluxHtml['flux-rss']              = array (540, 540, 540);
-$ordreBlocsDansFluxHtml['envoyer-amis']          = array (550, 550, 550);
-$ordreBlocsDansFluxHtml['partage']               = array (560, 560, 560);
+$ordreBlocsDansFluxHtml['menu-galeries']         = array (530, 530, 530);
+$ordreBlocsDansFluxHtml['legende-image-galerie'] = array (540, 540, 540);
+$ordreBlocsDansFluxHtml['flux-rss']              = array (550, 550, 550);
+$ordreBlocsDansFluxHtml['recherche-google']      = array (560, 560, 560);
 $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
-$ordreBlocsDansFluxHtml['recherche-google']      = array (570, 570, 570);
 
 // Conditions d'insertion des blocs.
 /*
 - Il est possible d'ajouter des conditions à l'insertion d'un bloc de contenu. Les conditions doivent être du code PHP valide. Elles seront exécutées par la fonction PHP `eval()`. Un bloc sera inclus seulement si le code PHP retourne TRUE. Exemple:
 	
-		$conditionsBlocs['envoyer-amis'] = 'return strpos($url, "/dossier/") ? TRUE : FALSE;';
+		$conditionsBlocs['partage'] = 'return strpos($url, "/dossier/") !== FALSE ? TRUE : FALSE;';
 	
 	Voici la même condition, écrite autrement:
 	
-		$conditionsBlocs['envoyer-amis'] = 'if (strpos($url, "/dossier/")) {return TRUE;} else {return FALSE;}';
+		$conditionsBlocs['partage'] = 'if (strpos($url, "/dossier/") !== FALSE) {return TRUE;} else {return FALSE;}';
 	
-	Dans cet exemple, le bloc «Envoyer à des amis» sera inclus seulement si l'URL contient `/dossier/`.
+	Dans cet exemple, le bloc «Partage» sera inclus seulement si l'URL contient `/dossier/`.
 	
 - Si aucune condition n'est donnée pour un bloc, le retour est automatiquement évalué à TRUE.
 */
@@ -259,11 +281,14 @@ $inclureSousTitre = TRUE; // TRUE|FALSE
 // Inclusion du bas de page.
 $inclureBasDePage = TRUE; // TRUE|FALSE
 
-// Activation par défaut de l'option «Envoyer à des amis».
-$activerEnvoyerAmisParDefaut = TRUE; // TRUE|FALSE
+// Si `$inclureBasDePage` vaut TRUE, positionner le bas de page à l'intérieur de la `div` `page`.
+$basDePageInterieurPage = FALSE; // TRUE|FALSE
 
-// Activation par défaut du partage en passant par des marque-pages et des réseaux sociaux.
-$activerPartageParDefaut = TRUE; // TRUE|FALSE
+// Activation par défaut du partage par courriel.
+$activerPartageCourrielParDefaut = TRUE; // TRUE|FALSE
+
+// Activation par défaut du partage par marque-pages et réseaux sociaux.
+$activerPartageReseauxParDefaut = TRUE; // TRUE|FALSE
 
 // Activation de la recherche Google.
 /*
@@ -424,14 +449,14 @@ $boitesDeroulantesAlaMainParDefaut = FALSE; // TRUE|FALSE
 /*
 - Voir le deuxième paramètre de la fonction Javascript `boiteDeroulante()`.
 */
-$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 87);";
+$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 86);";
 
 // Balises `link` et `script` finales, ajoutées juste avant `</body>`.
 /*
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 87);});";
+$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 86);});";
 
 // Inclusion de l'aperçu d'une page.
 /*
@@ -462,11 +487,21 @@ $tailleApercuAutomatique = 750;
   - `86400` équivaut à 1 jour;
   - `259200` équivaut à 3 jours;
   - `604800` équivaut à 7 jours.
+Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
 */
-$dureeCache['fluxRss']               = 0;
-$dureeCache['categorie']             = 0;
-$dureeCache['galerie']               = 0;
-$dureeCache['publications-recentes'] = 0; // Voir la fonction `publicationsRecentes()`.
+$dureeCache = 0;
+
+// Génération automatisée du bloc de menu des langues.
+/*
+- Le bloc de menu des langues peut être réalisé à la main dans le fichier `menu-langues.inc.php` ou généré automatiquement.
+*/
+$genererMenuLangues = TRUE; // TRUE|FALSE
+
+// Génération automatisée du bloc de menu des galeries.
+/*
+- Le bloc de menu des galeries peut être réalisé à la main dans le fichier `menu-galeries.inc.php` ou généré automatiquement.
+*/
+$genererMenuGaleries = TRUE; // TRUE|FALSE
 
 // Génération automatisée du titre principal de la page d'accueil d'une catégorie.
 /*
@@ -511,8 +546,11 @@ $nombreArticlesParPageCategorie = 5;
 // S'il y a pagination, type de liens.
 $typePaginationCategorie = 'texte'; // image|texte
 
-// S'il y a pagination, insertion dans une boîte arrondie.
-$paginationDansBoiteArrondie = TRUE; // TRUE|FALSE
+// S'il y a pagination, ajout d'une couleur de fond.
+$paginationAvecFond = TRUE; // TRUE|FALSE
+
+// Si `$paginationAvecFond` vaut TRUE, arrondir les coins.
+$paginationArrondie = FALSE; // TRUE|FALSE
 
 /* ____________________ Style CSS. ____________________ */
 
@@ -532,7 +570,6 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Voir la fonction `lienActif()`.
 */
 $liensActifsBlocs['balise-h1']             = NULL;
-$liensActifsBlocs['envoyer-amis']          = NULL;
 $liensActifsBlocs['flux-rss']              = NULL;
 $liensActifsBlocs['infos-publication']     = NULL;
 $liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
@@ -540,8 +577,9 @@ $liensActifsBlocs['licence']               = NULL;
 $liensActifsBlocs['lien-page']             = NULL;
 $liensActifsBlocs['menu']                  = TRUE;
 $liensActifsBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$liensActifsBlocs['menu-galeries']         = TRUE;
 $liensActifsBlocs['menu-langues']          = TRUE;
-$liensActifsBlocs['partage']               = NULL;
+$liensActifsBlocs['partage']               = TRUE;
 $liensActifsBlocs['piwik']                 = NULL;
 $liensActifsBlocs['recherche-google']      = NULL;
 
@@ -596,7 +634,6 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
 $limiterProfondeurListesBlocs['balise-h1']             = NULL;
-$limiterProfondeurListesBlocs['envoyer-amis']          = NULL;
 $limiterProfondeurListesBlocs['flux-rss']              = NULL;
 $limiterProfondeurListesBlocs['infos-publication']     = NULL;
 $limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE;
@@ -604,6 +641,7 @@ $limiterProfondeurListesBlocs['licence']               = NULL;
 $limiterProfondeurListesBlocs['lien-page']             = NULL;
 $limiterProfondeurListesBlocs['menu']                  = TRUE;
 $limiterProfondeurListesBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$limiterProfondeurListesBlocs['menu-galeries']         = FALSE;
 $limiterProfondeurListesBlocs['menu-langues']          = FALSE;
 $limiterProfondeurListesBlocs['partage']               = NULL;
 $limiterProfondeurListesBlocs['piwik']                 = NULL;
@@ -629,7 +667,14 @@ $uneColonneAgauche = TRUE; // TRUE|FALSE
 $deuxColonnesSousContenuAgauche = TRUE; // TRUE|FALSE
 
 // S'il y a lieu, arrière-plan d'une colonne.
-$arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
+$arrierePlanColonne = 'bordure'; // aucun|bordure|rayures|rayuresEtBordure|fondUni
+
+// Div `page` avec marges.
+/*
+- Les valeurs possibles sont TRUE ou FALSE.
+*/
+$margesPage['haut'] = TRUE;
+$margesPage['bas']  = TRUE;
 
 // Div `page` avec bordures.
 /*
@@ -638,6 +683,10 @@ $arrierePlanColonne = 'rayuresEtBordure'; // aucun|bordure|rayures|rayuresEtBord
 $borduresPage['droite'] = TRUE;
 $borduresPage['bas']    = TRUE;
 $borduresPage['gauche'] = TRUE;
+$borduresPage['haut']   = TRUE;
+
+// Div `page` avec ombre.
+$ombrePage = TRUE; // TRUE|FALSE
 
 // S'il y a au moins une colonne, étendre l'en-tête sur toute la largeur du site.
 /*
@@ -645,25 +694,31 @@ $borduresPage['gauche'] = TRUE;
 */ 
 $enTetePleineLargeur = FALSE; // TRUE|FALSE
 
-// Table des matières avec coins arrondis.
-$tableDesMatieresArrondie = TRUE; // TRUE|FALSE
+// Table des matières avec couleur de fond.
+$tableDesMatieresAvecFond = TRUE; // TRUE|FALSE
 
-// Blocs de contenu avec coins arrondis par défaut.
-$blocsArrondisParDefaut = FALSE; // TRUE|FALSE
+// Si `$tableDesMatieresAvecFond` vaut TRUE, arrondir les coins.
+$tableDesMatieresArrondie = FALSE; // TRUE|FALSE
 
-// Blocs de contenu spécifiques avec coins arrondis.
+// Blocs de contenu avec couleur de fond par défaut.
+$blocsAvecFondParDefaut = TRUE; // TRUE|FALSE
+
+// Si `$blocsAvecFondParDefaut` vaut TRUE, arrondir les coins.
+$blocsArrondis = FALSE; // TRUE|FALSE
+
+// Blocs de contenu spécifiques avec couleur de fond.
 /*
-Il est possible de modifier la configuration par défaut des blocs arrondis pour un bloc en particulier selon le nombre de colonnes. Par exemple, la ligne suivante:
+Il est possible de modifier la configuration par défaut des blocs avec couleur de fond pour un bloc en particulier selon le nombre de colonnes. Par exemple, la ligne suivante:
 
-	$blocsArrondisSpecifiques['menu'] = array (TRUE, FALSE, FALSE);
+	$blocsAvecFondSpecifiques['menu'] = array (TRUE, FALSE, FALSE);
 
-précise que le bloc de menu principal devra avoir des coins arrondis lorsqu'il n'y a pas de colonne, mais ne devra pas en avoir lorsqu'il y en a une ou deux. Nous pouvons donc dégager la syntaxe générale suivante:
+précise que le bloc de menu principal devra avoir une couleur de fond lorsqu'il n'y a pas de colonne, mais ne devra pas en avoir lorsqu'il y en a une ou deux. Nous pouvons donc dégager la syntaxe générale suivante:
 
-	$blocsArrondisSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
+	$blocsAvecFondSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
 */
-$blocsArrondisSpecifiques['balise-h1'] = array (FALSE, FALSE, FALSE);
-$blocsArrondisSpecifiques['menu']      = array (TRUE, FALSE, FALSE);
-$blocsArrondisSpecifiques['licence']   = array (TRUE, TRUE, TRUE);
+$blocsAvecFondSpecifiques['balise-h1']      = array (FALSE, FALSE, FALSE);
+$blocsAvecFondSpecifiques['licence']        = array (TRUE, TRUE, TRUE);
+$blocsAvecFondSpecifiques['menu-langues']   = array (FALSE, TRUE, TRUE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
@@ -673,12 +728,6 @@ $blocsArrondisSpecifiques['licence']   = array (TRUE, TRUE, TRUE);
 - Voir la documentation pour plus de détails.
 */
 $activerFluxRssGlobalSite = TRUE; // TRUE|FALSE
-
-// Syndication individuelle par défaut des catégories.
-/*
-- Note: il est possible de configurer la syndication pour chaque catégorie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssCategorie` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
-*/
-$activerFluxRssCategorieParDefaut = TRUE; // TRUE|FALSE
 
 // Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 25;
@@ -745,8 +794,8 @@ $contactNombreLiensMax = 5; // Nombre maximal de liens dans un message
 
 /* ____________________ Général. ____________________ */
 
-// Activation du Sitemap des galeries.
-$activerSitemapGaleries = TRUE; // TRUE|FALSE
+// Activation de la galerie démo.
+$activerGalerieDemo = TRUE; // TRUE|FALSE
 
 // Génération automatisée du titre principal des pages d'une galerie.
 /*
@@ -819,8 +868,11 @@ $galeriePagination['au-dessous'] = FALSE;
 // S'il y a pagination, type de liens.
 $galerieTypePagination = 'texte'; // image|texte
 
-// S'il y a pagination, insertion dans une boîte arrondie.
-$galeriePaginationDansBoiteArrondie = TRUE; // TRUE|FALSE
+// S'il y a pagination, ajout d'une couleur de fond.
+$galeriePaginationAvecFond = TRUE; // TRUE|FALSE
+
+// Si `$galeriePaginationAvecFond` vaut TRUE, arrondir les coins.
+$galeriePaginationArrondie = TRUE; // TRUE|FALSE
 
 // Affichage d'informations au sujet de la galerie.
 $galerieInfoAjout = TRUE; // TRUE|FALSE
@@ -897,7 +949,7 @@ $galerieMinivignettesNombre = 0;
   - `image`: l'image en version intermédiaire.
 - Laisser vide pour ne pas ajouter d'ancre.
 */
-$galerieAncreDeNavigation = '';
+$galerieAncreDeNavigation = 'titre';
 
 // Ajout automatique d'une légende dans le cas où aucune légende n'a été précisée.
 $galerieLegendeAutomatique = TRUE; // TRUE|FALSE
@@ -954,12 +1006,6 @@ $galerieLienOriginalTelecharger = FALSE; // TRUE|FALSE
 $galerieLegendeEmplacement = array ('bas', 'bas', 'bas');
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
-
-// Syndication individuelle par défaut des galeries.
-/*
-- Note: il est possible de configurer la syndication pour chaque galerie, et ainsi donner une valeur différente de celle par défaut. En effet, si la variable `$rssGalerie` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
-*/
-$galerieActiverFluxRssParDefaut = TRUE; // TRUE|FALSE
 
 // Syndication globale des galeries (derniers ajouts aux galeries).
 /*

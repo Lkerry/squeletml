@@ -1,0 +1,10 @@
+.acces
+.htaccess
+init.inc.php
+robots.txt
+site/admin/cache/
+site/cache/
+site/fichiers/galeries/
+site/inc/
+sitemap.xml
+TODO.mkd

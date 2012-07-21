@@ -1,7 +1,7 @@
 <?php
 // Inclusions et affectations.
 
-include_once dirname(__FILE__) . '/../../init.inc.php';
+include dirname(__FILE__) . '/../../init.inc.php';
 
 if (file_exists($racine . '/inc/devel.inc.php'))
 {
@@ -25,7 +25,12 @@ if (!isset($langue))
 	$langue = '';
 }
 
-foreach (adminFichiersAinclureAuDebut($racineAdmin) as $fichier)
+foreach (adminInclureAuDebut($racineAdmin) as $fichier)
+{
+	include $fichier;
+}
+
+foreach (adminInclureUneFoisAuDebut($racineAdmin) as $fichier)
 {
 	include_once $fichier;
 }
@@ -35,6 +40,6 @@ phpGettext('..', LANGUE_ADMIN); // Nécessaire à la traduction.
 // Traitement personnalisé optionnel.
 if (file_exists("$racine/site/$dossierAdmin/inc/zero.inc.php"))
 {
-	include_once "$racine/site/$dossierAdmin/inc/zero.inc.php";
+	include "$racine/site/$dossierAdmin/inc/zero.inc.php";
 }
 ?>

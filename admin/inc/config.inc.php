@@ -75,10 +75,9 @@ $adminLangueParDefaut = 'fr';
 - Voir les explications de la variable `$balisesLinkScript` dans le fichier de configuration du site.
 */
 $adminBalisesLinkScript[0] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/admin.css";
-$adminBalisesLinkScript[1] = "$urlRacineAdmin/*#css#$urlRacineAdmin/css/extensions-proprietaires.css";
-$adminBalisesLinkScript[2] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
-$adminBalisesLinkScript[3] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";
-$adminBalisesLinkScript[4] = "$urlRacineAdmin/*#css#$urlRacine/css/extensions-proprietaires.css";
+$adminBalisesLinkScript[2] = "$urlRacineAdmin/*#csslteIE8#$urlRacineAdmin/css/ie6-7-8.css";
+$adminBalisesLinkScript[3] = "$urlRacineAdmin/*#csslteIE7#$urlRacineAdmin/css/ie6-7.css";
+$adminBalisesLinkScript[4] = "$urlRacineAdmin/*#cssltIE7#$urlRacineAdmin/css/ie6.css";
 $adminBalisesLinkScript[5] = "$urlRacineAdmin/*#js#$urlRacine/js/phpjs/php.min.js";
 $adminBalisesLinkScript[6] = "$urlRacineAdmin/*#js#$urlRacine/js/squeletml.js";
 $adminBalisesLinkScript[7] = "$urlRacineAdmin/*#js#$urlRacineAdmin/js/squeletml.js";
@@ -107,6 +106,12 @@ $adminBalisesLinkScript[21] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/
 $adminBalisesLinkScript[22] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
 $adminBalisesLinkScript[23] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
 $adminBalisesLinkScript[24] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
+
+// Fusion des fichiers CSS et des scripts Javascript.
+/*
+- Voir les explications de la variable `$fusionnerCssJs` dans le fichier de configuration du site.
+*/
+$adminFusionnerCssJs = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
@@ -168,12 +173,12 @@ $adminTypeFiltreAccesDossiers = 'dossiersExclus';
 - Exemple:
   $adminFiltreAccesDossiers = '../rep|../rep2|../rep3/sous-rep4';
 */
-$adminFiltreAccesDossiers = '../.bzr';
+$adminFiltreAccesDossiers = '../.git';
 
 /* ____________________ Liste des dossiers. ____________________ */
 
 // Affichage des sous-dossiers dans la liste des dossiers.
-$adminAfficherSousDossiersDansListe = TRUE; // TRUE|FALSE
+$adminAfficherSousDossiersDansListe = FALSE; // TRUE|FALSE
 
 // Filtre d'affichage de la liste des dossiers.
 /*
@@ -183,33 +188,33 @@ $adminAfficherSousDossiersDansListe = TRUE; // TRUE|FALSE
 - Pour ne pas appliquer de filtre, laisser la variable vide, c'est-à-dire:
   $adminTypeFiltreAffichageDansListe = '';
 */
-$adminTypeFiltreAffichageDansListe = 'dossiersNonAffiches';
+$adminTypeFiltreAffichageDansListe = '';
 
 // Dossiers à prendre en compte dans le filtre d'affichage de la liste des dossiers.
 /*
 - Si la variable `$adminTypeFiltreAffichageDansListe` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageDansListe = '../admin/inc/pclzip|../admin/inc/tar|../admin/inc/UnsharpMask|../admin/inc/untar|../admin/js/bueditor|../admin/js/CodeMirror|../admin/js/jquery-ui|../admin/js/wz_dragdrop|../fichiers/coins|../fichiers/galeries|../inc/filter_htmlcorrector|../inc/htmlpurifier|../inc/mimedetect|../inc/node_teaser|../inc/pathauto|../inc/php-gettext|../inc/php-markdown|../inc/rolling-curl|../inc/simplehtmldom|../js/Gettext|../js/jquery|../js/phpjs|../js/slimbox2|../locale/en_US|../locale/fr_CA|../modeles/site|../piwik|../scripts|../src';
+$adminFiltreAffichageDansListe = '';
 
 /* ____________________ Sous-dossiers dans le contenu d'un dossier. ____________________ */
 
 // Lors de l'affichage du contenu d'un dossier, affichage du contenu des sous-dossiers.
-$adminAfficherSousDossiersDansContenu = TRUE; // TRUE|FALSE
+$adminAfficherSousDossiersDansContenu = FALSE; // TRUE|FALSE
 
 // Si `$adminAfficherSousDossiersDansContenu` vaut TRUE, filtre d'affichage du contenu des dossiers.
 /*
 - Il est possible d'appliquer un filtre d'affichage du contenu des dossiers. Un dossier dont l'affichage de son contenu est désactivé est quand même accessible par le porte-documents et téléchargeable; son contenu n'est simplement pas listé par défaut dans le porte-documents.
 - Voir les explication de la variable `$adminTypeFiltreAffichageDansListe` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminTypeFiltreAffichageDansContenu = 'dossiersNonAffiches';
+$adminTypeFiltreAffichageDansContenu = '';
 
 // Dossiers à prendre en compte dans le filtre d'affichage du contenu des dossiers.
 /*
 - Si la variable `$adminTypeFiltreAffichageDansContenu` est vide, aucun filtre ne sera appliqué.
 - Voir les explication de la variable `$adminFiltreAccesDossiers` dans le présent fichier de configuration pour la syntaxe à utiliser.
 */
-$adminFiltreAffichageDansContenu = '../admin|../css|../doc|../fichiers|../inc|../js|../locale|../modeles|../piwik|../scripts|../site/admin/cache|../site/cache|../site/fichiers/galeries|../src|../xhtml';
+$adminFiltreAffichageDansContenu = '';
 
 /* ____________________ Ajout de fichiers. ____________________ */
 
@@ -270,21 +275,7 @@ $adminTypesMimePermis['qt|mov']                 = 'video/quicktime';
 
 /* ____________________ Actions sur les fichiers. ____________________ */
 
-// Actions à activer dans le porte-documents.
-/*
-- Chaque élément peut valoir TRUE ou FALSE.
-*/
-$adminPorteDocumentsDroits['ajouter']              = TRUE;
-$adminPorteDocumentsDroits['copier']               = TRUE;
-$adminPorteDocumentsDroits['creer']                = TRUE;
-$adminPorteDocumentsDroits['deplacer']             = TRUE;
-$adminPorteDocumentsDroits['editer']               = TRUE;
-$adminPorteDocumentsDroits['modifier-permissions'] = TRUE;
-$adminPorteDocumentsDroits['renommer']             = TRUE;
-$adminPorteDocumentsDroits['supprimer']            = TRUE;
-$adminPorteDocumentsDroits['telecharger']          = TRUE;
-
-// Si `$adminPorteDocumentsDroits['edition']` vaut TRUE, activer une aide lors de l'édition.
+// Aide lors de l'édition.
 /*
 - Il y a deux possibilités:
   - activer l'ajout d'une barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor), qui permet également de visualiser un aperçu du code HTML.

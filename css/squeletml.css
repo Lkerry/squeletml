@@ -16,43 +16,53 @@ html, body {
 body {
 	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
 	font-size: 0.96em;
+	color: #000000;
 }
 
 h1, h2, h3, h4, h5, h6, a, a:visited {
-	color: #007070;
+	color: #005959;
 }
 
 h1, h2, h3, h4, h5, h6 {
-	margin: 20px 0px;
+	margin: 40px 0px 20px 0px;
 }
 
-h1 {
+h1, body.accueil div#milieuInterieurContenu h2 { /* Sur les pages d'accueil de chaque langue, le titre du site dans l'en-tête est contenu dans une balise `h1`, mais sans être stylé comme tel. Le style du titre `h2` est donc simulé pour apparaître comme un `h1`. Il en va de même pour les autres niveaux ci-dessous. */
 	font-size: 1.9em;
+	margin-bottom: 30px;
+	border-bottom: none;
 }
 
-h2 {
+h2, body.accueil div#milieuInterieurContenu h3 {
 	font-size: 1.6em;
+	border-bottom: 3px solid #005959;
 }
 
-h3 {
+h3, body.accueil div#milieuInterieurContenu h4 {
 	font-size: 1.3em;
 }
 
-h4 {
+h4, body.accueil div#milieuInterieurContenu h5 {
 	font-size: 1.15em;
 }
 
-h5 {
-	font-size: 1em;
+h5, body.accueil div#milieuInterieurContenu h6 {
+	font-size: 1.15em;
+	font-weight: normal;
 }
 
 h6 {
 	font-size: 1em;
+	font-weight: normal;
 	font-style: italic;
 }
 
+h4, h5, h6 {
+	margin-left: 20px;
+}
+
 .liensVisitesDifferencies a:visited {
-	color: #441570;
+	color: #551a8b;
 }
 
 a, a code {
@@ -65,7 +75,7 @@ a:hover, a:hover code {
 
 ol, ul {
 	padding: 0px;
-	margin-left: 20px;
+	margin-left: 40px;
 }
 
 ul {
@@ -77,18 +87,69 @@ li {
 	margin-bottom: 5px;
 }
 
+p, li {
+	line-height: 130%;
+}
+
 pre, code {
 	font-family: Courier, "Courier New", FreeMono, "Liberation Mono", monospace;
-	background-color: #ebebeb;
+	background-color: #f5f5f5;
+}
+
+em code {
+	font-style: normal;
+}
+
+pre code {
+	background-color: transparent;
+}
+
+strong code {
+	font-weight: normal;
 }
 
 pre {
 	display: block;
 	overflow: auto;
-	padding: 5px;
-	margin: 5px 0px;
-	border: 1px solid #b3b3b3;
-	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+	padding: 10px;
+	/* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+	white-space: pre-wrap; /* CSS 3. */
+	white-space: -moz-pre-wrap !important; /* Gecko. */
+	white-space: -pre-wrap; /* Elektra. */
+	white-space: -o-pre-wrap; /* Presto. */
+}
+
+pre, table {
+	border: 3px solid #ffffff;
+	margin: 20px 0px;
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
+}
+
+table {
+	border-spacing: 0;
+	width: 100%;
+}
+
+table tr th {
+	background-color: #cccccc;
+	border-bottom-style: none;
+	color: #000000;
+	font-weight: bold;
+}
+
+table tbody tr th {
+	vertical-align: top;
+}
+
+tr td, tr th {
+	padding: 5px 10px;
+	border: 1px solid #ffffff;
+}
+
+tr {
+	background-color: #f5f5f5;
 }
 
 #ancres {
@@ -99,24 +160,14 @@ pre {
 div#noticeMaintenance {
 	margin: 0px;
 	padding: 10px;
-	background: #ebebeb;
+	background: #f5f5f5;
 }
 
 div#noticeMaintenance p {
 	margin: 0px;
 	padding: 0px;
-	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
 	font-size: 0.96em;
 	font-weight: bold;
-}
-
-.blocMessagesScript p {
-	margin-top: 0px;
-}
-
-.blocMessagesScript ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
 }
 
 .pagination {
@@ -128,8 +179,8 @@ div#noticeMaintenance p {
 
 .pagination img {
 	border: none;
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 }
 
 .pagination .separateurPaginationTypeImage {
@@ -182,7 +233,7 @@ span.licence img {
 	display: none;
 }
 
-.sansBordure, /* forme obsolete: */.imgSansBordure {
+.sansBordure {
 	border: none;
 }
 
@@ -207,22 +258,40 @@ span.licence img {
 ***********************************************************************/
 
 #page {
-	max-width: 900px;
+	max-width: 1000px;
 	margin: 0px auto;
 	padding: 0px;
 	position: relative;
 }
 
+body.margeHautPage #page {
+	margin-top: 10px;
+}
+
+body.margeBasPage #page {
+	margin-bottom: 10px;
+}
+
+body.bordureHautPage #page {
+	border-top: 1px solid #f2f2f2;
+}
+
 body.bordureDroitePage #page {
-	border-right: 1px solid #ebebeb;
+	border-right: 1px solid #f2f2f2;
 }
 
 body.bordureBasPage #page {
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid #f2f2f2;
 }
 
 body.bordureGauchePage #page {
-	border-left: 1px solid #ebebeb;
+	border-left: 1px solid #f2f2f2;
+}
+
+body.ombrePage #page {
+	box-shadow: 1px 1px 12px #e0e0e0; /* CSS 3. */
+	-moz-box-shadow: 1px 1px 12px #e0e0e0; /* Gecko. */
+	-webkit-box-shadow: 1px 1px 12px #e0e0e0; /* Webkit. */
 }
 
 /***********************************************************************
@@ -232,7 +301,12 @@ body.bordureGauchePage #page {
 ***********************************************************************/
 
 div#enTete {
-	padding: 2px 5px;
+	padding: 10px;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+body.colonneAgaucheSansArrierePlan div#enTete, body.colonneAdroiteAvecRayures div#enTete, body.colonneAdroiteAvecRayuresEtBordure div#enTete, body.deuxColonnesSansArrierePlan div#enTete, body.deuxColonnesAvecBordure div#enTete, body.deuxColonnesAvecRayures div#enTete, body.deuxColonnesAvecRayuresEtBordure div#enTete {
+	border-bottom: none;
 }
 
 div#titre h1, div#titre p {
@@ -250,12 +324,12 @@ div#titre h1 img#logo, div#titre p img#logo {
 
 div#titre h1 span#logoSupplement, div#titre p span#logoSupplement {
 	display: block;
-	padding-top: 18px;
+	padding-top: 16px;
 	padding-bottom: 5px;
 }
 
 div#titre p a, div#titre p a:hover, div#titre p a:visited {
-	color: #007070;
+	color: #005959;
 	text-decoration: none;
 	border-bottom: none;
 }
@@ -278,7 +352,24 @@ div#sousTitre p {
 
 #surContenu {
 	width: 194px;
-	padding: 5px;
+	padding: 10px;
+}
+
+#surContenu .blocAvecFond:hover {
+	background-color: #fafafa;
+	background-image: none;
+}
+
+#surContenu a, #surContenu a code {
+	text-decoration: none;
+}
+
+#surContenu a:hover, #surContenu a:hover code {
+	text-decoration: underline;
+}
+
+#surContenu ul {
+	margin-left: 20px;
 }
 
 /***********************************************************************
@@ -287,26 +378,16 @@ div#sousTitre p {
 **
 ***********************************************************************/
 
-#contenu h1, #contenu .accueilPremierH2 {
-	margin-top: 0px;
-	padding-top: 0px;
-}
-
-#contenu .accueilPremierH2 {
-	font-size: 1.9em;
+#contenu {
+	margin-top: 40px;
 }
 
 #interieurContenu {
-	padding: 5px;
+	padding: 0px 50px 30px 50px;
 }
 
-body.tableDesMatieresArrondie #tableDesMatieres {
-	border-color: #ebebeb;
-	border-radius: 8px; /* CSS 3. */
-}
-
-#infosPublication {
-	font-style: italic;
+#finInterieurContenu {
+	margin-top: 40px;
 }
 
 /* Chapeau, style `fieldset`. */
@@ -314,7 +395,7 @@ body.tableDesMatieresArrondie #tableDesMatieres {
 div.chapeau {
 	margin-top: 20px;
 	margin-bottom: 20px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 }
 
 div.chapeau p {
@@ -344,7 +425,7 @@ div.chapeau div.contenuChapeau {
 /* Catégories. */
 
 .apercu {
-	border-bottom: 1px solid #ebebeb;
+	border-bottom: 1px solid #f2f2f2;
 	padding-bottom: 25px;
 }
 
@@ -373,9 +454,11 @@ div.descriptionApercu div.galerieIntermediaireImgApercu {
 	text-align: center;
 }
 
-.infosPublicationApercu {
+div.infosPublicationApercu {
 	font-style: italic;
 	margin-bottom: 10px;
+	padding-left: 19px;
+	background: url('../fichiers/info.png') no-repeat left center;
 }
 
 .lienApercu {
@@ -439,7 +522,24 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 
 #sousContenu {
 	width: 194px;
-	padding: 5px;
+	padding: 10px;
+}
+
+#sousContenu .blocAvecFond:hover {
+	background-color: #fafafa;
+	background-image: none;
+}
+
+#sousContenu a, #sousContenu a code {
+	text-decoration: none;
+}
+
+#sousContenu a:hover, #sousContenu a:hover code {
+	text-decoration: underline;
+}
+
+#sousContenu ul {
+	margin-left: 20px;
 }
 
 /***********************************************************************
@@ -448,45 +548,58 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 **
 ***********************************************************************/
 
-#basDePage {
+#basDePageInterieurPage, #basDePageHorsPage {
 	text-align: center;
-	padding: 5px;
 }
 
-#basDePage img {
+#basDePageInterieurPage img, #basDePageHorsPage img {
 	border: none;
 	vertical-align: bottom;
 }
 
+#basDePageInterieurPage {
+	padding: 10px;
+}
+
+#basDePageHorsPage {
+	max-width: 1000px;
+	margin: 25px auto;
+	padding: 0px;
+	border: 1px solid #f2f2f2;
+	box-shadow: 1px 1px 12px #e0e0e0; /* CSS 3. */
+	-moz-box-shadow: 1px 1px 12px #e0e0e0; /* Gecko. */
+	-webkit-box-shadow: 1px 1px 12px #e0e0e0; /* Webkit. */
+}
+
 /***********************************************************************
 **
-** Blocs
+** Blocs.
 **
 ***********************************************************************/
 
 .bloc {
-	margin-top: 0px;
+	margin-top: 20px;
 	margin-bottom: 20px;
 }
 
-#finInterieurContenu .bloc {
-	margin-top: 30px;
+.bloc code.codeLangue {
+	background-color: transparent;
+	background-image: none;
+	font-family: inherit;
 }
 
-.contenuBloc {
-	padding-left: 2px;
-	padding-right: 2px;
+.bloc h2, .bloc h3 {
+	margin: 0px 0px 15px 0px;
+	padding: 0px;
+	border-bottom: none;
 }
 
 .bloc h2 {
-	margin: 0px 0px 5px 0px;
-	padding: 0px;
 	font-size: 1em;
 }
 
-.bloc ul {
-	margin-top: 0px;
-	margin-bottom: 0px;
+.bloc h3 {
+	font-size: 0.9em;
 }
 
 a.actif {
@@ -505,42 +618,50 @@ li.parent {
 	list-style-type: disc;
 }
 
-/* Coins arrondis. */
+/* Avec couleur de fond. */
+
+.blocAvecFond {
+	padding: 10px;
+	border: 3px solid white;
+	background-color: #f5f5f5;
+	background-image: linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* CSS 3. */
+	background-image: -moz-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f7f7f7), color-stop(1, #f5f5f5)); /* Webkit. */
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
+}
+
+#lienPage.blocAvecFond pre {
+	margin-bottom: 0px;
+}
+
+.blocAvecFond > p:first-child, .blocAvecFond > ul:first-child, .blocAvecFond > ul:first-child > li:first-child {
+	margin-top: 0px;
+}
+
+.blocAvecFond > p:last-child, .blocAvecFond > ul:last-child, .blocAvecFond > ul:last-child > li:last-child {
+	margin-bottom: 0px;
+}
+
+/* Avec coins arrondis. */
 
 .blocArrondi {
-	background-color: #ebebeb;
-}
-
-div.haut-gauche {
-	background: url(../fichiers/coins/haut-gauche.gif);
-}
-
-div.haut-droit {
-	float: right;
-	background: url(../fichiers/coins/haut-droit.gif);
-}
-
-div.bas-gauche {
-	background: url(../fichiers/coins/bas-gauche.gif);
-}
-
-div.bas-droit {
-	float: right;
-	background: url(../fichiers/coins/bas-droit.gif);
-}
-
-div.haut-gauche, div.haut-droit, div.bas-gauche, div.bas-droit {
-	height: 8px;
-	width: 8px;
-	background-repeat: no-repeat;
-	font-size: 1px; /* À cause d'un bogue d'IE. */
+	border-radius: 5px; /* CSS 3. */
+	-moz-border-radius: 5px; /* Gecko. */
+	-webkit-border-radius: 5px; /* Webkit. */
 }
 
 /* Balise `h1`. */
 
-div#baliseH1 .contenuBloc {
-	padding-left: 0px;
-	padding-right: 0px;
+div#baliseH1 {
+	margin-top: 40px;
+	margin-bottom: 30px;
+}
+
+div#baliseH1 h1 {
+	margin: 0px;
 }
 
 /* Flux RSS. */
@@ -550,7 +671,7 @@ div#baliseH1 .contenuBloc {
 	margin-left: 0px;
 }
 
-#fluxRss a {
+#fluxRss a.fluxRssLien {
 	display: block;
 	padding-left: 19px;
 	background: url('../fichiers/rss.png') no-repeat left center;
@@ -558,34 +679,68 @@ div#baliseH1 .contenuBloc {
 
 /* Informations de publication. */
 
-#infosPublication div.contenuBloc, div.infosPublicationApercu {
+#infosPublication {
+	font-style: italic;
+}
+
+#infosPublication {
 	padding-left: 19px;
 	background: url('../fichiers/info.png') no-repeat left center;
 }
 
-/* Module «Envoyer à des amis». */
-
-#modeleMessageEnvoyerAmis {
-	margin: 25px;
-	padding: 5px;
-	background-color: #ebebeb;
-	border-radius: 8px; /* CSS 3. */
+#infosPublication.blocAvecFond {
+	padding-left: 29px;
+	background: url('../fichiers/info.png') #f5f5f5 no-repeat 10px center;
 }
 
-h2#titreEnvoyerAmis {
+/* Bloc «licence». */
+
+#licence ul {
+	margin-top: 10px;
+}
+
+/* Module de partage. */
+
+#modeleMessagePartageCourriel {
+	margin: 20px;
+}
+
+#modeleMessagePartageCourriel code {
+	background-color: transparent;
+}
+
+h2#titrePartageCourriel {
 	clear: both;
 }
 
-#envoyerAmis a {
-	display: block;
-	padding-left: 22px;
-	background: url('../fichiers/enveloppe.png') no-repeat left center;
+body.aucuneColonne #partage ul,
+#basDePageInterieurPage #partage ul,
+#basDePageHorsPage #partage ul,
+#debutInterieurContenu #partage ul,
+#finInterieurContenu #partage ul {
+	margin: 5px 0px 0px;
+	padding: 0px;
+	list-style-type: none;
+	text-align: center;
+}
+
+body.aucuneColonne #partage li,
+#basDePageInterieurPage #partage li,
+#basDePageHorsPage #partage li,
+#debutInterieurContenu #partage li,
+#finInterieurContenu #partage li {
+	display: inline;
+	margin-right: 20px;
 }
 
 /* Recherche Google. */
 
 #rechercheGoogle #inputMotsCles {
 	width: 184px;
+}
+
+#rechercheGoogle.blocAvecFond #inputMotsCles {
+	width: 170px;
 }
 
 /***********************************************************************
@@ -624,7 +779,11 @@ body.colonneAgaucheAvecFondUni #page {
 body.colonneAgaucheAvecBordure #page {
 	background: url('../fichiers/bordure-1px.png') repeat-y 204px top;
 }
-
+body.colonneAgaucheAvecBordure #surContenu .blocArrondi, body.colonneAgaucheAvecBordure #sousContenu .blocArrondi {
+	border-radius: 5px 0px 0px 5px; /* CSS 3. */
+	-moz-border-radius: 5px 0px 0px 5px; /* Gecko. */
+	-webkit-border-radius: 5px 0px 0px 5px; /* Webkit. */
+}
 /* */
 
 body.colonneAdroiteAvecRayures #page {
@@ -638,6 +797,11 @@ body.colonneAdroiteAvecFondUni #page {
 }
 body.colonneAdroiteAvecBordure #page {
 	background: url('../fichiers/bordure-gauche-205px.gif') repeat-y right top;
+}
+body.colonneAdroiteAvecBordure #surContenu .blocArrondi, body.colonneAdroiteAvecBordure #sousContenu .blocArrondi {
+	border-radius: 0px 5px 5px 0px; /* CSS 3. */
+	-moz-border-radius: 0px 5px 5px 0px; /* Gecko. */
+	-webkit-border-radius: 0px 5px 5px 0px; /* Webkit. */
 }
 
 /* */
@@ -671,6 +835,7 @@ body.deuxColonnesAvecBordure #interieurPage {
 
 body.colonneAgauche #enTete {
 	margin-left: 205px;
+	padding-left: 50px;
 }
 
 body.colonneAgauche div#sousTitre {
@@ -678,16 +843,16 @@ body.colonneAgauche div#sousTitre {
 }
 
 body.colonneAgauche #contenu {
-	margin-left: 204px;
+	margin-left: 205px;
 }
 
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	position: absolute;
-	top: 87px;
+	top: 100px;
 }
 
-body.colonneAgauche #basDePage {
-	margin: 25px 0px 0px 204px;
+body.colonneAgauche #basDePageInterieurPage {
+	margin: 20px 0px 0px 205px;
 }
 
 /* body.uneColonneAgauche */
@@ -703,17 +868,17 @@ body.colonneAdroite div#sousTitre {
 }
 
 body.colonneAdroite #contenu {
-	margin-right: 204px;
+	margin-right: 205px;
 	text-align: justify;
 }
 
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
-	top: 87px;
+	top: 100px;
 }
 
-body.colonneAdroite #basDePage {
-	margin: 25px 204px 0px 0px;
+body.colonneAdroite #basDePageInterieurPage {
+	margin: 20px 205px 0px 0px;
 }
 
 /* body.uneColonneAdroite */
@@ -728,12 +893,12 @@ body.uneColonneAdroite #surContenu, body.uneColonneAdroite #sousContenu {
 
 /* body.deuxColonnes */
 
-body.deuxColonnes #basDePage {
-	margin: 25px 204px 0 204px;
+body.deuxColonnes #basDePageInterieurPage {
+	margin: 20px 205px 0 205px;
 }
 
 body.deuxColonnes #contenu {
-	margin-right: 204px;
+	margin-right: 205px;
 	text-align: justify;
 }
 
@@ -747,8 +912,20 @@ body.deuxColonnesSousContenuAgauche #surContenu {
 	right: 0px;
 }
 
+body.deuxColonnesSousContenuAgauche #surContenu .blocArrondi {
+	border-radius: 0px 5px 5px 0px; /* CSS 3. */
+	-moz-border-radius: 0px 5px 5px 0px; /* Gecko. */
+	-webkit-border-radius: 0px 5px 5px 0px; /* Webkit. */
+}
+
 body.deuxColonnesSousContenuAgauche #sousContenu {
 	left: 0px;
+}
+
+body.deuxColonnesSousContenuAgauche #sousContenu .blocArrondi {
+	border-radius: 5px 0px 0px 5px; /* CSS 3. */
+	-moz-border-radius: 5px 0px 0px 5px; /* Gecko. */
+	-webkit-border-radius: 5px 0px 0px 5px; /* Webkit. */
 }
 
 /* body.deuxColonnesSousContenuAdroite */
@@ -758,15 +935,27 @@ body.deuxColonnesSousContenuAdroite #page {
 }
 
 body.deuxColonnesSousContenuAdroite #contenu {
-	margin-left: 204px;
+	margin-left: 205px;
 }
 
 body.deuxColonnesSousContenuAdroite #surContenu {
 	left: 0px;
 }
 
+body.deuxColonnesSousContenuAdroite #surContenu .blocArrondi {
+	border-radius: 5px 0px 0px 5px; /* CSS 3. */
+	-moz-border-radius: 5px 0px 0px 5px; /* Gecko. */
+	-webkit-border-radius: 5px 0px 0px 5px; /* Webkit. */
+}
+
 body.deuxColonnesSousContenuAdroite #sousContenu {
 	right: 0px;
+}
+
+body.deuxColonnesSousContenuAdroite #sousContenu .blocArrondi {
+	border-radius: 0px 5px 5px 0px; /* CSS 3. */
+	-moz-border-radius: 0px 5px 5px 0px; /* Gecko. */
+	-webkit-border-radius: 0px 5px 5px 0px; /* Webkit. */
 }
 
 /* body.aucuneColonne */
@@ -776,27 +965,39 @@ body.aucuneColonne #page {
 }
 
 body.aucuneColonne #interieurContenu {
-	padding-bottom: 0px;
+	padding: 0px 50px;
 }
 
 body.aucuneColonne #surContenu, body.aucuneColonne #sousContenu {
 	width: auto;
+	padding-left: 50px;
+	padding-right: 50px;
 }
 
 body.aucuneColonne #surContenu {
 	margin-bottom: 10px;
+	padding-bottom: 0px;
+}
+
+body.aucuneColonne #sousContenu {
+	padding-top: 0px;
+	margin-bottom: 20px;
 }
 
 body.aucuneColonne #menuLangues {
 	position: absolute;
 	top: 0px;
-	right: 5px;
+	right: 10px;
 	margin-top: 0px;
 	text-align: right;
 }
 
 body.aucuneColonne #menuLangues ul {
 	list-style-type: none;
+}
+
+body.aucuneColonne #menuLangues h2, body.aucuneColonne #menu h2 {
+	display: none;
 }
 
 body.aucuneColonne #menu {
@@ -815,12 +1016,17 @@ body.aucuneColonne #menu li {
 	margin-right: 20px;
 }
 
+body.aucuneColonne #basDePageHorsPage {
+	max-width: 750px;
+}
+
 /* body.enTetePleineLargeur */
 
 body.enTetePleineLargeur div#enTete {
 	background-color: white;
 	margin-left: 0px;
-	border-bottom: 1px solid #ebebeb;
+	padding-left: 10px;
+	border-bottom: 1px solid #f2f2f2;
 }
 
 /***********************************************************************
@@ -828,10 +1034,6 @@ body.enTetePleineLargeur div#enTete {
 ** Galerie.
 **
 ***********************************************************************/
-
-body.galerie #page {
-	max-width: 1000px;
-}
 
 body.galerieAucuneColonne #page {
 	max-width: 750px;
@@ -841,18 +1043,40 @@ p#galerieSousTitre {
 	font-weight: bold;
 }
 
-div#galerieIntermediaire div#galerieIntermediaireTexte {
-	margin-bottom: 15px;
+div#galerieIntermediaireTexte {
+	margin-top: 20px;
+	margin-bottom: 20px;
+	padding: 10px;
+	border: 3px solid white;
+	background-color: #f5f5f5;
+	background-image: linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* CSS 3. */
+	background-image: -moz-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f7f7f7), color-stop(1, #f5f5f5)); /* Webkit. */
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 div.minivignetteImageEnCours img {
-	border-left: 5px solid #b3b3b3 !important;
-	border-right: 5px solid #b3b3b3 !important;
+	border-left: 5px solid #cccccc !important;
+	border-right: 5px solid #cccccc !important;
 }
 
 div.sepGalerieMinivignettes {
 	clear: both;
-	margin-bottom: 15px;
+	margin-bottom: 20px;
+}
+
+div.galerieInfoEtMinivignettesEnsemble div#galerieInfo {
+	float: left;
+	width: 45%;
+}
+
+div.galerieInfoEtMinivignettesEnsemble div#galerieMinivignettes {
+	float: right;
+	margin-top: 15px;
+	width: 45%;
 }
 
 #galerieLienSansJavascript a {
@@ -860,13 +1084,9 @@ div.sepGalerieMinivignettes {
 	background: url('../fichiers/sans-javascript.png') no-repeat left center;
 }
 
-#galerieIntermediaireTexte ul {
-	margin-left: 25px;
-}
-
 #galerieIntermediaireTexteHorsContenu #galerieIntermediaireTexte {
 	padding-left: 5px;
-	border-left: 3px solid #007070;
+	border-left: 3px solid #005959;
 }
 
 #galerieIntermediaireTexteHorsContenu ul {
@@ -877,7 +1097,7 @@ div.sepGalerieMinivignettes {
 }
 
 #galerieLienOriginalLegende {
-	margin-top: 15px;
+	margin-top: 20px;
 }
 
 div.galerieNavigationPrecedent {
@@ -921,7 +1141,7 @@ div#galerieMinivignettes {
 div#galerieMinivignettes img {
 	float: left;
 	height: 35px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 	margin: 2px;
 }
 
@@ -937,7 +1157,7 @@ div#galerieAccompagnementVignetteSuivant img {
 
 div#galerieIntermediaireExif {
 	text-align: left;
-	margin-top: 15px;
+	margin-top: 20px;
 }
 
 div#galerieIntermediaireExif ul {
@@ -950,11 +1170,12 @@ div#galerieIntermediaireExif li {
 
 div.galerieNavigationAccueil img {
 	float: left;
-	background: url('../fichiers/ombre-vignette.png') no-repeat right bottom;
 }
 
-div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
-	background: url('../fichiers/ombre.png') no-repeat right bottom;
+div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 div#galerieLienOriginalIcone {
@@ -966,11 +1187,18 @@ div#galerieLienOriginalIcone img {
 }
 
 div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
-	padding: 5px 10px 10px 5px;
+	padding: 5px;
 	border: none;
 	margin: 10px;
+}
+
+ul.galerieListeImages {
+	list-style-type: none;
+	margin: 0px;
+	padding: 0px;
 }
 
 body.galerie div.pagination {
 	clear: both;
 }
+

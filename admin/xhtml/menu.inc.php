@@ -19,5 +19,7 @@
 	
 	<li><a href="<?php echo $urlRacine; ?>/"><?php echo T_("Site"); ?></a> | </li>
 	
+	<?php echo $lienPiwik; ?>
+	
 	<li class="bDtitre" title="<?php echo T_('Raccourcis'); ?>"></li>
 </ul>

@@ -3,8 +3,8 @@
 Ce fichier construit le code des blocs. Après son inclusion, le tableau `$blocs` est prêt à être utilisé. Aucun code XHTML n'est envoyé au navigateur.
 */
 
-// Vérification de l'état du module «Envoyer à des amis».
-include $racine . '/inc/envoyer-amis.inc.php';
+// Vérification de l'état du module de partage (par courriel).
+include $racine . '/inc/partage-courriel.inc.php';
 
 $blocsAinsererTemp = blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier);
 $blocs = array (
@@ -42,19 +42,9 @@ if (!empty($blocsAinsererTemp))
 				case 'balise-h1':
 					if (!empty($baliseH1))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="baliseH1" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="baliseH1" class="bloc ' . $classesBloc . '">' . "\n";
 						
 						if ($titreGalerieGenere)
 						{
@@ -71,85 +61,113 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$blocs[$region] .= $h1;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#baliseH1 -->' . "\n";
 					}
 					
 					break;
 					
-				case 'envoyer-amis':
-					if ($envoyerAmis && $envoyerAmisEstActif)
+				case 'flux-rss':
+					$fluxRssGlobalSiteActif = FALSE;
+					
+					if ($activerFluxRssGlobalSite)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$pagesFluxRssGlobalSite = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 						
-						$blocs[$region] .= '<div id="envoyerAmis" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<a href="' . urlPageAvecEnvoyerAmis() . '">' . T_("Envoyer à des amis") . '</a>';
-						$blocs[$region] .= $codeInterieurBlocBas;
-						$blocs[$region] .= '</div><!-- /#envoyerAmis -->' . "\n";
+						if (!empty($pagesFluxRssGlobalSite[$codeLangue]))
+						{
+							$fluxRssGlobalSiteActif = TRUE;
+						}
 					}
 					
-					break;
+					$fluxRssGlobalGaleriesActif = FALSE;
 					
-				case 'flux-rss':
+					if ($galerieActiverFluxRssGlobal)
+					{
+						foreach ($accueil as $codeLangue => $infosLangue)
+						{
+							$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+						
+							if (!empty($itemsFluxRssGaleriesLangue))
+							{
+								$fluxRssGlobalGaleriesActif = TRUE;
+								break;
+							}
+						}
+					}
+					
 					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGaleriesActif || $fluxRssGlobalSiteActif)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-					
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$boiteDeroulanteAjoutee = FALSE;
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="fluxRss" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="fluxRss" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2>' . T_("Flux RSS") . "</h2>\n";
 						
-						$blocs[$region] .= "<ul>\n";
-						
-						if ($fluxRssGlobalSiteActif)
-						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=site&amp;langue=" . LANGUE . '">' . T_("Dernières publications") . "</a></li>\n";
-						}
-						
-						if ($fluxRssGlobalGaleriesActif)
-						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galeries&amp;langue=" . LANGUE . '">' . T_("Derniers ajouts aux galeries") . "</a></li>\n";
-						}
+						$blocFluxRssIndividuels = '';
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=galerie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet) . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '&amp;langue=' . $langue . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
 						{
-							if (strpos($url, $urlRacine . '/categorie.php?id=') !== FALSE)
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+						}
+						
+						if (!empty($blocFluxRssIndividuels))
+						{
+							$blocs[$region] .= "<ul>\n$blocFluxRssIndividuels</ul>\n";
+						}
+						
+						if ($fluxRssGlobalSiteActif || $fluxRssGlobalGaleriesActif)
+						{
+							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							
+							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
-								$blocs[$region] .= '<li><a href="' . $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
-							}
-							else
-							{
-								$blocs[$region] .= '<li><a href="' . "$urlRacine/rss.php?type=categorie&amp;chemin=" . str_replace($urlRacine . '/', '', $urlSansIndexSansGet) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+								$blocLangue = '';
+								
+								if ($fluxRssGlobalSiteActif && isset($pagesFluxRssGlobalSite[$codeLangue]))
+								{
+									$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=site&amp;langue=$codeLangue\">" . T_("Dernières publications") . "</a></li>\n";
+								}
+								
+								if ($fluxRssGlobalGaleriesActif)
+								{
+									$itemsFluxRssLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+									
+									if (!empty($itemsFluxRssLangue))
+									{
+										$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue\">" . T_("Derniers ajouts aux galeries") . "</a></li>\n";
+									}
+								}
+								
+								if (!empty($blocLangue))
+								{
+									if ($codeLangue != LANGUE)
+									{
+										$boiteDeroulanteAjoutee = TRUE;
+										$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
+									}
+									else
+									{
+										$blocs[$region] .= "<ul>\n$blocLangue</ul>\n";
+									}
+								}
 							}
 						}
 						
-						$blocs[$region] .= "</ul>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#fluxRss -->' . "\n";
+						
+						if ($boiteDeroulanteAjoutee)
+						{
+							$blocs[$region] .= '<script type="text/javascript">' . "\n";
+							$blocs[$region] .= "//<![CDATA[\n";
+							$blocs[$region] .= "boiteDeroulante('.fluxRssLangueAutre', \"$aExecuterApresClicBd\");\n";
+							$blocs[$region] .= "//]]>\n";
+							$blocs[$region] .= "</script>\n";
+						}
 					}
 					
 					break;
@@ -157,26 +175,15 @@ if (!empty($blocsAinsererTemp))
 				case 'infos-publication':
 					if ($infosPublication && !$erreur404 && !$estPageDerreur && empty($courrielContact) && empty($idCategorie) && empty($idGalerie))
 					{
-						$listeCategoriesPage = categories($racine, $urlRacine, $url, $langueParDefaut);
+						$listeCategoriesPage = categories($racine, $urlRacine, $url);
 						$bloc = infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
 					
 						if (!empty($bloc))
 						{
-							list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+							$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 				
-							if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-							{
-								$classeBlocArrondi = ' blocArrondi';
-							}
-							else
-							{
-								$classeBlocArrondi = '';
-							}
-				
-							$blocs[$region] .= '<div id="infosPublication" class="bloc' . $classeBlocArrondi . '">' . "\n";
-							$blocs[$region] .= $codeInterieurBlocHaut;
+							$blocs[$region] .= '<div id="infosPublication" class="bloc ' . $classesBloc . '">' . "\n";
 							$blocs[$region] .= $bloc;
-							$blocs[$region] .= $codeInterieurBlocBas;
 							$blocs[$region] .= '</div><!-- /#infosPublication -->' . "\n";
 						}
 					}
@@ -190,7 +197,7 @@ if (!empty($blocsAinsererTemp))
 					
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
-							$bloc = lienActif($bloc, FALSE, 'li');
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 						}
 					
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
@@ -221,25 +228,14 @@ if (!empty($blocsAinsererTemp))
 					
 						if (!empty($bloc))
 						{
-							list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+							$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 					
-							if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-							{
-								$classeBlocArrondi = ' blocArrondi';
-							}
-							else
-							{
-								$classeBlocArrondi = '';
-							}
-					
-							$blocs[$region] .= '<div id="licence" class="bloc' . $classeBlocArrondi . '">' . "\n";
-							$blocs[$region] .= $codeInterieurBlocHaut;
-							$blocs[$region] .= T_("Sauf avis contraire:") . "\n";
+							$blocs[$region] .= '<div id="licence" class="bloc ' . $classesBloc . '">' . "\n";
+							$blocs[$region] .= T_("Sauf mention contraire:") . "\n";
 							
 							$blocs[$region] .= "<ul>\n";
 							$blocs[$region] .= $bloc;
 							$blocs[$region] .= "</ul>\n";
-							$blocs[$region] .= $codeInterieurBlocBas;
 							$blocs[$region] .= '</div><!-- /#licence -->' . "\n";
 						}
 					}
@@ -249,52 +245,38 @@ if (!empty($blocsAinsererTemp))
 				case 'lien-page':
 					if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="lienPage" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<h2>' . T_("Faire un lien vers cette page") . "</h2>\n";
+						$blocs[$region] .= '<div id="lienPage" class="bloc ' . $classesBloc . '">' . "\n";
+						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
+						$blocs[$region] .= "<div class=\"bDcorps\">\n";
 						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
-						$codeLienPage = '<a href="' . urlPageSansEnvoyerAmis() . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
+						$codeLienPage = '<a href="' . variableGet(0, $url, 'action') . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
 						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
+						$blocs[$region] .= "</div>\n";
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
+						$blocs[$region] .= '<script type="text/javascript">' . "\n";
+						$blocs[$region] .= "//<![CDATA[\n";
+						$blocs[$region] .= "boiteDeroulante('#lienPage', \"$aExecuterApresClicBd\");\n";
+						$blocs[$region] .= "//]]>\n";
+						$blocs[$region] .= "</script>\n";
 					}
 					
 					break;
 					
 				case 'menu':
-					list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+					$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 				
-					if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-					{
-						$classeBlocArrondi = ' blocArrondi';
-					}
-					else
-					{
-						$classeBlocArrondi = '';
-					}
-				
-					$blocs[$region] .= '<div id="menu" class="bloc' . $classeBlocArrondi . '">' . "\n";
-					$blocs[$region] .= $codeInterieurBlocHaut;
+					$blocs[$region] .= '<div id="menu" class="bloc ' . $classesBloc . '">' . "\n";
 				
 					ob_start();
-					include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu');
+					include cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu');
 					$bloc = ob_get_contents();
 					ob_end_clean();
 				
 					if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 					{
-						$bloc = lienActif($bloc, FALSE, 'li');
+						$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 					}
 				
 					if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
@@ -303,51 +285,68 @@ if (!empty($blocsAinsererTemp))
 					}
 				
 					$blocs[$region] .= $bloc;
-					$blocs[$region] .= $codeInterieurBlocBas;
 					$blocs[$region] .= '</div><!-- /#menu -->' . "\n";
 					break;
 					
 				case 'menu-categories':
 					$bloc = '';
-					$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
-					$cheminConfigCategories = cheminConfigCategories($racine);
+					$boiteDeroulanteAjoutee = FALSE;
 					
-					if (!empty($cheminMenuCategories))
+					if ($genererMenuCategories)
 					{
-						ob_start();
-						include_once $cheminMenuCategories;
-						$bloc = ob_get_contents();
-						ob_end_clean();
-					}
-					elseif ($genererMenuCategories && $cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
-					{
-						$bloc = menuCategoriesAutomatise($racine, $urlRacine, $langueParDefaut, LANGUE, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+						$cheminConfigCategories = cheminConfigCategories($racine);
 						
-						if (!empty($bloc))
+						if ($cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 						{
-							$bloc = '<h2>' . T_("Catégories") . "</h2>\n<ul>\n$bloc</ul>\n";
+							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							
+							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
+							{
+								$blocLangue = menuCategoriesAutomatise($racine, $urlRacine, $codeLangue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+								
+								if (!empty($blocLangue))
+								{
+									if ($codeLangue != LANGUE)
+									{
+										$boiteDeroulanteAjoutee = TRUE;
+										$bloc .= "<div class=\"menuCategoriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuCategoriesLangue -->\n";
+									}
+									else
+									{
+										$bloc .= "<ul>\n$blocLangue</ul>\n";
+									}
+								}
+							}
+							
+							if (!empty($bloc))
+							{
+								$bloc = '<h2>' . T_("Catégories") . "</h2>\n$bloc";
+							}
+						}
+					}
+					else
+					{
+						$cheminMenuCategories = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-categories');
+						
+						if (!empty($cheminMenuCategories))
+						{
+							ob_start();
+							include $cheminMenuCategories;
+							$bloc = ob_get_contents();
+							ob_end_clean();
 						}
 					}
 					
 					if (!empty($bloc))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="menuCategories" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="menuCategories" class="bloc ' . $classesBloc . '">' . "\n";
 						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
 							$bloc = categoriesActives($bloc, $listeCategoriesPage, $idCategorie);
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 						}
 						
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
@@ -356,34 +355,116 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuCategories -->' . "\n";
+						
+						if ($boiteDeroulanteAjoutee)
+						{
+							$blocs[$region] .= '<script type="text/javascript">' . "\n";
+							$blocs[$region] .= "//<![CDATA[\n";
+							$blocs[$region] .= "boiteDeroulante('.menuCategoriesLangueAutre', \"$aExecuterApresClicBd\");\n";
+							$blocs[$region] .= "//]]>\n";
+							$blocs[$region] .= "</script>\n";
+						}
+					}
+						
+					break;
+					
+				case 'menu-galeries':
+					$bloc = '';
+					
+					if ($genererMenuGaleries)
+					{
+						$listeGaleries = galeries($racine, '', TRUE);
+						uksort($listeGaleries, 'strnatcasecmp');
+						
+						if ($activerGalerieDemo)
+						{
+							$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $listeGaleries);
+						}
+						
+						foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
+						{
+							$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . $listeIdGalerie . "</a></li>\n";
+						}
+						
+						if (!empty($bloc))
+						{
+							$bloc = '<h2>' . T_("Galeries") . "</h2>\n<ul>\n$bloc</ul>\n";
+						}
+					}
+					else
+					{
+						$cheminMenuGaleries = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-galeries');
+						
+						if (!empty($cheminMenuGaleries))
+						{
+							ob_start();
+							include $cheminMenuGaleries;
+							$bloc = ob_get_contents();
+							ob_end_clean();
+						}
+					}
+					
+					if (!empty($bloc))
+					{
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						
+						$blocs[$region] .= '<div id="menuGaleries" class="bloc ' . $classesBloc . '">' . "\n";
+						
+						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+						{
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
+						}
+						
+						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
+						{
+							$bloc = limiteProfondeurListe($bloc);
+						}
+						
+						$blocs[$region] .= $bloc;
+						$blocs[$region] .= '</div><!-- /#menuGaleries -->' . "\n";
 					}
 						
 					break;
 					
 				case 'menu-langues':
+					$bloc = '';
+					
 					if (count($accueil) > 1)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
+						if ($genererMenuLangues)
 						{
-							$classeBlocArrondi = ' blocArrondi';
+							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							
+							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
+							{
+								$bloc .= '<li><a href="' . $urlAccueilLangue . '/">' . codeLangueVersNom($codeLangue, FALSE) . "</a></li>\n";
+							}
+							
+							if (!empty($bloc))
+							{
+								$bloc = '<h2>' . T_("Langues") . "</h2>\n<ul>\n$bloc</ul>\n";
+							}
 						}
 						else
 						{
-							$classeBlocArrondi = '';
+							$cheminMenuLangues = cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
+							
+							if (!empty($cheminMenuLangues))
+							{
+								ob_start();
+								include $cheminMenuLangues;
+								$bloc = ob_get_contents();
+								ob_end_clean();
+							}
 						}
+					}
+					
+					if (!empty($bloc))
+					{
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						$blocs[$region] .= '<div id="menuLangues" class="bloc ' . $classesBloc . '">' . "\n";
 						
-						$blocs[$region] .= '<div id="menuLangues" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-					
-						ob_start();
-						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), 'menu-langues');
-						$bloc = ob_get_contents();
-						ob_end_clean();
-					
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
 							$bloc = langueActive($bloc, LANGUE, $accueil);
@@ -393,49 +474,59 @@ if (!empty($blocsAinsererTemp))
 						{
 							$bloc = limiteProfondeurListe($bloc);
 						}
-					
+						
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#menuLangues -->' . "\n";
 					}
-						
+					
 					break;
 					
 				case 'partage':
-					$listePartage = partage($url, $baliseTitle . $baliseTitleComplement);
-					
-					if ($partage && !empty($listePartage) && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					if (
+						(
+							($partageCourriel && $partageCourrielActif) ||
+							($partageReseaux && empty($courrielContact))
+						) &&
+						!$erreur404 &&
+						!$estPageDerreur
+					)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						$bloc = '<div id="partage" class="bloc ' . $classesBloc . '">' . "\n";
+						$bloc .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
 						
-						$blocs[$region] .= '<div id="partage" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
-						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
+						$bloc .= "<ul class=\"bDcorps\">\n";
 						
-						$blocs[$region] .= "<ul class=\"bDcorps\">\n";
-						
-						foreach ($listePartage as $service)
+						if ($partageCourriel && $partageCourrielActif)
 						{
-							$blocs[$region] .= '<li><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
+							$blocPartageCourriel = '<li id="partageCourriel"><a href="' . variableGet(2, $url, 'action', 'partageCourriel') . '#titrePartageCourriel">' . T_("Par courriel") . "</a></li>\n";
+							
+							if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
+							{
+								$blocPartageCourriel = lienActif($urlRacine, $blocPartageCourriel, TRUE, 'li');
+							}
+							
+							$bloc .= $blocPartageCourriel;
 						}
 						
-						$blocs[$region] .= "</ul>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
-						$blocs[$region] .= '</div><!-- /#partage -->' . "\n";
-						$blocs[$region] .= '<script type="text/javascript">' . "\n";
-						$blocs[$region] .= "//<![CDATA[\n";
-						$blocs[$region] .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
-						$blocs[$region] .= "//]]>\n";
-						$blocs[$region] .= "</script>\n";
+						if ($partageReseaux && empty($courrielContact))
+						{
+							$listePartage = partageReseaux($url, $baliseTitle . $baliseTitleComplement);
+							
+							foreach ($listePartage as $service)
+							{
+								$bloc .= '<li id="' . $service['id'] . '"><a href="' . $service['lien'] . '" rel="nofollow">' . $service['nom'] . "</a></li>\n";
+							}
+						}
+						
+						$bloc .= "</ul>\n";
+						$bloc .= '</div><!-- /#partage -->' . "\n";
+						$bloc .= '<script type="text/javascript">' . "\n";
+						$bloc .= "//<![CDATA[\n";
+						$bloc .= "boiteDeroulante('#partage', \"$aExecuterApresClicBd\");\n";
+						$bloc .= "//]]>\n";
+						$bloc .= "</script>\n";
+						$blocs[$region] .= $bloc;
 					}
 					
 					break;
@@ -445,27 +536,16 @@ if (!empty($blocsAinsererTemp))
 					
 					if (!empty($cheminPiwik))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="piwik" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="piwik" class="bloc ' . $classesBloc . '">' . "\n";
 						
 						ob_start();
-						include_once $cheminPiwik;
+						include $cheminPiwik;
 						$bloc = ob_get_contents();
 						ob_end_clean();
 						
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#piwik -->' . "\n";
 					}
 					
@@ -474,19 +554,9 @@ if (!empty($blocsAinsererTemp))
 				case 'recherche-google':
 					if ($activerRechercheGoogle)
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
-				
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 						
-						$blocs[$region] .= '<div id="rechercheGoogle" class="bloc' . $classeBlocArrondi . '">' . "\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= '<div id="rechercheGoogle" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2>' . T_("Rechercher dans le site") . "</h2>\n";
 						$blocs[$region] .= '<form method="get" action="http://www.google.' . $rechercheGoogleExtension . '/search">' . "\n";
 						$blocs[$region] .= "<div>\n";
@@ -495,7 +565,6 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '<input type="hidden" name="as_sitesearch" value="' . securiseTexte($_SERVER['SERVER_NAME']) . '" />' . "\n";
 						$blocs[$region] .= "</div>\n";
 						$blocs[$region] .= "</form>\n";
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= '</div><!-- /#rechercheGoogle -->' . "\n";
 					}
 					
@@ -505,28 +574,18 @@ if (!empty($blocsAinsererTemp))
 				default:
 					if (cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer, FALSE))
 					{
-						list ($codeInterieurBlocHaut, $codeInterieurBlocBas) = codeInterieurBloc($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes);
+						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
 					
-						if (estBlocArrondi($blocsArrondisParDefaut, $blocsArrondisSpecifiques, $blocAinserer, $nombreDeColonnes))
-						{
-							$classeBlocArrondi = ' blocArrondi';
-						}
-						else
-						{
-							$classeBlocArrondi = '';
-						}
-					
-						$blocs[$region] .= "<div class=\"bloc$classeBlocArrondi $blocAinserer\">\n";
-						$blocs[$region] .= $codeInterieurBlocHaut;
+						$blocs[$region] .= "<div class=\"bloc $classesBloc $blocAinserer\">\n";
 					
 						ob_start();
-						include_once cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer);
+						include cheminXhtml($racine, array ($langue, $langueParDefaut), $blocAinserer);
 						$bloc = ob_get_contents();
 						ob_end_clean();
 					
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
-							$bloc = lienActif($bloc, FALSE, 'li');
+							$bloc = lienActif($urlRacine, $bloc, TRUE, 'li');
 						}
 					
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])
@@ -535,7 +594,6 @@ if (!empty($blocsAinsererTemp))
 						}
 					
 						$blocs[$region] .= $bloc;
-						$blocs[$region] .= $codeInterieurBlocBas;
 						$blocs[$region] .= "</div><!-- /.$blocAinserer -->\n";
 					}
 					
@@ -548,6 +606,6 @@ if (!empty($blocsAinsererTemp))
 // Traitement personnalisé optionnel.
 if (file_exists($racine . '/site/inc/blocs.inc.php'))
 {
-	include_once $racine . '/site/inc/blocs.inc.php';
+	include $racine . '/site/inc/blocs.inc.php';
 }
 ?>

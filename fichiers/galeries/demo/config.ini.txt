@@ -20,5 +20,4 @@ intermediaireLegende=Photo dans le domaine public et provenant de <a href="http:
 
 [lucertola_architetto_fra_01.png]
 titre=lucertola
-originalNom=lucertola_architetto_fra_01.svg
 intermediaireLegende=Image dans le domaine public et provenant de l'<a href="http://www.openclipart.org/">Open Clip Art Library</a>.

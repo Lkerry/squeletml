@@ -1,7 +1,31 @@
-pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
-	word-wrap: break-word; /* Internet Explorer 5.5+. */
+body.margeHautPage {
+	margin-top: 10px;
 }
 
-#modeleMessageEnvoyerAmis {
-	border: 1px solid #b3b3b3;
+body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
+	top: 130px;
+}
+
+body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
+	top: 130px;
+}
+
+#rechercheGoogle form {
+	margin-bottom: 0px;
+}
+
+div.galerieInfoEtMinivignettesEnsemble div#galerieMinivignettes {
+	margin-top: 0px;
+}
+
+.titreApercu a:visited {
+	color: expression(this.parentNode.currentStyle.color); /* Palliatif à `inherit`. */
+}
+
+h2 {
+	border-bottom: none; /* La bordure passe par-dessus la table des matières. */
+}
+
+pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
+	word-wrap: break-word; /* Internet Explorer 5.5+. */
 }

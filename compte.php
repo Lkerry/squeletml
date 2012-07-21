@@ -1,21 +1,22 @@
 <?php
-include_once 'init.inc.php';
+$desactiverCache = TRUE;
+include 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
 eval(variablesAvantConfig());
 
 foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {
-	include_once $cheminFichier;
+	include $cheminFichier;
 }
 
 if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 {
-	$envoyerAmis = FALSE;
 	$infosPublication = FALSE;
 	$licence = '';
 	$lienPage = FALSE;
-	$partage = FALSE;
+	$partageCourriel = FALSE;
+	$partageReseaux = FALSE;
 	$robots = 'noindex, nofollow, noarchive';
 	include $racine . '/inc/premier.inc.php';
 	
@@ -108,13 +109,13 @@ if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourriel
 	if (!empty($messagesScript))
 	{
 		$blocMessagesScript = '';
-		$blocMessagesScript .= '<div class="blocMessagesScript">' . "\n";
+		$blocMessagesScript .= '<div class="bloc blocAvecFond blocArrondi">' . "\n";
 		
 		$blocMessagesScript .= "<ul>\n";
 		$blocMessagesScript .= $messagesScript;
 		$blocMessagesScript .= "</ul>\n";
-		$blocMessagesScript .= "</div><!-- /.blocMessagesScript -->\n";
-		echo boiteArrondie($blocMessagesScript);
+		$blocMessagesScript .= "</div><!-- /.bloc -->\n";
+		echo $blocMessagesScript;
 	}
 	
 	if (!isset($_POST['demander']) || (isset($_POST['demander']) && $erreurFormulaire))

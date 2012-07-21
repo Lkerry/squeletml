@@ -2,10 +2,14 @@
 	margin-bottom: 0px;
 }
 
+.galerieNavigationSuivant {
+	margin-right: 54px;
+}
+
 body.deuxColonnes .galerieNavigationAccueil, body.deuxColonnes .galerieNavigationAccueil {
-	margin-right: 204px;
+	margin-right: 205px;
 }
 
 body.deuxColonnes .galerieNavigationSuivant, body.deuxColonnes .galerieNavigationSuivant {
-	margin-right: 204px;
+	margin-right: 205px;
 }

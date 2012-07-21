@@ -7,7 +7,7 @@
 
 if (file_exists("$racine/site/$dossierAdmin/inc/premier-pre.inc.php"))
 {
-	include_once "$racine/site/$dossierAdmin/inc/premier-pre.inc.php";
+	include "$racine/site/$dossierAdmin/inc/premier-pre.inc.php";
 }
 
 ########################################################################
@@ -50,6 +50,7 @@ $cheminAncres = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDe
 $cheminLienBas = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
 $cheminRaccourcis = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
 list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($adminDoctype, LANGUE_ADMIN);
+$classesBody = adminClassesBody($tableDesMatieresAvecFond, $tableDesMatieresArrondie);
 $idBody = adminIdBody();
 
 if (!empty($baliseH1))
@@ -57,12 +58,15 @@ if (!empty($baliseH1))
 	$h1 = '<h1>' . $baliseH1 . '</h1>';
 }
 
+if (!empty($classesBody))
+{
+	$classesBody = ' class="' . $classesBody . '"';
+}
+
 if (!empty($idBody))
 {
 	$idBody = ' id="' . $idBody . '"';
 }
-
-$locale = locale(LANGUE_ADMIN);
 
 $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 
@@ -71,12 +75,25 @@ if ($siteEstEnMaintenance)
 	$noticeMaintenance = noticeMaintenance();
 }
 
+$lienPiwik = '';
+$cheminPiwik = cheminXhtml($racine, array ($langue, $langueParDefaut), 'piwik');
+
+if (!empty($cheminPiwik))
+{
+	$contenuPiwik = @file_get_contents($cheminPiwik);
+	
+	if ($contenuPiwik !== FALSE && preg_match('#var pkBaseURL.+?' . preg_quote($urlRacine) . '/([^/]+)#', $contenuPiwik, $resultat))
+	{
+		$lienPiwik = '<li><a href="' . $urlRacine . '/' . $resultat[1] . '">' . T_("Piwik") . "</a> | </li>\n";
+	}
+}
+
 // Menu.
 ob_start();
-include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
+include adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'menu');
 $menu = ob_get_contents();
 ob_end_clean();
-$menu = lienActif($menu, FALSE);
+$menu = lienActif($urlRacine, $menu, FALSE);
 
 ########################################################################
 ##
@@ -225,24 +242,14 @@ if ($tableDesMatieres)
 	$adminBalisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$adminBalisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$adminBalisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
-	
-	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/Gettext/lib/Gettext.js";
-	
-	if (file_exists($racine . '/locale/' . $locale))
-	{
-		$adminBalisesLinkScript[] = "$url#po#$urlRacine/locale/$locale/LC_MESSAGES/squeletml.po";
-	}
-	
-	$adminBalisesLinkScript[] = "$url#jsDirect#var gt = new Gettext({'domain': 'squeletml'});";
-	
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
-	$adminBalisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret);";
+	$adminBalisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$adminLangueParDefaut');";
 }
 
 // Variable finale.
 
-$linkScript = linkScript($adminBalisesLinkScript, '', TRUE);
+$linkScript = linkScript($racine, $urlRacine, $adminFusionnerCssJs, $dossierAdmin, $adminBalisesLinkScript, '', TRUE);
 
 ########################################################################
 ##
@@ -252,7 +259,7 @@ $linkScript = linkScript($adminBalisesLinkScript, '', TRUE);
 
 if (file_exists("$racine/site/$dossierAdmin/inc/premier.inc.php"))
 {
-	include_once "$racine/site/$dossierAdmin/inc/premier.inc.php";
+	include "$racine/site/$dossierAdmin/inc/premier.inc.php";
 }
 
 ########################################################################
@@ -261,5 +268,5 @@ if (file_exists("$racine/site/$dossierAdmin/inc/premier.inc.php"))
 ##
 ########################################################################
 
-include_once adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.premier');
+include adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'page.premier');
 ?>

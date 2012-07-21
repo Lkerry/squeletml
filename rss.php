@@ -1,18 +1,17 @@
 <?php
-include_once 'init.inc.php';
+include 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
 eval(variablesAaffecterAuDebut());
 
 foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {
-	include_once $cheminFichier;
+	include $cheminFichier;
 }
 
 if (isset($_GET['langue']))
 {
 	$getLangue = sansEchappement($_GET['langue']);
-	
 	phpGettext('.', $getLangue); // Nécessaire à la traduction.
 }
 else
@@ -35,18 +34,6 @@ else
 	$fluxRssAvecApercu = FALSE;
 }
 
-if (isset($_GET['chemin']))
-{
-	$getCheminOriginal = sansEchappement($_GET['chemin']);
-	$getChemin = urlAvecIndex($urlRacine . '/' . $getCheminOriginal);
-	$getChemin = str_replace($urlRacine . '/', '', $getChemin);
-}
-else
-{
-	$getCheminOriginal = '';
-	$getChemin = '';
-}
-
 if (isset($_GET['id']))
 {
 	$getId = sansEchappement($_GET['id']);
@@ -65,103 +52,71 @@ else
 	$getType = '';
 }
 
+if ($dureeCache)
+{
+	$nomFichierCache = nomFichierCache($racine, $urlRacine, $url, FALSE);
+}
+
 $erreur404 = FALSE;
 
-if ((!empty($getChemin) && !empty($getId)) || preg_match('|(?<=/)index\.php$|', $getCheminOriginal))
+if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 {
-	$erreur404 = TRUE;
-}
-elseif ($getType == 'galerie' && !empty($getChemin) && empty($getLangue))
-{
-	if (file_exists($racine . '/' . $getChemin) && $fic = @fopen($racine . '/' . $getChemin, 'r'))
-	{
-		$ligne = rtrim(fgets($fic));
-		
-		while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
-		{
-			if (preg_match('/\$rssGalerie\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $resultat))
-			{
-				if ($resultat[1] == "TRUE" || $resultat[1] == "true")
-				{
-					$rssGalerie = TRUE;
-				}
-				elseif ($resultat[1] == "FALSE" || $resultat[1] == "false")
-				{
-					$rssGalerie = FALSE;
-				}
-			}
+	$galeries = galeries($racine);
 	
-			if (preg_match('/\$idGalerie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $resultat))
-			{
-				$idGalerie = $resultat[1];
-			}
-			
-			if (preg_match('/\$langue\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $resultat))
-			{
-				$langue = $resultat[1];
-			}
-			
-			$ligne = rtrim(fgets($fic));
-		}
-
-		fclose($fic);
-		
-		// Flux RSS de la galerie.
-		if (!empty($idGalerie))
+	foreach ($galeries as $idGalerie => $infosGalerie)
+	{
+		if ($getId == filtreChaine($racine, $idGalerie))
 		{
-			if (!isset($rssGalerie))
+			$id = $idGalerie;
+			
+			if ($infosGalerie['rss'] == 1)
 			{
-				$rssGalerie = $galerieActiverFluxRssParDefaut;
+				$rss = TRUE;
+			}
+			else
+			{
+				$rss = FALSE;
 			}
 			
-			$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
+			break;
+		}
+	}
+	
+	if (!empty($id) && $rss)
+	{
+		$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
+		
+		if (file_exists("$racine/site/fichiers/galeries/$idGalerieDossier") && cheminConfigGalerie($racine, $idGalerieDossier))
+		{
+			// A: le flux RSS est activé.
 			
-			if ($rssGalerie && file_exists("$racine/site/fichiers/galeries/$idGalerieDossier") && cheminConfigGalerie($racine, $idGalerieDossier))
+			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
+			if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
 			{
-				// A: le flux RSS est activé.
+				@readfile("$racine/site/cache/$nomFichierCache");
+			}
+			else
+			{
+				$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $langueParDefaut, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 				
-				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-				
-				if (!isset($langue))
+				if (!empty($itemsFluxRss))
 				{
-					$langue = $langueParDefaut;
+					$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 				}
 				
-				phpGettext('.', $langue); // Nécessaire à la traduction.
+				$urlGalerie = $urlRacine . '/' . $infosGalerie['url'];
+				$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), $idGalerie, '');
 				
-				$nomFichierCache = filtreChaine($racine, "rss-galerie-$idGalerie-$langue.cache.xml");
-				
-				if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
+				if ($dureeCache)
 				{
+					creeDossierCache($racine);
+					@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
 					@readfile("$racine/site/cache/$nomFichierCache");
 				}
 				else
 				{
-					$urlGalerie = $urlRacine . '/' . $getChemin;
-					$itemsFluxRss = fluxRssGalerieTableauBrut($racine, $urlRacine, $urlGalerie, $idGalerie, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
-					
-					if (!empty($itemsFluxRss))
-					{
-						$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
-					}
-					
-					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), FALSE), $idGalerie, '');
-					
-					if ($dureeCache['fluxRss'])
-					{
-						creeDossierCache($racine);
-						@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-						@readfile("$racine/site/cache/$nomFichierCache");
-					}
-					else
-					{
-						echo $rssAafficher;
-					}
+					echo $rssAafficher;
 				}
-			}
-			else
-			{
-				$erreur404 = TRUE;
 			}
 		}
 		else
@@ -174,169 +129,111 @@ elseif ($getType == 'galerie' && !empty($getChemin) && empty($getLangue))
 		$erreur404 = TRUE;
 	}
 }
-elseif ($getType == 'categorie' && (!empty($getChemin) || !empty($getId)) && empty($getLangue))
+elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 {
-	if (!empty($getChemin))
-	{
-		if (file_exists($racine . '/' . $getChemin) && $fic = @fopen($racine . '/' . $getChemin, 'r'))
-		{
-			$ligne = rtrim(fgets($fic));
-			
-			while (!strstr($ligne, 'inc/premier.inc.php') && !feof($fic))
-			{
-				if (preg_match('/\$rssCategorie\s*=\s*((TRUE|true|FALSE|false))\s*;/', $ligne, $resultat))
-				{
-					if ($resultat[1] == "TRUE" || $resultat[1] == "true")
-					{
-						$rssCategorie = TRUE;
-					}
-					elseif ($resultat[1] == "FALSE" || $resultat[1] == "false")
-					{
-						$rssCategorie = FALSE;
-					}
-				}
-				
-				if (preg_match('/\$idCategorie\s*=\s*[\'"](.+)[\'"]\s*;/', $ligne, $resultat))
-				{
-					$idCategorie = $resultat[1];
-				}
-				
-				$ligne = rtrim(fgets($fic));
-			}
-			
-			fclose($fic);
-		}
-		else
-		{
-			$erreur404 = TRUE;
-		}
-	}
+	$cheminConfigCategories = cheminConfigCategories($racine);
 	
-	if (!$erreur404)
+	if ($cheminConfigCategories)
 	{
-		if (!isset($rssCategorie))
-		{
-			$rssCategorie = $activerFluxRssCategorieParDefaut;
-		}
+		$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
 		
-		if (!empty($getId))
+		foreach ($categories as $idCategorie => $infosCategorie)
 		{
-			$idCategorie = $getId;
-		}
-		
-		// Flux RSS de la catégorie.
-		if ($rssCategorie && !empty($idCategorie))
-		{
-			$cheminConfigCategories = cheminConfigCategories($racine);
-			
-			if ($cheminConfigCategories)
+			if ($getId == filtreChaine($racine, $idCategorie))
 			{
-				$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
-			}
-			
-			if (!empty($getId) && !empty($categories))
-			{
-				$idReel = idCategorie($racine, $categories, $getId);
+				$id = $idCategorie;
 				
-				if (!empty($idReel))
+				if ($infosCategorie['rss'] == 1)
 				{
-					$idCategorie = $idReel;
-				}
-			}
-			
-			if (
-				isset($categories[$idCategorie]) &&
-				(empty($getId) || ($getId == filtreChaine($racine, $getId))) && // Pour éviter la duplication de contenu dans les moteurs de recherche.
-				((!empty($getId) && (empty($categories[$idCategorie]['urlCat']) || strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') !== FALSE)) || (!empty($getChemin) && !empty($categories[$idCategorie]['urlCat']) && strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=') === FALSE))
-			)
-			{
-				// A: le flux RSS est activé.
-				
-				// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-				
-				$langue = langueCat($categories[$idCategorie], $langueParDefaut);
-				
-				phpGettext('.', $langue); // Nécessaire à la traduction.
-				
-				$nomFichierCache = filtreChaine($racine, "rss-categorie-$idCategorie-$langue.cache.xml");
-		
-				if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
-				{
-					@readfile("$racine/site/cache/$nomFichierCache");
+					$rss = TRUE;
 				}
 				else
 				{
-					$itemsFluxRss = array ();
-					$i = 0;
-			
-					foreach ($categories[$idCategorie]['pages'] as $page)
-					{
-						if ($i < $nombreItemsFluxRss)
-						{
-							$page = rtrim($page);
-							$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique);
-					
-							if (!empty($fluxRssPageTableauBrut))
-							{
-								$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
-							}
-						}
-				
-						$i++;
-					}
-			
-					if (!empty($itemsFluxRss))
-					{
-						$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
-					}
-					
-					if (!empty($getChemin))
-					{
-						$urlCategorie = $urlRacine . '/' . $getChemin;
-					}
-					else
-					{
-						$urlCategorie = $urlRacine . '/' . urlCat($racine, $categories[$idCategorie], $idCategorie, $langueParDefaut);
-					}
-					
-					$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), FALSE), '', $idCategorie);
-			
-					if ($dureeCache['fluxRss'])
-					{
-						creeDossierCache($racine);
-						@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-						@readfile("$racine/site/cache/$nomFichierCache");
-					}
-					else
-					{
-						echo $rssAafficher;
-					}
+					$rss = FALSE;
 				}
+				
+				break;
 			}
-			else
-			{
-				$erreur404 = TRUE;
-			}
+		}
+	}
+	
+	if (!empty($id) && $rss)
+	{
+		// A: le flux RSS est activé.
+		
+		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
+		
+		phpGettext('.', $infosCategorie['langue']); // Nécessaire à la traduction.
+		
+		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+		{
+			@readfile("$racine/site/cache/$nomFichierCache");
 		}
 		else
 		{
-			$erreur404 = TRUE;
+			$itemsFluxRss = array ();
+			$i = 0;
+			
+			foreach ($infosCategorie['pages'] as $page)
+			{
+				if ($i < $nombreItemsFluxRss)
+				{
+					$page = rtrim($page);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
+					
+					if (!empty($fluxRssPageTableauBrut))
+					{
+						$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+					}
+				}
+				
+				$i++;
+			}
+			
+			if (!empty($itemsFluxRss))
+			{
+				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
+			}
+			
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $infosCategorie['url'], baliseTitleComplement($tableauBaliseTitleComplement, array ($infosCategorie['langue'], $langueParDefaut), FALSE), '', $idCategorie);
+	
+			if ($dureeCache)
+			{
+				creeDossierCache($racine);
+				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
+				@readfile("$racine/site/cache/$nomFichierCache");
+			}
+			else
+			{
+				echo $rssAafficher;
+			}
 		}
+	}
+	else
+	{
+		$erreur404 = TRUE;
 	}
 }
 elseif ($getType == 'galeries' && !empty($getLangue))
 {
-	$galeries = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'galeries'), TRUE);
+	$galeries = galeries($racine);
+	$listeGaleriesRss = array ();
 	
-	if ($galerieActiverFluxRssGlobal && isset($galeries[$getLangue]))
+	foreach ($galeries as $idGalerie => $infosGalerie)
+	{
+		if ($infosGalerie['rss'] == 1)
+		{
+			$listeGaleriesRss[$idGalerie] = $infosGalerie;
+		}
+	}
+	
+	if ($galerieActiverFluxRssGlobal && !empty($listeGaleriesRss))
 	{
 		// A: le flux RSS global pour les galeries est activé.
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = filtreChaine($racine, "rss-galeries-$getLangue.cache.xml");
-		
-		if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
+		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
 		{
 			@readfile("$racine/site/cache/$nomFichierCache");
 		}
@@ -353,7 +250,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 			
 			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
-			if ($dureeCache['fluxRss'])
+			if ($dureeCache)
 			{
 				creeDossierCache($racine);
 				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
@@ -372,7 +269,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 }
 elseif ($getType == 'site' && !empty($getLangue))
 {
-	$pages = super_parse_ini_file(cheminConfigFluxRssGlobal($racine, 'site'), TRUE);
+	$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 	
 	if ($activerFluxRssGlobalSite && isset($pages[$getLangue]))
 	{
@@ -380,9 +277,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		$nomFichierCache = filtreChaine($racine, "rss-site-$getLangue.cache.xml");
-		
-		if ($dureeCache['fluxRss'] && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache['fluxRss']))
+		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
 		{
 			@readfile("$racine/site/cache/$nomFichierCache");
 		}
@@ -401,14 +296,14 @@ elseif ($getType == 'site' && !empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut("$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique);
-					
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
+						
 						if (!empty($fluxRssPageTableauBrut))
 						{
 							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
 						}
 					}
-				
+					
 					$i++;
 				}
 			}
@@ -420,7 +315,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 			
 			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
-			if ($dureeCache['fluxRss'])
+			if ($dureeCache)
 			{
 				creeDossierCache($racine);
 				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);

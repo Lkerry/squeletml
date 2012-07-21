@@ -589,7 +589,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 			if ($activerPageCron)
 			{
-				if (contenuUrl("$urlRacine/cron.php") !== FALSE)
+				if (@file_get_contents("$urlRacine/cron.php") !== FALSE)
 				{
 					$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
 				}
@@ -801,15 +801,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			</form>
 		</div><!-- /.boite -->
 	
-		<?php if ($adminPorteDocumentsDroits['telecharger']): ?>
-			<div class="boite">
-				<h2 id="sauvegarde"><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
-		
-				<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
-		
-				<p><a href="telecharger.admin.php?fichier=<?php echo $racine; ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
-			</div><!-- /.boite -->
-		<?php endif; ?>
+		<div class="boite">
+			<h2 id="sauvegarde"><?php echo T_("Obtenir une copie de sauvegarde du site"); ?></h2>
+	
+			<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
+	
+			<p><a href="telecharger.admin.php?fichier=<?php echo $racine; ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
+		</div><!-- /.boite -->
 	<?php endif; ?>
 </div><!-- /#contenuPrincipal -->
 

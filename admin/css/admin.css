@@ -16,12 +16,13 @@ body, html {
 body {
 	font-family: Arial, Helvetica, "Liberation Sans", FreeSans, sans-serif;
 	font-size: 0.96em;
+	color: #000000;
 }
 
 div#noticeMaintenance {
 	margin: 0px;
 	padding: 10px;
-	background: #ebebeb;
+	background: #f5f5f5;
 }
 
 div#noticeMaintenance p {
@@ -34,11 +35,12 @@ div#noticeMaintenance p {
 
 #page {
 	max-width: 950px;
-	margin: 0px auto;
+	margin: 10px auto;
 	padding: 0px;
-	border-right: 1px solid #ebebeb;
-	border-bottom: 1px solid #ebebeb;
-	border-left: 1px solid #ebebeb;
+	border: 1px solid #f2f2f2;
+	box-shadow: 1px 1px 12px #e0e0e0; /* CSS 3. */
+	-moz-box-shadow: 1px 1px 12px #e0e0e0; /* Gecko. */
+	-webkit-box-shadow: 1px 1px 12px #e0e0e0; /* Webkit. */
 }
 
 #ancres {
@@ -48,8 +50,8 @@ div#noticeMaintenance p {
 
 #enTete {
 	padding: 5px 5px 0px 5px;
-	background: url('../fichiers/rayures.png') repeat left top;
-	border-bottom: 1px solid #ebebeb;
+	background-color: #f5f5f5;
+	border-bottom: 1px solid #cccccc;
 	text-align: center;
 }
 
@@ -73,7 +75,7 @@ div#noticeMaintenance p {
 }
 
 #contenu {
-	margin: 5px;
+	margin: 20px;
 }
 
 div#sousMenu {
@@ -81,8 +83,15 @@ div#sousMenu {
 	width: 140px;
 	margin-left: 1px;
 	padding: 5px;
-	background: url('../fichiers/rayures.png') repeat left top;
-	border: 1px solid #ebebeb;
+	border: 3px solid white;
+	background-color: #f5f5f5;
+	background-image: linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* CSS 3. */
+	background-image: -moz-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f7f7f7), color-stop(1, #f5f5f5)); /* Webkit. */
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 div#sousMenu ul {
@@ -91,24 +100,16 @@ div#sousMenu ul {
 }
 
 div#contenuPrincipal {
-	margin-left: 160px;
+	margin-left: 170px;
 }
 
 #basDePage {
-	margin: 25px 5px 5px;
+	margin: 25px 20px 20px;
 	text-align: right;
 }
 
-#galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes, #sousMenu, #tableDesMatieres, a.lienInfobulle:hover span, fieldset, .porteDocumentsListe li, .boite, .sousBoite {
-	border-radius: 8px; /* CSS 3. */
-}
-
-div#tableDesMatieres {
-	border-color: #ebebeb !important;
-}
-
 h1, h2, h3, h4, h5, h6, a {
-	color: #007070;
+	color: #005959;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -146,7 +147,7 @@ a, a code {
 }
 
 a:visited {
-	color: #441570;
+	color: #551a8b;
 }
 
 a:hover, a:hover code {
@@ -175,7 +176,7 @@ pre {
 	overflow: auto;
 	padding: 5px;
 	margin: 5px 0px;
-	border: 1px solid #b3b3b3;
+	border: 1px solid #cccccc;
 	white-space: pre-wrap; /* CSS 3. Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 }
 
@@ -184,10 +185,12 @@ pre, code {
 }
 
 fieldset {
+	padding-left: 15px;
+	padding-right: 15px;
 	margin-top: 20px;
 	margin-bottom: 20px;
-	border: 1px solid #b3b3b3;
-	background-color: #f0f0f0;
+	border: 1px solid #cccccc;
+	background-color: #f2f2f2;
 }
 
 fieldset ul {
@@ -275,21 +278,25 @@ ul.nonTriable li {
 	padding-left: 20px;
 }
 
-#boiteMessages h2, #boiteMessages h3, #boiteMessages h4, #boiteMessages h5, #boiteMessages h6 {
-	color: black;
-}
-
 .boite {
 	margin: 25px 0px;
-	padding: 5px;
-	background-color: #ebebeb;
 }
 
 .sousBoite {
 	margin: 25px;
-	border: 1px solid #b3b3b3;
-	padding: 5px;
-	background-color: #f0f0f0;
+}
+
+.boite, .sousBoite {
+	padding: 15px;
+	border: 3px solid white;
+	background-color: #f5f5f5;
+	background-image: linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* CSS 3. */
+	background-image: -moz-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Gecko. */
+	background-image: -o-linear-gradient(-45deg, #f7f7f7, #f5f5f5); /* Presto. */
+	background-image: -webkit-gradient(linear, left top, right bottom, color-stop(0, #f7f7f7), color-stop(1, #f5f5f5)); /* Webkit. */
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 /* Rapport du cron. */
@@ -314,7 +321,7 @@ ul.nonTriable li {
 ***********************************************************************/
 
 body#documentation-admin-php pre {
-	background-color: #ebebeb;
+	background-color: #f5f5f5;
 }
 
 body#documentation-admin-php em code {
@@ -349,8 +356,8 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 #galeriesAdminConfigGraphique li.configGraphiqueListeVignettes, #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes {
 	margin-bottom: 20px;
 	padding: 5px 5px 5px 20px;
-	border: 1px solid #b3b3b3;
-	background-color: #f0f0f0;
+	border: 1px solid #cccccc;
+	background-color: #f2f2f2;
 }
 
 #galeriesAdminConfigGraphiqueSimplifiee li.configGraphiqueListeVignettes {
@@ -374,10 +381,22 @@ div.aide .bDtitre {
 	font-size: 1em;
 }
 
+li.apercuGalerie {
+	margin-bottom: 15px;
+}
+
+li.listeGaleriesTitre {
+	font-weight: bold;
+}
+
+li.listeGaleriesTitre ul {
+	font-weight: normal;
+}
+
 .galerieMinivignettes img {
 	float: left;
 	height: 35px;
-	border: 1px solid #b3b3b3 !important;
+	border: 1px solid #cccccc !important;
 	margin: 2px;
 }
 
@@ -433,11 +452,11 @@ pre.consulterModifications {
 }
 
 .porteDocumentsListe li.impair {
-	background-color: #ebebeb;
+	background-color: #f5f5f5;
 }
 
 .porteDocumentsListeDernierNiveau li:hover {
-	background-color: #ffab00;
+	background-color: #ffffff;
 }
 
 .porteDocumentsListeContenuDossier {
@@ -446,7 +465,7 @@ pre.consulterModifications {
 
 .porteDocumentsSep {
 	font-weight: bold;
-	color: #b3b3b3;
+	color: #cccccc;
 }
 
 /* Infobulle. Inspirée de <http://www.alsacreations.com/astuce/lire/1-comment-contrler-et-modifier-lapparence-dune-infobullenbsp.html>. */
@@ -471,8 +490,8 @@ a.lienInfobulle:hover span {
 	position: absolute;
 	top: 20px;
 	left: 20px;
-	border: 1px solid #b3b3b3;
-	background: #ebebeb;
+	border: 1px solid #cccccc;
+	background: #f5f5f5;
 	text-align: left;
 	color: black;
 	padding: 2px;
@@ -483,7 +502,7 @@ a.lienInfobulle img {
 }
 
 img.infobulleApercuImage {
-	border: 1px solid #b3b3b3 !important;
+	border: 1px solid #cccccc !important;
 }
 
 /* BUEditor. */

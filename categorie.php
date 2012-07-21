@@ -1,12 +1,12 @@
 <?php
-include_once 'init.inc.php';
+include 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
 eval(variablesAvantConfig());
 
 foreach (cheminsInc($racine, 'config') as $cheminFichier)
 {
-	include_once $cheminFichier;
+	include $cheminFichier;
 }
 
 if (!empty($_GET['langue']))
@@ -35,9 +35,9 @@ if (!empty($_GET['id']))
 	{
 		$langue = $getLangue;
 	}
-	elseif (isset($categories[$idCategorie]))
+	elseif (isset($categories[$idCategorie]['langue']))
 	{
-		$langue = langueCat($categories[$idCategorie], $langueParDefaut);
+		$langue = $categories[$idCategorie]['langue'];
 	}
 	else
 	{
@@ -48,7 +48,7 @@ if (!empty($_GET['id']))
 	
 	if ($categories !== FALSE && estCatSpeciale($idCategorie) && !empty($getLangue))
 	{
-		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $getLangue, $categories, array($idCategorie), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, $getLangue, $categories, array ($idCategorie), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
 	}
 }
 
@@ -57,7 +57,7 @@ if (
 	!isset($categories[$idCategorie]) ||
 	(empty($getLangue) && estCatSpeciale($idCategorie)) ||
 	(!empty($getLangue) && !estCatSpeciale($idCategorie)) ||
-	(!empty($categories[$idCategorie]['urlCat']) && strpos($categories[$idCategorie]['urlCat'], 'categorie.php?id=' . filtreChaine($racine, $idCategorie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
+	(!empty($categories[$idCategorie]['url']) && strpos($categories[$idCategorie]['url'], 'categorie.php?id=' . filtreChaine($racine, $idCategorie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
 	($getId != filtreChaine($racine, $getId)) // Idem.
 )
 {
