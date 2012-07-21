@@ -33,6 +33,18 @@ $langueRapports = "";
 */
 $activerPageCron = TRUE; // TRUE|FALSE
 
+// Clé d'accès au cron.
+/*
+Si `$activerPageCron` vaut TRUE, utiliser une clé d'accès. Le cron ne pourra être lancé lors d'une visite que si la bonne clé se trouve dans l'URL:
+
+	$urlRacine/cron.php?cle=$cleCron
+
+Exemple:
+
+	$urlRacine/cron.php?cle=S3Fs_MTFyJ-GyPGR4BXj
+*/
+$cleCron = '';
+
 // Ajout par le cron de pages dans le fichier Sitemap.
 /*
 - Si l'ajout est activé, toutes les pages connues par Squeletml (URL d'accueil, galeries, flux RSS, catégories, etc.) seront ajoutées dans le fichier Sitemap.

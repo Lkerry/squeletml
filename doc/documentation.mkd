@@ -1378,7 +1378,7 @@ Le cron permet d'effectuer certaines tâches de maintenance:
 
 ### Lancement du cron
 
-Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où `$activerPageCron` dans le fichier de configuration du site vaut `TRUE` et que la visite de la page `cron.php` est planifiée par un script. Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
+Le cron peut être lancé manuellement dans l'administration (section «Accès»). Il peut aussi être lancé automatiquement dans la mesure où `$activerPageCron` dans le fichier de configuration du site vaut `TRUE` et que la visite de la page `cron.php` est planifiée par un script (pour plus de sécurité, une clé d'accès peut être précisée; voir la variable `$cleCron` dans le fichier de configuration du site). Par exemple, sous GNU/Linux, la commande `crontab -e` permet d'ajouter une commande différée, comme celle-ci:
 
 	0 4 * * * lynx -source $urlRacine/cron.php
 

@@ -20,7 +20,7 @@ if (file_exists($racine . '/init.inc.php'))
 		include $cheminFichier;
 	}
 	
-	if ($activerPageCron)
+	if ($activerPageCron && (empty($cleCron) || (isset($_GET['cle']) && $_GET['cle'] == $cleCron)))
 	{
 		$t1 = time();
 		@file_put_contents("$racine/site/inc/cron.txt", $t1);
@@ -168,5 +168,13 @@ if (file_exists($racine . '/init.inc.php'))
 			courriel($infosCourriel);
 		}
 	}
+	else
+	{
+		header('HTTP/1.1 401 Unauthorized');
+	}
+}
+else
+{
+	header('HTTP/1.1 404 Not found');
 }
 ?>
