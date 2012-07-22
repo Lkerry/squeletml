@@ -2,7 +2,7 @@
 <?php
 error_reporting(E_ALL);
 
-include 'init.inc.php';
+include dirname(__FILE__) . '/../init.inc.php';
 
 ########################################################################
 ##
