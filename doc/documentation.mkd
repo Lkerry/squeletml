@@ -319,7 +319,14 @@ Piwik est un logiciel libre de statistiques web. Lorsqu'un site est ajouté dans
 
 #### Dossiers inutiles pour une configuration donnée
 
-Le dossier d'une langue inactivée peut être supprimé, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas des pages `exemple.php` et `galerie-demo.php` à la racine du site si ces dernières ne sont pas utilisées.
+Les trois fichiers et le dossier suivants peuvent être supprimés d'une installation actuelle ou ignorés lors d'une mise à jour:
+
+- `.gitattributes`
+- `.gitignore`
+- `Makefile`
+- `src`
+
+Aussi, le dossier d'une langue inactivée peut être supprimé, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas des pages `exemple.php` et `exemple2.php` à la racine du site si ces dernières ne sont pas utilisées.
 
 Lors d'une mise à jour, il est également inutile de copier ces dossiers ou fichiers.
 
@@ -540,13 +547,13 @@ Pour mettre à jour Squeletml:
 
 	**Note: la réécriture d'URL doit être activée sur votre serveur pour utiliser cette fonctionnalité. Si tel n'est pas le cas, ignorez le mode maintenance et passez à l'étape suivante.**
 
-- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom est `squeletml`.
+- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom est `squeletml-master`.
 
 - Ensuite, sélectionnez et copiez tout le contenu de ce dossier, et collez la sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
 
-		**Important**: ne pas oublier d'afficher les fichiers cachés pour bien les sélectionner. Voir la section «Installation» pour plus de détails.
+	**Important**: ne pas oublier d'afficher les fichiers cachés pour bien les sélectionner. Voir la section «Installation» pour plus de détails.
 
-Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer** les quelques fichiers de configuration à la racine (`.acces`, `.htaccess`, `init.inc.php` et `robots.txt`), le dossier `site`, qui contient votre configuration personnalisée, éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`) ainsi que les pages que vous avez vous-même ajoutées.
+Il s'agit probablement de la méthode la plus simple. Cependant, de vieux fichiers supprimés entre deux versions de Squeletml peuvent encore être présents sur votre site. Pour une mise à jour totalement propre, vous pouvez supprimer les fichiers de Squeletml de votre site avant d'y coller votre précédente sélection. Prenez garde cependant à **ne pas supprimer** les quelques fichiers de configuration à la racine (`.acces`, `.htaccess`, `init.inc.php`, `robots.txt` et `sitemap.xml`), le dossier `site`, qui contient votre configuration personnalisée, éventuellement les dossiers des différentes langues si votre site est multilingue (par exemple, si vous avez une section en anglais, vous avez fort probablement créé des pages personnalisées dans le dossier `en`) ainsi que les pages que vous avez vous-même ajoutées.
 
 **Notes:**
 

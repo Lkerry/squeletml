@@ -8,7 +8,7 @@ menagePot:
 	touch locale/squeletml.pot
 
 messageAccueil:
-	php scripts.cli.php messageAccueil
+	php src/scripts.cli.php messageAccueil
 
 mo:
 	for po in $(shell find locale/ -name *.po);\
@@ -17,8 +17,8 @@ mo:
 	done
 
 fichiersModeles:
-	php scripts.cli.php config
-	php scripts.cli.php css
+	php src/scripts.cli.php config
+	php src/scripts.cli.php css
 
 po: pot poFr
 	for po in $(shell find ./ -name *.po);\
