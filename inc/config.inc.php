@@ -284,6 +284,9 @@ $inclureBasDePage = TRUE; // TRUE|FALSE
 // Si `$inclureBasDePage` vaut TRUE, positionner le bas de page à l'intérieur de la `div` `page`.
 $basDePageInterieurPage = FALSE; // TRUE|FALSE
 
+// Si `$inclureBasDePage` vaut TRUE, y ajouter un lien vers la section d'administration.
+$basDePageLienAdmin = TRUE; // TRUE|FALSE
+
 // Activation par défaut du partage par courriel.
 $activerPartageCourrielParDefaut = TRUE; // TRUE|FALSE
 
