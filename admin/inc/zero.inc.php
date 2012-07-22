@@ -3,14 +3,13 @@
 
 include dirname(__FILE__) . '/../../init.inc.php';
 
-if (file_exists($racine . '/inc/devel.inc.php'))
-{
-	include_once $racine . '/inc/devel.inc.php';
-}
-
 if (file_exists("$racine/site/$dossierAdmin/inc/devel.inc.php"))
 {
 	include_once "$racine/site/$dossierAdmin/inc/devel.inc.php";
+}
+elseif (file_exists("$racine/site/inc/devel.inc.php"))
+{
+	include_once "$racine/site/inc/devel.inc.php";
 }
 
 include_once $racineAdmin . '/inc/fonctions.inc.php';

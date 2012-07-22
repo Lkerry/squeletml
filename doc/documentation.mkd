@@ -319,9 +319,8 @@ Piwik est un logiciel libre de statistiques web. Lorsqu'un site est ajouté dans
 
 #### Dossiers inutiles pour une configuration donnée
 
-Les trois fichiers et le dossier suivants peuvent être supprimés d'une installation actuelle ou ignorés lors d'une mise à jour:
+Les deux fichiers et le dossier suivants peuvent être supprimés d'une installation actuelle ou ignorés lors d'une mise à jour:
 
-- `.gitattributes`
 - `.gitignore`
 - `Makefile`
 - `src`
@@ -461,7 +460,6 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 
 - `inc/premier.inc.php`
 	- `init.inc.php`
-	- *`inc/devel.inc.php`*
 	- *`site/inc/devel.inc.php`*
 	- `inc/fonctions.inc.php`
 	- *`site/inc/fonctions.inc.php`*
