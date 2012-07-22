@@ -585,47 +585,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 		if (isset($_POST['lancerCron']))
 		{
+			$lancementCronDansAdmin = TRUE;
+			include $racine . '/cron.php';
 			$messagesScript = '';
-
-			if ($activerPageCron)
+			$messagesScript .= '<li>';
+			$messagesScript .= '<p>' . T_("Lancement du cron effectué et terminé.") . "</p>\n";
+			
+			if (!empty($rapport))
 			{
-				$urlCron = "$urlRacine/cron.php";
-				
-				if (!empty($cleCron))
-				{
-					$urlCron .= "?cle=$cleCron";
-				}
-				
-				if (@file_get_contents($urlCron) !== FALSE)
-				{
-					$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . T_("Une erreur a eu lieu lors du lancement du cron.") . "</li>\n";
-				}
+				$messagesScript .= "<div id=\"rapportCron\">\n";
+				$messagesScript .= $rapport;
+				$messagesScript .= "</div><!-- /#rapportCron -->\n";
 			}
-			else
-			{
-				$activerPageCronTemp = $activerPageCron;
-				$activerPageCron = TRUE;
-				include $racine . '/cron.php';
-				$activerPageCron = $activerPageCronTemp;
-				$messagesScript .= '<li>';
-				$messagesScript .= '<p>' . T_("Lancement du cron effectué et terminé.") . "</p>\n";
-				
-				if (!empty($rapport))
-				{
-					$messagesScript .= '<p>' . T_("Le rapport d'exécution du cron est le suivant:") . "</p>\n";
-					
-					$messagesScript .= "<div id=\"rapportCron\">\n";
-					$messagesScript .= $rapport;
-					$messagesScript .= "</div><!-- /#rapportCron -->\n";
-				}
-				
-				$messagesScript .= "</li>\n";
-			}
-		
+			
+			$messagesScript .= "</li>\n";
+			
 			echo adminMessagesScript($messagesScript, T_("Lancement du cron"));
 		}
 		?>
