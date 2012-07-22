@@ -146,7 +146,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Images utilisées dans les galeries**:
 
-  - les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/);
+  - les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil);
   
   - la petite icône proposant la navigation sans fenêtre Javascript provient du [module QuickJava pour Firefox](https://addons.mozilla.org/fr/firefox/addon/1237), sous licence Mozilla Public License version 1.1;
   
