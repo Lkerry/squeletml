@@ -742,11 +742,11 @@ body.aucuneColonne #partage li,
 /* Recherche Google. */
 
 #rechercheGoogle #inputMotsCles {
-	width: 184px;
+	width: 180px;
 }
 
 #rechercheGoogle.blocAvecFond #inputMotsCles {
-	width: 170px;
+	width: 164px;
 }
 
 /***********************************************************************
