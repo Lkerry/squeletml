@@ -733,6 +733,12 @@ body.aucuneColonne #partage li,
 	margin-right: 20px;
 }
 
+/* Piwik. */
+
+#piwik {
+	margin: 0px;
+}
+
 /* Recherche Google. */
 
 #rechercheGoogle #inputMotsCles {
