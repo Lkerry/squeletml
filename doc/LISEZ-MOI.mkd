@@ -186,8 +186,6 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**jQuery UI**](http://jqueryui.com/): sous double licence MIT et GPL.
 
-- [**MimeDetect**](http://drupal.org/project/mimedetect): module pour Drupal sous licence GPL version 2 ou toute version ultérieure. Je l'ai modifié pour le rendre indépendant de Drupal. J'ai également ajouté la fonction `file_get_mimetype()` provenant du [fichier `includes/file.inc` de Drupal 6](http://api.drupal.org/api/drupal/includes--file.inc/6/source), sous licence GPL version 2 ou toute version ultérieure. J'ai publié le résultat sous licence GPL version 3 ou toute version ultérieure.
-
 - [**node_teaser**](http://api.drupal.org/api/function/node_teaser/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure. J'ai effectué quelques modifications; le résultat est sous licence GPL version 3 ou toute version ultérieure.
 
 - [**PclZip**](http://www.phpconcept.net/): Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir le site de PclZip.

@@ -25,7 +25,7 @@ $nomImage = superBasename($cheminImage);
 $vignetteNom = nomSuffixe($nomImage, '-vignette');
 $extensionImage = extension($cheminImage);
 $nomImageSansExtension = extension($cheminImage, TRUE);
-$typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+$typeMime = typeMime($cheminImage);
 ?>
 
 <p><img class="imgGauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> La présente image est le logo de Squeletml et a été positionnée avec la classe <code>imgGauche</code>. La fonction <code>superBasename()</code> fournit le nom de l'image, qui vaut dans ce cas-ci <code><?php echo $nomImage; ?></code>. Son extension peut être obtenue avec la fonction <code>extension()</code>; le résultat est <code><?php echo $extensionImage; ?></code> (ce qui donne <code><?php echo $nomImageSansExtension; ?></code> si on demande un retour sans l'extension). Le type MIME, obtenu avec la fonction <code>typeMime()</code>, est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code> (suffixe ajouté avec la fonction <code>nomSuffixe()</code>).</p>

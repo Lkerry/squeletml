@@ -87,7 +87,7 @@ if (adminEmplacementPermis($_GET['fichier'], $adminDossierRacinePorteDocuments, 
 			}
 			else
 			{
-				$typeMime = typeMime($chemin, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$typeMime = typeMime($chemin);
 	
 				if ($typeMime == 'application/octet-stream')
 				{

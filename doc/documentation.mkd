@@ -23,8 +23,6 @@ Certains dossiers doivent être accessibles en écriture:
 
 - Pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible.
 
-- La détection du type MIME peut se faire par `Fileinfo` de PHP ou par la commande `file` sur le système.
-
 - La rotation automatique et sans perte de qualité des images JPG peut se faire avec la commande `exiftran` sur le système, ou bien avec la commande `jpegtran` sur le système et la fonction PHP `exif_read_data()`.
 
 - La suppression sans perte de qualité des données Exif des images JPG peut se faire avec la commande `jpegtran` sur le système.
@@ -1415,13 +1413,11 @@ Ce fichier, nommé `sitemap.xml`, se trouve à la racine du site, et supporte po
 
 ### Fichier `Makefile`
 
-Les principales commandes du fichier `Makefile` sont:
+Un fichier `Makefile.modele` se trouve dans le dossier `modeles`. Pour l'utiliser, le copier à la racine du site en le renommant `Makefile`. Les principales commandes sont:
+
+- `make fichiersModeles`: génère les modèles dans le dossier `modeles`;
 
 - `make langues`: met à jour les fichiers de langues.
 
-- `make archive`: crée une archive au format ZIP; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires.
-
-	Par défaut, la dernière version (représentée par la dernière étiquette) est utilisée par cette commande. Pour publier une version différente, préciser la variable `version` dans la ligne de commande. Exemple:
-
-		make archive version=2.2.1
+La commande `make all` permet d'effectuer les deux.
 

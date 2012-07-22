@@ -614,7 +614,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'editer')
 	{
 		if (file_exists($getValeur))
 		{
-			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications». <strong>Attention</strong> à ne pas modifier un <a href=\"http://fr.wikipedia.org/wiki/Fichier_binaire\">fichier binaire</a>. Ceci le corromprait."), "<code>$getValeur</code> " . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
+			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications». <strong>Attention</strong> à ne pas modifier un <a href=\"http://fr.wikipedia.org/wiki/Fichier_binaire\">fichier binaire</a>. Ceci le corromprait."), "<code>$getValeur</code> " . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
 		}
 		else
 		{
@@ -1344,7 +1344,7 @@ if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimeP
 		{
 			if (@move_uploaded_file($_FILES['porteDocumentsAjouterFichier']['tmp_name'], $dossier . '/' . $nomFichier))
 			{
-				$typeMime = typeMime($dossier . '/' . $nomFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$typeMime = typeMime($dossier . '/' . $nomFichier);
 				
 				if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 				{
@@ -1458,7 +1458,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 	else
 	{
 		$dossierDeDepartAparcourir = $dossierAparcourir;
-		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+		$listeFormateeFichiers = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 		
 		if (!empty($listeFormateeFichiers))
 		{
@@ -1552,7 +1552,7 @@ foreach ($listeDossiersPourListe as $listeDossier)
 	
 	if ($adminActiverInfobulle['listeDesDossiers'])
 	{
-		$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+		$dossierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, $listeDossier, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	

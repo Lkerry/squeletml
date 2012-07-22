@@ -256,19 +256,6 @@ $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 */
 $conditionsBlocs = array ();
 
-// Détection du type MIME.
-/*
-- La détection du type MIME se fait par un des outils suivants, selon leur disponibilité (en ordre de priorité):
-  - `Fileinfo` de PHP;
-  - commande `file` si la variable `$typeMimeFile` vaut TRUE;
-  - tableau personnalisé de correspondance entre une extension et son type MIME si la variable `$typeMimeCorrespondance` n'est pas vide. Exemple:
-    $typeMimeCorrespondance = array ('rmi' => 'audio/midi');
-  - tableau par défaut de correspondance entre une extension et son type MIME de la fonction `file_get_mimetype()`.
-*/
-$typeMimeFile = FALSE; // TRUE|FALSE
-$typeMimeCheminFile = '/usr/bin/file';
-$typeMimeCorrespondance = array ();
-
 // Inclusion des ancres.
 $inclureAncres = TRUE; // TRUE|FALSE
 

@@ -10,7 +10,15 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 	include $cheminFichier;
 }
 
-if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
+if (!$activerCreationCompte)
+{
+	header('HTTP/1.1 401 Unauthorized');
+}
+elseif (empty($courrielAdmin) && empty($contactCourrielParDefaut))
+{
+	header('HTTP/1.1 500 Internal Server Error');
+}
+else
 {
 	$infosPublication = FALSE;
 	$licence = '';
@@ -152,9 +160,5 @@ if ($activerCreationCompte && (!empty($courrielAdmin) || !empty($contactCourriel
 	}
 	
 	include $racine . '/inc/dernier.inc.php';
-}
-else
-{
-	header('Location: ' . urlParente() . '/', TRUE, 301);
 }
 ?>

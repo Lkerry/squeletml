@@ -129,14 +129,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 					for ($j = 0; $j <= ($nombreDimages - 1) && $j < $nombreDimages; $j++)
 					{
-						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$j]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$j]['intermediaireNom']);
 						$minivignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $idGalerieDossier, FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
 						preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
 						$minivignette = $resultat[1];
 					
 						if ($adminActiverInfobulle['apercuGalerie'])
 						{
-							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $tableauGalerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+							$infobulle = adminInfobulle($racineAdmin, $urlRacineAdmin, dirname($cheminConfigGalerie) . '/' . $tableauGalerie[$j]['intermediaireNom'], FALSE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 						}
 						else
 						{
@@ -345,7 +345,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$suppressionExif = TRUE;
 						}
 						
-						$typeMime = typeMime($cheminGaleries . '/' . $nomArchive, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$typeMime = typeMime($cheminGaleries . '/' . $nomArchive);
 					
 						if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 						{
@@ -425,7 +425,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								
 									if ($infoImage['status'] == 'ok')
 									{
-										$typeMimeFichier = typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+										$typeMimeFichier = typeMime($cheminFichier);
 									
 										if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 										{
@@ -567,7 +567,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 										if (fwrite($fic, $donnees))
 										{
 											fclose($fic);
-											$typeMimeFichier = typeMime($cheminFichierFiltre, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+											$typeMimeFichier = typeMime($cheminFichierFiltre);
 										
 											if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 											{
@@ -704,7 +704,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								}
 							
 								$renommer = FALSE;
-								$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+								$typeMime = typeMime($cheminGalerie . '/' . $fichier);
 							
 								if (($renommerTout || (!preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '$/', $fichier))) && adminImageValide($typeMime))
 								{
@@ -828,7 +828,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 										}
 									}
 								
-									$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+									$typeMime = typeMime($cheminGalerie . '/' . $fichier);
 									$messagesScript .= nouvelleImage($cheminGalerie . '/' . $fichier, $cheminGalerie . '/' . $nouveauNom, $typeMime, $imageIntermediaireDimensionsVoulues, FALSE, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $nettete);
 								}
 							}
@@ -906,7 +906,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						if (!is_dir($cheminGalerie . '/' . $fichier))
 						{
-							$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$typeMime = typeMime($cheminGalerie . '/' . $fichier);
 							$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 						
 							if (isset($_POST['supprimer']) && ((in_array('vignettes', $_POST['supprimer']) && $versionImage == 'vignette') || (in_array('intermediaires', $_POST['supprimer']) && $versionImage == 'intermediaire') || (in_array('original', $_POST['supprimer']) && $versionImage == 'original')))
@@ -939,7 +939,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 										$infoFichier['extension'] = '';
 									}
 							
-									$typeMime = typeMime($cheminTatouage . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+									$typeMime = typeMime($cheminTatouage . '/' . $fichier);
 							
 									if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
 									{
@@ -1145,7 +1145,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (gdEstInstallee())
 					{
-						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
 						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $idDossier, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 						preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
 						$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
@@ -1399,7 +1399,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (gdEstInstallee())
 					{
-						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom'], $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
 						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . $idDossier, FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
 						preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
 						$vignette = '<div class="configGraphiqueSimplifieeVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueSimplifieeVignette -->\n";
@@ -1563,7 +1563,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						if (!is_dir($cheminGalerie . '/' . $fichier))
 						{
-							$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+							$typeMime = typeMime($cheminGalerie . '/' . $fichier);
 							$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, FALSE, $exclureMotifsCommeIntermediaires, FALSE, $typeMime);
 						
 							if (adminImageValide($typeMime) && $versionImage != 'vignette' && $versionImage != 'original')
@@ -1688,7 +1688,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 				}
 			
-				if (adminMajConfigGalerie($racine, $idDossier, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages))
+				if (adminMajConfigGalerie($racine, $idDossier, '', TRUE, $exclureMotifsCommeIntermediaires, FALSE, $parametresNouvellesImages))
 				{
 					if ($configExisteAuDepart)
 					{

@@ -2,21 +2,11 @@
 include 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
-eval(variablesAvantConfig());
-
-foreach (cheminsInc($racine, 'config') as $cheminFichier)
-{
-	include $cheminFichier;
-}
-
-include_once $racine . '/inc/mimedetect/file.inc.php';
-include_once $racine . '/inc/mimedetect/mimedetect.inc.php';
-
 $fichier = securiseTexte($_GET['fichier']);
 $chemin = $racine . '/' . $fichier;
 $urlFichier = $urlRacine . '/' . superRawurlencode($fichier, TRUE);
 $nom = superBasename($fichier);
-$typeMime = typeMime($chemin, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+$typeMime = typeMime($chemin);
 
 if ($typeMime == 'application/octet-stream')
 {

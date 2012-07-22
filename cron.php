@@ -6,7 +6,7 @@ if (file_exists($racine . '/init.inc.php'))
 	include $racine . '/init.inc.php';
 	include_once $racine . '/inc/fonctions.inc.php';
 	include_once $racineAdmin . '/inc/fonctions.inc.php';
-	include_once $racine . '/inc/php-gettext/gettext.inc';
+	include_once $racine . '/inc/php-gettext/gettext.inc.php';
 	
 	eval(variablesAvantConfig());
 	

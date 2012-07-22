@@ -59,7 +59,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 			$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
-			$htaccessFilesModele = "(Makefile|\.acces|\.admin\.php|\.cache\.gif|\.cache\.html|\.cache\.jpeg|\.cache\.jpg|\.cache\.png|\.cache\.xml|\.gitignore|\.ini|\.mkd|\.mo|\.modele|\.po|\.po\.info|\.pot|\.sauv|scripts\.cli\.php|\.text|\.txt)$";
+			$htaccessFilesModele = "\.((admin|class|cli|inc|lib)\.php|cache\.(gif|html|jpe?g|png|xml)|acces|gitignore|info|ini|mkd|mo|modele|pot?|sauv|src\.svg|te?xt)$";
 		
 			if ($serveurFreeFr)
 			{
@@ -2603,11 +2603,9 @@ Retourne un tableau contenant les fichiers à inclure une seule fois au début d
 function inclureUneFoisAuDebut($racine)
 {
 	$fichiers = array ();
-	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
-	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
-	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
-	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
-	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.inc.php';
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc.php';
+	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
 	$fichiers[] = $racine . '/inc/node_teaser/node.inc.php';
@@ -4800,7 +4798,7 @@ function phpGettext($racine, $langue)
 		define('LC_MESSAGES', 5);
 	}
 	
-	include_once $racine . '/inc/php-gettext/gettext.inc';
+	include_once $racine . '/inc/php-gettext/gettext.inc.php';
 	
 	$locale = locale($langue);
 	T_setlocale(LC_MESSAGES, $locale);
@@ -5693,11 +5691,24 @@ function tronqueTexte($texte, $taille)
 }
 
 /*
-Retourne le type MIME du fichier. Il s'agit d'un alias de la fonction `mimedetect_mime()`.
+Retourne le type MIME du fichier.
 */
-function typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function typeMime($cheminFichier)
 {
-	return mimedetect_mime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+	$typeMime = '';
+	
+	if (function_exists('finfo_file'))
+	{
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$typeMime = finfo_file($finfo, $cheminFichier);
+		finfo_close($finfo);
+	}
+	elseif (function_exists('mime_content_type'))
+	{
+		$typeMime = mime_content_type($cheminFichier);
+	}
+	
+	return $typeMime;
 }
 
 /*
@@ -6064,7 +6075,7 @@ Modifie la source de la vignette pour la remplacer par une vignette tatouée d'u
 
 Si la vignette tatouée n'existe pas déjà et que la bibliothèque GD n'est pas installée, la vignette utilisée est celle sans tatouage.
 */
-function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance)
+function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc, $galerieQualiteJpg)
 {
 	preg_match('/src="([^"]+)"/', $paragraphe, $resultat);
 	$srcContenu = $resultat[1];
@@ -6091,7 +6102,7 @@ function vignetteTatouee($paragraphe, $sens, $racine, $racineImgSrc, $urlImgSrc,
 				$imgSrc = imagecreatefrompng($racine . '/fichiers/' . $sens . '-tatouage.png');
 			}
 		
-			$typeMime = typeMime($racineImgSrc . '/tatouage/' . $vignetteNom, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+			$typeMime = typeMime($racineImgSrc . '/tatouage/' . $vignetteNom);
 		
 			switch ($typeMime)
 			{

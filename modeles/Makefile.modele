@@ -1,4 +1,7 @@
-all: langues fichiersModeles
+all: fichiersModeles langues
+
+fichiersModeles:
+	php src/scripts.cli.php modeles
 
 langues: messageAccueil po mo
 
@@ -15,10 +18,6 @@ mo:
 	do\
 		msgfmt -o $${po%\.*}.mo $$po;\
 	done
-
-fichiersModeles:
-	php src/scripts.cli.php config
-	php src/scripts.cli.php css
 
 po: pot poFr
 	for po in $(shell find ./ -name *.po);\

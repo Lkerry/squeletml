@@ -1,6 +1,7 @@
 .acces
 .htaccess
 init.inc.php
+Makefile
 robots.txt
 site/admin/cache/
 site/cache/
