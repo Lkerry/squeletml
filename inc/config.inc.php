@@ -31,7 +31,7 @@ $langueRapports = "";
 - Si la page du cron est activée, le cron pourra être lancé en visitant `cron.php` à la racine du site.
 - Le cron pourra toujours être lancé à partir de la section d'administration du site.
 */
-$activerPageCron = TRUE; // TRUE|FALSE
+$activerPageCron = FALSE; // TRUE|FALSE
 
 // Clé d'accès au cron.
 /*
@@ -283,6 +283,9 @@ $inclureBasDePage = TRUE; // TRUE|FALSE
 
 // Si `$inclureBasDePage` vaut TRUE, positionner le bas de page à l'intérieur de la `div` `page`.
 $basDePageInterieurPage = FALSE; // TRUE|FALSE
+
+// Si `$inclureBasDePage` vaut TRUE, y ajouter un lien vers la section d'administration.
+$basDePageLienAdmin = TRUE; // TRUE|FALSE
 
 // Activation par défaut du partage par courriel.
 $activerPartageCourrielParDefaut = TRUE; // TRUE|FALSE
@@ -719,6 +722,7 @@ précise que le bloc de menu principal devra avoir une couleur de fond lorsqu'il
 $blocsAvecFondSpecifiques['balise-h1']      = array (FALSE, FALSE, FALSE);
 $blocsAvecFondSpecifiques['licence']        = array (TRUE, TRUE, TRUE);
 $blocsAvecFondSpecifiques['menu-langues']   = array (FALSE, TRUE, TRUE);
+$blocsAvecFondSpecifiques['piwik']          = array (FALSE, FALSE, FALSE);
 
 /* ____________________ Syndication de contenu (flux RSS). ____________________ */
 
