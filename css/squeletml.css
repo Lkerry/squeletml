@@ -602,6 +602,10 @@ div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 	font-size: 0.9em;
 }
 
+.bloc h3.bDtitre {
+	margin-bottom: 0px;
+}
+
 a.actif {
 	font-weight: bold;
 }
