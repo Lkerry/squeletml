@@ -5328,12 +5328,13 @@ Récupère le code XHTML d'une page locale, comme si elle était visitée dans u
 function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
 {
 	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
-	# TODO: tester avec page d'erreur.
-	# TODO: tester si page d'accueil ou si variable GET.
 	$cheminRelatifPage = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', $urlAsimuler);
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
 	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
 	$cheminPage = $racine . '/' . $cheminRelatifPage;
+	
+	$dossierActuel = getcwd();
+	chdir(dirname($cheminPage));
 	
 	# Ajustement des variables relatives à l'URL.
 	
@@ -5403,6 +5404,8 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
 	
 	$codePage = ob_get_contents();
 	ob_end_clean();
+	
+	chdir($dossierActuel);
 	
 	# Restauration des variables relatives à l'URL.
 	if ($infosUrl !== FALSE)
