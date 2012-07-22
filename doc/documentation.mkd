@@ -41,11 +41,11 @@ La procédure d'installation est très simple. Il faut commencer par [téléchar
 
 ### Mise en situation
 
-On télécharge et extrait l'archive, ce qui crée le dossier `squeletml`.
+On télécharge et extrait l'archive, ce qui crée le dossier `squeletml-master`.
 
-- Pour avoir un site situé dans un répertoire, copier le dossier `squeletml` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`.
+- Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-master` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`.
 
-- Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+- Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-master`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
 
 	**Important:** à la racine du dossier créé par l'extraction de l'archive, il y a au moins un fichier dont le nom débute par un point. De tels fichiers sont dits «cachés» (à tout le moins sur les systèmes de type Unix), et pour les voir, il faut généralement que le gestionnaire de fichiers soit configuré en conséquence ou que la ligne de commande comporte un argument conséquent. Par exemple, dans Nautilus, on peut afficher les fichiers cachés en allant dans *Affichage* et en cochant *Afficher les fichiers cachés*. En ligne de commande, `ls` accepte l'argument `-a`:
 
