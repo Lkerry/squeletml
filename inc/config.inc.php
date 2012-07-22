@@ -31,7 +31,7 @@ $langueRapports = "";
 - Si la page du cron est activée, le cron pourra être lancé en visitant `cron.php` à la racine du site.
 - Le cron pourra toujours être lancé à partir de la section d'administration du site.
 */
-$activerPageCron = TRUE; // TRUE|FALSE
+$activerPageCron = FALSE; // TRUE|FALSE
 
 // Clé d'accès au cron.
 /*
