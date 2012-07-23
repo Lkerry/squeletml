@@ -121,21 +121,17 @@ $balisesLinkScript[8] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
 */
 $fusionnerCssJs = FALSE; // TRUE|FALSE
 
-// Version par défaut des fichiers CSS déclarés dans le tableau `$balisesLinkScript`.
+// Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`.
 /*
-- La version est ajoutée à la suite du nom des fichiers en tant que variable GET.
+- La version est ajoutée en tant que variable GET à la suite du nom des fichiers concernés.
 - Laisser vide pour désactiver l'ajout de version.
-- Exemple de sortie HTML lorsque `$versionParDefautLinkScriptCss` vaut `1`:
-  <link rel="stylesheet" type="text/css" href="http://localhost/serveur_local/squeletml/css/squeletml.css?1" media="screen" />
+- Exemple de sortie HTML lorsque `$versionParDefautLinkScript['css']` vaut `5497463215`:
+  <link rel="stylesheet" type="text/css" href="http://localhost/serveur_local/squeletml/css/squeletml.css?5497463215" media="screen" />
 - Voir la fonction `linkScript()`.
 */
-$versionParDefautLinkScriptCss = "";
-
-// Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`, à l'exception des fichiers CSS.
-/*
-- Voir les explications de la variable `$versionParDefautLinkScriptCss` dans le présent fichier de configuration pour plus de détails.
-*/
-$versionParDefautLinkScriptNonCss = "";
+$versionParDefautLinkScript['css']     = "";
+$versionParDefautLinkScript['js']      = "";
+$versionParDefautLinkScript['autres']  = "";
 
 // Inclusion des feuilles de style par défaut de Squeletml (dossier `css`).
 /*

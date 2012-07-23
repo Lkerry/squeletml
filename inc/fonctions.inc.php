@@ -3439,7 +3439,7 @@ function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomC
 {
 	if (!empty($listeFichiers))
 	{
-		$nomCache = $type . '-' . dechex(crc32(implode("\n", $listeFichiers))) . '.cache.' . $extensionNomCache;
+		$nomCache = $type . '-' . crc32(implode("\n", $listeFichiers)) . '.cache.' . $extensionNomCache;
 		
 		if (!empty($dossierAdmin))
 		{
@@ -3504,7 +3504,7 @@ Construit des balises `link` et `script`. Voir le fichier de configuration `inc/
 
 Le paramètre `$dossierAdmin` doit être vide si la fonction est utilisée pour le site et non pour la section d'administration.
 */
-function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScriptCss = '', $versionParDefautLinkScriptNonCss = '')
+function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScript = array ('css' => '', 'js' => '', 'autres' => ''))
 {
 	$balisesBrutesAinclure = linkScriptAinclure($balisesBrutes);
 	$balisesFormatees = '';
@@ -3531,32 +3531,29 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 			// On récupère les infos.
 			list ($type, $fichier) = explode('#', $fichierBrut, 2);
 			
-			if (strpos($type, 'css') === 0)
+			if ($type == 'css')
 			{
-				if ($type == 'css')
+				$listeFichiersCss[] = $fichier;
+				$balisesBrutesCssAinclure[] = $fichierBrut;
+			}
+			elseif (preg_match('/^css[lI]/', $type))
+			{
+				if ($type == 'cssltIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
 				{
-					$listeFichiersCss[] = $fichier;
-					$balisesBrutesCssAinclure[] = $fichierBrut;
+					$listeFichiersCssIe6[] = $fichier;
+					$balisesBrutesCssIe6Ainclure[] = $fichierBrut;
 				}
-				else
+				
+				if ($type == 'cssIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
 				{
-					if ($type == 'cssltIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
-					{
-						$listeFichiersCssIe6[] = $fichier;
-						$balisesBrutesCssIe6Ainclure[] = $fichierBrut;
-					}
-					
-					if ($type == 'cssIE7' || $type == 'csslteIE7' || $type == 'csslteIE8')
-					{
-						$listeFichiersCssIe7[] = $fichier;
-						$balisesBrutesCssIe7Ainclure[] = $fichierBrut;
-					}
-					
-					if ($type == 'cssIE8' || $type == 'csslteIE8')
-					{
-						$listeFichiersCssIe8[] = $fichier;
-						$balisesBrutesCssIe8Ainclure[] = $fichierBrut;
-					}
+					$listeFichiersCssIe7[] = $fichier;
+					$balisesBrutesCssIe7Ainclure[] = $fichierBrut;
+				}
+				
+				if ($type == 'cssIE8' || $type == 'csslteIE8')
+				{
+					$listeFichiersCssIe8[] = $fichier;
+					$balisesBrutesCssIe8Ainclure[] = $fichierBrut;
 				}
 			}
 			elseif ($type == 'js')
@@ -3629,11 +3626,11 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 		{
 			case 'favicon':
 				// On ne conserve qu'une déclaration de favicon.
-				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '" />' . "\n";
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['autres']) . '" />' . "\n";
 				break;
 	
 			case 'css':
-				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n";
+				$balisesFormatees .= '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['css']) . '" media="screen" />' . "\n";
 				break;
 				
 			case 'cssDirectlteIE8':
@@ -3641,23 +3638,23 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 				break;
 				
 			case 'cssltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['css']) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 		
 			case 'cssIE7':
-				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['css']) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'csslteIE7':
-				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['css']) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'cssIE8':
-				$balisesFormatees .= '<!--[if IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['css']) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'csslteIE8':
-				$balisesFormatees .= '<!--[if lte IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptCss) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lte IE 8]>' . "\n" . '<link rel="stylesheet" type="text/css" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['css']) . '" media="screen" />' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'hreflang':
@@ -3669,7 +3666,7 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 				break;
 				
 			case 'js':
-				$balisesFormatees .= '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n";
+				$balisesFormatees .= '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScript['js']) . '"></script>' . "\n";
 				break;
 				
 			case 'jsDirect':
@@ -3682,7 +3679,7 @@ $fichier\n//]]>\n</script>\n";
 				break;
 				
 			case 'jsltIE7':
-				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScript['js']) . '"></script>' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'rss':
@@ -3695,7 +3692,7 @@ $fichier\n//]]>\n</script>\n";
 					$title = '';
 				}
 				
-				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . variableGet(2, $fichier, $versionParDefautLinkScriptNonCss) . '"' . $title . ' />' . "\n";
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['autres']) . '"' . $title . ' />' . "\n";
 				break;
 		}
 	}

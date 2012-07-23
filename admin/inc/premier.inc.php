@@ -249,7 +249,7 @@ if ($tableDesMatieres)
 
 // Variable finale.
 
-$linkScript = linkScript($racine, $urlRacine, $adminFusionnerCssJs, $dossierAdmin, $adminBalisesLinkScript, '', TRUE);
+$linkScript = linkScript($racine, $urlRacine, $adminFusionnerCssJs, $dossierAdmin, $adminBalisesLinkScript);
 
 ########################################################################
 ##
