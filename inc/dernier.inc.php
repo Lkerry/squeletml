@@ -81,6 +81,12 @@ if ($dureeCache && !$desactiverCache)
 {
 	$codePage = ob_get_contents();
 	ob_end_clean();
+	
+	if ($tableDesMatieres)
+	{
+		$codePage = tableDesMatieres($racine, $codePage, 'div#milieuInterieurContenu', $tDmBaliseTable, $tDmBaliseTitre, $tDmNiveauDepart, $tDmNiveauArret);
+	}
+	
 	creeDossierCache($racine);
 	@file_put_contents("$racine/site/cache/$nomFichierCache", $codePage);
 	echo $codePage;

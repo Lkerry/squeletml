@@ -667,7 +667,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$robots`: contenu de la métabalise `robots`, si la valeur est différente de `$robotsParDefaut` du fichier de configuration du site.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée par Javascript.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée du côté client par Javascript si le cache est désactivé, sinon elle est générée du côté serveur par PHP.
 
 	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée.
 
