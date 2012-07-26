@@ -5589,7 +5589,7 @@ Retourne le code HTML sans les commentaires.
 */
 function supprimeCommentairesHtml($html)
 {
-	$dom = str_get_dom($html);
+	$dom = str_get_html($html);
 	
 	foreach ($dom->find('comment') as $commentaire)
 	{
