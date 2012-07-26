@@ -91,20 +91,31 @@ $jsDirect = <<<JS
 JS;
 
 $adminBalisesLinkScript[9] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[10] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[11] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[10] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[11] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[10] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[11] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
 $adminBalisesLinkScript[12] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
+
 $adminBalisesLinkScript[13] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[14] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[15] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[14] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[15] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[14] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[15] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
 $adminBalisesLinkScript[16] = "$urlRacineAdmin/galeries.admin.php*#jsDirect#$jsDirect";
+
 $adminBalisesLinkScript[17] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[18] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[19] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[18] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[19] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[18] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[19] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
 $adminBalisesLinkScript[20] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
+
 $adminBalisesLinkScript[21] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[22] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[23] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
+$adminBalisesLinkScript[22] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[23] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[22] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[23] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
 $adminBalisesLinkScript[24] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
 
 // Fusion des fichiers CSS et des scripts Javascript.
