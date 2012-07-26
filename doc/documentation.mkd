@@ -317,13 +317,7 @@ Piwik est un logiciel libre de statistiques web. Lorsqu'un site est ajouté dans
 
 #### Dossiers inutiles pour une configuration donnée
 
-Les deux fichiers et le dossier suivants peuvent être supprimés d'une installation actuelle ou ignorés lors d'une mise à jour:
-
-- `.gitignore`
-- `Makefile`
-- `src`
-
-Aussi, le dossier d'une langue inactivée peut être supprimé, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas des pages `exemple.php` et `exemple2.php` à la racine du site si ces dernières ne sont pas utilisées.
+Le dossier `src` ainsi que le dossier d'une langue inactivée peuvent être supprimés, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas des pages `exemple.php` et `exemple2.php` à la racine du site si ces dernières ne sont pas utilisées.
 
 Lors d'une mise à jour, il est également inutile de copier ces dossiers ou fichiers.
 
@@ -1420,4 +1414,8 @@ Un fichier `Makefile.modele` se trouve dans le dossier `modeles`. Pour l'utilise
 - `make langues`: met à jour les fichiers de langues.
 
 La commande `make all` permet d'effectuer les deux.
+
+### Fichier `.gitignore`
+
+Un fichier `.gitignore.modele` se trouve dans le dossier `modeles`. Pour l'utiliser, le copier à la racine du site en le renommant `.gitignore`.
 

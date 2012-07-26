@@ -27,6 +27,8 @@ if ($argv[1] == 'modeles')
 	file_put_contents($racine . '/modeles/site/css/style.css.modele', $ajout);
 	
 	copy("$racine/Makefile", "$racine/modeles/Makefile.modele");
+	
+	copy("$racine/.gitignore", "$racine/modeles/.gitignore.modele");
 }
 ########################################################################
 ##
