@@ -25,6 +25,13 @@ include_once $racine . '/inc/filter_htmlcorrector/filter.inc.php';
 include_once $racine . '/inc/node_teaser/node.inc.php';
 include_once $racine . '/inc/node_teaser/unicode.inc.php';
 
+if ($dureeCache)
+{
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
+}
+
+$enTetesHttp = 'header("Content-Type: text/xml; charset=' . $charset . '");';
+
 if ($inclureApercu && $utiliserApercuDansFluxRss)
 {
 	$fluxRssAvecApercu = TRUE;
@@ -50,11 +57,6 @@ if (isset($_GET['type']))
 else
 {
 	$getType = '';
-}
-
-if ($dureeCache)
-{
-	$nomFichierCache = nomFichierCache($racine, $urlRacine, $url, FALSE);
 }
 
 $erreur404 = FALSE;
@@ -90,10 +92,12 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 		{
 			// A: le flux RSS est activé.
 			
+			eval($enTetesHttp);
+			
 			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-			if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+			if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 			{
-				@readfile("$racine/site/cache/$nomFichierCache");
+				@readfile($cheminFichierCache);
 			}
 			else
 			{
@@ -110,13 +114,10 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 				if ($dureeCache)
 				{
 					creeDossierCache($racine);
-					@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-					@readfile("$racine/site/cache/$nomFichierCache");
+					@file_put_contents($cheminFichierCache, $rssAafficher);
 				}
-				else
-				{
-					echo $rssAafficher;
-				}
+				
+				echo $rssAafficher;
 			}
 		}
 		else
@@ -161,13 +162,15 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 	{
 		// A: le flux RSS est activé.
 		
+		eval($enTetesHttp);
+		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
 		phpGettext('.', $infosCategorie['langue']); // Nécessaire à la traduction.
 		
-		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 		{
-			@readfile("$racine/site/cache/$nomFichierCache");
+			@readfile($cheminFichierCache);
 		}
 		else
 		{
@@ -200,13 +203,10 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-				@readfile("$racine/site/cache/$nomFichierCache");
+				@file_put_contents($cheminFichierCache, $rssAafficher);
 			}
-			else
-			{
-				echo $rssAafficher;
-			}
+			
+			echo $rssAafficher;
 		}
 	}
 	else
@@ -231,11 +231,13 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 	{
 		// A: le flux RSS global pour les galeries est activé.
 		
+		eval($enTetesHttp);
+		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 		{
-			@readfile("$racine/site/cache/$nomFichierCache");
+			@readfile($cheminFichierCache);
 		}
 		else
 		{
@@ -253,13 +255,10 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-				@readfile("$racine/site/cache/$nomFichierCache");
+				@file_put_contents($cheminFichierCache, $rssAafficher);
 			}
-			else
-			{
-				echo $rssAafficher;
-			}
+			
+			echo $rssAafficher;
 		}
 	}
 	else
@@ -275,11 +274,13 @@ elseif ($getType == 'site' && !empty($getLangue))
 	{
 		// A: le flux RSS global du site est activé.
 		
+		eval($enTetesHttp);
+		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCache && file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 		{
-			@readfile("$racine/site/cache/$nomFichierCache");
+			@readfile($cheminFichierCache);
 		}
 		else
 		{
@@ -318,13 +319,10 @@ elseif ($getType == 'site' && !empty($getLangue))
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				@file_put_contents("$racine/site/cache/$nomFichierCache", $rssAafficher);
-				@readfile("$racine/site/cache/$nomFichierCache");
+				@file_put_contents($cheminFichierCache, $rssAafficher);
 			}
-			else
-			{
-				echo $rssAafficher;
-			}
+			
+			echo $rssAafficher;
 		}
 	}
 	else

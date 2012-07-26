@@ -45,6 +45,11 @@ if (file_exists($racine . '/init.inc.php'))
 		$rapport .= '<li><a href="' . $urlRacineAdmin . '/">' . T_("Section d'administration du site") . "</a></li>\n";
 		$rapport .= "</ul>\n";
 		
+		if ($dureeCache || $ajouterPagesParCronDansSitemap)
+		{
+			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
+		}
+		
 		########################################################################
 		##
 		## Cache.
@@ -57,44 +62,11 @@ if (file_exists($racine . '/init.inc.php'))
 		
 		if ($dureeCache)
 		{
-			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
-			
 			foreach ($listeUrl as $url => $infosUrl)
 			{
-				if (!empty($infosUrl['cache']))
-				{
-					if (@unlink($racine . '/site/cache/' . $infosUrl['cache']))
-					{
-						$rapportLi .= '<li>1: ';
-					}
-					else
-					{
-						$rapportLi .= '<li class="erreur">0: ';
-					}
-					
-					$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $infosUrl['cache'] . '");</code>' . "</li>\n";
-				}
-				
-				if (!empty($infosUrl['cacheEnTete']))
-				{
-					if (@unlink($racine . '/site/cache/' . $infosUrl['cacheEnTete']))
-					{
-						$rapportLi .= '<li>1: ';
-					}
-					else
-					{
-						$rapportLi .= '<li class="erreur">0: ';
-					}
-					
-					$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $infosUrl['cacheEnTete'] . '");</code>' . "</li>\n";
-				}
-				
-				if (empty($infosUrl['cache']) || !file_exists($racine . '/site/cache/' . $infosUrl['cache']))
-				{
-					simuleVisite($racine, $urlRacine, $url, $dureeCache);
-					$rapportLi .= '<li>';
-					$rapportLi .= '<code>simuleVisite("' . $racine . '", "' . $urlRacine . '", "' . $url . '", "' . $dureeCache . '");</code>' . "</li>\n";
-				}
+				simuleVisite($racine, $urlRacine, $url, $dureeCache);
+				$rapportLi .= '<li>';
+				$rapportLi .= '<code>simuleVisite("' . $racine . '", "' . $urlRacine . '", "' . $url . '", "' . $dureeCache . '");</code>' . "</li>\n";
 			}
 		}
 		
@@ -120,12 +92,6 @@ if (file_exists($racine . '/init.inc.php'))
 			$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap") . "</h3>\n";
 			
 			$rapport .= "<ul>\n";
-			
-			if (!isset($listeUrl))
-			{
-				$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
-			}
-			
 			$contenuSitemap = adminGenereContenuSitemap($listeUrl);
 			$rapport .= adminEnregistreSitemap($racine, $contenuSitemap);
 			$rapport .= "</ul>\n";

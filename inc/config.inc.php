@@ -60,6 +60,26 @@ $envoyerRapportCron = TRUE; // TRUE|FALSE
 */
 $activerCreationCompte = FALSE; // TRUE|FALSE
 
+// Expiration du cache.
+/*
+- Temps en secondes avant que le cache n'expire.
+- Exemples:
+  - `0` équivaut à désactiver le cache;
+  - `1800` équivaut à 30 minutes;
+  - `3600` équivaut à 1 heure;
+  - `28800` équivaut à 8 heures;
+  - `43200` équivaut à 12 heures;
+  - `86400` équivaut à 1 jour;
+  - `259200` équivaut à 3 jours;
+  - `604800` équivaut à 7 jours;
+  - `1209600` équivaut à 14 jours;
+  - `2592000` équivaut à 30 jours;
+  - `15552000` équivaut à 180 jours;
+  - `31536000` équivaut à 365 jours.
+Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
+*/
+$dureeCache = 0;
+
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).
@@ -160,7 +180,7 @@ $robotsParDefaut = 'index, follow, archive';
 $desactiverIndexationPagesCategorie = FALSE; // TRUE|FALSE
 
 // Encodage du site.
-$charset = 'UTF-8';
+$charset = 'utf-8';
 
 // Langue par défaut.
 /*
@@ -460,22 +480,6 @@ $apercuParDefaut = "";
 
 // S'il y a lieu, taille, en nombre de caractères, d'un aperçu généré automatiquement.
 $tailleApercuAutomatique = 750;
-
-// Expiration du cache.
-/*
-- Temps en secondes avant que le cache n'expire.
-- Exemples:
-  - `0` équivaut à désactiver le cache;
-  - `1800` équivaut à 30 minutes;
-  - `3600` équivaut à 1 heure;
-  - `28800` équivaut à 8 heures;
-  - `43200` équivaut à 12 heures;
-  - `86400` équivaut à 1 jour;
-  - `259200` équivaut à 3 jours;
-  - `604800` équivaut à 7 jours.
-Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
-*/
-$dureeCache = 0;
 
 // Génération automatisée du bloc de menu des langues.
 /*

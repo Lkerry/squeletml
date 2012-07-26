@@ -484,16 +484,34 @@ function boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes)
 /*
 Vérifie si le cache d'un fichier expire.
 */
-function cacheExpire($fichier, $dureeCache)
+function cacheExpire($cheminFichierCache, $dureeCache)
 {
-	if (time() - filemtime($fichier) > $dureeCache)
+	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+	$dateExpiration = 0;
+	
+	if (file_exists($cheminFichierCache))
 	{
-		return TRUE;
+		if (file_exists($cheminFichierCacheEnTete))
+		{
+			$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
+			
+			if ($contenuFichierCacheEnTete !== FALSE && preg_match('/header\("Expires: ([^"]+)/', $contenuFichierCacheEnTete, $resultat))
+			{
+				$dateExpiration = @strtotime($resultat[1]);
+			}
+		}
+		else
+		{
+			$dateExpiration = @filemtime($cheminFichierCache) + $dureeCache;
+		}
 	}
-	else
+	
+	if (time() < $dateExpiration)
 	{
 		return FALSE;
 	}
+	
+	return TRUE;
 }
 
 /*
@@ -824,6 +842,46 @@ function cheminConfigGaleries($racine, $retourneCheminParDefaut = FALSE)
 	{
 		return FALSE;
 	}
+}
+
+/*
+Retourne le chemin du fichier cache.
+*/
+function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
+{
+	$nomFichierCache = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', $nomBrut);
+	
+	if (empty($nomFichierCache))
+	{
+		$nomFichierCache = 'index';
+	}
+	
+	$nomFichierCache = str_replace(array ('/', '\\'), '-', $nomFichierCache);
+	$nomFichierCache = str_replace('&amp;amp;', '-', $nomFichierCache);
+	$nomFichierCache = str_replace('&amp;', '-', $nomFichierCache);
+	$nomFichierCache = filtreChaine($racine, "$nomFichierCache.cache");
+	
+	if ($html)
+	{
+		$nomFichierCache .= '.html';
+	}
+	else
+	{
+		$nomFichierCache .= '.xml';
+	}
+	
+	return "$racine/site/cache/$nomFichierCache";
+}
+
+/*
+Retourne le chemin du fichier cache contenant les informations d'en-tête HTTP.
+*/
+function cheminFichierCacheEnTete($cheminFichierCache)
+{
+	$nomFichierCache = superBasename($cheminFichierCache);
+	$dossierFichierCache = dirname($cheminFichierCache);
+	
+	return "$dossierFichierCache/en-tete-$nomFichierCache";
 }
 
 /*
@@ -1379,18 +1437,18 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 	}
 	
 	$categorie['url'] = urlCat($racine, $categorie, $idCategorie);
-	$nomFichierCache = nomFichierCache($racine, $urlRacine, $categorie['url']);
-	$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['url'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $categorie['url']);
+	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+$tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['url'], 'cache' => $cheminFichierCache, 'cacheEnTete' => $cheminFichierCacheEnTete);
 	
 	if ($nombreDePages > 1)
 	{
 		for ($i = 2; $i <= $nombreDePages; $i++)
 		{
 			$adresse = variableGet(2, $urlRacine . '/' . $categorie['url'], 'page', $i);
-			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+			$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $adresse);
+			$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+			$tableauUrl[] = array ('url' => $adresse, 'cache' => $cheminFichierCache, 'cacheEnTete' => $cheminFichierCacheEnTete);
 		}
 	}
 	
@@ -1418,18 +1476,18 @@ function cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGal
 			$nombreDePages = 1;
 		}
 		
-		$nomFichierCache = nomFichierCache($racine, $urlRacine, $infosGalerie['url']);
-		$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-		$tableauUrl[] = array ('url' => $urlRacine . '/' . $infosGalerie['url'], 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+		$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $infosGalerie['url']);
+		$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+		$tableauUrl[] = array ('url' => $urlRacine . '/' . $infosGalerie['url'], 'cache' => $cheminFichierCache, 'cacheEnTete' => $cheminFichierCacheEnTete);
 		
 		if ($nombreDePages > 1)
 		{
 			for ($i = 2; $i <= $nombreDePages; $i++)
 			{
 				$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'page', $i);
-				$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-				$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $adresse);
+				$cheminFichierCacheEnTete = nomFichierCacheEnTete($cheminFichierCache);
+				$tableauUrl[] = array ('url' => $adresse, 'cache' => $cheminFichierCache, 'cacheEnTete' => $cheminFichierCacheEnTete);
 			}
 		}
 		
@@ -1437,9 +1495,9 @@ function cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGal
 		{
 			$id = idImage($racine, $image);
 			$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'image', filtreChaine($racine, $id));
-			$nomFichierCache = nomFichierCache($racine, $urlRacine, $adresse);
-			$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-			$tableauUrl[] = array ('url' => $adresse, 'cache' => $nomFichierCache, 'cacheEnTete' => $nomFichierCacheEnTete);
+			$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $adresse);
+			$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+			$tableauUrl[] = array ('url' => $adresse, 'cache' => $cheminFichierCache, 'cacheEnTete' => $cheminFichierCacheEnTete);
 		}
 	}
 	
@@ -1852,7 +1910,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $ga
 			}
 			else
 			{
-				$pubDate = date('Y-m-d H:i', filemtime($cheminImage));
+				$pubDate = date('Y-m-d H:i', @filemtime($cheminImage));
 			}
 			
 			$description = '';
@@ -1947,7 +2005,7 @@ function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $flu
 		}
 		else
 		{
-			$pubDate = date('Y-m-d H:i', filemtime($cheminPage));
+			$pubDate = date('Y-m-d H:i', @filemtime($cheminPage));
 		}
 		
 		if (!empty($infosPage['apercu']))
@@ -4139,43 +4197,6 @@ function motsCles($motsCles, $chaine, $melanger = FALSE)
 }
 
 /*
-Retourne le nom du fichier cache.
-*/
-function nomFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
-{
-	$nomFichierCache = preg_replace('#^' . preg_quote($urlRacine) . '/#', '', $nomBrut);
-	
-	if (empty($nomFichierCache))
-	{
-		$nomFichierCache = 'index';
-	}
-	
-	$nomFichierCache = str_replace(array ('/', '\\'), '-', $nomFichierCache);
-	$nomFichierCache = str_replace('&amp;amp;', '-', $nomFichierCache);
-	$nomFichierCache = str_replace('&amp;', '-', $nomFichierCache);
-	$nomFichierCache = filtreChaine($racine, "$nomFichierCache.cache");
-	
-	if ($html)
-	{
-		$nomFichierCache .= '.html';
-	}
-	else
-	{
-		$nomFichierCache .= '.xml';
-	}
-	
-	return $nomFichierCache;
-}
-
-/*
-Retourne le nom du fichier cache contenant les informations d'en-tête HTTP.
-*/
-function nomFichierCacheEnTete($nomFichierCache)
-{
-	return "en-tete-$nomFichierCache";
-}
-
-/*
 Retourne le nom de la page en cours. Par exemple, si l'URL en cours est `http://www.NomDeDomaine.ext/fichier.php?a=2&b=3#ancre`, la fonciton va retourner `fichier.php`.
 */
 function nomPage()
@@ -4973,7 +4994,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					}
 					else
 					{
-						$date = date('Y-m-d H:i', filemtime("$racine/site/fichiers/galeries/$idDossier/" . $image['intermediaireNom']));
+						$date = date('Y-m-d H:i', @filemtime("$racine/site/fichiers/galeries/$idDossier/" . $image['intermediaireNom']));
 					}
 					
 					if (isset($image['vignetteNom']))
@@ -5386,11 +5407,11 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
 	}
 	
 	ob_start();
-	$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlAsimuler);
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
 	
-	if (file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+	if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 	{
-		@readfile("$racine/site/cache/$nomFichierCache");
+		@readfile($cheminFichierCache);
 	}
 	else
 	{

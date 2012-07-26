@@ -88,24 +88,43 @@ if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 // Vérification du cache.
 if ($dureeCache && !$desactiverCache)
 {
-	// On vérifie si la page existe en cache ou si le cache est expiré.
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 	
-	$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-	$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
+	// S'il y a lieu, analyse d'une requête effectuée par le client.
 	
-	if (file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+	$code304 = FALSE;
+	
+	if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && @strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == @filemtime($cheminFichierCache))
 	{
-		if (file_exists("$racine/site/cache/$nomFichierCacheEnTete"))
+		$code304 = TRUE;
+	}
+	elseif (isset($_SERVER['HTTP_IF_NONE_MATCH']) && str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == md5(@filesize($cheminFichierCache) . @filemtime($cheminFichierCache)))
+	{
+		$code304 = TRUE;
+	}
+	
+	if ($code304)
+	{
+		header('HTTP/1.1 304 Not Modified');
+		
+		exit(0);
+	}
+	
+	// On vérifie si la page existe en cache ou si le cache est expiré.
+	if (file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+	{
+		if (file_exists($cheminFichierCacheEnTete))
 		{
-			$contenuFichierCacheEnTete = @file_get_contents("$racine/site/cache/$nomFichierCacheEnTete");
+			$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 			
-			if ($contenuFichierCacheEnTete !== FALSE)
+			if (!empty($contenuFichierCacheEnTete))
 			{
 				eval($contenuFichierCacheEnTete);
 			}
 		}
 		
-		@readfile("$racine/site/cache/$nomFichierCache");
+		@readfile($cheminFichierCache);
 		
 		exit(0);
 	}
@@ -280,6 +299,10 @@ if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrie
 if ($erreur404)
 {
 	$enTetesHttp .= "header('HTTP/1.1 404 Not found');";
+}
+else
+{
+	$enTetesHttp .= 'header("Content-Type: text/html; charset=' . $charset . '");';
 }
 
 ########################################################################
@@ -464,13 +487,8 @@ if (file_exists($racine . '/site/inc/premier.inc.php'))
 ##
 ########################################################################
 
-if (!empty($enTetesHttp))
+if (!$dureeCache || $desactiverCache)
 {
-	if ($dureeCache && !$desactiverCache)
-	{
-		@file_put_contents("$racine/site/cache/$nomFichierCacheEnTete", $enTetesHttp);
-	}
-	
 	eval($enTetesHttp);
 }
 

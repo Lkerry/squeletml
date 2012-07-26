@@ -88,7 +88,42 @@ if ($dureeCache && !$desactiverCache)
 	}
 	
 	creeDossierCache($racine);
-	@file_put_contents("$racine/site/cache/$nomFichierCache", $codePage);
+	$enregistrerCache = TRUE;
+	
+	if (file_exists($cheminFichierCache))
+	{
+		$codePageCache = @file_get_contents($cheminFichierCache);
+		
+		if ($codePageCache !== FALSE && md5($codePageCache) == md5($codePage))
+		{
+			$enregistrerCache = FALSE;
+		}
+	}
+	
+	if ($enregistrerCache)
+	{
+		@file_put_contents($cheminFichierCache, $codePage);
+	}
+	
+	$enTetesHttp .= 'header("Expires: ' . gmdate("D, d M Y H:i:s \G\M\T", time() + $dureeCache) . '");';
+	$enTetesHttp .= 'header("Cache-Control: max-age=' . $dureeCache . '");';
+	
+	$dateFichierCache = @filemtime($cheminFichierCache);
+	$tailleFichierCache = @filesize($cheminFichierCache);
+	
+	if ($dateFichierCache !== FALSE)
+	{
+		$enTetesHttp .= 'header("Last-Modified: ' . gmdate("D, d M Y H:i:s \G\M\T", $dateFichierCache) . '");';
+	}
+	
+	if ($dateFichierCache !== FALSE && $tailleFichierCache !== FALSE)
+	{
+		$enTetesHttp .= 'header(\'ETag: "' . md5($dateFichierCache . $tailleFichierCache) . '"\');';
+	}
+	
+	@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
+	eval($enTetesHttp);
+	
 	echo $codePage;
 }
 ?>

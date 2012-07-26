@@ -53,11 +53,30 @@ Options -Indexes
 #	</FilesMatch>
 #</IfModule>
 
+# Décommenter les lignes ci-dessous pour envoyer automatiquement les en-têtes `Expires` et `Cache-Control` pour les fichiers CSS et Javascript ainsi que les images. Le temps précisé est en secondes. Les en-têtes pour le contenu HTML et XML sont gérées en PHP par Squeletml.
+# Voir <http://httpd.apache.org/docs/current/mod/mod_expires.html> pour plus de détails.
+#<ifModule mod_expires.c>
+#	ExpiresActive On
+#	ExpiresByType application/javascript A2592000
+#	ExpiresByType application/x-javascript A2592000
+#	ExpiresByType image/gif A2592000
+#	ExpiresByType image/jpeg A2592000
+#	ExpiresByType image/jpg A2592000
+#	ExpiresByType image/png A2592000
+#	ExpiresByType image/vnd.microsoft.icon A2592000
+#	ExpiresByType image/x-icon A2592000
+#	ExpiresByType text/css A25920000
+#	ExpiresByType text/javascript A2592000
+#</ifModule>
+
 ########################################################################
 ##
 ## NORMALEMENT, CE QUI SUIT NE DEVRAIT PAS ÊTRE MODIFIÉ.
 ##
 ########################################################################
+
+# S'assure que l'en-tête ETag n'utilise pas l'inode du fichier, ce qui la rendrait inutile dans le cas où le fichier se trouve sur plusieurs serveurs et n'est pas toujours retourné par le même.
+FileETag MTime Size
 
 # Type MIME des polices de caractères.
 <IfModule mod_mime.c>
