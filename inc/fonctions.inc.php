@@ -963,7 +963,7 @@ function classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsA
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesSupplementaires)
+function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesSupplementaires)
 {
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -1120,6 +1120,15 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 	if ($tableDesMatieresArrondie)
 	{
 		$classesBody .= 'tableDesMatieresArrondie ';
+	}
+	
+	if ($basDePageInterieurPage)
+	{
+		$classesBody .= 'basDePageInterieur ';
+	}
+	else
+	{
+		$classesBody .= 'basDePageExterieur ';
 	}
 	
 	$urlAvecGetSansServeurAvecIndex = url(TRUE, FALSE, TRUE);

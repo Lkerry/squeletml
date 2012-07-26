@@ -13,3 +13,8 @@ body.deuxColonnes .galerieNavigationAccueil, body.deuxColonnes .galerieNavigatio
 body.deuxColonnes .galerieNavigationSuivant, body.deuxColonnes .galerieNavigationSuivant {
 	margin-right: 205px;
 }
+
+body.margeHautPage {
+	margin-top: 10px;
+}
+

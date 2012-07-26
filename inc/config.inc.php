@@ -455,14 +455,14 @@ $boitesDeroulantesAlaMainParDefaut = FALSE; // TRUE|FALSE
 /*
 - Voir le deuxième paramètre de la fonction Javascript `boiteDeroulante()`.
 */
-$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 86);";
+$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 115);";
 
 // Balises `link` et `script` finales, ajoutées juste avant `</body>`.
 /*
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 86);});";
+$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 115);});";
 
 // Inclusion de l'aperçu d'une page.
 /*

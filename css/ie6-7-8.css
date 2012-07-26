@@ -1,3 +1,17 @@
+.bloc h3 {
+	margin-top: 15px;
+}
+
 .bloc ul { /* Paliatif à `last-child`. */
 	margin-bottom: 0px;
 }
+
+.bloc li {
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+#basDePageHorsPage, div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img {
+	background-color: #ffffff;
+}
+

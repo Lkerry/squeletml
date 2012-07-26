@@ -88,7 +88,7 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, nive
 		
 		var oTraductionsTitre = {
 			'fr': 'Table des matières',
-			'en': 'Table of contents',
+			'en': 'Table of contents'
 		};
 		
 		var titreTexte = oTraductionsTitre['fr'];

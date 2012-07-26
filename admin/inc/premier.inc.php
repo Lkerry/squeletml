@@ -242,6 +242,7 @@ if ($tableDesMatieres)
 	$adminBalisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$adminBalisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$adminBalisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
+	$adminBalisesLinkScript[] = "$url#cssIE8#$urlRacine/css/table-des-matieres-ie8.css";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$adminBalisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
 	$adminBalisesLinkScript[] = "$url#jsDirect#tableDesMatieres('interieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$adminLangueParDefaut');";

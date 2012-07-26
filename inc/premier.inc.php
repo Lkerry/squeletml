@@ -175,7 +175,7 @@ $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres'
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
 $listeCategoriesPage = categories($racine, $urlRacine, $url);
-$classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesBody);
+$classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
 if (!empty($classesContenu))
@@ -394,35 +394,25 @@ for ($i = 0; $i < $profondeur; $i++)
 $cheminPie .= 'inc/PIE/PIE.php';
 
 $cssDirectlteIE8 = '';
-$cssDirectlteIE8 .= "body.tableDesMatieresArrondie #tableDesMatieres, .blocArrondi, .blocAvecFond {\n";
-$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
-$cssDirectlteIE8 .= "}\n";
-
-$selecteursOmbre = 'pre, table';
+$cssDirectlteIE8 .= 'body.tableDesMatieresArrondie #tableDesMatieres, pre, table, .blocArrondi, .blocAvecFond';
 
 if ($idGalerie)
 {
-	$selecteursOmbre .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte';
+	$cssDirectlteIE8 .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte';
 }
 
 if ($inclureBasDePage && !$basDePageInterieurPage)
 {
-	$selecteursOmbre .= ', #basDePageHorsPage';
+	$cssDirectlteIE8 .= ', #basDePageHorsPage';
 }
 
 if ($ombrePage)
 {
-	$selecteursOmbre .= ', body.ombrePage #page';
+	$cssDirectlteIE8 .= ', body.ombrePage #page';
 }
 
-if (!empty($selecteursOmbre))
-{
-	$cssDirectlteIE8 .= "$selecteursOmbre {\n";
-	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
-	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
-	$cssDirectlteIE8 .= "}\n";
-}
-
+$cssDirectlteIE8 .= " {\n\tbehavior: url(\"$cheminPie\");\n";
+$cssDirectlteIE8 .= "}\n";
 $balisesLinkScript[] = "$url#cssDirectlteIE8#$cssDirectlteIE8";
 
 // Slimbox2.
@@ -441,6 +431,7 @@ if ($tableDesMatieres)
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$balisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
+	$balisesLinkScript[] = "$url#cssIE8#$urlRacine/css/table-des-matieres-ie8.css";
 	
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	

@@ -73,6 +73,10 @@ a:hover, a:hover code {
 	text-decoration: none;
 }
 
+a img {
+	border: none;
+}
+
 ol, ul {
 	padding: 0px;
 	margin-left: 40px;
@@ -859,7 +863,7 @@ body.colonneAgauche #contenu {
 
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
 	position: absolute;
-	top: 100px;
+	top: 106px;
 }
 
 body.colonneAgauche #basDePageInterieurPage {
@@ -885,7 +889,7 @@ body.colonneAdroite #contenu {
 
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
 	position: absolute;
-	top: 100px;
+	top: 106px;
 }
 
 body.colonneAdroite #basDePageInterieurPage {
