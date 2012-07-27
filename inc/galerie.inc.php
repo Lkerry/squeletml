@@ -451,7 +451,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			$titreGalerieGenere = TRUE;
 		}
 		
-		$corpsGalerie .= '<p>' . sprintf(T_("L'image %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les images de la galerie %3\$s</a>."), "<em>$id</em>", $urlSansGet, "<em>$idGalerie</em>") . "</p>\n";
+		$corpsGalerie .= '<p>' . sprintf(T_("L'image %1\$s est introuvable. <a href=\"%2\$s\">Voir toutes les images de la galerie %3\$s</a>."), "<em>$id</em>", $urlGalerie, "<em>$idGalerie</em>") . "</p>\n";
 		
 		// Ajustement des métabalises.
 		
