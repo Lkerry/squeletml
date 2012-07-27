@@ -717,7 +717,9 @@ Retourne la chaîne fournie en paramètre filtrée convenablement pour un nom de
 */
 function chaineVersClasseCss($racine, $chaine)
 {
-	$classe = filtreChaine($racine, rawurldecode($chaine));
+	$classe = rawurldecode($chaine);
+	$classe = str_replace('&amp;', '&', $classe);
+	$classe = filtreChaine($racine, $classe);
 	$classe = str_replace(array ('.', '+'), '-', $classe);
 	$classe = filtreChaine($racine, $classe);
 	$classe = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classe);
