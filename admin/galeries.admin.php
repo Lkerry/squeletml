@@ -1258,34 +1258,52 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if (isset($_POST['configGraphiqueInputSupprimer-' . $i]))
 					{
 						$imagesAsupprimer = array ();
-						$imagesAsupprimer[] = $cheminGalerie . '/' . $intermediaireNom;
+						
+						if (file_exists($cheminGalerie . '/' . $intermediaireNom))
+						{
+							$imagesAsupprimer[] = $cheminGalerie . '/' . $intermediaireNom;
+						}
 						
 						if (!empty($_POST['parametres'][$i]['originalNom']))
 						{
-							$imagesAsupprimer[] = $cheminGalerie . '/' . securiseTexte($_POST['parametres'][$i]['originalNom']);
+							$nomOriginal = securiseTexte($_POST['parametres'][$i]['originalNom']);
 						}
 						else
 						{
 							$nomOriginal = nomSuffixe($intermediaireNom, '-original');
-							
-							if (file_exists($cheminGalerie . '/' . $nomOriginal))
-							{
-								$imagesAsupprimer[] = $cheminGalerie . '/' . $nomOriginal;
-							}
+						}
+						
+						if (file_exists($cheminGalerie . '/' . $nomOriginal))
+						{
+							$imagesAsupprimer[] = $cheminGalerie . '/' . $nomOriginal;
 						}
 						
 						if (!empty($_POST['parametres'][$i]['vignetteNom']))
 						{
-							$imagesAsupprimer[] = $cheminGalerie . '/' . securiseTexte($_POST['parametres'][$i]['vignetteNom']);
+							$nomVignette = securiseTexte($_POST['parametres'][$i]['vignetteNom']);
 						}
 						else
 						{
 							$nomVignette = nomSuffixe($intermediaireNom, '-vignette');
-							
-							if (file_exists($cheminGalerie . '/' . $nomVignette))
-							{
-								$imagesAsupprimer[] = $cheminGalerie . '/' . $nomVignette;
-							}
+						}
+						
+						if (file_exists($cheminGalerie . '/' . $nomVignette))
+						{
+							$imagesAsupprimer[] = $cheminGalerie . '/' . $nomVignette;
+						}
+						
+						$nomTatouagePrecedent = nomSuffixe($nomVignette, '-precedent');
+						
+						if (file_exists($cheminGalerie . '/tatouage/' . $nomTatouagePrecedent))
+						{
+							$imagesAsupprimer[] = $cheminGalerie . '/tatouage/' . $nomTatouagePrecedent;
+						}
+						
+						$nomTatouageSuivant = nomSuffixe($nomVignette, '-suivant');
+						
+						if (file_exists($cheminGalerie . '/tatouage/' . $nomTatouageSuivant))
+						{
+							$imagesAsupprimer[] = $cheminGalerie . '/tatouage/' . $nomTatouageSuivant;
 						}
 						
 						foreach ($imagesAsupprimer as $imageAsupprimer)
