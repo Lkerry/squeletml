@@ -123,7 +123,7 @@ if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 }
 
 // Coloration syntaxique lors de l'édition.
-if ($adminColorationSyntaxique && isset($_GET['action']) && $_GET['action'] = 'editer' && isset($_GET['valeur']))
+if ($adminColorationSyntaxique && isset($_GET['action']) && $_GET['action'] == 'editer' && isset($_GET['valeur']))
 {
 	$mode = '';
 	$modesAinclure = array ();
