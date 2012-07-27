@@ -139,6 +139,10 @@ $adminFusionnerCssJs = FALSE; // TRUE|FALSE
 $adminCheminExiftran = '/usr/bin/exiftran';
 $adminCheminJpegtran = '/usr/bin/jpegtran';
 
+// Taille par défaut lors d'un redimensionnement.
+$adminTailleParDefautRedimensionnement['largeur'] = 500;
+$adminTailleParDefautRedimensionnement['hauteur'] = 500;
+
 ########################################################################
 ##
 ## Porte-documents.

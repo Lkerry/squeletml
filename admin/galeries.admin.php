@@ -2098,7 +2098,34 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 						<p><?php printf(T_("Taille maximale de la version intermédiaire (<label for=\"%1\$s\">largeur</label> × <label for=\"%2\$s\">hauteur</label>):"), "redimensionnerInputLargeur", "redimensionnerInputHauteur"); ?><br />
 						<?php echo T_("La plus grande taille possible contenable dans les dimensions données sera utilisée, sans toutefois dépasser la taille originale. Si une seule dimension est précisée, l'autre sera calculée à partir de la dimension donnée ainsi que des dimensions de l'image source. Les proportions de l'image sont conservées. Au moins une dimension doit être donnée."); ?><br />
-						<input id="redimensionnerInputLargeur" type="text" name="largeur" size="4" value="500" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input id="redimensionnerInputHauteur" type="text" name="hauteur" size="4" value="500" /> <?php echo T_("px de hauteur"); ?></p>
+						<?php
+						if (!empty($imageIntermediaireDimensionsVoulues['largeur']))
+						{
+							$valeurLargeur = $imageIntermediaireDimensionsVoulues['largeur'];
+						}
+						elseif (!empty($adminTailleParDefautRedimensionnement['largeur']))
+						{
+							$valeurLargeur = $adminTailleParDefautRedimensionnement['largeur'];
+						}
+						else
+						{
+							$valeurLargeur = 500;
+						}
+						
+						if (!empty($imageIntermediaireDimensionsVoulues['hauteur']))
+						{
+							$valeurHauteur = $imageIntermediaireDimensionsVoulues['hauteur'];
+						}
+						elseif (!empty($adminTailleParDefautRedimensionnement['hauteur']))
+						{
+							$valeurHauteur = $adminTailleParDefautRedimensionnement['hauteur'];
+						}
+						else
+						{
+							$valeurHauteur = 500;
+						}
+						?>
+						<input id="redimensionnerInputLargeur" type="text" name="largeur" size="4" value="<?php echo $valeurLargeur; ?>" /> <?php echo T_("px de largeur"); ?> <?php echo T_("×"); ?> <input id="redimensionnerInputHauteur" type="text" name="hauteur" size="4" value="<?php echo $valeurHauteur; ?>" /> <?php echo T_("px de hauteur"); ?></p>
 						
 						<fieldset class="optionsAvanceesAdminGaleries">
 							<legend class="bDtitre"><?php echo T_("Options avancées"); ?></legend>
