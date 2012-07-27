@@ -210,7 +210,7 @@ $chaineSansComCorrigeeEtSecurisee = securiseTexte($chaineSansComCorrigee);
 
 <?php
 $phrase = "L'hiver arrive, le vent se lève";
-$phraseFiltree = filtreChaine($racine, $phrase);
+$phraseFiltree = filtreChaine($phrase);
 ?>
 
 <p>Prenons maintenant cette phrase: <em><?php echo $phrase; ?></em>. Nous pourrions en faire un nom de fichier ou de page web en utilisant la fonction <code>filtreChaine()</code>: <em><?php echo $phraseFiltree; ?></em>.</p>

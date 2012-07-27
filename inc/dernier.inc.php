@@ -84,7 +84,7 @@ if ($dureeCache && !$desactiverCache)
 	
 	if ($tableDesMatieres)
 	{
-		$codePage = tableDesMatieres($racine, $codePage, 'div#milieuInterieurContenu', $tDmBaliseTable, $tDmBaliseTitre, $tDmNiveauDepart, $tDmNiveauArret);
+		$codePage = tableDesMatieres($codePage, 'div#milieuInterieurContenu', $tDmBaliseTable, $tDmBaliseTitre, $tDmNiveauDepart, $tDmNiveauArret);
 	}
 	
 	creeDossierCache($racine);

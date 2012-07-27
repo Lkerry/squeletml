@@ -175,7 +175,7 @@ $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres'
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
 $listeCategoriesPage = categories($racine, $urlRacine, $url);
-$classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesBody);
+$classesBody = classesBody($url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
 if (!empty($classesContenu))
@@ -362,13 +362,13 @@ if ($galerieActiverFluxRssGlobal)
 
 if (!empty($idGalerie) && $rssGalerie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie);
+	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($idGalerie);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Galerie %1$s'), $idGalerie);
 }
 
 if (!empty($idCategorie) && $rssCategorie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie);
+	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($idCategorie);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
 }
 

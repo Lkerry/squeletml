@@ -22,7 +22,7 @@ if (!empty($_GET['id']))
 		
 		if (!empty($galeries))
 		{
-			$idReel = idGalerie($racine, $galeries, $idGalerie);
+			$idReel = idGalerie($galeries, $idGalerie);
 			
 			if (!empty($idReel))
 			{
@@ -52,8 +52,8 @@ elseif (
 	!isset($langue) ||
 	empty($idGalerie) ||
 	!isset($galeries[$idGalerie]) ||
-	(!empty($galeries[$idGalerie]['url']) && strpos($galeries[$idGalerie]['url'], 'galerie.php?id=' . filtreChaine($racine, $idGalerie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
-	($getId != filtreChaine($racine, $getId)) // Idem.
+	(!empty($galeries[$idGalerie]['url']) && strpos($galeries[$idGalerie]['url'], 'galerie.php?id=' . filtreChaine($idGalerie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
+	($getId != filtreChaine($getId)) // Idem.
 )
 {
 	$erreur404 = TRUE;

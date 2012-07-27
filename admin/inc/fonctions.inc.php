@@ -821,7 +821,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		$dossierAdmin = superBasename($racineAdmin);
 		$nomFichierSansExtension = extension(superBasename($cheminFichier), TRUE);
 		$extension = extension($cheminFichier);
-		$cheminApercuImage = "$racine/site/$dossierAdmin/cache/" . filtreChaine($racine, $nomFichierSansExtension . '-' . dechex(crc32($cheminFichier)) . ".cache.$extension");
+		$cheminApercuImage = "$racine/site/$dossierAdmin/cache/" . filtreChaine($nomFichierSansExtension . '-' . dechex(crc32($cheminFichier)) . ".cache.$extension");
 		
 		if (!file_exists($cheminApercuImage))
 		{
@@ -1069,7 +1069,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 			foreach ($langues as $codeLangue)
 			{
 				// Flux RSS individuel d'une galerie pour une langue donnée.
-				$url = $urlRacine . '/rss.php?type=galerie&amp;id=' . filtreChaine($racine, $idGalerie) . "&amp;langue=$codeLangue";
+				$url = $urlRacine . '/rss.php?type=galerie&amp;id=' . filtreChaine($idGalerie) . "&amp;langue=$codeLangue";
 				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
 				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($nomFichierCache);
 				$tableauUrl[$url]['cache'] = $cheminFichierCache;
@@ -1141,8 +1141,8 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 				
 				foreach ($tableauGalerie as $image)
 				{
-					$id = idImage($racine, $image);
-					$urlImage = variableGet(2, $url, 'image', filtreChaine($racine, $id));
+					$id = idImage($image);
+					$urlImage = variableGet(2, $url, 'image', filtreChaine($id));
 					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlImage);
 					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($nomFichierCache);
 					$tableauUrl[$urlImage]['cache'] = $cheminFichierCache;
@@ -1280,7 +1280,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 				if (isset($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
 				{
 					// Flux RSS de la catégorie.
-					$urlRss = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($racine, $categorie);
+					$urlRss = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($categorie);
 					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlRss, FALSE);
 					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($nomFichierCache);
 					$tableauUrl[$urlRss]['cache'] = $cheminFichierCache;

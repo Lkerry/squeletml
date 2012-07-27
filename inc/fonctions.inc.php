@@ -579,7 +579,7 @@ function categories($racine, $urlRacine, $url)
 				
 				if (superRawurlencode($urlPage) == $url)
 				{
-					$listeCategories[$categorie] = urlCat($racine, $categorieInfos, $categorie);
+					$listeCategories[$categorie] = urlCat($categorieInfos, $categorie);
 				}
 			}
 		}
@@ -715,13 +715,13 @@ function categoriesParentesIndirectes($categories, $categorie)
 /*
 Retourne la chaîne fournie en paramètre filtrée convenablement pour un nom de classe CSS.
 */
-function chaineVersClasseCss($racine, $chaine)
+function chaineVersClasseCss($chaine)
 {
 	$classe = rawurldecode($chaine);
 	$classe = str_replace('&amp;', '&', $classe);
-	$classe = filtreChaine($racine, $classe);
+	$classe = filtreChaine($classe);
 	$classe = str_replace(array ('.', '+'), '-', $classe);
-	$classe = filtreChaine($racine, $classe);
+	$classe = filtreChaine($classe);
 	$classe = preg_replace('/(^[-0-9_]+)|([-_]+$)/', '', $classe);
 	
 	return $classe;
@@ -861,7 +861,7 @@ function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 	$nomFichierCache = str_replace(array ('/', '\\'), '-', $nomFichierCache);
 	$nomFichierCache = str_replace('&amp;amp;', '-', $nomFichierCache);
 	$nomFichierCache = str_replace('&amp;', '-', $nomFichierCache);
-	$nomFichierCache = filtreChaine($racine, "$nomFichierCache.cache");
+	$nomFichierCache = filtreChaine("$nomFichierCache.cache");
 	
 	if ($html)
 	{
@@ -965,7 +965,7 @@ function classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsA
 /*
 Retourne une liste de classes pour `body`.
 */
-function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesSupplementaires)
+function classesBody($url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesSupplementaires)
 {
 	$classesBody = '';
 	$arrierePlanColonne = 'Avec' . ucfirst($arrierePlanColonne);
@@ -997,7 +997,7 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		if (preg_match('/(\?|&(amp;)?)image\=(.+?)(&(amp;)?|$)/', $url, $resultat))
 		{
 			$classesBody .= 'galeriePageImage ';
-			$classesBody .= chaineVersClasseCss($racine, 'image-' . $resultat[3]) . ' ';
+			$classesBody .= chaineVersClasseCss('image-' . $resultat[3]) . ' ';
 		}
 		else
 		{
@@ -1026,7 +1026,7 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 		
 		foreach ($listeCategoriesPage as $categoriePage => $urlCategoriePage)
 		{
-			$classesBody .= chaineVersClasseCss($racine, "article-$categoriePage") . ' ';
+			$classesBody .= chaineVersClasseCss("article-$categoriePage") . ' ';
 		}
 	}
 	
@@ -1134,24 +1134,24 @@ function classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $cour
 	}
 	
 	$urlAvecGetSansServeurAvecIndex = url(TRUE, FALSE, TRUE);
-	$classesBody .= chaineVersClasseCss($racine, $urlAvecGetSansServeurAvecIndex) . ' ';
+	$classesBody .= chaineVersClasseCss($urlAvecGetSansServeurAvecIndex) . ' ';
 	
 	if (dirname($urlAvecGetSansServeurAvecIndex) != $urlAvecGetSansServeurAvecIndex)
 	{
-		$classesBody .= chaineVersClasseCss($racine, dirname($urlAvecGetSansServeurAvecIndex)) . ' ';
+		$classesBody .= chaineVersClasseCss(dirname($urlAvecGetSansServeurAvecIndex)) . ' ';
 	}
 	
 	if (superBasename($urlAvecGetSansServeurAvecIndex) != $urlAvecGetSansServeurAvecIndex)
 	{
-		$classesBody .= chaineVersClasseCss($racine, superBasename($urlAvecGetSansServeurAvecIndex)) . ' ';
+		$classesBody .= chaineVersClasseCss(superBasename($urlAvecGetSansServeurAvecIndex)) . ' ';
 	}
 	
 	$urlSansGetSansServeurAvecIndex = url(FALSE, FALSE, TRUE);
 	
 	if ($urlSansGetSansServeurAvecIndex != $urlAvecGetSansServeurAvecIndex)
 	{
-		$classesBody .= chaineVersClasseCss($racine, $urlSansGetSansServeurAvecIndex) . ' ';
-		$classesBody .= chaineVersClasseCss($racine, superBasename($urlSansGetSansServeurAvecIndex)) . ' ';
+		$classesBody .= chaineVersClasseCss($urlSansGetSansServeurAvecIndex) . ' ';
+		$classesBody .= chaineVersClasseCss(superBasename($urlSansGetSansServeurAvecIndex)) . ' ';
 	}
 	
 	if (!empty($classesSupplementaires))
@@ -1447,7 +1447,7 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 		$nombreDePages = 1;
 	}
 	
-	$categorie['url'] = urlCat($racine, $categorie, $idCategorie);
+	$categorie['url'] = urlCat($categorie, $idCategorie);
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $categorie['url']);
 	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 $tableauUrl[] = array ('url' => $urlRacine . '/' . $categorie['url'], 'cache' => $cheminFichierCache, 'cacheEnTete' => $cheminFichierCacheEnTete);
@@ -1504,8 +1504,8 @@ function cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGal
 		
 		foreach ($tableauGalerie as $image)
 		{
-			$id = idImage($racine, $image);
-			$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'image', filtreChaine($racine, $id));
+			$id = idImage($image);
+			$adresse = variableGet(2, $urlRacine . '/' . $infosGalerie['url'], 'image', filtreChaine($id));
 			$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $adresse);
 			$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 			$tableauUrl[] = array ('url' => $adresse, 'cache' => $cheminFichierCache, 'cacheEnTete' => $cheminFichierCacheEnTete);
@@ -1695,9 +1695,572 @@ function extension($nomFichier, $retourneNomSansExtension = FALSE)
 /*
 Filtre une chaîne de caractères pour ne conserver que des caractères non accentués et certains autres caractères. Retourne la chaîne filtrée.
 */
-function filtreChaine($racine, $chaine, $casse = '')
+function filtreChaine($chaine, $casse = '')
 {
-	$transliteration = parse_ini_file($racine . '/inc/pathauto/i18n-ascii.txt');
+	// Le contenu du tableau `$transliteration` provient du fichier `i18n-ascii.txt` du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.
+	$transliteration = array (
+		'À' => 'A',
+		'Á' => 'A',
+		'Â' => 'A',
+		'Ã' => 'A',
+		'Ä' => 'Ae',
+		'Å' => 'A',
+		'Æ' => 'A',
+		'Ā' => 'A',
+		'Ą' => 'A',
+		'Ă' => 'A',
+		'Ç' => 'C',
+		'Ć' => 'C',
+		'Č' => 'C',
+		'Ĉ' => 'C',
+		'Ċ' => 'C',
+		'Ď' => 'D',
+		'Đ' => 'D',
+		'È' => 'E',
+		'É' => 'E',
+		'Ê' => 'E',
+		'Ë' => 'E',
+		'Ē' => 'E',
+		'Ę' => 'E',
+		'Ě' => 'E',
+		'Ĕ' => 'E',
+		'Ė' => 'E',
+		'Ĝ' => 'G',
+		'Ğ' => 'G',
+		'Ġ' => 'G',
+		'Ģ' => 'G',
+		'Ĥ' => 'H',
+		'Ħ' => 'H',
+		'Ì' => 'I',
+		'Í' => 'I',
+		'Î' => 'I',
+		'Ï' => 'I',
+		'Ī' => 'I',
+		'Ĩ' => 'I',
+		'Ĭ' => 'I',
+		'Į' => 'I',
+		'İ' => 'I',
+		'Ĳ' => 'IJ',
+		'Ĵ' => 'J',
+		'Ķ' => 'K',
+		'Ľ' => 'K',
+		'Ĺ' => 'K',
+		'Ļ' => 'K',
+		'Ŀ' => 'K',
+		'Ł' => 'L',
+		'Ñ' => 'N',
+		'Ń' => 'N',
+		'Ň' => 'N',
+		'Ņ' => 'N',
+		'Ŋ' => 'N',
+		'Ò' => 'O',
+		'Ó' => 'O',
+		'Ô' => 'O',
+		'Õ' => 'O',
+		'Ö' => 'Oe',
+		'Ø' => 'O',
+		'Ō' => 'O',
+		'Ő' => 'O',
+		'Ŏ' => 'O',
+		'Œ' => 'OE',
+		'Ŕ' => 'R',
+		'Ř' => 'R',
+		'Ŗ' => 'R',
+		'Ś' => 'S',
+		'Ş' => 'S',
+		'Ŝ' => 'S',
+		'Ș' => 'S',
+		'Š' => 'S',
+		'Ť' => 'T',
+		'Ţ' => 'T',
+		'Ŧ' => 'T',
+		'Ț' => 'T',
+		'Ù' => 'U',
+		'Ú' => 'U',
+		'Û' => 'U',
+		'Ü' => 'Ue',
+		'Ū' => 'U',
+		'Ů' => 'U',
+		'Ű' => 'U',
+		'Ŭ' => 'U',
+		'Ũ' => 'U',
+		'Ų' => 'U',
+		'Ŵ' => 'W',
+		'Ŷ' => 'Y',
+		'Ÿ' => 'Y',
+		'Ý' => 'Y',
+		'Ź' => 'Z',
+		'Ż' => 'Z',
+		'Ž' => 'Z',
+		'à' => 'a',
+		'á' => 'a',
+		'â' => 'a',
+		'ã' => 'a',
+		'ä' => 'ae',
+		'ā' => 'a',
+		'ą' => 'a',
+		'ă' => 'a',
+		'å' => 'a',
+		'æ' => 'ae',
+		'ç' => 'c',
+		'ć' => 'c',
+		'č' => 'c',
+		'ĉ' => 'c',
+		'ċ' => 'c',
+		'ď' => 'd',
+		'đ' => 'd',
+		'è' => 'e',
+		'é' => 'e',
+		'ê' => 'e',
+		'ë' => 'e',
+		'ē' => 'e',
+		'ę' => 'e',
+		'ě' => 'e',
+		'ĕ' => 'e',
+		'ė' => 'e',
+		'ƒ' => 'f',
+		'ĝ' => 'g',
+		'ğ' => 'g',
+		'ġ' => 'g',
+		'ģ' => 'g',
+		'ĥ' => 'h',
+		'ħ' => 'h',
+		'ì' => 'i',
+		'í' => 'i',
+		'î' => 'i',
+		'ï' => 'i',
+		'ī' => 'i',
+		'ĩ' => 'i',
+		'ĭ' => 'i',
+		'į' => 'i',
+		'ı' => 'i',
+		'ĳ' => 'ij',
+		'ĵ' => 'j',
+		'ķ' => 'k',
+		'ĸ' => 'k',
+		'ł' => 'l',
+		'ľ' => 'l',
+		'ĺ' => 'l',
+		'ļ' => 'l',
+		'ŀ' => 'l',
+		'ñ' => 'n',
+		'ń' => 'n',
+		'ň' => 'n',
+		'ņ' => 'n',
+		'ŉ' => 'n',
+		'ŋ' => 'n',
+		'ò' => 'o',
+		'ó' => 'o',
+		'ô' => 'o',
+		'õ' => 'o',
+		'ö' => 'oe',
+		'ø' => 'o',
+		'ō' => 'o',
+		'ő' => 'o',
+		'ŏ' => 'o',
+		'œ' => 'oe',
+		'ŕ' => 'r',
+		'ř' => 'r',
+		'ŗ' => 'r',
+		'ś' => 's',
+		'š' => 's',
+		'ş' => 's',
+		'ť' => 't',
+		'ţ' => 't',
+		'ù' => 'u',
+		'ú' => 'u',
+		'û' => 'u',
+		'ü' => 'ue',
+		'ū' => 'u',
+		'ů' => 'u',
+		'ű' => 'u',
+		'ŭ' => 'u',
+		'ũ' => 'u',
+		'ų' => 'u',
+		'ŵ' => 'w',
+		'ÿ' => 'y',
+		'ý' => 'y',
+		'ŷ' => 'y',
+		'ż' => 'z',
+		'ź' => 'z',
+		'ž' => 'z',
+		'ß' => 'ss',
+		'ſ' => 'ss',
+		'Α' => 'A',
+		'Ά' => 'A',
+		'Ἀ' => 'A',
+		'Ἁ' => 'A',
+		'Ἂ' => 'A',
+		'Ἃ' => 'A',
+		'Ἄ' => 'A',
+		'Ἅ' => 'A',
+		'Ἆ' => 'A',
+		'Ἇ' => 'A',
+		'ᾈ' => 'A',
+		'ᾉ' => 'A',
+		'ᾊ' => 'A',
+		'ᾋ' => 'A',
+		'ᾌ' => 'A',
+		'ᾍ' => 'A',
+		'ᾎ' => 'A',
+		'ᾏ' => 'A',
+		'Ᾰ' => 'A',
+		'Ᾱ' => 'A',
+		'Ὰ' => 'A',
+		'Ά' => 'A',
+		'ᾼ' => 'A',
+		'Β' => 'B',
+		'Γ' => 'G',
+		'Δ' => 'D',
+		'Ε' => 'E',
+		'Έ' => 'E',
+		'Ἐ' => 'E',
+		'Ἑ' => 'E',
+		'Ἒ' => 'E',
+		'Ἓ' => 'E',
+		'Ἔ' => 'E',
+		'Ἕ' => 'E',
+		'Έ' => 'E',
+		'Ὲ' => 'E',
+		'Ζ' => 'Z',
+		'Η' => 'I',
+		'Ή' => 'I',
+		'Ἠ' => 'I',
+		'Ἡ' => 'I',
+		'Ἢ' => 'I',
+		'Ἣ' => 'I',
+		'Ἤ' => 'I',
+		'Ἥ' => 'I',
+		'Ἦ' => 'I',
+		'Ἧ' => 'I',
+		'ᾘ' => 'I',
+		'ᾙ' => 'I',
+		'ᾚ' => 'I',
+		'ᾛ' => 'I',
+		'ᾜ' => 'I',
+		'ᾝ' => 'I',
+		'ᾞ' => 'I',
+		'ᾟ' => 'I',
+		'Ὴ' => 'I',
+		'Ή' => 'I',
+		'ῌ' => 'I',
+		'Θ' => 'TH',
+		'Ι' => 'I',
+		'Ί' => 'I',
+		'Ϊ' => 'I',
+		'Ἰ' => 'I',
+		'Ἱ' => 'I',
+		'Ἲ' => 'I',
+		'Ἳ' => 'I',
+		'Ἴ' => 'I',
+		'Ἵ' => 'I',
+		'Ἶ' => 'I',
+		'Ἷ' => 'I',
+		'Ῐ' => 'I',
+		'Ῑ' => 'I',
+		'Ὶ' => 'I',
+		'Ί' => 'I',
+		'Κ' => 'K',
+		'Λ' => 'L',
+		'Μ' => 'M',
+		'Ν' => 'N',
+		'Ξ' => 'KS',
+		'Ο' => 'O',
+		'Ό' => 'O',
+		'Ὀ' => 'O',
+		'Ὁ' => 'O',
+		'Ὂ' => 'O',
+		'Ὃ' => 'O',
+		'Ὄ' => 'O',
+		'Ὅ' => 'O',
+		'Ὸ' => 'O',
+		'Ό' => 'O',
+		'Π' => 'P',
+		'Ρ' => 'R',
+		'Ῥ' => 'R',
+		'Σ' => 'S',
+		'Τ' => 'T',
+		'Υ' => 'Y',
+		'Ύ' => 'Y',
+		'Ϋ' => 'Y',
+		'Ὑ' => 'Y',
+		'Ὓ' => 'Y',
+		'Ὕ' => 'Y',
+		'Ὗ' => 'Y',
+		'Ῠ' => 'Y',
+		'Ῡ' => 'Y',
+		'Ὺ' => 'Y',
+		'Ύ' => 'Y',
+		'Φ' => 'F',
+		'Χ' => 'X',
+		'Ψ' => 'PS',
+		'Ω' => 'O',
+		'Ώ' => 'O',
+		'Ὠ' => 'O',
+		'Ὡ' => 'O',
+		'Ὢ' => 'O',
+		'Ὣ' => 'O',
+		'Ὤ' => 'O',
+		'Ὥ' => 'O',
+		'Ὦ' => 'O',
+		'Ὧ' => 'O',
+		'ᾨ' => 'O',
+		'ᾩ' => 'O',
+		'ᾪ' => 'O',
+		'ᾫ' => 'O',
+		'ᾬ' => 'O',
+		'ᾭ' => 'O',
+		'ᾮ' => 'O',
+		'ᾯ' => 'O',
+		'Ὼ' => 'O',
+		'Ώ' => 'O',
+		'ῼ' => 'O',
+		'α' => 'a',
+		'ά' => 'a',
+		'ἀ' => 'a',
+		'ἁ' => 'a',
+		'ἂ' => 'a',
+		'ἃ' => 'a',
+		'ἄ' => 'a',
+		'ἅ' => 'a',
+		'ἆ' => 'a',
+		'ἇ' => 'a',
+		'ᾀ' => 'a',
+		'ᾁ' => 'a',
+		'ᾂ' => 'a',
+		'ᾃ' => 'a',
+		'ᾄ' => 'a',
+		'ᾅ' => 'a',
+		'ᾆ' => 'a',
+		'ᾇ' => 'a',
+		'ὰ' => 'a',
+		'ά' => 'a',
+		'ᾰ' => 'a',
+		'ᾱ' => 'a',
+		'ᾲ' => 'a',
+		'ᾳ' => 'a',
+		'ᾴ' => 'a',
+		'ᾶ' => 'a',
+		'ᾷ' => 'a',
+		'β' => 'b',
+		'γ' => 'g',
+		'δ' => 'd',
+		'ε' => 'e',
+		'έ' => 'e',
+		'ἐ' => 'e',
+		'ἑ' => 'e',
+		'ἒ' => 'e',
+		'ἓ' => 'e',
+		'ἔ' => 'e',
+		'ἕ' => 'e',
+		'ὲ' => 'e',
+		'έ' => 'e',
+		'ζ' => 'z',
+		'η' => 'i',
+		'ή' => 'i',
+		'ἠ' => 'i',
+		'ἡ' => 'i',
+		'ἢ' => 'i',
+		'ἣ' => 'i',
+		'ἤ' => 'i',
+		'ἥ' => 'i',
+		'ἦ' => 'i',
+		'ἧ' => 'i',
+		'ᾐ' => 'i',
+		'ᾑ' => 'i',
+		'ᾒ' => 'i',
+		'ᾓ' => 'i',
+		'ᾔ' => 'i',
+		'ᾕ' => 'i',
+		'ᾖ' => 'i',
+		'ᾗ' => 'i',
+		'ὴ' => 'i',
+		'ή' => 'i',
+		'ῂ' => 'i',
+		'ῃ' => 'i',
+		'ῄ' => 'i',
+		'ῆ' => 'i',
+		'ῇ' => 'i',
+		'θ' => 'th',
+		'ι' => 'i',
+		'ί' => 'i',
+		'ϊ' => 'i',
+		'ΐ' => 'i',
+		'ἰ' => 'i',
+		'ἱ' => 'i',
+		'ἲ' => 'i',
+		'ἳ' => 'i',
+		'ἴ' => 'i',
+		'ἵ' => 'i',
+		'ἶ' => 'i',
+		'ἷ' => 'i',
+		'ὶ' => 'i',
+		'ί' => 'i',
+		'ῐ' => 'i',
+		'ῑ' => 'i',
+		'ῒ' => 'i',
+		'ΐ' => 'i',
+		'ῖ' => 'i',
+		'ῗ' => 'i',
+		'κ' => 'k',
+		'λ' => 'l',
+		'μ' => 'm',
+		'ν' => 'n',
+		'ξ' => 'ks',
+		'ο' => 'o',
+		'ό' => 'o',
+		'ὀ' => 'o',
+		'ὁ' => 'o',
+		'ὂ' => 'o',
+		'ὃ' => 'o',
+		'ὄ' => 'o',
+		'ὅ' => 'o',
+		'ὸ' => 'o',
+		'ό' => 'o',
+		'π' => 'p',
+		'ρ' => 'r',
+		'ῤ' => 'r',
+		'ῥ' => 'r',
+		'σ' => 's',
+		'ς' => 's',
+		'τ' => 't',
+		'υ' => 'y',
+		'ύ' => 'y',
+		'ϋ' => 'y',
+		'ΰ' => 'y',
+		'ὐ' => 'y',
+		'ὑ' => 'y',
+		'ὒ' => 'y',
+		'ὓ' => 'y',
+		'ὔ' => 'y',
+		'ὕ' => 'y',
+		'ὖ' => 'y',
+		'ὗ' => 'y',
+		'ὺ' => 'y',
+		'ύ' => 'y',
+		'ῠ' => 'y',
+		'ῡ' => 'y',
+		'ῢ' => 'y',
+		'ΰ' => 'y',
+		'ῦ' => 'y',
+		'ῧ' => 'y',
+		'φ' => 'f',
+		'χ' => 'x',
+		'ψ' => 'ps',
+		'ω' => 'o',
+		'ώ' => 'o',
+		'ὠ' => 'o',
+		'ὡ' => 'o',
+		'ὢ' => 'o',
+		'ὣ' => 'o',
+		'ὤ' => 'o',
+		'ὥ' => 'o',
+		'ὦ' => 'o',
+		'ὧ' => 'o',
+		'ᾠ' => 'o',
+		'ᾡ' => 'o',
+		'ᾢ' => 'o',
+		'ᾣ' => 'o',
+		'ᾤ' => 'o',
+		'ᾥ' => 'o',
+		'ᾦ' => 'o',
+		'ᾧ' => 'o',
+		'ὼ' => 'o',
+		'ώ' => 'o',
+		'ῲ' => 'o',
+		'ῳ' => 'o',
+		'ῴ' => 'o',
+		'ῶ' => 'o',
+		'ῷ' => 'o',
+		'¨' => '',
+		'΅' => '',
+		'᾿' => '',
+		'῾' => '',
+		'῍' => '',
+		'῝' => '',
+		'῎' => '',
+		'῞' => '',
+		'῏' => '',
+		'῟' => '',
+		'῀' => '',
+		'῁' => '',
+		'΄' => '',
+		'΅' => '',
+		'`' => '',
+		'῭' => '',
+		'ͺ' => '',
+		'᾽' => '',
+		'А' => 'A',
+		'Б' => 'B',
+		'В' => 'V',
+		'Г' => 'G',
+		'Д' => 'D',
+		'Е' => 'E',
+		'Ё' => 'E',
+		'Ж' => 'ZH',
+		'З' => 'Z',
+		'И' => 'I',
+		'Й' => 'I',
+		'К' => 'K',
+		'Л' => 'L',
+		'М' => 'M',
+		'Н' => 'N',
+		'О' => 'O',
+		'П' => 'P',
+		'Р' => 'R',
+		'С' => 'S',
+		'Т' => 'T',
+		'У' => 'U',
+		'Ф' => 'F',
+		'Х' => 'KH',
+		'Ц' => 'TS',
+		'Ч' => 'CH',
+		'Ш' => 'SH',
+		'Щ' => 'SHCH',
+		'Ы' => 'Y',
+		'Э' => 'E',
+		'Ю' => 'YU',
+		'Я' => 'YA',
+		'а' => 'A',
+		'б' => 'B',
+		'в' => 'V',
+		'г' => 'G',
+		'д' => 'D',
+		'е' => 'E',
+		'ё' => 'E',
+		'ж' => 'ZH',
+		'з' => 'Z',
+		'и' => 'I',
+		'й' => 'I',
+		'к' => 'K',
+		'л' => 'L',
+		'м' => 'M',
+		'н' => 'N',
+		'о' => 'O',
+		'п' => 'P',
+		'р' => 'R',
+		'с' => 'S',
+		'т' => 'T',
+		'у' => 'U',
+		'ф' => 'F',
+		'х' => 'KH',
+		'ц' => 'TS',
+		'ч' => 'CH',
+		'ш' => 'SH',
+		'щ' => 'SHCH',
+		'ы' => 'Y',
+		'э' => 'E',
+		'ю' => 'YU',
+		'я' => 'YA',
+		'Ъ' => '',
+		'ъ' => '',
+		'Ь' => '',
+		'ь' => '',
+		'ð' => 'd',
+		'Ð' => 'D',
+		'þ' => 'th',
+		'Þ' => 'TH',
+	);
 	
 	$chaine = strtr($chaine, $transliteration);
 	$chaine = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $chaine);
@@ -1838,12 +2401,12 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $ga
 	{
 		foreach ($tableauGalerie as $image)
 		{
-			$id = idImage($racine, $image);
+			$id = idImage($image);
 			$titreImage = titreImage($image);
 			$title = sprintf(T_("%1\$s – Galerie %2\$s"), $titreImage, $idGalerie);
 			$cheminImage = "$racine/site/fichiers/galeries/$idGalerieDossier/" . $image['intermediaireNom'];
 			$urlImage = "$urlRacine/site/fichiers/galeries/" . rawurlencode($idGalerieDossier) . '/' . rawurlencode($image['intermediaireNom']);
-			$urlGalerieImage = superRawurlencode(variableGet(2, $urlGalerie, 'image', filtreChaine($racine, $id)));
+			$urlGalerieImage = superRawurlencode(variableGet(2, $urlGalerie, 'image', filtreChaine($id)));
 			
 			if (!empty($image['intermediaireLargeur']))
 			{
@@ -2123,7 +2686,7 @@ function gdEstInstallee()
 /*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
-function htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
+function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
 {
 	$nomCategorie = $categorie;
 	
@@ -2139,7 +2702,7 @@ function htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNo
 	$htmlCategorie = '';
 	$htmlCategorie .= '<li>';
 	
-	$categories[$categorie]['url'] = urlCat($racine, $categories[$categorie], $categorie);
+	$categories[$categorie]['url'] = urlCat($categories[$categorie], $categorie);
 	
 	$htmlCategorie .= '<a href="' . $urlRacine . '/' . superRawurlencode($categories[$categorie]['url']) . '">' . $nomCategorie . '</a>';
 	
@@ -2156,7 +2719,7 @@ function htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNo
 		
 		foreach ($categoriesEnfants as $enfant)
 		{
-			$htmlCategorie .= htmlCategorie($racine, $urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
+			$htmlCategorie .= htmlCategorie($urlRacine, $categories, $enfant, $afficherNombreArticlesCategorie);
 		}
 		
 		$htmlCategorie .= "</ul>\n";
@@ -2170,13 +2733,13 @@ function htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNo
 /*
 Retourne l'`id` réel d'une catégorie à partir de l'`id` filtré. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
 */
-function idCategorie($racine, $categories, $idCategorieFiltre)
+function idCategorie($categories, $idCategorieFiltre)
 {
 	$idReel = '';
 	
 	foreach($categories as $idCategorie => $infosCategorie)
 	{
-		if ($idCategorieFiltre == filtreChaine($racine, $idCategorie))
+		if ($idCategorieFiltre == filtreChaine($idCategorie))
 		{
 			$idReel = $idCategorie;
 			break;
@@ -2189,13 +2752,13 @@ function idCategorie($racine, $categories, $idCategorieFiltre)
 /*
 Retourne l'`id` réel d'une galerie à partir de l'`id` filtré. Si aucun `id` n'a été trouvé, retourne une chaîne vide.
 */
-function idGalerie($racine, $galeries, $idGalerieFiltre)
+function idGalerie($galeries, $idGalerieFiltre)
 {
 	$idReel = '';
 	
 	foreach($galeries as $idGalerie => $infosGalerie)
 	{
-		if ($idGalerieFiltre == filtreChaine($racine, $idGalerie))
+		if ($idGalerieFiltre == filtreChaine($idGalerie))
 		{
 			$idReel = $idGalerie;
 			break;
@@ -2219,7 +2782,7 @@ function idGalerieDossier($racine, $idGalerie)
 	}
 	else
 	{
-		$dossier = filtreChaine($racine, $idGalerie);
+		$dossier = filtreChaine($idGalerie);
 	}
 	
 	return $dossier;
@@ -2228,7 +2791,7 @@ function idGalerieDossier($racine, $idGalerie)
 /*
 Retourne l'`id` d'une image d'une galerie.
 */
-function idImage($racine, $image)
+function idImage($image)
 {
 	if (!empty($image['id']))
 	{
@@ -2236,11 +2799,11 @@ function idImage($racine, $image)
 	}
 	elseif (!empty($image['titre']))
 	{
-		return filtreChaine($racine, $image['titre']);
+		return filtreChaine($image['titre']);
 	}
 	else
 	{
-		return filtreChaine($racine, $image['intermediaireNom']);
+		return filtreChaine($image['intermediaireNom']);
 	}
 }
 
@@ -2617,8 +3180,8 @@ function image(
 		}
 		
 		$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-		$id = idImage($racine, $infosImage);
-		$hrefPageIndividuelleImage = variableGet(1, url(), 'image', filtreChaine($racine, $id)) . $ancre;
+		$id = idImage($infosImage);
+		$hrefPageIndividuelleImage = variableGet(1, url(), 'image', filtreChaine($id)) . $ancre;
 		$hrefPageIndividuelleImage = variableGet(0, $hrefPageIndividuelleImage, 'action');
 		
 		if ($estAccueil && $galerieAccueilJavascript)
@@ -4102,7 +4665,7 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $af
 	{
 		if (empty($categorieInfos['parent']) && isset($categorieInfos['langue']) && $categorieInfos['langue'] == $langue)
 		{
-			$menuCategoriesAutomatise .= htmlCategorie($racine, $urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
+			$menuCategoriesAutomatise .= htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie);
 		}
 	}
 	
@@ -4959,7 +5522,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				{
 					if ($ajouterLienPlus && !$lienDesactive)
 					{
-						$categories[$id]['url'] = urlCat($racine, $categories[$id], $id);
+						$categories[$id]['url'] = urlCat($categories[$id], $id);
 						$lien = $urlRacine . '/' . $categories[$id]['url'];
 						$codeLien = '<p class="publicationsRecentesLien"><a href="' . $lien . '">' . T_("Voir plus de titres") . "</a></p>\n";
 					}
@@ -5034,7 +5597,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
 					}
 					
-					$lienVignette = variableGet(2, $urlGalerie, 'image', filtreChaine($racine, idImage($racine, $image)));
+					$lienVignette = variableGet(2, $urlGalerie, 'image', filtreChaine(idImage($image)));
 					$vignettesImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idDossier) . '/' . $vignetteNom . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
 					$vignettesCode = '<li>';
 					
@@ -5665,7 +6228,7 @@ Génère une table des matières pour le code HTML fourni, et retourne ce dernie
 
 Inspiré de <http://stackoverflow.com/a/4912737/643933>.
 */
-function tableDesMatieres($racine, $codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, $tDmNiveauDepart, $tDmNiveauArret)
+function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, $tDmNiveauDepart, $tDmNiveauArret)
 {
 	$dom = str_get_html($codeHtml);
 	$parent = $dom->find($parent, 0);
@@ -5706,7 +6269,7 @@ function tableDesMatieres($racine, $codeHtml, $parent, $tDmBaliseTable, $tDmBali
 		}
 		else
 		{
-			$idH = filtreChaine($racine, $contenuH);
+			$idH = filtreChaine($contenuH);
 			$h->id = $idH;
 		}
 		
@@ -5948,7 +6511,7 @@ function urlAvecIndex($url)
 /*
 Retourne l'URL relative d'une catégorie.
 */
-function urlCat($racine, $categorie, $idCategorie)
+function urlCat($categorie, $idCategorie)
 {
 	if (!empty($categorie['url']))
 	{
@@ -5959,7 +6522,7 @@ function urlCat($racine, $categorie, $idCategorie)
 	}
 	else
 	{
-		$categorie['url'] = 'categorie.php?id=' . filtreChaine($racine, $idCategorie);
+		$categorie['url'] = 'categorie.php?id=' . filtreChaine($idCategorie);
 		
 		if (estCatSpeciale($idCategorie) && !empty($categorie['langue']))
 		{
@@ -6004,7 +6567,7 @@ function urlGalerie($action, $racine, $urlRacine, $info, $langue)
 		}
 		else
 		{
-			$urlGalerie = 'galerie.php?id=' . filtreChaine($racine, $info) . "&amp;langue=$langue";
+			$urlGalerie = 'galerie.php?id=' . filtreChaine($info) . "&amp;langue=$langue";
 		}
 	}
 	elseif ($action == 1)

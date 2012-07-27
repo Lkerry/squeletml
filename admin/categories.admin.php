@@ -376,7 +376,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$urlCat = 'categorie.php?id=' . filtreChaine($racine, $cat);
+						$urlCat = 'categorie.php?id=' . filtreChaine($cat);
 						
 						if (estCatSpeciale($cat))
 						{
@@ -508,7 +508,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$urlCat = 'categorie.php?id=' . filtreChaine($racine, $c);
+					$urlCat = 'categorie.php?id=' . filtreChaine($c);
 					
 					if (estCatSpeciale($c))
 					{

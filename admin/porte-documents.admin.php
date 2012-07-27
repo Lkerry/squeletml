@@ -895,7 +895,7 @@ if (isset($_POST['porteDocumentsCreation']))
 				$casse = 'min';
 			}
 			
-			$fichierAcreerNom = filtreChaine($racine, $fichierAcreerNom, $casse);
+			$fichierAcreerNom = filtreChaine($fichierAcreerNom, $casse);
 			
 			if ($fichierAcreerNom != $fichierAcreerAncienNom)
 			{
@@ -1302,7 +1302,7 @@ if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimeP
 				$casse = 'min';
 			}
 			
-			$nomFichier = filtreChaine($racine, $nomFichier, $casse);
+			$nomFichier = filtreChaine($nomFichier, $casse);
 			
 			if ($nomFichier != $ancienNomFichier)
 			{

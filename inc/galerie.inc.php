@@ -12,7 +12,7 @@ $rssGalerie = rssGalerieActif($racine, $idGalerie);
 // URL.
 if ($pageGlobaleGalerie)
 {
-	$urlGalerie = "$urlSansGet?id=" . filtreChaine($racine, $idGalerie) . "&amp;langue=$langue";
+	$urlGalerie = "$urlSansGet?id=" . filtreChaine($idGalerie) . "&amp;langue=$langue";
 }
 else
 {
@@ -74,9 +74,9 @@ if (!empty($idGalerie) && isset($_GET['image']))
 	foreach($tableauGalerie as $image)
 	{
 		// On récupère l'`id` de chaque image.
-		$id = idImage($racine, $image);
+		$id = idImage($image);
 		
-		if (filtreChaine($racine, $id) == sansEchappement($_GET['image']))
+		if (filtreChaine($id) == sansEchappement($_GET['image']))
 		{
 			// A: l'image existe.
 			
@@ -577,7 +577,7 @@ elseif (!empty($idGalerie))
 			}
 			
 			$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-			$hrefSansJavascript = variableGet(2, $urlGalerie, 'image', filtreChaine($racine, titreImage($tableauGalerie[$indicePremiereImage]))) . $ancre;
+			$hrefSansJavascript = variableGet(2, $urlGalerie, 'image', filtreChaine(titreImage($tableauGalerie[$indicePremiereImage]))) . $ancre;
 			$lienSansJavascript .= "<a href=\"$hrefSansJavascript\">" . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
 			
 			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')

@@ -50,7 +50,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			foreach ($galeries as $idGalerie => $infosGalerie)
 			{
-				if ($id == filtreChaine($racine, $idGalerie))
+				if ($id == filtreChaine($idGalerie))
 				{
 					$id = $idGalerie;
 					$idDossier = $infosGalerie['dossier'];
@@ -111,7 +111,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if ($cheminConfigGalerie)
 				{
-					$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $idGalerie) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
+					$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($idGalerie) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
 					$fichierDeConfiguration .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idLien . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idLien . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 				}
 				else
@@ -272,9 +272,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Vous avez choisi de créer une nouvelle galerie dans le dossier %1\$s, mais ce dernier existe déjà."), '<code>' . $racine . '/site/fichiers/galeries/' . $idNouvelleGalerieDossier . '</code>') . "</li>\n";
 			}
-			elseif ($id == 'nouvelleGalerie' && empty($idNouvelleGalerieDossier) && file_exists($racine . '/site/fichiers/galeries/' . filtreChaine($racine, $idNouvelleGalerie)))
+			elseif ($id == 'nouvelleGalerie' && empty($idNouvelleGalerieDossier) && file_exists($racine . '/site/fichiers/galeries/' . filtreChaine($idNouvelleGalerie)))
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Vous avez choisi de créer une nouvelle galerie, mais le dossier %1\$s existe déjà."), '<code>' . $racine . '/site/fichiers/galeries/' . filtreChaine($racine, $idNouvelleGalerie) . '</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Vous avez choisi de créer une nouvelle galerie, mais le dossier %1\$s existe déjà."), '<code>' . $racine . '/site/fichiers/galeries/' . filtreChaine($idNouvelleGalerie) . '</code>') . "</li>\n";
 			}
 			elseif (empty($_FILES['fichier']['name']))
 			{
@@ -310,7 +310,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$idDossier = filtreChaine($racine, $id);
+						$idDossier = filtreChaine($id);
 					}
 				}
 				
@@ -357,7 +357,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 							if ($filtrerNom)
 							{
-								$nomFiltreArchive = filtreChaine($racine, $nomArchive, $casse);
+								$nomFiltreArchive = filtreChaine($nomArchive, $casse);
 							}
 						
 							$messagesScriptFiltre = '';
@@ -417,7 +417,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								
 									if ($filtrerNom)
 									{
-										$nomFiltreFichier = filtreChaine($racine, $nomFichier, $casse);
+										$nomFiltreFichier = filtreChaine($nomFichier, $casse);
 									}
 								
 									$cheminFichier = $cheminGaleries . '/' . $idDossier . '/' . $nomFichier;
@@ -534,7 +534,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								
 									if ($filtrerNom)
 									{
-										$nomFiltreFichier = filtreChaine($racine, $nomFichier, $casse);
+										$nomFiltreFichier = filtreChaine($nomFichier, $casse);
 									}
 								
 									if ($nomFiltreFichier != $nomFichier)
@@ -1108,7 +1108,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript = '';
 			$messagesScript .= '<p>' . T_("<strong>Important:</strong> ne pas oublier de cliquer sur le bouton «Mettre à jour» pour sauvegarder les modifications.") . "</p>\n";
 			
-			$messagesScript .= '<p><a href="galeries.admin.php?action=configGraphiqueSimplifiee&amp;id=' . filtreChaine($racine, $id) . '#messages">' . T_("Utiliser la version simplifiée du formulaire de mise à jour graphique.") . "</a></p>\n";
+			$messagesScript .= '<p><a href="galeries.admin.php?action=configGraphiqueSimplifiee&amp;id=' . filtreChaine($id) . '#messages">' . T_("Utiliser la version simplifiée du formulaire de mise à jour graphique.") . "</a></p>\n";
 			
 			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
@@ -1362,7 +1362,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript = '';
 			$messagesScript .= '<p>' . T_("<strong>Important:</strong> ne pas oublier de cliquer sur le bouton «Mettre à jour» pour sauvegarder les modifications.") . "</p>\n";
 			
-			$messagesScript .= '<p><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $id) . '#messages">' . T_("Utiliser la version complète du formulaire de mise à jour graphique.") . "</a></p>\n";
+			$messagesScript .= '<p><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($id) . '#messages">' . T_("Utiliser la version complète du formulaire de mise à jour graphique.") . "</a></p>\n";
 			
 			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 			$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
@@ -1736,7 +1736,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie:");
 			echo "<ul>\n";
-			echo '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($racine, $id) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
+			echo '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($id) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
 			echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/fichiers/galeries/' . $idDossierEncode . '/' . superBasename($cheminConfigGalerie) . '&amp;dossierCourant=../site/fichiers/galeries/' . $idDossierEncode . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 			echo "</ul></li>\n";
 		
@@ -1784,7 +1784,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$page = 'galerie.php?id=' . filtreChaine($racine, $id) . '&amp;langue={LANGUE}' ;
+				$page = 'galerie.php?id=' . filtreChaine($id) . '&amp;langue={LANGUE}' ;
 				$cheminPage = '..';
 			}
 			

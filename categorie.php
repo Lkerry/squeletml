@@ -23,7 +23,7 @@ if (!empty($_GET['id']))
 	
 	if (!empty($categories))
 	{
-		$idReel = idCategorie($racine, $categories, $idCategorie);
+		$idReel = idCategorie($categories, $idCategorie);
 		
 		if (!empty($idReel))
 		{
@@ -57,8 +57,8 @@ if (
 	!isset($categories[$idCategorie]) ||
 	(empty($getLangue) && estCatSpeciale($idCategorie)) ||
 	(!empty($getLangue) && !estCatSpeciale($idCategorie)) ||
-	(!empty($categories[$idCategorie]['url']) && strpos($categories[$idCategorie]['url'], 'categorie.php?id=' . filtreChaine($racine, $idCategorie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
-	($getId != filtreChaine($racine, $getId)) // Idem.
+	(!empty($categories[$idCategorie]['url']) && strpos($categories[$idCategorie]['url'], 'categorie.php?id=' . filtreChaine($idCategorie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
+	($getId != filtreChaine($getId)) // Idem.
 )
 {
 	$erreur404 = TRUE;

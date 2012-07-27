@@ -67,7 +67,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 	
 	foreach ($galeries as $idGalerie => $infosGalerie)
 	{
-		if ($getId == filtreChaine($racine, $idGalerie))
+		if ($getId == filtreChaine($idGalerie))
 		{
 			$id = $idGalerie;
 			
@@ -140,7 +140,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		
 		foreach ($categories as $idCategorie => $infosCategorie)
 		{
-			if ($getId == filtreChaine($racine, $idCategorie))
+			if ($getId == filtreChaine($idCategorie))
 			{
 				$id = $idCategorie;
 				

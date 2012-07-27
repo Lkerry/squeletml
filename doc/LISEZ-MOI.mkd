@@ -204,5 +204,5 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**Unsharp Mask for PHP**](http://vikjavev.no/computing/ump.php?id=306): permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL.
 
-- La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
+- La translitération effectuée par la fonction `filtreChaine()` est basée sur le contenu du fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
 

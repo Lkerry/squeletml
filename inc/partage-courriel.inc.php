@@ -42,9 +42,9 @@ if (!$erreur404 && !$estPageDerreur)
 		
 		foreach($tableauGalerie as $image)
 		{
-			$id = idImage($racine, $image);
+			$id = idImage($image);
 			
-			if (filtreChaine($racine, $id) == sansEchappement($_GET['image']))
+			if (filtreChaine($id) == sansEchappement($_GET['image']))
 			{
 				$partageCourrielActif = TRUE;
 				
