@@ -365,11 +365,12 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 	margin-right: 10px;
 }
 
-#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
+#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueRenommageImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
 	margin: 0px;
 }
 
 #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
+	margin-top: 10px;
 	text-align: right;
 }
 

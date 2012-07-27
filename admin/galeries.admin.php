@@ -1202,6 +1202,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$corpsGalerie .= '<p class="configGraphiqueSuppressionImage"><input id="configGraphiqueInputSupprimer-' . $i . '" class="long" type="checkbox" name="configGraphiqueInputSupprimer-' . $i . '" value="supprimer" /> <label for="configGraphiqueInputSupprimer-' . $i . '">' . T_("Supprimer") . "</label></p>\n";
 					
+					$corpsGalerie .= '<p class="configGraphiqueRenommageImage"><label for="configGraphiqueInputRenommer-' . $i . '">' . T_("Renommer:") . '</label> <input id="configGraphiqueInputRenommer-' . $i . '" class="tresLong" type="text" name="configGraphiqueInputRenommer-' . $i . '" value="" />' . "</p>\n";
+					
 					$corpsGalerie .= '<p class="configGraphiqueLienMaj"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></p>\n";
 					$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
 				}
@@ -1293,6 +1295,84 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
+						if (!empty($_POST['configGraphiqueInputRenommer-' . $i]))
+						{
+							$imagesArenommer = array ();
+							$ancienNom = $intermediaireNom;
+							$ancienChemin = $cheminGalerie . '/' . $ancienNom;
+							$nouveauNom = superBasename(securiseTexte($_POST['configGraphiqueInputRenommer-' . $i]));
+							$nouveauChemin = $cheminGalerie . '/' . $nouveauNom;
+							
+							if (file_exists($ancienChemin))
+							{
+								$imagesArenommer[$ancienChemin] = $nouveauChemin;
+							}
+							
+							if (empty($_POST['parametres'][$i]['originalNom']))
+							{
+								$ancienCheminOriginal = $cheminGalerie . '/' . nomSuffixe($ancienNom, '-original');
+								
+								if (file_exists($ancienCheminOriginal))
+								{
+									$nouveauCheminOriginal = $cheminGalerie . '/' . nomSuffixe($nouveauNom, '-original');
+									$imagesArenommer[$ancienCheminOriginal] = $nouveauCheminOriginal;
+								}
+							}
+							
+							if (empty($_POST['parametres'][$i]['vignetteNom']))
+							{
+								$ancienCheminVignette = $cheminGalerie . '/' . nomSuffixe($ancienNom, '-vignette');
+								
+								if (file_exists($ancienCheminVignette))
+								{
+									$nouveauCheminVignette = $cheminGalerie . '/' . nomSuffixe($nouveauNom, '-vignette');
+									$imagesArenommer[$ancienCheminVignette] = $nouveauCheminVignette;
+								}
+								
+								$ancienCheminTatouagePrecedent = $cheminGalerie . '/tatouage/' . nomSuffixe($ancienNom, '-vignette-precedent');
+								
+								if (file_exists($ancienCheminTatouagePrecedent))
+								{
+									$nouveauCheminTatouagePrecedent = $cheminGalerie . '/tatouage/' . nomSuffixe($nouveauNom, '-vignette-precedent');
+									$imagesArenommer[$ancienCheminTatouagePrecedent] = $nouveauCheminTatouagePrecedent;
+								}
+								
+								$ancienCheminTatouageSuivant = $cheminGalerie . '/tatouage/' . nomSuffixe($ancienNom, '-vignette-suivant');
+								
+								if (file_exists($ancienCheminTatouageSuivant))
+								{
+									$nouveauCheminTatouageSuivant = $cheminGalerie . '/tatouage/' . nomSuffixe($nouveauNom, '-vignette-suivant');
+									$imagesArenommer[$ancienCheminTatouageSuivant] = $nouveauCheminTatouageSuivant;
+								}
+							}
+							
+							$renommageActif = TRUE;
+							
+							foreach ($imagesArenommer as $ancienCheminImage => $nouveauCheminImage)
+							{
+								if (file_exists($nouveauCheminImage))
+								{
+									$renommageActif = FALSE;
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Renommage de %2\$s impossible."), "<code>$nouveauCheminImage</code>", "<code>$ancienCheminImage</code>") . "</li>\n";
+									$messagesScript .= '<li class="erreur">' . sprintf(T_("La demande de renommage de %1\$s a été annulée."), "<code>$intermediaireNom</code>") . "</li>\n";
+									break;
+								}
+							}
+							
+							if ($renommageActif)
+							{
+								foreach ($imagesArenommer as $ancienCheminImage => $nouveauCheminImage)
+								{
+									$messagesScript .= adminRename($ancienCheminImage, $nouveauCheminImage);
+								}
+								
+								if (file_exists($nouveauChemin))
+								{
+									$intermediaireNom = $nouveauNom;
+								}
+							}
+						}
+						
 						$contenuFichier .= "[$intermediaireNom]\n";
 						$contenuFichierAafficher .= "[$intermediaireNom]\n";
 						
