@@ -416,14 +416,6 @@ p#porteDocumentsLienHaut {
 	text-align: right;
 }
 
-#redimensionnable {
-	width: 95%;
-	height: 500px;
-	border: 1px solid black;
-	padding: 3px;
-	background-color: white;
-}
-
 a.porteDocumentsFichier {
 	text-decoration: none;
 }
@@ -431,11 +423,6 @@ a.porteDocumentsFichier {
 pre.consulterModifications {
 	width: 95%;
 	height: 500px;
-}
-
-.editeur {
-	padding-bottom: 10px;
-	overflow-y: scroll;
 }
 
 .porteDocumentsListe {

@@ -286,13 +286,9 @@ $adminTypesMimePermis['qt|mov']                 = 'video/quicktime';
 
 /* ____________________ Actions sur les fichiers. ____________________ */
 
-// Aide lors de l'édition.
+// Coloration syntaxique lors de l'édition.
 /*
-- Il y a deux possibilités:
-  - activer l'ajout d'une barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor), qui permet également de visualiser un aperçu du code HTML.
-  - activer la coloration en direct du **code** à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie dans le `textarea`. La coloration s'applique alors au code PHP, HTML, CSS et Javascript (séparément ou entremêlés dans le même fichier);
-- Pour désactiver l'aide, laisser vide, c'est-à-dire:
-  $adminAideEdition = '';
+Activer la coloration en direct du **code** à l'aide de [CodeMirror](http://codemirror.net/) durant la saisie dans le `textarea`. La coloration s'applique alors au code PHP, HTML, CSS, Javascript, XML, Markdown et INI.
 */
-$adminAideEdition = 'CodeMirror'; // BUEditor|CodeMirror
+$adminColorationSyntaxique = TRUE; // TRUE|FALSE
 ?>

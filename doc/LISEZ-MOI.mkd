@@ -88,7 +88,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par FTP:
 
-  - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor) ou coloration syntaxique du code en direct à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie), ajout, téléchargement...
+  - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (coloration syntaxique du code en direct à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie), ajout, téléchargement...
   
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration; mise en maintenance du site; suppression du cache; lancement du cron; sauvegarde du site.
   
@@ -172,11 +172,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 #### Code
 
-- [**BUEditor**](http://ufku.com/drupal/bueditor): sous licence GPL.
-
-- [**CodeMirror**](http://marijn.haverbeke.nl/codemirror/): sous licence BSD.
-
-- [**Drag'nDrop & DHTML Library**](http://www.walterzorn.com/dragdrop/dragdrop_e.htm): sous licence LGPL version 2.1 ou toute version ultérieure.
+- [**CodeMirror**](http://codemirror.net/): sous licence BSD.
 
 - [**\_filter\_htmlcorrector**](http://api.drupal.org/api/function/_filter_htmlcorrector/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure.
 
@@ -209,6 +205,4 @@ avec ce programme; si ce n'est pas le cas, consultez
 - [**Unsharp Mask for PHP**](http://vikjavev.no/computing/ump.php?id=306): permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL.
 
 - La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
-
-- Les liens de marque-pages et de réseaux sociaux ont été en partie récupérés dans le [module Service links pour Drupal](http://drupal.org/project/service_links), sous licence GPL.
 

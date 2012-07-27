@@ -637,34 +637,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'editer')
 			$contenuFichier = '';
 		}
 
-		if ($adminAideEdition != 'BUEditor' && $adminAideEdition != 'CodeMirror')
-		{
-			$styleTextarea = 'style="width: 93%;"';
-		}
-		else
-		{
-			$styleTextarea = '';
-		}
-		
-		if ($adminAideEdition == 'BUEditor')
-		{
-			$classTextarea = 'class="editor-textarea"';
-		}
-		else
-		{
-			$classTextarea = '';
-		}
-		
-		if (!adminEstIe() && $adminAideEdition != 'BUEditor')
-		{
-			$imageRedimensionner = '<img src="fichiers/redimensionner.png" alt="' . T_("Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le champ de saisie.") . '" title="' . T_("Appuyez sur Maj, cliquez sur l'image et glissez-là pour redimensionner le champ de saisie.") . '" width="41" height="20" />';
-		}
-		else
-		{
-			$imageRedimensionner = '';
-		}
-		
-		echo '<div id="redimensionnable"><textarea id="code" ' . $classTextarea . ' cols="80" rows="25" ' . $styleTextarea . ' name="porteDocumentsContenuFichier">' . $contenuFichier . '</textarea>' . $imageRedimensionner . "</div>\n";
+		echo '<textarea id="code" cols="80" rows="25" name="porteDocumentsContenuFichier">' . $contenuFichier . "</textarea>\n";
 	
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . $getValeur . '" />' . "\n";
 		
