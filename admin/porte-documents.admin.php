@@ -641,7 +641,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'editer')
 	
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . $getValeur . '" />' . "\n";
 		
-		echo '<p><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
+		echo '<p id="porteDocumentsBoutonSauvegarder"><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
 		
 		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 		echo "<div>\n";
@@ -654,6 +654,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'editer')
 			echo '<input type="hidden" name="porteDocumentsDossierCourant" value="' . $dossierCourant . '" />' . "\n";
 		}
 		
+		echo "<div class=\"sep\"></div>\n";
 		echo "</div></form>\n";
 		echo "</div></form>\n";
 	}

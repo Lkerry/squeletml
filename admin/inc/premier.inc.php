@@ -168,7 +168,7 @@ if ($adminColorationSyntaxique && isset($_GET['action']) && $_GET['action'] = 'e
 	{
 		$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#js#$urlRacineAdmin/js/CodeMirror/lib/codemirror.js";
 		$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#css#$urlRacineAdmin/js/CodeMirror/lib/codemirror.css";
-		$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#css#$urlRacineAdmin/js/CodeMirror/theme/rubyblue.css";
+		$adminBalisesLinkScript[] = "$urlRacineAdmin/porte-documents.admin.php*#css#$urlRacineAdmin/js/CodeMirror/theme/gedit.css";
 		
 		foreach ($modesAinclure as $modeAinclure)
 		{
@@ -177,7 +177,7 @@ if ($adminColorationSyntaxique && isset($_GET['action']) && $_GET['action'] = 'e
 		
 		$jsDirect = "var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
 			mode: '$mode',
-			theme: 'rubyblue',
+			theme: 'gedit',
 			lineNumbers: true,
 			indentUnit: 4,
 			smartIndent: false,

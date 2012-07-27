@@ -172,7 +172,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 #### Code
 
-- [**CodeMirror**](http://codemirror.net/): sous licence BSD.
+- [**CodeMirror**](http://codemirror.net/): sous licence BSD. J'ai créé un jeu de couleurs, nommé *gedit*, distribué sous licence AGPL version 3 ou toute version ultérieure.
 
 - [**\_filter\_htmlcorrector**](http://api.drupal.org/api/function/_filter_htmlcorrector/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure.
 
