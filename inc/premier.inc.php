@@ -92,19 +92,7 @@ if ($dureeCache && !$desactiverCache)
 	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 	
 	// S'il y a lieu, analyse d'une requête effectuée par le client.
-	
-	$code304 = FALSE;
-	
-	if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && @strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == @filemtime($cheminFichierCache))
-	{
-		$code304 = TRUE;
-	}
-	elseif (isset($_SERVER['HTTP_IF_NONE_MATCH']) && str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == md5(@filesize($cheminFichierCache) . @filemtime($cheminFichierCache)))
-	{
-		$code304 = TRUE;
-	}
-	
-	if ($code304)
+	if (code304($cheminFichierCache))
 	{
 		header('HTTP/1.1 304 Not Modified');
 		

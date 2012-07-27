@@ -28,6 +28,7 @@ include_once $racine . '/inc/node_teaser/unicode.inc.php';
 if ($dureeCache)
 {
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
+	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 }
 
 $enTetesHttp = 'header("Content-Type: text/xml; charset=' . $charset . '");';
@@ -92,11 +93,27 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 		{
 			// A: le flux RSS est activé.
 			
-			eval($enTetesHttp);
+			// S'il y a lieu, analyse d'une requête effectuée par le client.
+			if (code304($cheminFichierCache))
+			{
+				header('HTTP/1.1 304 Not Modified');
+				
+				exit(0);
+			}
 			
 			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 			if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 			{
+				if (file_exists($cheminFichierCacheEnTete))
+				{
+					$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
+					
+					if (!empty($contenuFichierCacheEnTete))
+					{
+						eval($contenuFichierCacheEnTete);
+					}
+				}
+				
 				@readfile($cheminFichierCache);
 			}
 			else
@@ -114,9 +131,27 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 				if ($dureeCache)
 				{
 					creeDossierCache($racine);
-					@file_put_contents($cheminFichierCache, $rssAafficher);
+					$enregistrerCache = TRUE;
+					
+					if (file_exists($cheminFichierCache))
+					{
+						$codePageCache = @file_get_contents($cheminFichierCache);
+						
+						if ($codePageCache !== FALSE && md5($codePageCache) == md5($rssAafficher))
+						{
+							$enregistrerCache = FALSE;
+						}
+					}
+					
+					if ($enregistrerCache)
+					{
+						@file_put_contents($cheminFichierCache, $rssAafficher);
+					}
 				}
 				
+				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
+				eval($enTetesHttp);
 				echo $rssAafficher;
 			}
 		}
@@ -162,7 +197,13 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 	{
 		// A: le flux RSS est activé.
 		
-		eval($enTetesHttp);
+		// S'il y a lieu, analyse d'une requête effectuée par le client.
+		if (code304($cheminFichierCache))
+		{
+			header('HTTP/1.1 304 Not Modified');
+			
+			exit(0);
+		}
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
@@ -170,6 +211,16 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		
 		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 		{
+			if (file_exists($cheminFichierCacheEnTete))
+			{
+				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
+				
+				if (!empty($contenuFichierCacheEnTete))
+				{
+					eval($contenuFichierCacheEnTete);
+				}
+			}
+			
 			@readfile($cheminFichierCache);
 		}
 		else
@@ -203,9 +254,27 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				@file_put_contents($cheminFichierCache, $rssAafficher);
+				$enregistrerCache = TRUE;
+				
+				if (file_exists($cheminFichierCache))
+				{
+					$codePageCache = @file_get_contents($cheminFichierCache);
+					
+					if ($codePageCache !== FALSE && md5($codePageCache) == md5($rssAafficher))
+					{
+						$enregistrerCache = FALSE;
+					}
+				}
+				
+				if ($enregistrerCache)
+				{
+					@file_put_contents($cheminFichierCache, $rssAafficher);
+				}
 			}
 			
+			$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+			@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
+			eval($enTetesHttp);
 			echo $rssAafficher;
 		}
 	}
@@ -231,12 +300,28 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 	{
 		// A: le flux RSS global pour les galeries est activé.
 		
-		eval($enTetesHttp);
+		// S'il y a lieu, analyse d'une requête effectuée par le client.
+		if (code304($cheminFichierCache))
+		{
+			header('HTTP/1.1 304 Not Modified');
+			
+			exit(0);
+		}
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
 		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 		{
+			if (file_exists($cheminFichierCacheEnTete))
+			{
+				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
+				
+				if (!empty($contenuFichierCacheEnTete))
+				{
+					eval($contenuFichierCacheEnTete);
+				}
+			}
+			
 			@readfile($cheminFichierCache);
 		}
 		else
@@ -255,9 +340,27 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				@file_put_contents($cheminFichierCache, $rssAafficher);
+				$enregistrerCache = TRUE;
+				
+				if (file_exists($cheminFichierCache))
+				{
+					$codePageCache = @file_get_contents($cheminFichierCache);
+					
+					if ($codePageCache !== FALSE && md5($codePageCache) == md5($rssAafficher))
+					{
+						$enregistrerCache = FALSE;
+					}
+				}
+				
+				if ($enregistrerCache)
+				{
+					@file_put_contents($cheminFichierCache, $rssAafficher);
+				}
 			}
 			
+			$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+			@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
+			eval($enTetesHttp);
 			echo $rssAafficher;
 		}
 	}
@@ -274,12 +377,28 @@ elseif ($getType == 'site' && !empty($getLangue))
 	{
 		// A: le flux RSS global du site est activé.
 		
-		eval($enTetesHttp);
+		// S'il y a lieu, analyse d'une requête effectuée par le client.
+		if (code304($cheminFichierCache))
+		{
+			header('HTTP/1.1 304 Not Modified');
+			
+			exit(0);
+		}
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
 		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 		{
+			if (file_exists($cheminFichierCacheEnTete))
+			{
+				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
+				
+				if (!empty($contenuFichierCacheEnTete))
+				{
+					eval($contenuFichierCacheEnTete);
+				}
+			}
+			
 			@readfile($cheminFichierCache);
 		}
 		else
@@ -319,9 +438,27 @@ elseif ($getType == 'site' && !empty($getLangue))
 			if ($dureeCache)
 			{
 				creeDossierCache($racine);
-				@file_put_contents($cheminFichierCache, $rssAafficher);
+				$enregistrerCache = TRUE;
+				
+				if (file_exists($cheminFichierCache))
+				{
+					$codePageCache = @file_get_contents($cheminFichierCache);
+					
+					if ($codePageCache !== FALSE && md5($codePageCache) == md5($rssAafficher))
+					{
+						$enregistrerCache = FALSE;
+					}
+				}
+				
+				if ($enregistrerCache)
+				{
+					@file_put_contents($cheminFichierCache, $rssAafficher);
+				}
 			}
 			
+			$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+			@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
+			eval($enTetesHttp);
 			echo $rssAafficher;
 		}
 	}

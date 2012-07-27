@@ -1183,6 +1183,25 @@ function classesContenu($differencierLiensVisitesHorsContenu, $classesSupplement
 }
 
 /*
+Retourne TRUE si le code 304 peut être envoyé, sinon retourne FALSE.
+*/
+function code304($cheminFichierCache)
+{
+	$code304 = FALSE;
+	
+	if (isset($_SERVER['HTTP_IF_MODIFIED_SINCE']) && @strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == @filemtime($cheminFichierCache))
+	{
+		$code304 = TRUE;
+	}
+	elseif (isset($_SERVER['HTTP_IF_NONE_MATCH']) && str_replace('"', '', stripslashes($_SERVER['HTTP_IF_NONE_MATCH'])) == md5(@filemtime($cheminFichierCache) . '-' . @filesize($cheminFichierCache)))
+	{
+		$code304 = TRUE;
+	}
+	
+	return $code304;
+}
+
+/*
 Retourne le nom complet d'une langue (ex.: «Français») à partir du code de langue (ex.: «fr»). Si aucun nom n'a été trouvé, retourne le code de langue.
 */
 function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
@@ -1631,6 +1650,30 @@ function doctype($doctype, $langue)
 			return array ('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n", '<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="' . $langue . '" lang="' . $langue . '">' . "\n");
 			break;
 	}
+}
+
+/*
+Retourne les en-têtes relatives au cache.
+*/
+function enTetesCache($cheminFichierCache, $dureeCache)
+{
+	$enTetesCache = 'header("Expires: ' . gmdate("D, d M Y H:i:s \G\M\T", time() + $dureeCache) . '");';
+	$enTetesCache .= 'header("Cache-Control: max-age=' . $dureeCache . '");';
+	
+	$dateFichierCache = @filemtime($cheminFichierCache);
+	$tailleFichierCache = @filesize($cheminFichierCache);
+	
+	if ($dateFichierCache !== FALSE)
+	{
+		$enTetesCache .= 'header("Last-Modified: ' . gmdate("D, d M Y H:i:s \G\M\T", $dateFichierCache) . '");';
+	}
+	
+	if ($dateFichierCache !== FALSE && $tailleFichierCache !== FALSE)
+	{
+		$enTetesCache .= 'header(\'ETag: "' . md5("$dateFichierCache-$tailleFichierCache") . '"\');';
+	}
+	
+	return $enTetesCache;
 }
 
 /*
