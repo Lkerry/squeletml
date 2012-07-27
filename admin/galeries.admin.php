@@ -1693,10 +1693,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 								{
 									$listeFichiers .= date('Y-m-d H:i');
 								}
-							
 								elseif ($parametre == 'exclure')
 								{
-									$listeFichiers .= 'oui';
+									$listeFichiers .= 1;
 								}
 							
 								$listeFichiers .= "\n";

@@ -6225,7 +6225,7 @@ function supprimeInclusionCssParDefaut(&$fichiers)
 }
 
 /*
-Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui`. Par exemple, le fichier `.ini` suivant:
+Transforme un fichier de configuration `.ini` d'une galerie en tableau PHP. Chaque section du fichier `.ini` devient un tableau dans le tableau principal. Le titre d'une section est transformé en paramètre `intermediaireNom`. Si `$exclure` vaut TRUE, ne tient pas compte des sections ayant un paramètre `exclure=oui` ou `exclure=1`. Par exemple, le fichier `.ini` suivant:
 
 	[image1.png]
 	id=1
@@ -6251,7 +6251,7 @@ function tableauGalerie($cheminConfigGalerie, $exclure = FALSE)
 		
 		foreach ($galerieIni as $image => $infos)
 		{
-			if (!$exclure || !(isset($infos['exclure']) && $infos['exclure'] == 'oui'))
+			if (!$exclure || !(isset($infos['exclure']) && ($infos['exclure'] == 1 || strtolower($infos['exclure']) == 'oui')))
 			{
 				$infos['intermediaireNom'] = $image;
 				$tableauGalerie[] = $infos;

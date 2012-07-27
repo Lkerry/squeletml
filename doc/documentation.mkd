@@ -1102,9 +1102,9 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
 
-- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
+- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `1` ou `oui`. Exemple:
 
-		exclure=oui
+		exclure=1
 
 - `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. Exemple:
 
