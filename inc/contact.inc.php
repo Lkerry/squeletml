@@ -25,6 +25,7 @@ if ($partageCourrielActif)
 if (isset($_POST['envoyer']))
 {
 	$desactiverCache = TRUE;
+	$desactiverCachePartiel = TRUE;
 	$nom = securiseTexte($_POST['nom']);
 	$courriel = securiseTexte($_POST['courriel']);
 	$message = securiseTexte($_POST['message']);

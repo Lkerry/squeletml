@@ -53,8 +53,8 @@ Options -Indexes
 #	</FilesMatch>
 #</IfModule>
 
-# Décommenter les lignes ci-dessous pour envoyer automatiquement les en-têtes `Expires` et `Cache-Control` pour les fichiers CSS et Javascript ainsi que les images. Le temps précisé est en secondes. Les en-têtes pour le contenu HTML et XML sont gérées en PHP par Squeletml.
-# Voir <http://httpd.apache.org/docs/current/mod/mod_expires.html> pour plus de détails.
+# Décommenter les lignes ci-dessous pour envoyer automatiquement les en-têtes `Expires` et `Cache-Control` pour les fichiers CSS et Javascript ainsi que les images. Le temps précisé est en secondes. Les en-têtes pour le contenu HTML et XML sont gérées en PHP par Squeletml (à ce sujet, voir la section «Cache» dans la documentation).
+# Voir <http://httpd.apache.org/docs/current/mod/mod_expires.html> pour la syntaxe utilisée.
 #<ifModule mod_expires.c>
 #	ExpiresActive On
 #	ExpiresByType application/javascript A2592000

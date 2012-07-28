@@ -60,9 +60,10 @@ $envoyerRapportCron = TRUE; // TRUE|FALSE
 */
 $activerCreationCompte = FALSE; // TRUE|FALSE
 
-// Expiration du cache.
+// Expiration du cache global.
 /*
-- Temps en secondes avant que le cache HTML et XML n'expire.
+- Permet de mettre en cache tout le contenu d'une page (HTML, ou XML pour les flux RSS).
+- Temps en secondes avant que le cache n'expire.
 - Exemples:
   - `0` équivaut à désactiver le cache;
   - `1800` équivaut à 30 minutes;
@@ -78,8 +79,18 @@ $activerCreationCompte = FALSE; // TRUE|FALSE
   - `31536000` équivaut à 365 jours.
 - Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
 - Le cache pour les autres types de fichiers (ex.: images, Javascript, etc.) est paramétré dans le fichier `.htaccess`.
+- Voir la section «Cache» dans la documentation.
 */
 $dureeCache = 0;
+
+// Expiration du cache partiel.
+/*
+- Permet de mettre en cache seulement le contenu principal d'une page, c'est-à-dire le contenu de `<div id="milieuInterieurContenu">...</div>`.
+- Temps en secondes avant que le cache partiel n'expire.
+- Si le cache global est activé ou si la variable `$desactiverCachePartiel` est déclarée dans une page et qu'elle vaut `TRUE`, le cache partiel sera désactivé même si `$dureeCachePartiel` ne vaut pas `0`.
+- Voir la section «Cache» dans la documentation.
+*/
+$dureeCachePartiel = 0;
 
 /* ____________________ En-tête HTML. ____________________ */
 
@@ -148,7 +159,7 @@ $fusionnerCssJs = FALSE; // TRUE|FALSE
 - Laisser vide pour désactiver l'ajout de version.
 - Exemple de sortie HTML lorsque `$versionParDefautLinkScript['css']` vaut `5497463215`:
   <link rel="stylesheet" type="text/css" href="http://localhost/serveur_local/squeletml/css/squeletml.css?5497463215" media="screen" />
-- Voir la fonction `linkScript()`.
+- Voir la section «Cache» dans la documentation ainsi que la fonction `linkScript()` pour plus de détails.
 */
 $versionParDefautLinkScript['css']     = "";
 $versionParDefautLinkScript['js']      = "";

@@ -847,7 +847,7 @@ function cheminConfigGaleries($racine, $retourneCheminParDefaut = FALSE)
 }
 
 /*
-Retourne le chemin du fichier cache.
+Retourne le chemin d'un fichier cache global.
 */
 function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 {
@@ -876,7 +876,7 @@ function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 }
 
 /*
-Retourne le chemin du fichier cache contenant les informations d'en-tête HTTP.
+Retourne le chemin d'un fichier cache global contenant les informations d'en-tête HTTP.
 */
 function cheminFichierCacheEnTete($cheminFichierCache)
 {
@@ -884,6 +884,18 @@ function cheminFichierCacheEnTete($cheminFichierCache)
 	$dossierFichierCache = dirname($cheminFichierCache);
 	
 	return "$dossierFichierCache/en-tete-$nomFichierCache";
+}
+
+/*
+Retourne le chemin d'un fichier cache partiel.
+*/
+function cheminFichierCachePartiel($racine, $urlRacine, $nomBrut)
+{
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $nomBrut);
+	$nomFichierCache = superBasename($cheminFichierCache);
+	$dossierFichierCache = dirname($cheminFichierCache);
+	
+	return "$dossierFichierCache/partiel-$nomFichierCache";
 }
 
 /*

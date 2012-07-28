@@ -1096,6 +1096,10 @@ if (isset($_POST['porteDocumentsCreation']))
 										$contenu .= '$desactiverCache = TRUE;' . "\n";
 										break;
 										
+									case 'desactiverCachePartiel':
+										$contenu .= '$desactiverCachePartiel = TRUE;' . "\n";
+										break;
+										
 									case 'description':
 										$contenu .= '$description = "' . T_("Description de la page.") . '";' . "\n";
 										break;
@@ -1705,6 +1709,7 @@ echo '<option value="courrielContact">$courrielContact</option>' . "\n";
 echo '<option value="dateCreation">$dateCreation</option>' . "\n";
 echo '<option value="dateRevision">$dateRevision</option>' . "\n";
 echo '<option value="desactiverCache">$desactiverCache</option>' . "\n";
+echo '<option value="desactiverCachePartiel">$desactiverCachePartiel</option>' . "\n";
 echo '<option value="description">$description</option>' . "\n";
 echo '<option value="idCategorie">$idCategorie</option>' . "\n";
 echo '<option value="idGalerie">$idGalerie</option>' . "\n";

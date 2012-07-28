@@ -1,19 +1,25 @@
-							<?php if ($afficherGalerie): ?>
-								<?php echo $galerie; ?>
-							<?php endif; ?>
+						<?php if ($inclureFinMilieuInterieurContenu): ?>
+								<?php if ($afficherGalerie): ?>
+									<?php echo $galerie; ?>
+								<?php endif; ?>
+								
+								<?php if (!empty($idGalerie)): ?>
+									</div><!-- /#galerie -->
+								<?php endif; ?>
+								
+								<?php if ($afficherCategorie): ?>
+									<?php echo $categorie; ?>
+								<?php endif; ?>
+								
+								<?php if ($inclureContact): ?>
+									<?php echo $contact; ?>
+								<?php endif; ?>
+							</div><!-- /#milieuInterieurContenu -->
+						<?php endif; ?>
 						
-							<?php if (!empty($idGalerie)): ?>
-								</div><!-- /#galerie -->
-							<?php endif; ?>
-						
-							<?php if ($afficherCategorie): ?>
-								<?php echo $categorie; ?>
-							<?php endif; ?>
-						
-							<?php if ($inclureContact): ?>
-								<?php echo $contact; ?>
-							<?php endif; ?>
-						</div><!-- /#milieuInterieurContenu -->
+						<?php if ($inclureCachePartiel): ?>
+							<?php include $cheminCachePartiel; ?>
+						<?php endif; ?>
 						
 						<?php if (!empty($blocs[400])): ?>
 							<div id="finInterieurContenu">

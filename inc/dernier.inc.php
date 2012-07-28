@@ -1,11 +1,11 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.dernier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML suivant le contenu ajouté directement dans une page du site. Le code XHTML n'est envoyé au navigateur qu'à la toute fin du fichier lors de la vérification du cache global ou lors de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.dernier.inc.php`.
 
 Étapes dans ce fichier:
 
 1. Affectations, inclusions et traitement personnalisé optionnel.
-2. Inclusion de code XHTML.
+2. Inclusion de code XHTML et vérification du cache global.
 */
 
 ########################################################################
@@ -71,12 +71,13 @@ if (file_exists($racine . '/site/inc/dernier.inc.php'))
 
 ########################################################################
 ##
-## Code XHTML 2 de 2.
+## Code XHTML 2 de 2 et vérification du cache global.
 ##
 ########################################################################
 
 include cheminXhtml($racine, array ($langue, $langueParDefaut), 'page.dernier');
 
+// Vérification du cache global.
 if ($dureeCache && !$desactiverCache)
 {
 	$codePage = ob_get_contents();

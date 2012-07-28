@@ -631,7 +631,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le bloc des informations de publication, dans le listage des articles classés dans une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
 
-- `$desactiverCache`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut désactiver ou non le cache pour la page courante (dans le cas où le cache est activé avec la variable `$dureeCache` du fichier de configuration du site).
+- `$desactiverCache`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut désactiver ou non le cache complet pour la page courante (dans le cas où le cache est activé avec la variable `$dureeCache` du fichier de configuration du site).
+
+- `$desactiverCachePartiel`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut désactiver ou non le cache partiel pour la page courante (dans le cas où le cache complet est désactivé et que le cache partiel est activé avec la variable `$dureeCachePartiel` du fichier de configuration du site).
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
@@ -661,7 +663,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$robots`: contenu de la métabalise `robots`, si la valeur est différente de `$robotsParDefaut` du fichier de configuration du site.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée du côté client par Javascript si le cache est désactivé, sinon elle est générée du côté serveur par PHP.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée du côté client par Javascript si le cache (global et partiel) est désactivé, sinon elle est générée du côté serveur par PHP.
 
 	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée.
 
@@ -1349,9 +1351,23 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 ## Cache
 
-Par défaut, Squeletml n'utilise pas de système de cache. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. Le contenu complet d'une page sera alors enregistré dans un fichier HTML (ou XML pour une page de flux RSS). Tant que le cache n'a pas expiré, c'est ce contenu qui sera retourné aux internautes. La page ne sera donc pas calculée et générée à chaque visite. Squeletml enverra également des en-têtes HTTP relatives au cache et analysera les requêtes conditionnelles pour vérifier si le contenu a changé. À noter que le cache pour les autres types de fichiers (images, Javascript, etc.) est paramétré dans le fichier `.htaccess`.
+### Cache global
+
+Par défaut, Squeletml n'utilise pas de système de cache. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. Tout le contenu d'une page sera alors enregistré dans un fichier HTML (ou XML pour une page de flux RSS). Tant que le cache n'a pas expiré, c'est ce contenu qui sera retourné aux internautes. La page ne sera donc pas calculée et générée à chaque visite. Squeletml s'occupera également d'envoyer les en-têtes HTTP relatives au cache (`Expires`, `Cache-Control`, `Last-Modified` et `ETag`) et analysera les requêtes conditionnelles reçues (`If-Modified-Since` et `If-None-Match`) pour retourner seulement un code d'en-tête 304 dans le cas où le contenu n'a pas changé (au lieu de retourner le contenu lui-même).
+
+À noter que si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
+
+Le cache pour les autres types de fichiers (images, Javascript, etc.) est paramétré dans le fichier `.htaccess`. À ce sujet, la variable `$versionParDefautLinkScript` du fichier de configuration du site peut être pratique. En effet, le cache des fichiers CSS et Javascript peut être paramétré pour une durée relativement longue (par exemple un mois ou plus), mais si un fichier a été modifié, il est possible de forcer son retéléchargement en modifiant l'URL déclarée par Squeletml. Par exemple, l'URL d'un fichier CSS sera `http://url/vers/fichier.css?$versionParDefautLinkScript['css']`.
 
 Il est possible de faire générer le cache automatiquement par le cron. Voir la section «Cron» pour plus de détails.
+
+### Cache partiel
+
+Il est possible d'activer le cache partiel en modifiant la variable `$dureeCachePartiel` du fichier de configuration du site. Le cache partiel sera alors activé seulement si le cache global ne l'est pas. À noter que si la variable `$desactiverCachePartiel` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCachePartiel` ne vaut pas `0`.
+
+Autrement dit, le cache partiel sera activé si l'expression suivante est vraie: `if ((!$dureeCache || $desactiverCache) && $dureeCachePartiel && !$desactiverCachePartiel)`.
+
+Aucune en-tête HTTP relative au cache ne sera envoyée, et aucune requête conditionnelle ne sera analysée. Squeletml va continuer à calculer et à générer une partie de la page. Le contenu HTML ou XML enregistré en cache correspondra au contenu de `<div id="milieuInterieurContenu">...</div>`.
 
 ### Fusion des feuilles de style CSS et des scripts Javascript
 

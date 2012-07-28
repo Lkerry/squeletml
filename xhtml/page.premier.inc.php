@@ -97,6 +97,10 @@
 							</div><!-- /#debutInterieurContenu -->
 						<?php endif; ?>
 						
+						<?php if ($inclureCachePartiel): ?>
+							<?php include $cheminCachePartiel; ?>
+						<?php endif; ?>
+						
 						<div id="milieuInterieurContenu">
 							<?php if ($inclureApercu): ?>
 								<?php echo $apercu; ?>

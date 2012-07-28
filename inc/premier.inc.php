@@ -1,6 +1,6 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML est envoyé au navigateur lors de la vérification du cache ou à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.premier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML est envoyé au navigateur lors de la vérification du cache global ou à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.premier.inc.php`.
 
 Étapes dans ce fichier:
 
@@ -8,7 +8,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 2. Première série d'affectations.
 3. Deuxième série d'inclusions.
 4. Première série de traitement personnalisé optionnel.
-5. Vérification du cache.
+5. Vérification du cache global.
 6. Deuxième série d'affectations.
 7. Troisième série d'inclusions.
 8. Troisième série d'affectations.
@@ -20,7 +20,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 ########################################################################
 ##
-## Affectations et inclusions.
+## Affectations, inclusions et cache global.
 ##
 ########################################################################
 
@@ -60,6 +60,11 @@ if (!isset($desactiverCache))
 	$desactiverCache = FALSE;
 }
 
+if (!isset($desactiverCachePartiel))
+{
+	$desactiverCachePartiel = FALSE;
+}
+
 if (!isset($idCategorie))
 {
 	$idCategorie = '';
@@ -85,7 +90,7 @@ if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 	include $racine . '/site/inc/premier-pre.inc.php';
 }
 
-// Vérification du cache.
+// Vérification du cache global.
 if ($dureeCache && !$desactiverCache)
 {
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
@@ -178,9 +183,15 @@ if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 	$courrielContact = $contactCourrielParDefaut;
 }
 
-if (!isset($partageCourriel))
+$cheminCachePartiel = $racine . '/inc/cache-partiel.inc.php';
+
+if ((!$dureeCache || $desactiverCache) && $dureeCachePartiel && !$desactiverCachePartiel)
 {
-	$partageCourriel = $activerPartageCourrielParDefaut;
+	$inclureCachePartiel = TRUE;
+}
+else
+{
+	$inclureCachePartiel = FALSE;
 }
 
 if (!isset($infosPublication))
@@ -215,6 +226,11 @@ $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 if ($siteEstEnMaintenance)
 {
 	$noticeMaintenance = noticeMaintenance();
+}
+
+if (!isset($partageCourriel))
+{
+	$partageCourriel = $activerPartageCourrielParDefaut;
 }
 
 if (!isset($partageReseaux))
@@ -278,6 +294,8 @@ if (!empty($classesBody))
 {
 	$classesBody = ' class="' . trim($classesBody) . '"';
 }
+
+$inclureFinMilieuInterieurContenu = TRUE;
 
 if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrielContact) && !isset($accueil[LANGUE]) && strpos($url, urlRacineLangueInactive($racine, $urlRacine, LANGUE)) === 0))
 {
@@ -423,7 +441,7 @@ if ($tableDesMatieres)
 	
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	
-	if (!$dureeCache || $desactiverCache)
+	if ((!$dureeCache || $desactiverCache) && (!$dureeCachePartiel || $desactiverCachePartiel))
 	{
 		$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
 		$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('milieuInterieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$langueParDefaut');";
