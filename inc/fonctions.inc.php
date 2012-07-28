@@ -2920,11 +2920,11 @@ function image(
 		
 		if (!empty($infosImage['intermediaireAttributTitle']))
 		{
-			$attributTitle = 'title="' . $infosImage['intermediaireAttributTitle'] . '"';
+			$attributTitle = ' title="' . $infosImage['intermediaireAttributTitle'] . '" ';
 		}
 		else
 		{
-			$attributTitle = '';
+			$attributTitle = ' ';
 		}
 		
 		// Si le nom de l'image au format original a été renseigné, on utilise ce nom.
@@ -3095,11 +3095,11 @@ function image(
 		// Code de retour.
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
+			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt$attributTitle/>" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
 		}
 		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
 		{
-			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt $attributTitle />" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
+			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '"' . " $width $height $alt$attributTitle/>" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
 		}
 		else
 		{
@@ -3206,11 +3206,11 @@ function image(
 		
 		if (!empty($infosImage['vignetteAttributTitle']))
 		{
-			$attributTitle = 'title="' . $infosImage['vignetteAttributTitle'] . '"';
+			$attributTitle = ' title="' . $infosImage['vignetteAttributTitle'] . '" ';
 		}
 		else
 		{
-			$attributTitle = '';
+			$attributTitle = ' ';
 		}
 		
 		if ($estAccueil)
@@ -3249,7 +3249,7 @@ function image(
 			$class .= ' minivignetteImageEnCours';
 		}
 		
-		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt $attributTitle /></a></div>\n";
+		return '<div class="galerieNavigation' . $classAccueil . $class . '">' . $aHref . '<img ' . "$src $width $height $alt$attributTitle/></a></div>\n";
 	}
 	else
 	{
