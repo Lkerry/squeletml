@@ -167,7 +167,14 @@ if (!empty($idGalerie) && isset($_GET['image']))
 	
 		// On récupère le code de l'image demandée en version intermediaire.
 		$imageIntermediaire = '<div id="galerieIntermediaire">' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'intermediaire', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</div>\n";
-
+		
+		// Si le bloc de lien vers la page est actif, on génère le code que ce bloc utilisera.
+		if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+		{
+			$lienPageIntermediaire = $imageIntermediaire;
+			$lienPageVignette = image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+		}
+		
 		// On recherche l'image précédente pour la navigation (si l'image demandée est la première, il n'y a pas d'image précédente), et on récupère son code.
 		if (array_key_exists($indice - 1, $tableauGalerie))
 		{
