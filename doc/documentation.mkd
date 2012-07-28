@@ -1347,11 +1347,11 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 - qu'aun moins une galerie dans le fichier de configuration des galeries ait un paramètre `rss` avec une valeur de `1`. La valeur de la clé `langue` va indiquer la langue de la syndication globale.
 
-## Cache et optimisation
+## Cache
 
-Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site.
+Par défaut, Squeletml n'utilise pas de système de cache. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. Le contenu complet d'une page sera alors enregistré dans un fichier HTML (ou XML pour une page de flux RSS). Tant que le cache n'a pas expiré, c'est ce contenu qui sera retourné aux internautes. La page ne sera donc pas calculée et générée à chaque visite. Squeletml enverra également des en-têtes HTTP relatives au cache et analysera les requêtes conditionnelles pour vérifier si le contenu a changé. À noter que le cache pour les autres types de fichiers (images, Javascript, etc.) est paramétré dans le fichier `.htaccess`.
 
-Dans certains cas, le cache peut être long à générer, ce qui a comme conséquence qu'un internaute visitant une page dont le cache n'a pas encore été généré ou est expiré peut attendre assez longtemps avant de voir le contenu s'afficher. Cependant, il est possible de générer le cache automatiquement sans attendre la visite d'internautes. Voir la section «Cron» pour plus de détails.
+Il est possible de faire générer le cache automatiquement par le cron. Voir la section «Cron» pour plus de détails.
 
 ### Fusion des feuilles de style CSS et des scripts Javascript
 

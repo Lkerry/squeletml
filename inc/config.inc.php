@@ -62,7 +62,7 @@ $activerCreationCompte = FALSE; // TRUE|FALSE
 
 // Expiration du cache.
 /*
-- Temps en secondes avant que le cache n'expire.
+- Temps en secondes avant que le cache HTML et XML n'expire.
 - Exemples:
   - `0` équivaut à désactiver le cache;
   - `1800` équivaut à 30 minutes;
@@ -76,7 +76,8 @@ $activerCreationCompte = FALSE; // TRUE|FALSE
   - `2592000` équivaut à 30 jours;
   - `15552000` équivaut à 180 jours;
   - `31536000` équivaut à 365 jours.
-Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
+- Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
+- Le cache pour les autres types de fichiers (ex.: images, Javascript, etc.) est paramétré dans le fichier `.htaccess`.
 */
 $dureeCache = 0;
 
