@@ -64,9 +64,9 @@ $erreur404 = FALSE;
 
 if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 {
-	$galeries = galeries($racine);
+	$listeGaleries = listeGaleries($racine);
 	
-	foreach ($galeries as $idGalerie => $infosGalerie)
+	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
 		if ($getId == filtreChaine($idGalerie))
 		{
@@ -285,10 +285,10 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 }
 elseif ($getType == 'galeries' && !empty($getLangue))
 {
-	$galeries = galeries($racine);
+	$listeGaleries = listeGaleries($racine);
 	$listeGaleriesRss = array ();
 	
-	foreach ($galeries as $idGalerie => $infosGalerie)
+	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
 		if ($infosGalerie['rss'] == 1)
 		{

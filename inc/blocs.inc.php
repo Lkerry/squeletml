@@ -402,7 +402,7 @@ if (!empty($blocsAinsererTemp))
 					
 					if ($genererMenuGaleries)
 					{
-						$listeGaleries = galeries($racine, '', TRUE);
+						$listeGaleries = listeGaleries($racine, '', TRUE);
 						uksort($listeGaleries, 'strnatcasecmp');
 						
 						if ($activerGalerieDemo)

@@ -830,7 +830,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		
 		if (file_exists($cheminApercuImage))
 		{
-			list ($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
+			list ($larg, $haut, $type, $attr) = @getimagesize($cheminApercuImage);
 			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . dirname($urlRacineAdmin) . "/site/$dossierAdmin/cache/" . superBasename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
 		}
 	}
@@ -1054,15 +1054,15 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 		}
 	}
 	
-	$galeries = galeries($racine);
+	$listeGaleries = listeGaleries($racine);
 	
 	// Galerie démo.
 	if ($activerGalerieDemo)
 	{
-		$galeries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $galeries);
+		$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $listeGaleries);
 	}
 	
-	foreach ($galeries as $idGalerie => $infosGalerie)
+	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
 		if (isset($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 		{
@@ -1507,24 +1507,24 @@ Met à jour le fichier de configuration des galeries. Retourne FALSE si une erre
 */
 function adminMajConfigGaleries($racine, $listeModifs)
 {
-	$galeries = galeries($racine);
+	$listeGaleries = listeGaleries($racine);
 	
 	foreach ($listeModifs as $idGalerie => $infosGalerie)
 	{
-		if (isset($galeries[$idGalerie]))
+		if (isset($listeGaleries[$idGalerie]))
 		{
 			if (empty($infosGalerie))
 			{
-				unset($galeries[$idGalerie]);
+				unset($listeGaleries[$idGalerie]);
 			}
 			else
 			{
-				$galeries[$idGalerie] = $infosGalerie;
+				$listeGaleries[$idGalerie] = $infosGalerie;
 			}
 		}
 		elseif (!empty($infosGalerie))
 		{
-			$galeries[$idGalerie] = $infosGalerie;
+			$listeGaleries[$idGalerie] = $infosGalerie;
 		}
 	}
 	
@@ -1537,7 +1537,7 @@ function adminMajConfigGaleries($racine, $listeModifs)
 	
 	$contenuConfig = '';
 	
-	foreach ($galeries as $idGalerie => $infosGalerie)
+	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
 		$contenuConfig .= "[$idGalerie]\n";
 		

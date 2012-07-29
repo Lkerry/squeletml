@@ -1112,6 +1112,10 @@ if (isset($_POST['porteDocumentsCreation']))
 										$contenu .= '$idGalerie = "";' . "\n";
 										break;
 										
+									case 'inclureCodeFenetreJavascript':
+										$contenu .= '$inclureCodeFenetreJavascript = TRUE;' . "\n";
+										break;
+										
 									case 'infosPublication':
 										if ($afficherInfosPublicationParDefaut)
 										{
@@ -1713,6 +1717,7 @@ echo '<option value="desactiverCachePartiel">$desactiverCachePartiel</option>' .
 echo '<option value="description">$description</option>' . "\n";
 echo '<option value="idCategorie">$idCategorie</option>' . "\n";
 echo '<option value="idGalerie">$idGalerie</option>' . "\n";
+echo '<option value="inclureCodeFenetreJavascript">$inclureCodeFenetreJavascript</option>' . "\n";
 echo '<option value="infosPublication">$infosPublication</option>' . "\n";
 echo '<option value="langue">$langue</option>' . "\n";
 echo '<option value="licence">$licence</option>' . "\n";

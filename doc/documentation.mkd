@@ -643,6 +643,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 	Par exemple, si nous avons `$idGalerie = "Promenade en forêt";`, Squeletml va rechercher le dossier `site/fichiers/galeries/Promenade-en-foret`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
 
+- `$inclureCodeFenetreJavascript`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut inclure ou non le code permettant de passer d'une image à une autre dans une fenêtre Javascript. Le script utilisé est Slimbox 2. À noter que ce code est inclus automatiquement dans les galeries (si ce type de navigation a été choisi dans le fichier de configuration). Cette variable permet tout simplement d'utiliser le code dans des pages personnalisées.
+
 - `$infosPublication`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut afficher ou non les informations de publication (auteur, date de création, date de dernière révision) pour la page courante, si la valeur est différente de `$afficherInfosPublicationParDefaut` du fichier de configuration du site.
 
 - `$langue`: langue de la page courante, si la valeur est différente de `$langueParDefaut` du fichier de configuration du site.
@@ -1282,6 +1284,26 @@ Les galeries peuvent être listées dans un menu qui leur est propre. Deux méth
 - utiliser le menu généré automatiquement en affectant la variable `$genererMenuGaleries` à TRUE dans le fichier de configuration du site.
 
 Dans l'un ou l'autre des cas, les galeries actives seront marquées comme telles, si cette option est activée dans le fichier de configuration du site.
+
+### Plusieurs galeries sur une même page
+
+Il est possible de lister plusieurs galeries sur une même page. Pour ce faire, utiliser la fonction `galeries()`. Exemple:
+
+	<?php
+	$baliseH1 = "Plusieurs galeries sur une même page";
+	$inclureCodeFenetreJavascript = TRUE;
+	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion.
+	
+	echo galeries($racine, $urlRacine, LANGUE, array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation);
+	
+	include $racine . '/inc/dernier.inc.php';
+	?>
+
+Ne pas oublier de définir la variable `$inclureCodeFenetreJavascript` à `TRUE` au début du fichier si la navigation par fenêtre Javascript est souhaitée.
+
+Par défaut, la navigation par fenêtre Javascript est activée et le niveau des titres de galerie est 2. Les deux derniers paramètres (optionnels) de la fonction permettent de modifier ces valeurs par défaut. Exemple:
+
+	echo galeries($racine, $urlRacine, LANGUE, array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation, FALSE, 3);
 
 ## Partage par courriel
 

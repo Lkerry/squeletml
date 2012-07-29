@@ -94,7 +94,7 @@ if (!$erreur404 && !$estPageDerreur)
 				
 				$cheminImg .= '/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom;
 				$urlImg .= '/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . rawurlencode($vignetteNom);
-				list ($imgWidth, $imgHeight) = getimagesize($cheminImg);
+				list ($imgWidth, $imgHeight) = @getimagesize($cheminImg);
 				$imgAlt = partageCourrielSupplementImageAlt($image);
 				$corpsMinivignettes .= "<li><img style=\"float: left; border: 1px solid #cccccc; margin: 2px;\" src=\"$urlImg\" width=\"$imgWidth\" height=\"$imgHeight\" alt=\"$imgAlt\" /></li>\n";
 				$i++;

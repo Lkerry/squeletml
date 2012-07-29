@@ -46,9 +46,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		elseif (isset($_GET['id']))
 		{
 			$id = securiseTexte(superBasename($_GET['id']));
-			$galeries = galeries($racine);
+			$listeGaleries = listeGaleries($racine);
 			
-			foreach ($galeries as $idGalerie => $infosGalerie)
+			foreach ($listeGaleries as $idGalerie => $infosGalerie)
 			{
 				if ($id == filtreChaine($idGalerie))
 				{
@@ -97,11 +97,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			
-			$galeries = galeries($racine);
+			$listeGaleries = listeGaleries($racine);
 			$tableauInfosGaleries = array ();
 			$i = 0;
 			
-			foreach ($galeries as $idGalerie => $infosGalerie)
+			foreach ($listeGaleries as $idGalerie => $infosGalerie)
 			{
 				$i++;
 				$idGalerieDossier = sansEchappement($infosGalerie['dossier']);
@@ -1018,7 +1018,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$nouvelId = '';
 			$nouveauNomDossier = '';
 			$nouvelleUrl = '';
-			$galeries = galeries($racine);
+			$listeGaleries = listeGaleries($racine);
 			
 			if (!empty($_POST['idNouveauNomGalerie']))
 			{
@@ -1039,7 +1039,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
 			}
-			elseif (!isset($galeries[$id]))
+			elseif (!isset($listeGaleries[$id]))
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), "<code>$id</code>") . "</li>\n";
 			}
@@ -1047,7 +1047,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune option sélectionnée.") . "</li>\n";
 			}
-			elseif (!empty($nouvelId) && isset($galeries[$nouvelId]))
+			elseif (!empty($nouvelId) && isset($listeGaleries[$nouvelId]))
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("L'identifiant de galerie %1\$s existe déja. Renommage de %2\$s impossible."), "<code>$nouvelId</code>", "<code>$id</code>") . "</li>\n";
 			}
@@ -1059,11 +1059,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "<code>$id</code>") . "</li>\n";
 				$listeModifs = array ();
-				$listeModifs[$id] = $galeries[$id];
+				$listeModifs[$id] = $listeGaleries[$id];
 				
 				if (!empty($nouveauNomDossier))
 				{
-					$messagesScript .= adminRename($racine . '/site/fichiers/galeries/' . $galeries[$id]['dossier'], $racine . '/site/fichiers/galeries/' . $nouveauNomDossier);
+					$messagesScript .= adminRename($racine . '/site/fichiers/galeries/' . $listeGaleries[$id]['dossier'], $racine . '/site/fichiers/galeries/' . $nouveauNomDossier);
 					$listeModifs[$id]['dossier'] = $nouveauNomDossier;
 				}
 				
@@ -2062,7 +2062,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<p><?php printf(T_("<label for=\"%1\$s\">Identifiant de la galerie</label> ou <label for=\"%2\$s\">création d'une nouvelle galerie</label>:"), "ajouterSelectId", "ajouterInputIdNouvelleGalerie"); ?><br />
 					<select id="ajouterSelectId" name="id">
 						<option value="nouvelleGalerie"><?php echo T_("Nouvelle galerie:"); ?></option>
-						<?php $listeGaleries = galeries($racine); ?>
+						<?php $listeGaleries = listeGaleries($racine); ?>
 						
 						<?php if (!empty($listeGaleries)): ?>
 							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
@@ -2180,7 +2180,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<legend><?php echo T_("Options"); ?></legend>
 				
 						<p><label for="redimensionnerSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-						<?php $listeGaleries = galeries($racine); ?>
+						<?php $listeGaleries = listeGaleries($racine); ?>
 				
 						<?php if (!empty($listeGaleries)): ?>
 							<select id="redimensionnerSelectId" name="id">
@@ -2310,7 +2310,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 				
 					<p><label for="supprimerSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-					<?php $listeGaleries = galeries($racine); ?>
+					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
 						<select id="supprimerSelectId" name="id">
@@ -2379,7 +2379,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 					
 					<p><?php printf(T_("<label for=\"%1\$s\">Identifiant de la galerie</label>:"), "renommerSelectId"); ?><br />
-					<?php $listeGaleries = galeries($racine); ?>
+					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
 						<select id="renommerSelectId" name="id">
@@ -2434,7 +2434,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<legend><?php echo T_("Options"); ?></legend>
 				
 						<p><label for="configGraphiqueSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-						<?php $listeGaleries = galeries($racine); ?>
+						<?php $listeGaleries = listeGaleries($racine); ?>
 					
 						<?php if (!empty($listeGaleries)): ?>
 							<select id="configGraphiqueSelectId" name="id">
@@ -2470,7 +2470,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 				
 					<p><label for="configSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-					<?php $listeGaleries = galeries($racine); ?>
+					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
 						<select id="configSelectId" name="id">
@@ -2508,7 +2508,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 				
 					<p><label for="modeleSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-					<?php $listeGaleries = galeries($racine); ?>
+					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
 						<select id="modeleSelectId" name="id">
@@ -2563,7 +2563,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Options"); ?></legend>
 			
 					<p><label for="sauvegarderSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
-					<?php $listeGaleries = galeries($racine); ?>
+					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
 						<select id="sauvegarderSelectId" name="id">

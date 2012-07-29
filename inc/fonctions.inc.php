@@ -2469,7 +2469,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $ga
 			}
 			else
 			{
-				list ($width, $height) = getimagesize($cheminImage);
+				list ($width, $height) = @getimagesize($cheminImage);
 			}
 		
 			if (!empty($image['intermediaireHauteur']))
@@ -2680,47 +2680,160 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
-Retourne un tableau listant les galeries sous la forme suivante:
+Fusionne plusieurs fichiers CSS ou Javascript en un seul, et crée le fichier résultant dans le dossier de cache.
 
-	"$idGalerie" => array ("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
-
-Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
+Retourne un tableau de balises brutes à inclure, utilisable par la fonction `linkScript()`.
 */
-function galeries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE)
+function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomCache, $listeFichiers, $balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure)
 {
-	$galeries = array ();
-	$configGaleries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
-	
-	if (!empty($configGaleries))
+	if (!empty($listeFichiers))
 	{
-		if (!empty($galerieSpecifique) && isset($configGaleries[$galerieSpecifique]))
+		$nomCache = $type . '-' . crc32(implode("\n", $listeFichiers)) . '.cache.' . $extensionNomCache;
+		
+		if (!empty($dossierAdmin))
 		{
-			$galeriesTmp = array ($galerieSpecifique => $configGaleries[$galerieSpecifique]);
+			$cheminCache = "$racine/site/$dossierAdmin/cache/$nomCache";
+			$urlCache = "$urlRacine/site/$dossierAdmin/cache/$nomCache";
 		}
 		else
 		{
-			$galeriesTmp = $configGaleries;
+			$cheminCache = "$racine/site/cache/$nomCache";
+			$urlCache = "$urlRacine/site/cache/$nomCache";
 		}
 		
-		if ($avecConfigSeulement)
+		if (!file_exists($cheminCache))
 		{
-			foreach ($galeriesTmp as $idGalerie => $infosGalerie)
+			$contenuCache = '';
+			
+			foreach ($listeFichiers as $fichier)
 			{
-				if (isset($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
+				if (strpos($fichier, $urlRacine) === 0)
 				{
-					$galeries[$idGalerie] = $infosGalerie;
+					$contenuFichier = @file_get_contents(preg_replace('#^' . preg_quote($urlRacine) . '#', $racine, $fichier));
+					
+					// Ajustement des chemins relatifs dans les feuilles de style.
+					if (strpos($type, 'css') === 0 && (strpos($fichier, "$urlRacine/css/") === 0 || (!empty($dossierAdmin) && strpos($fichier, "$urlRacine/$dossierAdmin/css/") === 0)))
+					{
+						$contenuFichier = preg_replace("#(\.\./)+#", '$1../', $contenuFichier);
+					}
+				}
+				else
+				{
+					$contenuFichier = @file_get_contents(superRawurlencode($fichier));
+				}
+				
+				if ($contenuFichier !== FALSE)
+				{
+					$enTete = '/* Fichier `' . superBasename($fichier) . "`. */\n\n";
+					$contenuCache .= $enTete . $contenuFichier . "\n";
 				}
 			}
+			
+			if (!empty($contenuCache))
+			{
+				@file_put_contents($cheminCache, $contenuCache);
+			}
+		}
+		
+		if (file_exists($cheminCache))
+		{
+			array_unshift($balisesBrutesFusionneesAinclure, "$type#$urlCache");
 		}
 		else
 		{
-			$galeries = $galeriesTmp;
+			$balisesBrutesFusionneesAinclure = array_merge($balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure);
 		}
 	}
 	
-	uksort($galeries, 'strnatcasecmp');
+	return $balisesBrutesFusionneesAinclure;
+}
+
+/*
+Génère le code HTML pour afficher toutes les galeries listées dans le tableau `$listeGaleries`.
+*/
+function galeries($racine, $urlRacine, $langue, $listeGaleries, $galerieAncreDeNavigation, $navigationJavascript = TRUE, $niveauTitre = 2)
+{
+	$contenu = "<div class=\"galeries\">\n";
 	
-	return $galeries;
+	foreach ($listeGaleries as $idGalerie)
+	{
+		$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
+		$cheminConfigGalerie = cheminConfigGalerie($racine, $idGalerieDossier);
+		$contenu .= "<div class=\"galerieDansListe\">\n";
+		$contenu .= "<h$niveauTitre>$idGalerie</h$niveauTitre>\n";
+		$contenu .= "<ul class=\"galerieListeImages\">\n";
+		$tableauGalerie = tableauGalerie($cheminConfigGalerie, TRUE);
+		$relLien = 'lightbox-galerie-' . chaineVersClasseCss($idGalerie);
+		
+		foreach($tableauGalerie as $image)
+		{
+			if (!empty($image['vignetteNom']))
+			{
+				$vignetteNom = $image['vignetteNom'];
+			}
+			else
+			{
+				$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
+			}
+			
+			$cheminVignette = $racine;
+			$urlVignette = $urlRacine;
+			
+			if ($idGalerieDossier != 'demo')
+			{
+				$cheminVignette .= '/site';
+				$urlVignette .= '/site';
+			}
+			
+			$cheminVignette .= '/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom;
+			$urlVignette .= '/fichiers/galeries/' . rawurlencode($idGalerieDossier);
+			$urlSourceImage = $urlVignette;
+			$urlVignette .= '/' . rawurlencode($vignetteNom);
+			list ($largeurImage, $hauteurImage) = @getimagesize($cheminVignette);
+			$titreImage = titreImage($image);
+			
+			if (!empty($image['vignetteAlt']))
+			{
+				$altImage = $image['vignetteAlt'];
+			}
+			else
+			{
+				$altImage = sprintf(T_("Image %1\$s"), $titreImage);
+			}
+			
+			$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
+			$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, $langue);
+			$idImage = idImage($image);
+			$urlPageIndividuelleImage = variableGet(1, $urlGalerie, 'image', filtreChaine($idImage)) . $ancre;
+			
+			if ($navigationJavascript)
+			{
+				$titleLien = '<a href="' . $urlPageIndividuelleImage . '">' . T_("Partager cette image ou voir plus d'information.") . '</a>';
+				
+				if (!empty($image['intermediaireLegende']))
+				{
+					$titleLien = $image['intermediaireLegende'] . '<br />' . $titleLien;
+				}
+				
+				$titleLien = str_replace(array ('<', '>', '"'), array ('&lt;', '&gt;', "'"), $titleLien);
+				$lienImage = '<a rel="' . $relLien . '" href="' . $urlSourceImage . '/' . rawurlencode($image['intermediaireNom']) . '" rel="lightbox-galerie" title="' . $titleLien . '">';
+			}
+			else
+			{
+				$lienImage = '<a rel="' . $relLien . '" href="' . $urlPageIndividuelleImage . '" title="' . $titreImage . '">';
+			}
+			
+			$contenu .= "<li><div class=\"galerieNavigationAccueil\">$lienImage<img src=\"$urlVignette\" width=\"$largeurImage\" height=\"$hauteurImage\" alt=\"$altImage\" /></a></div></li>\n";
+		}
+		
+		$contenu .= "</ul><!-- /.galerieListeImages -->\n";
+		$contenu .= "</div><!-- /.galerieDansListe -->\n";
+		$contenu .= "<div class=\"sep\"></div>\n";
+	}
+	
+	$contenu .= "</div><!-- /.galeries -->\n";
+	
+	return $contenu;
 }
 
 /*
@@ -2829,11 +2942,11 @@ Retourne le nom du dossier d'une galerie. Si aucun dossier n'a été trouvé, re
 function idGalerieDossier($racine, $idGalerie)
 {
 	$dossier = '';
-	$galeries = galeries($racine, $idGalerie);
+	$listeGaleries = listeGaleries($racine, $idGalerie);
 	
-	if (!empty($galeries[$idGalerie]['dossier']))
+	if (!empty($listeGaleries[$idGalerie]['dossier']))
 	{
-		$dossier = $galeries[$idGalerie]['dossier'];
+		$dossier = $listeGaleries[$idGalerie]['dossier'];
 	}
 	else
 	{
@@ -2914,7 +3027,7 @@ function image(
 		}
 		else
 		{
-			list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $infosImage['intermediaireNom']);
+			list ($larg, $haut) = @getimagesize($racineImgSrc . '/' . $infosImage['intermediaireNom']);
 			{
 				$width = 'width="' . $larg . '"';
 				$height = 'height="' . $haut . '"';
@@ -3200,7 +3313,7 @@ function image(
 				}
 				else
 				{
-					list ($larg, $haut) = getimagesize($racineImgSrc . '/' . $vignetteNom);
+					list ($larg, $haut) = @getimagesize($racineImgSrc . '/' . $vignetteNom);
 					$width = 'width="' . $larg . '"';
 					$height = 'height="' . $haut . '"';
 				}
@@ -3248,8 +3361,8 @@ function image(
 				$title = $infosImage['intermediaireLegende'] . '<br />' . $title;
 			}
 			
-			$title = preg_replace(array ('/</', '/>/', '/"/'), array ('&lt;', '&gt;', "'"), $title);
-			$aHref = '<a href="' . $urlImgSrc . '/' . $infosImage['intermediaireNom'] . '" rel="lightbox-galerie" title="' . $title . '">';
+			$title = str_replace(array ('<', '>', '"'), array ('&lt;', '&gt;', "'"), $title);
+			$aHref = '<a href="' . $urlImgSrc . '/' . rawurlencode($infosImage['intermediaireNom']) . '" rel="lightbox-galerie" title="' . $title . '">';
 		}
 		else
 		{
@@ -4118,75 +4231,6 @@ function limiteProfondeurListe($html)
 }
 
 /*
-Fusionne plusieurs fichiers CSS ou Javascript en un seul, et crée le fichier résultant dans le dossier de cache.
-
-Retourne un tableau de balises brutes à inclure, utilisable par la fonction `linkScript()`.
-*/
-function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomCache, $listeFichiers, $balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure)
-{
-	if (!empty($listeFichiers))
-	{
-		$nomCache = $type . '-' . crc32(implode("\n", $listeFichiers)) . '.cache.' . $extensionNomCache;
-		
-		if (!empty($dossierAdmin))
-		{
-			$cheminCache = "$racine/site/$dossierAdmin/cache/$nomCache";
-			$urlCache = "$urlRacine/site/$dossierAdmin/cache/$nomCache";
-		}
-		else
-		{
-			$cheminCache = "$racine/site/cache/$nomCache";
-			$urlCache = "$urlRacine/site/cache/$nomCache";
-		}
-		
-		if (!file_exists($cheminCache))
-		{
-			$contenuCache = '';
-			
-			foreach ($listeFichiers as $fichier)
-			{
-				if (strpos($fichier, $urlRacine) === 0)
-				{
-					$contenuFichier = @file_get_contents(preg_replace('#^' . preg_quote($urlRacine) . '#', $racine, $fichier));
-					
-					// Ajustement des chemins relatifs dans les feuilles de style.
-					if (strpos($type, 'css') === 0 && (strpos($fichier, "$urlRacine/css/") === 0 || (!empty($dossierAdmin) && strpos($fichier, "$urlRacine/$dossierAdmin/css/") === 0)))
-					{
-						$contenuFichier = preg_replace("#(\.\./)+#", '$1../', $contenuFichier);
-					}
-				}
-				else
-				{
-					$contenuFichier = @file_get_contents(superRawurlencode($fichier));
-				}
-				
-				if ($contenuFichier !== FALSE)
-				{
-					$enTete = '/* Fichier `' . superBasename($fichier) . "`. */\n\n";
-					$contenuCache .= $enTete . $contenuFichier . "\n";
-				}
-			}
-			
-			if (!empty($contenuCache))
-			{
-				@file_put_contents($cheminCache, $contenuCache);
-			}
-		}
-		
-		if (file_exists($cheminCache))
-		{
-			array_unshift($balisesBrutesFusionneesAinclure, "$type#$urlCache");
-		}
-		else
-		{
-			$balisesBrutesFusionneesAinclure = array_merge($balisesBrutesTypeAinclure, $balisesBrutesFusionneesAinclure);
-		}
-	}
-	
-	return $balisesBrutesFusionneesAinclure;
-}
-
-/*
 Construit des balises `link` et `script`. Voir le fichier de configuration `inc/config.inc.php` pour les détails au sujet de la syntaxe utilisée.
 
 Le paramètre `$dossierAdmin` doit être vide si la fonction est utilisée pour le site et non pour la section d'administration.
@@ -4481,6 +4525,50 @@ function linkScriptAinclure($balisesBrutes)
 	}
 	
 	return $balisesBrutesAinclure;
+}
+
+/*
+Retourne un tableau listant les galeries sous la forme suivante:
+
+	"$idGalerie" => array ("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
+
+Si le paramètre `$avecConfigSeulement` vaut TRUE, retourne seulement les galeries ayant un fichier de configuration.
+*/
+function listeGaleries($racine, $galerieSpecifique = '', $avecConfigSeulement = FALSE)
+{
+	$galeries = array ();
+	$configGaleries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
+	
+	if (!empty($configGaleries))
+	{
+		if (!empty($galerieSpecifique) && isset($configGaleries[$galerieSpecifique]))
+		{
+			$galeriesTmp = array ($galerieSpecifique => $configGaleries[$galerieSpecifique]);
+		}
+		else
+		{
+			$galeriesTmp = $configGaleries;
+		}
+		
+		if ($avecConfigSeulement)
+		{
+			foreach ($galeriesTmp as $idGalerie => $infosGalerie)
+			{
+				if (isset($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
+				{
+					$galeries[$idGalerie] = $infosGalerie;
+				}
+			}
+		}
+		else
+		{
+			$galeries = $galeriesTmp;
+		}
+	}
+	
+	uksort($galeries, 'strnatcasecmp');
+	
+	return $galeries;
 }
 
 /*
@@ -5649,7 +5737,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					}
 					else
 					{
-						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
+						list ($width, $height) = @getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
 					}
 					
 					$lienVignette = variableGet(2, $urlGalerie, 'image', filtreChaine(idImage($image)));
@@ -5770,7 +5858,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					}
 					else
 					{
-						list ($width, $height) = getimagesize($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom);
+						list ($width, $height) = @getimagesize($racine . '/site/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom);
 					}
 					
 					$vignetteImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . rawurlencode($idGalerieDossier) . '/' . $vignetteNom . '" alt="' . $itemsFluxRss[$i]['title'] . '" width="' . $width . '" height="' . $height . '" />';
@@ -5928,9 +6016,9 @@ Retourne TRUE si le RSS est activé pour la galerie demandée, sinon retourne FA
 function rssGalerieActif($racine, $idGalerie)
 {
 	$rssGalerie = FALSE;
-	$galeries = galeries($racine, $idGalerie);
+	$listeGaleries = listeGaleries($racine, $idGalerie);
 	
-	if (isset($galeries[$idGalerie]['rss']) && $galeries[$idGalerie]['rss'] == 1)
+	if (isset($listeGaleries[$idGalerie]['rss']) && $listeGaleries[$idGalerie]['rss'] == 1)
 	{
 		$rssGalerie = TRUE;
 	}
@@ -6614,11 +6702,11 @@ function urlGalerie($action, $racine, $urlRacine, $info, $langue)
 {
 	if ($action == 0)
 	{
-		$galeries = galeries($racine, $info);
+		$listeGaleries = listeGaleries($racine, $info);
 		
-		if (!empty($galeries[$info]['url']))
+		if (!empty($listeGaleries[$info]['url']))
 		{
-			$urlGalerie = $galeries[$info]['url'];
+			$urlGalerie = $listeGaleries[$info]['url'];
 		}
 		else
 		{
@@ -6805,7 +6893,7 @@ function vignetteAccompagnee($paragraphe, $sens, $racine, $urlRacine)
 		$urlImage = $urlRacine . '/fichiers/' . $sens . '-accompagnee.png';
 	}
 	
-	list ($larg, $haut) = getimagesize($cheminImage);
+	list ($larg, $haut) = @getimagesize($cheminImage);
 	$width = 'width="' . $larg . '"';
 	$height = 'height="' . $haut . '"';
 	preg_match('/(alt="[^"]+")/', $paragraphe, $resultat);
