@@ -191,9 +191,6 @@ $robotsParDefaut = 'index, follow, archive';
 */
 $desactiverIndexationPagesCategorie = FALSE; // TRUE|FALSE
 
-// Encodage du site.
-$charset = 'utf-8';
-
 // Langue par défaut.
 /*
 - Langue par défaut si aucune autre précision n'est apportée. Si la variable `$langue` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.

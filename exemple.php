@@ -79,7 +79,6 @@ $typeMime = typeMime($cheminImage);
 $courriel = 'contact_a_exemple_point_qc';
 $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 $urlTestExistance2 = URL_SQUELETML;
-$urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle page.php?a=1&amp;b=2&amp;c=3";
 ?>
 
 <div class="testBoiteDeroulante1">
@@ -141,18 +140,9 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 <div class="testBoiteDeroulante1">
 	<p class="bDtitre">Voici une autre boîte déroulante de classe <code>testBoiteDeroulante1</code>:</p>
 	
-	<ul class="bDcorps">
-		<li><p>Prenons maintenant cette adresse:</p>
-			
-			<pre><?php echo $urlTestEncodage; ?></pre>
-			
-			<p>Affichons-la en version encodée avec la fonction <code>superRawurlencode()</code>:</p>
-			
-			<pre><?php echo superRawurlencode($urlTestEncodage); ?></pre>
-		</li>
-		
-		<li><p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p></li>
-	</ul>
+	<div class="bDcorps">
+		<p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p>
+	</div>
 </div>
 
 <h2>Chaînes de caractères</h2>

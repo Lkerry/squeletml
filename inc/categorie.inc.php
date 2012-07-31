@@ -89,7 +89,7 @@ if (!empty($idCategorie))
 		}
 		else
 		{
-			$baliseTitle = sprintf(T_("%1\$s – Tous les articles classés dans la catégorie %2\$s"), $idCategorie, $idCategorie);
+			$baliseTitle = sprintf(T_("%1\$s – Tous les articles classés dans la catégorie %2\$s"), securiseTexte($idCategorie), securiseTexte($idCategorie));
 		}
 	}
 	
@@ -105,7 +105,7 @@ if (!empty($idCategorie))
 		}
 		else
 		{
-			$description = sprintf(T_("Consulter tous les articles de la catégorie %1\$s."), $idCategorie) . $baliseTitleComplement;
+			$description = sprintf(T_("Consulter tous les articles de la catégorie %1\$s."), securiseTexte($idCategorie)) . $baliseTitleComplement;
 		}
 	}
 	
@@ -159,11 +159,11 @@ if (!empty($idCategorie))
 			}
 			elseif ($titrePageCategoriesAvecMotCategorie)
 			{
-				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>");
+				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), '<em>' . securiseTexte($idCategorie) . '</em>');
 			}
 			else
 			{
-				$baliseH1 = "<em>$idCategorie</em>";
+				$baliseH1 = '<em>' . securiseTexte($idCategorie) . '</em>';
 			}
 		}
 		
@@ -204,19 +204,18 @@ if (!empty($idCategorie))
 			}
 			elseif ($titrePageCategoriesAvecMotCategorie)
 			{
-				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$idCategorie</em>");
+				$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), '<em>' . securiseTexte($idCategorie) . '</em>');
 			}
 			else
 			{
-				$baliseH1 = "<em>$idCategorie</em>";
+				$baliseH1 = '<em>' . securiseTexte($idCategorie) . '</em>';
 			}
 		}
 		
 		for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 		{
-			$adresseNonEncodee = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
-			$adresse = superRawurlencode($adresseNonEncodee);
-			$infosPage = infosPage($racine, $urlRacine, $adresseNonEncodee, $inclureApercu, $tailleApercuAutomatique, $dureeCache);
+			$adresse = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
+			$infosPage = infosPage($racine, $urlRacine, $adresse, $inclureApercu, $tailleApercuAutomatique, $dureeCache);
 			
 			if (!empty($infosPage))
 			{
@@ -249,19 +248,19 @@ else
 		}
 		elseif ($titrePageCategoriesAvecMotCategorie)
 		{
-			$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), "<em>$nomCategorie</em>");
+			$baliseH1 = sprintf(T_("Articles dans la catégorie %1\$s"), '<em>' . securiseTexte($nomCategorie) . '</em>');
 		}
 		else
 		{
-			$baliseH1 = "<em>$nomCategorie</em>";
+			$baliseH1 = '<em>' . securiseTexte($nomCategorie) . '</em>';
 		}
 	}
 	
-	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), "<em>$nomCategorie</em>") . "</p>\n";
+	$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s est introuvable."), '<em>' . securiseTexte($nomCategorie) . '</em>') . "</p>\n";
 	
 	// Ajustement des métabalises.
 	
-	$baliseTitle = sprintf(T_("La catégorie %1\$s est introuvable"), $nomCategorie);
+	$baliseTitle = sprintf(T_("La catégorie %1\$s est introuvable"), securiseTexte($nomCategorie));
 	$description = '';
 	
 	if ($inclureMotsCles)

@@ -1050,7 +1050,7 @@ Concrètement, pour créer une galerie à partir de l'administration de Squeletm
 
 3. Le champ «Si nouvelle galerie, nom du dossier» peut être rempli avec la valeur désirée ou laissé vide pour génération automatique à partir de l'identifiant.
 
-4. Le champ «Si nouvelle galerie, emplacement de la page Web» peut être rempli avec la valeur désirée ou laissé vide pour utilisation de la page globale des galeries (`galerie.php`).
+4. Le champ «Si nouvelle galerie, URL de la page Web» peut être rempli avec la valeur désirée ou laissé vide pour utilisation de la page globale des galeries (`galerie.php`).
 
 5. Dans le champ «Fichier», préciser un fichier image ou une archive de format TAR (`.tar`) ou ZIP (`.zip`).
 
@@ -1110,9 +1110,9 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		exclure=1
 
-- `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. Exemple:
+- `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. L'`id` doit être seulement composé des caractères suivants: `-A-Za-z0-9._+`. Exemple:
 
-		id=5
+		id=paysage-hiver
 
 - `licence`: licence ou licences de l'image. Exemple:
 

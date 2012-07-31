@@ -31,10 +31,16 @@ else
 	
 	$erreurFormulaire = FALSE;
 	$messagesScript = '';
+	$identifiant = '';
+	
+	if (!empty($_POST['identifiant']))
+	{
+		$identifiant = preg_replace('/[^A-Za-z0-9]/', '', $_POST['identifiant']);
+	}
 	
 	if (isset($_POST['demander']))
 	{
-		if (empty($_POST['identifiant']))
+		if (empty($identifiant))
 		{
 			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
@@ -91,11 +97,11 @@ else
 			
 			if (stristr(PHP_OS, 'win') || $serveurFreeFr)
 			{
-				$ligneAcces = securiseTexte($_POST['identifiant']) . ':' . securiseTexte($_POST['motDePasse']);
+				$ligneAcces = $identifiant . ':' . $_POST['motDePasse'];
 			}
 			else
 			{
-				$ligneAcces = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']);
+				$ligneAcces = $identifiant . ':' . chiffreMotDePasse($_POST['motDePasse']);
 			}
 			
 			$infosCourriel['message'] .= "$ligneAcces\n\n";
@@ -131,11 +137,11 @@ else
 	{
 		echo '<form action="' . $url . '" method="post">' . "\n";
 		echo "<div>\n";
-		echo '<p><label for="inputIdentifiant">' . T_("Identifiant:") . "</label><br />\n" . '<input id="inputIdentifiant" type="text" name="identifiant" ';
+		echo '<p><label for="inputIdentifiant">' . T_("Identifiant (caractères alphanumériques):") . "</label><br />\n" . '<input id="inputIdentifiant" type="text" name="identifiant" ';
 
-		if (!empty($_POST['identifiant']))
+		if (!empty($identifiant))
 		{
-			echo 'value="' . securiseTexte($_POST['identifiant']) . '" ';
+			echo 'value="' . $identifiant . '" ';
 		}
 
 		echo '/></p>' . "\n";

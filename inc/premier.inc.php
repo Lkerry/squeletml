@@ -129,7 +129,7 @@ if ($dureeCache && !$desactiverCache)
 
 // Affectations 2 de 3.
 
-extract(init('', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'baliseH1', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'inclureCodeFenetreJavascript', 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
 
 if (!isset($apercu))
@@ -147,6 +147,8 @@ if (!isset($auteur))
 	$auteur = $auteurParDefaut;
 }
 
+$auteur = securiseTexte($auteur);
+
 if ($estPageCompte)
 {
 	$baliseH1 = T_("Demande de création d'un compte utilisateur");
@@ -157,7 +159,14 @@ elseif ($estPageDeconnexion)
 }
 
 $estAccueil = estAccueil(ACCUEIL);
+
+if (!empty($baliseTitle))
+{
+	$baliseTitle = securiseTexte($baliseTitle);
+}
+
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), $estAccueil);
+$baliseTitleComplement = securiseTexte($baliseTitleComplement);
 
 if (!isset($boitesDeroulantesAlaMain))
 {
@@ -194,6 +203,21 @@ else
 	$inclureCachePartiel = FALSE;
 }
 
+if (!empty($dateCreation))
+{
+	$dateCreation = securiseTexte($dateCreation);
+}
+
+if (!empty($dateRevision))
+{
+	$dateRevision = securiseTexte($dateRevision);
+}
+
+if (!empty($description))
+{
+	$description = securiseTexte($description);
+}
+
 if (!isset($infosPublication))
 {
 	$infosPublication = $afficherInfosPublicationParDefaut;
@@ -216,7 +240,7 @@ if ($afficherMessageIe6)
 
 if ($inclureMotsCles)
 {
-	$motsCles = motsCles($motsCles, $description);
+	$motsCles = motsCles(securiseTexte($motsCles), $description);
 }
 
 $nomSite = nomSite($estAccueil, lienAccueil(ACCUEIL, $estAccueil, titreSite($titreSite, array ($langue, $langueParDefaut))));
@@ -244,7 +268,7 @@ if ($partageCourriel || $partageReseaux)
 }
 
 $premierOuDernier = 'premier';
-$robots = robots($robotsParDefaut, $robots);
+$robots = securiseTexte(robots($robotsParDefaut, $robots));
 
 if (!isset($tableDesMatieres))
 {
@@ -308,7 +332,7 @@ if ($erreur404)
 }
 else
 {
-	$enTetesHttp .= 'header("Content-Type: text/html; charset=' . $charset . '");';
+	$enTetesHttp .= 'header("Content-Type: text/html; charset=utf-8");';
 }
 
 ########################################################################
@@ -404,7 +428,7 @@ $cssDirectlteIE8 .= 'body.tableDesMatieresArrondie #tableDesMatieres, pre, table
 
 if ($idGalerie)
 {
-	$cssDirectlteIE8 .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte';
+	$cssDirectlteIE8 .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte, div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img';
 }
 
 if ($inclureBasDePage && !$basDePageInterieurPage)

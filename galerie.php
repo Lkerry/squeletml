@@ -9,7 +9,7 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 
 if (!empty($_GET['id']))
 {
-	$getId = securiseTexte($_GET['id']);
+	$getId = $_GET['id'];
 	
 	if ($getId == 'demo')
 	{
@@ -32,14 +32,9 @@ if (!empty($_GET['id']))
 	}
 }
 
-if (!empty($_GET['langue']))
+if (!empty($_GET['langue']) && isset($accueil[$_GET['langue']]))
 {
-	$getLangue = securiseTexte($_GET['langue']);
-	
-	if (isset($accueil[$getLangue]))
-	{
-		$langue = $getLangue;
-	}
+	$langue = $_GET['langue'];
 }
 
 if ($activerGalerieDemo && $getId != 'démo' && $idGalerie == 'démo' && isset($langue))
@@ -52,7 +47,7 @@ elseif (
 	!isset($langue) ||
 	empty($idGalerie) ||
 	!isset($galeries[$idGalerie]) ||
-	(!empty($galeries[$idGalerie]['url']) && strpos($galeries[$idGalerie]['url'], 'galerie.php?id=' . filtreChaine($idGalerie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
+	(!empty($galeries[$idGalerie]['url']) && (strpos($galeries[$idGalerie]['url'], 'galerie.php?') !== 0 || !preg_match('#(\?|&|&amp;)id=' . preg_quote(filtreChaine($idGalerie)) . '#', $galeries[$idGalerie]['url']))) || // Empêcher la duplication de contenu dans les moteurs de recherche.
 	($getId != filtreChaine($getId)) // Idem.
 )
 {

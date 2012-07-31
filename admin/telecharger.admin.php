@@ -11,107 +11,112 @@ else
 	$tableauFiltresAccesDossiers = array ();
 }
 
-if (adminEmplacementPermis($_GET['fichier'], $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+if (isset($_GET['fichier']))
 {
-	$chemin = securiseTexte($_GET['fichier']);
-	$nom = securiseTexte(superBasename($chemin));
+	$chemin = decodeTexte($_GET['fichier']);
+}
+else
+{
+	$chemin = '';
+}
+
+if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+{
+	$nom = superBasename($chemin);
 	
-	if (file_exists($chemin))
+	if (chdir(dirname($chemin)))
 	{
-		if (chdir(dirname($chemin)))
+		$chemin = $nom;
+	
+		if (is_dir($chemin))
 		{
-			$chemin = $nom;
-		
-			if (is_dir($chemin))
+			$dossierDeSauvegarde = $racine . '/site/' . $dossierAdmin . '/cache';
+			$nomArchive = '';
+			
+			if (preg_match('/^\.+$/', $nom))
 			{
-				$dossierDeSauvegarde = $racine . '/site/' . $dossierAdmin . '/cache';
-				$nomArchive = '';
-				
-				if (preg_match('/^\.+$/', $nom))
-				{
-					$nomArchive .= '_' . $nom . '_';
-				}
-				else
-				{
-					$nomArchive .= $nom;
-				}
-				
-				if (isset($_GET['action']) && $_GET['action'] == 'date')
-				{
-					if (substr($nomArchive, -1) !== '_')
-					{
-						$nomArchive .= '_';
-					}
-					
-					$nomArchive .= date('Y-m-d_H:i:s');
-				}
-				
-				$nomArchive .= '.tar';
-				$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
-				$archive = new tar($cheminArchive);
-				$listeFichiers = adminListeFichiers($chemin);
-		
-				foreach ($listeFichiers as $fichier)
-				{
-					if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
-					{
-						$archive->add($fichier);
-					}
-				}
-		
-				$resultatArchive = $archive->write();
-		
-				if ($resultatArchive)
-				{
-					$contentType = 'application/x-tar';
-					
-					if (function_exists('gzopen') && adminGz($dossierDeSauvegarde . '/' . $nomArchive) !== FALSE)
-					{
-						@unlink($cheminArchive);
-						$nomArchive = $nomArchive . '.gz';
-						$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
-						$contentType = 'application/x-gtar';
-					}
-					
-					header('Content-Type: ' . $contentType);
-					header('Content-Disposition: attachment; filename="' . $nomArchive . '"');
-					header('Content-Length: ' . filesize($cheminArchive));
-					@readfile($cheminArchive);
-					@unlink($cheminArchive);
-				}
-		
-				if (!$resultatArchive)
-				{
-					header('HTTP/1.1 500 Internal Server Error');
-				}
+				$nomArchive .= '_' . $nom . '_';
 			}
 			else
 			{
-				$typeMime = typeMime($chemin);
-	
-				if ($typeMime == 'application/octet-stream')
+				$nomArchive .= $nom;
+			}
+			
+			if (isset($_GET['action']) && $_GET['action'] == 'date')
+			{
+				if (substr($nomArchive, -1) !== '_')
 				{
-					$typeMime = 'application/force-download';
+					$nomArchive .= '_';
 				}
-		
-				header('Content-Type: ' . $typeMime);
-				header('Content-Disposition: attachment; filename="' . $nom . '"');
-				header('Content-Length: ' . filesize($chemin));
-				@readfile($chemin);
+				
+				$nomArchive .= date('Y-m-d_H:i:s');
+			}
+			
+			$nomArchive .= '.tar';
+			$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
+			$archive = new tar($cheminArchive);
+			$listeFichiers = adminListeFichiers($chemin);
+	
+			foreach ($listeFichiers as $fichier)
+			{
+				if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+				{
+					$archive->add($fichier);
+				}
+			}
+	
+			$resultatArchive = $archive->write();
+	
+			if ($resultatArchive)
+			{
+				$contentType = 'application/x-tar';
+				
+				if (function_exists('gzopen') && adminGz($dossierDeSauvegarde . '/' . $nomArchive) !== FALSE)
+				{
+					@unlink($cheminArchive);
+					$nomArchive = $nomArchive . '.gz';
+					$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
+					$contentType = 'application/x-gtar';
+				}
+				
+				header('Content-Type: ' . $contentType);
+				header('Content-Disposition: attachment; filename="' . $nomArchive . '"');
+				header('Content-Length: ' . filesize($cheminArchive));
+				@readfile($cheminArchive);
+				@unlink($cheminArchive);
+			}
+	
+			if (!$resultatArchive)
+			{
+				header('HTTP/1.1 500 Internal Server Error');
 			}
 		}
 		else
 		{
-			header('HTTP/1.1 500 Internal Server Error');
+			$typeMime = typeMime($chemin);
+
+			if ($typeMime == 'application/octet-stream')
+			{
+				$typeMime = 'application/force-download';
+			}
+	
+			header('Content-Type: ' . $typeMime);
+			header('Content-Disposition: attachment; filename="' . str_replace('"', '\"', $nom) . '"');
+			header('Content-Length: ' . filesize($chemin));
+			@readfile($chemin);
 		}
 	}
 	else
 	{
-		header('HTTP/1.1 404 Not found');
+		header('HTTP/1.1 500 Internal Server Error');
 	}
+}
+elseif (file_exists($chemin))
+{
+	header('HTTP/1.1 401 Unauthorized');
 }
 else
 {
-	header('HTTP/1.1 401 Unauthorized');
+	header('HTTP/1.1 404 Not found');
 }
 ?>

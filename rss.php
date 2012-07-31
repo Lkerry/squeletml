@@ -11,7 +11,7 @@ foreach (cheminsInc($racine, 'config') as $cheminFichier)
 
 if (isset($_GET['langue']))
 {
-	$getLangue = sansEchappement($_GET['langue']);
+	$getLangue = $_GET['langue'];
 	phpGettext('.', $getLangue); // Nécessaire à la traduction.
 }
 else
@@ -31,7 +31,7 @@ if ($dureeCache)
 	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 }
 
-$enTetesHttp = 'header("Content-Type: text/xml; charset=' . $charset . '");';
+$enTetesHttp = 'header("Content-Type: text/xml; charset=utf-8");';
 
 if ($inclureApercu && $utiliserApercuDansFluxRss)
 {
@@ -44,7 +44,7 @@ else
 
 if (isset($_GET['id']))
 {
-	$getId = sansEchappement($_GET['id']);
+	$getId = $_GET['id'];
 }
 else
 {
@@ -53,7 +53,7 @@ else
 
 if (isset($_GET['type']))
 {
-	$getType = sansEchappement($_GET['type']);
+	$getType = $_GET['type'];
 }
 else
 {
@@ -125,7 +125,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 					$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 				}
 				
-				$urlGalerie = $urlRacine . '/' . $infosGalerie['url'];
+				$urlGalerie = urlGalerie(1, $racine, $urlRacine, $infosGalerie['url'], $getLangue);
 				$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), $idGalerie, '');
 				
 				if ($dureeCache)
@@ -147,10 +147,11 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 					{
 						@file_put_contents($cheminFichierCache, $rssAafficher);
 					}
+					
+					$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+					@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 				}
 				
-				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
-				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 				eval($enTetesHttp);
 				echo $rssAafficher;
 			}
@@ -270,10 +271,11 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 				{
 					@file_put_contents($cheminFichierCache, $rssAafficher);
 				}
+				
+				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
-			@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			eval($enTetesHttp);
 			echo $rssAafficher;
 		}
@@ -356,10 +358,11 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 				{
 					@file_put_contents($cheminFichierCache, $rssAafficher);
 				}
+				
+				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
-			@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			eval($enTetesHttp);
 			echo $rssAafficher;
 		}
@@ -454,10 +457,11 @@ elseif ($getType == 'site' && !empty($getLangue))
 				{
 					@file_put_contents($cheminFichierCache, $rssAafficher);
 				}
+				
+				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
-			@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			eval($enTetesHttp);
 			echo $rssAafficher;
 		}

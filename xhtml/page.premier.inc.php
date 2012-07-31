@@ -2,7 +2,7 @@
 	<!-- ____________________ <head> ____________________ -->
 	<head>
 		<!-- Métabalises (1 de 2). -->
-		<meta http-equiv="content-type" content="text/html; charset=<?php echo $charset; ?>" />
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		
 		<!-- Titre. -->
 		<title><?php echo $baliseTitle . $baliseTitleComplement; ?></title>

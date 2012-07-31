@@ -29,6 +29,10 @@ if (!empty($adminBalisesLinkScriptFinales))
 {
 	$linkScriptFin = linkScript($racine, $urlRacine, $adminFusionnerCssJs, $dossierAdmin, $adminBalisesLinkScriptFinales);
 }
+else
+{
+	$linkScriptFin = '';
+}
 
 ########################################################################
 ##

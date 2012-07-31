@@ -22,7 +22,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (!@touch($cheminFichier))
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
 			}
 		}
 		
@@ -40,7 +40,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				foreach ($categories as $categorie => $categorieInfos)
 				{
 					$listeCategories[] = $categorie;
-					$listePages .= '<li class="liParent"><input type="text" name="cat[' . $i . ']" value="' . $categorie . '" />';
+					$listePages .= '<li class="liParent"><input class="long" type="text" name="cat[' . $i . ']" value="' . securiseTexte($categorie) . '" />';
 					$listePages .= "<ul class=\"nonTriable\">\n";
 					
 					// URL.
@@ -50,7 +50,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$categorieInfos['url'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputUrl-' . $i . '"><code>url=</code></label><input id="inputUrl-' . $i . '" class="long" type="text" name="url[' . $i . ']" value="' . $categorieInfos['url'] . '" /></li>' . "\n";
+					$listePages .= '<li><label for="inputUrl-' . $i . '"><code>url=</code></label><input id="inputUrl-' . $i . '" class="long" type="text" name="url[' . $i . ']" value="' . securiseTexte($categorieInfos['url']) . '" /></li>' . "\n";
 					
 					// Catégorie parente.
 					
@@ -66,14 +66,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						if ($cat != $categorie)
 						{
-							$listeOption .= '<option value="' . $cat . '"';
+							$listeOption .= '<option value="' . securiseTexte($cat) . '"';
 							
 							if ($cat == $categorieInfos['parent'])
 							{
 								$listeOption .= ' selected="selected"';
 							}
 							
-							$listeOption .= '>' . $cat . "</option>\n";
+							$listeOption .= '>' . securiseTexte($cat) . "</option>\n";
 						}
 					}
 					
@@ -86,7 +86,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$listePages .= '<input id="parent-' . $i . '" type="text" name="parent[' . $i . ']" value="' . $categorieInfos['parent'] . '" />';
+						$listePages .= '<input id="parent-' . $i . '" class="long" type="text" name="parent[' . $i . ']" value="' . securiseTexte($categorieInfos['parent']) . '" />';
 					}
 					
 					$listePages .= "</li>\n";
@@ -122,7 +122,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$listePages .= '<input id="langue-' . $i . '" type="text" name="langue[' . $i . ']" value="' . $categorieInfos['langue'] . '" />';
+						$listePages .= '<input id="langue-' . $i . '" type="text" name="langue[' . $i . ']" value="' . securiseTexte($categorieInfos['langue']) . '" />';
 					}
 					
 					$listePages .= "</li>\n";
@@ -166,7 +166,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						foreach ($categorieInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$listePages .= '<li><label for="inputUrlPages-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrlPages-' . $i . '-' . $j . '" class="long" type="text" name="urlPages[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+							$listePages .= '<li><label for="inputUrlPages-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrlPages-' . $i . '-' . $j . '" class="long" type="text" name="urlPages[' . $i . '][]" value="' . securiseTexte($page) . '" /></li>' . "\n";
 							$j++;
 						}
 
@@ -201,7 +201,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
-			echo '<p>' . sprintf(T_("Cet exemple fait référence à la catégorie en français «%1\$s», accessible à l'adresse %2\$s, enfant de la catégorie «%3\$s» et contenant une page dont l'URL est %4\$s."), "Chiens", "<code>$urlRacine/animaux/chiens/</code>", "Animaux", "<code>$urlRacine/animaux/chiens/husky.php</code>") . "</p>\n";
+			echo '<p>' . sprintf(T_("Cet exemple fait référence à la catégorie en français «%1\$s», accessible à l'adresse %2\$s, enfant de la catégorie «%3\$s» et contenant une page dont l'URL est %4\$s."), "Chiens", '<code>' . securiseTexte("$urlRacine/animaux/chiens/") . '</code>', "Animaux", '<code>' . securiseTexte("$urlRacine/animaux/chiens/husky.php") . '</code>') . "</p>\n";
 			
 			echo '<p>' . sprintf(T_("Si la langue d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, la langue sera celle déclarée par défaut dans le fichier de configuration du site."), '<code>langue</code>') . "</p>\n";
 			
@@ -245,13 +245,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				foreach ($listeCategories as $c)
 				{
-					echo '<option value="' . $c . '">' . $c . "</option>\n";
+					echo '<option value="' . encodeTexte($c) . '">' . securiseTexte($c) . "</option>\n";
 				}
 			}
 			
-			echo '</select> <input type="text" name="catAjoutInput" value="" />' . "\n";
+			echo '</select> <input class="long" type="text" name="catAjoutInput" value="" />' . "\n";
 			echo "<ul>\n";
-			echo '<li><label for="inputUrlAjout"><code>pages[]=</code></label><input id="inputUrlAjout" type="text" name="urlAjout" value="" /></li>' . "\n";
+			echo '<li><label for="inputUrlAjout"><code>pages[]=</code></label><input id="inputUrlAjout" class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
@@ -259,12 +259,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<legend class="bDtitre">' . T_("Nouvelle catégorie") . "</legend>\n";
 			
 			echo '<div class="bDcorps afficher">' . "\n";
-			echo '<p><label for="nouvelleCatInputPage">' . T_("Si nouvelle catégorie, emplacement de la page Web (laisser vide pour génération automatique):") . "</label><br />\n";
-			echo "$urlRacine/";
-			echo '<input id="nouvelleCatInputPage" type="text" name="page" /></p>' . "\n";
+			echo '<p><label for="nouvelleCatInputUrl">' . T_("Si nouvelle catégorie, URL de la page Web (laisser vide pour génération automatique):") . "</label><br />\n";
+			echo '<input id="nouvelleCatInputUrl" class="long" type="text" name="urlNouvelleCat" /></p>' . "\n";
 			
 			$listeLangues = '';
-			$listeLangues .= '<select name="mettreEnLigneLangue">' . "\n";
+			$listeLangues .= '<select id="nouvelleCatLangue" name="mettreEnLigneLangue">' . "\n";
 			
 			foreach ($accueil as $langueAccueil => $urlLangueAccueil)
 			{
@@ -283,7 +282,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<p><label for="nouvelleCatLangue">' . T_("Si nouvelle catégorie, langue:") . "</label><br />\n$listeLangues</p>\n";
 			
 			echo '<p><label for="nouvelleCatRss">' . T_("Si nouvelle catégorie, RSS:") . "</label><br />\n";
-			echo '<select name="nouvelleCatRss">' . "\n";
+			echo '<select id="nouvelleCatRss" name="mettreEnLigneRss">' . "\n";
 			echo '<option value="1" selected="selected">' . T_("Activé") . "</option>\n";
 			echo '<option value="0">' . T_("Désactivé") . "</option>\n";
 			echo "</select></p>\n";
@@ -333,7 +332,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		elseif (file_exists($cheminFichier))
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript);
@@ -351,9 +350,29 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			foreach ($_POST['cat'] as $cle => $cat)
 			{
-				$cat = securiseTexte($cat);
+				$urlCle = '';
 				
-				if (!empty($cat) && (!empty($_POST['langue'][$cle]) || !empty($_POST['parent'][$cle]) || !empty($_POST['url'][$cle]) || !empty($_POST['urlPages'][$cle])))
+				if (!empty($_POST['url'][$cle]))
+				{
+					$urlCle = supprimeUrlRacine($urlRacine, $_POST['url'][$cle]);
+				}
+				
+				$urlPagesCle = array ();
+				
+				if (!empty($_POST['urlPages'][$cle]))
+				{
+					foreach ($_POST['urlPages'][$cle] as $page)
+					{
+						$page = supprimeUrlRacine($urlRacine, $page);
+						
+						if (!empty($page))
+						{
+							$urlPagesCle[] = $page;
+						}
+					}
+				}
+				
+				if (!empty($cat) && (!empty($_POST['langue'][$cle]) || !empty($_POST['parent'][$cle]) || !empty($urlCle) || !empty($urlPagesCle)))
 				{
 					$contenuFichierTableau[$cat] = array ();
 					$contenuFichierTableau[$cat]['infos'] = array ();
@@ -370,9 +389,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$contenuFichierTableau[$cat]['infos'][] = "langue=$langueCat\n";
 					
-					if (!empty($_POST['url'][$cle]))
+					if (!empty($urlCle))
 					{
-						$urlCat = securiseTexte($_POST['url'][$cle]);
+						$urlCat = $urlCle;
 					}
 					else
 					{
@@ -388,7 +407,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!empty($_POST['parent'][$cle]))
 					{
-						$parentCat = securiseTexte($_POST['parent'][$cle]);
+						$parentCat = $_POST['parent'][$cle];
 					}
 					else
 					{
@@ -408,13 +427,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$contenuFichierTableau[$cat]['infos'][] = "rss=$rssCat\n";
 					
-					if (!empty($_POST['urlPages'][$cle]))
+					if (!empty($urlPagesCle))
 					{
-						foreach ($_POST['urlPages'][$cle] as $page)
+						foreach ($urlPagesCle as $page)
 						{
-							if (!empty($page) && !preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($page), '/') . "\n/", $contenuFichierTableau[$cat]['pages']))
+							if (!empty($page) && !preg_grep('/^pages\[\]=' . preg_quote($page, '/') . "\n/", $contenuFichierTableau[$cat]['pages']))
 							{
-								$contenuFichierTableau[$cat]['pages'][] = 'pages[]=' . securiseTexte($page) . "\n";
+								$contenuFichierTableau[$cat]['pages'][] = "pages[]=$page\n";
 							}
 						}
 					}
@@ -422,22 +441,31 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		if (!empty($_POST['catAjoutSelect']) && !empty($_POST['urlAjout']))
+		$urlAjout = '';
+		
+		if (!empty($_POST['urlAjout']))
+		{
+			$urlAjout = supprimeUrlRacine($urlRacine, $_POST['urlAjout']);
+		}
+		
+		if (!empty($_POST['catAjoutSelect']) && !empty($urlAjout))
 		{
 			$catAjout = array ();
 			
-			foreach ($_POST['catAjoutSelect'] as $catAjoutSelect)
+			foreach ($_POST['catAjoutSelect'] as $catAjoutSelectEncodee)
 			{
+				$catAjoutSelect = decodeTexte($catAjoutSelectEncodee);
+				
 				if ($catAjoutSelect == 'nouvelleCategorie')
 				{
 					if (!empty($_POST['catAjoutInput']))
 					{
-						$catAjout = array_merge($catAjout, explode('#', securiseTexte($_POST['catAjoutInput'])));
+						$catAjout = array_merge($catAjout, explode('#', $_POST['catAjoutInput']));
 					}
 				}
 				else
 				{
-					$catAjout[] = securiseTexte($catAjoutSelect);
+					$catAjout[] = $catAjoutSelect;
 				}
 			}
 			
@@ -501,10 +529,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				
 				$contenuFichierTableau[$c]['infos'][] = "langue=$langueCat\n";
+				$urlNouvelleCat = '';
 				
-				if (!empty($_POST['page']))
+				if (!empty($_POST['urlNouvelleCat']))
 				{
-					$urlCat = securiseTexte($_POST['page']);
+					$urlNouvelleCat = supprimeUrlRacine($urlRacine, $_POST['urlNouvelleCat']);
+				}
+				
+				if (!empty($urlNouvelleCat))
+				{
+					$urlCat = $urlNouvelleCat;
 				}
 				else
 				{
@@ -519,7 +553,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFichierTableau[$c]['infos'][] = "url=$urlCat\n";
 				$contenuFichierTableau[$c]['infos'][] = "parent=\n";
 				
-				if (isset($_POST['nouvelleCatRss']) && $_POST['nouvelleCatRss'] == 1)
+				if (isset($_POST['mettreEnLigneRss']) && $_POST['mettreEnLigneRss'] == 1)
 				{
 					$rssCat = 1;
 				}
@@ -530,9 +564,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				$contenuFichierTableau[$c]['infos'][] = "rss=$rssCat\n";
 				
-				if (!preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($_POST['urlAjout']), '/') . "\n/", $contenuFichierTableau[$c]['pages']))
+				if (!preg_grep('/^pages\[\]=' . preg_quote($urlAjout, '/') . "\n/", $contenuFichierTableau[$c]['pages']))
 				{
-					array_unshift($contenuFichierTableau[$c]['pages'], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
+					array_unshift($contenuFichierTableau[$c]['pages'], "pages[]=$urlAjout\n");
 				}
 			}
 		}
@@ -567,7 +601,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (!@touch($cheminFichier))
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
 			}
 		}
 		
@@ -579,11 +613,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
 
-				$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
 			}
 			else
 			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
 				
 				$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 			}
@@ -594,7 +628,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 
 		$messagesScript .= "<div class=\"bDcorps\">\n";
-		$messagesScript .= '<pre id="contenuFichierCategories">' . $contenuFichier . "</pre>\n";
+		$messagesScript .= '<pre id="contenuFichierCategories">' . securiseTexte($contenuFichier) . "</pre>\n";
 		
 		$messagesScript .= "<ul>\n";
 		$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
@@ -605,10 +639,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
 		
-		if (isset($_POST['rssAjout']) && !empty($_POST['urlAjout']) && !empty($_POST['rssLangueAjout']))
+		if (isset($_POST['rssAjout']) && !empty($urlAjout) && !empty($_POST['rssLangueAjout']))
 		{
 			$messagesScript = '';
-			$urlAjout = securiseTexte($_POST['urlAjout']);
 			$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
 			$contenuFichierRssTableau = array ();
 			$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine);
@@ -621,7 +654,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (file_exists($cheminFichierRss) && ($rssPages = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierRss . '</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
 			}
 			elseif (!empty($rssPages))
 			{
