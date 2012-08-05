@@ -1448,7 +1448,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 			
 			foreach ($listeFormateeFichiers as $cle => $valeur1)
 			{
-				echo '<li class="porteDocumentsListeContenuDossier"><strong>' . T_("Dossier") . ' <code>' . securiseTexte($cle) . "</code></strong><ul class=\"porteDocumentsListeDernierNiveau\">\n";
+				echo '<li class="porteDocumentsListeContenuDossier"><input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($cle) . '" /><strong>' . T_("Dossier") . ' <code>' . securiseTexte($cle) . "</code></strong><ul class=\"porteDocumentsListeDernierNiveau\">\n";
 				$cle = array ();
 				
 				foreach ($valeur1 as $valeur2)
