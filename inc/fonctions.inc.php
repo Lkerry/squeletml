@@ -1767,7 +1767,7 @@ function extension($nomFichier, $retourneNomSansExtension = FALSE)
 /*
 Filtre une chaîne de caractères pour ne conserver que des caractères non accentués et certains autres caractères. Retourne la chaîne filtrée.
 */
-function filtreChaine($chaine, $casse = '')
+function filtreChaine($chaine, $casse = '', $filtrerBarreOblique = TRUE)
 {
 	// Le contenu du tableau `$transliteration` provient du fichier `i18n-ascii.txt` du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.
 	$transliteration = array (
@@ -1868,7 +1868,16 @@ function filtreChaine($chaine, $casse = '')
 	);
 	
 	$chaine = strtr($chaine, $transliteration);
-	$chaine = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $chaine);
+	
+	if ($filtrerBarreOblique)
+	{
+		$chaine = preg_replace('/[^-A-Za-z0-9._\+]/', '-', $chaine);
+	}
+	else
+	{
+		$chaine = preg_replace('/[^-A-Za-z0-9._\+\/]/', '-', $chaine);
+	}
+	
 	$chaine = preg_replace('/-+/', '-', $chaine);
 	$chaine = str_replace('-.', '.', $chaine);
 	$chaine = str_replace('.-', '-', $chaine);

@@ -394,7 +394,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						}
 						elseif ($typeMime == 'application/zip' && !function_exists('gzopen'))
 						{
-							$messagesScript .= '<li class="erreur">' . T_("Les archives au format <code>ZIP</code> ne sont pas supportées.") . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . T_("L'extraction d'archives au format <code>ZIP</code> n'est pas supportée.") . "</li>\n";
 						}
 						elseif ($typeMime == 'application/zip')
 						{
