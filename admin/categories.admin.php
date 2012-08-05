@@ -207,7 +207,32 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<p>' . sprintf(T_("Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du paramètre %1\$s, l'URL sera générée automatiquement, et ce sous la forme %2\$s (%3\$s représente la variable %4\$s filtrée). Dans ce cas, il n'est pas nécessaire de créer la page d'accueil manuellement puisque %5\$s est une page livrée par défaut avec Squeletml et gérant l'affichage des articles d'une catégorie."), '<code>url</code>', '<code>$urlRacine/categorie.php?id=idCategorieFiltre</code>', '<code>idCategorieFiltre</code>', '<code>$idCategorie</code>', '<code>categorie.php</code>') . "</p>\n";
 			
-			echo '<p>' . T_("Pour enlever une catégorie ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
+			echo '<p>' . T_("Pour enlever une page, simplement supprimer le contenu du champ.") . "</p>\n";
+			
+			echo '<p>' . T_("Prendre note que si une URL contient des caractères spéciaux, elle devra être fournie sous forme encodée. Le plus simple est de copier l'adresse dans la barre de navigation du navigateur utilisé et de coller le résultat dans le champ approprié. L'URL racine sera automatiquement supprimée pour convertir l'adresse fournie en adresse relative.") . "</p>\n";
+			
+			echo '<p>' . T_("Voici un exemple pour l'URL d'une nouvelle catégorie:") . "</p>\n";
+			
+			echo "<p><code>http://www.monsite.ext/animaux/canid%C3%A9s/</code></p>\n";
+			
+			echo '<p>' . T_("et pour une nouvelle page dans cette catégorie:") . "</p>\n";
+			
+			echo "<p><code>http://www.monsite.ext/animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></p>\n";
+			
+			echo '<p>' . T_("Le résultat sera semblable à ci-dessous:") . "</p>\n";
+			
+			echo "<ul>\n";
+			echo "<li>Canidés\n";
+			echo "<ul>\n";
+			echo "<li><code>langue=fr</code></li>\n";
+			echo "<li><code>url=animaux/canid%C3%A9s/</code></li>\n";
+			echo "<li><code>parent=Animaux</code></li>\n";
+			echo "<li><code>pages</code>";
+			echo "<ul>";
+			echo "<li><code>pages[]=animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></li>\n";
+			echo "</ul></li>\n";
+			echo "</ul></li>\n";
+			echo "</ul>\n";
 			
 			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 			echo "</div><!-- /.bDcorps -->\n";

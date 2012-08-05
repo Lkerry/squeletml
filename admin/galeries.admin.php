@@ -2053,6 +2053,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<?php endif; ?>
 	
 				<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
+				
+				<p><?php echo T_("Prendre note que si vous précisez l'URL d'une nouvelle galerie et que cette URL contient des caractères spéciaux, elle devra être fournie sous forme encodée. Le plus simple est de copier l'adresse dans la barre de navigation du navigateur utilisé et de coller le résultat dans le champ de saisie. L'URL racine sera automatiquement supprimée pour convertir l'adresse fournie en adresse relative."); ?></p>
+				
+				<p><?php echo T_("Voici un exemple:"); ?></p>
+				
+				<p><code>http://www.monsite.ext/animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></p>
+				
+				<p><?php echo T_("Le résultat sera semblable à ci-dessous:"); ?></p>
+				
+				<p><code>url=animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></p>
 			</div><!-- .bDcorps -->
 		</div><!-- .aideAdminGaleries -->
 		
@@ -2082,7 +2092,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							<p><label for="nouvelleGalerieDossier"><?php echo T_("Si nouvelle galerie, nom du dossier (laisser vide pour génération automatique):"); ?></label><br />
 							<input id="nouvelleGalerieDossier" class="long" type="text" name="idNouvelleGalerieDossier" /></p>
 					
-							<p><label for="mettreEnLigneInputUrl"><?php echo T_("Si nouvelle galerie, URL de la page Web (laisser vide pour génération automatique):"); ?></label><br />
+							<p><label for="mettreEnLigneInputUrl"><?php echo T_("Si nouvelle galerie, URL relative de la page Web (laisser vide pour génération automatique):"); ?></label><br />
 							<input id="mettreEnLigneInputUrl" class="long" type="text" name="urlNouvelleGalerie" /></p>
 							
 							<p><label for="nouvelleGalerieRss"><?php echo T_("Si nouvelle galerie, RSS:"); ?></label><br />
@@ -2406,7 +2416,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<input id="renommerInputIdNouveauNomDossier" class="long" type="text" name="idNouveauNomDossier" />
 						</p>
 						
-						<p><?php printf(T_("<label for=\"%1\$s\">Nouvelle URL</label>:"), "renommerInputNouvelleUrl"); ?><br />
+						<p><?php printf(T_("<label for=\"%1\$s\">Nouvelle URL relative</label>:"), "renommerInputNouvelleUrl"); ?><br />
 						<input id="renommerInputNouvelleUrl" class="long" type="text" name="nouvelleUrl" />
 						</p>
 					<?php endif; ?>

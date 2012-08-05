@@ -124,7 +124,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<p>' . sprintf(T_("Cet exemple fait référence à une page en français dont l'URL est %1\$s."), '<code>' . securiseTexte("$urlRacine/animaux/chiens.php") . '</code>') . "</p>\n";
 			
-			echo '<p>' . T_("Pour enlever une langue ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
+			echo '<p>' . T_("Pour enlever une page, simplement supprimer le contenu du champ.") . "</p>\n";
+			
+			echo '<p>' . T_("Prendre note que si une URL contient des caractères spéciaux, elle devra être fournie sous forme encodée. Le plus simple est de copier l'adresse dans la barre de navigation du navigateur utilisé et de coller le résultat dans le champ approprié. L'URL racine sera automatiquement supprimée pour convertir l'adresse fournie en adresse relative.") . "</p>\n";
+			
+			echo '<p>' . T_("Voici un exemple:") . "</p>\n";
+			
+			echo "<p><code>http://www.monsite.ext/animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></p>\n";
+			
+			echo '<p>' . T_("Le résultat sera semblable à ci-dessous:") . "</p>\n";
+			
+			echo "<p><code>pages[]=animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></p>\n";
 			
 			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 			echo "</div><!-- /.bDcorps -->\n";
