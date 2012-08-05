@@ -21,8 +21,8 @@ ErrorDocument 503 /maintenance.php
 	# Chargement de fichiers par un formulaire.
 	<FilesMatch "^(galeries|porte-documents)\.admin\.php$">
 		php_value file_uploads On
-		php_value upload_max_filesize 15M
-		php_value post_max_size 15M
+		php_value upload_max_filesize 150M
+		php_value post_max_size 150M
 		php_value max_input_time 300
 	</FilesMatch>
 </IfModule>
