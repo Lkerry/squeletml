@@ -196,11 +196,11 @@
             ratio = preload.height / preload.width;
 
         if(width + paddingWidth > $(window).width() || height + paddingWidth > $(window).height()){
-            var new_width = $(window).width() - paddingWidth - 20,
+            var new_width = $(window).width() - paddingWidth - 10,
                 new_height =  new_width * ratio;
 
             if (new_height + paddingWidth > $(window).height()){
-                new_height = $(window).height() - paddingWidth - 20;
+                new_height = $(window).height() - paddingWidth - 100;
                 new_width = new_height / ratio;
             }
             width = new_width;
@@ -222,6 +222,10 @@
 
 		centerWidth = image.width;
 		totalWidth = centerWidth + paddingWidth;
+		
+		/* S'assurer d'une largeur minimale. */
+		if (totalWidth < 250) totalWidth = 250;
+		
 		centerHeight = image.height;
 		totalHeight = centerHeight + paddingHeight;
 		var top = Math.max(0, middle - (totalHeight / 2));

@@ -57,6 +57,24 @@
 	background: transparent url(nextlabel.gif) no-repeat 100% 15%;
 }
 
+/**/
+body.slimbox2gris #lbPrevLink:hover {
+	background: transparent url(prevlabel-gris.gif) no-repeat 0 15%;
+}
+
+body.slimbox2gris #lbNextLink:hover {
+	background: transparent url(nextlabel-gris.gif) no-repeat 100% 15%;
+}
+
+#lbContainer {
+	text-align: center;
+}
+
+#lbContainer, #lbBottomContainer {
+	min-width: 250px;
+}
+/**/
+
 #lbBottomContainer {
 	padding: 0 10px;
 }
