@@ -1,15 +1,265 @@
-/*
+/*!
 	Slimbox v2.04 - The ultimate lightweight Lightbox clone for jQuery
 	(c) 2007-2010 Christophe Beyls <http://www.digitalia.be>
 	MIT-style license.
 */
-(function(y){var H=y(window),u,e,I=-1,n,z,G,w,B,O,r,v,p,j,x,m=!window.XMLHttpRequest,s=[],l=document.documentElement,k={},t=new Image(),M=new Image(),K,A,f,L,c,J,b,D,N;y(function(){y("body").append(y([K=y('<div id="lbOverlay" />')[0],A=y('<div id="lbContainer" />')[0],J=y('<div id="lbBottomContainer" />')[0]]).css("display","none"));f=y("<img />").appendTo(A)[0];L=y('<a id="lbPrevLink" href="#" />').appendTo(A).click(E)[0];c=y('<a id="lbNextLink" href="#" />').appendTo(A).click(d)[0];b=y('<div id="lbBottom" />').appendTo(J).append([y('<a id="lbCloseLink" href="#" />').add(K).click(F)[0],D=y('<div id="lbCaption" />')[0],N=y('<div id="lbNumber" />')[0],y('<div style="clear: both;" />')[0]])[0]});y.slimbox=function(R,Q,P){u=y.extend({loop:false,overlayOpacity:0.8,overlayFadeDuration:400,resizeDuration:400,resizeEasing:"swing",initialWidth:250,initialHeight:250,imageFadeDuration:400,captionAnimationDuration:400,counterText:"Image {x} of {y}",closeKeys:[27,88,67],previousKeys:[37,80],nextKeys:[39,78]},P);if(typeof R=="string"){R=[[R,Q]];Q=0}B=H.scrollTop()+(H.height()/2);O=u.initialWidth;v=parseInt(y(A).css("paddingLeft"))+parseInt(y(A).css("paddingRight"));j=O+v;r=u.initialHeight;p=parseInt(y(A).css("paddingTop"))+parseInt(y(A).css("paddingBottom"));x=r+p;y(A).css({top:Math.max(0,B-(x/2)),width:O,height:r,marginLeft:-j/2}).show();w=m||(K.currentStyle&&(K.currentStyle.position!="fixed"));if(w){K.style.position="absolute"}y(K).css("opacity",u.overlayOpacity).fadeIn(u.overlayFadeDuration);C();i(1);e=R;u.loop=u.loop&&(e.length>1);return a(Q)};y.fn.slimbox=function(P,S,R){S=S||function(T){return[T.href,T.title]};R=R||function(){return true};var Q=this;return Q.unbind("click").click(function(){var V=this,X=0,W,T=0,U;W=y.grep(Q,function(Z,Y){return R.call(V,Z,Y)});for(U=W.length;T<U;++T){if(W[T]==V){X=T}W[T]=S(W[T],T)}return y.slimbox(W,X,P)})};function C(){var Q=H.scrollLeft(),P=H.width();y([A,J]).css("left",Q+(P/2));if(w){y(K).css({left:Q,top:H.scrollTop(),width:P,height:H.height()})}}function i(P){if(P){y("object").add(m?"select":"embed").each(function(R,S){s[R]=[S,S.style.visibility];S.style.visibility="hidden"})}else{y.each(s,function(R,S){S[0].style.visibility=S[1]});s=[]}var Q=P?"bind":"unbind";H[Q]("scroll resize",C);y(document)[Q]("keydown",o)}function o(R){var Q=R.keyCode,P=y.inArray;return(P(Q,u.closeKeys)>=0)?F():(P(Q,u.nextKeys)>=0)?d():(P(Q,u.previousKeys)>=0)?E():false}function E(){return a(z)}function d(){return a(G)}function a(P){if(P>=0){I=P;n=e[I][0];z=(I||(u.loop?e.length:0))-1;G=((I+1)%e.length)||(u.loop?0:-1);q();A.className="lbLoading";k=new Image();k.onload=h;k.src=n}return false}function h(){var T=k.width,P=k.height,S=k.height/k.width;if(T+v>y(window).width()||P+v>y(window).height()){var Q=y(window).width()-v-20,R=Q*S;if(R+v>y(window).height()){R=y(window).height()-v-20;Q=R/S}T=Q;P=R}A.className="";y(f).css({visibility:"hidden",display:""});f.src=k.src;f.width=T;f.height=P;y([L,c]).height(f.height);y(D).html(e[I][1]||"");y(N).html((((e.length>1)&&u.counterText)||"").replace(/{x}/,I+1).replace(/{y}/,e.length));if(z>=0){t.src=e[z][0]}if(G>=0){M.src=e[G][0]}O=f.width;j=O+v;r=f.height;x=r+p;var U=Math.max(0,B-(x/2));if(y(A).height()!=r){y(A).animate({height:r,top:U},u.resizeDuration,u.resizeEasing)}if(y(A).width()!=O){y(A).animate({width:O,marginLeft:-(j/2)},u.resizeDuration,u.resizeEasing)}y(A).queue(function(){y(J).css({width:O,top:U+x,marginLeft:-j/2,visibility:"hidden",display:""});y(f).css({display:"none",visibility:"",opacity:""}).fadeIn(u.imageFadeDuration,g)})}function g(){if(z>=0){y(L).show()}if(G>=0){y(c).show()}y(b).css("marginTop",-b.offsetHeight).animate({marginTop:0},u.captionAnimationDuration);J.style.visibility=""}function q(){k.onload=null;k.src=t.src=M.src=n;y([A,f,b]).stop(true);y([L,c,f,J]).hide()}function F(){if(I>=0){q();I=z=G=-1;y(A).hide();y(K).stop().fadeOut(u.overlayFadeDuration,i)}return false}})(jQuery);
 
-// AUTOLOAD CODE BLOCK (MAY BE CHANGED OR REMOVED)
-if (!/android|iphone|ipod|series60|symbian|windows ce|blackberry/i.test(navigator.userAgent)) {
-	jQuery(function($) {
-		$("a[rel^='lightbox']").slimbox({/* Put custom options here */}, null, function(el) {
-			return (this == el) || ((this.rel.length > 8) && (this.rel == el.rel));
-		});
+(function($) {
+
+	// Global variables, accessible to Slimbox only
+	var win = $(window), options, images, activeImage = -1, activeURL, prevImage, nextImage, compatibleOverlay, middle, centerWidth, centerHeight, paddingWidth, paddingHeight, totalWidth, totalHeight,
+		ie6 = !window.XMLHttpRequest, hiddenElements = [], documentElement = document.documentElement,
+
+	// Preload images
+	preload = {}, preloadPrev = new Image(), preloadNext = new Image(),
+
+	// DOM elements
+	overlay, container, image, prevLink, nextLink, bottomContainer, bottom, caption, number;
+
+	/*
+		Initialization
+	*/
+
+	$(function() {
+		// Append the Slimbox HTML code at the bottom of the document
+		$("body").append(
+			$([
+				overlay = $('<div id="lbOverlay" />')[0],
+				container = $('<div id="lbContainer" />')[0],
+				bottomContainer = $('<div id="lbBottomContainer" />')[0]
+			]).css("display", "none")
+		);
+
+		image = $('<img />').appendTo(container)[0];
+		prevLink = $('<a id="lbPrevLink" href="#" />').appendTo(container).click(previous)[0];
+		nextLink = $('<a id="lbNextLink" href="#" />').appendTo(container).click(next)[0];
+
+		bottom = $('<div id="lbBottom" />').appendTo(bottomContainer).append([
+			$('<a id="lbCloseLink" href="#" />').add(overlay).click(close)[0],
+			caption = $('<div id="lbCaption" />')[0],
+			number = $('<div id="lbNumber" />')[0],
+			$('<div style="clear: both;" />')[0]
+		])[0];
 	});
-}
+
+
+	/*
+		API
+	*/
+
+	// Open Slimbox with the specified parameters
+	$.slimbox = function(_images, startImage, _options) {
+		options = $.extend({
+			loop: false,				// Allows to navigate between first and last images
+			overlayOpacity: 0.8,			// 1 is opaque, 0 is completely transparent (change the color in the CSS file)
+			overlayFadeDuration: 400,		// Duration of the overlay fade-in and fade-out animations (in milliseconds)
+			resizeDuration: 400,			// Duration of each of the box resize animations (in milliseconds)
+			resizeEasing: "swing",			// "swing" is jQuery's default easing
+			initialWidth: 250,			// Initial width of the box (in pixels)
+			initialHeight: 250,			// Initial height of the box (in pixels)
+			imageFadeDuration: 400,			// Duration of the image fade-in animation (in milliseconds)
+			captionAnimationDuration: 400,		// Duration of the caption animation (in milliseconds)
+			counterText: "Image {x} of {y}",	// Translate or change as you wish, or set it to false to disable counter text for image groups
+			closeKeys: [27, 88, 67],		// Array of keycodes to close Slimbox, default: Esc (27), 'x' (88), 'c' (67)
+			previousKeys: [37, 80],			// Array of keycodes to navigate to the previous image, default: Left arrow (37), 'p' (80)
+			nextKeys: [39, 78]			// Array of keycodes to navigate to the next image, default: Right arrow (39), 'n' (78)
+		}, _options);
+
+		// The function is called for a single image, with URL and Title as first two arguments
+		if (typeof _images == "string") {
+			_images = [[_images, startImage]];
+			startImage = 0;
+		}
+
+		middle = win.scrollTop() + (win.height() / 2);
+		centerWidth = options.initialWidth;
+		paddingWidth = parseInt($(container).css('paddingLeft')) + parseInt($(container).css('paddingRight'));
+		totalWidth = centerWidth + paddingWidth;
+		centerHeight = options.initialHeight;
+		paddingHeight = parseInt($(container).css('paddingTop')) + parseInt($(container).css('paddingBottom'));
+		totalHeight = centerHeight + paddingHeight;
+		$(container).css({top: Math.max(0, middle - (totalHeight / 2)), width: centerWidth, height: centerHeight, marginLeft: -totalWidth/2}).show();
+		compatibleOverlay = ie6 || (overlay.currentStyle && (overlay.currentStyle.position != "fixed"));
+		if (compatibleOverlay) overlay.style.position = "absolute";
+		$(overlay).css("opacity", options.overlayOpacity).fadeIn(options.overlayFadeDuration);
+		position();
+		setup(1);
+
+		images = _images;
+		options.loop = options.loop && (images.length > 1);
+		return changeImage(startImage);
+	};
+
+	/*
+		options:	Optional options object, see jQuery.slimbox()
+		linkMapper:	Optional function taking a link DOM element and an index as arguments and returning an array containing 2 elements:
+				the image URL and the image caption (may contain HTML)
+		linksFilter:	Optional function taking a link DOM element and an index as arguments and returning true if the element is part of
+				the image collection that will be shown on click, false if not. "this" refers to the element that was clicked.
+				This function must always return true when the DOM element argument is "this".
+	*/
+	$.fn.slimbox = function(_options, linkMapper, linksFilter) {
+		linkMapper = linkMapper || function(el) {
+			return [el.href, el.title];
+		};
+
+		linksFilter = linksFilter || function() {
+			return true;
+		};
+
+		var links = this;
+
+		return links.unbind("click").click(function() {
+			// Build the list of images that will be displayed
+			var link = this, startIndex = 0, filteredLinks, i = 0, length;
+			filteredLinks = $.grep(links, function(el, i) {
+				return linksFilter.call(link, el, i);
+			});
+
+			// We cannot use jQuery.map() because it flattens the returned array
+			for (length = filteredLinks.length; i < length; ++i) {
+				if (filteredLinks[i] == link) startIndex = i;
+				filteredLinks[i] = linkMapper(filteredLinks[i], i);
+			}
+
+			return $.slimbox(filteredLinks, startIndex, _options);
+		});
+	};
+
+
+	/*
+		Internal functions
+	*/
+
+	function position() {
+		var l = win.scrollLeft(), w = win.width();
+		$([container, bottomContainer]).css("left", l + (w / 2));
+		if (compatibleOverlay) $(overlay).css({left: l, top: win.scrollTop(), width: w, height: win.height()});
+	}
+
+	function setup(open) {
+		if (open) {
+			$("object").add(ie6 ? "select" : "embed").each(function(index, el) {
+				hiddenElements[index] = [el, el.style.visibility];
+				el.style.visibility = "hidden";
+			});
+		} else {
+			$.each(hiddenElements, function(index, el) {
+				el[0].style.visibility = el[1];
+			});
+			hiddenElements = [];
+		}
+		var fn = open ? "bind" : "unbind";
+		win[fn]("scroll resize", position);
+		$(document)[fn]("keydown", keyDown);
+	}
+
+	function keyDown(event) {
+		var code = event.which, fn = $.inArray;
+		// Prevent default keyboard action (like navigating inside the page)
+		return (fn(code, options.closeKeys) >= 0) ? close()
+			: (fn(code, options.nextKeys) >= 0) ? next()
+			: (fn(code, options.previousKeys) >= 0) ? previous()
+			: null;
+	}
+
+	function previous() {
+		return changeImage(prevImage);
+	}
+
+	function next() {
+		return changeImage(nextImage);
+	}
+
+	function changeImage(imageIndex) {
+		if (imageIndex >= 0) {
+			activeImage = imageIndex;
+			activeURL = images[activeImage][0];
+			prevImage = (activeImage || (options.loop ? images.length : 0)) - 1;
+			nextImage = ((activeImage + 1) % images.length) || (options.loop ? 0 : -1);
+
+			stop();
+			container.className = "lbLoading";
+
+			preload = new Image();
+			preload.onload = animateBox;
+			preload.src = activeURL;
+		}
+
+		return false;
+	}
+
+	function animateBox() {
+		// make sure img fits in window
+		var width = preload.width, 
+            height = preload.height,
+            ratio = preload.height / preload.width;
+
+        if(width + paddingWidth > $(window).width() || height + paddingWidth > $(window).height()){
+            var new_width = $(window).width() - paddingWidth - 20,
+                new_height =  new_width * ratio;
+
+            if (new_height + paddingWidth > $(window).height()){
+                new_height = $(window).height() - paddingWidth - 20;
+                new_width = new_height / ratio;
+            }
+            width = new_width;
+            height = new_height;
+        }
+
+		container.className = "";
+		$(image).css({visibility: "hidden", display: ""});
+		image.src = preload.src;
+		image.width = width;
+		image.height = height;
+		$([prevLink, nextLink]).height(image.height);
+
+		$(caption).html(images[activeImage][1] || "");
+		$(number).html((((images.length > 1) && options.counterText) || "").replace(/{x}/, activeImage + 1).replace(/{y}/, images.length));
+
+		if (prevImage >= 0) preloadPrev.src = images[prevImage][0];
+		if (nextImage >= 0) preloadNext.src = images[nextImage][0];
+
+		centerWidth = image.width;
+		totalWidth = centerWidth + paddingWidth;
+		centerHeight = image.height;
+		totalHeight = centerHeight + paddingHeight;
+		var top = Math.max(0, middle - (totalHeight / 2));
+		if ($(container).height() != centerHeight) {
+			$(container).animate({height: centerHeight, top: top}, options.resizeDuration, options.resizeEasing);
+		}
+		if ($(container).width() != centerWidth) {
+			$(container).animate({width: centerWidth, marginLeft: -(totalWidth/2)}, options.resizeDuration, options.resizeEasing);
+		}
+		$(container).queue(function() {
+			$(bottomContainer).css({width: centerWidth, top: top + totalHeight, marginLeft: -totalWidth/2, visibility: "hidden", display: ""});
+			$(image).css({display: "none", visibility: "", opacity: ""}).fadeIn(options.imageFadeDuration, animateCaption);
+		});
+	}
+
+	function animateCaption() {
+		if (prevImage >= 0) $(prevLink).show();
+		if (nextImage >= 0) $(nextLink).show();
+		$(bottom).css("marginTop", -bottom.offsetHeight).animate({marginTop: 0}, options.captionAnimationDuration);
+		bottomContainer.style.visibility = "";
+	}
+
+	function stop() {
+		preload.onload = null;
+		preload.src = preloadPrev.src = preloadNext.src = activeURL;
+		$([container, image, bottom]).stop(true);
+		$([prevLink, nextLink, image, bottomContainer]).hide();
+	}
+
+	function close() {
+		if (activeImage >= 0) {
+			stop();
+			activeImage = prevImage = nextImage = -1;
+			$(container).hide();
+			$(overlay).stop().fadeOut(options.overlayFadeDuration, setup);
+		}
+
+		return false;
+	}
+
+})(jQuery);

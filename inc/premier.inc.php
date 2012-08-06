@@ -451,6 +451,7 @@ if ($inclureCodeFenetreJavascript || (($galerieAccueilJavascript || $galerieLien
 {
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/slimbox2/js/slimbox2.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/slimbox2/js/autoload.js";
 	$balisesLinkScript[] = "$url#css#$urlRacine/js/slimbox2/css/slimbox2.css";
 }
 
