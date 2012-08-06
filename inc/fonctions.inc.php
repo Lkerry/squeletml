@@ -5569,7 +5569,7 @@ function securiseTexte($texte)
 	}
 	elseif (is_string($texte))
 	{
-		return stripslashes(htmlspecialchars($texte, ENT_COMPAT, 'UTF-8'));
+		return htmlspecialchars($texte, ENT_COMPAT, 'UTF-8');
 	}
 	
 	return '';
