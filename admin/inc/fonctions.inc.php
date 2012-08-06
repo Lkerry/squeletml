@@ -1200,7 +1200,17 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexte("$dossierAparcourir/$fichier") . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=editer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$typeMime = typeMime("$dossierAparcourir/$fichier");
+					
+					if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty')
+					{
+						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=editer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					}
+					else
+					{
+						$fichierMisEnForme .= "<img src=\"$urlRacineAdmin/fichiers/editer-desactive.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" />\n";
+					}
+					
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
 					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
