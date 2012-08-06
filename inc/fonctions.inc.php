@@ -2888,7 +2888,6 @@ function image(
 				$title = $infosImage['intermediaireLegende'] . '<br />' . $title;
 			}
 			
-			$title = str_replace(array ('<', '>', '"'), array ('&lt;', '&gt;', "'"), $title);
 			$aHref = '<a href="' . $urlImgSrc . '/' . encodeTexte($infosImage['intermediaireNom']) . '" rel="lightbox-galerie" title="' . securiseTexte($title) . '">';
 		}
 		else
