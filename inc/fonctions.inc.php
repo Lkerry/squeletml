@@ -4698,7 +4698,14 @@ Conversion des octets en Kio.
 */
 function octetsVersKio($octets)
 {
-	return number_format($octets / 1024, 1, ',', '');
+	$nombre = number_format($octets / 1024, 1, ',', '');
+	
+	if ($nombre == '0,0')
+	{
+		$nombre = 0;
+	}
+	
+	return $nombre;
 }
 
 /*
@@ -4706,7 +4713,14 @@ Conversion des octets en Mio.
 */
 function octetsVersMio($octets)
 {
-	return number_format($octets / 1048576, 1, ',', '');
+	$nombre = number_format($octets / 1048576, 1, ',', '');
+	
+	if ($nombre == '0,0')
+	{
+		$nombre = 0;
+	}
+	
+	return $nombre;
 }
 
 /*
