@@ -91,21 +91,32 @@ $jsDirect = <<<JS
 JS;
 
 $adminBalisesLinkScript[9] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[10] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[11] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
-$adminBalisesLinkScript[12] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
-$adminBalisesLinkScript[13] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[14] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[15] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
-$adminBalisesLinkScript[16] = "$urlRacineAdmin/galeries.admin.php*#jsDirect#$jsDirect";
-$adminBalisesLinkScript[17] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[18] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[19] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
-$adminBalisesLinkScript[20] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
-$adminBalisesLinkScript[21] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
-$adminBalisesLinkScript[22] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.core.js";
-$adminBalisesLinkScript[23] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/ui.sortable.js";
-$adminBalisesLinkScript[24] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
+$adminBalisesLinkScript[10] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[11] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[12] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[13] = "$urlRacineAdmin/categories.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
+$adminBalisesLinkScript[14] = "$urlRacineAdmin/categories.admin.php*#jsDirect#$jsDirect";
+
+$adminBalisesLinkScript[15] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[16] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[17] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[18] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[19] = "$urlRacineAdmin/galeries.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
+$adminBalisesLinkScript[20] = "$urlRacineAdmin/galeries.admin.php*#jsDirect#$jsDirect";
+
+$adminBalisesLinkScript[21] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[22] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[23] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[24] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[25] = "$urlRacineAdmin/rss.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
+$adminBalisesLinkScript[26] = "$urlRacineAdmin/rss.admin.php*#jsDirect#$jsDirect";
+
+$adminBalisesLinkScript[27] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[28] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[29] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[30] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[31] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
+$adminBalisesLinkScript[32] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
 
 // Fusion des fichiers CSS et des scripts Javascript.
 /*
@@ -127,6 +138,10 @@ $adminFusionnerCssJs = FALSE; // TRUE|FALSE
 */
 $adminCheminExiftran = '/usr/bin/exiftran';
 $adminCheminJpegtran = '/usr/bin/jpegtran';
+
+// Taille par défaut lors d'un redimensionnement.
+$adminTailleParDefautRedimensionnement['largeur'] = 500;
+$adminTailleParDefautRedimensionnement['hauteur'] = 500;
 
 ########################################################################
 ##
@@ -225,6 +240,10 @@ $adminFiltreTypesMime = TRUE; // TRUE|FALSE
 /*
 - Si `$adminFiltreTypesMime` vaut TRUE et que le tableau `$adminTypesMimePermis` est vide, l'ajout de fichiers par le porte-documents sera désactivé.
 */
+$adminTypesMimePermis['vide'] = 'application/x-empty';
+
+$adminTypesMimePermis['dossier'] = 'directory';
+
 $adminTypesMimePermis['gif']          = 'image/gif';
 $adminTypesMimePermis['jpeg|jpg|jpe'] = 'image/jpeg';
 $adminTypesMimePermis['png']          = 'image/png';
@@ -234,11 +253,12 @@ $adminTypesMimePermis['tiff|tif']     = 'image/tiff';
 $adminTypesMimePermis['xcf']          = 'application/x-xcf';
 $adminTypesMimePermis['psd']          = 'image/x-photoshop';
 
-$adminTypesMimePermis['html|htm|shtml']       = 'text/html';
-$adminTypesMimePermis['xhtml|xht']            = 'application/xhtml+xml';
-$adminTypesMimePermis['xml|xsl']              = 'application/xml';
-$adminTypesMimePermis['css']                  = 'text/css';
-$adminTypesMimePermis['asc|txt|text|pot|ini'] = 'text/plain';
+$adminTypesMimePermis['html|htm|shtml']          = 'text/html';
+$adminTypesMimePermis['xhtml|xht']               = 'application/xhtml+xml';
+$adminTypesMimePermis['xml|xsl']                 = 'application/xml';
+$adminTypesMimePermis['css']                     = 'text/css';
+$adminTypesMimePermis['asc|txt|text|po|pot|ini'] = 'text/plain';
+$adminTypesMimePermis['markdown|md|mkd']         = 'text/x-markdown';
 
 $adminTypesMimePermis['odb']         = 'application/vnd.oasis.opendocument.database';
 $adminTypesMimePermis['odp']         = 'application/vnd.oasis.opendocument.presentation';
@@ -255,11 +275,12 @@ $adminTypesMimePermis['docx']        = 'application/vnd.openxmlformats-officedoc
 $adminTypesMimePermis['pdf']         = 'application/pdf';
 $adminTypesMimePermis['ps|ai|eps']   = 'application/postscript';
 
-$adminTypesMimePermis['tar']          = 'application/x-tar';
-$adminTypesMimePermis['7z']           = 'application/x-7z-compressed';
-$adminTypesMimePermis['gtar|tgz|taz'] = 'application/x-gtar';
-$adminTypesMimePermis['zip']          = 'application/zip';
-$adminTypesMimePermis['rar']          = 'application/rar';
+$adminTypesMimePermis['tar']      = 'application/x-tar';
+$adminTypesMimePermis['7z']       = 'application/x-7z-compressed';
+$adminTypesMimePermis['bz2|tbz2'] = 'application/x-bzip2';
+$adminTypesMimePermis['gz|tgz']   = 'application/x-gzip';
+$adminTypesMimePermis['zip']      = 'application/zip';
+$adminTypesMimePermis['rar']      = 'application/rar';
 
 $adminTypesMimePermis['ogg|ogx']                = 'application/ogg';
 $adminTypesMimePermis['oga|spx']                = 'audio/ogg';
@@ -275,13 +296,9 @@ $adminTypesMimePermis['qt|mov']                 = 'video/quicktime';
 
 /* ____________________ Actions sur les fichiers. ____________________ */
 
-// Aide lors de l'édition.
+// Coloration syntaxique lors de l'édition.
 /*
-- Il y a deux possibilités:
-  - activer l'ajout d'une barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor), qui permet également de visualiser un aperçu du code HTML.
-  - activer la coloration en direct du **code** à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie dans le `textarea`. La coloration s'applique alors au code PHP, HTML, CSS et Javascript (séparément ou entremêlés dans le même fichier);
-- Pour désactiver l'aide, laisser vide, c'est-à-dire:
-  $adminAideEdition = '';
+Activer la coloration en direct du **code** à l'aide de [CodeMirror](http://codemirror.net/) durant la saisie dans le `textarea`. La coloration s'applique alors au code PHP, HTML, CSS, Javascript, XML, Markdown et INI.
 */
-$adminAideEdition = 'CodeMirror'; // BUEditor|CodeMirror
+$adminColorationSyntaxique = TRUE; // TRUE|FALSE
 ?>

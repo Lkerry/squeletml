@@ -1,1 +1,0 @@
-Le fichier `i18n-ascii.txt` Provient du module Pathauto pour Drupal, sous licence GPL. Voir <http://drupal.org/project/pathauto>.

@@ -63,16 +63,16 @@ function adminChmod($fichier, $permissions)
 	{
 		if (@chmod($fichier, $permissions))
 		{
-			return '<li>' . sprintf(T_("Modification des permissions de %1\$s effectuée (de %2\$s vers %3\$s)."), "<code>$fichier</code>", "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
+			return '<li>' . sprintf(T_("Modification des permissions de %1\$s effectuée (de %2\$s vers %3\$s)."), '<code>' . securiseTexte($fichier) . '</code>', "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
 		}
 		else
 		{
-			return '<li class="erreur">' . sprintf(T_("Modification des permissions de %1\$s impossible (de %2\$s vers %3\$s)."), "<code>$fichier</code>", "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
+			return '<li class="erreur">' . sprintf(T_("Modification des permissions de %1\$s impossible (de %2\$s vers %3\$s)."), '<code>' . securiseTexte($fichier) . '</code>', "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
 		}
 	}
 	else
 	{
-		return '<li>' . sprintf(T_("Modification des permissions de %1\$s non nécessaire (demande de %2\$s vers %3\$s)."), "<code>$fichier</code>", "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
+		return '<li>' . sprintf(T_("Modification des permissions de %1\$s non nécessaire (demande de %2\$s vers %3\$s)."), '<code>' . securiseTexte($fichier) . '</code>', "<code>$anciennesPermissions</code>", "<code>" . decoct($permissions) . "</code>") . "</li>\n";
 	}
 }
 
@@ -109,7 +109,7 @@ function adminChmodRecursif($dossierAmodifier, $permissions)
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAmodifier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), '<code>' . securiseTexte($dossierAmodifier) . '</code>') . "</li>\n";
 			}
 		}
 	}
@@ -144,11 +144,11 @@ function adminCopy($fichierSource, $fichierDeDestination)
 {
 	if (@copy($fichierSource, $fichierDeDestination))
 	{
-		return '<li>' . sprintf(T_("Copie de %1\$s vers %2\$s effectuée."), "<code>$fichierSource</code>", "<code>$fichierDeDestination</code>") . "</li>\n";
+		return '<li>' . sprintf(T_("Copie de %1\$s vers %2\$s effectuée."), '<code>' . securiseTexte($fichierSource) . '</code>', '<code>' . securiseTexte($fichierDeDestination) . '</code>') . "</li>\n";
 	}
 	else
 	{
-		return '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible."), "<code>$fichierSource</code>", "<code>$fichierDeDestination</code>") . "</li>\n";
+		return '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible."), '<code>' . securiseTexte($fichierSource) . '</code>', '<code>' . securiseTexte($fichierDeDestination) . '</code>') . "</li>\n";
 	}
 }
 
@@ -187,7 +187,7 @@ function adminCopyDossier($dossierSource, $dossierDeDestination)
 		}
 		else
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierSource</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), '<code>' . securiseTexte($dossierSource) . '</code>') . "</li>\n";
 		}
 	}
 	
@@ -204,7 +204,7 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine)
 	
 	if (!file_exists($cheminFichierRobots) && !@touch($cheminFichierRobots))
 	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier Sitemap ne peut être déclaré puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierRobots</code>") . "</li>\n";
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier Sitemap ne peut être déclaré puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichierRobots) . '</code>') . "</li>\n";
 	}
 	
 	if (file_exists($cheminFichierRobots))
@@ -213,7 +213,7 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine)
 		
 		if ($contenuRobots === FALSE)
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$cheminFichierRobots</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRobots) . '</code>') . "</li>\n";
 		}
 		else
 		{
@@ -222,7 +222,7 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine)
 			
 			if (preg_match('/^' . preg_quote($declaration, '/') . '$/m', $contenuRobots))
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Le fichier Sitemap est déjà déclaré dans le fichier %1\$s."), "<code>$cheminFichierRobots</code>") . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Le fichier Sitemap est déjà déclaré dans le fichier %1\$s."), '<code>' . securiseTexte($cheminFichierRobots) . '</code>') . "</li>\n";
 			}
 			else
 			{
@@ -232,14 +232,14 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine)
 
 				if (@file_put_contents($cheminFichierRobots, $contenuRobots) !== FALSE)
 				{
-					$messagesScript .= '<p>' . sprintf(T_("Déclaration du fichier Sitemap dans le fichier %1\$s effectuée."), "<code>$cheminFichierRobots</code>") . "</p>\n";
+					$messagesScript .= '<p>' . sprintf(T_("Déclaration du fichier Sitemap dans le fichier %1\$s effectuée."), '<code>' . securiseTexte($cheminFichierRobots) . '</code>') . "</p>\n";
 
 
 					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui a été enregistré dans le fichier:") . "</p>\n";
 				}
 				else
 				{
-					$messagesScript .= '<p class="erreur">' . sprintf(T_("Déclaration du fichier Sitemap dans le fichier %1\$s impossible."), "<code>$cheminFichierRobots</code>") . "</p>\n";
+					$messagesScript .= '<p class="erreur">' . sprintf(T_("Déclaration du fichier Sitemap dans le fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRobots) . '</code>') . "</p>\n";
 
 					$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 				}
@@ -387,7 +387,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocument
 	{
 		foreach ($tableauFiltresAccesDossiers as $dossierFiltre)
 		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement))
+			if (preg_match('|^' . preg_quote($dossierFiltre, '|') . '(/.+)?$|', $emplacement))
 			{
 				return TRUE;
 			}
@@ -399,7 +399,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocument
 		
 		foreach ($tableauFiltresAccesDossiers as $dossierFiltre)
 		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $emplacement))
+			if (preg_match('|^' . preg_quote($dossierFiltre, '|') . '(/.+)?$|', $emplacement) || !preg_match('|^' . preg_quote($adminDossierRacinePorteDocuments, '|') . '(/.+)?$|', $emplacement))
 			{
 				$aAjouter = FALSE;
 				break;
@@ -465,7 +465,7 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier)
 		
 		if (!@touch($cheminFichier))
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
 		}
 	}
 	
@@ -477,11 +477,11 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier)
 		{
 			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
 
-			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
 		}
 		else
 		{
-			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</p>\n";
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
 			
 			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 		}
@@ -492,7 +492,7 @@ function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier)
 	}
 
 	$messagesScript .= "<div class=\"bDcorps\">\n";
-	$messagesScript .= '<pre id="contenuFichier">' . $contenuFichier . "</pre>\n";
+	$messagesScript .= '<pre id="contenuFichier">' . securiseTexte($contenuFichier) . "</pre>\n";
 	
 	$messagesScript .= "<ul>\n";
 	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
@@ -515,7 +515,7 @@ function adminEnregistreSitemap($racine, $contenuSitemap)
 	{
 		if (!@touch($cheminFichierSitemap))
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichierSitemap</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du fichier Sitemap puisque %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichierSitemap) . '</code>') . "</li>\n";
 		}
 	}
 
@@ -527,11 +527,11 @@ function adminEnregistreSitemap($racine, $contenuSitemap)
 		{
 			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
 
-			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . $cheminFichierSitemap . '</code>') . "</p>\n";
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichierSitemap) . '</code>') . "</p>\n";
 		}
 		else
 		{
-			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichierSitemap . '</code>') . "</p>\n";
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierSitemap) . '</code>') . "</p>\n";
 		
 			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
 		}
@@ -569,6 +569,121 @@ function adminEstIe()
 }
 
 /*
+Extrait l'archive (`.tar`, `.tar.bz2`, `.tar.gz` ou `.zip`) et retourne un tableau associatif de deux éléments:
+
+- `fichiersExtraits`: un tableau listant les fichiers extraits;
+- `messagesScript`: le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminExtraitArchive($cheminArchive, $cheminExtraction, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom = FALSE, $filtreCasse = '')
+{
+	$fichiersExtraits = array ();
+	$messagesScript = '';
+	$erreur = FALSE;
+	
+	try
+	{
+		$archive = ezcArchive::open($cheminArchive);
+	}
+	catch (Exception $e)
+	{
+		$erreur = TRUE;
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: «%2\$s»."), '<code>' . securiseTexte($cheminArchive) . '</code>', $e->getMessage()) . "</li>\n";
+	}
+	
+	if (!$erreur)
+	{
+		$messagesScript .= '<li>' . sprintf(T_("Début de l'extraction de l'archive %1\$s."), '<code>' . securiseTexte($cheminArchive) . '</code>') . "</li>\n";
+		
+		while ($archive->valid())
+		{
+			$fichier = $archive->current();
+			$cheminFichier = $cheminExtraction . '/' . $fichier->getPath();
+			
+			if (file_exists($cheminFichier))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+			}
+			else
+			{
+				if ($filtrerNom)
+				{
+					$cheminFichierFiltre = filtreChaine($fichier->getPath(), $filtreCasse, FALSE);
+				}
+				else
+				{
+					$cheminFichierFiltre = $fichier->getPath();
+				}
+				
+				$messagesScriptFiltrage = '';
+				
+				if ($cheminFichierFiltre != $fichier->getPath())
+				{
+					$messagesScriptFiltrage = '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($fichier->getPath()) . '</code>', '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
+				}
+				
+				$cheminFichierFiltre = $cheminExtraction . '/' . $cheminFichierFiltre;
+				
+				if (file_exists($cheminFichierFiltre))
+				{
+					$messagesScript .= $messagesScriptFiltrage;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
+				}
+				else
+				{
+					try
+					{
+						$extractionReussie = $archive->extractCurrent($cheminExtraction, TRUE);
+					}
+					catch (Exception $e)
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction du fichier %1\$s: «%2\$s»."), '<code>' . securiseTexte($cheminFichier) . '</code>', $e->getMessage()) . "</li>\n";
+						@unlink($cheminFichier);
+					}
+					
+					if ($extractionReussie)
+					{
+						$typeMimeFichier = typeMime($cheminFichier);
+						
+						if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($cheminFichier) . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
+							@unlink($cheminFichier);
+						}
+						else
+						{
+							$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+						
+							if (!empty($messagesScriptFiltrage))
+							{
+								$messagesScript .= $messagesScriptFiltrage;
+								$messagesScript .= adminRename($cheminFichier, $cheminFichierFiltre);
+							}
+							
+							if (file_exists($cheminFichierFiltre))
+							{
+								$fichiersExtraits[] = $cheminFichierFiltre;
+							}
+							else
+							{
+								$fichiersExtraits[] = $cheminFichier;
+							}
+						}
+					}
+				}
+			}
+			
+			$archive->next();
+		}
+		
+		$archive->close();
+		unset($archive);
+		$messagesScript .= '<li>' . sprintf(T_("Extraction de l'archive %1\$s effectuée."), '<code>' . securiseTexte($cheminArchive) . '</code>') . "</li>\n";
+	}
+	
+	return array ('fichiersExtraits' => $fichiersExtraits, 'messagesScript' => $messagesScript);
+}
+
+/*
 Génère et retourne le contenu du fichier Sitemap.
 */
 function adminGenereContenuSitemap($tableauUrl)
@@ -578,7 +693,7 @@ function adminGenereContenuSitemap($tableauUrl)
 	foreach ($tableauUrl as $urlAjout => $infosUrlAjout)
 	{
 		$contenuSitemap .= "\t<url>\n";
-		$contenuSitemap .= "\t\t<loc>" . superRawurlencode($urlAjout) . "</loc>\n";
+		$contenuSitemap .= "\t\t<loc>" . $urlAjout . "</loc>\n";
 	
 		foreach ($infosUrlAjout as $balise => $valeur)
 		{
@@ -624,47 +739,6 @@ function adminGenereContenuSitemap($tableauUrl)
 	$contenuSitemap .= '</urlset>';
 	
 	return $contenuSitemap;
-}
-
-/*
-Compresse (gzip) un fichier et retourne le chemin vers le fichier compressé. Si une erreur survient, retourne FALSE. Merci à <http://ca.php.net/manual/fr/function.gzwrite.php#34955>.
-*/
-function adminGz($fichierSource)
-{
-	$fichierCompresse = $fichierSource . '.gz';
-	$erreur = FALSE;
-	
-	if ($ficDest = gzopen($fichierCompresse, 'wb9'))
-	{
-		if ($ficSource = fopen($fichierSource, 'rb'))
-		{
-			while (!feof($ficSource))
-			{
-				gzwrite($ficDest, fread($ficSource, 1024 * 512));
-			}
-			
-			fclose($ficSource);
-		}
-		else
-		{
-			$erreur = TRUE;
-		}
-		
-		gzclose($ficDest);
-	}
-	else
-	{
-		$erreur = TRUE;
-	}
-	
-	if ($erreur)
-	{
-		return FALSE;
-	}
-	else
-	{
-		return $fichierCompresse;
-	}
 }
 
 /*
@@ -747,14 +821,10 @@ function adminInclureUneFoisAuDebut($racineAdmin)
 	$racine = dirname($racineAdmin);
 	
 	$fichiers = array ();
-	$fichiers[] = $racine . '/inc/mimedetect/file.inc.php';
-	$fichiers[] = $racine . '/inc/mimedetect/mimedetect.inc.php';
-	$fichiers[] = $racine . '/inc/php-markdown/markdown.php';
-	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc';
-	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.php';
-	$fichiers[] = $racineAdmin . '/inc/pclzip/pclzip.lib.php';
-	$fichiers[] = $racineAdmin . '/inc/tar/tar.class.php';
-	$fichiers[] = $racineAdmin . '/inc/untar/untar.class.php';
+	$fichiers[] = $racine . '/inc/php-markdown/markdown.inc.php';
+	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc.php';
+	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
+	$fichiers[] = $racineAdmin . '/inc/ezcomponents/Base/src/ezc_bootstrap.php';
 	
 	if (nomPage() == 'galeries.admin.php')
 	{
@@ -777,7 +847,7 @@ function adminInclureUneFoisAuDebut($racineAdmin)
 /*
 Retourne le code pour l'infobulle contenant les propriétés d'un fichier dans le porte-documents.
 */
-function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $galerieQualiteJpg, $galerieCouleurAlloueeImage)
+function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)
 {
 	clearstatcache();
 	
@@ -790,7 +860,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 	}
 	else
 	{
-		$typeMime = typeMime($cheminFichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+		$typeMime = typeMime($cheminFichier);
 	}
 	
 	$stat = stat($cheminFichier);
@@ -823,7 +893,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		$dossierAdmin = superBasename($racineAdmin);
 		$nomFichierSansExtension = extension(superBasename($cheminFichier), TRUE);
 		$extension = extension($cheminFichier);
-		$cheminApercuImage = "$racine/site/$dossierAdmin/cache/" . filtreChaine($racine, $nomFichierSansExtension . '-' . dechex(crc32($cheminFichier)) . ".cache.$extension");
+		$cheminApercuImage = "$racine/site/$dossierAdmin/cache/" . filtreChaine($nomFichierSansExtension . '-' . dechex(crc32($cheminFichier)) . ".cache.$extension");
 		
 		if (!file_exists($cheminApercuImage))
 		{
@@ -832,8 +902,8 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 		
 		if (file_exists($cheminApercuImage))
 		{
-			list ($larg, $haut, $type, $attr) = getimagesize($cheminApercuImage);
-			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . dirname($urlRacineAdmin) . "/site/$dossierAdmin/cache/" . superBasename($cheminApercuImage) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
+			list ($larg, $haut, $type, $attr) = @getimagesize($cheminApercuImage);
+			$apercu = "<img class=\"infobulleApercuImage\" src=\"" . dirname($urlRacineAdmin) . "/site/$dossierAdmin/cache/" . encodeTexte(superBasename($cheminApercuImage)) . "\" width=\"$larg\" height=\"$haut\" alt=\"" . sprintf(T_("Aperçu de l'image %1\$s"), $fichier) . "\" />";
 		}
 	}
 	
@@ -842,7 +912,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 	
 	if ($stat)
 	{
-		$infobulle .= sprintf(T_("<strong>Taille:</strong> %1\$s Kio (%2\$s octets)"), octetsVersKio($stat['size']), $stat['size']) . "<br />\n";
+		$infobulle .= sprintf(T_ngettext("<strong>Taille:</strong> %1\$s Kio (%2\$s octet)", "<strong>Taille:</strong> %1\$s Kio (%2\$s octets)", $stat['size']), octetsVersKio($stat['size']), $stat['size']) . "<br />\n";
 		
 		if ($dimensionsImage)
 		{
@@ -951,7 +1021,7 @@ function adminListeFiltreeDossiers($dossierAlister, $adminDossierRacinePorteDocu
 /*
 Retourne la liste filtrée des fichiers contenus dans un emplacement fourni en paramètre et prête à être affichée dans le porte-documents (contient les liens d'action comme l'édition, la suppression, etc.). L'analyse est récursive. Voir le fichier de configuration de l'administration pour plus de détails au sujet du filtre.
 */
-function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste = array ())
+function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste = array ())
 {
 	$racine = dirname($racineAdmin);
 	
@@ -959,7 +1029,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 	{
 		if (!empty($dossierCourant))
 		{
-			$dossierCourantDansUrl = "&amp;dossierCourant=$dossierCourant";
+			$dossierCourantDansUrl = '&amp;dossierCourant=' . encodeTexte($dossierCourant);
 		}
 		else
 		{
@@ -978,36 +1048,46 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					}
 					elseif (!$adminAfficherSousDossiersDansContenu || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu)))
 					{
-						$liste[$dossierAparcourir . '/' . $fichier][] = sprintf(T_("Affichage désactivé. <a href=\"%1\$s\">Lister ce dossier.</a>"), "porte-documents.admin.php?action=parcourir&valeur=$dossierAparcourir/$fichier&amp;dossierCourant=$dossierAparcourir/$fichier#fichiersEtDossiers");
+						$liste[$dossierAparcourir . '/' . $fichier][] = sprintf(T_("Affichage désactivé. <a href=\"%1\$s\">Lister ce dossier.</a>"), 'porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . '&amp;dossierCourant=' . encodeTexte("$dossierAparcourir/$fichier") . '#fichiersEtDossiers');
 					}
 					else
 					{
-						$liste = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir . '/' . $fichier, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste);
+						$liste = adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossierRacinePorteDocuments, $dossierDeDepartAparcourir, $dossierAparcourir . '/' . $fichier, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers, $adminAfficherSousDossiersDansContenu, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu, $adminAction, $adminSymboleUrl, $dossierCourant, $adminTailleCache, $adminActiverInfobulle, $galerieQualiteJpg, $galerieCouleurAlloueeImage, $liste);
 					}
 				}
 				else
 				{
 					$fichierMisEnForme = '';
 					
-					$fichierMisEnForme .= "<input type=\"checkbox\" name=\"porteDocumentsFichiers[]\" value=\"$dossierAparcourir/$fichier\" />\n";
+					$fichierMisEnForme .= '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte("$dossierAparcourir/$fichier") . "\" />\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=$dossierAparcourir/$fichier\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexte("$dossierAparcourir/$fichier") . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=editer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$typeMime = typeMime("$dossierAparcourir/$fichier");
+					
+					if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty')
+					{
+						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=editer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					}
+					else
+					{
+						$fichierMisEnForme .= "<img src=\"$urlRacineAdmin/fichiers/editer-desactive.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" />\n";
+					}
+					
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . "action=renommer&amp;valeur=$dossierAparcourir/$fichier$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
 					if ($adminActiverInfobulle['contenuDossier'])
 					{
-						$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierAparcourir/$fichier", TRUE, $adminTailleCache, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+						$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierAparcourir/$fichier", TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 					
-					$fichierMisEnForme .= "<a class=\"porteDocumentsFichier\" href=\"$dossierAparcourir/$fichier\" title=\"" . sprintf(T_("Afficher «%1\$s»"), $fichier) . "\"><code>$fichier</code></a>\n";
+					$fichierMisEnForme .= '<a class="porteDocumentsFichier" href="' . encodeTexte("$dossierAparcourir/$fichier") . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($fichier)) . '"><code>' . securiseTexte($fichier) . "</code></a>\n";
 					$liste[$dossierAparcourir][] = $fichierMisEnForme;
 				}
 			}
@@ -1025,7 +1105,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 }
 
 /*
-Génère la liste des URL que Squeletml connaît à propos du site.le fichier Sitemap et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+Génère la liste des URL que Squeletml connaît à propos du site et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo)
 {
@@ -1041,10 +1121,10 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	{
 		// URL d'accueil.
 		$url = $accueil[$codeLangue] . '/';
-		$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-		$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-		$tableauUrl[$url]['cache'] = $nomFichierCache;
-		$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+		$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+		$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+		$tableauUrl[$url]['cache'] = $cheminFichierCache;
+		$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 		
 		if (count($accueil) > 1)
 		{
@@ -1056,26 +1136,26 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 		}
 	}
 	
-	$galeries = galeries($racine);
+	$listeGaleries = listeGaleries($racine);
 	
 	// Galerie démo.
 	if ($activerGalerieDemo)
 	{
-		$galeries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $galeries);
+		$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $listeGaleries);
 	}
 	
-	foreach ($galeries as $idGalerie => $infosGalerie)
+	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
 		if (isset($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 		{
 			foreach ($langues as $codeLangue)
 			{
 				// Flux RSS individuel d'une galerie pour une langue donnée.
-				$url = $urlRacine . '/rss.php?type=galerie&amp;id=' . filtreChaine($racine, $idGalerie) . "&amp;langue=$codeLangue";
-				$nomFichierCache = nomFichierCache($racine, $urlRacine, $url, FALSE);
-				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-				$tableauUrl[$url]['cache'] = $nomFichierCache;
-				$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+				$url = $urlRacine . '/rss.php?type=galerie&amp;id=' . filtreChaine($idGalerie) . "&amp;langue=$codeLangue";
+				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
+				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+				$tableauUrl[$url]['cache'] = $cheminFichierCache;
+				$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				
 				if (count($accueil) > 1)
 				{
@@ -1106,10 +1186,10 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 			foreach ($langues as $codeLangue)
 			{
 				$url = urlGalerie(1, '', $urlRacine, $infosGalerie['url'], $codeLangue);
-				$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-				$tableauUrl[$url]['cache'] = $nomFichierCache;
-				$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+				$tableauUrl[$url]['cache'] = $cheminFichierCache;
+				$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				
 				if (count($accueil) > 1)
 				{
@@ -1125,10 +1205,10 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 					for ($i = 2; $i <= $nombreDePages; $i++)
 					{
 						$urlPage = variableGet(2, $url, 'page', $i);
-						$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlPage);
-						$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-						$tableauUrl[$urlPage]['cache'] = $nomFichierCache;
-						$tableauUrl[$urlPage]['cacheEnTete'] = $nomFichierCacheEnTete;
+						$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage);
+						$cheminFichierCacheEnTete = cheminFichierCacheEnTete($nomFichierCache);
+						$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
+						$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
 						
 						if (count($accueil) > 1)
 						{
@@ -1143,12 +1223,11 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 				
 				foreach ($tableauGalerie as $image)
 				{
-					$id = idImage($racine, $image);
-					$urlImage = variableGet(2, $url, 'image', filtreChaine($racine, $id));
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlImage);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrl[$urlImage]['cache'] = $nomFichierCache;
-					$tableauUrl[$urlImage]['cacheEnTete'] = $nomFichierCacheEnTete;
+					$urlImage = variableGet(2, $url, 'image', idImage($image));
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlImage);
+					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+					$tableauUrl[$urlImage]['cache'] = $cheminFichierCache;
+					$tableauUrl[$urlImage]['cacheEnTete'] = $cheminFichierCacheEnTete;
 					
 					if (count($accueil) > 1)
 					{
@@ -1160,7 +1239,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 					}
 					
 					$tableauUrl[$urlImage]['image'] = array ();
-					$urlImageIntermediaire = $urlRacine . '/site/fichiers/galeries/' . $infosGalerie['dossier'] . '/' . $image['intermediaireNom'];
+					$urlImageIntermediaire = $urlRacine . '/site/fichiers/galeries/' . encodeTexte($infosGalerie['dossier'] . '/' . $image['intermediaireNom']);
 					$tableauUrl[$urlImage]['image'][$urlImageIntermediaire] = array ();
 					
 					if (!empty($image['intermediaireLegende']))
@@ -1199,10 +1278,10 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 			foreach ($langues as $codeLangue)
 			{
 				$url = "$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue";
-				$nomFichierCache = nomFichierCache($racine, $urlRacine, $url, FALSE);
-				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-				$tableauUrl[$url]['cache'] = $nomFichierCache;
-				$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
+				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+				$tableauUrl[$url]['cache'] = $cheminFichierCache;
+				$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				
 				if (count($accueil) > 1)
 				{
@@ -1230,10 +1309,10 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 				foreach ($listeUrl as $infosUrl)
 				{
 					$url = $infosUrl['url'];
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrl[$url]['cache'] = $nomFichierCache;
-					$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+					$tableauUrl[$url]['cache'] = $cheminFichierCache;
+					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				
 					if (count($accueil) > 1)
 					{
@@ -1263,30 +1342,30 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 				{
 					// Catégorie.
 					$url = $infosUrl['url'];
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrl[$url]['cache'] = $nomFichierCache;
-					$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+					$tableauUrl[$url]['cache'] = $cheminFichierCache;
+					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				}
 				
 				foreach ($categorieInfos['pages'] as $page)
 				{
 					// Pages faisant partie de la catégorie.
 					$urlPage = $urlRacine . '/' . $page;
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlPage);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrl[$urlPage]['cache'] = $nomFichierCache;
-					$tableauUrl[$urlPage]['cacheEnTete'] = $nomFichierCacheEnTete;
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage);
+					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+					$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
+					$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				}
 				
 				if (isset($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
 				{
 					// Flux RSS de la catégorie.
-					$urlRss = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($racine, $categorie);
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlRss, FALSE);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrl[$urlRss]['cache'] = $nomFichierCache;
-					$tableauUrl[$urlRss]['cacheEnTete'] = $nomFichierCacheEnTete;
+					$urlRss = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($categorie);
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlRss, FALSE);
+					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+					$tableauUrl[$urlRss]['cache'] = $cheminFichierCache;
+					$tableauUrl[$urlRss]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				}
 			}
 		}
@@ -1302,19 +1381,19 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 			foreach ($pages as $codeLangue => $langueInfos)
 			{
 				$url = "$urlRacine/rss.php?type=site&amp;langue=$codeLangue";
-				$nomFichierCache = nomFichierCache($racine, $urlRacine, $url, FALSE);
-				$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-				$tableauUrl[$url]['cache'] = $nomFichierCache;
-				$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
+				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+				$tableauUrl[$url]['cache'] = $cheminFichierCache;
+				$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				
 				foreach ($langueInfos['pages'] as $page)
 				{
 					// Page faisant partie du flux RSS.
 					$urlPage = $urlRacine . '/' . $page;
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, $urlPage, FALSE);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrl[$urlPage]['cache'] = $nomFichierCache;
-					$tableauUrl[$urlPage]['cacheEnTete'] = $nomFichierCacheEnTete;
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage, FALSE);
+					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+					$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
+					$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				}
 			}
 		}
@@ -1334,10 +1413,10 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 				foreach ($listeUrl as $infosUrl)
 				{
 					$url = $infosUrl['url'];
-					$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-					$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-					$tableauUrl[$url]['cache'] = $nomFichierCache;
-					$tableauUrl[$url]['cacheEnTete'] = $nomFichierCacheEnTete;
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+					$tableauUrl[$url]['cache'] = $cheminFichierCache;
+					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				}
 			}
 		}
@@ -1349,7 +1428,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 /*
 Met à jour le fichier de configuration d'une galerie. Retourne FALSE si une erreur survient, sinon retourne TRUE.
 */
-function adminMajConfigGalerie($racine, $idDossier, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance, $parametresNouvellesImages = array ())
+function adminMajConfigGalerie($racine, $idDossier, $listeAjouts, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $parametresNouvellesImages = array ())
 {
 	$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
 	$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
@@ -1426,7 +1505,7 @@ function adminMajConfigGalerie($racine, $idDossier, $listeAjouts, $analyserConfi
 		{
 			if (!is_dir($cheminGalerie . '/' . $fichier))
 			{
-				$typeMime = typeMime($cheminGalerie . '/' . $fichier, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+				$typeMime = typeMime($cheminGalerie . '/' . $fichier);
 				$versionImage = adminVersionImage($racine, $cheminGalerie . '/' . $fichier, $analyserConfig, $exclureMotifsCommeIntermediaires, $analyserSeulementConfig, $typeMime);
 				
 				if (adminImageValide($typeMime) && $versionImage != 'vignette' && $versionImage != 'original' && !adminImageEstDeclaree($fichier, $galerieTemp, 'intermediaire') && !adminImageEstDeclaree($fichier, $listeNouveauxFichiers, 'intermediaire'))
@@ -1509,24 +1588,24 @@ Met à jour le fichier de configuration des galeries. Retourne FALSE si une erre
 */
 function adminMajConfigGaleries($racine, $listeModifs)
 {
-	$galeries = galeries($racine);
+	$listeGaleries = listeGaleries($racine);
 	
 	foreach ($listeModifs as $idGalerie => $infosGalerie)
 	{
-		if (isset($galeries[$idGalerie]))
+		if (isset($listeGaleries[$idGalerie]))
 		{
 			if (empty($infosGalerie))
 			{
-				unset($galeries[$idGalerie]);
+				unset($listeGaleries[$idGalerie]);
 			}
 			else
 			{
-				$galeries[$idGalerie] = $infosGalerie;
+				$listeGaleries[$idGalerie] = $infosGalerie;
 			}
 		}
 		elseif (!empty($infosGalerie))
 		{
-			$galeries[$idGalerie] = $infosGalerie;
+			$listeGaleries[$idGalerie] = $infosGalerie;
 		}
 	}
 	
@@ -1539,7 +1618,7 @@ function adminMajConfigGaleries($racine, $listeModifs)
 	
 	$contenuConfig = '';
 	
-	foreach ($galeries as $idGalerie => $infosGalerie)
+	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
 		$contenuConfig .= "[$idGalerie]\n";
 		
@@ -1648,11 +1727,11 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 {
 	if (@mkdir($fichier, $permissions, $recursivite))
 	{
-		return '<li>' . sprintf(T_("Création du dossier %1\$s effectuée."), "<code>$fichier</code>") . "</li>\n";
+		return '<li>' . sprintf(T_("Création du dossier %1\$s effectuée."), '<code>' . securiseTexte($fichier) . '</code>') . "</li>\n";
 	}
 	else
 	{
-		return '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), "<code>$fichier</code>") . "</li>\n";
+		return '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), '<code>' . securiseTexte($fichier) . '</code>') . "</li>\n";
 	}
 }
 
@@ -1801,22 +1880,22 @@ function adminRename($ancienNom, $nouveauNom, $messageDeplacement = FALSE)
 	{
 		if ($messageDeplacement)
 		{
-			return '<li>' . sprintf(T_("Déplacement de %1\$s vers %2\$s effectué."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+			return '<li>' . sprintf(T_("Déplacement de %1\$s vers %2\$s effectué."), '<code>' . securiseTexte($ancienNom) . '</code>', '<code>' . securiseTexte($nouveauNom) . '</code>') . "</li>\n";
 		}
 		else
 		{
-			return '<li>' . sprintf(T_("Renommage de %1\$s en %2\$s effectué."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+			return '<li>' . sprintf(T_("Renommage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienNom) . '</code>', '<code>' . securiseTexte($nouveauNom) . '</code>') . "</li>\n";
 		}
 	}
 	else
 	{
 		if ($messageDeplacement)
 		{
-			return '<li class="erreur">' . sprintf(T_("Déplacement de %1\$s vers %2\$s impossible."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+			return '<li class="erreur">' . sprintf(T_("Déplacement de %1\$s vers %2\$s impossible."), '<code>' . securiseTexte($ancienNom) . '</code>', '<code>' . securiseTexte($nouveauNom) . '</code>') . "</li>\n";
 		}
 		else
 		{
-			return '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), "<code>$ancienNom</code>", "<code>$nouveauNom</code>") . "</li>\n";
+			return '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), '<code>' . securiseTexte($ancienNom) . '</code>', '<code>' . securiseTexte($nouveauNom) . '</code>') . "</li>\n";
 		}
 	}
 }
@@ -1828,11 +1907,11 @@ function adminRmdir($dossier)
 {
 	if (@rmdir($dossier))
 	{
-		return '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), "<code>$dossier</code>") . "</li>\n";
+		return '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
 	}
 	else
 	{
-		return '<li class="erreur">' . sprintf(T_("Suppression de %1\$s impossible."), "<code>$dossier</code>") . "</li>\n";
+		return '<li class="erreur">' . sprintf(T_("Suppression de %1\$s impossible."), '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
 	}
 }
 
@@ -1865,7 +1944,7 @@ function adminRmdirRecursif($dossierAsupprimer)
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), "<code>$dossierAtraiter</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Accès au dossier %1\$s impossible."), '<code>' . securiseTexte($dossierAtraiter) . '</code>') . "</li>\n";
 			}
 		}
 		
@@ -1912,7 +1991,7 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 	
 	if (isset($orientation) && $orientation == 1)
 	{
-		$messagesScript .= '<li>' . sprintf(T_("Aucune rotation automatique à effectuer pour l'image %1\$s."), "<code>$cheminImage</code>") . "</li>\n";
+		$messagesScript .= '<li>' . sprintf(T_("Aucune rotation automatique à effectuer pour l'image %1\$s."), '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 	}
 	elseif (is_executable($cheminExiftran))
 	{
@@ -1920,11 +1999,11 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 		
 		if (!$ret)
 		{
-			$messagesScript .= '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>exiftran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 		}
 		else
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>exiftran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>exiftran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 		}
 	}
 	elseif (is_executable($cheminJpegtran) && isset($orientation))
@@ -1979,20 +2058,20 @@ function adminRotationJpegSansPerte($cheminImage, $cheminExiftran, $cheminJpegtr
 		
 		if (!$ret && @copy($cheminImageTmp, $cheminImage))
 		{
-			$messagesScript .= '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_("Rotation automatique et sans perte de qualité effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 			
 			if ($supprimerExif)
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Suppression sans perte de qualité des données Exif effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Suppression sans perte de qualité des données Exif effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 			}
 		}
 		else
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Rotation automatique et sans perte de qualité par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 			
 			if ($supprimerExif)
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Suppression sans perte de qualité des données Exif par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Suppression sans perte de qualité des données Exif par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 			}
 		}
 		
@@ -2060,11 +2139,11 @@ function adminSupprimeExif($cheminImage, $cheminJpegtran)
 		
 		if (!$ret && @copy($cheminImageTmp, $cheminImage))
 		{
-			$messagesScript .= '<li>' . sprintf(T_("Suppression sans perte de qualité des données Exif effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_("Suppression sans perte de qualité des données Exif effectuée par %1\$s pour l'image %2\$s."), '<code>jpegtran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 		}
 		else
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Suppression sans perte de qualité des données Exif par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', "<code>$cheminImage</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Suppression sans perte de qualité des données Exif par %1\$s impossible pour l'image %2\$s. Vérifier l'état de l'image sur le serveur."), '<code>jpegtran</code>', '<code>' . securiseTexte($cheminImage) . '</code>') . "</li>\n";
 		}
 		
 		@unlink($cheminImageTmp);
@@ -2113,7 +2192,7 @@ function adminTailleCache($racineAdmin)
 		{
 			if (!is_dir($cheminCache . '/' . $fichier))
 			{
-				$taille += filesize($cheminCache . '/' . $fichier);
+				$taille += @filesize($cheminCache . '/' . $fichier);
 			}
 		}
 		
@@ -2194,11 +2273,11 @@ function adminUnlink($fichier)
 {
 	if (@unlink($fichier))
 	{
-		return '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), "<code>$fichier</code>") . "</li>\n";
+		return '<li>' . sprintf(T_("Suppression de %1\$s effectuée."), '<code>' . securiseTexte($fichier) . '</code>') . "</li>\n";
 	}
 	else
 	{
-		return '<li class="erreur">' . sprintf(T_("Suppression de %1\$s impossible."), "<code>$fichier</code>") . "</li>\n";
+		return '<li class="erreur">' . sprintf(T_("Suppression de %1\$s impossible."), '<code>' . securiseTexte($fichier) . '</code>') . "</li>\n";
 	}
 }
 

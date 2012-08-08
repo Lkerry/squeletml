@@ -107,12 +107,12 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie) . '&amp;langue=' . $langue . '">' . sprintf(T_("Galerie %1\$s"), "<em>$idGalerie</em>") . "</a></li>\n";
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($idGalerie) . '&amp;langue=' . LANGUE . '">' . sprintf(T_("Galerie %1\$s"), '<em>' . securiseTexte($idGalerie) . '</em>') . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
 						{
-							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), "<em>$idCategorie</em>") . "</a></li>\n";
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($idCategorie) . '">' . sprintf(T_("Catégorie %1\$s"), '<em>' . securiseTexte($idCategorie) . '</em>') . "</a></li>\n";
 						}
 						
 						if (!empty($blocFluxRssIndividuels))
@@ -250,9 +250,37 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= '<div id="lienPage" class="bloc ' . $classesBloc . '">' . "\n";
 						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
 						$blocs[$region] .= "<div class=\"bDcorps\">\n";
-						$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n";
-						$codeLienPage = '<a href="' . variableGet(0, $url, 'action') . '">' . $baliseTitle . $baliseTitleComplement . '</a>';
-						$blocs[$region] .= '<pre><code>' . securiseTexte($codeLienPage) . "</code></pre>\n";
+						$urlSansAction = variableGet(0, $url, 'action');
+						$codeLienPage = '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '">' . $baliseTitle . $baliseTitleComplement . '</a>') . "</code></pre>\n";
+						$liensImage = array ();
+						
+						if (isset($lienPageVignette) && preg_match('#(<img .+? />)#', $lienPageVignette, $resultat))
+						{
+							$liensImage['vignette']['description'] = '<p>' . T_("Lien avec l'image en vignette:") . "</p>\n";
+							$liensImage['vignette']['balise'] = $resultat[1];
+						}
+						
+						if (isset($lienPageIntermediaire) && preg_match('#(<img .+? />)#', $lienPageIntermediaire, $resultat))
+						{
+							$liensImage['intermediaire']['description'] = '<p>' . T_("Lien avec l'image en taille intermédiaire:") . "</p>\n";
+							$liensImage['intermediaire']['balise'] = $resultat[1];
+						}
+						
+						if (empty($liensImage))
+						{
+							$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n$codeLienPage";
+						}
+						else
+						{
+							$blocs[$region] .= '<p>' . T_("Lien textuel seulement:") . "</p>\n$codeLienPage";
+							
+							foreach ($liensImage as $lienImageType => $lienImageInfo)
+							{
+								$blocs[$region] .= $lienImageInfo['description'];
+								$blocs[$region] .= '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '" title="' . $baliseTitle . $baliseTitleComplement . '">' . $lienImageInfo['balise'] . '</a>') . "</code></pre>\n";
+							}
+						}
+						
 						$blocs[$region] .= "</div>\n";
 						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
 						$blocs[$region] .= '<script type="text/javascript">' . "\n";
@@ -374,7 +402,7 @@ if (!empty($blocsAinsererTemp))
 					
 					if ($genererMenuGaleries)
 					{
-						$listeGaleries = galeries($racine, '', TRUE);
+						$listeGaleries = listeGaleries($racine, '', TRUE);
 						uksort($listeGaleries, 'strnatcasecmp');
 						
 						if ($activerGalerieDemo)
@@ -384,7 +412,7 @@ if (!empty($blocsAinsererTemp))
 						
 						foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
 						{
-							$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . $listeIdGalerie . "</a></li>\n";
+							$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
 						}
 						
 						if (!empty($bloc))

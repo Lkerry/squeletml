@@ -76,7 +76,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   
   - Script offert pour redimensionner automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
   
-  - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
+  - Ajout d'images par lot contenues dans une archive (`.tar`, `.tar.bz2`, `.tar.gz` ou `.zip`).
   
   - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette).
 
@@ -88,7 +88,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Section d'administration offrant des fonctionnalités utiles sans devoir passer par FTP:
 
-  - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (barre de raccourcis de balises HTML à l'aide de [BUEditor](http://ufku.com/drupal/bueditor) ou coloration syntaxique du code en direct à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie), ajout, téléchargement...
+  - Fichiers: parcours des dossiers du site, renommage, suppression, création, modification (coloration syntaxique du code en direct à l'aide de [CodeMirror](http://marijn.haverbeke.nl/codemirror/) durant la saisie), ajout, téléchargement...
   
   - Accès: ajout, modification et suppresion d'utilisateurs ayant le droit d'accéder à l'administration; mise en maintenance du site; suppression du cache; lancement du cron; sauvegarde du site.
   
@@ -108,7 +108,7 @@ Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou visiter l
 
 ## Développement
 
-Dernière version: 3.0.3 (2012-07-22)
+Dernière version: 3.1 (2012-08-08)
 
 Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
 
@@ -146,7 +146,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - **Images utilisées dans les galeries**:
 
-  - les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil) ou de l'[Open Clip Art Library](http://www.openclipart.org/);
+  - les images de la galerie démo sont dans le domaine public et proviennent de [Wikimedia Commons](http://commons.wikimedia.org/wiki/Accueil);
   
   - la petite icône proposant la navigation sans fenêtre Javascript provient du [module QuickJava pour Firefox](https://addons.mozilla.org/fr/firefox/addon/1237), sous licence Mozilla Public License version 1.1;
   
@@ -172,11 +172,9 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 #### Code
 
-- [**BUEditor**](http://ufku.com/drupal/bueditor): sous licence GPL.
+- [**CodeMirror**](http://codemirror.net/): sous licence BSD. J'ai créé un jeu de couleurs, nommé *gedit*, distribué sous licence AGPL version 3 ou toute version ultérieure.
 
-- [**CodeMirror**](http://marijn.haverbeke.nl/codemirror/): sous licence BSD.
-
-- [**Drag'nDrop & DHTML Library**](http://www.walterzorn.com/dragdrop/dragdrop_e.htm): sous licence LGPL version 2.1 ou toute version ultérieure.
+- [**eZ Components**](http://ezcomponents.org/): sous la nouvelle licence BSD.
 
 - [**\_filter\_htmlcorrector**](http://api.drupal.org/api/function/_filter_htmlcorrector/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure.
 
@@ -186,11 +184,7 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**jQuery UI**](http://jqueryui.com/): sous double licence MIT et GPL.
 
-- [**MimeDetect**](http://drupal.org/project/mimedetect): module pour Drupal sous licence GPL version 2 ou toute version ultérieure. Je l'ai modifié pour le rendre indépendant de Drupal. J'ai également ajouté la fonction `file_get_mimetype()` provenant du [fichier `includes/file.inc` de Drupal 6](http://api.drupal.org/api/drupal/includes--file.inc/6/source), sous licence GPL version 2 ou toute version ultérieure. J'ai publié le résultat sous licence GPL version 3 ou toute version ultérieure.
-
 - [**node_teaser**](http://api.drupal.org/api/function/node_teaser/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure. J'ai effectué quelques modifications; le résultat est sous licence GPL version 3 ou toute version ultérieure.
-
-- [**PclZip**](http://www.phpconcept.net/): Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir le site de PclZip.
 
 - [**PHP gettext**](https://launchpad.net/php-gettext/): sous licence GPL version 2 ou toute version ultérieure.
 
@@ -206,11 +200,5 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**Table of Contents jQuery Plugin**](http://fuelyourcoding.com/table-of-contents-jquery-plugin/): le script original a été écrit par Doug Neiner et est sous licence MIT. J'ai modifié le script et ai incorporé une fraction de code provenant du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), publié sous licence GPL (sans précision de la version). Je publie le script résultant sous licence GPL version 3 ou toute version ultérieure.
 
-- [**Tar et UnTar (classes PHP)**](http://php-classes.sourceforge.net/): sous licence LGPL 2.1.
-
 - [**Unsharp Mask for PHP**](http://vikjavev.no/computing/ump.php?id=306): permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL.
-
-- La translitération du filtre des noms de fichier lors de l'ajout dans le porte-documents utilise le fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
-
-- Les liens de marque-pages et de réseaux sociaux ont été en partie récupérés dans le [module Service links pour Drupal](http://drupal.org/project/service_links), sous licence GPL.
 

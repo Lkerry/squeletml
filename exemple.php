@@ -25,7 +25,7 @@ $nomImage = superBasename($cheminImage);
 $vignetteNom = nomSuffixe($nomImage, '-vignette');
 $extensionImage = extension($cheminImage);
 $nomImageSansExtension = extension($cheminImage, TRUE);
-$typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
+$typeMime = typeMime($cheminImage);
 ?>
 
 <p><img class="imgGauche" src="<?php echo $urlImage; ?>" alt="Squeletml" width="75" height="75" /> La présente image est le logo de Squeletml et a été positionnée avec la classe <code>imgGauche</code>. La fonction <code>superBasename()</code> fournit le nom de l'image, qui vaut dans ce cas-ci <code><?php echo $nomImage; ?></code>. Son extension peut être obtenue avec la fonction <code>extension()</code>; le résultat est <code><?php echo $extensionImage; ?></code> (ce qui donne <code><?php echo $nomImageSansExtension; ?></code> si on demande un retour sans l'extension). Le type MIME, obtenu avec la fonction <code>typeMime()</code>, est <code><?php echo $typeMime; ?></code>. La vignette de cette image pourrait s'appeler par exemple <code><?php echo $vignetteNom; ?></code> (suffixe ajouté avec la fonction <code>nomSuffixe()</code>).</p>
@@ -79,7 +79,6 @@ $typeMime = typeMime($cheminImage, $typeMimeFile, $typeMimeCheminFile, $typeMime
 $courriel = 'contact_a_exemple_point_qc';
 $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 $urlTestExistance2 = URL_SQUELETML;
-$urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle page.php?a=1&amp;b=2&amp;c=3";
 ?>
 
 <div class="testBoiteDeroulante1">
@@ -141,18 +140,9 @@ $urlTestEncodage = "http://www.exemple-abcde-12345.qc/chemin/vers/l'éventuelle 
 <div class="testBoiteDeroulante1">
 	<p class="bDtitre">Voici une autre boîte déroulante de classe <code>testBoiteDeroulante1</code>:</p>
 	
-	<ul class="bDcorps">
-		<li><p>Prenons maintenant cette adresse:</p>
-			
-			<pre><?php echo $urlTestEncodage; ?></pre>
-			
-			<p>Affichons-la en version encodée avec la fonction <code>superRawurlencode()</code>:</p>
-			
-			<pre><?php echo superRawurlencode($urlTestEncodage); ?></pre>
-		</li>
-		
-		<li><p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p></li>
-	</ul>
+	<div class="bDcorps">
+		<p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p>
+	</div>
 </div>
 
 <h2>Chaînes de caractères</h2>
@@ -210,7 +200,7 @@ $chaineSansComCorrigeeEtSecurisee = securiseTexte($chaineSansComCorrigee);
 
 <?php
 $phrase = "L'hiver arrive, le vent se lève";
-$phraseFiltree = filtreChaine($racine, $phrase);
+$phraseFiltree = filtreChaine($phrase);
 ?>
 
 <p>Prenons maintenant cette phrase: <em><?php echo $phrase; ?></em>. Nous pourrions en faire un nom de fichier ou de page web en utilisant la fonction <code>filtreChaine()</code>: <em><?php echo $phraseFiltree; ?></em>.</p>

@@ -6,10 +6,10 @@ include dirname(__FILE__) . '/../init.inc.php';
 
 ########################################################################
 ##
-## Modèles de fichiers de configuration (du site et de l'administration) personnalisés.
+## Modèles.
 ##
 ########################################################################
-if ($argv[1] == 'config')
+if ($argv[1] == 'modeles')
 {
 	$config = file_get_contents($racine . '/inc/config.inc.php');
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
@@ -20,18 +20,15 @@ if ($argv[1] == 'config')
 	preg_match_all('~(^#{72}.*?^#{72}|^/\* _{20} .*? _{20} \*/)~ms', $config, $resultat);
 	$ajout = "<?php\n" . implode("\n\n", $resultat[1]) . "\n\n?>";
 	file_put_contents($racine . '/modeles/site/admin/inc/config.inc.php.modele', $ajout);
-}
-########################################################################
-##
-## Modèle de feuille de style CSS personnalisée.
-##
-########################################################################
-elseif ($argv[1] == 'css')
-{
+	
 	$css = file_get_contents($racine . '/css/squeletml.css');
 	preg_match_all('|^(/\*.*?\*/)|ms', $css, $resultat);
 	$ajout = implode("\n\n", $resultat[1]) . "\n\n";
 	file_put_contents($racine . '/modeles/site/css/style.css.modele', $ajout);
+	
+	copy("$racine/Makefile", "$racine/modeles/Makefile.modele");
+	
+	copy("$racine/.gitignore", "$racine/modeles/.gitignore.modele");
 }
 ########################################################################
 ##
@@ -40,7 +37,7 @@ elseif ($argv[1] == 'css')
 ########################################################################
 elseif ($argv[1] == 'messageAccueil')
 {
-	include $racine . '/inc/php-markdown/markdown.php';
+	include $racine . '/inc/php-markdown/markdown.inc.php';
 	
 	if ($fic = fopen($racine . '/doc/LISEZ-MOI.mkd', 'r'))
 	{

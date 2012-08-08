@@ -250,6 +250,13 @@ else
 	##
 	########################################################################
 	
+	$identifiant = '';
+	
+	if (!empty($_POST['identifiant']))
+	{
+		$identifiant = preg_replace('/[^A-Za-z0-9]/', '', $_POST['identifiant']);
+	}
+	
 	if (isset($_POST['ajouter']) && file_exists($racine . '/init.inc.php') && file_exists($racine . '/.htaccess') && file_exists($racine . '/.acces'))
 	{
 		$installationTerminee = TRUE;
@@ -278,7 +285,7 @@ else
 				$messagesScript .= '<li>' . T_("Protection de l'administration effectuée.") . "</li>\n";
 			}
 		}
-		elseif (empty($_POST['identifiant']))
+		elseif (empty($identifiant))
 		{
 			$installationTerminee = FALSE;
 			$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
@@ -297,11 +304,11 @@ else
 		{
 			if (stristr(PHP_OS, 'win') || $serveurFreeFr)
 			{
-				$acces = securiseTexte($_POST['identifiant']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
+				$acces = $identifiant . ':' . $_POST['motDePasse'] . "\n";
 			}
 			else
 			{
-				$acces = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
+				$acces = $identifiant . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
 			}
 
 			// On vérifie si l'utilisateur est déjà présent.
@@ -311,7 +318,7 @@ else
 			{
 				$ligne = fgets($fic);
 
-				if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
+				if (strpos($ligne, $identifiant . ':') === 0)
 				{
 					$utilisateurAbsent = FALSE;
 					break;
@@ -321,11 +328,11 @@ else
 			if ($utilisateurAbsent)
 			{
 				fputs($fic, $acces);
-				$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), $identifiant) . "</li>\n";
 			}
 			else
 			{
-				$messagesScript .= '<li>' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), $identifiant) . "</li>\n";
 			}
 
 			fclose($fic);
@@ -489,9 +496,9 @@ else
 		
 			echo '<p><label for="inputIdentifiant">' . T_("Identifiant:") . "</label><br />\n" . '<input id="inputIdentifiant" type="text" name="identifiant" ';
 
-			if (!empty($_POST['identifiant']))
+			if (!empty($identifiant))
 			{
-				echo 'value="' . securiseTexte($_POST['identifiant']) . '" ';
+				echo 'value="' . $identifiant . '" ';
 			}
 
 			echo '/></p>' . "\n";

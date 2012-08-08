@@ -1,17 +1,30 @@
-body.margeHautPage {
-	margin-top: 10px;
+body.basDePageExterieur #page {
+	margin-bottom: 25px;
+}
+
+body.ombrePage #page {
+	background-color: #ffffff;
 }
 
 body.colonneAgauche #surContenu, body.colonneAgauche #sousContenu {
-	top: 130px;
+	top: 126px;
 }
 
 body.colonneAdroite #surContenu, body.colonneAdroite #sousContenu {
-	top: 130px;
+	top: 126px;
+}
+
+#basDePageHorsPage {
+	padding-top: 15px;
+	padding-bottom: 15px;
 }
 
 #rechercheGoogle form {
 	margin-bottom: 0px;
+}
+
+ul.galerieListeImages li {
+	float: left;
 }
 
 div.galerieInfoEtMinivignettesEnsemble div#galerieMinivignettes {
@@ -29,3 +42,4 @@ h2 {
 pre { /* Merci à <http://labnol.blogspot.com/2006/10/html-css-trick-for-displaying-code.html>. */
 	word-wrap: break-word; /* Internet Explorer 5.5+. */
 }
+

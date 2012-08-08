@@ -2,33 +2,28 @@
 include 'init.inc.php';
 include_once $racine . '/inc/fonctions.inc.php';
 
-eval(variablesAvantConfig());
-
-foreach (cheminsInc($racine, 'config') as $cheminFichier)
+if (isset($_GET['fichier']))
 {
-	include $cheminFichier;
+	$chemin = $racine . '/' . decodeTexte($_GET['fichier']);
+	$nom = superBasename($chemin);
+	$typeMime = typeMime($chemin);
+	
+	if ($typeMime == 'application/octet-stream')
+	{
+		$typeMime = 'application/force-download';
+	}
 }
-
-include_once $racine . '/inc/mimedetect/file.inc.php';
-include_once $racine . '/inc/mimedetect/mimedetect.inc.php';
-
-$fichier = securiseTexte($_GET['fichier']);
-$chemin = $racine . '/' . $fichier;
-$urlFichier = $urlRacine . '/' . superRawurlencode($fichier, TRUE);
-$nom = superBasename($fichier);
-$typeMime = typeMime($chemin, $typeMimeFile, $typeMimeCheminFile, $typeMimeCorrespondance);
-
-if ($typeMime == 'application/octet-stream')
+else
 {
-	$typeMime = 'application/force-download';
+	$chemin = '';
 }
 
 if (file_exists($chemin) && preg_match('|^' . preg_quote($racine, '|') . '(/site)?/fichiers/galeries/[^/]+/' . preg_quote($nom, '|') . '$|', $chemin) && $typeMime != 'text/plain')
 {
 	header('Content-Type: ' . $typeMime);
-	header('Content-Disposition: attachment; filename="' . $nom . '"');
-	header('Content-Length: ' . filesize($chemin));
-	@readfile($urlFichier);
+	header('Content-Disposition: attachment; filename="' . str_replace('"', '\"', $nom) . '"');
+	header('Content-Length: ' . @filesize($chemin));
+	@readfile($chemin);
 }
 elseif (file_exists($chemin))
 {

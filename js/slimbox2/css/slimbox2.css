@@ -11,49 +11,72 @@
 	cursor: pointer;
 }
 
-#lbCenter, #lbBottomContainer {
+#lbContainer, #lbBottomContainer {
 	position: absolute;
 	z-index: 9999;
 	overflow: hidden;
 	background-color: #fff;
 }
 
+#lbContainer {
+	padding: 10px;
+}
+
 .lbLoading {
 	background: #fff url(loading.gif) no-repeat center;
 }
 
-#lbImage {
+#lbNavigator {
 	position: absolute;
-	left: 0;
-	top: 0;
-	border: 20px solid #fff;
-	background-repeat: no-repeat;
+	top: 10px;
 }
 
 #lbPrevLink, #lbNextLink {
 	display: block;
 	position: absolute;
-	top: 0;
+	top: 10px;
 	width: 50%;
 	outline: none;
+	/* IE6, IE7, IE8 don't draw the anchor without something in it. */
+  background-image: url(clear.gif)\9;
 }
 
 #lbPrevLink {
-	left: -20px;
+	left: 10px;
+}
+
+#lbPrevLink:hover {
 	background: transparent url(prevlabel.gif) no-repeat 0 15%;
 }
 
 #lbNextLink {
-	right: -20px;
+	right: 10px;
+}
+
+#lbNextLink:hover {
 	background: transparent url(nextlabel.gif) no-repeat 100% 15%;
 }
 
-body.slimbox2gris #lbPrevLink {
+/**/
+body.slimbox2gris #lbPrevLink:hover {
 	background: transparent url(prevlabel-gris.gif) no-repeat 0 15%;
 }
 
-body.slimbox2gris #lbNextLink {
+body.slimbox2gris #lbNextLink:hover {
 	background: transparent url(nextlabel-gris.gif) no-repeat 100% 15%;
+}
+
+#lbContainer {
+	text-align: center;
+}
+
+#lbContainer, #lbBottomContainer {
+	min-width: 250px;
+}
+/**/
+
+#lbBottomContainer {
+	padding: 0 10px;
 }
 
 #lbBottom {
@@ -62,17 +85,15 @@ body.slimbox2gris #lbNextLink {
 	color: #666;
 	line-height: 1.4em;
 	text-align: left;
-	border: 10px solid #fff;
-	border-top-style: none;
 }
 
 #lbCloseLink {
 	display: block;
 	float: right;
-	width: 17px;
-	height: 17px;
+	width: 66px;
+	height: 22px;
 	background: transparent url(closelabel.gif) no-repeat center;
-	margin: 5px 10px 5px 0px;
+	margin: 5px 0;
 	outline: none;
 }
 

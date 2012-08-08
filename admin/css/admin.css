@@ -204,11 +204,11 @@ fieldset ul ul {
 }
 
 input.long {
-	width: 50%;
+	width: 45%;
 }
 
 input.tresLong {
-	width: 75%;
+	width: 70%;
 }
 
 legend {
@@ -328,10 +328,6 @@ body#documentation-admin-php em code {
 	color: #E30000;
 }
 
-body#documentation-admin-php pre.fichierDeConfiguration {
-	background-color: transparent;
-}
-
 /***********************************************************************
 **
 ** Galeries.
@@ -339,9 +335,13 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 ***********************************************************************/
 
 #galeriesAdminConfigGraphique img, #galeriesAdminConfigGraphiqueSimplifiee img {
-	background: url('../../fichiers/ombre-vignette.png') no-repeat right bottom;
-	padding: 5px 10px 10px 5px;
+	padding: 5px;
 	border: none;
+	margin: 10px;
+	background-color: #ffffff;
+	box-shadow: 0px 1px 2px #cccccc; /* CSS 3. */
+	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
+	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
 #galeriesAdminConfigGraphique p.bDtitre {
@@ -365,11 +365,12 @@ body#documentation-admin-php pre.fichierDeConfiguration {
 	margin-right: 10px;
 }
 
-#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
+#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueRenommageImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
 	margin: 0px;
 }
 
 #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
+	margin-top: 10px;
 	text-align: right;
 }
 
@@ -410,18 +411,19 @@ li.listeGaleriesTitre ul {
 **
 ***********************************************************************/
 
+body#porte-documents-admin-php #page {
+	max-width: 1150px;
+}
+
 p#porteDocumentsLienHaut {
 	margin-top: 0px;
 	margin-bottom: 0px;
 	text-align: right;
 }
 
-#redimensionnable {
-	width: 95%;
-	height: 500px;
-	border: 1px solid black;
-	padding: 3px;
-	background-color: white;
+p#porteDocumentsBoutonSauvegarder {
+	float: left;
+	margin-right: 10px;
 }
 
 a.porteDocumentsFichier {
@@ -431,11 +433,6 @@ a.porteDocumentsFichier {
 pre.consulterModifications {
 	width: 95%;
 	height: 500px;
-}
-
-.editeur {
-	padding-bottom: 10px;
-	overflow-y: scroll;
 }
 
 .porteDocumentsListe {
@@ -505,32 +502,13 @@ img.infobulleApercuImage {
 	border: 1px solid #cccccc !important;
 }
 
-/* BUEditor. */
+/***********************************************************************
+**
+** Flux RSS.
+**
+***********************************************************************/
 
-textarea.editor-textarea {
-	height: 92%;
+ul#rssUrlAjout {
+	padding-left: 60px;
 }
 
-.imgGauche {
-	float: left;
-	margin-right: 5px;
-	margin-bottom: 5px;
-}
-
-.imgCentre {
-	display: block;
-	margin-left: auto;
-	margin-right: auto;
-}
-
-.imgDroite {
-	float: right;
-	margin-left: 5px;
-	margin-bottom: 5px;
-}
-
-.video {
-	text-align: center;
-	margin-top: 20px;
-	margin-bottom: 20px;
-}

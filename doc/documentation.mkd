@@ -17,13 +17,9 @@ Certains dossiers doivent être accessibles en écriture:
 
 - Pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur.
 
-- Pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
-
 - Pour générer automatiquement des vignettes ou redimensionner des images d'une galerie, la bibliothèque GD doit être installée (par exemple, sous Ubuntu 10.10, vérifier que le paquet `php5-gd` est installé).
 
 - Pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible.
-
-- La détection du type MIME peut se faire par `Fileinfo` de PHP ou par la commande `file` sur le système.
 
 - La rotation automatique et sans perte de qualité des images JPG peut se faire avec la commande `exiftran` sur le système, ou bien avec la commande `jpegtran` sur le système et la fonction PHP `exif_read_data()`.
 
@@ -319,14 +315,7 @@ Piwik est un logiciel libre de statistiques web. Lorsqu'un site est ajouté dans
 
 #### Dossiers inutiles pour une configuration donnée
 
-Les trois fichiers et le dossier suivants peuvent être supprimés d'une installation actuelle ou ignorés lors d'une mise à jour:
-
-- `.gitattributes`
-- `.gitignore`
-- `Makefile`
-- `src`
-
-Aussi, le dossier d'une langue inactivée peut être supprimé, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas des pages `exemple.php` et `exemple2.php` à la racine du site si ces dernières ne sont pas utilisées.
+Le dossier `src` ainsi que le dossier d'une langue inactivée peuvent être supprimés, tout comme les pages livrées par défaut et qui ne sont pas utilisées. Par exemple, si votre site est seulement en français, le dossier `en` peut être supprimé. C'est également le cas des pages `exemple.php` et `exemple2.php` à la racine du site si ces dernières ne sont pas utilisées.
 
 Lors d'une mise à jour, il est également inutile de copier ces dossiers ou fichiers.
 
@@ -461,7 +450,6 @@ Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers pr
 
 - `inc/premier.inc.php`
 	- `init.inc.php`
-	- *`inc/devel.inc.php`*
 	- *`site/inc/devel.inc.php`*
 	- `inc/fonctions.inc.php`
 	- *`site/inc/fonctions.inc.php`*
@@ -641,7 +629,9 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$dateRevision`: date de dernière révision de la page, sous la forme *AAAA-MM-JJ*, incluse dans la métabalise `date-revision-yyyymmdd`. Si elle existe, cette variable sera utilisée dans le bloc des informations de publication, dans le listage des articles classés dans une catégorie et, si `$dateCreation` n'existe pas, dans le classement des items des flux RSS.
 
-- `$desactiverCache`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut désactiver ou non le cache pour la page courante (dans le cas où le cache est activé avec la variable `$dureeCache` du fichier de configuration du site).
+- `$desactiverCache`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut désactiver ou non le cache complet pour la page courante (dans le cas où le cache est activé avec la variable `$dureeCache` du fichier de configuration du site).
+
+- `$desactiverCachePartiel`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut désactiver ou non le cache partiel pour la page courante (dans le cas où le cache complet est désactivé et que le cache partiel est activé avec la variable `$dureeCachePartiel` du fichier de configuration du site).
 
 - `$description`: contenu de la métabalise `description`. Si cette variable est vide, la métabalise `description` ne sera pas incluse dans l'en-tête de la page.
 
@@ -650,6 +640,8 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 - `$idGalerie`: un nombre, un mot ou une phrase identifiant la galerie. Le nom du dossier de la galerie dans `site/fichiers/galeries` correspond à l'identifiant filtré. Par défaut, cette variable est vide, mais si elle n'est pas vide, et si le fichier de configuration existe pour cet `id` (voir la section «Galeries»), une galerie sera insérée dans la page.
 
 	Par exemple, si nous avons `$idGalerie = "Promenade en forêt";`, Squeletml va rechercher le dossier `site/fichiers/galeries/Promenade-en-foret`. Si ce dossier ou le fichier de configuration n'existent pas, un message d'erreur informe de l'inexistence de la galerie.
+
+- `$inclureCodeFenetreJavascript`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut inclure ou non le code permettant de passer d'une image à une autre dans une fenêtre Javascript. Le script utilisé est Slimbox 2. À noter que ce code est inclus automatiquement dans les galeries (si ce type de navigation a été choisi dans le fichier de configuration). Cette variable permet tout simplement d'utiliser le code dans des pages personnalisées.
 
 - `$infosPublication`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut afficher ou non les informations de publication (auteur, date de création, date de dernière révision) pour la page courante, si la valeur est différente de `$afficherInfosPublicationParDefaut` du fichier de configuration du site.
 
@@ -671,7 +663,7 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$robots`: contenu de la métabalise `robots`, si la valeur est différente de `$robotsParDefaut` du fichier de configuration du site.
 
-- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée par Javascript.
+- `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée du côté client par Javascript si le cache (global et partiel) est désactivé, sinon elle est générée du côté serveur par PHP.
 
 	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée.
 
@@ -1056,9 +1048,9 @@ Concrètement, pour créer une galerie à partir de l'administration de Squeletm
 
 3. Le champ «Si nouvelle galerie, nom du dossier» peut être rempli avec la valeur désirée ou laissé vide pour génération automatique à partir de l'identifiant.
 
-4. Le champ «Si nouvelle galerie, emplacement de la page Web» peut être rempli avec la valeur désirée ou laissé vide pour utilisation de la page globale des galeries (`galerie.php`).
+4. Le champ «Si nouvelle galerie, URL de la page Web» peut être rempli avec la valeur désirée ou laissé vide pour utilisation de la page globale des galeries (`galerie.php`).
 
-5. Dans le champ «Fichier», préciser un fichier image ou une archive de format TAR (`.tar`) ou ZIP (`.zip`).
+5. Dans le champ «Fichier», préciser un fichier image ou une archive (`.tar`, `.tar.bz2`, `.tar.gz` ou `.zip`).
 
 6. Choisir d'autres options selon les besoins.
 
@@ -1112,13 +1104,13 @@ Il s'agit d'une configuration minimale pour une galerie de deux images. Il est c
 
 		intermediaireLegende=Cette photographie a été prise le... à... avec un appareil de marque... et représente...
 
-- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `oui`. Exemple:
+- `exclure`: informe si l'image doit être exclue de la galerie. Par défaut, l'image n'est pas exclue, mais elle l'est seulement si `exclure` vaut `1` ou `oui`. Exemple:
 
-		exclure=oui
+		exclure=1
 
-- `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. Exemple:
+- `id`: utilisé dans l'adresse URL pour identifier l'image, au lieu de l'indice de la position de l'image dans le tableau de la galerie. Ceci permet de facilement déplacer des images dans la galerie sans modifier leur URL. Si l'`id` n'est pas renseigné, il sera généré automatiquement à partir du titre de l'image ou du nom du fichier image. L'`id` doit être seulement composé des caractères suivants: `-A-Za-z0-9._+`. Exemple:
 
-		id=5
+		id=paysage-hiver
 
 - `licence`: licence ou licences de l'image. Exemple:
 
@@ -1291,6 +1283,26 @@ Les galeries peuvent être listées dans un menu qui leur est propre. Deux méth
 
 Dans l'un ou l'autre des cas, les galeries actives seront marquées comme telles, si cette option est activée dans le fichier de configuration du site.
 
+### Plusieurs galeries sur une même page
+
+Il est possible de lister plusieurs galeries sur une même page. Pour ce faire, utiliser la fonction `galeries()`. Exemple:
+
+	<?php
+	$baliseH1 = "Plusieurs galeries sur une même page";
+	$inclureCodeFenetreJavascript = TRUE;
+	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion.
+	
+	echo galeries($racine, $urlRacine, LANGUE, array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation);
+	
+	include $racine . '/inc/dernier.inc.php';
+	?>
+
+Ne pas oublier de définir la variable `$inclureCodeFenetreJavascript` à `TRUE` au début du fichier si la navigation par fenêtre Javascript est souhaitée.
+
+Par défaut, la navigation par fenêtre Javascript est activée et le niveau des titres de galerie est 2. Les deux derniers paramètres (optionnels) de la fonction permettent de modifier ces valeurs par défaut. Exemple:
+
+	echo galeries($racine, $urlRacine, LANGUE, array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation, FALSE, 3);
+
 ## Partage par courriel
 
 Une option de partage par courriel est activée par défaut. Concrètement, un lien est inséré dans le menu de partage pour offrir la possibilité à l'internaute d'envoyer un message à une ou plusieurs personnes pour faire connaître la page visitée. En cliquant sur ce lien, un formulaire de contact est ajouté dans le bas de la page. Le modèle du message qui sera envoyé est présenté à l'internaute, et ce dernier peut ajouter un petit mot personnalisé.
@@ -1357,11 +1369,25 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 - qu'aun moins une galerie dans le fichier de configuration des galeries ait un paramètre `rss` avec une valeur de `1`. La valeur de la clé `langue` va indiquer la langue de la syndication globale.
 
-## Cache et optimisation
+## Cache
 
-Par défaut, Squeletml n'utilise pas de système de cache des pages générées. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site.
+### Cache global
 
-Dans certains cas, le cache peut être long à générer, ce qui a comme conséquence qu'un internaute visitant une page dont le cache n'a pas encore été généré ou est expiré peut attendre assez longtemps avant de voir le contenu s'afficher. Cependant, il est possible de générer le cache automatiquement sans attendre la visite d'internautes. Voir la section «Cron» pour plus de détails.
+Par défaut, Squeletml n'utilise pas de système de cache. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. Tout le contenu d'une page sera alors enregistré dans un fichier HTML (ou XML pour une page de flux RSS). Tant que le cache n'a pas expiré, c'est ce contenu qui sera retourné aux internautes. La page ne sera donc pas calculée et générée à chaque visite. Squeletml s'occupera également d'envoyer les en-têtes HTTP relatives au cache (`Expires`, `Cache-Control`, `Last-Modified` et `ETag`) et analysera les requêtes conditionnelles reçues (`If-Modified-Since` et `If-None-Match`) pour retourner seulement un code d'en-tête 304 dans le cas où le contenu n'a pas changé (au lieu de retourner le contenu lui-même).
+
+À noter que si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
+
+Le cache pour les autres types de fichiers (images, Javascript, etc.) est paramétré dans le fichier `.htaccess`. À ce sujet, la variable `$versionParDefautLinkScript` du fichier de configuration du site peut être pratique. En effet, le cache des fichiers CSS et Javascript peut être paramétré pour une durée relativement longue (par exemple un mois ou plus), mais si un fichier a été modifié, il est possible de forcer son retéléchargement en modifiant l'URL déclarée par Squeletml. Par exemple, l'URL d'un fichier CSS sera `http://url/vers/fichier.css?$versionParDefautLinkScript['css']`.
+
+Il est possible de faire générer le cache automatiquement par le cron. Voir la section «Cron» pour plus de détails.
+
+### Cache partiel
+
+Il est possible d'activer le cache partiel en modifiant la variable `$dureeCachePartiel` du fichier de configuration du site. Le cache partiel sera alors activé seulement si le cache global ne l'est pas. À noter que si la variable `$desactiverCachePartiel` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCachePartiel` ne vaut pas `0`.
+
+Autrement dit, le cache partiel sera activé si l'expression suivante est vraie: `if ((!$dureeCache || $desactiverCache) && $dureeCachePartiel && !$desactiverCachePartiel)`.
+
+Aucune en-tête HTTP relative au cache ne sera envoyée, et aucune requête conditionnelle ne sera analysée. Squeletml va continuer à calculer et à générer une partie de la page. Le contenu HTML ou XML enregistré en cache correspondra au contenu de `<div id="milieuInterieurContenu">...</div>`.
 
 ### Fusion des feuilles de style CSS et des scripts Javascript
 
@@ -1417,13 +1443,15 @@ Ce fichier, nommé `sitemap.xml`, se trouve à la racine du site, et supporte po
 
 ### Fichier `Makefile`
 
-Les principales commandes du fichier `Makefile` sont:
+Un fichier `Makefile.modele` se trouve dans le dossier `modeles`. Pour l'utiliser, le copier à la racine du site en le renommant `Makefile`. Les principales commandes sont:
+
+- `make fichiersModeles`: génère les modèles dans le dossier `modeles`;
 
 - `make langues`: met à jour les fichiers de langues.
 
-- `make archive`: crée une archive au format ZIP; y ajoute les fichiers qui ne sont pas versionnés, mais nécessaires.
+La commande `make all` permet d'effectuer les deux.
 
-	Par défaut, la dernière version (représentée par la dernière étiquette) est utilisée par cette commande. Pour publier une version différente, préciser la variable `version` dans la ligne de commande. Exemple:
+### Fichier `.gitignore`
 
-		make archive version=2.2.1
+Un fichier `.gitignore.modele` se trouve dans le dossier `modeles`. Pour l'utiliser, le copier à la racine du site en le renommant `.gitignore`.
 

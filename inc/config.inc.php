@@ -60,6 +60,38 @@ $envoyerRapportCron = TRUE; // TRUE|FALSE
 */
 $activerCreationCompte = FALSE; // TRUE|FALSE
 
+// Expiration du cache global.
+/*
+- Permet de mettre en cache tout le contenu d'une page (HTML, ou XML pour les flux RSS).
+- Temps en secondes avant que le cache n'expire.
+- Exemples:
+  - `0` équivaut à désactiver le cache;
+  - `1800` équivaut à 30 minutes;
+  - `3600` équivaut à 1 heure;
+  - `28800` équivaut à 8 heures;
+  - `43200` équivaut à 12 heures;
+  - `86400` équivaut à 1 jour;
+  - `259200` équivaut à 3 jours;
+  - `604800` équivaut à 7 jours;
+  - `1209600` équivaut à 14 jours;
+  - `2592000` équivaut à 30 jours;
+  - `15552000` équivaut à 180 jours;
+  - `31536000` équivaut à 365 jours.
+- Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
+- Le cache pour les autres types de fichiers (ex.: images, Javascript, etc.) est paramétré dans le fichier `.htaccess`.
+- Voir la section «Cache» dans la documentation.
+*/
+$dureeCache = 0;
+
+// Expiration du cache partiel.
+/*
+- Permet de mettre en cache seulement le contenu principal d'une page, c'est-à-dire le contenu de `<div id="milieuInterieurContenu">...</div>`.
+- Temps en secondes avant que le cache partiel n'expire.
+- Si le cache global est activé ou si la variable `$desactiverCachePartiel` est déclarée dans une page et qu'elle vaut `TRUE`, le cache partiel sera désactivé même si `$dureeCachePartiel` ne vaut pas `0`.
+- Voir la section «Cache» dans la documentation.
+*/
+$dureeCachePartiel = 0;
+
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).
@@ -121,21 +153,17 @@ $balisesLinkScript[8] = "$urlRacine/*#favicon#$urlRacine/fichiers/favicon.png";
 */
 $fusionnerCssJs = FALSE; // TRUE|FALSE
 
-// Version par défaut des fichiers CSS déclarés dans le tableau `$balisesLinkScript`.
+// Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`.
 /*
-- La version est ajoutée à la suite du nom des fichiers en tant que variable GET.
+- La version est ajoutée en tant que variable GET à la suite du nom des fichiers concernés.
 - Laisser vide pour désactiver l'ajout de version.
-- Exemple de sortie HTML lorsque `$versionParDefautLinkScriptCss` vaut `1`:
-  <link rel="stylesheet" type="text/css" href="http://localhost/serveur_local/squeletml/css/squeletml.css?1" media="screen" />
-- Voir la fonction `linkScript()`.
+- Exemple de sortie HTML lorsque `$versionParDefautLinkScript['css']` vaut `5497463215`:
+  <link rel="stylesheet" type="text/css" href="http://localhost/serveur_local/squeletml/css/squeletml.css?5497463215" media="screen" />
+- Voir la section «Cache» dans la documentation ainsi que la fonction `linkScript()` pour plus de détails.
 */
-$versionParDefautLinkScriptCss = "";
-
-// Version par défaut des fichiers déclarés dans le tableau `$balisesLinkScript`, à l'exception des fichiers CSS.
-/*
-- Voir les explications de la variable `$versionParDefautLinkScriptCss` dans le présent fichier de configuration pour plus de détails.
-*/
-$versionParDefautLinkScriptNonCss = "";
+$versionParDefautLinkScript['css']     = "";
+$versionParDefautLinkScript['js']      = "";
+$versionParDefautLinkScript['autres']  = "";
 
 // Inclusion des feuilles de style par défaut de Squeletml (dossier `css`).
 /*
@@ -162,9 +190,6 @@ $robotsParDefaut = 'index, follow, archive';
 - L'intérêt de ne pas indexer les pages de catégorie dans les moteurs de recherche est d'éviter le contenu dupliqué.
 */
 $desactiverIndexationPagesCategorie = FALSE; // TRUE|FALSE
-
-// Encodage du site.
-$charset = 'UTF-8';
 
 // Langue par défaut.
 /*
@@ -255,19 +280,6 @@ $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 - Si aucune condition n'est donnée pour un bloc, le retour est automatiquement évalué à TRUE.
 */
 $conditionsBlocs = array ();
-
-// Détection du type MIME.
-/*
-- La détection du type MIME se fait par un des outils suivants, selon leur disponibilité (en ordre de priorité):
-  - `Fileinfo` de PHP;
-  - commande `file` si la variable `$typeMimeFile` vaut TRUE;
-  - tableau personnalisé de correspondance entre une extension et son type MIME si la variable `$typeMimeCorrespondance` n'est pas vide. Exemple:
-    $typeMimeCorrespondance = array ('rmi' => 'audio/midi');
-  - tableau par défaut de correspondance entre une extension et son type MIME de la fonction `file_get_mimetype()`.
-*/
-$typeMimeFile = FALSE; // TRUE|FALSE
-$typeMimeCheminFile = '/usr/bin/file';
-$typeMimeCorrespondance = array ();
 
 // Inclusion des ancres.
 $inclureAncres = TRUE; // TRUE|FALSE
@@ -452,14 +464,14 @@ $boitesDeroulantesAlaMainParDefaut = FALSE; // TRUE|FALSE
 /*
 - Voir le deuxième paramètre de la fonction Javascript `boiteDeroulante()`.
 */
-$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 86);";
+$aExecuterApresClicBd = "egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 115);";
 
 // Balises `link` et `script` finales, ajoutées juste avant `</body>`.
 /*
 - Voir les commentaires de la variable `$balisesLinkScript` dans ce même fichier de configuration pour les détails de la syntaxe.
 - Voir la fonction `linkScript()`.
 */
-$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 86);});";
+$balisesLinkScriptFinales[0] = "$urlRacine/*#jsDirect#ajouteEvenementLoad(function(){egaliseHauteur('interieurPage', 'surContenu', 'sousContenu', 115);});";
 
 // Inclusion de l'aperçu d'une page.
 /*
@@ -477,22 +489,6 @@ $apercuParDefaut = "";
 
 // S'il y a lieu, taille, en nombre de caractères, d'un aperçu généré automatiquement.
 $tailleApercuAutomatique = 750;
-
-// Expiration du cache.
-/*
-- Temps en secondes avant que le cache n'expire.
-- Exemples:
-  - `0` équivaut à désactiver le cache;
-  - `1800` équivaut à 30 minutes;
-  - `3600` équivaut à 1 heure;
-  - `28800` équivaut à 8 heures;
-  - `43200` équivaut à 12 heures;
-  - `86400` équivaut à 1 jour;
-  - `259200` équivaut à 3 jours;
-  - `604800` équivaut à 7 jours.
-Si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
-*/
-$dureeCache = 0;
 
 // Génération automatisée du bloc de menu des langues.
 /*

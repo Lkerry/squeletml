@@ -34,7 +34,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.htaccess</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 			$erreurAccesFichiers = TRUE;
 		}
 
@@ -44,7 +44,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		else
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), "<code>$racine/.acces</code>") . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s en lecture et en écriture impossible. Veuillez lui assigner les bons droits et revisiter la présente page."), '<code>' . securiseTexte("$racine/.acces") . '</code>') . "</li>\n";
 			$erreurAccesFichiers = TRUE;
 		}
 	
@@ -60,12 +60,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (!$erreurAccesFichiers && isset($_POST['ajouter']) || isset($_POST['modifier']) || isset($_POST['supprimer']))
 		{
 			$messagesScript = '';
-		
-			if (empty($_POST['identifiant']))
+			$identifiant = '';
+			
+			if (!empty($_POST['identifiant']))
+			{
+				$identifiant = preg_replace('/[^A-Za-z0-9]/', '', $_POST['identifiant']);
+			}
+			
+			if (empty($identifiant))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucun identifiant spécifié.") . "</li>\n";
 			}
-			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && (strlen($_POST['motDePasse']) < 8 || !preg_match('/\d+/', $_POST['motDePasse']) || !preg_match('/[A-Za-z]+/', $_POST['motDePasse'])))
+			elseif ((isset($_POST['ajouter']) || isset($_POST['modifier'])) && (strlen($_POST['motDePasse']) < 8 || !preg_match('/\d/', $_POST['motDePasse']) || !preg_match('/[A-Za-z]/', $_POST['motDePasse'])))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Pour une question de sécurité, le mot de passe doit contenir au moins huit caractères ainsi qu'au moins un chiffre et une lettre.") . "</li>\n";
 			}
@@ -80,11 +86,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (stristr(PHP_OS, 'win') || $serveurFreeFr)
 					{
-						$acces = securiseTexte($_POST['identifiant']) . ':' . securiseTexte($_POST['motDePasse']) . "\n";
+						$acces = $identifiant . ':' . $_POST['motDePasse'] . "\n";
 					}
 					else
 					{
-						$acces = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
+						$acces = $identifiant . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
 					} 
 			
 					// On vérifie si l'utilisateur est déjà présent.
@@ -94,7 +100,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
+						if (strpos($ligne, $identifiant . ':') === 0)
 						{
 							$utilisateurAbsent = FALSE;
 							break;
@@ -104,18 +110,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if ($utilisateurAbsent)
 					{
 						fputs($fic2, $acces);
-						$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+						$messagesScript .= '<li>' . sprintf(T_("Ajout de l'utilisateur <em>%1\$s</em> effectué."), $identifiant) . "</li>\n";
 					}
 					else
 					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> a déjà les droits."), $identifiant) . "</li>\n";
 					}
 		
 					fclose($fic2);
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.acces") . '</code>') . "</li>\n";
 				}
 			}
 			// Modification d'un utilisateur.
@@ -132,10 +138,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
+						if (strpos($ligne, $identifiant . ':') === 0)
 						{
 							$utilisateurAbsent = FALSE;
-							$ligne = securiseTexte($_POST['identifiant']) . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
+							$ligne = $identifiant . ':' . chiffreMotDePasse($_POST['motDePasse']) . "\n";
 						}
 			
 						$utilisateurs[] = $ligne;
@@ -145,7 +151,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.acces") . '</code>') . "</li>\n";
 				}
 		
 				if ($fic2 = @fopen($racine . '/.acces', 'w'))
@@ -155,16 +161,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.acces") . '</code>') . "</li>\n";
 				}
 		
 				if ($utilisateurAbsent)
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Son mot de passe ne peut donc pas être modifié."), $identifiant) . "</li>\n";
 				}
 				else
 				{
-					$messagesScript .= '<li>' . sprintf(T_("Modification du mot de passe de l'utilisateur <em>%1\$s</em> effectuée."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Modification du mot de passe de l'utilisateur <em>%1\$s</em> effectuée."), $identifiant) . "</li>\n";
 				}
 			}
 	
@@ -182,7 +188,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$ligne = fgets($fic2);
 					
-						if (strpos($ligne, securiseTexte($_POST['identifiant']) . ':') === 0)
+						if (strpos($ligne, $identifiant . ':') === 0)
 						{
 							$utilisateurAbsent = FALSE;
 						}
@@ -196,7 +202,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.acces") . '</code>') . "</li>\n";
 				}
 		
 				if ($fic2 = @fopen($racine . '/.acces', 'w'))
@@ -206,7 +212,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.acces") . '</code>') . "</li>\n";
 				}
 		
 				// S'il n'y a plus d'utilisateur dans le fichier `.acces`, on supprime l'authentification dans le `.htaccess`.
@@ -243,7 +249,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 					}
 			
 					if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
@@ -253,17 +259,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 					}
 				}
 		
 				if ($utilisateurAbsent)
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("L'utilisateur <em>%1\$s</em> n'a pas les droits. Il ne peut donc pas être supprimé."), $identifiant) . "</li>\n";
 				}
 				else
 				{
-					$messagesScript .= '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), securiseTexte($_POST['identifiant'])) . "</li>\n";
+					$messagesScript .= '<li>' . sprintf(T_("Utilisateur <em>%1\$s</em> supprimé."), $identifiant) . "</li>\n";
 				}
 			}
 	
@@ -315,13 +321,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 						foreach ($listeUtilisateurs as $utilisateur)
 						{
-							echo '<li>' . $utilisateur . "</li>\n";
+							echo '<li>' . securiseTexte($utilisateur) . "</li>\n";
 						}
 					}
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.acces</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.acces") . '</code>') . "</li>\n";
 				}
 			}
 
@@ -375,7 +381,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 			}
 
 			if ($_POST['etat'] == 'horsLigne' && !$maintenanceDansHtaccess)
@@ -453,7 +459,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 				}
 		
 				if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
@@ -463,7 +469,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 				}
 			}
 			elseif ($_POST['etat'] == 'enLigne' && $maintenanceDansHtaccess)
@@ -493,7 +499,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 				}
 		
 				if ($fic2 = @fopen($racine . '/.htaccess', 'w'))
@@ -503,7 +509,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				else
 				{
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), "<code>$racine/.htaccess</code>") . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte("$racine/.htaccess") . '</code>') . "</li>\n";
 				}
 			}
 	
@@ -585,47 +591,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 		if (isset($_POST['lancerCron']))
 		{
+			$lancementCronDansAdmin = TRUE;
+			include $racine . '/cron.php';
 			$messagesScript = '';
-
-			if ($activerPageCron)
+			$messagesScript .= '<li>';
+			$messagesScript .= '<p>' . T_("Lancement du cron effectué et terminé.") . "</p>\n";
+			
+			if (!empty($rapport))
 			{
-				$urlCron = "$urlRacine/cron.php";
-				
-				if (!empty($cleCron))
-				{
-					$urlCron .= "?cle=$cleCron";
-				}
-				
-				if (@file_get_contents($urlCron) !== FALSE)
-				{
-					$messagesScript .= '<li>' . T_("Lancement du cron effectué et terminé.") . "</li>\n";
-				}
-				else
-				{
-					$messagesScript .= '<li class="erreur">' . T_("Une erreur a eu lieu lors du lancement du cron.") . "</li>\n";
-				}
+				$messagesScript .= "<div id=\"rapportCron\">\n";
+				$messagesScript .= $rapport;
+				$messagesScript .= "</div><!-- /#rapportCron -->\n";
 			}
-			else
-			{
-				$activerPageCronTemp = $activerPageCron;
-				$activerPageCron = TRUE;
-				include $racine . '/cron.php';
-				$activerPageCron = $activerPageCronTemp;
-				$messagesScript .= '<li>';
-				$messagesScript .= '<p>' . T_("Lancement du cron effectué et terminé.") . "</p>\n";
-				
-				if (!empty($rapport))
-				{
-					$messagesScript .= '<p>' . T_("Le rapport d'exécution du cron est le suivant:") . "</p>\n";
-					
-					$messagesScript .= "<div id=\"rapportCron\">\n";
-					$messagesScript .= $rapport;
-					$messagesScript .= "</div><!-- /#rapportCron -->\n";
-				}
-				
-				$messagesScript .= "</li>\n";
-			}
-		
+			
+			$messagesScript .= "</li>\n";
+			
 			echo adminMessagesScript($messagesScript, T_("Lancement du cron"));
 		}
 		?>
@@ -661,7 +641,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<fieldset>
 						<legend><?php echo T_("Options"); ?></legend>
 					
-						<p><label for="inputIdentifiant"><?php echo T_("Identifiant:"); ?></label><br />
+						<p><label for="inputIdentifiant"><?php echo T_("Identifiant (caractères alphanumériques):"); ?></label><br />
 						<input id="inputIdentifiant" type="text" name="identifiant" /></p>
 			
 						<p><label for="inputMotDePasse"><?php echo T_("Mot de passe:"); ?></label><br />
@@ -813,7 +793,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 			<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
 	
-			<p><a href="telecharger.admin.php?fichier=<?php echo $racine; ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
+			<p><a href="telecharger.admin.php?fichier=<?php echo encodeTexte($racine); ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
 		</div><!-- /.boite -->
 	<?php endif; ?>
 </div><!-- /#contenuPrincipal -->

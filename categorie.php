@@ -16,14 +16,14 @@ if (!empty($_GET['langue']))
 
 if (!empty($_GET['id']))
 {
-	$getId = securiseTexte($_GET['id']);
+	$getId = $_GET['id'];
 	$idCategorie = $getId;
 	
 	$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 	
 	if (!empty($categories))
 	{
-		$idReel = idCategorie($racine, $categories, $idCategorie);
+		$idReel = idCategorie($categories, $idCategorie);
 		
 		if (!empty($idReel))
 		{
@@ -57,8 +57,8 @@ if (
 	!isset($categories[$idCategorie]) ||
 	(empty($getLangue) && estCatSpeciale($idCategorie)) ||
 	(!empty($getLangue) && !estCatSpeciale($idCategorie)) ||
-	(!empty($categories[$idCategorie]['url']) && strpos($categories[$idCategorie]['url'], 'categorie.php?id=' . filtreChaine($racine, $idCategorie)) === FALSE) || // Empêcher la duplication de contenu dans les moteurs de recherche.
-	($getId != filtreChaine($racine, $getId)) // Idem.
+	(!empty($categories[$idCategorie]['url']) && (strpos($categories[$idCategorie]['url'], 'categorie.php?') !== 0 || !preg_match('#(\?|&|&amp;)id=' . preg_quote(filtreChaine($idCategorie)) . '#', $categories[$idCategorie]['url']))) || // Empêcher la duplication de contenu dans les moteurs de recherche.
+	($getId != filtreChaine($getId)) // Idem.
 )
 {
 	$erreur404 = TRUE;

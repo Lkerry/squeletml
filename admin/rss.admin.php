@@ -28,7 +28,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo '<h3>' . T_("Liste des pages du flux RSS des derniers ajouts aux galeries") . "</h3>\n";
 		
 		echo '<p>';
-		printf(T_("Cette liste est générée à partir des galeries dont le flux RSS est activé dans le <a href=\"%1\$s\">fichier de configuration des galeries</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=../site/inc/' . superBasename(cheminConfigGaleries($racine, TRUE)) . "&amp;dossierCourant=../site/inc#messages");
+		printf(T_("Cette liste est générée à partir des galeries dont le flux RSS est activé dans le <a href=\"%1\$s\">fichier de configuration des galeries</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte('../site/inc/' . superBasename(cheminConfigGaleries($racine, TRUE))) . '&amp;dossierCourant=../site/inc#messages');
 		echo "</p>\n";
 		echo "</div><!-- /.sousBoite -->\n";
 	}
@@ -48,7 +48,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (!@touch($cheminFichier))
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), "<code>$cheminFichier</code>") . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucune page ne peut faire partie du flux RSS des dernières publications puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<em>' . securiseTexte($cheminFichier) . '</em>') . "</li>\n";
 			}
 		}
 		
@@ -88,7 +88,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						$listePages .= '<input type="text" name="langue[' . $i . ']" value="' . $codeLangue . '" />';
+						$listePages .= '<input type="text" name="langue[' . $i . ']" value="' . securiseTexte($codeLangue) . '" />';
 					}
 					
 					$listePages .= "<ul class=\"triable\">\n";
@@ -97,7 +97,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					foreach ($langueInfos['pages'] as $page)
 					{
 						$page = rtrim($page);
-						$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . $page . '" /></li>' . "\n";
+						$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . securiseTexte($page) . '" /></li>' . "\n";
 						$j++;
 					}
 					
@@ -116,15 +116,25 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant la langue. À l'intérieur d'une section, chaque ligne est sous la forme %1\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>') . "</p>\n";
 			
 			echo "<ul>\n";
-			echo "<li>fr\n";
+			echo "<li><code>fr</code>\n";
 			echo "<ul>\n";
 			echo "<li><code>pages[]=animaux/chiens.php</code></li>\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
 			
-			echo '<p>' . sprintf(T_("Cet exemple fait référence à une page en français dont l'URL est %1\$s."), "<code>$urlRacine/animaux/chiens.php</code>") . "</p>\n";
+			echo '<p>' . sprintf(T_("Cet exemple fait référence à une page en français dont l'URL est %1\$s."), '<code>' . securiseTexte("$urlRacine/animaux/chiens.php") . '</code>') . "</p>\n";
 			
-			echo '<p>' . T_("Pour enlever une langue ou une page, simplement supprimer le contenu du champ.") . "</p>\n";
+			echo '<p>' . T_("Pour enlever une page, simplement supprimer le contenu du champ.") . "</p>\n";
+			
+			echo '<p>' . T_("Prendre note que si une URL contient des caractères spéciaux, elle devra être fournie sous forme encodée. Le plus simple est de copier l'adresse dans la barre de navigation du navigateur utilisé et de coller le résultat dans le champ approprié. L'URL racine sera automatiquement supprimée pour convertir l'adresse fournie en adresse relative.") . "</p>\n";
+			
+			echo '<p>' . T_("Voici un exemple:") . "</p>\n";
+			
+			echo "<p><code>http://www.monsite.ext/animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></p>\n";
+			
+			echo '<p>' . T_("Le résultat sera semblable à ci-dessous:") . "</p>\n";
+			
+			echo "<p><code>pages[]=animaux/canid%C3%A9s/husky%20sib%C3%A9rien.php</code></p>\n";
 			
 			echo '<p>' . T_("Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 			echo "</div><!-- /.bDcorps -->\n";
@@ -169,7 +179,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo "</select>\n";
 			
-			echo "<ul>\n";
+			echo '<ul id="rssUrlAjout">' . "\n";
 			echo '<li><label for="inputUrlAjout"><code>pages[]=</code></label><input id="inputUrlAjout" class="long" type="text" name="urlAjout" value="" /></li>' . "\n";
 			echo "</ul></li>\n";
 			echo "</ul>\n";
@@ -183,7 +193,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		elseif (file_exists($cheminFichier))
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . $cheminFichier . '</code>') . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
 		}
 		
 		echo adminMessagesScript($messagesScript);
@@ -201,22 +211,44 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			foreach ($_POST['langue'] as $cle => $postLangueValeur)
 			{
-				if (!empty($postLangueValeur) && !empty($_POST['url'][$cle]))
+				$urlCle = array ();
+				
+				if (!empty($_POST['url'][$cle]))
+				{
+					foreach ($_POST['url'][$cle] as $page)
+					{
+						$page = supprimeUrlRacine($urlRacine, $page);
+						
+						if (!empty($page))
+						{
+							$urlCle[] = $page;
+						}
+					}
+				}
+				
+				if (!empty($postLangueValeur) && !empty($urlCle))
 				{
 					$contenuFichierTableau[$postLangueValeur] = array ();
 					
-					foreach ($_POST['url'][$cle] as $page)
+					foreach ($urlCle as $page)
 					{
-						if (!empty($page) && !preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($page), '/') . "\n/", $contenuFichierTableau[$postLangueValeur]))
+						if (!empty($page) && !preg_grep('/^pages\[\]=' . preg_quote($page, '/') . "\n/", $contenuFichierTableau[$postLangueValeur]))
 						{
-							$contenuFichierTableau[$postLangueValeur][] = 'pages[]=' . securiseTexte($page) . "\n";
+							$contenuFichierTableau[$postLangueValeur][] = "pages[]=$page\n";
 						}
 					}
 				}
 			}
 		}
 		
-		if (!empty($_POST['langueAjout']) && !empty($_POST['urlAjout']))
+		$urlAjout = '';
+		
+		if (!empty($_POST['urlAjout']))
+		{
+			$urlAjout = supprimeUrlRacine($urlRacine, $_POST['urlAjout']);
+		}
+		
+		if (!empty($_POST['langueAjout']) && !empty($urlAjout))
 		{
 			$langueAjout = securiseTexte($_POST['langueAjout']);
 			
@@ -225,9 +257,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFichierTableau[$langueAjout] = array ();
 			}
 
-			if (!preg_grep('/^pages\[\]=' . preg_quote(securiseTexte($_POST['urlAjout']), '/') . "\n/", $contenuFichierTableau[$langueAjout]))
+			if (!preg_grep('/^pages\[\]=' . preg_quote($urlAjout, '/') . "\n/", $contenuFichierTableau[$langueAjout]))
 			{
-				array_unshift($contenuFichierTableau[$langueAjout], 'pages[]=' . securiseTexte($_POST['urlAjout']) . "\n");
+				array_unshift($contenuFichierTableau[$langueAjout], "pages[]=$urlAjout\n");
 			}
 		}
 		

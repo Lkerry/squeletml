@@ -1,0 +1,45 @@
+/*
+Inspiré du jeu de couleurs de l'éditeur de texte gedit.
+Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
+Copyright © Jean-Philippe Fleury, 2012.
+
+Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
+modifier suivant les termes de la GNU Affero General Public License telle que
+publiée par la Free Software Foundation: soit la version 3 de cette
+licence, soit (à votre gré) toute version ultérieure.
+
+Ce programme est distribué dans l'espoir qu'il vous sera utile, mais SANS
+AUCUNE GARANTIE: sans même la garantie implicite de COMMERCIALISABILITÉ
+ni d'ADÉQUATION À UN OBJECTIF PARTICULIER. Consultez la Licence publique
+générale GNU Affero pour plus de détails.
+
+Vous devriez avoir reçu une copie de la Licence publique générale GNU Affero
+avec ce programme; si ce n'est pas le cas, consultez
+<http://www.gnu.org/licenses/>.
+*/
+
+.CodeMirror-scroll {
+	height: 425px;
+}
+
+.cm-s-gedit {font: 1em "DejaVu Sans Mono", Courier, "Courier New", FreeMono, "Liberation Mono", monospace; background: #ffffff; color: #000000;}
+
+.cm-s-gedit .CodeMirror-gutter {background: #edeceb;}
+.cm-s-gedit .CodeMirror-gutter-text {color: #000000;}
+.cm-s-gedit div.CodeMirror-selected {background: #86abd9 !important;}
+
+.cm-s-gedit span.cm-atom {color: #ff00ff;}
+.cm-s-gedit span.cm-attribute {color: #6a5acd;}
+.cm-s-gedit span.cm-comment {color: #0000ff;}
+.cm-s-gedit span.cm-def {color: #000000;}
+.cm-s-gedit span.cm-error {background-color: #ff0000; color: #ffffff; font-weight: bold;}
+.cm-s-gedit span.cm-keyword {color: #a52a2a; font-weight: bold;}
+.cm-s-gedit span.cm-meta {color: #a020f0;}
+.cm-s-gedit span.cm-number {color: #ff00ff;}
+.cm-s-gedit span.cm-operator {color: #a52a2a; font-weight: bold;}
+.cm-s-gedit span.cm-property {color: #000000;}
+.cm-s-gedit span.cm-string {color: #ff00ff;}
+.cm-s-gedit span.cm-tag {color: #008a8c;}
+.cm-s-gedit span.cm-variable {color: #000000;}
+.cm-s-gedit span.cm-variable-2 {color: #008a8c;}
+

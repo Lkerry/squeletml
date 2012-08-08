@@ -1,4 +1,4 @@
-.blocAvecFond {
+pre, table, .blocAvecFond, div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte, div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img {
 	position: relative;
 }
 

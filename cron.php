@@ -1,12 +1,17 @@
 <?php
 $racine = dirname(__FILE__);
 
+if (!isset($lancementCronDansAdmin))
+{
+	$lancementCronDansAdmin = FALSE;
+}
+
 if (file_exists($racine . '/init.inc.php'))
 {
 	include $racine . '/init.inc.php';
 	include_once $racine . '/inc/fonctions.inc.php';
 	include_once $racineAdmin . '/inc/fonctions.inc.php';
-	include_once $racine . '/inc/php-gettext/gettext.inc';
+	include_once $racine . '/inc/php-gettext/gettext.inc.php';
 	
 	eval(variablesAvantConfig());
 	
@@ -20,7 +25,7 @@ if (file_exists($racine . '/init.inc.php'))
 		include $cheminFichier;
 	}
 	
-	if ($activerPageCron && (empty($cleCron) || (isset($_GET['cle']) && $_GET['cle'] == $cleCron)))
+	if ($lancementCronDansAdmin || ($activerPageCron && (empty($cleCron) || (isset($_GET['cle']) && $_GET['cle'] == $cleCron))))
 	{
 		$t1 = time();
 		@file_put_contents("$racine/site/inc/cron.txt", $t1);
@@ -33,12 +38,17 @@ if (file_exists($racine . '/init.inc.php'))
 		$dateHeure = date('H:i:s', $t1);
 		$rapport .= '<h1>' . sprintf(T_("Rapport d'exécution du cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . "</h1>\n";
 		
-		$rapport .= '<p><em>' . sprintf(T_("Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1\$s\">modifier la variable %2\$s dans le fichier de configuration du site</a>."), $urlRacineAdmin . '/porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php&amp;dossierCourant=../site/inc#messages', '<code>$envoyerRapportCron</code>') . "</em></p>\n";
+		$rapport .= '<p id="rapportCronNoteEnvoi"><em>' . sprintf(T_("Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1\$s\">modifier la variable %2\$s dans le fichier de configuration du site</a>."), $urlRacineAdmin . '/porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php&amp;dossierCourant=../site/inc#messages', '<code>$envoyerRapportCron</code>') . "</em></p>\n";
 		
-		$rapport .= "<ul>\n";
+		$rapport .= "<ul id=\"rapportCronLiensAdmin\">\n";
 		$rapport .= '<li><a href="' . $urlRacine . '/cron.php">' . T_("Page de lancement du cron") . "</a></li>\n";
 		$rapport .= '<li><a href="' . $urlRacineAdmin . '/">' . T_("Section d'administration du site") . "</a></li>\n";
 		$rapport .= "</ul>\n";
+		
+		if ($dureeCache || $ajouterPagesParCronDansSitemap)
+		{
+			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
+		}
 		
 		########################################################################
 		##
@@ -48,48 +58,11 @@ if (file_exists($racine . '/init.inc.php'))
 		
 		$rapport .= '<h2>' . T_("Cache") . "</h2>\n";
 		
-		$listeUrl = array ();
+		$rapportLi = '';
 		
 		if ($dureeCache)
 		{
-			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
-		}
-		
-		// Mise en action.
-		
-		$rapportLi = '';
-		
-		foreach ($listeUrl as $url => $infosUrl)
-		{
-			if (!empty($infosUrl['cache']))
-			{
-				if (@unlink($racine . '/site/cache/' . $infosUrl['cache']))
-				{
-					$rapportLi .= '<li>1: ';
-				}
-				else
-				{
-					$rapportLi .= '<li class="erreur">0: ';
-				}
-				
-				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $infosUrl['cache'] . '");</code>' . "</li>\n";
-			}
-			
-			if (!empty($infosUrl['cacheEnTete']))
-			{
-				if (@unlink($racine . '/site/cache/' . $infosUrl['cacheEnTete']))
-				{
-					$rapportLi .= '<li>1: ';
-				}
-				else
-				{
-					$rapportLi .= '<li class="erreur">0: ';
-				}
-				
-				$rapportLi .= '<code>unlink("' . $racine . '/site/cache/' . $infosUrl['cacheEnTete'] . '");</code>' . "</li>\n";
-			}
-			
-			if (empty($infosUrl['cache']) || !file_exists($racine . '/site/cache/' . $infosUrl['cache']))
+			foreach ($listeUrl as $url => $infosUrl)
 			{
 				simuleVisite($racine, $urlRacine, $url, $dureeCache);
 				$rapportLi .= '<li>';
@@ -119,12 +92,6 @@ if (file_exists($racine . '/init.inc.php'))
 			$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap") . "</h3>\n";
 			
 			$rapport .= "<ul>\n";
-			
-			if (!isset($listeUrl))
-			{
-				$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
-			}
-			
 			$contenuSitemap = adminGenereContenuSitemap($listeUrl);
 			$rapport .= adminEnregistreSitemap($racine, $contenuSitemap);
 			$rapport .= "</ul>\n";
@@ -147,20 +114,25 @@ if (file_exists($racine . '/init.inc.php'))
 		##
 		########################################################################
 		
-		$rapport = str_replace('class="erreur"', 'style="color: #630000;"', $rapport);
-		$rapport = str_replace('<code>', '<code style="background-color: #F2F2F2;">', $rapport);
-		$rapport = str_replace('<pre ', '<pre style="overflow: auto; padding: 5px; border: 1px solid #B3B3B3; background-color: #F2F2F2;" ', $rapport);
-		$rapport = preg_replace("#<ul>\n<li><a href=\"javascript:adminSelectionneTexte\('[^']+'\);\">[^<]+</a></li>\n</ul>#", '', $rapport);
-		
-		if ($envoyerRapportCron && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
+		if ($lancementCronDansAdmin)
 		{
+			$rapport = preg_replace('#<p id="rapportCronNoteEnvoi">.+?</p>#', '', $rapport);
+			$rapport = preg_replace('#<ul id="rapportCronLiensAdmin">.+?</ul>#s', '', $rapport);
+		}
+		elseif ($envoyerRapportCron && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
+		{
+			$rapport = str_replace('class="erreur"', 'style="color: #630000;"', $rapport);
+			$rapport = str_replace('<code>', '<code style="background-color: #F2F2F2;">', $rapport);
+			$rapport = str_replace('<pre ', '<pre style="overflow: auto; padding: 5px; border: 1px solid #B3B3B3; background-color: #F2F2F2;" ', $rapport);
+			$rapport = preg_replace("#<ul>\n<li><a href=\"javascript:adminSelectionneTexte\('[^']+'\);\">[^<]+</a></li>\n</ul>#", '', $rapport);
+			
 			$infosCourriel = array ();
-		
+			
 			if (!empty($courrielExpediteurRapports))
 			{
 				$infosCourriel['From'] = $courrielExpediteurRapports;
 			}
-		
+			
 			$infosCourriel['format'] = 'html';
 			$infosCourriel['destinataire'] = !empty($courrielAdmin) ? $courrielAdmin : $contactCourrielParDefaut;
 			$infosCourriel['objet'] = sprintf(T_("Cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . baliseTitleComplement($tableauBaliseTitleComplement, array ($langueParDefaut), FALSE);
@@ -168,12 +140,12 @@ if (file_exists($racine . '/init.inc.php'))
 			courriel($infosCourriel);
 		}
 	}
-	else
+	elseif (!$lancementCronDansAdmin)
 	{
 		header('HTTP/1.1 401 Unauthorized');
 	}
 }
-else
+elseif (!$lancementCronDansAdmin)
 {
 	header('HTTP/1.1 404 Not found');
 }

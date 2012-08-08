@@ -17,7 +17,6 @@ else
 	
 	echo '<p><em>' . sprintf(T_("<a href=\"%1\$s\">Consulter une introduction à Squeletml</a> au lieu de la documentation complète ci-dessous."), "$urlSansGet?type=lisez-moi") . "</em></p>\n";
 	echo mkd($racine . '/doc/documentation.mkd');
-	echo annexesDocumentation($racineAdmin);
 }
 
 include $racineAdmin . '/inc/dernier.inc.php';

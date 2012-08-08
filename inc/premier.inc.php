@@ -1,6 +1,6 @@
 <?php
 /*
-Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML est envoyé au navigateur lors de la vérification du cache ou à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.premier.inc.php`.
+Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Le code XHTML est envoyé au navigateur lors de la vérification du cache global ou à la toute fin du fichier par le biais de l'inclusion du fichier `(site/)xhtml/(LANGUE/)page.premier.inc.php`.
 
 Étapes dans ce fichier:
 
@@ -8,7 +8,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 2. Première série d'affectations.
 3. Deuxième série d'inclusions.
 4. Première série de traitement personnalisé optionnel.
-5. Vérification du cache.
+5. Vérification du cache global.
 6. Deuxième série d'affectations.
 7. Troisième série d'inclusions.
 8. Troisième série d'affectations.
@@ -20,18 +20,13 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 
 ########################################################################
 ##
-## Affectations et inclusions.
+## Affectations, inclusions et cache global.
 ##
 ########################################################################
 
 // Inclusions 1 de 3.
 
 include dirname(__FILE__) . '/../init.inc.php';
-
-if (file_exists($racine . '/inc/devel.inc.php'))
-{
-	include_once $racine . '/inc/devel.inc.php';
-}
 
 if (file_exists($racine . '/site/inc/devel.inc.php'))
 {
@@ -65,6 +60,11 @@ if (!isset($desactiverCache))
 	$desactiverCache = FALSE;
 }
 
+if (!isset($desactiverCachePartiel))
+{
+	$desactiverCachePartiel = FALSE;
+}
+
 if (!isset($idCategorie))
 {
 	$idCategorie = '';
@@ -90,27 +90,34 @@ if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
 	include $racine . '/site/inc/premier-pre.inc.php';
 }
 
-// Vérification du cache.
+// Vérification du cache global.
 if ($dureeCache && !$desactiverCache)
 {
-	// On vérifie si la page existe en cache ou si le cache est expiré.
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 	
-	$nomFichierCache = nomFichierCache($racine, $urlRacine, $url);
-	$nomFichierCacheEnTete = nomFichierCacheEnTete($nomFichierCache);
-	
-	if (file_exists("$racine/site/cache/$nomFichierCache") && !cacheExpire("$racine/site/cache/$nomFichierCache", $dureeCache))
+	// S'il y a lieu, analyse d'une requête effectuée par le client.
+	if (code304($cheminFichierCache))
 	{
-		if (file_exists("$racine/site/cache/$nomFichierCacheEnTete"))
+		header('HTTP/1.1 304 Not Modified');
+		
+		exit(0);
+	}
+	
+	// On vérifie si la page existe en cache ou si le cache est expiré.
+	if (file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+	{
+		if (file_exists($cheminFichierCacheEnTete))
 		{
-			$contenuFichierCacheEnTete = @file_get_contents("$racine/site/cache/$nomFichierCacheEnTete");
+			$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 			
-			if ($contenuFichierCacheEnTete !== FALSE)
+			if (!empty($contenuFichierCacheEnTete))
 			{
 				eval($contenuFichierCacheEnTete);
 			}
 		}
 		
-		@readfile("$racine/site/cache/$nomFichierCache");
+		@readfile($cheminFichierCache);
 		
 		exit(0);
 	}
@@ -122,8 +129,8 @@ if ($dureeCache && !$desactiverCache)
 
 // Affectations 2 de 3.
 
-extract(init('', 'baliseH1', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
+extract(init('', 'baliseH1', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init(FALSE, 'inclureCodeFenetreJavascript', 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
 
 if (!isset($apercu))
 {
@@ -140,6 +147,8 @@ if (!isset($auteur))
 	$auteur = $auteurParDefaut;
 }
 
+$auteur = securiseTexte($auteur);
+
 if ($estPageCompte)
 {
 	$baliseH1 = T_("Demande de création d'un compte utilisateur");
@@ -150,7 +159,14 @@ elseif ($estPageDeconnexion)
 }
 
 $estAccueil = estAccueil(ACCUEIL);
+
+if (!empty($baliseTitle))
+{
+	$baliseTitle = securiseTexte($baliseTitle);
+}
+
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), $estAccueil);
+$baliseTitleComplement = securiseTexte($baliseTitleComplement);
 
 if (!isset($boitesDeroulantesAlaMain))
 {
@@ -161,7 +177,7 @@ $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres'
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
 $listeCategoriesPage = categories($racine, $urlRacine, $url);
-$classesBody = classesBody($racine, $url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $classesBody);
+$classesBody = classesBody($url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
 if (!empty($classesContenu))
@@ -176,9 +192,30 @@ if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 	$courrielContact = $contactCourrielParDefaut;
 }
 
-if (!isset($partageCourriel))
+$cheminCachePartiel = $racine . '/inc/cache-partiel.inc.php';
+
+if ((!$dureeCache || $desactiverCache) && $dureeCachePartiel && !$desactiverCachePartiel)
 {
-	$partageCourriel = $activerPartageCourrielParDefaut;
+	$inclureCachePartiel = TRUE;
+}
+else
+{
+	$inclureCachePartiel = FALSE;
+}
+
+if (!empty($dateCreation))
+{
+	$dateCreation = securiseTexte($dateCreation);
+}
+
+if (!empty($dateRevision))
+{
+	$dateRevision = securiseTexte($dateRevision);
+}
+
+if (!empty($description))
+{
+	$description = securiseTexte($description);
 }
 
 if (!isset($infosPublication))
@@ -203,7 +240,7 @@ if ($afficherMessageIe6)
 
 if ($inclureMotsCles)
 {
-	$motsCles = motsCles($motsCles, $description);
+	$motsCles = motsCles(securiseTexte($motsCles), $description);
 }
 
 $nomSite = nomSite($estAccueil, lienAccueil(ACCUEIL, $estAccueil, titreSite($titreSite, array ($langue, $langueParDefaut))));
@@ -213,6 +250,11 @@ $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 if ($siteEstEnMaintenance)
 {
 	$noticeMaintenance = noticeMaintenance();
+}
+
+if (!isset($partageCourriel))
+{
+	$partageCourriel = $activerPartageCourrielParDefaut;
 }
 
 if (!isset($partageReseaux))
@@ -226,7 +268,7 @@ if ($partageCourriel || $partageReseaux)
 }
 
 $premierOuDernier = 'premier';
-$robots = robots($robotsParDefaut, $robots);
+$robots = securiseTexte(robots($robotsParDefaut, $robots));
 
 if (!isset($tableDesMatieres))
 {
@@ -277,6 +319,8 @@ if (!empty($classesBody))
 	$classesBody = ' class="' . trim($classesBody) . '"';
 }
 
+$inclureFinMilieuInterieurContenu = TRUE;
+
 if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrielContact) && !isset($accueil[LANGUE]) && strpos($url, urlRacineLangueInactive($racine, $urlRacine, LANGUE)) === 0))
 {
 	$robots = 'noindex, follow, noarchive';
@@ -285,6 +329,10 @@ if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrie
 if ($erreur404)
 {
 	$enTetesHttp .= "header('HTTP/1.1 404 Not found');";
+}
+else
+{
+	$enTetesHttp .= 'header("Content-Type: text/html; charset=utf-8");';
 }
 
 ########################################################################
@@ -344,13 +392,13 @@ if ($galerieActiverFluxRssGlobal)
 
 if (!empty($idGalerie) && $rssGalerie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($racine, $idGalerie);
+	$urlFlux = "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($idGalerie);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Galerie %1$s'), $idGalerie);
 }
 
 if (!empty($idCategorie) && $rssCategorie)
 {
-	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($racine, $idCategorie);
+	$urlFlux = "$urlRacine/rss.php?type=categorie&amp;id=" . filtreChaine($idCategorie);
 	$balisesLinkScript[] = "$url#rss#$urlFlux#" . sprintf(T_('Catégorie %1$s'), $idCategorie);
 }
 
@@ -376,43 +424,34 @@ for ($i = 0; $i < $profondeur; $i++)
 $cheminPie .= 'inc/PIE/PIE.php';
 
 $cssDirectlteIE8 = '';
-$cssDirectlteIE8 .= "body.tableDesMatieresArrondie #tableDesMatieres, .blocArrondi, .blocAvecFond {\n";
-$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
-$cssDirectlteIE8 .= "}\n";
-
-$selecteursOmbre = 'pre, table';
+$cssDirectlteIE8 .= 'body.tableDesMatieresArrondie #tableDesMatieres, pre, table, .blocArrondi, .blocAvecFond';
 
 if ($idGalerie)
 {
-	$selecteursOmbre .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte';
+	$cssDirectlteIE8 .= ', div.galerieNavigationAccueil img, div#galerieIntermediaireImg img, div.galerieIntermediaireImgApercu img, div#galerieIntermediaireTexte, div.publicationsRecentesGalerie img, div.publicationsRecentesGaleries img';
 }
 
 if ($inclureBasDePage && !$basDePageInterieurPage)
 {
-	$selecteursOmbre .= ', #basDePageHorsPage';
+	$cssDirectlteIE8 .= ', #basDePageHorsPage';
 }
 
 if ($ombrePage)
 {
-	$selecteursOmbre .= ', body.ombrePage #page';
+	$cssDirectlteIE8 .= ', body.ombrePage #page';
 }
 
-if (!empty($selecteursOmbre))
-{
-	$cssDirectlteIE8 .= "$selecteursOmbre {\n";
-	$cssDirectlteIE8 .= "\tbackground-color: white;\n";
-	$cssDirectlteIE8 .= "\tbehavior: url(\"$cheminPie\");\n";
-	$cssDirectlteIE8 .= "}\n";
-}
-
+$cssDirectlteIE8 .= " {\n\tbehavior: url(\"$cheminPie\");\n";
+$cssDirectlteIE8 .= "}\n";
 $balisesLinkScript[] = "$url#cssDirectlteIE8#$cssDirectlteIE8";
 
 // Slimbox2.
 
-if (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && !empty($idGalerie))
+if ($inclureCodeFenetreJavascript || (($galerieAccueilJavascript || $galerieLienOriginalJavascript) && !empty($idGalerie)))
 {
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/slimbox2/js/slimbox2.js";
+	$balisesLinkScript[] = "$url#js#$urlRacine/js/slimbox2/js/autoload.js";
 	$balisesLinkScript[] = "$url#css#$urlRacine/js/slimbox2/css/slimbox2.css";
 }
 
@@ -423,10 +462,15 @@ if ($tableDesMatieres)
 	$balisesLinkScript[] = "$url#css#$urlRacine/css/table-des-matieres.css";
 	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/table-des-matieres-ie6.css";
 	$balisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/table-des-matieres-ie6-7.css";
+	$balisesLinkScript[] = "$url#cssIE8#$urlRacine/css/table-des-matieres-ie8.css";
 	
 	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery.min.js";
-	$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
-	$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('milieuInterieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$langueParDefaut');";
+	
+	if ((!$dureeCache || $desactiverCache) && (!$dureeCachePartiel || $desactiverCachePartiel))
+	{
+		$balisesLinkScript[] = "$url#js#$urlRacine/js/jquery/jquery-tableofcontents/jquery.tableofcontents.js";
+		$balisesLinkScript[] = "$url#jsDirect#tableDesMatieres('milieuInterieurContenu', '$tDmBaliseTable', '$tDmBaliseTitre', $tDmNiveauDepart, $tDmNiveauArret, '$langue', '$langueParDefaut');";
+	}
 }
 
 // Message pour IE6.
@@ -446,7 +490,7 @@ if (!$inclureCssParDefaut)
 	supprimeInclusionCssParDefaut($balisesLinkScript);
 }
 
-$linkScript = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLinkScript, $versionParDefautLinkScriptCss, $versionParDefautLinkScriptNonCss);
+$linkScript = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLinkScript, $versionParDefautLinkScript);
 
 ########################################################################
 ##
@@ -465,13 +509,8 @@ if (file_exists($racine . '/site/inc/premier.inc.php'))
 ##
 ########################################################################
 
-if (!empty($enTetesHttp))
+if (!$dureeCache || $desactiverCache)
 {
-	if ($dureeCache && !$desactiverCache)
-	{
-		@file_put_contents("$racine/site/cache/$nomFichierCacheEnTete", $enTetesHttp);
-	}
-	
 	eval($enTetesHttp);
 }
 
