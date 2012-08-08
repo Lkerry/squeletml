@@ -625,10 +625,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'editer')
 		echo "<div>\n";
 		clearstatcache();
 		
-		if (file_exists($getValeur) && filesize($getValeur))
+		if (file_exists($getValeur) && @filesize($getValeur))
 		{
 			$fic = @fopen($getValeur, 'r');
-			$contenuFichier = fread($fic, filesize($getValeur));
+			$contenuFichier = fread($fic, @filesize($getValeur));
 			$contenuFichier = securiseTexte($contenuFichier);
 			fclose($fic);
 		}
@@ -1278,7 +1278,7 @@ if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimeP
 	{
 		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
 	}
-	elseif (file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && filesize($_FILES['porteDocumentsAjouterFichier']['tmp_name']) > $tailleMaxFichier)
+	elseif (file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && @filesize($_FILES['porteDocumentsAjouterFichier']['tmp_name']) > $tailleMaxFichier)
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier) . "</li>\n";
 	}

@@ -2035,12 +2035,12 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $ga
 				if ($galerieLienOriginalTelecharger)
 				{
 					$urlOriginal = "$urlRacine/telecharger.php?fichier=$urlOriginal";
-					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(filesize($cheminOriginal))) . "</a></li>\n";
+					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(@filesize($cheminOriginal))) . "</a></li>\n";
 				}
 				else
 				{
 					$urlOriginal = "$urlRacine/$urlOriginal";
-					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(filesize($cheminOriginal))) . "</a></li>\n";
+					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(@filesize($cheminOriginal))) . "</a></li>\n";
 				}
 			}
 			else
@@ -2284,75 +2284,79 @@ function galeries($racine, $urlRacine, $langue, $listeGaleries, $galerieAncreDeN
 	{
 		$idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 		$cheminConfigGalerie = cheminConfigGalerie($racine, $idGalerieDossier);
-		$contenu .= "<div class=\"galerieDansListe\">\n";
-		$contenu .= "<h$niveauTitre>" . securiseTexte($idGalerie) . "</h$niveauTitre>\n";
-		$contenu .= "<ul class=\"galerieListeImages\">\n";
 		$tableauGalerie = tableauGalerie($cheminConfigGalerie, TRUE);
-		$relLien = 'lightbox-galerie-' . chaineVersClasseCss($idGalerie);
 		
-		foreach($tableauGalerie as $image)
+		if (!empty($tableauGalerie))
 		{
-			if (!empty($image['vignetteNom']))
-			{
-				$vignetteNom = $image['vignetteNom'];
-			}
-			else
-			{
-				$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
-			}
+			$contenu .= "<div class=\"galerieDansListe\">\n";
+			$contenu .= "<h$niveauTitre>" . securiseTexte($idGalerie) . "</h$niveauTitre>\n";
+			$contenu .= "<ul class=\"galerieListeImages\">\n";
+			$relLien = 'lightbox-galerie-' . chaineVersClasseCss($idGalerie);
 			
-			$cheminVignette = $racine;
-			$urlVignette = $urlRacine;
-			
-			if ($idGalerieDossier != 'demo')
+			foreach($tableauGalerie as $image)
 			{
-				$cheminVignette .= '/site';
-				$urlVignette .= '/site';
-			}
-			
-			$cheminVignette .= '/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom;
-			$urlVignette .= '/fichiers/galeries/' . encodeTexte($idGalerieDossier);
-			$urlSourceImage = $urlVignette;
-			$urlVignette .= '/' . encodeTexte($vignetteNom);
-			list ($largeurImage, $hauteurImage) = @getimagesize($cheminVignette);
-			$titreImage = titreImage($image);
-			
-			if (!empty($image['vignetteAlt']))
-			{
-				$altImage = securiseTexte($image['vignetteAlt']);
-			}
-			else
-			{
-				$altImage = sprintf(T_("Image %1\$s"), securiseTexte($titreImage));
-			}
-			
-			$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-			$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, $langue);
-			$urlPageIndividuelleImage = variableGet(1, $urlGalerie, 'image', idImage($image)) . $ancre;
-			
-			if ($navigationJavascript)
-			{
-				$titleLien = '<a href="' . $urlPageIndividuelleImage . '">' . T_("Partager cette image ou voir plus d'information.") . '</a>';
-				
-				if (!empty($image['intermediaireLegende']))
+				if (!empty($image['vignetteNom']))
 				{
-					$titleLien = $image['intermediaireLegende'] . '<br />' . $titleLien;
+					$vignetteNom = $image['vignetteNom'];
+				}
+				else
+				{
+					$vignetteNom = nomSuffixe($image['intermediaireNom'], '-vignette');
 				}
 				
-				$titleLien = str_replace(array ('<', '>', '"'), array ('&lt;', '&gt;', "'"), $titleLien);
-				$lienImage = '<a rel="' . $relLien . '" href="' . $urlSourceImage . '/' . encodeTexte($image['intermediaireNom']) . '" title="' . $titleLien . '">';
-			}
-			else
-			{
-				$lienImage = '<a rel="' . $relLien . '" href="' . $urlPageIndividuelleImage . '" title="' . securiseTexte($titreImage) . '">';
+				$cheminVignette = $racine;
+				$urlVignette = $urlRacine;
+				
+				if ($idGalerieDossier != 'demo')
+				{
+					$cheminVignette .= '/site';
+					$urlVignette .= '/site';
+				}
+				
+				$cheminVignette .= '/fichiers/galeries/' . $idGalerieDossier . '/' . $vignetteNom;
+				$urlVignette .= '/fichiers/galeries/' . encodeTexte($idGalerieDossier);
+				$urlSourceImage = $urlVignette;
+				$urlVignette .= '/' . encodeTexte($vignetteNom);
+				list ($largeurImage, $hauteurImage) = @getimagesize($cheminVignette);
+				$titreImage = titreImage($image);
+				
+				if (!empty($image['vignetteAlt']))
+				{
+					$altImage = securiseTexte($image['vignetteAlt']);
+				}
+				else
+				{
+					$altImage = sprintf(T_("Image %1\$s"), securiseTexte($titreImage));
+				}
+				
+				$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
+				$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, $langue);
+				$urlPageIndividuelleImage = variableGet(1, $urlGalerie, 'image', idImage($image)) . $ancre;
+				
+				if ($navigationJavascript)
+				{
+					$titleLien = '<a href="' . $urlPageIndividuelleImage . '">' . T_("Partager cette image ou voir plus d'information.") . '</a>';
+					
+					if (!empty($image['intermediaireLegende']))
+					{
+						$titleLien = $image['intermediaireLegende'] . '<br />' . $titleLien;
+					}
+					
+					$titleLien = str_replace(array ('<', '>', '"'), array ('&lt;', '&gt;', "'"), $titleLien);
+					$lienImage = '<a rel="' . $relLien . '" href="' . $urlSourceImage . '/' . encodeTexte($image['intermediaireNom']) . '" title="' . $titleLien . '">';
+				}
+				else
+				{
+					$lienImage = '<a rel="' . $relLien . '" href="' . $urlPageIndividuelleImage . '" title="' . securiseTexte($titreImage) . '">';
+				}
+				
+				$contenu .= "<li><div class=\"galerieNavigationAccueil\">$lienImage<img src=\"$urlVignette\" width=\"$largeurImage\" height=\"$hauteurImage\" alt=\"$altImage\" /></a></div></li>\n";
 			}
 			
-			$contenu .= "<li><div class=\"galerieNavigationAccueil\">$lienImage<img src=\"$urlVignette\" width=\"$largeurImage\" height=\"$hauteurImage\" alt=\"$altImage\" /></a></div></li>\n";
+			$contenu .= "</ul><!-- /.galerieListeImages -->\n";
+			$contenu .= "</div><!-- /.galerieDansListe -->\n";
+			$contenu .= "<div class=\"sep\"></div>\n";
 		}
-		
-		$contenu .= "</ul><!-- /.galerieListeImages -->\n";
-		$contenu .= "</div><!-- /.galerieDansListe -->\n";
-		$contenu .= "<div class=\"sep\"></div>\n";
 	}
 	
 	$contenu .= "</div><!-- /.galeries -->\n";
@@ -2620,13 +2624,13 @@ function image(
 			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
 			{
 				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . encodeTexte(preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom));
-				$texteLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', "<em>$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', "<em>$originalExtension</em>", octetsVersKio(@filesize($racineImgSrc . '/' . $originalNom)));
 				$texteAltLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original"), securiseTexte($titreImage));
 			}
 			else
 			{
 				$urlLienOriginal = $urlImgSrc . '/' . encodeTexte($originalNom);
-				$texteLienOriginal = sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', "<em>$originalExtension</em>", octetsVersKio(filesize($racineImgSrc . '/' . $originalNom)));
+				$texteLienOriginal = sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', "<em>$originalExtension</em>", octetsVersKio(@filesize($racineImgSrc . '/' . $originalNom)));
 				$texteAltLienOriginal = sprintf(T_("Voir l'image %1\$s au format original"), securiseTexte($titreImage));
 			}
 			
@@ -2666,7 +2670,7 @@ function image(
 		}
 		elseif ($galerieLegendeAutomatique && (!$originalExiste || ($originalExiste && !$galerieLienOriginalEmplacement['legende'])))
 		{
-			$legende = '<div id="galerieIntermediaireLegende">' . sprintf(T_("Image %1\$s (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($infosImage['intermediaireNom']) . '</em>', octetsVersKio(filesize($racineImgSrc . '/' . $infosImage['intermediaireNom']))) . "</div>\n";
+			$legende = '<div id="galerieIntermediaireLegende">' . sprintf(T_("Image %1\$s (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($infosImage['intermediaireNom']) . '</em>', octetsVersKio(@filesize($racineImgSrc . '/' . $infosImage['intermediaireNom']))) . "</div>\n";
 		}
 		else
 		{

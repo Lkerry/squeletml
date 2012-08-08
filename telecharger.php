@@ -22,7 +22,7 @@ if (file_exists($chemin) && preg_match('|^' . preg_quote($racine, '|') . '(/site
 {
 	header('Content-Type: ' . $typeMime);
 	header('Content-Disposition: attachment; filename="' . str_replace('"', '\"', $nom) . '"');
-	header('Content-Length: ' . filesize($chemin));
+	header('Content-Length: ' . @filesize($chemin));
 	@readfile($chemin);
 }
 elseif (file_exists($chemin))

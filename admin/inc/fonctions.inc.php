@@ -2192,7 +2192,7 @@ function adminTailleCache($racineAdmin)
 		{
 			if (!is_dir($cheminCache . '/' . $fichier))
 			{
-				$taille += filesize($cheminCache . '/' . $fichier);
+				$taille += @filesize($cheminCache . '/' . $fichier);
 			}
 		}
 		

@@ -99,7 +99,7 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 			
 			header('Content-Type: ' . $typeMime);
 			header('Content-Disposition: attachment; filename="' . str_replace('"', '\"', $nomArchive) . '"');
-			header('Content-Length: ' . filesize($cheminArchive));
+			header('Content-Length: ' . @filesize($cheminArchive));
 			@readfile($cheminArchive);
 			@unlink($cheminArchive);
 		}
@@ -114,7 +114,7 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 	
 			header('Content-Type: ' . $typeMime);
 			header('Content-Disposition: attachment; filename="' . str_replace('"', '\"', $nom) . '"');
-			header('Content-Length: ' . filesize($chemin));
+			header('Content-Length: ' . @filesize($chemin));
 			@readfile($chemin);
 		}
 	}

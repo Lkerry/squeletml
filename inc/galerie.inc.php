@@ -373,7 +373,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			}
 		
 			$minivignetteImageEnCours = FALSE;
-			$corpsMinivignettes .= "<ul class=\"galerieListeImages\">\n";
+			$corpsMinivignettesImages = '';
 			
 			for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
 			{
@@ -383,18 +383,23 @@ if (!empty($idGalerie) && isset($_GET['image']))
 				}
 			
 				$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom']);
-				$corpsMinivignettes .= '<li>' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours) . "</li>\n";
+				$corpsMinivignettesImages .= '<li>' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, FALSE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, $minivignetteImageEnCours) . "</li>\n";
 				$minivignetteImageEnCours = FALSE;
 			}
-		
-			$corpsMinivignettes .= "</ul><!-- /.galerieListeImages -->\n</div><!-- /#galerieMinivignettes -->\n";
 			
-			if (!$infoEtMinivignettesEnsemble)
+			if (!empty($corpsMinivignettesImages))
 			{
-				$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+				$corpsMinivignettes .= "<ul class=\"galerieListeImages\">\n";
+				$corpsMinivignettes .= $corpsMinivignettesImages;
+				$corpsMinivignettes .= "</ul><!-- /.galerieListeImages -->\n</div><!-- /#galerieMinivignettes -->\n";
+				
+				if (!$infoEtMinivignettesEnsemble)
+				{
+					$corpsMinivignettes .= '<div class="sepGalerieMinivignettes"></div>' . "\n";
+				}
 			}
 		}
-	
+		
 		// Variable `$corpsGalerie` finale.
 		if ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut')
 		{
@@ -549,79 +554,85 @@ elseif (!empty($idGalerie))
 	}
 	else
 	{
-		$corpsGalerie .= "<ul class=\"galerieListeImages\">\n";
+		$corpsGalerieImages = '';
 		
 		for ($indice = $indicePremiereImage; $indice <= $indiceDerniereImage && $indice < $nombreDimages; $indice++)
 		{
 			$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$indice]['intermediaireNom']);
-			$corpsGalerie .= '<li>' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</li>\n";
+			$corpsGalerieImages .= '<li>' . image($racine, $urlRacine, $racineImgSrc, $urlImgSrc, TRUE, $nombreDeColonnes, $tableauGalerie[$indice], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, $galerieAncreDeNavigation, $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE) . "</li>\n";
 		}
 		
-		$corpsGalerie .= "</ul>\n";
-		$corpsGalerie .= "<div class=\"sep\"></div>\n";
 		$lienSansJavascript = '';
 		
-		if ($galerieAccueilJavascript && $galerieAccueilLienSansJavascript)
+		if (!empty($corpsGalerieImages))
 		{
-			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+			$corpsGalerie .= "<ul class=\"galerieListeImages\">\n";
+			$corpsGalerie .= $corpsGalerieImages;
+			$corpsGalerie .= "</ul>\n";
+			$corpsGalerie .= "<div class=\"sep\"></div>\n";
+			
+			if ($galerieAccueilJavascript && $galerieAccueilLienSansJavascript)
 			{
-				$lienSansJavascript .= '<div id="galerieLienSansJavascript">' . "\n";
-				$lienSansJavascript .= "<p>";
-			}
-			elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
-			{
-				$lienSansJavascript .= '<span id="galerieLienSansJavascript">';
+				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+				{
+					$lienSansJavascript .= '<div id="galerieLienSansJavascript">' . "\n";
+					$lienSansJavascript .= "<p>";
+				}
+				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
+				{
+					$lienSansJavascript .= '<span id="galerieLienSansJavascript">';
+				}
+				
+				$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
+				$hrefSansJavascript = variableGet(2, $urlGalerie, 'image', filtreChaine(titreImage($tableauGalerie[$indicePremiereImage]))) . $ancre;
+				$lienSansJavascript .= "<a href=\"$hrefSansJavascript\">" . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
+				
+				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+				{
+					$lienSansJavascript .= "</p>\n";
+					$lienSansJavascript .= '</div><!-- /#galerieLienSansJavascript -->' . "\n";
+				}
+				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
+				{
+					$lienSansJavascript .= '</span>';
+				}
+				
+				if ($galerieAccueilLienSansJavascriptEmplacement == 'haut')
+				{
+					$corpsGalerie = $lienSansJavascript . $corpsGalerie;
+				}
+				elseif ($galerieAccueilLienSansJavascriptEmplacement == 'bas')
+				{
+					$corpsGalerie .= $lienSansJavascript;
+				}
 			}
 			
-			$ancre = ancreDeNavigationGalerie($galerieAncreDeNavigation);
-			$hrefSansJavascript = variableGet(2, $urlGalerie, 'image', filtreChaine(titreImage($tableauGalerie[$indicePremiereImage]))) . $ancre;
-			$lienSansJavascript .= "<a href=\"$hrefSansJavascript\">" . T_("Voir plus d'information pour chaque image (navigation sans fenêtre Javascript).") . "</a>";
-			
-			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut' || $galerieAccueilLienSansJavascriptEmplacement == 'bas')
+			if ($galerieVignettesParPage)
 			{
-				$lienSansJavascript .= "</p>\n";
-				$lienSansJavascript .= '</div><!-- /#galerieLienSansJavascript -->' . "\n";
-			}
-			elseif ($galerieAccueilLienSansJavascriptEmplacement == 'info')
-			{
-				$lienSansJavascript .= '</span>';
-			}
-
-			if ($galerieAccueilLienSansJavascriptEmplacement == 'haut')
-			{
-				$corpsGalerie = $lienSansJavascript . $corpsGalerie;
-			}
-			elseif ($galerieAccueilLienSansJavascriptEmplacement == 'bas')
-			{
-				$corpsGalerie .= $lienSansJavascript;
+				if ($galeriePagination['au-dessus'])
+				{
+					$corpsGalerie = $pagination . $corpsGalerie;
+				}
+				
+				if ($galeriePagination['au-dessous'])
+				{
+					$corpsGalerie .= $pagination;
+				}
 			}
 		}
 		
-		if ($galerieVignettesParPage)
-		{
-			if ($galeriePagination['au-dessus'])
-			{
-				$corpsGalerie = $pagination . $corpsGalerie;
-			}
-
-			if ($galeriePagination['au-dessous'])
-			{
-				$corpsGalerie .= $pagination;
-			}
-		}
-
 		$galerieInfo = '';
-
+		
 		if ($galerieInfoAjout)
 		{
 			$galerieInfo .= '<div id="galerieInfo">' . "\n";
 			$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s image", "Cette galerie contient %1\$s images", $nombreDimages), $nombreDimages) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
-
+			
 			if (variableGet(0, $url, 'action') != $urlGalerie)
 			{
 				$galerieInfo .= ' <a href="' . $urlGalerie . '">' . T_("Voir l'accueil de la galerie."). "</a>";
 			}
-
+			
 			if (!empty($lienSansJavascript) && $galerieAccueilLienSansJavascriptEmplacement == 'info')
 			{
 				$galerieInfo .= " $lienSansJavascript";
