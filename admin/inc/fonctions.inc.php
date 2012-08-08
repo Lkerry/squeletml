@@ -912,7 +912,7 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 	
 	if ($stat)
 	{
-		$infobulle .= sprintf(T_("<strong>Taille:</strong> %1\$s Kio (%2\$s octets)"), octetsVersKio($stat['size']), $stat['size']) . "<br />\n";
+		$infobulle .= sprintf(T_ngettext("<strong>Taille:</strong> %1\$s Kio (%2\$s octet)", "<strong>Taille:</strong> %1\$s Kio (%2\$s octets)", $stat['size']), octetsVersKio($stat['size']), $stat['size']) . "<br />\n";
 		
 		if ($dimensionsImage)
 		{
