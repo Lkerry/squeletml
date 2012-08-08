@@ -569,210 +569,118 @@ function adminEstIe()
 }
 
 /*
-Extrait l'archive et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
-*/
-function adminExtraitArchiveTar($cheminArchive, $cheminExtraction, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom = FALSE, $filtreCasse = '')
-{
-	$messagesScript = '';
-	$fichierTar = new untar($cheminArchive);
-	$listeFichiers = $fichierTar->getfilelist();
-	
-	for ($i = 0; $i < count($listeFichiers); $i++)
-	{
-		if ($filtrerNom)
-		{
-			$cheminFichierFiltre = filtreChaine($listeFichiers[$i]['filename'], $filtreCasse, FALSE);
-		}
-		else
-		{
-			$cheminFichierFiltre = $listeFichiers[$i]['filename'];
-		}
-		
-		if ($cheminFichierFiltre != $listeFichiers[$i]['filename'])
-		{
-			$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($listeFichiers[$i]['filename']) . '</code>', '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-		}
-		
-		$cheminFichierFiltre = $cheminExtraction . '/' . $cheminFichierFiltre;
-		
-		if ($listeFichiers[$i]['filetype'] == 'directory')
-		{
-			if (file_exists($cheminFichierFiltre))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= adminMkdir($cheminFichierFiltre, octdec(755), TRUE);
-			}
-		}
-		elseif (file_exists($cheminFichierFiltre))
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-		}
-		elseif ($fic = @fopen($cheminFichierFiltre, 'w'))
-		{
-			$donnees = $fichierTar->extract($listeFichiers[$i]['filename']);
-			
-			if (fwrite($fic, $donnees))
-			{
-				fclose($fic);
-				$typeMimeFichier = typeMime($cheminFichierFiltre);
-				
-				if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
-				{
-					@unlink($cheminFichierFiltre);
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
-				}
-				else
-				{
-					$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-				}
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>";
-		}
-	}
-	
-	unset($fichierTar);
-	@unlink($cheminArchive);
-	
-	return $messagesScript;
-}
+Extrait l'archive (`.tar`, `.tar.bz2`, `.tar.gz` ou `.zip`) et retourne un tableau associatif de deux éléments:
 
-/*
-Extrait l'archive et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+- `fichiersExtraits`: un tableau listant les fichiers extraits;
+- `messagesScript`: le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminExtraitArchiveZip($cheminArchive, $cheminExtraction, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom = FALSE, $filtreCasse = '')
+function adminExtraitArchive($cheminArchive, $cheminExtraction, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom = FALSE, $filtreCasse = '')
 {
+	$fichiersExtraits = array ();
 	$messagesScript = '';
-	$resultatArchive = 0;
-	$archive = new PclZip($cheminArchive);
-	$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminExtraction);
+	$erreur = FALSE;
 	
-	if ($resultatArchive == 0)
+	try
 	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: %2\$s"), '<code>' . securiseTexte($cheminArchive) . '</code>', $archive->errorInfo(true)) . "</li>\n";
+		$archive = ezcArchive::open($cheminArchive);
 	}
-	else
+	catch (Exception $e)
 	{
-		$dossiersAfiltrer = array ();
+		$erreur = TRUE;
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: «%2\$s»."), '<code>' . securiseTexte($cheminArchive) . '</code>', $e->getMessage()) . "</li>\n";
+	}
+	
+	if (!$erreur)
+	{
+		$messagesScript .= '<li>' . sprintf(T_("Début de l'extraction de l'archive %1\$s."), '<code>' . securiseTexte($cheminArchive) . '</code>') . "</li>\n";
 		
-		foreach ($resultatArchive as $infoFichier)
+		while ($archive->valid())
 		{
-			if ($filtrerNom)
+			$fichier = $archive->current();
+			$cheminFichier = $cheminExtraction . '/' . $fichier->getPath();
+			
+			if (file_exists($cheminFichier))
 			{
-				$estDossier = FALSE;
-				
-				if (substr($infoFichier['filename'], -1) == '/')
-				{
-					$estDossier = TRUE;
-					$nomFichier = superBasename(substr($infoFichier['filename'], 0, -1));
-				}
-				else
-				{
-					$nomFichier = superBasename($infoFichier['filename']);
-				}
-				
-				$dossierFichier = dirname($infoFichier['filename']);
-				$cheminFichierFiltre = $infoFichier['filename'];
-				
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+			}
+			else
+			{
 				if ($filtrerNom)
 				{
-					$cheminFichierFiltre = filtreChaine($nomFichier, $filtreCasse);
-					
-					if ($estDossier)
-					{
-						$cheminFichierFiltre .= '/';
-					}
-				}
-				
-				if ($nomFichier != $dossierFichier)
-				{
-					$cheminFichierFiltre = $dossierFichier . '/' . $cheminFichierFiltre;
-				}
-			}
-			else
-			{
-				$cheminFichierFiltre = $infoFichier['filename'];
-			}
-			
-			if ($infoFichier['status'] == 'ok')
-			{
-				$typeMimeFichier = typeMime($infoFichier['filename']);
-				
-				if ($typeMimeFichier != 'directory' && !adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
-				{
-					@unlink($infoFichier['filename']);
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
-				}
-				elseif ($cheminFichierFiltre == $infoFichier['filename'])
-				{
-					$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>') . "</li>\n";
+					$cheminFichierFiltre = filtreChaine($fichier->getPath(), $filtreCasse, FALSE);
 				}
 				else
 				{
-					$messagesScriptFiltre = '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>', '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
+					$cheminFichierFiltre = $fichier->getPath();
+				}
+				
+				$messagesScriptFiltrage = '';
+				
+				if ($cheminFichierFiltre != $fichier->getPath())
+				{
+					$messagesScriptFiltrage = '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($fichier->getPath()) . '</code>', '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
+				}
+				
+				$cheminFichierFiltre = $cheminExtraction . '/' . $cheminFichierFiltre;
+				
+				if (file_exists($cheminFichierFiltre))
+				{
+					$messagesScript .= $messagesScriptFiltrage;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
+				}
+				else
+				{
+					try
+					{
+						$extractionReussie = $archive->extractCurrent($cheminExtraction, TRUE);
+					}
+					catch (Exception $e)
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction du fichier %1\$s: «%2\$s»."), '<code>' . securiseTexte($cheminFichier) . '</code>', $e->getMessage()) . "</li>\n";
+						@unlink($cheminFichier);
+					}
 					
-					if ($typeMimeFichier == 'directory')
+					if ($extractionReussie)
 					{
-						$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>') . "</li>\n";
-						$dossiersAfiltrer[$infoFichier['filename']] = array (
-							'nouveauNom' => $cheminFichierFiltre,
-							'message' => $messagesScriptFiltre,
-						);
-					}
-					elseif (file_exists($cheminFichierFiltre))
-					{
-						$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>') . "</li>\n";
-						$messagesScript .= $messagesScriptFiltre;
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s impossible, car un fichier %2\$s existe déjà."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>', '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-					}
-					elseif (@rename($infoFichier['filename'], $cheminFichierFiltre))
-					{
-						$messagesScript .= $messagesScriptFiltre;
-						$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-					}
-					else
-					{
-						$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>') . "</li>\n";
-						$messagesScript .= $messagesScriptFiltre;
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>', '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
+						$typeMimeFichier = typeMime($cheminFichier);
+						
+						if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($cheminFichier) . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
+							@unlink($cheminFichier);
+						}
+						else
+						{
+							$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s effectué."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+						
+							if (!empty($messagesScriptFiltrage))
+							{
+								$messagesScript .= $messagesScriptFiltrage;
+								$messagesScript .= adminRename($cheminFichier, $cheminFichierFiltre);
+							}
+							
+							if (file_exists($cheminFichierFiltre))
+							{
+								$fichiersExtraits[] = $cheminFichierFiltre;
+							}
+							else
+							{
+								$fichiersExtraits[] = $cheminFichier;
+							}
+						}
 					}
 				}
 			}
-			elseif ($infoFichier['status'] == 'newer_exist')
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>') . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . securiseTexte($infoFichier['filename']) . '</code>') . "</li>\n";
-			}
+			
+			$archive->next();
 		}
 		
-		foreach ($dossiersAfiltrer as $dossierActuel => $infosDossierActuel)
-		{
-			$messagesScript .= $infosDossierActuel['message'];
-			
-			if (file_exists($infosDossierActuel['nouveauNom']))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s impossible, car un fichier %2\$s existe déjà."), '<code>' . securiseTexte($dossierActuel) . '</code>', '<code>' . securiseTexte($infosDossierActuel['nouveauNom']) . '</code>') . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= adminRename($dossierActuel, $infosDossierActuel['nouveauNom']);
-			}
-		}
+		$archive->close();
+		unset($archive);
+		$messagesScript .= '<li>' . sprintf(T_("Extraction de l'archive %1\$s effectuée."), '<code>' . securiseTexte($cheminArchive) . '</code>') . "</li>\n";
 	}
 	
-	return $messagesScript;
+	return array ('fichiersExtraits' => $fichiersExtraits, 'messagesScript' => $messagesScript);
 }
 
 /*
@@ -831,47 +739,6 @@ function adminGenereContenuSitemap($tableauUrl)
 	$contenuSitemap .= '</urlset>';
 	
 	return $contenuSitemap;
-}
-
-/*
-Compresse (gzip) un fichier et retourne le chemin vers le fichier compressé. Si une erreur survient, retourne FALSE. Merci à <http://ca.php.net/manual/fr/function.gzwrite.php#34955>.
-*/
-function adminGz($fichierSource)
-{
-	$fichierCompresse = $fichierSource . '.gz';
-	$erreur = FALSE;
-	
-	if ($ficDest = gzopen($fichierCompresse, 'wb9'))
-	{
-		if ($ficSource = fopen($fichierSource, 'rb'))
-		{
-			while (!feof($ficSource))
-			{
-				gzwrite($ficDest, fread($ficSource, 1024 * 512));
-			}
-			
-			fclose($ficSource);
-		}
-		else
-		{
-			$erreur = TRUE;
-		}
-		
-		gzclose($ficDest);
-	}
-	else
-	{
-		$erreur = TRUE;
-	}
-	
-	if ($erreur)
-	{
-		return FALSE;
-	}
-	else
-	{
-		return $fichierCompresse;
-	}
 }
 
 /*
@@ -957,9 +824,7 @@ function adminInclureUneFoisAuDebut($racineAdmin)
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.inc.php';
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc.php';
 	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
-	$fichiers[] = $racineAdmin . '/inc/pclzip/pclzip.lib.php';
-	$fichiers[] = $racineAdmin . '/inc/tar/tar.class.php';
-	$fichiers[] = $racineAdmin . '/inc/untar/untar.class.php';
+	$fichiers[] = $racineAdmin . '/inc/ezcomponents/Base/src/ezc_bootstrap.php';
 	
 	if (nomPage() == 'galeries.admin.php')
 	{

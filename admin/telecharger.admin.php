@@ -54,47 +54,59 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 			
 			$nomArchive .= '.tar';
 			$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
-			$archive = new tar($cheminArchive);
+			$typeMime = 'application/x-tar';
 			$listeFichiers = adminListeFichiers($chemin);
-	
+			$listeFichiersFiltree = array ();
+			
 			foreach ($listeFichiers as $fichier)
 			{
-				if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+				if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers) && !preg_match('#^' . preg_quote($racine, '#') . '/site/' . $dossierAdmin . '/cache/#', realpath($fichier)))
 				{
-					$archive->add($fichier);
+					$listeFichiersFiltree[] = $fichier;
 				}
 			}
-	
-			$resultatArchive = $archive->write();
-	
-			if ($resultatArchive)
+			
+			try
 			{
-				$contentType = 'application/x-tar';
-				
-				if (function_exists('gzopen') && adminGz($dossierDeSauvegarde . '/' . $nomArchive) !== FALSE)
-				{
-					@unlink($cheminArchive);
-					$nomArchive = $nomArchive . '.gz';
-					$cheminArchive = $dossierDeSauvegarde . '/' . $nomArchive;
-					$contentType = 'application/x-gtar';
-				}
-				
-				header('Content-Type: ' . $contentType);
-				header('Content-Disposition: attachment; filename="' . $nomArchive . '"');
-				header('Content-Length: ' . filesize($cheminArchive));
-				@readfile($cheminArchive);
-				@unlink($cheminArchive);
+				$archive = ezcArchive::open($cheminArchive, ezcArchive::TAR_USTAR);
+				$archive->append($listeFichiersFiltree, '');
+				$archive->close();
+				unset($archive);
 			}
-	
-			if (!$resultatArchive)
+			catch (Exception $e)
 			{
 				header('HTTP/1.1 500 Internal Server Error');
+				echo $e->getMessage();
+				@unlink($cheminArchive);
+				
+				exit(1);
 			}
+			
+			if (in_array('compress.zlib', stream_get_wrappers()))
+			{
+				if (@file_put_contents("compress.zlib://$cheminArchive.gz", file_get_contents($cheminArchive)) !== FALSE)
+				{
+					@unlink($cheminArchive);
+					$nomArchive .= '.gz';
+					$cheminArchive .= '.gz';
+					$typeMime = 'application/x-gtar';
+				}
+				else
+				{
+					@unlink("$cheminArchive.gz");
+				}
+			}
+			
+			header('Content-Type: ' . $typeMime);
+			header('Content-Disposition: attachment; filename="' . str_replace('"', '\"', $nomArchive) . '"');
+			header('Content-Length: ' . filesize($cheminArchive));
+			@readfile($cheminArchive);
+			@unlink($cheminArchive);
 		}
 		else
 		{
 			$typeMime = typeMime($chemin);
-
+			
 			if ($typeMime == 'application/octet-stream')
 			{
 				$typeMime = 'application/force-download';

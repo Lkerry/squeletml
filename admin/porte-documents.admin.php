@@ -899,7 +899,7 @@ if (isset($_POST['porteDocumentsCreation']))
 			
 			if ($fichierAcreerNom != $fichierAcreerAncienNom)
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($fichierAcreerAncienNom) . '</code>', '<code>' . securiseTexte($fichierAcreerNom) . '</code>') . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($fichierAcreerAncienNom) . '</code>', '<code>' . securiseTexte($fichierAcreerNom) . '</code>') . "</li>\n";
 			}
 		}
 		else
@@ -1321,7 +1321,7 @@ if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimeP
 			
 			if ($nomFichier != $ancienNomFichier)
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienNomFichier) . '</code>', '<code>' . securiseTexte($nomFichier) . '</code>') . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienNomFichier) . '</code>', '<code>' . securiseTexte($nomFichier) . '</code>') . "</li>\n";
 			}
 		}
 		
@@ -1329,57 +1329,29 @@ if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimeP
 		{
 			$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
 		}
-		elseif (@move_uploaded_file($_FILES['porteDocumentsAjouterFichier']['tmp_name'], $dossier . '/' . $nomFichier))
+		else
 		{
-			if (isset($_POST['extraireArchive']) && $_POST['extraireArchive'] == 'extraire')
-			{
-				$extraireArchive = TRUE;
-			}
-			else
-			{
-				$extraireArchive = FALSE;
-			}
-			
-			$typeMime = typeMime($dossier . '/' . $nomFichier);
+			$typeMime = typeMime($_FILES['porteDocumentsAjouterFichier']['tmp_name']);
 			
 			if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
-				@unlink($dossier . '/' . $nomFichier);
 			}
-			elseif ($extraireArchive && $typeMime == 'application/zip')
+			elseif (@move_uploaded_file($_FILES['porteDocumentsAjouterFichier']['tmp_name'], $dossier . '/' . $nomFichier))
 			{
-				if (!function_exists('gzopen'))
-				{
-					$messagesScript .= '<li class="erreur">' . T_("L'extraction d'archives au format <code>ZIP</code> n'est pas supportée.") . "</li>\n";
-				}
-				else
-				{
-					$messagesScript .= adminExtraitArchiveZip($dossier . '/' . $nomFichier, $dossier, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom, $casse);
-					
-					if (file_exists($dossier . '/' . $nomFichier))
-					{
-						@unlink($dossier . '/' . $nomFichier);
-					}
-				}
-			}
-			elseif ($extraireArchive && $typeMime == 'application/x-tar')
-			{
-				$messagesScript .= adminExtraitArchiveTar($dossier . '/' . $nomFichier, $dossier, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom, $casse);
+				$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
 				
-				if (file_exists($dossier . '/' . $nomFichier))
+				if (isset($_POST['extraireArchive']) && $_POST['extraireArchive'] == 'extraire' && ($typeMime == 'application/x-tar' || $typeMime == 'application/x-bzip2' || $typeMime == 'application/x-gzip' || $typeMime == 'application/zip'))
 				{
-					@unlink($dossier . '/' . $nomFichier);
+					$retourAdminExtraitArchive = adminExtraitArchive($dossier . '/' . $nomFichier, $dossier, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom, $casse);
+					$messagesScript .= $retourAdminExtraitArchive['messagesScript'];
+					$messagesScript .= adminUnlink($dossier . '/' . $nomFichier);
 				}
 			}
 			else
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
 			}
-		}
-		else
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
 		}
 	}
 	
@@ -1647,7 +1619,7 @@ if (!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePe
 	
 	echo '<p><label for="inputPorteDocumentsAjouterFichier">' . T_("Fichier:") . "</label><br />\n" . '<input id="inputPorteDocumentsAjouterFichier" type="file" name="porteDocumentsAjouterFichier" size="25"/>' . "</p>\n";
 	
-	echo '<p><input id="inputPorteDocumentsAjouterExtraireArchive" type="checkbox" name="extraireArchive" value="extraire" /> <label for="inputPorteDocumentsAjouterExtraireArchive">' . T_("Si le fichier est une archive de format TAR (<code>.tar</code>) ou ZIP (<code>.zip</code>), extraire son contenu dans le dossier sélectionné (s'il y a lieu, les options de filtrage de nom s'appliquent à chaque fichier extrait). Lors de l'extraction, si un fichier existe déjà, il sera remplacé seulement si sa date est plus ancienne que le fichier équivalent extrait de l'archive.") . "</label></p>\n";
+	echo '<p><input id="inputPorteDocumentsAjouterExtraireArchive" type="checkbox" name="extraireArchive" value="extraire" /> <label for="inputPorteDocumentsAjouterExtraireArchive">' . T_("Si le fichier est une archive (<code>.tar</code>, <code>.tar.bz2</code>, <code>.tar.gz</code> ou <code>.zip</code>), extraire son contenu dans le dossier sélectionné. Un fichier déjà existant ne sera pas extrait. S'il y a lieu, les options de filtrage de nom s'appliquent à chaque fichier extrait.") . "</label></p>\n";
 	
 	echo '<p><label for="selectPorteDocumentsAjouterDossier">' . T_("Dossier:") . "</label><br />\n" . '<select id="selectPorteDocumentsAjouterDossier" name="porteDocumentsAjouterDossier" size="1">' . "\n";
 	

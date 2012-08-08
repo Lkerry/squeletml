@@ -240,6 +240,10 @@ $adminFiltreTypesMime = TRUE; // TRUE|FALSE
 /*
 - Si `$adminFiltreTypesMime` vaut TRUE et que le tableau `$adminTypesMimePermis` est vide, l'ajout de fichiers par le porte-documents sera désactivé.
 */
+$adminTypesMimePermis['vide'] = 'application/x-empty';
+
+$adminTypesMimePermis['dossier'] = 'directory';
+
 $adminTypesMimePermis['gif']          = 'image/gif';
 $adminTypesMimePermis['jpeg|jpg|jpe'] = 'image/jpeg';
 $adminTypesMimePermis['png']          = 'image/png';
@@ -249,11 +253,12 @@ $adminTypesMimePermis['tiff|tif']     = 'image/tiff';
 $adminTypesMimePermis['xcf']          = 'application/x-xcf';
 $adminTypesMimePermis['psd']          = 'image/x-photoshop';
 
-$adminTypesMimePermis['html|htm|shtml']       = 'text/html';
-$adminTypesMimePermis['xhtml|xht']            = 'application/xhtml+xml';
-$adminTypesMimePermis['xml|xsl']              = 'application/xml';
-$adminTypesMimePermis['css']                  = 'text/css';
-$adminTypesMimePermis['asc|txt|text|pot|ini'] = 'text/plain';
+$adminTypesMimePermis['html|htm|shtml']          = 'text/html';
+$adminTypesMimePermis['xhtml|xht']               = 'application/xhtml+xml';
+$adminTypesMimePermis['xml|xsl']                 = 'application/xml';
+$adminTypesMimePermis['css']                     = 'text/css';
+$adminTypesMimePermis['asc|txt|text|po|pot|ini'] = 'text/plain';
+$adminTypesMimePermis['markdown|md|mkd']         = 'text/x-markdown';
 
 $adminTypesMimePermis['odb']         = 'application/vnd.oasis.opendocument.database';
 $adminTypesMimePermis['odp']         = 'application/vnd.oasis.opendocument.presentation';
@@ -270,11 +275,12 @@ $adminTypesMimePermis['docx']        = 'application/vnd.openxmlformats-officedoc
 $adminTypesMimePermis['pdf']         = 'application/pdf';
 $adminTypesMimePermis['ps|ai|eps']   = 'application/postscript';
 
-$adminTypesMimePermis['tar']          = 'application/x-tar';
-$adminTypesMimePermis['7z']           = 'application/x-7z-compressed';
-$adminTypesMimePermis['gtar|tgz|taz'] = 'application/x-gtar';
-$adminTypesMimePermis['zip']          = 'application/zip';
-$adminTypesMimePermis['rar']          = 'application/rar';
+$adminTypesMimePermis['tar']      = 'application/x-tar';
+$adminTypesMimePermis['7z']       = 'application/x-7z-compressed';
+$adminTypesMimePermis['bz2|tbz2'] = 'application/x-bzip2';
+$adminTypesMimePermis['gz|tgz']   = 'application/x-gzip';
+$adminTypesMimePermis['zip']      = 'application/zip';
+$adminTypesMimePermis['rar']      = 'application/rar';
 
 $adminTypesMimePermis['ogg|ogx']                = 'application/ogg';
 $adminTypesMimePermis['oga|spx']                = 'audio/ogg';

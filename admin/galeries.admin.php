@@ -231,13 +231,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo adminMessagesScript($messagesScript, T_("Liste des galeries"));
 		}
-	
+		
 		########################################################################
 		##
 		## Ajout d'images.
 		##
 		########################################################################
-	
+		
 		if (isset($_POST['ajouter']) || (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size'))))
 		{
 			$messagesScript = '';
@@ -284,19 +284,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$filtrerNom = FALSE;
-				$casse = '';
-			
-				if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
-				{
-					$filtrerNom = TRUE;
-			
-					if (in_array('min', $_POST['filtrerNom']))
-					{
-						$casse = 'min';
-					}
-				}
-			
 				if ($id == 'nouvelleGalerie')
 				{
 					$ajoutNouvelleGalerie = TRUE;
@@ -312,9 +299,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 				}
 				
-				$cheminGaleries = $racine . '/site/fichiers/galeries';
 				$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
-			
+				
 				if (!file_exists($cheminGalerie))
 				{
 					$messagesScript .= adminMkdir($cheminGalerie, octdec(755), TRUE);
@@ -322,315 +308,111 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				if (file_exists($cheminGalerie) && isset($_FILES['fichier']))
 				{
-					$nomArchive = superBasename($_FILES['fichier']['name']);
-				
-					if (file_exists($cheminGaleries . '/' . $nomArchive))
+					$nomFichier = superBasename($_FILES['fichier']['name']);
+					$casse = '';
+					$filtrerNom = FALSE;
+					
+					if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
 					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . securiseTexte($nomArchive) . '</code>', '<code>' . securiseTexte($cheminGaleries) . '</code>') . "</li>\n";
+						$filtrerNom = TRUE;
+						$ancienNomFichier = $nomFichier;
+						
+						if (in_array('min', $_POST['filtrerNom']))
+						{
+							$casse = 'min';
+						}
+						
+						$nomFichier = filtreChaine($nomFichier, $casse);
+						
+						if ($nomFichier != $ancienNomFichier)
+						{
+							$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienNomFichier) . '</code>', '<code>' . securiseTexte($nomFichier) . '</code>') . "</li>\n";
+						}
 					}
-					elseif (move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGaleries . '/' . $nomArchive))
+					
+					if (file_exists($cheminGalerie . '/' . $nomFichier))
 					{
-						$rotationAuto = FALSE;
-						$suppressionExif = FALSE;
-						
-						if (isset($_POST['rotationAuto']))
-						{
-							$rotationAuto = TRUE;
-						}
-						
-						if (isset($_POST['suppressionExif']))
-						{
-							$suppressionExif = TRUE;
-						}
-						
-						$typeMime = typeMime($cheminGaleries . '/' . $nomArchive);
-					
-						if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
-						{
-							$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomArchive) . '</code>', "<code>$typeMime</code>") . "</li>\n";
-						}
-						elseif ($typeMime != 'application/zip' && $typeMime != 'application/x-tar')
-						{
-							$nomFiltreArchive = $nomArchive;
-						
-							if ($filtrerNom)
-							{
-								$nomFiltreArchive = filtreChaine($nomArchive, $casse);
-							}
-							
-							$messagesScriptFiltre = '';
-						
-							if ($nomFiltreArchive != $nomArchive)
-							{
-								$messagesScriptFiltre = '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($nomArchive) . '</code>', '<code>' . securiseTexte($nomFiltreArchive) . '</code>') . "</li>\n";
-							}
-						
-							if (file_exists($cheminGalerie . '/' . $nomFiltreArchive))
-							{
-								$messagesScript .= $messagesScriptFiltre;
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . securiseTexte($nomFiltreArchive) . '</code>', '<code>' . securiseTexte($cheminGalerie) . '</code>') . "</li>\n";
-							}
-							elseif (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomFiltreArchive))
-							{
-								$messagesScript .= $messagesScriptFiltre;
-								$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . securiseTexte($nomFiltreArchive) . '</code>', '<code>' . securiseTexte($cheminGalerie) . '</code>') . "</li>\n";
-								
-								if ($typeMime == 'image/jpeg')
-								{
-									if ($rotationAuto && $rotationSansPerteActivee)
-									{
-										$messagesScript .= adminRotationJpegSansPerte($cheminGalerie . '/' . $nomFiltreArchive, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
-									}
-									elseif ($suppressionExif && $suppressionExifActivee)
-									{
-										$messagesScript .= adminSupprimeExif($cheminGalerie . '/' . $nomFiltreArchive, $cheminJpegtran);
-									}
-								}
-							}
-							else
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors du déplacement du fichier %1\$s."), '<code>' . securiseTexte($nomArchive) . '</code>') . "</li>\n";
-							}
-						}
-						elseif ($typeMime == 'application/zip' && !function_exists('gzopen'))
-						{
-							$messagesScript .= '<li class="erreur">' . T_("L'extraction d'archives au format <code>ZIP</code> n'est pas supportée.") . "</li>\n";
-						}
-						elseif ($typeMime == 'application/zip')
-						{
-							$resultatArchive = 0;
-							$archive = new PclZip($cheminGaleries . '/' . $nomArchive);
-							$resultatArchive = $archive->extract(PCLZIP_OPT_PATH, $cheminGaleries . '/' . $idDossier . '/');
-				
-							if ($resultatArchive == 0)
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'extraction de l'archive %1\$s: %2\$s"), '<code>' . securiseTexte($nomArchive) . '</code>', $archive->errorInfo(true)) . "</li>\n";
-							}
-							else
-							{
-								foreach ($resultatArchive as $infoImage)
-								{
-									$nomFichier = superBasename($infoImage['filename']);
-									$nomFiltreFichier = $nomFichier;
-								
-									if ($filtrerNom)
-									{
-										$nomFiltreFichier = filtreChaine($nomFichier, $casse);
-									}
-									
-									$cheminFichier = $cheminGaleries . '/' . $idDossier . '/' . $nomFichier;
-									$cheminFiltreFichier = $cheminGaleries . '/' . $idDossier . '/' . $nomFiltreFichier;
-								
-									if ($infoImage['status'] == 'ok')
-									{
-										$typeMimeFichier = typeMime($cheminFichier);
-									
-										if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
-										{
-											@unlink($cheminFichier);
-											$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
-										}
-										elseif ($nomFiltreFichier == $nomFichier)
-										{
-											$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries . '/' . $idDossier) . '</code>') . "</li>\n";
-										
-											if ($typeMimeFichier == 'image/jpeg')
-											{
-												if ($rotationAuto && $rotationSansPerteActivee)
-												{
-													$messagesScript .= adminRotationJpegSansPerte($cheminFichier, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
-												}
-												elseif ($suppressionExif && $suppressionExifActivee)
-												{
-													$messagesScript .= adminSupprimeExif($cheminFichier, $cheminJpegtran);
-												}
-											}
-										}
-										else
-										{
-											$messagesScriptFiltre = '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($nomFiltreFichier) . '</code>') . "</li>\n";
-										
-											if (file_exists($cheminFiltreFichier))
-											{
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries . '/' . $idDossier) . '</code>') . "</li>\n";
-												
-												if ($typeMimeFichier == 'image/jpeg')
-												{
-													if ($rotationAuto && $rotationSansPerteActivee)
-													{
-														$messagesScript .= adminRotationJpegSansPerte($cheminFichier, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
-													}
-													elseif ($suppressionExif && $suppressionExifActivee)
-													{
-														$messagesScript .= adminSupprimeExif($cheminFichier, $cheminJpegtran);
-													}
-												}
-												
-												$messagesScript .= $messagesScriptFiltre;
-												$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s impossible, car un fichier %2\$s existe déjà dans le dossier %3\$s."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($nomFiltreFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries . '/' . $idDossier) . '</code>') . "</li>\n";
-											}
-											elseif (@rename($cheminFichier, $cheminFiltreFichier))
-											{
-												$messagesScript .= $messagesScriptFiltre;
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . securiseTexte($nomFiltreFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries . '/' . $idDossier) . '</code>') . "</li>\n";
-												
-												if ($typeMimeFichier == 'image/jpeg')
-												{
-													if ($rotationAuto && $rotationSansPerteActivee)
-													{
-														$messagesScript .= adminRotationJpegSansPerte($cheminFiltreFichier, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
-													}
-													elseif ($suppressionExif && $suppressionExifActivee)
-													{
-														$messagesScript .= adminSupprimeExif($cheminFiltreFichier, $cheminJpegtran);
-													}
-												}
-											}
-											else
-											{
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries . '/' . $idDossier) . '</code>') . "</li>\n";
-												
-												if ($typeMimeFichier == 'image/jpeg')
-												{
-													if ($rotationAuto && $rotationSansPerteActivee)
-													{
-														$messagesScript .= adminRotationJpegSansPerte($cheminFichier, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
-													}
-													elseif ($suppressionExif && $suppressionExifActivee)
-													{
-														$messagesScript .= adminSupprimeExif($cheminFichier, $cheminJpegtran);
-													}
-												}
-												
-												$messagesScript .= $messagesScriptFiltre;
-												$messagesScript .= '<li class="erreur">' . sprintf(T_("Renommage de %1\$s en %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($nomFiltreFichier) . '</code>') . "</li>\n";
-											}
-										}
-									}
-									elseif ($infoImage['status'] == 'newer_exist')
-									{
-										$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà, et est plus récent que celui de l'archive. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
-									}
-									else
-									{
-										$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
-									}
-								}
-							}
-						}
-						elseif ($typeMime == 'application/x-tar')
-						{
-							if (@rename($cheminGaleries . '/' . $nomArchive, $cheminGalerie . '/' . $nomArchive))
-							{
-								$fichierTar = new untar($cheminGalerie . '/' . $nomArchive);
-								$listeFichiers = $fichierTar->getfilelist();
-							
-								for ($i = 0; $i < count($listeFichiers); $i++)
-								{
-									$nomFichier = $listeFichiers[$i]['filename'];
-									$nomFiltreFichier = $nomFichier;
-								
-									if ($filtrerNom)
-									{
-										$nomFiltreFichier = filtreChaine($nomFichier, $casse);
-									}
-									
-									if ($nomFiltreFichier != $nomFichier)
-									{
-										$messagesScript .= '<li>' . sprintf(T_("Filtrage de %1\$s en %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($nomFiltreFichier) . '</code>') . "</li>\n";
-									}
-								
-									$cheminFichier = $cheminGalerie . '/' . $nomFichier;
-									$cheminFichierFiltre = $cheminGalerie . '/' . $nomFiltreFichier;
-								
-									if ($listeFichiers[$i]['filetype'] == 'directory')
-									{
-										if (file_exists($cheminFichierFiltre))
-										{
-											$messagesScript .= '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. Il n'a donc pas été créé."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-										}
-										else
-										{
-											$messagesScript .= adminMkdir($cheminFichierFiltre, octdec(755), TRUE);
-										}
-									}
-									elseif (file_exists($cheminFichierFiltre))
-									{
-										$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. Il n'y a donc pas eu extraction."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-									}
-									elseif ($fic = @fopen($cheminFichierFiltre, 'w'))
-									{
-										$donnees = $fichierTar->extract($nomFichier);
-									
-										if (fwrite($fic, $donnees))
-										{
-											fclose($fic);
-											$typeMimeFichier = typeMime($cheminFichierFiltre);
-										
-											if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
-											{
-												@unlink($cheminFichierFiltre);
-												$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFiltreFichier) . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
-											}
-											else
-											{
-												$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans le dossier %2\$s effectué."), '<code>' . securiseTexte($nomFiltreFichier) . '</code>', '<code>' . securiseTexte($cheminGalerie) . '</code>') . "</li>\n";
-												
-												if ($typeMimeFichier == 'image/jpeg')
-												{
-													if ($rotationAuto && $rotationSansPerteActivee)
-													{
-														$messagesScript .= adminRotationJpegSansPerte($cheminFichierFiltre, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
-													}
-													elseif ($suppressionExif && $suppressionExifActivee)
-													{
-														$messagesScript .= adminSupprimeExif($cheminFichierFiltre, $cheminJpegtran);
-													}
-												}
-											}
-										}
-										else
-										{
-											$messagesScript .= '<li class="erreur">' . sprintf(T_("Attention: une erreur a eu lieu avec le fichier %1\$s. Vérifiez son état sur le serveur (s'il s'y trouve), et ajoutez-le à la main si nécessaire."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>\n";
-										}
-									}
-									else
-									{
-										$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierFiltre) . '</code>') . "</li>";
-									}
-								}
-							
-								unset($fichierTar);
-								@unlink($cheminGalerie . '/' . $nomArchive);
-							}
-							else
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors du déplacement du fichier %1\$s."), '<code>' . securiseTexte($nomArchive) . '</code>') . "</li>\n";
-							}
-						}
-					
-						if (file_exists($cheminGaleries . '/' . $nomArchive))
-						{
-							@unlink($cheminGaleries . '/' . $nomArchive);
-						}
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGalerie) . '</code>') . "</li>\n";
 					}
 					else
 					{
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors du déplacement du fichier %1\$s."), '<code>' . securiseTexte($nomArchive) . '</code>') . "</li>\n";
+						$typeMime = typeMime($_FILES['fichier']['tmp_name']);
+						
+						if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
+						}
+						elseif (@move_uploaded_file($_FILES['fichier']['tmp_name'], $cheminGalerie . '/' . $nomFichier))
+						{
+							$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGalerie) . '</code>') . "</li>\n";
+							
+							$rotationAuto = FALSE;
+							$suppressionExif = FALSE;
+							
+							if (isset($_POST['rotationAuto']))
+							{
+								$rotationAuto = TRUE;
+							}
+							
+							if (isset($_POST['suppressionExif']))
+							{
+								$suppressionExif = TRUE;
+							}
+							
+							if ($typeMime == 'image/jpeg')
+							{
+								if ($rotationAuto && $rotationSansPerteActivee)
+								{
+									$messagesScript .= adminRotationJpegSansPerte($cheminGalerie . '/' . $nomFichier, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
+								}
+								elseif ($suppressionExif && $suppressionExifActivee)
+								{
+									$messagesScript .= adminSupprimeExif($cheminGalerie . '/' . $nomFichier, $cheminJpegtran);
+								}
+							}
+							elseif ($typeMime == 'application/x-tar' || $typeMime == 'application/x-bzip2' || $typeMime == 'application/x-gzip' || $typeMime == 'application/zip')
+							{
+								$retourAdminExtraitArchive = adminExtraitArchive($cheminGalerie . '/' . $nomFichier, $cheminGalerie, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom, $casse);
+								$messagesScript .= $retourAdminExtraitArchive['messagesScript'];
+								
+								foreach ($retourAdminExtraitArchive['fichiersExtraits'] as $fichierExtrait)
+								{
+									$typeMimeFichierExtrait = $fichierExtrait;
+									
+									if ($typeMimeFichierExtrait == 'image/jpeg')
+									{
+										if ($rotationAuto && $rotationSansPerteActivee)
+										{
+											$messagesScript .= adminRotationJpegSansPerte($fichierExtrait, $adminCheminExiftran, $adminCheminJpegtran, $suppressionExif);
+										}
+										elseif ($suppressionExif && $suppressionExifActivee)
+										{
+											$messagesScript .= adminSupprimeExif($fichierExtrait, $cheminJpegtran);
+										}
+									}
+								}
+								
+								$messagesScript .= adminUnlink($cheminGalerie . '/' . $nomFichier);
+							}
+						}
+						else
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries) . '</code>') . "</li>\n";
+						}
 					}
 				}
 			}
-		
+			
 			if (!empty($_FILES) && file_exists($_FILES['fichier']['tmp_name']))
 			{
 				@unlink($_FILES['fichier']['tmp_name']);
 			}
-		
+			
 			if (empty($messagesScript))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune image n'a été extraite. Veuillez vérifier les instructions.") . "</li>\n";
 			}
-		
+			
 			if (isset($id))
 			{
 				$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), '<code>' . securiseTexte($id) . '</code>') . "</li>\n" . $messagesScript;
@@ -639,7 +421,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), "") . "</li>\n" . $messagesScript;
 			}
-		
+			
 			echo adminMessagesScript($messagesScript, T_("Ajout d'images"));
 		}
 		
@@ -648,7 +430,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		## Redimensionnement des images originales.
 		##
 		########################################################################
-
+		
 		if (isset($_POST['redimensionner']) && gdEstInstallee())
 		{
 			$messagesScript = '';
@@ -2046,12 +1828,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 			
 			<div class="bDcorps">
-				<?php if (function_exists('gzopen')): ?>
-					<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>) ou ZIP (<code>.zip</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
-				<?php else: ?>
-					<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive de format TAR (<code>.tar</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
-				<?php endif; ?>
-	
+				<p><?php echo T_("Vous pouvez téléverser vers votre site en une seule fois plusieurs images contenues dans une archive (<code>.tar</code>, <code>.tar.bz2</code>, <code>.tar.gz</code> ou <code>.zip</code>). Veuillez créer votre archive de telle sorte que les images y soient à la racine, et non contenues dans un dossier."); ?></p>
+				
 				<p><?php echo T_("Vous pouvez également ajouter une seule image en choisissant un fichier image au lieu d'une archive."); ?></p>
 				
 				<p><?php echo T_("Prendre note que si vous précisez l'URL d'une nouvelle galerie et que cette URL contient des caractères spéciaux, elle devra être fournie sous forme encodée. Le plus simple est de copier l'adresse dans la barre de navigation du navigateur utilisé et de coller le résultat dans le champ de saisie. L'URL racine sera automatiquement supprimée pour convertir l'adresse fournie en adresse relative."); ?></p>
@@ -2103,7 +1881,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						</div><!-- /.bDcorps -->
 					</fieldset>
 					
-					<p><label for="ajouterInputFichier"><?php echo T_("Fichier (archive <code>.tar</code> ou <code>.zip</code>, ou fichier image unique):"); ?></label><br />
+					<p><label for="ajouterInputFichier"><?php echo T_("Fichier (archive <code>.tar</code>, <code>.tar.bz2</code>, <code>.tar.gz</code> ou <code>.zip</code>, ou fichier image unique):"); ?></label><br />
 					<input id="ajouterInputFichier" type="file" name="fichier" size="25"/></p>
 					
 					<fieldset class="optionsAvanceesAdminGaleries">

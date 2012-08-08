@@ -17,8 +17,6 @@ Certains dossiers doivent être accessibles en écriture:
 
 - Pour utiliser la fonction de mise en maintenance du site, la réécriture d'URL doit être activée sur le serveur.
 
-- Pour ajouter des images dans une galerie à partir d'une archive `ZIP` ainsi que pour compresser les archives `TAR` des dossiers téléchargeables à partir du porte-documents, le module PHP `zlib` doit être installé.
-
 - Pour générer automatiquement des vignettes ou redimensionner des images d'une galerie, la bibliothèque GD doit être installée (par exemple, sous Ubuntu 10.10, vérifier que le paquet `php5-gd` est installé).
 
 - Pour afficher les données Exif dans les galeries, la fonction PHP `exif_read_data()` doit être disponible.
@@ -1052,7 +1050,7 @@ Concrètement, pour créer une galerie à partir de l'administration de Squeletm
 
 4. Le champ «Si nouvelle galerie, URL de la page Web» peut être rempli avec la valeur désirée ou laissé vide pour utilisation de la page globale des galeries (`galerie.php`).
 
-5. Dans le champ «Fichier», préciser un fichier image ou une archive de format TAR (`.tar`) ou ZIP (`.zip`).
+5. Dans le champ «Fichier», préciser un fichier image ou une archive (`.tar`, `.tar.bz2`, `.tar.gz` ou `.zip`).
 
 6. Choisir d'autres options selon les besoins.
 

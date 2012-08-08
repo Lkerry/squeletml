@@ -76,7 +76,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   
   - Script offert pour redimensionner automatiquement les images originales et ainsi obtenir des copies de taille intermédiaire.
   
-  - Ajout d'images par lot contenues dans une archive TAR (`.tar`) ou ZIP (`.zip`).
+  - Ajout d'images par lot contenues dans une archive (`.tar`, `.tar.bz2`, `.tar.gz` ou `.zip`).
   
   - Reconnaissance automatique possible de la version d'une image selon le nom du fichier (par exemple un nom de fichier terminant par `-vignette.extension` pour une vignette).
 
@@ -174,6 +174,8 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**CodeMirror**](http://codemirror.net/): sous licence BSD. J'ai créé un jeu de couleurs, nommé *gedit*, distribué sous licence AGPL version 3 ou toute version ultérieure.
 
+- [**eZ Components**](http://ezcomponents.org/): sous la nouvelle licence BSD.
+
 - [**\_filter\_htmlcorrector**](http://api.drupal.org/api/function/_filter_htmlcorrector/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure.
 
 - [**jQuery**](http://jquery.com/): sous double licence MIT et GPL.
@@ -183,8 +185,6 @@ avec ce programme; si ce n'est pas le cas, consultez
 - [**jQuery UI**](http://jqueryui.com/): sous double licence MIT et GPL.
 
 - [**node_teaser**](http://api.drupal.org/api/function/node_teaser/6): fonction de Drupal, sous licence GPL version ou toute version ultérieure. J'ai effectué quelques modifications; le résultat est sous licence GPL version 3 ou toute version ultérieure.
-
-- [**PclZip**](http://www.phpconcept.net/): Squeletml utilise la bibliothèque PclZip (sous licence LGPL) pour la gestion des archives au format ZIP. L'auteur est Vincent Blavet. Pour en savoir plus sur PclZip ou pour consulter les mises à jour, voir le site de PclZip.
 
 - [**PHP gettext**](https://launchpad.net/php-gettext/): sous licence GPL version 2 ou toute version ultérieure.
 
@@ -200,9 +200,5 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**Table of Contents jQuery Plugin**](http://fuelyourcoding.com/table-of-contents-jquery-plugin/): le script original a été écrit par Doug Neiner et est sous licence MIT. J'ai modifié le script et ai incorporé une fraction de code provenant du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), publié sous licence GPL (sans précision de la version). Je publie le script résultant sous licence GPL version 3 ou toute version ultérieure.
 
-- [**Tar et UnTar (classes PHP)**](http://php-classes.sourceforge.net/): sous licence LGPL 2.1.
-
 - [**Unsharp Mask for PHP**](http://vikjavev.no/computing/ump.php?id=306): permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL.
-
-- La translitération effectuée par la fonction `filtreChaine()` est basée sur le contenu du fichier `i18n-ascii.txt` du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), sous licence GPL.
 
