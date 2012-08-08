@@ -914,89 +914,97 @@ include $racineAdmin . '/inc/premier.inc.php';
 			else
 			{
 				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idDossier));
-				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idDossier;
-				$nombreDimages = count($tableauGalerie);
-				$corpsGalerie .= '<div id="galeriesAdminConfigGraphique">';
-				$corpsGalerie .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
-				$corpsGalerie .= '<div>';
-				$corpsGalerie .= '<input type="hidden" name="configGraphiqueIdGalerie" value="' . encodeTexte($id) . '" />' . "\n";
-				$corpsGalerie .= '<ul class="triable">';
 				
-				for ($i = 0; $i <= ($nombreDimages - 1) && $i < $nombreDimages; $i++)
+				if (!empty($tableauGalerie))
 				{
-					if (gdEstInstallee())
+					$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idDossier;
+					$nombreDimages = count($tableauGalerie);
+					$corpsGalerie .= '<div id="galeriesAdminConfigGraphique">' . "\n";
+					$corpsGalerie .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
+					$corpsGalerie .= "<div>\n";
+					$corpsGalerie .= '<input type="hidden" name="configGraphiqueIdGalerie" value="' . encodeTexte($id) . '" />' . "\n";
+					$corpsGalerie .= '<ul class="triable">' . "\n";
+					
+					for ($i = 0; $i <= ($nombreDimages - 1) && $i < $nombreDimages; $i++)
 					{
-						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
-						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . encodeTexte($idDossier), FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
-						preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
-						$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
-					}
-					else
-					{
-						$vignette = '';
-					}
-					
-					$intermediaireNom = $tableauGalerie[$i]['intermediaireNom'];
-					
-					$config = '';
-					$config .= "<div class=\"configGraphiqueListeParametres\">\n";
-					$config .= '<input type="hidden" name="configGraphiqueVignettes[]" value="' . encodeTexte($intermediaireNom) . '" />' . "\n";
-					$config .= '<input type="hidden" name="indiceIntermediaireNom[' . encodeTexte($intermediaireNom) . ']" value="' . $i . '" />' . "\n";
-					$config .= '<p class="bDtitre"><code>' . securiseTexte($intermediaireNom) . "</code></p>\n";
-					
-					$config .= "<ul class=\"nonTriable bDcorps\">\n";
-					
-					foreach ($tableauParametres[0] as $parametre)
-					{
-						$contenuParametre = '';
-					
-						if (!empty($tableauGalerie[$i][$parametre]))
+						if (gdEstInstallee())
 						{
-							$contenuParametre = $tableauGalerie[$i][$parametre];
+							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
+							$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . encodeTexte($idDossier), FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+							preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
+							$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
 						}
-					
-						$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . securiseTexte($contenuParametre) . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '"><code>' . $parametre . "</code></label></li>\n";
-					}
-					
-					$config .= '<li class="autresParametres"><span class="bDtitre">' . T_("Afficher plus de paramètres") . '</span>';
-					$config .= "<ul class=\"bDcorps\">\n";
-					
-					foreach ($tableauParametres[1] as $parametre)
-					{
-						$contenuParametre = '';
-					
-						if (!empty($tableauGalerie[$i][$parametre]))
+						else
 						{
-							$contenuParametre = $tableauGalerie[$i][$parametre];
+							$vignette = '';
 						}
-					
-						$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . securiseTexte($contenuParametre) . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '"><code>' . $parametre . "</code></label></li>\n";
+						
+						$intermediaireNom = $tableauGalerie[$i]['intermediaireNom'];
+						
+						$config = '';
+						$config .= "<div class=\"configGraphiqueListeParametres\">\n";
+						$config .= '<input type="hidden" name="configGraphiqueVignettes[]" value="' . encodeTexte($intermediaireNom) . '" />' . "\n";
+						$config .= '<input type="hidden" name="indiceIntermediaireNom[' . encodeTexte($intermediaireNom) . ']" value="' . $i . '" />' . "\n";
+						$config .= '<p class="bDtitre"><code>' . securiseTexte($intermediaireNom) . "</code></p>\n";
+						
+						$config .= "<ul class=\"nonTriable bDcorps\">\n";
+						
+						foreach ($tableauParametres[0] as $parametre)
+						{
+							$contenuParametre = '';
+							
+							if (!empty($tableauGalerie[$i][$parametre]))
+							{
+								$contenuParametre = $tableauGalerie[$i][$parametre];
+							}
+							
+							$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . securiseTexte($contenuParametre) . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '"><code>' . $parametre . "</code></label></li>\n";
+						}
+						
+						$config .= '<li class="autresParametres"><span class="bDtitre">' . T_("Afficher plus de paramètres") . '</span>';
+						$config .= "<ul class=\"bDcorps\">\n";
+						
+						foreach ($tableauParametres[1] as $parametre)
+						{
+							$contenuParametre = '';
+							
+							if (!empty($tableauGalerie[$i][$parametre]))
+							{
+								$contenuParametre = $tableauGalerie[$i][$parametre];
+							}
+							
+							$config .= '<li><input id="configGraphiqueInput-' . $i . '-' . $parametre . '" class="long" type="text" name="parametres[' . $i . '][' . $parametre . ']" value="' . securiseTexte($contenuParametre) . '" /> <label for="configGraphiqueInput-' . $i . '-' . $parametre . '"><code>' . $parametre . "</code></label></li>\n";
+						}
+						
+						$config .= "</ul></li>\n";
+						$config .= "</ul>\n";
+						$config .= "</div><!-- /.configGraphiqueListeParametres -->\n";
+						
+						$corpsGalerie .= '<li class="configGraphiqueListeVignettes">';
+						$corpsGalerie .= $vignette;
+						$corpsGalerie .= $config;
+						
+						$corpsGalerie .= '<p class="configGraphiqueSuppressionImage"><input id="configGraphiqueInputSupprimer-' . $i . '" class="long" type="checkbox" name="configGraphiqueInputSupprimer-' . $i . '" value="supprimer" /> <label for="configGraphiqueInputSupprimer-' . $i . '">' . T_("Supprimer") . "</label></p>\n";
+						
+						$corpsGalerie .= '<p class="configGraphiqueRenommageImage"><label for="configGraphiqueInputRenommer-' . $i . '">' . T_("Renommer:") . '</label> <input id="configGraphiqueInputRenommer-' . $i . '" class="tresLong" type="text" name="configGraphiqueInputRenommer-' . $i . '" value="" />' . "</p>\n";
+						
+						$corpsGalerie .= '<p class="configGraphiqueLienMaj"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></p>\n";
+						$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
 					}
 					
-					$config .= "</ul></li>\n";
-					$config .= "</ul>\n";
-					$config .= "</div><!-- /.configGraphiqueListeParametres -->\n";
+					$corpsGalerie .= "</ul>\n";
 					
-					$corpsGalerie .= '<li class="configGraphiqueListeVignettes">';
-					$corpsGalerie .= $vignette;
-					$corpsGalerie .= $config;
+					$corpsGalerie .= "<div class=\"sep\"></div>\n";
 					
-					$corpsGalerie .= '<p class="configGraphiqueSuppressionImage"><input id="configGraphiqueInputSupprimer-' . $i . '" class="long" type="checkbox" name="configGraphiqueInputSupprimer-' . $i . '" value="supprimer" /> <label for="configGraphiqueInputSupprimer-' . $i . '">' . T_("Supprimer") . "</label></p>\n";
-					
-					$corpsGalerie .= '<p class="configGraphiqueRenommageImage"><label for="configGraphiqueInputRenommer-' . $i . '">' . T_("Renommer:") . '</label> <input id="configGraphiqueInputRenommer-' . $i . '" class="tresLong" type="text" name="configGraphiqueInputRenommer-' . $i . '" value="" />' . "</p>\n";
-					
-					$corpsGalerie .= '<p class="configGraphiqueLienMaj"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></p>\n";
-					$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
+					$corpsGalerie .= '<p><input id="configGraphiqueMaj" type="submit" name="configGraphiqueMaj" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
+					$corpsGalerie .= "</div>\n";
+					$corpsGalerie .= "</form>\n";
+					$corpsGalerie .= "</div><!-- /#galeriesAdminConfigGraphique -->\n";
 				}
-				
-				$corpsGalerie .= "</ul>\n";
-				
-				$corpsGalerie .= "<div class=\"sep\"></div>\n";
-				
-				$corpsGalerie .= '<p><input id="configGraphiqueMaj" type="submit" name="configGraphiqueMaj" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
-				$corpsGalerie .= "</div>\n";
-				$corpsGalerie .= "</form>\n";
-				$corpsGalerie .= "</div><!-- /#galeriesAdminConfigGraphique -->\n";
+				else
+				{
+					$messagesScript .= '<p>' . T_("Aucune image dans la galerie.") . "</p>\n";
+				}
 			}
 			
 			$messagesScript .= $corpsGalerie;
@@ -1270,48 +1278,56 @@ include $racineAdmin . '/inc/premier.inc.php';
 			else
 			{
 				$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $idDossier));
-				$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idDossier;
-				$nombreDimages = count($tableauGalerie);
-				$corpsGalerie .= '<div id="galeriesAdminConfigGraphiqueSimplifiee">';
-				$corpsGalerie .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
-				$corpsGalerie .= '<div>';
-				$corpsGalerie .= '<input type="hidden" name="configGraphiqueSimplifieeIdGalerie" value="' . $id . '" />' . "\n";
-				$corpsGalerie .= '<ul class="triable">';
 				
-				for ($i = 0; $i <= ($nombreDimages - 1) && $i < $nombreDimages; $i++)
+				if (!empty($tableauGalerie))
 				{
-					if (gdEstInstallee())
+					$racineImgSrc = $racine . '/site/fichiers/galeries/' . $idDossier;
+					$nombreDimages = count($tableauGalerie);
+					$corpsGalerie .= '<div id="galeriesAdminConfigGraphiqueSimplifiee">';
+					$corpsGalerie .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
+					$corpsGalerie .= '<div>';
+					$corpsGalerie .= '<input type="hidden" name="configGraphiqueSimplifieeIdGalerie" value="' . $id . '" />' . "\n";
+					$corpsGalerie .= '<ul class="triable">';
+					
+					for ($i = 0; $i <= ($nombreDimages - 1) && $i < $nombreDimages; $i++)
 					{
-						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
-						$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . encodeTexte($idDossier), FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
-						preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
-						$vignette = '<div class="configGraphiqueSimplifieeVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueSimplifieeVignette -->\n";
+						if (gdEstInstallee())
+						{
+							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
+							$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . encodeTexte($idDossier), FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
+							preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
+							$vignette = '<div class="configGraphiqueSimplifieeVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueSimplifieeVignette -->\n";
+						}
+						else
+						{
+							$vignette = '';
+						}
+						
+						$intermediaireNom = $tableauGalerie[$i]['intermediaireNom'];
+						
+						$config = '';
+						$config .= '<input type="hidden" name="configGraphiqueSimplifieeVignettes[]" value="' . encodeTexte($intermediaireNom) . '" />' . "\n";
+						$config .= '<input type="hidden" name="indiceIntermediaireNom[' . encodeTexte($intermediaireNom) . ']" value="' . $i . '" />' . "\n";
+						
+						$corpsGalerie .= '<li class="configGraphiqueListeVignettes">';
+						$corpsGalerie .= $vignette;
+						$corpsGalerie .= $config;
+						$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
 					}
-					else
-					{
-						$vignette = '';
-					}
 					
-					$intermediaireNom = $tableauGalerie[$i]['intermediaireNom'];
+					$corpsGalerie .= "</ul>\n";
 					
-					$config = '';
-					$config .= '<input type="hidden" name="configGraphiqueSimplifieeVignettes[]" value="' . encodeTexte($intermediaireNom) . '" />' . "\n";
-					$config .= '<input type="hidden" name="indiceIntermediaireNom[' . encodeTexte($intermediaireNom) . ']" value="' . $i . '" />' . "\n";
+					$corpsGalerie .= "<div class=\"sep\"></div>\n";
 					
-					$corpsGalerie .= '<li class="configGraphiqueListeVignettes">';
-					$corpsGalerie .= $vignette;
-					$corpsGalerie .= $config;
-					$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
+					$corpsGalerie .= '<p><input id="configGraphiqueSimplifieeMaj" type="submit" name="configGraphiqueSimplifieeMaj" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
+					$corpsGalerie .= "</div>\n";
+					$corpsGalerie .= "</form>\n";
+					$corpsGalerie .= "</div><!-- /#galeriesAdminConfigGraphiqueSimplifiee -->\n";
 				}
-				
-				$corpsGalerie .= "</ul>\n";
-				
-				$corpsGalerie .= "<div class=\"sep\"></div>\n";
-				
-				$corpsGalerie .= '<p><input id="configGraphiqueSimplifieeMaj" type="submit" name="configGraphiqueSimplifieeMaj" value="' . T_('Mettre à jour') . '" /></p>' . "\n";
-				$corpsGalerie .= "</div>\n";
-				$corpsGalerie .= "</form>\n";
-				$corpsGalerie .= "</div><!-- /#galeriesAdminConfigGraphiqueSimplifiee -->\n";
+				else
+				{
+					$messagesScript .= '<p>' . T_("Aucune image dans la galerie.") . "</p>\n";
+				}
 			}
 			
 			$messagesScript .= $corpsGalerie;
