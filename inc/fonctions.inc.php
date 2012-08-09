@@ -553,7 +553,7 @@ function categories($racine, $urlRacine, $url)
 		{
 			foreach ($categorieInfos['pages'] as $page)
 			{
-				$urlPage = $urlRacine . '/' . encodeTexte($page);
+				$urlPage = $urlRacine . '/' . $page;
 				
 				if ($urlPage == $url)
 				{
