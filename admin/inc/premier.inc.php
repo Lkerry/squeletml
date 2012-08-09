@@ -123,42 +123,50 @@ if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 }
 
 // Coloration syntaxique lors de l'édition.
-if ($adminColorationSyntaxique && isset($_GET['action']) && $_GET['action'] == 'editer' && isset($_GET['valeur']))
+if ($adminColorationSyntaxique && ($actionEditer && !empty($getValeur)) || (isset($_POST['porteDocumentsCreation']) && isset($_POST['porteDocumentsCreationType']) && ($_POST['porteDocumentsCreationType'] == 'FichierVide' || $_POST['porteDocumentsCreationType'] == 'FichierModeleHtml')))
 {
+	$valeurAcomparer = $getValeur;
+	
+	if (isset($_POST['porteDocumentsCreation']))
+	{
+		$retourAdminFichierAcreerPorteDocuments = adminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments);
+		$valeurAcomparer = $retourAdminFichierAcreerPorteDocuments['fichier'];
+	}
+	
 	$mode = '';
 	$modesAinclure = array ();
 	
-	if (preg_match('/\.css$/', $_GET['valeur']))
+	if (preg_match('/\.css$/', $valeurAcomparer))
 	{
 		$mode = 'css';
 		$modesAinclure = array ('css');
 	}
-	elseif (preg_match('/\.js$/', $_GET['valeur']))
+	elseif (preg_match('/\.js$/', $valeurAcomparer))
 	{
 		$mode = 'javascript';
 		$modesAinclure = array ('javascript');
 	}
-	elseif (preg_match('/\.xml$/', $_GET['valeur']))
+	elseif (preg_match('/\.xml$/', $valeurAcomparer))
 	{
 		$mode = 'xml';
 		$modesAinclure = array ('xml');
 	}
-	elseif (preg_match('/\.ini(\.txt)?$/', $_GET['valeur']))
+	elseif (preg_match('/\.ini(\.txt)?$/', $valeurAcomparer))
 	{
 		$mode = 'properties';
 		$modesAinclure = array ('properties');
 	}
-	elseif (preg_match('/\.php$/', $_GET['valeur']))
+	elseif (preg_match('/\.php$/', $valeurAcomparer))
 	{
 		$mode = 'php';
 		$modesAinclure = array ('xml', 'javascript', 'css', 'clike', 'php');
 	}
-	elseif (preg_match('/\.(markdown|md|mkd)$/', $_GET['valeur']))
+	elseif (preg_match('/\.(markdown|md|mkd)$/', $valeurAcomparer))
 	{
 		$mode = 'markdown';
 		$modesAinclure = array ('xml', 'markdown');
 	}
-	elseif (preg_match('/\.html?$/', $_GET['valeur']))
+	elseif (preg_match('/\.html?$/', $valeurAcomparer))
 	{
 		$mode = 'htmlmixed';
 		$modesAinclure = array ('xml', 'javascript', 'css', 'htmlmixed');

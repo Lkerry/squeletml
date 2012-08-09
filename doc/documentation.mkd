@@ -555,7 +555,7 @@ Il y a plusieurs manières de créer une page:
 
 1. Créer un fichier vide et reproduire la structure d'une page.
 2. Copier le fichier `exemple.php` et le coller avec le nom désiré.
-3. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Fichier modèle de page web» ou «Fichier modèle HTML de page web avec syntaxe Markdown».
+3. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Page web modèle» ou «Page web modèle avec fichier Markdown».
 
 Voici l'anatomie d'une page:
 

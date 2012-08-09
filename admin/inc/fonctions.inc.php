@@ -554,6 +554,21 @@ function adminEnregistreSitemap($racine, $contenuSitemap)
 }
 
 /*
+Retourne `TRUE` si le fichier est éditable dans le porte-documents, sinon retourne `FALSE`.
+*/
+function adminEstEditable($cheminFichier)
+{
+	$typeMime = typeMime($cheminFichier);
+	
+	if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty')
+	{
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
+/*
 Retourne TRUE si le navigateur de l'internaute est Internet Explorer, sinon retourne FALSE.
 */
 function adminEstIe()
@@ -681,6 +696,50 @@ function adminExtraitArchive($cheminArchive, $cheminExtraction, $adminFiltreType
 	}
 	
 	return array ('fichiersExtraits' => $fichiersExtraits, 'messagesScript' => $messagesScript);
+}
+
+/*
+Retourne un tableau associatif de deux éléments:
+
+- `fichier`: le chemin du fichier à créer dans le porte-documents;
+- `messagesScript`: le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments)
+{
+	$fichier = '';
+	$messagesScript = '';
+	
+	if (isset($_POST['porteDocumentsCreationNom']) && isset($_POST['porteDocumentsCreationChemin']))
+	{
+		$fichier = decodeTexte($_POST['porteDocumentsCreationNom']);
+		
+		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+		{
+			$fichierAncienNom = $fichier;
+			$casse = '';
+			
+			if (in_array('min', $_POST['filtrerNom']))
+			{
+				$casse = 'min';
+			}
+			
+			$fichier = filtreChaine($fichier, $casse);
+			
+			if ($fichier != $fichierAncienNom)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($fichierAncienNom) . '</code>', '<code>' . securiseTexte($fichier) . '</code>') . "</li>\n";
+			}
+		}
+		
+		$fichier = decodeTexte($_POST['porteDocumentsCreationChemin']) . '/' . $fichier;
+		
+		if (!preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '/#', $fichier))
+		{
+			$fichier = "$adminDossierRacinePorteDocuments/$fichier";
+		}
+	}
+	
+	return array ('fichier' => $fichier, 'messagesScript' => $messagesScript);
 }
 
 /*
@@ -1065,9 +1124,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexte("$dossierAparcourir/$fichier") . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$typeMime = typeMime("$dossierAparcourir/$fichier");
-					
-					if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty')
+					if (adminEstEditable("$dossierAparcourir/$fichier"))
 					{
 						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=editer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
 					}
