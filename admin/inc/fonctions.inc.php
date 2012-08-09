@@ -1,5 +1,49 @@
 <?php
 /*
+Retourne un tableau associatif de deux éléments:
+
+- `cheminFichier`: le chemin du fichier à créer dans le porte-documents;
+- `messagesScript`: le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminCheminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments)
+{
+	$cheminFichier = '';
+	$messagesScript = '';
+	
+	if (isset($_POST['porteDocumentsCreationNom']) && isset($_POST['porteDocumentsCreationChemin']))
+	{
+		$cheminFichier = decodeTexte($_POST['porteDocumentsCreationNom']);
+		
+		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+		{
+			$ancienCheminFichier = $cheminFichier;
+			$casse = '';
+			
+			if (in_array('min', $_POST['filtrerNom']))
+			{
+				$casse = 'min';
+			}
+			
+			$cheminFichier = filtreChaine($cheminFichier, $casse);
+			
+			if ($cheminFichier != $ancienCheminFichier)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienCheminFichier) . '</code>', '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+			}
+		}
+		
+		$cheminFichier = decodeTexte($_POST['porteDocumentsCreationChemin']) . '/' . $cheminFichier;
+		
+		if (!preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '/#', $cheminFichier))
+		{
+			$cheminFichier = "$adminDossierRacinePorteDocuments/$cheminFichier";
+		}
+	}
+	
+	return array ('cheminFichier' => $cheminFichier, 'messagesScript' => $messagesScript);
+}
+
+/*
 Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)basename($racineAdmin)/inc/$nom.inc.php` demandé.
 */
 function adminCheminsInc($racineAdmin, $nom)
@@ -699,50 +743,6 @@ function adminExtraitArchive($cheminArchive, $cheminExtraction, $adminFiltreType
 }
 
 /*
-Retourne un tableau associatif de deux éléments:
-
-- `fichier`: le chemin du fichier à créer dans le porte-documents;
-- `messagesScript`: le résultat sous forme de message concaténable dans `$messagesScript`.
-*/
-function adminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments)
-{
-	$fichier = '';
-	$messagesScript = '';
-	
-	if (isset($_POST['porteDocumentsCreationNom']) && isset($_POST['porteDocumentsCreationChemin']))
-	{
-		$fichier = decodeTexte($_POST['porteDocumentsCreationNom']);
-		
-		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
-		{
-			$fichierAncienNom = $fichier;
-			$casse = '';
-			
-			if (in_array('min', $_POST['filtrerNom']))
-			{
-				$casse = 'min';
-			}
-			
-			$fichier = filtreChaine($fichier, $casse);
-			
-			if ($fichier != $fichierAncienNom)
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($fichierAncienNom) . '</code>', '<code>' . securiseTexte($fichier) . '</code>') . "</li>\n";
-			}
-		}
-		
-		$fichier = decodeTexte($_POST['porteDocumentsCreationChemin']) . '/' . $fichier;
-		
-		if (!preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '/#', $fichier))
-		{
-			$fichier = "$adminDossierRacinePorteDocuments/$fichier";
-		}
-	}
-	
-	return array ('fichier' => $fichier, 'messagesScript' => $messagesScript);
-}
-
-/*
 Génère et retourne le contenu du fichier Sitemap.
 */
 function adminGenereContenuSitemap($tableauUrl)
@@ -1107,7 +1107,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					}
 					elseif (!$adminAfficherSousDossiersDansContenu || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu)))
 					{
-						$liste[$dossierAparcourir . '/' . $fichier][] = sprintf(T_("Affichage désactivé. <a href=\"%1\$s\">Lister ce dossier.</a>"), 'porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . '&amp;dossierCourant=' . encodeTexte("$dossierAparcourir/$fichier") . '#fichiersEtDossiers');
+						$liste[$dossierAparcourir . '/' . $fichier][] = sprintf(T_("<a href=\"%1\$s\">Lister ce dossier.</a>"), 'porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . '&amp;dossierCourant=' . encodeTexte("$dossierAparcourir/$fichier") . '#fichiersEtDossiers');
 					}
 					else
 					{
@@ -1480,6 +1480,86 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	}
 	
 	return $tableauUrl;
+}
+
+/*
+Met à jour le fichier de configuration des catégories et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminMajConfigCategories($racine, $contenuFichierTableau)
+{
+	$messagesScript = '';
+	$contenuFichier = '';
+	
+	foreach ($contenuFichierTableau as $categorie => $categorieInfos)
+	{
+		if (!empty($categorieInfos['infos']) || !empty($categorieInfos['pages']))
+		{
+			$contenuFichier .= "[$categorie]\n";
+			
+			if (!empty($categorieInfos['infos']))
+			{
+				foreach ($categorieInfos['infos'] as $ligne)
+				{
+					$contenuFichier .= $ligne;
+				}
+			}
+			
+			if (!empty($categorieInfos['pages']))
+			{
+				foreach ($categorieInfos['pages'] as $ligne)
+				{
+					$contenuFichier .= $ligne;
+				}
+			}
+			
+			$contenuFichier .= "\n";
+		}
+	}
+	
+	$cheminFichier = cheminConfigCategories($racine);
+	
+	if (!$cheminFichier)
+	{
+		$cheminFichier = cheminConfigCategories($racine, TRUE);
+		
+		if (!@touch($cheminFichier))
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
+	}
+	
+	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
+	
+	if (file_exists($cheminFichier))
+	{
+		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
+		{
+			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+		}
+		else
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		}
+	}
+	else
+	{
+		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+	}
+	
+	$messagesScript .= "<div class=\"bDcorps\">\n";
+	$messagesScript .= '<pre id="contenuFichierCategories">' . securiseTexte($contenuFichier) . "</pre>\n";
+	
+	$messagesScript .= "<ul>\n";
+	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</div><!-- /.bDcorps -->\n";
+	$messagesScript .= "</li>\n";
+	
+	return $messagesScript;
 }
 
 /*
@@ -2346,6 +2426,18 @@ function adminUrlDeconnexion($urlRacine)
 	list ($protocole, $url) = explode('://', $urlRacine, 2);
 	
 	return "$protocole://deconnexion@$url/deconnexion.php";
+}
+
+/*
+Retourne l'URL du fichier édité dans le porte-documents.
+*/
+function adminUrlFichierEditePorteDocuments($racine, $urlRacine, $cheminFichier)
+{
+	$urlFichierEdite = realpath($cheminFichier);
+	$urlFichierEdite = preg_replace('#^' . preg_quote($racine, '#') . '/?#', '', $urlFichierEdite);
+	$urlFichierEdite = $urlRacine . '/' . encodeTexte($urlFichierEdite);
+	
+	return $urlFichierEdite;
 }
 
 /*

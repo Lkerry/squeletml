@@ -16,7 +16,12 @@ if (file_exists("$racine/site/$dossierAdmin/inc/premier-pre.inc.php"))
 ##
 ########################################################################
 
-extract(init('', 'baliseH1', 'baliseTitle', 'h1'), EXTR_SKIP);
+extract(init('', 'baliseH1', 'baliseTitle', 'getValeur', 'h1'), EXTR_SKIP);
+
+if (!isset($actionEditer))
+{
+	$actionEditer = FALSE;
+}
 
 if (!isset($adminBalisesLinkScriptFinales))
 {
@@ -123,14 +128,14 @@ if (!empty($boitesDeroulantesTableau) || $boitesDeroulantesAlaMain)
 }
 
 // Coloration syntaxique lors de l'édition.
-if ($adminColorationSyntaxique && ($actionEditer && !empty($getValeur)) || (isset($_POST['porteDocumentsCreation']) && isset($_POST['porteDocumentsCreationType']) && ($_POST['porteDocumentsCreationType'] == 'FichierVide' || $_POST['porteDocumentsCreationType'] == 'FichierModeleHtml')))
+if ($adminColorationSyntaxique && (($actionEditer && !empty($getValeur)) || (isset($_POST['porteDocumentsCreation']) && isset($_POST['porteDocumentsCreationType']) && ($_POST['porteDocumentsCreationType'] == 'FichierVide' || $_POST['porteDocumentsCreationType'] == 'FichierModeleHtml'))))
 {
 	$valeurAcomparer = $getValeur;
 	
 	if (isset($_POST['porteDocumentsCreation']))
 	{
-		$retourAdminFichierAcreerPorteDocuments = adminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments);
-		$valeurAcomparer = $retourAdminFichierAcreerPorteDocuments['fichier'];
+		$retourAdminCheminFichierAcreerPorteDocuments = adminCheminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments);
+		$valeurAcomparer = $retourAdminCheminFichierAcreerPorteDocuments['cheminFichier'];
 	}
 	
 	$mode = '';

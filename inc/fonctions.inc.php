@@ -278,7 +278,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 
 	$apercu .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-	$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse);
+	$listeCategoriesAdresse = listeCategoriesPage($racine, $urlRacine, $adresse);
 	$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesAdresse);
 
 	if (!empty($infosPublication))
@@ -535,37 +535,6 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
 	$captchaCalcul .= $inputHidden;
 
 	return $captchaCalcul;
-}
-
-/*
-Retourne un tableau des catégories auxquelles appartient l'URL fournie. La structure est:
-
-	$listeCategories['idCategorie'] = 'url';
-*/
-function categories($racine, $urlRacine, $url)
-{
-	$listeCategories = array ();
-	$cheminFichier = cheminConfigCategories($racine);
-	
-	if ($cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE && !empty($categories))
-	{
-		foreach ($categories as $categorie => $categorieInfos)
-		{
-			foreach ($categorieInfos['pages'] as $page)
-			{
-				$urlPage = $urlRacine . '/' . $page;
-				
-				if ($urlPage == $url)
-				{
-					$listeCategories[$categorie] = urlCat($categorieInfos, $categorie);
-				}
-			}
-		}
-	}
-	
-	uksort($listeCategories, 'strnatcasecmp');
-	
-	return $listeCategories;
 }
 
 /*
@@ -4065,6 +4034,40 @@ function linkScriptAinclure($balisesBrutes)
 	}
 	
 	return $balisesBrutesAinclure;
+}
+
+/*
+Retourne un tableau des catégories auxquelles appartient la page donnée. La structure du tableau est:
+
+	$listeCategories['idCategorie'] = 'urlCategorie';
+*/
+function listeCategoriesPage($racine, $urlRacine, $urlPage)
+{
+	$listeCategories = array ();
+	$cheminFichier = cheminConfigCategories($racine);
+	
+	if ($cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE && !empty($categories))
+	{
+		foreach ($categories as $categorie => $categorieInfos)
+		{
+			if (!empty($categorieInfos['pages']))
+			{
+				foreach ($categorieInfos['pages'] as $page)
+				{
+					$urlDeComparaison = $urlRacine . '/' . $page;
+					
+					if ($urlDeComparaison == $urlPage)
+					{
+						$listeCategories[$categorie] = urlCat($categorieInfos, $categorie);
+					}
+				}
+			}
+		}
+	}
+	
+	uksort($listeCategories, 'strnatcasecmp');
+	
+	return $listeCategories;
 }
 
 /*

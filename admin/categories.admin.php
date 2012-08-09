@@ -28,6 +28,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (file_exists($cheminFichier) && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 		{
+			uksort($categories, 'strnatcasecmp');
 			echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 			echo "<div>\n";
 		
@@ -174,7 +175,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$listePages .= "</ul></li>\n";
-#					$listePages .= "</ul>\n";
 					$i++;
 				}
 			}
@@ -284,7 +284,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<legend class="bDtitre">' . T_("Nouvelle catégorie") . "</legend>\n";
 			
 			echo '<div class="bDcorps afficher">' . "\n";
-			echo '<p><label for="nouvelleCatInputUrl">' . T_("Si nouvelle catégorie, URL de la page Web (laisser vide pour génération automatique):") . "</label><br />\n";
+			echo '<p><label for="nouvelleCatInputUrl">' . T_("Si nouvelle catégorie, URL de la page Web (laisser vide pour génération automatique; si plusieurs catégories sont créées, il y aura génération automatique):") . "</label><br />\n";
 			echo '<input id="nouvelleCatInputUrl" class="long" type="text" name="urlNouvelleCat" /></p>' . "\n";
 			
 			$listeLangues = '';
@@ -319,14 +319,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			echo '<div class="bDcorps afficher">' . "\n";
 			echo "<ul>\n";
-			echo '<li><input id="inputParentAjout" type="checkbox" name="parentAjout" value="ajout" checked="checked" /> <label for="inputParentAjout">' . T_("S'il y a lieu, inclure la page dans la catégorie parente.") . "</label>\n";
-			echo "<ul>\n";
-			echo '<li><input id="inputParentsAjout" type="checkbox" name="parentsAjout" value="ajout" checked="checked" /> <label for="inputParentsAjout">' . T_("S'il y a lieu, inclure la page également dans les catégories parentes indirectes.") . "</label></li>\n";
-			echo "</ul>\n";
-			
-			echo '<p>' . T_("Explications: par exemple, une page est ajoutée à la catégorie «Miniatures». Cette catégorie a comme parent «Chiens», qui a elle-même comme parent la catégorie «Animaux». Si l'option d'ajout dans la catégorie parente est sélectionnée, la page sera ajoutée dans la catégorie «Miniatures» et dans la catégorie parente «Chiens». Aussi, si l'option d'ajout dans les catégories parentes indirectes est sélectionnée, la page sera également ajoutée à la catégorie «Animaux».") . "</p>\n";
-			echo "</li>\n";
-			
 			$rssListeLangues = '';
 			$rssListeLangues .= '<select name="rssLangueAjout">' . "\n";
 			
@@ -366,9 +358,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 	if (isset($_POST['modifsCategories']))
 	{
 		$messagesScript = '';
-		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Enregistrement des modifications des catégories") . "</h3>\n" ;
-	
 		$contenuFichierTableau = array ();
 		
 		if (isset($_POST['cat']))
@@ -473,6 +462,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$urlAjout = supprimeUrlRacine($urlRacine, $_POST['urlAjout']);
 		}
 		
+		$nombreNouvellesCategories = 0;
+		
 		if (!empty($_POST['catAjoutSelect']) && !empty($urlAjout))
 		{
 			$catAjout = array ();
@@ -485,7 +476,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (!empty($_POST['catAjoutInput']))
 					{
-						$catAjout = array_merge($catAjout, explode('#', $_POST['catAjoutInput']));
+						$nouvellesCategories = explode('#', $_POST['catAjoutInput']);
+						$nombreNouvellesCategories = count($nouvellesCategories);
+						$catAjout = array_merge($catAjout, $nouvellesCategories);
 					}
 				}
 				else
@@ -496,9 +489,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			$cheminFichier = cheminConfigCategories($racine);
 			
-			if (isset($_POST['parentAjout']) && $cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
+			if ($adminInclurePageDansCategorieParente && $cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE)
 			{
-				if (isset($_POST['parentsAjout']))
+				if ($adminInclurePageDansCategoriesParentesIndirectes)
 				{
 					$parentsAjout = array ();
 					
@@ -555,7 +548,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$contenuFichierTableau[$c]['infos'][] = "langue=$langueCat\n";
 					$urlNouvelleCat = '';
 					
-					if (!empty($_POST['urlNouvelleCat']))
+					if ($nombreNouvellesCategories == 1 && !empty($_POST['urlNouvelleCat']))
 					{
 						$urlNouvelleCat = supprimeUrlRacine($urlRacine, $_POST['urlNouvelleCat']);
 					}
@@ -596,73 +589,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 		}
 		
-		$contenuFichier = '';
-		
-		foreach ($contenuFichierTableau as $categorie => $categorieInfos)
-		{
-			if (!empty($categorieInfos['infos']) || !empty($categorieInfos['pages']))
-			{
-				$contenuFichier .= "[$categorie]\n";
-				
-				foreach ($categorieInfos['infos'] as $ligne)
-				{
-					$contenuFichier .= $ligne;
-				}
-				
-				foreach ($categorieInfos['pages'] as $ligne)
-				{
-					$contenuFichier .= $ligne;
-				}
-				
-				$contenuFichier .= "\n";
-			}
-		}
-		
-		$cheminFichier = cheminConfigCategories($racine);
-		
-		if (!$cheminFichier)
-		{
-			$cheminFichier = cheminConfigCategories($racine, TRUE);
-			
-			if (!@touch($cheminFichier))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
-			}
-		}
-		
-		$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
-		
-		if (file_exists($cheminFichier))
-		{
-			if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
-			{
-				$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
-
-				$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
-			}
-			else
-			{
-				$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
-				
-				$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-			}
-		}
-		else
-		{
-			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
-		}
-
-		$messagesScript .= "<div class=\"bDcorps\">\n";
-		$messagesScript .= '<pre id="contenuFichierCategories">' . securiseTexte($contenuFichier) . "</pre>\n";
-		
-		$messagesScript .= "<ul>\n";
-		$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
-		$messagesScript .= "</ul>\n";
-		$messagesScript .= "</div><!-- /.bDcorps -->\n";
-		$messagesScript .= "</li>\n";
-		
-		echo adminMessagesScript($messagesScript);
-		echo "</div><!-- /.sousBoite -->\n";
+		$messagesScript .= adminMajConfigCategories($racine, $contenuFichierTableau);
+		echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications des catégories"));
 		
 		if (isset($_POST['rssAjout']) && !empty($urlAjout) && !empty($_POST['rssLangueAjout']))
 		{

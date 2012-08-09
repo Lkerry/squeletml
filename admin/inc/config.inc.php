@@ -126,6 +126,19 @@ $adminFusionnerCssJs = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
+## Catégories.
+##
+########################################################################
+
+// S'il y a lieu, inclure une page dans la catégorie parente et dans les catégories parentes indirectes.
+/*
+Explications: par exemple, une page est ajoutée à la catégorie «Miniatures». Cette catégorie a comme parent «Chiens», qui a elle-même comme parent la catégorie «Animaux». Si l'option d'ajout dans la catégorie parente est activée, la page sera ajoutée dans la catégorie «Miniatures» et dans la catégorie parente «Chiens». Aussi, si l'option d'ajout dans les catégories parentes indirectes est activée, la page sera également ajoutée à la catégorie «Animaux».
+*/
+$adminInclurePageDansCategorieParente = TRUE;
+$adminInclurePageDansCategoriesParentesIndirectes = TRUE;
+
+########################################################################
+##
 ## Galeries.
 ##
 ########################################################################

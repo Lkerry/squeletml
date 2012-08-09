@@ -1308,9 +1308,7 @@ if ($actionEditer)
 	
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . encodeTexte($getValeur) . '" />' . "\n";
 		
-		$urlFichierEdite = realpath($getValeur);
-		$urlFichierEdite = preg_replace('#^' . preg_quote($racine, '#') . '/?#', '', $urlFichierEdite);
-		$urlFichierEdite = $urlRacine . '/' . encodeTexte($urlFichierEdite);
+		$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $getValeur);
 		
 		if (preg_match('/(?<!\.inc)\.php$/', $urlFichierEdite) && strpos($urlFichierEdite, $urlRacineAdmin) !== 0)
 		{
@@ -1319,36 +1317,49 @@ if ($actionEditer)
 			if (file_exists($cheminConfigCategories))
 			{
 				$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
+				uksort($categories, 'strnatcasecmp');
+				$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
+				echo '<p><label for="porteDocumentsEditionCat">' . T_("Catégories auxquelles appartient la page:") . "</label></p>\n";
+				
+				echo '<p><select id="porteDocumentsEditionCat" name="porteDocumentsEditionCatSelect[]" multiple="multiple">' . "\n";
+				echo '<option value="nouvelleCategorie">' . T_("Nouvelle catégorie:") . "</option>\n";
+				$option = '';
+				$categorieSelectionnee = FALSE;
 				
 				if (!empty($categories))
 				{
-					$listeCategoriesPage = categories($racine, $urlRacine, $urlFichierEdite);
-					echo '<p><label for="porteDocumentsEditionCat">' . T_("Catégories auxquelles appartient la page:") . "</label></p>\n";
-					
-					echo '<p><select id="porteDocumentsEditionCat" name="porteDocumentsEditionCatSelect[]" multiple="multiple" disabled="disabled">' . "\n";
-					
 					foreach ($categories as $categorie => $categorieInfos)
 					{
-						echo '<option value="' . encodeTexte($categorie) . '"';
-						
+						$option .= '<option value="' . encodeTexte($categorie) . '"';
+					
 						if (isset($listeCategoriesPage[$categorie]))
 						{
-							echo ' selected="selected"';
+							$categorieSelectionnee = TRUE;
+							$option .= ' selected="selected"';
 						}
 						
-						echo '>' . securiseTexte($categorie) . "</option>\n";
+						$option .= '>' . securiseTexte($categorie) . "</option>\n";
 					}
-					
-					echo "</select></p>\n";
 				}
+				
+				echo '<option value="aucuneCategorie"';
+				
+				if (!$categorieSelectionnee)
+				{
+					echo ' selected="selected"';
+				}
+				
+				echo '>' . T_("Aucune catégorie") . "</option>\n";
+				echo $option;
+				echo '</select> <input class="long" type="text" name="porteDocumentsEditionCatUrlInput" value="" />' . "</p>\n";
 			}
 		}
 		
-		echo '<p id="porteDocumentsBoutonSauvegarder"><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
+		echo '<p id="porteDocumentsBoutonEditionSauvegarder"><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
 		
 		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
 		echo "<div>\n";
-		echo '<p><input type="submit" name="porteDocumentsEditionAnnuler" value="' . T_("Annuler") . '" />' . "</p>\n";
+		echo '<p id="porteDocumentsBoutonEditionAnnuler"><input type="submit" name="porteDocumentsEditionAnnuler" value="' . T_("Annuler") . '" />' . "</p>\n";
 		
 		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . encodeTexte($getValeur) . '" />' . "\n";
 		
@@ -1403,7 +1414,9 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 		{
 			if (@fwrite($fic, $_POST['porteDocumentsContenuFichier']) !== FALSE)
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée. <a href=\"%2\$s\">Éditer à nouveau.</a>"), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages') . "</li>\n";
+				$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
+				$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages">' . T_("Éditer à nouveau le fichier.") . "</a></li>\n";
+				$messagesScript .= '<li><a href="' . encodeTexte($porteDocumentsEditionNom) . '">' . T_("Afficher le fichier.") . "</a></li>\n";
 			}
 			else
 			{
@@ -1427,6 +1440,228 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 	}
 	
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
+	
+	$messagesScript = '';
+	$cheminConfigCategories = cheminConfigCategories($racine, TRUE);
+	
+	if (!file_exists($cheminConfigCategories) && !@touch($cheminConfigCategories))
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+	}
+	
+	if (file_exists($cheminConfigCategories))
+	{
+		$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
+		
+		if ($categories !== FALSE)
+		{
+			$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $porteDocumentsEditionNom);
+			$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
+			$listeCategoriesActuelles = array ();
+			
+			foreach ($listeCategoriesPage as $listeIdCategorie => $listeInfosCategorie)
+			{
+				$listeCategoriesActuelles[] = $listeIdCategorie;
+			}
+			
+			$listeCategoriesSelectionnees = array ();
+			
+			if (!empty($_POST['porteDocumentsEditionCatSelect']))
+			{
+				foreach ($_POST['porteDocumentsEditionCatSelect'] as $categorieEncodee)
+				{
+					$categorie = decodeTexte($categorieEncodee);
+					$nouvellesCategories = array ();
+					
+					if ($categorie == 'aucuneCategorie')
+					{
+						$listeCategoriesSelectionnees = array ();
+						break;
+					}
+					elseif ($categorie == 'nouvelleCategorie')
+					{
+						if (!empty($_POST['porteDocumentsEditionCatUrlInput']))
+						{
+							$nouvellesCategories = explode('#', $_POST['porteDocumentsEditionCatUrlInput']);
+						}
+					}
+					else
+					{
+						$nouvellesCategories[] = $categorie;
+					}
+					
+					$listeCategoriesSelectionnees = array_merge($listeCategoriesSelectionnees, $nouvellesCategories);
+				}
+			}
+			
+			if ($adminInclurePageDansCategorieParente)
+			{
+				if ($adminInclurePageDansCategoriesParentesIndirectes)
+				{
+					$parentsAjout = array ();
+					
+					foreach ($listeCategoriesSelectionnees as $categorie)
+					{
+						if (!empty($categories[$categorie]['parent']))
+						{
+							if (!in_array($categories[$categorie]['parent'], $parentsAjout))
+							{
+								$parentsAjout[] = $categories[$categorie]['parent'];
+							}
+							
+							$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$categorie]['parent']));
+						}
+					}
+					
+					foreach ($parentsAjout as $parent)
+					{
+						if (!in_array($parent, $listeCategoriesSelectionnees))
+						{
+							$listeCategoriesSelectionnees[] = $parent;
+						}
+					}
+				}
+				else
+				{
+					foreach ($listeCategoriesSelectionnees as $categorie)
+					{
+						if (!empty($categories[$categorie]['parent']) && !in_array($categories[$categorie]['parent'], $listeCategoriesSelectionnees))
+						{
+							$listeCategoriesSelectionnees[] = $categories[$categorie]['parent'];
+						}
+					}
+				}
+			}
+			
+			$categoriesAajouter = array_diff($listeCategoriesSelectionnees, $listeCategoriesActuelles);
+			$categoriesAsupprimer = array_diff($listeCategoriesActuelles, $listeCategoriesSelectionnees);
+			
+			if (!empty($categoriesAajouter) || !empty($categoriesAsupprimer))
+			{
+				$urlRelativeFichierEdite = supprimeUrlRacine($urlRacine, $urlFichierEdite);
+				
+				foreach ($categoriesAajouter as $categorieAajouter)
+				{
+					if (!isset($categories[$categorieAajouter]))
+					{
+						$categories[$categorieAajouter] = array ();
+					}
+					
+					if (!isset($categories[$categorieAajouter]['infos']))
+					{
+						$categories[$categorieAajouter]['infos'] = array ();
+					}
+					
+					if (!isset($categories[$categorieAajouter]['pages']))
+					{
+						$categories[$categorieAajouter]['pages'] = array ();
+					}
+					
+					array_unshift($categories[$categorieAajouter]['pages'], $urlRelativeFichierEdite);
+				}
+				
+				foreach ($categoriesAsupprimer as $categorieAsupprimer)
+				{
+					if (isset($categories[$categorieAsupprimer]['pages']))
+					{
+						$nombrePages = count($categories[$categorieAsupprimer]['pages']);
+						
+						for ($i = 0; $i < $nombrePages; $i++)
+						{
+							if ($categories[$categorieAsupprimer]['pages'][$i] == $urlRelativeFichierEdite)
+							{
+								unset($categories[$categorieAsupprimer]['pages'][$i]);
+								$categories[$categorieAsupprimer]['pages'] = array_values($categories[$categorieAsupprimer]['pages']);
+								break;
+							}
+						}
+					}
+				}
+				
+				$contenuFichierTableau = array ();
+				
+				foreach ($categories as $categorie => $categorieInfos)
+				{
+					$contenuFichierTableau[$categorie] = array ();
+					$contenuFichierTableau[$categorie]['infos'] = array ();
+					$contenuFichierTableau[$categorie]['pages'] = array ();
+					
+					if (!empty($categorieInfos['langue']))
+					{
+						$langueCat = $categorieInfos['langue'];
+					}
+					else
+					{
+						$langueCat = $langueParDefaut;
+					}
+					
+					if (!empty($categorieInfos['url']))
+					{
+						$urlCat = $categorieInfos['url'];
+					}
+					else
+					{
+						$urlCat = 'categorie.php?id=' . filtreChaine($categorie);
+						
+						if (estCatSpeciale($categorie))
+						{
+							$urlCat .= "&amp;langue=$langueCat";
+						}
+					}
+					
+					$contenuFichierTableau[$categorie]['infos'][] = "url=$urlCat\n";
+					
+					if (!empty($categorieInfos['parent']))
+					{
+						$parentCat = $categorieInfos['parent'];
+					}
+					else
+					{
+						$parentCat = '';
+					}
+					
+					$contenuFichierTableau[$categorie]['infos'][] = "parent=$parentCat\n";
+					$contenuFichierTableau[$categorie]['infos'][] = "langue=$langueCat\n";
+					
+					if (!empty($categorieInfos['rss']))
+					{
+						$rssCat = $categorieInfos['rss'];
+					}
+					else
+					{
+						$rssCat = 1;
+					}
+					
+					$contenuFichierTableau[$categorie]['infos'][] = "rss=$rssCat\n";
+					$pagesCat = '';
+					
+					if (!empty($categorieInfos['pages']))
+					{
+						foreach ($categorieInfos['pages'] as $page)
+						{
+							if (!empty($page))
+							{
+								$pagesCat .= "pages[]=$page\n";
+							}
+						}
+					}
+					
+					$contenuFichierTableau[$categorie]['pages'][] = $pagesCat;
+				}
+				
+				$messagesScript = adminMajConfigCategories($racine, $contenuFichierTableau);
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Impossible de lire le contenu du fichier %1\$s."), '<code>' . securiseTexte($cheminConfigCategories) . '</code>') . "</li>\n";
+		}
+	}
+	
+	if (!empty($messagesScript))
+	{
+		echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications des catégories"));
+	}
 }
 
 echo "</div><!-- /#boiteMessages -->\n";

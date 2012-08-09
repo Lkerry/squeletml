@@ -421,9 +421,13 @@ p#porteDocumentsLienHaut {
 	text-align: right;
 }
 
-p#porteDocumentsBoutonSauvegarder {
+p#porteDocumentsBoutonEditionSauvegarder {
 	float: left;
 	margin-right: 10px;
+}
+
+p#porteDocumentsBoutonEditionAnnuler {
+	margin-top: 24px;
 }
 
 a.porteDocumentsFichier {

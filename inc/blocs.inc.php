@@ -175,7 +175,7 @@ if (!empty($blocsAinsererTemp))
 				case 'infos-publication':
 					if ($infosPublication && !$erreur404 && !$estPageDerreur && empty($courrielContact) && empty($idCategorie) && empty($idGalerie))
 					{
-						$listeCategoriesPage = categories($racine, $urlRacine, $url);
+						$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $url);
 						$bloc = infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
 					
 						if (!empty($bloc))

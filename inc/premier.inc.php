@@ -176,7 +176,7 @@ if (!isset($boitesDeroulantesAlaMain))
 $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
-$listeCategoriesPage = categories($racine, $urlRacine, $url);
+$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $url);
 $classesBody = classesBody($url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
