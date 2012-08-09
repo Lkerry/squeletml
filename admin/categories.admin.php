@@ -542,52 +542,52 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$contenuFichierTableau[$c] = array ();
 					$contenuFichierTableau[$c]['infos'] = array ();
 					$contenuFichierTableau[$c]['pages'] = array ();
-				}
-				
-				if (!empty($_POST['mettreEnLigneLangue']))
-				{
-					$langueCat = securiseTexte($_POST['mettreEnLigneLangue']);
-				}
-				else
-				{
-					$langueCat = $langueParDefaut;
-				}
-				
-				$contenuFichierTableau[$c]['infos'][] = "langue=$langueCat\n";
-				$urlNouvelleCat = '';
-				
-				if (!empty($_POST['urlNouvelleCat']))
-				{
-					$urlNouvelleCat = supprimeUrlRacine($urlRacine, $_POST['urlNouvelleCat']);
-				}
-				
-				if (!empty($urlNouvelleCat))
-				{
-					$urlCat = $urlNouvelleCat;
-				}
-				else
-				{
-					$urlCat = 'categorie.php?id=' . filtreChaine($c);
 					
-					if (estCatSpeciale($c))
+					if (!empty($_POST['mettreEnLigneLangue']))
 					{
-						$urlCat .= "&amp;langue=$langueCat";
+						$langueCat = securiseTexte($_POST['mettreEnLigneLangue']);
 					}
+					else
+					{
+						$langueCat = $langueParDefaut;
+					}
+					
+					$contenuFichierTableau[$c]['infos'][] = "langue=$langueCat\n";
+					$urlNouvelleCat = '';
+					
+					if (!empty($_POST['urlNouvelleCat']))
+					{
+						$urlNouvelleCat = supprimeUrlRacine($urlRacine, $_POST['urlNouvelleCat']);
+					}
+					
+					if (!empty($urlNouvelleCat))
+					{
+						$urlCat = $urlNouvelleCat;
+					}
+					else
+					{
+						$urlCat = 'categorie.php?id=' . filtreChaine($c);
+						
+						if (estCatSpeciale($c))
+						{
+							$urlCat .= "&amp;langue=$langueCat";
+						}
+					}
+					
+					$contenuFichierTableau[$c]['infos'][] = "url=$urlCat\n";
+					$contenuFichierTableau[$c]['infos'][] = "parent=\n";
+					
+					if (isset($_POST['mettreEnLigneRss']) && $_POST['mettreEnLigneRss'] == 1)
+					{
+						$rssCat = 1;
+					}
+					else
+					{
+						$rssCat = 0;
+					}
+					
+					$contenuFichierTableau[$c]['infos'][] = "rss=$rssCat\n";
 				}
-				
-				$contenuFichierTableau[$c]['infos'][] = "url=$urlCat\n";
-				$contenuFichierTableau[$c]['infos'][] = "parent=\n";
-				
-				if (isset($_POST['mettreEnLigneRss']) && $_POST['mettreEnLigneRss'] == 1)
-				{
-					$rssCat = 1;
-				}
-				else
-				{
-					$rssCat = 0;
-				}
-				
-				$contenuFichierTableau[$c]['infos'][] = "rss=$rssCat\n";
 				
 				if (!preg_grep('/^pages\[\]=' . preg_quote($urlAjout, '/') . "\n/", $contenuFichierTableau[$c]['pages']))
 				{
