@@ -5,7 +5,8 @@ include 'inc/zero.inc.php';
 
 $baliseTitle = T_("Porte-documents");
 $boitesDeroulantes = '#divContenuDossierAdminPorteDoc #divListeDossiersAdminPorteDoc #varPageModele';
-$boitesDeroulantes .= ' .aideAdminPorteDocuments .optionsAvanceesAdminPorteDocuments';
+$boitesDeroulantes .= ' .aideAdminPorteDocuments .contenuFichierPourSauvegarde';
+$boitesDeroulantes .= ' .optionsAvanceesAdminPorteDocuments';
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {
@@ -1430,12 +1431,13 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 	else
 	{
 		$messageErreurEdition = '';
-		$messageErreurEdition .= '<p class="erreur">' . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
-		
-		$messageErreurEdition .= '<p><pre id="porteDocumentsContenuFichier" class="consulterModifications">' . securiseTexte($_POST['porteDocumentsContenuFichier']) . "</pre></p>\n";
-		
+		$messageErreurEdition .= '<li class="contenuFichierPourSauvegarde">';
+		$messageErreurEdition .= '<p class="bDtitre erreur">' . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
+		$messageErreurEdition .= '<div class="bDcorps">' . "\n";
+		$messageErreurEdition .= '<pre id="porteDocumentsContenuFichier">' . securiseTexte($_POST['porteDocumentsContenuFichier']) . "</pre>\n";
 		$messageErreurEdition .= "<p><a href=\"javascript:adminSelectionneTexte('porteDocumentsContenuFichier');\">" . T_("Sélectionner le contenu.") . "</a></p>\n";
-		
+		$messageErreurEdition .= "</div>\n";
+		$messageErreurEdition .= "</li>\n";
 		$messageErreurEditionAafficher = FALSE;
 		
 		if ($fic = @fopen($porteDocumentsEditionNom, 'w'))
@@ -1462,7 +1464,7 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 		
 		if ($messageErreurEditionAafficher)
 		{
-			$messagesScript .= '<li>' . $messageErreurEdition . "</li>\n";
+			$messagesScript .= $messageErreurEdition;
 			$messagesScript .= '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages') . "</li>\n";
 		}
 	}

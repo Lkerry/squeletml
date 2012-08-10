@@ -1,6 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Accès");
+$boitesDeroulantes = '.contenuFichierPourSauvegarde';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
