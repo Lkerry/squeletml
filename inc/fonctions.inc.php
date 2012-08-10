@@ -478,6 +478,7 @@ function cacheExpire($cheminFichierCache, $dureeCache)
 			if ($contenuFichierCacheEnTete !== FALSE && preg_match('/header\("Expires: ([^"]+)/', $contenuFichierCacheEnTete, $resultat))
 			{
 				$dateExpiration = @strtotime($resultat[1]);
+				/*****/ echo '<pre>'; var_dump($dateExpiration); echo "</pre>\n<hr />\n"; /*****/
 			}
 		}
 		else
@@ -620,12 +621,9 @@ function categoriesEnfants($categories, $categorie)
 	
 	foreach ($categories as $cat => $catInfos)
 	{
-		if (isset($catInfos['parent']) && $catInfos['parent'] == $categorie)
+		if (!empty($catInfos['parent']) && $catInfos['parent'] == $categorie && isset($catInfos['langue']) && isset($categories[$categorie]['langue']) && $catInfos['langue'] == $categories[$categorie]['langue'])
 		{
-			if ($catInfos['langue'] == $categories[$categorie]['langue'])
-			{
-				$categoriesEnfants[] = $cat;
-			}
+			$categoriesEnfants[] = $cat;
 		}
 	}
 	
@@ -641,7 +639,7 @@ function categoriesParentesIndirectes($categories, $categorie)
 {
 	$categoriesParentesIndirectes = array ();
 	
-	if (isset($categories[$categorie]['parent']))
+	if (!empty($categories[$categorie]['parent']))
 	{
 		$idCatParente = $categories[$categorie]['parent'];
 	}
@@ -650,7 +648,7 @@ function categoriesParentesIndirectes($categories, $categorie)
 		$idCatParente = '';
 	}
 	
-	if (!empty($idCatParente) && $categories[$idCatParente]['langue'] == $categories[$categorie]['langue'])
+	if (!empty($idCatParente) && isset($categories[$idCatParente]['langue']) && isset($categories[$categorie]['langue']) && $categories[$idCatParente]['langue'] == $categories[$categorie]['langue'])
 	{
 		$categoriesParentesIndirectes[] = $idCatParente;
 		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $idCatParente));
@@ -1452,7 +1450,7 @@ function cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGal
 {
 	$tableauUrl = array ();
 	
-	if (cheminConfigGalerie($racine, $infosGalerie['dossier']))
+	if (!empty($infosGalerie['dossier']) && !empty($infosGalerie['url']) && cheminConfigGalerie($racine, $infosGalerie['dossier']))
 	{
 		$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $infosGalerie['dossier']), TRUE);
 		
@@ -2098,7 +2096,7 @@ function fluxRssGlobalGaleries($racine)
 	{
 		foreach ($galeries as $idGalerie => $infosGalerie)
 		{
-			if ($infosGalerie['rss'] == 1)
+			if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 			{
 				$listeGaleriesRss[] = $idGalerie;
 			}
@@ -2371,7 +2369,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArtic
 	
 	$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['url'] . '">' . securiseTexte($nomCategorie) . '</a>';
 	
-	if ($afficherNombreArticlesCategorie)
+	if ($afficherNombreArticlesCategorie && isset($categories[$categorie]['pages']))
 	{
 		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
 	}
@@ -4097,7 +4095,7 @@ function listeGaleries($racine, $galerieSpecifique = '', $avecConfigSeulement = 
 		{
 			foreach ($galeriesTmp as $idGalerie => $infosGalerie)
 			{
-				if (isset($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
+				if (!empty($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
 				{
 					$galeries[$idGalerie] = $infosGalerie;
 				}
@@ -5159,7 +5157,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		$lienDesactive = FALSE;
 		$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 		
-		if (!empty($categories) && isset($categories[$id]['pages']))
+		if (!empty($categories) && !empty($categories[$id]['pages']))
 		{
 			$nombreReel = count($categories[$id]['pages']);
 			
@@ -5462,7 +5460,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		$itemsFluxRss = array ();
 		$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 		
-		if (!empty($pages) && isset($pages[$langue]['pages']))
+		if (!empty($pages) && !empty($pages[$langue]['pages']))
 		{
 			$nombreReel = count($pages[$langue]['pages']);
 			
@@ -5568,7 +5566,7 @@ function rssGalerieActif($racine, $idGalerie)
 	$rssGalerie = FALSE;
 	$listeGaleries = listeGaleries($racine, $idGalerie);
 	
-	if (isset($listeGaleries[$idGalerie]['rss']) && $listeGaleries[$idGalerie]['rss'] == 1)
+	if (!empty($listeGaleries[$idGalerie]['rss']) && $listeGaleries[$idGalerie]['rss'] == 1)
 	{
 		$rssGalerie = TRUE;
 	}
@@ -6226,7 +6224,7 @@ Retourne l'URL d'une galerie. Si aucune URL n'a été trouvée, retourne une URL
 
 Si le paramètre `$action` vaut `0`, récupère les informations de la galerie `$info` dans le fichier de configuration des galeries, sinon s'il vaut `1`, utilise directement `$info` comme URL brute de la galerie.
 */
-function urlGalerie($action, $racine, $urlRacine, $info, $langue)
+function urlGalerie($action, $racine, $urlRacine, $info, $langue, $remplacerLangue = TRUE)
 {
 	if ($action == 0)
 	{
@@ -6250,7 +6248,10 @@ function urlGalerie($action, $racine, $urlRacine, $info, $langue)
 		$urlGalerie = '';
 	}
 	
-	$urlGalerie = str_replace('{LANGUE}', $langue, $urlGalerie);
+	if ($remplacerLangue)
+	{
+		$urlGalerie = str_replace('{LANGUE}', $langue, $urlGalerie);
+	}
 	
 	return $urlRacine . '/' . $urlGalerie;
 }

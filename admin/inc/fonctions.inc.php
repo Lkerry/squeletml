@@ -1203,7 +1203,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	
 	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
-		if (isset($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
+		if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 		{
 			foreach ($langues as $codeLangue)
 			{
@@ -1226,7 +1226,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 		}
 		
 		// Galerie.
-		if (cheminConfigGalerie($racine, $infosGalerie['dossier']))
+		if (!empty($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']))
 		{
 			$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $infosGalerie['dossier']), TRUE);
 			
@@ -1242,7 +1242,15 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 			
 			foreach ($langues as $codeLangue)
 			{
-				$url = urlGalerie(1, '', $urlRacine, $infosGalerie['url'], $codeLangue);
+				if (!empty($infosGalerie['url']))
+				{
+					$url = urlGalerie(1, '', $urlRacine, $infosGalerie['url'], $codeLangue);
+				}
+				else
+				{
+					$url = urlGalerie(0, $racine, $urlRacine, $idGalerie, $codeLangue);
+				}
+				
 				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
 				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 				$tableauUrl[$url]['cache'] = $cheminFichierCache;
@@ -1370,7 +1378,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 					$tableauUrl[$url]['cache'] = $cheminFichierCache;
 					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
-				
+					
 					if (count($accueil) > 1)
 					{
 						foreach ($langues as $code)
@@ -1418,7 +1426,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 					}
 				}
 				
-				if (isset($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
+				if (!empty($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
 				{
 					// Flux RSS de la catégorie.
 					$urlRss = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($categorie);
@@ -1440,20 +1448,23 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 		{
 			foreach ($pages as $codeLangue => $langueInfos)
 			{
-				$url = "$urlRacine/rss.php?type=site&amp;langue=$codeLangue";
-				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
-				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
-				$tableauUrl[$url]['cache'] = $cheminFichierCache;
-				$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
-				
-				foreach ($langueInfos['pages'] as $page)
+				if (!empty($langueInfos['pages']))
 				{
-					// Page faisant partie du flux RSS.
-					$urlPage = $urlRacine . '/' . $page;
-					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage, FALSE);
+					$url = "$urlRacine/rss.php?type=site&amp;langue=$codeLangue";
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
 					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
-					$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
-					$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					$tableauUrl[$url]['cache'] = $cheminFichierCache;
+					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					
+					foreach ($langueInfos['pages'] as $page)
+					{
+						// Page faisant partie du flux RSS.
+						$urlPage = $urlRacine . '/' . $page;
+						$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage, FALSE);
+						$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+						$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
+						$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					}
 				}
 			}
 		}

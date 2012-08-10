@@ -412,7 +412,10 @@ if (!empty($blocsAinsererTemp))
 						
 						foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
 						{
-							$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
+							if (!empty($listeInfosGalerie['url']))
+							{
+								$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
+							}
 						}
 						
 						if (!empty($bloc))

@@ -35,7 +35,7 @@ if (!empty($_GET['id']))
 	{
 		$langue = $getLangue;
 	}
-	elseif (isset($categories[$idCategorie]['langue']))
+	elseif (!empty($categories[$idCategorie]['langue']))
 	{
 		$langue = $categories[$idCategorie]['langue'];
 	}

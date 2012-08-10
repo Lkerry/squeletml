@@ -53,7 +53,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				if ($id == filtreChaine($idGalerie))
 				{
 					$id = $idGalerie;
-					$idDossier = $infosGalerie['dossier'];
+					
+					if (!empty($infosGalerie['dossier']))
+					{
+						$idDossier = $infosGalerie['dossier'];
+					}
+					
 					break;
 				}
 			}
@@ -104,7 +109,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			foreach ($listeGaleries as $idGalerie => $infosGalerie)
 			{
 				$i++;
-				$idGalerieDossier = $infosGalerie['dossier'];
+				$idGalerieDossier = '';
+				
+				if (!empty($infosGalerie['dossier']))
+				{
+					$idGalerieDossier = $infosGalerie['dossier'];
+				}
+				
 				$cheminConfigGalerie = cheminConfigGalerie($racine, $idGalerieDossier);
 				$fichierDeConfiguration = '';
 				
@@ -182,10 +193,22 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$tableauInfosGaleries[$idGalerieDossier] .= "<ul>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Identifiant: %1\$s"), securiseTexte($idGalerie)) . "</li>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Dossier: %1\$s"), '<a href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexte('../site/fichiers/galeries/' . $idGalerieDossier) . '&amp;dossierCourant=' . encodeTexte('../site/fichiers/galeries/' . $idGalerieDossier) . '#fichiersEtDossiers"><code>' . securiseTexte($idGalerieDossier) . '</code></a>') . "</li>\n";
-				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a href="' . urlGalerie(1, '', $urlRacine, $infosGalerie['url'], LANGUE_ADMIN) . '"><code>' . securiseTexte($infosGalerie['url']) . '</code></a>') . "</li>\n";
+				
+				if (!empty($infosGalerie['url']))
+				{
+					$urlGalerieAafficher = $infosGalerie['url'];
+				}
+				else
+				{
+					$urlGalerieAafficher = urlGalerie(0, $racine, $urlRacine, $idGalerie, '', FALSE);
+					$urlGalerieAafficher = supprimeUrlRacine($urlRacine, $urlGalerieAafficher);
+				}
+				
+				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlGalerieAafficher, LANGUE_ADMIN);
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a href="' . $urlGalerie . '"><code>' . securiseTexte($urlGalerieAafficher) . '</code></a>') . "</li>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>';
 				
-				if ($infosGalerie['rss'] == 1)
+				if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 				{
 					$tableauInfosGaleries[$idGalerieDossier] .= T_("RSS: activé");
 				}
@@ -842,7 +865,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$listeModifs = array ();
 				$listeModifs[$id] = $listeGaleries[$id];
 				
-				if (!empty($nouveauNomDossier))
+				if (!empty($nouveauNomDossier) && !empty($listeGaleries[$id]['dossier']))
 				{
 					$messagesScript .= adminRename($racine . '/site/fichiers/galeries/' . $listeGaleries[$id]['dossier'], $racine . '/site/fichiers/galeries/' . $nouveauNomDossier);
 					$listeModifs[$id]['dossier'] = $nouveauNomDossier;

@@ -94,7 +94,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					// Langue.
 					
-					if (!isset($categorieInfos['langue']))
+					if (empty($categorieInfos['langue']))
 					{
 						$categorieInfos['langue'] = $langueParDefaut;
 					}
@@ -430,7 +430,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$contenuFichierTableau[$cat]['infos'][] = "parent=$parentCat\n";
 					
-					if (isset($_POST['rss'][$cle]) && $_POST['rss'][$cle] == 1)
+					if (!empty($_POST['rss'][$cle]) && $_POST['rss'][$cle] == 1)
 					{
 						$rssCat = 1;
 					}
@@ -615,9 +615,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$contenuFichierRssTableau[$codeLangue] = array ();
 					
-					foreach ($langueInfos['pages'] as $page)
+					if (!empty($langueInfos['pages']))
 					{
-						$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+						foreach ($langueInfos['pages'] as $page)
+						{
+							$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+						}
 					}
 				}
 			}

@@ -91,17 +91,30 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$listePages .= '<input type="text" name="langue[' . $i . ']" value="' . securiseTexte($codeLangue) . '" />';
 					}
 					
-					$listePages .= "<ul class=\"triable\">\n";
+					$listePagesLangue = '';
 					$j = 0;
 					
-					foreach ($langueInfos['pages'] as $page)
+					if (!empty($langueInfos['pages']))
 					{
-						$page = rtrim($page);
-						$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . securiseTexte($page) . '" /></li>' . "\n";
-						$j++;
+						foreach ($langueInfos['pages'] as $page)
+						{
+							$page = rtrim($page);
+							
+							if (!empty($page))
+							{
+								$listePagesLangue .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . securiseTexte($page) . '" /></li>' . "\n";
+								$j++;
+							}
+						}
 					}
 					
-					$listePages .= "</ul></li>\n";
+					if (!empty($listePagesLangue))
+					{
+						$listePages .= "<ul class=\"triable\">\n";
+						$listePages .= $listePagesLangue;
+						$listePages .= "</ul></li>\n";
+					}
+					
 					$i++;
 				}
 			}
@@ -207,7 +220,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 		$contenuFichierTableau = array ();
 		
-		if (isset($_POST['langue']))
+		if (!empty($_POST['langue']))
 		{
 			foreach ($_POST['langue'] as $cle => $postLangueValeur)
 			{

@@ -876,8 +876,8 @@ if (isset($_POST['porteDocumentsCreation']))
 	else
 	{
 		$fichierAcreerType = $_POST['porteDocumentsCreationType'];
-		$retourAdminFichierAcreerPorteDocuments = adminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments);
-		$fichierAcreerNom = $retourAdminFichierAcreerPorteDocuments['fichier'];
+		$retourAdminFichierAcreerPorteDocuments = adminCheminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments);
+		$fichierAcreerNom = $retourAdminFichierAcreerPorteDocuments['cheminFichier'];
 		$messagesScript .= $retourAdminFichierAcreerPorteDocuments['messagesScript'];
 		
 		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
@@ -1562,7 +1562,7 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 				
 				foreach ($categoriesAsupprimer as $categorieAsupprimer)
 				{
-					if (isset($categories[$categorieAsupprimer]['pages']))
+					if (!empty($categories[$categorieAsupprimer]['pages']))
 					{
 						$nombrePages = count($categories[$categorieAsupprimer]['pages']);
 						
