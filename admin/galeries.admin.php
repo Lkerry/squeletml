@@ -1695,6 +1695,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (!empty($urlNouvelleGalerie))
 			{
+				$urlRelativeGalerie = $urlNouvelleGalerie;
 				$page = superBasename(decodeTexte($urlNouvelleGalerie));
 				$cheminPage = '../' . dirname(decodeTexte($urlNouvelleGalerie));
 				
@@ -1720,6 +1721,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$page = 'galerie.php?id=' . filtreChaine($id) . '&amp;langue={LANGUE}' ;
 				$cheminPage = '..';
+				$urlRelativeGalerie = $page;
 			}
 			
 			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
@@ -1738,7 +1740,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$urlRelativeGalerie = substr($cheminPage . '/' . $page, 3);
 				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlRelativeGalerie, LANGUE_ADMIN);
 				$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 				
@@ -1792,7 +1793,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 							fputs($fic, $contenu);
 							fclose($fic);
-							$messagesScript .= '<li>' . sprintf(T_("Le modèle de page %1\$s a été créé. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$cheminPage/$page</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexte($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("Création du modèle de page %1\$s effectuée. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$cheminPage/$page</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexte($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
 						}
 						else
 						{

@@ -603,7 +603,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 							fputs($fic, $contenu);
 							fclose($fic);
-							$messagesScript .= '<li>' . sprintf(T_("Le modèle de page %1\$s a été créé. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$dossierPageCategorie/$pageCategorie</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexte($dossierPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("Création du modèle de page %1\$s effectuée. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$dossierPageCategorie/$pageCategorie</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexte($dossierPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
 						}
 						else
 						{
