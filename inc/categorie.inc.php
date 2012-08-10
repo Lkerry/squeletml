@@ -228,6 +228,11 @@ if (!empty($idCategorie))
 			}
 		}
 		
+		if (empty($categorie))
+		{
+			$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s ne contient aucun article."), '<em>' . securiseTexte($idCategorie) . '</em>') . "</p>\n";
+		}
+		
 		$categorie .= $pagination;
 	}
 }
