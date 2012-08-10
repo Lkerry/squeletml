@@ -478,7 +478,6 @@ function cacheExpire($cheminFichierCache, $dureeCache)
 			if ($contenuFichierCacheEnTete !== FALSE && preg_match('/header\("Expires: ([^"]+)/', $contenuFichierCacheEnTete, $resultat))
 			{
 				$dateExpiration = @strtotime($resultat[1]);
-				/*****/ echo '<pre>'; var_dump($dateExpiration); echo "</pre>\n<hr />\n"; /*****/
 			}
 		}
 		else
