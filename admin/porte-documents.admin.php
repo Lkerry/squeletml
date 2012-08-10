@@ -1353,6 +1353,34 @@ if ($actionEditer)
 				echo $option;
 				echo '</select> <input class="long" type="text" name="porteDocumentsEditionCatUrlInput" value="" />' . "</p>\n";
 			}
+			
+			$langueFluxRssFichierEdite = adminLangueFluxRssPage($racine, $urlRacine, $urlFichierEdite);
+			
+			if (!empty($langueFluxRssFichierEdite))
+			{
+				echo '<input type="hidden" name="porteDocumentsEditionRssSuppressionLangue" value="' . $langueFluxRssFichierEdite . '" />' . "\n";
+				echo '<p><input id="porteDocumentsEditionRssSuppression" type="checkbox" name="porteDocumentsEditionRssSuppressionInput" value="suppression" /> <label for="porteDocumentsEditionRssSuppression">' . sprintf(T_("Supprimer la page du <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), 'rss.admin.php?global=site', '<code>' . $langueFluxRssFichierEdite . '</code>') . "</label></p>\n";
+			}
+			else
+			{
+				$rssListeLangues = '';
+				$rssListeLangues .= '<select name="porteDocumentsEditionRssAjoutLangue">' . "\n";
+				
+				foreach ($accueil as $langueAccueil => $urlLangueAccueil)
+				{
+					$rssListeLangues .= '<option value="' . $langueAccueil . '"';
+					
+					if ($langueAccueil == $langueParDefaut)
+					{
+						$rssListeLangues .= ' selected="selected"';
+					}
+					
+					$rssListeLangues .= '>' . $langueAccueil . "</option>\n";
+				}
+				
+				$rssListeLangues .= "</select>\n";
+				echo '<p><input id="porteDocumentsEditionRssAjout" type="checkbox" name="porteDocumentsEditionRssAjoutInput" value="ajout" /> <label for="porteDocumentsEditionRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), 'rss.admin.php?global=site', $rssListeLangues) . "</label></p>\n";
+			}
 		}
 		
 		echo '<p id="porteDocumentsBoutonEditionSauvegarder"><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
@@ -1441,6 +1469,9 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 	
 	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
 	
+	$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $porteDocumentsEditionNom);
+	$urlRelativeFichierEdite = supprimeUrlRacine($urlRacine, $urlFichierEdite);
+	
 	$messagesScript = '';
 	$cheminConfigCategories = cheminConfigCategories($racine, TRUE);
 	
@@ -1455,7 +1486,6 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 		
 		if ($categories !== FALSE)
 		{
-			$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $porteDocumentsEditionNom);
 			$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
 			$listeCategoriesActuelles = array ();
 			
@@ -1538,8 +1568,6 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 			
 			if (!empty($categoriesAajouter) || !empty($categoriesAsupprimer))
 			{
-				$urlRelativeFichierEdite = supprimeUrlRacine($urlRacine, $urlFichierEdite);
-				
 				foreach ($categoriesAajouter as $categorieAajouter)
 				{
 					if (!isset($categories[$categorieAajouter]))
@@ -1658,10 +1686,115 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 		}
 	}
 	
-	if (!empty($messagesScript))
+	if (empty($messagesScript))
 	{
-		echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications des catégories"));
+		$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
 	}
+	
+	echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications des catégories"));
+	
+	$messagesScript = '';
+	
+	if ((isset($_POST['porteDocumentsEditionRssAjoutInput']) && !empty($_POST['porteDocumentsEditionRssAjoutLangue'])) || (isset($_POST['porteDocumentsEditionRssSuppressionInput']) && !empty($_POST['porteDocumentsEditionRssSuppressionLangue'])))
+	{
+		if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
+		{
+			$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssAjoutLangue']);
+		}
+		else
+		{
+			$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssSuppressionLangue']);
+		}
+		
+		$contenuFichierRssTableau = array ();
+		$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
+		
+		if (!file_exists($cheminFichierRss) && !@touch($cheminFichierRss))
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des flux RSS est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
+		}
+		
+		if (file_exists($cheminFichierRss))
+		{
+			$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+			
+			if ($rssPages === FALSE)
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
+			}
+			else
+			{
+				if (!empty($rssPages))
+				{
+					foreach ($rssPages as $codeLangue => $langueInfos)
+					{
+						$contenuFichierRssTableau[$codeLangue] = array ();
+						
+						if (!empty($langueInfos['pages']))
+						{
+							foreach ($langueInfos['pages'] as $page)
+							{
+								$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+							}
+						}
+					}
+				}
+				
+				if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
+				{
+					if (!isset($contenuFichierRssTableau[$rssLangue]))
+					{
+						$contenuFichierRssTableau[$rssLangue] = array ();
+					}
+					
+					if (!preg_grep('/^pages\[\]=' . preg_quote($urlRelativeFichierEdite, '/') . "\n/", $contenuFichierRssTableau[$rssLangue]))
+					{
+						array_unshift($contenuFichierRssTableau[$rssLangue], "pages[]=$urlRelativeFichierEdite\n");
+					}
+				}
+				else
+				{
+					$nombrePages = count($contenuFichierRssTableau[$rssLangue]);
+					
+					for ($i = 0; $i < $nombrePages; $i++)
+					{
+						if ($contenuFichierRssTableau[$rssLangue][$i] == "pages[]=$urlRelativeFichierEdite\n")
+						{
+							unset($contenuFichierRssTableau[$rssLangue][$i]);
+							$contenuFichierRssTableau[$rssLangue] = array_values($contenuFichierRssTableau[$rssLangue]);
+							break;
+						}
+					}
+				}
+				
+				$contenuFichierRss = '';
+				
+				foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
+				{
+					if (!empty($langueInfos))
+					{
+						$contenuFichierRss .= "[$codeLangue]\n";
+						
+						foreach ($langueInfos as $ligne)
+						{
+							$contenuFichierRss .= $ligne;
+						}
+						
+						$contenuFichierRss .= "\n";
+					}
+				}
+				
+				$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
+			}
+		}
+	}
+	
+	if (empty($messagesScript))
+	{
+		$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
+	}
+	
+	echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications du flux RSS des dernières publications"));
 }
 
 echo "</div><!-- /#boiteMessages -->\n";

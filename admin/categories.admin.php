@@ -336,7 +336,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			$rssListeLangues .= "</select>\n";
 			
-			echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), "rss.admin.php?global=site", $rssListeLangues) . "</label></li>\n";
+			echo '<li><input id="inputRssAjout" type="checkbox" name="rssAjout" value="ajout" checked="checked" /> <label for="inputRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), 'rss.admin.php?global=site', $rssListeLangues) . "</label></li>\n";
 			echo "</ul>\n";
 			echo "</div><!-- /.bDcorps -->\n";
 			echo "</fieldset>\n";
@@ -597,64 +597,71 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript = '';
 			$rssLangueAjout = securiseTexte($_POST['rssLangueAjout']);
 			$contenuFichierRssTableau = array ();
-			$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine);
+			$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
 			
-			if (!$cheminFichierRss)
+			if (!file_exists($cheminFichierRss) && !@touch($cheminFichierRss))
 			{
-				$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
-				@touch($cheminFichierRss);
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des flux RSS est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
 			}
 			
-			if (file_exists($cheminFichierRss) && ($rssPages = super_parse_ini_file($cheminFichierRss, TRUE)) === FALSE)
+			if (file_exists($cheminFichierRss))
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
-			}
-			elseif (!empty($rssPages))
-			{
-				foreach ($rssPages as $codeLangue => $langueInfos)
+				$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+				
+				if ($rssPages === FALSE)
 				{
-					$contenuFichierRssTableau[$codeLangue] = array ();
-					
-					if (!empty($langueInfos['pages']))
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
+				}
+				else
+				{
+					if (!empty($rssPages))
 					{
-						foreach ($langueInfos['pages'] as $page)
+						foreach ($rssPages as $codeLangue => $langueInfos)
 						{
-							$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+							$contenuFichierRssTableau[$codeLangue] = array ();
+							
+							if (!empty($langueInfos['pages']))
+							{
+								foreach ($langueInfos['pages'] as $page)
+								{
+									$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+								}
+							}
 						}
 					}
-				}
-			}
-			
-			if (!isset($contenuFichierRssTableau[$rssLangueAjout]))
-			{
-				$contenuFichierRssTableau[$rssLangueAjout] = array ();
-			}
-			
-			if (!preg_grep('/^pages\[\]=' . preg_quote($urlAjout, '/') . "\n/", $contenuFichierRssTableau[$rssLangueAjout]))
-			{
-				array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjout\n");
-			}
-			
-			$contenuFichierRss = '';
-			
-			foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
-			{
-				if (!empty($langueInfos))
-				{
-					$contenuFichierRss .= "[$codeLangue]\n";
 					
-					foreach ($langueInfos as $ligne)
+					if (!isset($contenuFichierRssTableau[$rssLangueAjout]))
 					{
-						$contenuFichierRss .= $ligne;
+						$contenuFichierRssTableau[$rssLangueAjout] = array ();
 					}
 					
-					$contenuFichierRss .= "\n";
+					if (!preg_grep('/^pages\[\]=' . preg_quote($urlAjout, '/') . "\n/", $contenuFichierRssTableau[$rssLangueAjout]))
+					{
+						array_unshift($contenuFichierRssTableau[$rssLangueAjout], "pages[]=$urlAjout\n");
+					}
+					
+					$contenuFichierRss = '';
+					
+					foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
+					{
+						if (!empty($langueInfos))
+						{
+							$contenuFichierRss .= "[$codeLangue]\n";
+							
+							foreach ($langueInfos as $ligne)
+							{
+								$contenuFichierRss .= $ligne;
+							}
+							
+							$contenuFichierRss .= "\n";
+						}
+					}
+					
+					$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
 				}
 			}
 			
-			$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
-			
-			echo adminMessagesScript($messagesScript, T_("Ajout dans le flux RSS des dernières publications"));
+			echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications du flux RSS des dernières publications"));
 		}
 	}
 	?>

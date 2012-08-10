@@ -1004,6 +1004,41 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 }
 
 /*
+Retourne le code de langue du flux RSS des dernières publications dans laquelle la page fournie est classée. Si aucune langue n'est trouvée, retourne une chaîne vide.
+*/
+function adminLangueFluxRssPage($racine, $urlRacine, $urlPage)
+{
+	$langueFluxRssPage = '';
+	$urlRelativePage = supprimeUrlRacine($urlRacine, $urlPage);
+	$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
+	
+	if (file_exists($cheminFichierRss))
+	{
+		$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+		
+		if (!empty($rssPages))
+		{
+			foreach ($rssPages as $codeLangue => $langueInfos)
+			{
+				if (!empty($langueInfos['pages']))
+				{
+					foreach ($langueInfos['pages'] as $page)
+					{
+						if ($page == $urlRelativePage)
+						{
+							$langueFluxRssPage = $codeLangue;
+							break 2;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	return $langueFluxRssPage;
+}
+
+/*
 Retourne sous forme de tableau la liste des dossiers et fichiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Les dossiers ou fichiers dont l'accès a échoué ne sont pas retournés.
 */
 function adminListeFichiers($dossier, $liste = array ())
