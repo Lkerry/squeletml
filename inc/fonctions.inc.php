@@ -1416,7 +1416,7 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 {
 	$tableauUrl = array ();
 	
-	if ($nombreArticlesParPageCategorie)
+	if ($nombreArticlesParPageCategorie && isset($categorie['pages']))
 	{
 		$nombreArticles = count($categorie['pages']);
 		$nombreDePages = ceil($nombreArticles / $nombreArticlesParPageCategorie);
@@ -5598,14 +5598,13 @@ function securiseTexte($texte)
 /*
 Récupère le code XHTML d'une page locale, comme si elle était visitée dans un navigateur.
 */
-function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
+function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $estPageCron = FALSE)
 {
 	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
 	$cheminRelatifPage = supprimeUrlRacine($urlRacine, $urlAsimuler);
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
 	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
 	$cheminPage = $racine . '/' . decodeTexte($cheminRelatifPage);
-	
 	$dossierActuel = getcwd();
 	chdir(dirname($cheminPage));
 	
@@ -5666,7 +5665,7 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
 	ob_start();
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
 	
-	if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+	if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
 	{
 		@readfile($cheminFichierCache);
 	}
@@ -5677,7 +5676,6 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
 	
 	$codePage = ob_get_contents();
 	ob_end_clean();
-	
 	chdir($dossierActuel);
 	
 	# Restauration des variables relatives à l'URL.

@@ -781,7 +781,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<p><?php printf(T_("Dernier lancement du cron le %1\$s à %2\$s."), date('Y-m-d', $dateCron), date('H:i:s', $dateCron)); ?></p>
 					<?php endif; ?>
 				
-					<p><?php echo T_("Cette action peut prendre plusieurs minutes."); ?></p>
+					<p><?php echo T_("Cette action peut prendre un certain temps."); ?></p>
 				
 					<p><input type="submit" name="lancerCron" value="<?php echo T_('Lancer le cron'); ?>" /></p>
 				</div>

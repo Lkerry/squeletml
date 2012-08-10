@@ -1405,14 +1405,17 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				}
 				
-				foreach ($categorieInfos['pages'] as $page)
+				if (!empty($categorieInfos['pages']))
 				{
-					// Pages faisant partie de la catégorie.
-					$urlPage = $urlRacine . '/' . $page;
-					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage);
-					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
-					$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
-					$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					foreach ($categorieInfos['pages'] as $page)
+					{
+						// Pages faisant partie de la catégorie.
+						$urlPage = $urlRacine . '/' . $page;
+						$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage);
+						$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+						$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
+						$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					}
 				}
 				
 				if (isset($categorieInfos['rss']) && $categorieInfos['rss'] == 1)

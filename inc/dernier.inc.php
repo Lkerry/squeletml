@@ -109,7 +109,6 @@ if ($dureeCache && !$desactiverCache)
 	$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
 	@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 	eval($enTetesHttp);
-	
 	echo $codePage;
 }
 ?>
