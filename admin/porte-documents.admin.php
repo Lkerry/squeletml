@@ -1320,6 +1320,7 @@ if ($actionEditer)
 				$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
 				uksort($categories, 'strnatcasecmp');
 				$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
+				echo '<div id="porteDocumentsEditionOptions">' . "\n";
 				echo '<p><label for="porteDocumentsEditionCat">' . T_("Catégories auxquelles appartient la page:") . "</label></p>\n";
 				
 				echo '<p><select id="porteDocumentsEditionCat" name="porteDocumentsEditionCatSelect[]" multiple="multiple">' . "\n";
@@ -1381,6 +1382,7 @@ if ($actionEditer)
 				
 				$rssListeLangues .= "</select>\n";
 				echo '<p><input id="porteDocumentsEditionRssAjout" type="checkbox" name="porteDocumentsEditionRssAjoutInput" value="ajout" /> <label for="porteDocumentsEditionRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), 'rss.admin.php?global=site', $rssListeLangues) . "</label></p>\n";
+				echo "</div><!-- /#porteDocumentsEditionOptions -->\n";
 			}
 		}
 		
