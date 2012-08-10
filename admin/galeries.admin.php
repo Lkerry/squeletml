@@ -205,7 +205,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				
 				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlGalerieAafficher, LANGUE_ADMIN);
-				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a href="' . $urlGalerie . '"><code>' . securiseTexte($urlGalerieAafficher) . '</code></a>') . "</li>\n";
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a href="' . $urlGalerie . '"><code>' . securiseTexte($urlGalerieAafficher) . '</code></a>');
+				
+				if (strpos($urlGalerieAafficher, 'galerie.php?') !== 0)
+				{
+					$cheminPageGalerie = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($urlGalerieAafficher));
+					$tableauInfosGaleries[$idGalerieDossier] .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPageGalerie) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminPageGalerie)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageGalerie)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageGalerie)) . '" width="16" height="16" /></a>';
+				}
+				
+				$tableauInfosGaleries[$idGalerieDossier] .= "</li>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>';
 				
 				if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
@@ -1687,8 +1695,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (!empty($urlNouvelleGalerie))
 			{
-				$page = decodeTexte(superBasename($urlNouvelleGalerie));
-				$cheminPage = '../' . decodeTexte(dirname($urlNouvelleGalerie));
+				$page = superBasename(decodeTexte($urlNouvelleGalerie));
+				$cheminPage = '../' . dirname(decodeTexte($urlNouvelleGalerie));
 				
 				if ($cheminPage == '../.')
 				{
@@ -1764,7 +1772,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						if (!file_exists($cheminPage))
 						{
-							$messagesScript .= adminMkdir($cheminPage, octdec(0755), TRUE);
+							$messagesScript .= adminMkdir($cheminPage, octdec(755), TRUE);
 						}
 						
 						if (file_exists($cheminPage . '/' . $page))
@@ -1784,7 +1792,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 							fputs($fic, $contenu);
 							fclose($fic);
-							$messagesScript .= '<li>' . sprintf(T_("Le modèle de page a été créé. Vous pouvez <a href=\"%1\$s\">éditer le fichier</a> ou <a href=\"%2\$s\">visiter la page</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexte($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("Le modèle de page %1\$s a été créé. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$cheminPage/$page</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexte($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
 						}
 						else
 						{

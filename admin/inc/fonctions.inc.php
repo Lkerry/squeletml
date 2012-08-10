@@ -44,6 +44,22 @@ function adminCheminFichierAcreerPorteDocuments($adminDossierRacinePorteDocument
 }
 
 /*
+Retourne le chemin du fichier relatif à la racine du porte-documents.
+*/
+function adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminFichier)
+{
+	if (strpos($cheminFichier, $racine . '/') !== 0)
+	{
+		$cheminFichier = $racine . '/' . $cheminFichier;
+	}
+	
+	$cheminFichier = preg_replace('#^' . preg_quote(realpath($adminDossierRacinePorteDocuments), '#') . '/?#', '', $cheminFichier);
+	$cheminFichier = $adminDossierRacinePorteDocuments . '/' . $cheminFichier;
+	
+	return $cheminFichier;
+}
+
+/*
 Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)basename($racineAdmin)/inc/$nom.inc.php` demandé.
 */
 function adminCheminsInc($racineAdmin, $nom)

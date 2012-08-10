@@ -46,12 +46,20 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					// URL.
 					
-					if (!isset($categorieInfos['url']))
+					if (empty($categorieInfos['url']))
 					{
-						$categorieInfos['url'] = '';
+						$categorieInfos['url'] = urlCat($categorieInfos, $categorie);
 					}
 					
-					$listePages .= '<li><label for="inputUrl-' . $i . '"><code>url=</code></label><input id="inputUrl-' . $i . '" class="long" type="text" name="url[' . $i . ']" value="' . securiseTexte($categorieInfos['url']) . '" /></li>' . "\n";
+					$listePages .= '<li><label for="inputUrl-' . $i . '"><code>url=</code></label><input id="inputUrl-' . $i . '" class="long" type="text" name="url[' . $i . ']" value="' . securiseTexte($categorieInfos['url']) . '" />';
+					
+					if (strpos($categorieInfos['url'], 'categorie.php?') !== 0)
+					{
+						$cheminPageCategorie = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($categorieInfos['url']));
+						$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPageCategorie) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminPageCategorie)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" width="16" height="16" /></a>';
+					}
+					
+					$listePages .= "</li>\n";
 					
 					// Catégorie parente.
 					
@@ -167,10 +175,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						foreach ($categorieInfos['pages'] as $page)
 						{
 							$page = rtrim($page);
-							$listePages .= '<li><label for="inputUrlPages-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrlPages-' . $i . '-' . $j . '" class="long" type="text" name="urlPages[' . $i . '][]" value="' . securiseTexte($page) . '" /></li>' . "\n";
+							$listePages .= '<li><label for="inputUrlPages-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrlPages-' . $i . '-' . $j . '" class="long" type="text" name="urlPages[' . $i . '][]" value="' . securiseTexte($page) . '" />';
+							$cheminPage = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($page));
+							$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" width="16" height="16" /></a>';
+							$listePages .= "</li>\n";
 							$j++;
 						}
-
+						
 						$listePages .= "</ul></li>\n";
 					}
 					
@@ -186,7 +197,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
 			
 			echo "<div class=\"bDcorps\">\n";
-			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser la langue à laquelle appartient une catégorie, et ce à l'aide du paramètre %2\$s. Vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %3\$s (dans ce cas, vous devez créer la page d'accueil manuellement) ainsi que la catégorie parente, s'il y a lieu, grâce à %4\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>langue=' . T_("langue à laquelle appartient la catégorie") . '</code>', '<code>url=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>parent=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
+			echo '<p>' . sprintf(T_("Les pages sont classées par section représentant une catégorie. À l'intérieur d'une section, chaque page est déclarée sous la forme %1\$s. Optionnellement, vous pouvez préciser la langue à laquelle appartient une catégorie, et ce à l'aide du paramètre %2\$s. Vous pouvez également préciser l'URL relative de la page d'accueil de chaque catégorie à l'aide du paramètre %3\$s ainsi que la catégorie parente, s'il y a lieu, grâce à %4\$s. Voici un exemple:"), '<code>pages[]=' . T_("URL relative de la page") . '</code>', '<code>langue=' . T_("langue à laquelle appartient la catégorie") . '</code>', '<code>url=' . T_("URL relative de la page d'accueil de la catégorie") . '</code>', '<code>parent=' . T_("identifiant de la catégorie parente") . '</code>') . "</p>\n";
 			
 			echo "<ul>\n";
 			echo "<li>Chiens\n";
@@ -551,6 +562,53 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if ($nombreNouvellesCategories == 1 && !empty($_POST['urlNouvelleCat']))
 					{
 						$urlNouvelleCat = supprimeUrlRacine($urlRacine, $_POST['urlNouvelleCat']);
+						$pageCategorie = superBasename(decodeTexte($urlNouvelleCat));
+						$dossierPageCategorie = '../' . dirname(decodeTexte($urlNouvelleCat));
+						
+						if ($dossierPageCategorie == '../.')
+						{
+							$dossierPageCategorie = '..';
+						}
+						
+						$cheminInclude = preg_replace('|[^/]+/|', '../', $dossierPageCategorie);
+						$cheminInclude = dirname($cheminInclude);
+						
+						if ($cheminInclude == '.')
+						{
+							$cheminInclude = '';
+						}
+						
+						if (!empty($cheminInclude))
+						{
+							$cheminInclude .= '/';
+						}
+						
+						if (!file_exists($dossierPageCategorie))
+						{
+							$messagesScript .= adminMkdir($dossierPageCategorie, octdec(755), TRUE);
+						}
+						
+						if (file_exists($dossierPageCategorie . '/' . $pageCategorie))
+						{
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . securiseTexte($dossierPageCategorie . '/' . $pageCategorie) . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexte($dossierParentPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
+						}
+						elseif ($fic = @fopen($dossierPageCategorie . '/' . $pageCategorie, 'a'))
+						{
+							$contenu = '';
+							$contenu .= '<?php' . "\n";
+							$contenu .= '$idCategorie = \'' . str_replace("'", "\'", $c) . "';\n";
+							$contenu .= 'include "' . $cheminInclude . 'inc/premier.inc.php";' . "\n";
+							$contenu .= '?>' . "\n";
+							$contenu .= "\n";
+							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
+							fputs($fic, $contenu);
+							fclose($fic);
+							$messagesScript .= '<li>' . sprintf(T_("Le modèle de page %1\$s a été créé. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$dossierPageCategorie/$pageCategorie</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexte($dossierPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
+						}
+						else
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s impossible."), '<code>' . securiseTexte($dossierPageCategorie . '/' . $pageCategorie) . '</code>') . "</li>\n";
+						}
 					}
 					
 					if (!empty($urlNouvelleCat))
