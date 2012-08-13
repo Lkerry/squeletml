@@ -341,6 +341,43 @@ function arg($index = NULL)
 }
 
 /*
+Retourne le code à utiliser pour afficher l'auteur d'un commentaire.
+*/
+function auteurAfficheCommentaire($nom, $site, $attributNofollowLiensCommentaires)
+{
+	if (!empty($nom))
+	{
+		$auteur = $nom;
+	}
+	elseif (!empty($site))
+	{
+		$auteur = $site;
+	}
+	else
+	{
+		$auteur = T_("Anonyme");
+	}
+	
+	if (!empty($site))
+	{
+		$auteurAffiche = '<a href="' . $site . '"';
+		
+		if ($attributNofollowLiensCommentaires)
+		{
+			$auteurAffiche .= ' rel="nofollow"';
+		}
+		
+		$auteurAffiche .= '>' . $auteur . '</a>';
+	}
+	else
+	{
+		$auteurAffiche = $auteur;
+	}
+	
+	return $auteurAffiche;
+}
+
+/*
 Retourne le contenu de la balise `title`.
 */
 function baliseTitle($baliseTitle, $baliseH1)
@@ -497,7 +534,7 @@ function cacheExpire($cheminFichierCache, $dureeCache)
 /*
 Retourne le code à insérer dans un formulaire pour afficher un antipourriel basé sur un calcul mathématique.
 */
-function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
+function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE, $afficherAsterisque = FALSE)
 {
 	$calculUn = mt_rand($calculMin, $calculMax);
 	$calculDeux = mt_rand($calculMin, $calculMax);
@@ -518,7 +555,14 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
 	
 	$inputHidden .= '<input type="hidden" name="d" value="' . $calculDeux . '" />' . "\n";
 	
-	$captchaCalcul .= '<p><label>' . T_("Antipourriel:") . "</label><br />\n";
+	if ($afficherAsterisque)
+	{
+		$captchaCalcul .= '<p><label>' . T_("Antipourriel<code>*</code>:") . "</label><br />\n";
+	}
+	else
+	{
+		$captchaCalcul .= '<p><label>' . T_("Antipourriel:") . "</label><br />\n";
+	}
 	
 	if ($calculInverse)
 	{
@@ -657,6 +701,32 @@ function categoriesParentesIndirectes($categories, $categorie)
 }
 
 /*
+Retourne une chaine aléatoire formée de caractères alphanumériques.
+*/
+function chaineAleatoire($longueur)
+{
+	$caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	$chaineAleatoire = '';
+	$compteur = 0;
+	
+	while ($compteur < $longueur)
+	{
+		$caractere = $caracteres[mt_rand(0, 61)];
+		
+		// Éviter de former un attribut `id` invalide (c'est-à-dire commençant par un chiffre).
+		if ($compteur == 0 && ctype_digit($caractere))
+		{
+			continue;
+		}
+		
+		$chaineAleatoire .= $caractere;
+		$compteur++;
+	}
+	
+	return $chaineAleatoire;
+}
+
+/*
 Retourne la chaîne fournie en paramètre filtrée convenablement pour un nom de classe CSS.
 */
 function chaineVersClasseCss($chaine)
@@ -695,6 +765,17 @@ function chapeau($contenuChapeau, $chapeauEnMarkdown = FALSE)
 }
 
 /*
+Retourne le chemin vers un fichier de configuration des abonnements aux commentaires d'une URL. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function cheminConfigAbonnementsCommentaires($cheminConfigCommentaires)
+{
+	$nomFichierConfig = superBasename($cheminConfigCommentaires);
+	$dossierFichierConfig = dirname($cheminConfigCommentaires);
+	
+	return "$dossierFichierConfig/abonnements-$nomFichierConfig";
+}
+
+/*
 Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
@@ -715,6 +796,24 @@ function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 	{
 		return FALSE;
 	}
+}
+
+/*
+Retourne le chemin vers le fichier de configuration des commentaires de l'URL donnée. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function cheminConfigCommentaires($racine, $urlRacine, $url, $retourneCheminParDefaut = FALSE)
+{
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+	$nomFichierCache = superBasename($cheminFichierCache);
+	$nomConfigCommentaires = preg_replace('/\.cache\.(html|xml)$/', '.ini.txt', $nomFichierCache);
+	$cheminConfigCommentaires = "$racine/site/inc/commentaires/$nomConfigCommentaires";
+	
+	if (file_exists($cheminConfigCommentaires) || $retourneCheminParDefaut)
+	{
+		return $cheminConfigCommentaires;
+	}
+	
+	return FALSE;
 }
 
 /*
@@ -796,6 +895,7 @@ Retourne le chemin d'un fichier cache global.
 function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 {
 	$nomFichierCache = supprimeUrlRacine($urlRacine, $nomBrut);
+	$somme = hash('crc32b', $nomFichierCache);
 	
 	if (empty($nomFichierCache))
 	{
@@ -806,7 +906,7 @@ function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 	$nomFichierCache = str_replace('&amp;amp;', '_', $nomFichierCache);
 	$nomFichierCache = str_replace(array ('&amp;', '?'), '_', $nomFichierCache);
 	$nomFichierCache = preg_replace('/_+/', '_', $nomFichierCache);
-	$nomFichierCache = filtreChaine("$nomFichierCache.cache");
+	$nomFichierCache = filtreChaine("$nomFichierCache-$somme.cache");
 	
 	if ($html)
 	{
@@ -1272,6 +1372,28 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 }
 
 /*
+Retourne `TRUE` si le commentaire a déjà été enregistré dans le fichier de configuration des commentaires de l'URL donnée, sinon retourne `FALSE`.
+*/
+function commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaire)
+{
+	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), TRUE);
+	$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+	
+	if (!empty($listeCommentaires))
+	{
+		foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
+		{
+			if (isset($infosCommentaire['idFormulaire']) && $infosCommentaire['idFormulaire'] == $idFormulaire)
+			{
+				return TRUE;
+			}
+		}
+	}
+	
+	return FALSE;
+}
+
+/*
 S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
 */
 function corrigeHtml($html)
@@ -1321,55 +1443,56 @@ Envoie un courriel. Retourne TRUE si le courriel a été envoyé, sinon retourne
 
 Le tableau en paramètre peut contenir les informations suivantes:
 
-  - `$infos['From']` (optionnel);
-  - `$infos['ReplyTo']` (optionnel);
-  - `$infos['Bcc']` (optionnel);
+  - `$infos['From']` (obligatoire; s'il y a lieu, encoder les noms);
+  - `$infos['ReplyTo']` (optionnel; s'il y a lieu, encoder les noms);
+  - `$infos['Bcc']` (optionnel; s'il y a lieu, encoder les noms);
   - `$infos['format']` (optionnel): le format texte (`plain`) est celui par défaut. Peut valoir également `html`;
-  - `$infos['destinataire']` (obligatoire);
-  - `$infos['objet']` (obligatoire);
-  - `$infos['message']` (obligatoire);
+  - `$infos['destinataire']` (obligatoire; s'il y a lieu, encoder les noms);
+  - `$infos['objet']` (obligatoire; ne pas encoder);
+  - `$infos['message']` (obligatoire; si le format est HTML, fournir seulement le corps à l'intérieur de `body`);
 */
 function courriel($infos)
 {
-	if (!isset($infos['destinataire']) || !isset($infos['objet']) || !isset($infos['message']))
+	if (!isset($infos['From']) || !isset($infos['destinataire']) || !isset($infos['objet']) || !isset($infos['message']))
 	{
 		return FALSE;
 	}
 	else
 	{
+		$infos['objet'] = encodeInfoEnTeteCourriel($infos['objet']);
+		$infos['message'] = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $infos['message']);
 		$enTete = '';
-	
+		
 		if (!empty($infos['From']))
 		{
-			$enTete .= "From: {$infos['From']}\n";
+			$enTete .= "From: {$infos['From']}\r\n";
 		}
-	
-	
+		
 		if (!empty($infos['ReplyTo']))
 		{
-			$enTete .= "Reply-to: {$infos['ReplyTo']}\n";
+			$enTete .= "Reply-to: {$infos['ReplyTo']}\r\n";
 		}
-	
-
+		
 		if (!empty($infos['Bcc']))
 		{
-			$enTete .= "Bcc: {$infos['Bcc']}\n";
+			$enTete .= "Bcc: {$infos['Bcc']}\r\n";
 		}
-	
-		$enTete .= "MIME-Version: 1.0\n";
-	
+		
+		$enTete .= "MIME-Version: 1.0\r\n";
+		
 		if (isset($infos['format']) && $infos['format'] == 'html')
 		{
 			$format = 'html';
+			$infos['message'] = "<html>\n<head>\n<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n</head>\n<body>\n" . $infos['message'] . "</body>\n</html>";
 		}
 		else
 		{
 			$format = 'plain';
 		}
-	
-		$enTete .= "Content-Type: text/$format; charset=\"utf-8\"\n";
-		$enTete .= "X-Mailer: Squeletml\n";
-	
+		
+		$enTete .= "Content-Type: text/$format; charset=\"utf-8\"\r\n";
+		$enTete .= "X-Mailer: Squeletml\r\n";
+		
 		return @mail($infos['destinataire'], $infos['objet'], $infos['message'], $enTete);
 	}
 }
@@ -1379,9 +1502,7 @@ Retourne TRUE si l'adresse courriel a une forme valide, sinon retourne FALSE.
 */
 function courrielValide($courriel)
 {
-	$motifCourriel = "/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i";
-	
-	return preg_match($motifCourriel, $courriel);
+	return preg_match("/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i", $courriel);
 }
 
 /*
@@ -1626,6 +1747,19 @@ function doctype($doctype, $langue)
 }
 
 /*
+S'il y a lieu, encode l'information d'en-tête de courriel. Retourne le résultat.
+*/
+function encodeInfoEnTeteCourriel($info)
+{
+	if (!estAsciiImprimable($info))
+	{
+		$info = '=?UTF-8?B?' . base64_encode($info) . '?=';
+	}
+	
+	return $info;
+}
+
+/*
 Encode le texte fourni.
 
 La fonction inverse est `decodeTexte()`.
@@ -1695,6 +1829,14 @@ function estAccueil($accueil)
 	}
 	
 	return FALSE;
+}
+
+/*
+Retourne `TRUE` si la chaîne ne contient que des caractères ASCII imprimables, sinon retourne `FALSE`.
+*/
+function estAsciiImprimable($chaine)
+{
+	return preg_match('/^[\x20-\x7e]*$/D', $chaine);
 }
 
 /*
@@ -6279,42 +6421,6 @@ function urlParente()
 	}
 	
 	return $urlParente;
-}
-
-/*
-Retourne l'URL racine d'une langue inactive. Si aucune URL n'a été trouvée, retourne une chaîne vide.
-*/
-function urlRacineLangueInactive($racine, $urlRacine, $langue)
-{
-	$urlRacineLangue = '';
-
-	if (isset($accueil[$langue]))
-	{
-		$urlRacineLangue = $accueil[$langue];
-	}
-	else
-	{
-		$initIncPhp = @file_get_contents($racine . '/init.inc.php');
-
-		if ($initIncPhp !== FALSE)
-		{
-			preg_match_all('/^\s*(#|\/\/)\s*\$accueil\[\'([a-z]{2})\'\]\s*=\s*([^;]+);/m', $initIncPhp, $resultatAccueil, PREG_SET_ORDER);
-			$languesAccueil = array ();
-	
-			foreach ($resultatAccueil as $resultatAccueilTableauLangue)
-			{
-				$resultatAccueilLangue = $resultatAccueilTableauLangue[2];
-				$languesAccueil[$resultatAccueilLangue] = eval('return ' . $resultatAccueilTableauLangue[3] . ';');
-			}
-	
-			if (isset($languesAccueil[$langue]))
-			{
-				$urlRacineLangue = $languesAccueil[$langue];
-			}
-		}
-	}
-	
-	return $urlRacineLangue;
 }
 
 /*

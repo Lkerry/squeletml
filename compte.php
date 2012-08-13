@@ -21,6 +21,7 @@ elseif (empty($courrielAdmin) && empty($contactCourrielParDefaut))
 }
 else
 {
+	$ajoutCommentaires = FALSE;
 	$infosPublication = FALSE;
 	$licence = '';
 	$lienPage = FALSE;

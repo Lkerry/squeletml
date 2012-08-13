@@ -14,6 +14,10 @@
 								<?php if ($inclureContact): ?>
 									<?php echo $contact; ?>
 								<?php endif; ?>
+								
+								<?php if ($inclureFormulaireCommentaire): ?>
+									<?php echo $formulaireCommentaire; ?>
+								<?php endif; ?>
 							</div><!-- /#milieuInterieurContenu -->
 						<?php endif; ?>
 						

@@ -22,13 +22,13 @@ if ($partageCourrielActif)
 }
 
 // L'envoi du message est demandé.
-if (isset($_POST['envoyer']))
+if (isset($_POST['envoyerContact']))
 {
 	$desactiverCache = TRUE;
 	$desactiverCachePartiel = TRUE;
-	$nom = securiseTexte($_POST['nom']);
-	$courriel = securiseTexte($_POST['courriel']);
-	$message = securiseTexte($_POST['message']);
+	$nom = securiseTexte(trim($_POST['nom']));
+	$courriel = securiseTexte(trim($_POST['courriel']));
+	$message = securiseTexte(trim($_POST['message']));
 	$messagesScript = '';
 	$erreurFormulaire = FALSE;
 	$erreurEnvoiFormulaire = FALSE;
@@ -41,30 +41,27 @@ if (isset($_POST['envoyer']))
 	
 	if ($partageCourrielActif)
 	{
-		$courrielsPartageCourriel = securiseTexte($_POST['courrielsPartageCourriel']);
+		$courrielsPartageCourriel = securiseTexte(trim($_POST['courrielsPartageCourriel']));
 	}
 	
-	if (empty($nom) && $contactChampsObligatoires['nom'])
+	if (empty($nom))
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas inscrit de nom.") . "</li>\n";
 	}
-
-	if ($contactVerifierCourriel)
-	{
-		if (!courrielValide($courriel))
-		{
-			$erreurFormulaire = TRUE;
-			$messagesScript .= '<li class="erreur">' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
-		}
-	}
-	elseif (empty($courriel))
+	
+	if (empty($courriel))
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas inscrit de courriel.") . "</li>\n";
 	}
+	elseif (!courrielValide($courriel))
+	{
+		$erreurFormulaire = TRUE;
+		$messagesScript .= '<li class="erreur">' . T_("Votre adresse courriel ne semble pas avoir une forme valide. Veuillez vérifier.") . "</li>\n";
+	}
 	
-	if ($contactVerifierCourriel && !empty($courrielsPartageCourriel))
+	if (!empty($courrielsPartageCourriel))
 	{
 		$tableauCourrielsPartageCourriel = explode(',', str_replace(' ', '', $courrielsPartageCourriel));
 		$courrielsPartageCourrielErreur = '';
@@ -86,12 +83,12 @@ if (isset($_POST['envoyer']))
 		}
 	}
 	
-	if (empty($message) && !$partageCourrielActif && $contactChampsObligatoires['message'])
+	if (empty($message) && !$partageCourrielActif)
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
 	}
-
+	
 	if ($contactActiverCaptchaCalcul)
 	{
 		if ($contactCaptchaCalculInverse)
@@ -112,13 +109,10 @@ if (isset($_POST['envoyer']))
 		}
 	}
 
-	if ($contactActiverLimiteNombreLiens)
+	if ($contactActiverLimiteNombreLiens && substr_count($message, 'http') > $contactNombreLiensMax)
 	{
-		if (substr_count($message, 'http') > $contactNombreLiensMax)
-		{
-			$erreurFormulaire = TRUE;
-			$messagesScript .= '<li class="erreur">' . T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel en raison de ses liens trop nombreux. Veuillez le modifier.") . "</li>\n";
-		}
+		$erreurFormulaire = TRUE;
+		$messagesScript .= '<li class="erreur">' . T_("Votre message a une forme qui le fait malheureusement classer comme du pourriel en raison de ses liens trop nombreux. Veuillez le modifier.") . "</li>\n";
 	}
 	
 	// Traitement personnalisé optionnel 1 de 4.
@@ -136,7 +130,7 @@ if (isset($_POST['envoyer']))
 	if ($formulaireValide)
 	{
 		$infosCourriel = array ();
-		$infosCourriel['From'] = "$nom <$courriel>";
+		$infosCourriel['From'] = encodeInfoEnTeteCourriel($nom) . " <$courriel>";
 		$infosCourriel['ReplyTo'] = $infosCourriel['From'];
 		
 		if ($partageCourrielActif && $contactCopieCourriel && $copie)
@@ -171,11 +165,11 @@ if (isset($_POST['envoyer']))
 		
 		if ($partageCourrielActif)
 		{
-			$infosCourriel['message'] = str_replace(array ("\r\n", "\r"), "\n", $messagePartageCourriel) . "\n";
+			$infosCourriel['message'] = $messagePartageCourriel;
 		}
 		else
 		{
-			$infosCourriel['message'] = str_replace(array ("\r\n", "\r"), "\n", $message) . "\n";
+			$infosCourriel['message'] = $message;
 		}
 		
 		// Traitement personnalisé optionnel 2 de 4.

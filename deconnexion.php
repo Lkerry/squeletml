@@ -1,4 +1,5 @@
 <?php
+$ajoutCommentaires = FALSE;
 $desactiverCache = TRUE;
 $desactiverCachePartiel = TRUE;
 $infosPublication = FALSE;

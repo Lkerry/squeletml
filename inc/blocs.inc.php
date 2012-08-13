@@ -66,6 +66,125 @@ if (!empty($blocsAinsererTemp))
 					
 					break;
 					
+				case 'commentaires':
+					if (($ajoutCommentaires || $affichageCommentairesSiAjoutDesactive) && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+					{
+						$commentaires = '';
+						$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), TRUE);
+						$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+						$commentairesAffiches = '';
+						$nombreCommentaires = 0;
+						
+						if (!empty($listeCommentaires))
+						{
+							if ($inverserOrdreCommentaires)
+							{
+								$listeCommentaires = array_reverse($listeCommentaires);
+							}
+							
+							foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
+							{
+								if (!empty($infosCommentaire['message']))
+								{
+									$nombreCommentaires++;
+									$commentairesAffiches .= '<li id="' . $idCommentaire . '" class="commentaire">' . "\n";
+									
+									if (!isset($infosCommentaire['nom']))
+									{
+										$infosCommentaire['nom'] = '';
+									}
+									
+									if (!isset($infosCommentaire['site']))
+									{
+										$infosCommentaire['site'] = '';
+									}
+									
+									$auteurAfficheCommentaire = auteurAfficheCommentaire($infosCommentaire['nom'], $infosCommentaire['site'], $attributNofollowLiensCommentaires);
+									$dateAfficheeCommentaire = '';
+									$heureAfficheeCommentaire = '';
+									
+									if (!empty($infosCommentaire['date']))
+									{
+										$dateAfficheeCommentaire = date('Y-m-d', $infosCommentaire['date']);
+										$heureAfficheeCommentaire = date('H:i T', $infosCommentaire['date']);
+									}
+									
+									$lienCommentaire = variableGet(0, $url, 'action') . "#$idCommentaire";
+									
+									if (!empty($dateAfficheeCommentaire) && !empty($heureAfficheeCommentaire))
+									{
+										$commentairesAffiches .= '<p class="commentaireAuteur">' . sprintf(T_("%1\$s a écrit le %2\$s à %3\$s (<a href=\"%4\$s\">lien</a>):"), $auteurAfficheCommentaire, $dateAfficheeCommentaire, $heureAfficheeCommentaire, $lienCommentaire) . "</p>\n";
+									}
+									elseif (!empty($dateAfficheeCommentaire))
+									{
+										$commentairesAffiches .= '<p class="commentaireAuteur">' . sprintf(T_("%1\$s a écrit le %2\$s (<a href=\"%3\$s\">lien</a>):"), $auteurAfficheCommentaire, $dateAfficheeCommentaire, $lienCommentaire) . "</p>\n";
+									}
+									elseif (!empty($heureAfficheeCommentaire))
+									{
+										$commentairesAffiches .= '<p class="commentaireAuteur">' . sprintf(T_("%1\$s a écrit à %2\$s (<a href=\"%3\$s\">lien</a>):"), $auteurAfficheCommentaire, $heureAfficheeCommentaire, $lienCommentaire) . "</p>\n";
+									}
+									
+									$commentairesAffiches .= '<div class="commentaireCorps">' . "\n";
+									
+									foreach ($infosCommentaire['message'] as $ligneMessage)
+									{
+										$commentairesAffiches .= "$ligneMessage\n";
+									}
+									
+									$commentairesAffiches .= "</div><!-- /.commentaireCorps -->\n";
+									$commentairesAffiches .= "</li><!-- /.commentaire -->\n";
+								}
+							}
+						}
+						
+						if ($nombreCommentaires > 0 || $ajoutCommentaires)
+						{
+							if ($nombreCommentaires == 0)
+							{
+								$commentaires .= '<p>' . T_("Aucun commentaire.") . "</p>\n";
+							}
+							else
+							{
+								$commentaires .= '<ul id="listeCommentaires">' . "\n";
+								$commentaires .= $commentairesAffiches;
+								$commentaires .= "</ul><!-- /#listeCommentaires -->\n";
+							}
+							
+							$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+							
+							$blocs[$region] .= '<div id="commentaires" class="bloc ' . $classesBloc . '">' . "\n";
+							
+							if ($nombreCommentaires > 0 && $afficherNombreCommentaires)
+							{
+								$blocs[$region] .= '<h2 id="commentairesTitre" class="bDtitre">' . sprintf(T_("Commentaires (%1\$s)"), $nombreCommentaires) . "</h2>\n";
+							}
+							else
+							{
+								$blocs[$region] .= '<h2 id="commentairesTitre" class="bDtitre">' . T_("Commentaires") . "</h2>\n";
+							}
+							
+							$blocs[$region] .= $commentaires;
+							
+							if (!isset($_GET['action']) || $_GET['action'] != 'commentaire')
+							{
+								$blocs[$region] .= '<h3 id="ajoutCommentaire">' . T_("Ajout d'un commentaire") . "</h3>\n";
+								
+								if ($ajoutCommentaires)
+								{
+									$blocs[$region] .= '<p><a href="' . variableGet(2, $url, 'action', 'commentaire') . '#ajoutCommentaire">' . T_("Ajouter un commentaire.") . "</a></p>\n";
+								}
+								else
+								{
+									$blocs[$region] .= '<p>' . T_("L'ajout de commentaires est désactivé.") . "</p>\n";
+								}
+							}
+							
+							$blocs[$region] .= "</div><!-- /#commentaires -->\n";
+						}
+					}
+					
+					break;
+					
 				case 'flux-rss':
 					$fluxRssGlobalSiteActif = FALSE;
 					

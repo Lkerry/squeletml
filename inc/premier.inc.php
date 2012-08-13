@@ -40,13 +40,14 @@ include_once $racine . '/inc/fonctions.inc.php';
 eval(variablesAaffecterAuDebut());
 $estPageCompte = $urlSansGet == "$urlRacine/compte.php" ? TRUE : FALSE;
 $estPageDeconnexion = $urlSansGet == "$urlRacine/deconnexion.php" ? TRUE : FALSE;
+$estPageDesabonnement = $urlSansGet == "$urlRacine/desabonnement.php" ? TRUE : FALSE;
 
 if (!isset($pageGlobaleGalerie))
 {
 	$pageGlobaleGalerie = FALSE;
 }
 
-if ($estPageCompte || $estPageDeconnexion)
+if ($estPageCompte || $estPageDeconnexion || $estPageDesabonnement)
 {
 	$langue = langue('navigateur', '');
 }
@@ -137,6 +138,11 @@ if ($dureeCache && !$desactiverCache)
 extract(init('', 'baliseH1', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'inclureCodeFenetreJavascript', 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
 
+if (!isset($ajoutCommentaires))
+{
+	$ajoutCommentaires = $ajoutCommentairesParDefaut;
+}
+
 if (!isset($apercu))
 {
 	$apercu = $apercuParDefaut;
@@ -161,6 +167,10 @@ if ($estPageCompte)
 elseif ($estPageDeconnexion)
 {
 	$baliseH1 = T_("Déconnexion de la section d'administration de Squeletml");
+}
+elseif ($estPageDesabonnement)
+{
+	$baliseH1 = T_("Désabonnement aux notifications de nouveaux commentaires");
 }
 
 $estAccueil = estAccueil(ACCUEIL);
@@ -312,6 +322,12 @@ if (!isset($baliseTitle))
 }
 
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1);
+
+if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+{
+	$boitesDeroulantes .= ' #commentaireAideSyntaxe';
+}
+
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
 if ($estPageDerreur)
@@ -326,7 +342,7 @@ if (!empty($classesBody))
 
 $inclureFinMilieuInterieurContenu = TRUE;
 
-if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrielContact) && !isset($accueil[LANGUE]) && strpos($url, urlRacineLangueInactive($racine, $urlRacine, LANGUE)) === 0))
+if ($erreur404 || $estPageDerreur || $courrielContact == '@' || ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie)))
 {
 	$robots = 'noindex, follow, noarchive';
 }

@@ -15,7 +15,6 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 ########################################################################
 
 // Traitement personnalisé optionnel 1 de 2.
-
 if (file_exists($racine . '/site/inc/dernier-pre.inc.php'))
 {
 	include $racine . '/site/inc/dernier-pre.inc.php';
@@ -32,6 +31,15 @@ if (!empty($courrielContact) || ($partageCourrielActif && $partageCourrielInclur
 else
 {
 	$inclureContact = FALSE;
+}
+
+if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+{
+	$inclureFormulaireCommentaire = TRUE;
+}
+else
+{
+	$inclureFormulaireCommentaire = FALSE;
 }
 
 $premierOuDernier = 'dernier';
@@ -59,11 +67,19 @@ $linkScriptFin = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLi
 
 // Inclusions.
 
+if ($inclureFormulaireCommentaire)
+{
+	include $racine . '/inc/commentaire.inc.php';
+}
+
 include $racine . '/inc/blocs.inc.php';
-include $racine . '/inc/contact.inc.php';
+
+if ($inclureContact)
+{
+	include $racine . '/inc/contact.inc.php';
+}
 
 // Traitement personnalisé optionnel 2 de 2.
-
 if (file_exists($racine . '/site/inc/dernier.inc.php'))
 {
 	include $racine . '/site/inc/dernier.inc.php';

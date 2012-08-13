@@ -1009,6 +1009,18 @@ if (isset($_POST['porteDocumentsCreation']))
 							{
 								switch ($var)
 								{
+									case 'ajoutCommentaires':
+										if ($ajoutCommentairesParDefaut)
+										{
+											$contenu .= '$ajoutCommentaires = FALSE;' . "\n";
+										}
+										else
+										{
+											$contenu .= '$ajoutCommentaires = TRUE;' . "\n";
+										}
+										
+										break;
+										
 									case 'apercu':
 										$contenu .= '$apercu = "";' . "\n";
 										break;
@@ -2151,6 +2163,7 @@ echo '<legend class="bDtitre">' . T_("Options avancées") . "</legend>\n";
 echo '<div class="bDcorps">' . "\n";
 echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page web modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
 echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
+echo '<option value="ajoutCommentaires">$ajoutCommentaires</option>' . "\n";
 echo '<option value="apercu">$apercu</option>' . "\n";
 echo '<option value="auteur">$auteur</option>' . "\n";
 echo '<option value="baliseH1">$baliseH1</option>' . "\n";
