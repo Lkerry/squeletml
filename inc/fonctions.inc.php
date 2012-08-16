@@ -902,7 +902,6 @@ function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 		$nomFichierCache = 'index';
 	}
 	
-	$nomFichierCache = str_replace(array ('/', '\\'), '|', $nomFichierCache);
 	$nomFichierCache = str_replace('&amp;amp;', '_', $nomFichierCache);
 	$nomFichierCache = str_replace(array ('&amp;', '?'), '_', $nomFichierCache);
 	$nomFichierCache = preg_replace('/_+/', '_', $nomFichierCache);
