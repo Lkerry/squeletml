@@ -1938,6 +1938,14 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 }
 
 /*
+Retourne `TRUE` s'il faut afficher les options de catégories et de flux RSS pour le fichier édité dans le porte-documents, sinon retourne `FALSE`.
+*/
+function adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite)
+{
+	return preg_match('/(?<!\.inc)\.php$/', $urlFichierEdite) && strpos($urlFichierEdite, $urlRacineAdmin) !== 0;
+}
+
+/*
 Retourne un tableau de deux éléments tableau dont chaque élément contient le nom d'un paramètre d'une image de galerie. Le premier tableau contient les paramètres les plus utilisés; le second, ceux qui le sont moins.
 */
 function adminParametresImage()

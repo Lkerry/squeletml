@@ -1314,7 +1314,7 @@ if ($actionEditer)
 		
 		$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $getValeur);
 		
-		if (preg_match('/(?<!\.inc)\.php$/', $urlFichierEdite) && strpos($urlFichierEdite, $urlRacineAdmin) !== 0)
+		if (adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite))
 		{
 			$cheminConfigCategories = cheminConfigCategories($racine);
 			
@@ -1479,329 +1479,332 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 	$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $porteDocumentsEditionNom);
 	$urlRelativeFichierEdite = supprimeUrlRacine($urlRacine, $urlFichierEdite);
 	
-	$messagesScript = '';
-	$cheminConfigCategories = cheminConfigCategories($racine, TRUE);
-	
-	if (!file_exists($cheminConfigCategories) && !@touch($cheminConfigCategories))
+	if (adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite))
 	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
-	}
+		$messagesScript = '';
+		$cheminConfigCategories = cheminConfigCategories($racine, TRUE);
 	
-	if (file_exists($cheminConfigCategories))
-	{
-		$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
-		
-		if ($categories !== FALSE)
+		if (!file_exists($cheminConfigCategories) && !@touch($cheminConfigCategories))
 		{
-			$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
-			$listeCategoriesActuelles = array ();
-			
-			foreach ($listeCategoriesPage as $listeIdCategorie => $listeInfosCategorie)
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
+	
+		if (file_exists($cheminConfigCategories))
+		{
+			$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
+		
+			if ($categories !== FALSE)
 			{
-				$listeCategoriesActuelles[] = $listeIdCategorie;
-			}
+				$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
+				$listeCategoriesActuelles = array ();
 			
-			$listeCategoriesSelectionnees = array ();
-			
-			if (!empty($_POST['porteDocumentsEditionCatSelect']))
-			{
-				foreach ($_POST['porteDocumentsEditionCatSelect'] as $categorieEncodee)
+				foreach ($listeCategoriesPage as $listeIdCategorie => $listeInfosCategorie)
 				{
-					$categorie = decodeTexte($categorieEncodee);
-					$nouvellesCategories = array ();
+					$listeCategoriesActuelles[] = $listeIdCategorie;
+				}
+			
+				$listeCategoriesSelectionnees = array ();
+			
+				if (!empty($_POST['porteDocumentsEditionCatSelect']))
+				{
+					foreach ($_POST['porteDocumentsEditionCatSelect'] as $categorieEncodee)
+					{
+						$categorie = decodeTexte($categorieEncodee);
+						$nouvellesCategories = array ();
 					
-					if ($categorie == 'aucuneCategorie')
-					{
-						$listeCategoriesSelectionnees = array ();
-						break;
-					}
-					elseif ($categorie == 'nouvelleCategorie')
-					{
-						if (!empty($_POST['porteDocumentsEditionCatUrlInput']))
+						if ($categorie == 'aucuneCategorie')
 						{
-							$nouvellesCategories = explode('#', $_POST['porteDocumentsEditionCatUrlInput']);
+							$listeCategoriesSelectionnees = array ();
+							break;
+						}
+						elseif ($categorie == 'nouvelleCategorie')
+						{
+							if (!empty($_POST['porteDocumentsEditionCatUrlInput']))
+							{
+								$nouvellesCategories = explode('#', $_POST['porteDocumentsEditionCatUrlInput']);
+							}
+						}
+						else
+						{
+							$nouvellesCategories[] = $categorie;
+						}
+					
+						$listeCategoriesSelectionnees = array_merge($listeCategoriesSelectionnees, $nouvellesCategories);
+					}
+				}
+			
+				if ($adminInclurePageDansCategorieParente)
+				{
+					if ($adminInclurePageDansCategoriesParentesIndirectes)
+					{
+						$parentsAjout = array ();
+					
+						foreach ($listeCategoriesSelectionnees as $categorie)
+						{
+							if (!empty($categories[$categorie]['parent']))
+							{
+								if (!in_array($categories[$categorie]['parent'], $parentsAjout))
+								{
+									$parentsAjout[] = $categories[$categorie]['parent'];
+								}
+							
+								$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$categorie]['parent']));
+							}
+						}
+					
+						foreach ($parentsAjout as $parent)
+						{
+							if (!in_array($parent, $listeCategoriesSelectionnees))
+							{
+								$listeCategoriesSelectionnees[] = $parent;
+							}
 						}
 					}
 					else
 					{
-						$nouvellesCategories[] = $categorie;
+						foreach ($listeCategoriesSelectionnees as $categorie)
+						{
+							if (!empty($categories[$categorie]['parent']) && !in_array($categories[$categorie]['parent'], $listeCategoriesSelectionnees))
+							{
+								$listeCategoriesSelectionnees[] = $categories[$categorie]['parent'];
+							}
+						}
 					}
+				}
+			
+				$categoriesAajouter = array_diff($listeCategoriesSelectionnees, $listeCategoriesActuelles);
+				$categoriesAsupprimer = array_diff($listeCategoriesActuelles, $listeCategoriesSelectionnees);
+			
+				if (!empty($categoriesAajouter) || !empty($categoriesAsupprimer))
+				{
+					foreach ($categoriesAajouter as $categorieAajouter)
+					{
+						if (!isset($categories[$categorieAajouter]))
+						{
+							$categories[$categorieAajouter] = array ();
+						}
 					
-					$listeCategoriesSelectionnees = array_merge($listeCategoriesSelectionnees, $nouvellesCategories);
+						if (!isset($categories[$categorieAajouter]['infos']))
+						{
+							$categories[$categorieAajouter]['infos'] = array ();
+						}
+					
+						if (!isset($categories[$categorieAajouter]['pages']))
+						{
+							$categories[$categorieAajouter]['pages'] = array ();
+						}
+					
+						array_unshift($categories[$categorieAajouter]['pages'], $urlRelativeFichierEdite);
+					}
+				
+					foreach ($categoriesAsupprimer as $categorieAsupprimer)
+					{
+						if (!empty($categories[$categorieAsupprimer]['pages']))
+						{
+							$nombrePages = count($categories[$categorieAsupprimer]['pages']);
+						
+							for ($i = 0; $i < $nombrePages; $i++)
+							{
+								if ($categories[$categorieAsupprimer]['pages'][$i] == $urlRelativeFichierEdite)
+								{
+									unset($categories[$categorieAsupprimer]['pages'][$i]);
+									$categories[$categorieAsupprimer]['pages'] = array_values($categories[$categorieAsupprimer]['pages']);
+									break;
+								}
+							}
+						}
+					}
+				
+					$contenuFichierTableau = array ();
+				
+					foreach ($categories as $categorie => $categorieInfos)
+					{
+						$contenuFichierTableau[$categorie] = array ();
+						$contenuFichierTableau[$categorie]['infos'] = array ();
+						$contenuFichierTableau[$categorie]['pages'] = array ();
+					
+						if (!empty($categorieInfos['langue']))
+						{
+							$langueCat = $categorieInfos['langue'];
+						}
+						else
+						{
+							$langueCat = $langueParDefaut;
+						}
+					
+						if (!empty($categorieInfos['url']))
+						{
+							$urlCat = $categorieInfos['url'];
+						}
+						else
+						{
+							$urlCat = 'categorie.php?id=' . filtreChaine($categorie);
+						
+							if (estCatSpeciale($categorie))
+							{
+								$urlCat .= "&amp;langue=$langueCat";
+							}
+						}
+					
+						$contenuFichierTableau[$categorie]['infos'][] = "url=$urlCat\n";
+					
+						if (!empty($categorieInfos['parent']))
+						{
+							$parentCat = $categorieInfos['parent'];
+						}
+						else
+						{
+							$parentCat = '';
+						}
+					
+						$contenuFichierTableau[$categorie]['infos'][] = "parent=$parentCat\n";
+						$contenuFichierTableau[$categorie]['infos'][] = "langue=$langueCat\n";
+					
+						if (!empty($categorieInfos['rss']))
+						{
+							$rssCat = $categorieInfos['rss'];
+						}
+						else
+						{
+							$rssCat = 1;
+						}
+					
+						$contenuFichierTableau[$categorie]['infos'][] = "rss=$rssCat\n";
+						$pagesCat = '';
+					
+						if (!empty($categorieInfos['pages']))
+						{
+							foreach ($categorieInfos['pages'] as $page)
+							{
+								if (!empty($page))
+								{
+									$pagesCat .= "pages[]=$page\n";
+								}
+							}
+						}
+					
+						$contenuFichierTableau[$categorie]['pages'][] = $pagesCat;
+					}
+				
+					$messagesScript = adminMajConfigCategories($racine, $contenuFichierTableau);
 				}
 			}
-			
-			if ($adminInclurePageDansCategorieParente)
+			else
 			{
-				if ($adminInclurePageDansCategoriesParentesIndirectes)
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Impossible de lire le contenu du fichier %1\$s."), '<code>' . securiseTexte($cheminConfigCategories) . '</code>') . "</li>\n";
+			}
+		}
+	
+		if (empty($messagesScript))
+		{
+			$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
+		}
+	
+		echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications des catégories"));
+	
+		$messagesScript = '';
+	
+		if ((isset($_POST['porteDocumentsEditionRssAjoutInput']) && !empty($_POST['porteDocumentsEditionRssAjoutLangue'])) || (isset($_POST['porteDocumentsEditionRssSuppressionInput']) && !empty($_POST['porteDocumentsEditionRssSuppressionLangue'])))
+		{
+			if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
+			{
+				$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssAjoutLangue']);
+			}
+			else
+			{
+				$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssSuppressionLangue']);
+			}
+		
+			$contenuFichierRssTableau = array ();
+			$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
+		
+			if (!file_exists($cheminFichierRss) && !@touch($cheminFichierRss))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des flux RSS est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
+			}
+		
+			if (file_exists($cheminFichierRss))
+			{
+				$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+			
+				if ($rssPages === FALSE)
 				{
-					$parentsAjout = array ();
-					
-					foreach ($listeCategoriesSelectionnees as $categorie)
-					{
-						if (!empty($categories[$categorie]['parent']))
-						{
-							if (!in_array($categories[$categorie]['parent'], $parentsAjout))
-							{
-								$parentsAjout[] = $categories[$categorie]['parent'];
-							}
-							
-							$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$categorie]['parent']));
-						}
-					}
-					
-					foreach ($parentsAjout as $parent)
-					{
-						if (!in_array($parent, $listeCategoriesSelectionnees))
-						{
-							$listeCategoriesSelectionnees[] = $parent;
-						}
-					}
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
 				}
 				else
 				{
-					foreach ($listeCategoriesSelectionnees as $categorie)
+					if (!empty($rssPages))
 					{
-						if (!empty($categories[$categorie]['parent']) && !in_array($categories[$categorie]['parent'], $listeCategoriesSelectionnees))
+						foreach ($rssPages as $codeLangue => $langueInfos)
 						{
-							$listeCategoriesSelectionnees[] = $categories[$categorie]['parent'];
+							$contenuFichierRssTableau[$codeLangue] = array ();
+						
+							if (!empty($langueInfos['pages']))
+							{
+								foreach ($langueInfos['pages'] as $page)
+								{
+									$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+								}
+							}
 						}
 					}
-				}
-			}
-			
-			$categoriesAajouter = array_diff($listeCategoriesSelectionnees, $listeCategoriesActuelles);
-			$categoriesAsupprimer = array_diff($listeCategoriesActuelles, $listeCategoriesSelectionnees);
-			
-			if (!empty($categoriesAajouter) || !empty($categoriesAsupprimer))
-			{
-				foreach ($categoriesAajouter as $categorieAajouter)
-				{
-					if (!isset($categories[$categorieAajouter]))
-					{
-						$categories[$categorieAajouter] = array ();
-					}
-					
-					if (!isset($categories[$categorieAajouter]['infos']))
-					{
-						$categories[$categorieAajouter]['infos'] = array ();
-					}
-					
-					if (!isset($categories[$categorieAajouter]['pages']))
-					{
-						$categories[$categorieAajouter]['pages'] = array ();
-					}
-					
-					array_unshift($categories[$categorieAajouter]['pages'], $urlRelativeFichierEdite);
-				}
 				
-				foreach ($categoriesAsupprimer as $categorieAsupprimer)
-				{
-					if (!empty($categories[$categorieAsupprimer]['pages']))
+					if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
 					{
-						$nombrePages = count($categories[$categorieAsupprimer]['pages']);
-						
+						if (!isset($contenuFichierRssTableau[$rssLangue]))
+						{
+							$contenuFichierRssTableau[$rssLangue] = array ();
+						}
+					
+						if (!preg_grep('/^pages\[\]=' . preg_quote($urlRelativeFichierEdite, '/') . "\n/", $contenuFichierRssTableau[$rssLangue]))
+						{
+							array_unshift($contenuFichierRssTableau[$rssLangue], "pages[]=$urlRelativeFichierEdite\n");
+						}
+					}
+					else
+					{
+						$nombrePages = count($contenuFichierRssTableau[$rssLangue]);
+					
 						for ($i = 0; $i < $nombrePages; $i++)
 						{
-							if ($categories[$categorieAsupprimer]['pages'][$i] == $urlRelativeFichierEdite)
+							if ($contenuFichierRssTableau[$rssLangue][$i] == "pages[]=$urlRelativeFichierEdite\n")
 							{
-								unset($categories[$categorieAsupprimer]['pages'][$i]);
-								$categories[$categorieAsupprimer]['pages'] = array_values($categories[$categorieAsupprimer]['pages']);
+								unset($contenuFichierRssTableau[$rssLangue][$i]);
+								$contenuFichierRssTableau[$rssLangue] = array_values($contenuFichierRssTableau[$rssLangue]);
 								break;
 							}
 						}
 					}
-				}
 				
-				$contenuFichierTableau = array ();
+					$contenuFichierRss = '';
 				
-				foreach ($categories as $categorie => $categorieInfos)
-				{
-					$contenuFichierTableau[$categorie] = array ();
-					$contenuFichierTableau[$categorie]['infos'] = array ();
-					$contenuFichierTableau[$categorie]['pages'] = array ();
-					
-					if (!empty($categorieInfos['langue']))
+					foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
 					{
-						$langueCat = $categorieInfos['langue'];
-					}
-					else
-					{
-						$langueCat = $langueParDefaut;
-					}
-					
-					if (!empty($categorieInfos['url']))
-					{
-						$urlCat = $categorieInfos['url'];
-					}
-					else
-					{
-						$urlCat = 'categorie.php?id=' . filtreChaine($categorie);
+						if (!empty($langueInfos))
+						{
+							$contenuFichierRss .= "[$codeLangue]\n";
 						
-						if (estCatSpeciale($categorie))
-						{
-							$urlCat .= "&amp;langue=$langueCat";
-						}
-					}
-					
-					$contenuFichierTableau[$categorie]['infos'][] = "url=$urlCat\n";
-					
-					if (!empty($categorieInfos['parent']))
-					{
-						$parentCat = $categorieInfos['parent'];
-					}
-					else
-					{
-						$parentCat = '';
-					}
-					
-					$contenuFichierTableau[$categorie]['infos'][] = "parent=$parentCat\n";
-					$contenuFichierTableau[$categorie]['infos'][] = "langue=$langueCat\n";
-					
-					if (!empty($categorieInfos['rss']))
-					{
-						$rssCat = $categorieInfos['rss'];
-					}
-					else
-					{
-						$rssCat = 1;
-					}
-					
-					$contenuFichierTableau[$categorie]['infos'][] = "rss=$rssCat\n";
-					$pagesCat = '';
-					
-					if (!empty($categorieInfos['pages']))
-					{
-						foreach ($categorieInfos['pages'] as $page)
-						{
-							if (!empty($page))
+							foreach ($langueInfos as $ligne)
 							{
-								$pagesCat .= "pages[]=$page\n";
+								$contenuFichierRss .= $ligne;
 							}
+						
+							$contenuFichierRss .= "\n";
 						}
 					}
-					
-					$contenuFichierTableau[$categorie]['pages'][] = $pagesCat;
-				}
 				
-				$messagesScript = adminMajConfigCategories($racine, $contenuFichierTableau);
+					$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
+				}
 			}
 		}
-		else
+	
+		if (empty($messagesScript))
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Impossible de lire le contenu du fichier %1\$s."), '<code>' . securiseTexte($cheminConfigCategories) . '</code>') . "</li>\n";
+			$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
 		}
+	
+		echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications du flux RSS des dernières publications"));
 	}
-	
-	if (empty($messagesScript))
-	{
-		$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
-	}
-	
-	echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications des catégories"));
-	
-	$messagesScript = '';
-	
-	if ((isset($_POST['porteDocumentsEditionRssAjoutInput']) && !empty($_POST['porteDocumentsEditionRssAjoutLangue'])) || (isset($_POST['porteDocumentsEditionRssSuppressionInput']) && !empty($_POST['porteDocumentsEditionRssSuppressionLangue'])))
-	{
-		if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
-		{
-			$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssAjoutLangue']);
-		}
-		else
-		{
-			$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssSuppressionLangue']);
-		}
-		
-		$contenuFichierRssTableau = array ();
-		$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
-		
-		if (!file_exists($cheminFichierRss) && !@touch($cheminFichierRss))
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des flux RSS est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
-		}
-		
-		if (file_exists($cheminFichierRss))
-		{
-			$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
-			
-			if ($rssPages === FALSE)
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
-			}
-			else
-			{
-				if (!empty($rssPages))
-				{
-					foreach ($rssPages as $codeLangue => $langueInfos)
-					{
-						$contenuFichierRssTableau[$codeLangue] = array ();
-						
-						if (!empty($langueInfos['pages']))
-						{
-							foreach ($langueInfos['pages'] as $page)
-							{
-								$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
-							}
-						}
-					}
-				}
-				
-				if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
-				{
-					if (!isset($contenuFichierRssTableau[$rssLangue]))
-					{
-						$contenuFichierRssTableau[$rssLangue] = array ();
-					}
-					
-					if (!preg_grep('/^pages\[\]=' . preg_quote($urlRelativeFichierEdite, '/') . "\n/", $contenuFichierRssTableau[$rssLangue]))
-					{
-						array_unshift($contenuFichierRssTableau[$rssLangue], "pages[]=$urlRelativeFichierEdite\n");
-					}
-				}
-				else
-				{
-					$nombrePages = count($contenuFichierRssTableau[$rssLangue]);
-					
-					for ($i = 0; $i < $nombrePages; $i++)
-					{
-						if ($contenuFichierRssTableau[$rssLangue][$i] == "pages[]=$urlRelativeFichierEdite\n")
-						{
-							unset($contenuFichierRssTableau[$rssLangue][$i]);
-							$contenuFichierRssTableau[$rssLangue] = array_values($contenuFichierRssTableau[$rssLangue]);
-							break;
-						}
-					}
-				}
-				
-				$contenuFichierRss = '';
-				
-				foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
-				{
-					if (!empty($langueInfos))
-					{
-						$contenuFichierRss .= "[$codeLangue]\n";
-						
-						foreach ($langueInfos as $ligne)
-						{
-							$contenuFichierRss .= $ligne;
-						}
-						
-						$contenuFichierRss .= "\n";
-					}
-				}
-				
-				$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
-			}
-		}
-	}
-	
-	if (empty($messagesScript))
-	{
-		$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
-	}
-	
-	echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications du flux RSS des dernières publications"));
 }
 
 echo "</div><!-- /#boiteMessages -->\n";
