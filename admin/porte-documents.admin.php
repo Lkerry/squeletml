@@ -1202,17 +1202,8 @@ if (isset($_POST['porteDocumentsCreation']))
 									$contenu .= "\n";
 								}
 								
-								$contenu .= '<?php' . "\n";
-								$contenu .= '$chaine = <<<TEXTE' . "\n";
-								$contenu .= 'Du texte écrit en *Markdown*.' . "\n";
+								$contenu .= $adminCorpsModelePageWeb;
 								$contenu .= "\n";
-								$contenu .= 'Autre **paragraphe**.' . "\n";
-								$contenu .= 'TEXTE;' . "\n";
-								$contenu .= "\n";
-								$contenu .= 'echo mkdChaine($chaine);' . "\n";
-								$contenu .= '?>' . "\n";
-								$contenu .= "\n";
-								$contenu .= "<p>Lorem ipsum dolor sit amet.</p>\n";
 							}
 							elseif ($fichierAcreerType == 'FichierModeleMarkdown')
 							{

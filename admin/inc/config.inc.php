@@ -244,7 +244,7 @@ $adminTypeFiltreAffichageDansContenu = '';
 */
 $adminFiltreAffichageDansContenu = '';
 
-/* ____________________ Ajout de fichiers. ____________________ */
+/* ____________________ Ajout, création ou édition de fichiers. ____________________ */
 
 // Filtre du type Mime.
 $adminFiltreTypesMime = TRUE; // TRUE|FALSE
@@ -307,11 +307,22 @@ $adminTypesMimePermis['wma']                    = 'audio/x-ms-wma';
 $adminTypesMimePermis['wmv']                    = 'video/x-ms-wmv';
 $adminTypesMimePermis['qt|mov']                 = 'video/quicktime';
 
-/* ____________________ Actions sur les fichiers. ____________________ */
-
 // Coloration syntaxique lors de l'édition.
 /*
 Activer la coloration en direct du **code** à l'aide de [CodeMirror](http://codemirror.net/) durant la saisie dans le `textarea`. La coloration s'applique alors au code PHP, HTML, CSS, Javascript, XML, Markdown et INI.
 */
 $adminColorationSyntaxique = TRUE; // TRUE|FALSE
+
+// Corps du modèle de page Web créé dans le porte-documents.
+$adminCorpsModelePageWeb = '<?php
+$chaine = <<<TEXTE
+Du texte écrit en *Markdown*.
+
+Autre **paragraphe**.
+TEXTE;
+
+echo mkdChaine($chaine);
+?>
+
+<p>Lorem ipsum dolor sit amet.</p>';
 ?>
