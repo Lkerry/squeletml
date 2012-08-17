@@ -192,7 +192,7 @@ if (!empty($blocsAinsererTemp))
 					{
 						$pagesFluxRssGlobalSite = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 						
-						if (!empty($pagesFluxRssGlobalSite[$codeLangue]))
+						if (!empty($pagesFluxRssGlobalSite[$langue]))
 						{
 							$fluxRssGlobalSiteActif = TRUE;
 						}
