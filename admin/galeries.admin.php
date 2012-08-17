@@ -408,7 +408,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								
 								foreach ($retourAdminExtraitArchive['fichiersExtraits'] as $fichierExtrait)
 								{
-									$typeMimeFichierExtrait = $fichierExtrait;
+									$typeMimeFichierExtrait = typeMime($fichierExtrait);
 									
 									if ($typeMimeFichierExtrait == 'image/jpeg')
 									{
