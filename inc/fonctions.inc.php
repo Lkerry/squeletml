@@ -607,6 +607,45 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE, $
 }
 
 /*
+Retourne `TRUE` si le résultat du calcul du captcha est correct, sinon retourne `FALSE`.
+*/
+function captchaCalculValide($commentairesCaptchaCalculInverse)
+{
+	if (!isset($_POST['r']) || !is_numeric($_POST['r']))
+	{
+		return FALSE;
+	}
+	
+	if (!isset($_POST['u']) || !is_numeric($_POST['u']))
+	{
+		return FALSE;
+	}
+	
+	if ($commentairesCaptchaCalculInverse)
+	{
+		if (!isset($_POST['s']) || !is_numeric($_POST['s']))
+		{
+			return FALSE;
+		}
+		
+		$resultat = $_POST['u'];
+		$sommeUnDeux = $_POST['r'] + $_POST['s'];
+	}
+	else
+	{
+		if (!isset($_POST['d']) || !is_numeric($_POST['d']))
+		{
+			return FALSE;
+		}
+		
+		$resultat = $_POST['r'];
+		$sommeUnDeux = $_POST['u'] + $_POST['d'];
+	}
+	
+	return $sommeUnDeux == $resultat;
+}
+
+/*
 S'il y a lieu, ajoute la classe `actif` au lien de chaque catégorie à laquelle la page fait partie ainsi qu'au `li` contenant le lien. Retourne le code résultant.
 */
 function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategorie)

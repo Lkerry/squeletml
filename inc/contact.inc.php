@@ -96,18 +96,7 @@ if (isset($_POST['envoyerContact']))
 	
 	if ($contactActiverCaptchaCalcul)
 	{
-		if ($contactCaptchaCalculInverse)
-		{
-			$resultat = $_POST['u'];
-			$sommeUnDeux = $_POST['r'] + $_POST['s'];
-		}
-		else
-		{
-			$resultat = $_POST['r'];
-			$sommeUnDeux = $_POST['u'] + $_POST['d'];
-		}
-		
-		if ($sommeUnDeux != $resultat)
+		if (!captchaCalculValide($commentairesCaptchaCalculInverse))
 		{
 			$erreurFormulaire = TRUE;
 			$messagesScript .= '<li class="erreur">' . T_("Veuillez répondre correctement à la question antipourriel.") . "</li>\n";
