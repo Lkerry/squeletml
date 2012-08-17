@@ -128,7 +128,7 @@ if (isset($_POST['envoyerCommentaire']))
 	{
 		// Enregistrement du commentaire.
 		
-		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), TRUE);
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), $idGalerie, TRUE);
 		$cheminConfigAbonnementsCommentaires = cheminConfigAbonnementsCommentaires($cheminConfigCommentaires);
 		
 		if (!file_exists($cheminConfigCommentaires) && !@touch($cheminConfigCommentaires))
@@ -145,7 +145,7 @@ if (isset($_POST['envoyerCommentaire']))
 		
 		if (file_exists($cheminConfigCommentaires) && file_exists($cheminConfigAbonnementsCommentaires))
 		{
-			$commentaireDejaEnregistre = commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaireCommentaire);
+			$commentaireDejaEnregistre = commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaireCommentaire, $idGalerie);
 			$idCommentaire = chaineAleatoire(16);
 			$contenuConfigCommentaire = "[$idCommentaire]\n";
 			$contenuConfigCommentaire .= "idFormulaire=$idFormulaireCommentaire\n";
@@ -231,6 +231,7 @@ if (isset($_POST['envoyerCommentaire']))
 			}
 			
 			$contenuConfigCommentaire .= "\n";
+			$contenuConfigCommentaire .= "languePage=$langue\n";
 			$contenuConfigCommentaire .= "modere=0\n";
 			$contenuConfigCommentaire .= 'afficher=';
 			

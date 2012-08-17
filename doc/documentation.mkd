@@ -1275,23 +1275,9 @@ Si la page visitée est autre chose qu'une page individuelle d'image, le modèle
 
 ## Commentaires
 
-Lorsqu'un commentaire est ajouté, il est enregistré dans un fichier de configuration des commentaires propre à la page concernée et créé dans le dossier `site/inc/commentaires/`. Ce fichier de configuration liste tous les commentaires de la page en question, et ce sous la forme suivante:
+Lorsqu'un commentaire est ajouté, il est enregistré dans un fichier de configuration des commentaires propre à la page concernée et créé dans le dossier `site/inc/commentaires/`. Ce fichier de configuration liste tous les commentaires de la page en question.
 
-	[idCommentaire]
-	idFormulaire=
-	ip=
-	date=
-	nom=
-	courriel=
-	site=
-	notification=
-	message[]=
-
-À ce fichier de configuration s'ajoute un fichier de configuration des abonnements aux notifications par courriel des nouveaux commentaires, créé dans le même dossier. Chaque page possède également son propre fichier. La syntaxe est la suivante:
-
-	[$courriel]
-	nom=
-	idAbonnement=
+À ce fichier de configuration s'ajoute un fichier de configuration des abonnements aux notifications par courriel des nouveaux commentaires, créé dans le même dossier. Chaque page possède également son propre fichier.
 
 ## Syndication de contenu (flux RSS)
 

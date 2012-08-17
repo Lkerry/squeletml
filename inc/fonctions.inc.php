@@ -341,6 +341,31 @@ function arg($index = NULL)
 }
 
 /*
+Retourne l'attribut `lang` à utiliser selon le DTD.
+*/
+function attributLang($codeLangue, $doctype)
+{
+	$attribut = '';
+	
+	if ($doctype == 'XHTML 1.1' || $doctype == 'XHTML 1.0 Strict' || $doctype == 'XHTML 1.0 Transitional')
+	{
+		$attribut = 'xml:lang="' . $codeLangue . '"';
+	}
+	
+	if ($doctype != 'XHTML 1.1')
+	{
+		if (!empty($attribut))
+		{
+			$attribut .= ' ';
+		}
+		
+		$attribut .= 'lang="' . $codeLangue . '"';
+	}
+	
+	return $attribut;
+}
+
+/*
 Retourne le code à utiliser pour afficher l'auteur d'un commentaire.
 */
 function auteurAfficheCommentaire($nom, $site, $attributNofollowLiensCommentaires)
@@ -801,8 +826,13 @@ function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 /*
 Retourne le chemin vers le fichier de configuration des commentaires de l'URL donnée. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function cheminConfigCommentaires($racine, $urlRacine, $url, $retourneCheminParDefaut = FALSE)
+function cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, $retourneCheminParDefaut = FALSE)
 {
+	if (!empty($idGalerie))
+	{
+		$url = variableGet(0, $url, 'langue');
+	}
+	
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
 	$nomFichierCache = superBasename($cheminFichierCache);
 	$nomConfigCommentaires = preg_replace('/\.cache\.(html|xml)$/', '.ini.txt', $nomFichierCache);
@@ -1260,7 +1290,7 @@ function code304($cheminFichierCache)
 /*
 Retourne le nom complet d'une langue (ex.: «Français») à partir du code de langue (ex.: «fr»). Si aucun nom n'a été trouvé, retourne le code de langue.
 */
-function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
+function codeLangueVersNom($codeLangue, $doctype, $traduireNom = TRUE)
 {
 	switch ($codeLangue)
 	{
@@ -1271,7 +1301,7 @@ function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 			}
 			else
 			{
-				$nom = '<span lang="en">English</span>';
+				$nom = '<span ' . attributLang($codeLangue, $doctype) . '>English</span>';
 			}
 			
 			break;
@@ -1283,7 +1313,7 @@ function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 			}
 			else
 			{
-				$nom = '<span lang="fr">Français</span>';
+				$nom = '<span ' . attributLang($codeLangue, $doctype) . '>Français</span>';
 			}
 			
 			break;
@@ -1373,9 +1403,9 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 /*
 Retourne `TRUE` si le commentaire a déjà été enregistré dans le fichier de configuration des commentaires de l'URL donnée, sinon retourne `FALSE`.
 */
-function commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaire)
+function commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaire, $idGalerie)
 {
-	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), TRUE);
+	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), $idGalerie, TRUE);
 	$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
 	
 	if (!empty($listeCommentaires))

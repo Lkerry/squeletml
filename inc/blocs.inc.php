@@ -70,7 +70,7 @@ if (!empty($blocsAinsererTemp))
 					if (($ajoutCommentaires || $affichageCommentairesSiAjoutDesactive) && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
 					{
 						$commentaires = '';
-						$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), TRUE);
+						$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), $idGalerie, TRUE);
 						$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
 						$commentairesAffiches = '';
 						$nombreCommentaires = 0;
@@ -124,7 +124,14 @@ if (!empty($blocsAinsererTemp))
 										$commentairesAffiches .= '<p class="commentaireAuteur">' . sprintf(T_("%1\$s a écrit à %2\$s (<a href=\"%3\$s\">lien</a>):"), $auteurAfficheCommentaire, $heureAfficheeCommentaire, $lienCommentaire) . "</p>\n";
 									}
 									
-									$commentairesAffiches .= '<div class="commentaireCorps">' . "\n";
+									$commentairesAffiches .= '<div class="commentaireCorps"';
+									
+									if (!empty($idGalerie) && !empty($infosCommentaire['languePage']))
+									{
+										$commentairesAffiches .= ' ' . attributLang($infosCommentaire['languePage'], $doctype);
+									}
+									
+									$commentairesAffiches .= ">\n";
 									
 									foreach ($infosCommentaire['message'] as $ligneMessage)
 									{
@@ -267,7 +274,7 @@ if (!empty($blocsAinsererTemp))
 									if ($codeLangue != LANGUE)
 									{
 										$boiteDeroulanteAjoutee = TRUE;
-										$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
+										$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue, $doctype) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
 									}
 									else
 									{
@@ -419,7 +426,7 @@ if (!empty($blocsAinsererTemp))
 									if ($codeLangue != LANGUE)
 									{
 										$boiteDeroulanteAjoutee = TRUE;
-										$bloc .= "<div class=\"menuCategoriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuCategoriesLangue -->\n";
+										$bloc .= "<div class=\"menuCategoriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue, $doctype) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuCategoriesLangue -->\n";
 									}
 									else
 									{
@@ -551,7 +558,7 @@ if (!empty($blocsAinsererTemp))
 							
 							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
-								$bloc .= '<li><a href="' . $urlAccueilLangue . '/">' . codeLangueVersNom($codeLangue, FALSE) . "</a></li>\n";
+								$bloc .= '<li><a href="' . $urlAccueilLangue . '/">' . codeLangueVersNom($codeLangue, $doctype, FALSE) . "</a></li>\n";
 							}
 							
 							if (!empty($bloc))

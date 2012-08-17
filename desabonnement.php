@@ -18,7 +18,7 @@ $desabonnementReussi = FALSE;
 if (!empty($_GET['url']) && !empty($_GET['id']))
 {
 	$urlDesabonnement = $urlRacine . '/' . supprimeUrlRacine($urlRacine, decodeTexte($_GET['url']));
-	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $urlDesabonnement, TRUE);
+	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $urlDesabonnement, $idGalerie, TRUE);
 	$cheminConfigAbonnementsCommentaires = cheminConfigAbonnementsCommentaires($cheminConfigCommentaires);
 	
 	$listeAbonnements = super_parse_ini_file($cheminConfigAbonnementsCommentaires, TRUE);
