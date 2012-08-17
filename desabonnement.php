@@ -56,7 +56,7 @@ if (!empty($_GET['url']) && !empty($_GET['id']))
 
 if ($desabonnementReussi)
 {
-	echo '<p>' . sprintf(T_("Le désabonnement a été effectué pour le courriel %1\$s et l'adresse %2\$s."), '<code>' . securiseTexte($courrielDesabonnement) . '</code>', '<code>' . securiseTexte($urlDesabonnement) . '</code>') . "</p>\n";
+	echo '<p>' . sprintf(T_("Le désabonnement a été effectué pour le courriel %1\$s à l'adresse %2\$s."), '<code>' . securiseTexte($courrielDesabonnement) . '</code>', '<code>' . securiseTexte($urlDesabonnement) . '</code>') . "</p>\n";
 }
 else
 {

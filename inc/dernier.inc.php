@@ -20,7 +20,7 @@ if (file_exists($racine . '/site/inc/dernier-pre.inc.php'))
 	include $racine . '/site/inc/dernier-pre.inc.php';
 }
 
-// Affectations.
+// Affectations 1 de 2.
 
 $cheminBasDePage = cheminXhtml($racine, array ($langue, $langueParDefaut), 'bas-de-page');
 
@@ -77,6 +77,15 @@ include $racine . '/inc/blocs.inc.php';
 if ($inclureContact)
 {
 	include $racine . '/inc/contact.inc.php';
+}
+
+// Affectations 2 de 2.
+
+$inclureFinInterieurContenu = FALSE;
+
+if (!empty($blocs[400]) || $inclureContact || $inclureFormulaireCommentaire)
+{
+	$inclureFinInterieurContenu = TRUE;
 }
 
 // Traitement personnalisé optionnel 2 de 2.

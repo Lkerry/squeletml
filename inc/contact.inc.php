@@ -4,11 +4,13 @@ Ce fichier construit et analyse le formulaire de contact. Après son inclusion, 
 */
 
 // Affectations.
+$desactiverCache = TRUE;
 $nom = '';
 $courriel = '';
 $message = '';
 $copie = FALSE;
 $courrielsPartageCourriel = '';
+$idFormulaireContact = '';
 $messageEnvoye = FALSE;
 $contact = '';
 
@@ -24,8 +26,6 @@ if ($partageCourrielActif)
 // L'envoi du message est demandé.
 if (isset($_POST['envoyerContact']))
 {
-	$desactiverCache = TRUE;
-	$desactiverCachePartiel = TRUE;
 	$nom = securiseTexte(trim($_POST['nom']));
 	$courriel = securiseTexte(trim($_POST['courriel']));
 	$message = securiseTexte(trim($_POST['message']));
@@ -42,6 +42,11 @@ if (isset($_POST['envoyerContact']))
 	if ($partageCourrielActif)
 	{
 		$courrielsPartageCourriel = securiseTexte(trim($_POST['courrielsPartageCourriel']));
+	}
+	
+	if (!empty($_POST['idFormulaire']))
+	{
+		$idFormulaireContact = securiseTexte($_POST['idFormulaire']);
 	}
 	
 	if (empty($nom))
@@ -172,13 +177,15 @@ if (isset($_POST['envoyerContact']))
 			$infosCourriel['message'] = $message;
 		}
 		
+		$fichierConfirmationEnvoiFormulaireContact = "$racine/site/cache/formulaire-contact-$idFormulaireContact.txt";
+		
 		// Traitement personnalisé optionnel 2 de 4.
 		if (file_exists($racine . '/site/inc/contact.inc.php'))
 		{
 			include $racine . '/site/inc/contact.inc.php';
 		}
 		
-		if (courriel($infosCourriel))
+		if (file_exists($fichierConfirmationEnvoiFormulaireContact) || courriel($infosCourriel))
 		{
 			$messageEnvoye = TRUE;
 			$messagesScript .= '<li>' . T_("Votre message a bien été envoyé.") . "</li>\n";
@@ -187,6 +194,13 @@ if (isset($_POST['envoyerContact']))
 			$message = '';
 			$copie = FALSE;
 			$courrielsPartageCourriel = '';
+			
+			if (!file_exists($fichierConfirmationEnvoiFormulaireContact))
+			{
+				@touch("$racine/site/cache/$idFormulaireContact.txt");
+			}
+			
+			$idFormulaireContact = '';
 		}
 		else
 		{
@@ -233,6 +247,11 @@ $actionFormContact = actionFormContact($partageCourrielActif);
 if ($nom == T_("VOTRE NOM"))
 {
 	$nom = '';
+}
+
+if (empty($idFormulaireContact))
+{
+	$idFormulaireContact = chaineAleatoire(16);
 }
 
 // Traitement personnalisé optionnel 3 de 4.

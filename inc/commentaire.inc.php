@@ -4,6 +4,7 @@ Ce fichier construit et analyse le formulaire d'ajout d'un commentaire. Après s
 */
 
 // Affectations.
+$desactiverCache = TRUE;
 $nom = '';
 $courriel = '';
 $site = '';
@@ -16,9 +17,6 @@ $formulaireCommentaire = '';
 // L'envoi du commentaire est demandé.
 if (isset($_POST['envoyerCommentaire']))
 {
-	$desactiverCache = TRUE;
-	$desactiverCachePartiel = TRUE;
-	
 	if (!empty($_POST['nom']))
 	{
 		$nom = securiseTexte(trim($_POST['nom']));
@@ -265,6 +263,10 @@ if (isset($_POST['envoyerCommentaire']))
 				{
 					$messagesScript .= '<li>' . T_("Merci. Votre commentaire est en attente d'approbation.") . "</li>\n";
 				}
+				elseif ($dureeCache)
+				{
+					$messagesScript .= '<li>' . T_("Merci. Votre commentaire a été publié. Prenez note que selon l'état du cache, il se peut qu'il n'apparaisse pas immédiatement.") . "</li>\n";
+				}
 				else
 				{
 					$messagesScript .= '<li>' . T_("Merci. Votre commentaire a été publié.") . "</li>\n";
@@ -449,13 +451,6 @@ if (isset($_POST['envoyerCommentaire']))
 // Code du formulaire.
 
 $actionFormCommentaire = url() . '#messages';
-
-// Traitement personnalisé optionnel 3 de 4.
-if (file_exists($racine . '/site/inc/commentaire.inc.php'))
-{
-	include $racine . '/site/inc/commentaire.inc.php';
-}
-
 $champsTousObligatoires = TRUE;
 
 foreach ($commentairesChampsActifs as $nomChamp => $champActif)
@@ -473,6 +468,12 @@ if (empty($idFormulaireCommentaire))
 }
 
 $formulaireCommentaire .= '<h3 id="ajoutCommentaire">' . T_("Ajout d'un commentaire") . "</h3>\n";
+
+// Traitement personnalisé optionnel 3 de 4.
+if (file_exists($racine . '/site/inc/commentaire.inc.php'))
+{
+	include $racine . '/site/inc/commentaire.inc.php';
+}
 
 ob_start();
 include cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-commentaire');

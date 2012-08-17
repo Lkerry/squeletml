@@ -10,14 +10,6 @@
 								<?php if ($afficherCategorie): ?>
 									<?php echo $categorie; ?>
 								<?php endif; ?>
-								
-								<?php if ($inclureContact): ?>
-									<?php echo $contact; ?>
-								<?php endif; ?>
-								
-								<?php if ($inclureFormulaireCommentaire): ?>
-									<?php echo $formulaireCommentaire; ?>
-								<?php endif; ?>
 							</div><!-- /#milieuInterieurContenu -->
 						<?php endif; ?>
 						
@@ -25,9 +17,19 @@
 							<?php include $cheminCachePartiel; ?>
 						<?php endif; ?>
 						
-						<?php if (!empty($blocs[400])): ?>
+						<?php if ($inclureFinInterieurContenu): ?>
 							<div id="finInterieurContenu">
-								<?php echo $blocs[400]; ?>
+								<?php if ($inclureContact): ?>
+									<?php echo $contact; ?>
+								<?php endif; ?>
+								
+								<?php if ($inclureFormulaireCommentaire): ?>
+									<?php echo $formulaireCommentaire; ?>
+								<?php endif; ?>
+								
+								<?php if (!empty($blocs[400])): ?>
+									<?php echo $blocs[400]; ?>
+								<?php endif; ?>
 							</div><!-- /#finInterieurContenu -->
 						<?php endif; ?>
 					</div><!-- /#interieurContenu -->

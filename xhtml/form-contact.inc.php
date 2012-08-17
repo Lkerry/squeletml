@@ -50,6 +50,8 @@
 			<label for="inputCopie" class="labelPhrase"><?php echo T_("Je souhaite recevoir une copie du message"); ?></label></p>
 		<?php endif; ?>
 		
+		<input type="hidden" name="idFormulaire" value="<?php echo $idFormulaireContact; ?>" />
+		
 		<p><input
 			type="submit"
 			name="envoyerContact"
