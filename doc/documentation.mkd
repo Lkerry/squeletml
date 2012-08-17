@@ -618,7 +618,11 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée du côté client par Javascript si le cache (global et partiel) est désactivé, sinon elle est générée du côté serveur par PHP.
 
-	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée.
+	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée, ou bien à l'endroit où se trouve une `div` d'`id` `tableDesMatieres`, par exemple:
+
+		Contenu
+		<div id="tableDesMatieres"></div>
+		Contenu
 
 	Par défaut, tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` analysée constituent la table des matières. Il est possible de configurer la table des matières dans le fichier de configuration du site.
 

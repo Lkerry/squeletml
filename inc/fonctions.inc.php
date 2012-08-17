@@ -6182,37 +6182,37 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 	if (method_exists($dom, 'find'))
 	{
 		$parent = $dom->find($parent, 0);
-	
+		
 		if ($tDmNiveauDepart < 1 || $tDmNiveauDepart > 6)
 		{
 			$tDmNiveauDepart = 1;
 		}
-	
+		
 		if ($tDmNiveauArret < 1 || $tDmNiveauArret > 6)
 		{
 			$tDmNiveauArret = 6;
 		}
-	
+		
 		if ($tDmNiveauArret < $tDmNiveauDepart)
 		{
 			$tDmNiveauArret = $tDmNiveauDepart;
 		}
-	
+		
 		$balisesAchercher = "h$tDmNiveauDepart";
-	
+		
 		for ($i = $tDmNiveauDepart + 1; $i <= $tDmNiveauArret; $i++)
 		{
 			$balisesAchercher .= ", h$i";
 		}
-	
+		
 		$tableDesMatieres = '';
 		$niveauPrecedent = 0;
 		$premiereBalise = TRUE;
-	
+		
 		foreach ($parent->find($balisesAchercher) as $h)
 		{
 			$contenuH = trim($h->innertext);
-		
+			
 			if (!empty($h->id))
 			{
 				$idH = $h->id;
@@ -6222,9 +6222,9 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 				$idH = filtreChaine($contenuH);
 				$h->id = $idH;
 			}
-		
+			
 			$niveauActuel = intval($h->tag[1]);
-		
+			
 			if ($niveauActuel > $niveauPrecedent)
 			{
 				if ($premiereBalise)
@@ -6242,34 +6242,43 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 				$tableDesMatieres .= str_repeat("</li></$tDmBaliseTable>\n", max($niveauPrecedent - $niveauActuel, 0));
 				$tableDesMatieres .= "</li>\n";
 			}
-		
+			
 			$tableDesMatieres .= "<li><a href=\"#$idH\">$contenuH</a>";
 			$niveauPrecedent = $niveauActuel;
 		}
-	
+		
 		$tableDesMatieres .= str_repeat("</li></$tDmBaliseTable>\n", max($niveauPrecedent - ($tDmNiveauDepart - 1), 0));
-	
+		
 		if (!empty($tableDesMatieres))
 		{
-			$tableDesMatieres = "<div id=\"tableDesMatieres\">\n<$tDmBaliseTitre id=\"tableDesMatieresBdTitre\" class=\"bDtitre\">" . T_("Table des matières") . "</$tDmBaliseTitre>\n$tableDesMatieres</div><!-- /#tableDesMatieres -->\n";
-		
-			if ($chapeau = $parent->find('div.chapeau', 0))
+			$contenuTableDesMatieres = "<$tDmBaliseTitre id=\"tableDesMatieresBdTitre\" class=\"bDtitre\">" . T_("Table des matières") . "</$tDmBaliseTitre>\n$tableDesMatieres";
+			
+			if ($divTableDesMatieres = $parent->find('div#tableDesMatieres', 0))
 			{
-				$chapeau->outertext = $chapeau->outertext . $tableDesMatieres;
-			}
-			elseif ($debutInterieurContenu = $parent->find('div#debutInterieurContenu', 0))
-			{
-				$debutInterieurContenu->outertext = $debutInterieurContenu->outertext . $tableDesMatieres;
-			}
-			elseif ($h1 = $parent->find('h1', 0))
-			{
-				$h1->outertext = $h1->outertext . $tableDesMatieres;
+				$divTableDesMatieres->innertext = $divTableDesMatieres->innertext . $contenuTableDesMatieres;
 			}
 			else
 			{
-				$parent->first_child()->outertext = $tableDesMatieres . $parent->first_child()->outertext;
+				$tableDesMatieres = "<div id=\"tableDesMatieres\">\n$contenuTableDesMatieres</div><!-- /#tableDesMatieres -->\n";
+				
+				if ($chapeau = $parent->find('div.chapeau', 0))
+				{
+					$chapeau->outertext = $chapeau->outertext . $tableDesMatieres;
+				}
+				elseif ($debutInterieurContenu = $parent->find('div#debutInterieurContenu', 0))
+				{
+					$debutInterieurContenu->outertext = $debutInterieurContenu->outertext . $tableDesMatieres;
+				}
+				elseif ($h1 = $parent->find('h1', 0))
+				{
+					$h1->outertext = $h1->outertext . $tableDesMatieres;
+				}
+				else
+				{
+					$parent->first_child()->outertext = $tableDesMatieres . $parent->first_child()->outertext;
+				}
 			}
-		
+			
 			$codeHtml = $dom->save();
 		}
 		
