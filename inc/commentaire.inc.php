@@ -231,6 +231,19 @@ if (isset($_POST['envoyerCommentaire']))
 			}
 			
 			$contenuConfigCommentaire .= "\n";
+			$contenuConfigCommentaire .= "modere=0\n";
+			$contenuConfigCommentaire .= 'afficher=';
+			
+			if ($moderationCommentaires)
+			{
+				$contenuConfigCommentaire .= 0;
+			}
+			else
+			{
+				$contenuConfigCommentaire .= 1;
+			}
+			
+			$contenuConfigCommentaire .= "\n";
 			$messageDansConfig = mkdChaine($_POST['message']);
 			$messageDansConfig = corrigeHtml($messageDansConfig);
 			require_once $racine . '/inc/htmlpurifier/HTMLPurifier.standalone.php';

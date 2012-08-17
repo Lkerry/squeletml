@@ -84,7 +84,7 @@ if (!empty($blocsAinsererTemp))
 							
 							foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
 							{
-								if (!empty($infosCommentaire['message']))
+								if (isset($infosCommentaire['afficher']) && $infosCommentaire['afficher'] == 1 && !empty($infosCommentaire['message']))
 								{
 									$nombreCommentaires++;
 									$commentairesAffiches .= '<li id="' . $idCommentaire . '" class="commentaire">' . "\n";
