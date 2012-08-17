@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-17 15:13-0400\n"
-"PO-Revision-Date: 2012-07-16 22:11-0400\n"
+"POT-Creation-Date: 2012-08-17 16:02-0400\n"
+"PO-Revision-Date: 2012-08-17 16:02-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -26,7 +26,7 @@ msgstr "Log out of the administrator back-end"
 
 #: inc/premier.inc.php:173
 msgid "Désabonnement aux notifications de nouveaux commentaires"
-msgstr ""
+msgstr "Unsubscribe from notifications of new comments"
 
 #: inc/premier.inc.php:399 inc/blocs.inc.php:259 inc/fonctions.inc.php:2119
 #: inc/fonctions.inc.php:2121 inc/fonctions.inc.php:2640
@@ -55,9 +55,8 @@ msgid "Catégorie %1$s"
 msgstr "Category %1$s"
 
 #: inc/commentaire.inc.php:55
-#, fuzzy
 msgid "Vous n'avez pas inscrit de nom ou de pseudo."
-msgstr "You have not written your name."
+msgstr "You have not written your name or nickname."
 
 #: inc/commentaire.inc.php:61 inc/contact.inc.php:61
 msgid "Vous n'avez pas inscrit de courriel."
@@ -70,92 +69,92 @@ msgid ""
 msgstr "The e-mail entered seems to contain some errors. Please check it."
 
 #: inc/commentaire.inc.php:72
-#, fuzzy
 msgid "Vous n'avez pas spécifié de site Web."
-msgstr "You have not written any text."
+msgstr "You have not specified website."
 
 #: inc/commentaire.inc.php:77
 msgid ""
 "Votre site Web ne semble pas avoir une forme valide. Assurez-vous entre "
 "autres qu'il commence bien par <code>http://</code> ou <code>https://</code>."
 msgstr ""
+"The website entered seems to contain some errors. Please check it. Make sure "
+"among others it starts with <code>http://</code> or <code>https://</code>."
 
 #: inc/commentaire.inc.php:83
-#, fuzzy
 msgid "Vous n'avez pas écrit de commentaire."
-msgstr "You have not written any text."
+msgstr "You have not written any comment."
 
 #: inc/commentaire.inc.php:91 inc/contact.inc.php:102 compte.php:81
 msgid "Veuillez répondre correctement à la question antipourriel."
 msgstr "Please answer correctly the anti-spam question."
 
 #: inc/commentaire.inc.php:100
-#, fuzzy
 msgid ""
 "Votre commentaire a une forme qui le fait malheureusement classer comme du "
 "pourriel en raison de ses liens trop nombreux. Veuillez le modifier."
 msgstr ""
-"Unfortunately your text has been identified as spam because of too many "
+"Unfortunately your comment has been identified as spam because of too many "
 "links. Please change it."
 
 #: inc/commentaire.inc.php:126 inc/commentaire.inc.php:132
 #: inc/commentaire.inc.php:419
-#, fuzzy
 msgid ""
 "Erreur: votre commentaire n'a pas pu être envoyé. Essayez un peu plus tard."
-msgstr "CAUTION: your e-mail could not be sent. Please try again later."
+msgstr "CAUTION: your comment could not be sent. Please try again later."
 
 #: inc/commentaire.inc.php:267
 msgid "Merci. Votre commentaire est en attente d'approbation."
-msgstr ""
+msgstr "Thanks. Your comment is awaiting approval."
 
 #: inc/commentaire.inc.php:271
 msgid ""
 "Merci. Votre commentaire a été publié. Prenez note que selon l'état du "
 "cache, il se peut qu'il n'apparaisse pas immédiatement."
 msgstr ""
+"Thanks. Your comment has been posted. Note that depending on the cache, it "
+"may not appear immediately."
 
 #: inc/commentaire.inc.php:275
 msgid "Merci. Votre commentaire a été publié."
-msgstr ""
+msgstr "Thanks. Your comment has been posted."
 
 #: inc/commentaire.inc.php:314
 #, php-format
 msgid "[Commentaire] %1$s"
-msgstr ""
+msgstr "[Comment] %1$s"
 
 #: inc/commentaire.inc.php:318
 #, php-format
 msgid ""
 "Un nouveau commentaire a été posté sur la page %1$s par %2$s le %3$s à %4$s:"
-msgstr ""
+msgstr "A new comment was posted on the page %1$s by %2$s on %3$s at %4$s:"
 
 #: inc/commentaire.inc.php:346
 msgid "Se désabonner des notifications de nouveaux commentaires."
-msgstr ""
+msgstr "Unsubscribe from notifications of new comments."
 
 #: inc/commentaire.inc.php:361
-#, fuzzy, php-format
+#, php-format
 msgid "Courriel: %1$s"
-msgstr "E-mail:"
+msgstr "E-mail: %1$s"
 
 #: inc/commentaire.inc.php:366
-#, fuzzy, php-format
+#, php-format
 msgid "IP: %1$s"
-msgstr "URL: %1$s"
+msgstr "IP: %1$s"
 
 #: inc/commentaire.inc.php:380
 #, php-format
 msgid "Notification: %1$s"
-msgstr ""
+msgstr "Notification: %1$s"
 
 #: inc/commentaire.inc.php:398
 msgid "Ce commentaire est en attente de modération."
-msgstr ""
+msgstr "This comment is awaiting approval."
 
 #: inc/commentaire.inc.php:402
 msgid "La modération n'est pas activée. Ce commentaire a donc été publié."
-msgstr ""
+msgstr "Moderation is not enabled, so this comment has been posted."
 
 #: inc/commentaire.inc.php:443 inc/contact.inc.php:220
 msgid "Le formulaire n'a pas été rempli correctement"
@@ -163,43 +162,43 @@ msgstr "The form has not been filled correctly"
 
 #: inc/commentaire.inc.php:473 inc/blocs.inc.php:177
 msgid "Ajout d'un commentaire"
-msgstr ""
+msgstr "Adding comment"
 
 #: inc/blocs.inc.php:116
 #, php-format
 msgid "%1$s a écrit le %2$s à %3$s (<a href=\"%4$s\">lien</a>):"
-msgstr ""
+msgstr "%1$s wrote on %2$s at %3$s (<a href=\"%4$s\">link</a>):"
 
 #: inc/blocs.inc.php:120
 #, php-format
 msgid "%1$s a écrit le %2$s (<a href=\"%3$s\">lien</a>):"
-msgstr ""
+msgstr "%1$s wrote on %2$s (<a href=\"%3$s\">link</a>):"
 
 #: inc/blocs.inc.php:124
 #, php-format
 msgid "%1$s a écrit à %2$s (<a href=\"%3$s\">lien</a>):"
-msgstr ""
+msgstr "%1$s wrote at %2$s (<a href=\"%3$s\">link</a>):"
 
 #: inc/blocs.inc.php:151
 msgid "Aucun commentaire."
-msgstr ""
+msgstr "No comments."
 
 #: inc/blocs.inc.php:166
 #, php-format
 msgid "Commentaires (%1$s)"
-msgstr ""
+msgstr "Comments (%1$s)"
 
 #: inc/blocs.inc.php:170
 msgid "Commentaires"
-msgstr ""
+msgstr "Comments"
 
 #: inc/blocs.inc.php:181
 msgid "Ajouter un commentaire."
-msgstr ""
+msgstr "Add a comment."
 
 #: inc/blocs.inc.php:185
 msgid "L'ajout de commentaires est désactivé."
-msgstr ""
+msgstr "Adding comments is disabled."
 
 #: inc/blocs.inc.php:230 admin/xhtml/menu.inc.php:10
 msgid "Flux RSS"
@@ -313,9 +312,8 @@ msgid "Anonyme"
 msgstr ""
 
 #: inc/fonctions.inc.php:585
-#, fuzzy
 msgid "Antipourriel<code>*</code>:"
-msgstr "Anti-spam:"
+msgstr "Anti-spam<code>*</code>:"
 
 #: inc/fonctions.inc.php:589
 msgid "Antipourriel:"
@@ -1067,9 +1065,9 @@ msgid "La page est introuvable"
 msgstr "Page not found"
 
 #: inc/categorie.inc.php:233
-#, fuzzy, php-format
+#, php-format
 msgid "La catégorie %1$s ne contient aucun article."
-msgstr "Category %1$s not found."
+msgstr "Category %1$s is currently empty."
 
 #: inc/categorie.inc.php:269
 #, php-format
@@ -2095,9 +2093,8 @@ msgid "Nouvelle catégorie:"
 msgstr ""
 
 #: admin/porte-documents.admin.php:1357
-#, fuzzy
 msgid "Aucune catégorie"
-msgstr "Categories"
+msgstr "No category"
 
 #: admin/porte-documents.admin.php:1367
 #, php-format
@@ -4112,25 +4109,23 @@ msgstr ""
 
 #: xhtml/form-commentaire.inc.php:5
 msgid "Tous les champs sont obligatoires."
-msgstr ""
+msgstr "All fields are required."
 
 #: xhtml/form-commentaire.inc.php:7
 msgid "Les champs obligatoires sont marqués d'un astérisque (<code>*</code>)."
-msgstr ""
+msgstr "Required fields are marked with an asterisk (<code>*</code>)."
 
 #: xhtml/form-commentaire.inc.php:15
 msgid "Votre nom ou pseudo<code>*</code>:"
-msgstr ""
+msgstr "Your name or nickname<code>*</code>:"
 
 #: xhtml/form-commentaire.inc.php:17
-#, fuzzy
 msgid "Votre nom ou pseudo:"
-msgstr "Your name:"
+msgstr "Your name or nickname:"
 
 #: xhtml/form-commentaire.inc.php:28
-#, fuzzy
 msgid "Votre courriel<code>*</code>:"
-msgstr "Your e-mail:"
+msgstr "Your e-mail<code>*</code>:"
 
 #: xhtml/form-commentaire.inc.php:30 xhtml/form-contact.inc.php:11
 msgid "Votre courriel:"
@@ -4138,45 +4133,43 @@ msgstr "Your e-mail:"
 
 #: xhtml/form-commentaire.inc.php:33
 msgid "Le courriel ne sera pas divulgué."
-msgstr ""
+msgstr "The e-mail will not be disclosed."
 
 #: xhtml/form-commentaire.inc.php:42
 msgid "Votre site Web<code>*</code>:"
-msgstr ""
+msgstr "Your website<code>*</code>:"
 
 #: xhtml/form-commentaire.inc.php:44
-#, fuzzy
 msgid "Votre site Web:"
-msgstr "Your text:"
+msgstr "Your website:"
 
 #: xhtml/form-commentaire.inc.php:51
 msgid "Votre commentaire<code>*</code>:"
-msgstr ""
+msgstr "Your comment<code>*</code>:"
 
 #: xhtml/form-commentaire.inc.php:55
 msgid "Aide sur la syntaxe"
-msgstr ""
+msgstr "Syntax help"
 
 #: xhtml/form-commentaire.inc.php:58
 #, php-format
 msgid "La <a href=\"%1$s\">syntaxe Markdown</a> peut être utilisée."
-msgstr ""
+msgstr "<a href=\"%1$s\">Markdown syntax</a> can be used."
 
 #: xhtml/form-commentaire.inc.php:59
 #, php-format
 msgid "Les balises HTML suivantes sont permises: %1$s."
-msgstr ""
+msgstr "The following HTML tags are allowed: %1$s."
 
 #: xhtml/form-commentaire.inc.php:77
 msgid ""
 "Je souhaite être notifié par courriel des nouveaux commentaires sur cette "
 "page"
-msgstr ""
+msgstr "I want to get notified by e-mail of new comments on this page"
 
 #: xhtml/form-commentaire.inc.php:82
-#, fuzzy
 msgid "Envoyer le commentaire"
-msgstr "Send e-mail"
+msgstr "Send comment"
 
 #: xhtml/form-contact.inc.php:3
 msgid "Votre nom:"
@@ -4302,7 +4295,7 @@ msgstr ""
 #: desabonnement.php:59
 #, php-format
 msgid "Le désabonnement a été effectué pour le courriel %1$s à l'adresse %2$s."
-msgstr ""
+msgstr "E-mail %1$s was unsubscribed for %2$s."
 
 #: desabonnement.php:63
 msgid ""
@@ -4311,9 +4304,7 @@ msgid ""
 "persiste, vous pouvez faire la demande de désabonnement par le formulaire de "
 "contact du site."
 msgstr ""
-
-#~ msgid "Annexes"
-#~ msgstr "Appendix"
-
-#~ msgid "Contenu du fichier de configuration de Squeletml"
-#~ msgstr "Content of the configuration file of Squeletml"
+"Unsubscribing could not be performed. Please check your URL to be "
+"unsubscribed in the notification received by e-mail. If the problem "
+"persists, You can request to be unsubscribed by the contact form on the "
+"website."
