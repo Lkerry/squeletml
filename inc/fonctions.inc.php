@@ -1683,7 +1683,7 @@ function decodeTexte($texte)
 	{
 		return array_map('decodeTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		return rawurldecode($texte);
 	}
@@ -1700,7 +1700,7 @@ function desecuriseTexte($texte)
 	{
 		return array_map('desecuriseTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		return htmlspecialchars_decode($texte, ENT_COMPAT);
 	}
@@ -1769,7 +1769,7 @@ function encodeTexte($texte)
 	{
 		return array_map('encodeTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		$texte = rawurlencode($texte);
 		$texte = str_replace('%2F', '/', $texte);
@@ -5798,7 +5798,7 @@ function securiseTexte($texte)
 	{
 		return array_map('securiseTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		return htmlspecialchars($texte, ENT_COMPAT, 'UTF-8');
 	}
