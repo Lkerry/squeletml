@@ -436,55 +436,6 @@ Selon le style affecté (voir la section «Style CSS» du fichier de configurati
 
 Il est bon de rappeler qu'un modèle de page personnalisé peut être utilisé (voir la section «Le dossier `xhtml`»), et que les blocs peuvent alors être affichés ailleurs selon le modèle utilisé.
 
-### Schéma des inclusions lors de la construction d'une page
-
-*Note: le schéma doit se lire ainsi:*
-
-- `fichier`: le fichier existe et il sera inséré;
-- *`fichier`*: le fichier sera inséré seulement s'il existe;
-- *`fichier1`* **||** *`fichier2`*: une seule insertion au maximum aura lieu, le premier fichier existant, vérifié de gauche à droite, sera inséré.
-
-----
-
-Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers principaux et pour lesquels une personnalisation est possible sont listés.
-
-- `inc/premier.inc.php`
-	- `init.inc.php`
-	- *`site/inc/devel.inc.php`*
-	- `inc/fonctions.inc.php`
-	- *`site/inc/fonctions.inc.php`*
-	- `inc/config.inc.php`
-	- *`site/inc/config.inc.php`*
-	- `inc/constantes.inc.php`
-	- *`site/inc/constantes.inc.php`*
-	- *`site/inc/premier-pre.inc.php`*
-	- Si `$idCategorie` n'est pas vide: `inc/categorie.inc.php`
-		- *`site/inc/categorie.inc.php`*
-	- Si `$idGalerie` n'est pas vide: `inc/galerie.inc.php`
-		- *`site/inc/galerie.inc.php`*
-	- `inc/blocs.inc.php`
-		- `inc/partage-courriel.inc.php`
-			- *`site/inc/partage-courriel.inc.php`*
-		- Inclusions selon les blocs configurés. Exemple pour le menu:  
-		*`site/xhtml/$langueDeLaPage/menu.inc.php`* **||** *`xhtml/$langueDeLaPage/menu.inc.php`* **||** *`site/xhtml/$langueParDefaut/menu.inc.php`* **||** *`xhtml/$langueParDefaut/menu.inc.php`* **||** *`site/xhtml/menu.inc.php`* **||** *`xhtml/menu.inc.php`*
-		- *`site/inc/blocs.inc.php`*
-	- *`site/inc/premier.inc.php`*
-	- *`site/xhtml/(LANGUE/)page.premier.inc.php`* **||** `xhtml/(LANGUE/)page.premier.inc.php`
-- Contenu de la page
-- `inc/dernier.inc.php`
-	- *`site/inc/dernier-pre.inc.php`*
-	- `inc/blocs.inc.php` (voir les détails plus haut)
-	- `inc/contact.inc.php`
-		- `inc/partage-courriel.inc.php` (voir les détails plus haut)
-		- *`site/inc/contact.inc.php`* après le traitement des champs par défaut
-		- *`site/inc/contact.inc.php`* avant l'envoi du message
-		- `inc/partage-courriel.inc.php` (voir les détails plus haut)
-		- *`site/inc/contact.inc.php`* avant l'inclusion du code XHTML du formulaire
-		- *`site/xhtml/(LANGUE/)form-contact.inc.php`* **||** (`xhtml/(LANGUE/)form-contact.inc.php` && *`site/xhtml/(LANGUE/)form-contact-champs-apres-nom.inc.php`* && *`site/xhtml/(LANGUE/)form-contact-champs-apres-message.inc.php`*)
-		- *`site/inc/contact.inc.php`* à la fin du fichier
-	- *`site/inc/dernier.inc.php`*
-	- *`site/xhtml/(LANGUE/)page.dernier.inc.php`* **||** `xhtml/(LANGUE/)page.dernier.inc.php`
-
 ## Style de Squeletml
 
 Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Il est même possible de ne pas inclure les feuilles par défaut et partir de zéro. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style ou modifier le modèle de page (voir la section «Dossiers»). L'utilisation du fichier de configuration pour modifier le style n'est pas du tout une obligation, mais une aide supplémentaire si besoin il y a.
@@ -1321,6 +1272,26 @@ Si la page visitée est autre chose qu'une page individuelle d'image, le modèle
 
 - `$baliseDescription`
 - `$baliseTitle`
+
+## Commentaires
+
+Lorsqu'un commentaire est ajouté, il est enregistré dans un fichier de configuration des commentaires propre à la page concernée et créé dans le dossier `site/inc/commentaires/`. Ce fichier de configuration liste tous les commentaires de la page en question, et ce sous la forme suivante:
+
+	[idCommentaire]
+	idFormulaire=
+	ip=
+	date=
+	nom=
+	courriel=
+	site=
+	notification=
+	message[]=
+
+À ce fichier de configuration s'ajoute un fichier de configuration des abonnements aux notifications par courriel des nouveaux commentaires, créé dans le même dossier. Chaque page possède également son propre fichier. La syntaxe est la suivante:
+
+	[$courriel]
+	nom=
+	idAbonnement=
 
 ## Syndication de contenu (flux RSS)
 

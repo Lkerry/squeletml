@@ -46,6 +46,14 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 - Module de partage par courriel et par marque-pages et réseaux sociaux.
 
+- Gestion des commentaires:
+
+  - Formulaire d'ajout de commentaires activable ou désactivable page par page.
+
+  - Options relatives à l'affichage des commentaires.
+
+  - Notification par courriel des nouveaux commentaires avec lien de désabonnement.
+
 - Syndication de contenu (flux RSS):
 
   - Par défaut, un flux RSS pour chaque catégorie et chaque galerie, et des flux RSS globaux contenant les dernières publications du site et les dernières images de toutes les galeries.
