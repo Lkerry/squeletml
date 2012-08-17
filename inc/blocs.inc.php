@@ -362,51 +362,14 @@ if (!empty($blocsAinsererTemp))
 					break;
 					
 				case 'lien-page':
-					if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					if (!$fusionnerBlocsPartageLienPage)
 					{
-						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						$bloc = genereCodeLienPage($fusionnerBlocsPartageLienPage, $lienPage, $erreur404, $estPageDerreur, $courrielContact, $url, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes, $baliseTitle, $baliseTitleComplement, $lienPageVignette, $lienPageIntermediaire, $aExecuterApresClicBd);
 						
-						$blocs[$region] .= '<div id="lienPage" class="bloc ' . $classesBloc . '">' . "\n";
-						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
-						$blocs[$region] .= "<div class=\"bDcorps\">\n";
-						$urlSansAction = variableGet(0, $url, 'action');
-						$codeLienPage = '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '">' . $baliseTitle . $baliseTitleComplement . '</a>') . "</code></pre>\n";
-						$liensImage = array ();
-						
-						if (isset($lienPageVignette) && preg_match('#(<img .+? />)#', $lienPageVignette, $resultat))
+						if (!empty($bloc))
 						{
-							$liensImage['vignette']['description'] = '<p>' . T_("Lien avec l'image en vignette:") . "</p>\n";
-							$liensImage['vignette']['balise'] = $resultat[1];
+							$blocs[$region] .= $bloc;
 						}
-						
-						if (isset($lienPageIntermediaire) && preg_match('#(<img .+? />)#', $lienPageIntermediaire, $resultat))
-						{
-							$liensImage['intermediaire']['description'] = '<p>' . T_("Lien avec l'image en taille intermédiaire:") . "</p>\n";
-							$liensImage['intermediaire']['balise'] = $resultat[1];
-						}
-						
-						if (empty($liensImage))
-						{
-							$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n$codeLienPage";
-						}
-						else
-						{
-							$blocs[$region] .= '<p>' . T_("Lien textuel seulement:") . "</p>\n$codeLienPage";
-							
-							foreach ($liensImage as $lienImageType => $lienImageInfo)
-							{
-								$blocs[$region] .= $lienImageInfo['description'];
-								$blocs[$region] .= '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '" title="' . $baliseTitle . $baliseTitleComplement . '">' . $lienImageInfo['balise'] . '</a>') . "</code></pre>\n";
-							}
-						}
-						
-						$blocs[$region] .= "</div>\n";
-						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
-						$blocs[$region] .= '<script type="text/javascript">' . "\n";
-						$blocs[$region] .= "//<![CDATA[\n";
-						$blocs[$region] .= "boiteDeroulante('#lienPage', \"$aExecuterApresClicBd\");\n";
-						$blocs[$region] .= "//]]>\n";
-						$blocs[$region] .= "</script>\n";
 					}
 					
 					break;
@@ -645,7 +608,8 @@ if (!empty($blocsAinsererTemp))
 						$bloc = '<div id="partage" class="bloc ' . $classesBloc . '">' . "\n";
 						$bloc .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
 						
-						$bloc .= "<ul class=\"bDcorps\">\n";
+						$bloc .= "<div class=\"bDcorps\">\n";
+						$bloc .= "<ul>\n";
 						
 						if ($partageCourriel && $partageCourrielActif)
 						{
@@ -670,6 +634,18 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$bloc .= "</ul>\n";
+						
+						if ($fusionnerBlocsPartageLienPage)
+						{
+							$blocLienPage = genereCodeLienPage($fusionnerBlocsPartageLienPage, $lienPage, $erreur404, $estPageDerreur, $courrielContact, $url, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes, $baliseTitle, $baliseTitleComplement, $lienPageVignette, $lienPageIntermediaire, $aExecuterApresClicBd);
+							
+							if (!empty($blocLienPage))
+							{
+								$bloc .= $blocLienPage;
+							}
+						}
+						
+						$bloc .= "</div>\n";
 						$bloc .= '</div><!-- /#partage -->' . "\n";
 						$bloc .= '<script type="text/javascript">' . "\n";
 						$bloc .= "//<![CDATA[\n";

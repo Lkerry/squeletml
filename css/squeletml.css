@@ -639,10 +639,6 @@ li.parent {
 	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
-#lienPage.blocAvecFond pre {
-	margin-bottom: 0px;
-}
-
 .blocAvecFond > p:first-child, .blocAvecFond > ul:first-child, .blocAvecFond > ul:first-child > li:first-child {
 	margin-top: 0px;
 }
@@ -772,6 +768,16 @@ div#baliseH1 h1 {
 	margin-top: 10px;
 }
 
+/* Lien vers la page. */
+
+#lienPage.blocAvecFond pre, div.fusionBlocsPartageLienPage pre {
+	margin-bottom: 0px;
+}
+
+div.fusionBlocsPartageLienPage h3 {
+	margin-top: 20px;
+}
+
 /* Module de partage. */
 
 #modeleMessagePartageCourriel {
@@ -794,7 +800,6 @@ body.aucuneColonne #partage ul,
 	margin: 5px 0px 0px;
 	padding: 0px;
 	list-style-type: none;
-	text-align: center;
 }
 
 body.aucuneColonne #partage li,

@@ -256,7 +256,7 @@ $ordreBlocsDansFluxHtml['balise-h1']             = array (300, 300, 300);
 $ordreBlocsDansFluxHtml['infos-publication']     = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']               = array (410, 410, 410);
 $ordreBlocsDansFluxHtml['partage']               = array (420, 420, 420);
-$ordreBlocsDansFluxHtml['lien-page']             = array (430, 430, 430);
+$ordreBlocsDansFluxHtml['lien-page']             = array (430, 430, 430); // S'il y a lieu (voir les commentaires de la variable `$fusionnerBlocsPartageLienPage` dans ce même fichier de configuration).
 $ordreBlocsDansFluxHtml['commentaires']          = array (440, 440, 440);
 $ordreBlocsDansFluxHtml['menu-langues']          = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
@@ -276,11 +276,17 @@ $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 	
 		$conditionsBlocs['partage'] = 'if (strpos($url, "/dossier/") !== FALSE) {return TRUE;} else {return FALSE;}';
 	
-	Dans cet exemple, le bloc «Partage» sera inclus seulement si l'URL contient `/dossier/`.
+	Dans cet exemple, le bloc `partage` sera inclus seulement si l'URL contient `/dossier/`.
 	
 - Si aucune condition n'est donnée pour un bloc, le retour est automatiquement évalué à TRUE.
 */
 $conditionsBlocs = array ();
+
+// Fusion des blocs `partage` et `lien-page`.
+/*
+- Si la fusion est activée, le bloc `lien-page` sera inclus dans le bloc `partage`, sinon ces deux blocs seront indépendants.
+*/
+$fusionnerBlocsPartageLienPage = TRUE; // TRUE|FALSE
 
 // Inclusion des ancres.
 $inclureAncres = TRUE; // TRUE|FALSE

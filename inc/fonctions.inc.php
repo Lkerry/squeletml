@@ -2487,6 +2487,79 @@ function gdEstInstallee()
 }
 
 /*
+Génère et retourne le code pour le bloc `lien-page`.
+*/
+function genereCodeLienPage($fusionnerBlocsPartageLienPage, $lienPage, $erreur404, $estPageDerreur, $courrielContact, $url, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes, $baliseTitle, $baliseTitleComplement, $lienPageVignette, $lienPageIntermediaire, $aExecuterApresClicBd)
+{
+	$bloc = '';
+	
+	if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+	{
+		if ($fusionnerBlocsPartageLienPage)
+		{
+			$bloc .= '<div id="lienPage" class="fusionBlocsPartageLienPage">' . "\n";
+			$bloc .= '<h3>' . T_("Faire un lien vers cette page") . "</h3>\n";
+		}
+		else
+		{
+			$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, 'lien-page', $nombreDeColonnes);
+			$bloc .= '<div id="lienPage" class="bloc ' . $classesBloc . '">' . "\n";
+			$bloc .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
+			$bloc .= "<div class=\"bDcorps\">\n";
+		}
+		
+		$urlSansAction = variableGet(0, $url, 'action');
+		$codeLienPage = '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '">' . $baliseTitle . $baliseTitleComplement . '</a>') . "</code></pre>\n";
+		$liensImage = array ();
+		
+		if (isset($lienPageVignette) && preg_match('#(<img .+? />)#', $lienPageVignette, $resultat))
+		{
+			$liensImage['vignette']['description'] = '<p>' . T_("Lien avec l'image en vignette:") . "</p>\n";
+			$liensImage['vignette']['balise'] = $resultat[1];
+		}
+		
+		if (isset($lienPageIntermediaire) && preg_match('#(<img .+? />)#', $lienPageIntermediaire, $resultat))
+		{
+			$liensImage['intermediaire']['description'] = '<p>' . T_("Lien avec l'image en taille intermédiaire:") . "</p>\n";
+			$liensImage['intermediaire']['balise'] = $resultat[1];
+		}
+		
+		if (empty($liensImage))
+		{
+			$bloc .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n$codeLienPage";
+		}
+		else
+		{
+			$bloc .= '<p>' . T_("Lien textuel seulement:") . "</p>\n$codeLienPage";
+			
+			foreach ($liensImage as $lienImageType => $lienImageInfo)
+			{
+				$bloc .= $lienImageInfo['description'];
+				$bloc .= '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '" title="' . $baliseTitle . $baliseTitleComplement . '">' . $lienImageInfo['balise'] . '</a>') . "</code></pre>\n";
+			}
+		}
+		
+		if (!$fusionnerBlocsPartageLienPage)
+		{
+			$bloc .= "</div>\n";
+		}
+		
+		$bloc .= '</div><!-- /#lienPage -->' . "\n";
+		
+		if (!$fusionnerBlocsPartageLienPage)
+		{
+			$bloc .= '<script type="text/javascript">' . "\n";
+			$bloc .= "//<![CDATA[\n";
+			$bloc .= "boiteDeroulante('#lienPage', \"$aExecuterApresClicBd\");\n";
+			$bloc .= "//]]>\n";
+			$bloc .= "</script>\n";
+		}
+	}
+	
+	return $bloc;
+}
+
+/*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
 function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
