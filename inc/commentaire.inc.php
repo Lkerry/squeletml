@@ -117,7 +117,7 @@ if (isset($_POST['envoyerCommentaire']))
 	{
 		// Enregistrement du commentaire.
 		
-		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), $idGalerie, TRUE);
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, TRUE);
 		$cheminConfigAbonnementsCommentaires = cheminConfigAbonnementsCommentaires($cheminConfigCommentaires);
 		
 		if (!file_exists($cheminConfigCommentaires) && !@touch($cheminConfigCommentaires))
@@ -221,7 +221,7 @@ if (isset($_POST['envoyerCommentaire']))
 			
 			$contenuConfigCommentaire .= "\n";
 			$contenuConfigCommentaire .= "languePage=$langue\n";
-			$contenuConfigCommentaire .= "modere=0\n";
+			$contenuConfigCommentaire .= "aEteModere=0\n";
 			$contenuConfigCommentaire .= 'afficher=';
 			
 			if ($moderationCommentaires)
@@ -234,21 +234,7 @@ if (isset($_POST['envoyerCommentaire']))
 			}
 			
 			$contenuConfigCommentaire .= "\n";
-			$messageDansConfig = mkdChaine($_POST['message']);
-			$messageDansConfig = corrigeHtml($messageDansConfig);
-			require_once $racine . '/inc/htmlpurifier/HTMLPurifier.standalone.php';
-			$htmlPurifierConfig = HTMLPurifier_Config::createDefault();
-			$htmlPurifierConfig->set('Cache.SerializerPath', $racine . '/site/cache/htmlpurifier');
-			$htmlPurifierConfig->set('HTML.Allowed', 'p,em,strong,strike,ul,ol,li,a[href],pre,code,q,blockquote,br');
-			
-			if ($attributNofollowLiensCommentaires)
-			{
-				$htmlPurifierConfig->set("HTML.Nofollow", TRUE);
-			}
-			
-			$htmlPurifier = new HTMLPurifier($htmlPurifierConfig);
-			$messageDansConfig = $htmlPurifier->purify($messageDansConfig);
-			$messageDansConfig = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $messageDansConfig);
+			$messageDansConfig = messageDansConfigCommentaires($racine, $_POST['message'], $attributNofollowLiensCommentaires);
 			$tableauMessageDansConfig = explode("\n", trim($messageDansConfig));
 			
 			foreach ($tableauMessageDansConfig as $ligneMessageDansConfig)

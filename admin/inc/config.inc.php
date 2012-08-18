@@ -118,6 +118,13 @@ $adminBalisesLinkScript[30] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineA
 $adminBalisesLinkScript[31] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
 $adminBalisesLinkScript[32] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
 
+$adminBalisesLinkScript[33] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[34] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[35] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[36] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[37] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
+$adminBalisesLinkScript[38] = "$urlRacineAdmin/commentaires.admin.php*#jsDirect#$jsDirect";
+
 // Fusion des fichiers CSS et des scripts Javascript.
 /*
 - Voir les explications de la variable `$fusionnerCssJs` dans le fichier de configuration du site.

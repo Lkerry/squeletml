@@ -54,6 +54,8 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
   - Notification par courriel des nouveaux commentaires avec lien de désabonnement.
 
+  - Section d'administration pour la modération des commentaires.
+
 - Syndication de contenu (flux RSS):
 
   - Par défaut, un flux RSS pour chaque catégorie et chaque galerie, et des flux RSS globaux contenant les dernières publications du site et les dernières images de toutes les galeries.
@@ -102,7 +104,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
   
   - Gestion des galeries: listage de toutes les galeries existantes, création et mise à jour du fichier de configuration pour chaque galerie, génération automatique d'images de taille intermédiaire à partir des images originales, ajout et suppression d'images, etc.
   
-  - Gestion des catégories, des flux RSS globaux et des fichiers Sitemap.
+  - Gestion des catégories, des commentaires, des flux RSS globaux et des fichiers Sitemap.
   
   - Documentation: consultation de l'aide directement en local.
 

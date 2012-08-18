@@ -867,12 +867,15 @@ Retourne le chemin vers le fichier de configuration des commentaires de l'URL do
 */
 function cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, $retourneCheminParDefaut = FALSE)
 {
+	$urlPourCheminConfigCommentaires = supprimeUrlRacine($urlRacine, $url);
+	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'action');
+	
 	if (!empty($idGalerie))
 	{
-		$url = variableGet(0, $url, 'langue');
+		$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'langue');
 	}
 	
-	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPourCheminConfigCommentaires);
 	$nomFichierCache = superBasename($cheminFichierCache);
 	$nomConfigCommentaires = preg_replace('/\.cache\.(html|xml)$/', '.ini.txt', $nomFichierCache);
 	$cheminConfigCommentaires = "$racine/site/inc/commentaires/$nomConfigCommentaires";
@@ -964,17 +967,14 @@ Retourne le chemin d'un fichier cache global.
 function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 {
 	$nomFichierCache = supprimeUrlRacine($urlRacine, $nomBrut);
-	$somme = hash('crc32b', $nomFichierCache);
 	
 	if (empty($nomFichierCache))
 	{
 		$nomFichierCache = 'index';
 	}
 	
-	$nomFichierCache = str_replace('&amp;amp;', '_', $nomFichierCache);
-	$nomFichierCache = str_replace(array ('&amp;', '?'), '_', $nomFichierCache);
-	$nomFichierCache = preg_replace('/_+/', '_', $nomFichierCache);
-	$nomFichierCache = filtreChaine("$nomFichierCache-$somme.cache");
+	$nomFichierCache = encodeTexte($nomFichierCache, TRUE);
+	$nomFichierCache .= '.cache';
 	
 	if ($html)
 	{
@@ -1444,7 +1444,7 @@ Retourne `TRUE` si le commentaire a déjà été enregistré dans le fichier de 
 */
 function commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaire, $idGalerie)
 {
-	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, variableGet(0, $url, 'action'), $idGalerie, TRUE);
+	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, TRUE);
 	$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
 	
 	if (!empty($listeCommentaires))
@@ -1832,7 +1832,7 @@ Encode le texte fourni.
 
 La fonction inverse est `decodeTexte()`.
 */
-function encodeTexte($texte)
+function encodeTexte($texte, $encoderBarreOblique = FALSE)
 {
 	if (is_array($texte))
 	{
@@ -1841,7 +1841,11 @@ function encodeTexte($texte)
 	elseif (is_int($texte) || is_string($texte))
 	{
 		$texte = rawurlencode($texte);
-		$texte = str_replace('%2F', '/', $texte);
+		
+		if (!$encoderBarreOblique)
+		{
+			$texte = str_replace('%2F', '/', $texte);
+		}
 		
 		return $texte;
 	}
@@ -4636,6 +4640,30 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $af
 	}
 	
 	return $menuCategoriesAutomatise;
+}
+
+/*
+Fait le ménage dans le message fourni et retourne le résultat.
+*/
+function messageDansConfigCommentaires($racine, $message, $attributNofollowLiensCommentaires)
+{
+	$messageDansConfig = mkdChaine($message);
+	$messageDansConfig = corrigeHtml($messageDansConfig);
+	require_once $racine . '/inc/htmlpurifier/HTMLPurifier.standalone.php';
+	$htmlPurifierConfig = HTMLPurifier_Config::createDefault();
+	$htmlPurifierConfig->set('Cache.SerializerPath', $racine . '/site/cache/htmlpurifier');
+	$htmlPurifierConfig->set('HTML.Allowed', 'p,em,strong,strike,ul,ol,li,a[href],pre,code,q,blockquote,br');
+	
+	if ($attributNofollowLiensCommentaires)
+	{
+		$htmlPurifierConfig->set("HTML.Nofollow", TRUE);
+	}
+	
+	$htmlPurifier = new HTMLPurifier($htmlPurifierConfig);
+	$messageDansConfig = $htmlPurifier->purify($messageDansConfig);
+	$messageDansConfig = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $messageDansConfig);
+	
+	return trim($messageDansConfig);
 }
 
 /*

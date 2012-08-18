@@ -512,6 +512,52 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 }
 
 /*
+Enregistre un fichier de configuration des commentaires et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminEnregistreConfigCommentaires($racine, $cheminFichier, $contenuFichier)
+{
+	$messagesScript = '';
+	
+	if (!file_exists($cheminFichier) && !@touch($cheminFichier))
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucun commentaire ne peut être enregistré puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+	}
+	
+	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
+	
+	if (file_exists($cheminFichier))
+	{
+		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
+		{
+			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+		}
+		else
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		}
+	}
+	else
+	{
+		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+	}
+
+	$messagesScript .= "<div class=\"bDcorps\">\n";
+	$messagesScript .= '<pre id="contenuFichier">' . securiseTexte($contenuFichier) . "</pre>\n";
+	
+	$messagesScript .= "<ul>\n";
+	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</div><!-- /.bDcorps -->\n";
+	$messagesScript .= "</li>\n";
+	
+	return $messagesScript;
+}
+
+/*
 Enregistre la configuration du flux RSS des dernières publications et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
 function adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichier)
@@ -896,6 +942,8 @@ function adminInclureUneFoisAuDebut($racineAdmin)
 	$racine = dirname($racineAdmin);
 	
 	$fichiers = array ();
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.inc.php';
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc.php';
 	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
@@ -1210,6 +1258,33 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 	}
 	
 	return $liste;
+}
+
+/*
+Retourne un tableau listant les pages ayant au moins un commentaire.
+*/
+function adminListePagesAvecCommentaires($racine)
+{
+	$listePages = array ();
+	$racineCommentaires = "$racine/site/inc/commentaires";
+	$listeFichiers = adminListeFichiers($racineCommentaires);
+	
+	foreach ($listeFichiers as $listeFichier)
+	{
+		if (!is_dir($listeFichier) && preg_match('#^' . preg_quote($racineCommentaires, '#') . '/(?<!abonnements-)([^/]+)\.ini\.txt$#', $listeFichier, $resultat))
+		{
+			$configFichier = super_parse_ini_file($listeFichier, TRUE);
+			
+			if (!empty($configFichier))
+			{
+				$listePages[] = decodeTexte($resultat[1]);
+			}
+		}
+	}
+	
+	uksort($listePages, 'strnatcasecmp');
+	
+	return $listePages;
 }
 
 /*
