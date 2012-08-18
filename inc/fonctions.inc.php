@@ -1440,28 +1440,6 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 }
 
 /*
-Retourne `TRUE` si le commentaire a déjà été enregistré dans le fichier de configuration des commentaires de l'URL donnée, sinon retourne `FALSE`.
-*/
-function commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaire, $idGalerie)
-{
-	$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, TRUE);
-	$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
-	
-	if (!empty($listeCommentaires))
-	{
-		foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
-		{
-			if (isset($infosCommentaire['idFormulaire']) && $infosCommentaire['idFormulaire'] == $idFormulaire)
-			{
-				return TRUE;
-			}
-		}
-	}
-	
-	return FALSE;
-}
-
-/*
 S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
 */
 function corrigeHtml($html)
@@ -2382,6 +2360,60 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 	$itemsFluxRss = array_slice($itemsFluxRss, 0, $nombreItemsFluxRss);
 	
 	return $itemsFluxRss;
+}
+
+/*
+Ajoute le formulaire fourni en paramètre au fichier de configuration des formulaires envoyés. Retourne une chaîne vide.
+*/
+function majConfigFormulairesEnvoyes($racine, $idFormulaire)
+{
+	$fichierConfig = "$racine/site/cache/formulaires-envoyes.ini.txt";
+	
+	if (!file_exists($fichierConfig) && !@touch($fichierConfig))
+	{
+		return '';
+	}
+	
+	$contenuFichier = "[formulaires]\n";
+	$formulairesEnvoyes = super_parse_ini_file($fichierConfig, TRUE);
+	
+	if (!is_array($formulairesEnvoyes))
+	{
+		$formulairesEnvoyes = array ();
+	}
+	
+	if (!in_array($idFormulaire, $formulairesEnvoyes['formulaires']['id']))
+	{
+		$contenuFichier .= "id[]=$idFormulaire\n";
+	}
+	
+	if (!empty($formulairesEnvoyes['formulaires']['id']))
+	{
+		foreach ($formulairesEnvoyes['formulaires']['id'] as $idFormulaireEnvoye)
+		{
+			$contenuFichier .= "id[]=$idFormulaireEnvoye\n";
+		}
+	}
+	
+	@file_put_contents($fichierConfig, $contenuFichier);
+	
+	return '';
+}
+
+/*
+Retourne `TRUE` si le formulaire précisé a déjà été envoyé, sinon retourne `FALSE`.
+*/
+function formulaireDejaEnvoye($racine, $idFormulaire)
+{
+	$fichierConfig = "$racine/site/cache/formulaires-envoyes.ini.txt";
+	$formulairesEnvoyes = super_parse_ini_file($fichierConfig, TRUE);
+	
+	if (is_array($formulairesEnvoyes) && isset($formulairesEnvoyes['formulaires']['id']) && is_array($formulairesEnvoyes['formulaires']['id']) && in_array($idFormulaire, $formulairesEnvoyes['formulaires']['id']))
+	{
+		return TRUE;
+	}
+	
+	return FALSE;
 }
 
 /*

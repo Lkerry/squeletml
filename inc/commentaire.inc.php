@@ -134,10 +134,9 @@ if (isset($_POST['envoyerCommentaire']))
 		
 		if (file_exists($cheminConfigCommentaires) && file_exists($cheminConfigAbonnementsCommentaires))
 		{
-			$commentaireDejaEnregistre = commentaireDejaEnregistre($racine, $urlRacine, $url, $idFormulaireCommentaire, $idGalerie);
+			$commentaireDejaEnregistre = formulaireDejaEnvoye($racine, $idFormulaireCommentaire);
 			$idCommentaire = chaineAleatoire(16);
 			$contenuConfigCommentaire = "[$idCommentaire]\n";
-			$contenuConfigCommentaire .= "idFormulaire=$idFormulaireCommentaire\n";
 			$ipInternaute = ipInternaute();
 			$contenuConfigCommentaire .= "ip=$ipInternaute\n";
 			$date = time();
@@ -246,6 +245,11 @@ if (isset($_POST['envoyerCommentaire']))
 			
 			if ($enregistrementConfigAbonnementsCommentaire && ($commentaireDejaEnregistre || @file_put_contents($cheminConfigCommentaires, $contenuConfigCommentaire, FILE_APPEND | LOCK_EX) !== FALSE))
 			{
+				if (!$commentaireDejaEnregistre)
+				{
+					majConfigFormulairesEnvoyes($racine, $idFormulaireCommentaire);
+				}
+				
 				$commentaireEnregistre = TRUE;
 				
 				if ($moderationCommentaires)

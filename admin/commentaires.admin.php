@@ -74,16 +74,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
 				{
 					$listePages .= '<li class="liParent"><span class="bDtitre">' . sprintf(T_("Commentaire %1\$s"), '<code>' . securiseTexte($idCommentaire) . '</code></span>') . "\n";
+					$listePages .= '<input type="hidden" name="idCommentaire[]" value="' . $idCommentaire . "\" />\n";
 					$listePages .= "<ul class=\"nonTriable bDcorps afficher\">\n";
-					
-					// Identifiant du formulaire.
-					
-					if (!isset($infosCommentaire['idFormulaire']))
-					{
-						$infosCommentaire['idFormulaire'] = '';
-					}
-					
-					$listePages .= '<li><label for="inputIdFormulaire-' . $idCommentaire . '"><code>idFormulaire=</code></label><input type="hidden" name="idCommentaire[]" value="' . $idCommentaire . '" /><input id="inputIdFormulaire-' . $idCommentaire . '" type="text" name="idFormulaire[' . $idCommentaire . ']" value="' . $infosCommentaire['idFormulaire'] . "\" /></li>\n";
 					
 					// IP.
 					
@@ -328,17 +320,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if (!empty($messageDansConfig))
 					{
 						$contenuFichier .= "[$idCommentaire]\n";
-						
-						// Identifiant du formulaire.
-						
-						$contenuFichier .= 'idFormulaire=';
-						
-						if (isset($_POST['idFormulaire'][$idCommentaire]))
-						{
-							$contenuFichier .= $_POST['idFormulaire'][$idCommentaire];
-						}
-						
-						$contenuFichier .= "\n";
 						
 						// IP.
 						

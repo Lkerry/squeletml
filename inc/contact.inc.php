@@ -166,7 +166,7 @@ if (isset($_POST['envoyerContact']))
 			$infosCourriel['message'] = $message;
 		}
 		
-		$fichierConfirmationEnvoiFormulaireContact = "$racine/site/cache/formulaire-contact-$idFormulaireContact.txt";
+		$formulaireContactDejaEnvoye = formulaireDejaEnvoye($racine, $idFormulaireContact);
 		
 		// Traitement personnalisé optionnel 2 de 4.
 		if (file_exists($racine . '/site/inc/contact.inc.php'))
@@ -174,7 +174,7 @@ if (isset($_POST['envoyerContact']))
 			include $racine . '/site/inc/contact.inc.php';
 		}
 		
-		if (file_exists($fichierConfirmationEnvoiFormulaireContact) || courriel($infosCourriel))
+		if ($formulaireContactDejaEnvoye || courriel($infosCourriel))
 		{
 			$messageEnvoye = TRUE;
 			$messagesScript .= '<li>' . T_("Votre message a bien été envoyé.") . "</li>\n";
@@ -184,9 +184,9 @@ if (isset($_POST['envoyerContact']))
 			$copie = FALSE;
 			$courrielsPartageCourriel = '';
 			
-			if (!file_exists($fichierConfirmationEnvoiFormulaireContact))
+			if (!$formulaireContactDejaEnvoye)
 			{
-				@touch("$racine/site/cache/$idFormulaireContact.txt");
+				majConfigFormulairesEnvoyes($racine, $idFormulaireContact);
 			}
 			
 			$idFormulaireContact = '';
