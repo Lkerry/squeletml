@@ -1200,13 +1200,9 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 			{
 				if (is_dir($dossierAparcourir . '/' . $fichier))
 				{
-					if (adminDossierEstVide($dossierAparcourir . '/' . $fichier))
+					if (adminDossierEstVide($dossierAparcourir . '/' . $fichier) || (!$adminAfficherSousDossiersDansContenu || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu))))
 					{
-						$liste[$dossierAparcourir . '/' . $fichier][] = T_("Vide.");
-					}
-					elseif (!$adminAfficherSousDossiersDansContenu || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu)))
-					{
-						$liste[$dossierAparcourir . '/' . $fichier][] = sprintf(T_("<a href=\"%1\$s\">Lister ce dossier.</a>"), 'porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet("$dossierAparcourir/$fichier") . '&amp;dossierCourant=' . encodeTexteGet("$dossierAparcourir/$fichier") . '#fichiersEtDossiers');
+						$liste[$dossierAparcourir . '/' . $fichier] = array ();
 					}
 					else
 					{
@@ -1217,10 +1213,13 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 				{
 					$fichierMisEnForme = '';
 					
-					$fichierMisEnForme .= '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte("$dossierAparcourir/$fichier") . "\" />\n";
+					$fichierMisEnForme .= '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte("$dossierAparcourir/$fichier") . '" />';
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
 					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet("$dossierAparcourir/$fichier") . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
+					
+					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
 					if (adminEstEditable("$dossierAparcourir/$fichier"))
@@ -1232,9 +1231,6 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 						$fichierMisEnForme .= "<img src=\"$urlRacineAdmin/fichiers/editer-desactive.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" />\n";
 					}
 					
-					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
-					
-					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
 					if ($adminActiverInfobulle['contenuDossier'])

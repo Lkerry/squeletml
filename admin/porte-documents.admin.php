@@ -1900,17 +1900,26 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 		{
 			echo "<ul class=\"porteDocumentsListe\">\n";
 			
-			foreach ($listeFormateeFichiers as $cle => $valeur1)
+			foreach ($listeFormateeFichiers as $listeFormateeFichier => $listeFormateeContenuFichier)
 			{
-				echo '<li class="porteDocumentsListeContenuDossier"><input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($cle) . '" />';
-				echo "<span class=\"porteDocumentsSep\">|</span>\n";
-				
-				echo "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet($cle) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
-				echo "<span class=\"porteDocumentsSep\">|</span>\n";
-				
-				if (adminEmplacementModifiable($cle, $adminDossierRacinePorteDocuments))
+				if (empty($listeFormateeContenuFichier))
 				{
-					echo "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet($cle) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					echo '<li class="porteDocumentsListeContenuDossierSeul">';
+				}
+				else
+				{
+					echo '<li class="porteDocumentsListeContenuDossier">';
+				}
+				
+				echo '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($listeFormateeFichier) . '" />';
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				
+				echo "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet($listeFormateeFichier) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				
+				if (adminEmplacementModifiable($listeFormateeFichier, $adminDossierRacinePorteDocuments))
+				{
+					echo "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet($listeFormateeFichier) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 				}
 				else
 				{
@@ -1921,30 +1930,42 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 				
 				if ($adminActiverInfobulle['listeDesDossiers'])
 				{
-					echo adminInfobulle($racineAdmin, $urlRacineAdmin, $cle, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+					echo adminInfobulle($racineAdmin, $urlRacineAdmin, $listeFormateeFichier, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 					echo "<span class=\"porteDocumentsSep\">|</span>\n";
 				}
 				
-				echo '<strong>' . T_("Dossier") . ' <code>' . securiseTexte($cle) . "</code></strong><ul class=\"porteDocumentsListeDernierNiveau\">\n";
-				
-				$cle = array ();
-				
-				foreach ($valeur1 as $valeur2)
+				if ($listeFormateeFichier == $dossierDeDepartAparcourir)
 				{
-					$cle[] = $valeur2;
+					echo sprintf(T_("<strong>Dossier</strong> %1\$s"), '<code>' . securiseTexte($listeFormateeFichier) . '</code>') . "\n";
+				}
+				else
+				{
+					echo sprintf(T_("<strong>Dossier</strong> %1\$s"), '<a class="porteDocumentsFichier" href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet($listeFormateeFichier) . '&amp;dossierCourant=' . encodeTexteGet($listeFormateeFichier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeFormateeFichier)) . '"><code>' . securiseTexte($listeFormateeFichier) . '</code></a>') . "\n";
 				}
 				
-				natcasesort($cle);
-				
-				$classe = 'impair';
-				
-				foreach ($cle as $valeur3)
+				if (!empty($listeFormateeContenuFichier))
 				{
-					echo "<li class=\"$classe\">$valeur3</li>\n";
-					$classe = ($classe == 'impair') ? 'pair' : 'impair';
+					echo '<ul class="porteDocumentsListeDernierNiveau">' . "\n";
+					$listeFormateeContenu = array ();
+					
+					foreach ($listeFormateeContenuFichier as $fichierFormate)
+					{
+						$listeFormateeContenu[] = $fichierFormate;
+					}
+					
+					natcasesort($listeFormateeContenu);
+					$classe = 'impair';
+					
+					foreach ($listeFormateeContenu as $fichierFormate)
+					{
+						echo "<li class=\"$classe\">$fichierFormate</li>\n";
+						$classe = ($classe == 'impair') ? 'pair' : 'impair';
+					}
+					
+					echo "</ul>\n";
 				}
 				
-				echo "</ul></li>\n";
+				echo "</li>\n";
 			}
 			
 			echo "</ul>\n";
