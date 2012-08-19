@@ -338,7 +338,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				foreach ($listeAbonnements as $courrielAbonnement => $infosAbonnement)
 				{
-					$codeListeAbonnements .= '<li class="liParent"><span class="bDtitre"><label for="inputCourriel-' . $i . '">' . T_("Courriel") . '</label> <input id="inputCourriel-' . $i . '" type="text" name="courriel[' . $i . ']" value="' . $courrielAbonnement . "\" /></span>\n";
+					$codeListeAbonnements .= '<li class="liParent"><span class="bDtitre"><label for="inputCourriel-' . $i . '">' . T_("Courriel:") . '</label> <input id="inputCourriel-' . $i . '" type="text" name="courriel[' . $i . ']" value="' . $courrielAbonnement . "\" /></span>\n";
 					$codeListeAbonnements .= "<ul class=\"nonTriable bDcorps afficher\">\n";
 					
 					// Nom.
@@ -393,6 +393,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$contenuFormulaire .= '<p><input id="inputSupprimerTout" type="checkbox" name="inputSupprimerTout" value="supprimerTout" /> <label for="inputSupprimerTout">' . T_("Supprimer tous les abonnements de la page sélectionnée") . "</label></p>\n";
 					$contenuFormulaire .= "</div><!-- /.configActuelleAdminCommentaires -->\n";
+					
+					$contenuFormulaire .= '<h4>' . T_("Ajouter un abonnement") . "</h4>\n";
+					
+					$contenuFormulaire .= "<ul>\n";
+					$contenuFormulaire .='<li class="liParent"><label for="inputAjoutCourriel">' . T_("Courriel:") . '</label> <input id="inputAjoutCourriel" type="text" name="courrielAjout" value="" />' . "\n";
+					$contenuFormulaire .= "<ul>\n";
+					$contenuFormulaire .= '<li><label for="inputAjoutNom"><code>nom=</code></label><input id="inputAjoutNom" type="text" name="nomAjout" value="" /></li>' . "\n";
+					$contenuFormulaire .= '<li><label for="inputAjoutIdAbonnement"><code>idAbonnement=</code></label><input id="inputAjoutIdAbonnement" type="text" name="idAbonnementAjout" value="' . chaineAleatoire(16) . '" /></li>' . "\n";
+					$contenuFormulaire .= "</ul></li>\n";
+					$contenuFormulaire .= "</ul>\n";
 					$contenuFormulaire .= "</fieldset>\n";
 					
 					$contenuFormulaire .= '<input type="hidden" name="page" value="' . $urlPage . '" />' . "\n";
@@ -597,6 +607,40 @@ include $racineAdmin . '/inc/premier.inc.php';
 		if (!empty($urlPage))
 		{
 			$contenuFichier = '';
+			
+			if (!isset($_POST['courriel']))
+			{
+				$_POST['courriel'] = array ();
+			}
+			
+			if (!empty($_POST['courrielAjout']) && !in_array($_POST['courrielAjout'], $_POST['courriel']))
+			{
+				end($_POST['courriel']);
+				$indexFin = key($_POST['courriel']);
+				
+				if ($indexFin === NULL)
+				{
+					$indexFin = 0;
+				}
+				else
+				{
+					$indexFin++;
+				}
+				
+				$_POST['courriel'][$indexFin] = $_POST['courrielAjout'];
+				
+				if (!empty($_POST['nomAjout']))
+				{
+					$_POST['nom'][$indexFin] = $_POST['nomAjout'];
+				}
+				
+				if (empty($_POST['idAbonnementAjout']))
+				{
+					$_POST['idAbonnementAjout'] = chaineAleatoire(16);
+				}
+				
+				$_POST['idAbonnement'][$indexFin] = $_POST['idAbonnementAjout'];
+			}
 			
 			if (!isset($_POST['inputSupprimerTout']) && !empty($_POST['courriel']))
 			{
