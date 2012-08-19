@@ -306,168 +306,168 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (!empty($urlPage))
 		{
-			if (isset($_POST['inputSupprimerTout']))
+			$contenuFichier = '';
+			
+			if (!isset($_POST['inputSupprimerTout']) && !empty($_POST['idCommentaire']))
 			{
-				$messagesScript .= adminUnlink($cheminConfigCommentaires);
-				$messagesScript .= adminUnlink($cheminConfigAbonnementsCommentaires);
+				foreach ($_POST['idCommentaire'] as $idCommentaire)
+				{
+					$messageDansConfig = '';
+					
+					if (isset($_POST['message'][$idCommentaire]))
+					{
+						$messageDansConfig = messageDansConfigCommentaires($racine, $_POST['message'][$idCommentaire], $attributNofollowLiensCommentaires);
+					}
+					
+					if (!empty($messageDansConfig))
+					{
+						$contenuFichier .= "[$idCommentaire]\n";
+						
+						// IP.
+						
+						$contenuFichier .= 'ip=';
+						
+						if (isset($_POST['ip'][$idCommentaire]))
+						{
+							$contenuFichier .= $_POST['ip'][$idCommentaire];
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Date.
+						
+						$contenuFichier .= 'date=';
+						
+						if (isset($_POST['date'][$idCommentaire]))
+						{
+							$contenuFichier .= $_POST['date'][$idCommentaire];
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Nom.
+						
+						$contenuFichier .= 'nom=';
+						
+						if (isset($_POST['nom'][$idCommentaire]))
+						{
+							$contenuFichier .= $_POST['nom'][$idCommentaire];
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Courriel.
+						
+						$contenuFichier .= 'courriel=';
+						
+						if (isset($_POST['courriel'][$idCommentaire]))
+						{
+							$contenuFichier .= $_POST['courriel'][$idCommentaire];
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Site.
+						
+						$contenuFichier .= 'site=';
+						
+						if (isset($_POST['site'][$idCommentaire]))
+						{
+							$contenuFichier .= $_POST['site'][$idCommentaire];
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Notification.
+						
+						$contenuFichier .= 'notification=';
+						
+						if (isset($_POST['notification'][$idCommentaire]) && $_POST['notification'][$idCommentaire] == 1)
+						{
+							$contenuFichier .= 1;
+						}
+						else
+						{
+							$contenuFichier .= 0;
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Langue de la page.
+						
+						$contenuFichier .= 'languePage=';
+						
+						if (isset($_POST['languePage'][$idCommentaire]))
+						{
+							$contenuFichier .= $_POST['languePage'][$idCommentaire];
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// A été modéré.
+						
+						$contenuFichier .= 'aEteModere=';
+						
+						if (isset($_POST['aEteModere'][$idCommentaire]) && $_POST['aEteModere'][$idCommentaire] == 1)
+						{
+							$contenuFichier .= 1;
+						}
+						else
+						{
+							$contenuFichier .= 0;
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Afficher.
+						
+						$contenuFichier .= 'afficher=';
+						
+						if (!isset($_POST['afficher'][$idCommentaire]))
+						{
+							if ($moderationCommentaires)
+							{
+								$_POST['afficher'][$idCommentaire] = 0;
+							}
+							else
+							{
+								$_POST['afficher'][$idCommentaire] = 1;
+							}
+						}
+						
+						if ($_POST['afficher'][$idCommentaire] == 1)
+						{
+							$contenuFichier .= 1;
+						}
+						else
+						{
+							$contenuFichier .= 0;
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Message.
+						
+						$tableauMessageDansConfig = explode("\n", trim($messageDansConfig));
+						
+						foreach ($tableauMessageDansConfig as $ligneMessageDansConfig)
+						{
+							$contenuFichier .= "message[]=$ligneMessageDansConfig\n";
+						}
+						
+						$contenuFichier .= "\n";
+					}
+				}
+			}
+			
+			if (!empty($contenuFichier))
+			{
+				$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigCommentaires, $contenuFichier);
 			}
 			else
 			{
-				$contenuFichier = '';
-				
-				if (!empty($_POST['idCommentaire']))
-				{
-					foreach ($_POST['idCommentaire'] as $idCommentaire)
-					{
-						$messageDansConfig = '';
-						
-						if (isset($_POST['message'][$idCommentaire]))
-						{
-							$messageDansConfig = messageDansConfigCommentaires($racine, $_POST['message'][$idCommentaire], $attributNofollowLiensCommentaires);
-						}
-						
-						if (!empty($messageDansConfig))
-						{
-							$contenuFichier .= "[$idCommentaire]\n";
-							
-							// IP.
-							
-							$contenuFichier .= 'ip=';
-							
-							if (isset($_POST['ip'][$idCommentaire]))
-							{
-								$contenuFichier .= $_POST['ip'][$idCommentaire];
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Date.
-							
-							$contenuFichier .= 'date=';
-							
-							if (isset($_POST['date'][$idCommentaire]))
-							{
-								$contenuFichier .= $_POST['date'][$idCommentaire];
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Nom.
-							
-							$contenuFichier .= 'nom=';
-							
-							if (isset($_POST['nom'][$idCommentaire]))
-							{
-								$contenuFichier .= $_POST['nom'][$idCommentaire];
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Courriel.
-							
-							$contenuFichier .= 'courriel=';
-							
-							if (isset($_POST['courriel'][$idCommentaire]))
-							{
-								$contenuFichier .= $_POST['courriel'][$idCommentaire];
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Site.
-							
-							$contenuFichier .= 'site=';
-							
-							if (isset($_POST['site'][$idCommentaire]))
-							{
-								$contenuFichier .= $_POST['site'][$idCommentaire];
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Notification.
-							
-							$contenuFichier .= 'notification=';
-							
-							if (isset($_POST['notification'][$idCommentaire]) && $_POST['notification'][$idCommentaire] == 1)
-							{
-								$contenuFichier .= 1;
-							}
-							else
-							{
-								$contenuFichier .= 0;
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Langue de la page.
-							
-							$contenuFichier .= 'languePage=';
-							
-							if (isset($_POST['languePage'][$idCommentaire]))
-							{
-								$contenuFichier .= $_POST['languePage'][$idCommentaire];
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// A été modéré.
-							
-							$contenuFichier .= 'aEteModere=';
-							
-							if (isset($_POST['aEteModere'][$idCommentaire]) && $_POST['aEteModere'][$idCommentaire] == 1)
-							{
-								$contenuFichier .= 1;
-							}
-							else
-							{
-								$contenuFichier .= 0;
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Afficher.
-							
-							$contenuFichier .= 'afficher=';
-							
-							if (!isset($_POST['afficher'][$idCommentaire]))
-							{
-								if ($moderationCommentaires)
-								{
-									$_POST['afficher'][$idCommentaire] = 0;
-								}
-								else
-								{
-									$_POST['afficher'][$idCommentaire] = 1;
-								}
-							}
-							
-							if ($_POST['afficher'][$idCommentaire] == 1)
-							{
-								$contenuFichier .= 1;
-							}
-							else
-							{
-								$contenuFichier .= 0;
-							}
-							
-							$contenuFichier .= "\n";
-							
-							// Message.
-							
-							$tableauMessageDansConfig = explode("\n", trim($messageDansConfig));
-							
-							foreach ($tableauMessageDansConfig as $ligneMessageDansConfig)
-							{
-								$contenuFichier .= "message[]=$ligneMessageDansConfig\n";
-							}
-							
-							$contenuFichier .= "\n";
-						}
-					}
-				}
-				
-				$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigCommentaires, $contenuFichier);
+				$messagesScript .= adminUnlink($cheminConfigCommentaires);
+				$messagesScript .= adminUnlink($cheminConfigAbonnementsCommentaires);
 			}
 		}
 		
