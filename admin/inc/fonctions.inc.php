@@ -1267,7 +1267,7 @@ function adminListePagesAvecCommentaires($racine)
 	
 	foreach ($listeFichiers as $listeFichier)
 	{
-		if (!is_dir($listeFichier) && preg_match('#^' . preg_quote($racineCommentaires, '#') . '/(?<!abonnements-)([^/]+)\.ini\.txt$#', $listeFichier, $resultat))
+		if (!is_dir($listeFichier) && preg_match('#^' . preg_quote($racineCommentaires, '#') . '/([^/]+)\.ini\.txt$#', $listeFichier, $resultat) && file_exists(cheminConfigAbonnementsCommentaires($listeFichier)))
 		{
 			$configFichier = super_parse_ini_file($listeFichier, TRUE);
 			
