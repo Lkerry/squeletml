@@ -1902,7 +1902,31 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 			
 			foreach ($listeFormateeFichiers as $cle => $valeur1)
 			{
-				echo '<li class="porteDocumentsListeContenuDossier"><input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($cle) . '" /><strong>' . T_("Dossier") . ' <code>' . securiseTexte($cle) . "</code></strong><ul class=\"porteDocumentsListeDernierNiveau\">\n";
+				echo '<li class="porteDocumentsListeContenuDossier"><input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($cle) . '" />';
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				
+				echo "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet($cle) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				
+				if (adminEmplacementModifiable($cle, $adminDossierRacinePorteDocuments))
+				{
+					echo "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet($cle) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+				}
+				else
+				{
+					echo "<img src=\"$urlRacineAdmin/fichiers/renommer-desactive.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" />\n";
+				}
+				
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				
+				if ($adminActiverInfobulle['listeDesDossiers'])
+				{
+					echo adminInfobulle($racineAdmin, $urlRacineAdmin, $cle, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+					echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				}
+				
+				echo '<strong>' . T_("Dossier") . ' <code>' . securiseTexte($cle) . "</code></strong><ul class=\"porteDocumentsListeDernierNiveau\">\n";
+				
 				$cle = array ();
 				
 				foreach ($valeur1 as $valeur2)
