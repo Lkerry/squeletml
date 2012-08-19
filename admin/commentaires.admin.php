@@ -1,18 +1,18 @@
 <?php
 include 'inc/zero.inc.php';
-$baliseTitle = T_("Commentaires");
+$baliseTitle = T_("Commentaires et abonnements");
 $boitesDeroulantes = '.aideAdminCommentaires .configActuelleAdminCommentaires';
 $boitesDeroulantes .= ' .contenuFichierPourSauvegarde .liParent';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
-<h1><?php echo T_("Gestion des commentaires"); ?></h1>
+<h1><?php echo T_("Gestion des commentaires et des abonnements"); ?></h1>
 
 <div id="boiteMessages" class="boite">
 	<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
-
+	
 	<?php
-	$messagesScript = '';
+	$messagesScriptUrlPage = "<ul>\n";
 	$urlPage = '';
 	
 	if (!empty($_POST['page']))
@@ -32,25 +32,33 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$lienEditionPage = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifPage) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" width="16" height="16" /></a>';
 		}
 		
-		$messagesScript .= '<li>' . sprintf(T_("Page sélectionnée: %1\$s"), '<a href="' . $urlRacine . '/' . $valeurHrefUrlPage . '"><code>' . securiseTexte($urlPage) . '</code></a>' . $lienEditionPage) . "</li>\n";
+		$messagesScriptUrlPage .= '<li>' . sprintf(T_("Page sélectionnée: %1\$s"), '<a href="' . $urlRacine . '/' . $valeurHrefUrlPage . '"><code>' . securiseTexte($urlPage) . '</code></a>' . $lienEditionPage) . "</li>\n";
 		
 		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $urlPage, '', TRUE);
 		$cheminRelatifConfigCommentaires = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigCommentaires);
 		$lienEditionConfigCommentaires = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigCommentaires) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigCommentaires)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" width="16" height="16" /></a>';
-		$messagesScript .= '<li>' . sprintf(T_("Fichier de configuration des commentaires associé: %1\$s"), '<code>' . securiseTexte($cheminRelatifConfigCommentaires) . '</code>' . $lienEditionConfigCommentaires) . "</li>\n";
+		$messagesScriptUrlPage .= '<li>' . sprintf(T_("Fichier de configuration des commentaires associé: %1\$s"), '<code>' . securiseTexte($cheminRelatifConfigCommentaires) . '</code>' . $lienEditionConfigCommentaires) . "</li>\n";
 		
 		$cheminConfigAbonnementsCommentaires = cheminConfigAbonnementsCommentaires($cheminConfigCommentaires);
 		$cheminRelatifConfigAbonnementsCommentaires = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigAbonnementsCommentaires);
 		$lienEditionConfigAbonnementsCommentaires = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigAbonnementsCommentaires) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigAbonnementsCommentaires)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigAbonnementsCommentaires)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigAbonnementsCommentaires)) . '" width="16" height="16" /></a>';
-		$messagesScript .= '<li>' . sprintf(T_("Fichier de configuration des abonnements aux notifications associé: %1\$s"), '<code>' . securiseTexte($cheminRelatifConfigAbonnementsCommentaires) . '</code>' . $lienEditionConfigAbonnementsCommentaires) . "</li>\n";
+		$messagesScriptUrlPage .= '<li>' . sprintf(T_("Fichier de configuration des abonnements aux notifications associé: %1\$s"), '<code>' . securiseTexte($cheminRelatifConfigAbonnementsCommentaires) . '</code>' . $lienEditionConfigAbonnementsCommentaires) . "</li>\n";
 	}
 	else
 	{
-		$messagesScript .= '<li class="erreur">' . T_("Aucune page sélectionnée.") . "</li>\n";
+		$messagesScriptUrlPage .= '<li class="erreur">' . T_("Aucune page sélectionnée.") . "</li>\n";
 	}
 	
-	if (isset($_POST['action']))
+	$messagesScriptUrlPage .= "</ul>\n";
+	
+	##################################################################
+	#
+	# Gestion des commentaires.
+	#
+	##################################################################
+	if (isset($_POST['gererType']) && $_POST['gererType'] == 'commentaires')
 	{
+		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Liste des commentaires de la page sélectionnée") . "</h3>\n";
 		
@@ -68,14 +76,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$contenuFormulaire .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
 				$contenuFormulaire .= "<div>\n";
-				$listePages = '';
-				$i = 0;
+				$codeListeCommentaires = '';
 				
 				foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
 				{
-					$listePages .= '<li class="liParent"><span class="bDtitre">' . sprintf(T_("Commentaire %1\$s"), '<code>' . securiseTexte($idCommentaire) . '</code></span>') . "\n";
-					$listePages .= '<input type="hidden" name="idCommentaire[]" value="' . $idCommentaire . "\" />\n";
-					$listePages .= "<ul class=\"nonTriable bDcorps afficher\">\n";
+					$codeListeCommentaires .= '<li class="liParent"><span class="bDtitre">' . sprintf(T_("Commentaire %1\$s"), '<code>' . securiseTexte($idCommentaire) . '</code></span>') . "\n";
+					$codeListeCommentaires .= '<input type="hidden" name="idCommentaire[]" value="' . $idCommentaire . "\" />\n";
+					$codeListeCommentaires .= "<ul class=\"nonTriable bDcorps afficher\">\n";
 					
 					// IP.
 					
@@ -84,7 +91,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosCommentaire['ip'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputIp-' . $idCommentaire . '"><code>ip=</code></label><input id="inputIp-' . $idCommentaire . '" type="text" name="ip[' . $idCommentaire . ']" value="' . $infosCommentaire['ip'] . "\" /></li>\n";
+					$codeListeCommentaires .= '<li><label for="inputIp-' . $idCommentaire . '"><code>ip=</code></label><input id="inputIp-' . $idCommentaire . '" type="text" name="ip[' . $idCommentaire . ']" value="' . $infosCommentaire['ip'] . "\" /></li>\n";
 					
 					// Date.
 					
@@ -102,7 +109,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$dateAffichee = '';
 					}
 					
-					$listePages .= '<li><label for="inputDate-' . $idCommentaire . '"><code>date=</code></label><input id="inputDate-' . $idCommentaire . '" type="text" name="date[' . $idCommentaire . ']" value="' . $infosCommentaire['date'] . '" />' . $dateAffichee . "</li>\n";
+					$codeListeCommentaires .= '<li><label for="inputDate-' . $idCommentaire . '"><code>date=</code></label><input id="inputDate-' . $idCommentaire . '" type="text" name="date[' . $idCommentaire . ']" value="' . $infosCommentaire['date'] . '" />' . $dateAffichee . "</li>\n";
 					
 					// Nom.
 					
@@ -111,7 +118,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosCommentaire['nom'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputNom-' . $idCommentaire . '"><code>nom=</code></label><input id="inputNom-' . $idCommentaire . '" type="text" name="nom[' . $idCommentaire . ']" value="' . $infosCommentaire['nom'] . "\" /></li>\n";
+					$codeListeCommentaires .= '<li><label for="inputNom-' . $idCommentaire . '"><code>nom=</code></label><input id="inputNom-' . $idCommentaire . '" type="text" name="nom[' . $idCommentaire . ']" value="' . $infosCommentaire['nom'] . "\" /></li>\n";
 					
 					// Courriel.
 					
@@ -120,7 +127,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosCommentaire['courriel'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputCourriel-' . $idCommentaire . '"><code>courriel=</code></label><input id="inputCourriel-' . $idCommentaire . '" type="text" name="courriel[' . $idCommentaire . ']" value="' . $infosCommentaire['courriel'] . "\" /></li>\n";
+					$codeListeCommentaires .= '<li><label for="inputCourriel-' . $idCommentaire . '"><code>courriel=</code></label><input id="inputCourriel-' . $idCommentaire . '" type="text" name="courriel[' . $idCommentaire . ']" value="' . $infosCommentaire['courriel'] . "\" /></li>\n";
 					
 					// Site.
 					
@@ -129,7 +136,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosCommentaire['site'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputSite-' . $idCommentaire . '"><code>site=</code></label><input id="inputSite-' . $idCommentaire . '" type="text" name="site[' . $idCommentaire . ']" value="' . $infosCommentaire['site'] . "\" /></li>\n";
+					$codeListeCommentaires .= '<li><label for="inputSite-' . $idCommentaire . '"><code>site=</code></label><input id="inputSite-' . $idCommentaire . '" type="text" name="site[' . $idCommentaire . ']" value="' . $infosCommentaire['site'] . "\" /></li>\n";
 					
 					// Notification.
 					
@@ -138,26 +145,26 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosCommentaire['notification'] = 0;
 					}
 					
-					$listePages .= '<li><label for="notification-' . $idCommentaire . '"><code>notification=</code></label>';
-					$listePages .= '<select id="notification-' . $idCommentaire . '" name="notification[' . $idCommentaire . ']">' . "\n";
-					$listePages .= '<option value="1"';
+					$codeListeCommentaires .= '<li><label for="notification-' . $idCommentaire . '"><code>notification=</code></label>';
+					$codeListeCommentaires .= '<select id="notification-' . $idCommentaire . '" name="notification[' . $idCommentaire . ']">' . "\n";
+					$codeListeCommentaires .= '<option value="1"';
 					
 					if ($infosCommentaire['notification'] == 1)
 					{
-						$listePages .= ' selected="selected"';
+						$codeListeCommentaires .= ' selected="selected"';
 					}
 					
-					$listePages .= '>' . T_("Activée") . "</option>\n";
-					$listePages .= '<option value="0"';
+					$codeListeCommentaires .= '>' . T_("Activée") . "</option>\n";
+					$codeListeCommentaires .= '<option value="0"';
 					
 					if ($infosCommentaire['notification'] != 1)
 					{
-						$listePages .= ' selected="selected"';
+						$codeListeCommentaires .= ' selected="selected"';
 					}
 					
-					$listePages .= '>' . T_("Désactivée") . "</option>\n";
-					$listePages .= "</select>\n";
-					$listePages .= "</li>\n";
+					$codeListeCommentaires .= '>' . T_("Désactivée") . "</option>\n";
+					$codeListeCommentaires .= "</select>\n";
+					$codeListeCommentaires .= "</li>\n";
 					
 					// Langue de la page.
 					
@@ -166,7 +173,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosCommentaire['languePage'] = '';
 					}
 					
-					$listePages .= '<li><label for="inputLanguePage-' . $idCommentaire . '"><code>languePage=</code></label><input id="inputLanguePage-' . $idCommentaire . '" type="text" name="languePage[' . $idCommentaire . ']" value="' . $infosCommentaire['languePage'] . "\" /></li>\n";
+					$codeListeCommentaires .= '<li><label for="inputLanguePage-' . $idCommentaire . '"><code>languePage=</code></label><input id="inputLanguePage-' . $idCommentaire . '" type="text" name="languePage[' . $idCommentaire . ']" value="' . $infosCommentaire['languePage'] . "\" /></li>\n";
 					
 					// A été modéré.
 					
@@ -175,26 +182,26 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosCommentaire['aEteModere'] = 0;
 					}
 					
-					$listePages .= '<li><label for="aEteModere-' . $idCommentaire . '"><code>aEteModere=</code></label>';
-					$listePages .= '<select id="aEteModere-' . $idCommentaire . '" name="aEteModere[' . $idCommentaire . ']">' . "\n";
-					$listePages .= '<option value="1"';
+					$codeListeCommentaires .= '<li><label for="aEteModere-' . $idCommentaire . '"><code>aEteModere=</code></label>';
+					$codeListeCommentaires .= '<select id="aEteModere-' . $idCommentaire . '" name="aEteModere[' . $idCommentaire . ']">' . "\n";
+					$codeListeCommentaires .= '<option value="1"';
 					
 					if ($infosCommentaire['aEteModere'] == 1)
 					{
-						$listePages .= ' selected="selected"';
+						$codeListeCommentaires .= ' selected="selected"';
 					}
 					
-					$listePages .= '>' . T_("Oui") . "</option>\n";
-					$listePages .= '<option value="0"';
+					$codeListeCommentaires .= '>' . T_("Oui") . "</option>\n";
+					$codeListeCommentaires .= '<option value="0"';
 					
 					if ($infosCommentaire['aEteModere'] != 1)
 					{
-						$listePages .= ' selected="selected"';
+						$codeListeCommentaires .= ' selected="selected"';
 					}
 					
-					$listePages .= '>' . T_("Non") . "</option>\n";
-					$listePages .= "</select>\n";
-					$listePages .= "</li>\n";
+					$codeListeCommentaires .= '>' . T_("Non") . "</option>\n";
+					$codeListeCommentaires .= "</select>\n";
+					$codeListeCommentaires .= "</li>\n";
 					
 					// Afficher.
 					
@@ -210,26 +217,26 @@ include $racineAdmin . '/inc/premier.inc.php';
 						}
 					}
 					
-					$listePages .= '<li><label for="afficher-' . $idCommentaire . '"><code>afficher=</code></label>';
-					$listePages .= '<select id="afficher-' . $idCommentaire . '" name="afficher[' . $idCommentaire . ']">' . "\n";
-					$listePages .= '<option value="1"';
+					$codeListeCommentaires .= '<li><label for="afficher-' . $idCommentaire . '"><code>afficher=</code></label>';
+					$codeListeCommentaires .= '<select id="afficher-' . $idCommentaire . '" name="afficher[' . $idCommentaire . ']">' . "\n";
+					$codeListeCommentaires .= '<option value="1"';
 					
 					if ($infosCommentaire['afficher'] == 1)
 					{
-						$listePages .= ' selected="selected"';
+						$codeListeCommentaires .= ' selected="selected"';
 					}
 					
-					$listePages .= '>' . T_("Oui") . "</option>\n";
-					$listePages .= '<option value="0"';
+					$codeListeCommentaires .= '>' . T_("Oui") . "</option>\n";
+					$codeListeCommentaires .= '<option value="0"';
 					
 					if ($infosCommentaire['afficher'] != 1)
 					{
-						$listePages .= ' selected="selected"';
+						$codeListeCommentaires .= ' selected="selected"';
 					}
 					
-					$listePages .= '>' . T_("Non") . "</option>\n";
-					$listePages .= "</select>\n";
-					$listePages .= "</li>\n";
+					$codeListeCommentaires .= '>' . T_("Non") . "</option>\n";
+					$codeListeCommentaires .= "</select>\n";
+					$codeListeCommentaires .= "</li>\n";
 					
 					// Message
 					
@@ -247,9 +254,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$message = trim($message);
 					
-					$listePages .= '<li><label for="message-' . $idCommentaire . '"><code>message[]=</code></label><textarea id="message-' . $idCommentaire . '" cols="50" rows="10" name="message[' . $idCommentaire . ']">' . securiseTexte($message) . "</textarea></li>\n";
-					$listePages .= "</ul>\n";
-					$listePages .= "</li>\n";
+					$codeListeCommentaires .= '<li><label for="message-' . $idCommentaire . '"><code>message[]=</code></label><textarea id="message-' . $idCommentaire . '" cols="50" rows="10" name="message[' . $idCommentaire . ']">' . securiseTexte($message) . "</textarea></li>\n";
+					$codeListeCommentaires .= "</ul>\n";
+					$codeListeCommentaires .= "</li>\n";
 				}
 				
 				$contenuFormulaire .= '<div class="aideAdminCommentaires aide">' . "\n";
@@ -264,13 +271,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFormulaire .= "</div><!-- /.bDcorps -->\n";
 				$contenuFormulaire .= "</div><!-- /.aideAdminCommentaires -->\n";
 				
+				$contenuFormulaire .= $messagesScriptUrlPage;
+				
 				$contenuFormulaire .= "<fieldset>\n";
 				$contenuFormulaire .= '<legend>' . T_("Options") . "</legend>\n";
 				
 				$contenuFormulaire .= '<div class="configActuelleAdminCommentaires">' . "\n";
 				$contenuFormulaire .= '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
 				
-				if (empty($listePages))
+				if (empty($codeListeCommentaires))
 				{
 					$contenuFormulaire = '';
 					echo '<p class="erreur">' . sprintf(T_("La page %1\$s ne contient aucun commentaire."), '<code>' . securiseTexte($urlPage) . '</code>') . "</p>\n";
@@ -278,7 +287,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				else
 				{
 					$contenuFormulaire .= "<ul class=\"triable bDcorps afficher\">\n";
-					$contenuFormulaire .= $listePages;
+					$contenuFormulaire .= $codeListeCommentaires;
 					$contenuFormulaire .= "</ul>\n";
 					
 					$contenuFormulaire .= '<p><input id="inputSupprimerTout" type="checkbox" name="inputSupprimerTout" value="supprimerTout" /> <label for="inputSupprimerTout">' . T_("Supprimer tous les commentaires de la page sélectionnée") . "</label></p>\n";
@@ -299,8 +308,112 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo $contenuFormulaire;
 		echo "</div><!-- /.sousBoite -->\n";
 	}
-	elseif (isset($_POST['modifsCommentaires']))
+	##################################################################
+	#
+	# Gestion des abonnements.
+	#
+	##################################################################
+	elseif (isset($_POST['gererType']) && $_POST['gererType'] == 'abonnements')
 	{
+		$messagesScript = '';
+		echo '<div class="sousBoite">' . "\n";
+		echo '<h3>' . T_("Liste des abonnements aux notifications des nouveaux commentaires de la page sélectionnée") . "</h3>\n";
+		
+		$contenuFormulaire = '';
+		
+		if (!empty($urlPage))
+		{
+			$listeAbonnements = super_parse_ini_file($cheminConfigAbonnementsCommentaires, TRUE);
+			
+			if ($listeAbonnements === FALSE)
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminConfigAbonnementsCommentaires) . '</code>') . "</li>\n";
+			}
+			else
+			{
+				$contenuFormulaire .= "<form action=\"$adminAction#messages\" method=\"post\">\n";
+				$contenuFormulaire .= "<div>\n";
+				$codeListeAbonnements = '';
+				$i = 0;
+				
+				foreach ($listeAbonnements as $courrielAbonnement => $infosAbonnement)
+				{
+					$codeListeAbonnements .= '<li class="liParent"><span class="bDtitre"><label for="inputCourriel-' . $i . '">' . T_("Courriel") . '</label> <input id="inputCourriel-' . $i . '" type="text" name="courriel[' . $i . ']" value="' . $courrielAbonnement . "\" /></span>\n";
+					$codeListeAbonnements .= "<ul class=\"nonTriable bDcorps afficher\">\n";
+					
+					// Nom.
+					
+					if (!isset($infosAbonnement['nom']))
+					{
+						$infosAbonnement['nom'] = '';
+					}
+					
+					$codeListeAbonnements .= '<li><label for="inputNom-' . $i . '"><code>nom=</code></label><input id="inputNom-' . $i . '" type="text" name="nom[' . $i . ']" value="' . $infosAbonnement['nom'] . "\" /></li>\n";
+					
+					// Identifiant de l'abonnement.
+					
+					if (!isset($infosAbonnement['idAbonnement']))
+					{
+						$infosAbonnement['idAbonnement'] = '';
+					}
+					
+					$codeListeAbonnements .= '<li><label for="inputIdAbonnement-' . $i . '"><code>idAbonnement=</code></label><input id="inputIdAbonnement-' . $i . '" type="text" name="idAbonnement[' . $i . ']" value="' . $infosAbonnement['idAbonnement'] . "\" /></li>\n";
+					
+					$codeListeAbonnements .= "</ul>\n";
+					$codeListeAbonnements .= "</li>\n";
+					$i++;
+				}
+				
+				$contenuFormulaire .= '<div class="aideAdminCommentaires aide">' . "\n";
+				$contenuFormulaire .= '<h4 class="bDtitre">' . T_("Aide") . "</h4>\n";
+				
+				$contenuFormulaire .= "<div class=\"bDcorps\">\n";
+				$contenuFormulaire .= '<p>' . T_("Pour supprimer un abonnement, simplement effacer le contenu du champ du courriel associé.") . "</p>\n";
+				$contenuFormulaire .= "</div><!-- /.bDcorps -->\n";
+				$contenuFormulaire .= "</div><!-- /.aideAdminCommentaires -->\n";
+				
+				$contenuFormulaire .= $messagesScriptUrlPage;
+				
+				$contenuFormulaire .= "<fieldset>\n";
+				$contenuFormulaire .= '<legend>' . T_("Options") . "</legend>\n";
+				
+				$contenuFormulaire .= '<div class="configActuelleAdminCommentaires">' . "\n";
+				$contenuFormulaire .= '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
+				
+				if (empty($codeListeAbonnements))
+				{
+					$contenuFormulaire = '';
+					echo '<p class="erreur">' . sprintf(T_("La page %1\$s ne contient aucun abonnement."), '<code>' . securiseTexte($urlPage) . '</code>') . "</p>\n";
+				}
+				else
+				{
+					$contenuFormulaire .= "<ul class=\"nonTriable bDcorps afficher\">\n";
+					$contenuFormulaire .= $codeListeAbonnements;
+					$contenuFormulaire .= "</ul>\n";
+					
+					$contenuFormulaire .= '<p><input id="inputSupprimerTout" type="checkbox" name="inputSupprimerTout" value="supprimerTout" /> <label for="inputSupprimerTout">' . T_("Supprimer tous les abonnements de la page sélectionnée") . "</label></p>\n";
+					$contenuFormulaire .= "</div><!-- /.configActuelleAdminCommentaires -->\n";
+					$contenuFormulaire .= "</fieldset>\n";
+					
+					$contenuFormulaire .= '<input type="hidden" name="page" value="' . $urlPage . '" />' . "\n";
+					
+					$contenuFormulaire .= '<p><input type="submit" name="modifsAbonnements" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
+			
+					$contenuFormulaire .= "</div>\n";
+					$contenuFormulaire .= "</form>\n";
+				}
+			}
+		}
+		
+		echo adminMessagesScript($messagesScript);
+		echo $contenuFormulaire;
+		echo "</div><!-- /.sousBoite -->\n";
+	}
+	
+	if (isset($_POST['modifsCommentaires']))
+	{
+		$messagesScript = '';
+		$messagesScript .= $messagesScriptUrlPage;
 		echo '<div class="sousBoite">' . "\n";
 		echo '<h3>' . T_("Enregistrement des modifications aux commentaires de la page sélectionnée") . "</h3>\n" ;
 		
@@ -474,6 +587,63 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
 	}
+	elseif (isset($_POST['modifsAbonnements']))
+	{
+		$messagesScript = '';
+		$messagesScript .= $messagesScriptUrlPage;
+		echo '<div class="sousBoite">' . "\n";
+		echo '<h3>' . T_("Enregistrement des modifications aux abonnements aux notifications des nouveaux commentaires de la page sélectionnée") . "</h3>\n" ;
+		
+		if (!empty($urlPage))
+		{
+			$contenuFichier = '';
+			
+			if (!isset($_POST['inputSupprimerTout']) && !empty($_POST['courriel']))
+			{
+				foreach ($_POST['courriel'] as $cle => $courrielAbonnement)
+				{
+					if (!empty($courrielAbonnement))
+					{
+						$contenuFichier .= "[$courrielAbonnement]\n";
+						
+						// Nom.
+						
+						$contenuFichier .= 'nom=';
+						
+						if (isset($_POST['nom'][$cle]))
+						{
+							$contenuFichier .= $_POST['nom'][$cle];
+						}
+						
+						$contenuFichier .= "\n";
+						
+						// Identifiant de l'abonnement.
+						
+						$contenuFichier .= 'idAbonnement=';
+						
+						if (isset($_POST['idAbonnement'][$cle]))
+						{
+							$contenuFichier .= $_POST['idAbonnement'][$cle];
+						}
+						
+						$contenuFichier .= "\n";
+					}
+				}
+			}
+			
+			if (!empty($contenuFichier))
+			{
+				$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigAbonnementsCommentaires, $contenuFichier, FALSE);
+			}
+			else
+			{
+				$messagesScript .= adminUnlink($cheminConfigAbonnementsCommentaires);
+			}
+		}
+		
+		echo adminMessagesScript($messagesScript);
+		echo "</div><!-- /.sousBoite -->\n";
+	}
 	?>
 </div><!-- /#boiteMessages -->
 
@@ -504,8 +674,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 </div><!-- /.boite -->
 
 <div class="boite">
-	<h2 id="gerer"><?php echo T_("Gérer les commentaires"); ?></h2>
-
+	<h2 id="gerer"><?php echo T_("Gérer les commentaires et les abonnements"); ?></h2>
+	
+	<div class="aideAdminCommentaires aide">
+		<h4 class="bDtitre"><?php echo T_("Aide"); ?></h4>
+		
+		<div class="bDcorps">
+			<p><?php echo T_("Seules les pages ayant au moins un commentaire sont listées."); ?></p>
+		</div><!-- /.bDcorps -->
+	</div><!-- /.aideAdminCommentaires -->
+	
 	<form action="<?php echo $adminAction; ?>#messages" method="post">
 		<div>
 			<fieldset>
@@ -516,7 +694,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					<?php if (!empty($listePagesAvecCommentaires)): ?>
 						<?php $disabled = ''; ?>
-						<?php printf(T_("<label for=\"%1\$s\">Choisir une page parmi celles ayant au moins un commentaire</label>:"), "gererSelectPage"); ?><br />
+						<?php printf(T_("<label for=\"%1\$s\">URL de la page</label>:"), "gererSelectPage"); ?><br />
 						<select id="gererSelectPage" name="page">
 							<?php foreach ($listePagesAvecCommentaires as $listePage): ?>
 								<option value="<?php echo encodeTexte($listePage); ?>"><?php echo securiseTexte($listePage); ?></option>
@@ -527,9 +705,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<?php echo T_("Aucune page ayant au moins un commentaire."); ?>
 					<?php endif; ?>
 				</p>
+				
+				<ul>
+					<li><input id="gererInputListeCommentaires" type="radio" name="gererType" value="commentaires" checked="checked" /> <label for="gererInputListeCommentaires"><?php echo T_("Commentaires"); ?></label></li>
+				
+					<li><input id="gererInputListeAbonnements" type="radio" name="gererType" value="abonnements" /> <label for="gererInputListeAbonnements"><?php echo T_("Abonnements aux notifications des nouveaux commentaires"); ?></label></li>
+				</ul>
 			</fieldset>
 			
-			<p><input type="submit" name="action" value="<?php echo T_('Gérer les commentaires'); ?>"<?php echo $disabled; ?> /></p>
+			<p><input type="submit" name="action" value="<?php echo T_('Gérer'); ?>"<?php echo $disabled; ?> /></p>
 		</div>
 	</form>
 </div><!-- /.boite -->

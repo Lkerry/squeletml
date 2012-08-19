@@ -512,15 +512,22 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 }
 
 /*
-Enregistre un fichier de configuration des commentaires et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+Si `$enregistrerCommentaires` vaut `TRUE`, enregistre un fichier de configuration des commentaires, sinon enregistre un fichier de configuration des abonnements aux notifications des nouveaux commentaires. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminEnregistreConfigCommentaires($racine, $cheminFichier, $contenuFichier)
+function adminEnregistreConfigCommentaires($racine, $cheminFichier, $contenuFichier, $enregistrerCommentaires = TRUE)
 {
 	$messagesScript = '';
 	
 	if (!file_exists($cheminFichier) && !@touch($cheminFichier))
 	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucun commentaire ne peut être enregistré puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		if ($enregistrerCommentaires)
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucun commentaire ne peut être enregistré puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucun abonnement ne peut être enregistré puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
 	}
 	
 	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
