@@ -2023,12 +2023,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<?php $listeGaleries = listeGaleries($racine); ?>
 				
 						<?php if (!empty($listeGaleries)): ?>
+							<?php $disabled = ''; ?>
+							
 							<select id="redimensionnerSelectId" name="id">
 								<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
 									<option value="<?php echo encodeTexte($listeGalerie); ?>"><?php echo securiseTexte($listeGalerie); ?></option>
 								<?php endforeach; ?>
 							</select>
 						<?php else: ?>
+							<?php $disabled = ' disabled="disabled"'; ?>
 							<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 						<?php endif; ?>
 						</p>
@@ -2107,7 +2110,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 					<p><strong><?php echo T_("Note: s'il y a de grosses images ou s'il y a beaucoup d'images dans le dossier, vous allez peut-être rencontrer une erreur de dépassement du temps alloué. Dans ce cas, relancez le script en rafraîchissant la page dans votre navigateur.") ?></strong></p>
 
-					<p><input type="submit" name="redimensionner" value="<?php echo T_('Redimensionner les images originales'); ?>" /></p>
+					<p><input type="submit" name="redimensionner" value="<?php echo T_('Redimensionner les images originales'); ?>"<?php echo $disabled; ?> /></p>
 				</div>
 			</form>
 		<?php else: ?>
@@ -2153,12 +2156,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
+						<?php $disabled = ''; ?>
+						
 						<select id="supprimerSelectId" name="id">
 							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
 								<option value="<?php echo encodeTexte($listeGalerie); ?>"><?php echo securiseTexte($listeGalerie); ?></option>
 							<?php endforeach; ?>
 						</select>
 					<?php else: ?>
+						<?php $disabled = ' disabled="disabled"'; ?>
 						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 					<?php endif; ?>
 					</p>
@@ -2195,7 +2201,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					</ul>
 				</fieldset>
 			
-				<p><input type="submit" name="supprimerImages" value="<?php echo T_('Supprimer les images'); ?>" /></p>
+				<p><input type="submit" name="supprimerImages" value="<?php echo T_('Supprimer les images'); ?>"<?php echo $disabled; ?> /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->
@@ -2222,6 +2228,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
+						<?php $disabled = ''; ?>
+						
 						<select id="renommerSelectId" name="id">
 							
 							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
@@ -2229,6 +2237,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							<?php endforeach; ?>
 						</select>
 					<?php else: ?>
+						<?php $disabled = ' disabled="disabled"'; ?>
 						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 					<?php endif; ?>
 					</p>
@@ -2248,7 +2257,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<?php endif; ?>
 				</fieldset>
 			
-				<p><input type="submit" name="renommer" value="<?php echo T_('Renommer ou déplacer la galerie'); ?>" /></p>
+				<p><input type="submit" name="renommer" value="<?php echo T_('Renommer ou déplacer la galerie'); ?>"<?php echo $disabled; ?> /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->
@@ -2277,12 +2286,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<?php $listeGaleries = listeGaleries($racine); ?>
 					
 						<?php if (!empty($listeGaleries)): ?>
+							<?php $disabled = ''; ?>
+							
 							<select id="configGraphiqueSelectId" name="id">
 								<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
 									<option value="<?php echo encodeTexte($listeGalerie); ?>"><?php echo securiseTexte($listeGalerie); ?></option>
 								<?php endforeach; ?>
 							</select>
 						<?php else: ?>
+							<?php $disabled = ' disabled="disabled"'; ?>
 							<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 						<?php endif; ?>
 						</p>
@@ -2294,7 +2306,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						</ul>
 					</fieldset>
 					
-					<p><input type="submit" name="configGraphique" value="<?php echo T_('Mettre à jour graphiquement'); ?>" /></p>
+					<p><input type="submit" name="configGraphique" value="<?php echo T_('Mettre à jour graphiquement'); ?>"<?php echo $disabled; ?> /></p>
 				</div>
 			</form>
 	</div><!-- /.boite -->
@@ -2313,12 +2325,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
+						<?php $disabled = ''; ?>
+						
 						<select id="configSelectId" name="id">
 							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
 								<option value="<?php echo encodeTexte($listeGalerie); ?>"><?php echo securiseTexte($listeGalerie); ?></option>
 							<?php endforeach; ?>
 						</select>
 					<?php else: ?>
+						<?php $disabled = ' disabled="disabled"'; ?>
 						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 					<?php endif; ?>
 					</p>
@@ -2332,7 +2347,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<input id="configInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="configInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>, à moins qu'il y ait une déclaration différente pour ces dernières dans le fichier de configuration, s'il existe."); ?></label></p>
 				</fieldset>
 			
-				<p><input type="submit" name="majConf" value="<?php echo T_('Créer ou mettre à jour automatiquement'); ?>" /></p>
+				<p><input type="submit" name="majConf" value="<?php echo T_('Créer ou mettre à jour automatiquement'); ?>"<?php echo $disabled; ?> /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->
@@ -2351,12 +2366,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
+						<?php $disabled = ''; ?>
+						
 						<select id="modeleSelectId" name="id">
 							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
 								<option value="<?php echo encodeTexte($listeGalerie); ?>"><?php echo securiseTexte($listeGalerie); ?></option>
 							<?php endforeach; ?>
 						</select>
 					<?php else: ?>
+						<?php $disabled = ' disabled="disabled"'; ?>
 						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 					<?php endif; ?>
 					</p>
@@ -2379,7 +2397,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<p class="bDcorps"><input id="modeleInputConfigExclureMotifsCommeIntermediaires" type="checkbox" name="config[]" value="exclureMotifsCommeIntermediaires" checked="checked" /> <label for="modeleInputConfigExclureMotifsCommeIntermediaires"><?php echo T_("Ignorer dans la liste des images intermédiaires les images dont le nom satisfait le motif <code>nom-vignette.extension</code> ou <code>nom-original.extension</code>."); ?></label></p>
 				</fieldset>
 			
-				<p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>" /></p>
+				<p><input type="submit" name="modeleConf" value="<?php echo T_('Afficher un fichier de configuration'); ?>"<?php echo $disabled; ?> /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->
@@ -2406,18 +2424,21 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
+						<?php $disabled = ''; ?>
+						
 						<select id="sauvegarderSelectId" name="id">
 							<?php foreach ($listeGaleries as $listeGalerie => $listeGalerieInfos): ?>
 								<option value="<?php echo encodeTexte($listeGalerie); ?>"><?php echo securiseTexte($listeGalerie); ?></option>
 							<?php endforeach; ?>
 						</select>
 					<?php else: ?>
+						<?php $disabled = ' disabled="disabled"'; ?>
 						<strong><?php echo T_("Veuillez auparavant créer une galerie."); ?></strong>
 					<?php endif; ?>
 					</p>
 				</fieldset>
 		
-				<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>" /></p>
+				<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>"<?php echo $disabled; ?> /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->
