@@ -369,7 +369,7 @@ function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorte
 	{
 		foreach ($tableauFiltresAffichage as $dossierFiltre)
 		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement))
 			{
 				return TRUE;
 			}
@@ -381,7 +381,7 @@ function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorte
 		
 		foreach ($tableauFiltresAffichage as $dossierFiltre)
 		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement) || !preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '(/.+)?$#', $emplacement))
 			{
 				$aAjouter = FALSE;
 				break;
@@ -405,7 +405,7 @@ function adminEmplacementModifiable($cheminFichier, $adminDossierRacinePorteDocu
 	$adminDossierRacinePorteDocuments = realpath($adminDossierRacinePorteDocuments);
 	$cheminFichier = realpath($cheminFichier);
 	
-	if (is_dir($cheminFichier) && ($cheminFichier == $adminDossierRacinePorteDocuments || $cheminFichier == '.' || $cheminFichier == '..' || preg_match('|/\.{1,2}$|', $cheminFichier) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $cheminFichier)))
+	if (is_dir($cheminFichier) && ($cheminFichier == $adminDossierRacinePorteDocuments || $cheminFichier == '.' || $cheminFichier == '..' || preg_match('#/\.{1,2}$#', $cheminFichier) || !preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '(/.+)?$#', $cheminFichier)))
 	{
 		return FALSE;
 	}
@@ -447,7 +447,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocument
 	{
 		foreach ($tableauFiltresAccesDossiers as $dossierFiltre)
 		{
-			if (preg_match('|^' . preg_quote($dossierFiltre, '|') . '(/.+)?$|', $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement))
 			{
 				return TRUE;
 			}
@@ -459,7 +459,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocument
 		
 		foreach ($tableauFiltresAccesDossiers as $dossierFiltre)
 		{
-			if (preg_match('|^' . preg_quote($dossierFiltre, '|') . '(/.+)?$|', $emplacement) || !preg_match('|^' . preg_quote($adminDossierRacinePorteDocuments, '|') . '(/.+)?$|', $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement) || !preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '(/.+)?$#', $emplacement))
 			{
 				$aAjouter = FALSE;
 				break;

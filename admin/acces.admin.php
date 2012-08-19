@@ -400,7 +400,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$htaccess .= "\tRewriteCond %{REMOTE_ADDR} !^$ip\n";
 				}
 		
-				preg_match('|^[a-z]+://' . $_SERVER['SERVER_NAME'] . '(/.+)|i', $urlRacine . '/' . $adminUrlMaintenance, $resultat);
+				preg_match('#^[a-z]+://' . preg_quote($_SERVER['SERVER_NAME'], '#') . '(/.+)#i', $urlRacine . '/' . $adminUrlMaintenance, $resultat);
 				$adminUrlMaintenanceDansHtaccess = $resultat[1];
 		
 				$htaccess .= "\tRewriteCond %{REQUEST_URI} !$adminUrlMaintenanceDansHtaccess$\n";

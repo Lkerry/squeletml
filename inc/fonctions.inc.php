@@ -13,7 +13,7 @@ function accesAdminEstProtege($racine)
 		$htaccess = @file_get_contents($racine . '/.htaccess');
 		$acces = @file_get_contents($racine . '/.acces');
 		
-		if ($htaccess !== FALSE && $acces !== FALSE && preg_match('/^\tAuthUserFile ' . preg_quote($racine, '/') . '\/\.acces\n/m', $htaccess) && preg_match('/^[^:]+:/m', $acces))
+		if ($htaccess !== FALSE && $acces !== FALSE && preg_match('#^\tAuthUserFile ' . preg_quote($racine, '#') . '/\.acces\n#m', $htaccess) && preg_match('/^[^:]+:/m', $acces))
 		{
 			$accesAdminEstProtege = TRUE;
 		}
@@ -65,7 +65,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			{
 				$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
 	
-				preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
+				preg_match('#/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)#', $racine . '/.acces', $cheminAcces);
 	
 				$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
 			}
@@ -94,7 +94,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			{
 				$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
 	
-				preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.deconnexion.acces', $cheminAcces);
+				preg_match('#/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)#', $racine . '/.deconnexion.acces', $cheminAcces);
 	
 				$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
 			}
@@ -300,7 +300,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 	
 	// Incrémentation des niveaux de titre 2 à 5 (par exemple, `<h2 class="classe">Sous-titre</h2>` devient `<h3 class="classe">Sous-titre</h3>`). Le but est d'éviter que des sous-titres affichés dans l'aperçu aient le même niveau (2) que le titre de l'aperçu lui-même. Cela découle du fait que le titre d'une page est habituellement de niveau 1 alors que dans l'aperçu, le même titre est de niveau 2.
-	$texteApercu = preg_replace('|<h([2-5])(.*?>.*?</h)\1\b|e', '"<h" . ("$1" + 1) . "$2" . ("$1" + 1)', $texteApercu);
+	$texteApercu = preg_replace('#<h([2-5])(.*?>.*?</h)\1\b#e', '"<h" . ("$1" + 1) . "$2" . ("$1" + 1)', $texteApercu);
 	
 	$apercu .= $texteApercu . "\n";
 	$apercu .= "</div><!-- /.descriptionApercu -->\n";
@@ -327,7 +327,7 @@ Inspirée de <http://api.drupal.org/api/function/arg/6>.
 function arg($index = NULL)
 {
 	$urlArg = url(FALSE, FALSE);
-	$urlArg = preg_replace('/^\//', '', $urlArg);
+	$urlArg = preg_replace('#^/#', '', $urlArg);
 	$args = explode('/', $urlArg);
 	
 	if (isset($index) && isset($args[$index]))
@@ -1452,11 +1452,11 @@ Retourne un tableau de deux éléments: le premier contient le corps de la galer
 */
 function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes)
 {
-	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $resultat))
+	if (preg_match('|(<div id="galerieIntermediaireTexte">.+</div><!-- /#galerieIntermediaireTexte -->)|s', $corpsGalerie, $resultat))
 	{
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
-			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
+			$corpsGalerie = preg_replace('|<div id="galerieIntermediaireTexte">.+</div><!-- /#galerieIntermediaireTexte -->|s', '', $corpsGalerie);
 			
 			$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, 'legende-image-galerie', $nombreDeColonnes);
 			
@@ -1476,9 +1476,9 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 	}
 	
 	// Dans tous les cas, on supprime la div `galerieIntermediaireTexte` si elle est vide.
-	if (preg_match('/(<div id="galerieIntermediaireTexte"><\/div><!-- \/#galerieIntermediaireTexte -->)/', $tableauCorpsGalerie['corpsGalerie']))
+	if (preg_match('|(<div id="galerieIntermediaireTexte"></div><!-- /#galerieIntermediaireTexte -->)|', $tableauCorpsGalerie['corpsGalerie']))
 	{
-		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('/<div id="galerieIntermediaireTexte"><\/div><!-- \/#galerieIntermediaireTexte -->/', '', $tableauCorpsGalerie['corpsGalerie']);
+		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('|<div id="galerieIntermediaireTexte"></div><!-- /#galerieIntermediaireTexte -->|', '', $tableauCorpsGalerie['corpsGalerie']);
 	}
 	
 	return $tableauCorpsGalerie;
@@ -2051,7 +2051,7 @@ function filtreChaine($chaine, $casse = '', $filtrerBarreOblique = TRUE)
 	}
 	else
 	{
-		$chaine = preg_replace('/[^-A-Za-z0-9._\+\/]/', '-', $chaine);
+		$chaine = preg_replace('#[^-A-Za-z0-9._\+/]#', '-', $chaine);
 	}
 	
 	$chaine = preg_replace('/-+/', '-', $chaine);
@@ -2464,12 +2464,12 @@ function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomC
 			{
 				if (strpos($fichier, $urlRacine) === 0)
 				{
-					$contenuFichier = @file_get_contents(preg_replace('#^' . preg_quote($urlRacine) . '#', $racine, $fichier));
+					$contenuFichier = @file_get_contents(preg_replace('/^' . preg_quote($urlRacine, '/') . '/', $racine, $fichier));
 					
 					// Ajustement des chemins relatifs dans les feuilles de style.
 					if (strpos($type, 'css') === 0 && (strpos($fichier, "$urlRacine/css/") === 0 || (!empty($dossierAdmin) && strpos($fichier, "$urlRacine/$dossierAdmin/css/") === 0)))
 					{
-						$contenuFichier = preg_replace("#(\.\./)+#", '$1../', $contenuFichier);
+						$contenuFichier = preg_replace('#(\.\./)+#', '$1../', $contenuFichier);
 					}
 				}
 				else
@@ -3346,7 +3346,7 @@ function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuA
 			$commentairesHtmlSupprimes = FALSE;
 			$infosPage['apercu'] = '';
 	
-			if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['contenu'], $resultatApercu))
+			if ($inclureApercu && preg_match('/<!-- APERÇU: (.+?) -->/s', $infosPage['contenu'], $resultatApercu))
 			{
 				if ($resultatApercu[1] == 'interne')
 				{
@@ -4020,7 +4020,7 @@ function limiteProfondeurListe($html)
 					$ulParent = $ulParent->parent();
 				}
 		
-				if ($ulParent->tag == 'li' && preg_match('|\bactif\b|', $ulParent->class))
+				if ($ulParent->tag == 'li' && preg_match('/\bactif\b/', $ulParent->class))
 				{
 					$ulParentActif = TRUE;
 				}
@@ -4035,7 +4035,7 @@ function limiteProfondeurListe($html)
 				
 					if (!empty($ul->class))
 					{
-						if (preg_match('|\bmasquer\b|', $ul->class))
+						if (preg_match('/\bmasquer\b/', $ul->class))
 						{
 							$class = '';
 						}
@@ -4539,12 +4539,12 @@ function majLanguesActives($racine, $urlRacine, $langues, $initIncPhpFourni = ''
 				{
 					if (in_array($langueAccueil, $langues))
 					{
-						$initIncPhp = preg_replace('/^\s*(#|\/\/)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']') . ')/m', '$2', $initIncPhp);
+						$initIncPhp = preg_replace('~^\s*(#|//)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']', '~') . ')~m', '$2', $initIncPhp);
 
 					}
 					else
 					{
-						$initIncPhp = preg_replace('/^\s*(#|\/\/)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']') . ')/m', '#$2', $initIncPhp);
+						$initIncPhp = preg_replace('~^\s*(#|//)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']', '~') . ')~m', '#$2', $initIncPhp);
 					}
 					
 					$cheminLangueAccueil = supprimeUrlRacine($urlRacine, $urlLangueAccueil);
@@ -6076,11 +6076,11 @@ Simule la fonction `basename()` sans dépendre de la locale. Merci à <http://dr
 */
 function superBasename($chemin, $suffixe = '')
 {
-	$chemin = preg_replace('|^.+[\\/]|', '', $chemin);
+	$chemin = preg_replace('#^.+[\\/]#', '', $chemin);
 	
 	if ($suffixe)
 	{
-		$chemin = preg_replace('|' . preg_quote($suffixe) . '$|', '', $chemin);
+		$chemin = preg_replace('/' . preg_quote($suffixe, '/') . '$/', '', $chemin);
 	}
 	
 	return $chemin;
@@ -6203,7 +6203,7 @@ Supprime s'il y a lieu l'URL racine du début de l'URL fournie, et retourne le r
 */
 function supprimeUrlRacine($urlRacine, $urlAanalyser)
 {
-	return preg_replace('#^' . preg_quote($urlRacine) . '/?#', '', $urlAanalyser);
+	return preg_replace('#^' . preg_quote($urlRacine, '#') . '/?#', '', $urlAanalyser);
 }
 
 /*
@@ -6527,7 +6527,7 @@ Recherche un index (par exemple `index.php`) pour l'URL fournie. Si un index a �
 */
 function urlAvecIndex($url)
 {
-	if (preg_match('|/$|', $url))
+	if (preg_match('#/$#', $url))
 	{
 #		$fichiersIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
 #		
@@ -6585,7 +6585,7 @@ function urlExiste($url)
 		$enTetes = $http_response_header[0];
 	}
 	
-	return preg_match('~^HTTP/\d+\.\d+\s+[23]~', $enTetes);
+	return preg_match('#^HTTP/\d+\.\d+\s+[23]#', $enTetes);
 }
 
 /*
@@ -6639,7 +6639,7 @@ function urlParente()
 {
 	$urlSansGet = url(FALSE);
 	
-	if (preg_match('|/$|', $urlSansGet))
+	if (preg_match('#/$#', $urlSansGet))
 	{
 		$urlParente = substr($urlSansGet, 0, -1);
 	}
@@ -6723,7 +6723,7 @@ function variablesAaffecterAuDebut()
 	$url = url();
 	$urlSansGet = url(FALSE);
 	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
-	$urlSansIndexSansGet = preg_replace("|(?<=/)index\.php$|", "", $urlSansGet);';
+	$urlSansIndexSansGet = preg_replace("#(?<=/)index\.php$#", "", $urlSansGet);';
 	$variables .= variablesAvantConfig();
 	
 	return $variables;

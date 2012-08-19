@@ -231,7 +231,7 @@ if (isset($_POST['porteDocumentsCopieConfirmation']))
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Copie de %2\$s impossible."), '<code>' . securiseTexte($fichierDeDestination) . '</code>', '<code>' . securiseTexte($fichierSource) . '</code>') . "</li>\n";
 			}
-			elseif (preg_match("|^$fichierSource/|", $fichierDeDestination))
+			elseif (strpos($fichierDeDestination, "$fichierSource/") === 0)
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), '<code>' . securiseTexte($fichierSource) . '</code>', '<code>' . securiseTexte($fichierDeDestination) . '</code>') . "</li>\n";
 			}
@@ -709,7 +709,7 @@ if (isset($_POST['porteDocumentsRenommage']))
 		{
 			if ($copie)
 			{
-				if (preg_match("|^$ancienNom/|", $nouveauNom))
+				if (strpos($nouveauNom, "$ancienNom/") === 0)
 				{
 					$messagesScript .= '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), '<code>' . securiseTexte($ancienNom) . '</code>', '<code>' . securiseTexte($nouveauNom) . '</code>') . "</li>\n";
 				}
@@ -977,7 +977,7 @@ if (isset($_POST['porteDocumentsCreation']))
 					
 					if (($fichierAcreerType == 'FichierModeleHtml' && file_exists($fichierAcreerNom)) || ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierAcreerNom) && file_exists($fichierMarkdownAcreerNom)))
 					{
-						$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
+						$cheminInclude = preg_replace('#[^/]+/#', '../', $cheminPage);
 						$cheminInclude = dirname($cheminInclude);
 						
 						if ($cheminInclude == '.')

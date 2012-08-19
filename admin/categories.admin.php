@@ -570,7 +570,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$dossierPageCategorie = '..';
 						}
 						
-						$cheminInclude = preg_replace('|[^/]+/|', '../', $dossierPageCategorie);
+						$cheminInclude = preg_replace('#[^/]+/#', '../', $dossierPageCategorie);
 						$cheminInclude = dirname($cheminInclude);
 						
 						if ($cheminInclude == '.')

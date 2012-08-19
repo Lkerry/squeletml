@@ -140,7 +140,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$j]['intermediaireNom']);
 						$minivignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . encodeTexte($idGalerieDossier), FALSE, $nombreDeColonnes, $tableauGalerie[$j], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, FALSE, FALSE);
-						preg_match('|(<img[^>]+/>)|', $minivignette, $resultat);
+						preg_match('#(<img[^>]+/>)#', $minivignette, $resultat);
 						$minivignette = $resultat[1];
 					
 						if ($adminActiverInfobulle['apercuGalerie'])
@@ -168,7 +168,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 						$config = "<br />\n<strong>" . T_("Configuration:") . "</strong><br />\n" . $sectionConfig . $config;
 						$infobulle = str_replace('</span>', $config . '</span>', $infobulle);
-						$minivignette = preg_replace('|(<img[^>]+/>)|', $minivignette, $infobulle);
+						$minivignette = preg_replace('#(<img[^>]+/>)#', $minivignette, $infobulle);
 						$corpsMinivignettes .= $minivignette;
 					}
 				
@@ -517,7 +517,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								$renommer = FALSE;
 								$typeMime = typeMime($cheminGalerie . '/' . $fichier);
 							
-								if (($renommerTout || (!preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !preg_match('/-vignette\.' . $infoFichier['extension'] . '$/', $fichier))) && adminImageValide($typeMime))
+								if (($renommerTout || (!preg_match('/-original\.' . preg_quote($infoFichier['extension'], '/') . '$/', $fichier) && !preg_match('/-vignette\.' . preg_quote($infoFichier['extension'], '/') . '$/', $fichier))) && adminImageValide($typeMime))
 								{
 									$renommer = TRUE;
 								}
@@ -584,7 +584,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 								$nouveauNom = preg_replace('/-original\..{3,4}$/', '.', $fichier) . $infoFichier['extension'];
 			
-								if (!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\.' . $infoFichier['extension'] . '$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
+								if (!is_dir($cheminGalerie . '/' . $fichier) && preg_match('/-original\.' . preg_quote($infoFichier['extension'], '/') . '$/', $fichier) && !file_exists($cheminGalerie . '/' . $nouveauNom))
 								{
 									$nettete = array (
 										'nettete' => FALSE,
@@ -752,7 +752,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							
 									$typeMime = typeMime($cheminTatouage . '/' . $fichier);
 							
-									if (preg_match('/-vignette-(precedent|suivant)\.' . $infoFichier['extension'] . '$/', $fichier) && adminImageValide($typeMime))
+									if (preg_match('/-vignette-(precedent|suivant)\.' . preg_quote($infoFichier['extension'], '/') . '$/', $fichier) && adminImageValide($typeMime))
 									{
 										$messagesScript .= adminUnlink($cheminTatouage . '/' . $fichier);
 									}
@@ -962,7 +962,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						{
 							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
 							$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . encodeTexte($idDossier), FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
-							preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
+							preg_match('#(<img[^>]+/>)#', $vignette, $resultat);
 							$vignette = '<div class="configGraphiqueVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueVignette -->\n";
 						}
 						else
@@ -1326,7 +1326,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						{
 							$typeMime = typeMime($racineImgSrc . '/' . $tableauGalerie[$i]['intermediaireNom']);
 							$vignette = image($racine, $urlRacine, dirname($cheminConfigGalerie), $urlRacine . '/site/fichiers/galeries/' . encodeTexte($idDossier), FALSE, $nombreDeColonnes, $tableauGalerie[$i], $typeMime, 'vignette', '', $galerieQualiteJpg, $galerieCouleurAlloueeImage, $galerieExifAjout, $galerieExifDonnees, $galerieLegendeAutomatique, $galerieLegendeEmplacement, $galerieLegendeMarkdown, $galerieLienOriginalEmplacement, $galerieLienOriginalJavascript, $galerieLienOriginalTelecharger, $galerieAccueilJavascript, $galerieNavigation, '', $galerieDimensionsVignette, $galerieForcerDimensionsVignette, TRUE, FALSE);
-							preg_match('|(<img[^>]+/>)|', $vignette, $resultat);
+							preg_match('#(<img[^>]+/>)#', $vignette, $resultat);
 							$vignette = '<div class="configGraphiqueSimplifieeVignette">' . $resultat[1] . "</div><!-- /.configGraphiqueSimplifieeVignette -->\n";
 						}
 						else
@@ -1704,7 +1704,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$cheminPage = '..';
 				}
 				
-				$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
+				$cheminInclude = preg_replace('#[^/]+/#', '../', $cheminPage);
 				$cheminInclude = dirname($cheminInclude);
 			
 				if ($cheminInclude == '.')
