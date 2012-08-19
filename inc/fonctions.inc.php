@@ -1739,6 +1739,14 @@ function decodeTexte($texte)
 }
 
 /*
+Fonction inverse de `encodeTexteGet()`.
+*/
+function decodeTexteGet($texte)
+{
+	return base64_decode(strtr($texte, '-_,', '+/='));
+}
+
+/*
 Fonction opposée à `securiseTexte()`. Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour que les entités HTML spéciales soient converties en caractères, sinon si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été désécurisé, sinon si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
 */
 function desecuriseTexte($texte)
@@ -1829,6 +1837,16 @@ function encodeTexte($texte, $encoderBarreOblique = FALSE)
 	}
 	
 	return '';
+}
+
+/*
+Encode le texte fourni pour pouvoir l'utiliser sans problème comme valeur d'un paramètre `GET` dans une URL. Par exemple, un nom de fichier `a%3Fz.txt` serait encodé `a%253Fz.txt` par la fonction `encodeTexte()`. Passé par paramètre `GET` dans une URL, la valeur récupérée serait `a%3Fz.txt` puisque la chaîne `%25` aurait été interprétée durant le processus. Après utilisation de la fonction `decodeTexte()`, le résultat obtenu serait `a?z.txt`, donc différent de la valeur de départ. Ce problème n'existe pas avec la fonction `encodeTexteGet()`.
+
+La fonction inverse est `decodeTexteGet()`.
+*/
+function encodeTexteGet($texte)
+{
+	return strtr(base64_encode($texte), '+/=', '-_,');
 }
 
 /*
@@ -2188,16 +2206,16 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $ga
 			
 			if (file_exists($cheminOriginal))
 			{
-				$urlOriginal = "site/fichiers/galeries/" . encodeTexte("$idGalerieDossier/$nomOriginal");
+				$urlOriginal = "site/fichiers/galeries/$idGalerieDossier/$nomOriginal";
 				
 				if ($galerieLienOriginalTelecharger)
 				{
-					$urlOriginal = "$urlRacine/telecharger.php?fichier=$urlOriginal";
+					$urlOriginal = "$urlRacine/telecharger.php?fichier=" . encodeTexteGet($urlOriginal);
 					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(@filesize($cheminOriginal))) . "</a></li>\n";
 				}
 				else
 				{
-					$urlOriginal = "$urlRacine/$urlOriginal";
+					$urlOriginal = $urlRacine . '/' . encodeTexte($urlOriginal);
 					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(@filesize($cheminOriginal))) . "</a></li>\n";
 				}
 			}
@@ -2908,7 +2926,7 @@ function image(
 			
 			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
 			{
-				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . encodeTexte(preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom));
+				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . encodeTexteGet(preg_replace('#^' . preg_quote($racine, '#') . '/#', '', $racineImgSrc . '/' . $originalNom));
 				$texteLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', "<em>$originalExtension</em>", octetsVersKio(@filesize($racineImgSrc . '/' . $originalNom)));
 				$texteAltLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original"), securiseTexte($titreImage));
 			}

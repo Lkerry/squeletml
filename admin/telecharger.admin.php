@@ -13,7 +13,7 @@ else
 
 if (isset($_GET['fichier']))
 {
-	$chemin = decodeTexte($_GET['fichier']);
+	$chemin = decodeTexteGet($_GET['fichier']);
 }
 else
 {

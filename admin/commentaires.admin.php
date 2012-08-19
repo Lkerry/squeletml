@@ -29,19 +29,19 @@ include $racineAdmin . '/inc/premier.inc.php';
 		else
 		{
 			$cheminRelatifPage = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($urlPage));
-			$lienEditionPage = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminRelatifPage) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminRelatifPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" width="16" height="16" /></a>';
+			$lienEditionPage = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifPage) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" width="16" height="16" /></a>';
 		}
 		
 		$messagesScript .= '<li>' . sprintf(T_("Page sélectionnée: %1\$s"), '<a href="' . $urlRacine . '/' . $valeurHrefUrlPage . '"><code>' . securiseTexte($urlPage) . '</code></a>' . $lienEditionPage) . "</li>\n";
 		
 		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $urlPage, '', TRUE);
 		$cheminRelatifConfigCommentaires = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigCommentaires);
-		$lienEditionConfigCommentaires = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminRelatifConfigCommentaires) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminRelatifConfigCommentaires)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" width="16" height="16" /></a>';
+		$lienEditionConfigCommentaires = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigCommentaires) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigCommentaires)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" width="16" height="16" /></a>';
 		$messagesScript .= '<li>' . sprintf(T_("Fichier de configuration des commentaires associé: %1\$s"), '<code>' . securiseTexte($cheminRelatifConfigCommentaires) . '</code>' . $lienEditionConfigCommentaires) . "</li>\n";
 		
 		$cheminConfigAbonnementsCommentaires = cheminConfigAbonnementsCommentaires($cheminConfigCommentaires);
 		$cheminRelatifConfigAbonnementsCommentaires = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigAbonnementsCommentaires);
-		$lienEditionConfigAbonnementsCommentaires = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminRelatifConfigAbonnementsCommentaires) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminRelatifConfigAbonnementsCommentaires)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigAbonnementsCommentaires)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigAbonnementsCommentaires)) . '" width="16" height="16" /></a>';
+		$lienEditionConfigAbonnementsCommentaires = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigAbonnementsCommentaires) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigAbonnementsCommentaires)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigAbonnementsCommentaires)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigAbonnementsCommentaires)) . '" width="16" height="16" /></a>';
 		$messagesScript .= '<li>' . sprintf(T_("Fichier de configuration des abonnements aux notifications associé: %1\$s"), '<code>' . securiseTexte($cheminRelatifConfigAbonnementsCommentaires) . '</code>' . $lienEditionConfigAbonnementsCommentaires) . "</li>\n";
 	}
 	else

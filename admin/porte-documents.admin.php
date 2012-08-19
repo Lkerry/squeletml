@@ -24,7 +24,7 @@ $getValeur = '';
 
 if (isset($_GET['valeur']))
 {
-	$getValeur = decodeTexte($_GET['valeur']);
+	$getValeur = decodeTexteGet($_GET['valeur']);
 }
 
 include $racineAdmin . '/inc/premier.inc.php';
@@ -63,7 +63,7 @@ else
 
 if (isset($_GET['dossierCourant']))
 {
-	$dossierCourant = decodeTexte($_GET['dossierCourant']);
+	$dossierCourant = decodeTexteGet($_GET['dossierCourant']);
 }
 elseif (isset($_POST['porteDocumentsDossierCourant']))
 {
@@ -77,7 +77,7 @@ if (!isset($dossierCourant) || !file_exists($dossierCourant) || !is_dir($dossier
 
 if (!empty($dossierCourant))
 {
-	$dossierCourantDansUrl = '&amp;dossierCourant=' . encodeTexte($dossierCourant);
+	$dossierCourantDansUrl = '&amp;dossierCourant=' . encodeTexteGet($dossierCourant);
 }
 else
 {
@@ -833,7 +833,7 @@ if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimeP
 					
 					if (adminEstEditable($dossier . '/' . $nomFichier))
 					{
-						$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($dossier . '/' . $nomFichier) . $dossierCourantDansUrl . '#messages">' . T_("Éditer le fichier.") . "</a></li>\n";
+						$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($dossier . '/' . $nomFichier) . $dossierCourantDansUrl . '#messages">' . T_("Éditer le fichier.") . "</a></li>\n";
 					}
 				}
 			}
@@ -946,11 +946,11 @@ if (isset($_POST['porteDocumentsCreation']))
 						
 						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 						{
-							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($fichierAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page", 3)));
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page", 3)));
 						}
 						else
 						{
-							$messagesScript .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($fichierAcreerNom) . $dossierCourantDansUrl . '#messages">' . T_("Vous pouvez l'éditer.") . "</a>";
+							$messagesScript .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierAcreerNom) . $dossierCourantDansUrl . '#messages">' . T_("Vous pouvez l'éditer.") . "</a>";
 						}
 						
 						$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
@@ -966,7 +966,7 @@ if (isset($_POST['porteDocumentsCreation']))
 						{
 							$messagesScript .= '<li>'; // Ouverture de `<li>`.
 							$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), '<code>' . securiseTexte($fichierMarkdownAcreerNom) . '</code>');
-							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($fichierMarkdownAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page.mkd", 3)));
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierMarkdownAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page.mkd", 3)));
 							$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
 						}
 						else
@@ -1285,7 +1285,7 @@ if ($actionEditer)
 	{
 		if (file_exists($getValeur))
 		{
-			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications»."), '<a href="' . securiseTexte($getValeur) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($getValeur)) . '"><code>' . securiseTexte($getValeur) . '</code></a> ' . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
+			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications»."), '<a href="' . encodeTexte($getValeur) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($getValeur)) . '"><code>' . securiseTexte($getValeur) . '</code></a> ' . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
 		}
 		else
 		{
@@ -1450,7 +1450,7 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 			if (@fwrite($fic, $_POST['porteDocumentsContenuFichier']) !== FALSE)
 			{
 				$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
-				$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages">' . T_("Éditer à nouveau le fichier.") . "</a></li>\n";
+				$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages">' . T_("Éditer à nouveau le fichier.") . "</a></li>\n";
 				$messagesScript .= '<li><a href="' . encodeTexte($porteDocumentsEditionNom) . '">' . T_("Afficher le fichier.") . "</a></li>\n";
 			}
 			else
@@ -1470,7 +1470,7 @@ if (isset($_POST['porteDocumentsEditionSauvegarder']))
 		if ($messageErreurEditionAafficher)
 		{
 			$messagesScript .= $messageErreurEdition;
-			$messagesScript .= '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages') . "</li>\n";
+			$messagesScript .= '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages') . "</li>\n";
 		}
 	}
 	
@@ -1972,12 +1972,12 @@ foreach ($listeDossiersPourListe as $listeDossier)
 	$dossierMisEnForme .= '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($listeDossier) . "\"$disabled />";
 	$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	
-	$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexte($listeDossier) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+	$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet($listeDossier) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 	$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	
 	if (adminEmplacementModifiable($listeDossier, $adminDossierRacinePorteDocuments))
 	{
-		$dossierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexte($listeDossier) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+		$dossierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet($listeDossier) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 	}
 	else
 	{
@@ -1992,7 +1992,7 @@ foreach ($listeDossiersPourListe as $listeDossier)
 		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	
-	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$adminAction" . $adminSymboleUrl . 'action=parcourir&amp;valeur=' . encodeTexte($listeDossier) . '&amp;dossierCourant=' . encodeTexte($listeDossier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeDossier)) . '"><code>' . securiseTexte($listeDossier) . "</code></a></li>\n";
+	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$adminAction" . $adminSymboleUrl . 'action=parcourir&amp;valeur=' . encodeTexteGet($listeDossier) . '&amp;dossierCourant=' . encodeTexteGet($listeDossier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeDossier)) . '"><code>' . securiseTexte($listeDossier) . "</code></a></li>\n";
 	echo $dossierMisEnForme;
 	$classe = ($classe == 'impair') ? 'pair' : 'impair';
 }

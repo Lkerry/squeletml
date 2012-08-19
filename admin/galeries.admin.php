@@ -122,7 +122,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				if ($cheminConfigGalerie)
 				{
 					$fichierDeConfiguration .= '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($idGalerie) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
-					$fichierDeConfiguration .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte('../site/fichiers/galeries/' . $idGalerieDossier . '/' . superBasename($cheminConfigGalerie)) . '&amp;dossierCourant=' . encodeTexte('../site/fichiers/galeries/' . $idGalerieDossier) . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
+					$fichierDeConfiguration .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier . '/' . superBasename($cheminConfigGalerie)) . '&amp;dossierCourant=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier) . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 				}
 				else
 				{
@@ -192,7 +192,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$tableauInfosGaleries[$idGalerieDossier] = '<li class="listeGaleriesTitre">' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= "<ul>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Identifiant: %1\$s"), securiseTexte($idGalerie)) . "</li>\n";
-				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Dossier: %1\$s"), '<a href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexte('../site/fichiers/galeries/' . $idGalerieDossier) . '&amp;dossierCourant=' . encodeTexte('../site/fichiers/galeries/' . $idGalerieDossier) . '#fichiersEtDossiers"><code>' . securiseTexte($idGalerieDossier) . '</code></a>') . "</li>\n";
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Dossier: %1\$s"), '<a href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier) . '&amp;dossierCourant=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier) . '#fichiersEtDossiers"><code>' . securiseTexte($idGalerieDossier) . '</code></a>') . "</li>\n";
 				
 				if (!empty($infosGalerie['url']))
 				{
@@ -210,7 +210,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				if (strpos($urlGalerieAafficher, 'galerie.php?') !== 0)
 				{
 					$cheminPageGalerie = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($urlGalerieAafficher));
-					$tableauInfosGaleries[$idGalerieDossier] .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPageGalerie) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminPageGalerie)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageGalerie)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageGalerie)) . '" width="16" height="16" /></a>';
+					$tableauInfosGaleries[$idGalerieDossier] .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPageGalerie) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminPageGalerie)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageGalerie)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageGalerie)) . '" width="16" height="16" /></a>';
 				}
 				
 				$tableauInfosGaleries[$idGalerieDossier] .= "</li>\n";
@@ -1665,7 +1665,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<li>' . T_("Un fichier de configuration existe pour cette galerie:");
 			echo "<ul>\n";
 			echo '<li><a href="galeries.admin.php?action=configGraphique&amp;id=' . filtreChaine($id) . '#messages">' . T_("Modifier graphiquement le fichier de configuration.") . "</a></li>\n";
-			echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte('../site/fichiers/galeries/' . $idDossier . '/' . superBasename($cheminConfigGalerie)) . '&amp;dossierCourant=' . encodeTexte('../site/fichiers/galeries/' . $idDossier) . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
+			echo '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet('../site/fichiers/galeries/' . $idDossier . '/' . superBasename($cheminConfigGalerie)) . '&amp;dossierCourant=' . encodeTexteGet('../site/fichiers/galeries/' . $idDossier) . '#messages">' . T_("Modifier manuellement le fichier de configuration dans le porte-documents.") . "</a></li>\n";
 			echo "</ul></li>\n";
 		
 			echo "</ul>\n";
@@ -1779,7 +1779,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						if (file_exists($cheminPage . '/' . $page))
 						{
 							$actionValide = TRUE;
-							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . securiseTexte($cheminPage . '/' . $page) . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexte($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . securiseTexte($cheminPage . '/' . $page) . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexteGet($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
 						}
 						elseif ($fic = @fopen($cheminPage . '/' . $page, 'a'))
 						{
@@ -1793,7 +1793,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 							fputs($fic, $contenu);
 							fclose($fic);
-							$messagesScript .= '<li>' . sprintf(T_("Création du modèle de page %1\$s effectuée. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$cheminPage/$page</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexte($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("Création du modèle de page %1\$s effectuée. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$cheminPage/$page</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPage . '/' . $page) . '&amp;dossierCourant=' . encodeTexteGet($cheminPage) . '#messages', $urlGalerie) . "</li>\n";
 						}
 						else
 						{
@@ -1833,7 +1833,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . encodeTexte($cheminGalerie) . '&amp;action=date">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), '<code>' . securiseTexte($id) . '</code>') . "</a></li>\n";
+				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . encodeTexteGet($cheminGalerie) . '&amp;action=date">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), '<code>' . securiseTexte($id) . '</code>') . "</a></li>\n";
 			}
 		
 			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), '<code>' . securiseTexte($id) . '</code>') . "</li>\n" . $messagesScript;

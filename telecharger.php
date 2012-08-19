@@ -4,7 +4,7 @@ include_once $racine . '/inc/fonctions.inc.php';
 
 if (isset($_GET['fichier']))
 {
-	$chemin = $racine . '/' . decodeTexte($_GET['fichier']);
+	$chemin = $racine . '/' . decodeTexteGet($_GET['fichier']);
 	$nom = superBasename($chemin);
 	$typeMime = typeMime($chemin);
 	

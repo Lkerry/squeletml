@@ -333,7 +333,7 @@ if (isset($_POST['envoyerCommentaire']))
 							
 							if (!empty($infosDestinataire['idAbonnement']))
 							{
-								$infosCourriel['message'] .= '<p><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexte(supprimeUrlRacine($urlRacine, variableGet(0, $url, 'action'))) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires.") . "</a></p>\n";
+								$infosCourriel['message'] .= '<p><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, variableGet(0, $url, 'action'))) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires.") . "</a></p>\n";
 							}
 							
 							courriel($infosCourriel);

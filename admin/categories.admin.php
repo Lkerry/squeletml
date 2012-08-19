@@ -56,7 +56,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if (strpos($categorieInfos['url'], 'categorie.php?') !== 0)
 					{
 						$cheminPageCategorie = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($categorieInfos['url']));
-						$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPageCategorie) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminPageCategorie)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" width="16" height="16" /></a>';
+						$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPageCategorie) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminPageCategorie)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" width="16" height="16" /></a>';
 					}
 					
 					$listePages .= "</li>\n";
@@ -177,7 +177,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$page = rtrim($page);
 							$listePages .= '<li><label for="inputUrlPages-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrlPages-' . $i . '-' . $j . '" class="long" type="text" name="urlPages[' . $i . '][]" value="' . securiseTexte($page) . '" />';
 							$cheminPage = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($page));
-							$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($cheminPage) . '&amp;dossierCourant=' . encodeTexte(dirname($cheminPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" width="16" height="16" /></a>';
+							$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPage) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" width="16" height="16" /></a>';
 							$listePages .= "</li>\n";
 							$j++;
 						}
@@ -590,7 +590,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (file_exists($dossierPageCategorie . '/' . $pageCategorie))
 						{
-							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . securiseTexte($dossierPageCategorie . '/' . $pageCategorie) . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexte($dossierParentPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("La page web %1\$s existe déjà. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), '<code>' . securiseTexte($dossierPageCategorie . '/' . $pageCategorie) . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexteGet($dossierParentPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
 						}
 						elseif ($fic = @fopen($dossierPageCategorie . '/' . $pageCategorie, 'a'))
 						{
@@ -603,7 +603,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$contenu .= '<?php include $racine . "/inc/dernier.inc.php"; ?>';
 							fputs($fic, $contenu);
 							fclose($fic);
-							$messagesScript .= '<li>' . sprintf(T_("Création du modèle de page %1\$s effectuée. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$dossierPageCategorie/$pageCategorie</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexte($dossierPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
+							$messagesScript .= '<li>' . sprintf(T_("Création du modèle de page %1\$s effectuée. Vous pouvez <a href=\"%2\$s\">éditer le fichier</a> ou <a href=\"%3\$s\">visiter la page</a>."), "<code>$dossierPageCategorie/$pageCategorie</code>", 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($dossierPageCategorie . '/' . $pageCategorie) . '&amp;dossierCourant=' . encodeTexteGet($dossierPageCategorie) . '#messages', $urlRacine . '/' . $urlNouvelleCat) . "</li>\n";
 						}
 						else
 						{
