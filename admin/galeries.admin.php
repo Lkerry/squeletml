@@ -23,6 +23,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<li><a href="#configAutomatique"><?php echo T_("Configuration automatique"); ?></a></li>
 		<li><a href="#modele"><?php echo T_("Modèle"); ?></a></li>
 		<li><a href="#sauvegarder"><?php echo T_("Sauvegarder"); ?></a></li>
+		<li><a href="#page"><?php echo T_("Haut"); ?></a></li>
 	</ul>
 </div>
 

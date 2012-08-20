@@ -15,6 +15,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<li><a href="#cache"><?php echo T_("Cache"); ?></a></li>
 		<li><a href="#cron"><?php echo T_("Cron"); ?></a></li>
 		<li><a href="#sauvegarde"><?php echo T_("Sauvegarde"); ?></a></li>
+		<li><a href="#page"><?php echo T_("Haut"); ?></a></li>
 	</ul>
 </div>
 
