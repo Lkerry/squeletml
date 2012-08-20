@@ -268,7 +268,7 @@ if (isset($_POST['envoyerCommentaire']))
 				
 				$listeDestinataires = array ();
 				
-				if ($commentairesNotification)
+				if ($commentairesNotification && !$moderationCommentaires)
 				{
 					$listeAbonnements = super_parse_ini_file($cheminConfigAbonnementsCommentaires, TRUE);
 					
