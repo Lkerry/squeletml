@@ -914,9 +914,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						$contenuFichier .= 'nom=';
 						
-						if (isset($_POST['nom'][$cle]))
+						if (!empty($_POST['nom'][$cle]))
 						{
 							$contenuFichier .= securiseTexte($_POST['nom'][$cle]);
+						}
+						elseif ($commentairesChampsObligatoires['nom'])
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, le nom est obligatoire, mais celui associé à l'abonnement du courriel %1\$s est vide."), '<code>' . $courrielAbonnement . '</code>') . "</li>\n";
 						}
 						
 						$contenuFichier .= "\n";
