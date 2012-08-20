@@ -434,6 +434,10 @@ a.porteDocumentsFichier {
 	text-decoration: none;
 }
 
+li.contenuFichierPourSauvegarde > p:first-child {
+	margin-top: 0px;
+}
+
 .porteDocumentsListe {
 	padding-left: 0px;
 }
