@@ -475,8 +475,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				foreach ($listeAbonnements as $courrielAbonnement => $infosAbonnement)
 				{
-					$codeListeAbonnements .= '<li class="liParent"><span class="bDtitre"><label for="inputCourriel-' . $i . '">' . T_("Courriel:") . '</label> <input id="inputCourriel-' . $i . '" type="text" name="courriel[' . $i . ']" value="' . $courrielAbonnement . "\" /></span>\n";
-					$codeListeAbonnements .= "<ul class=\"nonTriable bDcorps afficher\">\n";
+					$codeListeAbonnements .= '<li class="liParent"><label for="inputCourriel-' . $i . '">' . T_("Courriel:") . '</label> <input id="inputCourriel-' . $i . '" type="text" name="courriel[' . $i . ']" value="' . $courrielAbonnement . "\" />\n";
+					$codeListeAbonnements .= "<ul class=\"nonTriable\">\n";
 					
 					// Nom.
 					
