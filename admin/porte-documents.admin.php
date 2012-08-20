@@ -1285,7 +1285,7 @@ if ($actionEditer)
 	{
 		if (file_exists($getValeur))
 		{
-			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications»."), '<a href="' . encodeTexte($getValeur) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($getValeur)) . '"><code>' . securiseTexte($getValeur) . '</code></a> ' . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
+			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications»."), '<a class="lienSurCode" href="' . encodeTexte($getValeur) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($getValeur)) . '"><code>' . securiseTexte($getValeur) . '</code></a> ' . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
 		}
 		else
 		{
@@ -1940,7 +1940,7 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 				}
 				else
 				{
-					echo sprintf(T_("<strong>Dossier</strong> %1\$s"), '<a class="porteDocumentsFichier" href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet($listeFormateeFichier) . '&amp;dossierCourant=' . encodeTexteGet($listeFormateeFichier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeFormateeFichier)) . '"><code>' . securiseTexte($listeFormateeFichier) . '</code></a>') . "\n";
+					echo sprintf(T_("<strong>Dossier</strong> %1\$s"), '<a class="lienSurCode" href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet($listeFormateeFichier) . '&amp;dossierCourant=' . encodeTexteGet($listeFormateeFichier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeFormateeFichier)) . '"><code>' . securiseTexte($listeFormateeFichier) . '</code></a>') . "\n";
 				}
 				
 				if (!empty($listeFormateeContenuFichier))
@@ -2037,7 +2037,7 @@ foreach ($listeDossiersPourListe as $listeDossier)
 		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	
-	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$adminAction" . $adminSymboleUrl . 'action=parcourir&amp;valeur=' . encodeTexteGet($listeDossier) . '&amp;dossierCourant=' . encodeTexteGet($listeDossier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeDossier)) . '"><code>' . securiseTexte($listeDossier) . "</code></a></li>\n";
+	$dossierMisEnForme .= "<a  class=\"lienSurCode\" href=\"$adminAction" . $adminSymboleUrl . 'action=parcourir&amp;valeur=' . encodeTexteGet($listeDossier) . '&amp;dossierCourant=' . encodeTexteGet($listeDossier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeDossier)) . '"><code>' . securiseTexte($listeDossier) . "</code></a></li>\n";
 	echo $dossierMisEnForme;
 	$classe = ($classe == 'impair') ? 'pair' : 'impair';
 }

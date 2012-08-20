@@ -142,10 +142,6 @@ h6 {
 	font-style: italic;
 }
 
-a, a code {
-	text-decoration: underline;
-}
-
 a:visited {
 	color: #551a8b;
 }
@@ -167,7 +163,7 @@ p {
 	font-weight: bold;
 }
 
-code {
+a.lienSurCode, code {
 	color: #0000E2;
 }
 
@@ -428,10 +424,6 @@ p#porteDocumentsBoutonEditionSauvegarder, p#porteDocumentsBoutonEditionAnnuler {
 div#porteDocumentsEditionOptions {
 	float: left;
 	width: 65%;
-}
-
-a.porteDocumentsFichier {
-	text-decoration: none;
 }
 
 li.contenuFichierPourSauvegarde > p:first-child {

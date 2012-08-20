@@ -49,7 +49,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$lienEditionPage = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifPage) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifPage)) . '" width="16" height="16" /></a>';
 		}
 		
-		$messagesScriptUrlPage .= '<li>' . sprintf(T_("Page sélectionnée: %1\$s"), '<a href="' . $urlRacine . '/' . $valeurHrefUrlPage . '"><code>' . securiseTexte($urlPage) . '</code></a>' . $lienEditionPage) . "</li>\n";
+		$messagesScriptUrlPage .= '<li>' . sprintf(T_("Page sélectionnée: %1\$s"), '<a class="lienSurCode" href="' . $urlRacine . '/' . $valeurHrefUrlPage . '"><code>' . securiseTexte($urlPage) . '</code></a>' . $lienEditionPage) . "</li>\n";
 		
 		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $urlPage, '', TRUE);
 		$cheminRelatifConfigCommentaires = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigCommentaires);
@@ -282,7 +282,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$codeListeCommentaires .= '<li id="' . $idCommentaire . '" class="liParent">' . "\n";
-					$codeListeCommentaires .= '<p class="bDtitre">' . sprintf(T_("%1\$s a écrit sur la page %2\$s le %3\$s à %4\$s:"), $auteurAffiche, '<a href="' . $urlRacine . '/' . $listePage . '#' . $idCommentaire . '">' . securiseTexte($listePage) . '</a>', $dateAffichee, $heureAffichee) . "</p>\n";
+					$codeListeCommentaires .= '<p>' . sprintf(T_("%1\$s a écrit sur la page %2\$s le %3\$s à %4\$s:"), $auteurAffiche, '<a class="lienSurCode" href="' . $urlRacine . '/' . $listePage . '"><code>' . securiseTexte($listePage) . '</code></a>', $dateAffichee, $heureAffichee) . "</p>\n";
 					
 					$message = '';
 					
@@ -297,7 +297,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$message = trim($message);
-					$codeListeCommentaires .= '<div class="bDcorps">' . "\n";
 					$codeListeCommentaires .= "<div class=\"message\">\n$message</div>\n";
 					$infosSupplementaires = array ();
 					
@@ -337,7 +336,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Supprimer") . "</a></li>\n";
 					$codeListeCommentaires .= "</ul>\n";
-					$codeListeCommentaires .= "</div><!-- /.bDcorps -->\n";
 					$codeListeCommentaires .= "</li>\n";
 					$nombreCommentaires++;
 				}

@@ -1246,7 +1246,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 					
-					$fichierMisEnForme .= '<a class="porteDocumentsFichier" href="' . encodeTexte("$dossierAparcourir/$fichier") . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($fichier)) . '"><code>' . securiseTexte($fichier) . "</code></a>\n";
+					$fichierMisEnForme .= '<a class="lienSurCode" href="' . encodeTexte("$dossierAparcourir/$fichier") . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($fichier)) . '"><code>' . securiseTexte($fichier) . "</code></a>\n";
 					$liste[$dossierAparcourir][] = $fichierMisEnForme;
 				}
 			}

@@ -192,7 +192,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$tableauInfosGaleries[$idGalerieDossier] = '<li class="listeGaleriesTitre">' . sprintf(T_("Galerie %1\$s:"), $i) . "\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= "<ul>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Identifiant: %1\$s"), securiseTexte($idGalerie)) . "</li>\n";
-				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Dossier: %1\$s"), '<a href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier) . '&amp;dossierCourant=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier) . '#fichiersEtDossiers"><code>' . securiseTexte($idGalerieDossier) . '</code></a>') . "</li>\n";
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Dossier: %1\$s"), '<a class="lienSurCode" href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier) . '&amp;dossierCourant=' . encodeTexteGet('../site/fichiers/galeries/' . $idGalerieDossier) . '#fichiersEtDossiers"><code>' . securiseTexte($idGalerieDossier) . '</code></a>') . "</li>\n";
 				
 				if (!empty($infosGalerie['url']))
 				{
@@ -205,7 +205,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				
 				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlGalerieAafficher, LANGUE_ADMIN);
-				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a href="' . $urlGalerie . '"><code>' . securiseTexte($urlGalerieAafficher) . '</code></a>');
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a class="lienSurCode" href="' . $urlGalerie . '"><code>' . securiseTexte($urlGalerieAafficher) . '</code></a>');
 				
 				if (strpos($urlGalerieAafficher, 'galerie.php?') !== 0)
 				{
