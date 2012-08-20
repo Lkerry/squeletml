@@ -449,7 +449,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!empty($messageDansConfig))
 					{
-						$contenuFichier .= "[$idCommentaire]\n";
+						$contenuFichier .= '[' . securiseTexte($idCommentaire) . "]\n";
 						
 						// IP.
 						
@@ -457,6 +457,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (!empty($_POST['ip'][$idCommentaire]))
 						{
+							$_POST['ip'][$idCommentaire] = securiseTexte($_POST['ip'][$idCommentaire]);
+							
 							// Le motif exact pour les adresses IP est beaucoup plus complexe, mais on ne vérifie ici que la forme générale.
 							if (!preg_match('/^\d{1,3}(\.\d{1,3}){3}$/', $_POST['ip'][$idCommentaire]))
 							{
@@ -474,6 +476,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (!empty($_POST['date'][$idCommentaire]))
 						{
+							$_POST['date'][$idCommentaire] = securiseTexte($_POST['date'][$idCommentaire]);
+							
 							if (!preg_match('/^\d+$/', $_POST['date'][$idCommentaire]))
 							{
 								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: la date %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['date'][$idCommentaire] . '</code>') . "</li>\n";
@@ -490,7 +494,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (isset($_POST['nom'][$idCommentaire]))
 						{
-							$contenuFichier .= $_POST['nom'][$idCommentaire];
+							$contenuFichier .= securiseTexte($_POST['nom'][$idCommentaire]);
 						}
 						
 						$contenuFichier .= "\n";
@@ -501,6 +505,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (!empty($_POST['courriel'][$idCommentaire]))
 						{
+							$_POST['courriel'][$idCommentaire] = securiseTexte($_POST['courriel'][$idCommentaire]);
+							
 							if (!courrielValide($_POST['courriel'][$idCommentaire]))
 							{
 								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le courriel %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['courriel'][$idCommentaire] . '</code>') . "</li>\n";
@@ -517,6 +523,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (!empty($_POST['site'][$idCommentaire]))
 						{
+							$_POST['site'][$idCommentaire] = securiseTexte($_POST['site'][$idCommentaire]);
+							
 							if (!siteWebValide($_POST['site'][$idCommentaire]))
 							{
 								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le site Web %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['site'][$idCommentaire] . '</code>') . "</li>\n";
@@ -548,7 +556,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (isset($_POST['languePage'][$idCommentaire]))
 						{
-							$contenuFichier .= $_POST['languePage'][$idCommentaire];
+							$contenuFichier .= securiseTexte($_POST['languePage'][$idCommentaire]);
 						}
 						
 						$contenuFichier .= "\n";
@@ -679,6 +687,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (!empty($courrielAbonnement))
 					{
+						$courrielAbonnement = securiseTexte($courrielAbonnement);
+						
 						if (!courrielValide($courrielAbonnement))
 						{
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le courriel %1\$s ne semble pas avoir une forme valide."), '<code>' . $courrielAbonnement . '</code>') . "</li>\n";
@@ -692,7 +702,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						if (isset($_POST['nom'][$cle]))
 						{
-							$contenuFichier .= $_POST['nom'][$cle];
+							$contenuFichier .= securiseTexte($_POST['nom'][$cle]);
 						}
 						
 						$contenuFichier .= "\n";
@@ -704,7 +714,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$_POST['idAbonnement'][$cle] = chaineAleatoire(16);
 						}
 						
-						$contenuFichier .= 'idAbonnement=' . $_POST['idAbonnement'][$cle] . "\n";
+						$contenuFichier .= 'idAbonnement=' . securiseTexte($_POST['idAbonnement'][$cle]) . "\n";
 						$contenuFichier .= "\n";
 					}
 				}
