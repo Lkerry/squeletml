@@ -276,7 +276,7 @@ if (isset($_POST['envoyerCommentaire']))
 					{
 						foreach ($listeAbonnements as $courrielAbonnement => $infosAbonnement)
 						{
-							if ($courrielAbonnement != $courriel && !empty($infosAbonnement['idAbonnement']))
+							if ($courrielAbonnement != $courriel && $courrielAbonnement != $commentairesDestinataireNotification && !empty($infosAbonnement['idAbonnement']))
 							{
 								$listeDestinataires[$courrielAbonnement] = array ();
 								$listeDestinataires[$courrielAbonnement]['idAbonnement'] = $infosAbonnement['idAbonnement'];
