@@ -282,7 +282,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$codeListeCommentaires .= '<li id="' . $idCommentaire . '" class="liParent">' . "\n";
-					$codeListeCommentaires .= '<p>' . sprintf(T_("%1\$s a écrit sur la page %2\$s le %3\$s à %4\$s:"), $auteurAffiche, '<a class="lienSurCode" href="' . $urlRacine . '/' . $listePage . '"><code>' . securiseTexte($listePage) . '</code></a>', $dateAffichee, $heureAffichee) . "</p>\n";
+					$codeListeCommentaires .= '<p><strong>' . sprintf(T_("%1\$s a écrit sur la page %2\$s le %3\$s à %4\$s:"), $auteurAffiche, '<a class="lienSurCode" href="' . $urlRacine . '/' . $listePage . '"><code>' . securiseTexte($listePage) . '</code></a>', $dateAffichee, $heureAffichee) . "</strong></p>\n";
 					
 					$message = '';
 					
@@ -297,7 +297,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$message = trim($message);
-					$codeListeCommentaires .= "<div class=\"message\">\n$message</div>\n";
+					$codeListeCommentaires .= "<div class=\"contenuCommentaireAmoderer\">\n$message</div>\n";
 					$infosSupplementaires = array ();
 					
 					if (!empty($infosCommentaire['courriel']))
@@ -317,7 +317,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!empty($infosSupplementaires))
 					{
-						$codeListeCommentaires .= "<ul>\n";
+						$codeListeCommentaires .= '<ul class="infosSupplementaires">' . "\n";
 						
 						foreach ($infosSupplementaires as $infoSupplementaire)
 						{
@@ -328,8 +328,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$pageGet = encodeTexteGet($listePage);
-					$codeListeCommentaires .= '<p>' . T_("Liste d'actions:") . "</p>\n";
-					$codeListeCommentaires .= "<ul>\n";
+					$codeListeCommentaires .= '<ul class="listeActions">' . "\n";
 					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=publier&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Publier") . "</a></li>\n";
 					
 					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
