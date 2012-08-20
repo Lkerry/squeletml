@@ -71,7 +71,7 @@ if (isset($_POST['envoyerCommentaire']))
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas spécifié de site Web.") . "</li>\n";
 	}
-	elseif (!empty($site) && !preg_match('#^https?://[^\s\.]+\.[^\s]+$#', $site))
+	elseif (!empty($site) && !siteWebValide($site))
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Votre site Web ne semble pas avoir une forme valide. Assurez-vous entre autres qu'il commence bien par <code>http://</code> ou <code>https://</code>.") . "</li>\n";

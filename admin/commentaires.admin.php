@@ -12,7 +12,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 	
 	<?php
-	$messagesScriptUrlPage = "<ul>\n";
+	$messagesScriptUrlPage = '';
 	$urlPage = '';
 	
 	if (!empty($_POST['page']))
@@ -48,8 +48,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 	{
 		$messagesScriptUrlPage .= '<li class="erreur">' . T_("Aucune page sélectionnée.") . "</li>\n";
 	}
-	
-	$messagesScriptUrlPage .= "</ul>\n";
 	
 	##################################################################
 	#
@@ -267,11 +265,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				$contenuFormulaire .= '<p>' . T_("Pour supprimer un commentaire, simplement effacer tout le contenu du message associé.") . "</p>\n";
 				
+				$contenuFormulaire .= '<p>' . T_("Prendre note que modifier le courriel dans ce formulaire ne va pas modifier le courriel abonné aux notifications, s'il y a lieu.") . "</p>\n";
+				
 				$contenuFormulaire .= '<p>' . T_("Aussi, la liste des commentaires est triable. Pour ce faire, cliquer sur la flèche correspondant au commentaire à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 				$contenuFormulaire .= "</div><!-- /.bDcorps -->\n";
 				$contenuFormulaire .= "</div><!-- /.aideAdminCommentaires -->\n";
 				
-				$contenuFormulaire .= $messagesScriptUrlPage;
+				$contenuFormulaire .= "<ul>\n$messagesScriptUrlPage</ul>\n";
 				
 				$contenuFormulaire .= "<fieldset>\n";
 				$contenuFormulaire .= '<legend>' . T_("Options") . "</legend>\n";
@@ -372,7 +372,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFormulaire .= "</div><!-- /.bDcorps -->\n";
 				$contenuFormulaire .= "</div><!-- /.aideAdminCommentaires -->\n";
 				
-				$contenuFormulaire .= $messagesScriptUrlPage;
+				$contenuFormulaire .= "<ul>\n$messagesScriptUrlPage</ul>\n";
 				
 				$contenuFormulaire .= "<fieldset>\n";
 				$contenuFormulaire .= '<legend>' . T_("Options") . "</legend>\n";
@@ -420,6 +420,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo "</div><!-- /.sousBoite -->\n";
 	}
 	
+	##################################################################
+	#
+	# Enregistrement des modifications aux commentaires.
+	#
+	##################################################################
 	if (isset($_POST['modifsCommentaires']))
 	{
 		$messagesScript = '';
@@ -450,8 +455,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						$contenuFichier .= 'ip=';
 						
-						if (isset($_POST['ip'][$idCommentaire]))
+						if (!empty($_POST['ip'][$idCommentaire]))
 						{
+							// Le motif exact pour les adresses IP est beaucoup plus complexe, mais on ne vérifie ici que la forme générale.
+							if (!preg_match('/^\d{1,3}(\.\d{1,3}){3}$/', $_POST['ip'][$idCommentaire]))
+							{
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: l'adresse IP %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['ip'][$idCommentaire] . '</code>') . "</li>\n";
+							}
+							
 							$contenuFichier .= $_POST['ip'][$idCommentaire];
 						}
 						
@@ -461,8 +472,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						$contenuFichier .= 'date=';
 						
-						if (isset($_POST['date'][$idCommentaire]))
+						if (!empty($_POST['date'][$idCommentaire]))
 						{
+							if (!preg_match('/^\d+$/', $_POST['date'][$idCommentaire]))
+							{
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: la date %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['date'][$idCommentaire] . '</code>') . "</li>\n";
+							}
+							
 							$contenuFichier .= $_POST['date'][$idCommentaire];
 						}
 						
@@ -483,8 +499,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						$contenuFichier .= 'courriel=';
 						
-						if (isset($_POST['courriel'][$idCommentaire]))
+						if (!empty($_POST['courriel'][$idCommentaire]))
 						{
+							if (!courrielValide($_POST['courriel'][$idCommentaire]))
+							{
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le courriel %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['courriel'][$idCommentaire] . '</code>') . "</li>\n";
+							}
+							
 							$contenuFichier .= $_POST['courriel'][$idCommentaire];
 						}
 						
@@ -494,8 +515,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						$contenuFichier .= 'site=';
 						
-						if (isset($_POST['site'][$idCommentaire]))
+						if (!empty($_POST['site'][$idCommentaire]))
 						{
+							if (!siteWebValide($_POST['site'][$idCommentaire]))
+							{
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le site Web %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['site'][$idCommentaire] . '</code>') . "</li>\n";
+							}
+							
 							$contenuFichier .= $_POST['site'][$idCommentaire];
 						}
 						
@@ -597,6 +623,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo adminMessagesScript($messagesScript);
 		echo "</div><!-- /.sousBoite -->\n";
 	}
+	##################################################################
+	#
+	# Enregistrement des modifications aux abonnements.
+	#
+	##################################################################
 	elseif (isset($_POST['modifsAbonnements']))
 	{
 		$messagesScript = '';
@@ -648,6 +679,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					if (!empty($courrielAbonnement))
 					{
+						if (!courrielValide($courrielAbonnement))
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le courriel %1\$s ne semble pas avoir une forme valide."), '<code>' . $courrielAbonnement . '</code>') . "</li>\n";
+						}
+						
 						$contenuFichier .= "[$courrielAbonnement]\n";
 						
 						// Nom.
@@ -663,13 +699,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						// Identifiant de l'abonnement.
 						
-						$contenuFichier .= 'idAbonnement=';
-						
-						if (isset($_POST['idAbonnement'][$cle]))
+						if (empty($_POST['idAbonnement'][$cle]))
 						{
-							$contenuFichier .= $_POST['idAbonnement'][$cle];
+							$_POST['idAbonnement'][$cle] = chaineAleatoire(16);
 						}
 						
+						$contenuFichier .= 'idAbonnement=' . $_POST['idAbonnement'][$cle] . "\n";
 						$contenuFichier .= "\n";
 					}
 				}

@@ -6072,6 +6072,14 @@ function siteEstEnMaintenance($cheminHtaccess)
 }
 
 /*
+Retourne `TRUE` si l'adresse du site Web a une forme valide, sinon retourne `FALSE`.
+*/
+function siteWebValide($site)
+{
+	return preg_match('#^https?://[^\s\.]+\.[^\s]+$#', $site);
+}
+
+/*
 Simule la fonction `basename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
 */
 function superBasename($chemin, $suffixe = '')
