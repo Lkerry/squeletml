@@ -220,7 +220,6 @@ if (isset($_POST['envoyerCommentaire']))
 			
 			$contenuConfigCommentaire .= "\n";
 			$contenuConfigCommentaire .= "languePage=$langue\n";
-			$contenuConfigCommentaire .= "aEteModere=0\n";
 			$contenuConfigCommentaire .= 'afficher=';
 			
 			if ($moderationCommentaires)
@@ -392,6 +391,22 @@ if (isset($_POST['envoyerCommentaire']))
 							$infosCourriel['message'] .= '<p>' . T_("La modération n'est pas activée. Ce commentaire a donc été publié.") . "</p>\n";
 						}
 						
+						$infosCourriel['message'] .= '<p>' . T_("Liste d'actions:") . "</p>\n";
+						$infosCourriel['message'] .= "<ul>\n";
+						$pageGet = encodeTexteGet(supprimeUrlRacine($urlRacine, variableGet(0, $url, 'action')));
+						
+						if ($moderationCommentaires)
+						{
+							$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=publier&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Publier") . "</a></li>\n";
+						}
+						else
+						{
+							$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=cacher&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Désactiver l'affichage en ligne de ce commentaire") . "</a></li>\n";
+						}
+						
+						$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
+						$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Supprimer") . "</a></li>\n";
+						$infosCourriel['message'] .= "</ul>\n";
 						courriel($infosCourriel);
 					}
 				}

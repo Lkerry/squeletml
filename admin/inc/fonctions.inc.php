@@ -2465,6 +2465,182 @@ function adminTableauCheminsCanoniques($tableauChemins)
 }
 
 /*
+Convertit un tableau de commentaires vers . Retourne 
+	array ('config' => $contenuFichier, 'messagesScript' => $messagesScript)
+*/
+function adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $tableauConfigCommentaires)
+{
+	$messagesScript = '';
+	$contenuFichier = '';
+	
+	foreach ($tableauConfigCommentaires as $idCommentaire => $infosCommentaire)
+	{
+		$message = '';
+		
+		if (!empty($infosCommentaire['message']) && is_array($infosCommentaire['message']))
+		{
+			foreach ($infosCommentaire['message'] as $ligneMessage)
+			{
+				$message .= "message[]=$ligneMessage\n";
+			}
+		}
+		
+		if (!empty($message))
+		{
+			$contenuFichier .= "[$idCommentaire]\n";
+			
+			// IP.
+			
+			$contenuFichier .= 'ip=';
+			
+			if (!empty($infosCommentaire['ip']))
+			{
+				// Le motif exact pour les adresses IP est beaucoup plus complexe, mais on ne vérifie ici que la forme générale.
+				if (!preg_match('/^\d{1,3}(\.\d{1,3}){3}$/', $infosCommentaire['ip']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: l'adresse IP %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['ip'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['ip'];
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Date.
+			
+			$contenuFichier .= 'date=';
+			
+			if (!empty($infosCommentaire['date']))
+			{
+				if (!preg_match('/^\d+$/', $infosCommentaire['date']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: la date %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['date'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['date'];
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Nom.
+			
+			$contenuFichier .= 'nom=';
+			
+			if (!empty($infosCommentaire['nom']))
+			{
+				$contenuFichier .= $infosCommentaire['nom'];
+			}
+			elseif ($commentairesChampsObligatoires['nom'])
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, le nom est obligatoire, mais celui associé au commentaire %1\$s est vide."), '<code>' . $idCommentaire . '</code>') . "</li>\n";
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Courriel.
+			
+			$contenuFichier .= 'courriel=';
+			
+			if (!empty($infosCommentaire['courriel']))
+			{
+				if (!courrielValide($infosCommentaire['courriel']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le courriel %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['courriel'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['courriel'];
+			}
+			elseif ($commentairesChampsObligatoires['courriel'])
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, le courriel est obligatoire, mais celui associé au commentaire %1\$s est vide."), '<code>' . $idCommentaire . '</code>') . "</li>\n";
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Site.
+			
+			$contenuFichier .= 'site=';
+			
+			if (!empty($infosCommentaire['site']))
+			{
+				if (!siteWebValide($infosCommentaire['site']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le site Web %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['site'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['site'];
+			}
+			elseif ($commentairesChampsObligatoires['site'])
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, le site est obligatoire, mais celui associé au commentaire %1\$s est vide."), '<code>' . $idCommentaire . '</code>') . "</li>\n";
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Notification.
+			
+			$contenuFichier .= 'notification=';
+			
+			if (isset($infosCommentaire['notification']) && $infosCommentaire['notification'] == 1)
+			{
+				$contenuFichier .= 1;
+			}
+			else
+			{
+				$contenuFichier .= 0;
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Langue de la page.
+			
+			$contenuFichier .= 'languePage=';
+			
+			if (!empty($infosCommentaire['languePage']))
+			{
+				$contenuFichier .= $infosCommentaire['languePage'];
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Afficher.
+			
+			$contenuFichier .= 'afficher=';
+			
+			if (!isset($infosCommentaire['afficher']))
+			{
+				if ($moderationCommentaires)
+				{
+					$infosCommentaire['afficher'] = 0;
+				}
+				else
+				{
+					$infosCommentaire['afficher'] = 1;
+				}
+			}
+			
+			if ($infosCommentaire['afficher'] == 1)
+			{
+				$contenuFichier .= 1;
+			}
+			else
+			{
+				$contenuFichier .= 0;
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Message.
+			$contenuFichier .= $message;
+			
+			$contenuFichier .= "\n";
+		}
+	}
+	
+	return array ('config' => $contenuFichier, 'messagesScript' => $messagesScript);
+}
+
+/*
 Retourne la taille en octets du dossier de cache de l'administration si le dossier est accessible, sinon retourne FALSE.
 */
 function adminTailleCache($racineAdmin)

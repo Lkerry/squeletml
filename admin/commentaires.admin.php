@@ -12,12 +12,29 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 	
 	<?php
+	if (!empty($_GET['gererType']) && $_GET['gererType'] == 'commentaires')
+	{
+		$_POST['gererType'] = $_GET['gererType'];
+	}
+	
+	if (!empty($_GET['page']))
+	{
+		$_POST['page'] = $_GET['page'];
+	}
+	
 	$messagesScriptUrlPage = '';
 	$urlPage = '';
 	
 	if (!empty($_POST['page']))
 	{
-		$urlPage = decodeTexte($_POST['page']);
+		if (!empty($_GET['page']))
+		{
+			$urlPage = decodeTexteGet($_POST['page']);
+		}
+		else
+		{
+			$urlPage = decodeTexte($_POST['page']);
+		}
 		
 		$lienEditionPage = '';
 		$valeurHrefUrlPage = $urlPage;
@@ -51,10 +68,157 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	##################################################################
 	#
+	# Publication en ligne d'un commentaire.
+	#
+	##################################################################
+	if (isset($_GET['action']) && $_GET['action'] == 'publier' && isset($_GET['id']) && !empty($urlPage))
+	{
+		$messagesScript = '';
+		$messagesScript .= $messagesScriptUrlPage;
+		$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+		
+		if ($listeCommentaires === FALSE)
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminConfigCommentaires) . '</code>') . "</li>\n";
+		}
+		elseif (isset($listeCommentaires[$_GET['id']]))
+		{
+			$listeCommentaires[$_GET['id']]['afficher'] = 1;
+			$messagesScript .= '<li>' . sprintf(T_("Le commentaire %1\$s a été publié."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
+			$contenuFichier = '';
+			$retourConversionTableauVersTexte = adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $listeCommentaires);
+			
+			if (!empty($retourConversionTableauVersTexte['config']))
+			{
+				$contenuFichier = $retourConversionTableauVersTexte['config'];
+			}
+			
+			if (!empty($retourConversionTableauVersTexte['messagesScript']))
+			{
+				$messagesScript .= $retourConversionTableauVersTexte['messagesScript'];
+			}
+			
+			if (!empty($contenuFichier))
+			{
+				$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigCommentaires, $contenuFichier);
+			}
+			else
+			{
+				$messagesScript .= adminUnlink($cheminConfigCommentaires);
+				$messagesScript .= adminUnlink($cheminConfigAbonnementsCommentaires);
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le commentaire %1\$s n'a pas été trouvé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
+		}
+		
+		echo adminMessagesScript($messagesScript, T_("Publication en ligne d'un commentaire"));
+	}
+	##################################################################
+	#
+	# Désactivation de l'affichage en ligne d'un commentaire.
+	#
+	##################################################################
+	elseif (isset($_GET['action']) && $_GET['action'] == 'cacher' && isset($_GET['id']) && !empty($urlPage))
+	{
+		$messagesScript = '';
+		$messagesScript .= $messagesScriptUrlPage;
+		$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+		
+		if ($listeCommentaires === FALSE)
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminConfigCommentaires) . '</code>') . "</li>\n";
+		}
+		elseif (isset($listeCommentaires[$_GET['id']]))
+		{
+			$listeCommentaires[$_GET['id']]['afficher'] = 0;
+			$messagesScript .= '<li>' . sprintf(T_("L'affichage du commentaire %1\$s a été désactivé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
+			$contenuFichier = '';
+			$retourConversionTableauVersTexte = adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $listeCommentaires);
+			
+			if (!empty($retourConversionTableauVersTexte['config']))
+			{
+				$contenuFichier = $retourConversionTableauVersTexte['config'];
+			}
+			
+			if (!empty($retourConversionTableauVersTexte['messagesScript']))
+			{
+				$messagesScript .= $retourConversionTableauVersTexte['messagesScript'];
+			}
+			
+			if (!empty($contenuFichier))
+			{
+				$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigCommentaires, $contenuFichier);
+			}
+			else
+			{
+				$messagesScript .= adminUnlink($cheminConfigCommentaires);
+				$messagesScript .= adminUnlink($cheminConfigAbonnementsCommentaires);
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le commentaire %1\$s n'a pas été trouvé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
+		}
+		
+		echo adminMessagesScript($messagesScript, T_("Désactivation de l'affichage en ligne d'un commentaire"));
+	}
+	##################################################################
+	#
+	# Suppression d'un commentaire.
+	#
+	##################################################################
+	elseif (isset($_GET['action']) && $_GET['action'] == 'supprimer' && isset($_GET['id']) && !empty($urlPage))
+	{
+		$messagesScript = '';
+		$messagesScript .= $messagesScriptUrlPage;
+		$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+		
+		if ($listeCommentaires === FALSE)
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminConfigCommentaires) . '</code>') . "</li>\n";
+		}
+		elseif (isset($listeCommentaires[$_GET['id']]))
+		{
+			unset($listeCommentaires[$_GET['id']]);
+			$messagesScript .= '<li>' . sprintf(T_("Le commentaire %1\$s a été supprimé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
+			$contenuFichier = '';
+			$retourConversionTableauVersTexte = adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $listeCommentaires);
+			
+			if (!empty($retourConversionTableauVersTexte['config']))
+			{
+				$contenuFichier = $retourConversionTableauVersTexte['config'];
+			}
+			
+			if (!empty($retourConversionTableauVersTexte['messagesScript']))
+			{
+				$messagesScript .= $retourConversionTableauVersTexte['messagesScript'];
+			}
+			
+			if (!empty($contenuFichier))
+			{
+				$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigCommentaires, $contenuFichier);
+			}
+			else
+			{
+				$messagesScript .= adminUnlink($cheminConfigCommentaires);
+				$messagesScript .= adminUnlink($cheminConfigAbonnementsCommentaires);
+			}
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le commentaire %1\$s n'a pas été trouvé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
+		}
+		
+		echo adminMessagesScript($messagesScript, T_("Suppression d'un commentaire"));
+	}
+	##################################################################
+	#
 	# Gestion des commentaires.
 	#
 	##################################################################
-	if (isset($_POST['gererType']) && $_POST['gererType'] == 'commentaires')
+	elseif (isset($_POST['gererType']) && $_POST['gererType'] == 'commentaires')
 	{
 		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";
@@ -78,7 +242,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
 				{
-					$codeListeCommentaires .= '<li class="liParent"><span class="bDtitre">' . sprintf(T_("Commentaire %1\$s"), '<code>' . securiseTexte($idCommentaire) . '</code></span>') . "\n";
+					$codeListeCommentaires .= '<li id="' . $idCommentaire . '" class="liParent"><span class="bDtitre">' . sprintf(T_("Commentaire %1\$s"), '<code>' . $idCommentaire . '</code></span>') . "\n";
 					$codeListeCommentaires .= '<input type="hidden" name="idCommentaire[]" value="' . $idCommentaire . "\" />\n";
 					$codeListeCommentaires .= "<ul class=\"nonTriable bDcorps afficher\">\n";
 					
@@ -173,34 +337,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$codeListeCommentaires .= '<li><label for="inputLanguePage-' . $idCommentaire . '"><code>languePage=</code></label><input id="inputLanguePage-' . $idCommentaire . '" type="text" name="languePage[' . $idCommentaire . ']" value="' . $infosCommentaire['languePage'] . "\" /></li>\n";
 					
-					// A été modéré.
-					
-					if (!isset($infosCommentaire['aEteModere']))
-					{
-						$infosCommentaire['aEteModere'] = 0;
-					}
-					
-					$codeListeCommentaires .= '<li><label for="aEteModere-' . $idCommentaire . '"><code>aEteModere=</code></label>';
-					$codeListeCommentaires .= '<select id="aEteModere-' . $idCommentaire . '" name="aEteModere[' . $idCommentaire . ']">' . "\n";
-					$codeListeCommentaires .= '<option value="1"';
-					
-					if ($infosCommentaire['aEteModere'] == 1)
-					{
-						$codeListeCommentaires .= ' selected="selected"';
-					}
-					
-					$codeListeCommentaires .= '>' . T_("Oui") . "</option>\n";
-					$codeListeCommentaires .= '<option value="0"';
-					
-					if ($infosCommentaire['aEteModere'] != 1)
-					{
-						$codeListeCommentaires .= ' selected="selected"';
-					}
-					
-					$codeListeCommentaires .= '>' . T_("Non") . "</option>\n";
-					$codeListeCommentaires .= "</select>\n";
-					$codeListeCommentaires .= "</li>\n";
-					
 					// Afficher.
 					
 					if (!isset($infosCommentaire['afficher']))
@@ -277,7 +413,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFormulaire .= '<legend>' . T_("Options") . "</legend>\n";
 				
 				$contenuFormulaire .= '<div class="configActuelleAdminCommentaires">' . "\n";
-				$contenuFormulaire .= '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
+				$contenuFormulaire .= '<h4 class="bDtitre">' . sprintf(T_ngettext("Configuration actuelle (%1\$s commentaire)", "Configuration actuelle (%1\$s commentaires)", count($listeCommentaires)), count($listeCommentaires)) . "</h4>\n";
 				
 				if (empty($codeListeCommentaires))
 				{
@@ -378,7 +514,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFormulaire .= '<legend>' . T_("Options") . "</legend>\n";
 				
 				$contenuFormulaire .= '<div class="configActuelleAdminCommentaires">' . "\n";
-				$contenuFormulaire .= '<h4 class="bDtitre">' . T_("Configuration actuelle") . "</h4>\n";
+				$contenuFormulaire .= '<h4 class="bDtitre">' . sprintf(T_ngettext("Configuration actuelle (%1\$s abonnement)", "Configuration actuelle (%1\$s abonnements)", count($listeAbonnements)), count($listeAbonnements)) . "</h4>\n";
 				
 				if (empty($codeListeAbonnements))
 				{
@@ -422,7 +558,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 	##################################################################
 	#
-	# Enregistrement des modifications aux commentaires.
+	# Enregistrement des modifications des commentaires.
 	#
 	##################################################################
 	if (isset($_POST['modifsCommentaires']))
@@ -438,8 +574,53 @@ include $racineAdmin . '/inc/premier.inc.php';
 			
 			if (!isset($_POST['inputSupprimerTout']) && !empty($_POST['idCommentaire']))
 			{
+				$tableauConfigCommentaires = array ();
+				
 				foreach ($_POST['idCommentaire'] as $idCommentaire)
 				{
+					$idCommentaire = securiseTexte($idCommentaire);
+					$tableauConfigCommentaires[$idCommentaire] = array ();
+					
+					if (!empty($_POST['ip'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['ip'] = securiseTexte($_POST['ip'][$idCommentaire]);
+					}
+					
+					if (!empty($_POST['date'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['date'] = securiseTexte($_POST['date'][$idCommentaire]);
+					}
+					
+					if (!empty($_POST['nom'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['nom'] = securiseTexte($_POST['nom'][$idCommentaire]);
+					}
+					
+					if (!empty($_POST['courriel'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['courriel'] = securiseTexte($_POST['courriel'][$idCommentaire]);
+					}
+					
+					if (!empty($_POST['site'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['site'] = securiseTexte($_POST['nom'][$idCommentaire]);
+					}
+					
+					if (isset($_POST['notification'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['notification'] = $_POST['notification'][$idCommentaire];
+					}
+					
+					if (!empty($_POST['languePage'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['languePage'] = securiseTexte($_POST['languePage'][$idCommentaire]);
+					}
+					
+					if (isset($_POST['afficher'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['afficher'] = $_POST['afficher'][$idCommentaire];
+					}
+					
 					$messageDansConfig = '';
 					
 					if (isset($_POST['message'][$idCommentaire]))
@@ -447,173 +628,19 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$messageDansConfig = messageDansConfigCommentaires($racine, $_POST['message'][$idCommentaire], $attributNofollowLiensCommentaires);
 					}
 					
-					if (!empty($messageDansConfig))
-					{
-						$contenuFichier .= '[' . securiseTexte($idCommentaire) . "]\n";
-						
-						// IP.
-						
-						$contenuFichier .= 'ip=';
-						
-						if (!empty($_POST['ip'][$idCommentaire]))
-						{
-							$_POST['ip'][$idCommentaire] = securiseTexte($_POST['ip'][$idCommentaire]);
-							
-							// Le motif exact pour les adresses IP est beaucoup plus complexe, mais on ne vérifie ici que la forme générale.
-							if (!preg_match('/^\d{1,3}(\.\d{1,3}){3}$/', $_POST['ip'][$idCommentaire]))
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: l'adresse IP %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['ip'][$idCommentaire] . '</code>') . "</li>\n";
-							}
-							
-							$contenuFichier .= $_POST['ip'][$idCommentaire];
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Date.
-						
-						$contenuFichier .= 'date=';
-						
-						if (!empty($_POST['date'][$idCommentaire]))
-						{
-							$_POST['date'][$idCommentaire] = securiseTexte($_POST['date'][$idCommentaire]);
-							
-							if (!preg_match('/^\d+$/', $_POST['date'][$idCommentaire]))
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: la date %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['date'][$idCommentaire] . '</code>') . "</li>\n";
-							}
-							
-							$contenuFichier .= $_POST['date'][$idCommentaire];
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Nom.
-						
-						$contenuFichier .= 'nom=';
-						
-						if (isset($_POST['nom'][$idCommentaire]))
-						{
-							$contenuFichier .= securiseTexte($_POST['nom'][$idCommentaire]);
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Courriel.
-						
-						$contenuFichier .= 'courriel=';
-						
-						if (!empty($_POST['courriel'][$idCommentaire]))
-						{
-							$_POST['courriel'][$idCommentaire] = securiseTexte($_POST['courriel'][$idCommentaire]);
-							
-							if (!courrielValide($_POST['courriel'][$idCommentaire]))
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le courriel %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['courriel'][$idCommentaire] . '</code>') . "</li>\n";
-							}
-							
-							$contenuFichier .= $_POST['courriel'][$idCommentaire];
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Site.
-						
-						$contenuFichier .= 'site=';
-						
-						if (!empty($_POST['site'][$idCommentaire]))
-						{
-							$_POST['site'][$idCommentaire] = securiseTexte($_POST['site'][$idCommentaire]);
-							
-							if (!siteWebValide($_POST['site'][$idCommentaire]))
-							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le site Web %1\$s ne semble pas avoir une forme valide."), '<code>' . $_POST['site'][$idCommentaire] . '</code>') . "</li>\n";
-							}
-							
-							$contenuFichier .= $_POST['site'][$idCommentaire];
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Notification.
-						
-						$contenuFichier .= 'notification=';
-						
-						if (isset($_POST['notification'][$idCommentaire]) && $_POST['notification'][$idCommentaire] == 1)
-						{
-							$contenuFichier .= 1;
-						}
-						else
-						{
-							$contenuFichier .= 0;
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Langue de la page.
-						
-						$contenuFichier .= 'languePage=';
-						
-						if (isset($_POST['languePage'][$idCommentaire]))
-						{
-							$contenuFichier .= securiseTexte($_POST['languePage'][$idCommentaire]);
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// A été modéré.
-						
-						$contenuFichier .= 'aEteModere=';
-						
-						if (isset($_POST['aEteModere'][$idCommentaire]) && $_POST['aEteModere'][$idCommentaire] == 1)
-						{
-							$contenuFichier .= 1;
-						}
-						else
-						{
-							$contenuFichier .= 0;
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Afficher.
-						
-						$contenuFichier .= 'afficher=';
-						
-						if (!isset($_POST['afficher'][$idCommentaire]))
-						{
-							if ($moderationCommentaires)
-							{
-								$_POST['afficher'][$idCommentaire] = 0;
-							}
-							else
-							{
-								$_POST['afficher'][$idCommentaire] = 1;
-							}
-						}
-						
-						if ($_POST['afficher'][$idCommentaire] == 1)
-						{
-							$contenuFichier .= 1;
-						}
-						else
-						{
-							$contenuFichier .= 0;
-						}
-						
-						$contenuFichier .= "\n";
-						
-						// Message.
-						
-						$tableauMessageDansConfig = explode("\n", trim($messageDansConfig));
-						
-						foreach ($tableauMessageDansConfig as $ligneMessageDansConfig)
-						{
-							$contenuFichier .= "message[]=$ligneMessageDansConfig\n";
-						}
-						
-						$contenuFichier .= "\n";
-					}
+					$tableauConfigCommentaires[$idCommentaire]['message'] = explode("\n", trim($messageDansConfig));
+				}
+				
+				$retourConversionTableauVersTexte = adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $tableauConfigCommentaires);
+				
+				if (!empty($retourConversionTableauVersTexte['config']))
+				{
+					$contenuFichier = $retourConversionTableauVersTexte['config'];
+				}
+				
+				if (!empty($retourConversionTableauVersTexte['messagesScript']))
+				{
+					$messagesScript .= $retourConversionTableauVersTexte['messagesScript'];
 				}
 			}
 			
@@ -633,7 +660,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	}
 	##################################################################
 	#
-	# Enregistrement des modifications aux abonnements.
+	# Enregistrement des modifications des abonnements.
 	#
 	##################################################################
 	elseif (isset($_POST['modifsAbonnements']))
@@ -720,14 +747,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 			}
 			
-			if (!empty($contenuFichier))
-			{
-				$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigAbonnementsCommentaires, $contenuFichier, FALSE);
-			}
-			else
-			{
-				$messagesScript .= adminUnlink($cheminConfigAbonnementsCommentaires);
-			}
+			$messagesScript .= adminEnregistreConfigCommentaires($racine, $cheminConfigAbonnementsCommentaires, $contenuFichier, FALSE);
 		}
 		
 		echo adminMessagesScript($messagesScript);

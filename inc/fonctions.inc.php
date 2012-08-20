@@ -2400,6 +2400,16 @@ function majConfigFormulairesEnvoyes($racine, $idFormulaire)
 		$formulairesEnvoyes = array ();
 	}
 	
+	if (!isset($formulairesEnvoyes['formulaires']))
+	{
+		$formulairesEnvoyes['formulaires'] = array ();
+	}
+	
+	if (!isset($formulairesEnvoyes['formulaires']['id']))
+	{
+		$formulairesEnvoyes['formulaires']['id'] = array ();
+	}
+	
 	if (!in_array($idFormulaire, $formulairesEnvoyes['formulaires']['id']))
 	{
 		$contenuFichier .= "id[]=$idFormulaire\n";
