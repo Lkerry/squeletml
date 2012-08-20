@@ -217,6 +217,152 @@ include $racineAdmin . '/inc/premier.inc.php';
 	}
 	##################################################################
 	#
+	# Gestion des commentaires en attente de modération.
+	#
+	##################################################################
+	elseif (isset($_POST['gererType']) && $_POST['gererType'] == 'commentairesModeration')
+	{
+		$messagesScript = '';
+		$contenu = '';
+		$codeListeCommentaires = '';
+		$nombreCommentaires = 0;
+		echo '<div class="sousBoite">' . "\n";
+		echo '<h3>' . T_("Liste des commentaires en attente de modération") . "</h3>\n";
+		
+		$listePagesAvecCommentaires = adminListePagesAvecCommentaires($racine);
+		
+		foreach ($listePagesAvecCommentaires as $listePage)
+		{
+			$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, '', TRUE);
+			$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+			
+			if ($listeCommentaires === FALSE)
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminConfigCommentaires) . '</code>') . "</li>\n";
+			}
+			else
+			{
+				foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
+				{
+					if (!isset($infosCommentaire['enAttenteDeModeration']))
+					{
+						if ($moderationCommentaires)
+						{
+							$infosCommentaire['enAttenteDeModeration'] = 1;
+						}
+						else
+						{
+							$infosCommentaire['enAttenteDeModeration'] = 0;
+						}
+					}
+					
+					if ($infosCommentaire['enAttenteDeModeration'] != 1)
+					{
+						continue;
+					}
+					
+					if (!isset($infosCommentaire['nom']))
+					{
+						$infosCommentaire['nom'] = '';
+					}
+					
+					if (!isset($infosCommentaire['site']))
+					{
+						$infosCommentaire['site'] = '';
+					}
+					
+					$auteurAffiche = auteurAfficheCommentaire($infosCommentaire['nom'], $infosCommentaire['site'], $attributNofollowLiensCommentaires);
+					$dateAffichee = '';
+					$heureAffichee = '';
+					
+					if (!empty($infosCommentaire['date']))
+					{
+						$dateAffichee = date('Y-m-d', $infosCommentaire['date']);
+						$heureAffichee = date('H:i T', $infosCommentaire['date']);
+					}
+					
+					$codeListeCommentaires .= '<li id="' . $idCommentaire . '" class="liParent">' . "\n";
+					$codeListeCommentaires .= '<p class="bDtitre">' . sprintf(T_("%1\$s a écrit sur la page %2\$s le %3\$s à %4\$s:"), $auteurAffiche, '<a href="' . $urlRacine . '/' . $listePage . '#' . $idCommentaire . '">' . securiseTexte($listePage) . '</a>', $dateAffichee, $heureAffichee) . "</p>\n";
+					
+					$message = '';
+					
+					if (!isset($infosCommentaire['message']))
+					{
+						$infosCommentaire['message'] = array ();
+					}
+					
+					foreach ($infosCommentaire['message'] as $ligneMessage)
+					{
+						$message .= "$ligneMessage\n";
+					}
+					
+					$message = trim($message);
+					$codeListeCommentaires .= '<div class="bDcorps">' . "\n";
+					$codeListeCommentaires .= "<div class=\"message\">\n$message</div>\n";
+					$infosSupplementaires = array ();
+					
+					if (!empty($infosCommentaire['courriel']))
+					{
+						$infosSupplementaires[] = sprintf(T_("Courriel: %1\$s"), $infosCommentaire['courriel']);
+					}
+					
+					if (!empty($infosCommentaire['ip']))
+					{
+						$infosSupplementaires[] = sprintf(T_("IP: %1\$s"), $infosCommentaire['ip']);
+					}
+					
+					if (isset($infosCommentaire['notification']))
+					{
+						$infosSupplementaires[] = sprintf(T_("Notification: %1\$s"), $infosCommentaire['notification']);
+					}
+					
+					if (!empty($infosSupplementaires))
+					{
+						$codeListeCommentaires .= "<ul>\n";
+						
+						foreach ($infosSupplementaires as $infoSupplementaire)
+						{
+							$codeListeCommentaires .= "<li>$infoSupplementaire</li>\n";
+						}
+						
+						$codeListeCommentaires .= "</ul>\n";
+					}
+					
+					$pageGet = encodeTexteGet($listePage);
+					$codeListeCommentaires .= '<p>' . T_("Liste d'actions:") . "</p>\n";
+					$codeListeCommentaires .= "<ul>\n";
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=publier&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Publier") . "</a></li>\n";
+					
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
+					
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Supprimer") . "</a></li>\n";
+					$codeListeCommentaires .= "</ul>\n";
+					$codeListeCommentaires .= "</div><!-- /.bDcorps -->\n";
+					$codeListeCommentaires .= "</li>\n";
+					$nombreCommentaires++;
+				}
+			}
+		}
+		
+		if (empty($codeListeCommentaires))
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La page %1\$s ne contient aucun commentaire."), '<code>' . securiseTexte($urlPage) . '</code>') . "</li>\n";
+		}
+		else
+		{
+			$contenu .= '<div class="configActuelleAdminCommentaires">' . "\n";
+			$contenu .= '<h4 class="bDtitre">' . sprintf(T_ngettext("Configuration actuelle (%1\$s commentaire)", "Configuration actuelle (%1\$s commentaires)", $nombreCommentaires), $nombreCommentaires) . "</h4>\n";
+			
+			$contenu .= "<ul class=\"bDcorps\">\n$codeListeCommentaires</ul>\n";
+			$contenu .= "</div><!-- /.configActuelleAdminCommentaires -->\n";
+		}
+		
+		echo adminMessagesScript($messagesScript);
+		echo $contenu;
+		echo "</div><!-- /.sousBoite -->\n";
+	}
+	##################################################################
+	#
 	# Gestion des commentaires.
 	#
 	##################################################################
@@ -842,27 +988,39 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
 				
-				<p>
-					<?php $listePagesAvecCommentaires = adminListePagesAvecCommentaires($racine); ?>
+				<fieldset>
+					<legend><?php echo T_("Page individuelle"); ?></legend>
 					
-					<?php if (!empty($listePagesAvecCommentaires)): ?>
-						<?php $disabled = ''; ?>
-						<?php printf(T_("<label for=\"%1\$s\">URL de la page</label>:"), "gererSelectPage"); ?><br />
-						<select id="gererSelectPage" name="page">
-							<?php foreach ($listePagesAvecCommentaires as $listePage): ?>
-								<option value="<?php echo encodeTexte($listePage); ?>"><?php echo securiseTexte($listePage); ?></option>
-							<?php endforeach; ?>
-						</select>
-					<?php else: ?>
-						<?php $disabled = ' disabled="disabled"'; ?>
-						<?php echo T_("Aucune page ayant au moins un commentaire."); ?>
-					<?php endif; ?>
-				</p>
+					<p>
+						<?php $listePagesAvecCommentaires = adminListePagesAvecCommentaires($racine); ?>
+						
+						<?php if (!empty($listePagesAvecCommentaires)): ?>
+							<?php $disabled = ''; ?>
+							<?php printf(T_("<label for=\"%1\$s\">URL de la page</label>:"), "gererSelectPage"); ?><br />
+							<select id="gererSelectPage" name="page">
+								<?php foreach ($listePagesAvecCommentaires as $listePage): ?>
+									<option value="<?php echo encodeTexte($listePage); ?>"><?php echo securiseTexte($listePage); ?></option>
+								<?php endforeach; ?>
+							</select>
+						<?php else: ?>
+							<?php $disabled = ' disabled="disabled"'; ?>
+							<?php echo T_("Aucune page ayant au moins un commentaire."); ?>
+						<?php endif; ?>
+					</p>
+					
+					<ul>
+						<li><input id="gererInputListeCommentaires" type="radio" name="gererType" value="commentaires" /> <label for="gererInputListeCommentaires"><?php echo T_("Commentaires"); ?></label></li>
+						<li><input id="gererInputListeAbonnements" type="radio" name="gererType" value="abonnements" /> <label for="gererInputListeAbonnements"><?php echo T_("Abonnements aux notifications des nouveaux commentaires"); ?></label></li>
+					</ul>
+				</fieldset>
 				
-				<ul>
-					<li><input id="gererInputListeCommentaires" type="radio" name="gererType" value="commentaires" checked="checked" /> <label for="gererInputListeCommentaires"><?php echo T_("Commentaires"); ?></label></li>
-					<li><input id="gererInputListeAbonnements" type="radio" name="gererType" value="abonnements" /> <label for="gererInputListeAbonnements"><?php echo T_("Abonnements aux notifications des nouveaux commentaires"); ?></label></li>
-				</ul>
+				<fieldset>
+					<legend><?php echo T_("Toutes les pages"); ?></legend>
+					
+					<ul>
+						<li><input id="gererInputListeCommentairesModeration" type="radio" name="gererType" value="commentairesModeration" checked="checked" /> <label for="gererInputListeCommentairesModeration"><?php echo T_("Commentaires en attente de modération"); ?></label></li>
+					</ul>
+				</fieldset>
 			</fieldset>
 			
 			<p><input type="submit" name="action" value="<?php echo T_('Gérer'); ?>"<?php echo $disabled; ?> /></p>
