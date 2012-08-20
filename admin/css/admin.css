@@ -253,6 +253,11 @@ li.liParent {
 	font-style: italic;
 }
 
+p.lienVersBoutonSoumettre {
+	margin: 10px 0px 0px;
+	text-align: right;
+}
+
 ul.nonTriable ul.triable li.liParent, li.liParent ul.triable li, ul.triable li {
 	background: url('../fichiers/glisser.png') no-repeat left 5px;
 	padding-left: 20px;
@@ -365,13 +370,8 @@ body#documentation-admin-php em code {
 	margin-right: 10px;
 }
 
-#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueRenommageImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
+#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueRenommageImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input {
 	margin: 0px;
-}
-
-#galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
-	margin-top: 10px;
-	text-align: right;
 }
 
 body#galeries-admin-php div.galerieMinivignettes {

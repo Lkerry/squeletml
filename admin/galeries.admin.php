@@ -1019,7 +1019,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						$corpsGalerie .= '<p class="configGraphiqueRenommageImage"><label for="configGraphiqueInputRenommer-' . $i . '">' . T_("Renommer:") . '</label> <input id="configGraphiqueInputRenommer-' . $i . '" class="tresLong" type="text" name="configGraphiqueInputRenommer-' . $i . '" value="" />' . "</p>\n";
 						
-						$corpsGalerie .= '<p class="configGraphiqueLienMaj"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></p>\n";
+						$corpsGalerie .= '<p class="lienVersBoutonSoumettre"><a href="#configGraphiqueMaj">' . T_("Lien vers «Mettre à jour»") . "</a></p>\n";
 						$corpsGalerie .= "</li><!-- /.configGraphiqueListeVignettes -->\n";
 					}
 					

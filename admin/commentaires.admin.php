@@ -390,6 +390,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$codeListeCommentaires .= '<li><label for="message-' . $idCommentaire . '"><code>message[]=</code></label><textarea id="message-' . $idCommentaire . '" cols="50" rows="10" name="message[' . $idCommentaire . ']">' . securiseTexte($message) . "</textarea></li>\n";
 					$codeListeCommentaires .= "</ul>\n";
+					$codeListeCommentaires .= '<p class="lienVersBoutonSoumettre"><a href="#enregistrerModifications">' . T_("Lien vers «Enregistrer»") . "</a></p>\n";
 					$codeListeCommentaires .= "</li>\n";
 				}
 				
@@ -432,7 +433,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$contenuFormulaire .= '<input type="hidden" name="page" value="' . $urlPage . '" />' . "\n";
 					
-					$contenuFormulaire .= '<p><input type="submit" name="modifsCommentaires" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
+					$contenuFormulaire .= '<p><input id="enregistrerModifications" type="submit" name="modifsCommentaires" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
 			
 					$contenuFormulaire .= "</div>\n";
 					$contenuFormulaire .= "</form>\n";
@@ -496,6 +497,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$codeListeAbonnements .= '<li><label for="inputIdAbonnement-' . $i . '"><code>idAbonnement=</code></label><input id="inputIdAbonnement-' . $i . '" type="text" name="idAbonnement[' . $i . ']" value="' . $infosAbonnement['idAbonnement'] . "\" /></li>\n";
 					
 					$codeListeAbonnements .= "</ul>\n";
+					$codeListeAbonnements .= '<p class="lienVersBoutonSoumettre"><a href="#enregistrerModifications">' . T_("Lien vers «Enregistrer»") . "</a></p>\n";
 					$codeListeAbonnements .= "</li>\n";
 					$i++;
 				}
@@ -543,7 +545,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$contenuFormulaire .= '<input type="hidden" name="page" value="' . $urlPage . '" />' . "\n";
 					
-					$contenuFormulaire .= '<p><input type="submit" name="modifsAbonnements" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
+					$contenuFormulaire .= '<p><input id="enregistrerModifications" type="submit" name="modifsAbonnements" value="' . T_("Enregistrer les modifications") . '" /></p>' . "\n";
 			
 					$contenuFormulaire .= "</div>\n";
 					$contenuFormulaire .= "</form>\n";
