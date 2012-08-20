@@ -83,6 +83,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		elseif (isset($listeCommentaires[$_GET['id']]))
 		{
+			$listeCommentaires[$_GET['id']]['enAttenteDeModeration'] = 0;
 			$listeCommentaires[$_GET['id']]['afficher'] = 1;
 			$messagesScript .= '<li>' . sprintf(T_("Le commentaire %1\$s a été publié."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
 			$contenuFichier = '';
@@ -132,6 +133,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		elseif (isset($listeCommentaires[$_GET['id']]))
 		{
+			$listeCommentaires[$_GET['id']]['enAttenteDeModeration'] = 0;
 			$listeCommentaires[$_GET['id']]['afficher'] = 0;
 			$messagesScript .= '<li>' . sprintf(T_("L'affichage du commentaire %1\$s a été désactivé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
 			$contenuFichier = '';
@@ -222,7 +224,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	{
 		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Liste des commentaires de la page sélectionnée") . "</h3>\n";
+		echo '<h3>' . T_("Liste des commentaires") . "</h3>\n";
 		
 		$contenuFormulaire = '';
 		
@@ -336,6 +338,41 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$codeListeCommentaires .= '<li><label for="inputLanguePage-' . $idCommentaire . '"><code>languePage=</code></label><input id="inputLanguePage-' . $idCommentaire . '" type="text" name="languePage[' . $idCommentaire . ']" value="' . $infosCommentaire['languePage'] . "\" /></li>\n";
+					
+					// En attente de modération.
+					
+					if (!isset($infosCommentaire['enAttenteDeModeration']))
+					{
+						if ($moderationCommentaires)
+						{
+							$infosCommentaire['enAttenteDeModeration'] = 1;
+						}
+						else
+						{
+							$infosCommentaire['enAttenteDeModeration'] = 0;
+						}
+					}
+					
+					$codeListeCommentaires .= '<li><label for="enAttenteDeModeration-' . $idCommentaire . '"><code>enAttenteDeModeration=</code></label>';
+					$codeListeCommentaires .= '<select id="enAttenteDeModeration-' . $idCommentaire . '" name="enAttenteDeModeration[' . $idCommentaire . ']">' . "\n";
+					$codeListeCommentaires .= '<option value="1"';
+					
+					if ($infosCommentaire['enAttenteDeModeration'] == 1)
+					{
+						$codeListeCommentaires .= ' selected="selected"';
+					}
+					
+					$codeListeCommentaires .= '>' . T_("Oui") . "</option>\n";
+					$codeListeCommentaires .= '<option value="0"';
+					
+					if ($infosCommentaire['enAttenteDeModeration'] != 1)
+					{
+						$codeListeCommentaires .= ' selected="selected"';
+					}
+					
+					$codeListeCommentaires .= '>' . T_("Non") . "</option>\n";
+					$codeListeCommentaires .= "</select>\n";
+					$codeListeCommentaires .= "</li>\n";
 					
 					// Afficher.
 					
@@ -454,7 +491,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	{
 		$messagesScript = '';
 		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Liste des abonnements aux notifications des nouveaux commentaires de la page sélectionnée") . "</h3>\n";
+		echo '<h3>' . T_("Liste des abonnements aux notifications des nouveaux commentaires") . "</h3>\n";
 		
 		$contenuFormulaire = '';
 		
@@ -568,7 +605,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		$messagesScript = '';
 		$messagesScript .= $messagesScriptUrlPage;
 		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Enregistrement des modifications aux commentaires de la page sélectionnée") . "</h3>\n" ;
+		echo '<h3>' . T_("Enregistrement des modifications aux commentaires") . "</h3>\n" ;
 		
 		if (!empty($urlPage))
 		{
@@ -616,6 +653,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if (!empty($_POST['languePage'][$idCommentaire]))
 					{
 						$tableauConfigCommentaires[$idCommentaire]['languePage'] = securiseTexte($_POST['languePage'][$idCommentaire]);
+					}
+					
+					if (isset($_POST['enAttenteDeModeration'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['enAttenteDeModeration'] = $_POST['enAttenteDeModeration'][$idCommentaire];
 					}
 					
 					if (isset($_POST['afficher'][$idCommentaire]))
@@ -670,7 +712,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		$messagesScript = '';
 		$messagesScript .= $messagesScriptUrlPage;
 		echo '<div class="sousBoite">' . "\n";
-		echo '<h3>' . T_("Enregistrement des modifications aux abonnements aux notifications des nouveaux commentaires de la page sélectionnée") . "</h3>\n" ;
+		echo '<h3>' . T_("Enregistrement des modifications aux abonnements aux notifications des nouveaux commentaires") . "</h3>\n" ;
 		
 		if (!empty($urlPage))
 		{
@@ -819,7 +861,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				<ul>
 					<li><input id="gererInputListeCommentaires" type="radio" name="gererType" value="commentaires" checked="checked" /> <label for="gererInputListeCommentaires"><?php echo T_("Commentaires"); ?></label></li>
-				
 					<li><input id="gererInputListeAbonnements" type="radio" name="gererType" value="abonnements" /> <label for="gererInputListeAbonnements"><?php echo T_("Abonnements aux notifications des nouveaux commentaires"); ?></label></li>
 				</ul>
 			</fieldset>

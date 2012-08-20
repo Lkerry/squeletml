@@ -2465,15 +2465,16 @@ function adminTableauCheminsCanoniques($tableauChemins)
 }
 
 /*
-Convertit un tableau de commentaires vers . Retourne 
+Convertit un tableau représentant la configuration des commentaires d'une page vers un contenu texte enregistrable dans le fichier de configuration en question. Retourne un tableau de deux éléments:
+
 	array ('config' => $contenuFichier, 'messagesScript' => $messagesScript)
 */
-function adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $tableauConfigCommentaires)
+function adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $tableauConfig)
 {
 	$messagesScript = '';
 	$contenuFichier = '';
 	
-	foreach ($tableauConfigCommentaires as $idCommentaire => $infosCommentaire)
+	foreach ($tableauConfig as $idCommentaire => $infosCommentaire)
 	{
 		$message = '';
 		
@@ -2599,6 +2600,33 @@ function adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObl
 			if (!empty($infosCommentaire['languePage']))
 			{
 				$contenuFichier .= $infosCommentaire['languePage'];
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// En attente de modération.
+			
+			$contenuFichier .= 'enAttenteDeModeration=';
+			
+			if (!isset($infosCommentaire['enAttenteDeModeration']))
+			{
+				if ($moderationCommentaires)
+				{
+					$infosCommentaire['enAttenteDeModeration'] = 1;
+				}
+				else
+				{
+					$infosCommentaire['enAttenteDeModeration'] = 0;
+				}
+			}
+			
+			if ($infosCommentaire['enAttenteDeModeration'] == 1)
+			{
+				$contenuFichier .= 1;
+			}
+			else
+			{
+				$contenuFichier .= 0;
 			}
 			
 			$contenuFichier .= "\n";

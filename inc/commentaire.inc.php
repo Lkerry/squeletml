@@ -220,6 +220,18 @@ if (isset($_POST['envoyerCommentaire']))
 			
 			$contenuConfigCommentaire .= "\n";
 			$contenuConfigCommentaire .= "languePage=$langue\n";
+			$contenuConfigCommentaire .= 'enAttenteDeModeration=';
+			
+			if ($moderationCommentaires)
+			{
+				$contenuConfigCommentaire .= 1;
+			}
+			else
+			{
+				$contenuConfigCommentaire .= 0;
+			}
+			
+			$contenuConfigCommentaire .= "\n";
 			$contenuConfigCommentaire .= 'afficher=';
 			
 			if ($moderationCommentaires)
