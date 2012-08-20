@@ -331,9 +331,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$codeListeCommentaires .= '<ul class="listeActions">' . "\n";
 					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=publier&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Publier") . "</a></li>\n";
 					
-					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=cacher&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Désactiver l'affichage sans le supprimer") . "</a></li>\n";
 					
 					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Supprimer") . "</a></li>\n";
+					
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
 					$codeListeCommentaires .= "</ul>\n";
 					$codeListeCommentaires .= "</li>\n";
 					$nombreCommentaires++;
