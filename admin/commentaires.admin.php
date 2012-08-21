@@ -282,8 +282,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$heureAffichee = date('H:i T', $infosCommentaire['date']);
 					}
 					
+					if (strpos($listePage, 'galerie.php?') === 0)
+					{
+						$valeurHrefListePage = variableGet(2, $listePage, 'langue', LANGUE_ADMIN);
+					}
+					else
+					{
+						$valeurHrefListePage = $listePage;
+					}
+					
+					$valeurHrefListePage = $urlRacine . '/' . $valeurHrefListePage;
 					$codeListeCommentaires .= '<li id="' . $idCommentaire . '" class="liParent">' . "\n";
-					$codeListeCommentaires .= '<p><strong>' . sprintf(T_("%1\$s a écrit sur la page %2\$s le %3\$s à %4\$s:"), $auteurAffiche, '<a class="lienSurCode" href="' . $urlRacine . '/' . $listePage . '"><code>' . securiseTexte($listePage) . '</code></a>', $dateAffichee, $heureAffichee) . "</strong></p>\n";
+					$codeListeCommentaires .= '<p><strong>' . sprintf(T_("%1\$s a écrit sur la page %2\$s le %3\$s à %4\$s:"), $auteurAffiche, '<a class="lienSurCode" href="' . $valeurHrefListePage . '"><code>' . securiseTexte($listePage) . '</code></a>', $dateAffichee, $heureAffichee) . "</strong></p>\n";
 					
 					$message = '';
 					
