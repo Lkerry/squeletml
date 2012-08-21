@@ -880,7 +880,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$idDeComparaison = $id;
 				}
 				
-				if (!empty($idDeComparaison) && !preg_match('/(\?|&|&amp;)id=' . preg_quote(filtreChaine($idDeComparaison), '/') . '/', $urlDeComparaison))
+				if (!empty($idDeComparaison) && !preg_match('/(\?|&|&amp;)id=' . preg_quote(filtreChaine($idDeComparaison), '/') . '(&|$)/', $urlDeComparaison))
 				{
 					if (!empty($nouvelId))
 					{
@@ -888,7 +888,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					else
 					{
-						preg_match('/^galerie.php\?.*(&|&amp;)?id=([^&]+)/', $urlDeComparaison, $resultat);
+						preg_match('/^galerie\.php\?.*(&|&amp;)?id=([^&]+)/', $urlDeComparaison, $resultat);
 						$nouvelId = $resultat[2];
 					}
 				}
