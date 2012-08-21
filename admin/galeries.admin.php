@@ -848,6 +848,69 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$nouvelleUrl = superBasename($nouvelleUrl);
 			}
 			
+			// S'assurer de la concordance entre l'identifiant et l'URL.
+			
+			$pageGlobaleGaleries = FALSE;
+			$urlDeComparaison = '';
+			
+			if (!empty($nouvelleUrl))
+			{
+				if (strpos($nouvelleUrl, 'galerie.php?') === 0)
+				{
+					$pageGlobaleGaleries = TRUE;
+					$urlDeComparaison = $nouvelleUrl;
+				}
+			}
+			elseif (isset($listeGaleries[$id]['url']) && strpos($listeGaleries[$id]['url'], 'galerie.php?') === 0)
+			{
+				$pageGlobaleGaleries = TRUE;
+				$urlDeComparaison = $listeGaleries[$id]['url'];
+			}
+			
+			if ($pageGlobaleGaleries)
+			{
+				$idDeComparaison = '';
+				
+				if (!empty($nouvelId))
+				{
+					$idDeComparaison = $nouvelId;
+				}
+				elseif (!empty($id))
+				{
+					$idDeComparaison = $id;
+				}
+				
+				if (!empty($idDeComparaison) && !preg_match('/(\?|&|&amp;)id=' . preg_quote(filtreChaine($idDeComparaison), '/') . '/', $urlDeComparaison))
+				{
+					if (!empty($nouvelId))
+					{
+						$nouvelleUrl = 'galerie.php?id=' . filtreChaine($idDeComparaison) . '&amp;langue={LANGUE}';
+					}
+					else
+					{
+						preg_match('/^galerie.php\?.*(&|&amp;)?id=([^&]+)/', $urlDeComparaison, $resultat);
+						$nouvelId = $resultat[2];
+					}
+				}
+			}
+			
+			// On vérifie si les nouvelles informations sont identiques aux anciennes.
+			
+			if ($nouvelId == $id)
+			{
+				$nouvelId = '';
+			}
+			
+			if (!empty($listeGaleries[$id]['dossier']) && $nouveauNomDossier == $listeGaleries[$id]['dossier'])
+			{
+				$nouveauNomDossier = '';
+			}
+			
+			if (!empty($listeGaleries[$id]['url']) && $nouvelleUrl == $listeGaleries[$id]['url'])
+			{
+				$nouvelleUrl = '';
+			}
+			
 			if (empty($id))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
@@ -1720,7 +1783,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$page = 'galerie.php?id=' . filtreChaine($id) . '&amp;langue={LANGUE}' ;
+				$page = 'galerie.php?id=' . filtreChaine($id) . '&amp;langue={LANGUE}';
 				$cheminPage = '..';
 				$urlRelativeGalerie = $page;
 			}
