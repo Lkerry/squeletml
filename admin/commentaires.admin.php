@@ -12,7 +12,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	<h2 id="messages"><?php echo T_("Messages d'avancement, de confirmation ou d'erreur"); ?></h2>
 	
 	<?php
-	if (!empty($_GET['gererType']) && $_GET['gererType'] == 'commentaires')
+	if (!empty($_GET['gererType']) && ($_GET['gererType'] == 'commentaires' || $_GET['gererType'] == 'commentairesModeration'))
 	{
 		$_POST['gererType'] = $_GET['gererType'];
 	}
@@ -215,12 +215,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		echo adminMessagesScript($messagesScript, T_("Suppression d'un commentaire"));
 	}
+	
 	##################################################################
 	#
 	# Gestion des commentaires en attente de modération.
 	#
 	##################################################################
-	elseif (isset($_POST['gererType']) && $_POST['gererType'] == 'commentairesModeration')
+	if (isset($_POST['gererType']) && $_POST['gererType'] == 'commentairesModeration')
 	{
 		$messagesScript = '';
 		$contenu = '';
@@ -329,11 +330,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$pageGet = encodeTexteGet($listePage);
 					$codeListeCommentaires .= '<ul class="listeActions">' . "\n";
-					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=publier&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Publier") . "</a></li>\n";
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=publier&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '&amp;gererType=commentairesModeration#messages">' . T_("Publier") . "</a></li>\n";
 					
-					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=cacher&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Désactiver l'affichage sans le supprimer") . "</a></li>\n";
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=cacher&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '&amp;gererType=commentairesModeration#messages">' . T_("Désactiver l'affichage sans le supprimer") . "</a></li>\n";
 					
-					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Supprimer") . "</a></li>\n";
+					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '&amp;gererType=commentairesModeration#messages">' . T_("Supprimer") . "</a></li>\n";
 					
 					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
 					$codeListeCommentaires .= "</ul>\n";
@@ -345,7 +346,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (empty($codeListeCommentaires))
 		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("La page %1\$s ne contient aucun commentaire."), '<code>' . securiseTexte($urlPage) . '</code>') . "</li>\n";
+			$messagesScript .= '<li class="erreur">' . T_("Aucun commentaire en attente de modération.") . "</li>\n";
 		}
 		else
 		{
@@ -991,6 +992,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<fieldset>
 				<legend><?php echo T_("Options"); ?></legend>
 				
+				<?php $nombreCommentairesAmoderer = adminNombreCommentairesAmoderer($racine, $urlRacine, $moderationCommentaires); ?>
+				
 				<fieldset>
 					<legend><?php echo T_("Page individuelle"); ?></legend>
 					
@@ -1007,12 +1010,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 							</select>
 						<?php else: ?>
 							<?php $disabled = ' disabled="disabled"'; ?>
-							<?php echo T_("Aucune page ayant au moins un commentaire."); ?>
+							<?php echo '<strong>' . T_("Aucune page ayant au moins un commentaire.") . '</strong>'; ?>
 						<?php endif; ?>
 					</p>
 					
 					<ul>
-						<li><input id="gererInputListeCommentaires" type="radio" name="gererType" value="commentaires" /> <label for="gererInputListeCommentaires"><?php echo T_("Commentaires"); ?></label></li>
+						<?php $checkedCommentaires = ''; ?>
+						
+						<?php if ($nombreCommentairesAmoderer == 0): ?>
+							<?php $checkedCommentaires = ' checked="checked"'; ?>
+						<?php endif; ?>
+						
+						<li><input id="gererInputListeCommentaires" type="radio" name="gererType" value="commentaires"<?php echo $checkedCommentaires; ?> /> <label for="gererInputListeCommentaires"><?php echo T_("Commentaires"); ?></label></li>
 						<li><input id="gererInputListeAbonnements" type="radio" name="gererType" value="abonnements" /> <label for="gererInputListeAbonnements"><?php echo T_("Abonnements aux notifications des nouveaux commentaires"); ?></label></li>
 					</ul>
 				</fieldset>
@@ -1021,7 +1030,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 					<legend><?php echo T_("Toutes les pages"); ?></legend>
 					
 					<ul>
-						<li><input id="gererInputListeCommentairesModeration" type="radio" name="gererType" value="commentairesModeration" checked="checked" /> <label for="gererInputListeCommentairesModeration"><?php echo T_("Commentaires en attente de modération"); ?></label></li>
+						<?php $checkedCommentairesModeration = ''; ?>
+						
+						<?php if ($nombreCommentairesAmoderer > 0): ?>
+							<?php $checkedCommentairesModeration = ' checked="checked"'; ?>
+						<?php endif; ?>
+						
+						<li><input id="gererInputListeCommentairesModeration" type="radio" name="gererType" value="commentairesModeration"<?php echo $checkedCommentairesModeration; ?> /> <label for="gererInputListeCommentairesModeration"><?php printf(T_ngettext("Commentaires en attente de modération (%1\$s commentaire)", "Commentaires en attente de modération (%1\$s commentaires)", $nombreCommentairesAmoderer), $nombreCommentairesAmoderer); ?></label></li>
 					</ul>
 				</fieldset>
 			</fieldset>

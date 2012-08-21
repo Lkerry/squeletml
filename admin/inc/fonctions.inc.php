@@ -2016,6 +2016,34 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 }
 
 /*
+Retourne le nombre de commentaires en attente de modération.
+*/
+function adminNombreCommentairesAmoderer($racine, $urlRacine, $moderationCommentaires)
+{
+	$nombre = 0;
+	$listePagesAvecCommentaires = adminListePagesAvecCommentaires($racine);
+	
+	foreach ($listePagesAvecCommentaires as $listePage)
+	{
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, '', TRUE);
+		$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+		
+		if ($listeCommentaires !== FALSE)
+		{
+			foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
+			{
+				if ((isset($infosCommentaire['enAttenteDeModeration']) && $infosCommentaire['enAttenteDeModeration'] == 1) || (!isset($infosCommentaire['enAttenteDeModeration']) && $moderationCommentaires))
+				{
+					$nombre++;
+				}
+			}
+		}
+	}
+	
+	return $nombre;
+}
+
+/*
 Retourne `TRUE` s'il faut afficher les options de catégories et de flux RSS pour le fichier édité dans le porte-documents, sinon retourne `FALSE`.
 */
 function adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite)
