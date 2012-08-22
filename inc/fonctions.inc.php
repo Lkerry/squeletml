@@ -2381,54 +2381,6 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
-Ajoute le formulaire fourni en paramètre au fichier de configuration des formulaires envoyés. Retourne une chaîne vide.
-*/
-function majConfigFormulairesEnvoyes($racine, $idFormulaire)
-{
-	$fichierConfig = "$racine/site/cache/formulaires-envoyes.ini.txt";
-	
-	if (!file_exists($fichierConfig) && !@touch($fichierConfig))
-	{
-		return '';
-	}
-	
-	$contenuFichier = "[formulaires]\n";
-	$formulairesEnvoyes = super_parse_ini_file($fichierConfig, TRUE);
-	
-	if (!is_array($formulairesEnvoyes))
-	{
-		$formulairesEnvoyes = array ();
-	}
-	
-	if (!isset($formulairesEnvoyes['formulaires']))
-	{
-		$formulairesEnvoyes['formulaires'] = array ();
-	}
-	
-	if (!isset($formulairesEnvoyes['formulaires']['id']))
-	{
-		$formulairesEnvoyes['formulaires']['id'] = array ();
-	}
-	
-	if (!in_array($idFormulaire, $formulairesEnvoyes['formulaires']['id']))
-	{
-		$contenuFichier .= "id[]=$idFormulaire\n";
-	}
-	
-	if (!empty($formulairesEnvoyes['formulaires']['id']))
-	{
-		foreach ($formulairesEnvoyes['formulaires']['id'] as $idFormulaireEnvoye)
-		{
-			$contenuFichier .= "id[]=$idFormulaireEnvoye\n";
-		}
-	}
-	
-	@file_put_contents($fichierConfig, $contenuFichier);
-	
-	return '';
-}
-
-/*
 Retourne `TRUE` si le formulaire précisé a déjà été envoyé, sinon retourne `FALSE`.
 */
 function formulaireDejaEnvoye($racine, $idFormulaire)
@@ -2690,6 +2642,59 @@ function genereCodeLienPage($fusionnerBlocsPartageLienPage, $lienPage, $erreur40
 	}
 	
 	return $bloc;
+}
+
+/*
+Effectue l'action demandée (0: suppression; 1: envoi; 2: ajout) pour les notifications en attente. Retourne une chaîne vide.
+*/
+function gereNotificationsEnAttente($racine, $idCommentaire, $action, $infos = array ())
+{
+	$cheminNotificationsEnAttente = $racine . '/site/inc/notifications-en-attente.txt';
+	
+	if (file_exists($cheminNotificationsEnAttente) || @touch($cheminNotificationsEnAttente))
+	{
+		$contenuFichierCodeEnAttente = @file_get_contents($cheminNotificationsEnAttente);
+		
+		if ($contenuFichierCodeEnAttente !== FALSE)
+		{
+			$codeEnAttente = unserialize($contenuFichierCodeEnAttente);
+			
+			if (($action == 0 || $action == 1) && is_array($codeEnAttente) && isset($codeEnAttente[$idCommentaire]))
+			{
+				if ($action == 1)
+				{
+					foreach ($codeEnAttente[$idCommentaire] as $infosCourriel)
+					{
+						courriel($infosCourriel);
+					}
+				}
+				
+				unset($codeEnAttente[$idCommentaire]);
+			}
+			elseif ($action == 2)
+			{
+				if (is_array($codeEnAttente))
+				{
+					$codeEnAttente = array_merge($codeEnAttente, $infos);
+				}
+				else
+				{
+					$codeEnAttente = $infos;
+				}
+			}
+			
+			if (!empty($codeEnAttente))
+			{
+				@file_put_contents($cheminNotificationsEnAttente, serialize($codeEnAttente), LOCK_EX);
+			}
+			else
+			{
+				@unlink($cheminNotificationsEnAttente);
+			}
+		}
+	}
+	
+	return '';
 }
 
 /*
@@ -4476,6 +4481,54 @@ function locale($langue)
 	}
 	
 	return $locale;
+}
+
+/*
+Ajoute le formulaire fourni en paramètre au fichier de configuration des formulaires envoyés. Retourne une chaîne vide.
+*/
+function majConfigFormulairesEnvoyes($racine, $idFormulaire)
+{
+	$fichierConfig = "$racine/site/cache/formulaires-envoyes.ini.txt";
+	
+	if (!file_exists($fichierConfig) && !@touch($fichierConfig))
+	{
+		return '';
+	}
+	
+	$contenuFichier = "[formulaires]\n";
+	$formulairesEnvoyes = super_parse_ini_file($fichierConfig, TRUE);
+	
+	if (!is_array($formulairesEnvoyes))
+	{
+		$formulairesEnvoyes = array ();
+	}
+	
+	if (!isset($formulairesEnvoyes['formulaires']))
+	{
+		$formulairesEnvoyes['formulaires'] = array ();
+	}
+	
+	if (!isset($formulairesEnvoyes['formulaires']['id']))
+	{
+		$formulairesEnvoyes['formulaires']['id'] = array ();
+	}
+	
+	if (!in_array($idFormulaire, $formulairesEnvoyes['formulaires']['id']))
+	{
+		$contenuFichier .= "id[]=$idFormulaire\n";
+	}
+	
+	if (!empty($formulairesEnvoyes['formulaires']['id']))
+	{
+		foreach ($formulairesEnvoyes['formulaires']['id'] as $idFormulaireEnvoye)
+		{
+			$contenuFichier .= "id[]=$idFormulaireEnvoye\n";
+		}
+	}
+	
+	@file_put_contents($fichierConfig, $contenuFichier);
+	
+	return '';
 }
 
 /*

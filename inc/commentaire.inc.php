@@ -280,7 +280,7 @@ if (isset($_POST['envoyerCommentaire']))
 				
 				$listeDestinataires = array ();
 				
-				if ($commentairesNotification && !$moderationCommentaires)
+				if ($commentairesNotification)
 				{
 					$listeAbonnements = super_parse_ini_file($cheminConfigAbonnementsCommentaires, TRUE);
 					
@@ -329,6 +329,8 @@ if (isset($_POST['envoyerCommentaire']))
 					
 					if (!empty($listeDestinataires))
 					{
+						$codeEnAttente = array ();
+						
 						foreach ($listeDestinataires as $courrielDestinataire => $infosDestinataire)
 						{
 							if (!empty($infosDestinataire['nom']))
@@ -347,7 +349,19 @@ if (isset($_POST['envoyerCommentaire']))
 								$infosCourriel['message'] .= '<p><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, variableGet(0, $url, 'action'))) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires.") . "</a></p>\n";
 							}
 							
-							courriel($infosCourriel);
+							if ($moderationCommentaires)
+							{
+								$codeEnAttente[$idCommentaire][] = $infosCourriel;
+							}
+							else
+							{
+								courriel($infosCourriel);
+							}
+						}
+						
+						if (!empty($codeEnAttente))
+						{
+							gereNotificationsEnAttente($racine, $idCommentaire, 2, $codeEnAttente);
 						}
 					}
 					

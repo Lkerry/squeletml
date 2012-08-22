@@ -85,6 +85,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$listeCommentaires[$_GET['id']]['enAttenteDeModeration'] = 0;
 			$listeCommentaires[$_GET['id']]['afficher'] = 1;
+			gereNotificationsEnAttente($racine, $_GET['id'], 1);
 			$messagesScript .= '<li>' . sprintf(T_("Le commentaire %1\$s a été publié."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
 			$contenuFichier = '';
 			$retourConversionTableauVersTexte = adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $listeCommentaires);
@@ -135,6 +136,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$listeCommentaires[$_GET['id']]['enAttenteDeModeration'] = 0;
 			$listeCommentaires[$_GET['id']]['afficher'] = 0;
+			gereNotificationsEnAttente($racine, $_GET['id'], 0);
 			$messagesScript .= '<li>' . sprintf(T_("L'affichage du commentaire %1\$s a été désactivé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
 			$contenuFichier = '';
 			$retourConversionTableauVersTexte = adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $listeCommentaires);
@@ -184,6 +186,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		elseif (isset($listeCommentaires[$_GET['id']]))
 		{
 			unset($listeCommentaires[$_GET['id']]);
+			gereNotificationsEnAttente($racine, $_GET['id'], 0);
 			$messagesScript .= '<li>' . sprintf(T_("Le commentaire %1\$s a été supprimé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
 			$contenuFichier = '';
 			$retourConversionTableauVersTexte = adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $listeCommentaires);
