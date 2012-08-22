@@ -591,7 +591,7 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE, $
 	
 	if ($calculInverse)
 	{
-		$captchaCalcul .= sprintf(T_("Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1\$s (plusieurs réponses possibles):"), $calculUn);
+		$captchaCalcul .= sprintf(T_("Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1\$s (plus d'une réponse correcte):"), $calculUn);
 		$captchaCalcul .= sprintf(T_("%1\$s et %2\$s"), "<input name=\"r\" type=\"text\" size=\"4\" />", "<input name=\"s\" type=\"text\" size=\"4\" />");
 	}
 	else
