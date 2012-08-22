@@ -313,6 +313,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$message = trim($message);
 					$codeListeCommentaires .= "<div class=\"contenuCommentaireAmoderer\">\n$message</div>\n";
 					$infosSupplementaires = array ();
+					$infosSupplementaires[] = sprintf(T_("Identifiant: %1\$s"), "<code>$idCommentaire</code>");
 					
 					if (!empty($infosCommentaire['courriel']))
 					{
