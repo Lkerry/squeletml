@@ -1,7 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Commentaires et abonnements");
-$boitesDeroulantes = '.aideAdminCommentaires .configActuelleAdminCommentaires';
+$boitesDeroulantes = '.aideAdminCommentaires .configActuelle .configActuelleAdminCommentaires';
 $boitesDeroulantes .= ' .contenuFichierPourSauvegarde .liParent';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
@@ -964,30 +964,32 @@ include $racineAdmin . '/inc/premier.inc.php';
 	?>
 </div><!-- /#boiteMessages -->
 
-<div class="boite">
-	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
+<div class="boite configActuelle">
+	<h2 id="config" class="bDtitre"><?php echo T_("Configuration actuelle"); ?></h2>
 	
-	<ul>
-		<?php if ($ajoutCommentairesParDefaut): ?>
-			<li><?php echo T_("L'ajout de commentaires est activé par défaut") . ' (<code>$ajoutCommentairesParDefaut = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("L'ajout de commentaires est désactivé par défaut") . ' (<code>$ajoutCommentairesParDefaut = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
+	<div class="bDcorps afficher">
+		<ul>
+			<?php if ($ajoutCommentairesParDefaut): ?>
+				<li><?php echo T_("L'ajout de commentaires est activé par défaut") . ' (<code>$ajoutCommentairesParDefaut = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("L'ajout de commentaires est désactivé par défaut") . ' (<code>$ajoutCommentairesParDefaut = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+			
+			<?php if ($affichageCommentairesSiAjoutDesactive): ?>
+				<li><?php echo T_("L'affichage des commentaires existants est activé pour les pages dont l'ajout est désactivé") . ' (<code>$affichageCommentairesSiAjoutDesactive = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("L'affichage des commentaires existants est désactivé pour les pages dont l'ajout est désactivé") . ' (<code>$affichageCommentairesSiAjoutDesactive = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+			
+			<?php if ($moderationCommentaires): ?>
+				<li><?php echo T_("La modération des commentaires est activée") . ' (<code>$moderationCommentaires = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("La modération des commentaires est désactivée") . ' (<code>$moderationCommentaires = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+		</ul>
 		
-		<?php if ($affichageCommentairesSiAjoutDesactive): ?>
-			<li><?php echo T_("L'affichage des commentaires existants est activé pour les pages dont l'ajout est désactivé") . ' (<code>$affichageCommentairesSiAjoutDesactive = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("L'affichage des commentaires existants est désactivé pour les pages dont l'ajout est désactivé") . ' (<code>$affichageCommentairesSiAjoutDesactive = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
-		
-		<?php if ($moderationCommentaires): ?>
-			<li><?php echo T_("La modération des commentaires est activée") . ' (<code>$moderationCommentaires = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("La modération des commentaires est désactivée") . ' (<code>$moderationCommentaires = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
-	</ul>
-	
-	<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+	</div><!-- /.bDcorps -->
 </div><!-- /.boite -->
 
 <div class="boite">

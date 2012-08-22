@@ -1,7 +1,8 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Flux RSS globaux");
-$boitesDeroulantes = '.aideAdminRss .configActuelleAdminRss .contenuFichierPourSauvegarde';
+$boitesDeroulantes = '.aideAdminRss .configActuelle .configActuelleAdminRss';
+$boitesDeroulantes .= ' .contenuFichierPourSauvegarde';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -304,24 +305,26 @@ include $racineAdmin . '/inc/premier.inc.php';
 	?>
 </div><!-- /#boiteMessages -->
 
-<div class="boite">
-	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
+<div class="boite configActuelle">
+	<h2 id="config" class="bDtitre"><?php echo T_("Configuration actuelle"); ?></h2>
 	
-	<ul>
-		<?php if ($activerFluxRssGlobalSite): ?>
-			<li><?php echo T_("Le flux RSS des dernières publications est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("Le flux RSS des dernières publications n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
+	<div class="bDcorps afficher">
+		<ul>
+			<?php if ($activerFluxRssGlobalSite): ?>
+				<li><?php echo T_("Le flux RSS des dernières publications est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("Le flux RSS des dernières publications n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+			
+			<?php if ($galerieActiverFluxRssGlobal): ?>
+				<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+		</ul>
 		
-		<?php if ($galerieActiverFluxRssGlobal): ?>
-			<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
-	</ul>
-	
-	<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+	</div><!-- /.bDcorps -->
 </div><!-- /.boite -->
 
 <div class="boite">
