@@ -2006,7 +2006,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 									<li><input id="ajouterInputFiltrerCasse" type="checkbox" name="filtrerNom[]" value="min" /> <label for="ajouterInputFiltrerCasse"><?php echo T_("Filtrer également les majuscules en minuscules."); ?></label></li>
 								</ul></li>
 							</ul>
-				
+							
+							<ul>
+								<li>
+									<input id="ajouterInputRedimensionner" type="checkbox" name="redimensionner" value="redimensionner" /> <label for="ajouterInputRedimensionner"><?php printf(T_("Créer des images de taille intermédiaire (%1\$s px × %2\$s px) à partir des images originales. Les options utilisées sont les mêmes que celles par défaut du formulaire de redimensionnement présent sur cette même page."), $adminTailleParDefautRedimensionnement['largeur'], $adminTailleParDefautRedimensionnement['hauteur']); ?></label>
+									<input type="hidden" name="qualiteJpg" value="<?php echo $galerieQualiteJpg; ?>" />
+									<input type="hidden" name="largeur" value="<?php echo $adminTailleParDefautRedimensionnement['largeur']; ?>" />
+									<input type="hidden" name="hauteur" value="<?php echo $adminTailleParDefautRedimensionnement['hauteur']; ?>" />
+									<input type="hidden" name="redimensionnerRenommer[]" value="renommer" />
+									<input type="hidden" name="redimensionnerRenommer[]" value="nePasRenommerMotifs" />
+								</li>
+							</ul>
+							
 							<?php if ($rotationSansPerteActivee || $suppressionExifActivee): ?>
 								<ul>
 									<li><?php echo T_("S'applique aux fichiers JPG:"); ?>
