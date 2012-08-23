@@ -15,13 +15,12 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 ########################################################################
 
 // Traitement personnalisé optionnel 1 de 2.
-
 if (file_exists($racine . '/site/inc/dernier-pre.inc.php'))
 {
 	include $racine . '/site/inc/dernier-pre.inc.php';
 }
 
-// Affectations.
+// Affectations 1 de 2.
 
 $cheminBasDePage = cheminXhtml($racine, array ($langue, $langueParDefaut), 'bas-de-page');
 
@@ -32,6 +31,15 @@ if (!empty($courrielContact) || ($partageCourrielActif && $partageCourrielInclur
 else
 {
 	$inclureContact = FALSE;
+}
+
+if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+{
+	$inclureFormulaireCommentaire = TRUE;
+}
+else
+{
+	$inclureFormulaireCommentaire = FALSE;
 }
 
 $premierOuDernier = 'dernier';
@@ -59,11 +67,28 @@ $linkScriptFin = linkScript($racine, $urlRacine, $fusionnerCssJs, '', $balisesLi
 
 // Inclusions.
 
+if ($inclureFormulaireCommentaire)
+{
+	include $racine . '/inc/commentaire.inc.php';
+}
+
 include $racine . '/inc/blocs.inc.php';
-include $racine . '/inc/contact.inc.php';
+
+if ($inclureContact)
+{
+	include $racine . '/inc/contact.inc.php';
+}
+
+// Affectations 2 de 2.
+
+$inclureFinInterieurContenu = FALSE;
+
+if (!empty($blocs[400]) || $inclureContact || $inclureFormulaireCommentaire)
+{
+	$inclureFinInterieurContenu = TRUE;
+}
 
 // Traitement personnalisé optionnel 2 de 2.
-
 if (file_exists($racine . '/site/inc/dernier.inc.php'))
 {
 	include $racine . '/site/inc/dernier.inc.php';
@@ -109,7 +134,6 @@ if ($dureeCache && !$desactiverCache)
 	$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
 	@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 	eval($enTetesHttp);
-	
 	echo $codePage;
 }
 ?>

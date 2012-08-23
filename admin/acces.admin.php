@@ -1,6 +1,7 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Accès");
+$boitesDeroulantes = '.contenuFichierPourSauvegarde';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -14,6 +15,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<li><a href="#cache"><?php echo T_("Cache"); ?></a></li>
 		<li><a href="#cron"><?php echo T_("Cron"); ?></a></li>
 		<li><a href="#sauvegarde"><?php echo T_("Sauvegarde"); ?></a></li>
+		<li><a href="#page"><?php echo T_("Haut"); ?></a></li>
 	</ul>
 </div>
 
@@ -399,7 +401,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$htaccess .= "\tRewriteCond %{REMOTE_ADDR} !^$ip\n";
 				}
 		
-				preg_match('|^[a-z]+://' . $_SERVER['SERVER_NAME'] . '(/.+)|i', $urlRacine . '/' . $adminUrlMaintenance, $resultat);
+				preg_match('#^[a-z]+://' . preg_quote($_SERVER['SERVER_NAME'], '#') . '(/.+)#i', $urlRacine . '/' . $adminUrlMaintenance, $resultat);
 				$adminUrlMaintenanceDansHtaccess = $resultat[1];
 		
 				$htaccess .= "\tRewriteCond %{REQUEST_URI} !$adminUrlMaintenanceDansHtaccess$\n";
@@ -781,7 +783,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<p><?php printf(T_("Dernier lancement du cron le %1\$s à %2\$s."), date('Y-m-d', $dateCron), date('H:i:s', $dateCron)); ?></p>
 					<?php endif; ?>
 				
-					<p><?php echo T_("Cette action peut prendre plusieurs minutes."); ?></p>
+					<p><?php echo T_("Cette action peut prendre un certain temps."); ?></p>
 				
 					<p><input type="submit" name="lancerCron" value="<?php echo T_('Lancer le cron'); ?>" /></p>
 				</div>
@@ -793,7 +795,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 			<p><?php echo T_("Vous pouvez télécharger sur votre ordinateur une archive contenant tout le site."); ?></p>
 	
-			<p><a href="telecharger.admin.php?fichier=<?php echo encodeTexte($racine); ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
+			<p><a href="telecharger.admin.php?fichier=<?php echo encodeTexteGet($racine); ?>&amp;action=date"><?php echo T_('Télécharger une copie de sauvegarde du site.'); ?></a></p>
 		</div><!-- /.boite -->
 	<?php endif; ?>
 </div><!-- /#contenuPrincipal -->

@@ -12,18 +12,18 @@ if (!$erreur404 && !$estPageDerreur)
 	
 	if (isset($_GET['action']) && $_GET['action'] == 'partageCourriel')
 	{
-		if (!empty($_POST['nom']) && !$messageEnvoye)
-		{
-			$nom = securiseTexte($_POST['nom']);
-		}
-		else
+		$nom = securiseTexte(trim($_POST['nom']));
+		
+		if (empty($nom))
 		{
 			$nom = T_("VOTRE NOM");
 		}
-
-		if (!empty($_POST['message']) && !$messageEnvoye)
+		
+		$message = securiseTexte(trim($_POST['message']));
+		
+		if (!empty($message) && !$messageEnvoye)
 		{
-			$petitMot = '<p>' . sprintf(T_("Aussi, %1\$s vous a écrit un petit mot personnalisé, que vous pouvez lire ci-dessous:"), $nom) . '</p><blockquote>' . nl2br(securiseTexte($_POST['message'])) . "</blockquote>\n";
+			$petitMot = '<p>' . sprintf(T_("Aussi, %1\$s vous a écrit un petit mot personnalisé, que vous pouvez lire ci-dessous:"), $nom) . '</p><blockquote>' . nl2br($message) . "</blockquote>\n";
 		}
 		else
 		{
@@ -136,7 +136,7 @@ if (!$erreur404 && !$estPageDerreur)
 }
 
 // Empêcher le contenu dupliqué dans les moteurs de recherche.
-if ($partageCourrielActif && $partageCourrielInclureContact)
+if ($partageCourrielActif && $partageCourrielInclureContact && $premierOuDernier == 'premier')
 {
 	$robots = 'noindex, follow, noarchive';
 }

@@ -66,6 +66,132 @@ if (!empty($blocsAinsererTemp))
 					
 					break;
 					
+				case 'commentaires':
+					if (($ajoutCommentaires || $affichageCommentairesSiAjoutDesactive) && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+					{
+						$commentaires = '';
+						$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, TRUE);
+						$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+						$commentairesAffiches = '';
+						$nombreCommentaires = 0;
+						
+						if (!empty($listeCommentaires))
+						{
+							if ($inverserOrdreCommentaires)
+							{
+								$listeCommentaires = array_reverse($listeCommentaires);
+							}
+							
+							foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
+							{
+								if ((!isset($infosCommentaire['enAttenteDeModeration']) || $infosCommentaire['enAttenteDeModeration'] != 1) && isset($infosCommentaire['afficher']) && $infosCommentaire['afficher'] == 1 && !empty($infosCommentaire['message']))
+								{
+									$nombreCommentaires++;
+									$commentairesAffiches .= '<li id="' . $idCommentaire . '" class="commentaire">' . "\n";
+									
+									if (!isset($infosCommentaire['nom']))
+									{
+										$infosCommentaire['nom'] = '';
+									}
+									
+									if (!isset($infosCommentaire['site']))
+									{
+										$infosCommentaire['site'] = '';
+									}
+									
+									$auteurAfficheCommentaire = auteurAfficheCommentaire($infosCommentaire['nom'], $infosCommentaire['site'], $attributNofollowLiensCommentaires);
+									$dateAfficheeCommentaire = '';
+									$heureAfficheeCommentaire = '';
+									
+									if (!empty($infosCommentaire['date']))
+									{
+										$dateAfficheeCommentaire = date('Y-m-d', $infosCommentaire['date']);
+										$heureAfficheeCommentaire = date('H:i T', $infosCommentaire['date']);
+									}
+									
+									$lienCommentaire = variableGet(0, $url, 'action') . "#$idCommentaire";
+									
+									if (!empty($dateAfficheeCommentaire) && !empty($heureAfficheeCommentaire))
+									{
+										$commentairesAffiches .= '<p class="commentaireAuteur">' . sprintf(T_("%1\$s a écrit le %2\$s à %3\$s (<a href=\"%4\$s\">lien</a>):"), $auteurAfficheCommentaire, $dateAfficheeCommentaire, $heureAfficheeCommentaire, $lienCommentaire) . "</p>\n";
+									}
+									elseif (!empty($dateAfficheeCommentaire))
+									{
+										$commentairesAffiches .= '<p class="commentaireAuteur">' . sprintf(T_("%1\$s a écrit le %2\$s (<a href=\"%3\$s\">lien</a>):"), $auteurAfficheCommentaire, $dateAfficheeCommentaire, $lienCommentaire) . "</p>\n";
+									}
+									elseif (!empty($heureAfficheeCommentaire))
+									{
+										$commentairesAffiches .= '<p class="commentaireAuteur">' . sprintf(T_("%1\$s a écrit à %2\$s (<a href=\"%3\$s\">lien</a>):"), $auteurAfficheCommentaire, $heureAfficheeCommentaire, $lienCommentaire) . "</p>\n";
+									}
+									
+									$commentairesAffiches .= '<div class="commentaireCorps"';
+									
+									if (!empty($idGalerie) && !empty($infosCommentaire['languePage']))
+									{
+										$commentairesAffiches .= ' ' . attributLang($infosCommentaire['languePage'], $doctype);
+									}
+									
+									$commentairesAffiches .= ">\n";
+									
+									foreach ($infosCommentaire['message'] as $ligneMessage)
+									{
+										$commentairesAffiches .= "$ligneMessage\n";
+									}
+									
+									$commentairesAffiches .= "</div><!-- /.commentaireCorps -->\n";
+									$commentairesAffiches .= "</li><!-- /.commentaire -->\n";
+								}
+							}
+						}
+						
+						if ($nombreCommentaires > 0 || $ajoutCommentaires)
+						{
+							if ($nombreCommentaires == 0)
+							{
+								$commentaires .= '<p>' . T_("Aucun commentaire.") . "</p>\n";
+							}
+							else
+							{
+								$commentaires .= '<ul id="listeCommentaires">' . "\n";
+								$commentaires .= $commentairesAffiches;
+								$commentaires .= "</ul><!-- /#listeCommentaires -->\n";
+							}
+							
+							$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+							
+							$blocs[$region] .= '<div id="commentaires" class="bloc ' . $classesBloc . '">' . "\n";
+							
+							if ($nombreCommentaires > 0 && $afficherNombreCommentaires)
+							{
+								$blocs[$region] .= '<h2 id="commentairesTitre" class="bDtitre">' . sprintf(T_("Commentaires (%1\$s)"), $nombreCommentaires) . "</h2>\n";
+							}
+							else
+							{
+								$blocs[$region] .= '<h2 id="commentairesTitre" class="bDtitre">' . T_("Commentaires") . "</h2>\n";
+							}
+							
+							$blocs[$region] .= $commentaires;
+							
+							if (!isset($_GET['action']) || $_GET['action'] != 'commentaire')
+							{
+								$blocs[$region] .= '<h3 id="ajoutCommentaire">' . T_("Ajout d'un commentaire") . "</h3>\n";
+								
+								if ($ajoutCommentaires)
+								{
+									$blocs[$region] .= '<p><a href="' . variableGet(2, $url, 'action', 'commentaire') . '#ajoutCommentaire">' . T_("Ajouter un commentaire.") . "</a></p>\n";
+								}
+								else
+								{
+									$blocs[$region] .= '<p>' . T_("L'ajout de commentaires est désactivé.") . "</p>\n";
+								}
+							}
+							
+							$blocs[$region] .= "</div><!-- /#commentaires -->\n";
+						}
+					}
+					
+					break;
+					
 				case 'flux-rss':
 					$fluxRssGlobalSiteActif = FALSE;
 					
@@ -73,7 +199,7 @@ if (!empty($blocsAinsererTemp))
 					{
 						$pagesFluxRssGlobalSite = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 						
-						if (!empty($pagesFluxRssGlobalSite[$codeLangue]))
+						if (!empty($pagesFluxRssGlobalSite[$langue]))
 						{
 							$fluxRssGlobalSiteActif = TRUE;
 						}
@@ -148,7 +274,7 @@ if (!empty($blocsAinsererTemp))
 									if ($codeLangue != LANGUE)
 									{
 										$boiteDeroulanteAjoutee = TRUE;
-										$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
+										$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue, $doctype) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
 									}
 									else
 									{
@@ -175,7 +301,7 @@ if (!empty($blocsAinsererTemp))
 				case 'infos-publication':
 					if ($infosPublication && !$erreur404 && !$estPageDerreur && empty($courrielContact) && empty($idCategorie) && empty($idGalerie))
 					{
-						$listeCategoriesPage = categories($racine, $urlRacine, $url);
+						$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $url);
 						$bloc = infosPublication($urlRacine, $auteur, $dateCreation, $dateRevision, $listeCategoriesPage);
 					
 						if (!empty($bloc))
@@ -243,51 +369,14 @@ if (!empty($blocsAinsererTemp))
 					break;
 					
 				case 'lien-page':
-					if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+					if (!$fusionnerBlocsPartageLienPage)
 					{
-						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
+						$bloc = genereCodeLienPage($fusionnerBlocsPartageLienPage, $lienPage, $erreur404, $estPageDerreur, $courrielContact, $url, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes, $baliseTitle, $baliseTitleComplement, $lienPageVignette, $lienPageIntermediaire, $aExecuterApresClicBd);
 						
-						$blocs[$region] .= '<div id="lienPage" class="bloc ' . $classesBloc . '">' . "\n";
-						$blocs[$region] .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
-						$blocs[$region] .= "<div class=\"bDcorps\">\n";
-						$urlSansAction = variableGet(0, $url, 'action');
-						$codeLienPage = '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '">' . $baliseTitle . $baliseTitleComplement . '</a>') . "</code></pre>\n";
-						$liensImage = array ();
-						
-						if (isset($lienPageVignette) && preg_match('#(<img .+? />)#', $lienPageVignette, $resultat))
+						if (!empty($bloc))
 						{
-							$liensImage['vignette']['description'] = '<p>' . T_("Lien avec l'image en vignette:") . "</p>\n";
-							$liensImage['vignette']['balise'] = $resultat[1];
+							$blocs[$region] .= $bloc;
 						}
-						
-						if (isset($lienPageIntermediaire) && preg_match('#(<img .+? />)#', $lienPageIntermediaire, $resultat))
-						{
-							$liensImage['intermediaire']['description'] = '<p>' . T_("Lien avec l'image en taille intermédiaire:") . "</p>\n";
-							$liensImage['intermediaire']['balise'] = $resultat[1];
-						}
-						
-						if (empty($liensImage))
-						{
-							$blocs[$region] .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n$codeLienPage";
-						}
-						else
-						{
-							$blocs[$region] .= '<p>' . T_("Lien textuel seulement:") . "</p>\n$codeLienPage";
-							
-							foreach ($liensImage as $lienImageType => $lienImageInfo)
-							{
-								$blocs[$region] .= $lienImageInfo['description'];
-								$blocs[$region] .= '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '" title="' . $baliseTitle . $baliseTitleComplement . '">' . $lienImageInfo['balise'] . '</a>') . "</code></pre>\n";
-							}
-						}
-						
-						$blocs[$region] .= "</div>\n";
-						$blocs[$region] .= '</div><!-- /#lienPage -->' . "\n";
-						$blocs[$region] .= '<script type="text/javascript">' . "\n";
-						$blocs[$region] .= "//<![CDATA[\n";
-						$blocs[$region] .= "boiteDeroulante('#lienPage', \"$aExecuterApresClicBd\");\n";
-						$blocs[$region] .= "//]]>\n";
-						$blocs[$region] .= "</script>\n";
 					}
 					
 					break;
@@ -337,7 +426,7 @@ if (!empty($blocsAinsererTemp))
 									if ($codeLangue != LANGUE)
 									{
 										$boiteDeroulanteAjoutee = TRUE;
-										$bloc .= "<div class=\"menuCategoriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuCategoriesLangue -->\n";
+										$bloc .= "<div class=\"menuCategoriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue, $doctype) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuCategoriesLangue -->\n";
 									}
 									else
 									{
@@ -412,7 +501,10 @@ if (!empty($blocsAinsererTemp))
 						
 						foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
 						{
-							$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
+							if (!empty($listeInfosGalerie['url']))
+							{
+								$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
+							}
 						}
 						
 						if (!empty($bloc))
@@ -466,7 +558,7 @@ if (!empty($blocsAinsererTemp))
 							
 							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
-								$bloc .= '<li><a href="' . $urlAccueilLangue . '/">' . codeLangueVersNom($codeLangue, FALSE) . "</a></li>\n";
+								$bloc .= '<li><a href="' . $urlAccueilLangue . '/">' . codeLangueVersNom($codeLangue, $doctype, FALSE) . "</a></li>\n";
 							}
 							
 							if (!empty($bloc))
@@ -523,7 +615,8 @@ if (!empty($blocsAinsererTemp))
 						$bloc = '<div id="partage" class="bloc ' . $classesBloc . '">' . "\n";
 						$bloc .= '<h2 class="bDtitre">' . T_("Partager") . "</h2>\n";
 						
-						$bloc .= "<ul class=\"bDcorps\">\n";
+						$bloc .= "<div class=\"bDcorps\">\n";
+						$bloc .= "<ul>\n";
 						
 						if ($partageCourriel && $partageCourrielActif)
 						{
@@ -548,6 +641,18 @@ if (!empty($blocsAinsererTemp))
 						}
 						
 						$bloc .= "</ul>\n";
+						
+						if ($fusionnerBlocsPartageLienPage)
+						{
+							$blocLienPage = genereCodeLienPage($fusionnerBlocsPartageLienPage, $lienPage, $erreur404, $estPageDerreur, $courrielContact, $url, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes, $baliseTitle, $baliseTitleComplement, $lienPageVignette, $lienPageIntermediaire, $aExecuterApresClicBd);
+							
+							if (!empty($blocLienPage))
+							{
+								$bloc .= $blocLienPage;
+							}
+						}
+						
+						$bloc .= "</div>\n";
 						$bloc .= '</div><!-- /#partage -->' . "\n";
 						$bloc .= '<script type="text/javascript">' . "\n";
 						$bloc .= "//<![CDATA[\n";

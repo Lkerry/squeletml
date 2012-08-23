@@ -66,7 +66,7 @@ else
 	{
 		$passerAlEtape2 = TRUE;
 		$urlSansServeur = url(FALSE, FALSE);
-		$urlSansServeurRacine = preg_replace('|/[^/]+$|', '', $urlSansServeur);
+		$urlSansServeurRacine = preg_replace('#/[^/]+$#', '', $urlSansServeur);
 		
 		if (!isset($_POST['langues']))
 		{
@@ -82,11 +82,11 @@ else
 				
 				if ($initIncPhp !== FALSE)
 				{
-					$initIncPhp = preg_replace('|^(\$urlRacine \= ")[^"]+(";)|m', '$1' . $urlRacine . '$2', $initIncPhp);
+					$initIncPhp = preg_replace('#^(\$urlRacine \= ")[^"]+(";)#m', '$1' . $urlRacine . '$2', $initIncPhp);
 		
 					if ($serveurFreeFr)
 					{
-						$initIncPhp = preg_replace('|^(\$serveurFreeFr \= )FALSE(;)|m', '$1TRUE$2', $initIncPhp);
+						$initIncPhp = preg_replace('#^(\$serveurFreeFr \= )FALSE(;)#m', '$1TRUE$2', $initIncPhp);
 					}
 					
 					list ($messagesScriptActiveLangues, $initIncPhp) = majLanguesActives($racine, $urlRacine, $_POST['langues'], $initIncPhp);
@@ -139,7 +139,7 @@ else
 			
 					if ($robotsTxt !== FALSE)
 					{
-						$robotsTxt = preg_replace('|^(Disallow: )(/telecharger\.php)|m', '$1' . $urlSansServeurRacine . '$2', $robotsTxt);
+						$robotsTxt = preg_replace('#^(Disallow: )(/telecharger\.php)#m', '$1' . $urlSansServeurRacine . '$2', $robotsTxt);
 						$robotsTxt = preg_replace("/\n{2,}/", "\n", $robotsTxt);
 						
 						if (@file_put_contents($racine . '/robots.txt', $robotsTxt) === FALSE)
@@ -196,9 +196,9 @@ else
 			
 						if ($htaccess !== FALSE)
 						{
-							$htaccess = preg_replace('|^(ErrorDocument 401 )(/401\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
-							$htaccess = preg_replace('|^(ErrorDocument 404 )(/404\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
-							$htaccess = preg_replace('|^(ErrorDocument 503 )(/maintenance\.php)|m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
+							$htaccess = preg_replace('#^(ErrorDocument 401 )(/401\.php)#m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
+							$htaccess = preg_replace('#^(ErrorDocument 404 )(/404\.php)#m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
+							$htaccess = preg_replace('#^(ErrorDocument 503 )(/maintenance\.php)#m', '$1' . $urlSansServeurRacine . '$2', $htaccess);
 
 							if (@file_put_contents($racine . '/.htaccess', $htaccess) === FALSE)
 							{

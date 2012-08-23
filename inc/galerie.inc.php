@@ -25,6 +25,7 @@ if (!$erreur404 && $idGalerie == 'démo')
 	$tableauGalerie = tableauGalerie($racine . '/fichiers/galeries/' . $idGalerieDossier . '/config.ini.txt', TRUE);
 	$urlImgSrc = $urlRacine . '/fichiers/galeries/' . encodeTexte($idGalerieDossier);
 	$racineImgSrc = $racine . '/fichiers/galeries/' . $idGalerieDossier;
+	$ajoutCommentaires = FALSE;
 }
 elseif (!$erreur404 && !empty($idGalerie) && cheminConfigGalerie($racine, $idGalerieDossier))
 {

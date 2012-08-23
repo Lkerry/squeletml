@@ -82,7 +82,7 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, nive
 		var oTitreTexte = '';
 		var oTable = document.createElement(baliseTable);
 		
-		oConteneur.setAttribute('id', 'tableDesMatieres');
+		oConteneur.setAttribute('id', 'tableDesMatieresTmp');
 		oTitre.setAttribute('id', 'tableDesMatieresBdTitre');
 		oTitre.setAttribute('class', 'bDtitre');
 		
@@ -118,24 +118,35 @@ function tableDesMatieres(idParent, baliseTable, baliseTitre, niveauDepart, nive
 		// S'il n'y a qu'un `li` vide (en fait, ne contenant qu'un retour à la ligne), aucun titre n'a été trouvé, on peut donc supprimer la table des matières, qui ne sert à rien. Note: pour IE6, le `li` est vraiment vide (aucun retour à la ligne).
 		if ($('#tableDesMatieresBdCorps li').length == 1 && ($('#tableDesMatieresBdCorps > li').text() == "\n" || $('#tableDesMatieresBdCorps > li').text() == ''))
 		{
-			$('#tableDesMatieres').remove();
+			$('#tableDesMatieresTmp').remove();
 		}
 		
+		var oTableDesMatieres = $(oParent).find('div#tableDesMatieres');
 		var oChapeau = $(oParent).find('div.chapeau');
 		var oDiC = $(oParent).find('div#debutInterieurContenu');
 		var oH1 = $(oParent).find('h1');
 		
-		if (oChapeau.length > 0)
+		if (oTableDesMatieres.length > 0)
 		{
-			$(oChapeau[0]).after($('#tableDesMatieres'));
+			$(oTableDesMatieres[0]).append($('#tableDesMatieresTmp').html());
+			$('#tableDesMatieresTmp').remove();
 		}
-		else if (oDiC.length > 0)
+		else
 		{
-			$(oDiC[0]).after($('#tableDesMatieres'));
-		}
-		else if (oH1.length > 0)
-		{
-			$(oH1[0]).after($('#tableDesMatieres'));
+			if (oChapeau.length > 0)
+			{
+				$(oChapeau[0]).after($('#tableDesMatieresTmp'));
+			}
+			else if (oDiC.length > 0)
+			{
+				$(oDiC[0]).after($('#tableDesMatieresTmp'));
+			}
+			else if (oH1.length > 0)
+			{
+				$(oH1[0]).after($('#tableDesMatieresTmp'));
+			}
+			
+			$('#tableDesMatieresTmp').attr('id', 'tableDesMatieres');
 		}
 	})
 }

@@ -1,5 +1,65 @@
 <?php
 /*
+Retourne un tableau associatif de deux éléments:
+
+- `cheminFichier`: le chemin du fichier à créer dans le porte-documents;
+- `messagesScript`: le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminCheminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments)
+{
+	$cheminFichier = '';
+	$messagesScript = '';
+	
+	if (isset($_POST['porteDocumentsCreationNom']) && isset($_POST['porteDocumentsCreationChemin']))
+	{
+		$cheminFichier = decodeTexte($_POST['porteDocumentsCreationNom']);
+		
+		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+		{
+			$ancienCheminFichier = $cheminFichier;
+			$casse = '';
+			
+			if (in_array('min', $_POST['filtrerNom']))
+			{
+				$casse = 'min';
+			}
+			
+			$cheminFichier = filtreChaine($cheminFichier, $casse);
+			
+			if ($cheminFichier != $ancienCheminFichier)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienCheminFichier) . '</code>', '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+			}
+		}
+		
+		$cheminFichier = decodeTexte($_POST['porteDocumentsCreationChemin']) . '/' . $cheminFichier;
+		
+		if (!preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '/#', $cheminFichier))
+		{
+			$cheminFichier = "$adminDossierRacinePorteDocuments/$cheminFichier";
+		}
+	}
+	
+	return array ('cheminFichier' => $cheminFichier, 'messagesScript' => $messagesScript);
+}
+
+/*
+Retourne le chemin du fichier relatif à la racine du porte-documents.
+*/
+function adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminFichier)
+{
+	if (strpos($cheminFichier, $racine . '/') !== 0)
+	{
+		$cheminFichier = $racine . '/' . $cheminFichier;
+	}
+	
+	$cheminFichier = preg_replace('#^' . preg_quote(realpath($adminDossierRacinePorteDocuments), '#') . '/?#', '', $cheminFichier);
+	$cheminFichier = $adminDossierRacinePorteDocuments . '/' . $cheminFichier;
+	
+	return $cheminFichier;
+}
+
+/*
 Retourne un tableau dont chaque élément contient un chemin vers le fichier `(site/)basename($racineAdmin)/inc/$nom.inc.php` demandé.
 */
 function adminCheminsInc($racineAdmin, $nom)
@@ -309,7 +369,7 @@ function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorte
 	{
 		foreach ($tableauFiltresAffichage as $dossierFiltre)
 		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement))
 			{
 				return TRUE;
 			}
@@ -321,7 +381,7 @@ function adminEmplacementAffichable($dossierAparcourir, $adminDossierRacinePorte
 		
 		foreach ($tableauFiltresAffichage as $dossierFiltre)
 		{
-			if (preg_match("|^$dossierFiltre(/.+)?$|", $emplacement) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement) || !preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '(/.+)?$#', $emplacement))
 			{
 				$aAjouter = FALSE;
 				break;
@@ -345,7 +405,7 @@ function adminEmplacementModifiable($cheminFichier, $adminDossierRacinePorteDocu
 	$adminDossierRacinePorteDocuments = realpath($adminDossierRacinePorteDocuments);
 	$cheminFichier = realpath($cheminFichier);
 	
-	if (is_dir($cheminFichier) && ($cheminFichier == $adminDossierRacinePorteDocuments || $cheminFichier == '.' || $cheminFichier == '..' || preg_match('|/\.{1,2}$|', $cheminFichier) || !preg_match("|^$adminDossierRacinePorteDocuments(/.+)?$|", $cheminFichier)))
+	if (is_dir($cheminFichier) && ($cheminFichier == $adminDossierRacinePorteDocuments || $cheminFichier == '.' || $cheminFichier == '..' || preg_match('#/\.{1,2}$#', $cheminFichier) || !preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '(/.+)?$#', $cheminFichier)))
 	{
 		return FALSE;
 	}
@@ -387,7 +447,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocument
 	{
 		foreach ($tableauFiltresAccesDossiers as $dossierFiltre)
 		{
-			if (preg_match('|^' . preg_quote($dossierFiltre, '|') . '(/.+)?$|', $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement))
 			{
 				return TRUE;
 			}
@@ -399,7 +459,7 @@ function adminEmplacementPermis($cheminFichier, $adminDossierRacinePorteDocument
 		
 		foreach ($tableauFiltresAccesDossiers as $dossierFiltre)
 		{
-			if (preg_match('|^' . preg_quote($dossierFiltre, '|') . '(/.+)?$|', $emplacement) || !preg_match('|^' . preg_quote($adminDossierRacinePorteDocuments, '|') . '(/.+)?$|', $emplacement))
+			if (preg_match('#^' . preg_quote($dossierFiltre, '#') . '(/.+)?$#', $emplacement) || !preg_match('#^' . preg_quote($adminDossierRacinePorteDocuments, '#') . '(/.+)?$#', $emplacement))
 			{
 				$aAjouter = FALSE;
 				break;
@@ -449,6 +509,59 @@ function adminEmplacementsPermis($tableauFichiers, $adminDossierRacinePorteDocum
 	}
 	
 	return $tableauFichiersFiltre;
+}
+
+/*
+Si `$enregistrerCommentaires` vaut `TRUE`, enregistre un fichier de configuration des commentaires, sinon enregistre un fichier de configuration des abonnements aux notifications des nouveaux commentaires. Retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminEnregistreConfigCommentaires($racine, $cheminFichier, $contenuFichier, $enregistrerCommentaires = TRUE)
+{
+	$messagesScript = '';
+	
+	if (!file_exists($cheminFichier) && !@touch($cheminFichier))
+	{
+		if ($enregistrerCommentaires)
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucun commentaire ne peut être enregistré puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
+		else
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Aucun abonnement ne peut être enregistré puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
+	}
+	
+	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
+	
+	if (file_exists($cheminFichier))
+	{
+		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
+		{
+			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+		}
+		else
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		}
+	}
+	else
+	{
+		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+	}
+
+	$messagesScript .= "<div class=\"bDcorps\">\n";
+	$messagesScript .= '<pre id="contenuFichier">' . securiseTexte($contenuFichier) . "</pre>\n";
+	
+	$messagesScript .= "<ul>\n";
+	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichier');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</div><!-- /.bDcorps -->\n";
+	$messagesScript .= "</li>\n";
+	
+	return $messagesScript;
 }
 
 /*
@@ -551,6 +664,21 @@ function adminEnregistreSitemap($racine, $contenuSitemap)
 	$messagesScript .= "</li>\n";
 	
 	return $messagesScript;
+}
+
+/*
+Retourne `TRUE` si le fichier est éditable dans le porte-documents, sinon retourne `FALSE`.
+*/
+function adminEstEditable($cheminFichier)
+{
+	$typeMime = typeMime($cheminFichier);
+	
+	if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty')
+	{
+		return TRUE;
+	}
+	
+	return FALSE;
 }
 
 /*
@@ -821,6 +949,8 @@ function adminInclureUneFoisAuDebut($racineAdmin)
 	$racine = dirname($racineAdmin);
 	
 	$fichiers = array ();
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
+	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
 	$fichiers[] = $racine . '/inc/php-markdown/markdown.inc.php';
 	$fichiers[] = $racine . '/inc/php-gettext/gettext.inc.php';
 	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
@@ -945,6 +1075,41 @@ function adminInfobulle($racineAdmin, $urlRacineAdmin, $cheminFichier, $apercu, 
 }
 
 /*
+Retourne le code de langue du flux RSS des dernières publications dans laquelle la page fournie est classée. Si aucune langue n'est trouvée, retourne une chaîne vide.
+*/
+function adminLangueFluxRssPage($racine, $urlRacine, $urlPage)
+{
+	$langueFluxRssPage = '';
+	$urlRelativePage = supprimeUrlRacine($urlRacine, $urlPage);
+	$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
+	
+	if (file_exists($cheminFichierRss))
+	{
+		$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+		
+		if (!empty($rssPages))
+		{
+			foreach ($rssPages as $codeLangue => $langueInfos)
+			{
+				if (!empty($langueInfos['pages']))
+				{
+					foreach ($langueInfos['pages'] as $page)
+					{
+						if ($page == $urlRelativePage)
+						{
+							$langueFluxRssPage = $codeLangue;
+							break 2;
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	return $langueFluxRssPage;
+}
+
+/*
 Retourne sous forme de tableau la liste des dossiers et fichiers contenus dans un emplacement fourni en paramètre. L'analyse est récursive. Les dossiers ou fichiers dont l'accès a échoué ne sont pas retournés.
 */
 function adminListeFichiers($dossier, $liste = array ())
@@ -1029,7 +1194,7 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 	{
 		if (!empty($dossierCourant))
 		{
-			$dossierCourantDansUrl = '&amp;dossierCourant=' . encodeTexte($dossierCourant);
+			$dossierCourantDansUrl = '&amp;dossierCourant=' . encodeTexteGet($dossierCourant);
 		}
 		else
 		{
@@ -1042,13 +1207,9 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 			{
 				if (is_dir($dossierAparcourir . '/' . $fichier))
 				{
-					if (adminDossierEstVide($dossierAparcourir . '/' . $fichier))
+					if (adminDossierEstVide($dossierAparcourir . '/' . $fichier) || (!$adminAfficherSousDossiersDansContenu || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu))))
 					{
-						$liste[$dossierAparcourir . '/' . $fichier][] = T_("Vide.");
-					}
-					elseif (!$adminAfficherSousDossiersDansContenu || (!adminEmplacementAffichable($dossierAparcourir . '/' . $fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu) && adminEmplacementAffichable($dossierDeDepartAparcourir, $adminDossierRacinePorteDocuments, $adminTypeFiltreAffichageDansContenu, $tableauFiltresAffichageDansContenu)))
-					{
-						$liste[$dossierAparcourir . '/' . $fichier][] = sprintf(T_("Affichage désactivé. <a href=\"%1\$s\">Lister ce dossier.</a>"), 'porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . '&amp;dossierCourant=' . encodeTexte("$dossierAparcourir/$fichier") . '#fichiersEtDossiers');
+						$liste[$dossierAparcourir . '/' . $fichier] = array ();
 					}
 					else
 					{
@@ -1059,17 +1220,18 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 				{
 					$fichierMisEnForme = '';
 					
-					$fichierMisEnForme .= '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte("$dossierAparcourir/$fichier") . "\" />\n";
+					$fichierMisEnForme .= '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte("$dossierAparcourir/$fichier") . '" />';
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexte("$dossierAparcourir/$fichier") . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet("$dossierAparcourir/$fichier") . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$typeMime = typeMime("$dossierAparcourir/$fichier");
+					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty')
+					if (adminEstEditable("$dossierAparcourir/$fichier"))
 					{
-						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=editer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
+						$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=editer&amp;valeur=' . encodeTexteGet("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/editer.png\" alt=\"" . T_("Éditer") . "\" title=\"" . T_("Éditer") . "\" width=\"16\" height=\"16\" /></a>\n";
 					}
 					else
 					{
@@ -1078,16 +1240,13 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 					
 					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					
-					$fichierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexte("$dossierAparcourir/$fichier") . "$dossierCourantDansUrl#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
-					$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
-					
 					if ($adminActiverInfobulle['contenuDossier'])
 					{
 						$fichierMisEnForme .= adminInfobulle($racineAdmin, $urlRacineAdmin, "$dossierAparcourir/$fichier", TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
 						$fichierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 					}
 					
-					$fichierMisEnForme .= '<a class="porteDocumentsFichier" href="' . encodeTexte("$dossierAparcourir/$fichier") . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($fichier)) . '"><code>' . securiseTexte($fichier) . "</code></a>\n";
+					$fichierMisEnForme .= '<a class="lienSurCode" href="' . encodeTexte("$dossierAparcourir/$fichier") . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($fichier)) . '"><code>' . securiseTexte($fichier) . "</code></a>\n";
 					$liste[$dossierAparcourir][] = $fichierMisEnForme;
 				}
 			}
@@ -1102,6 +1261,33 @@ function adminListeFormateeFichiers($racineAdmin, $urlRacineAdmin, $adminDossier
 	}
 	
 	return $liste;
+}
+
+/*
+Retourne un tableau listant les pages ayant au moins un commentaire.
+*/
+function adminListePagesAvecCommentaires($racine)
+{
+	$listePages = array ();
+	$racineCommentaires = "$racine/site/inc/commentaires";
+	$listeFichiers = adminListeFichiers($racineCommentaires);
+	
+	foreach ($listeFichiers as $listeFichier)
+	{
+		if (!is_dir($listeFichier) && preg_match('#^' . preg_quote($racineCommentaires, '#') . '/([^/]+)\.ini\.txt$#', $listeFichier, $resultat) && file_exists(cheminConfigAbonnementsCommentaires($listeFichier)))
+		{
+			$configFichier = super_parse_ini_file($listeFichier, TRUE);
+			
+			if (!empty($configFichier))
+			{
+				$listePages[] = decodeTexte($resultat[1]);
+			}
+		}
+	}
+	
+	uksort($listePages, 'strnatcasecmp');
+	
+	return $listePages;
 }
 
 /*
@@ -1146,7 +1332,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	
 	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
-		if (isset($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
+		if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 		{
 			foreach ($langues as $codeLangue)
 			{
@@ -1169,7 +1355,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 		}
 		
 		// Galerie.
-		if (cheminConfigGalerie($racine, $infosGalerie['dossier']))
+		if (!empty($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']))
 		{
 			$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $infosGalerie['dossier']), TRUE);
 			
@@ -1185,7 +1371,15 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 			
 			foreach ($langues as $codeLangue)
 			{
-				$url = urlGalerie(1, '', $urlRacine, $infosGalerie['url'], $codeLangue);
+				if (!empty($infosGalerie['url']))
+				{
+					$url = urlGalerie(1, '', $urlRacine, $infosGalerie['url'], $codeLangue);
+				}
+				else
+				{
+					$url = urlGalerie(0, $racine, $urlRacine, $idGalerie, $codeLangue);
+				}
+				
 				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url);
 				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 				$tableauUrl[$url]['cache'] = $cheminFichierCache;
@@ -1313,7 +1507,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 					$tableauUrl[$url]['cache'] = $cheminFichierCache;
 					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
-				
+					
 					if (count($accueil) > 1)
 					{
 						foreach ($langues as $code)
@@ -1348,17 +1542,20 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
 				}
 				
-				foreach ($categorieInfos['pages'] as $page)
+				if (!empty($categorieInfos['pages']))
 				{
-					// Pages faisant partie de la catégorie.
-					$urlPage = $urlRacine . '/' . $page;
-					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage);
-					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
-					$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
-					$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					foreach ($categorieInfos['pages'] as $page)
+					{
+						// Pages faisant partie de la catégorie.
+						$urlPage = $urlRacine . '/' . $page;
+						$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage);
+						$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+						$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
+						$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					}
 				}
 				
-				if (isset($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
+				if (!empty($categorieInfos['rss']) && $categorieInfos['rss'] == 1)
 				{
 					// Flux RSS de la catégorie.
 					$urlRss = $urlRacine . '/rss.php?type=categorie&amp;id=' . filtreChaine($categorie);
@@ -1380,20 +1577,23 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 		{
 			foreach ($pages as $codeLangue => $langueInfos)
 			{
-				$url = "$urlRacine/rss.php?type=site&amp;langue=$codeLangue";
-				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
-				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
-				$tableauUrl[$url]['cache'] = $cheminFichierCache;
-				$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
-				
-				foreach ($langueInfos['pages'] as $page)
+				if (!empty($langueInfos['pages']))
 				{
-					// Page faisant partie du flux RSS.
-					$urlPage = $urlRacine . '/' . $page;
-					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage, FALSE);
+					$url = "$urlRacine/rss.php?type=site&amp;langue=$codeLangue";
+					$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
 					$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
-					$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
-					$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					$tableauUrl[$url]['cache'] = $cheminFichierCache;
+					$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					
+					foreach ($langueInfos['pages'] as $page)
+					{
+						// Page faisant partie du flux RSS.
+						$urlPage = $urlRacine . '/' . $page;
+						$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPage, FALSE);
+						$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+						$tableauUrl[$urlPage]['cache'] = $cheminFichierCache;
+						$tableauUrl[$urlPage]['cacheEnTete'] = $cheminFichierCacheEnTete;
+					}
 				}
 			}
 		}
@@ -1423,6 +1623,86 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	}
 	
 	return $tableauUrl;
+}
+
+/*
+Met à jour le fichier de configuration des catégories et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
+*/
+function adminMajConfigCategories($racine, $contenuFichierTableau)
+{
+	$messagesScript = '';
+	$contenuFichier = '';
+	
+	foreach ($contenuFichierTableau as $categorie => $categorieInfos)
+	{
+		if (!empty($categorieInfos['infos']) || !empty($categorieInfos['pages']))
+		{
+			$contenuFichier .= "[$categorie]\n";
+			
+			if (!empty($categorieInfos['infos']))
+			{
+				foreach ($categorieInfos['infos'] as $ligne)
+				{
+					$contenuFichier .= $ligne;
+				}
+			}
+			
+			if (!empty($categorieInfos['pages']))
+			{
+				foreach ($categorieInfos['pages'] as $ligne)
+				{
+					$contenuFichier .= $ligne;
+				}
+			}
+			
+			$contenuFichier .= "\n";
+		}
+	}
+	
+	$cheminFichier = cheminConfigCategories($racine);
+	
+	if (!$cheminFichier)
+	{
+		$cheminFichier = cheminConfigCategories($racine, TRUE);
+		
+		if (!@touch($cheminFichier))
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
+	}
+	
+	$messagesScript .= '<li class="contenuFichierPourSauvegarde">';
+	
+	if (file_exists($cheminFichier))
+	{
+		if (@file_put_contents($cheminFichier, $contenuFichier) !== FALSE)
+		{
+			$messagesScript .= '<p>' . T_("Les modifications ont été enregistrées.") . "</p>\n";
+
+			$messagesScript .= '<p class="bDtitre">' . sprintf(T_("Voici le contenu qui a été enregistré dans le fichier %1\$s:"), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+		}
+		else
+		{
+			$messagesScript .= '<p class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</p>\n";
+			
+			$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+		}
+	}
+	else
+	{
+		$messagesScript .= '<p class="bDtitre">' . T_("Voici le contenu qui aurait été enregistré dans le fichier:") . "</p>\n";
+	}
+	
+	$messagesScript .= "<div class=\"bDcorps\">\n";
+	$messagesScript .= '<pre id="contenuFichierCategories">' . securiseTexte($contenuFichier) . "</pre>\n";
+	
+	$messagesScript .= "<ul>\n";
+	$messagesScript .= "<li><a href=\"javascript:adminSelectionneTexte('contenuFichierCategories');\">" . T_("Sélectionner le résultat.") . "</a></li>\n";
+	$messagesScript .= "</ul>\n";
+	$messagesScript .= "</div><!-- /.bDcorps -->\n";
+	$messagesScript .= "</li>\n";
+	
+	return $messagesScript;
 }
 
 /*
@@ -1733,6 +2013,42 @@ function adminMkdir($fichier, $permissions, $recursivite = FALSE)
 	{
 		return '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), '<code>' . securiseTexte($fichier) . '</code>') . "</li>\n";
 	}
+}
+
+/*
+Retourne le nombre de commentaires en attente de modération.
+*/
+function adminNombreCommentairesAmoderer($racine, $urlRacine, $moderationCommentaires)
+{
+	$nombre = 0;
+	$listePagesAvecCommentaires = adminListePagesAvecCommentaires($racine);
+	
+	foreach ($listePagesAvecCommentaires as $listePage)
+	{
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, '', TRUE);
+		$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
+		
+		if ($listeCommentaires !== FALSE)
+		{
+			foreach ($listeCommentaires as $idCommentaire => $infosCommentaire)
+			{
+				if ((isset($infosCommentaire['enAttenteDeModeration']) && $infosCommentaire['enAttenteDeModeration'] == 1) || (!isset($infosCommentaire['enAttenteDeModeration']) && $moderationCommentaires))
+				{
+					$nombre++;
+				}
+			}
+		}
+	}
+	
+	return $nombre;
+}
+
+/*
+Retourne `TRUE` s'il faut afficher les options de catégories et de flux RSS pour le fichier édité dans le porte-documents, sinon retourne `FALSE`.
+*/
+function adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite)
+{
+	return preg_match('/(?<!\.inc)\.php$/', $urlFichierEdite) && strpos($urlFichierEdite, $urlRacineAdmin) !== 0;
 }
 
 /*
@@ -2177,6 +2493,210 @@ function adminTableauCheminsCanoniques($tableauChemins)
 }
 
 /*
+Convertit un tableau représentant la configuration des commentaires d'une page vers un contenu texte enregistrable dans le fichier de configuration en question. Retourne un tableau de deux éléments:
+
+	array ('config' => $contenuFichier, 'messagesScript' => $messagesScript)
+*/
+function adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObligatoires, $moderationCommentaires, $tableauConfig)
+{
+	$messagesScript = '';
+	$contenuFichier = '';
+	
+	foreach ($tableauConfig as $idCommentaire => $infosCommentaire)
+	{
+		$message = '';
+		
+		if (!empty($infosCommentaire['message']) && is_array($infosCommentaire['message']))
+		{
+			foreach ($infosCommentaire['message'] as $ligneMessage)
+			{
+				$message .= "message[]=$ligneMessage\n";
+			}
+		}
+		
+		if (!empty($message))
+		{
+			$contenuFichier .= "[$idCommentaire]\n";
+			
+			// IP.
+			
+			$contenuFichier .= 'ip=';
+			
+			if (!empty($infosCommentaire['ip']))
+			{
+				// Le motif exact pour les adresses IP est beaucoup plus complexe, mais on ne vérifie ici que la forme générale.
+				if (!preg_match('/^\d{1,3}(\.\d{1,3}){3}$/', $infosCommentaire['ip']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: l'adresse IP %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['ip'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['ip'];
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Date.
+			
+			$contenuFichier .= 'date=';
+			
+			if (!empty($infosCommentaire['date']))
+			{
+				if (!preg_match('/^\d+$/', $infosCommentaire['date']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: la date %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['date'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['date'];
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Nom.
+			
+			$contenuFichier .= 'nom=';
+			
+			if (!empty($infosCommentaire['nom']))
+			{
+				$contenuFichier .= $infosCommentaire['nom'];
+			}
+			elseif ($commentairesChampsObligatoires['nom'])
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, le nom est obligatoire, mais celui associé au commentaire %1\$s est vide."), '<code>' . $idCommentaire . '</code>') . "</li>\n";
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Courriel.
+			
+			$contenuFichier .= 'courriel=';
+			
+			if (!empty($infosCommentaire['courriel']))
+			{
+				if (!courrielValide($infosCommentaire['courriel']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le courriel %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['courriel'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['courriel'];
+			}
+			elseif ($commentairesChampsObligatoires['courriel'])
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, le courriel est obligatoire, mais celui associé au commentaire %1\$s est vide."), '<code>' . $idCommentaire . '</code>') . "</li>\n";
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Site.
+			
+			$contenuFichier .= 'site=';
+			
+			if (!empty($infosCommentaire['site']))
+			{
+				if (!siteWebValide($infosCommentaire['site']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: le site Web %1\$s ne semble pas avoir une forme valide."), '<code>' . $infosCommentaire['site'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['site'];
+			}
+			elseif ($commentairesChampsObligatoires['site'])
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, le site est obligatoire, mais celui associé au commentaire %1\$s est vide."), '<code>' . $idCommentaire . '</code>') . "</li>\n";
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Notification.
+			
+			$contenuFichier .= 'notification=';
+			
+			if (isset($infosCommentaire['notification']) && $infosCommentaire['notification'] == 1)
+			{
+				$contenuFichier .= 1;
+			}
+			else
+			{
+				$contenuFichier .= 0;
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Langue de la page.
+			
+			$contenuFichier .= 'languePage=';
+			
+			if (!empty($infosCommentaire['languePage']))
+			{
+				$contenuFichier .= $infosCommentaire['languePage'];
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// En attente de modération.
+			
+			$contenuFichier .= 'enAttenteDeModeration=';
+			
+			if (!isset($infosCommentaire['enAttenteDeModeration']))
+			{
+				if ($moderationCommentaires)
+				{
+					$infosCommentaire['enAttenteDeModeration'] = 1;
+				}
+				else
+				{
+					$infosCommentaire['enAttenteDeModeration'] = 0;
+				}
+			}
+			
+			if ($infosCommentaire['enAttenteDeModeration'] == 1)
+			{
+				$contenuFichier .= 1;
+			}
+			else
+			{
+				$contenuFichier .= 0;
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Afficher.
+			
+			$contenuFichier .= 'afficher=';
+			
+			if (!isset($infosCommentaire['afficher']))
+			{
+				if ($moderationCommentaires)
+				{
+					$infosCommentaire['afficher'] = 0;
+				}
+				else
+				{
+					$infosCommentaire['afficher'] = 1;
+				}
+			}
+			
+			if ($infosCommentaire['afficher'] == 1)
+			{
+				$contenuFichier .= 1;
+			}
+			else
+			{
+				$contenuFichier .= 0;
+			}
+			
+			$contenuFichier .= "\n";
+			
+			// Message.
+			$contenuFichier .= $message;
+			
+			$contenuFichier .= "\n";
+		}
+	}
+	
+	return array ('config' => $contenuFichier, 'messagesScript' => $messagesScript);
+}
+
+/*
 Retourne la taille en octets du dossier de cache de l'administration si le dossier est accessible, sinon retourne FALSE.
 */
 function adminTailleCache($racineAdmin)
@@ -2289,6 +2809,18 @@ function adminUrlDeconnexion($urlRacine)
 	list ($protocole, $url) = explode('://', $urlRacine, 2);
 	
 	return "$protocole://deconnexion@$url/deconnexion.php";
+}
+
+/*
+Retourne l'URL du fichier édité dans le porte-documents.
+*/
+function adminUrlFichierEditePorteDocuments($racine, $urlRacine, $cheminFichier)
+{
+	$urlFichierEdite = realpath($cheminFichier);
+	$urlFichierEdite = preg_replace('#^' . preg_quote($racine, '#') . '/?#', '', $urlFichierEdite);
+	$urlFichierEdite = $urlRacine . '/' . encodeTexte($urlFichierEdite);
+	
+	return $urlFichierEdite;
 }
 
 /*

@@ -118,11 +118,31 @@ $adminBalisesLinkScript[30] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineA
 $adminBalisesLinkScript[31] = "$urlRacineAdmin/sitemap.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
 $adminBalisesLinkScript[32] = "$urlRacineAdmin/sitemap.admin.php*#jsDirect#$jsDirect";
 
+$adminBalisesLinkScript[33] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacine/js/jquery/jquery.min.js";
+$adminBalisesLinkScript[34] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.core.min.js";
+$adminBalisesLinkScript[35] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.widget.min.js";
+$adminBalisesLinkScript[36] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.mouse.min.js";
+$adminBalisesLinkScript[37] = "$urlRacineAdmin/commentaires.admin.php*#js#$urlRacineAdmin/js/jquery-ui/jquery.ui.sortable.min.js";
+$adminBalisesLinkScript[38] = "$urlRacineAdmin/commentaires.admin.php*#jsDirect#$jsDirect";
+
 // Fusion des fichiers CSS et des scripts Javascript.
 /*
 - Voir les explications de la variable `$fusionnerCssJs` dans le fichier de configuration du site.
 */
 $adminFusionnerCssJs = FALSE; // TRUE|FALSE
+
+########################################################################
+##
+## Catégories.
+##
+########################################################################
+
+// S'il y a lieu, inclure une page dans la catégorie parente et dans les catégories parentes indirectes.
+/*
+Explications: par exemple, une page est ajoutée à la catégorie «Miniatures». Cette catégorie a comme parent «Chiens», qui a elle-même comme parent la catégorie «Animaux». Si l'option d'ajout dans la catégorie parente est activée, la page sera ajoutée dans la catégorie «Miniatures» et dans la catégorie parente «Chiens». Aussi, si l'option d'ajout dans les catégories parentes indirectes est activée, la page sera également ajoutée à la catégorie «Animaux».
+*/
+$adminInclurePageDansCategorieParente = TRUE;
+$adminInclurePageDansCategoriesParentesIndirectes = TRUE;
 
 ########################################################################
 ##
@@ -231,7 +251,7 @@ $adminTypeFiltreAffichageDansContenu = '';
 */
 $adminFiltreAffichageDansContenu = '';
 
-/* ____________________ Ajout de fichiers. ____________________ */
+/* ____________________ Ajout, création ou édition de fichiers. ____________________ */
 
 // Filtre du type Mime.
 $adminFiltreTypesMime = TRUE; // TRUE|FALSE
@@ -294,11 +314,22 @@ $adminTypesMimePermis['wma']                    = 'audio/x-ms-wma';
 $adminTypesMimePermis['wmv']                    = 'video/x-ms-wmv';
 $adminTypesMimePermis['qt|mov']                 = 'video/quicktime';
 
-/* ____________________ Actions sur les fichiers. ____________________ */
-
 // Coloration syntaxique lors de l'édition.
 /*
 Activer la coloration en direct du **code** à l'aide de [CodeMirror](http://codemirror.net/) durant la saisie dans le `textarea`. La coloration s'applique alors au code PHP, HTML, CSS, Javascript, XML, Markdown et INI.
 */
 $adminColorationSyntaxique = TRUE; // TRUE|FALSE
+
+// Corps du modèle de page Web créé dans le porte-documents.
+$adminCorpsModelePageWeb = '<?php
+$chaine = <<<TEXTE
+Du texte écrit en *Markdown*.
+
+Autre **paragraphe**.
+TEXTE;
+
+echo mkdChaine($chaine);
+?>
+
+<p>Lorem ipsum dolor sit amet.</p>';
 ?>

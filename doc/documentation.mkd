@@ -436,55 +436,6 @@ Selon le style affecté (voir la section «Style CSS» du fichier de configurati
 
 Il est bon de rappeler qu'un modèle de page personnalisé peut être utilisé (voir la section «Le dossier `xhtml`»), et que les blocs peuvent alors être affichés ailleurs selon le modèle utilisé.
 
-### Schéma des inclusions lors de la construction d'une page
-
-*Note: le schéma doit se lire ainsi:*
-
-- `fichier`: le fichier existe et il sera inséré;
-- *`fichier`*: le fichier sera inséré seulement s'il existe;
-- *`fichier1`* **||** *`fichier2`*: une seule insertion au maximum aura lieu, le premier fichier existant, vérifié de gauche à droite, sera inséré.
-
-----
-
-Voici le schéma des inclusions pour une page par défaut. Seuls les fichiers principaux et pour lesquels une personnalisation est possible sont listés.
-
-- `inc/premier.inc.php`
-	- `init.inc.php`
-	- *`site/inc/devel.inc.php`*
-	- `inc/fonctions.inc.php`
-	- *`site/inc/fonctions.inc.php`*
-	- `inc/config.inc.php`
-	- *`site/inc/config.inc.php`*
-	- `inc/constantes.inc.php`
-	- *`site/inc/constantes.inc.php`*
-	- *`site/inc/premier-pre.inc.php`*
-	- Si `$idCategorie` n'est pas vide: `inc/categorie.inc.php`
-		- *`site/inc/categorie.inc.php`*
-	- Si `$idGalerie` n'est pas vide: `inc/galerie.inc.php`
-		- *`site/inc/galerie.inc.php`*
-	- `inc/blocs.inc.php`
-		- `inc/partage-courriel.inc.php`
-			- *`site/inc/partage-courriel.inc.php`*
-		- Inclusions selon les blocs configurés. Exemple pour le menu:  
-		*`site/xhtml/$langueDeLaPage/menu.inc.php`* **||** *`xhtml/$langueDeLaPage/menu.inc.php`* **||** *`site/xhtml/$langueParDefaut/menu.inc.php`* **||** *`xhtml/$langueParDefaut/menu.inc.php`* **||** *`site/xhtml/menu.inc.php`* **||** *`xhtml/menu.inc.php`*
-		- *`site/inc/blocs.inc.php`*
-	- *`site/inc/premier.inc.php`*
-	- *`site/xhtml/(LANGUE/)page.premier.inc.php`* **||** `xhtml/(LANGUE/)page.premier.inc.php`
-- Contenu de la page
-- `inc/dernier.inc.php`
-	- *`site/inc/dernier-pre.inc.php`*
-	- `inc/blocs.inc.php` (voir les détails plus haut)
-	- `inc/contact.inc.php`
-		- `inc/partage-courriel.inc.php` (voir les détails plus haut)
-		- *`site/inc/contact.inc.php`* après le traitement des champs par défaut
-		- *`site/inc/contact.inc.php`* avant l'envoi du message
-		- `inc/partage-courriel.inc.php` (voir les détails plus haut)
-		- *`site/inc/contact.inc.php`* avant l'inclusion du code XHTML du formulaire
-		- *`site/xhtml/(LANGUE/)form-contact.inc.php`* **||** (`xhtml/(LANGUE/)form-contact.inc.php` && *`site/xhtml/(LANGUE/)form-contact-champs-apres-nom.inc.php`* && *`site/xhtml/(LANGUE/)form-contact-champs-apres-message.inc.php`*)
-		- *`site/inc/contact.inc.php`* à la fin du fichier
-	- *`site/inc/dernier.inc.php`*
-	- *`site/xhtml/(LANGUE/)page.dernier.inc.php`* **||** `xhtml/(LANGUE/)page.dernier.inc.php`
-
 ## Style de Squeletml
 
 Le style d'un site réalisé avec Squeletml peut être modifié comme n'importe quel autre site à l'aide de feuilles de style CSS. Il est même possible de ne pas inclure les feuilles par défaut et partir de zéro. Cependant, le fichier de configuration contient une section «Style CSS», offrant la possibilité de modifier quelques aspects du site sans devoir bidouiller dans une feuille de style ou modifier le modèle de page (voir la section «Dossiers»). L'utilisation du fichier de configuration pour modifier le style n'est pas du tout une obligation, mais une aide supplémentaire si besoin il y a.
@@ -555,7 +506,7 @@ Il y a plusieurs manières de créer une page:
 
 1. Créer un fichier vide et reproduire la structure d'une page.
 2. Copier le fichier `exemple.php` et le coller avec le nom désiré.
-3. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Fichier modèle de page web» ou «Fichier modèle HTML de page web avec syntaxe Markdown».
+3. Dans le porte-documents de la section d'administration, créer un nouveau fichier de type «Page web modèle» ou «Page web modèle avec fichier Markdown».
 
 Voici l'anatomie d'une page:
 
@@ -567,6 +518,8 @@ Voici l'anatomie d'une page:
 ### Variables PHP
 
 Voici les différentes variables optionnelles avant l'inclusion du premier fichier PHP:
+
+- `$ajoutCommentaires`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut activer ou non l'ajout de commentaires pour la page courante, si la valeur est différente de `$ajoutCommentairesParDefaut` du fichier de configuration du site.
 
 - `$apercu`: aperçu de la page en cours, si la valeur est différente de `$apercuParDefaut` du fichier de configuration du site. Le contenu de `$apercu` est inséré en tant que commentaire HTML au début de la `div` `milieuInterieurContenu` s'il n'est pas vide et si `$inclureApercu` du fichier de configuration du site vaut TRUE.
 
@@ -665,7 +618,11 @@ Voici les différentes variables optionnelles avant l'inclusion du premier fichi
 
 - `$tableDesMatieres`: prend la valeur `TRUE` ou `FALSE`, selon qu'on veut générer ou non une table des matières pour la page courante, si la valeur est différente de `$afficherTableDesMatieresParDefaut` du fichier de configuration du site. La table des matières est générée du côté client par Javascript si le cache (global et partiel) est désactivé, sinon elle est générée du côté serveur par PHP.
 
-	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée.
+	Le contenu analysé pour la génération de la table des matières est la `div` `milieuInterieurContenu` pour les pages du site et la `div` `interieurContenu` pour les pages de l'administration. La table est ajoutée au début de la `div` analysée, ou bien à l'endroit où se trouve une `div` d'`id` `tableDesMatieres`, par exemple:
+
+		Contenu
+		<div id="tableDesMatieres"></div>
+		Contenu
 
 	Par défaut, tous les titres de niveaux 2 à 6 présents à l'intérieur de la `div` analysée constituent la table des matières. Il est possible de configurer la table des matières dans le fichier de configuration du site.
 
@@ -1319,6 +1276,12 @@ Si la page visitée est autre chose qu'une page individuelle d'image, le modèle
 
 - `$baliseDescription`
 - `$baliseTitle`
+
+## Commentaires
+
+Lorsqu'un commentaire est ajouté, il est enregistré dans un fichier de configuration des commentaires propre à la page concernée et créé dans le dossier `site/inc/commentaires/`. Ce fichier de configuration liste tous les commentaires de la page en question.
+
+À ce fichier de configuration s'ajoute un fichier de configuration des abonnements aux notifications par courriel des nouveaux commentaires, créé dans le même dossier. Chaque page possède également son propre fichier.
 
 ## Syndication de contenu (flux RSS)
 

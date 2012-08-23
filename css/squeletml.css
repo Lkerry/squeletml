@@ -112,6 +112,10 @@ strong code {
 	font-weight: normal;
 }
 
+label code {
+	background-color: transparent;
+}
+
 pre {
 	display: block;
 	overflow: auto;
@@ -635,10 +639,6 @@ li.parent {
 	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
 
-#lienPage.blocAvecFond pre {
-	margin-bottom: 0px;
-}
-
 .blocAvecFond > p:first-child, .blocAvecFond > ul:first-child, .blocAvecFond > ul:first-child > li:first-child {
 	margin-top: 0px;
 }
@@ -664,6 +664,73 @@ div#baliseH1 {
 
 div#baliseH1 h1 {
 	margin: 0px;
+}
+
+/* Commentaires. */
+
+#formCommentaire p#noteCommentaire code {
+	background-color: transparent;
+}
+
+#formCommentaire p#commentaireMessage {
+	margin-bottom: 0px;
+}
+
+#formCommentaire div#commentaireAideSyntaxe p.bDtitre {
+	margin-top: 0px;
+}
+
+#formCommentaire .labelPrecision {
+	font-style: italic;
+}
+
+#formCommentaire label {
+	font-weight: bold;
+}
+
+#formCommentaire label.labelPhrase {
+	font-weight: normal;
+}
+
+#formCommentaire input.champInfo {
+	width: 35%;
+}
+
+#formCommentaire textarea {
+	width: 70%;
+}
+
+#finInterieurContenu #commentaires h2, body.aucuneColonne #commentaires h2, #finInterieurContenu #commentaires h3, body.aucuneColonne #commentaires h3 {
+	margin: 40px 0px 20px 0px;
+}
+
+#finInterieurContenu #commentaires h2, body.aucuneColonne #commentaires h2 {
+	font-size: 1.6em;
+	border-bottom: 3px solid #005959;
+}
+
+#finInterieurContenu #commentaires h3, body.aucuneColonne #commentaires h3 {
+	font-size: 1.15em;
+}
+
+#commentaires ul#listeCommentaires {
+	list-style-type: none;
+	margin-left: 0px;
+}
+
+#commentaires ul#listeCommentaires li.commentaire {
+	margin-bottom: 40px;
+	border-bottom: 1px solid #f2f2f2;
+}
+
+#commentaires ul#listeCommentaires li.commentaire p.commentaireAuteur {
+	font-weight: bold;
+}
+
+#commentaires ul#listeCommentaires li.commentaire div.commentaireCorps {
+	margin-left: 20px;
+	padding: 0px 0px 0px 10px;
+	border-left: 3px solid #005959;
 }
 
 /* Flux RSS. */
@@ -701,6 +768,16 @@ div#baliseH1 h1 {
 	margin-top: 10px;
 }
 
+/* Lien vers la page. */
+
+#lienPage.blocAvecFond pre, div.fusionBlocsPartageLienPage pre {
+	margin-bottom: 0px;
+}
+
+div.fusionBlocsPartageLienPage h3 {
+	margin-top: 20px;
+}
+
 /* Module de partage. */
 
 #modeleMessagePartageCourriel {
@@ -723,7 +800,6 @@ body.aucuneColonne #partage ul,
 	margin: 5px 0px 0px;
 	padding: 0px;
 	list-style-type: none;
-	text-align: center;
 }
 
 body.aucuneColonne #partage li,

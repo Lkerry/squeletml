@@ -4,7 +4,7 @@ $cheminFichierCachePartiel = cheminFichierCachePartiel($racine, $urlRacine, $url
 if ($premierOuDernier == 'premier')
 {
 	// On vérifie si le cache partiel existe ou s'il est expiré.
-	if (file_exists($cheminFichierCachePartiel) && !cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel))
+	if (file_exists($cheminFichierCachePartiel) && !cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel) && !$estPageCron)
 	{
 		@readfile($cheminFichierCachePartiel);
 		$inclureFinMilieuInterieurContenu = FALSE;

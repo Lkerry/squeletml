@@ -13,7 +13,7 @@ function accesAdminEstProtege($racine)
 		$htaccess = @file_get_contents($racine . '/.htaccess');
 		$acces = @file_get_contents($racine . '/.acces');
 		
-		if ($htaccess !== FALSE && $acces !== FALSE && preg_match('/^\tAuthUserFile ' . preg_quote($racine, '/') . '\/\.acces\n/m', $htaccess) && preg_match('/^[^:]+:/m', $acces))
+		if ($htaccess !== FALSE && $acces !== FALSE && preg_match('#^\tAuthUserFile ' . preg_quote($racine, '#') . '/\.acces\n#m', $htaccess) && preg_match('/^[^:]+:/m', $acces))
 		{
 			$accesAdminEstProtege = TRUE;
 		}
@@ -65,7 +65,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			{
 				$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
 	
-				preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.acces', $cheminAcces);
+				preg_match('#/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)#', $racine . '/.acces', $cheminAcces);
 	
 				$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
 			}
@@ -94,7 +94,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			{
 				$htaccess .= "<Files ~ \"$htaccessFilesModele\">\n";
 	
-				preg_match('|/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)|', $racine . '/.deconnexion.acces', $cheminAcces);
+				preg_match('#/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+/[^/]+(.+)#', $racine . '/.deconnexion.acces', $cheminAcces);
 	
 				$htaccess .= "\tPerlSetVar AuthFile " . $cheminAcces[1] . "\n";
 			}
@@ -278,7 +278,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 
 	$apercu .= "<h2 class=\"titreApercu\"><a href=\"$adresse\">{$infosPage['titre']}</a></h2>\n";
-	$listeCategoriesAdresse = categories($racine, $urlRacine, $adresse);
+	$listeCategoriesAdresse = listeCategoriesPage($racine, $urlRacine, $adresse);
 	$infosPublication = infosPublication($urlRacine, $infosPage['auteur'], $infosPage['dateCreation'], $infosPage['dateRevision'], $listeCategoriesAdresse);
 
 	if (!empty($infosPublication))
@@ -300,7 +300,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 	
 	// Incrémentation des niveaux de titre 2 à 5 (par exemple, `<h2 class="classe">Sous-titre</h2>` devient `<h3 class="classe">Sous-titre</h3>`). Le but est d'éviter que des sous-titres affichés dans l'aperçu aient le même niveau (2) que le titre de l'aperçu lui-même. Cela découle du fait que le titre d'une page est habituellement de niveau 1 alors que dans l'aperçu, le même titre est de niveau 2.
-	$texteApercu = preg_replace('|<h([2-5])(.*?>.*?</h)\1\b|e', '"<h" . ("$1" + 1) . "$2" . ("$1" + 1)', $texteApercu);
+	$texteApercu = preg_replace('#<h([2-5])(.*?>.*?</h)\1\b#e', '"<h" . ("$1" + 1) . "$2" . ("$1" + 1)', $texteApercu);
 	
 	$apercu .= $texteApercu . "\n";
 	$apercu .= "</div><!-- /.descriptionApercu -->\n";
@@ -327,7 +327,7 @@ Inspirée de <http://api.drupal.org/api/function/arg/6>.
 function arg($index = NULL)
 {
 	$urlArg = url(FALSE, FALSE);
-	$urlArg = preg_replace('/^\//', '', $urlArg);
+	$urlArg = preg_replace('#^/#', '', $urlArg);
 	$args = explode('/', $urlArg);
 	
 	if (isset($index) && isset($args[$index]))
@@ -338,6 +338,68 @@ function arg($index = NULL)
 	{
 		return $args;
 	}
+}
+
+/*
+Retourne l'attribut `lang` à utiliser selon le DTD.
+*/
+function attributLang($codeLangue, $doctype)
+{
+	$attribut = '';
+	
+	if ($doctype == 'XHTML 1.1' || $doctype == 'XHTML 1.0 Strict' || $doctype == 'XHTML 1.0 Transitional')
+	{
+		$attribut = 'xml:lang="' . $codeLangue . '"';
+	}
+	
+	if ($doctype != 'XHTML 1.1')
+	{
+		if (!empty($attribut))
+		{
+			$attribut .= ' ';
+		}
+		
+		$attribut .= 'lang="' . $codeLangue . '"';
+	}
+	
+	return $attribut;
+}
+
+/*
+Retourne le code à utiliser pour afficher l'auteur d'un commentaire.
+*/
+function auteurAfficheCommentaire($nom, $site, $attributNofollowLiensCommentaires)
+{
+	if (!empty($nom))
+	{
+		$auteur = $nom;
+	}
+	elseif (!empty($site))
+	{
+		$auteur = $site;
+	}
+	else
+	{
+		$auteur = T_("Anonyme");
+	}
+	
+	if (!empty($site))
+	{
+		$auteurAffiche = '<a href="' . $site . '"';
+		
+		if ($attributNofollowLiensCommentaires)
+		{
+			$auteurAffiche .= ' rel="nofollow"';
+		}
+		
+		$auteurAffiche .= '>' . $auteur . '</a>';
+	}
+	else
+	{
+		$auteurAffiche = $auteur;
+	}
+	
+	return $auteurAffiche;
 }
 
 /*
@@ -497,7 +559,7 @@ function cacheExpire($cheminFichierCache, $dureeCache)
 /*
 Retourne le code à insérer dans un formulaire pour afficher un antipourriel basé sur un calcul mathématique.
 */
-function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
+function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE, $afficherAsterisque = FALSE)
 {
 	$calculUn = mt_rand($calculMin, $calculMax);
 	$calculDeux = mt_rand($calculMin, $calculMax);
@@ -518,11 +580,18 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
 	
 	$inputHidden .= '<input type="hidden" name="d" value="' . $calculDeux . '" />' . "\n";
 	
-	$captchaCalcul .= '<p><label>' . T_("Antipourriel:") . "</label><br />\n";
+	if ($afficherAsterisque)
+	{
+		$captchaCalcul .= '<p><label>' . T_("Antipourriel<code>*</code>:") . "</label><br />\n";
+	}
+	else
+	{
+		$captchaCalcul .= '<p><label>' . T_("Antipourriel:") . "</label><br />\n";
+	}
 	
 	if ($calculInverse)
 	{
-		$captchaCalcul .= sprintf(T_("Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1\$s (plusieurs réponses possibles):"), $calculUn);
+		$captchaCalcul .= sprintf(T_("Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1\$s (plus d'une réponse correcte):"), $calculUn);
 		$captchaCalcul .= sprintf(T_("%1\$s et %2\$s"), "<input name=\"r\" type=\"text\" size=\"4\" />", "<input name=\"s\" type=\"text\" size=\"4\" />");
 	}
 	else
@@ -538,34 +607,42 @@ function captchaCalcul($calculMin = 2, $calculMax = 10, $calculInverse = TRUE)
 }
 
 /*
-Retourne un tableau des catégories auxquelles appartient l'URL fournie. La structure est:
-
-	$listeCategories['idCategorie'] = 'url';
+Retourne `TRUE` si le résultat du calcul du captcha est correct, sinon retourne `FALSE`.
 */
-function categories($racine, $urlRacine, $url)
+function captchaCalculValide($commentairesCaptchaCalculInverse)
 {
-	$listeCategories = array ();
-	$cheminFichier = cheminConfigCategories($racine);
-	
-	if ($cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE && !empty($categories))
+	if (!isset($_POST['r']) || !is_numeric($_POST['r']))
 	{
-		foreach ($categories as $categorie => $categorieInfos)
-		{
-			foreach ($categorieInfos['pages'] as $page)
-			{
-				$urlPage = $urlRacine . '/' . encodeTexte($page);
-				
-				if ($urlPage == $url)
-				{
-					$listeCategories[$categorie] = urlCat($categorieInfos, $categorie);
-				}
-			}
-		}
+		return FALSE;
 	}
 	
-	uksort($listeCategories, 'strnatcasecmp');
+	if (!isset($_POST['u']) || !is_numeric($_POST['u']))
+	{
+		return FALSE;
+	}
 	
-	return $listeCategories;
+	if ($commentairesCaptchaCalculInverse)
+	{
+		if (!isset($_POST['s']) || !is_numeric($_POST['s']))
+		{
+			return FALSE;
+		}
+		
+		$resultat = $_POST['u'];
+		$sommeUnDeux = $_POST['r'] + $_POST['s'];
+	}
+	else
+	{
+		if (!isset($_POST['d']) || !is_numeric($_POST['d']))
+		{
+			return FALSE;
+		}
+		
+		$resultat = $_POST['r'];
+		$sommeUnDeux = $_POST['u'] + $_POST['d'];
+	}
+	
+	return $sommeUnDeux == $resultat;
 }
 
 /*
@@ -651,12 +728,9 @@ function categoriesEnfants($categories, $categorie)
 	
 	foreach ($categories as $cat => $catInfos)
 	{
-		if (isset($catInfos['parent']) && $catInfos['parent'] == $categorie)
+		if (!empty($catInfos['parent']) && $catInfos['parent'] == $categorie && isset($catInfos['langue']) && isset($categories[$categorie]['langue']) && $catInfos['langue'] == $categories[$categorie]['langue'])
 		{
-			if ($catInfos['langue'] == $categories[$categorie]['langue'])
-			{
-				$categoriesEnfants[] = $cat;
-			}
+			$categoriesEnfants[] = $cat;
 		}
 	}
 	
@@ -672,7 +746,7 @@ function categoriesParentesIndirectes($categories, $categorie)
 {
 	$categoriesParentesIndirectes = array ();
 	
-	if (isset($categories[$categorie]['parent']))
+	if (!empty($categories[$categorie]['parent']))
 	{
 		$idCatParente = $categories[$categorie]['parent'];
 	}
@@ -681,13 +755,39 @@ function categoriesParentesIndirectes($categories, $categorie)
 		$idCatParente = '';
 	}
 	
-	if (!empty($idCatParente) && $categories[$idCatParente]['langue'] == $categories[$categorie]['langue'])
+	if (!empty($idCatParente) && isset($categories[$idCatParente]['langue']) && isset($categories[$categorie]['langue']) && $categories[$idCatParente]['langue'] == $categories[$categorie]['langue'])
 	{
 		$categoriesParentesIndirectes[] = $idCatParente;
 		$categoriesParentesIndirectes = array_merge($categoriesParentesIndirectes, categoriesParentesIndirectes($categories, $idCatParente));
 	}
 	
 	return array_unique($categoriesParentesIndirectes);
+}
+
+/*
+Retourne une chaine aléatoire formée de caractères alphanumériques.
+*/
+function chaineAleatoire($longueur)
+{
+	$caracteres = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+	$chaineAleatoire = '';
+	$compteur = 0;
+	
+	while ($compteur < $longueur)
+	{
+		$caractere = $caracteres[mt_rand(0, 61)];
+		
+		// Éviter de former un attribut `id` invalide (c'est-à-dire commençant par un chiffre).
+		if ($compteur == 0 && ctype_digit($caractere))
+		{
+			continue;
+		}
+		
+		$chaineAleatoire .= $caractere;
+		$compteur++;
+	}
+	
+	return $chaineAleatoire;
 }
 
 /*
@@ -729,6 +829,17 @@ function chapeau($contenuChapeau, $chapeauEnMarkdown = FALSE)
 }
 
 /*
+Retourne le chemin vers un fichier de configuration des abonnements aux commentaires d'une URL. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function cheminConfigAbonnementsCommentaires($cheminConfigCommentaires)
+{
+	$nomFichierConfig = superBasename($cheminConfigCommentaires);
+	$dossierFichierConfig = dirname($cheminConfigCommentaires);
+	
+	return "$dossierFichierConfig/abonnements-$nomFichierConfig";
+}
+
+/*
 Retourne le chemin vers le fichier de configuration des catégories. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
 function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
@@ -749,6 +860,32 @@ function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 	{
 		return FALSE;
 	}
+}
+
+/*
+Retourne le chemin vers le fichier de configuration des commentaires de l'URL donnée. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
+*/
+function cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, $retourneCheminParDefaut = FALSE)
+{
+	$urlPourCheminConfigCommentaires = supprimeUrlRacine($urlRacine, $url);
+	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'action');
+	
+	if (!empty($idGalerie))
+	{
+		$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'langue');
+	}
+	
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPourCheminConfigCommentaires);
+	$nomFichierCache = superBasename($cheminFichierCache);
+	$nomConfigCommentaires = preg_replace('/\.cache\.(html|xml)$/', '.ini.txt', $nomFichierCache);
+	$cheminConfigCommentaires = "$racine/site/inc/commentaires/$nomConfigCommentaires";
+	
+	if (file_exists($cheminConfigCommentaires) || $retourneCheminParDefaut)
+	{
+		return $cheminConfigCommentaires;
+	}
+	
+	return FALSE;
 }
 
 /*
@@ -836,11 +973,8 @@ function cheminFichierCache($racine, $urlRacine, $nomBrut, $html = TRUE)
 		$nomFichierCache = 'index';
 	}
 	
-	$nomFichierCache = str_replace(array ('/', '\\'), '|', $nomFichierCache);
-	$nomFichierCache = str_replace('&amp;amp;', '_', $nomFichierCache);
-	$nomFichierCache = str_replace(array ('&amp;', '?'), '_', $nomFichierCache);
-	$nomFichierCache = preg_replace('/_+/', '_', $nomFichierCache);
-	$nomFichierCache = filtreChaine("$nomFichierCache.cache");
+	$nomFichierCache = encodeTexte($nomFichierCache, TRUE);
+	$nomFichierCache .= '.cache';
 	
 	if ($html)
 	{
@@ -1195,7 +1329,7 @@ function code304($cheminFichierCache)
 /*
 Retourne le nom complet d'une langue (ex.: «Français») à partir du code de langue (ex.: «fr»). Si aucun nom n'a été trouvé, retourne le code de langue.
 */
-function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
+function codeLangueVersNom($codeLangue, $doctype, $traduireNom = TRUE)
 {
 	switch ($codeLangue)
 	{
@@ -1206,7 +1340,7 @@ function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 			}
 			else
 			{
-				$nom = '<span lang="en">English</span>';
+				$nom = '<span ' . attributLang($codeLangue, $doctype) . '>English</span>';
 			}
 			
 			break;
@@ -1218,7 +1352,7 @@ function codeLangueVersNom($codeLangue, $traduireNom = TRUE)
 			}
 			else
 			{
-				$nom = '<span lang="fr">Français</span>';
+				$nom = '<span ' . attributLang($codeLangue, $doctype) . '>Français</span>';
 			}
 			
 			break;
@@ -1318,11 +1452,11 @@ Retourne un tableau de deux éléments: le premier contient le corps de la galer
 */
 function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes)
 {
-	if (preg_match('/(<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->)/s', $corpsGalerie, $resultat))
+	if (preg_match('|(<div id="galerieIntermediaireTexte">.+</div><!-- /#galerieIntermediaireTexte -->)|s', $corpsGalerie, $resultat))
 	{
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
-			$corpsGalerie = preg_replace('/<div id="galerieIntermediaireTexte">.+<\/div><!-- \/#galerieIntermediaireTexte -->/s', '', $corpsGalerie);
+			$corpsGalerie = preg_replace('|<div id="galerieIntermediaireTexte">.+</div><!-- /#galerieIntermediaireTexte -->|s', '', $corpsGalerie);
 			
 			$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, 'legende-image-galerie', $nombreDeColonnes);
 			
@@ -1342,9 +1476,9 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 	}
 	
 	// Dans tous les cas, on supprime la div `galerieIntermediaireTexte` si elle est vide.
-	if (preg_match('/(<div id="galerieIntermediaireTexte"><\/div><!-- \/#galerieIntermediaireTexte -->)/', $tableauCorpsGalerie['corpsGalerie']))
+	if (preg_match('|(<div id="galerieIntermediaireTexte"></div><!-- /#galerieIntermediaireTexte -->)|', $tableauCorpsGalerie['corpsGalerie']))
 	{
-		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('/<div id="galerieIntermediaireTexte"><\/div><!-- \/#galerieIntermediaireTexte -->/', '', $tableauCorpsGalerie['corpsGalerie']);
+		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('|<div id="galerieIntermediaireTexte"></div><!-- /#galerieIntermediaireTexte -->|', '', $tableauCorpsGalerie['corpsGalerie']);
 	}
 	
 	return $tableauCorpsGalerie;
@@ -1355,55 +1489,56 @@ Envoie un courriel. Retourne TRUE si le courriel a été envoyé, sinon retourne
 
 Le tableau en paramètre peut contenir les informations suivantes:
 
-  - `$infos['From']` (optionnel);
-  - `$infos['ReplyTo']` (optionnel);
-  - `$infos['Bcc']` (optionnel);
+  - `$infos['From']` (obligatoire; s'il y a lieu, encoder les noms);
+  - `$infos['ReplyTo']` (optionnel; s'il y a lieu, encoder les noms);
+  - `$infos['Bcc']` (optionnel; s'il y a lieu, encoder les noms);
   - `$infos['format']` (optionnel): le format texte (`plain`) est celui par défaut. Peut valoir également `html`;
-  - `$infos['destinataire']` (obligatoire);
-  - `$infos['objet']` (obligatoire);
-  - `$infos['message']` (obligatoire);
+  - `$infos['destinataire']` (obligatoire; s'il y a lieu, encoder les noms);
+  - `$infos['objet']` (obligatoire; ne pas encoder);
+  - `$infos['message']` (obligatoire; si le format est HTML, fournir seulement le corps à l'intérieur de `body`);
 */
 function courriel($infos)
 {
-	if (!isset($infos['destinataire']) || !isset($infos['objet']) || !isset($infos['message']))
+	if (!isset($infos['From']) || !isset($infos['destinataire']) || !isset($infos['objet']) || !isset($infos['message']))
 	{
 		return FALSE;
 	}
 	else
 	{
+		$infos['objet'] = encodeInfoEnTeteCourriel($infos['objet']);
+		$infos['message'] = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $infos['message']);
 		$enTete = '';
-	
+		
 		if (!empty($infos['From']))
 		{
-			$enTete .= "From: {$infos['From']}\n";
+			$enTete .= "From: {$infos['From']}\r\n";
 		}
-	
-	
+		
 		if (!empty($infos['ReplyTo']))
 		{
-			$enTete .= "Reply-to: {$infos['ReplyTo']}\n";
+			$enTete .= "Reply-to: {$infos['ReplyTo']}\r\n";
 		}
-	
-
+		
 		if (!empty($infos['Bcc']))
 		{
-			$enTete .= "Bcc: {$infos['Bcc']}\n";
+			$enTete .= "Bcc: {$infos['Bcc']}\r\n";
 		}
-	
-		$enTete .= "MIME-Version: 1.0\n";
-	
+		
+		$enTete .= "MIME-Version: 1.0\r\n";
+		
 		if (isset($infos['format']) && $infos['format'] == 'html')
 		{
 			$format = 'html';
+			$infos['message'] = "<html>\n<head>\n<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n</head>\n<body>\n" . $infos['message'] . "</body>\n</html>";
 		}
 		else
 		{
 			$format = 'plain';
 		}
-	
-		$enTete .= "Content-Type: text/$format; charset=\"utf-8\"\n";
-		$enTete .= "X-Mailer: Squeletml\n";
-	
+		
+		$enTete .= "Content-Type: text/$format; charset=\"utf-8\"\r\n";
+		$enTete .= "X-Mailer: Squeletml\r\n";
+		
 		return @mail($infos['destinataire'], $infos['objet'], $infos['message'], $enTete);
 	}
 }
@@ -1413,9 +1548,7 @@ Retourne TRUE si l'adresse courriel a une forme valide, sinon retourne FALSE.
 */
 function courrielValide($courriel)
 {
-	$motifCourriel = "/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i";
-	
-	return preg_match($motifCourriel, $courriel);
+	return preg_match("/^[^@\s]+@([-a-z0-9]+\.)+[a-z]{2,}$/i", $courriel);
 }
 
 /*
@@ -1447,7 +1580,7 @@ function cronUrlCategorie($racine, $urlRacine, $categorie, $idCategorie, $nombre
 {
 	$tableauUrl = array ();
 	
-	if ($nombreArticlesParPageCategorie)
+	if ($nombreArticlesParPageCategorie && isset($categorie['pages']))
 	{
 		$nombreArticles = count($categorie['pages']);
 		$nombreDePages = ceil($nombreArticles / $nombreArticlesParPageCategorie);
@@ -1483,7 +1616,7 @@ function cronUrlGalerie($racine, $urlRacine, $galerieVignettesParPage, $infosGal
 {
 	$tableauUrl = array ();
 	
-	if (cheminConfigGalerie($racine, $infosGalerie['dossier']))
+	if (!empty($infosGalerie['dossier']) && !empty($infosGalerie['url']) && cheminConfigGalerie($racine, $infosGalerie['dossier']))
 	{
 		$tableauGalerie = tableauGalerie(cheminConfigGalerie($racine, $infosGalerie['dossier']), TRUE);
 		
@@ -1597,12 +1730,20 @@ function decodeTexte($texte)
 	{
 		return array_map('decodeTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		return rawurldecode($texte);
 	}
 	
 	return '';
+}
+
+/*
+Fonction inverse de `encodeTexteGet()`.
+*/
+function decodeTexteGet($texte)
+{
+	return base64_decode(strtr($texte, '-_,', '+/='));
 }
 
 /*
@@ -1614,7 +1755,7 @@ function desecuriseTexte($texte)
 	{
 		return array_map('desecuriseTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		return htmlspecialchars_decode($texte, ENT_COMPAT);
 	}
@@ -1660,25 +1801,52 @@ function doctype($doctype, $langue)
 }
 
 /*
+S'il y a lieu, encode l'information d'en-tête de courriel. Retourne le résultat.
+*/
+function encodeInfoEnTeteCourriel($info)
+{
+	if (!estAsciiImprimable($info))
+	{
+		$info = '=?UTF-8?B?' . base64_encode($info) . '?=';
+	}
+	
+	return $info;
+}
+
+/*
 Encode le texte fourni.
 
 La fonction inverse est `decodeTexte()`.
 */
-function encodeTexte($texte)
+function encodeTexte($texte, $encoderBarreOblique = FALSE)
 {
 	if (is_array($texte))
 	{
 		return array_map('encodeTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		$texte = rawurlencode($texte);
-		$texte = str_replace('%2F', '/', $texte);
+		
+		if (!$encoderBarreOblique)
+		{
+			$texte = str_replace('%2F', '/', $texte);
+		}
 		
 		return $texte;
 	}
 	
 	return '';
+}
+
+/*
+Encode le texte fourni pour pouvoir l'utiliser sans problème comme valeur d'un paramètre `GET` dans une URL. Par exemple, un nom de fichier `a%3Fz.txt` serait encodé `a%253Fz.txt` par la fonction `encodeTexte()`. Passé par paramètre `GET` dans une URL, la valeur récupérée serait `a%3Fz.txt` puisque la chaîne `%25` aurait été interprétée durant le processus. Après utilisation de la fonction `decodeTexte()`, le résultat obtenu serait `a?z.txt`, donc différent de la valeur de départ. Ce problème n'existe pas avec la fonction `encodeTexteGet()`.
+
+La fonction inverse est `decodeTexteGet()`.
+*/
+function encodeTexteGet($texte)
+{
+	return strtr(base64_encode($texte), '+/=', '-_,');
 }
 
 /*
@@ -1729,6 +1897,14 @@ function estAccueil($accueil)
 	}
 	
 	return FALSE;
+}
+
+/*
+Retourne `TRUE` si la chaîne ne contient que des caractères ASCII imprimables, sinon retourne `FALSE`.
+*/
+function estAsciiImprimable($chaine)
+{
+	return preg_match('/^[\x20-\x7e]*$/D', $chaine);
 }
 
 /*
@@ -1875,7 +2051,7 @@ function filtreChaine($chaine, $casse = '', $filtrerBarreOblique = TRUE)
 	}
 	else
 	{
-		$chaine = preg_replace('/[^-A-Za-z0-9._\+\/]/', '-', $chaine);
+		$chaine = preg_replace('#[^-A-Za-z0-9._\+/]#', '-', $chaine);
 	}
 	
 	$chaine = preg_replace('/-+/', '-', $chaine);
@@ -2030,16 +2206,16 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $ga
 			
 			if (file_exists($cheminOriginal))
 			{
-				$urlOriginal = "site/fichiers/galeries/" . encodeTexte("$idGalerieDossier/$nomOriginal");
+				$urlOriginal = "site/fichiers/galeries/$idGalerieDossier/$nomOriginal";
 				
 				if ($galerieLienOriginalTelecharger)
 				{
-					$urlOriginal = "$urlRacine/telecharger.php?fichier=$urlOriginal";
+					$urlOriginal = "$urlRacine/telecharger.php?fichier=" . encodeTexteGet($urlOriginal);
 					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(@filesize($cheminOriginal))) . "</a></li>\n";
 				}
 				else
 				{
-					$urlOriginal = "$urlRacine/$urlOriginal";
+					$urlOriginal = $urlRacine . '/' . encodeTexte($urlOriginal);
 					$msgOriginal = "<li><a href=\"$urlOriginal\">" . sprintf(T_("Voir l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . extension($nomOriginal) . '</em>', octetsVersKio(@filesize($cheminOriginal))) . "</a></li>\n";
 				}
 			}
@@ -2129,7 +2305,7 @@ function fluxRssGlobalGaleries($racine)
 	{
 		foreach ($galeries as $idGalerie => $infosGalerie)
 		{
-			if ($infosGalerie['rss'] == 1)
+			if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 			{
 				$listeGaleriesRss[] = $idGalerie;
 			}
@@ -2205,6 +2381,22 @@ function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
 }
 
 /*
+Retourne `TRUE` si le formulaire précisé a déjà été envoyé, sinon retourne `FALSE`.
+*/
+function formulaireDejaEnvoye($racine, $idFormulaire)
+{
+	$fichierConfig = "$racine/site/cache/formulaires-envoyes.ini.txt";
+	$formulairesEnvoyes = super_parse_ini_file($fichierConfig, TRUE);
+	
+	if (is_array($formulairesEnvoyes) && isset($formulairesEnvoyes['formulaires']['id']) && is_array($formulairesEnvoyes['formulaires']['id']) && in_array($idFormulaire, $formulairesEnvoyes['formulaires']['id']))
+	{
+		return TRUE;
+	}
+	
+	return FALSE;
+}
+
+/*
 Fusionne plusieurs fichiers CSS ou Javascript en un seul, et crée le fichier résultant dans le dossier de cache.
 
 Retourne un tableau de balises brutes à inclure, utilisable par la fonction `linkScript()`.
@@ -2234,12 +2426,12 @@ function fusionneCssJs($racine, $urlRacine, $dossierAdmin, $type, $extensionNomC
 			{
 				if (strpos($fichier, $urlRacine) === 0)
 				{
-					$contenuFichier = @file_get_contents(preg_replace('#^' . preg_quote($urlRacine) . '#', $racine, $fichier));
+					$contenuFichier = @file_get_contents(preg_replace('/^' . preg_quote($urlRacine, '/') . '/', $racine, $fichier));
 					
 					// Ajustement des chemins relatifs dans les feuilles de style.
 					if (strpos($type, 'css') === 0 && (strpos($fichier, "$urlRacine/css/") === 0 || (!empty($dossierAdmin) && strpos($fichier, "$urlRacine/$dossierAdmin/css/") === 0)))
 					{
-						$contenuFichier = preg_replace("#(\.\./)+#", '$1../', $contenuFichier);
+						$contenuFichier = preg_replace('#(\.\./)+#', '$1../', $contenuFichier);
 					}
 				}
 				else
@@ -2380,6 +2572,132 @@ function gdEstInstallee()
 }
 
 /*
+Génère et retourne le code pour le bloc `lien-page`.
+*/
+function genereCodeLienPage($fusionnerBlocsPartageLienPage, $lienPage, $erreur404, $estPageDerreur, $courrielContact, $url, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes, $baliseTitle, $baliseTitleComplement, $lienPageVignette, $lienPageIntermediaire, $aExecuterApresClicBd)
+{
+	$bloc = '';
+	
+	if ($lienPage && !$erreur404 && !$estPageDerreur && empty($courrielContact))
+	{
+		if ($fusionnerBlocsPartageLienPage)
+		{
+			$bloc .= '<div id="lienPage" class="fusionBlocsPartageLienPage">' . "\n";
+			$bloc .= '<h3>' . T_("Faire un lien vers cette page") . "</h3>\n";
+		}
+		else
+		{
+			$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, 'lien-page', $nombreDeColonnes);
+			$bloc .= '<div id="lienPage" class="bloc ' . $classesBloc . '">' . "\n";
+			$bloc .= '<h2 class="bDtitre">' . T_("Faire un lien vers cette page") . "</h2>\n";
+			$bloc .= "<div class=\"bDcorps\">\n";
+		}
+		
+		$urlSansAction = variableGet(0, $url, 'action');
+		$codeLienPage = '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '">' . $baliseTitle . $baliseTitleComplement . '</a>') . "</code></pre>\n";
+		$liensImage = array ();
+		
+		if (isset($lienPageVignette) && preg_match('#(<img .+? />)#', $lienPageVignette, $resultat))
+		{
+			$liensImage['vignette']['description'] = '<p>' . T_("Lien avec l'image en vignette:") . "</p>\n";
+			$liensImage['vignette']['balise'] = $resultat[1];
+		}
+		
+		if (isset($lienPageIntermediaire) && preg_match('#(<img .+? />)#', $lienPageIntermediaire, $resultat))
+		{
+			$liensImage['intermediaire']['description'] = '<p>' . T_("Lien avec l'image en taille intermédiaire:") . "</p>\n";
+			$liensImage['intermediaire']['balise'] = $resultat[1];
+		}
+		
+		if (empty($liensImage))
+		{
+			$bloc .= '<p>' . T_("Ajoutez le code ci-dessous sur votre site:") . "</p>\n$codeLienPage";
+		}
+		else
+		{
+			$bloc .= '<p>' . T_("Lien textuel seulement:") . "</p>\n$codeLienPage";
+			
+			foreach ($liensImage as $lienImageType => $lienImageInfo)
+			{
+				$bloc .= $lienImageInfo['description'];
+				$bloc .= '<pre><code>' . securiseTexte('<a href="' . $urlSansAction . '" title="' . $baliseTitle . $baliseTitleComplement . '">' . $lienImageInfo['balise'] . '</a>') . "</code></pre>\n";
+			}
+		}
+		
+		if (!$fusionnerBlocsPartageLienPage)
+		{
+			$bloc .= "</div>\n";
+		}
+		
+		$bloc .= '</div><!-- /#lienPage -->' . "\n";
+		
+		if (!$fusionnerBlocsPartageLienPage)
+		{
+			$bloc .= '<script type="text/javascript">' . "\n";
+			$bloc .= "//<![CDATA[\n";
+			$bloc .= "boiteDeroulante('#lienPage', \"$aExecuterApresClicBd\");\n";
+			$bloc .= "//]]>\n";
+			$bloc .= "</script>\n";
+		}
+	}
+	
+	return $bloc;
+}
+
+/*
+Effectue l'action demandée (0: suppression; 1: envoi; 2: ajout) pour les notifications en attente. Retourne une chaîne vide.
+*/
+function gereNotificationsEnAttente($racine, $idCommentaire, $action, $infos = array ())
+{
+	$cheminNotificationsEnAttente = $racine . '/site/inc/notifications-en-attente.txt';
+	
+	if (file_exists($cheminNotificationsEnAttente) || @touch($cheminNotificationsEnAttente))
+	{
+		$contenuFichierCodeEnAttente = @file_get_contents($cheminNotificationsEnAttente);
+		
+		if ($contenuFichierCodeEnAttente !== FALSE)
+		{
+			$codeEnAttente = unserialize($contenuFichierCodeEnAttente);
+			
+			if (($action == 0 || $action == 1) && is_array($codeEnAttente) && isset($codeEnAttente[$idCommentaire]))
+			{
+				if ($action == 1)
+				{
+					foreach ($codeEnAttente[$idCommentaire] as $infosCourriel)
+					{
+						courriel($infosCourriel);
+					}
+				}
+				
+				unset($codeEnAttente[$idCommentaire]);
+			}
+			elseif ($action == 2)
+			{
+				if (is_array($codeEnAttente))
+				{
+					$codeEnAttente = array_merge($codeEnAttente, $infos);
+				}
+				else
+				{
+					$codeEnAttente = $infos;
+				}
+			}
+			
+			if (!empty($codeEnAttente))
+			{
+				@file_put_contents($cheminNotificationsEnAttente, serialize($codeEnAttente), LOCK_EX);
+			}
+			else
+			{
+				@unlink($cheminNotificationsEnAttente);
+			}
+		}
+	}
+	
+	return '';
+}
+
+/*
 Retourne le code HTML d'une catégorie à inclure dans le menu des catégories automatisé.
 */
 function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArticlesCategorie)
@@ -2402,7 +2720,7 @@ function htmlCategorie($urlRacine, $categories, $categorie, $afficherNombreArtic
 	
 	$htmlCategorie .= '<a href="' . $urlRacine . '/' . $categories[$categorie]['url'] . '">' . securiseTexte($nomCategorie) . '</a>';
 	
-	if ($afficherNombreArticlesCategorie)
+	if ($afficherNombreArticlesCategorie && isset($categories[$categorie]['pages']))
 	{
 		$htmlCategorie .= sprintf(T_(" (%1\$s)"), count($categories[$categorie]['pages']));
 	}
@@ -2623,7 +2941,7 @@ function image(
 			
 			if ($galerieLienOriginalTelecharger && !$galerieLienOriginalJavascript)
 			{
-				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . encodeTexte(preg_replace("|^$urlRacine/|", '', $urlImgSrc . '/' . $originalNom));
+				$urlLienOriginal = $urlRacine . '/telecharger.php?fichier=' . encodeTexteGet(preg_replace('#^' . preg_quote($racine, '#') . '/#', '', $racineImgSrc . '/' . $originalNom));
 				$texteLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original (extension: %2\$s; taille: %3\$s Kio)."), '<em>' . securiseTexte($titreImage) . '</em>', "<em>$originalExtension</em>", octetsVersKio(@filesize($racineImgSrc . '/' . $originalNom)));
 				$texteAltLienOriginal = sprintf(T_("Télécharger l'image %1\$s au format original"), securiseTexte($titreImage));
 			}
@@ -3043,7 +3361,7 @@ function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuA
 			$commentairesHtmlSupprimes = FALSE;
 			$infosPage['apercu'] = '';
 	
-			if ($inclureApercu && preg_match('|<!-- APERÇU: (.+?) -->|s', $infosPage['contenu'], $resultatApercu))
+			if ($inclureApercu && preg_match('/<!-- APERÇU: (.+?) -->/s', $infosPage['contenu'], $resultatApercu))
 			{
 				if ($resultatApercu[1] == 'interne')
 				{
@@ -3717,7 +4035,7 @@ function limiteProfondeurListe($html)
 					$ulParent = $ulParent->parent();
 				}
 		
-				if ($ulParent->tag == 'li' && preg_match('|\bactif\b|', $ulParent->class))
+				if ($ulParent->tag == 'li' && preg_match('/\bactif\b/', $ulParent->class))
 				{
 					$ulParentActif = TRUE;
 				}
@@ -3732,7 +4050,7 @@ function limiteProfondeurListe($html)
 				
 					if (!empty($ul->class))
 					{
-						if (preg_match('|\bmasquer\b|', $ul->class))
+						if (preg_match('/\bmasquer\b/', $ul->class))
 						{
 							$class = '';
 						}
@@ -4068,6 +4386,40 @@ function linkScriptAinclure($balisesBrutes)
 }
 
 /*
+Retourne un tableau des catégories auxquelles appartient la page donnée. La structure du tableau est:
+
+	$listeCategories['idCategorie'] = 'urlCategorie';
+*/
+function listeCategoriesPage($racine, $urlRacine, $urlPage)
+{
+	$listeCategories = array ();
+	$cheminFichier = cheminConfigCategories($racine);
+	
+	if ($cheminFichier && ($categories = super_parse_ini_file($cheminFichier, TRUE)) !== FALSE && !empty($categories))
+	{
+		foreach ($categories as $categorie => $categorieInfos)
+		{
+			if (!empty($categorieInfos['pages']))
+			{
+				foreach ($categorieInfos['pages'] as $page)
+				{
+					$urlDeComparaison = $urlRacine . '/' . $page;
+					
+					if ($urlDeComparaison == $urlPage)
+					{
+						$listeCategories[$categorie] = urlCat($categorieInfos, $categorie);
+					}
+				}
+			}
+		}
+	}
+	
+	uksort($listeCategories, 'strnatcasecmp');
+	
+	return $listeCategories;
+}
+
+/*
 Retourne un tableau listant les galeries sous la forme suivante:
 
 	"$idGalerie" => array ("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
@@ -4094,7 +4446,7 @@ function listeGaleries($racine, $galerieSpecifique = '', $avecConfigSeulement = 
 		{
 			foreach ($galeriesTmp as $idGalerie => $infosGalerie)
 			{
-				if (isset($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
+				if (!empty($infosGalerie['dossier']) && cheminConfigGalerie($racine, $infosGalerie['dossier']) !== FALSE)
 				{
 					$galeries[$idGalerie] = $infosGalerie;
 				}
@@ -4129,6 +4481,54 @@ function locale($langue)
 	}
 	
 	return $locale;
+}
+
+/*
+Ajoute le formulaire fourni en paramètre au fichier de configuration des formulaires envoyés. Retourne une chaîne vide.
+*/
+function majConfigFormulairesEnvoyes($racine, $idFormulaire)
+{
+	$fichierConfig = "$racine/site/cache/formulaires-envoyes.ini.txt";
+	
+	if (!file_exists($fichierConfig) && !@touch($fichierConfig))
+	{
+		return '';
+	}
+	
+	$contenuFichier = "[formulaires]\n";
+	$formulairesEnvoyes = super_parse_ini_file($fichierConfig, TRUE);
+	
+	if (!is_array($formulairesEnvoyes))
+	{
+		$formulairesEnvoyes = array ();
+	}
+	
+	if (!isset($formulairesEnvoyes['formulaires']))
+	{
+		$formulairesEnvoyes['formulaires'] = array ();
+	}
+	
+	if (!isset($formulairesEnvoyes['formulaires']['id']))
+	{
+		$formulairesEnvoyes['formulaires']['id'] = array ();
+	}
+	
+	if (!in_array($idFormulaire, $formulairesEnvoyes['formulaires']['id']))
+	{
+		$contenuFichier .= "id[]=$idFormulaire\n";
+	}
+	
+	if (!empty($formulairesEnvoyes['formulaires']['id']))
+	{
+		foreach ($formulairesEnvoyes['formulaires']['id'] as $idFormulaireEnvoye)
+		{
+			$contenuFichier .= "id[]=$idFormulaireEnvoye\n";
+		}
+	}
+	
+	@file_put_contents($fichierConfig, $contenuFichier);
+	
+	return '';
 }
 
 /*
@@ -4202,12 +4602,12 @@ function majLanguesActives($racine, $urlRacine, $langues, $initIncPhpFourni = ''
 				{
 					if (in_array($langueAccueil, $langues))
 					{
-						$initIncPhp = preg_replace('/^\s*(#|\/\/)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']') . ')/m', '$2', $initIncPhp);
+						$initIncPhp = preg_replace('~^\s*(#|//)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']', '~') . ')~m', '$2', $initIncPhp);
 
 					}
 					else
 					{
-						$initIncPhp = preg_replace('/^\s*(#|\/\/)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']') . ')/m', '#$2', $initIncPhp);
+						$initIncPhp = preg_replace('~^\s*(#|//)?\s*(' . preg_quote('$accueil[\'' . $langueAccueil . '\']', '~') . ')~m', '#$2', $initIncPhp);
 					}
 					
 					$cheminLangueAccueil = supprimeUrlRacine($urlRacine, $urlLangueAccueil);
@@ -4353,6 +4753,30 @@ function menuCategoriesAutomatise($racine, $urlRacine, $langue, $categories, $af
 	}
 	
 	return $menuCategoriesAutomatise;
+}
+
+/*
+Fait le ménage dans le message fourni et retourne le résultat.
+*/
+function messageDansConfigCommentaires($racine, $message, $attributNofollowLiensCommentaires)
+{
+	$messageDansConfig = mkdChaine($message);
+	$messageDansConfig = corrigeHtml($messageDansConfig);
+	require_once $racine . '/inc/htmlpurifier/HTMLPurifier.standalone.php';
+	$htmlPurifierConfig = HTMLPurifier_Config::createDefault();
+	$htmlPurifierConfig->set('Cache.SerializerPath', $racine . '/site/cache/htmlpurifier');
+	$htmlPurifierConfig->set('HTML.Allowed', 'p,em,strong,strike,ul,ol,li,a[href],pre,code,q,blockquote,br');
+	
+	if ($attributNofollowLiensCommentaires)
+	{
+		$htmlPurifierConfig->set("HTML.Nofollow", TRUE);
+	}
+	
+	$htmlPurifier = new HTMLPurifier($htmlPurifierConfig);
+	$messageDansConfig = $htmlPurifier->purify($messageDansConfig);
+	$messageDansConfig = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $messageDansConfig);
+	
+	return trim($messageDansConfig);
 }
 
 /*
@@ -5156,7 +5580,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		$lienDesactive = FALSE;
 		$categories = super_parse_ini_file(cheminConfigCategories($racine), TRUE);
 		
-		if (!empty($categories) && isset($categories[$id]['pages']))
+		if (!empty($categories) && !empty($categories[$id]['pages']))
 		{
 			$nombreReel = count($categories[$id]['pages']);
 			
@@ -5459,7 +5883,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		$itemsFluxRss = array ();
 		$pages = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 		
-		if (!empty($pages) && isset($pages[$langue]['pages']))
+		if (!empty($pages) && !empty($pages[$langue]['pages']))
 		{
 			$nombreReel = count($pages[$langue]['pages']);
 			
@@ -5565,7 +5989,7 @@ function rssGalerieActif($racine, $idGalerie)
 	$rssGalerie = FALSE;
 	$listeGaleries = listeGaleries($racine, $idGalerie);
 	
-	if (isset($listeGaleries[$idGalerie]['rss']) && $listeGaleries[$idGalerie]['rss'] == 1)
+	if (!empty($listeGaleries[$idGalerie]['rss']) && $listeGaleries[$idGalerie]['rss'] == 1)
 	{
 		$rssGalerie = TRUE;
 	}
@@ -5584,7 +6008,7 @@ function securiseTexte($texte)
 	{
 		return array_map('securiseTexte', $texte);
 	}
-	elseif (is_string($texte))
+	elseif (is_int($texte) || is_string($texte))
 	{
 		return htmlspecialchars($texte, ENT_COMPAT, 'UTF-8');
 	}
@@ -5595,14 +6019,13 @@ function securiseTexte($texte)
 /*
 Récupère le code XHTML d'une page locale, comme si elle était visitée dans un navigateur.
 */
-function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
+function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $estPageCron = FALSE)
 {
 	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
 	$cheminRelatifPage = supprimeUrlRacine($urlRacine, $urlAsimuler);
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
 	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
 	$cheminPage = $racine . '/' . decodeTexte($cheminRelatifPage);
-	
 	$dossierActuel = getcwd();
 	chdir(dirname($cheminPage));
 	
@@ -5663,7 +6086,7 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
 	ob_start();
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
 	
-	if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+	if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
 	{
 		@readfile($cheminFichierCache);
 	}
@@ -5674,7 +6097,6 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache)
 	
 	$codePage = ob_get_contents();
 	ob_end_clean();
-	
 	chdir($dossierActuel);
 	
 	# Restauration des variables relatives à l'URL.
@@ -5713,15 +6135,23 @@ function siteEstEnMaintenance($cheminHtaccess)
 }
 
 /*
+Retourne `TRUE` si l'adresse du site Web a une forme valide, sinon retourne `FALSE`.
+*/
+function siteWebValide($site)
+{
+	return preg_match('#^https?://[^\s\.]+\.[^\s]+$#', $site);
+}
+
+/*
 Simule la fonction `basename()` sans dépendre de la locale. Merci à <http://drupal.org/node/278425>.
 */
 function superBasename($chemin, $suffixe = '')
 {
-	$chemin = preg_replace('|^.+[\\/]|', '', $chemin);
+	$chemin = preg_replace('#^.+[\\/]#', '', $chemin);
 	
 	if ($suffixe)
 	{
-		$chemin = preg_replace('|' . preg_quote($suffixe) . '$|', '', $chemin);
+		$chemin = preg_replace('/' . preg_quote($suffixe, '/') . '$/', '', $chemin);
 	}
 	
 	return $chemin;
@@ -5844,7 +6274,7 @@ Supprime s'il y a lieu l'URL racine du début de l'URL fournie, et retourne le r
 */
 function supprimeUrlRacine($urlRacine, $urlAanalyser)
 {
-	return preg_replace('#^' . preg_quote($urlRacine) . '/?#', '', $urlAanalyser);
+	return preg_replace('#^' . preg_quote($urlRacine, '#') . '/?#', '', $urlAanalyser);
 }
 
 /*
@@ -5901,37 +6331,37 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 	if (method_exists($dom, 'find'))
 	{
 		$parent = $dom->find($parent, 0);
-	
+		
 		if ($tDmNiveauDepart < 1 || $tDmNiveauDepart > 6)
 		{
 			$tDmNiveauDepart = 1;
 		}
-	
+		
 		if ($tDmNiveauArret < 1 || $tDmNiveauArret > 6)
 		{
 			$tDmNiveauArret = 6;
 		}
-	
+		
 		if ($tDmNiveauArret < $tDmNiveauDepart)
 		{
 			$tDmNiveauArret = $tDmNiveauDepart;
 		}
-	
+		
 		$balisesAchercher = "h$tDmNiveauDepart";
-	
+		
 		for ($i = $tDmNiveauDepart + 1; $i <= $tDmNiveauArret; $i++)
 		{
 			$balisesAchercher .= ", h$i";
 		}
-	
+		
 		$tableDesMatieres = '';
 		$niveauPrecedent = 0;
 		$premiereBalise = TRUE;
-	
+		
 		foreach ($parent->find($balisesAchercher) as $h)
 		{
 			$contenuH = trim($h->innertext);
-		
+			
 			if (!empty($h->id))
 			{
 				$idH = $h->id;
@@ -5941,9 +6371,9 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 				$idH = filtreChaine($contenuH);
 				$h->id = $idH;
 			}
-		
+			
 			$niveauActuel = intval($h->tag[1]);
-		
+			
 			if ($niveauActuel > $niveauPrecedent)
 			{
 				if ($premiereBalise)
@@ -5961,34 +6391,43 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 				$tableDesMatieres .= str_repeat("</li></$tDmBaliseTable>\n", max($niveauPrecedent - $niveauActuel, 0));
 				$tableDesMatieres .= "</li>\n";
 			}
-		
+			
 			$tableDesMatieres .= "<li><a href=\"#$idH\">$contenuH</a>";
 			$niveauPrecedent = $niveauActuel;
 		}
-	
+		
 		$tableDesMatieres .= str_repeat("</li></$tDmBaliseTable>\n", max($niveauPrecedent - ($tDmNiveauDepart - 1), 0));
-	
+		
 		if (!empty($tableDesMatieres))
 		{
-			$tableDesMatieres = "<div id=\"tableDesMatieres\">\n<$tDmBaliseTitre id=\"tableDesMatieresBdTitre\" class=\"bDtitre\">" . T_("Table des matières") . "</$tDmBaliseTitre>\n$tableDesMatieres</div><!-- /#tableDesMatieres -->\n";
-		
-			if ($chapeau = $parent->find('div.chapeau', 0))
+			$contenuTableDesMatieres = "<$tDmBaliseTitre id=\"tableDesMatieresBdTitre\" class=\"bDtitre\">" . T_("Table des matières") . "</$tDmBaliseTitre>\n$tableDesMatieres";
+			
+			if ($divTableDesMatieres = $parent->find('div#tableDesMatieres', 0))
 			{
-				$chapeau->outertext = $chapeau->outertext . $tableDesMatieres;
-			}
-			elseif ($debutInterieurContenu = $parent->find('div#debutInterieurContenu', 0))
-			{
-				$debutInterieurContenu->outertext = $debutInterieurContenu->outertext . $tableDesMatieres;
-			}
-			elseif ($h1 = $parent->find('h1', 0))
-			{
-				$h1->outertext = $h1->outertext . $tableDesMatieres;
+				$divTableDesMatieres->innertext = $divTableDesMatieres->innertext . $contenuTableDesMatieres;
 			}
 			else
 			{
-				$parent->first_child()->outertext = $tableDesMatieres . $parent->first_child()->outertext;
+				$tableDesMatieres = "<div id=\"tableDesMatieres\">\n$contenuTableDesMatieres</div><!-- /#tableDesMatieres -->\n";
+				
+				if ($chapeau = $parent->find('div.chapeau', 0))
+				{
+					$chapeau->outertext = $chapeau->outertext . $tableDesMatieres;
+				}
+				elseif ($debutInterieurContenu = $parent->find('div#debutInterieurContenu', 0))
+				{
+					$debutInterieurContenu->outertext = $debutInterieurContenu->outertext . $tableDesMatieres;
+				}
+				elseif ($h1 = $parent->find('h1', 0))
+				{
+					$h1->outertext = $h1->outertext . $tableDesMatieres;
+				}
+				else
+				{
+					$parent->first_child()->outertext = $tableDesMatieres . $parent->first_child()->outertext;
+				}
 			}
-		
+			
 			$codeHtml = $dom->save();
 		}
 		
@@ -6159,7 +6598,7 @@ Recherche un index (par exemple `index.php`) pour l'URL fournie. Si un index a �
 */
 function urlAvecIndex($url)
 {
-	if (preg_match('|/$|', $url))
+	if (preg_match('#/$#', $url))
 	{
 #		$fichiersIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
 #		
@@ -6217,7 +6656,7 @@ function urlExiste($url)
 		$enTetes = $http_response_header[0];
 	}
 	
-	return preg_match('~^HTTP/\d+\.\d+\s+[23]~', $enTetes);
+	return preg_match('#^HTTP/\d+\.\d+\s+[23]#', $enTetes);
 }
 
 /*
@@ -6225,7 +6664,7 @@ Retourne l'URL d'une galerie. Si aucune URL n'a été trouvée, retourne une URL
 
 Si le paramètre `$action` vaut `0`, récupère les informations de la galerie `$info` dans le fichier de configuration des galeries, sinon s'il vaut `1`, utilise directement `$info` comme URL brute de la galerie.
 */
-function urlGalerie($action, $racine, $urlRacine, $info, $langue)
+function urlGalerie($action, $racine, $urlRacine, $info, $langue, $remplacerLangue = TRUE)
 {
 	if ($action == 0)
 	{
@@ -6249,7 +6688,10 @@ function urlGalerie($action, $racine, $urlRacine, $info, $langue)
 		$urlGalerie = '';
 	}
 	
-	$urlGalerie = str_replace('{LANGUE}', $langue, $urlGalerie);
+	if ($remplacerLangue)
+	{
+		$urlGalerie = str_replace('{LANGUE}', $langue, $urlGalerie);
+	}
 	
 	return $urlRacine . '/' . $urlGalerie;
 }
@@ -6268,7 +6710,7 @@ function urlParente()
 {
 	$urlSansGet = url(FALSE);
 	
-	if (preg_match('|/$|', $urlSansGet))
+	if (preg_match('#/$#', $urlSansGet))
 	{
 		$urlParente = substr($urlSansGet, 0, -1);
 	}
@@ -6278,42 +6720,6 @@ function urlParente()
 	}
 	
 	return $urlParente;
-}
-
-/*
-Retourne l'URL racine d'une langue inactive. Si aucune URL n'a été trouvée, retourne une chaîne vide.
-*/
-function urlRacineLangueInactive($racine, $urlRacine, $langue)
-{
-	$urlRacineLangue = '';
-
-	if (isset($accueil[$langue]))
-	{
-		$urlRacineLangue = $accueil[$langue];
-	}
-	else
-	{
-		$initIncPhp = @file_get_contents($racine . '/init.inc.php');
-
-		if ($initIncPhp !== FALSE)
-		{
-			preg_match_all('/^\s*(#|\/\/)\s*\$accueil\[\'([a-z]{2})\'\]\s*=\s*([^;]+);/m', $initIncPhp, $resultatAccueil, PREG_SET_ORDER);
-			$languesAccueil = array ();
-	
-			foreach ($resultatAccueil as $resultatAccueilTableauLangue)
-			{
-				$resultatAccueilLangue = $resultatAccueilTableauLangue[2];
-				$languesAccueil[$resultatAccueilLangue] = eval('return ' . $resultatAccueilTableauLangue[3] . ';');
-			}
-	
-			if (isset($languesAccueil[$langue]))
-			{
-				$urlRacineLangue = $languesAccueil[$langue];
-			}
-		}
-	}
-	
-	return $urlRacineLangue;
 }
 
 /*
@@ -6388,7 +6794,7 @@ function variablesAaffecterAuDebut()
 	$url = url();
 	$urlSansGet = url(FALSE);
 	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
-	$urlSansIndexSansGet = preg_replace("|(?<=/)index\.php$|", "", $urlSansGet);';
+	$urlSansIndexSansGet = preg_replace("#(?<=/)index\.php$#", "", $urlSansGet);';
 	$variables .= variablesAvantConfig();
 	
 	return $variables;

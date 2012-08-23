@@ -35,7 +35,7 @@ if (!empty($_GET['id']))
 	{
 		$langue = $getLangue;
 	}
-	elseif (isset($categories[$idCategorie]['langue']))
+	elseif (!empty($categories[$idCategorie]['langue']))
 	{
 		$langue = $categories[$idCategorie]['langue'];
 	}
@@ -57,7 +57,7 @@ if (
 	!isset($categories[$idCategorie]) ||
 	(empty($getLangue) && estCatSpeciale($idCategorie)) ||
 	(!empty($getLangue) && !estCatSpeciale($idCategorie)) ||
-	(!empty($categories[$idCategorie]['url']) && (strpos($categories[$idCategorie]['url'], 'categorie.php?') !== 0 || !preg_match('#(\?|&|&amp;)id=' . preg_quote(filtreChaine($idCategorie)) . '#', $categories[$idCategorie]['url']))) || // Empêcher la duplication de contenu dans les moteurs de recherche.
+	(!empty($categories[$idCategorie]['url']) && (strpos($categories[$idCategorie]['url'], 'categorie.php?') !== 0 || !preg_match('/(\?|&|&amp;)id=' . preg_quote(filtreChaine($idCategorie), '/') . '(&|$)/', $categories[$idCategorie]['url']))) || // Empêcher la duplication de contenu dans les moteurs de recherche.
 	($getId != filtreChaine($getId)) // Idem.
 )
 {

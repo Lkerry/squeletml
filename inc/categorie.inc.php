@@ -47,7 +47,7 @@ else
 		$categories = super_parse_ini_file($cheminFichier, TRUE);
 	}
 	
-	if (isset($categories[$idCategorie]['rss']) && $categories[$idCategorie]['rss'] == 1)
+	if (!empty($categories[$idCategorie]['rss']) && $categories[$idCategorie]['rss'] == 1)
 	{
 		$rssCategorie = TRUE;
 	}
@@ -114,7 +114,12 @@ if (!empty($idCategorie))
 		$motsCles = motsCles('', $description);
 	}
 	
-	$nombreArticles = count($categories[$idCategorie]['pages']);
+	$nombreArticles = 0;
+	
+	if (!empty($categories[$idCategorie]['pages']))
+	{
+		$nombreArticles = count($categories[$idCategorie]['pages']);
+	}
 	
 	if ($nombreArticlesParPageCategorie)
 	{
@@ -221,6 +226,11 @@ if (!empty($idCategorie))
 			{
 				$categorie .= apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseTitleComplement);
 			}
+		}
+		
+		if (empty($categorie))
+		{
+			$categorie .= '<p>' . sprintf(T_("La catégorie %1\$s ne contient aucun article."), '<em>' . securiseTexte($idCategorie) . '</em>') . "</p>\n";
 		}
 		
 		$categorie .= $pagination;

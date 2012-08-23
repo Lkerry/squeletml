@@ -1,7 +1,8 @@
 <?php
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Flux RSS globaux");
-$boitesDeroulantes = '.aideAdminRss .configActuelleAdminRss .contenuFichierPourSauvegarde';
+$boitesDeroulantes = '.aideAdminRss .configActuelle .configActuelleAdminRss';
+$boitesDeroulantes .= ' .contenuFichierPourSauvegarde';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -28,7 +29,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo '<h3>' . T_("Liste des pages du flux RSS des derniers ajouts aux galeries") . "</h3>\n";
 		
 		echo '<p>';
-		printf(T_("Cette liste est générée à partir des galeries dont le flux RSS est activé dans le <a href=\"%1\$s\">fichier de configuration des galeries</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte('../site/inc/' . superBasename(cheminConfigGaleries($racine, TRUE))) . '&amp;dossierCourant=../site/inc#messages');
+		printf(T_("Cette liste est générée à partir des galeries dont le flux RSS est activé dans le <a href=\"%1\$s\">fichier de configuration des galeries</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet('../site/inc/' . superBasename(cheminConfigGaleries($racine, TRUE))) . '&amp;dossierCourant=../site/inc#messages');
 		echo "</p>\n";
 		echo "</div><!-- /.sousBoite -->\n";
 	}
@@ -91,17 +92,33 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$listePages .= '<input type="text" name="langue[' . $i . ']" value="' . securiseTexte($codeLangue) . '" />';
 					}
 					
-					$listePages .= "<ul class=\"triable\">\n";
+					$listePagesLangue = '';
 					$j = 0;
 					
-					foreach ($langueInfos['pages'] as $page)
+					if (!empty($langueInfos['pages']))
 					{
-						$page = rtrim($page);
-						$listePages .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . securiseTexte($page) . '" /></li>' . "\n";
-						$j++;
+						foreach ($langueInfos['pages'] as $page)
+						{
+							$page = rtrim($page);
+							
+							if (!empty($page))
+							{
+								$listePagesLangue .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . securiseTexte($page) . '" />';
+								$cheminPage = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($page));
+								$listePagesLangue .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPage) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" width="16" height="16" /></a>';
+								$listePagesLangue .= "</li>\n";
+								$j++;
+							}
+						}
 					}
 					
-					$listePages .= "</ul></li>\n";
+					if (!empty($listePagesLangue))
+					{
+						$listePages .= "<ul class=\"triable\">\n";
+						$listePages .= $listePagesLangue;
+						$listePages .= "</ul></li>\n";
+					}
+					
 					$i++;
 				}
 			}
@@ -207,7 +224,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 	
 		$contenuFichierTableau = array ();
 		
-		if (isset($_POST['langue']))
+		if (!empty($_POST['langue']))
 		{
 			foreach ($_POST['langue'] as $cle => $postLangueValeur)
 			{
@@ -288,24 +305,26 @@ include $racineAdmin . '/inc/premier.inc.php';
 	?>
 </div><!-- /#boiteMessages -->
 
-<div class="boite">
-	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
+<div class="boite configActuelle">
+	<h2 id="config" class="bDtitre"><?php echo T_("Configuration actuelle"); ?></h2>
 	
-	<ul>
-		<?php if ($activerFluxRssGlobalSite): ?>
-			<li><?php echo T_("Le flux RSS des dernières publications est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("Le flux RSS des dernières publications n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
+	<div class="bDcorps afficher">
+		<ul>
+			<?php if ($activerFluxRssGlobalSite): ?>
+				<li><?php echo T_("Le flux RSS des dernières publications est activé") . ' (<code>$activerFluxRssGlobalSite = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("Le flux RSS des dernières publications n'est pas activé") . ' (<code>$activerFluxRssGlobalSite = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+			
+			<?php if ($galerieActiverFluxRssGlobal): ?>
+				<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+		</ul>
 		
-		<?php if ($galerieActiverFluxRssGlobal): ?>
-			<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries est activé") . ' (<code>$galerieActiverFluxRssGlobal = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("Le flux RSS des derniers ajouts aux galeries n'est pas activé") . ' (<code>$galerieActiverFluxRssGlobal = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
-	</ul>
-	
-	<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+	</div><!-- /.bDcorps -->
 </div><!-- /.boite -->
 
 <div class="boite">

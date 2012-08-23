@@ -142,10 +142,6 @@ h6 {
 	font-style: italic;
 }
 
-a, a code {
-	text-decoration: underline;
-}
-
 a:visited {
 	color: #551a8b;
 }
@@ -167,7 +163,7 @@ p {
 	font-weight: bold;
 }
 
-code {
+a.lienSurCode, code {
 	color: #0000E2;
 }
 
@@ -251,6 +247,19 @@ li.liParent {
 
 .note {
 	font-style: italic;
+}
+
+div.aide .bDcorps {
+	border-bottom: 1px solid #cccccc;
+}
+
+div.aide .bDtitre {
+	font-size: 1em;
+}
+
+p.lienVersBoutonSoumettre {
+	margin: 10px 0px 0px;
+	text-align: right;
 }
 
 ul.nonTriable ul.triable li.liParent, li.liParent ul.triable li, ul.triable li {
@@ -365,29 +374,17 @@ body#documentation-admin-php em code {
 	margin-right: 10px;
 }
 
-#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueRenommageImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input, #galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
+#galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage, #galeriesAdminConfigGraphique p.configGraphiqueRenommageImage, #galeriesAdminConfigGraphique p.configGraphiqueSuppressionImage input {
 	margin: 0px;
-}
-
-#galeriesAdminConfigGraphique p.configGraphiqueLienMaj {
-	margin-top: 10px;
-	text-align: right;
 }
 
 body#galeries-admin-php div.galerieMinivignettes {
 	width: 50%;
 }
 
-div.aide .bDtitre {
-	font-size: 1em;
-}
-
-li.apercuGalerie {
-	margin-bottom: 15px;
-}
-
 li.listeGaleriesTitre {
 	font-weight: bold;
+	margin-top: 15px;
 }
 
 li.listeGaleriesTitre ul {
@@ -421,18 +418,17 @@ p#porteDocumentsLienHaut {
 	text-align: right;
 }
 
-p#porteDocumentsBoutonSauvegarder {
+p#porteDocumentsBoutonEditionSauvegarder, p#porteDocumentsBoutonEditionAnnuler {
+	text-align: right;
+}
+
+div#porteDocumentsEditionOptions {
 	float: left;
-	margin-right: 10px;
+	width: 65%;
 }
 
-a.porteDocumentsFichier {
-	text-decoration: none;
-}
-
-pre.consulterModifications {
-	width: 95%;
-	height: 500px;
+li.contenuFichierPourSauvegarde > p:first-child {
+	margin-top: 0px;
 }
 
 .porteDocumentsListe {
@@ -446,10 +442,6 @@ pre.consulterModifications {
 .porteDocumentsListe img {
 	border: none;
 	vertical-align: middle;
-}
-
-.porteDocumentsListe li.impair {
-	background-color: #f5f5f5;
 }
 
 .porteDocumentsListeDernierNiveau li:hover {
@@ -500,6 +492,21 @@ a.lienInfobulle img {
 
 img.infobulleApercuImage {
 	border: 1px solid #cccccc !important;
+}
+
+/***********************************************************************
+**
+** Commentaires.
+**
+***********************************************************************/
+
+ul.infosSupplementaires {
+	float: left;
+	width: 45%;
+}
+
+span.noteChampCommentaire {
+	font-style: italic;
 }
 
 /***********************************************************************

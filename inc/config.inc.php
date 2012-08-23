@@ -256,7 +256,8 @@ $ordreBlocsDansFluxHtml['balise-h1']             = array (300, 300, 300);
 $ordreBlocsDansFluxHtml['infos-publication']     = array (400, 400, 400);
 $ordreBlocsDansFluxHtml['licence']               = array (410, 410, 410);
 $ordreBlocsDansFluxHtml['partage']               = array (420, 420, 420);
-$ordreBlocsDansFluxHtml['lien-page']             = array (430, 430, 430);
+$ordreBlocsDansFluxHtml['lien-page']             = array (430, 430, 430); // S'il y a lieu (voir les commentaires de la variable `$fusionnerBlocsPartageLienPage` dans ce même fichier de configuration).
+$ordreBlocsDansFluxHtml['commentaires']          = array (440, 440, 440);
 $ordreBlocsDansFluxHtml['menu-langues']          = array (500, 500, 200);
 $ordreBlocsDansFluxHtml['menu-categories']       = array (520, 520, 520);
 $ordreBlocsDansFluxHtml['menu-galeries']         = array (530, 530, 530);
@@ -275,11 +276,17 @@ $ordreBlocsDansFluxHtml['piwik']                 = array (699, 699, 699);
 	
 		$conditionsBlocs['partage'] = 'if (strpos($url, "/dossier/") !== FALSE) {return TRUE;} else {return FALSE;}';
 	
-	Dans cet exemple, le bloc «Partage» sera inclus seulement si l'URL contient `/dossier/`.
+	Dans cet exemple, le bloc `partage` sera inclus seulement si l'URL contient `/dossier/`.
 	
 - Si aucune condition n'est donnée pour un bloc, le retour est automatiquement évalué à TRUE.
 */
 $conditionsBlocs = array ();
+
+// Fusion des blocs `partage` et `lien-page`.
+/*
+- Si la fusion est activée, le bloc `lien-page` sera inclus dans le bloc `partage`, sinon ces deux blocs seront indépendants.
+*/
+$fusionnerBlocsPartageLienPage = TRUE; // TRUE|FALSE
 
 // Inclusion des ancres.
 $inclureAncres = TRUE; // TRUE|FALSE
@@ -569,6 +576,7 @@ $differencierLiensVisitesHorsContenu = TRUE; // TRUE|FALSE
 - Voir la fonction `lienActif()`.
 */
 $liensActifsBlocs['balise-h1']             = NULL;
+$liensActifsBlocs['commentaires']          = FALSE;
 $liensActifsBlocs['flux-rss']              = NULL;
 $liensActifsBlocs['infos-publication']     = NULL;
 $liensActifsBlocs['legende-image-galerie'] = FALSE; // S'il y a lieu (voir `$galerieLegendeEmplacement`).
@@ -633,6 +641,7 @@ Voir les explications de la variable `$ordreBlocsDansFluxHtml` dans ce fichier d
 Voir les fonctions `limiteProfondeurListe()` et `lienActif()`.
 */
 $limiterProfondeurListesBlocs['balise-h1']             = NULL;
+$limiterProfondeurListesBlocs['commentaires']          = FALSE;
 $limiterProfondeurListesBlocs['flux-rss']              = NULL;
 $limiterProfondeurListesBlocs['infos-publication']     = NULL;
 $limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE;
@@ -716,6 +725,7 @@ précise que le bloc de menu principal devra avoir une couleur de fond lorsqu'il
 	$blocsAvecFondSpecifiques['bloc'] = array (valeur quand aucune colonne, valeur quand 1 colonne, valeur quand 2 colonnes);
 */
 $blocsAvecFondSpecifiques['balise-h1']      = array (FALSE, FALSE, FALSE);
+$blocsAvecFondSpecifiques['commentaires']   = array (FALSE, FALSE, FALSE);
 $blocsAvecFondSpecifiques['licence']        = array (TRUE, TRUE, TRUE);
 $blocsAvecFondSpecifiques['menu-langues']   = array (FALSE, TRUE, TRUE);
 $blocsAvecFondSpecifiques['piwik']          = array (FALSE, FALSE, FALSE);
@@ -749,21 +759,11 @@ $utiliserApercuDansFluxRss = FALSE; // TRUE|FALSE
 */
 $contactCourrielParDefaut = "";
 
-// Vérification de la forme du courriel.
-$contactVerifierCourriel = TRUE; // TRUE|FALSE
-
 // Ajout optionnel d'un identifiant dans l'objet.
 $contactCourrielIdentifiantObjet = '[Contact] ';
 
 // Ajout dans le formulaire d'une option d'envoi d'une copie à l'expéditeur.
 $contactCopieCourriel = FALSE; // TRUE|FALSE
-
-// Champs obligatoires.
-/*
-- Chaque élément prend comme valeur TRUE ou FALSE.
-*/
-$contactChampsObligatoires['nom']     = TRUE;
-$contactChampsObligatoires['message'] = TRUE;
 
 /* ____________________ Antipourriel. ____________________ */
 
@@ -784,7 +784,93 @@ $contactCaptchaCalculInverse = TRUE; // TRUE|FALSE;
 
 // Limitation du nombre de liens dans le corps d'un message.
 $contactActiverLimiteNombreLiens = FALSE; // TRUE|FALSE
-$contactNombreLiensMax = 5; // Nombre maximal de liens dans un message
+$contactNombreLiensMax = 5; // Nombre maximal de liens dans un message.
+
+########################################################################
+##
+## Configuration des commentaires.
+##
+########################################################################
+
+/* ____________________ Général. ____________________ */
+
+// Activation par défaut de l'ajout de commentaires.
+/*
+- État de l'activation de l'ajout de commentaires si aucune autre précision n'est apportée. Si la variable `$ajoutCommentaires` est déclarée dans une page, c'est la valeur de cette dernière qui est utilisée.
+- Si l'ajout de commentaires est activé, l'affichage des commentaires l'est également.
+*/
+$ajoutCommentairesParDefaut = TRUE; // TRUE|FALSE
+
+// Affichage des commentaires existants si l'ajout de commentaires est désactivé.
+/*
+- Si l'ajout de commentaires est désactivé, afficher quand même les commentaires déjà existants, s'il y a lieu.
+*/
+$affichageCommentairesSiAjoutDesactive = TRUE; // TRUE|FALSE
+
+// Affichage du nombre de commentaires après le titre de section.
+$afficherNombreCommentaires = TRUE; // TRUE|FALSE
+
+// Inversion de l'ordre d'affichage des commentaires.
+/*
+- Par défaut, les commentaires sont affichés par ordre chronologique. Mettre à `TRUE` pour afficher du plus récent au plus ancien.
+*/
+$inverserOrdreCommentaires = FALSE; // TRUE|FALSE
+
+// Ajout d'un attribut `nofollow` aux liens d'un commentaire.
+$attributNofollowLiensCommentaires = TRUE; // TRUE|FALSE
+
+// Champs activés.
+/*
+- Chaque élément prend comme valeur TRUE ou FALSE.
+*/
+$commentairesChampsActifs['nom']      = TRUE;
+$commentairesChampsActifs['courriel'] = TRUE;
+$commentairesChampsActifs['site']     = TRUE;
+
+// Champs obligatoires.
+/*
+- Chaque élément prend comme valeur TRUE ou FALSE.
+*/
+$commentairesChampsObligatoires['nom']      = TRUE;
+$commentairesChampsObligatoires['courriel'] = TRUE;
+$commentairesChampsObligatoires['site']     = FALSE;
+
+// Modération des commentaires avant publication en ligne.
+$moderationCommentaires = FALSE; // TRUE|FALSE
+
+/* ____________________ Notification. ____________________ */
+
+// Adresse expéditrice pour la notification des nouveaux commentaires.
+/*
+- Adresse apparaissant dans le champ d'expéditeur d'un courriel de notification lorsqu'un nouveau commentaire est publié.
+*/
+$commentairesExpediteurNotification = "";
+
+// Adresse destinataire pour la notification des nouveaux commentaires.
+/*
+- Adresse à laquelle envoyer une notification lorsqu'un nouveau commentaire est publié ou soumis à modération. Laisser vide pour désactiver cette option.
+*/
+$commentairesDestinataireNotification = "";
+
+// Ajout dans le formulaire d'une option de notification par courriel des nouveaux commentaires.
+$commentairesNotification = TRUE; // TRUE|FALSE
+
+/* ____________________ Antipourriel. ____________________ */
+
+// Ajout d'un champ de calcul mathématique.
+$commentairesActiverCaptchaCalcul = TRUE; // TRUE|FALSE
+$commentairesCaptchaCalculMin = 2;
+$commentairesCaptchaCalculMax = 10;
+
+// Si `$commentairesActiverCaptchaCalcul` vaut TRUE, inversion des termes de l'addition et du résultat.
+/*
+- Voir la variable `$contactCaptchaCalculInverse` dans ce présent fichier de configuration.
+*/
+$commentairesCaptchaCalculInverse = TRUE; // TRUE|FALSE;
+
+// Limitation du nombre de liens dans le corps d'un commentaire.
+$commentairesActiverLimiteNombreLiens = FALSE; // TRUE|FALSE
+$commentairesNombreLiensMax = 5; // Nombre maximal de liens dans un commentaire.
 
 ########################################################################
 ##

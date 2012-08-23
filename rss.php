@@ -72,7 +72,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 		{
 			$id = $idGalerie;
 			
-			if ($infosGalerie['rss'] == 1)
+			if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 			{
 				$rss = TRUE;
 			}
@@ -125,7 +125,15 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 					$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 				}
 				
-				$urlGalerie = urlGalerie(1, $racine, $urlRacine, $infosGalerie['url'], $getLangue);
+				if (!empty($infosGalerie['url']))
+				{
+					$urlGalerie = urlGalerie(1, '', $urlRacine, $infosGalerie['url'], $getLangue);
+				}
+				else
+				{
+					$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, $getLangue);
+				}
+				
 				$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), $idGalerie, '');
 				
 				if ($dureeCache)
@@ -180,7 +188,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 			{
 				$id = $idCategorie;
 				
-				if ($infosCategorie['rss'] == 1)
+				if (!empty($infosCategorie['rss']) && $infosCategorie['rss'] == 1)
 				{
 					$rss = TRUE;
 				}
@@ -208,7 +216,16 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		phpGettext('.', $infosCategorie['langue']); // Nécessaire à la traduction.
+		if (!empty($infosCategorie['langue']))
+		{
+			$infosCategorieLangue = $infosCategorie['langue'];
+		}
+		else
+		{
+			$infosCategorieLangue = $langueParDefaut;
+		}
+		
+		phpGettext('.', $infosCategorieLangue); // Nécessaire à la traduction.
 		
 		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
 		{
@@ -229,20 +246,23 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 			$itemsFluxRss = array ();
 			$i = 0;
 			
-			foreach ($infosCategorie['pages'] as $page)
+			if (!empty($infosCategorie['pages']))
 			{
-				if ($i < $nombreItemsFluxRss)
+				foreach ($infosCategorie['pages'] as $page)
 				{
-					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
-					
-					if (!empty($fluxRssPageTableauBrut))
+					if ($i < $nombreItemsFluxRss)
 					{
-						$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+						$page = rtrim($page);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
+					
+						if (!empty($fluxRssPageTableauBrut))
+						{
+							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+						}
 					}
-				}
 				
-				$i++;
+					$i++;
+				}
 			}
 			
 			if (!empty($itemsFluxRss))
@@ -250,7 +270,16 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 			}
 			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $infosCategorie['url'], baliseTitleComplement($tableauBaliseTitleComplement, array ($infosCategorie['langue'], $langueParDefaut), FALSE), '', $idCategorie);
+			if (!empty($infosCategorie['url']))
+			{
+				$urlCategorie = $infosCategorie['url'];
+			}
+			else
+			{
+				$urlCategorie = urlCat($infosCategorie, $id);
+			}
+			
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($infosCategorie['langue'], $langueParDefaut), FALSE), '', $idCategorie);
 	
 			if ($dureeCache)
 			{
@@ -292,7 +321,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 	
 	foreach ($listeGaleries as $idGalerie => $infosGalerie)
 	{
-		if ($infosGalerie['rss'] == 1)
+		if (!empty($infosGalerie['rss']) && $infosGalerie['rss'] == 1)
 		{
 			$listeGaleriesRss[$idGalerie] = $infosGalerie;
 		}
@@ -410,7 +439,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 			include_once $racine . '/inc/constantes.inc.php';
 			$itemsFluxRss = array ();
 			
-			if (isset($pages[$getLangue]['pages']))
+			if (!empty($pages[$getLangue]['pages']))
 			{
 				$i = 0;
 				

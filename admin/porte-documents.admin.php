@@ -5,11 +5,26 @@ include 'inc/zero.inc.php';
 
 $baliseTitle = T_("Porte-documents");
 $boitesDeroulantes = '#divContenuDossierAdminPorteDoc #divListeDossiersAdminPorteDoc #varPageModele';
-$boitesDeroulantes .= ' .aideAdminPorteDocuments .optionsAvanceesAdminPorteDocuments';
+$boitesDeroulantes .= ' .aideAdminPorteDocuments .contenuFichierPourSauvegarde';
+$boitesDeroulantes .= ' .optionsAvanceesAdminPorteDocuments';
 
 if ($adminFiltreTypesMime && !empty($adminTypesMimePermis))
 {
 	$boitesDeroulantes .= ' #typesMimePermisAdminPorteDoc';
+}
+
+$actionEditer = FALSE;
+
+if (isset($_GET['action']) && $_GET['action'] == 'editer')
+{
+	$actionEditer = TRUE;
+}
+
+$getValeur = '';
+
+if (isset($_GET['valeur']))
+{
+	$getValeur = decodeTexteGet($_GET['valeur']);
 }
 
 include $racineAdmin . '/inc/premier.inc.php';
@@ -46,18 +61,9 @@ else
 	$tableauFiltresAffichageDansContenu = array ();
 }
 
-if (isset($_GET['valeur']))
-{
-	$getValeur = decodeTexte($_GET['valeur']);
-}
-else
-{
-	$getValeur = '';
-}
-
 if (isset($_GET['dossierCourant']))
 {
-	$dossierCourant = decodeTexte($_GET['dossierCourant']);
+	$dossierCourant = decodeTexteGet($_GET['dossierCourant']);
 }
 elseif (isset($_POST['porteDocumentsDossierCourant']))
 {
@@ -71,7 +77,7 @@ if (!isset($dossierCourant) || !file_exists($dossierCourant) || !is_dir($dossier
 
 if (!empty($dossierCourant))
 {
-	$dossierCourantDansUrl = '&amp;dossierCourant=' . encodeTexte($dossierCourant);
+	$dossierCourantDansUrl = '&amp;dossierCourant=' . encodeTexteGet($dossierCourant);
 }
 else
 {
@@ -225,7 +231,7 @@ if (isset($_POST['porteDocumentsCopieConfirmation']))
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("%1\$s existe déjà. Copie de %2\$s impossible."), '<code>' . securiseTexte($fichierDeDestination) . '</code>', '<code>' . securiseTexte($fichierSource) . '</code>') . "</li>\n";
 			}
-			elseif (preg_match("|^$fichierSource/|", $fichierDeDestination))
+			elseif (strpos($fichierDeDestination, "$fichierSource/") === 0)
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), '<code>' . securiseTexte($fichierSource) . '</code>', '<code>' . securiseTexte($fichierDeDestination) . '</code>') . "</li>\n";
 			}
@@ -593,141 +599,6 @@ if (isset($_POST['porteDocumentsPermissionsConfirmation']))
 
 ########################################################################
 ##
-## Édition.
-##
-########################################################################
-
-/* ____________________ Formulaire d'édition. ____________________ */
-
-if (isset($_GET['action']) && $_GET['action'] == 'editer')
-{
-	$messagesScript = '';
-	
-	echo '<div class="sousBoite">' . "\n";
-	echo '<h3>' . T_("Édition d'un fichier") . "</h3>\n";
-	
-	if (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), '<code>' . securiseTexte($getValeur) . '</code>') . "</li>\n";
-	}
-	else
-	{
-		if (file_exists($getValeur))
-		{
-			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications»."), '<code>' . securiseTexte($getValeur) . '</code> ' . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
-		}
-		else
-		{
-			echo '<p>' . sprintf(T_("Le fichier %1\$s n'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisie (qui peut être vide)."), '<code>' . securiseTexte($getValeur) . '</code>') . "</p>\n";
-		}
-		
-		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
-		echo "<div>\n";
-		clearstatcache();
-		
-		if (file_exists($getValeur) && @filesize($getValeur))
-		{
-			$fic = @fopen($getValeur, 'r');
-			$contenuFichier = fread($fic, @filesize($getValeur));
-			$contenuFichier = securiseTexte($contenuFichier);
-			fclose($fic);
-		}
-		else
-		{
-			$contenuFichier = '';
-		}
-
-		echo '<textarea id="code" cols="80" rows="25" name="porteDocumentsContenuFichier">' . $contenuFichier . "</textarea>\n";
-	
-		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . encodeTexte($getValeur) . '" />' . "\n";
-		
-		echo '<p id="porteDocumentsBoutonSauvegarder"><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
-		
-		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
-		echo "<div>\n";
-		echo '<p><input type="submit" name="porteDocumentsEditionAnnuler" value="' . T_("Annuler") . '" />' . "</p>\n";
-		
-		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . encodeTexte($getValeur) . '" />' . "\n";
-		
-		if (!empty($dossierCourant))
-		{
-			echo '<input type="hidden" name="porteDocumentsDossierCourant" value="' . encodeTexte($dossierCourant) . '" />' . "\n";
-		}
-		
-		echo "<div class=\"sep\"></div>\n";
-		echo "</div></form>\n";
-		echo "</div></form>\n";
-	}
-	
-	echo adminMessagesScript($messagesScript);
-	echo "</div><!-- /.sousBoite -->\n";
-}
-
-/* ____________________ Annulation d'édition. ____________________ */
-
-if (isset($_POST['porteDocumentsEditionAnnuler']))
-{
-	$messagesScript = '';
-	$porteDocumentsEditionNom = decodeTexte($_POST['porteDocumentsEditionNom']);
-	$messagesScript .= '<li>' . sprintf(T_("Aucune modification apportée au fichier %1\$s."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
-	
-	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
-}
-
-/* ____________________ Sauvegarde des modifications. ____________________ */
-
-if (isset($_POST['porteDocumentsEditionSauvegarder']))
-{
-	$messagesScript = '';
-	$porteDocumentsEditionNom = decodeTexte($_POST['porteDocumentsEditionNom']);
-	
-	if (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
-	}
-	else
-	{
-		$messageErreurEdition = '';
-		$messageErreurEdition .= '<p class="erreur">' . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
-		
-		$messageErreurEdition .= '<p><pre id="porteDocumentsContenuFichier" class="consulterModifications">' . securiseTexte($_POST['porteDocumentsContenuFichier']) . "</pre></p>\n";
-		
-		$messageErreurEdition .= "<p><a href=\"javascript:adminSelectionneTexte('porteDocumentsContenuFichier');\">" . T_("Sélectionner le contenu.") . "</a></p>\n";
-		
-		$messageErreurEditionAafficher = FALSE;
-		
-		if ($fic = @fopen($porteDocumentsEditionNom, 'w'))
-		{
-			if (@fwrite($fic, $_POST['porteDocumentsContenuFichier']) !== FALSE)
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée. <a href=\"%2\$s\">Éditer à nouveau.</a>"), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>', 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages') . "</li>\n";
-			}
-			else
-			{
-				$messageErreurEditionAafficher = FALSE;
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Écriture dans le fichier %1\$s impossible."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
-			}
-			
-			fclose($fic);
-		}
-		else
-		{
-			$messageErreurEditionAafficher = TRUE;
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'a pas pu être ouvert."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
-		}
-		
-		if ($messageErreurEditionAafficher)
-		{
-			$messagesScript .= '<li>' . $messageErreurEdition . "</li>\n";
-			$messagesScript .= '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages') . "</li>\n";
-		}
-	}
-	
-	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
-}
-
-########################################################################
-##
 ## Renommage.
 ##
 ########################################################################
@@ -838,7 +709,7 @@ if (isset($_POST['porteDocumentsRenommage']))
 		{
 			if ($copie)
 			{
-				if (preg_match("|^$ancienNom/|", $nouveauNom))
+				if (strpos($nouveauNom, "$ancienNom/") === 0)
 				{
 					$messagesScript .= '<li class="erreur">' . sprintf(T_("Copie de %1\$s vers %2\$s impossible. La destination se trouve à l'intérieur de la source."), '<code>' . securiseTexte($ancienNom) . '</code>', '<code>' . securiseTexte($nouveauNom) . '</code>') . "</li>\n";
 				}
@@ -863,6 +734,126 @@ if (isset($_POST['porteDocumentsRenommage']))
 
 ########################################################################
 ##
+## Ajout.
+##
+########################################################################
+
+if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis))) && (isset($_POST['porteDocumentsAjouter']) || (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))))
+{
+	$messagesScript = '';
+	
+	if (isset($_POST['porteDocumentsAjouterDossier']))
+	{
+		$dossier = decodeTexte($_POST['porteDocumentsAjouterDossier']);
+	}
+	
+	if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))
+	{
+		// Explications: À la page <http://www.php.net/manual/fr/ini.core.php#ini.post-max-size>, on peut lire: «Dans le cas où la taille des données reçues par la méthode POST est plus grande que post_max_size , les superglobales  $_POST et $_FILES  seront vides». Je repère donc une erreur potentielle par le test ci-dessus.
+		
+		$messagesScript .= '<li class="erreur">' . T_("Le fichier téléchargé excède la taille de <code>post_max_size</code>, configurée dans le <code>php.ini</code>.") . "</li>\n";
+	}
+	elseif (empty($_FILES['porteDocumentsAjouterFichier']['name']))
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
+	}
+	elseif (file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && @filesize($_FILES['porteDocumentsAjouterFichier']['tmp_name']) > $tailleMaxFichier)
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier) . "</li>\n";
+	}
+	elseif (empty($dossier))
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Aucun dossier spécifié.") . "</li>\n";
+	}
+	elseif (!adminEmplacementPermis($dossier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour l'ajout (%1\$s) n'est pas gérable par le porte-documents."), "<code>" . securiseTexte($dossier) . "</code>") . "</li>\n";
+	}
+	elseif ($_FILES['porteDocumentsAjouterFichier']['error'])
+	{
+		$messagesScript .= adminMessageFilesError($_FILES['porteDocumentsAjouterFichier']['error']);
+	}
+	else
+	{
+		$dossierCourant = $dossier;
+		$nomFichier = superBasename($_FILES['porteDocumentsAjouterFichier']['name']);
+		$nouveauNomFichier = superBasename($_POST['porteDocumentsAjouterNom']);
+		
+		if (!empty($nouveauNomFichier))
+		{
+			$nomFichier = $nouveauNomFichier;
+		}
+		
+		$casse = '';
+		$filtrerNom = FALSE;
+		
+		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
+		{
+			$filtrerNom = TRUE;
+			$ancienNomFichier = $nomFichier;
+			
+			if (in_array('min', $_POST['filtrerNom']))
+			{
+				$casse = 'min';
+			}
+			
+			$nomFichier = filtreChaine($nomFichier, $casse);
+			
+			if ($nomFichier != $ancienNomFichier)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienNomFichier) . '</code>', '<code>' . securiseTexte($nomFichier) . '</code>') . "</li>\n";
+			}
+		}
+		
+		if (file_exists($dossier . '/' . $nomFichier))
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
+		}
+		else
+		{
+			$typeMime = typeMime($_FILES['porteDocumentsAjouterFichier']['tmp_name']);
+			
+			if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
+			}
+			elseif (@move_uploaded_file($_FILES['porteDocumentsAjouterFichier']['tmp_name'], $dossier . '/' . $nomFichier))
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
+				
+				if (isset($_POST['extraireArchive']) && $_POST['extraireArchive'] == 'extraire' && ($typeMime == 'application/x-tar' || $typeMime == 'application/x-bzip2' || $typeMime == 'application/x-gzip' || $typeMime == 'application/zip'))
+				{
+					$retourAdminExtraitArchive = adminExtraitArchive($dossier . '/' . $nomFichier, $dossier, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom, $casse);
+					$messagesScript .= $retourAdminExtraitArchive['messagesScript'];
+					$messagesScript .= adminUnlink($dossier . '/' . $nomFichier);
+				}
+				else
+				{
+					$messagesScript .= '<li><a href="' . encodeTexte($dossier . '/' . $nomFichier) . '">' . T_("Afficher le fichier.") . "</a></li>\n";
+					
+					if (adminEstEditable($dossier . '/' . $nomFichier))
+					{
+						$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($dossier . '/' . $nomFichier) . $dossierCourantDansUrl . '#messages">' . T_("Éditer le fichier.") . "</a></li>\n";
+					}
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
+			}
+		}
+	}
+	
+	if (isset($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']))
+	{
+		@unlink($_FILES['porteDocumentsAjouterFichier']['tmp_name']);
+	}
+	
+	echo adminMessagesScript($messagesScript, T_("Ajout d'un fichier"));
+}
+
+########################################################################
+##
 ## Création.
 ##
 ########################################################################
@@ -879,39 +870,24 @@ if (isset($_POST['porteDocumentsCreation']))
 	{
 		$messagesScript .= '<li class="erreur">' . T_("Aucun nom spécifié.") . "</li>\n";
 	}
+	elseif (empty($_POST['porteDocumentsCreationType']))
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Aucun type spécifié.") . "</li>\n";
+	}
 	else
 	{
 		$fichierAcreerType = $_POST['porteDocumentsCreationType'];
-		$fichierAcreerNom = decodeTexte($_POST['porteDocumentsCreationNom']);
+		$retourAdminFichierAcreerPorteDocuments = adminCheminFichierAcreerPorteDocuments($adminDossierRacinePorteDocuments);
+		$fichierAcreerNom = $retourAdminFichierAcreerPorteDocuments['cheminFichier'];
+		$messagesScript .= $retourAdminFichierAcreerPorteDocuments['messagesScript'];
 		
 		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
 		{
-			$fichierAcreerAncienNom = $fichierAcreerNom;
 			$titrePotentiel = extension($fichierAcreerAncienNom, TRUE);
-			$casse = '';
-			
-			if (in_array('min', $_POST['filtrerNom']))
-			{
-				$casse = 'min';
-			}
-			
-			$fichierAcreerNom = filtreChaine($fichierAcreerNom, $casse);
-			
-			if ($fichierAcreerNom != $fichierAcreerAncienNom)
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($fichierAcreerAncienNom) . '</code>', '<code>' . securiseTexte($fichierAcreerNom) . '</code>') . "</li>\n";
-			}
 		}
 		else
 		{
 			$titrePotentiel = '';
-		}
-		
-		$fichierAcreerNom = decodeTexte($_POST['porteDocumentsCreationChemin']) . '/' . $fichierAcreerNom;
-		
-		if (!preg_match("|^$adminDossierRacinePorteDocuments/|i", $fichierAcreerNom))
-		{
-			$fichierAcreerNom = "$adminDossierRacinePorteDocuments/$fichierAcreerNom";
 		}
 		
 		if ($fichierAcreerType == 'FichierModeleMarkdown')
@@ -933,8 +909,11 @@ if (isset($_POST['porteDocumentsCreation']))
 		}
 		else
 		{
+			$dossierCourant = dirname($fichierAcreerNom);
+			
 			if ($fichierAcreerType == 'Dossier')
 			{
+				$dossierCourant = $fichierAcreerNom;
 				$majListeDossiers = TRUE;
 				$messagesScript .= adminMkdir($fichierAcreerNom, octdec(755), TRUE);
 			}
@@ -957,16 +936,21 @@ if (isset($_POST['porteDocumentsCreation']))
 				{
 					if (@touch($fichierAcreerNom))
 					{
+						if ($fichierAcreerType == 'FichierVide' || $fichierAcreerType == 'FichierModeleHtml')
+						{
+							$actionEditer = TRUE;
+						}
+						
 						$messagesScript .= '<li>'; // Ouverture de `<li>`.
 						$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), '<code>' . securiseTexte($fichierAcreerNom) . '</code>');
 						
 						if ($fichierAcreerType == 'FichierModeleHtml' || $fichierAcreerType == 'FichierModeleMarkdown')
 						{
-							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($fichierAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page", 3)));
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page", 3)));
 						}
 						else
 						{
-							$messagesScript .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($fichierAcreerNom) . $dossierCourantDansUrl . '#messages">' . T_("Vous pouvez l'éditer.") . "</a>";
+							$messagesScript .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierAcreerNom) . $dossierCourantDansUrl . '#messages">' . T_("Vous pouvez l'éditer.") . "</a>";
 						}
 						
 						$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
@@ -982,7 +966,7 @@ if (isset($_POST['porteDocumentsCreation']))
 						{
 							$messagesScript .= '<li>'; // Ouverture de `<li>`.
 							$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), '<code>' . securiseTexte($fichierMarkdownAcreerNom) . '</code>');
-							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexte($fichierMarkdownAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page.mkd", 3)));
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierMarkdownAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page.mkd", 3)));
 							$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
 						}
 						else
@@ -993,7 +977,7 @@ if (isset($_POST['porteDocumentsCreation']))
 					
 					if (($fichierAcreerType == 'FichierModeleHtml' && file_exists($fichierAcreerNom)) || ($fichierAcreerType == 'FichierModeleMarkdown' && file_exists($fichierAcreerNom) && file_exists($fichierMarkdownAcreerNom)))
 					{
-						$cheminInclude = preg_replace('|[^/]+/|', '../', $cheminPage);
+						$cheminInclude = preg_replace('#[^/]+/#', '../', $cheminPage);
 						$cheminInclude = dirname($cheminInclude);
 						
 						if ($cheminInclude == '.')
@@ -1025,6 +1009,18 @@ if (isset($_POST['porteDocumentsCreation']))
 							{
 								switch ($var)
 								{
+									case 'ajoutCommentaires':
+										if ($ajoutCommentairesParDefaut)
+										{
+											$contenu .= '$ajoutCommentaires = FALSE;' . "\n";
+										}
+										else
+										{
+											$contenu .= '$ajoutCommentaires = TRUE;' . "\n";
+										}
+										
+										break;
+										
 									case 'apercu':
 										$contenu .= '$apercu = "";' . "\n";
 										break;
@@ -1206,7 +1202,8 @@ if (isset($_POST['porteDocumentsCreation']))
 									$contenu .= "\n";
 								}
 								
-								$contenu .= "<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.</p>\n";
+								$contenu .= $adminCorpsModelePageWeb;
+								$contenu .= "\n";
 							}
 							elseif ($fichierAcreerType == 'FichierModeleMarkdown')
 							{
@@ -1220,6 +1217,11 @@ if (isset($_POST['porteDocumentsCreation']))
 						}
 						else
 						{
+							if ($fichierAcreerType == 'FichierModeleHtml')
+							{
+								$actionEditer = FALSE;
+							}
+							
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web dans le fichier %1\$s impossible."), '<code>' . securiseTexte($cheminPage . '/' . $page) . '</code>') . "</li>\n";
 						}
 						
@@ -1235,13 +1237,13 @@ if (isset($_POST['porteDocumentsCreation']))
 									$contenu .= "\n";
 								}
 								
-								$contenu .= "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. In sapien ante; dictum id, pharetra ut, malesuada et, magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent tempus; odio ac sagittis vehicula; mauris pede tincidunt lacus, in euismod orci mauris a quam. Sed justo. Nunc diam. Fusce eros leo, feugiat nec, viverra eu, tristique pellentesque, nunc.";
+								$contenu .= "Lorem ipsum dolor sit amet.";
 								fputs($fic, $contenu);
 								fclose($fic);
 							}
 							else
 							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec syntaxe Markdown dans le fichier %1\$s impossible."), '<code>' . securiseTexte($cheminPage . '/' . "$page.mkd") . '</code>') . "</li>\n";
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec fichier Markdown %1\$s impossible."), '<code>' . securiseTexte($cheminPage . '/' . "$page.mkd") . '</code>') . "</li>\n";
 							}
 						}
 					}
@@ -1250,117 +1252,559 @@ if (isset($_POST['porteDocumentsCreation']))
 		}
 	}
 	
-	echo adminMessagesScript($messagesScript, T_("Création d'un fichier"));
+	if ($actionEditer)
+	{
+		$getValeur = $cheminPage . '/' . $page;
+	}
+	else
+	{
+		echo adminMessagesScript($messagesScript, T_("Création d'un fichier"));
+	}
 }
 
 ########################################################################
 ##
-## Ajout.
+## Édition.
 ##
 ########################################################################
 
-if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimePermis))) && (isset($_POST['porteDocumentsAjouter']) || (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))))
+/* ____________________ Formulaire d'édition. ____________________ */
+
+if ($actionEditer)
 {
 	$messagesScript = '';
 	
-	if (isset($_POST['porteDocumentsAjouterDossier']))
-	{
-		$dossier = decodeTexte($_POST['porteDocumentsAjouterDossier']);
-	}
+	echo '<div class="sousBoite">' . "\n";
+	echo '<h3>' . T_("Édition d'un fichier") . "</h3>\n";
 	
-	if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))
+	if (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
-		// Explications: À la page <http://www.php.net/manual/fr/ini.core.php#ini.post-max-size>, on peut lire: «Dans le cas où la taille des données reçues par la méthode POST est plus grande que post_max_size , les superglobales  $_POST et $_FILES  seront vides». Je repère donc une erreur potentielle par le test ci-dessus.
-		
-		$messagesScript .= '<li class="erreur">' . T_("Le fichier téléchargé excède la taille de <code>post_max_size</code>, configurée dans le <code>php.ini</code>.") . "</li>\n";
-	}
-	elseif (empty($_FILES['porteDocumentsAjouterFichier']['name']))
-	{
-		$messagesScript .= '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
-	}
-	elseif (file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && @filesize($_FILES['porteDocumentsAjouterFichier']['tmp_name']) > $tailleMaxFichier)
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($tailleMaxFichier), $tailleMaxFichier) . "</li>\n";
-	}
-	elseif (empty($dossier))
-	{
-		$messagesScript .= '<li class="erreur">' . T_("Aucun dossier spécifié.") . "</li>\n";
-	}
-	elseif (!adminEmplacementPermis($dossier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
-	{
-		$messagesScript .= '<li class="erreur">' . sprintf(T_("L'emplacement spécifié pour l'ajout (%1\$s) n'est pas gérable par le porte-documents."), "<code>" . securiseTexte($dossier) . "</code>") . "</li>\n";
-	}
-	elseif ($_FILES['porteDocumentsAjouterFichier']['error'])
-	{
-		$messagesScript .= adminMessageFilesError($_FILES['porteDocumentsAjouterFichier']['error']);
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), '<code>' . securiseTexte($getValeur) . '</code>') . "</li>\n";
 	}
 	else
 	{
-		$nomFichier = superBasename($_FILES['porteDocumentsAjouterFichier']['name']);
-		$nouveauNomFichier = superBasename($_POST['porteDocumentsAjouterNom']);
-		
-		if (!empty($nouveauNomFichier))
+		if (file_exists($getValeur))
 		{
-			$nomFichier = $nouveauNomFichier;
-		}
-		
-		$casse = '';
-		$filtrerNom = FALSE;
-		
-		if (isset($_POST['filtrerNom']) && in_array('filtrer', $_POST['filtrerNom']))
-		{
-			$filtrerNom = TRUE;
-			$ancienNomFichier = $nomFichier;
-			
-			if (in_array('min', $_POST['filtrerNom']))
-			{
-				$casse = 'min';
-			}
-			
-			$nomFichier = filtreChaine($nomFichier, $casse);
-			
-			if ($nomFichier != $ancienNomFichier)
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Filtrage de la chaîne de caractères %1\$s en %2\$s effectué."), '<code>' . securiseTexte($ancienNomFichier) . '</code>', '<code>' . securiseTexte($nomFichier) . '</code>') . "</li>\n";
-			}
-		}
-		
-		if (file_exists($dossier . '/' . $nomFichier))
-		{
-			$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
+			echo '<p>' . sprintf(T_("Le fichier %1\$s est consultable dans le champ ci-dessous. Vous pouvez y effectuer des modifications et ensuite cliquer sur «Sauvegarder les modifications»."), '<a class="lienSurCode" href="' . encodeTexte($getValeur) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($getValeur)) . '"><code>' . securiseTexte($getValeur) . '</code></a> ' . adminInfobulle($racineAdmin, $urlRacineAdmin, $getValeur, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage)) . "</p>\n";
 		}
 		else
 		{
-			$typeMime = typeMime($_FILES['porteDocumentsAjouterFichier']['tmp_name']);
+			echo '<p>' . sprintf(T_("Le fichier %1\$s n'existe pas. Toutefois, si vous cliquez sur «Sauvegarder les modifications», le fichier sera créé avec le contenu du champ de saisie (qui peut être vide)."), '<code>' . securiseTexte($getValeur) . '</code>') . "</p>\n";
+		}
+		
+		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
+		echo "<div>\n";
+		clearstatcache();
+		
+		if (file_exists($getValeur) && @filesize($getValeur))
+		{
+			$fic = @fopen($getValeur, 'r');
+			$contenuFichier = fread($fic, @filesize($getValeur));
+			$contenuFichier = securiseTexte($contenuFichier);
+			fclose($fic);
+		}
+		else
+		{
+			$contenuFichier = '';
+		}
+
+		echo '<textarea id="code" cols="80" rows="25" name="porteDocumentsContenuFichier">' . $contenuFichier . "</textarea>\n";
+	
+		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . encodeTexte($getValeur) . '" />' . "\n";
+		
+		$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $getValeur);
+		
+		if (adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite))
+		{
+			$cheminConfigCategories = cheminConfigCategories($racine);
 			
-			if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
+			if (file_exists($cheminConfigCategories))
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
-			}
-			elseif (@move_uploaded_file($_FILES['porteDocumentsAjouterFichier']['tmp_name'], $dossier . '/' . $nomFichier))
-			{
-				$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
+				$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
+				uksort($categories, 'strnatcasecmp');
+				$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
+				echo '<div id="porteDocumentsEditionOptions">' . "\n";
+				echo '<p><label for="porteDocumentsEditionCat">' . T_("Catégories auxquelles appartient la page:") . "</label></p>\n";
 				
-				if (isset($_POST['extraireArchive']) && $_POST['extraireArchive'] == 'extraire' && ($typeMime == 'application/x-tar' || $typeMime == 'application/x-bzip2' || $typeMime == 'application/x-gzip' || $typeMime == 'application/zip'))
+				echo '<p><select id="porteDocumentsEditionCat" name="porteDocumentsEditionCatSelect[]" multiple="multiple">' . "\n";
+				echo '<option value="nouvelleCategorie">' . T_("Nouvelle catégorie:") . "</option>\n";
+				$option = '';
+				$categorieSelectionnee = FALSE;
+				
+				if (!empty($categories))
 				{
-					$retourAdminExtraitArchive = adminExtraitArchive($dossier . '/' . $nomFichier, $dossier, $adminFiltreTypesMime, $adminTypesMimePermis, $filtrerNom, $casse);
-					$messagesScript .= $retourAdminExtraitArchive['messagesScript'];
-					$messagesScript .= adminUnlink($dossier . '/' . $nomFichier);
+					foreach ($categories as $categorie => $categorieInfos)
+					{
+						$option .= '<option value="' . encodeTexte($categorie) . '"';
+					
+						if (isset($listeCategoriesPage[$categorie]))
+						{
+							$categorieSelectionnee = TRUE;
+							$option .= ' selected="selected"';
+						}
+						
+						$option .= '>' . securiseTexte($categorie) . "</option>\n";
+					}
+				}
+				
+				echo '<option value="aucuneCategorie"';
+				
+				if (!$categorieSelectionnee)
+				{
+					echo ' selected="selected"';
+				}
+				
+				echo '>' . T_("Aucune catégorie") . "</option>\n";
+				echo $option;
+				echo '</select> <input class="long" type="text" name="porteDocumentsEditionCatUrlInput" value="" />' . "</p>\n";
+			}
+			
+			$langueFluxRssFichierEdite = adminLangueFluxRssPage($racine, $urlRacine, $urlFichierEdite);
+			
+			if (!empty($langueFluxRssFichierEdite))
+			{
+				echo '<input type="hidden" name="porteDocumentsEditionRssSuppressionLangue" value="' . $langueFluxRssFichierEdite . '" />' . "\n";
+				echo '<p><input id="porteDocumentsEditionRssSuppression" type="checkbox" name="porteDocumentsEditionRssSuppressionInput" value="suppression" /> <label for="porteDocumentsEditionRssSuppression">' . sprintf(T_("Supprimer la page du <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), 'rss.admin.php?global=site', '<code>' . $langueFluxRssFichierEdite . '</code>') . "</label></p>\n";
+			}
+			else
+			{
+				$rssListeLangues = '';
+				$rssListeLangues .= '<select name="porteDocumentsEditionRssAjoutLangue">' . "\n";
+				
+				foreach ($accueil as $langueAccueil => $urlLangueAccueil)
+				{
+					$rssListeLangues .= '<option value="' . $langueAccueil . '"';
+					
+					if ($langueAccueil == $langueParDefaut)
+					{
+						$rssListeLangues .= ' selected="selected"';
+					}
+					
+					$rssListeLangues .= '>' . $langueAccueil . "</option>\n";
+				}
+				
+				$rssListeLangues .= "</select>\n";
+				echo '<p><input id="porteDocumentsEditionRssAjout" type="checkbox" name="porteDocumentsEditionRssAjoutInput" value="ajout" /> <label for="porteDocumentsEditionRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), 'rss.admin.php?global=site', $rssListeLangues) . "</label></p>\n";
+				echo "</div><!-- /#porteDocumentsEditionOptions -->\n";
+			}
+		}
+		
+		echo '<p id="porteDocumentsBoutonEditionSauvegarder"><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
+		
+		echo "<form action=\"$adminAction#messages\" method=\"post\">\n";
+		echo "<div>\n";
+		echo '<p id="porteDocumentsBoutonEditionAnnuler"><input type="submit" name="porteDocumentsEditionAnnuler" value="' . T_("Annuler") . '" />' . "</p>\n";
+		
+		echo '<input type="hidden" name="porteDocumentsEditionNom" value="' . encodeTexte($getValeur) . '" />' . "\n";
+		
+		if (!empty($dossierCourant))
+		{
+			echo '<input type="hidden" name="porteDocumentsDossierCourant" value="' . encodeTexte($dossierCourant) . '" />' . "\n";
+		}
+		
+		echo "<div class=\"sep\"></div>\n";
+		echo "</div></form>\n";
+		echo "</div></form>\n";
+	}
+	
+	echo adminMessagesScript($messagesScript);
+	echo "</div><!-- /.sousBoite -->\n";
+}
+
+/* ____________________ Annulation d'édition. ____________________ */
+
+if (isset($_POST['porteDocumentsEditionAnnuler']))
+{
+	$messagesScript = '';
+	$porteDocumentsEditionNom = decodeTexte($_POST['porteDocumentsEditionNom']);
+	$messagesScript .= '<li>' . sprintf(T_("Aucune modification apportée au fichier %1\$s."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
+	
+	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
+}
+
+/* ____________________ Sauvegarde des modifications. ____________________ */
+
+if (isset($_POST['porteDocumentsEditionSauvegarder']))
+{
+	$messagesScript = '';
+	$porteDocumentsEditionNom = decodeTexte($_POST['porteDocumentsEditionNom']);
+	
+	if (!adminEmplacementPermis($porteDocumentsEditionNom, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+	{
+		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
+	}
+	else
+	{
+		$messageErreurEdition = '';
+		$messageErreurEdition .= '<li class="contenuFichierPourSauvegarde">';
+		$messageErreurEdition .= '<p class="bDtitre erreur">' . T_("Les modifications n'ont donc pas été sauvegardées. Vous pouvez toutefois les consulter ci-dessous, et en enregistrer une copie sur votre ordinateur.") . "</p>\n";
+		$messageErreurEdition .= '<div class="bDcorps">' . "\n";
+		$messageErreurEdition .= '<pre id="porteDocumentsContenuFichier">' . securiseTexte($_POST['porteDocumentsContenuFichier']) . "</pre>\n";
+		$messageErreurEdition .= "<p><a href=\"javascript:adminSelectionneTexte('porteDocumentsContenuFichier');\">" . T_("Sélectionner le contenu.") . "</a></p>\n";
+		$messageErreurEdition .= "</div>\n";
+		$messageErreurEdition .= "</li>\n";
+		$messageErreurEditionAafficher = FALSE;
+		
+		if ($fic = @fopen($porteDocumentsEditionNom, 'w'))
+		{
+			if (@fwrite($fic, $_POST['porteDocumentsContenuFichier']) !== FALSE)
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Édition du fichier %1\$s effectuée."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
+				$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages">' . T_("Éditer à nouveau le fichier.") . "</a></li>\n";
+				$messagesScript .= '<li><a href="' . encodeTexte($porteDocumentsEditionNom) . '">' . T_("Afficher le fichier.") . "</a></li>\n";
+			}
+			else
+			{
+				$messageErreurEditionAafficher = FALSE;
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Écriture dans le fichier %1\$s impossible."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
+			}
+			
+			fclose($fic);
+		}
+		else
+		{
+			$messageErreurEditionAafficher = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s n'a pas pu être ouvert."), '<code>' . securiseTexte($porteDocumentsEditionNom) . '</code>') . "</li>\n";
+		}
+		
+		if ($messageErreurEditionAafficher)
+		{
+			$messagesScript .= $messageErreurEdition;
+			$messagesScript .= '<li>' . sprintf(T_("<a href=\"%1\$s\">Tenter à nouveau d'éditer le fichier.</a>"), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($porteDocumentsEditionNom) . $dossierCourantDansUrl . '#messages') . "</li>\n";
+		}
+	}
+	
+	echo adminMessagesScript($messagesScript, T_("Édition d'un fichier"));
+	
+	$urlFichierEdite = adminUrlFichierEditePorteDocuments($racine, $urlRacine, $porteDocumentsEditionNom);
+	$urlRelativeFichierEdite = supprimeUrlRacine($urlRacine, $urlFichierEdite);
+	
+	if (adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite))
+	{
+		$messagesScript = '';
+		$cheminConfigCategories = cheminConfigCategories($racine, TRUE);
+	
+		if (!file_exists($cheminConfigCategories) && !@touch($cheminConfigCategories))
+		{
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des catégories est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichier) . '</code>') . "</li>\n";
+		}
+	
+		if (file_exists($cheminConfigCategories))
+		{
+			$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
+		
+			if ($categories !== FALSE)
+			{
+				$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
+				$listeCategoriesActuelles = array ();
+			
+				foreach ($listeCategoriesPage as $listeIdCategorie => $listeInfosCategorie)
+				{
+					$listeCategoriesActuelles[] = $listeIdCategorie;
+				}
+			
+				$listeCategoriesSelectionnees = array ();
+			
+				if (!empty($_POST['porteDocumentsEditionCatSelect']))
+				{
+					foreach ($_POST['porteDocumentsEditionCatSelect'] as $categorieEncodee)
+					{
+						$categorie = decodeTexte($categorieEncodee);
+						$nouvellesCategories = array ();
+					
+						if ($categorie == 'aucuneCategorie')
+						{
+							$listeCategoriesSelectionnees = array ();
+							break;
+						}
+						elseif ($categorie == 'nouvelleCategorie')
+						{
+							if (!empty($_POST['porteDocumentsEditionCatUrlInput']))
+							{
+								$nouvellesCategories = explode('#', $_POST['porteDocumentsEditionCatUrlInput']);
+							}
+						}
+						else
+						{
+							$nouvellesCategories[] = $categorie;
+						}
+					
+						$listeCategoriesSelectionnees = array_merge($listeCategoriesSelectionnees, $nouvellesCategories);
+					}
+				}
+			
+				if ($adminInclurePageDansCategorieParente)
+				{
+					if ($adminInclurePageDansCategoriesParentesIndirectes)
+					{
+						$parentsAjout = array ();
+					
+						foreach ($listeCategoriesSelectionnees as $categorie)
+						{
+							if (!empty($categories[$categorie]['parent']))
+							{
+								if (!in_array($categories[$categorie]['parent'], $parentsAjout))
+								{
+									$parentsAjout[] = $categories[$categorie]['parent'];
+								}
+							
+								$parentsAjout = array_merge($parentsAjout, categoriesParentesIndirectes($categories, $categories[$categorie]['parent']));
+							}
+						}
+					
+						foreach ($parentsAjout as $parent)
+						{
+							if (!in_array($parent, $listeCategoriesSelectionnees))
+							{
+								$listeCategoriesSelectionnees[] = $parent;
+							}
+						}
+					}
+					else
+					{
+						foreach ($listeCategoriesSelectionnees as $categorie)
+						{
+							if (!empty($categories[$categorie]['parent']) && !in_array($categories[$categorie]['parent'], $listeCategoriesSelectionnees))
+							{
+								$listeCategoriesSelectionnees[] = $categories[$categorie]['parent'];
+							}
+						}
+					}
+				}
+			
+				$categoriesAajouter = array_diff($listeCategoriesSelectionnees, $listeCategoriesActuelles);
+				$categoriesAsupprimer = array_diff($listeCategoriesActuelles, $listeCategoriesSelectionnees);
+			
+				if (!empty($categoriesAajouter) || !empty($categoriesAsupprimer))
+				{
+					foreach ($categoriesAajouter as $categorieAajouter)
+					{
+						if (!isset($categories[$categorieAajouter]))
+						{
+							$categories[$categorieAajouter] = array ();
+						}
+					
+						if (!isset($categories[$categorieAajouter]['infos']))
+						{
+							$categories[$categorieAajouter]['infos'] = array ();
+						}
+					
+						if (!isset($categories[$categorieAajouter]['pages']))
+						{
+							$categories[$categorieAajouter]['pages'] = array ();
+						}
+					
+						array_unshift($categories[$categorieAajouter]['pages'], $urlRelativeFichierEdite);
+					}
+				
+					foreach ($categoriesAsupprimer as $categorieAsupprimer)
+					{
+						if (!empty($categories[$categorieAsupprimer]['pages']))
+						{
+							$nombrePages = count($categories[$categorieAsupprimer]['pages']);
+						
+							for ($i = 0; $i < $nombrePages; $i++)
+							{
+								if ($categories[$categorieAsupprimer]['pages'][$i] == $urlRelativeFichierEdite)
+								{
+									unset($categories[$categorieAsupprimer]['pages'][$i]);
+									$categories[$categorieAsupprimer]['pages'] = array_values($categories[$categorieAsupprimer]['pages']);
+									break;
+								}
+							}
+						}
+					}
+				
+					$contenuFichierTableau = array ();
+				
+					foreach ($categories as $categorie => $categorieInfos)
+					{
+						$contenuFichierTableau[$categorie] = array ();
+						$contenuFichierTableau[$categorie]['infos'] = array ();
+						$contenuFichierTableau[$categorie]['pages'] = array ();
+					
+						if (!empty($categorieInfos['langue']))
+						{
+							$langueCat = $categorieInfos['langue'];
+						}
+						else
+						{
+							$langueCat = $langueParDefaut;
+						}
+					
+						if (!empty($categorieInfos['url']))
+						{
+							$urlCat = $categorieInfos['url'];
+						}
+						else
+						{
+							$urlCat = 'categorie.php?id=' . filtreChaine($categorie);
+						
+							if (estCatSpeciale($categorie))
+							{
+								$urlCat .= "&amp;langue=$langueCat";
+							}
+						}
+					
+						$contenuFichierTableau[$categorie]['infos'][] = "url=$urlCat\n";
+					
+						if (!empty($categorieInfos['parent']))
+						{
+							$parentCat = $categorieInfos['parent'];
+						}
+						else
+						{
+							$parentCat = '';
+						}
+					
+						$contenuFichierTableau[$categorie]['infos'][] = "parent=$parentCat\n";
+						$contenuFichierTableau[$categorie]['infos'][] = "langue=$langueCat\n";
+					
+						if (!empty($categorieInfos['rss']))
+						{
+							$rssCat = $categorieInfos['rss'];
+						}
+						else
+						{
+							$rssCat = 1;
+						}
+					
+						$contenuFichierTableau[$categorie]['infos'][] = "rss=$rssCat\n";
+						$pagesCat = '';
+					
+						if (!empty($categorieInfos['pages']))
+						{
+							foreach ($categorieInfos['pages'] as $page)
+							{
+								if (!empty($page))
+								{
+									$pagesCat .= "pages[]=$page\n";
+								}
+							}
+						}
+					
+						$contenuFichierTableau[$categorie]['pages'][] = $pagesCat;
+					}
+				
+					$messagesScript = adminMajConfigCategories($racine, $contenuFichierTableau);
 				}
 			}
 			else
 			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($dossier) . '</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Impossible de lire le contenu du fichier %1\$s."), '<code>' . securiseTexte($cheminConfigCategories) . '</code>') . "</li>\n";
 			}
 		}
-	}
 	
-	if (!empty($_FILES) && file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']))
-	{
-		@unlink($_FILES['porteDocumentsAjouterFichier']['tmp_name']);
-	}
+		if (empty($messagesScript))
+		{
+			$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
+		}
 	
-	echo adminMessagesScript($messagesScript, T_("Ajout d'un fichier"));
+		echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications des catégories"));
+	
+		$messagesScript = '';
+	
+		if ((isset($_POST['porteDocumentsEditionRssAjoutInput']) && !empty($_POST['porteDocumentsEditionRssAjoutLangue'])) || (isset($_POST['porteDocumentsEditionRssSuppressionInput']) && !empty($_POST['porteDocumentsEditionRssSuppressionLangue'])))
+		{
+			if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
+			{
+				$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssAjoutLangue']);
+			}
+			else
+			{
+				$rssLangue = securiseTexte($_POST['porteDocumentsEditionRssSuppressionLangue']);
+			}
+		
+			$contenuFichierRssTableau = array ();
+			$cheminFichierRss = cheminConfigFluxRssGlobalSite($racine, TRUE);
+		
+			if (!file_exists($cheminFichierRss) && !@touch($cheminFichierRss))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La gestion des flux RSS est impossible puisque le fichier %1\$s n'existe pas, et sa création automatique a échoué. Veuillez créer ce fichier manuellement."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
+			}
+		
+			if (file_exists($cheminFichierRss))
+			{
+				$rssPages = super_parse_ini_file($cheminFichierRss, TRUE);
+			
+				if ($rssPages === FALSE)
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Ouverture du fichier %1\$s impossible."), '<code>' . securiseTexte($cheminFichierRss) . '</code>') . "</li>\n";
+				}
+				else
+				{
+					if (!empty($rssPages))
+					{
+						foreach ($rssPages as $codeLangue => $langueInfos)
+						{
+							$contenuFichierRssTableau[$codeLangue] = array ();
+						
+							if (!empty($langueInfos['pages']))
+							{
+								foreach ($langueInfos['pages'] as $page)
+								{
+									$contenuFichierRssTableau[$codeLangue][] = "pages[]=$page\n";
+								}
+							}
+						}
+					}
+				
+					if (isset($_POST['porteDocumentsEditionRssAjoutInput']))
+					{
+						if (!isset($contenuFichierRssTableau[$rssLangue]))
+						{
+							$contenuFichierRssTableau[$rssLangue] = array ();
+						}
+					
+						if (!preg_grep('/^pages\[\]=' . preg_quote($urlRelativeFichierEdite, '/') . "\n/", $contenuFichierRssTableau[$rssLangue]))
+						{
+							array_unshift($contenuFichierRssTableau[$rssLangue], "pages[]=$urlRelativeFichierEdite\n");
+						}
+					}
+					else
+					{
+						$nombrePages = count($contenuFichierRssTableau[$rssLangue]);
+					
+						for ($i = 0; $i < $nombrePages; $i++)
+						{
+							if ($contenuFichierRssTableau[$rssLangue][$i] == "pages[]=$urlRelativeFichierEdite\n")
+							{
+								unset($contenuFichierRssTableau[$rssLangue][$i]);
+								$contenuFichierRssTableau[$rssLangue] = array_values($contenuFichierRssTableau[$rssLangue]);
+								break;
+							}
+						}
+					}
+				
+					$contenuFichierRss = '';
+				
+					foreach ($contenuFichierRssTableau as $codeLangue => $langueInfos)
+					{
+						if (!empty($langueInfos))
+						{
+							$contenuFichierRss .= "[$codeLangue]\n";
+						
+							foreach ($langueInfos as $ligne)
+							{
+								$contenuFichierRss .= $ligne;
+							}
+						
+							$contenuFichierRss .= "\n";
+						}
+					}
+				
+					$messagesScript .= adminEnregistreConfigFluxRssGlobalSite($racine, $contenuFichierRss);
+				}
+			}
+		}
+	
+		if (empty($messagesScript))
+		{
+			$messagesScript .= '<li>' . T_("Aucune modification à apporter.") . "</li>\n";
+		}
+	
+		echo adminMessagesScript($messagesScript, T_("Enregistrement des modifications du flux RSS des dernières publications"));
+	}
 }
 
 echo "</div><!-- /#boiteMessages -->\n";
@@ -1456,27 +1900,72 @@ if ((isset($_GET['action']) && $_GET['action'] == 'parcourir') || !empty($dossie
 		{
 			echo "<ul class=\"porteDocumentsListe\">\n";
 			
-			foreach ($listeFormateeFichiers as $cle => $valeur1)
+			foreach ($listeFormateeFichiers as $listeFormateeFichier => $listeFormateeContenuFichier)
 			{
-				echo '<li class="porteDocumentsListeContenuDossier"><input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($cle) . '" /><strong>' . T_("Dossier") . ' <code>' . securiseTexte($cle) . "</code></strong><ul class=\"porteDocumentsListeDernierNiveau\">\n";
-				$cle = array ();
-				
-				foreach ($valeur1 as $valeur2)
+				if (empty($listeFormateeContenuFichier))
 				{
-					$cle[] = $valeur2;
+					echo '<li class="porteDocumentsListeContenuDossierSeul">';
+				}
+				else
+				{
+					echo '<li class="porteDocumentsListeContenuDossier">';
 				}
 				
-				natcasesort($cle);
+				echo '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($listeFormateeFichier) . '" />';
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
 				
-				$classe = 'impair';
+				echo "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet($listeFormateeFichier) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
 				
-				foreach ($cle as $valeur3)
+				if (adminEmplacementModifiable($listeFormateeFichier, $adminDossierRacinePorteDocuments))
 				{
-					echo "<li class=\"$classe\">$valeur3</li>\n";
-					$classe = ($classe == 'impair') ? 'pair' : 'impair';
+					echo "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet($listeFormateeFichier) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+				}
+				else
+				{
+					echo "<img src=\"$urlRacineAdmin/fichiers/renommer-desactive.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" />\n";
 				}
 				
-				echo "</ul></li>\n";
+				echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				
+				if ($adminActiverInfobulle['listeDesDossiers'])
+				{
+					echo adminInfobulle($racineAdmin, $urlRacineAdmin, $listeFormateeFichier, TRUE, $adminTailleCache, $galerieQualiteJpg, $galerieCouleurAlloueeImage);
+					echo "<span class=\"porteDocumentsSep\">|</span>\n";
+				}
+				
+				if ($listeFormateeFichier == $dossierDeDepartAparcourir)
+				{
+					echo sprintf(T_("<strong>Dossier</strong> %1\$s"), '<code>' . securiseTexte($listeFormateeFichier) . '</code>') . "\n";
+				}
+				else
+				{
+					echo sprintf(T_("<strong>Dossier</strong> %1\$s"), '<a class="lienSurCode" href="porte-documents.admin.php?action=parcourir&amp;valeur=' . encodeTexteGet($listeFormateeFichier) . '&amp;dossierCourant=' . encodeTexteGet($listeFormateeFichier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeFormateeFichier)) . '"><code>' . securiseTexte($listeFormateeFichier) . '</code></a>') . "\n";
+				}
+				
+				if (!empty($listeFormateeContenuFichier))
+				{
+					echo '<ul class="porteDocumentsListeDernierNiveau">' . "\n";
+					$listeFormateeContenu = array ();
+					
+					foreach ($listeFormateeContenuFichier as $fichierFormate)
+					{
+						$listeFormateeContenu[] = $fichierFormate;
+					}
+					
+					natcasesort($listeFormateeContenu);
+					$classe = 'impair';
+					
+					foreach ($listeFormateeContenu as $fichierFormate)
+					{
+						echo "<li class=\"$classe\">$fichierFormate</li>\n";
+						$classe = ($classe == 'impair') ? 'pair' : 'impair';
+					}
+					
+					echo "</ul>\n";
+				}
+				
+				echo "</li>\n";
 			}
 			
 			echo "</ul>\n";
@@ -1528,12 +2017,12 @@ foreach ($listeDossiersPourListe as $listeDossier)
 	$dossierMisEnForme .= '<input type="checkbox" name="porteDocumentsFichiers[]" value="' . encodeTexte($listeDossier) . "\"$disabled />";
 	$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	
-	$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexte($listeDossier) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
+	$dossierMisEnForme .= "<a href=\"$urlRacineAdmin/telecharger.admin.php?fichier=" . encodeTexteGet($listeDossier) . "\"><img src=\"$urlRacineAdmin/fichiers/telecharger.png\" alt=\"" . T_("Télécharger") . "\" title=\"" . T_("Télécharger") . "\" width=\"16\" height=\"16\" /></a>\n";
 	$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	
 	if (adminEmplacementModifiable($listeDossier, $adminDossierRacinePorteDocuments))
 	{
-		$dossierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexte($listeDossier) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
+		$dossierMisEnForme .= "<a href=\"$adminAction" . $adminSymboleUrl . 'action=renommer&amp;valeur=' . encodeTexteGet($listeDossier) . $dossierCourantDansUrl . "#messages\"><img src=\"$urlRacineAdmin/fichiers/renommer.png\" alt=\"" . T_("Renommer") . "\" title=\"" . T_("Renommer") . "\" width=\"16\" height=\"16\" /></a>\n";
 	}
 	else
 	{
@@ -1548,7 +2037,7 @@ foreach ($listeDossiersPourListe as $listeDossier)
 		$dossierMisEnForme .= "<span class=\"porteDocumentsSep\">|</span>\n";
 	}
 	
-	$dossierMisEnForme .= "<a  class=\"porteDocumentsFichier\" href=\"$adminAction" . $adminSymboleUrl . 'action=parcourir&amp;valeur=' . encodeTexte($listeDossier) . '&amp;dossierCourant=' . encodeTexte($listeDossier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeDossier)) . '"><code>' . securiseTexte($listeDossier) . "</code></a></li>\n";
+	$dossierMisEnForme .= "<a  class=\"lienSurCode\" href=\"$adminAction" . $adminSymboleUrl . 'action=parcourir&amp;valeur=' . encodeTexteGet($listeDossier) . '&amp;dossierCourant=' . encodeTexteGet($listeDossier) . '#fichiersEtDossiers" title="' . sprintf(T_("Parcourir «%1\$s»"), securiseTexte($listeDossier)) . '"><code>' . securiseTexte($listeDossier) . "</code></a></li>\n";
 	echo $dossierMisEnForme;
 	$classe = ($classe == 'impair') ? 'pair' : 'impair';
 }
@@ -1703,7 +2192,7 @@ echo ' / <input id="inputPorteDocumentsCreationNom" type="text" name="porteDocum
 echo '<p><label for="selectPorteDocumentsCreationType">' . T_("Type:") . "</label><br />\n";
 echo '<select id="selectPorteDocumentsCreationType" name="porteDocumentsCreationType" size="1">' . "\n";
 echo '<option value="FichierModeleHtml">' .  T_("Page web modèle") . "</option>\n";
-echo '<option value="FichierModeleMarkdown">' .  T_("Page web modèle avec syntaxe Markdown") . "</option>\n";
+echo '<option value="FichierModeleMarkdown">' .  T_("Page web modèle avec fichier Markdown") . "</option>\n";
 echo '<option value="FichierVide">' . T_("Fichier vide") . "</option>\n";
 echo '<option value="Dossier">' . T_("Dossier") . "</option>\n";
 echo "</select></p>\n";
@@ -1713,6 +2202,7 @@ echo '<legend class="bDtitre">' . T_("Options avancées") . "</legend>\n";
 echo '<div class="bDcorps">' . "\n";
 echo '<p id="varPageModele"><label class="bDtitre" for="selectPorteDocumentsCreationVar">' . T_("Si le type est une page web modèle, ajouter au début du fichier les variables suivantes:") . "</label><br />\n";
 echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name="porteDocumentsCreationVar[]" multiple="multiple">' . "\n";
+echo '<option value="ajoutCommentaires">$ajoutCommentaires</option>' . "\n";
 echo '<option value="apercu">$apercu</option>' . "\n";
 echo '<option value="auteur">$auteur</option>' . "\n";
 echo '<option value="baliseH1">$baliseH1</option>' . "\n";

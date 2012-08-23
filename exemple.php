@@ -78,7 +78,6 @@ $typeMime = typeMime($cheminImage);
 <?php
 $courriel = 'contact_a_exemple_point_qc';
 $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
-$urlTestExistance2 = URL_SQUELETML;
 ?>
 
 <div class="testBoiteDeroulante1">
@@ -123,15 +122,6 @@ $urlTestExistance2 = URL_SQUELETML;
 				<p>l'URL <code><?php echo $urlTestExistance1; ?></code> existe.</p>
 			<?php else: ?>
 				<p>l'URL <code><?php echo $urlTestExistance1; ?></code> n'existe pas.</p>
-			<?php endif; ?>
-		</li>
-		
-		<li><p>Voici un autre exemple d'utilisation de la fonction <code>urlExiste()</code>:</p>
-			
-			<?php if (urlExiste($urlTestExistance2)): ?>
-				<p>l'URL <code><?php echo $urlTestExistance2; ?></code> existe.</p>
-			<?php else: ?>
-				<p>l'URL <code><?php echo $urlTestExistance2; ?></code> n'existe pas.</p>
 			<?php endif; ?>
 		</li>
 	</ul>

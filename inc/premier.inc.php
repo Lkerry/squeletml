@@ -40,13 +40,14 @@ include_once $racine . '/inc/fonctions.inc.php';
 eval(variablesAaffecterAuDebut());
 $estPageCompte = $urlSansGet == "$urlRacine/compte.php" ? TRUE : FALSE;
 $estPageDeconnexion = $urlSansGet == "$urlRacine/deconnexion.php" ? TRUE : FALSE;
+$estPageDesabonnement = $urlSansGet == "$urlRacine/desabonnement.php" ? TRUE : FALSE;
 
 if (!isset($pageGlobaleGalerie))
 {
 	$pageGlobaleGalerie = FALSE;
 }
 
-if ($estPageCompte || $estPageDeconnexion)
+if ($estPageCompte || $estPageDeconnexion || $estPageDesabonnement)
 {
 	$langue = langue('navigateur', '');
 }
@@ -63,6 +64,11 @@ if (!isset($desactiverCache))
 if (!isset($desactiverCachePartiel))
 {
 	$desactiverCachePartiel = FALSE;
+}
+
+if (!isset($estPageCron))
+{
+	$estPageCron = FALSE;
 }
 
 if (!isset($idCategorie))
@@ -105,7 +111,7 @@ if ($dureeCache && !$desactiverCache)
 	}
 	
 	// On vérifie si la page existe en cache ou si le cache est expiré.
-	if (file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+	if (file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
 	{
 		if (file_exists($cheminFichierCacheEnTete))
 		{
@@ -129,8 +135,13 @@ if ($dureeCache && !$desactiverCache)
 
 // Affectations 2 de 3.
 
-extract(init('', 'baliseH1', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'motsCles', 'robots'), EXTR_SKIP);
+extract(init('', 'baliseH1', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'lienPageVignette', 'lienPageIntermediaire', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'inclureCodeFenetreJavascript', 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
+
+if (!isset($ajoutCommentaires))
+{
+	$ajoutCommentaires = $ajoutCommentairesParDefaut;
+}
 
 if (!isset($apercu))
 {
@@ -157,6 +168,10 @@ elseif ($estPageDeconnexion)
 {
 	$baliseH1 = T_("Déconnexion de la section d'administration de Squeletml");
 }
+elseif ($estPageDesabonnement)
+{
+	$baliseH1 = T_("Désabonnement aux notifications de nouveaux commentaires");
+}
 
 $estAccueil = estAccueil(ACCUEIL);
 
@@ -176,7 +191,7 @@ if (!isset($boitesDeroulantesAlaMain))
 $cheminAncres = cheminXhtml($racine, array ($langue, $langueParDefaut), 'ancres');
 $cheminSousTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sous-titre');
 $cheminSurTitre = cheminXhtml($racine, array ($langue, $langueParDefaut), 'sur-titre');
-$listeCategoriesPage = categories($racine, $urlRacine, $url);
+$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $url);
 $classesBody = classesBody($url, $estAccueil, $idCategorie, $idGalerie, $courrielContact, $listeCategoriesPage, $nombreDeColonnes, $uneColonneAgauche, $deuxColonnesSousContenuAgauche, $arrierePlanColonne, $margesPage, $borduresPage, $ombrePage, $enTetePleineLargeur, $differencierLiensVisitesHorsContenu, $tableDesMatieresAvecFond, $tableDesMatieresArrondie, $galerieAccueilJavascriptCouleurNavigation, $basDePageInterieurPage, $classesBody);
 $classesContenu = classesContenu($differencierLiensVisitesHorsContenu, $classesContenu);
 
@@ -307,6 +322,12 @@ if (!isset($baliseTitle))
 }
 
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1);
+
+if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+{
+	$boitesDeroulantes .= ' #commentaireAideSyntaxe';
+}
+
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
 if ($estPageDerreur)
@@ -321,7 +342,7 @@ if (!empty($classesBody))
 
 $inclureFinMilieuInterieurContenu = TRUE;
 
-if ($erreur404 || $estPageDerreur || $courrielContact == '@' || (!empty($courrielContact) && !isset($accueil[LANGUE]) && strpos($url, urlRacineLangueInactive($racine, $urlRacine, LANGUE)) === 0))
+if ($erreur404 || $estPageDerreur || $courrielContact == '@' || ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie)))
 {
 	$robots = 'noindex, follow, noarchive';
 }

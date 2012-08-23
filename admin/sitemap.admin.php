@@ -2,7 +2,8 @@
 include 'inc/zero.inc.php';
 $baliseTitle = T_("Fichiers Sitemap");
 $boitesDeroulantes = '#configActuelleAdminSitemapSite #optionsAjoutAdminSitemap';
-$boitesDeroulantes .= ' .aideAdminSitemap .contenuFichierPourSauvegarde .sitemapBalisesOptionnelles .sitemapImage';
+$boitesDeroulantes .= ' .aideAdminSitemap .configActuelle .contenuFichierPourSauvegarde';
+$boitesDeroulantes .= ' .sitemapBalisesOptionnelles .sitemapImage';
 include $racineAdmin . '/inc/premier.inc.php';
 ?>
 
@@ -40,18 +41,20 @@ include $racineAdmin . '/inc/premier.inc.php';
 	?>
 </div><!-- /#boiteMessages -->
 
-<div class="boite">
-	<h2 id="config"><?php echo T_("Configuration actuelle"); ?></h2>
+<div class="boite configActuelle">
+	<h2 id="config" class="bDtitre"><?php echo T_("Configuration actuelle"); ?></h2>
 	
-	<ul>
-		<?php if ($ajouterPagesParCronDansSitemap): ?>
-			<li><?php echo T_("L'ajout de pages par le cron dans le fichier Sitemap est activé") . ' (<code>$ajouterPagesParCronDansSitemap = TRUE;</code>).'; ?></li>
-		<?php else: ?>
-			<li><?php echo T_("L'ajout de pages par le cron dans le fichier Sitemap n'est pas activé") . ' (<code>$ajouterPagesParCronDansSitemap = FALSE;</code>).'; ?></li>
-		<?php endif; ?>
-	</ul>
-	
-	<p><a href="porte-documents.admin.php?action=editer&amp;valeur=<?php echo encodeTexte('../site/' . $dossierAdmin . '/inc/config.inc.php'); ?>#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+	<div class="bDcorps afficher">
+		<ul>
+			<?php if ($ajouterPagesParCronDansSitemap): ?>
+				<li><?php echo T_("L'ajout de pages par le cron dans le fichier Sitemap est activé") . ' (<code>$ajouterPagesParCronDansSitemap = TRUE;</code>).'; ?></li>
+			<?php else: ?>
+				<li><?php echo T_("L'ajout de pages par le cron dans le fichier Sitemap n'est pas activé") . ' (<code>$ajouterPagesParCronDansSitemap = FALSE;</code>).'; ?></li>
+			<?php endif; ?>
+		</ul>
+		
+		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=<?php echo encodeTexteGet('../site/' . $dossierAdmin . '/inc/config.inc.php'); ?>#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+	</div><!-- /.bDcorps -->
 </div><!-- /.boite -->
 
 <div class="boite">

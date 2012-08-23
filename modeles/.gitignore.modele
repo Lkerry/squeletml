@@ -1,6 +1,7 @@
 .acces
 .gitignore
 .htaccess
+inc/htmlpurifier/standalone/HTMLPurifier/DefinitionCache/
 init.inc.php
 Makefile
 robots.txt
