@@ -23,6 +23,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		<li><a href="#configAutomatique"><?php echo T_("Configuration automatique"); ?></a></li>
 		<li><a href="#modele"><?php echo T_("Modèle"); ?></a></li>
 		<li><a href="#sauvegarder"><?php echo T_("Sauvegarder"); ?></a></li>
+		<li><a href="#importer"><?php echo T_("Importer"); ?></a></li>
 		<li><a href="#page"><?php echo T_("Haut"); ?></a></li>
 	</ul>
 </div>
@@ -1742,6 +1743,168 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		########################################################################
 		##
+		## Sauvegarde d'une galerie.
+		##
+		########################################################################
+
+		if (isset($_POST['sauvegarder']))
+		{
+			$messagesScript = '';
+			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
+			
+			if (empty($id))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
+			}
+			elseif (!file_exists($cheminGalerie))
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
+			}
+			else
+			{
+				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . encodeTexteGet($cheminGalerie) . '&amp;action=date&amp;galerie=' . encodeTexteGet($id) . '">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), '<code>' . securiseTexte($id) . '</code>') . "</a></li>\n";
+			}
+		
+			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), '<code>' . securiseTexte($id) . '</code>') . "</li>\n" . $messagesScript;
+			echo adminMessagesScript($messagesScript, T_("Sauvegarde d'une galerie"));
+		}
+		
+		########################################################################
+		##
+		## Importation d'une galerie.
+		##
+		########################################################################
+		
+		if (isset($_POST['importer']))
+		{
+			$messagesScript = '';
+			
+			if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Le fichier téléchargé excède la taille de <code>post_max_size</code>, configurée dans le <code>php.ini</code>.") . "</li>\n";
+			}
+			elseif (empty($_FILES['archive']['name']))
+			{
+				$messagesScript .= '<li class="erreur">' . T_("Aucun fichier spécifié.") . "</li>\n";
+			}
+			elseif ($_FILES['archive']['error'])
+			{
+				$messagesScript .= adminMessageFilesError($_FILES['archive']['error']);
+			}
+			else
+			{
+				$cheminGaleries = $racine . '/site/fichiers/galeries';
+				$nomFichier = superBasename($_FILES['archive']['name']);
+				
+				if (file_exists($cheminGaleries . '/' . $nomFichier))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà dans le dossier %2\$s."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries) . '</code>') . "</li>\n";
+				}
+				else
+				{
+					$typeMime = typeMime($_FILES['archive']['tmp_name']);
+					
+					if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
+					}
+					elseif ($typeMime != 'application/x-tar' && $typeMime != 'application/x-bzip2' && $typeMime != 'application/x-gzip' && $typeMime != 'application/zip')
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s. Il ne s'agit donc pas d'un format d'archive reconnu pour l'importation d'une galerie."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
+					}
+					elseif (!preg_match('/^(.+)_\d{4}(-\d{2}){2}_\d{2}(:\d{2}){2}\.(tar|tar\.bz2|tbz2|tar\.gz|tgz|\.zip)$/', $nomFichier, $resultat))
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le nom de l'archive %1\$s ne concorde pas avec le modèle de nom généré par Squeleml lors de la sauvegarde d'une galerie. Assurez-vous que l'archive sélectionnée a bien été créée par Squeletml."), '<code>' . securiseTexte($nomFichier) . '</code>') . "</li>\n";
+					}
+					elseif (file_exists($cheminGaleries . '/' . $resultat[1]))
+					{
+						if (is_dir($cheminGaleries . '/' . $resultat[1]))
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Un dossier %1\$s existe déjà. L'importation de la galerie a été annulée."), '<code>' . securiseTexte($cheminGaleries . '/' . $resultat[1]) . '</code>') . "</li>\n";
+						}
+						else
+						{
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Un fichier %1\$s existe déjà. L'importation de la galerie a été annulée."), '<code>' . securiseTexte($cheminGaleries . '/' . $resultat[1]) . '</code>') . "</li>\n";
+						}
+					}
+					elseif (@move_uploaded_file($_FILES['archive']['tmp_name'], $cheminGaleries . '/' . $nomFichier))
+					{
+						$idDossier = $resultat[1];
+						$messagesScript .= '<li>' . sprintf(T_("Ajout de %1\$s dans %2\$s effectué."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries) . '</code>') . "</li>\n";
+						$retourAdminExtraitArchive = adminExtraitArchive($cheminGaleries . '/' . $nomFichier, $cheminGaleries, $adminFiltreTypesMime, $adminTypesMimePermis);
+						$messagesScript .= $retourAdminExtraitArchive['messagesScript'];
+						
+						if (file_exists($cheminGaleries . '/' . $idDossier))
+						{
+							$id = '';
+							$_POST['urlNouvelleGalerie'] = '';
+							$_POST['mettreEnLigneRss'] = '';
+							
+							if (file_exists($cheminGaleries . '/galeries.ini.txt'))
+							{
+								$contenuConfigImportee = super_parse_ini_file($cheminGaleries . '/galeries.ini.txt', TRUE);
+								
+								if ($contenuConfigImportee !== FALSE)
+								{
+									foreach ($contenuConfigImportee as $configImporteeIdGalerie => $configImporteeInfosGalerie)
+									{
+										if (isset($configImporteeInfosGalerie['dossier']) && $configImporteeInfosGalerie['dossier'] == $idDossier)
+										{
+											$id = $configImporteeIdGalerie;
+											
+											if (isset($configImporteeInfosGalerie['url']) && strpos($configImporteeInfosGalerie['url'], 'galerie.php?') !== 0)
+											{
+												$_POST['urlNouvelleGalerie'] = $configImporteeInfosGalerie['url'];
+											}
+											
+											if (isset($configImporteeInfosGalerie['rss']))
+											{
+												$_POST['mettreEnLigneRss'] = $configImporteeInfosGalerie['rss'];
+											}
+											
+											break;
+										}
+									}
+								}
+								
+								$messagesScript .= adminUnlink($cheminGaleries . '/galeries.ini.txt');
+							}
+							
+							$ajoutNouvelleGalerie = TRUE;
+							
+							if (empty($id))
+							{
+								$id = $idDossier;
+								$listeGaleries = listeGaleries($racine);
+								$i = 2;
+								
+								while (isset($listeGaleries[$id]))
+								{
+									$id = "$idDossier-$i";
+									$i++;
+								}
+							}
+						}
+						
+						$messagesScript .= adminUnlink($cheminGaleries . '/' . $nomFichier);
+					}
+					else
+					{
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries) . '</code>') . "</li>\n";
+					}
+				}
+			}
+			
+			if (!empty($_FILES) && file_exists($_FILES['archive']['tmp_name']))
+			{
+				@unlink($_FILES['archive']['tmp_name']);
+			}
+			
+			echo adminMessagesScript($messagesScript, T_("Importation d'une galerie"));
+		}
+		
+		########################################################################
+		##
 		## Mise en ligne d'une nouvelle galerie.
 		##
 		########################################################################
@@ -1752,7 +1915,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$actionValide = FALSE;
 			$urlNouvelleGalerie = '';
 			
-			if (!empty($_POST['urlNouvelleGalerie']))
+			if (!empty($_POST['urlNouvelleGalerie']) && strpos($_POST['urlNouvelleGalerie'], 'galerie.php?') !== 0)
 			{
 				$urlNouvelleGalerie = supprimeUrlRacine($urlRacine, $_POST['urlNouvelleGalerie']);
 			}
@@ -1875,37 +2038,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), '<code>' . securiseTexte($id) . '</code>') . "</li>\n" . $messagesScript;
 			echo adminMessagesScript($messagesScript, T_("Mise en ligne d'une nouvelle galerie"));
 		}
-		
-		########################################################################
-		##
-		## Sauvegarde d'une galerie.
-		##
-		########################################################################
-
-		if (isset($_POST['sauvegarder']))
-		{
-			$messagesScript = '';
-			$cheminGalerie = $racine . '/site/fichiers/galeries/' . $idDossier;
-			
-			if (empty($id))
-			{
-				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
-			}
-			elseif (!file_exists($cheminGalerie))
-			{
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
-			}
-			else
-			{
-				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . encodeTexteGet($cheminGalerie) . '&amp;action=date">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), '<code>' . securiseTexte($id) . '</code>') . "</a></li>\n";
-			}
-		
-			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), '<code>' . securiseTexte($id) . '</code>') . "</li>\n" . $messagesScript;
-			echo adminMessagesScript($messagesScript, T_("Sauvegarde d'une galerie"));
-		}
 		?>
 	</div><!-- /#boiteMessages -->
-
+	
 	<?php
 	########################################################################
 	##
@@ -1994,7 +2129,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					</fieldset>
 					
 					<p><label for="ajouterInputFichier"><?php echo T_("Fichier (archive <code>.tar</code>, <code>.tar.bz2</code>, <code>.tar.gz</code> ou <code>.zip</code>, ou fichier image unique):"); ?></label><br />
-					<input id="ajouterInputFichier" type="file" name="fichier" size="25"/></p>
+					<input id="ajouterInputFichier" type="file" name="fichier" size="25" /></p>
 					
 					<fieldset class="optionsAvanceesAdminGaleries">
 						<legend class="bDtitre"><?php echo T_("Options avancées"); ?></legend>
@@ -2486,7 +2621,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 			
 			<div class="bDcorps">
-				<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous."); ?></p>
+				<p><?php echo T_("Vous pouvez sauvegarder une galerie en choisissant son identifiant ci-dessous. Une archive sera proposée en téléchargement. Cette archive pourra être utilisée pour importer la galerie à partir du formulaire d'importation."); ?></p>
 			</div><!-- .bDcorps -->
 		</div><!-- .aideAdminGaleries -->
 
@@ -2514,6 +2649,31 @@ include $racineAdmin . '/inc/premier.inc.php';
 				</fieldset>
 		
 				<p><input type="submit" name="sauvegarder" value="<?php echo T_('Sauvegarder la galerie'); ?>"<?php echo $disabled; ?> /></p>
+			</div>
+		</form>
+	</div><!-- /.boite -->
+	
+	<div class="boite">
+		<h2 id="importer"><?php echo T_("Importer une galerie"); ?></h2>
+		
+		<div class="aideAdminGaleries aide">
+			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
+			
+			<div class="bDcorps">
+				<p><?php echo T_("Vous pouvez importer une galerie en sélectionnant une archive créée par le formulaire de sauvegarde d'une galerie."); ?></p>
+			</div><!-- .bDcorps -->
+		</div><!-- .aideAdminGaleries -->
+		
+		<form action="<?php echo $adminAction; ?>#messages" method="post" enctype="multipart/form-data">
+			<div>
+				<fieldset>
+					<legend><?php echo T_("Options"); ?></legend>
+					
+					<p><label for="importerInputArchive"><?php echo T_("Archive (<code>.tar</code>, <code>.tar.bz2</code>, <code>.tar.gz</code> ou <code>.zip</code>):"); ?></label><br />
+					<input id="importerInputArchive" type="file" name="archive" size="25" /></p>
+				</fieldset>
+				
+				<p><input type="submit" name="importer" value="<?php echo T_('Importer une galerie'); ?>" /></p>
 			</div>
 		</form>
 	</div><!-- /.boite -->

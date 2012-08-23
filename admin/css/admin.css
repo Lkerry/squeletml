@@ -378,12 +378,9 @@ div.aide .bDtitre {
 	font-size: 1em;
 }
 
-li.apercuGalerie {
-	margin-bottom: 15px;
-}
-
 li.listeGaleriesTitre {
 	font-weight: bold;
+	margin-top: 15px;
 }
 
 li.listeGaleriesTitre ul {

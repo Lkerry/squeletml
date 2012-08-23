@@ -66,10 +66,58 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 				}
 			}
 			
+			$inclureConfigGalerie = FALSE;
+			
+			if (!empty($_GET['galerie']))
+			{
+				$idGalerie = decodeTexteGet($_GET['galerie']);
+				$listeGaleries = listeGaleries($racine);
+				
+				if (isset($listeGaleries[$idGalerie]))
+				{
+					$contenuConfigGalerie = '';
+					
+					if (isset($listeGaleries[$idGalerie]['dossier']))
+					{
+						$contenuConfigGalerie .= 'dossier=' . $listeGaleries[$idGalerie]['dossier'] . "\n";
+					}
+					
+					if (isset($listeGaleries[$idGalerie]['url']))
+					{
+						$contenuConfigGalerie .= 'url=' . $listeGaleries[$idGalerie]['url'] . "\n";
+					}
+					
+					if (isset($listeGaleries[$idGalerie]['rss']))
+					{
+						$contenuConfigGalerie .= 'rss=' . $listeGaleries[$idGalerie]['rss'] . "\n";
+					}
+					
+					if (!empty($contenuConfigGalerie))
+					{
+						$contenuConfigGalerie = "[$idGalerie]\n$contenuConfigGalerie";
+						$dossierTemporaire = chaineAleatoire(16);
+						$parentConfigGalerieAinclure = "$racine/site/$dossierAdmin/cache/$dossierTemporaire";
+						$cheminConfigGalerieAinclure = "$parentConfigGalerieAinclure/galeries.ini.txt";
+						
+						if ((is_dir($parentConfigGalerieAinclure) || (!file_exists($parentConfigGalerieAinclure) && @mkdir($parentConfigGalerieAinclure, octdec(755)))) && @file_put_contents($cheminConfigGalerieAinclure, $contenuConfigGalerie) !== FALSE)
+						{
+							$inclureConfigGalerie = TRUE;
+						}
+					}
+				}
+			}
+			
 			try
 			{
 				$archive = ezcArchive::open($cheminArchive, ezcArchive::TAR_USTAR);
 				$archive->append($listeFichiersFiltree, '');
+				
+				if ($inclureConfigGalerie)
+				{
+					$archive->append($cheminConfigGalerieAinclure, dirname($cheminConfigGalerieAinclure));
+					adminRmdirRecursif($parentConfigGalerieAinclure);
+				}
+				
 				$archive->close();
 				unset($archive);
 			}
@@ -78,6 +126,7 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 				header('HTTP/1.1 500 Internal Server Error');
 				echo $e->getMessage();
 				@unlink($cheminArchive);
+				adminRmdirRecursif($parentConfigGalerieAinclure);
 				
 				exit(1);
 			}
