@@ -501,6 +501,10 @@ ul.infosSupplementaires {
 	width: 45%;
 }
 
+span.noteChampCommentaire {
+	font-style: italic;
+}
+
 /***********************************************************************
 **
 ** Flux RSS.
