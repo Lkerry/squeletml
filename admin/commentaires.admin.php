@@ -599,7 +599,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				$contenuFormulaire .= '<p>' . T_("Pour supprimer un commentaire, simplement effacer tout le contenu du message associé.") . "</p>\n";
 				
-				$contenuFormulaire .= '<p>' . T_("Prendre note que les modifications dans ce formulaire (suppression d'un commentaire, changement d'un courriel, etc.) ne sont pas appliquées aux abonnements aux notifications. Pour ce faire, utiliser plutôt le formulaire réservé aux abonnements.") . "</p>\n";
+				$contenuFormulaire .= '<p>' . T_("Prendre note que les modifications dans ce formulaire (suppression d'un commentaire, changement d'un courriel, etc.) ne sont pas appliquées aux abonnements aux notifications. Pour ce faire, utiliser plutôt le formulaire réservé à cette fin.") . "</p>\n";
 				
 				$contenuFormulaire .= '<p>' . T_("Aussi, la liste des commentaires est triable. Pour ce faire, cliquer sur la flèche correspondant au commentaire à déplacer et glisser-la à l'endroit désiré à l'intérieur de la liste.") . "</p>\n";
 				$contenuFormulaire .= "</div><!-- /.bDcorps -->\n";
@@ -704,6 +704,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				
 				$contenuFormulaire .= "<div class=\"bDcorps\">\n";
 				$contenuFormulaire .= '<p>' . T_("Pour supprimer un abonnement, simplement effacer le contenu du champ du courriel associé.") . "</p>\n";
+				
+				$contenuFormulaire .= '<p>' . T_("Prendre note que les modifications dans ce formulaire ne sont pas appliquées au fichier de configuration des commentaires. Pour ce faire, utiliser plutôt le formulaire réservé à cette fin.") . "</p>\n";
 				$contenuFormulaire .= "</div><!-- /.bDcorps -->\n";
 				$contenuFormulaire .= "</div><!-- /.aideAdminCommentaires -->\n";
 				
