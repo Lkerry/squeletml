@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-23 00:48-0400\n"
+"POT-Creation-Date: 2012-08-23 01:41-0400\n"
 "PO-Revision-Date: 2012-08-22 02:30-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -214,7 +214,7 @@ msgstr "No comments."
 msgid "Commentaires (%1$s)"
 msgstr "Comments (%1$s)"
 
-#: inc/blocs.inc.php:170 admin/commentaires.admin.php:1042
+#: inc/blocs.inc.php:170 admin/commentaires.admin.php:1054
 #: admin/xhtml/menu.inc.php:10
 msgid "Commentaires"
 msgstr "Comments"
@@ -318,7 +318,7 @@ msgstr ""
 #: admin/inc/fonctions.inc.php:1686 admin/commentaires.admin.php:82
 #: admin/commentaires.admin.php:133 admin/commentaires.admin.php:184
 #: admin/commentaires.admin.php:245 admin/commentaires.admin.php:397
-#: admin/commentaires.admin.php:664 admin/porte-documents.admin.php:1732
+#: admin/commentaires.admin.php:676 admin/porte-documents.admin.php:1732
 #: admin/acces.admin.php:126 admin/acces.admin.php:156
 #: admin/acces.admin.php:166 admin/acces.admin.php:207
 #: admin/acces.admin.php:217 admin/acces.admin.php:254
@@ -1741,7 +1741,7 @@ msgid ""
 "obligatoire, mais celui associé au commentaire %1$s est vide."
 msgstr ""
 
-#: admin/inc/fonctions.inc.php:2577 admin/commentaires.admin.php:927
+#: admin/inc/fonctions.inc.php:2577 admin/commentaires.admin.php:939
 #, php-format
 msgid "Avertissement: le courriel %1$s ne semble pas avoir une forme valide."
 msgstr ""
@@ -1863,7 +1863,7 @@ msgstr ""
 msgid "Aucun commentaire en attente de modération."
 msgstr ""
 
-#: admin/commentaires.admin.php:368 admin/commentaires.admin.php:614
+#: admin/commentaires.admin.php:368 admin/commentaires.admin.php:626
 #, php-format
 msgid "Configuration actuelle (%1$s commentaire)"
 msgid_plural "Configuration actuelle (%1$s commentaires)"
@@ -1887,20 +1887,24 @@ msgstr ""
 msgid "Désactivée"
 msgstr ""
 
-#: admin/commentaires.admin.php:525 admin/commentaires.admin.php:560
+#: admin/commentaires.admin.php:519
+msgid "(utiliser le formulaire réservé à cette fin)"
+msgstr ""
+
+#: admin/commentaires.admin.php:536 admin/commentaires.admin.php:572
 msgid "Oui"
 msgstr ""
 
-#: admin/commentaires.admin.php:533 admin/commentaires.admin.php:568
+#: admin/commentaires.admin.php:544 admin/commentaires.admin.php:580
 msgid "Non"
 msgstr ""
 
-#: admin/commentaires.admin.php:590 admin/commentaires.admin.php:697
+#: admin/commentaires.admin.php:602 admin/commentaires.admin.php:709
 msgid "Lien vers «Enregistrer»"
 msgstr ""
 
-#: admin/commentaires.admin.php:595 admin/commentaires.admin.php:703
-#: admin/commentaires.admin.php:1001 admin/porte-documents.admin.php:2063
+#: admin/commentaires.admin.php:607 admin/commentaires.admin.php:715
+#: admin/commentaires.admin.php:1013 admin/porte-documents.admin.php:2063
 #: admin/porte-documents.admin.php:2159 admin/categories.admin.php:197
 #: admin/xhtml/menu.inc.php:16 admin/rss.admin.php:130
 #: admin/galeries.admin.php:2058 admin/galeries.admin.php:2075
@@ -1910,36 +1914,36 @@ msgstr ""
 msgid "Aide"
 msgstr ""
 
-#: admin/commentaires.admin.php:598
+#: admin/commentaires.admin.php:610
 #, php-format
 msgid ""
 "Pour désactiver l'affichage d'un commentaire, simplement définir à «Non» le "
 "paramètre %1$s associé."
 msgstr ""
 
-#: admin/commentaires.admin.php:600
+#: admin/commentaires.admin.php:612
 msgid ""
 "Pour supprimer un commentaire, simplement effacer tout le contenu du message "
 "associé."
 msgstr ""
 
-#: admin/commentaires.admin.php:602
+#: admin/commentaires.admin.php:614
 msgid ""
-"Prendre note que les modifications dans ce formulaire (suppression d'un "
-"commentaire, changement d'un courriel, etc.) ne sont pas appliquées aux "
-"abonnements aux notifications. Pour ce faire, utiliser plutôt le formulaire "
-"réservé à cette fin."
+"Prendre note que les modifications effectuées dans ce formulaire ne sont pas "
+"appliquées aux abonnements aux notifications (nom, courriel, état de la "
+"notification). Pour ce faire, utiliser plutôt le formulaire réservé à cette "
+"fin."
 msgstr ""
 
-#: admin/commentaires.admin.php:604
+#: admin/commentaires.admin.php:616
 msgid ""
 "Aussi, la liste des commentaires est triable. Pour ce faire, cliquer sur la "
 "flèche correspondant au commentaire à déplacer et glisser-la à l'endroit "
 "désiré à l'intérieur de la liste."
 msgstr ""
 
-#: admin/commentaires.admin.php:611 admin/commentaires.admin.php:715
-#: admin/commentaires.admin.php:1011 admin/porte-documents.admin.php:150
+#: admin/commentaires.admin.php:623 admin/commentaires.admin.php:727
+#: admin/commentaires.admin.php:1023 admin/porte-documents.admin.php:150
 #: admin/porte-documents.admin.php:293 admin/porte-documents.admin.php:520
 #: admin/porte-documents.admin.php:631 admin/porte-documents.admin.php:2107
 #: admin/porte-documents.admin.php:2169 admin/sitemap.admin.php:66
@@ -1954,155 +1958,155 @@ msgstr ""
 msgid "Options"
 msgstr ""
 
-#: admin/commentaires.admin.php:619
+#: admin/commentaires.admin.php:631
 #, php-format
 msgid "La page %1$s ne contient aucun commentaire."
 msgstr ""
 
-#: admin/commentaires.admin.php:627
+#: admin/commentaires.admin.php:639
 msgid "Supprimer tous les commentaires de la page sélectionnée"
 msgstr ""
 
-#: admin/commentaires.admin.php:633 admin/commentaires.admin.php:747
+#: admin/commentaires.admin.php:645 admin/commentaires.admin.php:759
 #: admin/categories.admin.php:356 admin/rss.admin.php:205
 msgid "Enregistrer les modifications"
 msgstr ""
 
-#: admin/commentaires.admin.php:654
+#: admin/commentaires.admin.php:666
 msgid "Liste des abonnements aux notifications des nouveaux commentaires"
 msgstr ""
 
-#: admin/commentaires.admin.php:675 admin/commentaires.admin.php:737
+#: admin/commentaires.admin.php:687 admin/commentaires.admin.php:749
 #: compte.php:109 compte.php:150
 msgid "Courriel:"
 msgstr "E-mail:"
 
-#: admin/commentaires.admin.php:706
+#: admin/commentaires.admin.php:718
 msgid ""
 "Pour supprimer un abonnement, simplement effacer le contenu du champ du "
 "courriel associé."
 msgstr ""
 
-#: admin/commentaires.admin.php:708
+#: admin/commentaires.admin.php:720
 msgid ""
-"Prendre note que les modifications dans ce formulaire ne sont pas appliquées "
-"au fichier de configuration des commentaires. Pour ce faire, utiliser plutôt "
-"le formulaire réservé à cette fin."
+"Prendre note que les modifications effectuées dans ce formulaire ne sont pas "
+"appliquées au fichier de configuration des commentaires. Pour ce faire, "
+"utiliser plutôt le formulaire réservé à cette fin."
 msgstr ""
 
-#: admin/commentaires.admin.php:718
+#: admin/commentaires.admin.php:730
 #, php-format
 msgid "Configuration actuelle (%1$s abonnement)"
 msgid_plural "Configuration actuelle (%1$s abonnements)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/commentaires.admin.php:723
+#: admin/commentaires.admin.php:735
 #, php-format
 msgid "La page %1$s ne contient aucun abonnement."
 msgstr ""
 
-#: admin/commentaires.admin.php:731
+#: admin/commentaires.admin.php:743
 msgid "Supprimer tous les abonnements de la page sélectionnée"
 msgstr ""
 
-#: admin/commentaires.admin.php:734
+#: admin/commentaires.admin.php:746
 msgid "Ajouter un abonnement"
 msgstr ""
 
-#: admin/commentaires.admin.php:770
+#: admin/commentaires.admin.php:782
 msgid "Enregistrement des modifications aux commentaires"
 msgstr ""
 
-#: admin/commentaires.admin.php:877
+#: admin/commentaires.admin.php:889
 msgid ""
 "Enregistrement des modifications aux abonnements aux notifications des "
 "nouveaux commentaires"
 msgstr ""
 
-#: admin/commentaires.admin.php:942
+#: admin/commentaires.admin.php:954
 #, php-format
 msgid ""
 "Avertissement: selon la configuration des commentaires, le nom est "
 "obligatoire, mais celui associé à l'abonnement du courriel %1$s est vide."
 msgstr ""
 
-#: admin/commentaires.admin.php:970 admin/sitemap.admin.php:45
+#: admin/commentaires.admin.php:982 admin/sitemap.admin.php:45
 #: admin/categories.admin.php:256 admin/rss.admin.php:164
 #: admin/rss.admin.php:309
 msgid "Configuration actuelle"
 msgstr ""
 
-#: admin/commentaires.admin.php:975
+#: admin/commentaires.admin.php:987
 msgid "L'ajout de commentaires est activé par défaut"
 msgstr ""
 
-#: admin/commentaires.admin.php:977
+#: admin/commentaires.admin.php:989
 msgid "L'ajout de commentaires est désactivé par défaut"
 msgstr ""
 
-#: admin/commentaires.admin.php:981
+#: admin/commentaires.admin.php:993
 msgid ""
 "L'affichage des commentaires existants est activé pour les pages dont "
 "l'ajout est désactivé"
 msgstr ""
 
-#: admin/commentaires.admin.php:983
+#: admin/commentaires.admin.php:995
 msgid ""
 "L'affichage des commentaires existants est désactivé pour les pages dont "
 "l'ajout est désactivé"
 msgstr ""
 
-#: admin/commentaires.admin.php:987
+#: admin/commentaires.admin.php:999
 msgid "La modération des commentaires est activée"
 msgstr ""
 
-#: admin/commentaires.admin.php:989
+#: admin/commentaires.admin.php:1001
 msgid "La modération des commentaires est désactivée"
 msgstr ""
 
-#: admin/commentaires.admin.php:993 admin/sitemap.admin.php:56
+#: admin/commentaires.admin.php:1005 admin/sitemap.admin.php:56
 #: admin/rss.admin.php:326
 msgid "Modifier cette configuration."
 msgstr ""
 
-#: admin/commentaires.admin.php:998
+#: admin/commentaires.admin.php:1010
 msgid "Gérer les commentaires et les abonnements"
 msgstr ""
 
-#: admin/commentaires.admin.php:1004
+#: admin/commentaires.admin.php:1016
 msgid "Seules les pages ayant au moins un commentaire sont listées."
 msgstr ""
 
-#: admin/commentaires.admin.php:1016
+#: admin/commentaires.admin.php:1028
 msgid "Page individuelle"
 msgstr ""
 
-#: admin/commentaires.admin.php:1023
+#: admin/commentaires.admin.php:1035
 #, php-format
 msgid "<label for=\"%1$s\">URL de la page</label>:"
 msgstr ""
 
-#: admin/commentaires.admin.php:1031
+#: admin/commentaires.admin.php:1043
 msgid "Aucune page ayant au moins un commentaire."
 msgstr ""
 
-#: admin/commentaires.admin.php:1043
+#: admin/commentaires.admin.php:1055
 msgid "Abonnements aux notifications des nouveaux commentaires"
 msgstr ""
 
-#: admin/commentaires.admin.php:1048
+#: admin/commentaires.admin.php:1060
 msgid "Toutes les pages"
 msgstr ""
 
-#: admin/commentaires.admin.php:1057
+#: admin/commentaires.admin.php:1069
 #, php-format
 msgid "Commentaires en attente de modération (%1$s commentaire)"
 msgid_plural "Commentaires en attente de modération (%1$s commentaires)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/commentaires.admin.php:1062
+#: admin/commentaires.admin.php:1074
 msgid "Gérer"
 msgstr ""
 
