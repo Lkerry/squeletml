@@ -339,7 +339,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$messagesScript .= adminMkdir($cheminGalerie, octdec(755), TRUE);
 				}
 				
-				if (file_exists($cheminGalerie) && isset($_FILES['fichier']))
+				if (file_exists($cheminGalerie))
 				{
 					$nomFichier = superBasename($_FILES['fichier']['name']);
 					$casse = '';
@@ -430,13 +430,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						}
 						else
 						{
-							$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGaleries) . '</code>') . "</li>\n";
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout de %1\$s dans %2\$s impossible."), '<code>' . securiseTexte($nomFichier) . '</code>', '<code>' . securiseTexte($cheminGalerie) . '</code>') . "</li>\n";
 						}
 					}
 				}
 			}
 			
-			if (!empty($_FILES) && file_exists($_FILES['fichier']['tmp_name']))
+			if (isset($_FILES['fichier']['tmp_name']) && file_exists($_FILES['fichier']['tmp_name']))
 			{
 				@unlink($_FILES['fichier']['tmp_name']);
 			}
@@ -1895,7 +1895,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 			}
 			
-			if (!empty($_FILES) && file_exists($_FILES['archive']['tmp_name']))
+			if (isset($_FILES['archive']['tmp_name']) && file_exists($_FILES['archive']['tmp_name']))
 			{
 				@unlink($_FILES['archive']['tmp_name']);
 			}

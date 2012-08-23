@@ -844,7 +844,7 @@ if ((!$adminFiltreTypesMime || ($adminFiltreTypesMime && !empty($adminTypesMimeP
 		}
 	}
 	
-	if (!empty($_FILES) && file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']))
+	if (isset($_FILES['porteDocumentsAjouterFichier']['tmp_name']) && file_exists($_FILES['porteDocumentsAjouterFichier']['tmp_name']))
 	{
 		@unlink($_FILES['porteDocumentsAjouterFichier']['tmp_name']);
 	}
