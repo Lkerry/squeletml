@@ -117,7 +117,7 @@ if (isset($_POST['envoyerCommentaire']))
 	{
 		// Enregistrement du commentaire.
 		
-		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, TRUE);
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, TRUE);
 		$cheminConfigAbonnementsCommentaires = cheminConfigAbonnementsCommentaires($cheminConfigCommentaires);
 		
 		if (!file_exists($cheminConfigCommentaires) && !@touch($cheminConfigCommentaires))

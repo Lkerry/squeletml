@@ -73,31 +73,39 @@ else
 			$_POST['langues'] = array ();
 		}
 		
-		if (!file_exists($racine . '/init.inc.php') && file_exists($racine . '/modeles/init.inc.php.modele'))
+		if (!file_exists($racine . '/init.inc.php'))
 		{
-			if (@copy($racine . '/modeles/init.inc.php.modele', $racine . '/init.inc.php'))
+			if (file_exists($racine . '/modeles/init.inc.php.modele'))
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>init.inc.php</code>', '<code>modeles/init.inc.php.modele</code>') . "</li>\n";
-				$initIncPhp = @file_get_contents($racine . '/init.inc.php');
-				
-				if ($initIncPhp !== FALSE)
+				if (@copy($racine . '/modeles/init.inc.php.modele', $racine . '/init.inc.php'))
 				{
-					$initIncPhp = preg_replace('#^(\$urlRacine \= ")[^"]+(";)#m', '$1' . $urlRacine . '$2', $initIncPhp);
+					$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>init.inc.php</code>', '<code>modeles/init.inc.php.modele</code>') . "</li>\n";
+					$initIncPhp = @file_get_contents($racine . '/init.inc.php');
+				
+					if ($initIncPhp !== FALSE)
+					{
+						$initIncPhp = preg_replace('#^(\$urlRacine \= ")[^"]+(";)#m', '$1' . $urlRacine . '$2', $initIncPhp);
 		
-					if ($serveurFreeFr)
-					{
-						$initIncPhp = preg_replace('#^(\$serveurFreeFr \= )FALSE(;)#m', '$1TRUE$2', $initIncPhp);
+						if ($serveurFreeFr)
+						{
+							$initIncPhp = preg_replace('#^(\$serveurFreeFr \= )FALSE(;)#m', '$1TRUE$2', $initIncPhp);
+						}
+					
+						list ($messagesScriptActiveLangues, $initIncPhp) = majLanguesActives($racine, $urlRacine, $_POST['langues'], $initIncPhp);
+						$messagesScript .= $messagesScriptActiveLangues;
+					
+						if (strpos($messagesScriptActiveLangues, '<li class="erreur">') !== FALSE)
+						{
+							$passerAlEtape2 = FALSE;
+						}
+					
+						if (@file_put_contents($racine . '/init.inc.php', $initIncPhp) === FALSE)
+						{
+							$passerAlEtape2 = FALSE;
+							$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>init.inc.php</code>') . "</li>\n";
+						}
 					}
-					
-					list ($messagesScriptActiveLangues, $initIncPhp) = majLanguesActives($racine, $urlRacine, $_POST['langues'], $initIncPhp);
-					$messagesScript .= $messagesScriptActiveLangues;
-					
-					if (strpos($messagesScriptActiveLangues, '<li class="erreur">') !== FALSE)
-					{
-						$passerAlEtape2 = FALSE;
-					}
-					
-					if (@file_put_contents($racine . '/init.inc.php', $initIncPhp) === FALSE)
+					else
 					{
 						$passerAlEtape2 = FALSE;
 						$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>init.inc.php</code>') . "</li>\n";
@@ -106,13 +114,13 @@ else
 				else
 				{
 					$passerAlEtape2 = FALSE;
-					$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>init.inc.php</code>') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible, car le modèle n'existe pas. Veuillez vérifier que tous les fichiers de Squeletml ont été copiés sur le serveur."), '<code>init.inc.php</code>', '<code>modeles/init.inc.php.modele</code>') . "</li>\n";
 				}
 			}
 			else
 			{
 				$passerAlEtape2 = FALSE;
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>init.inc.php</code>', '<code>modeles/init.inc.php.modele</code>') . "</li>\n";
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>init.inc.php</code>', '<code>modeles/init.inc.php.modele</code>') . "</li>\n";
 			}
 		}
 		else
@@ -127,38 +135,46 @@ else
 			}
 		}
 		
-		if (!file_exists($racine . '/robots.txt') && file_exists($racine . '/modeles/robots.txt.modele'))
+		if (!file_exists($racine . '/robots.txt'))
 		{
-			if (@copy($racine . '/modeles/robots.txt.modele', $racine . '/robots.txt'))
+			if (file_exists($racine . '/modeles/robots.txt.modele'))
 			{
-				$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>robots.txt</code>', '<code>modeles/robots.txt.modele</code>') . "</li>\n";
-
-				if (!empty($urlSansServeurRacine))
+				if (@copy($racine . '/modeles/robots.txt.modele', $racine . '/robots.txt'))
 				{
-					$robotsTxt = @file_get_contents($racine . '/robots.txt');
-			
-					if ($robotsTxt !== FALSE)
+					$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>robots.txt</code>', '<code>modeles/robots.txt.modele</code>') . "</li>\n";
+
+					if (!empty($urlSansServeurRacine))
 					{
-						$robotsTxt = preg_replace('#^(Disallow: )(/telecharger\.php)#m', '$1' . $urlSansServeurRacine . '$2', $robotsTxt);
-						$robotsTxt = preg_replace("/\n{2,}/", "\n", $robotsTxt);
+						$robotsTxt = @file_get_contents($racine . '/robots.txt');
+			
+						if ($robotsTxt !== FALSE)
+						{
+							$robotsTxt = preg_replace('#^(Disallow: )(/telecharger\.php)#m', '$1' . $urlSansServeurRacine . '$2', $robotsTxt);
+							$robotsTxt = preg_replace("/\n{2,}/", "\n", $robotsTxt);
 						
-						if (@file_put_contents($racine . '/robots.txt', $robotsTxt) === FALSE)
+							if (@file_put_contents($racine . '/robots.txt', $robotsTxt) === FALSE)
+							{
+								$passerAlEtape2 = FALSE;
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>robots.txt</code>') . "</li>\n";
+							}
+						}
+						else
 						{
 							$passerAlEtape2 = FALSE;
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>robots.txt</code>') . "</li>\n";
 						}
 					}
-					else
-					{
-						$passerAlEtape2 = FALSE;
-						$messagesScript .= '<li class="erreur">' . sprintf(T_("Renseignement du fichier %1\$s impossible."), '<code>robots.txt</code>') . "</li>\n";
-					}
+				}
+				else
+				{
+					$passerAlEtape2 = FALSE;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>robots.txt</code>', '<code>modeles/robots.txt.modele</code>') . "</li>\n";
 				}
 			}
 			else
 			{
 				$passerAlEtape2 = FALSE;
-				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>robots.txt</code>', '<code>modeles/robots.txt.modele</code>') . "</li>\n";
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible, car le modèle n'existe pas. Veuillez vérifier que tous les fichiers de Squeletml ont été copiés sur le serveur."), '<code>robots.txt</code>', '<code>modeles/robots.txt.modele</code>') . "</li>\n";
 			}
 		}
 		else
@@ -219,12 +235,17 @@ else
 					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>.htaccess</code>', "<code>$modeleHtaccess</code>") . "</li>\n";
 				}
 			}
+			else
+			{
+				$passerAlEtape2 = FALSE;
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible, car le modèle n'existe pas. Veuillez vérifier que tous les fichiers de Squeletml ont été copiés sur le serveur."), '<code>.htaccess</code>', "<code>$modeleHtaccess</code>") . "</li>\n";
+			}
 		}
 		else
 		{
 			$messagesScript .= '<li>' . sprintf(T_("Le fichier %1\$s existe."), '<code>.htaccess</code>') . "</li>\n";
 		}
-
+		
 		if (!file_exists($racine . '/.acces'))
 		{
 			if ($fic = @fopen($racine . '/.acces', 'a+'))
@@ -241,6 +262,82 @@ else
 		else
 		{
 			$messagesScript .= '<li>' . sprintf(T_("Le fichier %1\$s existe."), '<code>.acces</code>') . "</li>\n";
+		}
+		
+		$dossiersAcreer = array (
+			'site',
+			'site/admin',
+			'site/admin/cache',
+			'site/admin/css',
+			'site/admin/fichiers',
+			'site/admin/inc',
+			'site/admin/js',
+			'site/admin/xhtml',
+			'site/cache',
+			'site/cache/htmlpurifier',
+			'site/css',
+			'site/fichiers',
+			'site/fichiers/galeries',
+			'site/inc',
+			'site/inc/commentaires',
+			'site/js',
+			'site/xhtml',
+			'site/xhtml/en',
+			'site/xhtml/fr',
+		);
+		
+		foreach ($dossiersAcreer as $dossierAcreer)
+		{
+			if (!file_exists($racine . '/' . $dossierAcreer))
+			{
+				if (@mkdir($racine . '/' . $dossierAcreer, 0755, TRUE))
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Création du dossier %1\$s effectuée."), '<code>' . securiseTexte($dossierAcreer) . '</code>') . "</li>\n";
+				}
+				else
+				{
+					$passerAlEtape2 = FALSE;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), '<code>' . securiseTexte($dossierAcreer) . '</code>') . "</li>\n";
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Le dossier %1\$s existe."), '<code>' . securiseTexte($dossierAcreer) . '</code>') . "</li>\n";
+			}
+		}
+		
+		$modelesDansSite = array (
+			'modeles/site/admin/inc/config.inc.php.modele' => 'site/admin/inc/config.inc.php',
+			'modeles/site/css/style.css.modele' => 'site/css/style.css',
+			'modeles/site/inc/config.inc.php.modele' => 'site/inc/config.inc.php',
+		);
+		
+		foreach ($modelesDansSite as $modeleDansSite => $destination)
+		{
+			if (!file_exists($racine . '/' . $destination))
+			{
+				if (file_exists($racine . '/' . $modeleDansSite))
+				{
+					if (@copy($racine . '/' . $modeleDansSite, $racine . '/' . $destination))
+					{
+						$messagesScript .= '<li>' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s effectuée."), '<code>' . securiseTexte($destination) . '</code>', '<code>' . securiseTexte($modeleDansSite) . '</code>') . "</li>\n";
+					}
+					else
+					{
+						$passerAlEtape2 = FALSE;
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible."), '<code>' . securiseTexte($destination) . '</code>', '<code>' . securiseTexte($modeleDansSite) . '</code>') . "</li>\n";
+					}
+				}
+				else
+				{
+					$passerAlEtape2 = FALSE;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du fichier %1\$s à partir du modèle %2\$s impossible, car le modèle n'existe pas. Veuillez vérifier que tous les fichiers de Squeletml ont été copiés sur le serveur."), '<code>' . securiseTexte($destination) . '</code>', '<code>' . securiseTexte($modeleDansSite) . '</code>') . "</li>\n";
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Le fichier %1\$s existe."), '<code>' . securiseTexte($destination) . '</code>') . "</li>\n";
+			}
 		}
 	}
 	

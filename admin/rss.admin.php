@@ -29,7 +29,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		echo '<h3>' . T_("Liste des pages du flux RSS des derniers ajouts aux galeries") . "</h3>\n";
 		
 		echo '<p>';
-		printf(T_("Cette liste est générée à partir des galeries dont le flux RSS est activé dans le <a href=\"%1\$s\">fichier de configuration des galeries</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet('../site/inc/' . superBasename(cheminConfigGaleries($racine, TRUE))) . '&amp;dossierCourant=../site/inc#messages');
+		printf(T_("Cette liste est générée à partir des galeries dont le flux RSS est activé dans le <a href=\"%1\$s\">fichier de configuration des galeries</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet('../site/inc/' . superBasename(cheminConfigGaleries($racine, TRUE))) . '&amp;dossierCourant=' . encodeTexteGet('../site/inc') . '#messages');
 		echo "</p>\n";
 		echo "</div><!-- /.sousBoite -->\n";
 	}
@@ -323,7 +323,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<?php endif; ?>
 		</ul>
 		
-		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=<?php encodeTexteGet('../site/inc/config.inc.php'); ?>#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
 	</div><!-- /.bDcorps -->
 </div><!-- /.boite -->
 

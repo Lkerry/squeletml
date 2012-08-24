@@ -673,7 +673,7 @@ function adminEstEditable($cheminFichier)
 {
 	$typeMime = typeMime($cheminFichier);
 	
-	if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty')
+	if (strpos($typeMime, 'text/') === 0 || strpos($typeMime, 'xml') !== FALSE || $typeMime == 'application/x-empty' || $typeMime == 'application/x-httpd-php' || $typeMime == 'application/x-javascript' || ($typeMime === FALSE && (superBasename($cheminFichier) == '.htaccess' || superBasename($cheminFichier) == '.acces' || superBasename($cheminFichier) == '.deconnexion.acces' || preg_match('/\.(ini|markdown|md|mkd|po)$/', $cheminFichier))))
 	{
 		return TRUE;
 	}
@@ -2025,7 +2025,7 @@ function adminNombreCommentairesAmoderer($racine, $urlRacine, $moderationComment
 	
 	foreach ($listePagesAvecCommentaires as $listePage)
 	{
-		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, '', TRUE);
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, TRUE);
 		$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
 		
 		if ($listeCommentaires !== FALSE)
