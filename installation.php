@@ -224,7 +224,7 @@ else
 		{
 			$messagesScript .= '<li>' . sprintf(T_("Le fichier %1\$s existe."), '<code>.htaccess</code>') . "</li>\n";
 		}
-
+		
 		if (!file_exists($racine . '/.acces'))
 		{
 			if ($fic = @fopen($racine . '/.acces', 'a+'))
@@ -241,6 +241,48 @@ else
 		else
 		{
 			$messagesScript .= '<li>' . sprintf(T_("Le fichier %1\$s existe."), '<code>.acces</code>') . "</li>\n";
+		}
+		
+		$dossiersAcreer = array (
+			'site',
+			'site/admin',
+			'site/admin/cache',
+			'site/admin/css',
+			'site/admin/fichiers',
+			'site/admin/inc',
+			'site/admin/js',
+			'site/admin/xhtml',
+			'site/cache',
+			'site/cache/htmlpurifier',
+			'site/css',
+			'site/fichiers',
+			'site/fichiers/galeries',
+			'site/inc',
+			'site/inc/commentaires',
+			'site/js',
+			'site/xhtml',
+			'site/xhtml/en',
+			'site/xhtml/fr',
+		);
+		
+		foreach ($dossiersAcreer as $dossierAcreer)
+		{
+			if (!file_exists($racine . '/' . $dossierAcreer))
+			{
+				if (@mkdir($racine . '/' . $dossierAcreer, 0755, TRUE))
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Création du dossier %1\$s effectuée."), '<code>' . securiseTexte($dossierAcreer) . '</code>') . "</li>\n";
+				}
+				else
+				{
+					$passerAlEtape2 = FALSE;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Création du dossier %1\$s impossible."), '<code>' . securiseTexte($dossierAcreer) . '</code>') . "</li>\n";
+				}
+			}
+			else
+			{
+				$messagesScript .= '<li>' . sprintf(T_("Le dossier %1\$s existe."), '<code>' . securiseTexte($dossierAcreer) . '</code>') . "</li>\n";
+			}
 		}
 	}
 	

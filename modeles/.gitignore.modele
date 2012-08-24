@@ -5,9 +5,6 @@ inc/htmlpurifier/standalone/HTMLPurifier/DefinitionCache/
 init.inc.php
 Makefile
 robots.txt
-site/admin/cache/
-site/cache/
-site/fichiers/galeries/
-site/inc/
+site/
 sitemap.xml
 TODO.mkd
