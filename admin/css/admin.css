@@ -163,6 +163,11 @@ p {
 	font-weight: bold;
 }
 
+#menu img {
+	border: none;
+	vertical-align: bottom;
+}
+
 a.lienSurCode, code {
 	color: #0000E2;
 }
