@@ -258,11 +258,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (empty($listePages))
 			{
 				$listePages = '<li>' . T_("Le fichier est vide. Aucune page n'y est listée.") . "</li>\n";
-				echo "<ul class=\"bDcorps\">\n";
+				echo "<ul class=\"bDcorps afficher\">\n";
 			}
 			else
 			{
-				echo "<ul class=\"triable bDcorps\">\n";
+				echo "<ul class=\"triable bDcorps afficher\">\n";
 			}
 			
 			echo $listePages;
