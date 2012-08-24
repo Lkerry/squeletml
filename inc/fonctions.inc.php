@@ -865,16 +865,16 @@ function cheminConfigCategories($racine, $retourneCheminParDefaut = FALSE)
 /*
 Retourne le chemin vers le fichier de configuration des commentaires de l'URL donnée. Si aucun fichier de configuration n'a été trouvé, retourne FALSE si `$retourneCheminParDefaut` vaut FALSE, sinon retourne le chemin par défaut du fichier de configuration.
 */
-function cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, $retourneCheminParDefaut = FALSE)
+function cheminConfigCommentaires($racine, $urlRacine, $url, $retourneCheminParDefaut = FALSE)
 {
 	$urlPourCheminConfigCommentaires = supprimeUrlRacine($urlRacine, $url);
-	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'action');
 	
-	if (!empty($idGalerie))
+	if (strpos($urlPourCheminConfigCommentaires, 'galerie.php?') === 0)
 	{
 		$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'langue');
 	}
 	
+	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'action');
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPourCheminConfigCommentaires);
 	$nomFichierCache = superBasename($cheminFichierCache);
 	$nomConfigCommentaires = preg_replace('/\.cache\.(html|xml)$/', '.ini.txt', $nomFichierCache);

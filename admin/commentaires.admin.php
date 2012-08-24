@@ -51,7 +51,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		$messagesScriptUrlPage .= '<li>' . sprintf(T_("Page sélectionnée: %1\$s"), '<a class="lienSurCode" href="' . $urlRacine . '/' . $valeurHrefUrlPage . '"><code>' . securiseTexte($urlPage) . '</code></a>' . $lienEditionPage) . "</li>\n";
 		
-		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $urlPage, '', TRUE);
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $urlPage, TRUE);
 		$cheminRelatifConfigCommentaires = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigCommentaires);
 		$lienEditionConfigCommentaires = ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigCommentaires) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigCommentaires)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminRelatifConfigCommentaires)) . '" width="16" height="16" /></a>';
 		$messagesScriptUrlPage .= '<li>' . sprintf(T_("Fichier de configuration des commentaires associé: %1\$s"), '<code>' . securiseTexte($cheminRelatifConfigCommentaires) . '</code>' . $lienEditionConfigCommentaires) . "</li>\n";
@@ -237,7 +237,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		foreach ($listePagesAvecCommentaires as $listePage)
 		{
-			$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, '', TRUE);
+			$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, TRUE);
 			$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
 			
 			if ($listeCommentaires === FALSE)

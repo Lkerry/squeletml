@@ -70,7 +70,7 @@ if (!empty($blocsAinsererTemp))
 					if (($ajoutCommentaires || $affichageCommentairesSiAjoutDesactive) && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
 					{
 						$commentaires = '';
-						$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, $idGalerie, TRUE);
+						$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $url, TRUE);
 						$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
 						$commentairesAffiches = '';
 						$nombreCommentaires = 0;

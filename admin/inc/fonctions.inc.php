@@ -2025,7 +2025,7 @@ function adminNombreCommentairesAmoderer($racine, $urlRacine, $moderationComment
 	
 	foreach ($listePagesAvecCommentaires as $listePage)
 	{
-		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, '', TRUE);
+		$cheminConfigCommentaires = cheminConfigCommentaires($racine, $urlRacine, $listePage, TRUE);
 		$listeCommentaires = super_parse_ini_file($cheminConfigCommentaires, TRUE);
 		
 		if ($listeCommentaires !== FALSE)
