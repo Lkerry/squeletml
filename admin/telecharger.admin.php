@@ -99,7 +99,7 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 						$parentConfigGalerieAinclure = "$racine/site/$dossierAdmin/cache/$dossierTemporaire";
 						$cheminConfigGalerieAinclure = "$parentConfigGalerieAinclure/galeries.ini.txt";
 						
-						if ((is_dir($parentConfigGalerieAinclure) || (!file_exists($parentConfigGalerieAinclure) && @mkdir($parentConfigGalerieAinclure, octdec(755)))) && @file_put_contents($cheminConfigGalerieAinclure, $contenuConfigGalerie) !== FALSE)
+						if ((is_dir($parentConfigGalerieAinclure) || (!file_exists($parentConfigGalerieAinclure) && @mkdir($parentConfigGalerieAinclure, 0755))) && @file_put_contents($cheminConfigGalerieAinclure, $contenuConfigGalerie) !== FALSE)
 						{
 							$inclureConfigGalerie = TRUE;
 						}
