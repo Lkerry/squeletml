@@ -1002,7 +1002,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<?php endif; ?>
 		</ul>
 		
-		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=../site/inc/config.inc.php#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
+		<p><a href="porte-documents.admin.php?action=editer&amp;valeur=<?php echo encodeTexteGet('../site/inc/config.inc.php'); ?>#messages"><?php echo T_("Modifier cette configuration."); ?></a></p>
 	</div><!-- /.bDcorps -->
 </div><!-- /.boite -->
 

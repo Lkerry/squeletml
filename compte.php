@@ -109,7 +109,7 @@ else
 			$infosCourriel['message'] .= T_("Courriel:") . "\n" . securiseTexte($_POST['courriel']) . "\n\n";
 			$infosCourriel['message'] .= T_("Adresse IP:") . "\n" . ipInternaute() . "\n\n";
 			$infosCourriel['message'] .= T_("Administration de l'accès:") . "\n$urlRacineAdmin/acces.admin.php\n\n";
-			$infosCourriel['message'] .= sprintf(T_("Modification du fichier %1\$s:"), '`.acces`') . "\n$urlRacineAdmin/porte-documents.admin.php?action=editer&valeur=../.acces&dossierCourant=..#messages\n\n";
+			$infosCourriel['message'] .= sprintf(T_("Modification du fichier %1\$s:"), '`.acces`') . "\n$urlRacineAdmin/porte-documents.admin.php?action=editer&valeur=" . encodeTexteGet('../.acces') . '&dossierCourant=' . encodeTexteGet('..') . "#messages\n\n";
 			
 			if (courriel($infosCourriel))
 			{
