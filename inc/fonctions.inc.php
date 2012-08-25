@@ -4093,7 +4093,7 @@ Construit des balises `link` et `script`. Voir le fichier de configuration `inc/
 
 Le paramètre `$dossierAdmin` doit être vide si la fonction est utilisée pour le site et non pour la section d'administration.
 */
-function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScript = array ('css' => '', 'js' => '', 'autres' => ''))
+function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScript = array ('css' => '', 'favicon' => '', 'js' => ''))
 {
 	$balisesBrutesAinclure = linkScriptAinclure($balisesBrutes);
 	$balisesFormatees = '';
@@ -4215,7 +4215,7 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 		{
 			case 'favicon':
 				// On ne conserve qu'une déclaration de favicon.
-				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['autres']) . '" />' . "\n";
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['favicon']) . '" />' . "\n";
 				break;
 	
 			case 'css':
@@ -4281,7 +4281,7 @@ $fichier\n//]]>\n</script>\n";
 					$title = '';
 				}
 				
-				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['autres']) . '"' . $title . ' />' . "\n";
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . $fichier . '"' . $title . ' />' . "\n";
 				break;
 		}
 	}
