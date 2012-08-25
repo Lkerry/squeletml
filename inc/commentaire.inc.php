@@ -125,8 +125,7 @@ if (isset($_POST['envoyerCommentaire']))
 			$erreurEnvoiFormulaire = TRUE;
 			$messagesScript .= '<li class="erreur">' . T_("Erreur: votre commentaire n'a pas pu être envoyé. Essayez un peu plus tard.") . "</li>\n";
 		}
-		
-		if (!file_exists($cheminConfigAbonnementsCommentaires) && !@touch($cheminConfigAbonnementsCommentaires))
+		elseif (!file_exists($cheminConfigAbonnementsCommentaires) && !@touch($cheminConfigAbonnementsCommentaires))
 		{
 			$erreurEnvoiFormulaire = TRUE;
 			$messagesScript .= '<li class="erreur">' . T_("Erreur: votre commentaire n'a pas pu être envoyé. Essayez un peu plus tard.") . "</li>\n";
