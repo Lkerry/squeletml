@@ -78,6 +78,11 @@ Options -Indexes
 # S'assure que l'en-tête ETag n'utilise pas l'inode du fichier, ce qui la rendrait inutile dans le cas où le fichier se trouve sur plusieurs serveurs et n'est pas toujours retourné par le même.
 FileETag MTime Size
 
+# Désactivation des guillemets magiques.
+<IfModule mod_php5.c>
+	php_flag magic_quotes_gpc Off
+</IfModule>
+
 # Type MIME des polices de caractères.
 <IfModule mod_mime.c>
 	AddType application/vnd.ms-fontobject .eot
