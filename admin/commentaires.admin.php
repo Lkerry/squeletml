@@ -317,7 +317,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!empty($infosCommentaire['courriel']))
 					{
-						$infosSupplementaires[] = sprintf(T_("Courriel: %1\$s"), $infosCommentaire['courriel']);
+						$infosSupplementaires[] = sprintf(T_("Courriel: %1\$s"), '<a href="mailto:' . $infosCommentaire['courriel'] . '">' . $infosCommentaire['courriel'] . '</a>');
 					}
 					
 					if (!empty($infosCommentaire['ip']))
@@ -330,18 +330,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$infosSupplementaires[] = sprintf(T_("Notification: %1\$s"), $infosCommentaire['notification']);
 					}
 					
-					if (!empty($infosSupplementaires))
+					$codeListeCommentaires .= '<ul class="infosSupplementaires">' . "\n";
+					
+					foreach ($infosSupplementaires as $infoSupplementaire)
 					{
-						$codeListeCommentaires .= '<ul class="infosSupplementaires">' . "\n";
-						
-						foreach ($infosSupplementaires as $infoSupplementaire)
-						{
-							$codeListeCommentaires .= "<li>$infoSupplementaire</li>\n";
-						}
-						
-						$codeListeCommentaires .= "</ul>\n";
+						$codeListeCommentaires .= "<li>$infoSupplementaire</li>\n";
 					}
 					
+					$codeListeCommentaires .= "</ul>\n";
 					$pageGet = encodeTexteGet($listePage);
 					$codeListeCommentaires .= '<ul class="listeActions">' . "\n";
 					$codeListeCommentaires .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=publier&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '&amp;gererType=commentairesModeration#messages">' . T_("Publier") . "</a></li>\n";
