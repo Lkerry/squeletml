@@ -432,6 +432,11 @@ div#porteDocumentsEditionOptions {
 	width: 65%;
 }
 
+textarea#code {
+	width: 100%;
+	border: none;
+}
+
 li.contenuFichierPourSauvegarde > p:first-child {
 	margin-top: 0px;
 }
