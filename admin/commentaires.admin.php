@@ -367,7 +367,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$contenu .= '<div class="configActuelleAdminCommentaires">' . "\n";
 			$contenu .= '<h4 class="bDtitre">' . sprintf(T_ngettext("Configuration actuelle (%1\$s commentaire)", "Configuration actuelle (%1\$s commentaires)", $nombreCommentaires), $nombreCommentaires) . "</h4>\n";
 			
-			$contenu .= "<ul class=\"bDcorps\">\n$codeListeCommentaires</ul>\n";
+			$contenu .= "<ul class=\"bDcorps afficher\">\n$codeListeCommentaires</ul>\n";
 			$contenu .= "</div><!-- /.configActuelleAdminCommentaires -->\n";
 		}
 		

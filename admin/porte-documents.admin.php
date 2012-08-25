@@ -1316,48 +1316,54 @@ if ($actionEditer)
 		
 		if (adminOptionsFichierPorteDocuments($urlRacineAdmin, $urlFichierEdite))
 		{
-			$cheminConfigCategories = cheminConfigCategories($racine);
+			$cheminConfigCategories = cheminConfigCategories($racine, TRUE);
 			
 			if (file_exists($cheminConfigCategories))
 			{
 				$categories = super_parse_ini_file($cheminConfigCategories, TRUE);
-				uksort($categories, 'strnatcasecmp');
-				$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
-				echo '<div id="porteDocumentsEditionOptions">' . "\n";
-				echo '<p><label for="porteDocumentsEditionCat">' . T_("Catégories auxquelles appartient la page:") . "</label></p>\n";
 				
-				echo '<p><select id="porteDocumentsEditionCat" name="porteDocumentsEditionCatSelect[]" multiple="multiple">' . "\n";
-				echo '<option value="nouvelleCategorie">' . T_("Nouvelle catégorie:") . "</option>\n";
-				$option = '';
-				$categorieSelectionnee = FALSE;
-				
-				if (!empty($categories))
+				if (!is_array($categories))
 				{
-					foreach ($categories as $categorie => $categorieInfos)
-					{
-						$option .= '<option value="' . encodeTexte($categorie) . '"';
-					
-						if (isset($listeCategoriesPage[$categorie]))
-						{
-							$categorieSelectionnee = TRUE;
-							$option .= ' selected="selected"';
-						}
-						
-						$option .= '>' . securiseTexte($categorie) . "</option>\n";
-					}
+					$categories = array ();
 				}
-				
-				echo '<option value="aucuneCategorie"';
-				
-				if (!$categorieSelectionnee)
-				{
-					echo ' selected="selected"';
-				}
-				
-				echo '>' . T_("Aucune catégorie") . "</option>\n";
-				echo $option;
-				echo '</select> <input class="long" type="text" name="porteDocumentsEditionCatUrlInput" value="" />' . "</p>\n";
 			}
+			
+			uksort($categories, 'strnatcasecmp');
+			$listeCategoriesPage = listeCategoriesPage($racine, $urlRacine, $urlFichierEdite);
+			echo '<div id="porteDocumentsEditionOptions">' . "\n";
+			echo '<p><label for="porteDocumentsEditionCat">' . T_("Catégories auxquelles appartient la page:") . "</label></p>\n";
+			
+			echo '<p><select id="porteDocumentsEditionCat" name="porteDocumentsEditionCatSelect[]" multiple="multiple">' . "\n";
+			echo '<option value="nouvelleCategorie">' . T_("Nouvelle catégorie:") . "</option>\n";
+			$option = '';
+			$categorieSelectionnee = FALSE;
+			
+			if (!empty($categories))
+			{
+				foreach ($categories as $categorie => $categorieInfos)
+				{
+					$option .= '<option value="' . encodeTexte($categorie) . '"';
+				
+					if (isset($listeCategoriesPage[$categorie]))
+					{
+						$categorieSelectionnee = TRUE;
+						$option .= ' selected="selected"';
+					}
+					
+					$option .= '>' . securiseTexte($categorie) . "</option>\n";
+				}
+			}
+			
+			echo '<option value="aucuneCategorie"';
+			
+			if (!$categorieSelectionnee)
+			{
+				echo ' selected="selected"';
+			}
+			
+			echo '>' . T_("Aucune catégorie") . "</option>\n";
+			echo $option;
+			echo '</select> <input class="long" type="text" name="porteDocumentsEditionCatUrlInput" value="" />' . "</p>\n";
 			
 			$langueFluxRssFichierEdite = adminLangueFluxRssPage($racine, $urlRacine, $urlFichierEdite);
 			
@@ -1385,8 +1391,9 @@ if ($actionEditer)
 				
 				$rssListeLangues .= "</select>\n";
 				echo '<p><input id="porteDocumentsEditionRssAjout" type="checkbox" name="porteDocumentsEditionRssAjoutInput" value="ajout" /> <label for="porteDocumentsEditionRssAjout">' . sprintf(T_("Ajouter la page dans le <a href=\"%1\$s\">flux RSS des dernières publications</a> pour la langue %2\$s."), 'rss.admin.php?global=site', $rssListeLangues) . "</label></p>\n";
-				echo "</div><!-- /#porteDocumentsEditionOptions -->\n";
 			}
+			
+			echo "</div><!-- /#porteDocumentsEditionOptions -->\n";
 		}
 		
 		echo '<p id="porteDocumentsBoutonEditionSauvegarder"><input type="submit" name="porteDocumentsEditionSauvegarder" value="' . T_("Sauvegarder les modifications") . '" />' . "</p>\n";
