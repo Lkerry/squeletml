@@ -60,7 +60,7 @@ if (file_exists($racine . '/init.inc.php'))
 		
 		$rapportLi = '';
 		
-		if ($dureeCache)
+		if ($dureeCache || $dureeCachePartiel)
 		{
 			foreach ($listeUrl as $url => $infosUrl)
 			{
