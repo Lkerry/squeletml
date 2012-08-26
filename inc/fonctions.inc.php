@@ -2321,7 +2321,7 @@ Retourne un tableau d'un élément représentant une page du site, cet élément
 function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
+	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, TRUE);
 	
 	if (!empty($infosPage))
 	{
@@ -3292,13 +3292,13 @@ Retourne un tableau d'informations au sujet du contenu local accessible à l'URL
 
 Si `$html` est vide et que l'URL fournie n'est pas accessible, retourne un tableau vide.
 */
-function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $html = '')
+function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $desactiverLectureCachePartiel = FALSE, $html = '')
 {
 	$infosPage = array ();
 	
 	if (empty($html))
 	{
-		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache);
+		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache, $desactiverLectureCachePartiel);
 	}
 	
 	if (!empty($html))
@@ -6019,7 +6019,7 @@ function securiseTexte($texte)
 /*
 Récupère le code XHTML d'une page locale, comme si elle était visitée dans un navigateur.
 */
-function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $estPageCron = FALSE)
+function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE)
 {
 	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
 	$cheminRelatifPage = supprimeUrlRacine($urlRacine, $urlAsimuler);

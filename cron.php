@@ -64,9 +64,9 @@ if (file_exists($racine . '/init.inc.php'))
 		{
 			foreach ($listeUrl as $url => $infosUrl)
 			{
-				simuleVisite($racine, $urlRacine, $url, $dureeCache, TRUE);
+				simuleVisite($racine, $urlRacine, $url, $dureeCache, FALSE, TRUE);
 				$rapportLi .= '<li>';
-				$rapportLi .= '<code>simuleVisite("' . $racine . '", "' . $urlRacine . '", "' . $url . '", "' . $dureeCache . '", TRUE);</code>' . "</li>\n";
+				$rapportLi .= '<code>simuleVisite("' . $racine . '", "' . $urlRacine . '", "' . $url . '", "' . $dureeCache . '", FALSE, TRUE);</code>' . "</li>\n";
 			}
 		}
 		
