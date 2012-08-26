@@ -55,7 +55,7 @@ else
 
 if (!empty($tableauCorpsGalerie['corpsGalerie']))
 {
-	$galerie = $tableauCorpsGalerie['corpsGalerie'];
+	$galerie = '<div id="galerie">' . "\n" . $tableauCorpsGalerie['corpsGalerie'] . "</div><!-- /#galerie -->\n";
 	$afficherGalerie = TRUE;
 }
 else

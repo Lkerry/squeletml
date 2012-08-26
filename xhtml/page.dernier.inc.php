@@ -3,10 +3,6 @@
 									<?php echo $galerie; ?>
 								<?php endif; ?>
 								
-								<?php if (!empty($idGalerie)): ?>
-									</div><!-- /#galerie -->
-								<?php endif; ?>
-								
 								<?php if ($afficherCategorie): ?>
 									<?php echo $categorie; ?>
 								<?php endif; ?>
