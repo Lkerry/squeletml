@@ -6373,7 +6373,7 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 			}
 			else
 			{
-				$idH = filtreChaine($contenuH);
+				$idH = filtreChaine(strip_tags($contenuH));
 				$h->id = $idH;
 			}
 			
