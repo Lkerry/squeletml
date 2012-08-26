@@ -6026,86 +6026,91 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
 	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
 	$cheminPage = $racine . '/' . decodeTexte($cheminRelatifPage);
-	$dossierActuel = getcwd();
-	chdir(dirname($cheminPage));
+	$codePage = '';
 	
-	# Ajustement des variables relatives à l'URL.
-	
-	$infosUrl = parse_url($urlAsimuler);
-	
-	if ($infosUrl !== FALSE)
+	if (file_exists($cheminPage))
 	{
-		$_SERVER_TMP = $_SERVER;
+		$dossierActuel = getcwd();
+		chdir(dirname($cheminPage));
 		
-		if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
+		# Ajustement des variables relatives à l'URL.
+		
+		$infosUrl = parse_url($urlAsimuler);
+		
+		if ($infosUrl !== FALSE)
 		{
-			$_SERVER['HTTPS'] = 1;
+			$_SERVER_TMP = $_SERVER;
+			
+			if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
+			{
+				$_SERVER['HTTPS'] = 1;
+			}
+			else
+			{
+				$_SERVER['HTTPS'] = '';
+			}
+			
+			if (isset($infosUrl['host']))
+			{
+				$_SERVER['SERVER_NAME'] = $infosUrl['host'];
+			}
+			else
+			{
+				$_SERVER['SERVER_NAME'] = '';
+			}
+			
+			if (isset($infosUrl['port']))
+			{
+				$_SERVER['SERVER_PORT'] = $infosUrl['port'];
+			}
+			else
+			{
+				$_SERVER['SERVER_PORT'] = '';
+			}
+			
+			if (isset($infosUrl['path']))
+			{
+				$_SERVER['REQUEST_URI'] = $infosUrl['path'];
+			}
+			else
+			{
+				$_SERVER['REQUEST_URI'] = '';
+			}
+			
+			$_GET_TMP = $_GET;
+			unset($_GET);
+			
+			if (isset($infosUrl['query']))
+			{
+				$_SERVER['REQUEST_URI'] .= '?' . $infosUrl['query'];
+				parse_str($infosUrl['query'], $_GET);
+			}
+		}
+		
+		ob_start();
+		$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
+	
+		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
+		{
+			@readfile($cheminFichierCache);
 		}
 		else
 		{
-			$_SERVER['HTTPS'] = '';
+			include $cheminPage;
 		}
 		
-		if (isset($infosUrl['host']))
-		{
-			$_SERVER['SERVER_NAME'] = $infosUrl['host'];
-		}
-		else
-		{
-			$_SERVER['SERVER_NAME'] = '';
-		}
+		$codePage = ob_get_contents();
+		ob_end_clean();
+		chdir($dossierActuel);
 		
-		if (isset($infosUrl['port']))
+		# Restauration des variables relatives à l'URL.
+		if ($infosUrl !== FALSE)
 		{
-			$_SERVER['SERVER_PORT'] = $infosUrl['port'];
+			$_SERVER = $_SERVER_TMP;
+			unset($_SERVER_TMP);
+			$_GET = $_GET_TMP;
+			unset($_GET_TMP);
 		}
-		else
-		{
-			$_SERVER['SERVER_PORT'] = '';
-		}
-		
-		if (isset($infosUrl['path']))
-		{
-			$_SERVER['REQUEST_URI'] = $infosUrl['path'];
-		}
-		else
-		{
-			$_SERVER['REQUEST_URI'] = '';
-		}
-		
-		$_GET_TMP = $_GET;
-		unset($_GET);
-		
-		if (isset($infosUrl['query']))
-		{
-			$_SERVER['REQUEST_URI'] .= '?' . $infosUrl['query'];
-			parse_str($infosUrl['query'], $_GET);
-		}
-	}
-	
-	ob_start();
-	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
-	
-	if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
-	{
-		@readfile($cheminFichierCache);
-	}
-	else
-	{
-		include $cheminPage;
-	}
-	
-	$codePage = ob_get_contents();
-	ob_end_clean();
-	chdir($dossierActuel);
-	
-	# Restauration des variables relatives à l'URL.
-	if ($infosUrl !== FALSE)
-	{
-		$_SERVER = $_SERVER_TMP;
-		unset($_SERVER_TMP);
-		$_GET = $_GET_TMP;
-		unset($_GET_TMP);
 	}
 	
 	return $codePage;
