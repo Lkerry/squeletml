@@ -65,11 +65,11 @@ h4, h5, h6 {
 	color: #590059;
 }
 
-a, a code {
+a {
 	text-decoration: underline;
 }
 
-a:hover, a:hover code {
+a:hover {
 	text-decoration: none;
 }
 
