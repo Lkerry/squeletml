@@ -59,6 +59,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPageCategorie) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminPageCategorie)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPageCategorie)) . '" width="16" height="16" /></a>';
 					}
 					
+					$listePages .= ' <a href="' . $urlRacine . '/' . $categorieInfos['url'] . '"><img src="' . $urlRacineAdmin . '/fichiers/navigation.png" alt="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($urlRacine . '/' . $categorieInfos['url'])) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($urlRacine . '/' . $categorieInfos['url'])) . '" width="16" height="16" /></a>';
 					$listePages .= "</li>\n";
 					
 					// Catégorie parente.
@@ -178,6 +179,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$listePages .= '<li><label for="inputUrlPages-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrlPages-' . $i . '-' . $j . '" class="long" type="text" name="urlPages[' . $i . '][]" value="' . securiseTexte($page) . '" />';
 							$cheminPage = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($page));
 							$listePages .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPage) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" width="16" height="16" /></a>';
+							$listePages .= ' <a href="' . $urlRacine . '/' . $page . '"><img src="' . $urlRacineAdmin . '/fichiers/navigation.png" alt="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($urlRacine . '/' . $page)) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($urlRacine . '/' . $page)) . '" width="16" height="16" /></a>';
 							$listePages .= "</li>\n";
 							$j++;
 						}
