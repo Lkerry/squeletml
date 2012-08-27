@@ -6039,6 +6039,11 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 		
 		if ($infosUrl !== FALSE)
 		{
+			if (!isset($_SERVER))
+			{
+				$_SERVER = array ();
+			}
+			
 			$_SERVER_TMP = $_SERVER;
 			
 			if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
@@ -6075,6 +6080,11 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 			else
 			{
 				$_SERVER['REQUEST_URI'] = '';
+			}
+			
+			if (!isset($_GET))
+			{
+				$_GET = array ();
 			}
 			
 			$_GET_TMP = $_GET;
