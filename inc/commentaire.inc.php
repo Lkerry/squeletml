@@ -4,7 +4,6 @@ Ce fichier construit et analyse le formulaire d'ajout d'un commentaire. Après s
 */
 
 // Affectations.
-$desactiverCache = TRUE;
 $nom = '';
 $courriel = '';
 $site = '';

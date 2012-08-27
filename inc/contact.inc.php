@@ -4,7 +4,6 @@ Ce fichier construit et analyse le formulaire de contact. Après son inclusion, 
 */
 
 // Affectations.
-$desactiverCache = TRUE;
 $nom = '';
 $courriel = '';
 $message = '';

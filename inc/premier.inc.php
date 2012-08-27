@@ -7,15 +7,17 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 1. Première série d'inclusions.
 2. Première série d'affectations.
 3. Deuxième série d'inclusions.
-4. Première série de traitement personnalisé optionnel.
-5. Vérification du cache global.
-6. Deuxième série d'affectations.
-7. Troisième série d'inclusions.
+4. Deuxième série d'affectations.
+5. Troisième série d'inclusions.
+6. Première série de traitement personnalisé optionnel.
+7. Vérification du cache global.
 8. Troisième série d'affectations.
-9. Ajouts dans `$balisesLinkScript`.
-10. Deuxième série de traitement personnalisé optionnel.
-11. En-têtes HTTP.
-12. Inclusion de code XHTML.
+9. Quatrième série d'inclusions.
+10. Quatrième série d'affectations.
+11. Ajouts dans `$balisesLinkScript`.
+12. Deuxième série de traitement personnalisé optionnel.
+13. En-têtes HTTP.
+14. Inclusion de code XHTML.
 */
 
 ########################################################################
@@ -24,7 +26,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 ##
 ########################################################################
 
-// Inclusions 1 de 3.
+// Inclusions 1 de 4.
 
 include dirname(__FILE__) . '/../init.inc.php';
 
@@ -35,7 +37,7 @@ if (file_exists($racine . '/site/inc/devel.inc.php'))
 
 include_once $racine . '/inc/fonctions.inc.php';
 
-// Affectations 1 de 3.
+// Affectations 1 de 4.
 
 eval(variablesAaffecterAuDebut());
 $estPageCompte = $urlSansGet == "$urlRacine/compte.php" ? TRUE : FALSE;
@@ -76,7 +78,7 @@ if (!isset($idCategorie))
 	$idCategorie = '';
 }
 
-// Inclusions 2 de 3.
+// Inclusions 2 de 4.
 
 foreach (inclureAuDebut($racine) as $fichier)
 {
@@ -87,6 +89,25 @@ foreach (inclureUneFoisAuDebut($racine) as $fichier)
 {
 	include_once $fichier;
 }
+
+// Affectations 2 de 4.
+
+if (!isset($ajoutCommentaires))
+{
+	$ajoutCommentaires = $ajoutCommentairesParDefaut;
+}
+
+if (!isset($partageCourriel))
+{
+	$partageCourriel = $activerPartageCourrielParDefaut;
+}
+
+if (!empty($courrielContact) || (isset($_GET['action']) && (($ajoutCommentaires && $_GET['action'] == 'commentaire') || ($partageCourriel && $_GET['action'] == 'partageCourriel'))))
+{
+	$desactiverCache = TRUE;
+}
+
+// Inclusions 3 de 4.
 
 phpGettext($racine, LANGUE); // Nécessaire à la traduction.
 
@@ -133,15 +154,10 @@ if ($dureeCache && !$desactiverCache)
 	}
 }
 
-// Affectations 2 de 3.
+// Affectations 3 de 4.
 
 extract(init('', 'baliseH1', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'lienPageVignette', 'lienPageIntermediaire', 'motsCles', 'robots'), EXTR_SKIP);
 extract(init(FALSE, 'desactiverLectureCachePartiel', 'inclureCodeFenetreJavascript', 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
-
-if (!isset($ajoutCommentaires))
-{
-	$ajoutCommentaires = $ajoutCommentairesParDefaut;
-}
 
 if (!isset($apercu))
 {
@@ -268,11 +284,6 @@ if ($siteEstEnMaintenance)
 	$noticeMaintenance = noticeMaintenance();
 }
 
-if (!isset($partageCourriel))
-{
-	$partageCourriel = $activerPartageCourrielParDefaut;
-}
-
 if (!isset($partageReseaux))
 {
 	$partageReseaux = $activerPartageReseauxParDefaut;
@@ -301,7 +312,7 @@ if ($tableDesMatieres)
 	$boitesDeroulantes .= ' #tableDesMatieres';
 }
 
-// Inclusions 3 de 3.
+// Inclusions 4 de 4.
 
 if (!empty($idCategorie))
 {
@@ -315,7 +326,7 @@ if (!empty($idGalerie))
 
 include $racine . '/inc/blocs.inc.php';
 
-// Affectations 3 de 3.
+// Affectations 4 de 4.
 
 if (!isset($baliseTitle))
 {
