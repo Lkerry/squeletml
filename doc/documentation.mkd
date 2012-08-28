@@ -1352,6 +1352,8 @@ Autrement dit, le cache partiel sera activé si l'expression suivante est vraie:
 
 Aucune en-tête HTTP relative au cache ne sera envoyée, et aucune requête conditionnelle ne sera analysée. Squeletml va continuer à calculer et à générer une partie de la page. Le contenu HTML ou XML enregistré en cache correspondra au contenu de `<div id="milieuInterieurContenu">...</div>`.
 
+À noter que le cache partiel se comportera exactement comme le cache global pour les flux RSS.
+
 ### Fusion des feuilles de style CSS et des scripts Javascript
 
 Si la variable `$fusionnerCssJs` dans le fichier de configuration du site vaut `TRUE`, les feuilles de style seront fusionnées dans un seul fichier, tout comme les scripts Javascript, ce qui permet de réduire le nombre de requêtes HTTP lors de la visite d'une page.
