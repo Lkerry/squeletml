@@ -111,7 +111,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 			}
 			
 			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-			if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss))
+			if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 			{
 				if (file_exists($cheminFichierCacheEnTete))
 				{
@@ -236,7 +236,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		
 		phpGettext('.', $infosCategorieLangue); // Nécessaire à la traduction.
 		
-		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss))
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
 			if (file_exists($cheminFichierCacheEnTete))
 			{
@@ -350,7 +350,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss))
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
 			if (file_exists($cheminFichierCacheEnTete))
 			{
@@ -428,7 +428,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss))
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
 			if (file_exists($cheminFichierCacheEnTete))
 			{
