@@ -12,14 +12,22 @@ if (!$erreur404 && !$estPageDerreur)
 	
 	if (isset($_GET['action']) && $_GET['action'] == 'partageCourriel')
 	{
-		$nom = securiseTexte(trim($_POST['nom']));
+		if (isset($_POST['nom']))
+		{
+			$nom = securiseTexte(trim($_POST['nom']));
+		}
 		
 		if (empty($nom))
 		{
 			$nom = T_("VOTRE NOM");
 		}
 		
-		$message = securiseTexte(trim($_POST['message']));
+		$message = '';
+		
+		if (isset($_POST['message']))
+		{
+			$message = securiseTexte(trim($_POST['message']));
+		}
 		
 		if (!empty($message) && !$messageEnvoye)
 		{
