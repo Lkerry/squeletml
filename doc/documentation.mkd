@@ -181,7 +181,11 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
 
 - `blocs.inc.php`: construit le code XHTML des blocs (menu des langues, menu principal, liens vers les flux RSS, etc.) pour une région spécifique. Après son inclusion, la variable `$blocs` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/blocs.inc.php`, qui sera inséré à la fin de celui par défaut.
 
+- `cache-partiel.inc.php`: vérifie si le cache partiel doit être généré, affiché ou enregistré.
+
 - `categorie.inc.php`: construit et analyse la liste des articles classés dans la catégorie demandée. Après son inclusion, la variable `$categorie` est prête à être utilisée. Vous pouvez modifier cette variable en créant le fichier `site/inc/categorie.inc.php`, qui sera inséré à la fin de celui par défaut.
+
+- `commentaire.inc.php`: construit et analyse le formulaire d'ajout d'un commentaire. Après son inclusion, la variable `$formulaireCommentaire` est prête à être utilisée. Il est possible d'interagir avec ce script en créant le fichier `site/inc/commentaire.inc.php`, qui sera inséré à différentes étapes du script.
 
 - `config.inc.php`: contient presque toute la configuration du site, autant pour le formulaire de contact, les galeries photo, le titre du site, etc. Pour modifier une variable de ce fichier, créer le fichier `site/inc/config.inc.php` et y réaffecter les variables dont vous voulez changer la valeur. S'il existe, ce fichier sera inséré après celui par défaut.
 
@@ -208,11 +212,11 @@ Les fichiers du dossier `inc` peuvent être personnalisés en créant un fichier
   - vous pouvez créer le fichier `site/inc/dernier-pre.inc.php`, qui sera inséré au début de `inc/dernier.inc.php`;
   - vous pouvez également créer le fichier `site/inc/dernier.inc.php`, qui sera inséré à la fin de celui par défaut.
 
-- `partage-courriel.inc.php`: crée les variables nécessaires à l'incorporation au formulaire de contact du module de partage (par courriel). Vous pouvez modifier ces variables en créant le fichier `site/inc/partage-courriel.inc.php`, qui sera inséré à la fin de celui par défaut.
-
 - `fonctions.inc.php`: contient les fonctions utilisées dans Squeletml. Vous pouvez créer vos propres fonctions dans le fichier `site/inc/fonctions.inc.php`, qui sera inséré après celui par défaut.
 
 - `galerie.inc.php`: génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une image. Vous pouvez modifier ces variables en créant le fichier `site/inc/galerie.inc.php`, qui sera inséré à la fin de celui par défaut.
+
+- `partage-courriel.inc.php`: crée les variables nécessaires à l'incorporation au formulaire de contact du module de partage (par courriel). Vous pouvez modifier ces variables en créant le fichier `site/inc/partage-courriel.inc.php`, qui sera inséré à la fin de celui par défaut.
 
 - `premier.inc.php`: gère l'inclusion des fichiers et l'affectation des variables nécessaires à la construction de la structure XHTML précédant le contenu ajouté directement dans une page du site. Deux traitements personnalisés peuvent être effectués dans ce fichier:
 
