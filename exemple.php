@@ -166,6 +166,7 @@ $chaineSecurisee = securiseTexte($chaine);
 $chaineSansCom = supprimeCommentairesHtml($chaine);
 $chaineSansComCorrigee = corrigeHtml($chaineSansCom);
 $chaineSansComCorrigeeEtSecurisee = securiseTexte($chaineSansComCorrigee);
+$chaineTronquee = tronqueTexte($chaine, 25);
 ?>
 
 <p>Voici maintenant une chaîne de caractères sécurisée avec la fonction <code>securiseTexte()</code>:</p>
@@ -184,9 +185,17 @@ $chaineSansComCorrigeeEtSecurisee = securiseTexte($chaineSansComCorrigee);
 
 <pre><?php echo $chaineSansComCorrigeeEtSecurisee; ?></pre>
 
-<p>Pour terminer, désécurisons avec la fonction <code>desecuriseTexte()</code> la chaîne précédemment sécurisée:</p>
+<p>Désécurisons avec la fonction <code>desecuriseTexte()</code> la chaîne précédemment sécurisée:</p>
 
 <?php echo desecuriseTexte($chaineSansComCorrigeeEtSecurisee); ?>
+
+<p>Pour terminer, affichons un aperçu de ce texte avec la fonction <code>tronqueTexte()</code>:</p>
+
+<?php echo $chaineTronquee; ?>
+
+Remarquons que les balises HTML sont correctement fermées par cette fonction:
+
+<pre><?php echo securiseTexte($chaineTronquee); ?></pre>
 
 <?php
 $phrase = "L'hiver arrive, le vent se lève";

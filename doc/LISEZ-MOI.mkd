@@ -196,8 +196,6 @@ avec ce programme; si ce n'est pas le cas, consultez
 
 - [**jQuery UI**](http://jqueryui.com/): sous double licence MIT et GPL.
 
-- [**node_teaser**](http://api.drupal.org/api/function/node_teaser/6): fonction de Drupal, sous licence GPL. J'ai effectué quelques modifications; le résultat est sous licence GPL version 3 ou toute version ultérieure.
-
 - [**PHP gettext**](https://launchpad.net/php-gettext/): sous licence GPL version 2 ou toute version ultérieure.
 
 - [**PHPJS**](http://phpjs.org/): sous double licence MIT et GPL.

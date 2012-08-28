@@ -22,8 +22,6 @@ else
 include_once $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
 include_once $racine . '/inc/filter_htmlcorrector/common.inc.php';
 include_once $racine . '/inc/filter_htmlcorrector/filter.inc.php';
-include_once $racine . '/inc/node_teaser/node.inc.php';
-include_once $racine . '/inc/node_teaser/unicode.inc.php';
 
 if ($dureeCache)
 {

@@ -1,6 +1,6 @@
 ## Dépendances
 
-Squeletml requiert un serveur Apache avec PHP 5. Aucune base de données n'est utilisée.
+Squeletml requiert un serveur Apache avec PHP 5 (et le module PHP `mbstring` activé). Aucune base de données n'est utilisée.
 
 Certains dossiers doivent être accessibles en écriture:
 
