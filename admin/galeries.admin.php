@@ -228,6 +228,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 				}
 				
 				$tableauInfosGaleries[$idGalerieDossier] .= "</li>\n";
+				$descriptionGalerie = '';
+				
+				if (!empty($infosGalerie['description']))
+				{
+					$descriptionGalerie = descriptionGalerieTableauVersTexte($infosGalerie['description']);
+				}
+				
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("Description: %1\$s"), $descriptionGalerie) . "</li>\n";
 				$tableauInfosGaleries[$idGalerieDossier] .= $fichierDeConfiguration;
 				$tableauInfosGaleries[$idGalerieDossier] .= $apercu;
 				$tableauInfosGaleries[$idGalerieDossier] .= "</ul></li>\n";
@@ -2496,7 +2504,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 			
 			<div class="bDcorps">
-				<p><?php echo T_("Vous pouvez renommer une galerie ou modifier son dossier ou son URL. S'il s'agit du renommage d'une galerie ayant sa propre page Web, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page Web en question."); ?></p>
+				<p><?php echo T_("Vous pouvez renommer une galerie ou modifier son dossier ou son URL. D'autres informations sont également modifiables. S'il s'agit du renommage d'une galerie ayant sa propre page Web, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page Web en question."); ?></p>
 			</div><!-- .bDcorps -->
 		</div><!-- .aideAdminGaleries -->
 

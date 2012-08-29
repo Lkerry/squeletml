@@ -396,6 +396,10 @@ li.listeGaleriesTitre ul {
 	font-weight: normal;
 }
 
+li.listeGaleriesTitre div.descriptionGalerie {
+	margin: 10px 10px 10px 50px;
+}
+
 .galerieMinivignettes img {
 	float: left;
 	height: 35px;
