@@ -1747,6 +1747,21 @@ function decodeTexteGet($texte)
 }
 
 /*
+Convertit la description en tableau d'une galerie au format texte affichable dans une page HTML, et retourne le résultat.
+*/
+function descriptionGalerieTableauVersTexte($tableauDescription)
+{
+	$description = '';
+	
+	foreach ($tableauDescription as $ligneDescription)
+	{
+		$description .= "$ligneDescription\n";
+	}
+	
+	return "<div class=\"descriptionGalerie\">\n$description</div><!-- /.descriptionGalerie -->\n";
+}
+
+/*
 Fonction opposée à `securiseTexte()`. Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour que les entités HTML spéciales soient converties en caractères, sinon si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été désécurisé, sinon si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
 */
 function desecuriseTexte($texte)

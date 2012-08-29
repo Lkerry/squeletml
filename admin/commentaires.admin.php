@@ -1028,7 +1028,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						<?php if (!empty($listePagesAvecCommentaires)): ?>
 							<?php $disabled = ''; ?>
-							<?php printf(T_("<label for=\"%1\$s\">URL de la page</label>:"), "gererSelectPage"); ?><br />
+							<label for="gererSelectPage"><?php echo T_("URL de la page:"); ?></label><br />
 							<select id="gererSelectPage" name="page">
 								<?php foreach ($listePagesAvecCommentaires as $listePage): ?>
 									<option value="<?php echo encodeTexte($listePage); ?>"><?php echo securiseTexte($listePage); ?></option>

@@ -320,6 +320,17 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine)
 }
 
 /*
+Convertit la description textuelle d'une galerie en tableau utilisable dans le fichier de configuration des galeries, et retourne le résultat.
+*/
+function adminDescriptionGalerieTexteVersTableau($description)
+{
+	$description = trim($description);
+	$description = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $description);
+	
+	return explode("\n", $description);
+}
+
+/*
 Retourne TRUE si le dossier est vide, sinon retourne FALSE.
 */
 function adminDossierEstVide($cheminDossier)
@@ -1904,7 +1915,17 @@ function adminMajConfigGaleries($racine, $listeModifs)
 		
 		foreach ($infosGalerie as $cle => $valeur)
 		{
-			$contenuConfig .= "$cle=$valeur\n";
+			if (is_array($valeur))
+			{
+				foreach ($valeur as $valeur2)
+				{
+					$contenuConfig .= $cle . '[]=' . $valeur2 . "\n";
+				}
+			}
+			else
+			{
+				$contenuConfig .= "$cle=$valeur\n";
+			}
 		}
 		
 		$contenuConfig .= "\n";

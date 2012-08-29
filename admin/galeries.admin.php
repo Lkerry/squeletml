@@ -275,11 +275,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$idNouvelleGalerie = '';
+			$tableauNouvelleGalerieDescription = array ();
 			$idNouvelleGalerieDossier = '';
 			
 			if (!empty($_POST['idNouvelleGalerie']))
 			{
 				$idNouvelleGalerie = superBasename($_POST['idNouvelleGalerie']);
+			}
+			
+			if (!empty($_POST['nouvelleGalerieDescription']))
+			{
+				$tableauNouvelleGalerieDescription = adminDescriptionGalerieTexteVersTableau($_POST['nouvelleGalerieDescription']);
 			}
 			
 			if (!empty($_POST['idNouvelleGalerieDossier']))
@@ -829,6 +835,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$nouvelId = '';
+			$tableauNouvelleDescription = array ();
 			$nouveauNomDossier = '';
 			$nouvelleUrl = '';
 			$listeGaleries = listeGaleries($racine);
@@ -836,6 +843,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (!empty($_POST['idNouveauNomGalerie']))
 			{
 				$nouvelId = superBasename($_POST['idNouveauNomGalerie']);
+			}
+			
+			if (!empty($_POST['nouvelleDescriptionGalerie']))
+			{
+				$tableauNouvelleDescription = adminDescriptionGalerieTexteVersTableau($_POST['nouvelleDescriptionGalerie']);
 			}
 			
 			if (!empty($_POST['idNouveauNomDossier']))
@@ -921,6 +933,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$nouvelId = '';
 			}
 			
+			if (!empty($listeGaleries[$id]['description']) && $tableauNouvelleDescription == $listeGaleries[$id]['description'])
+			{
+				$tableauNouvelleDescription = array ();
+			}
+			
 			if (!empty($listeGaleries[$id]['dossier']) && $nouveauNomDossier == $listeGaleries[$id]['dossier'])
 			{
 				$nouveauNomDossier = '';
@@ -939,7 +956,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
 			}
-			elseif (empty($nouvelId) && empty($nouveauNomDossier) && empty($nouvelleUrl))
+			elseif (empty($nouvelId) && empty($tableauNouvelleDescription) && empty($nouveauNomDossier) && empty($nouvelleUrl))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune option sélectionnée.") . "</li>\n";
 			}
@@ -967,6 +984,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$messagesScript .= '<li>' . sprintf(T_("URL %1\$s modifiée pour %2\$s."), '<code>' . securiseTexte($listeModifs[$id]['url']) . '</code>', '<code>' . securiseTexte($nouvelleUrl) . '</code>') . "</li>\n";
 					$listeModifs[$id]['url'] = $nouvelleUrl;
+				}
+				
+				if (!empty($tableauNouvelleDescription))
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Description de la galerie %1\$s modifiée."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
+					$listeModifs[$id]['description'] = $tableauNouvelleDescription;
 				}
 				
 				if (!empty($nouvelId))
@@ -2006,7 +2029,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$rssGalerie = 0;
 					}
 					
-					if (adminMajConfigGaleries($racine, array ($id => array ('dossier' => $idDossier, 'url' => $urlRelativeGalerie, 'rss' => $rssGalerie))))
+					if (adminMajConfigGaleries($racine, array ($id => array ('dossier' => $idDossier, 'url' => $urlRelativeGalerie, 'rss' => $rssGalerie, 'description' => $tableauNouvelleGalerieDescription))))
 					{
 						$messagesScript .= '<li>' . sprintf(T_("Ajout de la galerie %1\$s dans le fichier de configuration des galeries %2\$s effectué."), '<code>' . securiseTexte($id) . '</code>', '<code>' . securiseTexte($cheminConfigGaleries) . '</code>') . "</li>\n";
 					}
@@ -2135,7 +2158,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<div class="bDcorps afficher">
 							<p><label for="nouvelleGalerieDossier"><?php echo T_("Si nouvelle galerie, nom du dossier (laisser vide pour génération automatique):"); ?></label><br />
 							<input id="nouvelleGalerieDossier" class="long" type="text" name="idNouvelleGalerieDossier" /></p>
-					
+							
 							<p><label for="mettreEnLigneInputUrl"><?php echo T_("Si nouvelle galerie, URL relative de la page Web (laisser vide pour génération automatique):"); ?></label><br />
 							<input id="mettreEnLigneInputUrl" class="long" type="text" name="urlNouvelleGalerie" /></p>
 							
@@ -2144,6 +2167,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 								<option value="1" selected="selected"><?php echo T_("Activé"); ?></option>
 								<option value="0"><?php echo T_("Désactivé"); ?></option>
 							</select></p>
+							
+							<p><label for="nouvelleGalerieDescription"><?php echo T_("Si nouvelle galerie, description (code HTML permis):"); ?></label><br />
+							<textarea id="nouvelleGalerieDescription" cols="50" rows="3" name="nouvelleGalerieDescription"></textarea></p>
 						</div><!-- /.bDcorps -->
 					</fieldset>
 					
@@ -2453,7 +2479,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				<fieldset>
 					<legend><?php echo T_("Options"); ?></legend>
 					
-					<p><?php printf(T_("<label for=\"%1\$s\">Identifiant de la galerie</label>:"), "renommerSelectId"); ?><br />
+					<p><label for="renommerSelectId"><?php echo T_("Identifiant de la galerie:"); ?></label><br />
 					<?php $listeGaleries = listeGaleries($racine); ?>
 				
 					<?php if (!empty($listeGaleries)): ?>
@@ -2472,19 +2498,23 @@ include $racineAdmin . '/inc/premier.inc.php';
 					</p>
 					
 					<?php if (!empty($listeGaleries)): ?>
-						<p><?php printf(T_("<label for=\"%1\$s\">Nouvel identifiant</label>:"), "renommerInputIdNouveauNomGalerie"); ?><br />
+						<p><label for="renommerInputIdNouveauNomGalerie"><?php echo T_("Nouvel identifiant:"); ?></label><br />
 						<input id="renommerInputIdNouveauNomGalerie" class="long" type="text" name="idNouveauNomGalerie" />
 						</p>
 						
-						<p><?php printf(T_("<label for=\"%1\$s\">Nouveau nom du dossier</label>:"), "renommerInputIdNouveauNomDossier"); ?><br />
+						<p><label for="renommerInputIdNouveauNomDossier"><?php echo T_("Nouveau nom du dossier:"); ?></label><br />
 						<input id="renommerInputIdNouveauNomDossier" class="long" type="text" name="idNouveauNomDossier" />
 						</p>
 						
-						<p><?php printf(T_("<label for=\"%1\$s\">Nouvelle URL relative</label>:"), "renommerInputNouvelleUrl"); ?><br />
+						<p><label for="renommerInputNouvelleUrl"><?php echo T_("Nouvelle URL relative:"); ?></label><br />
 						<input id="renommerInputNouvelleUrl" class="long" type="text" name="nouvelleUrl" />
 						</p>
 						
 						<p><input id="renommerInputNouvelleUrlPageGlobale" type="checkbox" name="nouvelleUrlPageGlobale" value="pageGlobale" /> <label for="renommerInputNouvelleUrlPageGlobale"><?php echo T_("Modifier l'URL actuelle pour la page globale des galeries"); ?></label></p>
+						
+						<p><label for="renommerNouvelleDescriptionGalerie"><?php echo T_("Nouvelle description (code HTML permis):"); ?></label><br />
+						<textarea id="renommerNouvelleDescriptionGalerie" cols="50" rows="10" name="nouvelleDescriptionGalerie"></textarea>
+						</p>
 					<?php endif; ?>
 				</fieldset>
 			

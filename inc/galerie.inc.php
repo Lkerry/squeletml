@@ -3,6 +3,12 @@
 Ce fichier génère les variables nécessaires à l'affiche d'une galerie ou d'une page individuelle d'une image. Aucun code XHTML n'est envoyé au navigateur.
 */
 
+// Tableau de configuration des galeries.
+if (!isset($galeries))
+{
+	$galeries = super_parse_ini_file(cheminConfigGaleries($racine), TRUE);
+}
+
 // Dossier.
 $idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 
@@ -402,6 +408,7 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		}
 		
 		// Variable `$corpsGalerie` finale.
+		
 		if ($galerieMinivignettesEmplacement == 'haut' && $galerieInfoEmplacement == 'haut')
 		{
 			$corpsGalerie = $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin . $corpsGalerie;
@@ -417,6 +424,11 @@ if (!empty($idGalerie) && isset($_GET['image']))
 		elseif ($galerieMinivignettesEmplacement == 'bas' && $galerieInfoEmplacement == 'bas')
 		{
 			$corpsGalerie = $corpsGalerie . $infoEtMinivignettesEnsembleCodeDebut . $galerieInfo . $corpsMinivignettes . $infoEtMinivignettesEnsembleCodeFin;
+		}
+		
+		if (!empty($galeries[$idGalerie]['description']))
+		{
+			$corpsGalerie = descriptionGalerieTableauVersTexte($galeries[$idGalerie]['description']) . $corpsGalerie;
 		}
 	}
 	// Si l'image n'existe pas, on affiche un message d'erreur. On n'affiche pas toutes les images de la galerie dans le but d'éviter le contenu dupliqué.
@@ -644,6 +656,7 @@ elseif (!empty($idGalerie))
 		}
 		
 		// Variable `$corpsGalerie` finale.
+		
 		if ($galerieInfoEmplacement == 'haut')
 		{
 			$corpsGalerie = $galerieInfo . $corpsGalerie;
@@ -651,6 +664,11 @@ elseif (!empty($idGalerie))
 		elseif ($galerieInfoEmplacement == 'bas')
 		{
 			$corpsGalerie .= $galerieInfo;
+		}
+		
+		if (!empty($galeries[$idGalerie]['description']))
+		{
+			$corpsGalerie = descriptionGalerieTableauVersTexte($galeries[$idGalerie]['description']) . $corpsGalerie;
 		}
 	}
 }
