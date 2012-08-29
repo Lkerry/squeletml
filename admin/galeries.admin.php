@@ -849,6 +849,25 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$nouvelleUrl = superBasename($nouvelleUrl);
 			}
 			
+			if (isset($_POST['nouvelleUrlPageGlobale']))
+			{
+				$idNouvelleUrlPageGlobale = '';
+				
+				if (!empty($nouvelId))
+				{
+					$idNouvelleUrlPageGlobale = $nouvelId;
+				}
+				elseif (!empty($id))
+				{
+					$idNouvelleUrlPageGlobale = $id;
+				}
+				
+				if (!empty($idNouvelleUrlPageGlobale))
+				{
+					$nouvelleUrl = 'galerie.php?id=' . filtreChaine($idNouvelleUrlPageGlobale) . '&amp;langue={LANGUE}';
+				}
+			}
+			
 			// S'assurer de la concordance entre l'identifiant et l'URL.
 			
 			$pageGlobaleGaleries = FALSE;
@@ -2464,6 +2483,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 						<p><?php printf(T_("<label for=\"%1\$s\">Nouvelle URL relative</label>:"), "renommerInputNouvelleUrl"); ?><br />
 						<input id="renommerInputNouvelleUrl" class="long" type="text" name="nouvelleUrl" />
 						</p>
+						
+						<p><input id="renommerInputNouvelleUrlPageGlobale" type="checkbox" name="nouvelleUrlPageGlobale" value="pageGlobale" /> <label for="renommerInputNouvelleUrlPageGlobale"><?php echo T_("Modifier l'URL actuelle pour la page globale des galeries"); ?></label></p>
 					<?php endif; ?>
 				</fieldset>
 			
