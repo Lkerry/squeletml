@@ -275,8 +275,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$idNouvelleGalerie = '';
-			$tableauNouvelleGalerieDescription = array ();
 			$idNouvelleGalerieDossier = '';
+			$tableauNouvelleGalerieDescription = array ();
 			
 			if (!empty($_POST['idNouvelleGalerie']))
 			{
@@ -838,9 +838,10 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			$nouvelId = '';
-			$tableauNouvelleDescription = array ();
 			$nouveauNomDossier = '';
 			$nouvelleUrl = '';
+			$tableauNouvelleDescription = array ();
+			$nouvelleValeurRss = '';
 			$listeGaleries = listeGaleries($racine);
 			
 			if (!empty($_POST['idNouveauNomGalerie']))
@@ -881,6 +882,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$nouvelleUrl = 'galerie.php?id=' . filtreChaine($idNouvelleUrlPageGlobale) . '&amp;langue={LANGUE}';
 				}
+			}
+			
+			if (isset($_POST['nouvelleValeurRss']) && ($_POST['nouvelleValeurRss'] === '0' || $_POST['nouvelleValeurRss'] === '1'))
+			{
+				$nouvelleValeurRss = $_POST['nouvelleValeurRss'];
 			}
 			
 			// S'assurer de la concordance entre l'identifiant et l'URL.
@@ -936,11 +942,6 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$nouvelId = '';
 			}
 			
-			if (!empty($listeGaleries[$id]['description']) && $tableauNouvelleDescription == $listeGaleries[$id]['description'])
-			{
-				$tableauNouvelleDescription = array ();
-			}
-			
 			if (!empty($listeGaleries[$id]['dossier']) && $nouveauNomDossier == $listeGaleries[$id]['dossier'])
 			{
 				$nouveauNomDossier = '';
@@ -951,6 +952,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$nouvelleUrl = '';
 			}
 			
+			if (isset($listeGaleries[$id]['rss']) && $nouvelleValeurRss == $listeGaleries[$id]['rss'])
+			{
+				$nouvelleValeurRss = '';
+			}
+			
+			if (!empty($listeGaleries[$id]['description']) && $tableauNouvelleDescription == $listeGaleries[$id]['description'])
+			{
+				$tableauNouvelleDescription = array ();
+			}
+			
 			if (empty($id))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune galerie sélectionnée.") . "</li>\n";
@@ -959,7 +970,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
 			}
-			elseif (empty($nouvelId) && empty($tableauNouvelleDescription) && empty($nouveauNomDossier) && empty($nouvelleUrl))
+			elseif (empty($nouvelId) && empty($nouveauNomDossier) && empty($nouvelleUrl) && strlen($nouvelleValeurRss) == 0 && empty($tableauNouvelleDescription))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune option sélectionnée.") . "</li>\n";
 			}
@@ -987,6 +998,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$messagesScript .= '<li>' . sprintf(T_("URL %1\$s modifiée pour %2\$s."), '<code>' . securiseTexte($listeModifs[$id]['url']) . '</code>', '<code>' . securiseTexte($nouvelleUrl) . '</code>') . "</li>\n";
 					$listeModifs[$id]['url'] = $nouvelleUrl;
+				}
+				
+				if (strlen($nouvelleValeurRss) > 0)
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Valeur d'activation du flux RSS de la galerie %1\$s modifiée."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
+					$listeModifs[$id]['rss'] = $nouvelleValeurRss;
 				}
 				
 				if (!empty($tableauNouvelleDescription))
@@ -2520,6 +2537,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 						</p>
 						
 						<p><input id="renommerInputNouvelleUrlPageGlobale" type="checkbox" name="nouvelleUrlPageGlobale" value="pageGlobale" /> <label for="renommerInputNouvelleUrlPageGlobale"><?php echo T_("Modifier l'URL actuelle pour la page globale des galeries"); ?></label></p>
+						
+						<p><label for="renommerSelectNouvelleValeurRss"><?php echo T_("Nouvelle valeur d'activation du flux RSS:"); ?></label><br />
+						<select id="renommerSelectNouvelleValeurRss" name="nouvelleValeurRss">
+							<option value="" selected="selected"></option>
+							<option value="1"><?php echo T_("Activé"); ?></option>
+							<option value="0"><?php echo T_("Désactivé"); ?></option>
+						</select></p>
 						
 						<p><label for="renommerNouvelleDescriptionGalerie"><?php echo T_("Nouvelle description (code HTML permis):"); ?></label><br />
 						<textarea id="renommerNouvelleDescriptionGalerie" cols="50" rows="10" name="nouvelleDescriptionGalerie"></textarea>

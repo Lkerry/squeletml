@@ -443,7 +443,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$contenuFichierTableau[$cat]['infos'][] = "parent=$parentCat\n";
 					
-					if (!empty($_POST['rss'][$cle]) && $_POST['rss'][$cle] == 1)
+					if (isset($_POST['rss'][$cle]) && $_POST['rss'][$cle] == 1)
 					{
 						$rssCat = 1;
 					}
