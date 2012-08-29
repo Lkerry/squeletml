@@ -2504,7 +2504,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			<h3 class="bDtitre"><?php echo T_("Aide"); ?></h3>
 			
 			<div class="bDcorps">
-				<p><?php echo T_("Vous pouvez renommer une galerie ou modifier son dossier ou son URL. D'autres informations sont également modifiables. S'il s'agit du renommage d'une galerie ayant sa propre page Web, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page Web en question."); ?></p>
+				<p><?php echo T_("Vous pouvez renommer une galerie ou modifier son dossier ou son URL. D'autres informations sont également modifiables dans les options avancées. S'il s'agit du renommage d'une galerie ayant sa propre page Web, ne pas oublier de modifier la valeur de la variable <code>\$idGalerie</code> dans la page Web en question."); ?></p>
 			</div><!-- .bDcorps -->
 		</div><!-- .aideAdminGaleries -->
 
@@ -2546,16 +2546,23 @@ include $racineAdmin . '/inc/premier.inc.php';
 						
 						<p><input id="renommerInputNouvelleUrlPageGlobale" type="checkbox" name="nouvelleUrlPageGlobale" value="pageGlobale" /> <label for="renommerInputNouvelleUrlPageGlobale"><?php echo T_("Modifier l'URL actuelle pour la page globale des galeries"); ?></label></p>
 						
-						<p><label for="renommerSelectNouvelleValeurRss"><?php echo T_("Nouvelle valeur d'activation du flux RSS:"); ?></label><br />
-						<select id="renommerSelectNouvelleValeurRss" name="nouvelleValeurRss">
-							<option value="" selected="selected"></option>
-							<option value="1"><?php echo T_("Activé"); ?></option>
-							<option value="0"><?php echo T_("Désactivé"); ?></option>
-						</select></p>
-						
-						<p><label for="renommerNouvelleDescriptionGalerie"><?php echo T_("Nouvelle description (code HTML permis):"); ?></label><br />
-						<textarea id="renommerNouvelleDescriptionGalerie" cols="50" rows="10" name="nouvelleDescriptionGalerie"></textarea>
-						</p>
+						<fieldset class="optionsAvanceesAdminGaleries">
+							<legend class="bDtitre"><?php echo T_("Options avancées"); ?></legend>
+							
+							<div class="bDcorps">
+								<ul>
+									<li><label for="renommerSelectNouvelleValeurRss"><?php echo T_("Nouvelle valeur d'activation du flux RSS:"); ?></label><br />
+									<select id="renommerSelectNouvelleValeurRss" name="nouvelleValeurRss">
+										<option value="" selected="selected"></option>
+										<option value="1"><?php echo T_("Activé"); ?></option>
+										<option value="0"><?php echo T_("Désactivé"); ?></option>
+									</select></li>
+									
+									<li><label for="renommerNouvelleDescriptionGalerie"><?php echo T_("Nouvelle description (code HTML permis):"); ?></label><br />
+									<textarea id="renommerNouvelleDescriptionGalerie" cols="50" rows="10" name="nouvelleDescriptionGalerie"></textarea></li>
+								</ul>
+							</div><!-- /.bDcorps -->
+						</fieldset>
 					<?php endif; ?>
 				</fieldset>
 			
