@@ -5568,15 +5568,13 @@ Aussi, une galerie doit être présente dans le flux RSS global des galeries pou
 function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
 {
 	$html = '';
-	$nomFichierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . filtreChaine($id);
+	$dossierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . encodeTexte($id);
 	
 	// Éviter une boucle infinie.
-	if (file_exists($nomFichierTmp))
+	if (!@mkdir($dossierTmp))
 	{
 		return $html;
 	}
-	
-	@touch($nomFichierTmp);
 	
 	if ($type == 'categorie')
 	{
@@ -5969,10 +5967,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		}
 	}
 	
-	if (file_exists($nomFichierTmp))
-	{
-		@unlink($nomFichierTmp);
-	}
+	@rmdir($dossierTmp);
 	
 	return $html;
 }
