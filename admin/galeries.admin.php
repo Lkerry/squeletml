@@ -808,6 +808,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 						{
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de la suppression de la galerie %1\$s du fichier de configuration des galeries %2\$s."), '<code>' . securiseTexte($id) . '</code>', '<code>' . securiseTexte($cheminConfigGaleries) . '</code>') . "</li>\n";
 						}
+						
+						$cheminRelatifConfigGaleries = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigGaleries);
+						$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigGaleries) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigGaleries)) . '#messages">' . T_("Modifier manuellement le fichier de configuration des galeries dans le porte-documents.") . "</a></li>\n";
 					}
 				}
 				else
@@ -1009,6 +1012,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de la mise à jour des données de la galerie %1\$s dans le fichier de configuration des galeries %2\$s."), '<code>' . securiseTexte($id) . '</code>', '<code>' . securiseTexte($cheminConfigGaleries) . '</code>') . "</li>\n";
 				}
+				
+				$cheminRelatifConfigGaleries = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigGaleries);
+				$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigGaleries) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigGaleries)) . '#messages">' . T_("Modifier manuellement le fichier de configuration des galeries dans le porte-documents.") . "</a></li>\n";
 			}
 			
 			echo adminMessagesScript($messagesScript, T_("Renommage ou déplacement d'une galerie"));
@@ -2037,6 +2043,9 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$messagesScript .= '<li class="erreur">' . sprintf(T_("Erreur lors de l'ajout de la galerie %1\$s dans le fichier de configuration des galeries %2\$s."), '<code>' . securiseTexte($id) . '</code>', '<code>' . securiseTexte($cheminConfigGaleries) . '</code>') . "</li>\n";
 					}
+					
+					$cheminRelatifConfigGaleries = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, $cheminConfigGaleries);
+					$messagesScript .= '<li><a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminRelatifConfigGaleries) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminRelatifConfigGaleries)) . '#messages">' . T_("Modifier manuellement le fichier de configuration des galeries dans le porte-documents.") . "</a></li>\n";
 					
 					if (!empty($urlNouvelleGalerie))
 					{
