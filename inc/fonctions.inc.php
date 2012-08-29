@@ -993,7 +993,7 @@ Retourne le chemin d'un fichier cache global contenant les informations d'en-tê
 */
 function cheminFichierCacheEnTete($cheminFichierCache)
 {
-	$nomFichierCache = superBasename($cheminFichierCache);
+	$nomFichierCache = superBasename($cheminFichierCache) . '.txt';
 	$dossierFichierCache = dirname($cheminFichierCache);
 	
 	return "$dossierFichierCache/en-tete-$nomFichierCache";
