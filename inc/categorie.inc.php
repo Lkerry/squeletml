@@ -222,7 +222,7 @@ if (!empty($idCategorie))
 			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 			{
 				$adresse = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
-				$infosPage = infosPage($racine, $urlRacine, $adresse, $inclureApercu, $tailleApercuAutomatique, $dureeCache, TRUE);
+				$infosPage = infosPage($racine, $urlRacine, $adresse, $inclureApercu, $tailleApercuAutomatique, $dureeCache, TRUE, $estPageCron);
 				
 				if (!empty($infosPage))
 				{

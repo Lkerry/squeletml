@@ -3290,13 +3290,13 @@ Retourne un tableau d'informations au sujet du contenu local accessible à l'URL
 
 Si `$html` est vide et que l'URL fournie n'est pas accessible, retourne un tableau vide.
 */
-function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $desactiverLectureCachePartiel = FALSE, $html = '')
+function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE, $html = '')
 {
 	$infosPage = array ();
 	
 	if (empty($html))
 	{
-		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache, $desactiverLectureCachePartiel);
+		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache, $desactiverLectureCachePartiel, $estPageCron);
 	}
 	
 	if (!empty($html))
