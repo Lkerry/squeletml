@@ -2333,10 +2333,10 @@ function fluxRssGlobalGaleries($racine)
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 */
-function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache)
+function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, $estPageCron)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, TRUE);
+	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, TRUE, $estPageCron);
 	
 	if (!empty($infosPage))
 	{
@@ -5580,7 +5580,7 @@ Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un l
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron)
 {
 	$html = '';
 	$dossierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . encodeTexte($id);
@@ -5618,7 +5618,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $dureeCache);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $dureeCache, $estPageCron);
 					
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -5921,7 +5921,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $dureeCache);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $dureeCache, $estPageCron);
 				
 					if (!empty($fluxRssPageTableauBrut))
 					{

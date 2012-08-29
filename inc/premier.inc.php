@@ -542,7 +542,7 @@ if (file_exists($racine . '/site/inc/premier.inc.php'))
 ##
 ########################################################################
 
-if (!$dureeCache || $desactiverCache)
+if ((!$dureeCache || $desactiverCache) && !$estPageCron)
 {
 	eval($enTetesHttp);
 }

@@ -42,6 +42,11 @@ if ($dureeCacheRss)
 
 $enTetesHttp = 'header("Content-Type: text/xml; charset=utf-8");';
 
+if (!isset($estPageCron))
+{
+	$estPageCron = FALSE;
+}
+
 if ($inclureApercu && $utiliserApercuDansFluxRss)
 {
 	$fluxRssAvecApercu = TRUE;
@@ -169,7 +174,11 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 					@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 				}
 				
-				eval($enTetesHttp);
+				if (!$estPageCron)
+				{
+					eval($enTetesHttp);
+				}
+				
 				echo $rssAafficher;
 			}
 		}
@@ -262,7 +271,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss, $estPageCron);
 					
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -314,7 +323,11 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			eval($enTetesHttp);
+			if (!$estPageCron)
+			{
+				eval($enTetesHttp);
+			}
+			
 			echo $rssAafficher;
 		}
 	}
@@ -401,7 +414,11 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			eval($enTetesHttp);
+			if (!$estPageCron)
+			{
+				eval($enTetesHttp);
+			}
+			
 			echo $rssAafficher;
 		}
 	}
@@ -457,7 +474,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss, $estPageCron);
 						
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -500,7 +517,11 @@ elseif ($getType == 'site' && !empty($getLangue))
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			eval($enTetesHttp);
+			if (!$estPageCron)
+			{
+				eval($enTetesHttp);
+			}
+			
 			echo $rssAafficher;
 		}
 	}
