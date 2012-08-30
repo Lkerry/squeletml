@@ -6314,7 +6314,7 @@ Supprime les balises HTML du code fourni, et retourne le résultat.
 */
 function supprimeBalisesHtml($codeHtml)
 {
-	return trim(strip_tags($codeHtml));
+	return strip_tags($codeHtml);
 }
 
 /*
