@@ -6079,6 +6079,13 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 	}
 	
 	$codePage = '';
+	$dossierTmp = "$racine/site/cache/simule-visite-" . encodeTexte($cheminPage, TRUE);
+	
+	// Éviter une boucle infinie.
+	if (!@mkdir($dossierTmp))
+	{
+		return $codePage;
+	}
 	
 	if (is_file($cheminPage))
 	{
@@ -6174,6 +6181,8 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 			unset($_GET_TMP);
 		}
 	}
+	
+	@rmdir($dossierTmp);
 	
 	return $codePage;
 }
