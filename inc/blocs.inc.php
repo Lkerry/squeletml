@@ -635,7 +635,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($partageReseaux && empty($courrielContact))
 						{
-							$listePartage = partageReseaux(variableGet(1, $url, 'action', 'partageCourriel'), $baliseTitle . $baliseTitleComplement);
+							$listePartage = partageReseaux($urlSansAction, $baliseTitle . $baliseTitleComplement);
 							
 							foreach ($listePartage as $service)
 							{
