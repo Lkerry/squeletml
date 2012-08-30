@@ -500,7 +500,9 @@ elseif (!empty($idGalerie))
 		if (!empty($galeries[$idGalerie]['description']))
 		{
 			$description = descriptionGalerieTableauVersTexte($galeries[$idGalerie]['description']);
-			$description = securiseTexte(supprimeBalisesHtml($description));
+			$description = supprimeBalisesHtml($description);
+			$description = securiseTexte($description);
+			$description = str_replace(array ("\r\n", "\n\r", "\r", "\n"), ' ', $description);
 		}
 		else
 		{
