@@ -497,7 +497,16 @@ elseif (!empty($idGalerie))
 	
 	if (empty($description))
 	{
-		$description = sprintf(T_("Voir toutes les images de la galerie %1\$s."), securiseTexte($idGalerie));
+		if (!empty($galeries[$idGalerie]['description']))
+		{
+			$description = descriptionGalerieTableauVersTexte($galeries[$idGalerie]['description']);
+			$description = strip_tags($description);
+			$description = securiseTexte($description);
+		}
+		else
+		{
+			$description = sprintf(T_("Voir toutes les images de la galerie %1\$s."), securiseTexte($idGalerie));
+		}
 	}
 	
 	if ($inclureMotsCles && empty($motsCles))
