@@ -22,16 +22,35 @@ else
 include_once $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
 include_once $racine . '/inc/filter_htmlcorrector/common.inc.php';
 include_once $racine . '/inc/filter_htmlcorrector/filter.inc.php';
-include_once $racine . '/inc/node_teaser/node.inc.php';
-include_once $racine . '/inc/node_teaser/unicode.inc.php';
+
+$dureeCacheRss = 0;
 
 if ($dureeCache)
+{
+	$dureeCacheRss = $dureeCache;
+}
+elseif ($dureeCachePartiel)
+{
+	$dureeCacheRss = $dureeCachePartiel;
+}
+
+if ($dureeCacheRss)
 {
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
 	$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
 }
 
 $enTetesHttp = 'header("Content-Type: text/xml; charset=utf-8");';
+
+if (!isset($estPageCron))
+{
+	$estPageCron = FALSE;
+}
+
+if (!isset($estVisiteSimulee))
+{
+	$estVisiteSimulee = FALSE;
+}
 
 if ($inclureApercu && $utiliserApercuDansFluxRss)
 {
@@ -102,9 +121,9 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 			}
 			
 			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-			if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+			if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 			{
-				if (file_exists($cheminFichierCacheEnTete))
+				if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 				{
 					$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 					
@@ -136,7 +155,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 				
 				$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlGalerie, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), $idGalerie, '');
 				
-				if ($dureeCache)
+				if ($dureeCacheRss)
 				{
 					creeDossierCache($racine);
 					$enregistrerCache = TRUE;
@@ -156,11 +175,15 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 						@file_put_contents($cheminFichierCache, $rssAafficher);
 					}
 					
-					$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+					$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCacheRss);
 					@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 				}
 				
-				eval($enTetesHttp);
+				if (!$estPageCron && !$estVisiteSimulee)
+				{
+					eval($enTetesHttp);
+				}
+				
 				echo $rssAafficher;
 			}
 		}
@@ -227,9 +250,9 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		
 		phpGettext('.', $infosCategorieLangue); // Nécessaire à la traduction.
 		
-		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
-			if (file_exists($cheminFichierCacheEnTete))
+			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
 				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 				
@@ -253,7 +276,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss, $estPageCron);
 					
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -281,7 +304,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 			
 			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, $urlCategorie, baliseTitleComplement($tableauBaliseTitleComplement, array ($infosCategorie['langue'], $langueParDefaut), FALSE), '', $idCategorie);
 	
-			if ($dureeCache)
+			if ($dureeCacheRss)
 			{
 				creeDossierCache($racine);
 				$enregistrerCache = TRUE;
@@ -301,11 +324,15 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 					@file_put_contents($cheminFichierCache, $rssAafficher);
 				}
 				
-				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCacheRss);
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			eval($enTetesHttp);
+			if (!$estPageCron && !$estVisiteSimulee)
+			{
+				eval($enTetesHttp);
+			}
+			
 			echo $rssAafficher;
 		}
 	}
@@ -341,9 +368,9 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
-			if (file_exists($cheminFichierCacheEnTete))
+			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
 				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 				
@@ -368,7 +395,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 			
 			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
-			if ($dureeCache)
+			if ($dureeCacheRss)
 			{
 				creeDossierCache($racine);
 				$enregistrerCache = TRUE;
@@ -388,11 +415,15 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 					@file_put_contents($cheminFichierCache, $rssAafficher);
 				}
 				
-				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCacheRss);
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			eval($enTetesHttp);
+			if (!$estPageCron && !$estVisiteSimulee)
+			{
+				eval($enTetesHttp);
+			}
+			
 			echo $rssAafficher;
 		}
 	}
@@ -419,9 +450,9 @@ elseif ($getType == 'site' && !empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache))
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
-			if (file_exists($cheminFichierCacheEnTete))
+			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
 				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 				
@@ -448,7 +479,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss, $estPageCron);
 						
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -467,7 +498,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 			
 			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
-			if ($dureeCache)
+			if ($dureeCacheRss)
 			{
 				creeDossierCache($racine);
 				$enregistrerCache = TRUE;
@@ -487,11 +518,15 @@ elseif ($getType == 'site' && !empty($getLangue))
 					@file_put_contents($cheminFichierCache, $rssAafficher);
 				}
 				
-				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
+				$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCacheRss);
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			eval($enTetesHttp);
+			if (!$estPageCron && !$estVisiteSimulee)
+			{
+				eval($enTetesHttp);
+			}
+			
 			echo $rssAafficher;
 		}
 	}

@@ -7,15 +7,17 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 1. Première série d'inclusions.
 2. Première série d'affectations.
 3. Deuxième série d'inclusions.
-4. Première série de traitement personnalisé optionnel.
-5. Vérification du cache global.
-6. Deuxième série d'affectations.
-7. Troisième série d'inclusions.
+4. Deuxième série d'affectations.
+5. Troisième série d'inclusions.
+6. Première série de traitement personnalisé optionnel.
+7. Vérification du cache global.
 8. Troisième série d'affectations.
-9. Ajouts dans `$balisesLinkScript`.
-10. Deuxième série de traitement personnalisé optionnel.
-11. En-têtes HTTP.
-12. Inclusion de code XHTML.
+9. Quatrième série d'inclusions.
+10. Quatrième série d'affectations.
+11. Ajouts dans `$balisesLinkScript`.
+12. Deuxième série de traitement personnalisé optionnel.
+13. En-têtes HTTP.
+14. Inclusion de code XHTML.
 */
 
 ########################################################################
@@ -24,7 +26,7 @@ Ce fichier gère l'inclusion des fichiers et l'affectation des variables nécess
 ##
 ########################################################################
 
-// Inclusions 1 de 3.
+// Inclusions 1 de 4.
 
 include dirname(__FILE__) . '/../init.inc.php';
 
@@ -35,7 +37,7 @@ if (file_exists($racine . '/site/inc/devel.inc.php'))
 
 include_once $racine . '/inc/fonctions.inc.php';
 
-// Affectations 1 de 3.
+// Affectations 1 de 4.
 
 eval(variablesAaffecterAuDebut());
 $estPageCompte = $urlSansGet == "$urlRacine/compte.php" ? TRUE : FALSE;
@@ -71,12 +73,17 @@ if (!isset($estPageCron))
 	$estPageCron = FALSE;
 }
 
+if (!isset($estVisiteSimulee))
+{
+	$estVisiteSimulee = FALSE;
+}
+
 if (!isset($idCategorie))
 {
 	$idCategorie = '';
 }
 
-// Inclusions 2 de 3.
+// Inclusions 2 de 4.
 
 foreach (inclureAuDebut($racine) as $fichier)
 {
@@ -87,6 +94,25 @@ foreach (inclureUneFoisAuDebut($racine) as $fichier)
 {
 	include_once $fichier;
 }
+
+// Affectations 2 de 4.
+
+if (!isset($ajoutCommentaires))
+{
+	$ajoutCommentaires = $ajoutCommentairesParDefaut;
+}
+
+if (!isset($partageCourriel))
+{
+	$partageCourriel = $activerPartageCourrielParDefaut;
+}
+
+if (!empty($courrielContact) || (isset($_GET['action']) && (($ajoutCommentaires && $_GET['action'] == 'commentaire') || ($partageCourriel && $_GET['action'] == 'partageCourriel'))))
+{
+	$desactiverCache = TRUE;
+}
+
+// Inclusions 3 de 4.
 
 phpGettext($racine, LANGUE); // Nécessaire à la traduction.
 
@@ -113,7 +139,7 @@ if ($dureeCache && !$desactiverCache)
 	// On vérifie si la page existe en cache ou si le cache est expiré.
 	if (file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
 	{
-		if (file_exists($cheminFichierCacheEnTete))
+		if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 		{
 			$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 			
@@ -133,15 +159,10 @@ if ($dureeCache && !$desactiverCache)
 	}
 }
 
-// Affectations 2 de 3.
+// Affectations 3 de 4.
 
 extract(init('', 'baliseH1', 'baliseTitle', 'boitesDeroulantes', 'classesBody', 'classesContenu', 'courrielContact', 'dateCreation', 'dateRevision', 'description', 'enTetesHttp', 'idGalerie', 'idGalerieDossier', 'lienPageVignette', 'lienPageIntermediaire', 'motsCles', 'robots'), EXTR_SKIP);
-extract(init(FALSE, 'inclureCodeFenetreJavascript', 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
-
-if (!isset($ajoutCommentaires))
-{
-	$ajoutCommentaires = $ajoutCommentairesParDefaut;
-}
+extract(init(FALSE, 'desactiverLectureCachePartiel', 'inclureCodeFenetreJavascript', 'partageCourrielActif', 'partageCourrielInclureContact', 'erreur404', 'estPageDerreur', 'titreGalerieGenere'), EXTR_SKIP);
 
 if (!isset($apercu))
 {
@@ -177,11 +198,11 @@ $estAccueil = estAccueil(ACCUEIL);
 
 if (!empty($baliseTitle))
 {
-	$baliseTitle = securiseTexte($baliseTitle);
+	$baliseTitle = securiseTexte(supprimeBalisesHtml($baliseTitle));
 }
 
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), $estAccueil);
-$baliseTitleComplement = securiseTexte($baliseTitleComplement);
+$baliseTitleComplement = securiseTexte(supprimeBalisesHtml($baliseTitleComplement));
 
 if (!isset($boitesDeroulantesAlaMain))
 {
@@ -212,6 +233,7 @@ $cheminCachePartiel = $racine . '/inc/cache-partiel.inc.php';
 if ((!$dureeCache || $desactiverCache) && $dureeCachePartiel && !$desactiverCachePartiel)
 {
 	$inclureCachePartiel = TRUE;
+	$cheminFichierCachePartiel = cheminFichierCachePartiel($racine, $urlRacine, $url);
 }
 else
 {
@@ -230,7 +252,7 @@ if (!empty($dateRevision))
 
 if (!empty($description))
 {
-	$description = securiseTexte($description);
+	$description = securiseTexte(supprimeBalisesHtml($description));
 }
 
 if (!isset($infosPublication))
@@ -267,11 +289,6 @@ if ($siteEstEnMaintenance)
 	$noticeMaintenance = noticeMaintenance();
 }
 
-if (!isset($partageCourriel))
-{
-	$partageCourriel = $activerPartageCourrielParDefaut;
-}
-
 if (!isset($partageReseaux))
 {
 	$partageReseaux = $activerPartageReseauxParDefaut;
@@ -300,7 +317,7 @@ if ($tableDesMatieres)
 	$boitesDeroulantes .= ' #tableDesMatieres';
 }
 
-// Inclusions 3 de 3.
+// Inclusions 4 de 4.
 
 if (!empty($idCategorie))
 {
@@ -314,13 +331,9 @@ if (!empty($idGalerie))
 
 include $racine . '/inc/blocs.inc.php';
 
-// Affectations 3 de 3.
+// Affectations 4 de 4.
 
-if (!isset($baliseTitle))
-{
-	$baliseTitle = '';
-}
-
+// Mise à jour de la balise `title`.
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1);
 
 if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
@@ -530,7 +543,7 @@ if (file_exists($racine . '/site/inc/premier.inc.php'))
 ##
 ########################################################################
 
-if (!$dureeCache || $desactiverCache)
+if ((!$dureeCache || $desactiverCache) && !$estPageCron && !$estVisiteSimulee)
 {
 	eval($enTetesHttp);
 }

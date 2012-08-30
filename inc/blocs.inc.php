@@ -4,7 +4,10 @@ Ce fichier construit le code des blocs. Après son inclusion, le tableau `$blocs
 */
 
 // Vérification de l'état du module de partage (par courriel).
-include $racine . '/inc/partage-courriel.inc.php';
+if ($partageCourriel)
+{
+	include $racine . '/inc/partage-courriel.inc.php';
+}
 
 $blocsAinsererTemp = blocs($ordreBlocsDansFluxHtml, $nombreDeColonnes, $premierOuDernier);
 $blocs = array (

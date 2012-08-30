@@ -308,7 +308,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	if (!empty($infosPage['apercu']))
 	{
 		$apercu .= "<div class=\"lienApercu\">\n";
-		$apercu .= sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em>') . "\n";
+		$apercu .= '<p>' . sprintf(T_("Lire la suite de %1\$s"), "<em><a href=\"$adresse\">" . $infosPage['titre'] . '</a></em></p>') . "\n";
 		$apercu .= "</div><!-- /.lienApercu -->\n";
 	}
 
@@ -411,12 +411,14 @@ function baliseTitle($baliseTitle, $baliseH1)
 	{
 		if (!empty($baliseH1))
 		{
-			$baliseTitle = strip_tags($baliseH1);
+			$baliseTitle = $baliseH1;
 		}
 		else
 		{
 			$baliseTitle = variableGet(0, url(), 'action');
 		}
+		
+		$baliseTitle = securiseTexte(supprimeBalisesHtml($baliseTitle));
 	}
 	
 	return $baliseTitle;
@@ -993,7 +995,7 @@ Retourne le chemin d'un fichier cache global contenant les informations d'en-tê
 */
 function cheminFichierCacheEnTete($cheminFichierCache)
 {
-	$nomFichierCache = superBasename($cheminFichierCache);
+	$nomFichierCache = superBasename($cheminFichierCache) . '.txt';
 	$dossierFichierCache = dirname($cheminFichierCache);
 	
 	return "$dossierFichierCache/en-tete-$nomFichierCache";
@@ -1747,6 +1749,21 @@ function decodeTexteGet($texte)
 }
 
 /*
+Convertit la description en tableau d'une galerie au format texte affichable dans une page HTML, et retourne le résultat.
+*/
+function descriptionGalerieTableauVersTexte($tableauDescriptionGalerie)
+{
+	$descriptionGalerie = '';
+	
+	foreach ($tableauDescriptionGalerie as $ligneDescriptionGalerie)
+	{
+		$descriptionGalerie .= "$ligneDescriptionGalerie\n";
+	}
+	
+	return "<div class=\"descriptionGalerie\">\n$descriptionGalerie</div><!-- /.descriptionGalerie -->\n";
+}
+
+/*
 Fonction opposée à `securiseTexte()`. Si la valeur passée en paramètre est une chaîne de caractères, retourne la chaîne traitée pour que les entités HTML spéciales soient converties en caractères, sinon si la valeur passée en paramètre est un tableau, retourne un tableau dont chaque élément a été désécurisé, sinon si la valeur passée en paramètre n'est ni une chaîne ni un tableau, retourne une chaîne vide.
 */
 function desecuriseTexte($texte)
@@ -2318,10 +2335,10 @@ function fluxRssGlobalGaleries($racine)
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 */
-function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache)
+function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, $estPageCron)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache);
+	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, TRUE, $estPageCron);
 	
 	if (!empty($infosPage))
 	{
@@ -3256,8 +3273,6 @@ function inclureUneFoisAuDebut($racine)
 	$fichiers[] = $racine . '/inc/simplehtmldom/simple_html_dom.inc.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/common.inc.php';
 	$fichiers[] = $racine . '/inc/filter_htmlcorrector/filter.inc.php';
-	$fichiers[] = $racine . '/inc/node_teaser/node.inc.php';
-	$fichiers[] = $racine . '/inc/node_teaser/unicode.inc.php';
 	
 	if (file_exists($racine . '/site/inc/fonctions.inc.php'))
 	{
@@ -3292,13 +3307,13 @@ Retourne un tableau d'informations au sujet du contenu local accessible à l'URL
 
 Si `$html` est vide et que l'URL fournie n'est pas accessible, retourne un tableau vide.
 */
-function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $html = '')
+function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE, $html = '')
 {
 	$infosPage = array ();
 	
 	if (empty($html))
 	{
-		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache);
+		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache, $desactiverLectureCachePartiel, $estPageCron);
 	}
 	
 	if (!empty($html))
@@ -3378,14 +3393,20 @@ function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuA
 				}
 				elseif ($resultatApercu[1] == 'automatique')
 				{
-					list ($infosPage['apercu'], $apercuEstToutLeTexte) = tronqueTexte(supprimeCommentairesHtml($infosPage['contenu']), $tailleApercuAutomatique);
+					$contenuSansCommentairesHtml = trim(supprimeCommentairesHtml($infosPage['contenu']));
 					$commentairesHtmlSupprimes = TRUE;
-					$infosPage['apercu'] = corrigeHtml($infosPage['apercu']);
-				
-					if (!$apercuEstToutLeTexte)
+					$infosPage['apercu'] = tronqueTexte($contenuSansCommentairesHtml, $tailleApercuAutomatique, array (), TRUE);
+					
+					if ($infosPage['apercu'] == $contenuSansCommentairesHtml)
 					{
-						$infosPage['apercu'] .= ' […]';
+						$infosPage['apercu'] = '';
 					}
+					else
+					{
+						$infosPage['apercu'] .= "<div class=\"sep\"></div>\n";
+					}
+					
+					unset($contenuSansCommentairesHtml);
 				}
 				else
 				{
@@ -4093,7 +4114,7 @@ Construit des balises `link` et `script`. Voir le fichier de configuration `inc/
 
 Le paramètre `$dossierAdmin` doit être vide si la fonction est utilisée pour le site et non pour la section d'administration.
 */
-function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScript = array ('css' => '', 'js' => '', 'autres' => ''))
+function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balisesBrutes, $versionParDefautLinkScript = array ('css' => '', 'favicon' => '', 'js' => ''))
 {
 	$balisesBrutesAinclure = linkScriptAinclure($balisesBrutes);
 	$balisesFormatees = '';
@@ -4215,7 +4236,7 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 		{
 			case 'favicon':
 				// On ne conserve qu'une déclaration de favicon.
-				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['autres']) . '" />' . "\n";
+				$favicon = '<link rel="shortcut icon" type="images/x-icon" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['favicon']) . '" />' . "\n";
 				break;
 	
 			case 'css':
@@ -4281,7 +4302,7 @@ $fichier\n//]]>\n</script>\n";
 					$title = '';
 				}
 				
-				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . variableGet(2, $fichier, $versionParDefautLinkScript['autres']) . '"' . $title . ' />' . "\n";
+				$balisesFormatees .= '<link rel="alternate" type="application/rss+xml" href="' . $fichier . '"' . $title . ' />' . "\n";
 				break;
 		}
 	}
@@ -5561,18 +5582,16 @@ Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un l
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron)
 {
 	$html = '';
-	$nomFichierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . filtreChaine($id);
+	$dossierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . encodeTexte($id);
 	
 	// Éviter une boucle infinie.
-	if (file_exists($nomFichierTmp))
+	if (!@mkdir($dossierTmp))
 	{
 		return $html;
 	}
-	
-	@touch($nomFichierTmp);
 	
 	if ($type == 'categorie')
 	{
@@ -5601,7 +5620,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $dureeCache);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $dureeCache, $estPageCron);
 					
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -5904,7 +5923,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $dureeCache);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $dureeCache, $estPageCron);
 				
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -5965,10 +5984,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		}
 	}
 	
-	if (file_exists($nomFichierTmp))
-	{
-		@unlink($nomFichierTmp);
-	}
+	@rmdir($dossierTmp);
 	
 	return $html;
 }
@@ -6019,93 +6035,109 @@ function securiseTexte($texte)
 /*
 Récupère le code XHTML d'une page locale, comme si elle était visitée dans un navigateur.
 */
-function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $estPageCron = FALSE)
+function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE)
 {
+	$estVisiteSimulee = TRUE;
 	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
 	$cheminRelatifPage = supprimeUrlRacine($urlRacine, $urlAsimuler);
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
 	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
 	$cheminPage = $racine . '/' . decodeTexte($cheminRelatifPage);
-	$dossierActuel = getcwd();
-	chdir(dirname($cheminPage));
+	$codePage = '';
 	
-	# Ajustement des variables relatives à l'URL.
-	
-	$infosUrl = parse_url($urlAsimuler);
-	
-	if ($infosUrl !== FALSE)
+	if (file_exists($cheminPage))
 	{
-		$_SERVER_TMP = $_SERVER;
+		$dossierActuel = getcwd();
+		chdir(dirname($cheminPage));
 		
-		if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
+		# Ajustement des variables relatives à l'URL.
+		
+		$infosUrl = parse_url($urlAsimuler);
+		
+		if ($infosUrl !== FALSE)
 		{
-			$_SERVER['HTTPS'] = 1;
+			if (!isset($_SERVER))
+			{
+				$_SERVER = array ();
+			}
+			
+			$_SERVER_TMP = $_SERVER;
+			
+			if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
+			{
+				$_SERVER['HTTPS'] = 1;
+			}
+			else
+			{
+				$_SERVER['HTTPS'] = '';
+			}
+			
+			if (isset($infosUrl['host']))
+			{
+				$_SERVER['SERVER_NAME'] = $infosUrl['host'];
+			}
+			else
+			{
+				$_SERVER['SERVER_NAME'] = '';
+			}
+			
+			if (isset($infosUrl['port']))
+			{
+				$_SERVER['SERVER_PORT'] = $infosUrl['port'];
+			}
+			else
+			{
+				$_SERVER['SERVER_PORT'] = '';
+			}
+			
+			if (isset($infosUrl['path']))
+			{
+				$_SERVER['REQUEST_URI'] = $infosUrl['path'];
+			}
+			else
+			{
+				$_SERVER['REQUEST_URI'] = '';
+			}
+			
+			if (!isset($_GET))
+			{
+				$_GET = array ();
+			}
+			
+			$_GET_TMP = $_GET;
+			unset($_GET);
+			
+			if (isset($infosUrl['query']))
+			{
+				$_SERVER['REQUEST_URI'] .= '?' . $infosUrl['query'];
+				parse_str($infosUrl['query'], $_GET);
+			}
+		}
+		
+		ob_start();
+		$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
+	
+		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
+		{
+			@readfile($cheminFichierCache);
 		}
 		else
 		{
-			$_SERVER['HTTPS'] = '';
+			include $cheminPage;
 		}
 		
-		if (isset($infosUrl['host']))
-		{
-			$_SERVER['SERVER_NAME'] = $infosUrl['host'];
-		}
-		else
-		{
-			$_SERVER['SERVER_NAME'] = '';
-		}
+		$codePage = ob_get_contents();
+		ob_end_clean();
+		chdir($dossierActuel);
 		
-		if (isset($infosUrl['port']))
+		# Restauration des variables relatives à l'URL.
+		if ($infosUrl !== FALSE)
 		{
-			$_SERVER['SERVER_PORT'] = $infosUrl['port'];
+			$_SERVER = $_SERVER_TMP;
+			unset($_SERVER_TMP);
+			$_GET = $_GET_TMP;
+			unset($_GET_TMP);
 		}
-		else
-		{
-			$_SERVER['SERVER_PORT'] = '';
-		}
-		
-		if (isset($infosUrl['path']))
-		{
-			$_SERVER['REQUEST_URI'] = $infosUrl['path'];
-		}
-		else
-		{
-			$_SERVER['REQUEST_URI'] = '';
-		}
-		
-		$_GET_TMP = $_GET;
-		unset($_GET);
-		
-		if (isset($infosUrl['query']))
-		{
-			$_SERVER['REQUEST_URI'] .= '?' . $infosUrl['query'];
-			parse_str($infosUrl['query'], $_GET);
-		}
-	}
-	
-	ob_start();
-	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
-	
-	if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
-	{
-		@readfile($cheminFichierCache);
-	}
-	else
-	{
-		include $cheminPage;
-	}
-	
-	$codePage = ob_get_contents();
-	ob_end_clean();
-	chdir($dossierActuel);
-	
-	# Restauration des variables relatives à l'URL.
-	if ($infosUrl !== FALSE)
-	{
-		$_SERVER = $_SERVER_TMP;
-		unset($_SERVER_TMP);
-		$_GET = $_GET_TMP;
-		unset($_GET_TMP);
 	}
 	
 	return $codePage;
@@ -6231,6 +6263,14 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 	}
 	
 	return $tableau;
+}
+
+/*
+Supprime les balises HTML du code fourni, et retourne le résultat.
+*/
+function supprimeBalisesHtml($codeHtml)
+{
+	return trim(strip_tags($codeHtml));
 }
 
 /*
@@ -6368,7 +6408,7 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 			}
 			else
 			{
-				$idH = filtreChaine($contenuH);
+				$idH = filtreChaine(supprimeBalisesHtml($contenuH));
 				$h->id = $idH;
 			}
 			
@@ -6491,11 +6531,132 @@ function triTableauAccueil($accueil, $langue)
 }
 
 /*
-Tronque le texte à la taille spécifiée. Il s'agit d'un alias de la fonction `node_teaser()`.
+Tronque le texte à la taille spécifiée et retourne le résultat.
+
+Provient de la fonction `truncate()` du fichier `lib/Cake/Utility/String.php` de CakePHP 2.2.1, sous licence MIT. Le commentaire original de la fonction est le suivant:
+
+Truncates text.
+
+Cuts a string to the length of $length and replaces the last characters
+with the ending if the text is longer than length.
+
+### Options:
+
+- `ending` Will be used as Ending and appended to the trimmed string
+- `exact` If false, $text will not be cut mid-word
+- `html` If true, HTML tags would be handled correctly
+
+@param string $text String to truncate.
+@param integer $length Length of returned string, including ellipsis.
+@param array $options An array of html attributes and options.
+@return string Trimmed string.
+@link http://book.cakephp.org/2.0/en/core-libraries/helpers/text.html#TextHelper::truncate
 */
-function tronqueTexte($texte, $taille)
+function tronqueTexte($text, $length, $options = array(), $commentairesHtmlSupprimes = FALSE)
 {
-	return node_teaser($texte, $taille);
+	$default = array(
+		'ending' => ' […]', 'exact' => FALSE, 'html' => TRUE
+	);
+	$options = array_merge($default, $options);
+	extract($options);
+	
+	if (!empty($text) && $html && !$commentairesHtmlSupprimes)
+	{
+		$text = supprimeCommentairesHtml($text);
+	}
+	
+	if ($html) {
+		if (mb_strlen(preg_replace('/<.*?>/', '', $text)) <= $length) {
+			return $text;
+		}
+		$totalLength = mb_strlen(strip_tags($ending));
+		$openTags = array();
+		$truncate = '';
+
+		preg_match_all('/(<\/?([\w+]+)[^>]*>)?([^<>]*)/', $text, $tags, PREG_SET_ORDER);
+		foreach ($tags as $tag) {
+			if (!preg_match('/img|br|input|hr|area|base|basefont|col|frame|isindex|link|meta|param/s', $tag[2])) {
+				if (preg_match('/<[\w]+[^>]*>/s', $tag[0])) {
+					array_unshift($openTags, $tag[2]);
+				} elseif (preg_match('/<\/([\w]+)[^>]*>/s', $tag[0], $closeTag)) {
+					$pos = array_search($closeTag[1], $openTags);
+					if ($pos !== false) {
+						array_splice($openTags, $pos, 1);
+					}
+				}
+			}
+			$truncate .= $tag[1];
+
+			$contentLength = mb_strlen(preg_replace('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', ' ', $tag[3]));
+			if ($contentLength + $totalLength > $length) {
+				$left = $length - $totalLength;
+				$entitiesLength = 0;
+				if (preg_match_all('/&[0-9a-z]{2,8};|&#[0-9]{1,7};|&#x[0-9a-f]{1,6};/i', $tag[3], $entities, PREG_OFFSET_CAPTURE)) {
+					foreach ($entities[0] as $entity) {
+						if ($entity[1] + 1 - $entitiesLength <= $left) {
+							$left--;
+							$entitiesLength += mb_strlen($entity[0]);
+						} else {
+							break;
+						}
+					}
+				}
+
+				$truncate .= mb_substr($tag[3], 0 , $left + $entitiesLength);
+				break;
+			} else {
+				$truncate .= $tag[3];
+				$totalLength += $contentLength;
+			}
+			if ($totalLength >= $length) {
+				break;
+			}
+		}
+	} else {
+		if (mb_strlen($text) <= $length) {
+			return $text;
+		} else {
+			$truncate = mb_substr($text, 0, $length - mb_strlen($ending));
+		}
+	}
+	if (!$exact) {
+		$spacepos = mb_strrpos($truncate, ' ');
+		if ($html) {
+			$truncateCheck = mb_substr($truncate, 0, $spacepos);
+			$lastOpenTag = mb_strrpos($truncateCheck, '<');
+			$lastCloseTag = mb_strrpos($truncateCheck, '>');
+			if ($lastOpenTag > $lastCloseTag) {
+				preg_match_all('/<[\w]+[^>]*>/s', $truncate, $lastTagMatches);
+				$lastTag = array_pop($lastTagMatches[0]);
+				$spacepos = mb_strrpos($truncate, $lastTag) + mb_strlen($lastTag);
+			}
+			$bits = mb_substr($truncate, $spacepos);
+			preg_match_all('/<\/([a-z]+)>/', $bits, $droppedTags, PREG_SET_ORDER);
+			if (!empty($droppedTags)) {
+				if (!empty($openTags)) {
+					foreach ($droppedTags as $closingTag) {
+						if (!in_array($closingTag[1], $openTags)) {
+							array_unshift($openTags, $closingTag[1]);
+						}
+					}
+				} else {
+					foreach ($droppedTags as $closingTag) {
+						array_push($openTags, $closingTag[1]);
+					}
+				}
+			}
+		}
+		$truncate = mb_substr($truncate, 0, $spacepos);
+	}
+	$truncate .= $ending;
+
+	if ($html) {
+		foreach ($openTags as $tag) {
+			$truncate .= '</' . $tag . '>';
+		}
+	}
+
+	return $truncate;
 }
 
 /*

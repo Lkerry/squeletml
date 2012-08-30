@@ -4,7 +4,6 @@ Ce fichier construit et analyse le formulaire d'ajout d'un commentaire. Après s
 */
 
 // Affectations.
-$desactiverCache = TRUE;
 $nom = '';
 $courriel = '';
 $site = '';
@@ -125,8 +124,7 @@ if (isset($_POST['envoyerCommentaire']))
 			$erreurEnvoiFormulaire = TRUE;
 			$messagesScript .= '<li class="erreur">' . T_("Erreur: votre commentaire n'a pas pu être envoyé. Essayez un peu plus tard.") . "</li>\n";
 		}
-		
-		if (!file_exists($cheminConfigAbonnementsCommentaires) && !@touch($cheminConfigAbonnementsCommentaires))
+		elseif (!file_exists($cheminConfigAbonnementsCommentaires) && !@touch($cheminConfigAbonnementsCommentaires))
 		{
 			$erreurEnvoiFormulaire = TRUE;
 			$messagesScript .= '<li class="erreur">' . T_("Erreur: votre commentaire n'a pas pu être envoyé. Essayez un peu plus tard.") . "</li>\n";
@@ -370,10 +368,11 @@ if (isset($_POST['envoyerCommentaire']))
 						$infosCourriel['destinataire'] = $commentairesDestinataireNotification;
 						$infosCourriel['message'] = $messageDansCourriel;
 						$infosSupplementaires = array ();
+						$infosSupplementaires[] = sprintf(T_("Identifiant: %1\$s"), "<code>$idCommentaire</code>");
 						
 						if (!empty($courriel))
 						{
-							$infosSupplementaires[] = sprintf(T_("Courriel: %1\$s"), $courriel);
+							$infosSupplementaires[] = sprintf(T_("Courriel: %1\$s"), "<a href=\"mailto:$courriel\">$courriel</a>");
 						}
 						
 						if (!empty($ipInternaute))
@@ -395,18 +394,15 @@ if (isset($_POST['envoyerCommentaire']))
 							$infosSupplementaires[] = sprintf(T_("Notification: %1\$s"), $notificationAffichee);
 						}
 						
-						if (!empty($infosSupplementaires))
+						$infosCourriel['message'] .= "<ul>\n";
+						
+						foreach ($infosSupplementaires as $infoSupplementaire)
 						{
-							$infosCourriel['message'] .= "<ul>\n";
-							
-							foreach ($infosSupplementaires as $infoSupplementaire)
-							{
-								$infosCourriel['message'] .= "<li>$infoSupplementaire</li>\n";
-							}
-							
-							$infosCourriel['message'] .= "</ul>\n";
-							$infosCourriel['message'] .= "<hr />\n";
+							$infosCourriel['message'] .= "<li>$infoSupplementaire</li>\n";
 						}
+						
+						$infosCourriel['message'] .= "</ul>\n";
+						$infosCourriel['message'] .= "<hr />\n";
 						
 						if ($moderationCommentaires)
 						{

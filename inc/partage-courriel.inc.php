@@ -12,14 +12,22 @@ if (!$erreur404 && !$estPageDerreur)
 	
 	if (isset($_GET['action']) && $_GET['action'] == 'partageCourriel')
 	{
-		$nom = securiseTexte(trim($_POST['nom']));
+		if (isset($_POST['nom']))
+		{
+			$nom = securiseTexte(trim($_POST['nom']));
+		}
 		
 		if (empty($nom))
 		{
 			$nom = T_("VOTRE NOM");
 		}
 		
-		$message = securiseTexte(trim($_POST['message']));
+		$message = '';
+		
+		if (isset($_POST['message']))
+		{
+			$message = securiseTexte(trim($_POST['message']));
+		}
 		
 		if (!empty($message) && !$messageEnvoye)
 		{
@@ -122,7 +130,7 @@ if (!$erreur404 && !$estPageDerreur)
 			
 			if (!empty($idCategorie))
 			{
-				$messagePartageCourrielSupplement = publicationsRecentes($racine, $urlRacine, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache);
+				$messagePartageCourrielSupplement = publicationsRecentes($racine, $urlRacine, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron);
 				$messagePartageCourrielSupplement = partageCourrielSupplementPage('', '', $messagePartageCourrielSupplement);
 				$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la catégorie %3\$s:"), $nom, '<code>' . securiseTexte(ACCUEIL) . '</code>', '<em>' . securiseTexte($idCategorie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
 			}

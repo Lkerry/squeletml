@@ -105,7 +105,3 @@
 							<?php if ($inclureApercu): ?>
 								<?php echo $apercu; ?>
 							<?php endif; ?>
-							
-							<?php if (!empty($idGalerie)): ?>
-								<div id="galerie">
-							<?php endif; ?>

@@ -4,7 +4,6 @@ Ce fichier construit et analyse le formulaire de contact. Après son inclusion, 
 */
 
 // Affectations.
-$desactiverCache = TRUE;
 $nom = '';
 $courriel = '';
 $message = '';
@@ -15,7 +14,10 @@ $messageEnvoye = FALSE;
 $contact = '';
 
 // Vérification de l'état du module de partage (par courriel).
-include $racine . '/inc/partage-courriel.inc.php';
+if ($partageCourriel)
+{
+	include $racine . '/inc/partage-courriel.inc.php';
+}
 
 if ($partageCourrielActif)
 {
@@ -230,7 +232,11 @@ if (isset($_POST['envoyerContact']))
 
 // Code du formulaire.
 
-include $racine . '/inc/partage-courriel.inc.php';
+if ($partageCourriel)
+{
+	include $racine . '/inc/partage-courriel.inc.php';
+}
+
 $actionFormContact = actionFormContact($partageCourrielActif);
 
 if ($nom == T_("VOTRE NOM"))

@@ -396,6 +396,10 @@ li.listeGaleriesTitre ul {
 	font-weight: normal;
 }
 
+li.listeGaleriesTitre div.descriptionGalerie {
+	margin: 10px 10px 10px 50px;
+}
+
 .galerieMinivignettes img {
 	float: left;
 	height: 35px;
@@ -430,6 +434,11 @@ p#porteDocumentsBoutonEditionSauvegarder, p#porteDocumentsBoutonEditionAnnuler {
 div#porteDocumentsEditionOptions {
 	float: left;
 	width: 65%;
+}
+
+textarea#code {
+	width: 100%;
+	border: none;
 }
 
 li.contenuFichierPourSauvegarde > p:first-child {

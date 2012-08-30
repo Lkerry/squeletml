@@ -55,7 +55,7 @@ else
 
 if (!empty($tableauCorpsGalerie['corpsGalerie']))
 {
-	$galerie = $tableauCorpsGalerie['corpsGalerie'];
+	$galerie = '<div id="galerie">' . "\n" . $tableauCorpsGalerie['corpsGalerie'] . "</div><!-- /#galerie -->\n";
 	$afficherGalerie = TRUE;
 }
 else
@@ -133,7 +133,12 @@ if ($dureeCache && !$desactiverCache)
 	
 	$enTetesHttp .= enTetesCache($cheminFichierCache, $dureeCache);
 	@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
-	eval($enTetesHttp);
+	
+	if (!$estPageCron && !$estVisiteSimulee)
+	{
+		eval($enTetesHttp);
+	}
+	
 	echo $codePage;
 }
 ?>

@@ -1,10 +1,8 @@
 <?php
-$cheminFichierCachePartiel = cheminFichierCachePartiel($racine, $urlRacine, $url);
-
 if ($premierOuDernier == 'premier')
 {
 	// On vérifie si le cache partiel existe ou s'il est expiré.
-	if (file_exists($cheminFichierCachePartiel) && !cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel) && !$estPageCron)
+	if (file_exists($cheminFichierCachePartiel) && !cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel) && !$estPageCron && !$desactiverLectureCachePartiel)
 	{
 		@readfile($cheminFichierCachePartiel);
 		$inclureFinMilieuInterieurContenu = FALSE;
@@ -43,6 +41,10 @@ elseif ($premierOuDernier == 'dernier' && $inclureFinMilieuInterieurContenu)
 	if ($enregistrerCachePartiel)
 	{
 		@file_put_contents($cheminFichierCachePartiel, $codePartielPage);
+	}
+	else
+	{
+		@touch($cheminFichierCachePartiel);
 	}
 	
 	echo $codePartielPage;

@@ -162,8 +162,8 @@ $fusionnerCssJs = FALSE; // TRUE|FALSE
 - Voir la section «Cache» dans la documentation ainsi que la fonction `linkScript()` pour plus de détails.
 */
 $versionParDefautLinkScript['css']     = "";
+$versionParDefautLinkScript['favicon'] = "";
 $versionParDefautLinkScript['js']      = "";
-$versionParDefautLinkScript['autres']  = "";
 
 // Inclusion des feuilles de style par défaut de Squeletml (dossier `css`).
 /*

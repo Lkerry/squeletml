@@ -106,6 +106,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 								$listePagesLangue .= '<li><label for="inputUrl-' . $i . '-' . $j . '"><code>pages[]=</code></label><input id="inputUrl-' . $i . '-' . $j . '" class="long" type="text" name="url[' . $i . '][]" value="' . securiseTexte($page) . '" />';
 								$cheminPage = adminCheminFichierRelatifRacinePorteDocuments($racine, $adminDossierRacinePorteDocuments, decodeTexte($page));
 								$listePagesLangue .= ' <a href="porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($cheminPage) . '&amp;dossierCourant=' . encodeTexteGet(dirname($cheminPage)) . '#messages"><img src="' . $urlRacineAdmin . '/fichiers/editer.png" alt="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" title="' . sprintf(T_("Éditer «%1\$s»"), securiseTexte($cheminPage)) . '" width="16" height="16" /></a>';
+								$listePagesLangue .= ' <a href="' . $urlRacine . '/' . $page . '"><img src="' . $urlRacineAdmin . '/fichiers/navigation.png" alt="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($urlRacine . '/' . $page)) . '" title="' . sprintf(T_("Afficher «%1\$s»"), securiseTexte($urlRacine . '/' . $page)) . '" width="16" height="16" /></a>';
 								$listePagesLangue .= "</li>\n";
 								$j++;
 							}
