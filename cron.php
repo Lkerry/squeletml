@@ -65,19 +65,22 @@ if (file_exists($racine . '/init.inc.php'))
 			foreach ($listeUrl as $url => $infosUrl)
 			{
 				simuleVisite($racine, $urlRacine, $url, $dureeCache, FALSE, TRUE);
-				$rapportLi .= '<li>';
-				$rapportLi .= '<code>simuleVisite("' . $racine . '", "' . $urlRacine . '", "' . $url . '", "' . $dureeCache . '", FALSE, TRUE);</code>' . "</li>\n";
+				$rapportLi .= "<li><code>$url</code></li>\n";
 			}
 		}
 		
 		if (empty($rapportLi))
 		{
-			$rapportLi = '<li>' . T_("Aucune action à effectuer.") . "</li>\n";
+			$rapport .= '<p>' . T_("Aucune action à effectuer.") . "</p>\n";
 		}
-		
-		$rapport .= "<ul>\n";
-		$rapport .= $rapportLi;
-		$rapport .= "</ul>\n";
+		else
+		{
+			$rapport .= '<p>' . T_("Génération du cache des URL suivantes:") . "</p>\n";
+			
+			$rapport .= "<ul>\n";
+			$rapport .= $rapportLi;
+			$rapport .= "</ul>\n";
+		}
 		
 		########################################################################
 		##
