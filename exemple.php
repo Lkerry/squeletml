@@ -135,6 +135,17 @@ $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 	</div>
 </div>
 
+<?php if ($activerGalerieDemo): ?>
+	<h2>Publications récentes</h2>
+	
+	<p>La fonction <code>publicationsRecentes()</code> permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple d'utilisation de cette foncion pour afficher les cinq dernières images ajoutées à la galerie démo:
+	
+	<?php $dernieresImagesDemo = publicationsRecentes($racine, $urlRacine, LANGUE, 'galerie', 'démo', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron); ?>
+	<?php echo $dernieresImagesDemo; ?>
+	
+	<p>Voir la section «Liste des dernières publications» de la documentation pour plus de détails.</p>
+<?php endif; ?>
+
 <h2>Chaînes de caractères</h2>
 
 <h3>Code PHP</h3>

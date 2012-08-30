@@ -5684,7 +5684,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		$urlGalerie = '';
 		$listeGaleriesRss = fluxRssGlobalGaleries($racine);
 		
-		if (in_array($id, $listeGaleriesRss))
+		if ($id == 'démo' || in_array($id, $listeGaleriesRss))
 		{
 			$urlGalerie = urlGalerie(0, $racine, $urlRacine, $id, $langue);
 		}
@@ -5696,6 +5696,17 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 			
 			if ($tableauGalerie !== FALSE)
 			{
+				$racineImgSrc = $racine;
+				$urlImgSrc = $urlRacine;
+				
+				if ($id != 'démo')
+				{
+					$racineImgSrc .= '/site';
+					$urlImgSrc .= '/site';
+				}
+				
+				$racineImgSrc .= '/fichiers/galeries/' . $idDossier;
+				$urlImgSrc .= '/fichiers/galeries/' . encodeTexte($idDossier);
 				$vignettes = array ();
 				
 				foreach ($tableauGalerie as $image)
@@ -5710,7 +5721,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					}
 					else
 					{
-						$date = date('Y-m-d H:i', @filemtime("$racine/site/fichiers/galeries/$idDossier/" . $image['intermediaireNom']));
+						$date = date('Y-m-d H:i', @filemtime($racineImgSrc . '/' . $image['intermediaireNom']));
 					}
 					
 					if (isset($image['vignetteNom']))
@@ -5736,11 +5747,11 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					}
 					else
 					{
-						list ($width, $height) = @getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
+						list ($width, $height) = @getimagesize($racineImgSrc . '/' . $vignetteNom);
 					}
 					
 					$lienVignette = variableGet(2, $urlGalerie, 'image', idImage($image));
-					$vignettesImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . encodeTexte("$idDossier/$vignetteNom") . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
+					$vignettesImg = '<img src="' . $urlImgSrc . '/' . encodeTexte($vignetteNom) . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
 					$vignettesCode = '<li>';
 					
 					if ($ajouterLienVersPublication)
