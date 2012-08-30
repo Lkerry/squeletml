@@ -151,11 +151,7 @@ $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 <?php if (!empty($infosPage['apercu'])): ?>
 	<h2>Informations sur une page du site</h2>
 	
-	<p>La fonction <code>infosPage()</code> permet d'obtenir des informations au sujet d'une page locale. Cette fonction retourne un tableau. Par exemple, récupérons les informations de la page d'accueil dans la variable <code>$infosPage</code> et affichons l'aperçu se trouvant dans <code>$infosPage['apercu']</code>:
-	
-	<div class="blocAvecFond">
-		<?php echo $infosPage['apercu']; ?>
-	</div>
+	<p>La fonction <code>infosPage()</code> permet d'obtenir des informations au sujet d'une page locale. Cette fonction retourne un tableau. Par exemple, récupérons les informations de la page d'accueil dans la variable <code>$infosPage</code> et affichons le titre se trouvant dans <code>$infosPage['titre']</code>: <em><?php echo $infosPage['titre']; ?></em>.</p>
 <?php endif; ?>
 
 <h2>Chaînes de caractères</h2>
