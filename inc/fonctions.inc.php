@@ -418,7 +418,7 @@ function baliseTitle($baliseTitle, $baliseH1)
 			$baliseTitle = variableGet(0, url(), 'action');
 		}
 		
-		$baliseTitle = securiseTexte(strip_tags($baliseTitle));
+		$baliseTitle = securiseTexte(supprimeBalisesHtml($baliseTitle));
 	}
 	
 	return $baliseTitle;
@@ -6266,6 +6266,14 @@ function super_parse_ini_file($cheminFichier, $creerSections = FALSE)
 }
 
 /*
+Supprime les balises HTML du code fourni, et retourne le résultat.
+*/
+function supprimeBalisesHtml($codeHtml)
+{
+	return trim(strip_tags($codeHtml));
+}
+
+/*
 Retourne le code HTML sans les commentaires.
 */
 function supprimeCommentairesHtml($html)
@@ -6400,7 +6408,7 @@ function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, 
 			}
 			else
 			{
-				$idH = filtreChaine(strip_tags($contenuH));
+				$idH = filtreChaine(supprimeBalisesHtml($contenuH));
 				$h->id = $idH;
 			}
 			

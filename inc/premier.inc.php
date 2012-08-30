@@ -198,11 +198,11 @@ $estAccueil = estAccueil(ACCUEIL);
 
 if (!empty($baliseTitle))
 {
-	$baliseTitle = securiseTexte(strip_tags($baliseTitle));
+	$baliseTitle = securiseTexte(supprimeBalisesHtml($baliseTitle));
 }
 
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), $estAccueil);
-$baliseTitleComplement = securiseTexte(strip_tags($baliseTitleComplement));
+$baliseTitleComplement = securiseTexte(supprimeBalisesHtml($baliseTitleComplement));
 
 if (!isset($boitesDeroulantesAlaMain))
 {
@@ -252,7 +252,7 @@ if (!empty($dateRevision))
 
 if (!empty($description))
 {
-	$description = securiseTexte(strip_tags($description));
+	$description = securiseTexte(supprimeBalisesHtml($description));
 }
 
 if (!isset($infosPublication))

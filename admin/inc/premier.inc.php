@@ -30,7 +30,7 @@ if (!isset($adminBalisesLinkScriptFinales))
 
 if (!empty($baliseTitle))
 {
-	$baliseTitle = securiseTexte(strip_tags($baliseTitle));
+	$baliseTitle = securiseTexte(supprimeBalisesHtml($baliseTitle));
 }
 
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1) . ' | ' . T_("Administration de Squeletml");

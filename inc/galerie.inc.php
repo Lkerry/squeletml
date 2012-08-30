@@ -97,15 +97,15 @@ if (!empty($idGalerie) && isset($_GET['image']))
 				$baliseTitle = $titreImage;
 			}
 			
-			$baliseTitle = sprintf(T_("%1\$s – Galerie %2\$s"), securiseTexte(strip_tags($baliseTitle)), securiseTexte($idGalerie));
+			$baliseTitle = sprintf(T_("%1\$s – Galerie %2\$s"), securiseTexte(supprimeBalisesHtml($baliseTitle)), securiseTexte($idGalerie));
 			
 			if (!empty($tableauGalerie[$indice]['pageIntermediaireDescription']))
 			{
-				$description = securiseTexte(strip_tags($tableauGalerie[$indice]['pageIntermediaireDescription']));
+				$description = securiseTexte(supprimeBalisesHtml($tableauGalerie[$indice]['pageIntermediaireDescription']));
 			}
 			elseif (!empty($tableauGalerie[$indice]['intermediaireLegende']))
 			{
-				$description = securiseTexte(strip_tags($tableauGalerie[$indice]['intermediaireLegende']));
+				$description = securiseTexte(supprimeBalisesHtml($tableauGalerie[$indice]['intermediaireLegende']));
 			}
 			else
 			{
@@ -500,7 +500,7 @@ elseif (!empty($idGalerie))
 		if (!empty($galeries[$idGalerie]['description']))
 		{
 			$description = descriptionGalerieTableauVersTexte($galeries[$idGalerie]['description']);
-			$description = securiseTexte(strip_tags($description));
+			$description = securiseTexte(supprimeBalisesHtml($description));
 		}
 		else
 		{
