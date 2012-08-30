@@ -7,7 +7,7 @@ $apercu = "interne";
 $boitesDeroulantes = "#testBoiteDeroulante2 .testBoiteDeroulante1";
 $auteur = "Squeletml";
 $dateCreation = "2010-03-01";
-$dateRevision = "2010-03-02";
+$dateRevision = "2012-08-30";
 $licence = "agplv3+";
 include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion.
 ?>
