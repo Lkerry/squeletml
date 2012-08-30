@@ -7851,6 +7851,7 @@ function variablesAaffecterAuDebut()
 {
 	$variables = '$nomPage = nomPage();
 	$url = url();
+	$urlSansAction = variableGet(0, $url, "action");
 	$urlSansGet = url(FALSE);
 	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
 	$urlSansIndexSansGet = preg_replace("#(?<=/)index\.php$#", "", $urlSansGet);';

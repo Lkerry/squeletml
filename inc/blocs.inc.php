@@ -112,7 +112,7 @@ if (!empty($blocsAinsererTemp))
 										$heureAfficheeCommentaire = date('H:i T', $infosCommentaire['date']);
 									}
 									
-									$lienCommentaire = variableGet(0, $url, 'action') . "#$idCommentaire";
+									$lienCommentaire = "$urlSansAction#$idCommentaire";
 									
 									if (!empty($dateAfficheeCommentaire) && !empty($heureAfficheeCommentaire))
 									{
@@ -635,7 +635,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($partageReseaux && empty($courrielContact))
 						{
-							$listePartage = partageReseaux($url, $baliseTitle . $baliseTitleComplement);
+							$listePartage = partageReseaux(variableGet(1, $url, 'action', 'partageCourriel'), $baliseTitle . $baliseTitleComplement);
 							
 							foreach ($listePartage as $service)
 							{

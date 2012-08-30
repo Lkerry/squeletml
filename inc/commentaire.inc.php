@@ -314,7 +314,7 @@ if (isset($_POST['envoyerCommentaire']))
 					$auteurAffiche = auteurAfficheCommentaire($nom, $site, $attributNofollowLiensCommentaires);
 					$dateAffichee = date('Y-m-d', $date);
 					$heureAffichee = date('H:i T', $date);
-					$messageDansCourriel = '<p>' . sprintf(T_("Un nouveau commentaire a été posté sur la page %1\$s par %2\$s le %3\$s à %4\$s:"), '<a href="' . variableGet(0, $url, 'action') . '#' . $idCommentaire . '">' . $baliseTitle . '</a>', $auteurAffiche, $dateAffichee, $heureAffichee) . "</p>\n";
+					$messageDansCourriel = '<p>' . sprintf(T_("Un nouveau commentaire a été posté sur la page %1\$s par %2\$s le %3\$s à %4\$s:"), '<a href="' . $urlSansAction . '#' . $idCommentaire . '">' . $baliseTitle . '</a>', $auteurAffiche, $dateAffichee, $heureAffichee) . "</p>\n";
 					$messageDansCourriel .= $messageDansConfig;
 					$messageDansCourriel .= "<hr />\n";
 					$infosCourriel['message'] = $messageDansCourriel;
@@ -344,7 +344,7 @@ if (isset($_POST['envoyerCommentaire']))
 							
 							if (!empty($infosDestinataire['idAbonnement']))
 							{
-								$infosCourriel['message'] .= '<p><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, variableGet(0, $url, 'action'))) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires.") . "</a></p>\n";
+								$infosCourriel['message'] .= '<p><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, $urlSansAction)) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires.") . "</a></p>\n";
 							}
 							
 							if ($moderationCommentaires)
@@ -415,7 +415,7 @@ if (isset($_POST['envoyerCommentaire']))
 						
 						$infosCourriel['message'] .= '<p>' . T_("Liste d'actions:") . "</p>\n";
 						$infosCourriel['message'] .= "<ul>\n";
-						$pageGet = encodeTexteGet(supprimeUrlRacine($urlRacine, variableGet(0, $url, 'action')));
+						$pageGet = encodeTexteGet(supprimeUrlRacine($urlRacine, $urlSansAction));
 						
 						if ($moderationCommentaires)
 						{
