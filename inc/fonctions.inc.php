@@ -1896,7 +1896,6 @@ Retourne TRUE si la page est l'accueil, sinon retourne FALSE.
 function estAccueil($accueil)
 {
 	$url = url();
-	$listeIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
 	
 	if ($url == $accueil . '/')
 	{
@@ -1904,6 +1903,8 @@ function estAccueil($accueil)
 	}
 	else
 	{
+		$listeIndex = listeFichiersIndex();
+		
 		foreach ($listeIndex as $index)
 		{
 			if ($url == $accueil . '/' . $index)
@@ -4441,6 +4442,14 @@ function listeCategoriesPage($racine, $urlRacine, $urlPage)
 }
 
 /*
+Retourne un tableau dont chaque élément contient un fichier d'index possible. Cette liste correspond à la valeur par défaut de `DirectoryIndex` sous Apache 2.
+*/
+function listeFichiersIndex()
+{
+	return array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm');
+}
+
+/*
 Retourne un tableau listant les galeries sous la forme suivante:
 
 	"$idGalerie" => array ("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
@@ -5675,7 +5684,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 		$urlGalerie = '';
 		$listeGaleriesRss = fluxRssGlobalGaleries($racine);
 		
-		if (in_array($id, $listeGaleriesRss))
+		if ($id == 'démo' || in_array($id, $listeGaleriesRss))
 		{
 			$urlGalerie = urlGalerie(0, $racine, $urlRacine, $id, $langue);
 		}
@@ -5687,6 +5696,17 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 			
 			if ($tableauGalerie !== FALSE)
 			{
+				$racineImgSrc = $racine;
+				$urlImgSrc = $urlRacine;
+				
+				if ($id != 'démo')
+				{
+					$racineImgSrc .= '/site';
+					$urlImgSrc .= '/site';
+				}
+				
+				$racineImgSrc .= '/fichiers/galeries/' . $idDossier;
+				$urlImgSrc .= '/fichiers/galeries/' . encodeTexte($idDossier);
 				$vignettes = array ();
 				
 				foreach ($tableauGalerie as $image)
@@ -5701,7 +5721,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					}
 					else
 					{
-						$date = date('Y-m-d H:i', @filemtime("$racine/site/fichiers/galeries/$idDossier/" . $image['intermediaireNom']));
+						$date = date('Y-m-d H:i', @filemtime($racineImgSrc . '/' . $image['intermediaireNom']));
 					}
 					
 					if (isset($image['vignetteNom']))
@@ -5727,11 +5747,11 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 					}
 					else
 					{
-						list ($width, $height) = @getimagesize($racine . '/site/fichiers/galeries/' . $idDossier . '/' . $vignetteNom);
+						list ($width, $height) = @getimagesize($racineImgSrc . '/' . $vignetteNom);
 					}
 					
 					$lienVignette = variableGet(2, $urlGalerie, 'image', idImage($image));
-					$vignettesImg = '<img src="' . $urlRacine . '/site/fichiers/galeries/' . encodeTexte("$idDossier/$vignetteNom") . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
+					$vignettesImg = '<img src="' . $urlImgSrc . '/' . encodeTexte($vignetteNom) . '" alt="' . $alt . '" width="' . $width . '" height="' . $height . '" />';
 					$vignettesCode = '<li>';
 					
 					if ($ajouterLienVersPublication)
@@ -6043,9 +6063,31 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
 	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
 	$cheminPage = $racine . '/' . decodeTexte($cheminRelatifPage);
-	$codePage = '';
 	
-	if (file_exists($cheminPage))
+	if (preg_match('#/$#', $cheminPage))
+	{
+		$listeFichiersIndex = listeFichiersIndex();
+		
+		foreach ($listeFichiersIndex as $fichierIndex)
+		{
+			if (file_exists($cheminPage . $fichierIndex))
+			{
+				$cheminPage .= $fichierIndex;
+				break;
+			}
+		}
+	}
+	
+	$codePage = '';
+	$dossierTmp = "$racine/site/cache/simule-visite-" . encodeTexte($cheminPage, TRUE);
+	
+	// Éviter une boucle infinie.
+	if (!@mkdir($dossierTmp))
+	{
+		return $codePage;
+	}
+	
+	if (is_file($cheminPage))
 	{
 		$dossierActuel = getcwd();
 		chdir(dirname($cheminPage));
@@ -6139,6 +6181,8 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 			unset($_GET_TMP);
 		}
 	}
+	
+	@rmdir($dossierTmp);
 	
 	return $codePage;
 }
@@ -6270,7 +6314,7 @@ Supprime les balises HTML du code fourni, et retourne le résultat.
 */
 function supprimeBalisesHtml($codeHtml)
 {
-	return trim(strip_tags($codeHtml));
+	return strip_tags($codeHtml);
 }
 
 /*

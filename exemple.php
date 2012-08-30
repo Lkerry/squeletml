@@ -7,7 +7,7 @@ $apercu = "interne";
 $boitesDeroulantes = "#testBoiteDeroulante2 .testBoiteDeroulante1";
 $auteur = "Squeletml";
 $dateCreation = "2010-03-01";
-$dateRevision = "2010-03-02";
+$dateRevision = "2012-08-30";
 $licence = "agplv3+";
 include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion.
 ?>
@@ -134,6 +134,25 @@ $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 		<p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p>
 	</div>
 </div>
+
+<?php if ($activerGalerieDemo): ?>
+	<h2>Publications récentes</h2>
+	
+	<p>La fonction <code>publicationsRecentes()</code> permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple d'utilisation de cette foncion pour afficher les cinq dernières images ajoutées à la galerie démo:
+	
+	<?php $dernieresImagesDemo = publicationsRecentes($racine, $urlRacine, LANGUE, 'galerie', 'démo', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron); ?>
+	<?php echo $dernieresImagesDemo; ?>
+	
+	<p>Voir la section «Liste des dernières publications» de la documentation pour plus de détails.</p>
+<?php endif; ?>
+
+<?php $infosPage = infosPage($racine, $urlRacine, ACCUEIL, $inclureApercu, $tailleApercuAutomatique, $dureeCache); ?>
+
+<?php if (!empty($infosPage['apercu'])): ?>
+	<h2>Informations sur une page du site</h2>
+	
+	<p>La fonction <code>infosPage()</code> permet d'obtenir des informations au sujet d'une page locale. Cette fonction retourne un tableau. Par exemple, récupérons les informations de la page d'accueil dans la variable <code>$infosPage</code> et affichons le titre se trouvant dans <code>$infosPage['titre']</code>: <em><?php echo $infosPage['titre']; ?></em>.</p>
+<?php endif; ?>
 
 <h2>Chaînes de caractères</h2>
 
