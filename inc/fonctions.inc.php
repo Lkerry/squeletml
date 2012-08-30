@@ -1896,7 +1896,6 @@ Retourne TRUE si la page est l'accueil, sinon retourne FALSE.
 function estAccueil($accueil)
 {
 	$url = url();
-	$listeIndex = array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm'); // Valeur par défaut de `DirectoryIndex` sous Apache 2.
 	
 	if ($url == $accueil . '/')
 	{
@@ -1904,6 +1903,8 @@ function estAccueil($accueil)
 	}
 	else
 	{
+		$listeIndex = listeFichiersIndex();
+		
 		foreach ($listeIndex as $index)
 		{
 			if ($url == $accueil . '/' . $index)
@@ -4441,6 +4442,14 @@ function listeCategoriesPage($racine, $urlRacine, $urlPage)
 }
 
 /*
+Retourne un tableau dont chaque élément contient un fichier d'index possible. Cette liste correspond à la valeur par défaut de `DirectoryIndex` sous Apache 2.
+*/
+function listeFichiersIndex()
+{
+	return array ('index.html', 'index.cgi', 'index.pl', 'index.php', 'index.xhtml', 'index.htm');
+}
+
+/*
 Retourne un tableau listant les galeries sous la forme suivante:
 
 	"$idGalerie" => array ("dossier" => "$idGalerieDossier", "url" => "$urlGalerie")
@@ -6043,9 +6052,24 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);
 	$cheminRelatifPage = preg_replace('/\#.*/', '', $cheminRelatifPage);
 	$cheminPage = $racine . '/' . decodeTexte($cheminRelatifPage);
+	
+	if (preg_match('#/$#', $cheminPage))
+	{
+		$listeFichiersIndex = listeFichiersIndex();
+		
+		foreach ($listeFichiersIndex as $fichierIndex)
+		{
+			if (file_exists($cheminPage . $fichierIndex))
+			{
+				$cheminPage .= $fichierIndex;
+				break;
+			}
+		}
+	}
+	
 	$codePage = '';
 	
-	if (file_exists($cheminPage))
+	if (is_file($cheminPage))
 	{
 		$dossierActuel = getcwd();
 		chdir(dirname($cheminPage));
