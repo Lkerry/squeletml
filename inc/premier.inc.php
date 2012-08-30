@@ -73,6 +73,11 @@ if (!isset($estPageCron))
 	$estPageCron = FALSE;
 }
 
+if (!isset($estVisiteSimulee))
+{
+	$estVisiteSimulee = FALSE;
+}
+
 if (!isset($idCategorie))
 {
 	$idCategorie = '';
@@ -134,7 +139,7 @@ if ($dureeCache && !$desactiverCache)
 	// On vérifie si la page existe en cache ou si le cache est expiré.
 	if (file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
 	{
-		if (file_exists($cheminFichierCacheEnTete))
+		if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 		{
 			$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 			
@@ -542,7 +547,7 @@ if (file_exists($racine . '/site/inc/premier.inc.php'))
 ##
 ########################################################################
 
-if ((!$dureeCache || $desactiverCache) && !$estPageCron)
+if ((!$dureeCache || $desactiverCache) && !$estPageCron && !$estVisiteSimulee)
 {
 	eval($enTetesHttp);
 }

@@ -6035,6 +6035,7 @@ Récupère le code XHTML d'une page locale, comme si elle était visitée dans u
 */
 function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE)
 {
+	$estVisiteSimulee = TRUE;
 	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
 	$cheminRelatifPage = supprimeUrlRacine($urlRacine, $urlAsimuler);
 	$cheminRelatifPage = preg_replace('/\?.*/', '', $cheminRelatifPage);

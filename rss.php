@@ -47,6 +47,11 @@ if (!isset($estPageCron))
 	$estPageCron = FALSE;
 }
 
+if (!isset($estVisiteSimulee))
+{
+	$estVisiteSimulee = FALSE;
+}
+
 if ($inclureApercu && $utiliserApercuDansFluxRss)
 {
 	$fluxRssAvecApercu = TRUE;
@@ -118,7 +123,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 			if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 			{
-				if (file_exists($cheminFichierCacheEnTete))
+				if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 				{
 					$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 					
@@ -174,7 +179,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 					@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 				}
 				
-				if (!$estPageCron)
+				if (!$estPageCron && !$estVisiteSimulee)
 				{
 					eval($enTetesHttp);
 				}
@@ -247,7 +252,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		
 		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
-			if (file_exists($cheminFichierCacheEnTete))
+			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
 				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 				
@@ -323,7 +328,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			if (!$estPageCron)
+			if (!$estPageCron && !$estVisiteSimulee)
 			{
 				eval($enTetesHttp);
 			}
@@ -365,7 +370,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 		
 		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
-			if (file_exists($cheminFichierCacheEnTete))
+			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
 				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 				
@@ -414,7 +419,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			if (!$estPageCron)
+			if (!$estPageCron && !$estVisiteSimulee)
 			{
 				eval($enTetesHttp);
 			}
@@ -447,7 +452,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 		
 		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
 		{
-			if (file_exists($cheminFichierCacheEnTete))
+			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
 				$contenuFichierCacheEnTete = @file_get_contents($cheminFichierCacheEnTete);
 				
@@ -517,7 +522,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 				@file_put_contents($cheminFichierCacheEnTete, $enTetesHttp);
 			}
 			
-			if (!$estPageCron)
+			if (!$estPageCron && !$estVisiteSimulee)
 			{
 				eval($enTetesHttp);
 			}
