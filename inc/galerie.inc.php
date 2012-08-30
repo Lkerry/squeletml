@@ -103,9 +103,9 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			{
 				$description = securiseTexte($tableauGalerie[$indice]['pageIntermediaireDescription']);
 			}
-			elseif (!empty($tableauGalerie[$indice]['legendeIntermediaire']))
+			elseif (!empty($tableauGalerie[$indice]['intermediaireLegende']))
 			{
-				$description = securiseTexte($tableauGalerie[$indice]['legendeIntermediaire']);
+				$description = securiseTexte($tableauGalerie[$indice]['intermediaireLegende']);
 			}
 			else
 			{
