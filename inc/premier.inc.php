@@ -198,11 +198,11 @@ $estAccueil = estAccueil(ACCUEIL);
 
 if (!empty($baliseTitle))
 {
-	$baliseTitle = securiseTexte($baliseTitle);
+	$baliseTitle = securiseTexte(strip_tags($baliseTitle));
 }
 
 $baliseTitleComplement = baliseTitleComplement($tableauBaliseTitleComplement, array ($langue, $langueParDefaut), $estAccueil);
-$baliseTitleComplement = securiseTexte($baliseTitleComplement);
+$baliseTitleComplement = securiseTexte(strip_tags($baliseTitleComplement));
 
 if (!isset($boitesDeroulantesAlaMain))
 {
@@ -252,7 +252,7 @@ if (!empty($dateRevision))
 
 if (!empty($description))
 {
-	$description = securiseTexte($description);
+	$description = securiseTexte(strip_tags($description));
 }
 
 if (!isset($infosPublication))
@@ -333,11 +333,7 @@ include $racine . '/inc/blocs.inc.php';
 
 // Affectations 4 de 4.
 
-if (!isset($baliseTitle))
-{
-	$baliseTitle = '';
-}
-
+// Mise à jour de la balise `title`.
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1);
 
 if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))

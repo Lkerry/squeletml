@@ -322,12 +322,12 @@ function adminDeclareSitemapDansRobots($racine, $urlRacine)
 /*
 Convertit la description textuelle d'une galerie en tableau utilisable dans le fichier de configuration des galeries, et retourne le résultat.
 */
-function adminDescriptionGalerieTexteVersTableau($description)
+function adminDescriptionGalerieTexteVersTableau($descriptionGalerie)
 {
-	$description = trim($description);
-	$description = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $description);
+	$descriptionGalerie = trim($descriptionGalerie);
+	$descriptionGalerie = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $descriptionGalerie);
 	
-	return explode("\n", $description);
+	return explode("\n", $descriptionGalerie);
 }
 
 /*

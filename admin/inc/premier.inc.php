@@ -28,6 +28,11 @@ if (!isset($adminBalisesLinkScriptFinales))
 	$adminBalisesLinkScriptFinales = array ();
 }
 
+if (!empty($baliseTitle))
+{
+	$baliseTitle = securiseTexte(strip_tags($baliseTitle));
+}
+
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1) . ' | ' . T_("Administration de Squeletml");
 
 if (!isset($boitesDeroulantes))

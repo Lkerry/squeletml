@@ -411,12 +411,14 @@ function baliseTitle($baliseTitle, $baliseH1)
 	{
 		if (!empty($baliseH1))
 		{
-			$baliseTitle = strip_tags($baliseH1);
+			$baliseTitle = $baliseH1;
 		}
 		else
 		{
 			$baliseTitle = variableGet(0, url(), 'action');
 		}
+		
+		$baliseTitle = securiseTexte(strip_tags($baliseTitle));
 	}
 	
 	return $baliseTitle;
@@ -1749,16 +1751,16 @@ function decodeTexteGet($texte)
 /*
 Convertit la description en tableau d'une galerie au format texte affichable dans une page HTML, et retourne le résultat.
 */
-function descriptionGalerieTableauVersTexte($tableauDescription)
+function descriptionGalerieTableauVersTexte($tableauDescriptionGalerie)
 {
-	$description = '';
+	$descriptionGalerie = '';
 	
-	foreach ($tableauDescription as $ligneDescription)
+	foreach ($tableauDescriptionGalerie as $ligneDescriptionGalerie)
 	{
-		$description .= "$ligneDescription\n";
+		$descriptionGalerie .= "$ligneDescriptionGalerie\n";
 	}
 	
-	return "<div class=\"descriptionGalerie\">\n$description</div><!-- /.descriptionGalerie -->\n";
+	return "<div class=\"descriptionGalerie\">\n$descriptionGalerie</div><!-- /.descriptionGalerie -->\n";
 }
 
 /*
