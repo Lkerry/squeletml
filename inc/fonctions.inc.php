@@ -1006,7 +1006,7 @@ Retourne le chemin d'un fichier cache partiel.
 */
 function cheminFichierCachePartiel($racine, $urlRacine, $nomBrut)
 {
-	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $nomBrut);
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, variableGet(0, $nomBrut, 'action'));
 	$nomFichierCache = superBasename($cheminFichierCache);
 	$dossierFichierCache = dirname($cheminFichierCache);
 	
