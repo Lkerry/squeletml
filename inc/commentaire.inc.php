@@ -500,7 +500,7 @@ if (empty($idFormulaireCommentaire))
 	$idFormulaireCommentaire = chaineAleatoire(16);
 }
 
-$formulaireCommentaire .= '<h3 id="ajoutCommentaire">' . T_("Ajout d'un commentaire") . "</h3>\n";
+$formulaireCommentaire .= '<h2 id="ajoutCommentaire">' . T_("Ajout d'un commentaire") . "</h2>\n";
 
 // Traitement personnalisé optionnel 3 de 4.
 if (file_exists($racine . '/site/inc/commentaire.inc.php'))
