@@ -651,7 +651,7 @@ elseif (!empty($idGalerie))
 			$galerieInfo .= '<div id="galerieInfo">' . "\n";
 			$galerieInfo .= '<p>' . sprintf(T_ngettext("Cette galerie contient %1\$s image", "Cette galerie contient %1\$s images", $nombreDimages), $nombreDimages) . sprintf(T_ngettext(" (sur %1\$s page).", " (sur %1\$s pages).", $nombreDePages), $nombreDePages);
 			
-			if (variableGet(0, $url, 'action') != $urlGalerie)
+			if ($urlSansAction != $urlGalerie)
 			{
 				$galerieInfo .= ' <a href="' . $urlGalerie . '">' . T_("Voir l'accueil de la galerie."). "</a>";
 			}

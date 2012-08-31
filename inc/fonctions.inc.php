@@ -1006,7 +1006,7 @@ Retourne le chemin d'un fichier cache partiel.
 */
 function cheminFichierCachePartiel($racine, $urlRacine, $nomBrut)
 {
-	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $nomBrut);
+	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, variableGet(0, $nomBrut, 'action'));
 	$nomFichierCache = superBasename($cheminFichierCache);
 	$dossierFichierCache = dirname($cheminFichierCache);
 	
@@ -7851,6 +7851,7 @@ function variablesAaffecterAuDebut()
 {
 	$variables = '$nomPage = nomPage();
 	$url = url();
+	$urlSansAction = variableGet(0, $url, "action");
 	$urlSansGet = url(FALSE);
 	$urlAvecIndexSansGet = url(FALSE, TRUE, TRUE);
 	$urlSansIndexSansGet = preg_replace("#(?<=/)index\.php$#", "", $urlSansGet);';

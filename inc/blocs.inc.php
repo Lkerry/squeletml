@@ -112,7 +112,7 @@ if (!empty($blocsAinsererTemp))
 										$heureAfficheeCommentaire = date('H:i T', $infosCommentaire['date']);
 									}
 									
-									$lienCommentaire = variableGet(0, $url, 'action') . "#$idCommentaire";
+									$lienCommentaire = "$urlSansAction#$idCommentaire";
 									
 									if (!empty($dateAfficheeCommentaire) && !empty($heureAfficheeCommentaire))
 									{
@@ -181,7 +181,7 @@ if (!empty($blocsAinsererTemp))
 								
 								if ($ajoutCommentaires)
 								{
-									$blocs[$region] .= '<p><a href="' . variableGet(2, $url, 'action', 'commentaire') . '#ajoutCommentaire">' . T_("Ajouter un commentaire.") . "</a></p>\n";
+									$blocs[$region] .= '<p><a href="' . variableGet(1, $url, 'action', 'commentaire') . '#ajoutCommentaire">' . T_("Ajouter un commentaire.") . "</a></p>\n";
 								}
 								else
 								{
@@ -623,7 +623,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($partageCourriel && $partageCourrielActif)
 						{
-							$blocPartageCourriel = '<li id="partageCourriel"><a href="' . variableGet(2, $url, 'action', 'partageCourriel') . '#titrePartageCourriel">' . T_("Par courriel") . "</a></li>\n";
+							$blocPartageCourriel = '<li id="partageCourriel"><a href="' . variableGet(1, $url, 'action', 'partageCourriel') . '#titrePartageCourriel">' . T_("Par courriel") . "</a></li>\n";
 							
 							if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 							{
@@ -635,7 +635,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($partageReseaux && empty($courrielContact))
 						{
-							$listePartage = partageReseaux($url, $baliseTitle . $baliseTitleComplement);
+							$listePartage = partageReseaux($urlSansAction, $baliseTitle . $baliseTitleComplement);
 							
 							foreach ($listePartage as $service)
 							{
