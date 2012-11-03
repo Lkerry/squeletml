@@ -236,7 +236,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($idGalerie) && $rssGalerie)
 						{
-							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($idGalerie) . '&amp;langue=' . LANGUE . '">' . sprintf(T_("Galerie %1\$s"), '<em>' . securiseTexte($idGalerie) . '</em>') . "</a></li>\n";
+							$blocFluxRssIndividuels .= '<li><a class="fluxRssLien" href="' . "$urlRacine/rss.php?type=galerie&amp;id=" . filtreChaine($idGalerie) . '&amp;langue=' . eval(LANGUE) . '">' . sprintf(T_("Galerie %1\$s"), '<em>' . securiseTexte($idGalerie) . '</em>') . "</a></li>\n";
 						}
 						
 						if (!empty($idCategorie) && $rssCategorie)
@@ -251,7 +251,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($fluxRssGlobalSiteActif || $fluxRssGlobalGaleriesActif)
 						{
-							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							$tableauAccueilTrie = triTableauAccueil($accueil, eval(LANGUE));
 							
 							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
@@ -274,7 +274,7 @@ if (!empty($blocsAinsererTemp))
 								
 								if (!empty($blocLangue))
 								{
-									if ($codeLangue != LANGUE)
+									if ($codeLangue != eval(LANGUE))
 									{
 										$boiteDeroulanteAjoutee = TRUE;
 										$blocs[$region] .= "<div class=\"fluxRssLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue, $doctype) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuFluxRssLangue -->\n";
@@ -418,7 +418,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($cheminConfigCategories && ($categories = super_parse_ini_file($cheminConfigCategories, TRUE)) !== FALSE)
 						{
-							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							$tableauAccueilTrie = triTableauAccueil($accueil, eval(LANGUE));
 							
 							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
@@ -426,7 +426,7 @@ if (!empty($blocsAinsererTemp))
 								
 								if (!empty($blocLangue))
 								{
-									if ($codeLangue != LANGUE)
+									if ($codeLangue != eval(LANGUE))
 									{
 										$boiteDeroulanteAjoutee = TRUE;
 										$bloc .= "<div class=\"menuCategoriesLangueAutre\">\n<h3 class=\"bDtitre\">" . codeLangueVersNom($codeLangue, $doctype) . "</h3>\n<ul class=\"bDcorps masquer\">\n$blocLangue</ul>\n</div><!-- /.menuCategoriesLangue -->\n";
@@ -499,14 +499,14 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($activerGalerieDemo)
 						{
-							$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $listeGaleries);
+							$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}', 'menu' => 1)), $listeGaleries);
 						}
 						
 						foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
 						{
-							if (!empty($listeInfosGalerie['url']))
+							if ($listeInfosGalerie['menu'] == 1 && !empty($listeInfosGalerie['url']))
 							{
-								$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], LANGUE) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
+								$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], eval(LANGUE)) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
 							}
 						}
 						
@@ -557,7 +557,7 @@ if (!empty($blocsAinsererTemp))
 					{
 						if ($genererMenuLangues)
 						{
-							$tableauAccueilTrie = triTableauAccueil($accueil, LANGUE);
+							$tableauAccueilTrie = triTableauAccueil($accueil, eval(LANGUE));
 							
 							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
@@ -590,7 +590,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if (isset($liensActifsBlocs[$blocAinserer]) && $liensActifsBlocs[$blocAinserer])
 						{
-							$bloc = langueActive($bloc, LANGUE, $accueil);
+							$bloc = langueActive($bloc, eval(LANGUE), $accueil);
 						}
 					
 						if (isset($limiterProfondeurListesBlocs[$blocAinserer]) && $limiterProfondeurListesBlocs[$blocAinserer])

@@ -206,7 +206,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$urlGalerieAafficher = supprimeUrlRacine($urlRacine, $urlGalerieAafficher);
 				}
 				
-				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlGalerieAafficher, LANGUE_ADMIN);
+				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlGalerieAafficher, eval(LANGUE_ADMIN));
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a class="lienSurCode" href="' . $urlGalerie . '"><code>' . securiseTexte($urlGalerieAafficher) . '</code></a>');
 				
 				if (strpos($urlGalerieAafficher, 'galerie.php?') !== 0)
@@ -225,6 +225,18 @@ include $racineAdmin . '/inc/premier.inc.php';
 				else
 				{
 					$tableauInfosGaleries[$idGalerieDossier] .= T_("RSS: désactivé");
+				}
+				
+				$tableauInfosGaleries[$idGalerieDossier] .= "</li>\n";
+				$tableauInfosGaleries[$idGalerieDossier] .= '<li>';
+				
+				if (!empty($infosGalerie['menu']) && $infosGalerie['menu'] == 1)
+				{
+					$tableauInfosGaleries[$idGalerieDossier] .= T_("Présence dans le menu automatique: listée");
+				}
+				else
+				{
+					$tableauInfosGaleries[$idGalerieDossier] .= T_("Présence dans le menu automatique: cachée");
 				}
 				
 				$tableauInfosGaleries[$idGalerieDossier] .= "</li>\n";
@@ -850,6 +862,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			$nouvelleUrl = '';
 			$tableauNouvelleDescription = array ();
 			$nouvelleValeurRss = '';
+			$nouvelleValeurMenu = '';
 			$listeGaleries = listeGaleries($racine);
 			
 			if (!empty($_POST['idNouveauNomGalerie']))
@@ -895,6 +908,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 			if (isset($_POST['nouvelleValeurRss']) && ($_POST['nouvelleValeurRss'] === '0' || $_POST['nouvelleValeurRss'] === '1'))
 			{
 				$nouvelleValeurRss = $_POST['nouvelleValeurRss'];
+			}
+			
+			if (isset($_POST['nouvelleValeurMenu']) && ($_POST['nouvelleValeurMenu'] === '0' || $_POST['nouvelleValeurMenu'] === '1'))
+			{
+				$nouvelleValeurMenu = $_POST['nouvelleValeurMenu'];
 			}
 			
 			// S'assurer de la concordance entre l'identifiant et l'URL.
@@ -965,6 +983,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$nouvelleValeurRss = '';
 			}
 			
+			if (isset($listeGaleries[$id]['menu']) && $nouvelleValeurMenu == $listeGaleries[$id]['menu'])
+			{
+				$nouvelleValeurMenu = '';
+			}
+			
 			if (!empty($listeGaleries[$id]['description']) && $tableauNouvelleDescription == $listeGaleries[$id]['description'])
 			{
 				$tableauNouvelleDescription = array ();
@@ -978,7 +1001,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			{
 				$messagesScript .= '<li class="erreur">' . sprintf(T_("La galerie %1\$s n'existe pas."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
 			}
-			elseif (empty($nouvelId) && empty($nouveauNomDossier) && empty($nouvelleUrl) && strlen($nouvelleValeurRss) == 0 && empty($tableauNouvelleDescription))
+			elseif (empty($nouvelId) && empty($nouveauNomDossier) && empty($nouvelleUrl) && strlen($nouvelleValeurRss) == 0 && strlen($nouvelleValeurMenu) == 0 && empty($tableauNouvelleDescription))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Aucune option sélectionnée.") . "</li>\n";
 			}
@@ -1012,6 +1035,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$messagesScript .= '<li>' . sprintf(T_("Valeur d'activation du flux RSS de la galerie %1\$s modifiée."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
 					$listeModifs[$id]['rss'] = $nouvelleValeurRss;
+				}
+				
+				if (strlen($nouvelleValeurMenu) > 0)
+				{
+					$messagesScript .= '<li>' . sprintf(T_("Présence de la galerie %1\$s dans le menu automatique modifiée."), '<code>' . securiseTexte($id) . '</code>') . "</li>\n";
+					$listeModifs[$id]['menu'] = $nouvelleValeurMenu;
 				}
 				
 				if (!empty($tableauNouvelleDescription))
@@ -1912,6 +1941,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 							$id = '';
 							$_POST['urlNouvelleGalerie'] = '';
 							$_POST['mettreEnLigneRss'] = '';
+							$_POST['nouvelleGalerieMenu'] = '';
 							
 							if (file_exists($cheminGaleries . '/galeries.ini.txt'))
 							{
@@ -1933,6 +1963,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 											if (isset($configImporteeInfosGalerie['rss']))
 											{
 												$_POST['mettreEnLigneRss'] = $configImporteeInfosGalerie['rss'];
+											}
+											
+											if (isset($configImporteeInfosGalerie['menu']))
+											{
+												$_POST['nouvelleGalerieMenu'] = $configImporteeInfosGalerie['menu'];
 											}
 											
 											break;
@@ -2040,7 +2075,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlRelativeGalerie, LANGUE_ADMIN);
+				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlRelativeGalerie, eval(LANGUE_ADMIN));
 				$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 				
 				if (!$cheminConfigGalerie)
@@ -2060,7 +2095,16 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$rssGalerie = 0;
 					}
 					
-					if (adminMajConfigGaleries($racine, array ($id => array ('dossier' => $idDossier, 'url' => $urlRelativeGalerie, 'rss' => $rssGalerie, 'description' => $tableauNouvelleGalerieDescription))))
+					if (!empty($_POST['nouvelleGalerieMenu']))
+					{
+						$menuGalerie = securiseTexte($_POST['nouvelleGalerieMenu']);
+					}
+					else
+					{
+						$menuGalerie = 0;
+					}
+					
+					if (adminMajConfigGaleries($racine, array ($id => array ('dossier' => $idDossier, 'url' => $urlRelativeGalerie, 'rss' => $rssGalerie, 'menu' => $menuGalerie, 'description' => $tableauNouvelleGalerieDescription))))
 					{
 						$messagesScript .= '<li>' . sprintf(T_("Ajout de la galerie %1\$s dans le fichier de configuration des galeries %2\$s effectué."), '<code>' . securiseTexte($id) . '</code>', '<code>' . securiseTexte($cheminConfigGaleries) . '</code>') . "</li>\n";
 					}
@@ -2200,6 +2244,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 							<select id="nouvelleGalerieRss" name="mettreEnLigneRss">
 								<option value="1" selected="selected"><?php echo T_("Activé"); ?></option>
 								<option value="0"><?php echo T_("Désactivé"); ?></option>
+							</select></p>
+							
+							<p><label for="nouvelleGalerieMenu"><?php echo T_("Si nouvelle galerie, présence dans le menu automatique:"); ?></label><br />
+							<select id="nouvelleGalerieMenu" name="nouvelleGalerieMenu">
+								<option value="1" selected="selected"><?php echo T_("Listée"); ?></option>
+								<option value="0"><?php echo T_("Cachée"); ?></option>
 							</select></p>
 							
 							<p><label for="nouvelleGalerieDescription"><?php echo T_("Si nouvelle galerie, description (code HTML permis):"); ?></label><br />
@@ -2556,6 +2606,13 @@ include $racineAdmin . '/inc/premier.inc.php';
 										<option value="" selected="selected"></option>
 										<option value="1"><?php echo T_("Activé"); ?></option>
 										<option value="0"><?php echo T_("Désactivé"); ?></option>
+									</select></li>
+									
+									<li><label for="renommerSelectNouvelleValeurMenu"><?php echo T_("Nouvelle valeur de présence dans le menu automatique:"); ?></label><br />
+									<select id="renommerSelectNouvelleValeurMenu" name="nouvelleValeurMenu">
+										<option value="" selected="selected"></option>
+										<option value="1"><?php echo T_("Listée"); ?></option>
+										<option value="0"><?php echo T_("Cachée"); ?></option>
 									</select></li>
 									
 									<li><label for="renommerNouvelleDescriptionGalerie"><?php echo T_("Nouvelle description (code HTML permis):"); ?></label><br />

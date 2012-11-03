@@ -59,7 +59,7 @@ $boitesDeroulantesTableau = boitesDeroulantes($adminBoitesDeroulantesParDefaut, 
 $cheminAncres = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'ancres');
 $cheminLienBas = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'lien-bas');
 $cheminRaccourcis = adminCheminXhtml($racineAdmin, array ($langue, $adminLangueParDefaut), 'raccourcis');
-list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($adminDoctype, LANGUE_ADMIN);
+list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($adminDoctype, eval(LANGUE_ADMIN));
 $classesBody = adminClassesBody($tableDesMatieresAvecFond, $tableDesMatieresArrondie);
 $idBody = adminIdBody();
 

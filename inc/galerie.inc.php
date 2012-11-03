@@ -16,7 +16,7 @@ $idGalerieDossier = idGalerieDossier($racine, $idGalerie);
 $rssGalerie = rssGalerieActif($racine, $idGalerie);
 
 // URL.
-$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, LANGUE);
+$urlGalerie = urlGalerie(0, $racine, $urlRacine, $idGalerie, eval(LANGUE));
 
 // Empêcher la duplication de contenu dans les moteurs de recherche.
 if (!$pageGlobaleGalerie && (isset($_GET['id']) || isset($_GET['langue'])))

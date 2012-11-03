@@ -1,3 +1,6 @@
 <?php
-define('LANGUE_ADMIN', langue($langue, $adminLangueParDefaut));
+if (!define('LANGUE_ADMIN'))
+{
+	define('LANGUE_ADMIN', 'return langue($langue, $adminLangueParDefaut);');
+}
 ?>

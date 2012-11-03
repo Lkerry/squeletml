@@ -59,7 +59,7 @@ if (!$erreur404 && !$estPageDerreur)
 					$partageCourrielInclureContact = TRUE;
 					$messagePartageCourrielSupplement = partageCourrielSupplementImage($urlRacine, $idGalerieDossier, $image, $galerieLegendeMarkdown);
 					$titreImage = titreImage($image);
-					$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'image %3\$s, qui fait partie de la galerie %4\$s:"), $nom, '<code>' . securiseTexte(ACCUEIL) . '</code>', '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . securiseTexte($idGalerie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
+					$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir l'image %3\$s, qui fait partie de la galerie %4\$s:"), $nom, '<code>' . securiseTexte(eval(ACCUEIL)) . '</code>', '<em>' . securiseTexte($titreImage) . '</em>', '<em>' . securiseTexte($idGalerie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
 				}
 				
 				break;
@@ -117,7 +117,7 @@ if (!$erreur404 && !$estPageDerreur)
 			$corpsMinivignettes .= '<div style="clear: both; margin-bottom: 20px;"></div>' . "\n";
 			
 			$messagePartageCourrielSupplement = partageCourrielSupplementPage('', '', $corpsMinivignettes);
-			$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s:"), $nom, '<code>' . securiseTexte(ACCUEIL) . '</code>', '<em>' . securiseTexte($idGalerie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
+			$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la galerie %3\$s:"), $nom, '<code>' . securiseTexte(eval(ACCUEIL)) . '</code>', '<em>' . securiseTexte($idGalerie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
 		}
 	}
 	elseif (empty($courrielContact))
@@ -132,12 +132,12 @@ if (!$erreur404 && !$estPageDerreur)
 			{
 				$messagePartageCourrielSupplement = publicationsRecentes($racine, $urlRacine, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron);
 				$messagePartageCourrielSupplement = partageCourrielSupplementPage('', '', $messagePartageCourrielSupplement);
-				$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la catégorie %3\$s:"), $nom, '<code>' . securiseTexte(ACCUEIL) . '</code>', '<em>' . securiseTexte($idCategorie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
+				$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la catégorie %3\$s:"), $nom, '<code>' . securiseTexte(eval(ACCUEIL)) . '</code>', '<em>' . securiseTexte($idCategorie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
 			}
 			else
 			{
 				$messagePartageCourrielSupplement = partageCourrielSupplementPage($description, $baliseTitle . $baliseTitleComplement);
-				$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page suivante:"), $nom, '<code>' . securiseTexte(ACCUEIL) . '</code>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
+				$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la page suivante:"), $nom, '<code>' . securiseTexte(eval(ACCUEIL)) . '</code>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
 			}
 		}
 	}

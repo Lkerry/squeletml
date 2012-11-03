@@ -114,7 +114,7 @@ if (!empty($courrielContact) || (isset($_GET['action']) && (($ajoutCommentaires 
 
 // Inclusions 3 de 4.
 
-phpGettext($racine, LANGUE); // Nécessaire à la traduction.
+phpGettext($racine, eval(LANGUE)); // Nécessaire à la traduction.
 
 // Traitement personnalisé optionnel 1 de 2.
 if (file_exists($racine . '/site/inc/premier-pre.inc.php'))
@@ -194,7 +194,7 @@ elseif ($estPageDesabonnement)
 	$baliseH1 = T_("Désabonnement aux notifications de nouveaux commentaires");
 }
 
-$estAccueil = estAccueil(ACCUEIL);
+$estAccueil = estAccueil(eval(ACCUEIL));
 
 if (!empty($baliseTitle))
 {
@@ -221,7 +221,7 @@ if (!empty($classesContenu))
 	$classesContenu = ' class="' . trim($classesContenu) . '"';
 }
 
-list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($doctype, LANGUE);
+list ($contenuDoctype, $ouvertureBaliseHtml) = doctype($doctype, eval(LANGUE));
 
 if ($courrielContact == '@' && !empty($contactCourrielParDefaut))
 {
@@ -280,7 +280,7 @@ if ($inclureMotsCles)
 	$motsCles = motsCles(securiseTexte($motsCles), $description);
 }
 
-$nomSite = nomSite($estAccueil, lienAccueil(ACCUEIL, $estAccueil, titreSite($titreSite, array ($langue, $langueParDefaut))));
+$nomSite = nomSite($estAccueil, lienAccueil(eval(ACCUEIL), $estAccueil, titreSite($titreSite, array ($langue, $langueParDefaut))));
 
 $siteEstEnMaintenance = siteEstEnMaintenance($racine . '/.htaccess');
 
@@ -406,20 +406,20 @@ if ($activerFluxRssGlobalSite)
 		$pagesFluxRssGlobalSite = super_parse_ini_file(cheminConfigFluxRssGlobalSite($racine), TRUE);
 	}
 	
-	if (!empty($pagesFluxRssGlobalSite[LANGUE]))
+	if (!empty($pagesFluxRssGlobalSite[eval(LANGUE)]))
 	{
-		$urlFlux = $urlRacine . '/rss.php?type=site&amp;langue=' . LANGUE;
+		$urlFlux = $urlRacine . '/rss.php?type=site&amp;langue=' . eval(LANGUE);
 		$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Dernières publications');
 	}
 }
 
 if ($galerieActiverFluxRssGlobal)
 {
-	$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, LANGUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+	$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, eval(LANGUE), $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
 	
 	if (!empty($itemsFluxRssGaleriesLangue))
 	{
-		$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . LANGUE;
+		$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . eval(LANGUE);
 		$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Derniers ajouts aux galeries');
 	}
 }
