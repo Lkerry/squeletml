@@ -499,12 +499,12 @@ if (!empty($blocsAinsererTemp))
 						
 						if ($activerGalerieDemo)
 						{
-							$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}')), $listeGaleries);
+							$listeGaleries = array_merge(array ('démo' => array ('dossier' => 'demo', 'url' => 'galerie.php?id=demo&amp;langue={LANGUE}', 'menu' => 1)), $listeGaleries);
 						}
 						
 						foreach ($listeGaleries as $listeIdGalerie => $listeInfosGalerie)
 						{
-							if (!empty($listeInfosGalerie['url']))
+							if ($listeInfosGalerie['menu'] == 1 && !empty($listeInfosGalerie['url']))
 							{
 								$bloc .= '<li><a href="' . urlGalerie(1, $racine, $urlRacine, $listeInfosGalerie['url'], eval(LANGUE)) . '">' . securiseTexte($listeIdGalerie) . "</a></li>\n";
 							}
