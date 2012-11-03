@@ -1,5 +1,5 @@
 <?php
-if (!define('LANGUE_ADMIN'))
+if (!defined('LANGUE_ADMIN'))
 {
 	define('LANGUE_ADMIN', 'return langue($langue, $adminLangueParDefaut);');
 }

@@ -47,17 +47,17 @@ CODE
 	);
 }
 
-if (!define('URL_SQUELETML'))
+if (!defined('URL_SQUELETML'))
 {
 	define('URL_SQUELETML', 'http://www.jpfleury.net/logiciels/squeletml.php');
 }
 
-if (!define('URL_DERNIERE_VERSION_SQUELETML'))
+if (!defined('URL_DERNIERE_VERSION_SQUELETML'))
 {
 	define('URL_DERNIERE_VERSION_SQUELETML', 'http://jpfleury.indefero.net/p/squeletml/source/file/master/doc/version.txt');
 }
 
-if (!define('URL_TELECHARGEMENT_SQUELETML'))
+if (!defined('URL_TELECHARGEMENT_SQUELETML'))
 {
 	define('URL_TELECHARGEMENT_SQUELETML', 'http://www.jpfleury.net/logiciels/squeletml.php#Telechargement');
 }
