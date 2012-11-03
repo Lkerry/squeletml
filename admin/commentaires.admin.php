@@ -41,7 +41,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		
 		if (strpos($urlPage, 'galerie.php?') === 0)
 		{
-			$valeurHrefUrlPage = variableGet(2, $urlPage, 'langue', LANGUE_ADMIN);
+			$valeurHrefUrlPage = variableGet(2, $urlPage, 'langue', eval(LANGUE_ADMIN));
 		}
 		else
 		{
@@ -287,7 +287,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (strpos($listePage, 'galerie.php?') === 0)
 					{
-						$valeurHrefListePage = variableGet(2, $listePage, 'langue', LANGUE_ADMIN);
+						$valeurHrefListePage = variableGet(2, $listePage, 'langue', eval(LANGUE_ADMIN));
 					}
 					else
 					{

@@ -101,7 +101,7 @@ $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 			<?php if (estAccueil($accueil)): ?>
 				<p>la page courante est la page d'accueil.</p>
 			<?php else: ?>
-				<p><a href="<?php echo ACCUEIL; ?>/">lien vers la page d'accueil</a>.</p>
+				<p><a href="<?php echo eval(ACCUEIL); ?>/">lien vers la page d'accueil</a>.</p>
 			<?php endif; ?>
 		</li>
 		
@@ -131,7 +131,7 @@ $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 	<p class="bDtitre">Voici une autre boîte déroulante de classe <code>testBoiteDeroulante1</code>:</p>
 	
 	<div class="bDcorps">
-		<p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo LANGUE; ?></em>.</p>
+		<p>La constante <code>LANGUE</code> fournit la langue de la page, qui vaut dans ce cas-ci <em><?php echo eval(LANGUE); ?></em>.</p>
 	</div>
 </div>
 
@@ -140,13 +140,13 @@ $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 	
 	<p>La fonction <code>publicationsRecentes()</code> permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple d'utilisation de cette foncion pour afficher les cinq dernières images ajoutées à la galerie démo:
 	
-	<?php $dernieresImagesDemo = publicationsRecentes($racine, $urlRacine, LANGUE, 'galerie', 'démo', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron); ?>
+	<?php $dernieresImagesDemo = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'démo', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron); ?>
 	<?php echo $dernieresImagesDemo; ?>
 	
 	<p>Voir la section «Liste des dernières publications» de la documentation pour plus de détails.</p>
 <?php endif; ?>
 
-<?php $infosPage = infosPage($racine, $urlRacine, ACCUEIL, $inclureApercu, $tailleApercuAutomatique, $dureeCache); ?>
+<?php $infosPage = infosPage($racine, $urlRacine, eval(ACCUEIL), $inclureApercu, $tailleApercuAutomatique, $dureeCache); ?>
 
 <?php if (!empty($infosPage['apercu'])): ?>
 	<h2>Informations sur une page du site</h2>

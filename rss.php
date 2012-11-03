@@ -393,7 +393,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 			}
 			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, eval(ACCUEIL), baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
 			if ($dureeCacheRss)
 			{
@@ -496,7 +496,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
 			}
 			
-			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, ACCUEIL, baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
+			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, eval(ACCUEIL), baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
 			
 			if ($dureeCacheRss)
 			{

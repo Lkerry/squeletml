@@ -206,7 +206,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$urlGalerieAafficher = supprimeUrlRacine($urlRacine, $urlGalerieAafficher);
 				}
 				
-				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlGalerieAafficher, LANGUE_ADMIN);
+				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlGalerieAafficher, eval(LANGUE_ADMIN));
 				$tableauInfosGaleries[$idGalerieDossier] .= '<li>' . sprintf(T_("URL: %1\$s"), '<a class="lienSurCode" href="' . $urlGalerie . '"><code>' . securiseTexte($urlGalerieAafficher) . '</code></a>');
 				
 				if (strpos($urlGalerieAafficher, 'galerie.php?') !== 0)
@@ -2040,7 +2040,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlRelativeGalerie, LANGUE_ADMIN);
+				$urlGalerie = urlGalerie(1, '', $urlRacine, $urlRelativeGalerie, eval(LANGUE_ADMIN));
 				$cheminConfigGalerie = cheminConfigGalerie($racine, $idDossier);
 				
 				if (!$cheminConfigGalerie)

@@ -10,6 +10,6 @@ include $racine . '/inc/premier.inc.php';
 
 <p>The URL you requested requires authentication.</p>
 
-<p>You can <?php echo lienAccueil(ACCUEIL, $estAccueil, "visit the home page"); ?>.</p>
+<p>You can <?php echo lienAccueil(eval(ACCUEIL), $estAccueil, "visit the home page"); ?>.</p>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

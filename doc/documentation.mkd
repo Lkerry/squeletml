@@ -834,21 +834,21 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
   - Exemple d'utilisation dans une page dont la langue est le français:
 
-			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en français</a>
+			<a href="<?php echo eval(ACCUEIL); ?>/contact.php">lien vers la page contact de la section en français</a>
 
   - Exemple d'utilisation dans une page dont la langue est l'anglais:
 
-			<a href="<?php echo ACCUEIL; ?>/contact.php">lien vers la page contact de la section en anglais</a>
+			<a href="<?php echo eval(ACCUEIL); ?>/contact.php">lien vers la page contact de la section en anglais</a>
 
-- `LANGUE`: contient la langue de la page en cours. Exemple de valeur:
+- `LANGUE`: contient la langue de la page en cours (par exemple `fr`). Exemple d'utilisation:
 
-		`fr`
+		Langue de la page en cours: <?php echo eval(LANGUE); ?>
 
 #### Liste des dernières publications
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresImages = publicationsRecentes($racine, $urlRacine, LANGUE, 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron);
+	$dernieresImages = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron);
 
 Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième argument vaut `TRUE`, donc un lien est ajouté sur chaque vignette vers la page Web de l'image en question. Le huitième argument vaut également `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
@@ -1253,7 +1253,7 @@ Il est possible de lister plusieurs galeries sur une même page. Pour ce faire, 
 	$inclureCodeFenetreJavascript = TRUE;
 	include 'inc/premier.inc.php'; // Le cas échéant, modifier le chemin d'inclusion.
 	
-	echo galeries($racine, $urlRacine, LANGUE, array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation);
+	echo galeries($racine, $urlRacine, eval(LANGUE), array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation);
 	
 	include $racine . '/inc/dernier.inc.php';
 	?>
@@ -1262,7 +1262,7 @@ Ne pas oublier de définir la variable `$inclureCodeFenetreJavascript` à `TRUE`
 
 Par défaut, la navigation par fenêtre Javascript est activée et le niveau des titres de galerie est 2. Les deux derniers paramètres (optionnels) de la fonction permettent de modifier ces valeurs par défaut. Exemple:
 
-	echo galeries($racine, $urlRacine, LANGUE, array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation, FALSE, 3);
+	echo galeries($racine, $urlRacine, eval(LANGUE), array ('identifiant galerie 1', 'identifiant galerie 2', 'identifiant galerie 3'), $galerieAncreDeNavigation, FALSE, 3);
 
 ## Partage par courriel
 
