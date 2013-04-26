@@ -185,8 +185,8 @@ $chaineSecurisee = securiseTexte($chaine);
 $chaineSansCom = supprimeCommentairesHtml($chaine);
 $chaineSansComCorrigee = corrigeHtml($chaineSansCom);
 $chaineSansComCorrigeeEtSecurisee = securiseTexte($chaineSansComCorrigee);
-$chaineTronquee = tronqueTexte($chaine, 25);
-$chaineTronqueeMarquePersonnalisee = tronqueTexte($chaine, 25, array ('ending' => '...'));
+$chaineTronquee = tronqueHtml($chaine, 25, $marqueTroncatureApercu);
+$chaineTronqueeMarquePersonnalisee = tronqueHtml($chaine, 25, '...');
 ?>
 
 <p>Voici maintenant une chaîne de caractères sécurisée avec la fonction <code>securiseTexte()</code>:</p>
@@ -209,7 +209,7 @@ $chaineTronqueeMarquePersonnalisee = tronqueTexte($chaine, 25, array ('ending' =
 
 <?php echo desecuriseTexte($chaineSansComCorrigeeEtSecurisee); ?>
 
-<p>Pour terminer, affichons un aperçu de ce texte avec la fonction <code>tronqueTexte()</code>:</p>
+<p>Pour terminer, affichons un aperçu de ce texte avec la fonction <code>tronqueHtml()</code>:</p>
 
 <?php echo $chaineTronquee; ?>
 
