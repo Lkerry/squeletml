@@ -810,11 +810,11 @@ $affichageCommentairesSiAjoutDesactive = TRUE; // TRUE|FALSE
 // Affichage du nombre de commentaires après le titre de section.
 $afficherNombreCommentaires = TRUE; // TRUE|FALSE
 
-// Inversion de l'ordre d'affichage des commentaires.
+// Ordre d'affichage des commentaires.
 /*
-- Par défaut, les commentaires sont affichés par ordre chronologique. Mettre à `TRUE` pour afficher du plus récent au plus ancien.
+- Par défaut, les commentaires sont affichés en ordre chronologique. Mettre à `FALSE` pour afficher du plus récent au plus ancien.
 */
-$inverserOrdreCommentaires = FALSE; // TRUE|FALSE
+$commentairesEnOrdreChronologique = TRUE; // TRUE|FALSE
 
 // Ajout d'un attribut `nofollow` aux liens d'un commentaire.
 $attributNofollowLiensCommentaires = TRUE; // TRUE|FALSE

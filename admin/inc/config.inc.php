@@ -208,7 +208,7 @@ $adminTypeFiltreAccesDossiers = 'dossiersExclus';
 - Exemple:
   $adminFiltreAccesDossiers = '../rep|../rep2|../rep3/sous-rep4';
 */
-$adminFiltreAccesDossiers = '../.git';
+$adminFiltreAccesDossiers = '../.git|../piwik|../inc/filter_htmlcorrector|../inc/htmlpurifier|../inc/php-gettext|../inc/php-markdown|../inc/PIE|../inc/simplehtmldom|../js/jquery|../js/phpjs|../js/slimbox2|../locale|../modeles|../site/cache/htmlpurifier|../src|inc/ezcomponents|inc/UnsharpMask|js/CodeMirror|js/jquery-ui';
 
 /* ____________________ Liste des dossiers. ____________________ */
 
@@ -261,6 +261,7 @@ $adminFiltreTypesMime = TRUE; // TRUE|FALSE
 - Si `$adminFiltreTypesMime` vaut TRUE et que le tableau `$adminTypesMimePermis` est vide, l'ajout de fichiers par le porte-documents sera désactivé.
 */
 $adminTypesMimePermis['vide'] = 'application/x-empty';
+$adminTypesMimePermis['vide2'] = 'inode/x-empty';
 
 $adminTypesMimePermis['dossier'] = 'directory';
 

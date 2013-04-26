@@ -80,7 +80,7 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($listeCommentaires))
 						{
-							if ($inverserOrdreCommentaires)
+							if (!$commentairesEnOrdreChronologique)
 							{
 								$listeCommentaires = array_reverse($listeCommentaires);
 							}
