@@ -130,7 +130,7 @@ if (!$erreur404 && !$estPageDerreur)
 			
 			if (!empty($idCategorie))
 			{
-				$messagePartageCourrielSupplement = publicationsRecentes($racine, $urlRacine, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron);
+				$messagePartageCourrielSupplement = publicationsRecentes($racine, $urlRacine, $langue, 'categorie', $idCategorie, 5, FALSE, FALSE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron);
 				$messagePartageCourrielSupplement = partageCourrielSupplementPage('', '', $messagePartageCourrielSupplement);
 				$messagePartageCourriel = '<p>' . sprintf(T_("%1\$s vous a envoyé un message à partir du site %2\$s pour vous faire découvrir la catégorie %3\$s:"), $nom, '<code>' . securiseTexte(eval(ACCUEIL)) . '</code>', '<em>' . securiseTexte($idCategorie) . '</em>') . "</p>\n" . $messagePartageCourrielSupplement . $petitMot;
 			}

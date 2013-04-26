@@ -654,7 +654,7 @@ function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategor
 {
 	if (!empty($listeCategoriesPage) || !empty($idCategorie))
 	{
-		$dom = str_get_html($codeMenuCategories);
+		$dom = str_get_html($codeMenuCategories, TRUE, TRUE, 'UTF-8', FALSE);
 		
 		if (method_exists($dom, 'find'))
 		{
@@ -1442,7 +1442,7 @@ function coloreFichierPhp($fichier, $retourneCode = FALSE, $commentairesEnNoir =
 }
 
 /*
-S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y avait lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
+S'assure que les balises du code HTML fourni en paramètre sont toutes bien fermées et imbriquées. Retourne le code analysé (et modifié s'il y a lieu). Il s'agit d'un alias de la fonction `_filter_htmlcorrector()`.
 */
 function corrigeHtml($html)
 {
@@ -2336,10 +2336,10 @@ function fluxRssGlobalGaleries($racine)
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 */
-function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, $estPageCron)
+function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $estPageCron)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCache, TRUE, $estPageCron);
+	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, TRUE, $estPageCron);
 	
 	if (!empty($infosPage))
 	{
@@ -3308,7 +3308,7 @@ Retourne un tableau d'informations au sujet du contenu local accessible à l'URL
 
 Si `$html` est vide et que l'URL fournie n'est pas accessible, retourne un tableau vide.
 */
-function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE, $html = '')
+function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE, $html = '')
 {
 	$infosPage = array ();
 	
@@ -3319,7 +3319,7 @@ function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuA
 	
 	if (!empty($html))
 	{
-		$dom = str_get_html($html);
+		$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 		
 		if (method_exists($dom, 'find'))
 		{
@@ -3371,55 +3371,63 @@ function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuA
 			{
 				$infosPage['contenu'] = '';
 			}
-		
+			
 			// Aperçu.
-		
-			$commentairesHtmlSupprimes = FALSE;
+			
 			$infosPage['apercu'] = '';
-	
-			if ($inclureApercu && preg_match('/<!-- APERÇU: (.+?) -->/s', $infosPage['contenu'], $resultatApercu))
+			
+			if ($inclureApercu)
 			{
-				if ($resultatApercu[1] == 'interne')
+				$contenuSansTableDesMatieres = supprimeTableDesMatieres($infosPage['contenu']);
+				
+				if (preg_match('/<!-- APERÇU: (.+?) -->/s', $contenuSansTableDesMatieres, $resultatApercu))
 				{
-					if (preg_match('#^(.+?)<!-- ?/aper(ç|c)u ?-->#s', $infosPage['contenu'], $resultatInterne))
-					{
-						$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]) . ' […]');
-						$commentairesHtmlSupprimes = TRUE;
-					}
-				}
-				elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
-				{
-					$infosPage['apercu'] = $description[0]->content;
-					unset($description);
-				}
-				elseif ($resultatApercu[1] == 'automatique')
-				{
-					$contenuSansCommentairesHtml = trim(supprimeCommentairesHtml($infosPage['contenu']));
-					$commentairesHtmlSupprimes = TRUE;
-					$infosPage['apercu'] = tronqueTexte($contenuSansCommentairesHtml, $tailleApercuAutomatique, array (), TRUE);
+					$commentairesHtmlSupprimes = FALSE;
 					
-					if ($infosPage['apercu'] == $contenuSansCommentairesHtml)
+					if ($resultatApercu[1] == 'interne')
 					{
-						$infosPage['apercu'] = '';
+						if (preg_match('#^(.+?)<!-- ?/aper(ç|c)u ?-->#s', $contenuSansTableDesMatieres, $resultatInterne))
+						{
+							$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]) . $marqueTroncatureApercu);
+							$commentairesHtmlSupprimes = TRUE;
+						}
+					}
+					elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
+					{
+						$infosPage['apercu'] = $description[0]->content;
+						unset($description);
+					}
+					elseif ($resultatApercu[1] == 'automatique')
+					{
+						$contenuSansCommentairesHtml = trim(supprimeCommentairesHtml($contenuSansTableDesMatieres));
+						$commentairesHtmlSupprimes = TRUE;
+						$infosPage['apercu'] = tronqueTexte($contenuSansCommentairesHtml, $tailleApercuAutomatique, array ('ending' => $marqueTroncatureApercu), TRUE);
+					
+						if ($infosPage['apercu'] == $contenuSansCommentairesHtml)
+						{
+							$infosPage['apercu'] = '';
+						}
+						else
+						{
+							$infosPage['apercu'] .= "<div class=\"sep\"></div>\n";
+						}
+					
+						unset($contenuSansCommentairesHtml);
 					}
 					else
 					{
-						$infosPage['apercu'] .= "<div class=\"sep\"></div>\n";
+						$infosPage['apercu'] = $resultatApercu[1];
 					}
 					
-					unset($contenuSansCommentairesHtml);
+					if (!$commentairesHtmlSupprimes)
+					{
+						$infosPage['apercu'] = supprimeCommentairesHtml($infosPage['apercu']);
+					}
 				}
-				else
-				{
-					$infosPage['apercu'] = $resultatApercu[1];
-				}
+				
+				unset($contenuSansTableDesMatieres);
 			}
-	
-			if (!$commentairesHtmlSupprimes)
-			{
-				$infosPage['apercu'] = supprimeCommentairesHtml($infosPage['apercu']);
-			}
-	
+			
 			// Auteur.
 			if ($auteur = $dom->find('meta[name=author]'))
 			{
@@ -3618,7 +3626,7 @@ function langueActive($codeMenuLangues, $langue, $accueil)
 	if (array_key_exists($langue, $accueil))
 	{
 		$url = $accueil[$langue] . '/';
-		$dom = str_get_html($codeMenuLangues);
+		$dom = str_get_html($codeMenuLangues, TRUE, TRUE, 'UTF-8', FALSE);
 		
 		if (method_exists($dom, 'find'))
 		{
@@ -3836,7 +3844,7 @@ function lienActif($urlRacine, $html, $inclureGet, $parent = '')
 	$url = url();
 	$urlRelative = supprimeUrlRacine($urlRacine, $url);
 	$infosUrlRelative = parse_url($urlRelative);
-	$dom = str_get_html($html);
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -4039,7 +4047,7 @@ Le code passé en paramètre doit avoir été traité par la fonction `lienActif
 */
 function limiteProfondeurListe($html)
 {
-	$dom = str_get_html($html);
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -5591,7 +5599,7 @@ Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un l
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron)
 {
 	$html = '';
 	$dossierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . encodeTexte($id);
@@ -5629,7 +5637,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $dureeCache, $estPageCron);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron);
 					
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -5943,7 +5951,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $dureeCache, $estPageCron);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron);
 				
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -6333,7 +6341,7 @@ Retourne le code HTML sans les commentaires.
 */
 function supprimeCommentairesHtml($html)
 {
-	$dom = str_get_html($html);
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -6362,6 +6370,29 @@ function supprimeInclusionCssParDefaut(&$fichiers)
 	}
 	
 	return;
+}
+
+/*
+Retourne le code HTML sans la table des matières.
+*/
+function supprimeTableDesMatieres($html)
+{
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
+	
+	if (method_exists($dom, 'find'))
+	{
+		if ($divTdM = $dom->find('div#tableDesMatieres'))
+		{
+			$divTdM[0]->outertext = '';
+		}
+		
+		$html = $dom->save();
+		$dom->clear();
+	}
+	
+	unset($dom);
+	
+	return $html;
 }
 
 /*
@@ -6421,7 +6452,7 @@ Inspiré de <http://stackoverflow.com/a/4912737/643933>.
 */
 function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, $tDmNiveauDepart, $tDmNiveauArret)
 {
-	$dom = str_get_html($codeHtml);
+	$dom = str_get_html($codeHtml, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -6586,7 +6617,7 @@ function triTableauAccueil($accueil, $langue)
 }
 
 /*
-Tronque le texte à la taille spécifiée et retourne le résultat.
+Tronque le texte à la taille spécifiée et retourne le résultat. Si le texte à tronquer est du code HTML, il est corrigé (balises bien fermées et imbriquées) avant d'être retourné.
 
 Provient de la fonction `truncate()` du fichier `lib/Cake/Utility/String.php` de CakePHP 2.2.1, sous licence MIT. Le commentaire original de la fonction est le suivant:
 
@@ -6709,6 +6740,9 @@ function tronqueTexte($text, $length, $options = array(), $commentairesHtmlSuppr
 		foreach ($openTags as $tag) {
 			$truncate .= '</' . $tag . '>';
 		}
+		
+		// Dans certaines situations, le code HTML final contient quand même quelques erreurs. On s'assure donc de corriger le résultat avant de le retourner.
+		$truncate = corrigeHtml($truncate);
 	}
 
 	return $truncate;

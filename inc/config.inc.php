@@ -497,6 +497,9 @@ $apercuParDefaut = "";
 // S'il y a lieu, taille, en nombre de caractères, d'un aperçu généré automatiquement.
 $tailleApercuAutomatique = 750;
 
+// S'il y a lieu, marque de troncature ajoutée à la fin d'un aperçu.
+$marqueTroncatureApercu = ' […]';
+
 // Génération automatisée du bloc de menu des langues.
 /*
 - Le bloc de menu des langues peut être réalisé à la main dans le fichier `menu-langues.inc.php` ou généré automatiquement.

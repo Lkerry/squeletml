@@ -118,7 +118,7 @@ Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou visiter l
 
 ## Développement
 
-Dernière version: 3.2.8 (2013-04-26)
+Dernière version: 3.2.9 (2013-04-26)
 
 Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
 
