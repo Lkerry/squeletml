@@ -140,13 +140,13 @@ $urlTestExistance1 = 'http://www.exemple-abcde-12345.qc/';
 	
 	<p>La fonction <code>publicationsRecentes()</code> permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple d'utilisation de cette foncion pour afficher les cinq dernières images ajoutées à la galerie démo:
 	
-	<?php $dernieresImagesDemo = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'démo', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $dureeCache, $estPageCron); ?>
+	<?php $dernieresImagesDemo = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'démo', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron); ?>
 	<?php echo $dernieresImagesDemo; ?>
 	
 	<p>Voir la section «Liste des dernières publications» de la documentation pour plus de détails.</p>
 <?php endif; ?>
 
-<?php $infosPage = infosPage($racine, $urlRacine, eval(ACCUEIL), $inclureApercu, $tailleApercuAutomatique, $dureeCache); ?>
+<?php $infosPage = infosPage($racine, $urlRacine, eval(ACCUEIL), $inclureApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache); ?>
 
 <?php if (!empty($infosPage['apercu'])): ?>
 	<h2>Informations sur une page du site</h2>

@@ -276,7 +276,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss, $estPageCron);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron);
 					
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -479,7 +479,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $dureeCacheRss, $estPageCron);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron);
 						
 						if (!empty($fluxRssPageTableauBrut))
 						{
