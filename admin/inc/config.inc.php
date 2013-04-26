@@ -261,6 +261,7 @@ $adminFiltreTypesMime = TRUE; // TRUE|FALSE
 - Si `$adminFiltreTypesMime` vaut TRUE et que le tableau `$adminTypesMimePermis` est vide, l'ajout de fichiers par le porte-documents sera désactivé.
 */
 $adminTypesMimePermis['vide'] = 'application/x-empty';
+$adminTypesMimePermis['vide2'] = 'inode/x-empty';
 
 $adminTypesMimePermis['dossier'] = 'directory';
 
