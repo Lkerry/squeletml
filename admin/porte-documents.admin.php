@@ -2212,14 +2212,14 @@ echo '<select id="selectPorteDocumentsCreationVar" class="bDcorps afficher" name
 echo '<option value="ajoutCommentaires">$ajoutCommentaires</option>' . "\n";
 echo '<option value="apercu">$apercu</option>' . "\n";
 echo '<option value="auteur">$auteur</option>' . "\n";
-echo '<option value="baliseH1">$baliseH1</option>' . "\n";
+echo '<option value="baliseH1" selected="selected">$baliseH1</option>' . "\n";
 echo '<option value="baliseTitle">$baliseTitle</option>' . "\n";
 echo '<option value="boitesDeroulantes">$boitesDeroulantes</option>' . "\n";
 echo '<option value="boitesDeroulantesAlaMain">$boitesDeroulantesAlaMain</option>' . "\n";
 echo '<option value="classesBody">$classesBody</option>' . "\n";
 echo '<option value="classesContenu">$classesContenu</option>' . "\n";
 echo '<option value="courrielContact">$courrielContact</option>' . "\n";
-echo '<option value="dateCreation">$dateCreation</option>' . "\n";
+echo '<option value="dateCreation" selected="selected">$dateCreation</option>' . "\n";
 echo '<option value="dateRevision">$dateRevision</option>' . "\n";
 echo '<option value="desactiverCache">$desactiverCache</option>' . "\n";
 echo '<option value="desactiverCachePartiel">$desactiverCachePartiel</option>' . "\n";
