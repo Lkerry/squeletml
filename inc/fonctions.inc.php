@@ -3371,55 +3371,63 @@ function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuA
 			{
 				$infosPage['contenu'] = '';
 			}
-		
+			
 			// Aperçu.
-		
-			$commentairesHtmlSupprimes = FALSE;
+			
 			$infosPage['apercu'] = '';
-	
-			if ($inclureApercu && preg_match('/<!-- APERÇU: (.+?) -->/s', $infosPage['contenu'], $resultatApercu))
+			
+			if ($inclureApercu)
 			{
-				if ($resultatApercu[1] == 'interne')
+				$contenuSansTableDesMatieres = supprimeTableDesMatieres($infosPage['contenu']);
+				
+				if (preg_match('/<!-- APERÇU: (.+?) -->/s', $contenuSansTableDesMatieres, $resultatApercu))
 				{
-					if (preg_match('#^(.+?)<!-- ?/aper(ç|c)u ?-->#s', $infosPage['contenu'], $resultatInterne))
-					{
-						$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]) . ' […]');
-						$commentairesHtmlSupprimes = TRUE;
-					}
-				}
-				elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
-				{
-					$infosPage['apercu'] = $description[0]->content;
-					unset($description);
-				}
-				elseif ($resultatApercu[1] == 'automatique')
-				{
-					$contenuSansCommentairesHtml = trim(supprimeCommentairesHtml($infosPage['contenu']));
-					$commentairesHtmlSupprimes = TRUE;
-					$infosPage['apercu'] = tronqueTexte($contenuSansCommentairesHtml, $tailleApercuAutomatique, array (), TRUE);
+					$commentairesHtmlSupprimes = FALSE;
 					
-					if ($infosPage['apercu'] == $contenuSansCommentairesHtml)
+					if ($resultatApercu[1] == 'interne')
 					{
-						$infosPage['apercu'] = '';
+						if (preg_match('#^(.+?)<!-- ?/aper(ç|c)u ?-->#s', $contenuSansTableDesMatieres, $resultatInterne))
+						{
+							$infosPage['apercu'] = corrigeHtml(supprimeCommentairesHtml($resultatInterne[1]) . ' […]');
+							$commentairesHtmlSupprimes = TRUE;
+						}
+					}
+					elseif ($resultatApercu[1] == 'description' && $description = $dom->find('meta[name=description]'))
+					{
+						$infosPage['apercu'] = $description[0]->content;
+						unset($description);
+					}
+					elseif ($resultatApercu[1] == 'automatique')
+					{
+						$contenuSansCommentairesHtml = trim(supprimeCommentairesHtml($contenuSansTableDesMatieres));
+						$commentairesHtmlSupprimes = TRUE;
+						$infosPage['apercu'] = tronqueTexte($contenuSansCommentairesHtml, $tailleApercuAutomatique, array (), TRUE);
+					
+						if ($infosPage['apercu'] == $contenuSansCommentairesHtml)
+						{
+							$infosPage['apercu'] = '';
+						}
+						else
+						{
+							$infosPage['apercu'] .= "<div class=\"sep\"></div>\n";
+						}
+					
+						unset($contenuSansCommentairesHtml);
 					}
 					else
 					{
-						$infosPage['apercu'] .= "<div class=\"sep\"></div>\n";
+						$infosPage['apercu'] = $resultatApercu[1];
 					}
 					
-					unset($contenuSansCommentairesHtml);
+					if (!$commentairesHtmlSupprimes)
+					{
+						$infosPage['apercu'] = supprimeCommentairesHtml($infosPage['apercu']);
+					}
 				}
-				else
-				{
-					$infosPage['apercu'] = $resultatApercu[1];
-				}
+				
+				unset($contenuSansTableDesMatieres);
 			}
-	
-			if (!$commentairesHtmlSupprimes)
-			{
-				$infosPage['apercu'] = supprimeCommentairesHtml($infosPage['apercu']);
-			}
-	
+			
 			// Auteur.
 			if ($auteur = $dom->find('meta[name=author]'))
 			{
@@ -6362,6 +6370,29 @@ function supprimeInclusionCssParDefaut(&$fichiers)
 	}
 	
 	return;
+}
+
+/*
+Retourne le code HTML sans la table des matières.
+*/
+function supprimeTableDesMatieres($html)
+{
+	$dom = str_get_html($html);
+	
+	if (method_exists($dom, 'find'))
+	{
+		if ($divTdM = $dom->find('div#tableDesMatieres'))
+		{
+			$divTdM[0]->outertext = '';
+		}
+		
+		$html = $dom->save();
+		$dom->clear();
+	}
+	
+	unset($dom);
+	
+	return $html;
 }
 
 /*
