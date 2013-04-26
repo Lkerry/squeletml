@@ -5239,7 +5239,7 @@ function pagination($racine, $urlRacine, $type, $paginationAvecFond, $pagination
 	{
 		foreach ($_GET as $cle => $valeur)
 		{
-			if ($cle != 'page')
+			if ($cle != 'page' && $cle != 'action')
 			{
 				$lien .= $cle . '=' . $valeur . '&amp;';
 			}
