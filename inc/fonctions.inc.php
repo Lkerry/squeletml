@@ -5242,7 +5242,7 @@ function pagination($racine, $urlRacine, $type, $paginationAvecFond, $pagination
 	// `$lien` va être utilisée pour construire l'URL de la page précédente ou suivante.
 	$lien = $urlSansGet . '?';
 
-	// On récupère les variables GET pour les ajouter au lien, sauf `page`.
+	// On récupère les variables GET pour les ajouter au lien, sauf `page` et `action`.
 	if (!empty($_GET))
 	{
 		foreach ($_GET as $cle => $valeur)
