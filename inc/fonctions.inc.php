@@ -6617,7 +6617,7 @@ function triTableauAccueil($accueil, $langue)
 }
 
 /*
-Tronque le texte à la taille spécifiée et retourne le résultat.
+Tronque le texte à la taille spécifiée et retourne le résultat. Si le texte à tronquer est du code HTML, il est corrigé (balises bien fermées et imbriquées) avant d'être retourné.
 
 Provient de la fonction `truncate()` du fichier `lib/Cake/Utility/String.php` de CakePHP 2.2.1, sous licence MIT. Le commentaire original de la fonction est le suivant:
 
@@ -6740,6 +6740,9 @@ function tronqueTexte($text, $length, $options = array(), $commentairesHtmlSuppr
 		foreach ($openTags as $tag) {
 			$truncate .= '</' . $tag . '>';
 		}
+		
+		// Dans certaines situations, le code HTML final contient quand même quelques erreurs. On s'assure donc de corriger le résultat avant de le retourner.
+		$truncate = corrigeHtml($truncate);
 	}
 
 	return $truncate;
