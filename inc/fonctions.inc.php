@@ -6081,6 +6081,17 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 	$codePage = '';
 	$dossierTmp = "$racine/site/cache/simule-visite-" . encodeTexte($cheminPage, TRUE);
 	
+	if (file_exists($dossierTmp))
+	{
+		// Si le dossier temporaire existe déjà et qu'il a été créé il y a déjà un certain temps (deux heures ou plus), on suppose qu'il y a eu un problème quelconque avec le script et on efface le dossier pour recommencer à zéro.
+		$dateExpiration = @filemtime($dossierTmp) + 7200;
+		
+		if (time() >= $dateExpiration)
+		{
+			@rmdir($dossierTmp);
+		}
+	}
+	
 	// Éviter une boucle infinie.
 	if (!@mkdir($dossierTmp))
 	{
