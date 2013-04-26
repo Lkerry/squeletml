@@ -654,7 +654,7 @@ function categoriesActives($codeMenuCategories, $listeCategoriesPage, $idCategor
 {
 	if (!empty($listeCategoriesPage) || !empty($idCategorie))
 	{
-		$dom = str_get_html($codeMenuCategories);
+		$dom = str_get_html($codeMenuCategories, TRUE, TRUE, 'UTF-8', FALSE);
 		
 		if (method_exists($dom, 'find'))
 		{
@@ -3319,7 +3319,7 @@ function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuA
 	
 	if (!empty($html))
 	{
-		$dom = str_get_html($html);
+		$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 		
 		if (method_exists($dom, 'find'))
 		{
@@ -3626,7 +3626,7 @@ function langueActive($codeMenuLangues, $langue, $accueil)
 	if (array_key_exists($langue, $accueil))
 	{
 		$url = $accueil[$langue] . '/';
-		$dom = str_get_html($codeMenuLangues);
+		$dom = str_get_html($codeMenuLangues, TRUE, TRUE, 'UTF-8', FALSE);
 		
 		if (method_exists($dom, 'find'))
 		{
@@ -3844,7 +3844,7 @@ function lienActif($urlRacine, $html, $inclureGet, $parent = '')
 	$url = url();
 	$urlRelative = supprimeUrlRacine($urlRacine, $url);
 	$infosUrlRelative = parse_url($urlRelative);
-	$dom = str_get_html($html);
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -4047,7 +4047,7 @@ Le code passé en paramètre doit avoir été traité par la fonction `lienActif
 */
 function limiteProfondeurListe($html)
 {
-	$dom = str_get_html($html);
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -6341,7 +6341,7 @@ Retourne le code HTML sans les commentaires.
 */
 function supprimeCommentairesHtml($html)
 {
-	$dom = str_get_html($html);
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -6377,7 +6377,7 @@ Retourne le code HTML sans la table des matières.
 */
 function supprimeTableDesMatieres($html)
 {
-	$dom = str_get_html($html);
+	$dom = str_get_html($html, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
@@ -6452,7 +6452,7 @@ Inspiré de <http://stackoverflow.com/a/4912737/643933>.
 */
 function tableDesMatieres($codeHtml, $parent, $tDmBaliseTable, $tDmBaliseTitre, $tDmNiveauDepart, $tDmNiveauArret)
 {
-	$dom = str_get_html($codeHtml);
+	$dom = str_get_html($codeHtml, TRUE, TRUE, 'UTF-8', FALSE);
 	
 	if (method_exists($dom, 'find'))
 	{
