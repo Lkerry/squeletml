@@ -6108,96 +6108,111 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 	
 	if (is_file($cheminPage))
 	{
-		$dossierActuel = getcwd();
-		chdir(dirname($cheminPage));
-		
-		# Ajustement des variables relatives à l'URL.
-		
-		$infosUrl = parse_url($urlAsimuler);
-		
-		if ($infosUrl !== FALSE)
-		{
-			if (!isset($_SERVER))
-			{
-				$_SERVER = array ();
-			}
-			
-			$_SERVER_TMP = $_SERVER;
-			
-			if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
-			{
-				$_SERVER['HTTPS'] = 1;
-			}
-			else
-			{
-				$_SERVER['HTTPS'] = '';
-			}
-			
-			if (isset($infosUrl['host']))
-			{
-				$_SERVER['SERVER_NAME'] = $infosUrl['host'];
-			}
-			else
-			{
-				$_SERVER['SERVER_NAME'] = '';
-			}
-			
-			if (isset($infosUrl['port']))
-			{
-				$_SERVER['SERVER_PORT'] = $infosUrl['port'];
-			}
-			else
-			{
-				$_SERVER['SERVER_PORT'] = '';
-			}
-			
-			if (isset($infosUrl['path']))
-			{
-				$_SERVER['REQUEST_URI'] = $infosUrl['path'];
-			}
-			else
-			{
-				$_SERVER['REQUEST_URI'] = '';
-			}
-			
-			if (!isset($_GET))
-			{
-				$_GET = array ();
-			}
-			
-			$_GET_TMP = $_GET;
-			unset($_GET);
-			
-			if (isset($infosUrl['query']))
-			{
-				$_SERVER['REQUEST_URI'] .= '?' . $infosUrl['query'];
-				parse_str($infosUrl['query'], $_GET);
-			}
-		}
-		
-		ob_start();
 		$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlAsimuler);
-	
+		$cheminDossierTmpCron = "$racine/site/cache/cron/";
+		$cheminFichierCacheDansDossierTmpCron = "$cheminDossierTmpCron/" . superBasename($cheminFichierCache);
+		
 		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
 		{
-			@readfile($cheminFichierCache);
+			$codePage = @file_get_contents($cheminFichierCache);
+		}
+		elseif ($estPageCron && file_exists($cheminFichierCacheDansDossierTmpCron))
+		{
+			$codePage = @file_get_contents($cheminFichierCacheDansDossierTmpCron);
 		}
 		else
 		{
+			$dossierActuel = getcwd();
+			chdir(dirname($cheminPage));
+		
+			# Ajustement des variables relatives à l'URL.
+		
+			$infosUrl = parse_url($urlAsimuler);
+		
+			if ($infosUrl !== FALSE)
+			{
+				if (!isset($_SERVER))
+				{
+					$_SERVER = array ();
+				}
+			
+				$_SERVER_TMP = $_SERVER;
+			
+				if (isset($infosUrl['scheme']) && strtolower($infosUrl['scheme']) == 'https')
+				{
+					$_SERVER['HTTPS'] = 1;
+				}
+				else
+				{
+					$_SERVER['HTTPS'] = '';
+				}
+			
+				if (isset($infosUrl['host']))
+				{
+					$_SERVER['SERVER_NAME'] = $infosUrl['host'];
+				}
+				else
+				{
+					$_SERVER['SERVER_NAME'] = '';
+				}
+			
+				if (isset($infosUrl['port']))
+				{
+					$_SERVER['SERVER_PORT'] = $infosUrl['port'];
+				}
+				else
+				{
+					$_SERVER['SERVER_PORT'] = '';
+				}
+			
+				if (isset($infosUrl['path']))
+				{
+					$_SERVER['REQUEST_URI'] = $infosUrl['path'];
+				}
+				else
+				{
+					$_SERVER['REQUEST_URI'] = '';
+				}
+			
+				if (!isset($_GET))
+				{
+					$_GET = array ();
+				}
+			
+				$_GET_TMP = $_GET;
+				unset($_GET);
+			
+				if (isset($infosUrl['query']))
+				{
+					$_SERVER['REQUEST_URI'] .= '?' . $infosUrl['query'];
+					parse_str($infosUrl['query'], $_GET);
+				}
+			}
+			
+			ob_start();
 			include $cheminPage;
+			$codePage = ob_get_contents();
+			ob_end_clean();
+			chdir($dossierActuel);
+			
+			# Restauration des variables relatives à l'URL.
+			if ($infosUrl !== FALSE)
+			{
+				$_SERVER = $_SERVER_TMP;
+				unset($_SERVER_TMP);
+				$_GET = $_GET_TMP;
+				unset($_GET_TMP);
+			}
 		}
 		
-		$codePage = ob_get_contents();
-		ob_end_clean();
-		chdir($dossierActuel);
-		
-		# Restauration des variables relatives à l'URL.
-		if ($infosUrl !== FALSE)
+		if ($codePage === FALSE)
 		{
-			$_SERVER = $_SERVER_TMP;
-			unset($_SERVER_TMP);
-			$_GET = $_GET_TMP;
-			unset($_GET_TMP);
+			$codePage = '';
+		}
+		
+		if ($estPageCron && !file_exists($cheminFichierCacheDansDossierTmpCron))
+		{
+			@file_put_contents($cheminFichierCacheDansDossierTmpCron, $codePage);
 		}
 	}
 	
