@@ -550,7 +550,7 @@ $activerCategoriesGlobales['galeries'] = TRUE;
 /*
 - Nombre d'articles par page par défaut (0 pour désactiver la pagination).
 */
-$nombreArticlesParPageCategorie = 5;
+$nombreArticlesParPageCategorie = 10;
 
 // S'il y a pagination, type de liens.
 $typePaginationCategorie = 'texte'; // image|texte
