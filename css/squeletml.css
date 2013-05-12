@@ -35,7 +35,7 @@ h1, body.accueil div#milieuInterieurContenu h2 { /* Sur les pages d'accueil de c
 
 h2, body.accueil div#milieuInterieurContenu h3 {
 	font-size: 1.6em;
-	border-bottom: 3px solid #005959;
+	border-bottom: 2px solid #005959;
 }
 
 h3, body.accueil div#milieuInterieurContenu h4 {
@@ -711,7 +711,7 @@ div#baliseH1 h1 {
 
 #finInterieurContenu #commentaires h2, body.aucuneColonne #commentaires h2 {
 	font-size: 1.6em;
-	border-bottom: 3px solid #005959;
+	border-bottom: 2px solid #005959;
 }
 
 #finInterieurContenu #commentaires h3, body.aucuneColonne #commentaires h3 {
@@ -734,7 +734,7 @@ div#baliseH1 h1 {
 
 #commentaires ul#listeCommentaires li.commentaire div.commentaireCorps {
 	padding: 0px 0px 0px 10px;
-	border-left: 3px solid #005959;
+	border-left: 2px solid #005959;
 }
 
 /* Flux RSS. */
@@ -1175,7 +1175,7 @@ div.galerieInfoEtMinivignettesEnsemble div#galerieMinivignettes {
 
 #galerieIntermediaireTexteHorsContenu #galerieIntermediaireTexte {
 	padding-left: 5px;
-	border-left: 3px solid #005959;
+	border-left: 2px solid #005959;
 }
 
 #galerieIntermediaireTexteHorsContenu ul {
