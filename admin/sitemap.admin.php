@@ -21,7 +21,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			echo '<div class="sousBoite">' . "\n";
 			echo '<h3>' . T_("Ajout automatique des pages du site dans le fichier Sitemap") . "</h3>\n";
 			
-			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
+			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieVignettesParPage, $activerGalerieDemo, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 			$contenuSitemap = adminGenereContenuSitemap($listeUrl);
 			$messagesScript .= adminEnregistreSitemap($racine, $contenuSitemap);
 			echo adminMessagesScript($messagesScript);

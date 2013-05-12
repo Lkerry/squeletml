@@ -848,7 +848,7 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresImages = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
+	$dernieresImages = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLegendeMarkdown, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
 
 Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième argument vaut `TRUE`, donc un lien est ajouté sur chaque vignette vers la page Web de l'image en question. Le huitième argument vaut également `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 

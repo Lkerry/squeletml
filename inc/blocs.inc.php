@@ -196,7 +196,7 @@ if (!empty($blocsAinsererTemp))
 					break;
 					
 				case 'flux-rss':
-					$fluxRssGlobalSiteActif = FALSE;
+					$fluxRssGlobalSiteContientElements = FALSE;
 					
 					if ($activerFluxRssGlobalSite)
 					{
@@ -204,27 +204,26 @@ if (!empty($blocsAinsererTemp))
 						
 						if (!empty($pagesFluxRssGlobalSite[$langue]))
 						{
-							$fluxRssGlobalSiteActif = TRUE;
+							$fluxRssGlobalSiteContientElements = TRUE;
 						}
 					}
 					
-					$fluxRssGlobalGaleriesActif = FALSE;
+					$fluxRssGlobalGalerieDansBloc = $fluxRssGlobalGalerieContientElements;
 					
-					if ($galerieActiverFluxRssGlobal)
+					if (!$fluxRssGlobalGalerieDansBloc && $galerieActiverFluxRssGlobal)
 					{
 						foreach ($accueil as $codeLangue => $infosLangue)
 						{
-							$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
-						
-							if (!empty($itemsFluxRssGaleriesLangue))
+							if (fluxRssGlobalGaleriesContientElements($racine, $urlRacine, $codeLangue))
 							{
-								$fluxRssGlobalGaleriesActif = TRUE;
+								// Au moins une langue du site possède un flux RSS global des galeries contenant des éléments.
+								$fluxRssGlobalGalerieDansBloc = TRUE;
 								break;
 							}
 						}
 					}
 					
-					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGaleriesActif || $fluxRssGlobalSiteActif)
+					if (($idCategorie && $rssCategorie) || ($idGalerie && $rssGalerie) || $fluxRssGlobalGalerieDansBloc || $fluxRssGlobalSiteContientElements)
 					{
 						$boiteDeroulanteAjoutee = FALSE;
 						$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $blocAinserer, $nombreDeColonnes);
@@ -249,7 +248,7 @@ if (!empty($blocsAinsererTemp))
 							$blocs[$region] .= "<ul>\n$blocFluxRssIndividuels</ul>\n";
 						}
 						
-						if ($fluxRssGlobalSiteActif || $fluxRssGlobalGaleriesActif)
+						if ($fluxRssGlobalSiteContientElements || $fluxRssGlobalGalerieDansBloc)
 						{
 							$tableauAccueilTrie = triTableauAccueil($accueil, eval(LANGUE));
 							
@@ -257,19 +256,14 @@ if (!empty($blocsAinsererTemp))
 							{
 								$blocLangue = '';
 								
-								if ($fluxRssGlobalSiteActif && isset($pagesFluxRssGlobalSite[$codeLangue]))
+								if ($fluxRssGlobalSiteContientElements && isset($pagesFluxRssGlobalSite[$codeLangue]))
 								{
 									$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=site&amp;langue=$codeLangue\">" . T_("Dernières publications") . "</a></li>\n";
 								}
 								
-								if ($fluxRssGlobalGaleriesActif)
+								if ($fluxRssGlobalGalerieDansBloc && fluxRssGlobalGaleriesContientElements($racine, $urlRacine, $codeLangue))
 								{
-									$itemsFluxRssLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, $codeLangue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
-									
-									if (!empty($itemsFluxRssLangue))
-									{
-										$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue\">" . T_("Derniers ajouts aux galeries") . "</a></li>\n";
-									}
+									$blocLangue .= "<li><a class=\"fluxRssLien\" href=\"$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue\">" . T_("Derniers ajouts aux galeries") . "</a></li>\n";
 								}
 								
 								if (!empty($blocLangue))
@@ -316,7 +310,7 @@ if (!empty($blocsAinsererTemp))
 							$blocs[$region] .= '</div><!-- /#infosPublication -->' . "\n";
 						}
 					}
-						
+					
 					break;
 					
 				case 'legende-image-galerie':
@@ -422,7 +416,7 @@ if (!empty($blocsAinsererTemp))
 							
 							foreach ($tableauAccueilTrie as $codeLangue => $urlAccueilLangue)
 							{
-								$blocLangue = menuCategoriesAutomatise($racine, $urlRacine, $codeLangue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+								$blocLangue = menuCategoriesAutomatise($racine, $urlRacine, $codeLangue, $categories, $afficherNombreArticlesCategorie, $activerCategoriesGlobales, $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 								
 								if (!empty($blocLangue))
 								{
@@ -486,7 +480,7 @@ if (!empty($blocsAinsererTemp))
 							$blocs[$region] .= "</script>\n";
 						}
 					}
-						
+					
 					break;
 					
 				case 'menu-galeries':
@@ -547,7 +541,7 @@ if (!empty($blocsAinsererTemp))
 						$blocs[$region] .= $bloc;
 						$blocs[$region] .= '</div><!-- /#menuGaleries -->' . "\n";
 					}
-						
+					
 					break;
 					
 				case 'menu-langues':

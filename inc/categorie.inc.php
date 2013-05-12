@@ -13,7 +13,7 @@ if ($idCategorie == 'site')
 	
 	if ($activerCategoriesGlobales['site'])
 	{
-		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, eval(LANGUE), $categories, array ('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, eval(LANGUE), $categories, array ('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 	}
 	
 	if (empty($categories))
@@ -29,7 +29,7 @@ elseif ($idCategorie == 'galeries')
 	
 	if ($activerCategoriesGlobales['galeries'])
 	{
-		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, eval(LANGUE), $categories, array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+		$categories = ajouteCategoriesSpeciales($racine, $urlRacine, eval(LANGUE), $categories, array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 	}
 	
 	if (empty($categories))

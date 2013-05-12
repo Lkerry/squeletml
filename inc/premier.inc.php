@@ -353,6 +353,7 @@ if (!empty($classesBody))
 	$classesBody = ' class="' . trim($classesBody) . '"';
 }
 
+$fluxRssGlobalGaleriesContientElements = FALSE;
 $inclureFinMilieuInterieurContenu = TRUE;
 
 if ($erreur404 || $estPageDerreur || $courrielContact == '@' || ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie)))
@@ -415,9 +416,9 @@ if ($activerFluxRssGlobalSite)
 
 if ($galerieActiverFluxRssGlobal)
 {
-	$itemsFluxRssGaleriesLangue = fluxRssGaleriesTableauBrut($racine, $urlRacine, eval(LANGUE), $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
+	$fluxRssGlobalGaleriesContientElements = fluxRssGlobalGaleriesContientElements($racine, $urlRacine, eval(LANGUE));
 	
-	if (!empty($itemsFluxRssGaleriesLangue))
+	if ($fluxRssGlobalGaleriesContientElements)
 	{
 		$urlFlux = $urlRacine . '/rss.php?type=galeries&amp;langue=' . eval(LANGUE);
 		$balisesLinkScript[] = "$url#rss#$urlFlux#" . T_('Derniers ajouts aux galeries');

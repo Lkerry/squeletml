@@ -1304,7 +1304,7 @@ function adminListePagesAvecCommentaires($racine)
 /*
 Génère la liste des URL que Squeletml connaît à propos du site et retourne le résultat sous forme de message concaténable dans `$messagesScript`.
 */
-function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo)
+function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieVignettesParPage, $activerGalerieDemo, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown)
 {
 	$tableauUrl = array ();
 	$langues = array ();
@@ -1474,27 +1474,22 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	}
 	
 	// Flux RSS global des galeries.
-	if ($galerieActiverFluxRssGlobal)
+	if ($galerieActiverFluxRssGlobal && fluxRssGlobalGaleriesContientElements($racine, $urlRacine, $langues[0]))
 	{
-		$itemsFluxRssGaleries = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langues[0], $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, FALSE);
-		
-		if (!empty($itemsFluxRssGaleries))
+		foreach ($langues as $codeLangue)
 		{
-			foreach ($langues as $codeLangue)
+			$url = "$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue";
+			$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
+			$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
+			$tableauUrl[$url]['cache'] = $cheminFichierCache;
+			$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
+			
+			if (count($accueil) > 1)
 			{
-				$url = "$urlRacine/rss.php?type=galeries&amp;langue=$codeLangue";
-				$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $url, FALSE);
-				$cheminFichierCacheEnTete = cheminFichierCacheEnTete($cheminFichierCache);
-				$tableauUrl[$url]['cache'] = $cheminFichierCache;
-				$tableauUrl[$url]['cacheEnTete'] = $cheminFichierCacheEnTete;
-				
-				if (count($accueil) > 1)
+				foreach ($langues as $code)
 				{
-					foreach ($langues as $code)
-					{
-						$urlLink = variableGet(1, $url, 'langue', $code);
-						$tableauUrl[$url]['link'][$urlLink] = $code;
-					}
+					$urlLink = variableGet(1, $url, 'langue', $code);
+					$tableauUrl[$url]['link'][$urlLink] = $code;
 				}
 			}
 		}
@@ -1505,7 +1500,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	{
 		foreach ($langues as $codeLangue)
 		{
-			$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+			$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('galeries'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 		
 			if (!empty($categorie))
 			{
@@ -1615,7 +1610,7 @@ function adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales
 	{
 		foreach ($langues as $codeLangue)
 		{
-			$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger);
+			$categorie = ajouteCategoriesSpeciales($racine, $urlRacine, $codeLangue, array (), array ('site'), $nombreItemsFluxRss, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
 			
 			if (!empty($categorie))
 			{
