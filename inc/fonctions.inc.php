@@ -2336,10 +2336,10 @@ function fluxRssGlobalGaleries($racine)
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 */
-function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $estPageCron)
+function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
 {
 	$itemFlux = array ();
-	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, TRUE, $estPageCron);
+	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, TRUE, $estPageCron, $mettreAjourCacheSeulementParCron);
 	
 	if (!empty($infosPage))
 	{
@@ -3308,13 +3308,13 @@ Retourne un tableau d'informations au sujet du contenu local accessible à l'URL
 
 Si `$html` est vide et que l'URL fournie n'est pas accessible, retourne un tableau vide.
 */
-function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE, $html = '')
+function infosPage($racine, $urlRacine, $urlPage, $inclureApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE, $mettreAjourCacheSeulementParCron = FALSE, $html = '')
 {
 	$infosPage = array ();
 	
 	if (empty($html))
 	{
-		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache, $desactiverLectureCachePartiel, $estPageCron);
+		$html = simuleVisite($racine, $urlRacine, $urlPage, $dureeCache, $desactiverLectureCachePartiel, $estPageCron, $mettreAjourCacheSeulementParCron);
 	}
 	
 	if (!empty($html))
@@ -5599,7 +5599,7 @@ Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un l
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
 {
 	$html = '';
 	$dossierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . encodeTexte($id);
@@ -5637,7 +5637,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
 					
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -5951,7 +5951,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
 				
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -6063,7 +6063,7 @@ function securiseTexte($texte)
 /*
 Récupère le code XHTML d'une page locale, comme si elle était visitée dans un navigateur.
 */
-function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE)
+function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactiverLectureCachePartiel = FALSE, $estPageCron = FALSE, $mettreAjourCacheSeulementParCron = FALSE)
 {
 	$estVisiteSimulee = TRUE;
 	$urlAsimuler = str_replace('&amp;', '&', $urlAsimuler);
@@ -6112,7 +6112,7 @@ function simuleVisite($racine, $urlRacine, $urlAsimuler, $dureeCache, $desactive
 		$cheminDossierTmpCron = "$racine/site/cache/cron/";
 		$cheminFichierCacheDansDossierTmpCron = "$cheminDossierTmpCron/" . superBasename($cheminFichierCache);
 		
-		if ($dureeCache && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
+		if ($dureeCache && file_exists($cheminFichierCache) && (!cacheExpire($cheminFichierCache, $dureeCache) || $mettreAjourCacheSeulementParCron) && !$estPageCron)
 		{
 			$codePage = @file_get_contents($cheminFichierCache);
 		}

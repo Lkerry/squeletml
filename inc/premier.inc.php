@@ -137,7 +137,7 @@ if ($dureeCache && !$desactiverCache)
 	}
 	
 	// On vérifie si la page existe en cache ou si le cache est expiré.
-	if (file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCache) && !$estPageCron)
+	if (file_exists($cheminFichierCache) && (!cacheExpire($cheminFichierCache, $dureeCache) || $mettreAjourCacheSeulementParCron) && !$estPageCron)
 	{
 		if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 		{

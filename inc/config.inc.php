@@ -92,6 +92,13 @@ $dureeCache = 0;
 */
 $dureeCachePartiel = 0;
 
+// Mise à jour du cache seulement par le cron.
+/*
+- Si le cache (global ou partiel) est activé, que `$mettreAjourCacheSeulementParCron` vaut TRUE et qu'une page dont le cache est expiré est visitée par un internaute, aucun nouveau cache ne sera généré. Pour ce faire, le cron devra être utilisé.
+- Cette option évite aux internautes d'attendre lors de la visite de pages dont le cache est expiré et dont la génération prend un certain temps.
+*/
+$mettreAjourCacheSeulementParCron = FALSE; // TRUE|FALSE
+
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).
