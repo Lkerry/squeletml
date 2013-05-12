@@ -208,7 +208,7 @@ $adminTypeFiltreAccesDossiers = 'dossiersExclus';
 - Exemple:
   $adminFiltreAccesDossiers = '../rep|../rep2|../rep3/sous-rep4';
 */
-$adminFiltreAccesDossiers = '../.git|../piwik|../inc/filter_htmlcorrector|../inc/htmlpurifier|../inc/php-gettext|../inc/php-markdown|../inc/PIE|../inc/simplehtmldom|../js/jquery|../js/phpjs|../js/slimbox2|../locale|../modeles|../site/cache/htmlpurifier|../src|inc/ezcomponents|inc/UnsharpMask|js/CodeMirror|js/jquery-ui';
+$adminFiltreAccesDossiers = '../.git|../piwik|../inc/filter_htmlcorrector|../inc/htmlpurifier|../inc/php-gettext|../inc/php-markdown|../inc/PIE|../inc/simplehtmldom|../js/jquery|../js/phpjs|../js/slimbox2|../locale|../site/cache/htmlpurifier|../src|inc/ezcomponents|inc/UnsharpMask|js/CodeMirror|js/jquery-ui';
 
 /* ____________________ Liste des dossiers. ____________________ */
 

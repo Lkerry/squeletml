@@ -92,6 +92,13 @@ $dureeCache = 0;
 */
 $dureeCachePartiel = 0;
 
+// Mise à jour du cache seulement par le cron.
+/*
+- Si le cache (global ou partiel) est activé, que `$mettreAjourCacheSeulementParCron` vaut TRUE et qu'une page dont le cache est expiré est visitée par un internaute, aucun nouveau cache ne sera généré. Pour ce faire, le cron devra être utilisé.
+- Cette option évite aux internautes d'attendre lors de la visite de pages dont le cache est expiré et dont la génération prend un certain temps.
+*/
+$mettreAjourCacheSeulementParCron = FALSE; // TRUE|FALSE
+
 /* ____________________ En-tête HTML. ____________________ */
 
 // Choix du DTD (Définition de Type de Document).
@@ -550,10 +557,10 @@ $activerCategoriesGlobales['galeries'] = TRUE;
 /*
 - Nombre d'articles par page par défaut (0 pour désactiver la pagination).
 */
-$nombreArticlesParPageCategorie = 5;
+$nombreArticlesParPageCategorie = 10;
 
 // S'il y a pagination, type de liens.
-$typePaginationCategorie = 'texte'; // image|texte
+$typePaginationCategorie = 'image'; // image|texte
 
 // S'il y a pagination, ajout d'une couleur de fond.
 $paginationAvecFond = TRUE; // TRUE|FALSE
@@ -651,7 +658,7 @@ $limiterProfondeurListesBlocs['legende-image-galerie'] = FALSE;
 $limiterProfondeurListesBlocs['licence']               = NULL;
 $limiterProfondeurListesBlocs['lien-page']             = NULL;
 $limiterProfondeurListesBlocs['menu']                  = TRUE;
-$limiterProfondeurListesBlocs['menu-categories']       = TRUE; // S'il y a lieu (voir la section «Catégories» de la documentation).
+$limiterProfondeurListesBlocs['menu-categories']       = FALSE; // S'il y a lieu (voir la section «Catégories» de la documentation).
 $limiterProfondeurListesBlocs['menu-galeries']         = FALSE;
 $limiterProfondeurListesBlocs['menu-langues']          = FALSE;
 $limiterProfondeurListesBlocs['partage']               = NULL;
@@ -955,7 +962,7 @@ $galeriePagination['au-dessus']  = TRUE;
 $galeriePagination['au-dessous'] = FALSE;
 
 // S'il y a pagination, type de liens.
-$galerieTypePagination = 'texte'; // image|texte
+$galerieTypePagination = 'image'; // image|texte
 
 // S'il y a pagination, ajout d'une couleur de fond.
 $galeriePaginationAvecFond = TRUE; // TRUE|FALSE

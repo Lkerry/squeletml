@@ -42,7 +42,7 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 				$nomArchive .= $nom;
 			}
 			
-			if (isset($_GET['action']) && $_GET['action'] == 'date')
+			if (isset($_GET['action']) && in_array('date', $_GET['action']))
 			{
 				if (substr($nomArchive, -1) !== '_')
 				{
@@ -57,10 +57,17 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 			$typeMime = 'application/x-tar';
 			$listeFichiers = adminListeFichiers($chemin);
 			$listeFichiersFiltree = array ();
+			$inclureTousLesFichiers = FALSE;
+			
+			if (isset($_GET['action']) && in_array('tout', $_GET['action']))
+			{
+				$inclureTousLesFichiers = TRUE;
+			}
 			
 			foreach ($listeFichiers as $fichier)
 			{
-				if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers) && strpos(realpath($fichier), "$racine/site/$dossierAdmin/cache/") !== 0)
+				# Le cache n'est jamais inclus, même si tous les fichiers ont été demandés.
+				if (strpos(realpath($fichier), "$racine/site/$dossierAdmin/cache/") !== 0 && strpos(realpath($fichier), "$racine/site/cache/") !== 0 && ($inclureTousLesFichiers || adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers)))
 				{
 					$listeFichiersFiltree[] = $fichier;
 				}

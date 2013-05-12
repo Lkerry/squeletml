@@ -27,13 +27,11 @@ if (file_exists($racine . '/init.inc.php'))
 	
 	if ($lancementCronDansAdmin || ($activerPageCron && (empty($cleCron) || (isset($_GET['cle']) && $_GET['cle'] == $cleCron))))
 	{
-		$t1 = time();
-		@file_put_contents("$racine/site/inc/cron.txt", $t1);
-		
 		$langueRapports = !empty($langueRapports) ? $langueRapports : $langueParDefaut;
 		phpGettext($racine, $langueRapports); // Nécessaire à la traduction.
 		
 		$rapport = '';
+		$t1 = time();
 		$dateJour = date('Y-m-d', $t1);
 		$dateHeure = date('H:i:s', $t1);
 		$rapport .= '<h1>' . sprintf(T_("Rapport d'exécution du cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . "</h1>\n";
@@ -45,71 +43,84 @@ if (file_exists($racine . '/init.inc.php'))
 		$rapport .= '<li><a href="' . $urlRacineAdmin . '/">' . T_("Section d'administration du site") . "</a></li>\n";
 		$rapport .= "</ul>\n";
 		
-		if ($dureeCache || $ajouterPagesParCronDansSitemap)
+		$cheminDossierTmpCron = "$racine/site/cache/cron/";
+		
+		if (@mkdir($cheminDossierTmpCron))
 		{
-			$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
-		}
-		
-		########################################################################
-		##
-		## Cache.
-		##
-		########################################################################
-		
-		$rapport .= '<h2>' . T_("Cache") . "</h2>\n";
-		
-		$rapportLi = '';
-		
-		if ($dureeCache || $dureeCachePartiel)
-		{
-			foreach ($listeUrl as $url => $infosUrl)
+			@file_put_contents("$racine/site/inc/cron.txt", $t1);
+			
+			if ($dureeCache || $ajouterPagesParCronDansSitemap)
 			{
-				simuleVisite($racine, $urlRacine, $url, $dureeCache, FALSE, TRUE);
-				$rapportLi .= "<li><code>$url</code></li>\n";
+				$listeUrl = adminListeUrl($racine, $urlRacine, $accueil, $activerCategoriesGlobales, $nombreArticlesParPageCategorie, $nombreItemsFluxRss, $activerFluxRssGlobalSite, $galerieActiverFluxRssGlobal, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieVignettesParPage, $activerGalerieDemo);
 			}
-		}
 		
-		if (empty($rapportLi))
-		{
-			$rapport .= '<p>' . T_("Aucune action à effectuer.") . "</p>\n";
+			########################################################################
+			##
+			## Cache.
+			##
+			########################################################################
+		
+			$rapport .= '<h2>' . T_("Cache") . "</h2>\n";
+		
+			$rapportLi = '';
+		
+			if ($dureeCache || $dureeCachePartiel)
+			{
+				foreach ($listeUrl as $url => $infosUrl)
+				{
+					simuleVisite($racine, $urlRacine, $url, $dureeCache, FALSE, TRUE);
+					$rapportLi .= "<li><code>$url</code></li>\n";
+				}
+			}
+		
+			if (empty($rapportLi))
+			{
+				$rapport .= '<p>' . T_("Aucune action à effectuer.") . "</p>\n";
+			}
+			else
+			{
+				$rapport .= '<p>' . T_("Génération du cache des URL suivantes:") . "</p>\n";
+			
+				$rapport .= "<ul>\n";
+				$rapport .= $rapportLi;
+				$rapport .= "</ul>\n";
+			}
+		
+			########################################################################
+			##
+			## Fichiers Sitemap.
+			##
+			########################################################################
+		
+			$rapport .= '<h2>' . T_("Fichier Sitemap") . "</h2>\n";
+		
+			if ($ajouterPagesParCronDansSitemap)
+			{
+				$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap") . "</h3>\n";
+			
+				$rapport .= "<ul>\n";
+				$contenuSitemap = adminGenereContenuSitemap($listeUrl);
+				$rapport .= adminEnregistreSitemap($racine, $contenuSitemap);
+				$rapport .= "</ul>\n";
+			}
+		
+			$rapport .= '<h3>' . sprintf(T_("Vérification de la déclaration du fichier Sitemap dans le fichier %1\$s"), '<code>robots.txt</code>') . "</h3>\n" ;
+		
+			$rapport .= "<ul>\n";
+			$rapport .= adminDeclareSitemapDansRobots($racine, $urlRacine);
+			$rapport .= "</ul>\n";
+			
+			$t2 = time();
+			$t = $t2 - $t1;
+			$rapport .= "<hr />\n";
+			$rapport .= '<p>' . sprintf(T_ngettext("Cron exécuté en %1\$s seconde.", "Cron exécuté en %1\$s secondes.", $t), $t) . "</p>\n";
+			
+			adminRmdirRecursif($cheminDossierTmpCron);
 		}
 		else
 		{
-			$rapport .= '<p>' . T_("Génération du cache des URL suivantes:") . "</p>\n";
-			
-			$rapport .= "<ul>\n";
-			$rapport .= $rapportLi;
-			$rapport .= "</ul>\n";
+			$rapport .= '<p class="erreur">' . T_("Le cron est déjà en cours. La présente demande de lancement de cron a donc été annulée.") . "</p>\n";
 		}
-		
-		########################################################################
-		##
-		## Fichiers Sitemap.
-		##
-		########################################################################
-		
-		$rapport .= '<h2>' . T_("Fichier Sitemap") . "</h2>\n";
-		
-		if ($ajouterPagesParCronDansSitemap)
-		{
-			$rapport .= '<h3>' . T_("Ajout de pages dans le fichier Sitemap") . "</h3>\n";
-			
-			$rapport .= "<ul>\n";
-			$contenuSitemap = adminGenereContenuSitemap($listeUrl);
-			$rapport .= adminEnregistreSitemap($racine, $contenuSitemap);
-			$rapport .= "</ul>\n";
-		}
-		
-		$rapport .= '<h3>' . sprintf(T_("Vérification de la déclaration du fichier Sitemap dans le fichier %1\$s"), '<code>robots.txt</code>') . "</h3>\n" ;
-		
-		$rapport .= "<ul>\n";
-		$rapport .= adminDeclareSitemapDansRobots($racine, $urlRacine);
-		$rapport .= "</ul>\n";
-		
-		$t2 = time();
-		$t = $t2 - $t1;
-		$rapport .= "<hr />\n";
-		$rapport .= '<p>' . sprintf(T_ngettext("Cron exécuté en %1\$s seconde.", "Cron exécuté en %1\$s secondes.", $t), $t) . "</p>\n";
 		
 		########################################################################
 		##

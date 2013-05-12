@@ -2,7 +2,7 @@
 if ($premierOuDernier == 'premier')
 {
 	// On vérifie si le cache partiel existe ou s'il est expiré.
-	if (file_exists($cheminFichierCachePartiel) && !cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel) && !$estPageCron && !$desactiverLectureCachePartiel)
+	if (file_exists($cheminFichierCachePartiel) && (!cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel) || $mettreAjourCacheSeulementParCron) && !$estPageCron && !$desactiverLectureCachePartiel)
 	{
 		@readfile($cheminFichierCachePartiel);
 		$inclureFinMilieuInterieurContenu = FALSE;

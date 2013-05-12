@@ -848,7 +848,7 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresImages = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron);
+	$dernieresImages = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
 
 Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième argument vaut `TRUE`, donc un lien est ajouté sur chaque vignette vers la page Web de l'image en question. Le huitième argument vaut également `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
@@ -1338,21 +1338,23 @@ Pour activer le flux RSS global des galeries, ou flux RSS des derniers ajouts au
 
 ## Cache
 
+Le cache permet d'enregistrer tout le contenu HTML (ou XML) d'une page (cache global) ou une partie (cache partiel) pour un accès ultérieur. Tant que le fichier de cache n'a pas expiré, c'est ce contenu qui est récupéré par Squeletml pour être retourné aux internautes. Le contenu de la page n'est donc pas généré (ou complètement généré) dynamiquement à chaque visite, ce qui accélère l'affichage et réduit l'utilisation des ressources du serveur.
+
+Lorsqu'un internaute visite une page dont le cache n'est plus valide, Squeletml regénère le contenu, le remet en cache et retourne le résultat HTML (ou XML). Cependant, il est possible d'empêcher Squeletml de mettre à jour le cache (ce qui peut prendre un certain temps) lors de la visite d'un internaute pour réserver plutôt cette action au cron. Pour ce faire, il faut donner la valeur TRUE à la variable `$mettreAjourCacheSeulementParCron` du fichier de configuration du site. Le fichier de cache (même s'il n'est plus valide) sera dans ce cas toujours utilisé par Squeletml pour afficher la page demandée par un internaute, la mise à jour du cache s'effectuant lors du lancement du cron (voir la section «Cron» pour plus de détails).
+
 ### Cache global
 
-Par défaut, Squeletml n'utilise pas de système de cache. Cependant, il est possible d'activer le cache en modifiant la variable `$dureeCache` du fichier de configuration du site. Tout le contenu d'une page sera alors enregistré dans un fichier HTML (ou XML pour une page de flux RSS). Tant que le cache n'a pas expiré, c'est ce contenu qui sera retourné aux internautes. La page ne sera donc pas calculée et générée à chaque visite. Squeletml s'occupera également d'envoyer les en-têtes HTTP relatives au cache (`Expires`, `Cache-Control`, `Last-Modified` et `ETag`) et analysera les requêtes conditionnelles reçues (`If-Modified-Since` et `If-None-Match`) pour retourner seulement un code d'en-tête 304 dans le cas où le contenu n'a pas changé (au lieu de retourner le contenu lui-même).
+Il est possible d'activer le cache global en modifiant la variable `$dureeCache` du fichier de configuration du site. Tout le contenu d'une page sera alors enregistré dans un fichier HTML (ou XML pour une page de flux RSS). La page ne sera donc pas générée à chaque visite. Squeletml s'occupera également d'envoyer les en-têtes HTTP relatives au cache (`Expires`, `Cache-Control`, `Last-Modified` et `ETag`) et analysera les requêtes conditionnelles reçues (`If-Modified-Since` et `If-None-Match`) pour retourner seulement un code d'en-tête 304 dans le cas où le contenu n'a pas changé (au lieu de retourner le contenu lui-même).
 
 À noter que si la variable `$desactiverCache` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCache` ne vaut pas `0`.
 
 Le cache pour les autres types de fichiers (images, Javascript, etc.) est paramétré dans le fichier `.htaccess`. À ce sujet, la variable `$versionParDefautLinkScript` du fichier de configuration du site peut être pratique. En effet, le cache des fichiers CSS et Javascript peut être paramétré pour une durée relativement longue (par exemple un mois ou plus), mais si un fichier a été modifié, il est possible de forcer son retéléchargement en modifiant l'URL déclarée par Squeletml. Par exemple, l'URL d'un fichier CSS sera `http://url/vers/fichier.css?$versionParDefautLinkScript['css']`.
 
-Il est possible de faire générer le cache automatiquement par le cron. Voir la section «Cron» pour plus de détails.
-
 ### Cache partiel
 
 Il est possible d'activer le cache partiel en modifiant la variable `$dureeCachePartiel` du fichier de configuration du site. Le cache partiel sera alors activé seulement si le cache global ne l'est pas. À noter que si la variable `$desactiverCachePartiel` est déclarée dans une page et qu'elle vaut `TRUE`, le cache sera désactivé même si `$dureeCachePartiel` ne vaut pas `0`.
 
-Autrement dit, le cache partiel sera activé si l'expression suivante est vraie: `if ((!$dureeCache || $desactiverCache) && $dureeCachePartiel && !$desactiverCachePartiel)`.
+Autrement dit, le cache partiel sera activé si l'expression suivante est vraie: `(!$dureeCache || $desactiverCache) && $dureeCachePartiel && !$desactiverCachePartiel`.
 
 Aucune en-tête HTTP relative au cache ne sera envoyée, et aucune requête conditionnelle ne sera analysée. Squeletml va continuer à calculer et à générer une partie de la page. Le contenu HTML ou XML enregistré en cache correspondra au contenu de `<div id="milieuInterieurContenu">...</div>`.
 
@@ -1374,9 +1376,9 @@ Une fois qu'un fichier unique a été créé pour un ensemble différent de fich
 
 Le cron permet d'effectuer certaines tâches de maintenance:
 
-- génération du cache (flux RSS, galeries et catégories). Prendre note que l'activation du cache dépend de la valeur de la variable `$dureeCache` du fichier de configuration du site;
+- génération ou mise à jour du cache. Voir la section «Cache» pour plus de détails;
 
-- génération du fichier Sitemap. Si ce fichier n'existe pas, il sera créé, et s'il n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
+- génération ou mise à jour du fichier Sitemap. Si ce fichier n'existe pas, il sera créé, et s'il n'est pas indiqué dans le fichier `robots.txt`, il y sera déclaré.
 
 ### Lancement du cron
 

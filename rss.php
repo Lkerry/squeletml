@@ -121,7 +121,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 			}
 			
 			// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
-			if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
+			if ($dureeCacheRss && file_exists($cheminFichierCache) && (!cacheExpire($cheminFichierCache, $dureeCacheRss) || $mettreAjourCacheSeulementParCron) && !$estPageCron)
 			{
 				if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 				{
@@ -250,7 +250,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		
 		phpGettext('.', $infosCategorieLangue); // Nécessaire à la traduction.
 		
-		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && (!cacheExpire($cheminFichierCache, $dureeCacheRss) || $mettreAjourCacheSeulementParCron) && !$estPageCron)
 		{
 			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
@@ -276,7 +276,7 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron, $mettreAjourCacheSeulementParCron);
 					
 						if (!empty($fluxRssPageTableauBrut))
 						{
@@ -368,7 +368,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && (!cacheExpire($cheminFichierCache, $dureeCacheRss) || $mettreAjourCacheSeulementParCron) && !$estPageCron)
 		{
 			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
@@ -450,7 +450,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 		
 		// On vérifie si le flux RSS existe en cache ou si le cache est expiré.
 		
-		if ($dureeCacheRss && file_exists($cheminFichierCache) && !cacheExpire($cheminFichierCache, $dureeCacheRss) && !$estPageCron)
+		if ($dureeCacheRss && file_exists($cheminFichierCache) && (!cacheExpire($cheminFichierCache, $dureeCacheRss) || $mettreAjourCacheSeulementParCron) && !$estPageCron)
 		{
 			if (file_exists($cheminFichierCacheEnTete) && !$estVisiteSimulee)
 			{
@@ -479,7 +479,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 					if ($i < $nombreItemsFluxRss)
 					{
 						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron);
+						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron, $mettreAjourCacheSeulementParCron);
 						
 						if (!empty($fluxRssPageTableauBrut))
 						{

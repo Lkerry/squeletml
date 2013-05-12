@@ -1864,7 +1864,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 			}
 			else
 			{
-				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . encodeTexteGet($cheminGalerie) . '&amp;action=date&amp;galerie=' . encodeTexteGet($id) . '">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), '<code>' . securiseTexte($id) . '</code>') . "</a></li>\n";
+				$messagesScript .= '<li><a href="telecharger.admin.php?fichier=' . encodeTexteGet($cheminGalerie) . '&amp;action[]=date&amp;galerie=' . encodeTexteGet($id) . '">' . sprintf(T_("Cliquer sur ce lien pour obtenir une copie de sauvegarde de la galerie %1\$s."), '<code>' . securiseTexte($id) . '</code>') . "</a></li>\n";
 			}
 		
 			$messagesScript = '<li>' . sprintf(T_("Galerie sélectionnée: %1\$s"), '<code>' . securiseTexte($id) . '</code>') . "</li>\n" . $messagesScript;

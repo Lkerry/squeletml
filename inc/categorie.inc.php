@@ -217,12 +217,12 @@ if (!empty($idCategorie))
 			}
 		}
 		
-		if (!$inclureCachePartiel || !file_exists($cheminFichierCachePartiel) || cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel) || $estPageCron)
+		if (!$inclureCachePartiel || !file_exists($cheminFichierCachePartiel) || (cacheExpire($cheminFichierCachePartiel, $dureeCachePartiel) && !$mettreAjourCacheSeulementParCron) || $estPageCron)
 		{
 			for ($indice = $indicePremierArticle; $indice <= $indiceDernierArticle && $indice < $nombreArticles; $indice++)
 			{
 				$adresse = $urlRacine . '/' . $categories[$idCategorie]['pages'][$indice];
-				$infosPage = infosPage($racine, $urlRacine, $adresse, $inclureApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, TRUE, $estPageCron);
+				$infosPage = infosPage($racine, $urlRacine, $adresse, $inclureApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, TRUE, $estPageCron, $mettreAjourCacheSeulementParCron);
 				
 				if (!empty($infosPage))
 				{
