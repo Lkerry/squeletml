@@ -560,7 +560,7 @@ $activerCategoriesGlobales['galeries'] = TRUE;
 $nombreArticlesParPageCategorie = 10;
 
 // S'il y a pagination, type de liens.
-$typePaginationCategorie = 'texte'; // image|texte
+$typePaginationCategorie = 'image'; // image|texte
 
 // S'il y a pagination, ajout d'une couleur de fond.
 $paginationAvecFond = TRUE; // TRUE|FALSE
@@ -962,7 +962,7 @@ $galeriePagination['au-dessus']  = TRUE;
 $galeriePagination['au-dessous'] = FALSE;
 
 // S'il y a pagination, type de liens.
-$galerieTypePagination = 'texte'; // image|texte
+$galerieTypePagination = 'image'; // image|texte
 
 // S'il y a pagination, ajout d'une couleur de fond.
 $galeriePaginationAvecFond = TRUE; // TRUE|FALSE
