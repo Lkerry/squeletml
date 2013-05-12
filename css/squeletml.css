@@ -733,7 +733,6 @@ div#baliseH1 h1 {
 }
 
 #commentaires ul#listeCommentaires li.commentaire div.commentaireCorps {
-	margin-left: 20px;
 	padding: 0px 0px 0px 10px;
 	border-left: 3px solid #005959;
 }
