@@ -60,7 +60,7 @@ if (file_exists($chemin) && adminEmplacementPermis($chemin, $adminDossierRacineP
 			
 			foreach ($listeFichiers as $fichier)
 			{
-				if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers) && strpos(realpath($fichier), "$racine/site/$dossierAdmin/cache/") !== 0)
+				if (adminEmplacementPermis($fichier, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers) && strpos(realpath($fichier), "$racine/site/$dossierAdmin/cache/") !== 0 && strpos(realpath($fichier), "$racine/site/cache/") !== 0)
 				{
 					$listeFichiersFiltree[] = $fichier;
 				}
