@@ -109,7 +109,7 @@ if (!empty($blocsAinsererTemp))
 									if (!empty($infosCommentaire['date']))
 									{
 										$dateAfficheeCommentaire = date('Y-m-d', $infosCommentaire['date']);
-										$heureAfficheeCommentaire = date('H:i T', $infosCommentaire['date']);
+										$heureAfficheeCommentaire = date('H:i', $infosCommentaire['date']);
 									}
 									
 									$lienCommentaire = "$urlSansAction#$idCommentaire";
