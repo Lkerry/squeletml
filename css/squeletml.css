@@ -767,6 +767,12 @@ div#baliseH1 h1 {
 	background: url('../fichiers/info.png') #f5f5f5 no-repeat 10px center;
 }
 
+/* Légende d'une image. */
+
+#galerieIntermediaireTexteHorsContenu {
+	border-left: 3px solid #005959;
+}
+
 /* Bloc «licence». */
 
 #licence ul {
@@ -1133,7 +1139,7 @@ p#galerieSousTitre {
 	font-weight: bold;
 }
 
-div#galerieIntermediaireTexte {
+div#galerieIntermediaire div#galerieIntermediaireTexte {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	padding: 10px;
@@ -1172,18 +1178,6 @@ div.galerieInfoEtMinivignettesEnsemble div#galerieMinivignettes {
 #galerieLienSansJavascript a {
 	padding-left: 22px;
 	background: url('../fichiers/sans-javascript.png') no-repeat left center;
-}
-
-#galerieIntermediaireTexteHorsContenu #galerieIntermediaireTexte {
-	padding-left: 5px;
-	border-left: 2px solid #005959;
-}
-
-#galerieIntermediaireTexteHorsContenu ul {
-	margin-top: 0px;
-	margin-left: 0px;
-	padding-top: 0px;
-	padding-left: 15px;
 }
 
 #galerieLienOriginalLegende {
@@ -1289,4 +1283,3 @@ ul.galerieListeImages, div.publicationsRecentesGalerie ul, div.publicationsRecen
 body.galerie div.pagination {
 	clear: both;
 }
-
