@@ -47,6 +47,7 @@ if (file_exists($racine . '/init.inc.php'))
 		
 		if (@mkdir($cheminDossierTmpCron))
 		{
+			$erreurLancementCron = FALSE;
 			@file_put_contents("$racine/site/inc/cron.txt", $t1);
 			
 			if ($dureeCache || $ajouterPagesParCronDansSitemap)
@@ -119,6 +120,7 @@ if (file_exists($racine . '/init.inc.php'))
 		}
 		else
 		{
+			$erreurLancementCron = TRUE;
 			$rapport .= '<p class="erreur">' . T_("Le cron est déjà en cours. La présente demande de lancement de cron a donc été annulée.") . "</p>\n";
 		}
 		
@@ -133,7 +135,7 @@ if (file_exists($racine . '/init.inc.php'))
 			$rapport = preg_replace('#<p id="rapportCronNoteEnvoi">.+?</p>#', '', $rapport);
 			$rapport = preg_replace('#<ul id="rapportCronLiensAdmin">.+?</ul>#s', '', $rapport);
 		}
-		elseif ($envoyerRapportCron && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
+		elseif ((($envoyerRapportCron == 1 && $erreurLancementCron) || $envoyerRapportCron == 2) && (!empty($courrielAdmin) || !empty($contactCourrielParDefaut)))
 		{
 			$rapport = str_replace('class="erreur"', 'style="color: #630000;"', $rapport);
 			$rapport = str_replace('<code>', '<code style="background-color: #F2F2F2;">', $rapport);

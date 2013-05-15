@@ -52,7 +52,12 @@ $cleCron = '';
 $ajouterPagesParCronDansSitemap = TRUE; // TRUE|FALSE
 
 // Envoi d'un rapport par courriel après l'exécution du cron.
-$envoyerRapportCron = TRUE; // TRUE|FALSE
+/*
+- `0`: jamais;
+- `1`: seulement si le cron n'a pas pu être lancé;
+- `2`: toujours.
+*/
+$envoyerRapportCron = 2; // 0|1|2
 
 // Activation de la demande de création de compte à partir du site.
 /*
