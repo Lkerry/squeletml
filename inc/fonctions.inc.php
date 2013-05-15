@@ -1450,11 +1450,11 @@ Retourne un tableau de deux éléments: le premier contient le corps de la galer
 */
 function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeColonnes, $blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, $nombreDeColonnes)
 {
-	if (preg_match('|(<div id="galerieIntermediaireTexte">.+</div><!-- /#galerieIntermediaireTexte -->)|s', $corpsGalerie, $resultat))
+	if (preg_match('|(<div id="galerieIntermediaireTexte"[^>]*>.+</div><!-- /#galerieIntermediaireTexte -->)|s', $corpsGalerie, $resultat))
 	{
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
-			$corpsGalerie = preg_replace('|<div id="galerieIntermediaireTexte">.+</div><!-- /#galerieIntermediaireTexte -->|s', '', $corpsGalerie);
+			$corpsGalerie = preg_replace('|<div id="galerieIntermediaireTexte"[^>]*>.+</div><!-- /#galerieIntermediaireTexte -->|s', '', $corpsGalerie);
 			
 			$classesBloc = classesBloc($blocsAvecFondParDefaut, $blocsAvecFondSpecifiques, $blocsArrondis, 'legende-image-galerie', $nombreDeColonnes);
 			
@@ -1474,9 +1474,9 @@ function coupeCorpsGalerie($corpsGalerie, $galerieLegendeEmplacement, $nombreDeC
 	}
 	
 	// Dans tous les cas, on supprime la div `galerieIntermediaireTexte` si elle est vide.
-	if (preg_match('|(<div id="galerieIntermediaireTexte"></div><!-- /#galerieIntermediaireTexte -->)|', $tableauCorpsGalerie['corpsGalerie']))
+	if (preg_match('|(<div id="galerieIntermediaireTexte"[^>]*></div><!-- /#galerieIntermediaireTexte -->)|', $tableauCorpsGalerie['corpsGalerie']))
 	{
-		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('|<div id="galerieIntermediaireTexte"></div><!-- /#galerieIntermediaireTexte -->|', '', $tableauCorpsGalerie['corpsGalerie']);
+		$tableauCorpsGalerie['corpsGalerie'] = preg_replace('|<div id="galerieIntermediaireTexte"[^>]*></div><!-- /#galerieIntermediaireTexte -->|', '', $tableauCorpsGalerie['corpsGalerie']);
 	}
 	
 	return $tableauCorpsGalerie;
@@ -3128,11 +3128,18 @@ function image(
 		// Code de retour.
 		if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut' || $galerieLegendeEmplacement[$nombreDeColonnes] == 'bloc')
 		{
-			return '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . encodeTexte($infosImage['intermediaireNom']) . '"' . " $width $height $alt$attributTitle/>" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
+			$class = '';
+			
+			if ($galerieLegendeEmplacement[$nombreDeColonnes] == 'haut')
+			{
+				$class = ' class="haut"';
+			}
+			
+			return '<div id="galerieIntermediaireTexte"' . $class . '>' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n" . '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . encodeTexte($infosImage['intermediaireNom']) . '"' . " $width $height $alt$attributTitle/>" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone;
 		}
 		elseif ($galerieLegendeEmplacement[$nombreDeColonnes] == 'bas')
 		{
-			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . encodeTexte($infosImage['intermediaireNom']) . '"' . " $width $height $alt$attributTitle/>" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
+			return '<div id="galerieIntermediaireImg">' . $aLienOriginalImgIntermediaireDebut . '<img src="' . $urlImgSrc . '/' . encodeTexte($infosImage['intermediaireNom']) . '"' . " $width $height $alt$attributTitle/>" . $aLienOriginalImgIntermediaireFin . "</div><!-- /#galerieIntermediaireImg -->\n" . $divLienOriginalIcone . '<div id="galerieIntermediaireTexte" class="bas">' . $legende . $exif . $divLienOriginalLegende . "</div><!-- /#galerieIntermediaireTexte -->\n";
 		}
 		else
 		{
