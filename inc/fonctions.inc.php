@@ -177,7 +177,7 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 	if (in_array('galeries', $categoriesSpecialesAajouter) && !isset($categories['galeries']) && fluxRssGlobalGaleriesContientElements($racine, $urlRacine, $langue))
 	{
 		$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
-		$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss);
+		$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss, FALSE);
 		$categories['galeries'] = array ();
 		$categories['galeries']['langue'] = $langue;
 		$categories['galeries']['url'] = "categorie.php?id=galeries&amp;langue=$langue";
@@ -2430,11 +2430,11 @@ function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $flu
 }
 
 /*
-Retourne le tableau `$itemsFluxRss` contenant au maximum le nombre d'items précisé dans la configuration. L'ordre des items dépend du type.
+Retourne le tableau `$itemsFluxRss` contenant au maximum le nombre d'items précisé dans la configuration.
 */
-function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
+function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss, $triParDateFluxRss)
 {
-	if ($type == 'galerie' || $type == 'galeries')
+	if ($type == 'galerie' || $type == 'galeries' || $triParDateFluxRss)
 	{
 		foreach ($itemsFluxRss as $cle => $valeur)
 		{
@@ -5657,7 +5657,7 @@ Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un l
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $datePublicationVautDateRevision, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLegendeMarkdown, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $triParDateFluxRss, $datePublicationVautDateRevision, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLegendeMarkdown, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
 {
 	$html = '';
 	$dossierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . encodeTexte($id);
@@ -5708,7 +5708,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 			
 			if (!empty($itemsFluxRss))
 			{
-				$itemsFluxRss = fluxRssTableauFinal('categorie', $itemsFluxRss, $nombreVoulu);
+				$itemsFluxRss = fluxRssTableauFinal('categorie', $itemsFluxRss, $nombreVoulu, $triParDateFluxRss);
 				
 				foreach ($itemsFluxRss as $cle => $valeur)
 				{
@@ -5895,7 +5895,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				$nombreVoulu = $nombreReel;
 			}
 			
-			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu);
+			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu, $triParDateFluxRss);
 		}
 		
 		if (!empty($itemsFluxRss))
@@ -6022,7 +6022,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 			
 			if (!empty($itemsFluxRss))
 			{
-				$itemsFluxRss = fluxRssTableauFinal('site', $itemsFluxRss, $nombreVoulu);
+				$itemsFluxRss = fluxRssTableauFinal('site', $itemsFluxRss, $nombreVoulu, $triParDateFluxRss);
 				
 				foreach ($itemsFluxRss as $cle => $valeur)
 				{

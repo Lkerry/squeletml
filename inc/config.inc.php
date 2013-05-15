@@ -757,11 +757,18 @@ $activerFluxRssGlobalSite = TRUE; // TRUE|FALSE
 // Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 25;
 
-// Si `$inclureApercu` vaut TRUE, utiliser les aperçus dans les flux RSS.
-$utiliserApercuDansFluxRss = FALSE; // TRUE|FALSE
+// Tri par date.
+/*
+- Par défaut, l'ordre des pages listées dans un flux RSS correspond à celui dans le fichier contenant les URL (voir la documentation pour plus de détails). Par exemple, si `$nombreItemsFluxRss` vaut 25, alors les 25 premières pages listées dans le fichier contenant les URL sont récupérées pour générer le flux RSS. Si `$triParDateFluxRss` vaut TRUE, toutes les pages du fichier sont analysées et triées par date; ce n'est qu'après le tri que la sélection des 25 pages s'effectue.
+- À noter que cette option peut ralentir la génération des flux RSS lorsqu'il y a beaucoup de pages.
+*/
+$triParDateFluxRss = FALSE; // TRUE|FALSE
 
 // Si la date de révision d'une page est fournie, l'utiliser comme date de publication dans les flux RSS à la place de la date de création.
-$datePublicationVautDateRevision = TRUE; // TRUE|FALSE
+$datePublicationVautDateRevision = FALSE; // TRUE|FALSE
+
+// Si `$inclureApercu` vaut TRUE, utiliser les aperçus dans les flux RSS.
+$utiliserApercuDansFluxRss = FALSE; // TRUE|FALSE
 
 ########################################################################
 ##
