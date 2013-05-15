@@ -141,12 +141,7 @@ if (file_exists($racine . '/init.inc.php'))
 			$rapport = preg_replace("#<ul>\n<li><a href=\"javascript:adminSelectionneTexte\('[^']+'\);\">[^<]+</a></li>\n</ul>#", '', $rapport);
 			
 			$infosCourriel = array ();
-			
-			if (!empty($courrielExpediteurRapports))
-			{
-				$infosCourriel['From'] = $courrielExpediteurRapports;
-			}
-			
+			$infosCourriel['From'] = $courrielExpediteurRapports;
 			$infosCourriel['format'] = 'html';
 			$infosCourriel['destinataire'] = !empty($courrielAdmin) ? $courrielAdmin : $contactCourrielParDefaut;
 			$infosCourriel['objet'] = sprintf(T_("Cron du %1\$s à %2\$s"), $dateJour, $dateHeure) . baliseTitleComplement($tableauBaliseTitleComplement, array ($langueParDefaut), FALSE);
