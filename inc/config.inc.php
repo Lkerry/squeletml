@@ -760,6 +760,9 @@ $nombreItemsFluxRss = 25;
 // Si `$inclureApercu` vaut TRUE, utiliser les aperçus dans les flux RSS.
 $utiliserApercuDansFluxRss = FALSE; // TRUE|FALSE
 
+// Si la date de révision d'une page est fournie, l'utiliser comme date de publication dans les flux RSS à la place de la date de création.
+$datePublicationVautDateRevision = TRUE; // TRUE|FALSE
+
 ########################################################################
 ##
 ## Configuration du formulaire de contact.
