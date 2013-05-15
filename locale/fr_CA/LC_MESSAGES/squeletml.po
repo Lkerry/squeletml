@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-03 17:10-0400\n"
+"POT-Creation-Date: 2013-05-15 00:55-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -16,12 +16,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: cron.php:39
+#: cron.php:37
 #, php-format
 msgid "Rapport d'exécution du cron du %1$s à %2$s"
 msgstr "Rapport d'exécution du cron du %1$s à %2$s"
 
-#: cron.php:41
+#: cron.php:39
 #, php-format
 msgid ""
 "Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1$s"
@@ -30,47 +30,55 @@ msgstr ""
 "Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1$s"
 "\">modifier la variable %2$s dans le fichier de configuration du site</a>."
 
-#: cron.php:44
+#: cron.php:42
 msgid "Page de lancement du cron"
 msgstr "Page de lancement du cron"
 
-#: cron.php:45
+#: cron.php:43
 msgid "Section d'administration du site"
 msgstr "Section d'administration du site"
 
-#: cron.php:59 admin/acces.admin.php:15
+#: cron.php:64 admin/acces.admin.php:15
 msgid "Cache"
 msgstr "Cache"
 
-#: cron.php:74
+#: cron.php:79
 msgid "Aucune action à effectuer."
 msgstr "Aucune action à effectuer."
 
-#: cron.php:78
+#: cron.php:83
 msgid "Génération du cache des URL suivantes:"
 msgstr "Génération du cache des URL suivantes:"
 
-#: cron.php:91
+#: cron.php:96
 msgid "Fichier Sitemap"
 msgstr "Fichier Sitemap"
 
-#: cron.php:95
+#: cron.php:100
 msgid "Ajout de pages dans le fichier Sitemap"
 msgstr "Ajout de pages dans le fichier Sitemap"
 
-#: cron.php:103
+#: cron.php:108
 #, php-format
 msgid "Vérification de la déclaration du fichier Sitemap dans le fichier %1$s"
 msgstr "Vérification de la déclaration du fichier Sitemap dans le fichier %1$s"
 
-#: cron.php:112
+#: cron.php:117
 #, php-format
 msgid "Cron exécuté en %1$s seconde."
 msgid_plural "Cron exécuté en %1$s secondes."
 msgstr[0] "Cron exécuté en %1$s seconde."
 msgstr[1] "Cron exécuté en %1$s secondes."
 
-#: cron.php:141
+#: cron.php:124
+msgid ""
+"Le cron est déjà en cours. La présente demande de lancement de cron a donc "
+"été annulée."
+msgstr ""
+"Le cron est déjà en cours. La présente demande de lancement de cron a donc "
+"été annulée."
+
+#: cron.php:149
 #, php-format
 msgid "Cron du %1$s à %2$s"
 msgstr "Cron du %1$s à %2$s"
@@ -83,7 +91,7 @@ msgstr "Création du fichier %1$s à partir du modèle %2$s effectuée."
 
 #: installation.php:105 installation.php:111 installation.php:158
 #: installation.php:164 installation.php:222 installation.php:228
-#: inc/fonctions.inc.php:4594 inc/fonctions.inc.php:4716
+#: inc/fonctions.inc.php:4649 inc/fonctions.inc.php:4771
 #, php-format
 msgid "Renseignement du fichier %1$s impossible."
 msgstr "Renseignement du fichier %1$s impossible."
@@ -125,12 +133,12 @@ msgstr "Création du fichier %1$s effectuée."
 msgid "Création du fichier %1$s impossible."
 msgstr "Création du fichier %1$s impossible."
 
-#: installation.php:295 admin/inc/fonctions.inc.php:2031
+#: installation.php:295 admin/inc/fonctions.inc.php:2026
 #, php-format
 msgid "Création du dossier %1$s effectuée."
 msgstr "Création du dossier %1$s effectuée."
 
-#: installation.php:300 admin/inc/fonctions.inc.php:2035
+#: installation.php:300 admin/inc/fonctions.inc.php:2030
 #, php-format
 msgid "Création du dossier %1$s impossible."
 msgstr "Création du dossier %1$s impossible."
@@ -187,7 +195,7 @@ msgstr "L'utilisateur <em>%1$s</em> a déjà les droits."
 #: admin/acces.admin.php:474 admin/acces.admin.php:504
 #: admin/acces.admin.php:514 admin/inc/fonctions.inc.php:276
 #: admin/inc/fonctions.inc.php:556 admin/inc/fonctions.inc.php:608
-#: admin/inc/fonctions.inc.php:658 admin/inc/fonctions.inc.php:1697
+#: admin/inc/fonctions.inc.php:658 admin/inc/fonctions.inc.php:1692
 #: admin/galeries.admin.php:1417 admin/galeries.admin.php:1594
 #: admin/categories.admin.php:365 admin/categories.admin.php:673
 #: admin/rss.admin.php:214
@@ -380,35 +388,35 @@ msgstr "Déconnexion de la section d'administration de Squeletml"
 msgid "Désabonnement aux notifications de nouveaux commentaires"
 msgstr "Désabonnement aux notifications de nouveaux commentaires"
 
-#: inc/premier.inc.php:412 inc/categorie.inc.php:21 inc/categorie.inc.php:84
+#: inc/premier.inc.php:413 inc/categorie.inc.php:21 inc/categorie.inc.php:84
 #: inc/categorie.inc.php:159 inc/categorie.inc.php:204
-#: inc/categorie.inc.php:256 inc/fonctions.inc.php:2137
-#: inc/fonctions.inc.php:2139 inc/fonctions.inc.php:2727 inc/blocs.inc.php:262
+#: inc/categorie.inc.php:256 inc/fonctions.inc.php:2142
+#: inc/fonctions.inc.php:2144 inc/fonctions.inc.php:2767 inc/blocs.inc.php:261
 #: admin/rss.admin.php:340
 msgid "Dernières publications"
 msgstr "Dernières publications"
 
-#: inc/premier.inc.php:423 inc/categorie.inc.php:37 inc/categorie.inc.php:88
+#: inc/premier.inc.php:424 inc/categorie.inc.php:37 inc/categorie.inc.php:88
 #: inc/categorie.inc.php:163 inc/categorie.inc.php:208
-#: inc/categorie.inc.php:260 inc/fonctions.inc.php:2132
-#: inc/fonctions.inc.php:2731 inc/blocs.inc.php:271 admin/rss.admin.php:341
+#: inc/categorie.inc.php:260 inc/fonctions.inc.php:2137
+#: inc/fonctions.inc.php:2771 inc/blocs.inc.php:266 admin/rss.admin.php:341
 msgid "Derniers ajouts aux galeries"
 msgstr "Derniers ajouts aux galeries"
 
-#: inc/premier.inc.php:430 inc/galerie.inc.php:143 inc/galerie.inc.php:450
-#: inc/galerie.inc.php:523 inc/galerie.inc.php:699 inc/fonctions.inc.php:2115
-#: inc/blocs.inc.php:239
+#: inc/premier.inc.php:431 inc/galerie.inc.php:143 inc/galerie.inc.php:462
+#: inc/galerie.inc.php:535 inc/galerie.inc.php:711 inc/fonctions.inc.php:2120
+#: inc/blocs.inc.php:238
 #, php-format
 msgid "Galerie %1$s"
 msgstr "Galerie %1$s"
 
-#: inc/premier.inc.php:436 inc/blocs.inc.php:244
+#: inc/premier.inc.php:437 inc/blocs.inc.php:243
 #, php-format
 msgid "Catégorie %1$s"
 msgstr "Catégorie %1$s"
 
-#: inc/galerie.inc.php:100 inc/galerie.inc.php:152 inc/galerie.inc.php:459
-#: inc/fonctions.inc.php:2183
+#: inc/galerie.inc.php:100 inc/galerie.inc.php:152 inc/galerie.inc.php:471
+#: inc/fonctions.inc.php:2218
 #, php-format
 msgid "%1$s – Galerie %2$s"
 msgstr "%1$s – Galerie %2$s"
@@ -418,24 +426,24 @@ msgstr "%1$s – Galerie %2$s"
 msgid "Voir l'image %1$s, classée dans la galerie %2$s."
 msgstr "Voir l'image %1$s, classée dans la galerie %2$s."
 
-#: inc/galerie.inc.php:156 inc/galerie.inc.php:463
+#: inc/galerie.inc.php:156 inc/galerie.inc.php:475
 #, php-format
 msgid "%1$s – %2$s"
 msgstr "%1$s – %2$s"
 
-#: inc/galerie.inc.php:283
+#: inc/galerie.inc.php:295
 #, php-format
 msgid "Affichage de l'image %1$s sur un total de %2$s image."
 msgid_plural "Affichage de l'image %1$s sur un total de %2$s images."
 msgstr[0] "Affichage de l'image %1$s sur un total de %2$s image."
 msgstr[1] "Affichage de l'image %1$s sur un total de %2$s images."
 
-#: inc/galerie.inc.php:283
+#: inc/galerie.inc.php:295
 #, php-format
 msgid "Aller à l'accueil de la galerie %1$s."
 msgstr "Aller à l'accueil de la galerie %1$s."
 
-#: inc/galerie.inc.php:469
+#: inc/galerie.inc.php:481
 #, php-format
 msgid ""
 "L'image %1$s est introuvable. <a href=\"%2$s\">Voir toutes les images de la "
@@ -444,32 +452,32 @@ msgstr ""
 "L'image %1$s est introuvable. <a href=\"%2$s\">Voir toutes les images de la "
 "galerie %3$s</a>."
 
-#: inc/galerie.inc.php:473
+#: inc/galerie.inc.php:485
 #, php-format
 msgid "L'image %1$s est introuvable dans la galerie %2$s"
 msgstr "L'image %1$s est introuvable dans la galerie %2$s"
 
-#: inc/galerie.inc.php:495
+#: inc/galerie.inc.php:507
 #, php-format
 msgid "%1$s – Toutes les images classées dans la galerie %2$s"
 msgstr "%1$s – Toutes les images classées dans la galerie %2$s"
 
-#: inc/galerie.inc.php:509
+#: inc/galerie.inc.php:521
 #, php-format
 msgid "Voir toutes les images de la galerie %1$s."
 msgstr "Voir toutes les images de la galerie %1$s."
 
-#: inc/galerie.inc.php:564 inc/categorie.inc.php:179
+#: inc/galerie.inc.php:576 inc/categorie.inc.php:179
 #, php-format
 msgid "La page %1$s est introuvable."
 msgstr "La page %1$s est introuvable."
 
-#: inc/galerie.inc.php:568
+#: inc/galerie.inc.php:580
 #, php-format
 msgid "La page %1$s est introuvable – Galerie %2$s"
 msgstr "La page %1$s est introuvable – Galerie %2$s"
 
-#: inc/galerie.inc.php:611
+#: inc/galerie.inc.php:623
 msgid ""
 "Voir plus d'information pour chaque image (navigation sans fenêtre "
 "Javascript)."
@@ -477,30 +485,30 @@ msgstr ""
 "Voir plus d'information pour chaque image (navigation sans fenêtre "
 "Javascript)."
 
-#: inc/galerie.inc.php:652
+#: inc/galerie.inc.php:664
 #, php-format
 msgid "Cette galerie contient %1$s image"
 msgid_plural "Cette galerie contient %1$s images"
 msgstr[0] "Cette galerie contient %1$s image"
 msgstr[1] "Cette galerie contient %1$s images"
 
-#: inc/galerie.inc.php:652
+#: inc/galerie.inc.php:664
 #, php-format
 msgid " (sur %1$s page)."
 msgid_plural " (sur %1$s pages)."
 msgstr[0] " (sur %1$s page)."
 msgstr[1] " (sur %1$s pages)."
 
-#: inc/galerie.inc.php:656
+#: inc/galerie.inc.php:668
 msgid "Voir l'accueil de la galerie."
 msgstr "Voir l'accueil de la galerie."
 
-#: inc/galerie.inc.php:709
+#: inc/galerie.inc.php:721
 #, php-format
 msgid "La galerie %1$s est introuvable."
 msgstr "La galerie %1$s est introuvable."
 
-#: inc/galerie.inc.php:713
+#: inc/galerie.inc.php:725
 #, php-format
 msgid "La galerie %1$s est introuvable"
 msgstr "La galerie %1$s est introuvable"
@@ -747,24 +755,24 @@ msgstr "Modifier"
 msgid "Ajout d'un commentaire"
 msgstr "Ajout d'un commentaire"
 
-#: inc/fonctions.inc.php:311
+#: inc/fonctions.inc.php:307
 #, php-format
 msgid "Lire la suite de %1$s"
 msgstr "Lire la suite de %1$s"
 
-#: inc/fonctions.inc.php:383
+#: inc/fonctions.inc.php:379
 msgid "Anonyme"
 msgstr "Anonyme"
 
-#: inc/fonctions.inc.php:587
+#: inc/fonctions.inc.php:583
 msgid "Antipourriel<code>*</code>:"
 msgstr "Antipourriel<code>*</code>:"
 
-#: inc/fonctions.inc.php:591
+#: inc/fonctions.inc.php:587
 msgid "Antipourriel:"
 msgstr "Antipourriel:"
 
-#: inc/fonctions.inc.php:596
+#: inc/fonctions.inc.php:592
 #, php-format
 msgid ""
 "Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1$s (plus "
@@ -773,55 +781,55 @@ msgstr ""
 "Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1$s (plus "
 "d'une réponse correcte):"
 
-#: inc/fonctions.inc.php:597
+#: inc/fonctions.inc.php:593
 #, php-format
 msgid "%1$s et %2$s"
 msgstr "%1$s et %2$s"
 
-#: inc/fonctions.inc.php:601
+#: inc/fonctions.inc.php:597
 #, php-format
 msgid "Veuillez compléter: %1$s ajouté à %2$s vaut %3$s"
 msgstr "Veuillez compléter: %1$s ajouté à %2$s vaut %3$s"
 
-#: inc/fonctions.inc.php:817
+#: inc/fonctions.inc.php:813
 msgid "Résumé"
 msgstr "Résumé"
 
-#: inc/fonctions.inc.php:1341
+#: inc/fonctions.inc.php:1337
 msgid "Anglais"
 msgstr "Anglais"
 
-#: inc/fonctions.inc.php:1353
+#: inc/fonctions.inc.php:1349
 msgid "Français"
 msgstr "Français"
 
-#: inc/fonctions.inc.php:1465
+#: inc/fonctions.inc.php:1461
 msgid "Légende de l'image"
 msgstr "Légende de l'image"
 
-#: inc/fonctions.inc.php:2117
+#: inc/fonctions.inc.php:2122
 #, php-format
 msgid "Derniers ajouts à la galerie «%1$s»"
 msgstr "Derniers ajouts à la galerie «%1$s»"
 
-#: inc/fonctions.inc.php:2122 inc/fonctions.inc.php:2124
+#: inc/fonctions.inc.php:2127 inc/fonctions.inc.php:2129
 #, php-format
 msgid "Dernières publications dans la catégorie «%1$s»"
 msgstr "Dernières publications dans la catégorie «%1$s»"
 
-#: inc/fonctions.inc.php:2130 inc/blocs.inc.php:515 admin/galeries.admin.php:4
+#: inc/fonctions.inc.php:2135 inc/blocs.inc.php:509 admin/galeries.admin.php:4
 #: admin/xhtml/menu.inc.php:6
 msgid "Galeries"
 msgstr "Galeries"
 
-#: inc/fonctions.inc.php:2208 inc/fonctions.inc.php:2539
-#: inc/fonctions.inc.php:2911 inc/fonctions.inc.php:3197
-#: inc/fonctions.inc.php:5420
+#: inc/fonctions.inc.php:2241 inc/fonctions.inc.php:2579
+#: inc/fonctions.inc.php:2951 inc/fonctions.inc.php:3244
+#: inc/fonctions.inc.php:5475
 #, php-format
 msgid "Image %1$s"
 msgstr "Image %1$s"
 
-#: inc/fonctions.inc.php:2232 inc/fonctions.inc.php:2963
+#: inc/fonctions.inc.php:2265 inc/fonctions.inc.php:3003
 #, php-format
 msgid ""
 "Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
@@ -830,124 +838,124 @@ msgstr ""
 "Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
 "Kio)."
 
-#: inc/fonctions.inc.php:2237 inc/fonctions.inc.php:2969
+#: inc/fonctions.inc.php:2270 inc/fonctions.inc.php:3009
 #, php-format
 msgid ""
 "Voir l'image %1$s au format original (extension: %2$s; taille: %3$s Kio)."
 msgstr ""
 "Voir l'image %1$s au format original (extension: %2$s; taille: %3$s Kio)."
 
-#: inc/fonctions.inc.php:2275
+#: inc/fonctions.inc.php:2299
 #, php-format
 msgid "Consulter la page de présentation de l'image %1$s dans la galerie %2$s."
 msgstr ""
 "Consulter la page de présentation de l'image %1$s dans la galerie %2$s."
 
-#: inc/fonctions.inc.php:2361
+#: inc/fonctions.inc.php:2401
 #, php-format
 msgid "Lire la suite de %1$s."
 msgstr "Lire la suite de %1$s."
 
-#: inc/fonctions.inc.php:2548 inc/fonctions.inc.php:3224
+#: inc/fonctions.inc.php:2588 inc/fonctions.inc.php:3271
 msgid "Partager cette image ou voir plus d'information."
 msgstr "Partager cette image ou voir plus d'information."
 
-#: inc/fonctions.inc.php:2604 inc/fonctions.inc.php:2610
+#: inc/fonctions.inc.php:2644 inc/fonctions.inc.php:2650
 msgid "Faire un lien vers cette page"
 msgstr "Faire un lien vers cette page"
 
-#: inc/fonctions.inc.php:2620
+#: inc/fonctions.inc.php:2660
 msgid "Lien avec l'image en vignette:"
 msgstr "Lien avec l'image en vignette:"
 
-#: inc/fonctions.inc.php:2626
+#: inc/fonctions.inc.php:2666
 msgid "Lien avec l'image en taille intermédiaire:"
 msgstr "Lien avec l'image en taille intermédiaire:"
 
-#: inc/fonctions.inc.php:2632
+#: inc/fonctions.inc.php:2672
 msgid "Ajoutez le code ci-dessous sur votre site:"
 msgstr "Ajoutez le code ci-dessous sur votre site:"
 
-#: inc/fonctions.inc.php:2636
+#: inc/fonctions.inc.php:2676
 msgid "Lien textuel seulement:"
 msgstr "Lien textuel seulement:"
 
-#: inc/fonctions.inc.php:2743
+#: inc/fonctions.inc.php:2783
 #, php-format
 msgid " (%1$s)"
 msgstr " (%1$s)"
 
-#: inc/fonctions.inc.php:2964
+#: inc/fonctions.inc.php:3004
 #, php-format
 msgid "Télécharger l'image %1$s au format original"
 msgstr "Télécharger l'image %1$s au format original"
 
-#: inc/fonctions.inc.php:2970
+#: inc/fonctions.inc.php:3010
 #, php-format
 msgid "Voir l'image %1$s au format original"
 msgstr "Voir l'image %1$s au format original"
 
-#: inc/fonctions.inc.php:3009
+#: inc/fonctions.inc.php:3049
 #, php-format
 msgid "Image %1$s (extension: %2$s; taille: %3$s Kio)."
 msgstr "Image %1$s (extension: %2$s; taille: %3$s Kio)."
 
-#: inc/fonctions.inc.php:3039
+#: inc/fonctions.inc.php:3079
 msgid "Modèle d'appareil photo"
 msgstr "Modèle d'appareil photo"
 
-#: inc/fonctions.inc.php:3043
+#: inc/fonctions.inc.php:3083
 msgid "Date et heure"
 msgstr "Date et heure"
 
-#: inc/fonctions.inc.php:3053
+#: inc/fonctions.inc.php:3093
 msgid "Durée d'exposition"
 msgstr "Durée d'exposition"
 
-#: inc/fonctions.inc.php:3057
+#: inc/fonctions.inc.php:3097
 msgid "Sensibilité ISO"
 msgstr "Sensibilité ISO"
 
-#: inc/fonctions.inc.php:3061
+#: inc/fonctions.inc.php:3101
 msgid "Ouverture"
 msgstr "Ouverture"
 
-#: inc/fonctions.inc.php:3065
+#: inc/fonctions.inc.php:3105
 msgid "Distance focale"
 msgstr "Distance focale"
 
-#: inc/fonctions.inc.php:3069
+#: inc/fonctions.inc.php:3109
 msgid "Fabriquant"
 msgstr "Fabriquant"
 
-#: inc/fonctions.inc.php:3476
+#: inc/fonctions.inc.php:3531
 #, php-format
 msgid "Publié par %1$s le %2$s."
 msgstr "Publié par %1$s le %2$s."
 
-#: inc/fonctions.inc.php:3480
+#: inc/fonctions.inc.php:3535
 #, php-format
 msgid "Publié par %1$s."
 msgstr "Publié par %1$s."
 
-#: inc/fonctions.inc.php:3485
+#: inc/fonctions.inc.php:3540
 #, php-format
 msgid "Publié le %1$s."
 msgstr "Publié le %1$s."
 
-#: inc/fonctions.inc.php:3490
+#: inc/fonctions.inc.php:3545
 #, php-format
 msgid "Dernière révision le %1$s."
 msgstr "Dernière révision le %1$s."
 
-#: inc/fonctions.inc.php:3503
+#: inc/fonctions.inc.php:3558
 #, php-format
 msgid "Catégorie: %1$s."
 msgid_plural "Catégories: %1$s."
 msgstr[0] "Catégorie: %1$s."
 msgstr[1] "Catégories: %1$s."
 
-#: inc/fonctions.inc.php:3736
+#: inc/fonctions.inc.php:3791
 #, php-format
 msgid ""
 "<a href=\"http://artlibre.org/licence/lal\"><img %1$s alt=\"Licence Art Libre"
@@ -958,7 +966,7 @@ msgstr ""
 "\" /></a> Mis à disposition sous la <a href=\"http://artlibre.org/licence/lal"
 "\">licence Art Libre</a>."
 
-#: inc/fonctions.inc.php:3740
+#: inc/fonctions.inc.php:3795
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1$s alt="
@@ -971,7 +979,7 @@ msgstr ""
 "a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/"
 "by/3.0/deed.fr\">licence Creative Commons</a>."
 
-#: inc/fonctions.inc.php:3744
+#: inc/fonctions.inc.php:3799
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1$s "
@@ -986,7 +994,7 @@ msgstr ""
 "\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\">licence Creative "
 "Commons</a>."
 
-#: inc/fonctions.inc.php:3748
+#: inc/fonctions.inc.php:3803
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1$s "
@@ -1001,7 +1009,7 @@ msgstr ""
 "\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\">licence Creative "
 "Commons</a>."
 
-#: inc/fonctions.inc.php:3752
+#: inc/fonctions.inc.php:3807
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1$s "
@@ -1016,7 +1024,7 @@ msgstr ""
 "\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\">licence Creative "
 "Commons</a>."
 
-#: inc/fonctions.inc.php:3756
+#: inc/fonctions.inc.php:3811
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img "
@@ -1031,7 +1039,7 @@ msgstr ""
 "SA 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons."
 "org/licenses/by-nc-sa/3.0/deed.fr\">licence Creative Commons</a>."
 
-#: inc/fonctions.inc.php:3760
+#: inc/fonctions.inc.php:3815
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img "
@@ -1046,7 +1054,7 @@ msgstr ""
 "a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/"
 "by-nc-nd/3.0/deed.fr\">licence Creative Commons</a>."
 
-#: inc/fonctions.inc.php:3764
+#: inc/fonctions.inc.php:3819
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-2.0.html\"><img %1$s alt=\"Licence "
@@ -1059,7 +1067,7 @@ msgstr ""
 "href=\"http://www.gnu.org/licenses/gpl-2.0.html\">licence publique générale "
 "de GNU, version 2</a>."
 
-#: inc/fonctions.inc.php:3768
+#: inc/fonctions.inc.php:3823
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -1074,7 +1082,7 @@ msgstr ""
 "\">licence publique générale de GNU, version 2 ou toute version ultérieure</"
 "a>."
 
-#: inc/fonctions.inc.php:3772
+#: inc/fonctions.inc.php:3827
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\"><img %1$s alt=\"Licence "
@@ -1087,7 +1095,7 @@ msgstr ""
 "href=\"http://www.gnu.org/licenses/gpl-3.0.html\">licence publique générale "
 "de GNU, version 3</a>."
 
-#: inc/fonctions.inc.php:3776
+#: inc/fonctions.inc.php:3831
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
@@ -1102,7 +1110,7 @@ msgstr ""
 "\">licence publique générale de GNU, version 3 ou toute version ultérieure</"
 "a>."
 
-#: inc/fonctions.inc.php:3780
+#: inc/fonctions.inc.php:3835
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\"><img %1$s alt="
@@ -1115,7 +1123,7 @@ msgstr ""
 "sous la <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\">licence "
 "publique générale GNU Affero, version 3</a>."
 
-#: inc/fonctions.inc.php:3784
+#: inc/fonctions.inc.php:3839
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/agpl.html\"><img %1$s alt=\"Licence "
@@ -1130,7 +1138,7 @@ msgstr ""
 "\">licence publique générale GNU Affero, version 3 ou toute version "
 "ultérieure</a>."
 
-#: inc/fonctions.inc.php:3788
+#: inc/fonctions.inc.php:3843
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\"><img %1$s alt="
@@ -1143,7 +1151,7 @@ msgstr ""
 "disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-2.1.html"
 "\">licence publique générale amoindrie de GNU, version 2.1</a>."
 
-#: inc/fonctions.inc.php:3792
+#: inc/fonctions.inc.php:3847
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -1158,7 +1166,7 @@ msgstr ""
 "lgpl.html\">licence publique générale amoindrie de GNU, version 2.1 ou toute "
 "version ultérieure</a>."
 
-#: inc/fonctions.inc.php:3796
+#: inc/fonctions.inc.php:3851
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\"><img %1$s alt="
@@ -1171,7 +1179,7 @@ msgstr ""
 "disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-3.0.html"
 "\">licence publique générale amoindrie de GNU, version 3</a>."
 
-#: inc/fonctions.inc.php:3800
+#: inc/fonctions.inc.php:3855
 #, php-format
 msgid ""
 "<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
@@ -1186,7 +1194,7 @@ msgstr ""
 "html\">licence publique générale amoindrie de GNU, version 3 ou toute "
 "version ultérieure</a>."
 
-#: inc/fonctions.inc.php:3804
+#: inc/fonctions.inc.php:3859
 #, php-format
 msgid ""
 "<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
@@ -1199,7 +1207,7 @@ msgstr ""
 "<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
 "\">licence BSD modifiée</a>."
 
-#: inc/fonctions.inc.php:3808
+#: inc/fonctions.inc.php:3863
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr\"><img "
@@ -1212,7 +1220,7 @@ msgstr ""
 "le <a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr"
 "\">domaine public</a>."
 
-#: inc/fonctions.inc.php:3812
+#: inc/fonctions.inc.php:3867
 #, php-format
 msgid ""
 "<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1$s alt="
@@ -1223,7 +1231,7 @@ msgstr ""
 "\"Licence MIT\" /></a> Mis à disposition sous la <a href=\"http://www."
 "opensource.org/licenses/mit-license.php\">licence MIT</a>."
 
-#: inc/fonctions.inc.php:3816
+#: inc/fonctions.inc.php:3871
 #, php-format
 msgid ""
 "<a href=\"http://creativecommons.org/publicdomain/zero/1.0/deed.fr\"><img "
@@ -1236,7 +1244,7 @@ msgstr ""
 "></a> Transféré dans le <a href=\"http://creativecommons.org/publicdomain/"
 "zero/1.0/deed.fr\">domaine public</a>."
 
-#: inc/fonctions.inc.php:3820
+#: inc/fonctions.inc.php:3875
 msgid ""
 "La reproduction exacte et la distribution intégrale de cet article est "
 "permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
@@ -1246,7 +1254,7 @@ msgstr ""
 "permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
 "préservée."
 
-#: inc/fonctions.inc.php:4573
+#: inc/fonctions.inc.php:4628
 #, php-format
 msgid ""
 "Mise à jour des langues actives impossible, puisque le fichier %1$s n'existe "
@@ -1255,7 +1263,7 @@ msgstr ""
 "Mise à jour des langues actives impossible, puisque le fichier %1$s n'existe "
 "pas."
 
-#: inc/fonctions.inc.php:4577 inc/fonctions.inc.php:4627
+#: inc/fonctions.inc.php:4632 inc/fonctions.inc.php:4682
 msgid ""
 "Mise à jour des langues actives impossible, puisqu'aucune langue n'a été "
 "fournie."
@@ -1263,38 +1271,38 @@ msgstr ""
 "Mise à jour des langues actives impossible, puisqu'aucune langue n'a été "
 "fournie."
 
-#: inc/fonctions.inc.php:4598
+#: inc/fonctions.inc.php:4653
 msgid "Le contenu fourni ne peut être analysé."
 msgstr "Le contenu fourni ne peut être analysé."
 
-#: inc/fonctions.inc.php:4685 inc/fonctions.inc.php:4706
+#: inc/fonctions.inc.php:4740 inc/fonctions.inc.php:4761
 #, php-format
 msgid "Mise à jour du fichier %1$s impossible."
 msgstr "Mise à jour du fichier %1$s impossible."
 
-#: inc/fonctions.inc.php:4689
+#: inc/fonctions.inc.php:4744
 #, php-format
 msgid "Mise à jour du fichier %1$s effectuée."
 msgstr "Mise à jour du fichier %1$s effectuée."
 
-#: inc/fonctions.inc.php:4696
+#: inc/fonctions.inc.php:4751
 #, php-format
 msgid "Suppression du fichier %1$s effectuée."
 msgstr "Suppression du fichier %1$s effectuée."
 
-#: inc/fonctions.inc.php:4700
+#: inc/fonctions.inc.php:4755
 #, php-format
 msgid ""
 "Suppression du fichier %1$s impossible. Ce fichier est maintenant inutile."
 msgstr ""
 "Suppression du fichier %1$s impossible. Ce fichier est maintenant inutile."
 
-#: inc/fonctions.inc.php:4720
+#: inc/fonctions.inc.php:4775
 #, php-format
 msgid "Mise à jour des langues actives dans le fichier %1$s effectuée."
 msgstr "Mise à jour des langues actives dans le fichier %1$s effectuée."
 
-#: inc/fonctions.inc.php:4820
+#: inc/fonctions.inc.php:4875
 msgid ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
@@ -1302,7 +1310,7 @@ msgstr ""
 "Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
 "visitez sur ce site actuellement) est obsolète?"
 
-#: inc/fonctions.inc.php:4822
+#: inc/fonctions.inc.php:4877
 msgid ""
 "<strong>Pour naviguer de la manière la plus satisfaisante et sécuritaire, "
 "nous recommandons d'utiliser Firefox</strong>, un navigateur libre, "
@@ -1316,11 +1324,11 @@ msgstr ""
 "basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au "
 "travail, vous pouvez faire la suggestion à votre service informatique."
 
-#: inc/fonctions.inc.php:4824
+#: inc/fonctions.inc.php:4879
 msgid "Télécharger Firefox"
 msgstr "Télécharger Firefox"
 
-#: inc/fonctions.inc.php:4956
+#: inc/fonctions.inc.php:5011
 msgid ""
 "Le site est présentement hors ligne pour maintenance. Certaines pages "
 "peuvent ne pas s'afficher correctement."
@@ -1328,64 +1336,64 @@ msgstr ""
 "Le site est présentement hors ligne pour maintenance. Certaines pages "
 "peuvent ne pas s'afficher correctement."
 
-#: inc/fonctions.inc.php:5053
+#: inc/fonctions.inc.php:5108
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
 msgstr "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
 
-#: inc/fonctions.inc.php:5057
+#: inc/fonctions.inc.php:5112
 #, php-format
 msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
 msgstr "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
 
-#: inc/fonctions.inc.php:5100 inc/fonctions.inc.php:5113
-#: inc/fonctions.inc.php:5126
+#: inc/fonctions.inc.php:5155 inc/fonctions.inc.php:5168
+#: inc/fonctions.inc.php:5181
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
 msgstr "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
 
-#: inc/fonctions.inc.php:5104 inc/fonctions.inc.php:5117
-#: inc/fonctions.inc.php:5130
+#: inc/fonctions.inc.php:5159 inc/fonctions.inc.php:5172
+#: inc/fonctions.inc.php:5185
 #, php-format
 msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
 msgstr ""
 "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
 
-#: inc/fonctions.inc.php:5225 inc/fonctions.inc.php:5226
+#: inc/fonctions.inc.php:5280 inc/fonctions.inc.php:5281
 #, php-format
 msgid "%1$s – Page %2$s"
 msgstr "%1$s – Page %2$s"
 
-#: inc/fonctions.inc.php:5277 inc/fonctions.inc.php:5281
+#: inc/fonctions.inc.php:5332 inc/fonctions.inc.php:5336
 msgid "Page précédente"
 msgstr "Page précédente"
 
-#: inc/fonctions.inc.php:5310 inc/fonctions.inc.php:5314
+#: inc/fonctions.inc.php:5365 inc/fonctions.inc.php:5369
 msgid "Page suivante"
 msgstr "Page suivante"
 
-#: inc/fonctions.inc.php:5399
+#: inc/fonctions.inc.php:5454
 #, php-format
 msgid "Voyez l'image %1$s en plus grande taille!"
 msgstr "Voyez l'image %1$s en plus grande taille!"
 
-#: inc/fonctions.inc.php:5399
+#: inc/fonctions.inc.php:5454
 msgid "En espérant qu'elle vous intéresse!"
 msgstr "En espérant qu'elle vous intéresse!"
 
-#: inc/fonctions.inc.php:5451
+#: inc/fonctions.inc.php:5506
 msgid "En espérant que cette page vous intéresse!"
 msgstr "En espérant que cette page vous intéresse!"
 
-#: inc/fonctions.inc.php:5669 inc/fonctions.inc.php:5994
+#: inc/fonctions.inc.php:5724 inc/fonctions.inc.php:6049
 msgid "Voir plus de titres"
 msgstr "Voir plus de titres"
 
-#: inc/fonctions.inc.php:5801 inc/fonctions.inc.php:5908
+#: inc/fonctions.inc.php:5856 inc/fonctions.inc.php:5963
 msgid "Voir plus d'images"
 msgstr "Voir plus d'images"
 
-#: inc/fonctions.inc.php:6487
+#: inc/fonctions.inc.php:6591
 msgid "Table des matières"
 msgstr "Table des matières"
 
@@ -1426,36 +1434,36 @@ msgstr "Ajouter un commentaire."
 msgid "L'ajout de commentaires est désactivé."
 msgstr "L'ajout de commentaires est désactivé."
 
-#: inc/blocs.inc.php:233 admin/xhtml/menu.inc.php:12
+#: inc/blocs.inc.php:232 admin/xhtml/menu.inc.php:12
 msgid "Flux RSS"
 msgstr "Flux RSS"
 
-#: inc/blocs.inc.php:363
+#: inc/blocs.inc.php:357
 msgid "Sauf mention contraire:"
 msgstr "Sauf mention contraire:"
 
-#: inc/blocs.inc.php:443 admin/categories.admin.php:3
+#: inc/blocs.inc.php:437 admin/categories.admin.php:3
 #: admin/xhtml/menu.inc.php:8
 msgid "Catégories"
 msgstr "Catégories"
 
-#: inc/blocs.inc.php:569 admin/acces.admin.php:13
+#: inc/blocs.inc.php:563 admin/acces.admin.php:13
 msgid "Langues"
 msgstr "Langues"
 
-#: inc/blocs.inc.php:619
+#: inc/blocs.inc.php:613
 msgid "Partager"
 msgstr "Partager"
 
-#: inc/blocs.inc.php:626
+#: inc/blocs.inc.php:620
 msgid "Par courriel"
 msgstr "Par courriel"
 
-#: inc/blocs.inc.php:696
+#: inc/blocs.inc.php:690
 msgid "Rechercher dans le site"
 msgstr "Rechercher dans le site"
 
-#: inc/blocs.inc.php:700
+#: inc/blocs.inc.php:694
 msgid "Rechercher"
 msgstr "Rechercher"
 
@@ -2064,7 +2072,7 @@ msgstr "Le fichier %1$s n'a pas pu être ouvert."
 msgid "<a href=\"%1$s\">Tenter à nouveau d'éditer le fichier.</a>"
 msgstr "<a href=\"%1$s\">Tenter à nouveau d'éditer le fichier.</a>"
 
-#: admin/porte-documents.admin.php:1496 admin/inc/fonctions.inc.php:1681
+#: admin/porte-documents.admin.php:1496 admin/inc/fonctions.inc.php:1676
 #: admin/categories.admin.php:25
 #, php-format
 msgid ""
@@ -2548,7 +2556,7 @@ msgstr ""
 "Enregistrement des modifications aux abonnements aux notifications des "
 "nouveaux commentaires"
 
-#: admin/commentaires.admin.php:935 admin/inc/fonctions.inc.php:2598
+#: admin/commentaires.admin.php:935 admin/inc/fonctions.inc.php:2593
 #, php-format
 msgid "Avertissement: le courriel %1$s ne semble pas avoir une forme valide."
 msgstr "Avertissement: le courriel %1$s ne semble pas avoir une forme valide."
@@ -2949,10 +2957,10 @@ msgstr "Obtenir une copie de sauvegarde du site"
 #: admin/acces.admin.php:796
 msgid ""
 "Vous pouvez télécharger sur votre ordinateur une archive contenant tout le "
-"site."
+"site (sauf le cache)."
 msgstr ""
 "Vous pouvez télécharger sur votre ordinateur une archive contenant tout le "
-"site."
+"site (sauf le cache)."
 
 #: admin/acces.admin.php:798
 msgid "Télécharger une copie de sauvegarde du site."
@@ -2986,7 +2994,7 @@ msgstr ""
 "%3$s)."
 
 #: admin/inc/fonctions.inc.php:172 admin/inc/fonctions.inc.php:250
-#: admin/inc/fonctions.inc.php:2284
+#: admin/inc/fonctions.inc.php:2279
 #, php-format
 msgid "Accès au dossier %1$s impossible."
 msgstr "Accès au dossier %1$s impossible."
@@ -3032,8 +3040,8 @@ msgstr "Déclaration du fichier Sitemap dans le fichier %1$s impossible."
 #: admin/inc/fonctions.inc.php:304 admin/inc/fonctions.inc.php:558
 #: admin/inc/fonctions.inc.php:563 admin/inc/fonctions.inc.php:610
 #: admin/inc/fonctions.inc.php:615 admin/inc/fonctions.inc.php:660
-#: admin/inc/fonctions.inc.php:665 admin/inc/fonctions.inc.php:1699
-#: admin/inc/fonctions.inc.php:1704 admin/galeries.admin.php:1419
+#: admin/inc/fonctions.inc.php:665 admin/inc/fonctions.inc.php:1694
+#: admin/inc/fonctions.inc.php:1699 admin/galeries.admin.php:1419
 #: admin/galeries.admin.php:1424 admin/galeries.admin.php:1596
 #: admin/galeries.admin.php:1601
 msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
@@ -3041,7 +3049,7 @@ msgstr "Voici le contenu qui aurait été enregistré dans le fichier:"
 
 #: admin/inc/fonctions.inc.php:311 admin/inc/fonctions.inc.php:570
 #: admin/inc/fonctions.inc.php:622 admin/inc/fonctions.inc.php:672
-#: admin/inc/fonctions.inc.php:1711 admin/galeries.admin.php:1431
+#: admin/inc/fonctions.inc.php:1706 admin/galeries.admin.php:1431
 #: admin/galeries.admin.php:1608 admin/galeries.admin.php:1704
 msgid "Sélectionner le résultat."
 msgstr "Sélectionner le résultat."
@@ -3069,13 +3077,13 @@ msgstr ""
 "manuellement."
 
 #: admin/inc/fonctions.inc.php:550 admin/inc/fonctions.inc.php:602
-#: admin/inc/fonctions.inc.php:652 admin/inc/fonctions.inc.php:1691
+#: admin/inc/fonctions.inc.php:652 admin/inc/fonctions.inc.php:1686
 #: admin/galeries.admin.php:1411 admin/galeries.admin.php:1588
 msgid "Les modifications ont été enregistrées."
 msgstr "Les modifications ont été enregistrées."
 
 #: admin/inc/fonctions.inc.php:552 admin/inc/fonctions.inc.php:604
-#: admin/inc/fonctions.inc.php:654 admin/inc/fonctions.inc.php:1693
+#: admin/inc/fonctions.inc.php:654 admin/inc/fonctions.inc.php:1688
 #: admin/galeries.admin.php:1413 admin/galeries.admin.php:1590
 #, php-format
 msgid "Voici le contenu qui a été enregistré dans le fichier %1$s:"
@@ -3197,11 +3205,11 @@ msgstr "<strong>Permissions:</strong> %1$s"
 msgid "Éditer"
 msgstr "Éditer"
 
-#: admin/inc/fonctions.inc.php:1954
+#: admin/inc/fonctions.inc.php:1949
 msgid "Aucune erreur, le téléchargement est correct."
 msgstr "Aucune erreur, le téléchargement est correct."
 
-#: admin/inc/fonctions.inc.php:1958
+#: admin/inc/fonctions.inc.php:1953
 msgid ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
 "configurée dans le <code>php.ini</code>."
@@ -3209,7 +3217,7 @@ msgstr ""
 "Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
 "configurée dans le <code>php.ini</code>."
 
-#: admin/inc/fonctions.inc.php:1962
+#: admin/inc/fonctions.inc.php:1957
 msgid ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
 "été spécifiée dans le formulaire HTML."
@@ -3217,74 +3225,74 @@ msgstr ""
 "Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
 "été spécifiée dans le formulaire HTML."
 
-#: admin/inc/fonctions.inc.php:1966
+#: admin/inc/fonctions.inc.php:1961
 msgid "Le fichier n'a été que partiellement téléchargé."
 msgstr "Le fichier n'a été que partiellement téléchargé."
 
-#: admin/inc/fonctions.inc.php:1970
+#: admin/inc/fonctions.inc.php:1965
 msgid "Aucun fichier n'a été téléchargé."
 msgstr "Aucun fichier n'a été téléchargé."
 
-#: admin/inc/fonctions.inc.php:1974
+#: admin/inc/fonctions.inc.php:1969
 msgid "Un dossier temporaire est manquant."
 msgstr "Un dossier temporaire est manquant."
 
-#: admin/inc/fonctions.inc.php:1978
+#: admin/inc/fonctions.inc.php:1973
 msgid "Échec de l'écriture du fichier sur le disque."
 msgstr "Échec de l'écriture du fichier sur le disque."
 
-#: admin/inc/fonctions.inc.php:1982
+#: admin/inc/fonctions.inc.php:1977
 msgid "L'envoi de fichier est arrêté par l'extension."
 msgstr "L'envoi de fichier est arrêté par l'extension."
 
-#: admin/inc/fonctions.inc.php:2187
+#: admin/inc/fonctions.inc.php:2182
 msgid "La réécriture d'URL est activée."
 msgstr "La réécriture d'URL est activée."
 
-#: admin/inc/fonctions.inc.php:2192
+#: admin/inc/fonctions.inc.php:2187
 msgid "La réécriture d'URL n'est pas activée."
 msgstr "La réécriture d'URL n'est pas activée."
 
-#: admin/inc/fonctions.inc.php:2198
+#: admin/inc/fonctions.inc.php:2193
 msgid "Impossible de déterminer si la réécriture d'URL est activée."
 msgstr "Impossible de déterminer si la réécriture d'URL est activée."
 
-#: admin/inc/fonctions.inc.php:2220
+#: admin/inc/fonctions.inc.php:2215
 #, php-format
 msgid "Déplacement de %1$s vers %2$s effectué."
 msgstr "Déplacement de %1$s vers %2$s effectué."
 
-#: admin/inc/fonctions.inc.php:2224
+#: admin/inc/fonctions.inc.php:2219
 #, php-format
 msgid "Renommage de %1$s en %2$s effectué."
 msgstr "Renommage de %1$s en %2$s effectué."
 
-#: admin/inc/fonctions.inc.php:2231
+#: admin/inc/fonctions.inc.php:2226
 #, php-format
 msgid "Déplacement de %1$s vers %2$s impossible."
 msgstr "Déplacement de %1$s vers %2$s impossible."
 
-#: admin/inc/fonctions.inc.php:2235
+#: admin/inc/fonctions.inc.php:2230
 #, php-format
 msgid "Renommage de %1$s en %2$s impossible."
 msgstr "Renommage de %1$s en %2$s impossible."
 
-#: admin/inc/fonctions.inc.php:2247 admin/inc/fonctions.inc.php:2817
+#: admin/inc/fonctions.inc.php:2242 admin/inc/fonctions.inc.php:2812
 #, php-format
 msgid "Suppression de %1$s effectuée."
 msgstr "Suppression de %1$s effectuée."
 
-#: admin/inc/fonctions.inc.php:2251 admin/inc/fonctions.inc.php:2821
+#: admin/inc/fonctions.inc.php:2246 admin/inc/fonctions.inc.php:2816
 #, php-format
 msgid "Suppression de %1$s impossible."
 msgstr "Suppression de %1$s impossible."
 
-#: admin/inc/fonctions.inc.php:2331
+#: admin/inc/fonctions.inc.php:2326
 #, php-format
 msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
 msgstr "Aucune rotation automatique à effectuer pour l'image %1$s."
 
-#: admin/inc/fonctions.inc.php:2339 admin/inc/fonctions.inc.php:2398
+#: admin/inc/fonctions.inc.php:2334 admin/inc/fonctions.inc.php:2393
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
@@ -3293,7 +3301,7 @@ msgstr ""
 "Rotation automatique et sans perte de qualité effectuée par %1$s pour "
 "l'image %2$s."
 
-#: admin/inc/fonctions.inc.php:2343 admin/inc/fonctions.inc.php:2407
+#: admin/inc/fonctions.inc.php:2338 admin/inc/fonctions.inc.php:2402
 #, php-format
 msgid ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
@@ -3302,7 +3310,7 @@ msgstr ""
 "Rotation automatique et sans perte de qualité par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 
-#: admin/inc/fonctions.inc.php:2402 admin/inc/fonctions.inc.php:2479
+#: admin/inc/fonctions.inc.php:2397 admin/inc/fonctions.inc.php:2474
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
@@ -3311,7 +3319,7 @@ msgstr ""
 "Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
 "l'image %2$s."
 
-#: admin/inc/fonctions.inc.php:2411 admin/inc/fonctions.inc.php:2483
+#: admin/inc/fonctions.inc.php:2406 admin/inc/fonctions.inc.php:2478
 #, php-format
 msgid ""
 "Suppression sans perte de qualité des données Exif par %1$s impossible pour "
@@ -3320,7 +3328,7 @@ msgstr ""
 "Suppression sans perte de qualité des données Exif par %1$s impossible pour "
 "l'image %2$s. Vérifier l'état de l'image sur le serveur."
 
-#: admin/inc/fonctions.inc.php:2419
+#: admin/inc/fonctions.inc.php:2414
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une rotation automatique et "
@@ -3333,7 +3341,7 @@ msgstr ""
 "l'exécutable %1$s, soit un accès à l'exécutable %2$s ainsi qu'à la fonction "
 "PHP %3$s."
 
-#: admin/inc/fonctions.inc.php:2490
+#: admin/inc/fonctions.inc.php:2485
 #, php-format
 msgid ""
 "Votre environnement ne permet pas d'effectuer une suppression sans perte de "
@@ -3344,17 +3352,17 @@ msgstr ""
 "qualité des données Exif. La configuration nécessaire est un accès à "
 "l'exécutable %1$s."
 
-#: admin/inc/fonctions.inc.php:2551
+#: admin/inc/fonctions.inc.php:2546
 #, php-format
 msgid "Avertissement: l'adresse IP %1$s ne semble pas avoir une forme valide."
 msgstr "Avertissement: l'adresse IP %1$s ne semble pas avoir une forme valide."
 
-#: admin/inc/fonctions.inc.php:2567
+#: admin/inc/fonctions.inc.php:2562
 #, php-format
 msgid "Avertissement: la date %1$s ne semble pas avoir une forme valide."
 msgstr "Avertissement: la date %1$s ne semble pas avoir une forme valide."
 
-#: admin/inc/fonctions.inc.php:2585
+#: admin/inc/fonctions.inc.php:2580
 #, php-format
 msgid ""
 "Avertissement: selon la configuration des commentaires, le nom est "
@@ -3363,7 +3371,7 @@ msgstr ""
 "Avertissement: selon la configuration des commentaires, le nom est "
 "obligatoire, mais celui associé au commentaire %1$s est vide."
 
-#: admin/inc/fonctions.inc.php:2605
+#: admin/inc/fonctions.inc.php:2600
 #, php-format
 msgid ""
 "Avertissement: selon la configuration des commentaires, le courriel est "
@@ -3372,12 +3380,12 @@ msgstr ""
 "Avertissement: selon la configuration des commentaires, le courriel est "
 "obligatoire, mais celui associé au commentaire %1$s est vide."
 
-#: admin/inc/fonctions.inc.php:2618
+#: admin/inc/fonctions.inc.php:2613
 #, php-format
 msgid "Avertissement: le site Web %1$s ne semble pas avoir une forme valide."
 msgstr "Avertissement: le site Web %1$s ne semble pas avoir une forme valide."
 
-#: admin/inc/fonctions.inc.php:2625
+#: admin/inc/fonctions.inc.php:2620
 #, php-format
 msgid ""
 "Avertissement: selon la configuration des commentaires, le site est "
