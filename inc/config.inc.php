@@ -1023,14 +1023,20 @@ $galerieNavigationEmplacement = 'haut'; // haut|bas
 */
 $galerieAfficherMinivignettes = TRUE; //TRUE|FALSE
 
-// S'il y a des minivignettes, choix de leur emplacement.
-$galerieMinivignettesEmplacement = 'haut'; // haut|bas
-
-// S'il y a des minivignettes, le nombre à afficher.
+// S'il y a des minivignettes, le nombre maximum à afficher.
 /*
 - 0 pour un nombre illimité.
 */
 $galerieMinivignettesNombre = 0;
+
+// S'il y a des minivignettes, choix de leur emplacement.
+/*
+- Les minivignettes peuvent être placées en haut ou en bas de l'image intermédiaire. En choisissant l'option «automatique», l'emplacement va dépendre du nombre de minivignettes affichées. Si ce nombre est inférieur ou égal à `$galerieMinivignettesEmplacementNombre`, les minivignettes seront placées en haut de l'image, sinon elles seront placées en bas.
+*/
+$galerieMinivignettesEmplacement = 'automatique'; // haut|bas|automatique
+
+// S'il y a des minivignettes et si `$galerieMinivignettesEmplacement` vaut `automatique`, nombre au-delà duquel les minivignettes sont placées en bas.
+$galerieMinivignettesEmplacementNombre = 28;
 
 // Ajout d'une ancre de navigation.
 /*

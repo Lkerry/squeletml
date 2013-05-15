@@ -261,6 +261,18 @@ if (!empty($idGalerie) && isset($_GET['image']))
 			$corpsGalerie .= $imageIntermediaire . $imagePrecedente . $imageSuivante . "<div class=\"sep\"></div>\n";
 		}
 		
+		if ($galerieMinivignettesEmplacement == 'automatique')
+		{
+			if ($nombreDimages > $galerieMinivignettesEmplacementNombre && ($galerieMinivignettesNombre == 0 || $galerieMinivignettesNombre > $galerieMinivignettesEmplacementNombre))
+			{
+				$galerieMinivignettesEmplacement = 'bas';
+			}
+			else
+			{
+				$galerieMinivignettesEmplacement = 'haut';
+			}
+		}
+		
 		$infoEtMinivignettesEnsemble = FALSE;
 		$infoEtMinivignettesEnsembleCodeDebut = '';
 		$infoEtMinivignettesEnsembleCodeFin = '';
