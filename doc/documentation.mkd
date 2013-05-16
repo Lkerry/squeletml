@@ -848,7 +848,7 @@ Quelques variables et constantes PHP peuvent être utilisées dans la rédaction
 
 La fonction `publicationsRecentes()` permet d'obtenir la liste des dernières publications pour un type de publication donné: une catégorie, une galerie, toutes les galeries ou tout le site. Voici un exemple:
 
-	$dernieresImages = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'chiens', 5, TRUE, TRUE, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLegendeMarkdown, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
+	$dernieresImages = publicationsRecentes($racine, $urlRacine, eval(LANGUE), 'galerie', 'chiens', 5, TRUE, TRUE, $triParDateFluxRss, $datePublicationVautDateRevision, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLegendeMarkdown, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
 
 Dans l'exemple ci-dessus, la variable `$dernieresImages` contient les 5 dernières images ajoutées à la galerie `chiens`, et ce sous la forme d'une liste (formée de balises `li` dans un `ul`) dont chaque item contient la vignette d'une image et un lien vers la page individuelle de l'image. Aussi, le septième argument vaut `TRUE`, donc un lien est ajouté sur chaque vignette vers la page Web de l'image en question. Le huitième argument vaut également `TRUE`, donc un lien «Voir plus d'images» est ajouté à la fin de la liste vers l'accueil de la galerie.
 
@@ -1402,7 +1402,7 @@ Certains scripts permettent aussi d'émuler cron en PHP. Voir par exemple [pseud
 
 ### Rapport par courriel
 
-Il est possible de recevoir un rapport par courriel au format HTML après l'exécution du cron. Pour ce faire, la variable `$envoyerRapportCron` du fichier de configuration du site doit valoir `TRUE` et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
+Il est possible de recevoir un rapport par courriel au format HTML après l'exécution (ou la tentative d'exécution) du cron. Pour ce faire, la variable `$envoyerRapportCron` du fichier de configuration du site doit valoir `1` (envoyer un rapport seulement si le cron n'a pas pu être lancé) ou `2` (toujours envoyer un rapport), et un courriel d'administration doit avoir été précisé (au moins une des deux variables `$courrielAdmin` ou `$contactCourrielParDefaut` doit être renseignée).
 
 ## Fichier Sitemap
 

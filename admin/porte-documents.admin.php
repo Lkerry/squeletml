@@ -1085,7 +1085,7 @@ if (isset($_POST['porteDocumentsCreation']))
 										break;
 										
 									case 'dateRevision':
-										$contenu .= '$dateRevision = "' . date('Y-m-d') . '";' . "\n";
+										$contenu .= '$dateRevision = "";' . "\n";
 										break;
 										
 									case 'desactiverCache':
@@ -2220,7 +2220,7 @@ echo '<option value="classesBody">$classesBody</option>' . "\n";
 echo '<option value="classesContenu">$classesContenu</option>' . "\n";
 echo '<option value="courrielContact">$courrielContact</option>' . "\n";
 echo '<option value="dateCreation" selected="selected">$dateCreation</option>' . "\n";
-echo '<option value="dateRevision">$dateRevision</option>' . "\n";
+echo '<option value="dateRevision" selected="selected">$dateRevision</option>' . "\n";
 echo '<option value="desactiverCache">$desactiverCache</option>' . "\n";
 echo '<option value="desactiverCachePartiel">$desactiverCachePartiel</option>' . "\n";
 echo '<option value="description">$description</option>' . "\n";

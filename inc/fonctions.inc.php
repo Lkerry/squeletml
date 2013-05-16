@@ -177,7 +177,7 @@ function ajouteCategoriesSpeciales($racine, $urlRacine, $langue, $categories, $c
 	if (in_array('galeries', $categoriesSpecialesAajouter) && !isset($categories['galeries']) && fluxRssGlobalGaleriesContientElements($racine, $urlRacine, $langue))
 	{
 		$itemsFluxRss = fluxRssGaleriesTableauBrut($racine, $urlRacine, $langue, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLienOriginalTelecharger, $galerieLegendeMarkdown);
-		$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss);
+		$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreItemsFluxRss, FALSE);
 		$categories['galeries'] = array ();
 		$categories['galeries']['langue'] = $langue;
 		$categories['galeries']['url'] = "categorie.php?id=galeries&amp;langue=$langue";
@@ -2151,7 +2151,7 @@ function fluxRss($type, $itemsFluxRss, $urlRss, $url, $baliseTitleComplement, $i
 			$contenuRss .= "\t\t<item>\n";
 			$contenuRss .= "\t\t\t<title>" . $itemFlux['title'] . "</title>\n";
 			$contenuRss .= "\t\t\t<link>" . $itemFlux['link'] . "</link>\n";
-			$contenuRss .= "\t\t\t" . '<guid isPermaLink="true">' . $itemFlux['guid'] . "</guid>\n";
+			$contenuRss .= "\t\t\t" . '<guid isPermaLink="false">' . $itemFlux['guid'] . "</guid>\n";
 			$contenuRss .= "\t\t\t<description>" . $itemFlux['description'] . "</description>\n";
 			
 			if (!empty($itemFlux['dccreator']))
@@ -2312,7 +2312,7 @@ function fluxRssGalerieTableauBrut($racine, $urlRacine, $langue, $idGalerie, $ga
 			$itemsFluxRss[] = array (
 				"title" => $title,
 				"link" => $urlGalerieImage,
-				"guid" => $urlGalerieImage,
+				"guid" => "$pubDate;$urlGalerieImage",
 				"description" => $description,
 				"dccreator" => $dccreator,
 				"pubDate" => $pubDate,
@@ -2376,20 +2376,31 @@ function fluxRssGlobalGaleriesContientElements($racine, $urlRacine, $langue)
 /*
 Retourne un tableau d'un élément représentant une page du site, cet élément étant lui-même un tableau contenant les informations nécessaires à la création d'un fichier RSS. Si une erreur survient, retourne un tableau vide.
 */
-function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
+function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $fluxRssAvecApercu, $datePublicationVautDateRevision, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
 {
 	$itemFlux = array ();
 	$infosPage = infosPage($racine, $urlRacine, $urlPage, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCache, TRUE, $estPageCron, $mettreAjourCacheSeulementParCron);
 	
 	if (!empty($infosPage))
 	{
-		if (!empty($infosPage['dateCreation']))
-		{
-			$pubDate = securiseTexte($infosPage['dateCreation']);
-		}
-		elseif (!empty($infosPage['dateRevision']))
+		$description = '';
+		
+		if (!empty($infosPage['dateRevision']) && $datePublicationVautDateRevision)
 		{
 			$pubDate = securiseTexte($infosPage['dateRevision']);
+			
+			if (!empty($infosPage['dateCreation']))
+			{
+				$description .= '<p><em>' . sprintf(T_("Note: cet article a été publié le %1\$s, mais une révision a été effectuée le %2\$s."), $infosPage['dateCreation'], $infosPage['dateRevision']) . "</em></p>\n";
+			}
+			else
+			{
+				$description .= '<p><em>' . sprintf(T_("Note: cet article a été révisé le %1\$s."), $infosPage['dateRevision']) . "</em></p>\n";
+			}
+		}
+		elseif (!empty($infosPage['dateCreation']))
+		{
+			$pubDate = securiseTexte($infosPage['dateCreation']);
 		}
 		else
 		{
@@ -2398,17 +2409,17 @@ function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $flu
 		
 		if (!empty($infosPage['apercu']))
 		{
-			$description = $infosPage['apercu'] . "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n";
+			$description .= $infosPage['apercu'] . "<p><a href=\"$urlPage\">" . sprintf(T_("Lire la suite de %1\$s."), '<em>' . $infosPage['titre'] . '</em>') . "</a></p>\n";
 		}
 		else
 		{
-			$description = $infosPage['contenu'];
+			$description .= $infosPage['contenu'];
 		}
 		
 		$itemFlux[] = array (
 			"title" => securiseTexte($infosPage['titre']),
 			"link" => $urlPage,
-			"guid" => $urlPage,
+			"guid" => "$pubDate;$urlPage",
 			"description" => securiseTexte($description),
 			"dccreator" => securiseTexte($infosPage['auteur']),
 			"pubDate" => $pubDate,
@@ -2419,11 +2430,11 @@ function fluxRssPageTableauBrut($racine, $urlRacine, $cheminPage, $urlPage, $flu
 }
 
 /*
-Retourne le tableau `$itemsFluxRss` contenant au maximum le nombre d'items précisé dans la configuration. L'ordre des items dépend du type.
+Retourne le tableau `$itemsFluxRss` contenant au maximum le nombre d'items précisé dans la configuration.
 */
-function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss)
+function fluxRssTableauFinal($type, $itemsFluxRss, $nombreItemsFluxRss, $triParDateFluxRss)
 {
-	if ($type == 'galerie' || $type == 'galeries')
+	if ($type == 'galerie' || $type == 'galeries' || $triParDateFluxRss)
 	{
 		foreach ($itemsFluxRss as $cle => $valeur)
 		{
@@ -5646,7 +5657,7 @@ Le paramètre `$ajouterLienPlus` peut valoir TRUE ou FALSE. S'il vaut TRUE, un l
 
 Aussi, une galerie doit être présente dans le flux RSS global des galeries pour que la fonction puisse lister ses images, car c'est le seul fichier faisant un lien entre une galerie et sa page web. Voir la section «Syndication globale des galeries» de la documentation pour plus de détails.
 */
-function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLegendeMarkdown, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
+function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreVoulu, $ajouterLienVersPublication, $ajouterLienPlus, $triParDateFluxRss, $datePublicationVautDateRevision, $galerieFluxRssAuteurEstAuteurParDefaut, $auteurParDefaut, $galerieLegendeMarkdown, $galerieLienOriginalTelecharger, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron)
 {
 	$html = '';
 	$dossierTmp = "$racine/site/cache/publications-recentes-$langue-$type-" . encodeTexte($id);
@@ -5684,7 +5695,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", FALSE, $datePublicationVautDateRevision, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
 					
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -5697,7 +5708,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 			
 			if (!empty($itemsFluxRss))
 			{
-				$itemsFluxRss = fluxRssTableauFinal('categorie', $itemsFluxRss, $nombreVoulu);
+				$itemsFluxRss = fluxRssTableauFinal('categorie', $itemsFluxRss, $nombreVoulu, $triParDateFluxRss);
 				
 				foreach ($itemsFluxRss as $cle => $valeur)
 				{
@@ -5884,7 +5895,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				$nombreVoulu = $nombreReel;
 			}
 			
-			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu);
+			$itemsFluxRss = fluxRssTableauFinal('galeries', $itemsFluxRss, $nombreVoulu, $triParDateFluxRss);
 		}
 		
 		if (!empty($itemsFluxRss))
@@ -5998,7 +6009,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 				if ($i < $nombreVoulu)
 				{
 					$page = rtrim($page);
-					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, FALSE, $datePublicationVautDateRevision, 600, $marqueTroncatureApercu, $dureeCache, $estPageCron, $mettreAjourCacheSeulementParCron);
 				
 					if (!empty($fluxRssPageTableauBrut))
 					{
@@ -6011,7 +6022,7 @@ function publicationsRecentes($racine, $urlRacine, $langue, $type, $id, $nombreV
 			
 			if (!empty($itemsFluxRss))
 			{
-				$itemsFluxRss = fluxRssTableauFinal('site', $itemsFluxRss, $nombreVoulu);
+				$itemsFluxRss = fluxRssTableauFinal('site', $itemsFluxRss, $nombreVoulu, $triParDateFluxRss);
 				
 				foreach ($itemsFluxRss as $cle => $valeur)
 				{

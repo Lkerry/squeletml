@@ -141,7 +141,7 @@ if ($getType == 'galerie' && !empty($getId) && !empty($getLangue))
 				
 				if (!empty($itemsFluxRss))
 				{
-					$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
+					$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss, $triParDateFluxRss);
 				}
 				
 				if (!empty($infosGalerie['url']))
@@ -267,30 +267,42 @@ elseif ($getType == 'categorie' && !empty($getId) && empty($getLangue))
 		else
 		{
 			$itemsFluxRss = array ();
+			
+			if ($triParDateFluxRss)
+			{
+				$nombrePagesAanalyser = count($infosCategorie['pages']);
+			}
+			else
+			{
+				$nombrePagesAanalyser = $nombreItemsFluxRss;
+			}
+			
 			$i = 0;
 			
 			if (!empty($infosCategorie['pages']))
 			{
 				foreach ($infosCategorie['pages'] as $page)
 				{
-					if ($i < $nombreItemsFluxRss)
+					if ($i >= $nombrePagesAanalyser)
 					{
-						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron, $mettreAjourCacheSeulementParCron);
-					
-						if (!empty($fluxRssPageTableauBrut))
-						{
-							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
-						}
+						break;
 					}
-				
+					
+					$page = rtrim($page);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", "$urlRacine/$page", $fluxRssAvecApercu, $datePublicationVautDateRevision, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron, $mettreAjourCacheSeulementParCron);
+					
+					if (!empty($fluxRssPageTableauBrut))
+					{
+						$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
+					}
+					
 					$i++;
 				}
 			}
 			
 			if (!empty($itemsFluxRss))
 			{
-				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
+				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss, $triParDateFluxRss);
 			}
 			
 			if (!empty($infosCategorie['url']))
@@ -390,7 +402,7 @@ elseif ($getType == 'galeries' && !empty($getLangue))
 			
 			if (!empty($itemsFluxRss))
 			{
-				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
+				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss, $triParDateFluxRss);
 			}
 			
 			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, eval(ACCUEIL), baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');
@@ -472,19 +484,30 @@ elseif ($getType == 'site' && !empty($getLangue))
 			
 			if (!empty($pages[$getLangue]['pages']))
 			{
+				if ($triParDateFluxRss)
+				{
+					$nombrePagesAanalyser = count($pages[$getLangue]['pages']);
+				}
+				else
+				{
+					$nombrePagesAanalyser = $nombreItemsFluxRss;
+				}
+				
 				$i = 0;
 				
 				foreach ($pages[$getLangue]['pages'] as $page)
 				{
-					if ($i < $nombreItemsFluxRss)
+					if ($i >= $nombrePagesAanalyser)
 					{
-						$page = rtrim($page);
-						$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron, $mettreAjourCacheSeulementParCron);
-						
-						if (!empty($fluxRssPageTableauBrut))
-						{
-							$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
-						}
+						break;
+					}
+					
+					$page = rtrim($page);
+					$fluxRssPageTableauBrut = fluxRssPageTableauBrut($racine, $urlRacine, "$racine/$page", $urlRacine . '/' . $page, $fluxRssAvecApercu, $datePublicationVautDateRevision, $tailleApercuAutomatique, $marqueTroncatureApercu, $dureeCacheRss, $estPageCron, $mettreAjourCacheSeulementParCron);
+					
+					if (!empty($fluxRssPageTableauBrut))
+					{
+						$itemsFluxRss = array_merge($itemsFluxRss, $fluxRssPageTableauBrut);
 					}
 					
 					$i++;
@@ -493,7 +516,7 @@ elseif ($getType == 'site' && !empty($getLangue))
 			
 			if (!empty($itemsFluxRss))
 			{
-				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss);
+				$itemsFluxRss = fluxRssTableauFinal($getType, $itemsFluxRss, $nombreItemsFluxRss, $triParDateFluxRss);
 			}
 			
 			$rssAafficher = fluxRss($getType, $itemsFluxRss, $url, eval(ACCUEIL), baliseTitleComplement($tableauBaliseTitleComplement, array ($getLangue, $langueParDefaut), FALSE), '', '');

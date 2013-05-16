@@ -52,7 +52,12 @@ $cleCron = '';
 $ajouterPagesParCronDansSitemap = TRUE; // TRUE|FALSE
 
 // Envoi d'un rapport par courriel après l'exécution du cron.
-$envoyerRapportCron = TRUE; // TRUE|FALSE
+/*
+- `0`: jamais;
+- `1`: seulement si le cron n'a pas pu être lancé;
+- `2`: toujours.
+*/
+$envoyerRapportCron = 2; // 0|1|2
 
 // Activation de la demande de création de compte à partir du site.
 /*
@@ -751,6 +756,16 @@ $activerFluxRssGlobalSite = TRUE; // TRUE|FALSE
 
 // Nombre maximal d'items par flux RSS.
 $nombreItemsFluxRss = 25;
+
+// Tri par date.
+/*
+- Par défaut, l'ordre des pages listées dans un flux RSS correspond à celui dans le fichier contenant les URL (voir la documentation pour plus de détails). Par exemple, si `$nombreItemsFluxRss` vaut 25, alors les 25 premières pages listées dans le fichier contenant les URL sont récupérées pour générer le flux RSS. Si `$triParDateFluxRss` vaut TRUE, toutes les pages du fichier sont analysées et triées par date; ce n'est qu'après le tri que la sélection des 25 pages s'effectue.
+- À noter que cette option peut ralentir la génération des flux RSS lorsqu'il y a beaucoup de pages.
+*/
+$triParDateFluxRss = FALSE; // TRUE|FALSE
+
+// Si la date de révision d'une page est fournie, l'utiliser comme date de publication dans les flux RSS à la place de la date de création.
+$datePublicationVautDateRevision = FALSE; // TRUE|FALSE
 
 // Si `$inclureApercu` vaut TRUE, utiliser les aperçus dans les flux RSS.
 $utiliserApercuDansFluxRss = FALSE; // TRUE|FALSE

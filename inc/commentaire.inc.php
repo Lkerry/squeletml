@@ -217,7 +217,7 @@ if (isset($_POST['envoyerCommentaire']))
 			}
 			
 			$contenuConfigCommentaire .= "\n";
-			$contenuConfigCommentaire .= "languePage=$langue\n";
+			$contenuConfigCommentaire .= 'languePage=' . eval(LANGUE) . "\n";
 			$contenuConfigCommentaire .= 'enAttenteDeModeration=';
 			
 			if ($moderationCommentaires)
