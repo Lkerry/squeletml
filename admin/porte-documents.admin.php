@@ -1277,7 +1277,11 @@ if ($actionEditer)
 	echo '<div class="sousBoite">' . "\n";
 	echo '<h3>' . T_("Édition d'un fichier") . "</h3>\n";
 	
-	if (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
+	if (empty($getValeur))
+	{
+		$messagesScript .= '<li class="erreur">' . T_("Aucun nom de fichier n'a été fourni.") . "</li>\n";
+	}
+	elseif (!adminEmplacementPermis($getValeur, $adminDossierRacinePorteDocuments, $adminTypeFiltreAccesDossiers, $tableauFiltresAccesDossiers))
 	{
 		$messagesScript .= '<li class="erreur">' . sprintf(T_("Le fichier %1\$s ne se trouve pas dans un emplacement gérable par le porte-documents."), '<code>' . securiseTexte($getValeur) . '</code>') . "</li>\n";
 	}
