@@ -336,9 +336,17 @@ include $racine . '/inc/blocs.inc.php';
 // Mise à jour de la balise `title`.
 $baliseTitle = baliseTitle($baliseTitle, $baliseH1);
 
+$formCommentairePieceJointeActivee = FALSE;
+
 if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
 {
 	$boitesDeroulantes .= ' #commentaireAideSyntaxe';
+	
+	if ($commentairesChampsActifs['pieceJointe'] && (!$commentairesFiltreTypesMimePieceJointe || !empty($commentairesTypesMimePermisPieceJointe)))
+	{
+		$boitesDeroulantes .= ' #commentaireAidePieceJointe';
+		$formCommentairePieceJointeActivee = TRUE;
+	}
 }
 
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);

@@ -36,7 +36,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 
 		<?php
 		$tableauParametres = adminParametresImage();
-		$tailleMaxFichier = adminPhpIniOctets(ini_get('upload_max_filesize'));
+		$tailleMaxFichier = phpIniOctets(ini_get('upload_max_filesize'));
 		$ajoutNouvelleGalerie = FALSE;
 		$id = '';
 		$idDossier = '';
@@ -291,7 +291,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		##
 		########################################################################
 		
-		if (isset($_POST['ajouter']) || (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size'))))
+		if (isset($_POST['ajouter']) || (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size'))))
 		{
 			$messagesScript = '';
 			$idNouvelleGalerie = '';
@@ -313,7 +313,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$idNouvelleGalerieDossier = superBasename($_POST['idNouvelleGalerieDossier']);
 			}
 			
-			if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))
+			if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size')))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Le fichier téléchargé excède la taille de <code>post_max_size</code>, configurée dans le <code>php.ini</code>.") . "</li>\n";
 			}
@@ -397,7 +397,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					{
 						$typeMime = typeMime($_FILES['fichier']['tmp_name']);
 						
-						if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
+						if (!typeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 						{
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
 						}
@@ -1881,7 +1881,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 		{
 			$messagesScript = '';
 			
-			if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > adminPhpIniOctets(ini_get('post_max_size')))
+			if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size')))
 			{
 				$messagesScript .= '<li class="erreur">' . T_("Le fichier téléchargé excède la taille de <code>post_max_size</code>, configurée dans le <code>php.ini</code>.") . "</li>\n";
 			}
@@ -1906,7 +1906,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 				{
 					$typeMime = typeMime($_FILES['archive']['tmp_name']);
 					
-					if (!adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
+					if (!typeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis))
 					{
 						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($nomFichier) . '</code>', "<code>$typeMime</code>") . "</li>\n";
 					}

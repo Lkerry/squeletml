@@ -13,8 +13,13 @@ $idFormulaireCommentaire = '';
 $commentaireEnregistre = FALSE;
 $formulaireCommentaire = '';
 
+if ($formCommentairePieceJointeActivee)
+{
+	$commentairesTailleMaxPieceJointe = min($commentairesTailleMaxPieceJointe, phpIniOctets(ini_get('post_max_size')), phpIniOctets(ini_get('upload_max_filesize')));
+}
+
 // L'envoi du commentaire est demandé.
-if (isset($_POST['envoyerCommentaire']))
+if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size'))))
 {
 	if (!empty($_POST['nom']))
 	{
@@ -82,6 +87,102 @@ if (isset($_POST['envoyerCommentaire']))
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas écrit de commentaire.") . "</li>\n";
 	}
 	
+	$nomPieceJointe = '';
+	
+	if ($formCommentairePieceJointeActivee)
+	{
+		if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size')))
+		{
+			// Explications: À la page <http://www.php.net/manual/fr/ini.core.php#ini.post-max-size>, on peut lire: «Dans le cas où la taille des données reçues par la méthode POST est plus grande que post_max_size , les superglobales  $_POST et $_FILES  seront vides». Je repère donc une erreur potentielle par le test ci-dessus.
+			
+			$erreurFormulaire = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La pièce jointe doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($commentairesTailleMaxPieceJointe), $commentairesTailleMaxPieceJointe) . "</li>\n";
+		}
+		elseif (empty($_FILES['pieceJointe']['name']))
+		{
+			if ($commentairesChampsObligatoires['pieceJointe'])
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas ajouté de pièce jointe.") . "</li>\n";
+			}
+		}
+		elseif (file_exists($_FILES['pieceJointe']['tmp_name']) && @filesize($_FILES['pieceJointe']['tmp_name']) > $commentairesTailleMaxPieceJointe)
+		{
+			$erreurFormulaire = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La pièce jointe doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($commentairesTailleMaxPieceJointe), $commentairesTailleMaxPieceJointe) . "</li>\n";
+		}
+		elseif ($_FILES['pieceJointe']['error'])
+		{
+			$erreurFormulaire = TRUE;
+			$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+		}
+		else
+		{
+			$dossierParentPieceJointe = $racine . '/site/fichiers/commentaires/';
+			
+			if (!file_exists($dossierParentPieceJointe))
+			{
+				@mkdir($dossierParentPieceJointe, octdec(755));
+			}
+			
+			if (file_exists($dossierParentPieceJointe))
+			{
+				$nomPieceJointe = superBasename($_FILES['pieceJointe']['name']);
+				$nomPieceJointe = filtreChaine($nomPieceJointe);
+				
+				if (!$commentairesLienPublicPieceJointe)
+				{
+					$nomPieceJointe = chaineAleatoire(16) . '-' . $nomPieceJointe;
+				}
+				
+				if (file_exists($dossierParentPieceJointe . $nomPieceJointe))
+				{
+					for ($i = 2; $i < 1000; $i++)
+					{
+						$nomTemporairePieceJointe = nomSuffixe($nomPieceJointe, '-' . $i);
+						
+						if (!file_exists($dossierParentPieceJointe . $nomTemporairePieceJointe))
+						{
+							$nomPieceJointe = $nomTemporairePieceJointe;
+							
+							break;
+						}
+					}
+				}
+				
+				$cheminPieceJointe = $dossierParentPieceJointe . $nomPieceJointe;
+				
+				if (file_exists($cheminPieceJointe))
+				{
+					$erreurFormulaire = TRUE;
+					$cheminPieceJointe = '';
+					$nomPieceJointe = '';
+					$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+				}
+				else
+				{
+					$typeMimePieceJointe = typeMime($_FILES['pieceJointe']['tmp_name']);
+					
+					if (!typeMimePermis($typeMimePieceJointe, $commentairesFiltreTypesMimePieceJointe, $commentairesTypesMimePermisPieceJointe))
+					{
+						$erreurFormulaire = TRUE;
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type de la pièce jointe %1\$s n'est pas permis."), '<code>' . securiseTexte(superBasename($_FILES['pieceJointe']['name'])) . '</code>') . "</li>\n";
+					}
+					elseif (!@move_uploaded_file($_FILES['pieceJointe']['tmp_name'], $cheminPieceJointe))
+					{
+						$erreurFormulaire = TRUE;
+						$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+					}
+				}
+			}
+			else
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+			}
+		}
+	}
+	
 	if ($commentairesActiverCaptchaCalcul)
 	{
 		if (!captchaCalculValide($commentairesCaptchaCalculInverse))
@@ -142,6 +243,7 @@ if (isset($_POST['envoyerCommentaire']))
 			$contenuConfigCommentaire .= "nom=$nom\n";
 			$contenuConfigCommentaire .= "courriel=$courriel\n";
 			$contenuConfigCommentaire .= "site=$site\n";
+			$contenuConfigCommentaire .= "pieceJointe=$nomPieceJointe\n";
 			$contenuConfigCommentaire .= 'notification=';
 			$enregistrementConfigAbonnementsCommentaire = TRUE;
 			
@@ -316,6 +418,12 @@ if (isset($_POST['envoyerCommentaire']))
 					$heureAffichee = date('H:i T', $date);
 					$messageDansCourriel = '<p>' . sprintf(T_("Un nouveau commentaire a été posté sur la page %1\$s par %2\$s le %3\$s à %4\$s:"), '<a href="' . $urlSansAction . '#' . $idCommentaire . '">' . $baliseTitle . '</a>', $auteurAffiche, $dateAffichee, $heureAffichee) . "</p>\n";
 					$messageDansCourriel .= $messageDansConfig;
+					
+					if (!empty($nomPieceJointe))
+					{
+						$messageDansCourriel .= '<p>' . T_("Pièce jointe: ") . "<a href=\"$urlFichiers/commentaires/$nomPieceJointe\">$nomPieceJointe</a></p>\n";
+					}
+					
 					$messageDansCourriel .= "<hr />\n";
 					$infosCourriel['message'] = $messageDansCourriel;
 					
@@ -460,6 +568,11 @@ if (isset($_POST['envoyerCommentaire']))
 		if ($erreurFormulaire || $erreurEnvoiFormulaire)
 		{
 			$classesBlocMessagesScript .= ' messagesErreur';
+			
+			if (file_exists($cheminPieceJointe))
+			{
+				@unlink($cheminPieceJointe);
+			}
 		}
 		else
 		{
@@ -479,11 +592,32 @@ if (isset($_POST['envoyerCommentaire']))
 		$blocMessagesScript .= "</div><!-- /#messages -->\n";
 		$formulaireCommentaire .= $blocMessagesScript;
 	}
+	
+	if (isset($_FILES['pieceJointe']['tmp_name']) && file_exists($_FILES['pieceJointe']['tmp_name']))
+	{
+		@unlink($_FILES['pieceJointe']['tmp_name']);
+	}
 }
 
 // Code du formulaire.
 
 $actionFormCommentaire = url() . '#messages';
+$enctypeFormCommentaire = '';
+
+if ($formCommentairePieceJointeActivee)
+{
+	$enctypeFormCommentaire = ' enctype="multipart/form-data"';
+	$commentairesListeTypesMimePermisPieceJointe = ' ';
+	
+	foreach ($commentairesTypesMimePermisPieceJointe as $extensions => $type)
+	{
+		$extensions = str_replace('|', ', ', $extensions);
+		$commentairesListeTypesMimePermisPieceJointe .= "$extensions, ";
+	}
+	
+	$commentairesListeTypesMimePermisPieceJointe = substr($commentairesListeTypesMimePermisPieceJointe, 0, -2);
+}
+
 $champsTousObligatoires = TRUE;
 
 foreach ($commentairesChampsActifs as $nomChamp => $champActif)

@@ -848,17 +848,54 @@ $attributNofollowLiensCommentaires = TRUE; // TRUE|FALSE
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$commentairesChampsActifs['nom']      = TRUE;
-$commentairesChampsActifs['courriel'] = TRUE;
-$commentairesChampsActifs['site']     = TRUE;
+$commentairesChampsActifs['nom']         = TRUE;
+$commentairesChampsActifs['courriel']    = TRUE;
+$commentairesChampsActifs['site']        = TRUE;
+$commentairesChampsActifs['pieceJointe'] = TRUE;
 
 // Champs obligatoires.
 /*
 - Chaque élément prend comme valeur TRUE ou FALSE.
 */
-$commentairesChampsObligatoires['nom']      = TRUE;
-$commentairesChampsObligatoires['courriel'] = TRUE;
-$commentairesChampsObligatoires['site']     = FALSE;
+$commentairesChampsObligatoires['nom']         = TRUE;
+$commentairesChampsObligatoires['courriel']    = TRUE;
+$commentairesChampsObligatoires['site']        = FALSE;
+$commentairesChampsObligatoires['pieceJointe'] = FALSE;
+
+// Si le champ de pièce jointe est activé, taille maximale (en octets).
+/*
+- Exemples:
+  - `102400` équivaut à 100 Kio;
+  - `512000` équivaut à 500 Kio;
+  - `1048576` équivaut à 1 Mio;
+  - `2097152` équivaut à 2 Mio;
+  - `5242880` équivaut à 5 Mio;
+  - `10485760` équivaut à 10 Mio;
+  - `26214400` équivaut à 25 Mio;
+  - `52428800` équivaut à 50 Mio;
+- La valeur réellement utilisée sera la plus petite entre `$commentairesTailleMaxPieceJointe`, `phpIniOctets(ini_get('post_max_size'))` et `phpIniOctets(ini_get('upload_max_filesize'))`.
+*/
+$commentairesTailleMaxPieceJointe = 1048576;
+
+// Si le champ de pièce jointe est activé, filtre du type Mime.
+$commentairesFiltreTypesMimePieceJointe = TRUE; // TRUE|FALSE
+
+// Si le champ de pièce jointe est activé et si `$commentairesFiltreTypesMimePieceJointe` vaut TRUE, types MIME permis.
+/*
+- Si le tableau `$commentairesTypesMimePermisPieceJointe` est vide, l'ajout de pièce jointe sera désactivé.
+*/
+$commentairesTypesMimePermisPieceJointe['gif']          = 'image/gif';
+$commentairesTypesMimePermisPieceJointe['jpeg|jpg|jpe'] = 'image/jpeg';
+$commentairesTypesMimePermisPieceJointe['png']          = 'image/png';
+$commentairesTypesMimePermisPieceJointe['pdf']          = 'application/pdf';
+$commentairesTypesMimePermisPieceJointe['tar']          = 'application/x-tar';
+$commentairesTypesMimePermisPieceJointe['bz2|tbz2']     = 'application/x-bzip2';
+$commentairesTypesMimePermisPieceJointe['gz|tgz']       = 'application/x-gzip';
+$commentairesTypesMimePermisPieceJointe['zip']          = 'application/zip';
+$commentairesTypesMimePermisPieceJointe['ogv']          = 'video/ogg';
+
+// Si le champ de pièce jointe est activé, lien vers la pièce jointe dans les commentaires publiés.
+$commentairesLienPublicPieceJointe = TRUE; // TRUE|FALSE
 
 // Modération des commentaires avant publication en ligne.
 $moderationCommentaires = FALSE; // TRUE|FALSE

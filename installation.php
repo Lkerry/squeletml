@@ -277,6 +277,7 @@ else
 			'site/cache/htmlpurifier',
 			'site/css',
 			'site/fichiers',
+			'site/fichiers/commentaires',
 			'site/fichiers/galeries',
 			'site/inc',
 			'site/inc/commentaires',

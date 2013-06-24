@@ -783,7 +783,7 @@ function adminExtraitArchive($cheminArchive, $cheminExtraction, $adminFiltreType
 					{
 						$typeMimeFichier = typeMime($cheminFichier);
 						
-						if (!adminTypeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
+						if (!typeMimePermis($typeMimeFichier, $adminFiltreTypesMime, $adminTypesMimePermis))
 						{
 							$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type MIME reconnu pour le fichier %1\$s est %2\$s, mais il n'est pas permis d'ajouter un tel type de fichier. Le transfert du fichier n'est donc pas possible."), '<code>' . securiseTexte($cheminFichier) . '</code>', '<code>' . $typeMimeFichier . '</code>') . "</li>\n";
 							@unlink($cheminFichier);
@@ -2119,40 +2119,6 @@ function adminPermissionsFichier($cheminFichier)
 }
 
 /*
-Retourne la valeur en octets des tailles déclarées dans le `php.ini`. Ex.:
-
-	2M => 2097152
-
-Merci à <http://ca.php.net/manual/fr/ini.core.php#79564>.
-*/
-function adminPhpIniOctets($nombre)
-{
-	$lettre = substr($nombre, -1);
-	$octets = substr($nombre, 0, -1);
-	
-	switch (strtoupper($lettre))
-	{
-		case 'P':
-			$octets *= 1024;
-			
-		case 'T':
-			$octets *= 1024;
-			
-		case 'G':
-			$octets *= 1024;
-			
-		case 'M':
-			$octets *= 1024;
-			
-		case 'K':
-			$octets *= 1024;
-			break;
-	}
-	
-	return $octets;
-}
-
-/*
 Retourne un plan modèle de fichier Sitemap (du site ou des galeries) au format XML. Si `$fermeUrlset` vaut FALSE, la balise fermante de `urlset` ne sera pas incluse dans le modèle retourné.
 */
 function adminPlanSitemapXml($fermeUrlset = TRUE)
@@ -2622,6 +2588,26 @@ function adminTableauConfigCommentairesVersTexte($racine, $commentairesChampsObl
 			
 			$contenuFichier .= "\n";
 			
+			// Pièce jointe.
+			
+			$contenuFichier .= 'pieceJointe=';
+			
+			if (!empty($infosCommentaire['pieceJointe']))
+			{
+				if (!file_exists($racine . '/site/fichiers/commentaires/' . $infosCommentaire['pieceJointe']))
+				{
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: la pièce jointe %1\$s n'existe pas sur le disque."), '<code>' . $infosCommentaire['pieceJointe'] . '</code>') . "</li>\n";
+				}
+				
+				$contenuFichier .= $infosCommentaire['pieceJointe'];
+			}
+			elseif ($commentairesChampsObligatoires['pieceJointe'])
+			{
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("Avertissement: selon la configuration des commentaires, la pièce jointe est obligatoire, mais le commentaire %1\$s n'en a pas."), '<code>' . $idCommentaire . '</code>') . "</li>\n";
+			}
+			
+			$contenuFichier .= "\n";
+			
 			// Notification.
 			
 			$contenuFichier .= 'notification=';
@@ -2785,21 +2771,6 @@ function adminTriParProfondeur($tableauFichiers)
 	}
 	
 	return $tableauFichiers;
-}
-
-/*
-Retourne TRUE si le type MIME passé en paramètre est permis, sinon retourne FALSE.
-*/
-function adminTypeMimePermis($typeMime, $adminFiltreTypesMime, $adminTypesMimePermis)
-{
-	if ($adminFiltreTypesMime && array_search($typeMime, $adminTypesMimePermis) === FALSE)
-	{
-		return FALSE;
-	}
-	else
-	{
-		return TRUE;
-	}
 }
 
 /*

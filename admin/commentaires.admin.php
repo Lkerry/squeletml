@@ -185,6 +185,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 		}
 		elseif (isset($listeCommentaires[$_GET['id']]))
 		{
+			if (!empty($listeCommentaires[$_GET['id']]['pieceJointe']))
+			{
+				$messagesScript .= adminUnlink($racine . '/site/fichiers/commentaires/' . $listeCommentaires[$_GET['id']]['pieceJointe']);
+			}
+			
 			unset($listeCommentaires[$_GET['id']]);
 			gereNotificationsEnAttente($racine, $_GET['id'], 0);
 			$messagesScript .= '<li>' . sprintf(T_("Le commentaire %1\$s a été supprimé."), '<code>' . securiseTexte($_GET['id']) . '</code>') . "</li>\n";
@@ -282,7 +287,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					if (!empty($infosCommentaire['date']))
 					{
 						$dateAffichee = date('Y-m-d', $infosCommentaire['date']);
-						$heureAffichee = date('H:i T', $infosCommentaire['date']);
+						$heureAffichee = date('H:i', $infosCommentaire['date']);
 					}
 					
 					if (strpos($listePage, 'galerie.php?') === 0)
@@ -312,8 +317,14 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					$message = trim($message);
 					$codeListeCommentaires .= "<div class=\"contenuCommentaireAmoderer\">\n$message</div>\n";
+					
 					$infosSupplementaires = array ();
 					$infosSupplementaires[] = sprintf(T_("Identifiant: %1\$s"), "<code>$idCommentaire</code>");
+					
+					if (!empty($infosCommentaire['pieceJointe']))
+					{
+						$infosSupplementaires[] = T_("Pièce jointe: ") .'<a href="' . $urlFichiers . '/commentaires/' . $infosCommentaire['pieceJointe'] . '">' . $infosCommentaire['pieceJointe'] . '</a>';
+					}
 					
 					if (!empty($infosCommentaire['courriel']))
 					{
@@ -422,7 +433,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!empty($infosCommentaire['date']))
 					{
-						$dateAffichee = ' (<code>' . $infosCommentaire['date'] . '=' . date('Y-m-d H:i T', $infosCommentaire['date']) . '</code>)';
+						$dateAffichee = ' (<code>' . $infosCommentaire['date'] . '=' . date('Y-m-d H:i', $infosCommentaire['date']) . '</code>)';
 					}
 					else
 					{
@@ -457,6 +468,15 @@ include $racineAdmin . '/inc/premier.inc.php';
 					}
 					
 					$codeListeCommentaires .= '<li><label for="inputSite-' . $idCommentaire . '"><code>site=</code></label><input id="inputSite-' . $idCommentaire . '" type="text" name="site[' . $idCommentaire . ']" value="' . $infosCommentaire['site'] . "\" /></li>\n";
+					
+					// Pièce jointe.
+					
+					if (!isset($infosCommentaire['pieceJointe']))
+					{
+						$infosCommentaire['pieceJointe'] = '';
+					}
+					
+					$codeListeCommentaires .= '<li><label for="inputPieceJointe-' . $idCommentaire . '"><code>pieceJointe=</code></label><input id="inputPieceJointe-' . $idCommentaire . '" type="text" name="pieceJointe[' . $idCommentaire . ']" value="' . $infosCommentaire['pieceJointe'] . '" /><input type="hidden" name="pieceJointeAncienneValeur[' . $idCommentaire . ']" value="' . $infosCommentaire['pieceJointe'] . "\" /></li>\n";
 					
 					// Notification.
 					
@@ -540,6 +560,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 					$codeListeCommentaires .= '>' . T_("Non") . "</option>\n";
 					$codeListeCommentaires .= "</select>\n";
 					$codeListeCommentaires .= $noteEnAttenteDeModeration;
+					
+					if ($infosCommentaire['enAttenteDeModeration'] == 1)
+					{
+						$codeListeCommentaires .= '<input type="hidden" name="enAttenteDeModerationLectureSeule[' . $idCommentaire . ']" value="' . $infosCommentaire['enAttenteDeModeration'] . "\" />\n";
+					}
+					
 					$codeListeCommentaires .= "</li>\n";
 					
 					// Afficher.
@@ -606,6 +632,8 @@ include $racineAdmin . '/inc/premier.inc.php';
 				$contenuFormulaire .= '<p>' . sprintf(T_("Pour désactiver l'affichage d'un commentaire, simplement définir à «Non» le paramètre %1\$s associé."), '<code>afficher</code>') . "</p>\n";
 				
 				$contenuFormulaire .= '<p>' . T_("Pour supprimer un commentaire, simplement effacer tout le contenu du message associé.") . "</p>\n";
+				
+				$contenuFormulaire .= '<p>' . T_("Pour supprimer une pièce jointe, effacer le contenu du champ associé.") . "</p>\n";
 				
 				$contenuFormulaire .= '<p>' . T_("Prendre note que les modifications effectuées dans ce formulaire ne sont pas appliquées aux abonnements aux notifications (nom, courriel, état de la notification). Pour ce faire, utiliser plutôt le formulaire réservé à cette fin.") . "</p>\n";
 				
@@ -788,6 +816,17 @@ include $racineAdmin . '/inc/premier.inc.php';
 				foreach ($_POST['idCommentaire'] as $idCommentaire)
 				{
 					$idCommentaire = securiseTexte($idCommentaire);
+					
+					if (!empty($_POST['pieceJointeAncienneValeur'][$idCommentaire]) && (empty($_POST['pieceJointe'][$idCommentaire]) || empty($_POST['message'][$idCommentaire])))
+					{
+						$messagesScript .= adminUnlink($racine . '/site/fichiers/commentaires/' . $_POST['pieceJointeAncienneValeur'][$idCommentaire]);
+					}
+					
+					if (empty($_POST['message'][$idCommentaire]))
+					{
+						continue;
+					}
+					
 					$tableauConfigCommentaires[$idCommentaire] = array ();
 					
 					if (!empty($_POST['ip'][$idCommentaire]))
@@ -812,7 +851,12 @@ include $racineAdmin . '/inc/premier.inc.php';
 					
 					if (!empty($_POST['site'][$idCommentaire]))
 					{
-						$tableauConfigCommentaires[$idCommentaire]['site'] = securiseTexte($_POST['nom'][$idCommentaire]);
+						$tableauConfigCommentaires[$idCommentaire]['site'] = securiseTexte($_POST['site'][$idCommentaire]);
+					}
+					
+					if (!empty($_POST['pieceJointe'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['pieceJointe'] = securiseTexte($_POST['pieceJointe'][$idCommentaire]);
 					}
 					
 					if (isset($_POST['notification'][$idCommentaire]))
@@ -825,7 +869,11 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$tableauConfigCommentaires[$idCommentaire]['languePage'] = securiseTexte($_POST['languePage'][$idCommentaire]);
 					}
 					
-					if (isset($_POST['enAttenteDeModeration'][$idCommentaire]))
+					if (isset($_POST['enAttenteDeModerationLectureSeule'][$idCommentaire]))
+					{
+						$tableauConfigCommentaires[$idCommentaire]['enAttenteDeModeration'] = $_POST['enAttenteDeModerationLectureSeule'][$idCommentaire];
+					}
+					elseif (isset($_POST['enAttenteDeModeration'][$idCommentaire]))
 					{
 						$tableauConfigCommentaires[$idCommentaire]['enAttenteDeModeration'] = $_POST['enAttenteDeModeration'][$idCommentaire];
 					}
@@ -835,13 +883,7 @@ include $racineAdmin . '/inc/premier.inc.php';
 						$tableauConfigCommentaires[$idCommentaire]['afficher'] = $_POST['afficher'][$idCommentaire];
 					}
 					
-					$messageDansConfig = '';
-					
-					if (isset($_POST['message'][$idCommentaire]))
-					{
-						$messageDansConfig = messageDansConfigCommentaires($racine, $_POST['message'][$idCommentaire], $attributNofollowLiensCommentaires);
-					}
-					
+					$messageDansConfig = messageDansConfigCommentaires($racine, $_POST['message'][$idCommentaire], $attributNofollowLiensCommentaires);
 					$tableauConfigCommentaires[$idCommentaire]['message'] = explode("\n", trim($messageDansConfig));
 				}
 				

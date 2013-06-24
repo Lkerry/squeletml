@@ -5620,6 +5620,40 @@ function phpGettext($racine, $langue)
 }
 
 /*
+Retourne la valeur en octets des tailles déclarées dans le `php.ini`. Ex.:
+
+	2M => 2097152
+
+Merci à <http://ca.php.net/manual/fr/ini.core.php#79564>.
+*/
+function phpIniOctets($nombre)
+{
+	$lettre = substr($nombre, -1);
+	$octets = substr($nombre, 0, -1);
+	
+	switch (strtoupper($lettre))
+	{
+		case 'P':
+			$octets *= 1024;
+			
+		case 'T':
+			$octets *= 1024;
+			
+		case 'G':
+			$octets *= 1024;
+			
+		case 'M':
+			$octets *= 1024;
+			
+		case 'K':
+			$octets *= 1024;
+			break;
+	}
+	
+	return $octets;
+}
+
+/*
 Retourne la profondeur d'une page par rapport à l'URL racine du site. Par exemple, si l'URL racine est:
 
 	http://localhost/serveur_local/squeletml
@@ -7658,6 +7692,21 @@ function typeMimeAssociations()
 			'm4v' => 348,
 		),
 	);
+}
+
+/*
+Retourne TRUE si le type MIME passé en paramètre est permis, sinon retourne FALSE.
+*/
+function typeMimePermis($typeMime, $filtreTypesMime, $typesMimePermis)
+{
+	if ($filtreTypesMime && array_search($typeMime, $typesMimePermis) === FALSE)
+	{
+		return FALSE;
+	}
+	else
+	{
+		return TRUE;
+	}
 }
 
 /*

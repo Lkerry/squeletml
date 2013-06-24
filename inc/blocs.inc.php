@@ -142,6 +142,12 @@ if (!empty($blocsAinsererTemp))
 									}
 									
 									$commentairesAffiches .= "</div><!-- /.commentaireCorps -->\n";
+									
+									if ($commentairesLienPublicPieceJointe && !empty($infosCommentaire['pieceJointe']))
+									{
+										$commentairesAffiches .= '<p class="commentairePieceJointe">' . T_("Pièce jointe: ") . '<a href="' . $urlFichiers . '/commentaires/' . $infosCommentaire['pieceJointe'] . '">' . $infosCommentaire['pieceJointe'] . "</a></p>\n";
+									}
+									
 									$commentairesAffiches .= "</li><!-- /.commentaire -->\n";
 								}
 							}
