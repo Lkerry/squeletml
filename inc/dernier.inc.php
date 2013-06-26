@@ -33,7 +33,7 @@ else
 	$inclureContact = FALSE;
 }
 
-if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+if ($ajoutCommentaires && isset($_GET['action']) && estActionCommentaire($_GET['action']) && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
 {
 	$inclureFormulaireCommentaire = TRUE;
 }

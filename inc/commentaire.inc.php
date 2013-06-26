@@ -4,17 +4,22 @@ Ce fichier construit et analyse le formulaire d'ajout d'un commentaire. Après s
 */
 
 // Affectations.
-$nom = '';
-$courriel = '';
+$nom = infoGetAction($_GET['action'], 'nom');
+$courriel = infoGetAction($_GET['action'], 'courriel');
 $site = '';
-$message = '';
+$message = infoGetAction($_GET['action'], 'message');
 $notification = FALSE;
 $idFormulaireCommentaire = '';
 $commentaireEnregistre = FALSE;
 $formulaireCommentaire = '';
 
+if ($formCommentairePieceJointeActivee)
+{
+	$commentairesTailleMaxPieceJointe = min($commentairesTailleMaxPieceJointe, phpIniOctets(ini_get('post_max_size')), phpIniOctets(ini_get('upload_max_filesize')));
+}
+
 // L'envoi du commentaire est demandé.
-if (isset($_POST['envoyerCommentaire']))
+if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size'))))
 {
 	if (!empty($_POST['nom']))
 	{
@@ -33,7 +38,7 @@ if (isset($_POST['envoyerCommentaire']))
 	
 	$message = securiseTexte(trim($_POST['message']));
 	
-	if (isset($_POST['notification']))
+	if (isset($_POST['notification']) && !empty($courriel) && $courriel != $commentairesDestinataireNotification)
 	{
 		$notification = TRUE;
 	}
@@ -80,6 +85,102 @@ if (isset($_POST['envoyerCommentaire']))
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas écrit de commentaire.") . "</li>\n";
+	}
+	
+	$nomPieceJointe = '';
+	
+	if ($formCommentairePieceJointeActivee)
+	{
+		if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size')))
+		{
+			// Explications: À la page <http://www.php.net/manual/fr/ini.core.php#ini.post-max-size>, on peut lire: «Dans le cas où la taille des données reçues par la méthode POST est plus grande que post_max_size , les superglobales  $_POST et $_FILES  seront vides». Je repère donc une erreur potentielle par le test ci-dessus.
+			
+			$erreurFormulaire = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La pièce jointe doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($commentairesTailleMaxPieceJointe), $commentairesTailleMaxPieceJointe) . "</li>\n";
+		}
+		elseif (empty($_FILES['pieceJointe']['name']))
+		{
+			if ($commentairesChampsObligatoires['pieceJointe'])
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas ajouté de pièce jointe.") . "</li>\n";
+			}
+		}
+		elseif (file_exists($_FILES['pieceJointe']['tmp_name']) && @filesize($_FILES['pieceJointe']['tmp_name']) > $commentairesTailleMaxPieceJointe)
+		{
+			$erreurFormulaire = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La pièce jointe doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($commentairesTailleMaxPieceJointe), $commentairesTailleMaxPieceJointe) . "</li>\n";
+		}
+		elseif ($_FILES['pieceJointe']['error'])
+		{
+			$erreurFormulaire = TRUE;
+			$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+		}
+		else
+		{
+			$dossierParentPieceJointe = $racine . '/site/fichiers/commentaires/';
+			
+			if (!file_exists($dossierParentPieceJointe))
+			{
+				@mkdir($dossierParentPieceJointe, octdec(755));
+			}
+			
+			if (file_exists($dossierParentPieceJointe))
+			{
+				$nomPieceJointe = superBasename($_FILES['pieceJointe']['name']);
+				$nomPieceJointe = filtreChaine($nomPieceJointe);
+				
+				if (!$commentairesLienPublicPieceJointe)
+				{
+					$nomPieceJointe = chaineAleatoire(16) . '-' . $nomPieceJointe;
+				}
+				
+				if (file_exists($dossierParentPieceJointe . $nomPieceJointe))
+				{
+					for ($i = 2; $i < 1000; $i++)
+					{
+						$nomTemporairePieceJointe = nomSuffixe($nomPieceJointe, '-' . $i);
+						
+						if (!file_exists($dossierParentPieceJointe . $nomTemporairePieceJointe))
+						{
+							$nomPieceJointe = $nomTemporairePieceJointe;
+							
+							break;
+						}
+					}
+				}
+				
+				$cheminPieceJointe = $dossierParentPieceJointe . $nomPieceJointe;
+				
+				if (file_exists($cheminPieceJointe))
+				{
+					$erreurFormulaire = TRUE;
+					$cheminPieceJointe = '';
+					$nomPieceJointe = '';
+					$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+				}
+				else
+				{
+					$typeMimePieceJointe = typeMime($_FILES['pieceJointe']['tmp_name']);
+					
+					if (!typeMimePermis($typeMimePieceJointe, $commentairesFiltreTypesMimePieceJointe, $commentairesTypesMimePermisPieceJointe))
+					{
+						$erreurFormulaire = TRUE;
+						$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type de la pièce jointe %1\$s n'est pas permis."), '<code>' . securiseTexte(superBasename($_FILES['pieceJointe']['name'])) . '</code>') . "</li>\n";
+					}
+					elseif (!@move_uploaded_file($_FILES['pieceJointe']['tmp_name'], $cheminPieceJointe))
+					{
+						$erreurFormulaire = TRUE;
+						$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+					}
+				}
+			}
+			else
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+			}
+		}
 	}
 	
 	if ($commentairesActiverCaptchaCalcul)
@@ -142,6 +243,7 @@ if (isset($_POST['envoyerCommentaire']))
 			$contenuConfigCommentaire .= "nom=$nom\n";
 			$contenuConfigCommentaire .= "courriel=$courriel\n";
 			$contenuConfigCommentaire .= "site=$site\n";
+			$contenuConfigCommentaire .= "pieceJointe=$nomPieceJointe\n";
 			$contenuConfigCommentaire .= 'notification=';
 			$enregistrementConfigAbonnementsCommentaire = TRUE;
 			
@@ -313,11 +415,16 @@ if (isset($_POST['envoyerCommentaire']))
 					$infosCourriel['objet'] = sprintf(T_("[Commentaire] %1\$s"), $baliseTitle);
 					$auteurAffiche = auteurAfficheCommentaire($nom, $site, $attributNofollowLiensCommentaires);
 					$dateAffichee = date('Y-m-d', $date);
-					$heureAffichee = date('H:i T', $date);
+					$heureAffichee = date('H:i', $date);
 					$messageDansCourriel = '<p>' . sprintf(T_("Un nouveau commentaire a été posté sur la page %1\$s par %2\$s le %3\$s à %4\$s:"), '<a href="' . $urlSansAction . '#' . $idCommentaire . '">' . $baliseTitle . '</a>', $auteurAffiche, $dateAffichee, $heureAffichee) . "</p>\n";
 					$messageDansCourriel .= $messageDansConfig;
 					$messageDansCourriel .= "<hr />\n";
-					$infosCourriel['message'] = $messageDansCourriel;
+					$urlReponse = "$urlSansAction?action[]=commentaire";
+					
+					if ($commentairesChampsActifs['nom'] && !empty($nom))
+					{
+						$urlReponse .= '&amp;action[]=message-' . encodeTexteGet("@$nom: ");
+					}
 					
 					// Traitement personnalisé optionnel 2 de 4.
 					if (file_exists($racine . '/site/inc/commentaire.inc.php'))
@@ -331,21 +438,41 @@ if (isset($_POST['envoyerCommentaire']))
 						
 						foreach ($listeDestinataires as $courrielDestinataire => $infosDestinataire)
 						{
+							$urlReponseDestinataire = $urlReponse;
+							
 							if (!empty($infosDestinataire['nom']))
 							{
 								$infosCourriel['destinataire'] = encodeInfoEnTeteCourriel($infosDestinataire['nom']) . " <$courrielDestinataire>";
+								$urlReponseDestinataire .= '&amp;action[]=nom-' . encodeTexteGet($infosDestinataire['nom']);
 							}
 							else
 							{
 								$infosCourriel['destinataire'] = $courrielDestinataire;
 							}
 							
+							$urlReponseDestinataire .= '&amp;action[]=courriel-' . encodeTexteGet($courrielDestinataire);
 							$infosCourriel['message'] = $messageDansCourriel;
+							
+							if (!empty($nomPieceJointe) && $commentairesLienPublicPieceJointe)
+							{
+								$infosCourriel['message'] .= "<ul>\n";
+								$infosCourriel['message'] .= '<li>' . T_("Pièce jointe: ") . "<a href=\"$urlFichiers/commentaires/$nomPieceJointe\">$nomPieceJointe</a></li>\n";
+								$infosCourriel['message'] .= "</ul>\n";
+								
+								$infosCourriel['message'] .= "<hr />\n";
+							}
+							
+							$infosCourriel['message'] .= '<p>' . T_("Liste d'actions:") . "</p>\n";
+							$infosCourriel['message'] .= "<ul>\n";
+							
+							$infosCourriel['message'] .= '<li><a href="' . $urlReponseDestinataire . '#ajoutCommentaire">' . T_("Répondre") . "</a></li>\n";
 							
 							if (!empty($infosDestinataire['idAbonnement']))
 							{
-								$infosCourriel['message'] .= '<p><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, $urlSansAction)) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires.") . "</a></p>\n";
+								$infosCourriel['message'] .= '<li><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, $urlSansAction)) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires") . "</a></li>\n";
 							}
+							
+							$infosCourriel['message'] .= "</ul>\n";
 							
 							if ($moderationCommentaires)
 							{
@@ -365,10 +492,23 @@ if (isset($_POST['envoyerCommentaire']))
 					
 					if (!empty($commentairesDestinataireNotification))
 					{
+						$urlReponseDestinataire = $urlReponse;
+						
+						if (!empty($commentairesNomDestinataireNotification))
+						{
+							$urlReponseDestinataire .= '&amp;action[]=nom-' . encodeTexteGet($commentairesNomDestinataireNotification);
+						}
+						
+						$urlReponseDestinataire .= '&amp;action[]=courriel-' . encodeTexteGet($commentairesDestinataireNotification);
 						$infosCourriel['destinataire'] = $commentairesDestinataireNotification;
 						$infosCourriel['message'] = $messageDansCourriel;
 						$infosSupplementaires = array ();
 						$infosSupplementaires[] = sprintf(T_("Identifiant: %1\$s"), "<code>$idCommentaire</code>");
+						
+						if (!empty($nomPieceJointe))
+						{
+							$infosSupplementaires[] = sprintf(T_("Pièce jointe: %1\$s"), "<a href=\"$urlFichiers/commentaires/$nomPieceJointe\">$nomPieceJointe</a>");
+						}
 						
 						if (!empty($courriel))
 						{
@@ -431,6 +571,8 @@ if (isset($_POST['envoyerCommentaire']))
 						$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Supprimer") . "</a></li>\n";
 						
 						$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
+						
+						$infosCourriel['message'] .= '<li><a href="' . $urlReponseDestinataire . '#ajoutCommentaire">' . T_("Répondre") . "</a></li>\n";
 						$infosCourriel['message'] .= "</ul>\n";
 						courriel($infosCourriel);
 					}
@@ -460,6 +602,11 @@ if (isset($_POST['envoyerCommentaire']))
 		if ($erreurFormulaire || $erreurEnvoiFormulaire)
 		{
 			$classesBlocMessagesScript .= ' messagesErreur';
+			
+			if (file_exists($cheminPieceJointe))
+			{
+				@unlink($cheminPieceJointe);
+			}
 		}
 		else
 		{
@@ -479,11 +626,32 @@ if (isset($_POST['envoyerCommentaire']))
 		$blocMessagesScript .= "</div><!-- /#messages -->\n";
 		$formulaireCommentaire .= $blocMessagesScript;
 	}
+	
+	if (isset($_FILES['pieceJointe']['tmp_name']) && file_exists($_FILES['pieceJointe']['tmp_name']))
+	{
+		@unlink($_FILES['pieceJointe']['tmp_name']);
+	}
 }
 
 // Code du formulaire.
 
-$actionFormCommentaire = url() . '#messages';
+$actionFormCommentaire = variableGet(1, url(), 'action', 'commentaire') . '#messages';
+$enctypeFormCommentaire = '';
+
+if ($formCommentairePieceJointeActivee)
+{
+	$enctypeFormCommentaire = ' enctype="multipart/form-data"';
+	$commentairesListeTypesMimePermisPieceJointe = ' ';
+	
+	foreach ($commentairesTypesMimePermisPieceJointe as $extensions => $type)
+	{
+		$extensions = str_replace('|', ', ', $extensions);
+		$commentairesListeTypesMimePermisPieceJointe .= "$extensions, ";
+	}
+	
+	$commentairesListeTypesMimePermisPieceJointe = substr($commentairesListeTypesMimePermisPieceJointe, 0, -2);
+}
+
 $champsTousObligatoires = TRUE;
 
 foreach ($commentairesChampsActifs as $nomChamp => $champActif)

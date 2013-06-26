@@ -296,7 +296,7 @@ function apercuDansCategorie($racine, $urlRacine, $infosPage, $adresse, $baliseT
 	}
 	
 	// Incrémentation des niveaux de titre 2 à 5 (par exemple, `<h2 class="classe">Sous-titre</h2>` devient `<h3 class="classe">Sous-titre</h3>`). Le but est d'éviter que des sous-titres affichés dans l'aperçu aient le même niveau (2) que le titre de l'aperçu lui-même. Cela découle du fait que le titre d'une page est habituellement de niveau 1 alors que dans l'aperçu, le même titre est de niveau 2.
-	$texteApercu = preg_replace('#<h([2-5])(.*?>.*?</h)\1\b#e', '"<h" . ("$1" + 1) . "$2" . ("$1" + 1)', $texteApercu);
+	$texteApercu = preg_replace_callback('#<h([2-5])(.*?>.*?</h)\1\b#', create_function('$elements', '$niveauTitre = $elements[1] + 1; return "<h" . $niveauTitre . $elements[2] . $niveauTitre;'), $texteApercu);
 	
 	$apercu .= $texteApercu . "\n";
 	$apercu .= "</div><!-- /.descriptionApercu -->\n";
@@ -873,6 +873,7 @@ function cheminConfigCommentaires($racine, $urlRacine, $url, $retourneCheminParD
 	}
 	
 	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'action');
+	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'infos');
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPourCheminConfigCommentaires);
 	$nomFichierCache = superBasename($cheminFichierCache);
 	$nomConfigCommentaires = preg_replace('/\.cache\.(html|xml)$/', '.ini.txt', $nomFichierCache);
@@ -1908,6 +1909,19 @@ function estAccueil($accueil)
 				return TRUE;
 			}
 		}
+	}
+	
+	return FALSE;
+}
+
+/*
+Retourne TRUE si l'action est relative à l'ajout d'un commentaire, sinon retourne FALSE.
+*/
+function estActionCommentaire($getAction)
+{
+	if ($getAction == 'commentaire' || (is_array($getAction) && in_array('commentaire', $getAction)))
+	{
+		return TRUE;
 	}
 	
 	return FALSE;
@@ -3344,6 +3358,25 @@ function inclureUneFoisAuDebut($racine)
 	}
 	
 	return $fichiers;
+}
+
+/*
+Retourne l'information d'action demandée. Si cette information n'est pas trouvée, retourne une chaîne vide.
+*/
+function infoGetAction($getAction, $infoRecherchee)
+{
+	foreach ($getAction as $info)
+	{
+		if (strpos($info, "$infoRecherchee-") === 0)
+		{
+			$tableauInfo = explode('-', $info);
+			$tableauInfo[1] = decodeTexteGet($tableauInfo[1]);
+			
+			return securiseTexte($tableauInfo[1]);
+		}
+	}
+	
+	return '';
 }
 
 /*
@@ -5620,6 +5653,40 @@ function phpGettext($racine, $langue)
 }
 
 /*
+Retourne la valeur en octets des tailles déclarées dans le `php.ini`. Ex.:
+
+	2M => 2097152
+
+Merci à <http://ca.php.net/manual/fr/ini.core.php#79564>.
+*/
+function phpIniOctets($nombre)
+{
+	$lettre = substr($nombre, -1);
+	$octets = substr($nombre, 0, -1);
+	
+	switch (strtoupper($lettre))
+	{
+		case 'P':
+			$octets *= 1024;
+			
+		case 'T':
+			$octets *= 1024;
+			
+		case 'G':
+			$octets *= 1024;
+			
+		case 'M':
+			$octets *= 1024;
+			
+		case 'K':
+			$octets *= 1024;
+			break;
+	}
+	
+	return $octets;
+}
+
+/*
 Retourne la profondeur d'une page par rapport à l'URL racine du site. Par exemple, si l'URL racine est:
 
 	http://localhost/serveur_local/squeletml
@@ -7658,6 +7725,21 @@ function typeMimeAssociations()
 			'm4v' => 348,
 		),
 	);
+}
+
+/*
+Retourne TRUE si le type MIME passé en paramètre est permis, sinon retourne FALSE.
+*/
+function typeMimePermis($typeMime, $filtreTypesMime, $typesMimePermis)
+{
+	if ($filtreTypesMime && array_search($typeMime, $typesMimePermis) === FALSE)
+	{
+		return FALSE;
+	}
+	else
+	{
+		return TRUE;
+	}
 }
 
 /*

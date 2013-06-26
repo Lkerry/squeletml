@@ -1,4 +1,4 @@
-<form id="formCommentaire" method="post" action="<?php echo $actionFormCommentaire; ?>">
+<form id="formCommentaire" method="post" action="<?php echo $actionFormCommentaire; ?>"<?php echo $enctypeFormCommentaire; ?>>
 	<div id="divCommentaire">
 		<p id="noteCommentaire">
 			<?php if ($champsTousObligatoires): ?>
@@ -52,13 +52,39 @@
 		<textarea id="message" name="message" cols="30" rows="10"><?php echo $message; ?></textarea></p>
 		
 		<div id="commentaireAideSyntaxe">
-			<p class="bDtitre"><?php echo T_("Aide sur la syntaxe"); ?></p>
+			<p class="bDtitre"><?php echo T_("Aide au sujet de la syntaxe"); ?></p>
 			
 			<ul class="bDcorps">
 				<li><?php printf(T_("La <a href=\"%1\$s\">syntaxe Markdown</a> peut être utilisée."), 'http://michelf.ca/projets/php-markdown/syntaxe/'); ?></li>
 				<li><?php printf(T_("Les balises HTML suivantes sont permises: %1\$s."), '<code>p</code>, <code>em</code>, <code>strong</code>, <code>strike</code>, <code>ul</code>, <code>ol</code>, <code>li</code>, <code>a</code>, <code>pre</code>, <code>code</code>, <code>q</code>, <code>blockquote</code>, <code>br</code>'); ?></li>
 			</ul>
 		</div>
+		
+		<?php if ($formCommentairePieceJointeActivee): ?>
+			<p id="commentairePieceJointe">
+				<label for="inputPieceJointe">
+					<?php if (!$champsTousObligatoires && $commentairesChampsObligatoires['pieceJointe']): ?>
+						<?php echo T_("Pièce jointe<code>*</code>:"); ?>
+					<?php else: ?>
+						<?php echo T_("Pièce jointe:"); ?>
+					<?php endif; ?>
+				</label><br />
+				<input id="inputPieceJointe" class="champInfo" type="file" name="pieceJointe" size="30" />
+			</p>
+			
+			<div id="commentaireAidePieceJointe">
+				<p class="bDtitre"><?php echo T_("Aide au sujet de la pièce jointe"); ?></p>
+				
+				<ul class="bDcorps">
+					<li><?php printf(T_("Taille maximale: %1\$s Mio (%2\$s octets)"), octetsVersMio($commentairesTailleMaxPieceJointe), $commentairesTailleMaxPieceJointe); ?></li>
+					<li><?php echo T_("Types de fichier permis: ") . $commentairesListeTypesMimePermisPieceJointe; ?></li>
+					
+					<?php if (!$commentairesLienPublicPieceJointe): ?>
+						<li><?php echo T_("Le lien vers la pièce jointe n'est pas affiché publiquement."); ?></li>
+					<?php endif; ?>
+				</ul>
+			</div>
+		<?php endif; ?>
 		
 		<?php if ($commentairesActiverCaptchaCalcul): ?>
 			<?php echo captchaCalcul($commentairesCaptchaCalculMin, $commentairesCaptchaCalculMax, $commentairesCaptchaCalculInverse, !$champsTousObligatoires); ?>

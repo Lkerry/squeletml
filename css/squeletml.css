@@ -678,11 +678,11 @@ div#baliseH1 h1 {
 	background-color: transparent;
 }
 
-#formCommentaire p#commentaireMessage {
+#formCommentaire p#commentaireMessage, #formCommentaire p#commentairePieceJointe {
 	margin-bottom: 0px;
 }
 
-#formCommentaire div#commentaireAideSyntaxe p.bDtitre {
+#formCommentaire div#commentaireAideSyntaxe p.bDtitre, #formCommentaire div#commentaireAidePieceJointe p.bDtitre {
 	margin-top: 0px;
 }
 
@@ -736,6 +736,10 @@ div#baliseH1 h1 {
 #commentaires ul#listeCommentaires li.commentaire div.commentaireCorps {
 	padding: 0px 0px 0px 10px;
 	border-left: 2px solid #005959;
+}
+
+#commentaires ul#listeCommentaires li.commentaire p.commentairePieceJointe {
+	text-align: right;
 }
 
 /* Flux RSS. */

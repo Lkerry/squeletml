@@ -20,7 +20,7 @@ $adminUrlMaintenance = 'maintenance.php';
   - `26214400` équivaut à 25 Mio;
   - `52428800` équivaut à 50 Mio;
 */
-$adminTailleCache = '5242880';
+$adminTailleCache = 5242880;
 
 // Activation de boîtes déroulantes par défaut.
 /*
