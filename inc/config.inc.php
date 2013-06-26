@@ -914,6 +914,12 @@ $commentairesExpediteurNotification = "";
 */
 $commentairesDestinataireNotification = "";
 
+// Si `$commentairesDestinataireNotification` n'est pas vide et si `$commentairesChampsActifs['nom']` vaut TRUE, nom à utiliser pour préremplir le formulaire de réponse à un commentaire.
+/*
+- Dans le message de notification envoyé à l'adresse `$commentairesDestinataireNotification`, un lien «Répondre» permet d'afficher un formulaire prérempli. La valeur de `$commentairesNomDestinataireNotification` est utilisée pour préremplir le champ «Nom».
+*/
+$commentairesNomDestinataireNotification = "";
+
 // Ajout dans le formulaire d'une option de notification par courriel des nouveaux commentaires.
 $commentairesNotification = TRUE; // TRUE|FALSE
 

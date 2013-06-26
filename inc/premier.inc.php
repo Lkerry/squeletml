@@ -107,7 +107,7 @@ if (!isset($partageCourriel))
 	$partageCourriel = $activerPartageCourrielParDefaut;
 }
 
-if (!empty($courrielContact) || (isset($_GET['action']) && (($ajoutCommentaires && $_GET['action'] == 'commentaire') || ($partageCourriel && $_GET['action'] == 'partageCourriel'))))
+if (!empty($courrielContact) || (isset($_GET['action']) && (($ajoutCommentaires && estActionCommentaire($_GET['action'])) || ($partageCourriel && $_GET['action'] == 'partageCourriel'))))
 {
 	$desactiverCache = TRUE;
 }
@@ -338,7 +338,7 @@ $baliseTitle = baliseTitle($baliseTitle, $baliseH1);
 
 $formCommentairePieceJointeActivee = FALSE;
 
-if ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
+if ($ajoutCommentaires && isset($_GET['action']) && estActionCommentaire($_GET['action']) && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie))
 {
 	$boitesDeroulantes .= ' #commentaireAideSyntaxe';
 	
@@ -364,7 +364,7 @@ if (!empty($classesBody))
 $fluxRssGlobalGaleriesContientElements = FALSE;
 $inclureFinMilieuInterieurContenu = TRUE;
 
-if ($erreur404 || $estPageDerreur || $courrielContact == '@' || ($ajoutCommentaires && isset($_GET['action']) && $_GET['action'] == 'commentaire' && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie)))
+if ($erreur404 || $estPageDerreur || $courrielContact == '@' || ($ajoutCommentaires && isset($_GET['action']) && estActionCommentaire($_GET['action']) && !$erreur404 && !$estPageDerreur && !$estAccueil && empty($courrielContact) && empty($idCategorie)))
 {
 	$robots = 'noindex, follow, noarchive';
 }

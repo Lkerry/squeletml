@@ -873,6 +873,7 @@ function cheminConfigCommentaires($racine, $urlRacine, $url, $retourneCheminParD
 	}
 	
 	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'action');
+	$urlPourCheminConfigCommentaires = variableGet(0, $urlPourCheminConfigCommentaires, 'infos');
 	$cheminFichierCache = cheminFichierCache($racine, $urlRacine, $urlPourCheminConfigCommentaires);
 	$nomFichierCache = superBasename($cheminFichierCache);
 	$nomConfigCommentaires = preg_replace('/\.cache\.(html|xml)$/', '.ini.txt', $nomFichierCache);
@@ -1908,6 +1909,19 @@ function estAccueil($accueil)
 				return TRUE;
 			}
 		}
+	}
+	
+	return FALSE;
+}
+
+/*
+Retourne TRUE si l'action est relative à l'ajout d'un commentaire, sinon retourne FALSE.
+*/
+function estActionCommentaire($getAction)
+{
+	if ($getAction == 'commentaire' || (is_array($getAction) && in_array('commentaire', $getAction)))
+	{
+		return TRUE;
 	}
 	
 	return FALSE;
@@ -3344,6 +3358,25 @@ function inclureUneFoisAuDebut($racine)
 	}
 	
 	return $fichiers;
+}
+
+/*
+Retourne l'information d'action demandée. Si cette information n'est pas trouvée, retourne une chaîne vide.
+*/
+function infoGetAction($getAction, $infoRecherchee)
+{
+	foreach ($getAction as $info)
+	{
+		if (strpos($info, "$infoRecherchee-") === 0)
+		{
+			$tableauInfo = explode('-', $info);
+			$tableauInfo[1] = decodeTexteGet($tableauInfo[1]);
+			
+			return securiseTexte($tableauInfo[1]);
+		}
+	}
+	
+	return '';
 }
 
 /*

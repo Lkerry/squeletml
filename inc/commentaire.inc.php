@@ -4,10 +4,10 @@ Ce fichier construit et analyse le formulaire d'ajout d'un commentaire. Après s
 */
 
 // Affectations.
-$nom = '';
-$courriel = '';
+$nom = infoGetAction($_GET['action'], 'nom');
+$courriel = infoGetAction($_GET['action'], 'courriel');
 $site = '';
-$message = '';
+$message = infoGetAction($_GET['action'], 'message');
 $notification = FALSE;
 $idFormulaireCommentaire = '';
 $commentaireEnregistre = FALSE;
@@ -38,7 +38,7 @@ if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee &
 	
 	$message = securiseTexte(trim($_POST['message']));
 	
-	if (isset($_POST['notification']))
+	if (isset($_POST['notification']) && !empty($courriel) && $courriel != $commentairesDestinataireNotification)
 	{
 		$notification = TRUE;
 	}
@@ -415,17 +415,16 @@ if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee &
 					$infosCourriel['objet'] = sprintf(T_("[Commentaire] %1\$s"), $baliseTitle);
 					$auteurAffiche = auteurAfficheCommentaire($nom, $site, $attributNofollowLiensCommentaires);
 					$dateAffichee = date('Y-m-d', $date);
-					$heureAffichee = date('H:i T', $date);
+					$heureAffichee = date('H:i', $date);
 					$messageDansCourriel = '<p>' . sprintf(T_("Un nouveau commentaire a été posté sur la page %1\$s par %2\$s le %3\$s à %4\$s:"), '<a href="' . $urlSansAction . '#' . $idCommentaire . '">' . $baliseTitle . '</a>', $auteurAffiche, $dateAffichee, $heureAffichee) . "</p>\n";
 					$messageDansCourriel .= $messageDansConfig;
-					
-					if (!empty($nomPieceJointe))
-					{
-						$messageDansCourriel .= '<p>' . T_("Pièce jointe: ") . "<a href=\"$urlFichiers/commentaires/$nomPieceJointe\">$nomPieceJointe</a></p>\n";
-					}
-					
 					$messageDansCourriel .= "<hr />\n";
-					$infosCourriel['message'] = $messageDansCourriel;
+					$urlReponse = "$urlSansAction?action[]=commentaire";
+					
+					if ($commentairesChampsActifs['nom'] && !empty($nom))
+					{
+						$urlReponse .= '&amp;action[]=message-' . encodeTexteGet("@$nom: ");
+					}
 					
 					// Traitement personnalisé optionnel 2 de 4.
 					if (file_exists($racine . '/site/inc/commentaire.inc.php'))
@@ -439,21 +438,41 @@ if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee &
 						
 						foreach ($listeDestinataires as $courrielDestinataire => $infosDestinataire)
 						{
+							$urlReponseDestinataire = $urlReponse;
+							
 							if (!empty($infosDestinataire['nom']))
 							{
 								$infosCourriel['destinataire'] = encodeInfoEnTeteCourriel($infosDestinataire['nom']) . " <$courrielDestinataire>";
+								$urlReponseDestinataire .= '&amp;action[]=nom-' . encodeTexteGet($infosDestinataire['nom']);
 							}
 							else
 							{
 								$infosCourriel['destinataire'] = $courrielDestinataire;
 							}
 							
+							$urlReponseDestinataire .= '&amp;action[]=courriel-' . encodeTexteGet($courrielDestinataire);
 							$infosCourriel['message'] = $messageDansCourriel;
+							
+							if (!empty($nomPieceJointe) && $commentairesLienPublicPieceJointe)
+							{
+								$infosCourriel['message'] .= "<ul>\n";
+								$infosCourriel['message'] .= '<li>' . T_("Pièce jointe: ") . "<a href=\"$urlFichiers/commentaires/$nomPieceJointe\">$nomPieceJointe</a></li>\n";
+								$infosCourriel['message'] .= "</ul>\n";
+								
+								$infosCourriel['message'] .= "<hr />\n";
+							}
+							
+							$infosCourriel['message'] .= '<p>' . T_("Liste d'actions:") . "</p>\n";
+							$infosCourriel['message'] .= "<ul>\n";
+							
+							$infosCourriel['message'] .= '<li><a href="' . $urlReponseDestinataire . '#ajoutCommentaire">' . T_("Répondre") . "</a></li>\n";
 							
 							if (!empty($infosDestinataire['idAbonnement']))
 							{
-								$infosCourriel['message'] .= '<p><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, $urlSansAction)) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires.") . "</a></p>\n";
+								$infosCourriel['message'] .= '<li><a href="' . $urlRacine . '/desabonnement.php?url=' . encodeTexteGet(supprimeUrlRacine($urlRacine, $urlSansAction)) . '&amp;id=' . $infosDestinataire['idAbonnement'] . '">' . T_("Se désabonner des notifications de nouveaux commentaires") . "</a></li>\n";
 							}
+							
+							$infosCourriel['message'] .= "</ul>\n";
 							
 							if ($moderationCommentaires)
 							{
@@ -473,10 +492,23 @@ if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee &
 					
 					if (!empty($commentairesDestinataireNotification))
 					{
+						$urlReponseDestinataire = $urlReponse;
+						
+						if (!empty($commentairesNomDestinataireNotification))
+						{
+							$urlReponseDestinataire .= '&amp;action[]=nom-' . encodeTexteGet($commentairesNomDestinataireNotification);
+						}
+						
+						$urlReponseDestinataire .= '&amp;action[]=courriel-' . encodeTexteGet($commentairesDestinataireNotification);
 						$infosCourriel['destinataire'] = $commentairesDestinataireNotification;
 						$infosCourriel['message'] = $messageDansCourriel;
 						$infosSupplementaires = array ();
 						$infosSupplementaires[] = sprintf(T_("Identifiant: %1\$s"), "<code>$idCommentaire</code>");
+						
+						if (!empty($nomPieceJointe))
+						{
+							$infosSupplementaires[] = sprintf(T_("Pièce jointe: %1\$s"), "<a href=\"$urlFichiers/commentaires/$nomPieceJointe\">$nomPieceJointe</a>");
+						}
 						
 						if (!empty($courriel))
 						{
@@ -539,6 +571,8 @@ if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee &
 						$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?action=supprimer&amp;id=' . $idCommentaire . '&amp;page=' . $pageGet . '">' . T_("Supprimer") . "</a></li>\n";
 						
 						$infosCourriel['message'] .= '<li><a href="' . $urlRacineAdmin . '/commentaires.admin.php?gererType=commentaires&amp;page=' . $pageGet . '#' . $idCommentaire . '">' . T_("Modifier") . "</a></li>\n";
+						
+						$infosCourriel['message'] .= '<li><a href="' . $urlReponseDestinataire . '#ajoutCommentaire">' . T_("Répondre") . "</a></li>\n";
 						$infosCourriel['message'] .= "</ul>\n";
 						courriel($infosCourriel);
 					}
@@ -601,7 +635,7 @@ if (isset($_POST['envoyerCommentaire']) || ($formCommentairePieceJointeActivee &
 
 // Code du formulaire.
 
-$actionFormCommentaire = url() . '#messages';
+$actionFormCommentaire = variableGet(1, url(), 'action', 'commentaire') . '#messages';
 $enctypeFormCommentaire = '';
 
 if ($formCommentairePieceJointeActivee)

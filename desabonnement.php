@@ -38,9 +38,9 @@ if (!empty($_GET['url']) && !empty($_GET['id']))
 			{
 				$contenuConfigAbonnements .= "[$courrielAbonnement]\n";
 				
-				if (!empty($infosAbonnement['idAbonnement']))
+				foreach ($infosAbonnement as $cle => $valeur)
 				{
-					$contenuConfigAbonnements .= 'idAbonnement=' . $infosAbonnement['idAbonnement'] . "\n";
+					$contenuConfigAbonnements .= "$cle=$valeur\n";
 				}
 				
 				$contenuConfigAbonnements .= "\n";

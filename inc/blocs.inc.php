@@ -181,7 +181,7 @@ if (!empty($blocsAinsererTemp))
 							
 							$blocs[$region] .= $commentaires;
 							
-							if (!isset($_GET['action']) || $_GET['action'] != 'commentaire')
+							if (!isset($_GET['action']) || !estActionCommentaire($_GET['action']))
 							{
 								$blocs[$region] .= '<h3 id="ajoutCommentaire">' . T_("Ajout d'un commentaire") . "</h3>\n";
 								
