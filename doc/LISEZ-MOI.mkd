@@ -114,22 +114,17 @@ Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou visiter l
 
 ## Téléchargement
 
-[Télécharger l'archive de la dernière version.](http://jpfleury.indefero.net/p/squeletml/source/download/master/)
+[Télécharger l'archive de la dernière version.](https://gitorious.org/projets-divers/squeletml/archive/master.zip)
 
 ## Développement
 
-Dernière version: 3.2.15 (2013-06-25)
+Dernière version: 3.2.16 (2013-09-08)
 
-Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.][git]
-
-Squeletml dispose également d'un [système de suivi], sur lequel les rapports de bogues et les suggestions peuvent être soumis. N'oubliez pas d'indiquer votre environnement d'hébergement. Vous pouvez récolter ces informations en visitant la page `admin/versions.admin.php`. S'il y a des erreurs en visitant cette page, allez plutôt sur `admin/versions-solo.admin.php`. (S'il y a lieu, modifier le nom du dossier d'administration.)
-
-[git]: http://jpfleury.indefero.net/p/squeletml/source/tree/master/
-[système de suivi]: http://jpfleury.indefero.net/p/squeletml/issues/
+Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](https://gitorious.org/projets-divers/squeletml)
 
 ## Licence
 
-Auteur: Jean-Philippe Fleury <contact@jpfleury.net>  
+Auteur: Jean-Philippe Fleury (<http://www.jpfleury.net/contact.php>)  
 Copyright © Jean-Philippe Fleury, 2008-2013.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le

@@ -162,7 +162,7 @@ if (isset($_POST['porteDocumentsCopie']))
 				$selected = '';
 			}
 			
-			echo '<option value="' . encodeTexte($valeur) . $selected . '">' . securiseTexte($valeur) . "</option>\n";
+			echo '<option value="' . encodeTexte($valeur) . '"' . $selected . '>' . securiseTexte($valeur) . "</option>\n";
 		}
 		
 		echo "</select></p>\n";
