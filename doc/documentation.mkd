@@ -33,15 +33,15 @@ Certains dossiers doivent être accessibles en écriture:
 
 ## Installation
 
-La procédure d'installation est très simple. Il faut commencer par [télécharger l'archive de la dernière version](http://jpfleury.indefero.net/p/squeletml/source/download/master/), extraire cette archive et placer les fichiers sur votre serveur, par exemple par ftp.
+La procédure d'installation est très simple. Il faut commencer par [télécharger l'archive de la dernière version](https://gitorious.org/projets-divers/squeletml/archive/master.zip), extraire cette archive et placer les fichiers sur votre serveur, par exemple par ftp.
 
 ### Mise en situation
 
-On télécharge et extrait l'archive, ce qui crée le dossier `squeletml-master`.
+On télécharge et extrait l'archive, ce qui crée le dossier `projets-divers-squeletml`.
 
-- Pour avoir un site situé dans un répertoire, copier le dossier `squeletml-master` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`.
+- Pour avoir un site situé dans un répertoire, copier le dossier `projets-divers-squeletml` sur le serveur et le renommer comme désiré, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/monSiteSqueletml/`.
 
-- Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `squeletml-master`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
+- Pour avoir un site situé à la racine d'un nom de domaine, transférer sur le serveur le contenu du dossier `projets-divers-squeletml`, ce qui nous donne l'adresse `http://www.nomDeDomaine.ext/`.
 
 	**Important:** à la racine du dossier créé par l'extraction de l'archive, il y a au moins un fichier dont le nom débute par un point. De tels fichiers sont dits «cachés» (à tout le moins sur les systèmes de type Unix), et pour les voir, il faut généralement que le gestionnaire de fichiers soit configuré en conséquence ou que la ligne de commande comporte un argument conséquent. Par exemple, dans Nautilus, on peut afficher les fichiers cachés en allant dans *Affichage* et en cochant *Afficher les fichiers cachés*. En ligne de commande, `ls` accepte l'argument `-a`:
 
@@ -490,7 +490,7 @@ Pour mettre à jour Squeletml:
 
 	**Note: la réécriture d'URL doit être activée sur votre serveur pour utiliser cette fonctionnalité. Si tel n'est pas le cas, ignorez le mode maintenance et passez à l'étape suivante.**
 
-- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom est `squeletml-master`.
+- Téléchargez l'archive de la dernière version et extrayez son contenu. Vous allez obtenir un dossier dont le nom est `projets-divers-squeletml`.
 
 - Ensuite, sélectionnez et copiez tout le contenu de ce dossier, et collez la sélection dans l'emplacement de votre site, et ce en acceptant de fusionner les dossiers et d'écraser les fichiers déjà existants.
 
