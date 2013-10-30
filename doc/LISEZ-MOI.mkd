@@ -118,7 +118,7 @@ Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou visiter l
 
 ## Développement
 
-Dernière version: 3.2.16 (2013-09-08)
+Dernière version: 3.2.17 (2013-10-30)
 
 Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](https://gitorious.org/projets-divers/squeletml)
 
