@@ -482,6 +482,18 @@ div.infosPublicationApercu {
 
 /* Contact. */
 
+#formContact p#noteContact code {
+	background-color: transparent;
+}
+
+#formContact p#contactPieceJointe {
+	margin-bottom: 0px;
+}
+
+#formContact div#contactAidePieceJointe p.bDtitre {
+	margin-top: 0px;
+}
+
 #formContact label {
 	font-weight: bold;
 }
@@ -494,7 +506,7 @@ div.infosPublicationApercu {
 	width: 35%;
 }
 
-#formContact textarea {
+#formContact textarea, #formContact #inputPieceJointe {
 	width: 70%;
 }
 
@@ -702,7 +714,7 @@ div#baliseH1 h1 {
 	width: 35%;
 }
 
-#formCommentaire textarea {
+#formCommentaire textarea, #formCommentaire #inputPieceJointe {
 	width: 70%;
 }
 

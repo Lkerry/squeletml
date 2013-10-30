@@ -23,10 +23,16 @@ if ($partageCourrielActif)
 {
 	$contact .= '<div id="formulairePartageCourriel">' . "\n";
 	$contact .= '<h2 id="titrePartageCourriel">' . T_("Partager par courriel") . "</h2>\n";
+	$formContactPieceJointeActivee = FALSE;
+}
+
+if ($formContactPieceJointeActivee)
+{
+	$contactTailleMaxPieceJointe = min($contactTailleMaxPieceJointe, phpIniOctets(ini_get('post_max_size')), phpIniOctets(ini_get('upload_max_filesize')));
 }
 
 // L'envoi du message est demandé.
-if (isset($_POST['envoyerContact']))
+if (isset($_POST['envoyerContact']) || ($formContactPieceJointeActivee && empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size'))))
 {
 	$nom = securiseTexte(trim($_POST['nom']));
 	$courriel = securiseTexte(trim($_POST['courriel']));
@@ -94,6 +100,42 @@ if (isset($_POST['envoyerContact']))
 	{
 		$erreurFormulaire = TRUE;
 		$messagesScript .= '<li class="erreur">' . T_("Vous n'avez pas écrit de message.") . "</li>\n";
+	}
+	
+	$nomPieceJointe = '';
+	
+	if ($formContactPieceJointeActivee)
+	{
+		if (empty($_FILES) && isset($_SERVER['CONTENT_LENGTH']) && $_SERVER['CONTENT_LENGTH'] > phpIniOctets(ini_get('post_max_size')))
+		{
+			// Explications: À la page <http://www.php.net/manual/fr/ini.core.php#ini.post-max-size>, on peut lire: «Dans le cas où la taille des données reçues par la méthode POST est plus grande que post_max_size , les superglobales  $_POST et $_FILES  seront vides». Je repère donc une erreur potentielle par le test ci-dessus.
+			
+			$erreurFormulaire = TRUE;
+			$messagesScript .= '<li class="erreur">' . sprintf(T_("La pièce jointe doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($contactTailleMaxPieceJointe), $contactTailleMaxPieceJointe) . "</li>\n";
+		}
+		elseif (!empty($_FILES['pieceJointe']['name']))
+		{
+			if (file_exists($_FILES['pieceJointe']['tmp_name']) && @filesize($_FILES['pieceJointe']['tmp_name']) > $contactTailleMaxPieceJointe)
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= '<li class="erreur">' . sprintf(T_("La pièce jointe doit faire moins de %1\$s Mio (%2\$s octets)."), octetsVersMio($contactTailleMaxPieceJointe), $contactTailleMaxPieceJointe) . "</li>\n";
+			}
+			elseif ($_FILES['pieceJointe']['error'])
+			{
+				$erreurFormulaire = TRUE;
+				$messagesScript .= '<li class="erreur">' . T_("Erreur lors de l'ajout de la pièce jointe.") . "</li>\n";
+			}
+			else
+			{
+				$typeMimePieceJointe = typeMime($_FILES['pieceJointe']['tmp_name']);
+				
+				if (!typeMimePermis($typeMimePieceJointe, $contactFiltreTypesMimePieceJointe, $contactTypesMimePermisPieceJointe))
+				{
+					$erreurFormulaire = TRUE;
+					$messagesScript .= '<li class="erreur">' . sprintf(T_("Le type de la pièce jointe %1\$s n'est pas permis."), '<code>' . securiseTexte(superBasename($_FILES['pieceJointe']['name'])) . '</code>') . "</li>\n";
+				}
+			}
+		}
 	}
 	
 	if ($contactActiverCaptchaCalcul)
@@ -168,6 +210,11 @@ if (isset($_POST['envoyerContact']))
 			$infosCourriel['message'] = $message;
 		}
 		
+		if (!empty($_FILES['pieceJointe']['name']) && file_exists($_FILES['pieceJointe']['tmp_name']))
+		{
+			$infosCourriel['pieceJointe'] = $_FILES['pieceJointe'];
+		}
+		
 		$formulaireContactDejaEnvoye = formulaireDejaEnvoye($racine, $idFormulaireContact);
 		
 		// Traitement personnalisé optionnel 2 de 4.
@@ -228,6 +275,11 @@ if (isset($_POST['envoyerContact']))
 		$blocMessagesScript .= "</div><!-- /#messages -->\n";
 		$contact .= $blocMessagesScript;
 	}
+	
+	if (isset($_FILES['pieceJointe']['tmp_name']) && file_exists($_FILES['pieceJointe']['tmp_name']))
+	{
+		@unlink($_FILES['pieceJointe']['tmp_name']);
+	}
 }
 
 // Code du formulaire.
@@ -238,6 +290,21 @@ if ($partageCourriel)
 }
 
 $actionFormContact = actionFormContact($partageCourrielActif);
+$enctypeFormContact = '';
+
+if ($formContactPieceJointeActivee)
+{
+	$enctypeFormContact = ' enctype="multipart/form-data"';
+	$contactListeTypesMimePermisPieceJointe = ' ';
+	
+	foreach ($contactTypesMimePermisPieceJointe as $extensions => $type)
+	{
+		$extensions = str_replace('|', ', ', $extensions);
+		$contactListeTypesMimePermisPieceJointe .= "$extensions, ";
+	}
+	
+	$contactListeTypesMimePermisPieceJointe = substr($contactListeTypesMimePermisPieceJointe, 0, -2);
+}
 
 if ($nom == T_("VOTRE NOM"))
 {
