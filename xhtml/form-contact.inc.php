@@ -1,4 +1,4 @@
-<form id="formContact" method="post" action="<?php echo $actionFormContact; ?>">
+<form id="formContact" method="post" action="<?php echo $actionFormContact; ?>"<?php echo $enctypeFormContact; ?>>
 	<div id="divContact">
 		<p><label for="inputNom"><?php echo T_("Votre nom:"); ?></label><br />
 		<input id="inputNom" class="champInfo" type="text" name="nom" size="30" maxlength="120" value="<?php echo $nom; ?>" /></p>
@@ -31,6 +31,24 @@
 		<?php // Champs supplémentaires optionnels après le message. ?>
 		<?php if (!$partageCourrielActif && cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact-champs-apres-message', FALSE)): ?>
 			<?php include cheminXhtml($racine, array ($langue, $langueParDefaut), 'form-contact-champs-apres-message'); ?>
+		<?php endif; ?>
+		
+		<?php if ($formContactPieceJointeActivee): ?>
+			<p id="contactPieceJointe">
+				<label for="inputPieceJointe">
+					<?php echo T_("Pièce jointe:"); ?>
+				</label><br />
+				<input id="inputPieceJointe" type="file" name="pieceJointe" size="30" />
+			</p>
+			
+			<div id="contactAidePieceJointe">
+				<p class="bDtitre"><?php echo T_("Aide au sujet de la pièce jointe"); ?></p>
+				
+				<ul class="bDcorps">
+					<li><?php printf(T_("Taille maximale: %1\$s Mio (%2\$s octets)"), octetsVersMio($contactTailleMaxPieceJointe), $contactTailleMaxPieceJointe); ?></li>
+					<li><?php echo T_("Types de fichier permis: ") . $contactListeTypesMimePermisPieceJointe; ?></li>
+				</ul>
+			</div>
 		<?php endif; ?>
 		
 		<?php if ($contactActiverCaptchaCalcul): ?>

@@ -349,6 +349,14 @@ if ($ajoutCommentaires && isset($_GET['action']) && estActionCommentaire($_GET['
 	}
 }
 
+$formContactPieceJointeActivee = FALSE;
+
+if (!empty($courrielContact) && $contactPieceJointe && (!$contactFiltreTypesMimePieceJointe || !empty($contactTypesMimePermisPieceJointe)))
+{
+	$boitesDeroulantes .= ' #contactAidePieceJointe';
+	$formContactPieceJointeActivee = TRUE;
+}
+
 $boitesDeroulantesTableau = boitesDeroulantes($boitesDeroulantesParDefaut, $boitesDeroulantes);
 
 if ($estPageDerreur)

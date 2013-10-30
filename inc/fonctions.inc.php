@@ -1495,6 +1495,7 @@ Le tableau en paramètre peut contenir les informations suivantes:
   - `$infos['destinataire']` (obligatoire; s'il y a lieu, encoder les noms);
   - `$infos['objet']` (obligatoire; ne pas encoder);
   - `$infos['message']` (obligatoire; si le format est HTML, fournir seulement le corps à l'intérieur de `body`);
+  - `$infos['pieceJointe']` (optionnel; chemin vers la pièce jointe).
 */
 function courriel($infos)
 {
@@ -1506,6 +1507,17 @@ function courriel($infos)
 	{
 		$infos['objet'] = encodeInfoEnTeteCourriel($infos['objet']);
 		$infos['message'] = str_replace(array ("\r\n", "\n\r", "\r"), "\n", $infos['message']);
+		
+		if (isset($infos['format']) && $infos['format'] == 'html')
+		{
+			$format = 'html';
+			$infos['message'] = "<html>\n<head>\n<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n</head>\n<body>\n" . $infos['message'] . "</body>\n</html>";
+		}
+		else
+		{
+			$format = 'plain';
+		}
+		
 		$enTete = '';
 		
 		if (!empty($infos['From']))
@@ -1524,19 +1536,46 @@ function courriel($infos)
 		}
 		
 		$enTete .= "MIME-Version: 1.0\r\n";
+		$enTete .= "X-Mailer: Squeletml\r\n";
 		
-		if (isset($infos['format']) && $infos['format'] == 'html')
+		if (!empty($infos['pieceJointe']['name']) && file_exists($infos['pieceJointe']['tmp_name']) && ($contenuPieceJointe = @file_get_contents($_FILES['pieceJointe']['tmp_name'])) !== FALSE)
 		{
-			$format = 'html';
-			$infos['message'] = "<html>\n<head>\n<meta http-equiv=\"content-type\" content=\"text/html; charset=utf-8\" />\n</head>\n<body>\n" . $infos['message'] . "</body>\n</html>";
+			$boundary = '------------' . chaineAleatoire(24);
+			$enTete .= "Content-Type: multipart/mixed;\r\n";
+			$enTete .= " boundary=\"$boundary\"\r\n";
+			
+			$messageAvecPieceJointe = "This is a multi-part message in MIME format.\r\n";
+			$messageAvecPieceJointe .= "--$boundary\r\n";
+			$messageAvecPieceJointe .= "Content-Type: text/$format; charset=\"utf-8\"\r\n";
+			$messageAvecPieceJointe .= "\r\n";
+			$messageAvecPieceJointe .= $infos['message'];
+			$messageAvecPieceJointe .= "\r\n\r\n";
+			$messageAvecPieceJointe .= "--$boundary\r\n";
+			
+			$typeMimePieceJointe = typeMime($_FILES['pieceJointe']['tmp_name']);
+			
+			if (empty($typeMimePieceJointe))
+			{
+				$typeMimePieceJointe = 'application/octet-stream';
+			}
+			
+			$messageAvecPieceJointe .= "Content-Type: $typeMimePieceJointe;\r\n";
+			$messageAvecPieceJointe .= ' name="' . encodeInfoEnTeteCourriel($infos['pieceJointe']['name']) . '"' . "\r\n";
+			$messageAvecPieceJointe .= "Content-Transfer-Encoding: base64\r\n";
+			$messageAvecPieceJointe .= "Content-Disposition: attachment;\r\n";
+			$messageAvecPieceJointe .= ' filename="' . encodeInfoEnTeteCourriel($infos['pieceJointe']['name']) . '"' . "\r\n";
+			$messageAvecPieceJointe .= "\r\n";
+			$messageAvecPieceJointe .= chunk_split(base64_encode($contenuPieceJointe)) . "\r\n";
+			unset($contenuPieceJointe);
+			$messageAvecPieceJointe .= "--$boundary--";
+			
+			$infos['message'] = $messageAvecPieceJointe;
+			unset($messageAvecPieceJointe);
 		}
 		else
 		{
-			$format = 'plain';
+			$enTete .= "Content-Type: text/$format; charset=\"utf-8\"\r\n";
 		}
-		
-		$enTete .= "Content-Type: text/$format; charset=\"utf-8\"\r\n";
-		$enTete .= "X-Mailer: Squeletml\r\n";
 		
 		return @mail($infos['destinataire'], $infos['objet'], $infos['message'], $enTete);
 	}
@@ -1821,7 +1860,8 @@ function encodeInfoEnTeteCourriel($info)
 {
 	if (!estAsciiImprimable($info))
 	{
-		$info = '=?UTF-8?B?' . base64_encode($info) . '?=';
+		$info = '=?UTF-8?B?' . chunk_split(base64_encode($info), 62, "?=\r\n =?UTF-8?B?");
+		$info = substr($info, 0, -13);
 	}
 	
 	return $info;

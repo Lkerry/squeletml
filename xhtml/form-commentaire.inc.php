@@ -69,7 +69,7 @@
 						<?php echo T_("Pièce jointe:"); ?>
 					<?php endif; ?>
 				</label><br />
-				<input id="inputPieceJointe" class="champInfo" type="file" name="pieceJointe" size="30" />
+				<input id="inputPieceJointe" type="file" name="pieceJointe" size="30" />
 			</p>
 			
 			<div id="commentaireAidePieceJointe">

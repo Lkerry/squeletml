@@ -790,6 +790,42 @@ $contactCourrielIdentifiantObjet = '[Contact] ';
 // Ajout dans le formulaire d'une option d'envoi d'une copie à l'expéditeur.
 $contactCopieCourriel = FALSE; // TRUE|FALSE
 
+// Ajout dans le formulaire d'un champ d'ajout de pièce jointe.
+$contactPieceJointe = TRUE; // TRUE|FALSE
+
+// Si le champ de pièce jointe est activé, taille maximale (en octets).
+/*
+- Exemples:
+  - `102400` équivaut à 100 Kio;
+  - `512000` équivaut à 500 Kio;
+  - `1048576` équivaut à 1 Mio;
+  - `2097152` équivaut à 2 Mio;
+  - `5242880` équivaut à 5 Mio;
+  - `10485760` équivaut à 10 Mio;
+  - `26214400` équivaut à 25 Mio;
+  - `52428800` équivaut à 50 Mio;
+- La valeur réellement utilisée sera la plus petite entre `$contactTailleMaxPieceJointe`, `phpIniOctets(ini_get('post_max_size'))` et `phpIniOctets(ini_get('upload_max_filesize'))`.
+*/
+$contactTailleMaxPieceJointe = 5242880;
+
+// Si le champ de pièce jointe est activé, filtre du type Mime.
+$contactFiltreTypesMimePieceJointe = TRUE; // TRUE|FALSE
+
+// Si le champ de pièce jointe est activé et si `$contactFiltreTypesMimePieceJointe` vaut TRUE, types MIME permis.
+/*
+- Si le tableau `$contactTypesMimePermisPieceJointe` est vide, l'ajout de pièce jointe sera désactivé.
+*/
+$contactTypesMimePermisPieceJointe['gif'] = 'image/gif';
+$contactTypesMimePermisPieceJointe['jpg'] = 'image/jpeg';
+$contactTypesMimePermisPieceJointe['png'] = 'image/png';
+$contactTypesMimePermisPieceJointe['ogv'] = 'video/ogg';
+$contactTypesMimePermisPieceJointe['pdf'] = 'application/pdf';
+$contactTypesMimePermisPieceJointe['txt'] = 'text/plain';
+$contactTypesMimePermisPieceJointe['bz2'] = 'application/x-bzip2';
+$contactTypesMimePermisPieceJointe['gz']  = 'application/x-gzip';
+$contactTypesMimePermisPieceJointe['tar'] = 'application/x-tar';
+$contactTypesMimePermisPieceJointe['zip'] = 'application/zip';
+
 /* ____________________ Antipourriel. ____________________ */
 
 // Ajout d'un champ de calcul mathématique.
@@ -884,15 +920,16 @@ $commentairesFiltreTypesMimePieceJointe = TRUE; // TRUE|FALSE
 /*
 - Si le tableau `$commentairesTypesMimePermisPieceJointe` est vide, l'ajout de pièce jointe sera désactivé.
 */
-$commentairesTypesMimePermisPieceJointe['gif']          = 'image/gif';
-$commentairesTypesMimePermisPieceJointe['jpeg|jpg|jpe'] = 'image/jpeg';
-$commentairesTypesMimePermisPieceJointe['png']          = 'image/png';
-$commentairesTypesMimePermisPieceJointe['pdf']          = 'application/pdf';
-$commentairesTypesMimePermisPieceJointe['tar']          = 'application/x-tar';
-$commentairesTypesMimePermisPieceJointe['bz2|tbz2']     = 'application/x-bzip2';
-$commentairesTypesMimePermisPieceJointe['gz|tgz']       = 'application/x-gzip';
-$commentairesTypesMimePermisPieceJointe['zip']          = 'application/zip';
-$commentairesTypesMimePermisPieceJointe['ogv']          = 'video/ogg';
+$commentairesTypesMimePermisPieceJointe['gif'] = 'image/gif';
+$commentairesTypesMimePermisPieceJointe['jpg'] = 'image/jpeg';
+$commentairesTypesMimePermisPieceJointe['png'] = 'image/png';
+$commentairesTypesMimePermisPieceJointe['ogv'] = 'video/ogg';
+$commentairesTypesMimePermisPieceJointe['pdf'] = 'application/pdf';
+$commentairesTypesMimePermisPieceJointe['txt'] = 'text/plain';
+$commentairesTypesMimePermisPieceJointe['bz2'] = 'application/x-bzip2';
+$commentairesTypesMimePermisPieceJointe['gz']  = 'application/x-gzip';
+$commentairesTypesMimePermisPieceJointe['tar'] = 'application/x-tar';
+$commentairesTypesMimePermisPieceJointe['zip'] = 'application/zip';
 
 // Si le champ de pièce jointe est activé, lien vers la pièce jointe dans les commentaires publiés.
 $commentairesLienPublicPieceJointe = TRUE; // TRUE|FALSE
