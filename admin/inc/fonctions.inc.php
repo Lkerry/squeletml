@@ -2909,13 +2909,9 @@ function adminVersionSqueletml($cheminFichierVersionTxt)
 	$version = '';
 	$contenuFichierVersionTxt = @file_get_contents($cheminFichierVersionTxt);
 	
-	if (preg_match('/^(.+) \(\d{4}(-\d{2}){2}\)$/', $contenuFichierVersionTxt, $resultat))
+	if ($contenuFichierVersionTxt !== FALSE)
 	{
-		$version = $resultat[1];
-	}
-	elseif (preg_match('/^.+\+$/', $contenuFichierVersionTxt, $resultat))
-	{
-		$version = $resultat[0];
+		$version = $contenuFichierVersionTxt;
 	}
 	
 	return $version;
