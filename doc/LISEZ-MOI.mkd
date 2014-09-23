@@ -110,22 +110,20 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 ## Documentation
 
-Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel, ou visiter la [documentation en ligne](http://www.jpfleury.net/logiciels/squeletml.php?page=documentation).
+Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel.
 
 ## Téléchargement
 
-[Télécharger l'archive de la dernière version.](https://gitorious.org/projets-divers/squeletml/archive/master.zip)
+[Télécharger l'archive de la dernière version.](https://github.com/jpfleury/squeletml/archive/master.zip)
 
 ## Développement
 
-Dernière version: 3.2.17 (2013-10-30)
-
-Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](https://gitorious.org/projets-divers/squeletml)
+Le logiciel Git est utilisé pour la gestion de versions. [Le dépôt peut être consulté en ligne ou récupéré en local.](https://github.com/jpfleury/squeletml)
 
 ## Licence
 
 Auteur: Jean-Philippe Fleury (<http://www.jpfleury.net/contact.php>)  
-Copyright © Jean-Philippe Fleury, 2008-2013.
+Copyright © Jean-Philippe Fleury, 2008.
 
 Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 modifier suivant les termes de la GNU Affero General Public License telle que
@@ -206,4 +204,3 @@ avec ce programme; si ce n'est pas le cas, consultez
 - [**Table of Contents jQuery Plugin**](http://fuelyourcoding.com/table-of-contents-jquery-plugin/): le script original a été écrit par Doug Neiner et est sous licence MIT. J'ai modifié le script et ai incorporé une fraction de code provenant du [module Pathauto pour Drupal](http://drupal.org/project/pathauto), publié sous licence GPL (sans précision de la version). Je publie le script résultant sous licence GPL version 3 ou toute version ultérieure.
 
 - [**Unsharp Mask for PHP**](http://vikjavev.no/computing/ump.php?id=306): permission écrite de l'auteur Torstein Hønsi d'ajouter «Unsharp Mask for PHP» à mon script sous AGPL.
-
