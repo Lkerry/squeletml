@@ -49,16 +49,16 @@ CODE
 
 if (!defined('URL_SQUELETML'))
 {
-	define('URL_SQUELETML', 'http://www.jpfleury.net/logiciels/squeletml.php');
+	define('URL_SQUELETML', 'https://github.com/jpfleury/squeletml');
 }
 
 if (!defined('URL_DERNIERE_VERSION_SQUELETML'))
 {
-	define('URL_DERNIERE_VERSION_SQUELETML', 'http://jpfleury.indefero.net/p/squeletml/source/file/master/doc/version.txt');
+	define('URL_DERNIERE_VERSION_SQUELETML', 'https://raw.githubusercontent.com/jpfleury/squeletml/master/doc/version.txt');
 }
 
 if (!defined('URL_TELECHARGEMENT_SQUELETML'))
 {
-	define('URL_TELECHARGEMENT_SQUELETML', 'http://www.jpfleury.net/logiciels/squeletml.php#Telechargement');
+	define('URL_TELECHARGEMENT_SQUELETML', 'https://github.com/jpfleury/squeletml');
 }
 ?>

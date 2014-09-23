@@ -33,7 +33,7 @@ Certains dossiers doivent être accessibles en écriture:
 
 ## Installation
 
-La procédure d'installation est très simple. Il faut commencer par [télécharger l'archive de la dernière version](https://gitorious.org/projets-divers/squeletml/archive/master.zip), extraire cette archive et placer les fichiers sur votre serveur, par exemple par ftp.
+La procédure d'installation est très simple. Il faut commencer par [télécharger l'archive de la dernière version](https://github.com/jpfleury/squeletml/archive/master.zip), extraire cette archive et placer les fichiers sur votre serveur, par exemple par ftp.
 
 ### Mise en situation
 
