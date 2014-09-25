@@ -8,7 +8,7 @@ if (isset($_GET['type']) && $_GET['type'] == 'lisez-moi')
 	include $racineAdmin . '/inc/premier.inc.php';
 	
 	echo '<p><em>' . sprintf(T_("<a href=\"%1\$s\">Consulter la documentation complète de Squeletml</a> au lieu de l'introduction ci-dessous."), "$urlSansGet") . "</em></p>\n";
-	echo mkd($racine . '/doc/LISEZ-MOI.mkd');
+	echo mkd($racine . '/README.mkd');
 }
 else
 {

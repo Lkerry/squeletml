@@ -461,8 +461,6 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 
 - `admin/versions-solo.admin.php` (le cas échéant, modifier le nom du dossier d'administration)
 - `doc/documentation.mkd`
-- `doc/INCOMPATIBILITES.mkd`
-- `doc/LISEZ-MOI.mkd`
 - `js/squeletml.js` (fonction `tableDesMatieres()`)
 - `xhtml/fr/ancres.inc.php`
 - `xhtml/fr/bas-de-page.inc.php`
@@ -475,6 +473,7 @@ Il est possible de traduire Squeletml dans la langue désirée. Le principal fic
 - `xhtml/fr/page.galerie.inc.php`
 - `xhtml/fr/page.index.inc.php`
 - `maintenance.php`
+- `README.mkd`
 
 ## Mise à jour de Squeletml
 
