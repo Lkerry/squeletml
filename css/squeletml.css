@@ -510,6 +510,10 @@ div.infosPublicationApercu {
 	width: 70%;
 }
 
+#formContact #inputPieceJointe {
+	border: 1px solid #cccccc;
+}
+
 /* Pages d'erreur. */
 
 h1#titrePage401, h1#titrePage404 {
@@ -656,7 +660,7 @@ li.parent {
 	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
 	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
-
+inputPieceJointe
 .blocAvecFond > p:first-child, .blocAvecFond > ul:first-child, .blocAvecFond > ul:first-child > li:first-child {
 	margin-top: 0px;
 }
@@ -716,6 +720,10 @@ div#baliseH1 h1 {
 
 #formCommentaire textarea, #formCommentaire #inputPieceJointe {
 	width: 70%;
+}
+
+#formCommentaire #inputPieceJointe {
+	border: 1px solid #cccccc;
 }
 
 #finInterieurContenu #commentaires h2, body.aucuneColonne #commentaires h2, #finInterieurContenu #commentaires h3, body.aucuneColonne #commentaires h3 {
