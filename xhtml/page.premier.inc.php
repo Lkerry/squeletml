@@ -20,7 +20,9 @@
 			<meta name="robots" content="<?php echo $robots; ?>" />
 		<?php endif; ?>
 		
-		<meta name="generator" content="Squeletml" />
+		<?php if ($inclureBaliseGenerator): ?>
+			<meta name="generator" content="Squeletml" />
+		<?php endif; ?>
 		
 		<?php if (!empty($auteur)): ?>
 			<meta name="author" content="<?php echo $auteur; ?>" />

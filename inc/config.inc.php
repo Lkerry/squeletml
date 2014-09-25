@@ -177,6 +177,9 @@ $versionParDefautLinkScript['css']     = "";
 $versionParDefautLinkScript['favicon'] = "";
 $versionParDefautLinkScript['js']      = "";
 
+// Inclusion de la métabalise `generator`.
+$inclureBaliseGenerator = TRUE; // TRUE|FALSE
+
 // Inclusion des feuilles de style par défaut de Squeletml (dossier `css`).
 /*
 - Voir les fonctions `linkScript()` et `supprimeInclusionCssParDefaut()`.
