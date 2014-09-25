@@ -270,9 +270,9 @@ if (!isset($lienPage))
 	$lienPage = $afficherLienPageParDefaut;
 }
 
-if ($afficherMessageIe6)
+if ($afficherMessageIE)
 {
-	$messageIe6 = messageIe6($urlRacine);
+	$messageIE = messageIE($urlRacine);
 }
 
 if ($inclureMotsCles)
@@ -524,14 +524,14 @@ if ($tableDesMatieres)
 	}
 }
 
-// Message pour IE6.
+// Message pour IE6 et IE7.
 
-if ($afficherMessageIe6)
+if ($afficherMessageIE)
 {
-	$balisesLinkScript[] = "$url#cssltIE7#$urlRacine/css/boites-deroulantes.css";
-	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.min.js";
-	$balisesLinkScript[] = "$url#jsltIE7#$urlRacine/js/jquery/jquery.cookie.js";
-	$balisesLinkScript[] = "$url#jsDirectltIE7#ajouteEvenementLoad(function(){boiteDeroulante('#messageIe6', '');});";
+	$balisesLinkScript[] = "$url#csslteIE7#$urlRacine/css/boites-deroulantes.css";
+	$balisesLinkScript[] = "$url#jslteIE7#$urlRacine/js/jquery/jquery.min.js";
+	$balisesLinkScript[] = "$url#jslteIE7#$urlRacine/js/jquery/jquery.cookie.js";
+	$balisesLinkScript[] = "$url#jsDirectlteIE7#ajouteEvenementLoad(function(){boiteDeroulante('#messageIE', '');});";
 }
 
 // Variable finale.

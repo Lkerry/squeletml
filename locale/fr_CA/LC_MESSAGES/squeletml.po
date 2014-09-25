@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-25 00:57-0400\n"
+"POT-Creation-Date: 2014-09-25 01:28-0400\n"
 "PO-Revision-Date: 2009-05-08 17:00-0400\n"
 "Last-Translator: Jean-Philippe Fleury <contact@jpfleury.net>\n"
 "Language-Team: \n"
@@ -1141,12 +1141,8 @@ msgid "Mise à jour des langues actives dans le fichier %1$s effectuée."
 msgstr "Mise à jour des langues actives dans le fichier %1$s effectuée."
 
 #: inc/fonctions.inc.php:4960
-msgid ""
-"Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
-"visitez sur ce site actuellement) est obsolète?"
-msgstr ""
-"Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
-"visitez sur ce site actuellement) est obsolète?"
+msgid "La version de votre navigateur Internet Explorer est obsolète."
+msgstr "La version de votre navigateur Internet Explorer est obsolète."
 
 #: inc/fonctions.inc.php:4962
 msgid ""

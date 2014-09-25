@@ -48,9 +48,9 @@
 			</div><!-- /#ancres -->
 		<?php endif; ?>
 		
-		<?php if ($afficherMessageIe6): ?>
-			<!-- ____________________ Message pour IE6. ____________________ -->
-			<?php echo $messageIe6; ?>
+		<?php if ($afficherMessageIE): ?>
+			<!-- ____________________ Message pour IE6 et IE7. ____________________ -->
+			<?php echo $messageIE; ?>
 		<?php endif; ?>
 		
 		<?php if ($siteEstEnMaintenance): ?>

@@ -349,11 +349,11 @@ Voici un modèle simplifié d'une page de Squeletml **par défaut**:
 				...
 			</div><!-- /#ancres -->
 			
-			<!-- ____________________ Message pour IE6. ____________________ -->
-			<!--[if lt IE 7]>
-				<div id="messageIe6">
+			<!-- ____________________ Message pour IE6 et IE7. ____________________ -->
+			<!--[if lte IE 7]>
+				<div id="messageIE">
 					...
-				</div><!-- /#messageIe6 -->
+				</div><!-- /#messageIE -->
 			<![endif]-->
 			
 			<!-- ____________________ #page ____________________ -->

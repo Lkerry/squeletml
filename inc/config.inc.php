@@ -134,7 +134,7 @@ $tableauBaliseTitleComplement['en']['interne'] = " | Squeletml";
 
 // Fichiers inclus dans des balises `link` et `script`.
 /*
-- Les types possibles sont: css, cssDirectlteIE8, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, hreflang, js, jsDirect, jsDirectltIE7, jsltIE7, favicon, po, rss.
+- Les types possibles sont: css, cssDirectlteIE8, cssltIE7, cssIE7, csslteIE7, cssIE8, csslteIE8, hreflang, js, jsDirect, jsDirectltIE7, jsDirectIE7, jsDirectlteIE7, jsltIE7, jsIE7, jslteIE7, favicon, po, rss.
 - Syntaxe pour tous les types:
   $balisesLinkScript[] = "URL#TYPE#fichier à inclure#extra";
   La valeur `extra` correspond au contenu de l'attribut `title` pour le type `rss` (optionnelle dans ce cas), ou au code de langue pour le type `hreflang` (obligatoire dans ce cas).
@@ -339,12 +339,12 @@ $activerRechercheGoogle = TRUE; // TRUE|FALSE
 */
 $rechercheGoogleExtension = 'ca';
 
-// Affichage du message pour Internet Explorer 6.
+// Affichage d'un message pour Internet Explorer 6 et 7.
 /*
 - Message invitant l'internaute à télécharger un navigateur moderne.
-- Voir la fonction `messageIe6()`.
+- Voir la fonction `messageIE()`.
 */
-$afficherMessageIe6 = TRUE; // TRUE|FALSE
+$afficherMessageIE = TRUE; // TRUE|FALSE
 
 // Auteur par défaut.
 /*

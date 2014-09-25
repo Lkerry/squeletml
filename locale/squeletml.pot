@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-25 00:57-0400\n"
+"POT-Creation-Date: 2014-09-25 01:28-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1008,9 +1008,7 @@ msgid "Mise à jour des langues actives dans le fichier %1$s effectuée."
 msgstr ""
 
 #: inc/fonctions.inc.php:4960
-msgid ""
-"Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
-"visitez sur ce site actuellement) est obsolète?"
+msgid "La version de votre navigateur Internet Explorer est obsolète."
 msgstr ""
 
 #: inc/fonctions.inc.php:4962

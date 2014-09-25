@@ -4312,10 +4312,19 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 				$listeFichiersJs[] = $fichier;
 				$balisesBrutesJsAinclure[] = $fichierBrut;
 			}
-			elseif ($type == 'jsltIE7')
+			elseif (preg_match('/^js[lI]/', $type))
 			{
-				$listeFichiersJsIe6[] = $fichier;
-				$balisesBrutesJsIe6Ainclure[] = $fichierBrut;
+				if ($type == 'jsltIE7' || $type == 'jslteIE7')
+				{
+					$listeFichiersJsIe6[] = $fichier;
+					$balisesBrutesJsIe6Ainclure[] = $fichierBrut;
+				}
+				
+				if ($type == 'jsIE7' || $type == 'jslteIE7')
+				{
+					$listeFichiersJsIe7[] = $fichier;
+					$balisesBrutesJsIe7Ainclure[] = $fichierBrut;
+				}
 			}
 			else
 			{
@@ -4326,6 +4335,11 @@ function linkScript($racine, $urlRacine, $fusionnerCssJs, $dossierAdmin, $balise
 		if (!empty($listeFichiersJsIe6))
 		{
 			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'jsltIE7', 'js', $listeFichiersJsIe6, $balisesBrutesJsIe6Ainclure, $balisesBrutesFusionneesAinclure);
+		}
+		
+		if (!empty($listeFichiersJsIe7))
+		{
+			$balisesBrutesFusionneesAinclure = fusionneCssJs($racine, $urlRacine, $dossierAdmin, 'jsIE7', 'js', $listeFichiersJsIe7, $balisesBrutesJsIe7Ainclure, $balisesBrutesFusionneesAinclure);
 		}
 		
 		if (!empty($listeFichiersJs))
@@ -4429,8 +4443,24 @@ $fichier\n//]]>\n</script>\n";
 				$balisesFormatees .= "<!--[if lt IE 7]>\n<script type=\"text/javascript\">\n//<![CDATA[\n$fichier\n//]]>\n</script>\n<![endif]-->\n";
 				break;
 				
+			case 'jsDirectIE7':
+				$balisesFormatees .= "<!--[if IE 7]>\n<script type=\"text/javascript\">\n//<![CDATA[\n$fichier\n//]]>\n</script>\n<![endif]-->\n";
+				break;
+				
+			case 'jsDirectlteIE7':
+				$balisesFormatees .= "<!--[if lte IE 7]>\n<script type=\"text/javascript\">\n//<![CDATA[\n$fichier\n//]]>\n</script>\n<![endif]-->\n";
+				break;
+				
 			case 'jsltIE7':
 				$balisesFormatees .= '<!--[if lt IE 7]>' . "\n" . '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScript['js']) . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'jsIE7':
+				$balisesFormatees .= '<!--[if IE 7]>' . "\n" . '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScript['js']) . '"></script>' . "\n" . '<![endif]-->' . "\n";
+				break;
+				
+			case 'jslteIE7':
+				$balisesFormatees .= '<!--[if lte IE 7]>' . "\n" . '<script type="text/javascript" src="' . variableGet(2, $fichier, $versionParDefautLinkScript['js']) . '"></script>' . "\n" . '<![endif]-->' . "\n";
 				break;
 				
 			case 'rss':
@@ -4950,18 +4980,18 @@ function messageDansConfigCommentaires($racine, $message, $attributNofollowLiens
 }
 
 /*
-Construit le message affiché à Internet Explorer 6.
+Construit le message affiché à Internet Explorer 6 et 7.
 */
-function messageIe6($urlRacine)
+function messageIE($urlRacine)
 {
 	$message = '';
-	$message .= "<!--[if lt IE 7]>\n";
-	$message .= '<div id="messageIe6">' . "\n";
-	$message .= '<p class="bDtitre">' . T_("Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous visitez sur ce site actuellement) est obsolète?") . "</p>\n";
+	$message .= "<!--[if lte IE 7]>\n";
+	$message .= '<div id="messageIE">' . "\n";
+	$message .= '<p class="bDtitre">' . T_("La version de votre navigateur Internet Explorer est obsolète.") . "</p>\n";
 	$message .= "\n";
 	$message .= '<div class="bDcorps afficher"><p>' . T_("<strong>Pour naviguer de la manière la plus satisfaisante et sécuritaire, nous recommandons d'utiliser Firefox</strong>, un navigateur libre, performant, sécuritaire et respectueux des standards sur lesquels le web est basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au travail, vous pouvez faire la suggestion à votre service informatique.") . "</p>\n";
 	$message .= "\n";
-	$message .= "<p><strong><a href=\"http://www.firefox.com/\"><img src=\"$urlRacine/fichiers/Deer_Park_Globe.png\" alt=\"\" width=\"52\" height=\"52\" /></a> <a href=\"http://www.mozilla-europe.org/fr/\"><span>" . T_("Télécharger Firefox") . "</span></a></strong></p></div>\n";
+	$message .= "<p><strong><a href=\"http://www.firefox.com/\"><img src=\"$urlRacine/fichiers/Deer_Park_Globe.png\" alt=\"\" width=\"52\" height=\"52\" /></a> <a href=\"https://www.mozilla.org/\"><span>" . T_("Télécharger Firefox") . "</span></a></strong></p></div>\n";
 	$message .= "</div>\n";
 	$message .= "<![endif]-->\n";
 	
