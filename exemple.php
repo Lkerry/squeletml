@@ -246,8 +246,8 @@ MARKDOWN;
 
 <pre><?php echo securiseTexte($markdown); ?></pre>
 
-<p>Ce qui donne, une fois traité avec la fonction <code>mkdChaine()</code>:</p>
+<p>Ce qui donne, une fois traité avec la fonction <code>mdChaine()</code>:</p>
 
-<?php echo mkdChaine($markdown); ?>
+<?php echo mdChaine($markdown); ?>
 
 <?php include $racine . '/inc/dernier.inc.php'; ?>

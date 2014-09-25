@@ -329,7 +329,7 @@ Du texte écrit en *Markdown*.
 Autre **paragraphe**.
 TEXTE;
 
-echo mkdChaine($chaine);
+echo mdChaine($chaine);
 ?>
 
 <p>Lorem ipsum dolor sit amet.</p>';

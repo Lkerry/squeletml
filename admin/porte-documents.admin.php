@@ -892,7 +892,7 @@ if (isset($_POST['porteDocumentsCreation']))
 		
 		if ($fichierAcreerType == 'FichierModeleMarkdown')
 		{
-			$fichierMarkdownAcreerNom = $fichierAcreerNom . '.mkd';
+			$fichierMarkdownAcreerNom = $fichierAcreerNom . '.md';
 		}
 		
 		if (file_exists($fichierAcreerNom))
@@ -966,7 +966,7 @@ if (isset($_POST['porteDocumentsCreation']))
 						{
 							$messagesScript .= '<li>'; // Ouverture de `<li>`.
 							$messagesScript .= sprintf(T_("Création du fichier %1\$s effectuée."), '<code>' . securiseTexte($fichierMarkdownAcreerNom) . '</code>');
-							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierMarkdownAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page.mkd", 3)));
+							$messagesScript .= sprintf(T_("Vous pouvez <a href=\"%1\$s\">l'éditer</a> ou <a href=\"%2\$s\">l'afficher</a>."), 'porte-documents.admin.php?action=editer&amp;valeur=' . encodeTexteGet($fichierMarkdownAcreerNom) . $dossierCourantDansUrl . '#messages', $urlRacine . '/' . encodeTexte(substr("$cheminPage/$page.md", 3)));
 							$messagesScript .= "</li>\n"; // Fermeture de `<li>`.
 						}
 						else
@@ -1207,7 +1207,7 @@ if (isset($_POST['porteDocumentsCreation']))
 							}
 							elseif ($fichierAcreerType == 'FichierModeleMarkdown')
 							{
-								$contenu .= '<?php echo mkd("' . superBasename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
+								$contenu .= '<?php echo md("' . superBasename($fichierMarkdownAcreerNom) . '"); ?>' . "\n";
 							}
 							
 							$contenu .= "\n";
@@ -1227,7 +1227,7 @@ if (isset($_POST['porteDocumentsCreation']))
 						
 						if ($fichierAcreerType == 'FichierModeleMarkdown')
 						{
-							if ($fic = @fopen($cheminPage . '/' . "$page.mkd", 'a'))
+							if ($fic = @fopen($cheminPage . '/' . "$page.md", 'a'))
 							{
 								$contenu = '';
 								
@@ -1243,7 +1243,7 @@ if (isset($_POST['porteDocumentsCreation']))
 							}
 							else
 							{
-								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec fichier Markdown %1\$s impossible."), '<code>' . securiseTexte($cheminPage . '/' . "$page.mkd") . '</code>') . "</li>\n";
+								$messagesScript .= '<li class="erreur">' . sprintf(T_("Ajout d'un modèle de page web avec fichier Markdown %1\$s impossible."), '<code>' . securiseTexte($cheminPage . '/' . "$page.md") . '</code>') . "</li>\n";
 							}
 						}
 					}

@@ -110,7 +110,7 @@ Voici un aperçu des fonctionnalités et des caractéristiques de Squeletml:
 
 ## Documentation
 
-Voir le fichier `doc/documentation.mkd` dans l'archive du logiciel.
+Voir le fichier `doc/documentation.md` dans l'archive du logiciel.
 
 ## Téléchargement
 

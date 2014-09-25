@@ -59,7 +59,7 @@ function accesDansHtaccess($racine, $serveurFreeFr)
 			$htaccess .= "# Ajout automatique de Squeletml (accès admin). Ne pas modifier.\n";
 			$htaccess .= "# Empêcher l'affichage direct de certains fichiers.\n";
 		
-			$htaccessFilesModele = "\.((admin|cli|inc|lib)\.php|cache\.(gif|html|jpe?g|png|xml)|acces|info|ini|mkd|mo|modele|pot?|sauv|src\.svg|te?xt)$";
+			$htaccessFilesModele = "\.((admin|cli|inc|lib)\.php|cache\.(gif|html|jpe?g|png|xml)|acces|info|ini|mk?d|mo|modele|pot?|sauv|src\.svg|te?xt)$";
 		
 			if ($serveurFreeFr)
 			{
@@ -816,7 +816,7 @@ function chapeau($contenuChapeau, $chapeauEnMarkdown = FALSE)
 	
 	if ($chapeauEnMarkdown)
 	{
-		$contenuChapeau = mkdChaine($contenuChapeau);
+		$contenuChapeau = mdChaine($contenuChapeau);
 	}
 	
 	$chapeau .= $contenuChapeau;
@@ -4875,7 +4875,7 @@ function majLanguesActives($racine, $urlRacine, $langues, $initIncPhpFourni = ''
 /*
 Accepte en paramètre un fichier dont le contenu est rédigé en Markdown, et retourne le contenu de ce fichier converti en HTML.
 */
-function mkd($fichier)
+function md($fichier)
 {
 	return Markdown(@file_get_contents($fichier));
 }
@@ -4883,7 +4883,7 @@ function mkd($fichier)
 /*
 Accepte en paramètre une chaîne rédigée en Markdown, et retourne cette chaîne convertie en HTML.
 */
-function mkdChaine($chaine)
+function mdChaine($chaine)
 {
 	return Markdown($chaine);
 }
@@ -4929,7 +4929,7 @@ Fait le ménage dans le message fourni et retourne le résultat.
 */
 function messageDansConfigCommentaires($racine, $message, $attributNofollowLiensCommentaires)
 {
-	$messageDansConfig = mkdChaine($message);
+	$messageDansConfig = mdChaine($message);
 	$messageDansConfig = corrigeHtml($messageDansConfig);
 	require_once $racine . '/inc/htmlpurifier/HTMLPurifier.standalone.php';
 	$htmlPurifierConfig = HTMLPurifier_Config::createDefault();

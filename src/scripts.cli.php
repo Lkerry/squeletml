@@ -39,7 +39,7 @@ elseif ($argv[1] == 'messageAccueil')
 {
 	include $racine . '/inc/php-markdown/markdown.inc.php';
 	
-	if ($fic = fopen($racine . '/README.mkd', 'r'))
+	if ($fic = fopen($racine . '/README.md', 'r'))
 	{
 		$fichierLisezMoi = array ();
 		
