@@ -318,6 +318,16 @@ body.colonneAgaucheSansArrierePlan div#enTete, body.colonneAdroiteAvecRayures di
 	border-bottom: none;
 }
 
+div#enTete a, div#enTete a:hover, div#enTete a:visited {
+	color: #005959;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+div#enTete a img {
+	border: none;
+}
+
 div#titre h1, div#titre p {
 	margin: 0px;
 	padding: 0px;
@@ -335,16 +345,6 @@ div#titre h1 span#logoSupplement, div#titre p span#logoSupplement {
 	display: block;
 	padding-top: 16px;
 	padding-bottom: 5px;
-}
-
-div#titre p a, div#titre p a:hover, div#titre p a:visited {
-	color: #005959;
-	text-decoration: none;
-	border-bottom: none;
-}
-
-div#titre p a img {
-	border: none;
 }
 
 div#sousTitre p {
