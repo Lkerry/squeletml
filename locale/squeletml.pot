@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-25 22:44-0400\n"
+"POT-Creation-Date: 2014-09-25 00:57-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,69 +18,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: cron.php:37
-#, php-format
-msgid "Rapport d'exécution du cron du %1$s à %2$s"
-msgstr ""
-
-#: cron.php:39
-#, php-format
-msgid ""
-"Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1$s"
-"\">modifier la variable %2$s dans le fichier de configuration du site</a>."
-msgstr ""
-
-#: cron.php:42
-msgid "Page de lancement du cron"
-msgstr ""
-
-#: cron.php:43
-msgid "Section d'administration du site"
-msgstr ""
-
-#: cron.php:64 admin/acces.admin.php:15
-msgid "Cache"
-msgstr ""
-
-#: cron.php:79
-msgid "Aucune action à effectuer."
-msgstr ""
-
-#: cron.php:83
-msgid "Génération du cache des URL suivantes:"
-msgstr ""
-
-#: cron.php:96
-msgid "Fichier Sitemap"
-msgstr ""
-
-#: cron.php:100
-msgid "Ajout de pages dans le fichier Sitemap"
-msgstr ""
-
-#: cron.php:108
-#, php-format
-msgid "Vérification de la déclaration du fichier Sitemap dans le fichier %1$s"
-msgstr ""
-
-#: cron.php:117
-#, php-format
-msgid "Cron exécuté en %1$s seconde."
-msgid_plural "Cron exécuté en %1$s secondes."
-msgstr[0] ""
-msgstr[1] ""
-
-#: cron.php:124
-msgid ""
-"Le cron est déjà en cours. La présente demande de lancement de cron a donc "
-"été annulée."
-msgstr ""
-
-#: cron.php:149
-#, php-format
-msgid "Cron du %1$s à %2$s"
-msgstr ""
-
 #: installation.php:82 installation.php:144 installation.php:208
 #: installation.php:324
 #, php-format
@@ -89,7 +26,7 @@ msgstr ""
 
 #: installation.php:105 installation.php:111 installation.php:158
 #: installation.php:164 installation.php:222 installation.php:228
-#: inc/fonctions.inc.php:4693 inc/fonctions.inc.php:4815
+#: inc/fonctions.inc.php:4734 inc/fonctions.inc.php:4856
 #, php-format
 msgid "Renseignement du fichier %1$s impossible."
 msgstr ""
@@ -121,9 +58,9 @@ msgstr ""
 msgid "Création du fichier %1$s effectuée."
 msgstr ""
 
-#: installation.php:259 admin/porte-documents.admin.php:960
-#: admin/porte-documents.admin.php:974 admin/galeries.admin.php:2147
-#: admin/categories.admin.php:612
+#: installation.php:259 admin/categories.admin.php:612
+#: admin/porte-documents.admin.php:960 admin/porte-documents.admin.php:974
+#: admin/galeries.admin.php:2147
 #, php-format
 msgid "Création du fichier %1$s impossible."
 msgstr ""
@@ -176,22 +113,22 @@ msgid "L'utilisateur <em>%1$s</em> a déjà les droits."
 msgstr ""
 
 #: installation.php:453 inc/fonctions.inc.php:53 inc/fonctions.inc.php:129
-#: admin/porte-documents.admin.php:1743 admin/commentaires.admin.php:82
-#: admin/commentaires.admin.php:133 admin/commentaires.admin.php:184
-#: admin/commentaires.admin.php:250 admin/commentaires.admin.php:404
-#: admin/commentaires.admin.php:700 admin/acces.admin.php:126
+#: admin/rss.admin.php:214 admin/categories.admin.php:365
+#: admin/categories.admin.php:673 admin/porte-documents.admin.php:1743
+#: admin/inc/fonctions.inc.php:276 admin/inc/fonctions.inc.php:556
+#: admin/inc/fonctions.inc.php:608 admin/inc/fonctions.inc.php:658
+#: admin/inc/fonctions.inc.php:1692 admin/acces.admin.php:126
 #: admin/acces.admin.php:156 admin/acces.admin.php:166
 #: admin/acces.admin.php:207 admin/acces.admin.php:217
 #: admin/acces.admin.php:254 admin/acces.admin.php:264
 #: admin/acces.admin.php:332 admin/acces.admin.php:386
 #: admin/acces.admin.php:419 admin/acces.admin.php:464
 #: admin/acces.admin.php:474 admin/acces.admin.php:504
-#: admin/acces.admin.php:514 admin/inc/fonctions.inc.php:276
-#: admin/inc/fonctions.inc.php:556 admin/inc/fonctions.inc.php:608
-#: admin/inc/fonctions.inc.php:658 admin/inc/fonctions.inc.php:1692
-#: admin/galeries.admin.php:1417 admin/galeries.admin.php:1594
-#: admin/categories.admin.php:365 admin/categories.admin.php:673
-#: admin/rss.admin.php:214
+#: admin/acces.admin.php:514 admin/galeries.admin.php:1417
+#: admin/galeries.admin.php:1594 admin/commentaires.admin.php:82
+#: admin/commentaires.admin.php:133 admin/commentaires.admin.php:184
+#: admin/commentaires.admin.php:250 admin/commentaires.admin.php:404
+#: admin/commentaires.admin.php:700
 #, php-format
 msgid "Ouverture du fichier %1$s impossible."
 msgstr ""
@@ -292,99 +229,251 @@ msgstr ""
 msgid "<a href=\"%1$s\">Administrer Squeletml.</a>"
 msgstr ""
 
-#: desabonnement.php:59
-#, php-format
-msgid "Le désabonnement a été effectué pour le courriel %1$s à l'adresse %2$s."
-msgstr ""
-
-#: desabonnement.php:63
-msgid ""
-"Le désabonnement n'a pu être effectué. Veuillez vérifier votre URL de "
-"désabonnement dans le courriel de notification reçu. Si le problème "
-"persiste, vous pouvez faire la demande de désabonnement par le formulaire de "
-"contact du site."
-msgstr ""
-
-#: inc/partage-courriel.inc.php:22 inc/contact.inc.php:242
-msgid "VOTRE NOM"
-msgstr ""
-
-#: inc/partage-courriel.inc.php:34
-#, php-format
-msgid ""
-"Aussi, %1$s vous a écrit un petit mot personnalisé, que vous pouvez lire ci-"
-"dessous:"
-msgstr ""
-
-#: inc/partage-courriel.inc.php:62
-#, php-format
-msgid ""
-"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
-"découvrir l'image %3$s, qui fait partie de la galerie %4$s:"
-msgstr ""
-
-#: inc/partage-courriel.inc.php:120
-#, php-format
-msgid ""
-"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
-"découvrir la galerie %3$s:"
-msgstr ""
-
-#: inc/partage-courriel.inc.php:135
-#, php-format
-msgid ""
-"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
-"découvrir la catégorie %3$s:"
-msgstr ""
-
-#: inc/partage-courriel.inc.php:140
-#, php-format
-msgid ""
-"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
-"découvrir la page suivante:"
-msgstr ""
-
-#: inc/premier.inc.php:186 compte.php:95
-msgid "Demande de création d'un compte utilisateur"
-msgstr ""
-
-#: inc/premier.inc.php:190
-msgid "Déconnexion de la section d'administration de Squeletml"
-msgstr ""
-
-#: inc/premier.inc.php:194
-msgid "Désabonnement aux notifications de nouveaux commentaires"
-msgstr ""
-
-#: inc/premier.inc.php:421 inc/categorie.inc.php:21 inc/categorie.inc.php:84
-#: inc/categorie.inc.php:159 inc/categorie.inc.php:204
-#: inc/categorie.inc.php:256 inc/fonctions.inc.php:2156
-#: inc/fonctions.inc.php:2158 inc/fonctions.inc.php:2792 inc/blocs.inc.php:267
-#: admin/rss.admin.php:340
+#: inc/categorie.inc.php:21 inc/categorie.inc.php:84 inc/categorie.inc.php:159
+#: inc/categorie.inc.php:204 inc/categorie.inc.php:256 inc/blocs.inc.php:267
+#: inc/fonctions.inc.php:2197 inc/fonctions.inc.php:2199
+#: inc/fonctions.inc.php:2833 inc/premier.inc.php:429 admin/rss.admin.php:340
 msgid "Dernières publications"
 msgstr ""
 
-#: inc/premier.inc.php:432 inc/categorie.inc.php:37 inc/categorie.inc.php:88
-#: inc/categorie.inc.php:163 inc/categorie.inc.php:208
-#: inc/categorie.inc.php:260 inc/fonctions.inc.php:2151
-#: inc/fonctions.inc.php:2796 inc/blocs.inc.php:272 admin/rss.admin.php:341
+#: inc/categorie.inc.php:37 inc/categorie.inc.php:88 inc/categorie.inc.php:163
+#: inc/categorie.inc.php:208 inc/categorie.inc.php:260 inc/blocs.inc.php:272
+#: inc/fonctions.inc.php:2192 inc/fonctions.inc.php:2837
+#: inc/premier.inc.php:440 admin/rss.admin.php:341
 msgid "Derniers ajouts aux galeries"
 msgstr ""
 
-#: inc/premier.inc.php:439 inc/galerie.inc.php:143 inc/galerie.inc.php:462
-#: inc/galerie.inc.php:535 inc/galerie.inc.php:711 inc/fonctions.inc.php:2134
-#: inc/blocs.inc.php:244
+#: inc/categorie.inc.php:92
+#, php-format
+msgid "%1$s – Tous les articles classés dans la catégorie %2$s"
+msgstr ""
+
+#: inc/categorie.inc.php:100
+msgid "Consulter les dernières publications sur le site."
+msgstr ""
+
+#: inc/categorie.inc.php:104
+msgid "Consulter les derniers ajouts effectués aux galeries du site."
+msgstr ""
+
+#: inc/categorie.inc.php:108
+#, php-format
+msgid "Consulter tous les articles de la catégorie %1$s."
+msgstr ""
+
+#: inc/categorie.inc.php:167 inc/categorie.inc.php:212
+#: inc/categorie.inc.php:264
+#, php-format
+msgid "Articles dans la catégorie %1$s"
+msgstr ""
+
+#: inc/categorie.inc.php:179 inc/galerie.inc.php:576
+#, php-format
+msgid "La page %1$s est introuvable."
+msgstr ""
+
+#: inc/categorie.inc.php:180
+#, php-format
+msgid "La page %1$s est introuvable"
+msgstr ""
+
+#: inc/categorie.inc.php:185
+msgid "La page est introuvable."
+msgstr ""
+
+#: inc/categorie.inc.php:186
+msgid "La page est introuvable"
+msgstr ""
+
+#: inc/categorie.inc.php:236
+#, php-format
+msgid "La catégorie %1$s ne contient aucun article."
+msgstr ""
+
+#: inc/categorie.inc.php:272
+#, php-format
+msgid "La catégorie %1$s est introuvable."
+msgstr ""
+
+#: inc/categorie.inc.php:276
+#, php-format
+msgid "La catégorie %1$s est introuvable"
+msgstr ""
+
+#: inc/contact.inc.php:25
+msgid "Partager par courriel"
+msgstr ""
+
+#: inc/contact.inc.php:63
+msgid "Vous n'avez pas inscrit de nom."
+msgstr ""
+
+#: inc/contact.inc.php:69 inc/commentaire.inc.php:65
+msgid "Vous n'avez pas inscrit de courriel."
+msgstr ""
+
+#: inc/contact.inc.php:74 inc/commentaire.inc.php:70 compte.php:53
+msgid ""
+"Votre adresse courriel ne semble pas avoir une forme valide. Veuillez "
+"vérifier."
+msgstr ""
+
+#: inc/contact.inc.php:95
+#, php-format
+msgid ""
+"L'adresse suivante ne semble pas avoir une forme valide; veuillez la "
+"vérifier: %1$s"
+msgid_plural ""
+"Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les "
+"vérifier: %1$s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: inc/contact.inc.php:102
+msgid "Vous n'avez pas écrit de message."
+msgstr ""
+
+#: inc/contact.inc.php:114 inc/contact.inc.php:121 inc/commentaire.inc.php:99
+#: inc/commentaire.inc.php:112
+#, php-format
+msgid "La pièce jointe doit faire moins de %1$s Mio (%2$s octets)."
+msgstr ""
+
+#: inc/contact.inc.php:126 inc/commentaire.inc.php:117
+#: inc/commentaire.inc.php:160 inc/commentaire.inc.php:174
+#: inc/commentaire.inc.php:181
+msgid "Erreur lors de l'ajout de la pièce jointe."
+msgstr ""
+
+#: inc/contact.inc.php:135 inc/commentaire.inc.php:169
+#, php-format
+msgid "Le type de la pièce jointe %1$s n'est pas permis."
+msgstr ""
+
+#: inc/contact.inc.php:146 inc/commentaire.inc.php:191 compte.php:81
+msgid "Veuillez répondre correctement à la question antipourriel."
+msgstr ""
+
+#: inc/contact.inc.php:153
+msgid ""
+"Votre message a une forme qui le fait malheureusement classer comme du "
+"pourriel en raison de ses liens trop nombreux. Veuillez le modifier."
+msgstr ""
+
+#: inc/contact.inc.php:229
+msgid "Votre message a bien été envoyé."
+msgstr ""
+
+#: inc/contact.inc.php:246
+msgid "Erreur: votre message n'a pas pu être envoyé. Essayez un peu plus tard."
+msgstr ""
+
+#: inc/contact.inc.php:269 inc/commentaire.inc.php:620
+msgid "Le formulaire n'a pas été rempli correctement"
+msgstr ""
+
+#: inc/contact.inc.php:309 inc/partage-courriel.inc.php:22
+msgid "VOTRE NOM"
+msgstr ""
+
+#: inc/blocs.inc.php:119
+#, php-format
+msgid "%1$s a écrit le %2$s à %3$s (<a href=\"%4$s\">lien</a>):"
+msgstr ""
+
+#: inc/blocs.inc.php:123
+#, php-format
+msgid "%1$s a écrit le %2$s (<a href=\"%3$s\">lien</a>):"
+msgstr ""
+
+#: inc/blocs.inc.php:127
+#, php-format
+msgid "%1$s a écrit à %2$s (<a href=\"%3$s\">lien</a>):"
+msgstr ""
+
+#: inc/blocs.inc.php:148 inc/commentaire.inc.php:459
+#: admin/commentaires.admin.php:326
+msgid "Pièce jointe: "
+msgstr ""
+
+#: inc/blocs.inc.php:160
+msgid "Aucun commentaire."
+msgstr ""
+
+#: inc/blocs.inc.php:175
+#, php-format
+msgid "Commentaires (%1$s)"
+msgstr ""
+
+#: inc/blocs.inc.php:179 admin/xhtml/menu.inc.php:10
+#: admin/commentaires.admin.php:1092
+msgid "Commentaires"
+msgstr ""
+
+#: inc/blocs.inc.php:186 inc/commentaire.inc.php:671
+msgid "Ajout d'un commentaire"
+msgstr ""
+
+#: inc/blocs.inc.php:190
+msgid "Ajouter un commentaire."
+msgstr ""
+
+#: inc/blocs.inc.php:194
+msgid "L'ajout de commentaires est désactivé."
+msgstr ""
+
+#: inc/blocs.inc.php:238 admin/xhtml/menu.inc.php:12
+msgid "Flux RSS"
+msgstr ""
+
+#: inc/blocs.inc.php:244 inc/galerie.inc.php:143 inc/galerie.inc.php:462
+#: inc/galerie.inc.php:535 inc/galerie.inc.php:711 inc/fonctions.inc.php:2175
+#: inc/premier.inc.php:447
 #, php-format
 msgid "Galerie %1$s"
 msgstr ""
 
-#: inc/premier.inc.php:445 inc/blocs.inc.php:249
+#: inc/blocs.inc.php:249 inc/premier.inc.php:453
 #, php-format
 msgid "Catégorie %1$s"
 msgstr ""
 
+#: inc/blocs.inc.php:363
+msgid "Sauf mention contraire:"
+msgstr ""
+
+#: inc/blocs.inc.php:443 admin/categories.admin.php:3
+#: admin/xhtml/menu.inc.php:8
+msgid "Catégories"
+msgstr ""
+
+#: inc/blocs.inc.php:515 inc/fonctions.inc.php:2190 admin/xhtml/menu.inc.php:6
+#: admin/galeries.admin.php:4
+msgid "Galeries"
+msgstr ""
+
+#: inc/blocs.inc.php:569 admin/acces.admin.php:13
+msgid "Langues"
+msgstr ""
+
+#: inc/blocs.inc.php:619
+msgid "Partager"
+msgstr ""
+
+#: inc/blocs.inc.php:626
+msgid "Par courriel"
+msgstr ""
+
+#: inc/blocs.inc.php:696
+msgid "Rechercher dans le site"
+msgstr ""
+
+#: inc/blocs.inc.php:700
+msgid "Rechercher"
+msgstr ""
+
 #: inc/galerie.inc.php:100 inc/galerie.inc.php:152 inc/galerie.inc.php:471
-#: inc/fonctions.inc.php:2232
+#: inc/fonctions.inc.php:2273
 #, php-format
 msgid "%1$s – Galerie %2$s"
 msgstr ""
@@ -433,11 +522,6 @@ msgstr ""
 msgid "Voir toutes les images de la galerie %1$s."
 msgstr ""
 
-#: inc/galerie.inc.php:576 inc/categorie.inc.php:179
-#, php-format
-msgid "La page %1$s est introuvable."
-msgstr ""
-
 #: inc/galerie.inc.php:580
 #, php-format
 msgid "La page %1$s est introuvable – Galerie %2$s"
@@ -477,111 +561,535 @@ msgstr ""
 msgid "La galerie %1$s est introuvable"
 msgstr ""
 
-#: inc/contact.inc.php:25
-msgid "Partager par courriel"
+#: inc/fonctions.inc.php:307
+#, php-format
+msgid "Lire la suite de %1$s"
 msgstr ""
 
-#: inc/contact.inc.php:57
-msgid "Vous n'avez pas inscrit de nom."
+#: inc/fonctions.inc.php:379
+msgid "Anonyme"
 msgstr ""
 
-#: inc/contact.inc.php:63 inc/commentaire.inc.php:65
-msgid "Vous n'avez pas inscrit de courriel."
+#: inc/fonctions.inc.php:583
+msgid "Antipourriel<code>*</code>:"
 msgstr ""
 
-#: inc/contact.inc.php:68 inc/commentaire.inc.php:70 compte.php:53
-msgid ""
-"Votre adresse courriel ne semble pas avoir une forme valide. Veuillez "
-"vérifier."
+#: inc/fonctions.inc.php:587
+msgid "Antipourriel:"
 msgstr ""
 
-#: inc/contact.inc.php:89
+#: inc/fonctions.inc.php:592
+#, php-format
+msgid "Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1$s:"
+msgstr ""
+
+#: inc/fonctions.inc.php:594
+#, php-format
+msgid "%1$s et %2$s"
+msgstr ""
+
+#: inc/fonctions.inc.php:598
+#, php-format
+msgid "Veuillez compléter: %1$s ajouté à %2$s vaut %3$s"
+msgstr ""
+
+#: inc/fonctions.inc.php:814
+msgid "Résumé"
+msgstr ""
+
+#: inc/fonctions.inc.php:1339
+msgid "Anglais"
+msgstr ""
+
+#: inc/fonctions.inc.php:1351
+msgid "Français"
+msgstr ""
+
+#: inc/fonctions.inc.php:1463
+msgid "Légende de l'image"
+msgstr ""
+
+#: inc/fonctions.inc.php:2177
+#, php-format
+msgid "Derniers ajouts à la galerie «%1$s»"
+msgstr ""
+
+#: inc/fonctions.inc.php:2182 inc/fonctions.inc.php:2184
+#, php-format
+msgid "Dernières publications dans la catégorie «%1$s»"
+msgstr ""
+
+#: inc/fonctions.inc.php:2296 inc/fonctions.inc.php:2645
+#: inc/fonctions.inc.php:3017 inc/fonctions.inc.php:3310
+#: inc/fonctions.inc.php:5560
+#, php-format
+msgid "Image %1$s"
+msgstr ""
+
+#: inc/fonctions.inc.php:2320 inc/fonctions.inc.php:3069
 #, php-format
 msgid ""
-"L'adresse suivante ne semble pas avoir une forme valide; veuillez la "
-"vérifier: %1$s"
-msgid_plural ""
-"Les adresses suivantes ne semblent pas avoir une forme valide; veuillez les "
-"vérifier: %1$s"
+"Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
+"Kio)."
+msgstr ""
+
+#: inc/fonctions.inc.php:2325 inc/fonctions.inc.php:3075
+#, php-format
+msgid ""
+"Voir l'image %1$s au format original (extension: %2$s; taille: %3$s Kio)."
+msgstr ""
+
+#: inc/fonctions.inc.php:2354
+#, php-format
+msgid "Consulter la page de présentation de l'image %1$s dans la galerie %2$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:2449
+#, php-format
+msgid ""
+"Note: cet article a été publié le %1$s, mais une révision a été effectuée le "
+"%2$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:2453
+#, php-format
+msgid "Note: cet article a été révisé le %1$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:2467
+#, php-format
+msgid "Lire la suite de %1$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:2654 inc/fonctions.inc.php:3337
+msgid "Partager cette image ou voir plus d'information."
+msgstr ""
+
+#: inc/fonctions.inc.php:2710 inc/fonctions.inc.php:2716
+msgid "Faire un lien vers cette page"
+msgstr ""
+
+#: inc/fonctions.inc.php:2726
+msgid "Lien avec l'image en vignette:"
+msgstr ""
+
+#: inc/fonctions.inc.php:2732
+msgid "Lien avec l'image en taille intermédiaire:"
+msgstr ""
+
+#: inc/fonctions.inc.php:2738
+msgid "Ajoutez le code ci-dessous sur votre site:"
+msgstr ""
+
+#: inc/fonctions.inc.php:2742
+msgid "Lien textuel seulement:"
+msgstr ""
+
+#: inc/fonctions.inc.php:2849
+#, php-format
+msgid " (%1$s)"
+msgstr ""
+
+#: inc/fonctions.inc.php:3070
+#, php-format
+msgid "Télécharger l'image %1$s au format original"
+msgstr ""
+
+#: inc/fonctions.inc.php:3076
+#, php-format
+msgid "Voir l'image %1$s au format original"
+msgstr ""
+
+#: inc/fonctions.inc.php:3115
+#, php-format
+msgid "Image %1$s (extension: %2$s; taille: %3$s Kio)."
+msgstr ""
+
+#: inc/fonctions.inc.php:3145
+msgid "Modèle d'appareil photo"
+msgstr ""
+
+#: inc/fonctions.inc.php:3149
+msgid "Date et heure"
+msgstr ""
+
+#: inc/fonctions.inc.php:3159
+msgid "Durée d'exposition"
+msgstr ""
+
+#: inc/fonctions.inc.php:3163
+msgid "Sensibilité ISO"
+msgstr ""
+
+#: inc/fonctions.inc.php:3167
+msgid "Ouverture"
+msgstr ""
+
+#: inc/fonctions.inc.php:3171
+msgid "Distance focale"
+msgstr ""
+
+#: inc/fonctions.inc.php:3175
+msgid "Fabriquant"
+msgstr ""
+
+#: inc/fonctions.inc.php:3616
+#, php-format
+msgid "Publié par %1$s le %2$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:3620
+#, php-format
+msgid "Publié par %1$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:3625
+#, php-format
+msgid "Publié le %1$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:3630
+#, php-format
+msgid "Dernière révision le %1$s."
+msgstr ""
+
+#: inc/fonctions.inc.php:3643
+#, php-format
+msgid "Catégorie: %1$s."
+msgid_plural "Catégories: %1$s."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/contact.inc.php:96
-msgid "Vous n'avez pas écrit de message."
-msgstr ""
-
-#: inc/contact.inc.php:104 inc/commentaire.inc.php:191 compte.php:81
-msgid "Veuillez répondre correctement à la question antipourriel."
-msgstr ""
-
-#: inc/contact.inc.php:111
+#: inc/fonctions.inc.php:3876
+#, php-format
 msgid ""
-"Votre message a une forme qui le fait malheureusement classer comme du "
-"pourriel en raison de ses liens trop nombreux. Veuillez le modifier."
+"<a href=\"http://artlibre.org/licence/lal\"><img %1$s alt=\"Licence Art Libre"
+"\" /></a> Mis à disposition sous la <a href=\"http://artlibre.org/licence/lal"
+"\">licence Art Libre</a>."
 msgstr ""
 
-#: inc/contact.inc.php:182
-msgid "Votre message a bien été envoyé."
-msgstr ""
-
-#: inc/contact.inc.php:199
-msgid "Erreur: votre message n'a pas pu être envoyé. Essayez un peu plus tard."
-msgstr ""
-
-#: inc/contact.inc.php:222 inc/commentaire.inc.php:620
-msgid "Le formulaire n'a pas été rempli correctement"
-msgstr ""
-
-#: inc/categorie.inc.php:92
+#: inc/fonctions.inc.php:3880
 #, php-format
-msgid "%1$s – Tous les articles classés dans la catégorie %2$s"
+msgid ""
+"<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1$s alt="
+"\"Licence Creative Commons Attribution 3.0 non transposé (CC BY 3.0)\" /></"
+"a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/"
+"by/3.0/deed.fr\">licence Creative Commons</a>."
 msgstr ""
 
-#: inc/categorie.inc.php:100
-msgid "Consulter les dernières publications sur le site."
-msgstr ""
-
-#: inc/categorie.inc.php:104
-msgid "Consulter les derniers ajouts effectués aux galeries du site."
-msgstr ""
-
-#: inc/categorie.inc.php:108
+#: inc/fonctions.inc.php:3884
 #, php-format
-msgid "Consulter tous les articles de la catégorie %1$s."
+msgid ""
+"<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1$s "
+"alt=\"Licence Creative Commons Paternité – Partage dans les mêmes conditions "
+"3.0 non transposé (CC BY-SA 3.0)\" /></a> Mis à disposition sous une <a href="
+"\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\">licence Creative "
+"Commons</a>."
 msgstr ""
 
-#: inc/categorie.inc.php:167 inc/categorie.inc.php:212
-#: inc/categorie.inc.php:264
+#: inc/fonctions.inc.php:3888
 #, php-format
-msgid "Articles dans la catégorie %1$s"
+msgid ""
+"<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1$s "
+"alt=\"Licence Creative Commons Attribution – Pas de modification 3.0 non "
+"transposé (CC BY-ND 3.0)\" /></a> Mis à disposition sous une <a href="
+"\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\">licence Creative "
+"Commons</a>."
 msgstr ""
 
-#: inc/categorie.inc.php:180
+#: inc/fonctions.inc.php:3892
 #, php-format
-msgid "La page %1$s est introuvable"
+msgid ""
+"<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1$s "
+"alt=\"Licence Creative Commons Attribution – Pas d'utilisation commerciale "
+"3.0 non transposé (CC BY-NC 3.0)\" /></a> Mis à disposition sous une <a href="
+"\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\">licence Creative "
+"Commons</a>."
 msgstr ""
 
-#: inc/categorie.inc.php:185
-msgid "La page est introuvable."
-msgstr ""
-
-#: inc/categorie.inc.php:186
-msgid "La page est introuvable"
-msgstr ""
-
-#: inc/categorie.inc.php:236
+#: inc/fonctions.inc.php:3896
 #, php-format
-msgid "La catégorie %1$s ne contient aucun article."
+msgid ""
+"<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img "
+"%1$s alt=\"Licence Creative Commons Attribution – Pas d'utilisation "
+"commerciale – Partage dans les mêmes conditions 3.0 non transposé (CC BY-NC-"
+"SA 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons."
+"org/licenses/by-nc-sa/3.0/deed.fr\">licence Creative Commons</a>."
 msgstr ""
 
-#: inc/categorie.inc.php:272
+#: inc/fonctions.inc.php:3900
 #, php-format
-msgid "La catégorie %1$s est introuvable."
+msgid ""
+"<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img "
+"%1$s alt=\"Licence Creative Commons Attribution – Pas d'utilisation "
+"commerciale – Pas de modification 3.0 non transposé (CC BY-NC-ND 3.0)\" /></"
+"a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/"
+"by-nc-nd/3.0/deed.fr\">licence Creative Commons</a>."
 msgstr ""
 
-#: inc/categorie.inc.php:276
+#: inc/fonctions.inc.php:3904
 #, php-format
-msgid "La catégorie %1$s est introuvable"
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/gpl-2.0.html\"><img %1$s alt=\"Licence "
+"publique générale de GNU, version 2\" /></a> Mis à disposition sous la <a "
+"href=\"http://www.gnu.org/licenses/gpl-2.0.html\">licence publique générale "
+"de GNU, version 2</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3908
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
+"publique générale de GNU, version 2 ou toute version ultérieure\" /></a> Mis "
+"à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html"
+"\">licence publique générale de GNU, version 2 ou toute version ultérieure</"
+"a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3912
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\"><img %1$s alt=\"Licence "
+"publique générale de GNU, version 3\" /></a> Mis à disposition sous la <a "
+"href=\"http://www.gnu.org/licenses/gpl-3.0.html\">licence publique générale "
+"de GNU, version 3</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3916
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
+"publique générale de GNU, version 3 ou toute version ultérieure\" /></a> Mis "
+"à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html"
+"\">licence publique générale de GNU, version 3 ou toute version ultérieure</"
+"a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3920
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\"><img %1$s alt="
+"\"Licence publique générale GNU Affero, version 3\" /></a> Mis à disposition "
+"sous la <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\">licence "
+"publique générale GNU Affero, version 3</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3924
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/agpl.html\"><img %1$s alt=\"Licence "
+"publique générale GNU Affero, version 3 ou toute version ultérieure\" /></a> "
+"Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/agpl.html"
+"\">licence publique générale GNU Affero, version 3 ou toute version "
+"ultérieure</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3928
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\"><img %1$s alt="
+"\"Licence publique générale amoindrie de GNU, version 2.1\" /></a> Mis à "
+"disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-2.1.html"
+"\">licence publique générale amoindrie de GNU, version 2.1</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3932
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
+"publique générale amoindrie de GNU, version 2.1 ou toute version ultérieure"
+"\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/"
+"lgpl.html\">licence publique générale amoindrie de GNU, version 2.1 ou toute "
+"version ultérieure</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3936
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\"><img %1$s alt="
+"\"Licence publique générale amoindrie de GNU, version 3\" /></a> Mis à "
+"disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-3.0.html"
+"\">licence publique générale amoindrie de GNU, version 3</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3940
+#, php-format
+msgid ""
+"<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
+"publique générale amoindrie de GNU, version 3 ou toute version ultérieure\" /"
+"></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl."
+"html\">licence publique générale amoindrie de GNU, version 3 ou toute "
+"version ultérieure</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3944
+#, php-format
+msgid ""
+"<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
+"\"><img %1$s alt=\"Licence BSD modifiée\" /></a> Mis à disposition sous la "
+"<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
+"\">licence BSD modifiée</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3948
+#, php-format
+msgid ""
+"<a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr\"><img "
+"%1$s alt=\"Marque du domaine public 1.0\" /></a> Identifié comme étant dans "
+"le <a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr"
+"\">domaine public</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3952
+#, php-format
+msgid ""
+"<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1$s alt="
+"\"Licence MIT\" /></a> Mis à disposition sous la <a href=\"http://www."
+"opensource.org/licenses/mit-license.php\">licence MIT</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3956
+#, php-format
+msgid ""
+"<a href=\"http://creativecommons.org/publicdomain/zero/1.0/deed.fr\"><img "
+"%1$s alt=\"Transfert dans le domaine public – CC0 1.0 universel (CC0 1.0)\" /"
+"></a> Transféré dans le <a href=\"http://creativecommons.org/publicdomain/"
+"zero/1.0/deed.fr\">domaine public</a>."
+msgstr ""
+
+#: inc/fonctions.inc.php:3960
+msgid ""
+"La reproduction exacte et la distribution intégrale de cet article est "
+"permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
+"préservée."
+msgstr ""
+
+#: inc/fonctions.inc.php:4713
+#, php-format
+msgid ""
+"Mise à jour des langues actives impossible, puisque le fichier %1$s n'existe "
+"pas."
+msgstr ""
+
+#: inc/fonctions.inc.php:4717 inc/fonctions.inc.php:4767
+msgid ""
+"Mise à jour des langues actives impossible, puisqu'aucune langue n'a été "
+"fournie."
+msgstr ""
+
+#: inc/fonctions.inc.php:4738
+msgid "Le contenu fourni ne peut être analysé."
+msgstr ""
+
+#: inc/fonctions.inc.php:4825 inc/fonctions.inc.php:4846
+#, php-format
+msgid "Mise à jour du fichier %1$s impossible."
+msgstr ""
+
+#: inc/fonctions.inc.php:4829
+#, php-format
+msgid "Mise à jour du fichier %1$s effectuée."
+msgstr ""
+
+#: inc/fonctions.inc.php:4836
+#, php-format
+msgid "Suppression du fichier %1$s effectuée."
+msgstr ""
+
+#: inc/fonctions.inc.php:4840
+#, php-format
+msgid ""
+"Suppression du fichier %1$s impossible. Ce fichier est maintenant inutile."
+msgstr ""
+
+#: inc/fonctions.inc.php:4860
+#, php-format
+msgid "Mise à jour des langues actives dans le fichier %1$s effectuée."
+msgstr ""
+
+#: inc/fonctions.inc.php:4960
+msgid ""
+"Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
+"visitez sur ce site actuellement) est obsolète?"
+msgstr ""
+
+#: inc/fonctions.inc.php:4962
+msgid ""
+"<strong>Pour naviguer de la manière la plus satisfaisante et sécuritaire, "
+"nous recommandons d'utiliser Firefox</strong>, un navigateur libre, "
+"performant, sécuritaire et respectueux des standards sur lesquels le web est "
+"basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au "
+"travail, vous pouvez faire la suggestion à votre service informatique."
+msgstr ""
+
+#: inc/fonctions.inc.php:4964
+msgid "Télécharger Firefox"
+msgstr ""
+
+#: inc/fonctions.inc.php:5096
+msgid ""
+"Le site est présentement hors ligne pour maintenance. Certaines pages "
+"peuvent ne pas s'afficher correctement."
+msgstr ""
+
+#: inc/fonctions.inc.php:5193
+#, php-format
+msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
+msgstr ""
+
+#: inc/fonctions.inc.php:5197
+#, php-format
+msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
+msgstr ""
+
+#: inc/fonctions.inc.php:5240 inc/fonctions.inc.php:5253
+#: inc/fonctions.inc.php:5266
+#, php-format
+msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
+msgstr ""
+
+#: inc/fonctions.inc.php:5244 inc/fonctions.inc.php:5257
+#: inc/fonctions.inc.php:5270
+#, php-format
+msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
+msgstr ""
+
+#: inc/fonctions.inc.php:5365 inc/fonctions.inc.php:5366
+#, php-format
+msgid "%1$s – Page %2$s"
+msgstr ""
+
+#: inc/fonctions.inc.php:5417 inc/fonctions.inc.php:5421
+msgid "Page précédente"
+msgstr ""
+
+#: inc/fonctions.inc.php:5450 inc/fonctions.inc.php:5454
+msgid "Page suivante"
+msgstr ""
+
+#: inc/fonctions.inc.php:5539
+#, php-format
+msgid "Voyez l'image %1$s en plus grande taille!"
+msgstr ""
+
+#: inc/fonctions.inc.php:5539
+msgid "En espérant qu'elle vous intéresse!"
+msgstr ""
+
+#: inc/fonctions.inc.php:5591
+msgid "En espérant que cette page vous intéresse!"
+msgstr ""
+
+#: inc/fonctions.inc.php:5843 inc/fonctions.inc.php:6168
+msgid "Voir plus de titres"
+msgstr ""
+
+#: inc/fonctions.inc.php:5975 inc/fonctions.inc.php:6082
+msgid "Voir plus d'images"
+msgstr ""
+
+#: inc/fonctions.inc.php:6710
+msgid "Table des matières"
 msgstr ""
 
 #: inc/commentaire.inc.php:59
@@ -602,23 +1110,8 @@ msgstr ""
 msgid "Vous n'avez pas écrit de commentaire."
 msgstr ""
 
-#: inc/commentaire.inc.php:99 inc/commentaire.inc.php:112
-#, php-format
-msgid "La pièce jointe doit faire moins de %1$s Mio (%2$s octets)."
-msgstr ""
-
 #: inc/commentaire.inc.php:106
 msgid "Vous n'avez pas ajouté de pièce jointe."
-msgstr ""
-
-#: inc/commentaire.inc.php:117 inc/commentaire.inc.php:160
-#: inc/commentaire.inc.php:174 inc/commentaire.inc.php:181
-msgid "Erreur lors de l'ajout de la pièce jointe."
-msgstr ""
-
-#: inc/commentaire.inc.php:169
-#, php-format
-msgid "Le type de la pièce jointe %1$s n'est pas permis."
 msgstr ""
 
 #: inc/commentaire.inc.php:200
@@ -658,11 +1151,6 @@ msgid ""
 "Un nouveau commentaire a été posté sur la page %1$s par %2$s le %3$s à %4$s:"
 msgstr ""
 
-#: inc/commentaire.inc.php:459 inc/blocs.inc.php:148
-#: admin/commentaires.admin.php:326
-msgid "Pièce jointe: "
-msgstr ""
-
 #: inc/commentaire.inc.php:465 inc/commentaire.inc.php:556
 msgid "Liste d'actions:"
 msgstr ""
@@ -675,8 +1163,8 @@ msgstr ""
 msgid "Se désabonner des notifications de nouveaux commentaires"
 msgstr ""
 
-#: inc/commentaire.inc.php:506 admin/commentaires.admin.php:322
-#: admin/galeries.admin.php:196
+#: inc/commentaire.inc.php:506 admin/galeries.admin.php:196
+#: admin/commentaires.admin.php:322
 #, php-format
 msgid "Identifiant: %1$s"
 msgstr ""
@@ -722,8 +1210,8 @@ msgid "Désactiver l'affichage en ligne de ce commentaire"
 msgstr ""
 
 #: inc/commentaire.inc.php:571 admin/porte-documents.admin.php:426
-#: admin/porte-documents.admin.php:1868 admin/commentaires.admin.php:358
-#: admin/galeries.admin.php:20 admin/galeries.admin.php:1185
+#: admin/porte-documents.admin.php:1868 admin/galeries.admin.php:20
+#: admin/galeries.admin.php:1185 admin/commentaires.admin.php:358
 msgid "Supprimer"
 msgstr ""
 
@@ -731,696 +1219,555 @@ msgstr ""
 msgid "Modifier"
 msgstr ""
 
-#: inc/commentaire.inc.php:671 inc/blocs.inc.php:186
-msgid "Ajout d'un commentaire"
+#: inc/premier.inc.php:186 compte.php:95
+msgid "Demande de création d'un compte utilisateur"
 msgstr ""
 
-#: inc/fonctions.inc.php:307
-#, php-format
-msgid "Lire la suite de %1$s"
+#: inc/premier.inc.php:190
+msgid "Déconnexion de la section d'administration de Squeletml"
 msgstr ""
 
-#: inc/fonctions.inc.php:379
-msgid "Anonyme"
+#: inc/premier.inc.php:194
+msgid "Désabonnement aux notifications de nouveaux commentaires"
 msgstr ""
 
-#: inc/fonctions.inc.php:583
-msgid "Antipourriel<code>*</code>:"
-msgstr ""
-
-#: inc/fonctions.inc.php:587
-msgid "Antipourriel:"
-msgstr ""
-
-#: inc/fonctions.inc.php:592
+#: inc/partage-courriel.inc.php:34
 #, php-format
 msgid ""
-"Veuillez indiquer deux nombres qui, une fois additionnés, donnent %1$s (plus "
-"d'une réponse correcte):"
+"Aussi, %1$s vous a écrit un petit mot personnalisé, que vous pouvez lire ci-"
+"dessous:"
 msgstr ""
 
-#: inc/fonctions.inc.php:593
-#, php-format
-msgid "%1$s et %2$s"
-msgstr ""
-
-#: inc/fonctions.inc.php:597
-#, php-format
-msgid "Veuillez compléter: %1$s ajouté à %2$s vaut %3$s"
-msgstr ""
-
-#: inc/fonctions.inc.php:813
-msgid "Résumé"
-msgstr ""
-
-#: inc/fonctions.inc.php:1338
-msgid "Anglais"
-msgstr ""
-
-#: inc/fonctions.inc.php:1350
-msgid "Français"
-msgstr ""
-
-#: inc/fonctions.inc.php:1462
-msgid "Légende de l'image"
-msgstr ""
-
-#: inc/fonctions.inc.php:2136
-#, php-format
-msgid "Derniers ajouts à la galerie «%1$s»"
-msgstr ""
-
-#: inc/fonctions.inc.php:2141 inc/fonctions.inc.php:2143
-#, php-format
-msgid "Dernières publications dans la catégorie «%1$s»"
-msgstr ""
-
-#: inc/fonctions.inc.php:2149 inc/blocs.inc.php:515 admin/galeries.admin.php:4
-#: admin/xhtml/menu.inc.php:6
-msgid "Galeries"
-msgstr ""
-
-#: inc/fonctions.inc.php:2255 inc/fonctions.inc.php:2604
-#: inc/fonctions.inc.php:2976 inc/fonctions.inc.php:3269
-#: inc/fonctions.inc.php:5519
-#, php-format
-msgid "Image %1$s"
-msgstr ""
-
-#: inc/fonctions.inc.php:2279 inc/fonctions.inc.php:3028
+#: inc/partage-courriel.inc.php:62
 #, php-format
 msgid ""
-"Télécharger l'image %1$s au format original (extension: %2$s; taille: %3$s "
-"Kio)."
+"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
+"découvrir l'image %3$s, qui fait partie de la galerie %4$s:"
 msgstr ""
 
-#: inc/fonctions.inc.php:2284 inc/fonctions.inc.php:3034
+#: inc/partage-courriel.inc.php:120
 #, php-format
 msgid ""
-"Voir l'image %1$s au format original (extension: %2$s; taille: %3$s Kio)."
+"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
+"découvrir la galerie %3$s:"
 msgstr ""
 
-#: inc/fonctions.inc.php:2313
-#, php-format
-msgid "Consulter la page de présentation de l'image %1$s dans la galerie %2$s."
-msgstr ""
-
-#: inc/fonctions.inc.php:2408
+#: inc/partage-courriel.inc.php:135
 #, php-format
 msgid ""
-"Note: cet article a été publié le %1$s, mais une révision a été effectuée le "
-"%2$s."
+"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
+"découvrir la catégorie %3$s:"
 msgstr ""
 
-#: inc/fonctions.inc.php:2412
+#: inc/partage-courriel.inc.php:140
 #, php-format
-msgid "Note: cet article a été révisé le %1$s."
+msgid ""
+"%1$s vous a envoyé un message à partir du site %2$s pour vous faire "
+"découvrir la page suivante:"
 msgstr ""
 
-#: inc/fonctions.inc.php:2426
+#: xhtml/form-contact.inc.php:3
+msgid "Votre nom:"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:11 xhtml/form-commentaire.inc.php:30
+msgid "Votre courriel:"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:15
+msgid "Les courriels des destinataires:"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:16
+msgid ""
+"Pour envoyer le message à plus d'une personne, veuillez séparer les adresses "
+"par une virgule."
+msgstr ""
+
+#: xhtml/form-contact.inc.php:19
+msgid "Modèle du message qui sera envoyé aux destinataires:"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:25
+msgid ""
+"Optionnellement, vous pouvez ajouter ci-dessous un petit mot personnalisé:"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:28
+msgid "Votre message:"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:39 xhtml/form-commentaire.inc.php:69
+msgid "Pièce jointe:"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:45 xhtml/form-commentaire.inc.php:76
+msgid "Aide au sujet de la pièce jointe"
+msgstr ""
+
+#: xhtml/form-contact.inc.php:48 xhtml/form-commentaire.inc.php:79
 #, php-format
-msgid "Lire la suite de %1$s."
+msgid "Taille maximale: %1$s Mio (%2$s octets)"
 msgstr ""
 
-#: inc/fonctions.inc.php:2613 inc/fonctions.inc.php:3296
-msgid "Partager cette image ou voir plus d'information."
+#: xhtml/form-contact.inc.php:49 xhtml/form-commentaire.inc.php:80
+msgid "Types de fichier permis: "
 msgstr ""
 
-#: inc/fonctions.inc.php:2669 inc/fonctions.inc.php:2675
-msgid "Faire un lien vers cette page"
+#: xhtml/form-contact.inc.php:68
+msgid "Je souhaite recevoir une copie du message"
 msgstr ""
 
-#: inc/fonctions.inc.php:2685
-msgid "Lien avec l'image en vignette:"
+#: xhtml/form-contact.inc.php:76
+msgid "Envoyer le message"
 msgstr ""
 
-#: inc/fonctions.inc.php:2691
-msgid "Lien avec l'image en taille intermédiaire:"
+#: xhtml/form-commentaire.inc.php:5
+msgid "Tous les champs sont obligatoires."
 msgstr ""
 
-#: inc/fonctions.inc.php:2697
-msgid "Ajoutez le code ci-dessous sur votre site:"
+#: xhtml/form-commentaire.inc.php:7
+msgid "Les champs obligatoires sont marqués d'un astérisque (<code>*</code>)."
 msgstr ""
 
-#: inc/fonctions.inc.php:2701
-msgid "Lien textuel seulement:"
+#: xhtml/form-commentaire.inc.php:15
+msgid "Votre nom ou pseudo<code>*</code>:"
 msgstr ""
 
-#: inc/fonctions.inc.php:2808
+#: xhtml/form-commentaire.inc.php:17
+msgid "Votre nom ou pseudo:"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:28
+msgid "Votre courriel<code>*</code>:"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:33
+msgid "Le courriel ne sera pas divulgué."
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:42
+msgid "Votre site Web<code>*</code>:"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:44
+msgid "Votre site Web:"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:51
+msgid "Votre commentaire<code>*</code>:"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:55
+msgid "Aide au sujet de la syntaxe"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:58
 #, php-format
-msgid " (%1$s)"
+msgid "La <a href=\"%1$s\">syntaxe Markdown</a> peut être utilisée."
 msgstr ""
 
-#: inc/fonctions.inc.php:3029
+#: xhtml/form-commentaire.inc.php:59
 #, php-format
-msgid "Télécharger l'image %1$s au format original"
+msgid "Les balises HTML suivantes sont permises: %1$s."
 msgstr ""
 
-#: inc/fonctions.inc.php:3035
+#: xhtml/form-commentaire.inc.php:67
+msgid "Pièce jointe<code>*</code>:"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:83
+msgid "Le lien vers la pièce jointe n'est pas affiché publiquement."
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:103
+msgid ""
+"Je souhaite être notifié par courriel des nouveaux commentaires sur cette "
+"page"
+msgstr ""
+
+#: xhtml/form-commentaire.inc.php:108
+msgid "Envoyer le commentaire"
+msgstr ""
+
+#: xhtml/message-accueil-par-defaut.inc.php:2
+msgid "Bienvenue sur votre site Squeletml"
+msgstr ""
+
+#: xhtml/message-accueil-par-defaut.inc.php:4
+msgid ""
+"<p>Le logiciel libre Squeletml est un système de gestion de contenu sans "
+"base de données, utilisant un squelette de site valide XHTML 1.0 Strict et "
+"géré par inclusion de fichiers PHP, c'est-à-dire un site dont le corps de "
+"chaque page se trouve dans un fichier unique et dont les principaux éléments "
+"de structuration comme l'en-tête, le bas de page, etc. sont partagés entre "
+"toutes les pages. Il a pour but d'optimiser la création et la maintenance de "
+"ce genre de site.</p>"
+msgstr ""
+
+#: xhtml/message-accueil-par-defaut.inc.php:6
+msgid ""
+"<p>En effet, seulement deux fichiers doivent être inclus dans chaque page "
+"(un au début et un à la fin), peu importe le type de page (galerie, "
+"catégorie, formulaire de contact, etc.), et ces derniers fournissent une "
+"structure de site personnalisée et traduite dans la langue de la page (si "
+"disponible). Chaque page peut facilement avoir ses propres informations: "
+"langue, balise <code>title</code>, métabalises, feuilles de style, scripts "
+"Javascript, titre de premier niveau (<code>h1</code>), licence, table des "
+"matières, etc. L'en-tête personnalisée permet d'offrir de meilleurs repères "
+"aux internautes, d'éviter le contenu dupliqué dans les moteurs de recherche "
+"et d'avoir un site optimisé pour le référencement.</p>"
+msgstr ""
+
+#: xhtml/message-accueil-par-defaut.inc.php:8
+msgid ""
+"<p>Aussi, un fichier de configuration permet de paramétrer, par simple "
+"affectation de variables, le flux HTML ainsi que plusieurs aspects visuels "
+"sans devoir bidouiller dans les feuilles de style CSS, la structure de page "
+"XHTML ou la programmation PHP. Bien sûr, il est également possible "
+"d'utiliser ses propres styles ou structure de page.</p>"
+msgstr ""
+
+#: xhtml/message-accueil-par-defaut.inc.php:10
+msgid ""
+"<p>Enfin, Squeletml fournit plusieurs modules prêts à l'emploi: formulaires "
+"de contact, galeries photo, classement par catégories, flux RSS, "
+"commentaires avec notification, partage de la page par courriel ou par "
+"marque-pages et réseaux sociaux, cron, fichiers Sitemap, interface "
+"d'administration reproduisant les principales actions normalement effectuées "
+"par FTP, etc. Un site Squeletml peut être géré autant par l'interface "
+"graphique de l'administration que par un  simple éditeur de texte. Le tout "
+"peut facilement être traduit puisque Squeletml utilise PHP Gettext pour "
+"l'affichage de l'interface.</p>"
+msgstr ""
+
+#: xhtml/message-accueil-par-defaut.inc.php:12
+msgid ""
+"<p>Le fonctionnement de Squeletml est indéniablement inspiré de systèmes de "
+"gestion de contenu comme <a href=\"http://www.drupalfr.org/\">Drupal</a>.</p>"
+msgstr ""
+
+#: xhtml/message-accueil-par-defaut.inc.php:14
 #, php-format
-msgid "Voir l'image %1$s au format original"
+msgid ""
+"Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à "
+"personnaliser votre installation, <a href=\"%1$s\">en visitant la "
+"documentation</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3074
+#: cron.php:37
 #, php-format
-msgid "Image %1$s (extension: %2$s; taille: %3$s Kio)."
+msgid "Rapport d'exécution du cron du %1$s à %2$s"
 msgstr ""
 
-#: inc/fonctions.inc.php:3104
-msgid "Modèle d'appareil photo"
-msgstr ""
-
-#: inc/fonctions.inc.php:3108
-msgid "Date et heure"
-msgstr ""
-
-#: inc/fonctions.inc.php:3118
-msgid "Durée d'exposition"
-msgstr ""
-
-#: inc/fonctions.inc.php:3122
-msgid "Sensibilité ISO"
-msgstr ""
-
-#: inc/fonctions.inc.php:3126
-msgid "Ouverture"
-msgstr ""
-
-#: inc/fonctions.inc.php:3130
-msgid "Distance focale"
-msgstr ""
-
-#: inc/fonctions.inc.php:3134
-msgid "Fabriquant"
-msgstr ""
-
-#: inc/fonctions.inc.php:3575
+#: cron.php:39
 #, php-format
-msgid "Publié par %1$s le %2$s."
+msgid ""
+"Note: pour ne plus recevoir le rapport d'exécution du cron, <a href=\"%1$s"
+"\">modifier la variable %2$s dans le fichier de configuration du site</a>."
 msgstr ""
 
-#: inc/fonctions.inc.php:3579
-#, php-format
-msgid "Publié par %1$s."
+#: cron.php:42
+msgid "Page de lancement du cron"
 msgstr ""
 
-#: inc/fonctions.inc.php:3584
-#, php-format
-msgid "Publié le %1$s."
+#: cron.php:43
+msgid "Section d'administration du site"
 msgstr ""
 
-#: inc/fonctions.inc.php:3589
-#, php-format
-msgid "Dernière révision le %1$s."
+#: cron.php:64 admin/acces.admin.php:15
+msgid "Cache"
 msgstr ""
 
-#: inc/fonctions.inc.php:3602
+#: cron.php:79
+msgid "Aucune action à effectuer."
+msgstr ""
+
+#: cron.php:83
+msgid "Génération du cache des URL suivantes:"
+msgstr ""
+
+#: cron.php:96
+msgid "Fichier Sitemap"
+msgstr ""
+
+#: cron.php:100
+msgid "Ajout de pages dans le fichier Sitemap"
+msgstr ""
+
+#: cron.php:108
 #, php-format
-msgid "Catégorie: %1$s."
-msgid_plural "Catégories: %1$s."
+msgid "Vérification de la déclaration du fichier Sitemap dans le fichier %1$s"
+msgstr ""
+
+#: cron.php:117
+#, php-format
+msgid "Cron exécuté en %1$s seconde."
+msgid_plural "Cron exécuté en %1$s secondes."
 msgstr[0] ""
 msgstr[1] ""
 
-#: inc/fonctions.inc.php:3835
+#: cron.php:124
+msgid ""
+"Le cron est déjà en cours. La présente demande de lancement de cron a donc "
+"été annulée."
+msgstr ""
+
+#: cron.php:149
+#, php-format
+msgid "Cron du %1$s à %2$s"
+msgstr ""
+
+#: admin/versions.admin.php:3 admin/versions.admin.php:63
+msgid "Version de Squeletml et autres informations"
+msgstr ""
+
+#: admin/versions.admin.php:11 admin/versions.admin.php:50
+#, php-format
+msgid "Version de Squeletml: %1$s"
+msgstr ""
+
+#: admin/versions.admin.php:32
+#, php-format
+msgid "(<a href=\"%1$s\"><strong>la version %2$s est disponible</strong></a>)"
+msgstr ""
+
+#: admin/versions.admin.php:36
+msgid "(il s'agit de la dernière version publiée)"
+msgstr ""
+
+#: admin/versions.admin.php:40 admin/versions.admin.php:45
 #, php-format
 msgid ""
-"<a href=\"http://artlibre.org/licence/lal\"><img %1$s alt=\"Licence Art Libre"
-"\" /></a> Mis à disposition sous la <a href=\"http://artlibre.org/licence/lal"
-"\">licence Art Libre</a>."
+"(impossible de vérifier si une version plus récente a été publiée; <a href="
+"\"%1$s\">vérifier manuellement</a>)"
 msgstr ""
 
-#: inc/fonctions.inc.php:3839
+#: admin/versions.admin.php:50
+msgid "impossible de déterminer la version"
+msgstr ""
+
+#: admin/versions.admin.php:55
+msgid "La bibliothèque GD est installée."
+msgstr ""
+
+#: admin/versions.admin.php:59
+msgid "La bibliothèque GD n'est pas installée."
+msgstr ""
+
+#: admin/versions.admin.php:65
+msgid "Aperçu"
+msgstr ""
+
+#: admin/versions.admin.php:69
+#, php-format
+msgid "Version de PHP: %1$s"
+msgstr ""
+
+#: admin/versions.admin.php:70
+#, php-format
+msgid "Version d'Apache: %1$s"
+msgstr ""
+
+#: admin/versions.admin.php:73
+#, php-format
+msgid "Système d'exploitation: %1$s"
+msgstr ""
+
+#: admin/versions.admin.php:77
+msgid "Afficher le <code>phpinfo()</code>"
+msgstr ""
+
+#: admin/versions.admin.php:78
+msgid "Afficher la liste des fonctions internes de PHP"
+msgstr ""
+
+#: admin/versions.admin.php:82
+msgid "Fonctions internes de PHP"
+msgstr ""
+
+#: admin/versions.admin.php:88
 #, php-format
 msgid ""
-"<a href=\"http://creativecommons.org/licenses/by/3.0/deed.fr\"><img %1$s alt="
-"\"Licence Creative Commons Attribution 3.0 non transposé (CC BY 3.0)\" /></"
-"a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/"
-"by/3.0/deed.fr\">licence Creative Commons</a>."
+"Il y a %1$s fonctions internes réparties entre %2$s modules. En voici la "
+"liste:"
 msgstr ""
 
-#: inc/fonctions.inc.php:3843
-#, php-format
-msgid ""
-"<a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\"><img %1$s "
-"alt=\"Licence Creative Commons Paternité – Partage dans les mêmes conditions "
-"3.0 non transposé (CC BY-SA 3.0)\" /></a> Mis à disposition sous une <a href="
-"\"http://creativecommons.org/licenses/by-sa/3.0/deed.fr\">licence Creative "
-"Commons</a>."
+#: admin/rss.admin.php:3
+msgid "Flux RSS globaux"
 msgstr ""
 
-#: inc/fonctions.inc.php:3847
-#, php-format
-msgid ""
-"<a href=\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\"><img %1$s "
-"alt=\"Licence Creative Commons Attribution – Pas de modification 3.0 non "
-"transposé (CC BY-ND 3.0)\" /></a> Mis à disposition sous une <a href="
-"\"http://creativecommons.org/licenses/by-nd/3.0/deed.fr\">licence Creative "
-"Commons</a>."
+#: admin/rss.admin.php:9
+msgid "Gestion des flux RSS globaux"
 msgstr ""
 
-#: inc/fonctions.inc.php:3851
-#, php-format
-msgid ""
-"<a href=\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\"><img %1$s "
-"alt=\"Licence Creative Commons Attribution – Pas d'utilisation commerciale "
-"3.0 non transposé (CC BY-NC 3.0)\" /></a> Mis à disposition sous une <a href="
-"\"http://creativecommons.org/licenses/by-nc/3.0/deed.fr\">licence Creative "
-"Commons</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3855
-#, php-format
-msgid ""
-"<a href=\"http://creativecommons.org/licenses/by-nc-sa/3.0/deed.fr\"><img "
-"%1$s alt=\"Licence Creative Commons Attribution – Pas d'utilisation "
-"commerciale – Partage dans les mêmes conditions 3.0 non transposé (CC BY-NC-"
-"SA 3.0)\" /></a> Mis à disposition sous une <a href=\"http://creativecommons."
-"org/licenses/by-nc-sa/3.0/deed.fr\">licence Creative Commons</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3859
-#, php-format
-msgid ""
-"<a href=\"http://creativecommons.org/licenses/by-nc-nd/3.0/deed.fr\"><img "
-"%1$s alt=\"Licence Creative Commons Attribution – Pas d'utilisation "
-"commerciale – Pas de modification 3.0 non transposé (CC BY-NC-ND 3.0)\" /></"
-"a> Mis à disposition sous une <a href=\"http://creativecommons.org/licenses/"
-"by-nc-nd/3.0/deed.fr\">licence Creative Commons</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3863
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/gpl-2.0.html\"><img %1$s alt=\"Licence "
-"publique générale de GNU, version 2\" /></a> Mis à disposition sous la <a "
-"href=\"http://www.gnu.org/licenses/gpl-2.0.html\">licence publique générale "
-"de GNU, version 2</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3867
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
-"publique générale de GNU, version 2 ou toute version ultérieure\" /></a> Mis "
-"à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html"
-"\">licence publique générale de GNU, version 2 ou toute version ultérieure</"
-"a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3871
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/gpl-3.0.html\"><img %1$s alt=\"Licence "
-"publique générale de GNU, version 3\" /></a> Mis à disposition sous la <a "
-"href=\"http://www.gnu.org/licenses/gpl-3.0.html\">licence publique générale "
-"de GNU, version 3</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3875
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/gpl.html\"><img %1$s alt=\"Licence "
-"publique générale de GNU, version 3 ou toute version ultérieure\" /></a> Mis "
-"à disposition sous la <a href=\"http://www.gnu.org/licenses/gpl.html"
-"\">licence publique générale de GNU, version 3 ou toute version ultérieure</"
-"a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3879
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/agpl-3.0.html\"><img %1$s alt="
-"\"Licence publique générale GNU Affero, version 3\" /></a> Mis à disposition "
-"sous la <a href=\"http://www.gnu.org/licenses/agpl-3.0.html\">licence "
-"publique générale GNU Affero, version 3</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3883
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/agpl.html\"><img %1$s alt=\"Licence "
-"publique générale GNU Affero, version 3 ou toute version ultérieure\" /></a> "
-"Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/agpl.html"
-"\">licence publique générale GNU Affero, version 3 ou toute version "
-"ultérieure</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3887
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/lgpl-2.1.html\"><img %1$s alt="
-"\"Licence publique générale amoindrie de GNU, version 2.1\" /></a> Mis à "
-"disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-2.1.html"
-"\">licence publique générale amoindrie de GNU, version 2.1</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3891
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
-"publique générale amoindrie de GNU, version 2.1 ou toute version ultérieure"
-"\" /></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/"
-"lgpl.html\">licence publique générale amoindrie de GNU, version 2.1 ou toute "
-"version ultérieure</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3895
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/lgpl-3.0.html\"><img %1$s alt="
-"\"Licence publique générale amoindrie de GNU, version 3\" /></a> Mis à "
-"disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl-3.0.html"
-"\">licence publique générale amoindrie de GNU, version 3</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3899
-#, php-format
-msgid ""
-"<a href=\"http://www.gnu.org/licenses/lgpl.html\"><img %1$s alt=\"Licence "
-"publique générale amoindrie de GNU, version 3 ou toute version ultérieure\" /"
-"></a> Mis à disposition sous la <a href=\"http://www.gnu.org/licenses/lgpl."
-"html\">licence publique générale amoindrie de GNU, version 3 ou toute "
-"version ultérieure</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3903
-#, php-format
-msgid ""
-"<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
-"\"><img %1$s alt=\"Licence BSD modifiée\" /></a> Mis à disposition sous la "
-"<a href=\"http://fr.wikipedia.org/wiki/Licence_BSD#Texte_de_la_licence"
-"\">licence BSD modifiée</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3907
-#, php-format
-msgid ""
-"<a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr\"><img "
-"%1$s alt=\"Marque du domaine public 1.0\" /></a> Identifié comme étant dans "
-"le <a href=\"http://creativecommons.org/publicdomain/mark/1.0/deed.fr"
-"\">domaine public</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3911
-#, php-format
-msgid ""
-"<a href=\"http://www.opensource.org/licenses/mit-license.php\"><img %1$s alt="
-"\"Licence MIT\" /></a> Mis à disposition sous la <a href=\"http://www."
-"opensource.org/licenses/mit-license.php\">licence MIT</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3915
-#, php-format
-msgid ""
-"<a href=\"http://creativecommons.org/publicdomain/zero/1.0/deed.fr\"><img "
-"%1$s alt=\"Transfert dans le domaine public – CC0 1.0 universel (CC0 1.0)\" /"
-"></a> Transféré dans le <a href=\"http://creativecommons.org/publicdomain/"
-"zero/1.0/deed.fr\">domaine public</a>."
-msgstr ""
-
-#: inc/fonctions.inc.php:3919
-msgid ""
-"La reproduction exacte et la distribution intégrale de cet article est "
-"permise sur n'importe quel support d'archivage, pourvu que cette notice soit "
-"préservée."
-msgstr ""
-
-#: inc/fonctions.inc.php:4672
-#, php-format
-msgid ""
-"Mise à jour des langues actives impossible, puisque le fichier %1$s n'existe "
-"pas."
-msgstr ""
-
-#: inc/fonctions.inc.php:4676 inc/fonctions.inc.php:4726
-msgid ""
-"Mise à jour des langues actives impossible, puisqu'aucune langue n'a été "
-"fournie."
-msgstr ""
-
-#: inc/fonctions.inc.php:4697
-msgid "Le contenu fourni ne peut être analysé."
-msgstr ""
-
-#: inc/fonctions.inc.php:4784 inc/fonctions.inc.php:4805
-#, php-format
-msgid "Mise à jour du fichier %1$s impossible."
-msgstr ""
-
-#: inc/fonctions.inc.php:4788
-#, php-format
-msgid "Mise à jour du fichier %1$s effectuée."
-msgstr ""
-
-#: inc/fonctions.inc.php:4795
-#, php-format
-msgid "Suppression du fichier %1$s effectuée."
-msgstr ""
-
-#: inc/fonctions.inc.php:4799
-#, php-format
-msgid ""
-"Suppression du fichier %1$s impossible. Ce fichier est maintenant inutile."
-msgstr ""
-
-#: inc/fonctions.inc.php:4819
-#, php-format
-msgid "Mise à jour des langues actives dans le fichier %1$s effectuée."
-msgstr ""
-
-#: inc/fonctions.inc.php:4919
-msgid ""
-"Savez-vous que le navigateur Internet&nbsp;Explorer&nbsp;6 (avec lequel vous "
-"visitez sur ce site actuellement) est obsolète?"
-msgstr ""
-
-#: inc/fonctions.inc.php:4921
-msgid ""
-"<strong>Pour naviguer de la manière la plus satisfaisante et sécuritaire, "
-"nous recommandons d'utiliser Firefox</strong>, un navigateur libre, "
-"performant, sécuritaire et respectueux des standards sur lesquels le web est "
-"basé. Firefox est tout à fait gratuit. Si vous utilisez un ordinateur au "
-"travail, vous pouvez faire la suggestion à votre service informatique."
-msgstr ""
-
-#: inc/fonctions.inc.php:4923
-msgid "Télécharger Firefox"
-msgstr ""
-
-#: inc/fonctions.inc.php:5055
-msgid ""
-"Le site est présentement hors ligne pour maintenance. Certaines pages "
-"peuvent ne pas s'afficher correctement."
-msgstr ""
-
-#: inc/fonctions.inc.php:5152
-#, php-format
-msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> effectuée."
-msgstr ""
-
-#: inc/fonctions.inc.php:5156
-#, php-format
-msgid "Copie de <code>%1$s</code> sous le nom <code>%2$s</code> impossible."
-msgstr ""
-
-#: inc/fonctions.inc.php:5199 inc/fonctions.inc.php:5212
-#: inc/fonctions.inc.php:5225
-#, php-format
-msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> effectuée."
-msgstr ""
-
-#: inc/fonctions.inc.php:5203 inc/fonctions.inc.php:5216
-#: inc/fonctions.inc.php:5229
-#, php-format
-msgid "Création de <code>%1$s</code> à partir de <code>%2$s</code> impossible."
-msgstr ""
-
-#: inc/fonctions.inc.php:5324 inc/fonctions.inc.php:5325
-#, php-format
-msgid "%1$s – Page %2$s"
-msgstr ""
-
-#: inc/fonctions.inc.php:5376 inc/fonctions.inc.php:5380
-msgid "Page précédente"
-msgstr ""
-
-#: inc/fonctions.inc.php:5409 inc/fonctions.inc.php:5413
-msgid "Page suivante"
-msgstr ""
-
-#: inc/fonctions.inc.php:5498
-#, php-format
-msgid "Voyez l'image %1$s en plus grande taille!"
-msgstr ""
-
-#: inc/fonctions.inc.php:5498
-msgid "En espérant qu'elle vous intéresse!"
-msgstr ""
-
-#: inc/fonctions.inc.php:5550
-msgid "En espérant que cette page vous intéresse!"
-msgstr ""
-
-#: inc/fonctions.inc.php:5802 inc/fonctions.inc.php:6127
-msgid "Voir plus de titres"
-msgstr ""
-
-#: inc/fonctions.inc.php:5934 inc/fonctions.inc.php:6041
-msgid "Voir plus d'images"
-msgstr ""
-
-#: inc/fonctions.inc.php:6669
-msgid "Table des matières"
-msgstr ""
-
-#: inc/blocs.inc.php:119
-#, php-format
-msgid "%1$s a écrit le %2$s à %3$s (<a href=\"%4$s\">lien</a>):"
-msgstr ""
-
-#: inc/blocs.inc.php:123
-#, php-format
-msgid "%1$s a écrit le %2$s (<a href=\"%3$s\">lien</a>):"
-msgstr ""
-
-#: inc/blocs.inc.php:127
-#, php-format
-msgid "%1$s a écrit à %2$s (<a href=\"%3$s\">lien</a>):"
-msgstr ""
-
-#: inc/blocs.inc.php:160
-msgid "Aucun commentaire."
-msgstr ""
-
-#: inc/blocs.inc.php:175
-#, php-format
-msgid "Commentaires (%1$s)"
-msgstr ""
-
-#: inc/blocs.inc.php:179 admin/commentaires.admin.php:1092
-#: admin/xhtml/menu.inc.php:10
-msgid "Commentaires"
-msgstr ""
-
-#: inc/blocs.inc.php:190
-msgid "Ajouter un commentaire."
-msgstr ""
-
-#: inc/blocs.inc.php:194
-msgid "L'ajout de commentaires est désactivé."
-msgstr ""
-
-#: inc/blocs.inc.php:238 admin/xhtml/menu.inc.php:12
-msgid "Flux RSS"
-msgstr ""
-
-#: inc/blocs.inc.php:363
-msgid "Sauf mention contraire:"
-msgstr ""
-
-#: inc/blocs.inc.php:443 admin/categories.admin.php:3
-#: admin/xhtml/menu.inc.php:8
-msgid "Catégories"
-msgstr ""
-
-#: inc/blocs.inc.php:569 admin/acces.admin.php:13
-msgid "Langues"
-msgstr ""
-
-#: inc/blocs.inc.php:619
-msgid "Partager"
-msgstr ""
-
-#: inc/blocs.inc.php:626
-msgid "Par courriel"
-msgstr ""
-
-#: inc/blocs.inc.php:696
-msgid "Rechercher dans le site"
-msgstr ""
-
-#: inc/blocs.inc.php:700
-msgid "Rechercher"
-msgstr ""
-
-#: deconnexion.php:15
-msgid ""
-"Pour vous assurer de la déconnexion, visitez l'accueil de la section "
-"d'administration. Si une fenêtre de connexion vous demande de vous "
-"identifier, la déconnexion a été effectuée avec succès."
-msgstr ""
-
-#: admin/sitemap.admin.php:3 admin/sitemap.admin.php:61
-msgid "Fichiers Sitemap"
-msgstr ""
-
-#: admin/sitemap.admin.php:10
-msgid "Gestion des fichiers Sitemap"
-msgstr ""
-
-#: admin/sitemap.admin.php:13 admin/porte-documents.admin.php:107
-#: admin/commentaires.admin.php:12 admin/acces.admin.php:26
-#: admin/galeries.admin.php:35 admin/categories.admin.php:11
-#: admin/rss.admin.php:12
+#: admin/rss.admin.php:12 admin/categories.admin.php:11
+#: admin/porte-documents.admin.php:107 admin/acces.admin.php:26
+#: admin/galeries.admin.php:35 admin/sitemap.admin.php:13
+#: admin/commentaires.admin.php:12
 msgid "Messages d'avancement, de confirmation ou d'erreur"
 msgstr ""
 
-#: admin/sitemap.admin.php:22
-msgid "Ajout automatique des pages du site dans le fichier Sitemap"
+#: admin/rss.admin.php:29
+msgid "Liste des pages du flux RSS des derniers ajouts aux galeries"
 msgstr ""
 
-#: admin/sitemap.admin.php:34
+#: admin/rss.admin.php:32
+#, php-format
 msgid ""
-"Vérification de la déclaration du fichier Sitemap dans le fichier "
-"<code>robots.txt</code>"
+"Cette liste est générée à partir des galeries dont le flux RSS est activé "
+"dans le <a href=\"%1$s\">fichier de configuration des galeries</a>."
 msgstr ""
 
-#: admin/sitemap.admin.php:45 admin/commentaires.admin.php:1020
-#: admin/categories.admin.php:258 admin/rss.admin.php:165
-#: admin/rss.admin.php:310
-msgid "Configuration actuelle"
+#: admin/rss.admin.php:52 admin/inc/fonctions.inc.php:592
+#, php-format
+msgid ""
+"Aucune page ne peut faire partie du flux RSS des dernières publications "
+"puisque le fichier %1$s n'existe pas, et sa création automatique a échoué. "
+"Veuillez créer ce fichier manuellement."
 msgstr ""
 
-#: admin/sitemap.admin.php:50
-msgid "L'ajout de pages par le cron dans le fichier Sitemap est activé"
+#: admin/rss.admin.php:108 admin/categories.admin.php:59
+#: admin/categories.admin.php:181 admin/galeries.admin.php:215
+#: admin/commentaires.admin.php:49 admin/commentaires.admin.php:56
+#: admin/commentaires.admin.php:61
+#, php-format
+msgid "Éditer «%1$s»"
 msgstr ""
 
-#: admin/sitemap.admin.php:52
-msgid "L'ajout de pages par le cron dans le fichier Sitemap n'est pas activé"
+#: admin/rss.admin.php:109 admin/categories.admin.php:62
+#: admin/categories.admin.php:182 admin/porte-documents.admin.php:1292
+#: admin/inc/fonctions.inc.php:1260
+#, php-format
+msgid "Afficher «%1$s»"
 msgstr ""
 
-#: admin/sitemap.admin.php:56 admin/commentaires.admin.php:1043
-#: admin/rss.admin.php:327
-msgid "Modifier cette configuration."
+#: admin/rss.admin.php:128
+msgid "Liste des pages du flux RSS des dernières publications"
 msgstr ""
 
-#: admin/sitemap.admin.php:66 admin/porte-documents.admin.php:150
+#: admin/rss.admin.php:131 admin/categories.admin.php:199
+#: admin/porte-documents.admin.php:2074 admin/porte-documents.admin.php:2170
+#: admin/xhtml/menu.inc.php:16 admin/galeries.admin.php:2178
+#: admin/galeries.admin.php:2195 admin/galeries.admin.php:2349
+#: admin/galeries.admin.php:2466 admin/galeries.admin.php:2554
+#: admin/galeries.admin.php:2637 admin/galeries.admin.php:2777
+#: admin/galeries.admin.php:2816 admin/commentaires.admin.php:629
+#: admin/commentaires.admin.php:739 admin/commentaires.admin.php:1051
+msgid "Aide"
+msgstr ""
+
+#: admin/rss.admin.php:134
+#, php-format
+msgid ""
+"Les pages sont classées par section représentant la langue. À l'intérieur "
+"d'une section, chaque ligne est sous la forme %1$s. Voici un exemple:"
+msgstr ""
+
+#: admin/rss.admin.php:134 admin/categories.admin.php:202
+msgid "URL relative de la page"
+msgstr ""
+
+#: admin/rss.admin.php:143
+#, php-format
+msgid "Cet exemple fait référence à une page en français dont l'URL est %1$s."
+msgstr ""
+
+#: admin/rss.admin.php:145 admin/categories.admin.php:223
+msgid "Pour enlever une page, simplement supprimer le contenu du champ."
+msgstr ""
+
+#: admin/rss.admin.php:147 admin/categories.admin.php:225
+msgid ""
+"Prendre note que si une URL contient des caractères spéciaux, elle devra "
+"être fournie sous forme encodée. Le plus simple est de copier l'adresse dans "
+"la barre de navigation du navigateur utilisé et de coller le résultat dans "
+"le champ approprié. L'URL racine sera automatiquement supprimée pour "
+"convertir l'adresse fournie en adresse relative."
+msgstr ""
+
+#: admin/rss.admin.php:149 admin/galeries.admin.php:2204
+msgid "Voici un exemple:"
+msgstr ""
+
+#: admin/rss.admin.php:153 admin/categories.admin.php:235
+#: admin/galeries.admin.php:2208
+msgid "Le résultat sera semblable à ci-dessous:"
+msgstr ""
+
+#: admin/rss.admin.php:157 admin/categories.admin.php:250
+msgid ""
+"Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche "
+"correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à "
+"l'intérieur de la liste."
+msgstr ""
+
+#: admin/rss.admin.php:162 admin/rss.admin.php:337
+#: admin/categories.admin.php:255 admin/porte-documents.admin.php:150
 #: admin/porte-documents.admin.php:293 admin/porte-documents.admin.php:520
 #: admin/porte-documents.admin.php:631 admin/porte-documents.admin.php:2118
-#: admin/porte-documents.admin.php:2180 admin/commentaires.admin.php:647
+#: admin/porte-documents.admin.php:2180 admin/acces.admin.php:644
+#: admin/acces.admin.php:669 admin/acces.admin.php:723
+#: admin/acces.admin.php:762 admin/galeries.admin.php:2219
+#: admin/galeries.admin.php:2359 admin/galeries.admin.php:2492
+#: admin/galeries.admin.php:2564 admin/galeries.admin.php:2649
+#: admin/galeries.admin.php:2688 admin/galeries.admin.php:2729
+#: admin/galeries.admin.php:2787 admin/galeries.admin.php:2826
+#: admin/sitemap.admin.php:66 admin/commentaires.admin.php:647
 #: admin/commentaires.admin.php:751 admin/commentaires.admin.php:1061
-#: admin/acces.admin.php:644 admin/acces.admin.php:669
-#: admin/acces.admin.php:723 admin/acces.admin.php:762
-#: admin/galeries.admin.php:2219 admin/galeries.admin.php:2359
-#: admin/galeries.admin.php:2492 admin/galeries.admin.php:2564
-#: admin/galeries.admin.php:2649 admin/galeries.admin.php:2688
-#: admin/galeries.admin.php:2729 admin/galeries.admin.php:2787
-#: admin/galeries.admin.php:2826 admin/categories.admin.php:255
-#: admin/rss.admin.php:162 admin/rss.admin.php:337
 msgid "Options"
 msgstr ""
 
-#: admin/sitemap.admin.php:69
-msgid "Ajouter automatiquement les pages du site dans le fichier Sitemap"
+#: admin/rss.admin.php:165 admin/rss.admin.php:310
+#: admin/categories.admin.php:258 admin/sitemap.admin.php:45
+#: admin/commentaires.admin.php:1020
+msgid "Configuration actuelle"
 msgstr ""
 
-#: admin/sitemap.admin.php:71
-#, php-format
-msgid "Vérifier la déclaration du fichier Sitemap dans le fichier %1$s"
+#: admin/rss.admin.php:169 admin/categories.admin.php:262
+msgid "Le fichier est vide. Aucune page n'y est listée."
 msgstr ""
 
-#: admin/sitemap.admin.php:75
-msgid "Choisir"
+#: admin/rss.admin.php:181 admin/categories.admin.php:274
+msgid "Ajouter une page"
+msgstr ""
+
+#: admin/rss.admin.php:206 admin/categories.admin.php:358
+#: admin/commentaires.admin.php:669 admin/commentaires.admin.php:783
+msgid "Enregistrer les modifications"
+msgstr ""
+
+#: admin/rss.admin.php:224
+msgid "Enregistrement des modifications pour les pages du site"
+msgstr ""
+
+#: admin/rss.admin.php:315
+msgid "Le flux RSS des dernières publications est activé"
+msgstr ""
+
+#: admin/rss.admin.php:317
+msgid "Le flux RSS des dernières publications n'est pas activé"
+msgstr ""
+
+#: admin/rss.admin.php:321
+msgid "Le flux RSS des derniers ajouts aux galeries est activé"
+msgstr ""
+
+#: admin/rss.admin.php:323
+msgid "Le flux RSS des derniers ajouts aux galeries n'est pas activé"
+msgstr ""
+
+#: admin/rss.admin.php:327 admin/sitemap.admin.php:56
+#: admin/commentaires.admin.php:1043
+msgid "Modifier cette configuration."
+msgstr ""
+
+#: admin/rss.admin.php:332
+msgid "Pages ajoutées aux flux RSS globaux"
+msgstr ""
+
+#: admin/rss.admin.php:345
+msgid "Lister les pages"
 msgstr ""
 
 #: admin/documentation.admin.php:7
@@ -1443,6 +1790,172 @@ msgstr ""
 msgid ""
 "<a href=\"%1$s\">Consulter une introduction à Squeletml</a> au lieu de la "
 "documentation complète ci-dessous."
+msgstr ""
+
+#: admin/categories.admin.php:8
+msgid "Gestion des catégories"
+msgstr ""
+
+#: admin/categories.admin.php:25 admin/porte-documents.admin.php:1500
+#: admin/inc/fonctions.inc.php:1676
+#, php-format
+msgid ""
+"La gestion des catégories est impossible puisque le fichier %1$s n'existe "
+"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
+"manuellement."
+msgstr ""
+
+#: admin/categories.admin.php:156 admin/categories.admin.php:324
+#: admin/galeries.admin.php:2245 admin/galeries.admin.php:2607
+msgid "Activé"
+msgstr ""
+
+#: admin/categories.admin.php:164 admin/categories.admin.php:325
+#: admin/galeries.admin.php:2246 admin/galeries.admin.php:2608
+msgid "Désactivé"
+msgstr ""
+
+#: admin/categories.admin.php:196
+msgid "Liste des pages classées par catégorie"
+msgstr ""
+
+#: admin/categories.admin.php:202
+#, php-format
+msgid ""
+"Les pages sont classées par section représentant une catégorie. À "
+"l'intérieur d'une section, chaque page est déclarée sous la forme %1$s. "
+"Optionnellement, vous pouvez préciser la langue à laquelle appartient une "
+"catégorie, et ce à l'aide du paramètre %2$s. Vous pouvez également préciser "
+"l'URL relative de la page d'accueil de chaque catégorie à l'aide du "
+"paramètre %3$s ainsi que la catégorie parente, s'il y a lieu, grâce à %4$s. "
+"Voici un exemple:"
+msgstr ""
+
+#: admin/categories.admin.php:202
+msgid "langue à laquelle appartient la catégorie"
+msgstr ""
+
+#: admin/categories.admin.php:202
+msgid "URL relative de la page d'accueil de la catégorie"
+msgstr ""
+
+#: admin/categories.admin.php:202
+msgid "identifiant de la catégorie parente"
+msgstr ""
+
+#: admin/categories.admin.php:217
+#, php-format
+msgid ""
+"Cet exemple fait référence à la catégorie en français «%1$s», accessible à "
+"l'adresse %2$s, enfant de la catégorie «%3$s» et contenant une page dont "
+"l'URL est %4$s."
+msgstr ""
+
+#: admin/categories.admin.php:219
+#, php-format
+msgid ""
+"Si la langue d'une catégorie n'est pas précisée à l'aide du paramètre %1$s, "
+"la langue sera celle déclarée par défaut dans le fichier de configuration du "
+"site."
+msgstr ""
+
+#: admin/categories.admin.php:221
+#, php-format
+msgid ""
+"Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du "
+"paramètre %1$s, l'URL sera générée automatiquement, et ce sous la forme %2$s "
+"(%3$s représente la variable %4$s filtrée). Dans ce cas, il n'est pas "
+"nécessaire de créer la page d'accueil manuellement puisque %5$s est une page "
+"livrée par défaut avec Squeletml et gérant l'affichage des articles d'une "
+"catégorie."
+msgstr ""
+
+#: admin/categories.admin.php:227
+msgid "Voici un exemple pour l'URL d'une nouvelle catégorie:"
+msgstr ""
+
+#: admin/categories.admin.php:231
+msgid "et pour une nouvelle page dans cette catégorie:"
+msgstr ""
+
+#: admin/categories.admin.php:276
+msgid ""
+"Il est possible d'ajouter une page à plus d'une catégorie. Il est aussi "
+"possible de créer une catégorie. Pour ce faire, ajouter «Nouvelle catégorie» "
+"à votre sélection et saisir le nom dans le champ. Pour créer plus d'une "
+"catégorie, séparer les noms par un carré (exemple: <code>animaux#chiens</"
+"code>)."
+msgstr ""
+
+#: admin/categories.admin.php:280 admin/porte-documents.admin.php:1341
+msgid "Nouvelle catégorie:"
+msgstr ""
+
+#: admin/categories.admin.php:297
+msgid "Nouvelle catégorie"
+msgstr ""
+
+#: admin/categories.admin.php:300
+msgid ""
+"Si nouvelle catégorie, URL de la page Web (laisser vide pour génération "
+"automatique; si plusieurs catégories sont créées, il y aura génération "
+"automatique):"
+msgstr ""
+
+#: admin/categories.admin.php:320
+msgid "Si nouvelle catégorie, langue:"
+msgstr ""
+
+#: admin/categories.admin.php:322
+msgid "Si nouvelle catégorie, RSS:"
+msgstr ""
+
+#: admin/categories.admin.php:331
+msgid "Options d'ajout"
+msgstr ""
+
+#: admin/categories.admin.php:352 admin/porte-documents.admin.php:1397
+#, php-format
+msgid ""
+"Ajouter la page dans le <a href=\"%1$s\">flux RSS des dernières "
+"publications</a> pour la langue %2$s."
+msgstr ""
+
+#: admin/categories.admin.php:595 admin/galeries.admin.php:2129
+#, php-format
+msgid ""
+"La page web %1$s existe déjà. Vous pouvez <a href=\"%2$s\">éditer le "
+"fichier</a> ou <a href=\"%3$s\">visiter la page</a>."
+msgstr ""
+
+#: admin/categories.admin.php:608 admin/galeries.admin.php:2143
+#, php-format
+msgid ""
+"Création du modèle de page %1$s effectuée. Vous pouvez <a href=\"%2$s"
+"\">éditer le fichier</a> ou <a href=\"%3$s\">visiter la page</a>."
+msgstr ""
+
+#: admin/categories.admin.php:653 admin/porte-documents.admin.php:1714
+msgid "Enregistrement des modifications des catégories"
+msgstr ""
+
+#: admin/categories.admin.php:664 admin/porte-documents.admin.php:1734
+#, php-format
+msgid ""
+"La gestion des flux RSS est impossible puisque le fichier %1$s n'existe pas, "
+"et sa création automatique a échoué. Veuillez créer ce fichier manuellement."
+msgstr ""
+
+#: admin/categories.admin.php:724 admin/porte-documents.admin.php:1817
+msgid "Enregistrement des modifications du flux RSS des dernières publications"
+msgstr ""
+
+#: admin/categories.admin.php:732 admin/porte-documents.admin.php:1856
+msgid "Actions"
+msgstr ""
+
+#: admin/categories.admin.php:735
+msgid "Lister les pages classées par catégorie."
 msgstr ""
 
 #: admin/porte-documents.admin.php:6 admin/porte-documents.admin.php:104
@@ -1820,13 +2333,6 @@ msgid ""
 "modifications»."
 msgstr ""
 
-#: admin/porte-documents.admin.php:1292 admin/inc/fonctions.inc.php:1260
-#: admin/categories.admin.php:62 admin/categories.admin.php:182
-#: admin/rss.admin.php:109
-#, php-format
-msgid "Afficher «%1$s»"
-msgstr ""
-
 #: admin/porte-documents.admin.php:1296
 #, php-format
 msgid ""
@@ -1839,10 +2345,6 @@ msgstr ""
 msgid "Catégories auxquelles appartient la page:"
 msgstr ""
 
-#: admin/porte-documents.admin.php:1341 admin/categories.admin.php:280
-msgid "Nouvelle catégorie:"
-msgstr ""
-
 #: admin/porte-documents.admin.php:1368
 msgid "Aucune catégorie"
 msgstr ""
@@ -1852,13 +2354,6 @@ msgstr ""
 msgid ""
 "Supprimer la page du <a href=\"%1$s\">flux RSS des dernières publications</"
 "a> pour la langue %2$s."
-msgstr ""
-
-#: admin/porte-documents.admin.php:1397 admin/categories.admin.php:352
-#, php-format
-msgid ""
-"Ajouter la page dans le <a href=\"%1$s\">flux RSS des dernières "
-"publications</a> pour la langue %2$s."
 msgstr ""
 
 #: admin/porte-documents.admin.php:1403
@@ -1908,15 +2403,6 @@ msgstr ""
 msgid "<a href=\"%1$s\">Tenter à nouveau d'éditer le fichier.</a>"
 msgstr ""
 
-#: admin/porte-documents.admin.php:1500 admin/inc/fonctions.inc.php:1676
-#: admin/categories.admin.php:25
-#, php-format
-msgid ""
-"La gestion des catégories est impossible puisque le fichier %1$s n'existe "
-"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
-"manuellement."
-msgstr ""
-
 #: admin/porte-documents.admin.php:1705
 #, php-format
 msgid "Impossible de lire le contenu du fichier %1$s."
@@ -1926,27 +2412,8 @@ msgstr ""
 msgid "Aucune modification à apporter."
 msgstr ""
 
-#: admin/porte-documents.admin.php:1714 admin/categories.admin.php:653
-msgid "Enregistrement des modifications des catégories"
-msgstr ""
-
-#: admin/porte-documents.admin.php:1734 admin/categories.admin.php:664
-#, php-format
-msgid ""
-"La gestion des flux RSS est impossible puisque le fichier %1$s n'existe pas, "
-"et sa création automatique a échoué. Veuillez créer ce fichier manuellement."
-msgstr ""
-
-#: admin/porte-documents.admin.php:1817 admin/categories.admin.php:724
-msgid "Enregistrement des modifications du flux RSS des dernières publications"
-msgstr ""
-
 #: admin/porte-documents.admin.php:1852
 msgid "Liste des fichiers et dossiers"
-msgstr ""
-
-#: admin/porte-documents.admin.php:1856 admin/categories.admin.php:732
-msgid "Actions"
 msgstr ""
 
 #: admin/porte-documents.admin.php:1858 admin/porte-documents.admin.php:2153
@@ -1997,8 +2464,8 @@ msgstr ""
 msgid "Parcourir «%1$s»"
 msgstr ""
 
-#: admin/porte-documents.admin.php:1990 admin/acces.admin.php:18
-#: admin/galeries.admin.php:27 admin/xhtml/bas-de-page.inc.php:1
+#: admin/porte-documents.admin.php:1990 admin/xhtml/bas-de-page.inc.php:1
+#: admin/acces.admin.php:18 admin/galeries.admin.php:27
 msgid "Haut"
 msgstr ""
 
@@ -2012,17 +2479,6 @@ msgstr ""
 
 #: admin/porte-documents.admin.php:2071 admin/xhtml/raccourcis.inc.php:2
 msgid "Ajouter un fichier"
-msgstr ""
-
-#: admin/porte-documents.admin.php:2074 admin/porte-documents.admin.php:2170
-#: admin/commentaires.admin.php:629 admin/commentaires.admin.php:739
-#: admin/commentaires.admin.php:1051 admin/galeries.admin.php:2178
-#: admin/galeries.admin.php:2195 admin/galeries.admin.php:2349
-#: admin/galeries.admin.php:2466 admin/galeries.admin.php:2554
-#: admin/galeries.admin.php:2637 admin/galeries.admin.php:2777
-#: admin/galeries.admin.php:2816 admin/categories.admin.php:199
-#: admin/rss.admin.php:131 admin/xhtml/menu.inc.php:16
-msgid "Aide"
 msgstr ""
 
 #: admin/porte-documents.admin.php:2090
@@ -2128,311 +2584,569 @@ msgid ""
 "par un tiret."
 msgstr ""
 
-#: admin/commentaires.admin.php:3
-msgid "Commentaires et abonnements"
-msgstr ""
-
-#: admin/commentaires.admin.php:9
-msgid "Gestion des commentaires et des abonnements"
-msgstr ""
-
-#: admin/commentaires.admin.php:49 admin/commentaires.admin.php:56
-#: admin/commentaires.admin.php:61 admin/galeries.admin.php:215
-#: admin/categories.admin.php:59 admin/categories.admin.php:181
-#: admin/rss.admin.php:108
+#: admin/inc/fonctions.inc.php:126
 #, php-format
-msgid "Éditer «%1$s»"
+msgid "Modification des permissions de %1$s effectuée (de %2$s vers %3$s)."
 msgstr ""
 
-#: admin/commentaires.admin.php:52
+#: admin/inc/fonctions.inc.php:130
 #, php-format
-msgid "Page sélectionnée: %1$s"
+msgid "Modification des permissions de %1$s impossible (de %2$s vers %3$s)."
 msgstr ""
 
-#: admin/commentaires.admin.php:57
-#, php-format
-msgid "Fichier de configuration des commentaires associé: %1$s"
-msgstr ""
-
-#: admin/commentaires.admin.php:62
+#: admin/inc/fonctions.inc.php:135
 #, php-format
 msgid ""
-"Fichier de configuration des abonnements aux notifications associé: %1$s"
+"Modification des permissions de %1$s non nécessaire (demande de %2$s vers "
+"%3$s)."
 msgstr ""
 
-#: admin/commentaires.admin.php:66
-msgid "Aucune page sélectionnée."
-msgstr ""
-
-#: admin/commentaires.admin.php:89
+#: admin/inc/fonctions.inc.php:172 admin/inc/fonctions.inc.php:250
+#: admin/inc/fonctions.inc.php:2245
 #, php-format
-msgid "Le commentaire %1$s a été publié."
+msgid "Accès au dossier %1$s impossible."
 msgstr ""
 
-#: admin/commentaires.admin.php:115 admin/commentaires.admin.php:166
-#: admin/commentaires.admin.php:221
+#: admin/inc/fonctions.inc.php:207
 #, php-format
-msgid "Le commentaire %1$s n'a pas été trouvé."
+msgid "Copie de %1$s vers %2$s effectuée."
 msgstr ""
 
-#: admin/commentaires.admin.php:118
-msgid "Publication en ligne d'un commentaire"
-msgstr ""
-
-#: admin/commentaires.admin.php:140
+#: admin/inc/fonctions.inc.php:211
 #, php-format
-msgid "L'affichage du commentaire %1$s a été désactivé."
+msgid "Copie de %1$s vers %2$s impossible."
 msgstr ""
 
-#: admin/commentaires.admin.php:169
-msgid "Désactivation de l'affichage en ligne d'un commentaire"
-msgstr ""
-
-#: admin/commentaires.admin.php:195
+#: admin/inc/fonctions.inc.php:267
 #, php-format
-msgid "Le commentaire %1$s a été supprimé."
+msgid ""
+"Le fichier Sitemap ne peut être déclaré puisque %1$s n'existe pas, et sa "
+"création automatique a échoué. Veuillez créer ce fichier manuellement."
 msgstr ""
 
-#: admin/commentaires.admin.php:224
-msgid "Suppression d'un commentaire"
-msgstr ""
-
-#: admin/commentaires.admin.php:239
-msgid "Liste des commentaires en attente de modération"
-msgstr ""
-
-#: admin/commentaires.admin.php:304
+#: admin/inc/fonctions.inc.php:285
 #, php-format
-msgid "%1$s a écrit sur la page %2$s le %3$s à %4$s:"
+msgid "Le fichier Sitemap est déjà déclaré dans le fichier %1$s."
 msgstr ""
 
-#: admin/commentaires.admin.php:356
-msgid "Désactiver l'affichage sans le supprimer"
-msgstr ""
-
-#: admin/commentaires.admin.php:370
-msgid "Aucun commentaire en attente de modération."
-msgstr ""
-
-#: admin/commentaires.admin.php:375 admin/commentaires.admin.php:650
+#: admin/inc/fonctions.inc.php:295
 #, php-format
-msgid "Configuration actuelle (%1$s commentaire)"
-msgid_plural "Configuration actuelle (%1$s commentaires)"
+msgid "Déclaration du fichier Sitemap dans le fichier %1$s effectuée."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:298
+msgid "Voici le contenu qui a été enregistré dans le fichier:"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:302
+#, php-format
+msgid "Déclaration du fichier Sitemap dans le fichier %1$s impossible."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:304 admin/inc/fonctions.inc.php:558
+#: admin/inc/fonctions.inc.php:563 admin/inc/fonctions.inc.php:610
+#: admin/inc/fonctions.inc.php:615 admin/inc/fonctions.inc.php:660
+#: admin/inc/fonctions.inc.php:665 admin/inc/fonctions.inc.php:1694
+#: admin/inc/fonctions.inc.php:1699 admin/galeries.admin.php:1419
+#: admin/galeries.admin.php:1424 admin/galeries.admin.php:1596
+#: admin/galeries.admin.php:1601
+msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:311 admin/inc/fonctions.inc.php:570
+#: admin/inc/fonctions.inc.php:622 admin/inc/fonctions.inc.php:672
+#: admin/inc/fonctions.inc.php:1706 admin/galeries.admin.php:1431
+#: admin/galeries.admin.php:1608 admin/galeries.admin.php:1704
+msgid "Sélectionner le résultat."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:536
+#, php-format
+msgid ""
+"Aucun commentaire ne peut être enregistré puisque le fichier %1$s n'existe "
+"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
+"manuellement."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:540
+#, php-format
+msgid ""
+"Aucun abonnement ne peut être enregistré puisque le fichier %1$s n'existe "
+"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
+"manuellement."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:550 admin/inc/fonctions.inc.php:602
+#: admin/inc/fonctions.inc.php:652 admin/inc/fonctions.inc.php:1686
+#: admin/galeries.admin.php:1411 admin/galeries.admin.php:1588
+msgid "Les modifications ont été enregistrées."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:552 admin/inc/fonctions.inc.php:604
+#: admin/inc/fonctions.inc.php:654 admin/inc/fonctions.inc.php:1688
+#: admin/galeries.admin.php:1413 admin/galeries.admin.php:1590
+#, php-format
+msgid "Voici le contenu qui a été enregistré dans le fichier %1$s:"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:642
+#, php-format
+msgid ""
+"Aucune page ne peut faire partie du fichier Sitemap puisque %1$s n'existe "
+"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
+"manuellement."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:729
+#, php-format
+msgid "Erreur lors de l'extraction de l'archive %1$s: «%2$s»."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:734
+#, php-format
+msgid "Début de l'extraction de l'archive %1$s."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:743 admin/inc/fonctions.inc.php:768
+#, php-format
+msgid "Un fichier %1$s existe déjà. Il n'y a donc pas eu extraction."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:778
+#, php-format
+msgid "Erreur lors de l'extraction du fichier %1$s: «%2$s»."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:793
+#, php-format
+msgid "Ajout de %1$s effectué."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:819
+#, php-format
+msgid "Extraction de l'archive %1$s effectuée."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1000
+msgid "dossier"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1047
+#, php-format
+msgid "Aperçu de l'image %1$s"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1051
+msgid "Propriétés"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1052
+#, php-format
+msgid "<strong>Type MIME:</strong> %1$s"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1056
+#, php-format
+msgid "<strong>Taille:</strong> %1$s Kio (%2$s octet)"
+msgid_plural "<strong>Taille:</strong> %1$s Kio (%2$s octets)"
 msgstr[0] ""
 msgstr[1] ""
 
-#: admin/commentaires.admin.php:394
-msgid "Liste des commentaires"
-msgstr ""
-
-#: admin/commentaires.admin.php:414
+#: admin/inc/fonctions.inc.php:1060
 #, php-format
-msgid "Commentaire %1$s"
+msgid "<strong>Dimensions:</strong> %1$s"
 msgstr ""
 
-#: admin/commentaires.admin.php:497
-msgid "Activée"
+#: admin/inc/fonctions.inc.php:1065
+#, php-format
+msgid "<strong>Aperçu:</strong> %1$s"
 msgstr ""
 
-#: admin/commentaires.admin.php:505
-msgid "Désactivée"
+#: admin/inc/fonctions.inc.php:1068
+#, php-format
+msgid "<strong>Dernier accès:</strong> %1$s"
 msgstr ""
 
-#: admin/commentaires.admin.php:535
-msgid "(utiliser le formulaire réservé à cette fin)"
+#: admin/inc/fonctions.inc.php:1069
+#, php-format
+msgid "<strong>Dernière modification:</strong> %1$s"
 msgstr ""
 
-#: admin/commentaires.admin.php:552 admin/commentaires.admin.php:594
-msgid "Oui"
+#: admin/inc/fonctions.inc.php:1073
+#, php-format
+msgid "<strong>uid:</strong> %1$s"
 msgstr ""
 
-#: admin/commentaires.admin.php:560 admin/commentaires.admin.php:602
-msgid "Non"
+#: admin/inc/fonctions.inc.php:1078
+#, php-format
+msgid "<strong>gid:</strong> %1$s"
 msgstr ""
 
-#: admin/commentaires.admin.php:624 admin/commentaires.admin.php:733
-msgid "Lien vers «Enregistrer»"
+#: admin/inc/fonctions.inc.php:1082
+#, php-format
+msgid "<strong>Permissions:</strong> %1$s"
 msgstr ""
 
-#: admin/commentaires.admin.php:632
+#: admin/inc/fonctions.inc.php:1245 admin/inc/fonctions.inc.php:1249
+msgid "Éditer"
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1949
+msgid "Aucune erreur, le téléchargement est correct."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1953
+msgid ""
+"Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
+"configurée dans le <code>php.ini</code>."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1957
+msgid ""
+"Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
+"été spécifiée dans le formulaire HTML."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1961
+msgid "Le fichier n'a été que partiellement téléchargé."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1965
+msgid "Aucun fichier n'a été téléchargé."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1969
+msgid "Un dossier temporaire est manquant."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1973
+msgid "Échec de l'écriture du fichier sur le disque."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:1977
+msgid "L'envoi de fichier est arrêté par l'extension."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2148
+msgid "La réécriture d'URL est activée."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2153
+msgid "La réécriture d'URL n'est pas activée."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2159
+msgid "Impossible de déterminer si la réécriture d'URL est activée."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2181
+#, php-format
+msgid "Déplacement de %1$s vers %2$s effectué."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2185
+#, php-format
+msgid "Renommage de %1$s en %2$s effectué."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2192
+#, php-format
+msgid "Déplacement de %1$s vers %2$s impossible."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2196
+#, php-format
+msgid "Renommage de %1$s en %2$s impossible."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2208 admin/inc/fonctions.inc.php:2783
+#, php-format
+msgid "Suppression de %1$s effectuée."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2212 admin/inc/fonctions.inc.php:2787
+#, php-format
+msgid "Suppression de %1$s impossible."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2292
+#, php-format
+msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2300 admin/inc/fonctions.inc.php:2359
 #, php-format
 msgid ""
-"Pour désactiver l'affichage d'un commentaire, simplement définir à «Non» le "
-"paramètre %1$s associé."
+"Rotation automatique et sans perte de qualité effectuée par %1$s pour "
+"l'image %2$s."
 msgstr ""
 
-#: admin/commentaires.admin.php:634
-msgid ""
-"Pour supprimer un commentaire, simplement effacer tout le contenu du message "
-"associé."
-msgstr ""
-
-#: admin/commentaires.admin.php:636
-msgid "Pour supprimer une pièce jointe, effacer le contenu du champ associé."
-msgstr ""
-
-#: admin/commentaires.admin.php:638
-msgid ""
-"Prendre note que les modifications effectuées dans ce formulaire ne sont pas "
-"appliquées aux abonnements aux notifications (nom, courriel, état de la "
-"notification). Pour ce faire, utiliser plutôt le formulaire réservé à cette "
-"fin."
-msgstr ""
-
-#: admin/commentaires.admin.php:640
-msgid ""
-"Aussi, la liste des commentaires est triable. Pour ce faire, cliquer sur la "
-"flèche correspondant au commentaire à déplacer et glisser-la à l'endroit "
-"désiré à l'intérieur de la liste."
-msgstr ""
-
-#: admin/commentaires.admin.php:655
+#: admin/inc/fonctions.inc.php:2304 admin/inc/fonctions.inc.php:2368
 #, php-format
-msgid "La page %1$s ne contient aucun commentaire."
-msgstr ""
-
-#: admin/commentaires.admin.php:663
-msgid "Supprimer tous les commentaires de la page sélectionnée"
-msgstr ""
-
-#: admin/commentaires.admin.php:669 admin/commentaires.admin.php:783
-#: admin/categories.admin.php:358 admin/rss.admin.php:206
-msgid "Enregistrer les modifications"
-msgstr ""
-
-#: admin/commentaires.admin.php:690
-msgid "Liste des abonnements aux notifications des nouveaux commentaires"
-msgstr ""
-
-#: admin/commentaires.admin.php:711 admin/commentaires.admin.php:773
-#: compte.php:109 compte.php:150
-msgid "Courriel:"
-msgstr ""
-
-#: admin/commentaires.admin.php:742
 msgid ""
-"Pour supprimer un abonnement, simplement effacer le contenu du champ du "
-"courriel associé."
+"Rotation automatique et sans perte de qualité par %1$s impossible pour "
+"l'image %2$s. Vérifier l'état de l'image sur le serveur."
 msgstr ""
 
-#: admin/commentaires.admin.php:744
-msgid ""
-"Prendre note que les modifications effectuées dans ce formulaire ne sont pas "
-"appliquées au fichier de configuration des commentaires. Pour ce faire, "
-"utiliser plutôt le formulaire réservé à cette fin."
-msgstr ""
-
-#: admin/commentaires.admin.php:754
+#: admin/inc/fonctions.inc.php:2363 admin/inc/fonctions.inc.php:2440
 #, php-format
-msgid "Configuration actuelle (%1$s abonnement)"
-msgid_plural "Configuration actuelle (%1$s abonnements)"
-msgstr[0] ""
-msgstr[1] ""
-
-#: admin/commentaires.admin.php:759
-#, php-format
-msgid "La page %1$s ne contient aucun abonnement."
-msgstr ""
-
-#: admin/commentaires.admin.php:767
-msgid "Supprimer tous les abonnements de la page sélectionnée"
-msgstr ""
-
-#: admin/commentaires.admin.php:770
-msgid "Ajouter un abonnement"
-msgstr ""
-
-#: admin/commentaires.admin.php:806
-msgid "Enregistrement des modifications aux commentaires"
-msgstr ""
-
-#: admin/commentaires.admin.php:927
 msgid ""
-"Enregistrement des modifications aux abonnements aux notifications des "
-"nouveaux commentaires"
+"Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
+"l'image %2$s."
 msgstr ""
 
-#: admin/commentaires.admin.php:977 admin/inc/fonctions.inc.php:2559
+#: admin/inc/fonctions.inc.php:2372 admin/inc/fonctions.inc.php:2444
+#, php-format
+msgid ""
+"Suppression sans perte de qualité des données Exif par %1$s impossible pour "
+"l'image %2$s. Vérifier l'état de l'image sur le serveur."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2380
+#, php-format
+msgid ""
+"Votre environnement ne permet pas d'effectuer une rotation automatique et "
+"sans perte de qualité. La configuration nécessaire est soit un accès à "
+"l'exécutable %1$s, soit un accès à l'exécutable %2$s ainsi qu'à la fonction "
+"PHP %3$s."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2451
+#, php-format
+msgid ""
+"Votre environnement ne permet pas d'effectuer une suppression sans perte de "
+"qualité des données Exif. La configuration nécessaire est un accès à "
+"l'exécutable %1$s."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2512
+#, php-format
+msgid "Avertissement: l'adresse IP %1$s ne semble pas avoir une forme valide."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2528
+#, php-format
+msgid "Avertissement: la date %1$s ne semble pas avoir une forme valide."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2546
+#, php-format
+msgid ""
+"Avertissement: selon la configuration des commentaires, le nom est "
+"obligatoire, mais celui associé au commentaire %1$s est vide."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2559 admin/commentaires.admin.php:977
 #, php-format
 msgid "Avertissement: le courriel %1$s ne semble pas avoir une forme valide."
 msgstr ""
 
-#: admin/commentaires.admin.php:992
+#: admin/inc/fonctions.inc.php:2566
 #, php-format
 msgid ""
-"Avertissement: selon la configuration des commentaires, le nom est "
-"obligatoire, mais celui associé à l'abonnement du courriel %1$s est vide."
+"Avertissement: selon la configuration des commentaires, le courriel est "
+"obligatoire, mais celui associé au commentaire %1$s est vide."
 msgstr ""
 
-#: admin/commentaires.admin.php:1025
-msgid "L'ajout de commentaires est activé par défaut"
-msgstr ""
-
-#: admin/commentaires.admin.php:1027
-msgid "L'ajout de commentaires est désactivé par défaut"
-msgstr ""
-
-#: admin/commentaires.admin.php:1031
-msgid ""
-"L'affichage des commentaires existants est activé pour les pages dont "
-"l'ajout est désactivé"
-msgstr ""
-
-#: admin/commentaires.admin.php:1033
-msgid ""
-"L'affichage des commentaires existants est désactivé pour les pages dont "
-"l'ajout est désactivé"
-msgstr ""
-
-#: admin/commentaires.admin.php:1037
-msgid "La modération des commentaires est activée"
-msgstr ""
-
-#: admin/commentaires.admin.php:1039
-msgid "La modération des commentaires est désactivée"
-msgstr ""
-
-#: admin/commentaires.admin.php:1048
-msgid "Gérer les commentaires et les abonnements"
-msgstr ""
-
-#: admin/commentaires.admin.php:1054
-msgid "Seules les pages ayant au moins un commentaire sont listées."
-msgstr ""
-
-#: admin/commentaires.admin.php:1066
-msgid "Page individuelle"
-msgstr ""
-
-#: admin/commentaires.admin.php:1073
-msgid "URL de la page:"
-msgstr ""
-
-#: admin/commentaires.admin.php:1081
-msgid "Aucune page ayant au moins un commentaire."
-msgstr ""
-
-#: admin/commentaires.admin.php:1093
-msgid "Abonnements aux notifications des nouveaux commentaires"
-msgstr ""
-
-#: admin/commentaires.admin.php:1098
-msgid "Toutes les pages"
-msgstr ""
-
-#: admin/commentaires.admin.php:1107
+#: admin/inc/fonctions.inc.php:2579
 #, php-format
-msgid "Commentaires en attente de modération (%1$s commentaire)"
-msgid_plural "Commentaires en attente de modération (%1$s commentaires)"
-msgstr[0] ""
-msgstr[1] ""
-
-#: admin/commentaires.admin.php:1112
-msgid "Gérer"
+msgid "Avertissement: le site Web %1$s ne semble pas avoir une forme valide."
 msgstr ""
 
-#: admin/acces.admin.php:3 admin/xhtml/menu.inc.php:2
+#: admin/inc/fonctions.inc.php:2586
+#, php-format
+msgid ""
+"Avertissement: selon la configuration des commentaires, le site est "
+"obligatoire, mais celui associé au commentaire %1$s est vide."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2599
+#, php-format
+msgid "Avertissement: la pièce jointe %1$s n'existe pas sur le disque."
+msgstr ""
+
+#: admin/inc/fonctions.inc.php:2606
+#, php-format
+msgid ""
+"Avertissement: selon la configuration des commentaires, la pièce jointe est "
+"obligatoire, mais le commentaire %1$s n'en a pas."
+msgstr ""
+
+#: admin/inc/premier.inc.php:36
+msgid "Administration de Squeletml"
+msgstr ""
+
+#: admin/inc/premier.inc.php:97
+msgid "Piwik"
+msgstr ""
+
+#: admin/deconnexion.admin.php:3 admin/deconnexion.admin.php:10
+msgid "Déconnexion de la section d'administration"
+msgstr ""
+
+#: admin/deconnexion.admin.php:13
+msgid "Explications"
+msgstr ""
+
+#: admin/deconnexion.admin.php:16
+#, php-format
+msgid ""
+"Avant de se déconnecter de la section d'administration, il est important de "
+"bien comprendre la manière dont l'accès est géré. Squeletml utilise "
+"l'authentification basique <acronym %1$s>HTTP</acronym> offerte par Apache. "
+"Les informations de connexion sont gardées en mémoire par le navigateur, qui "
+"va automatiquement les envoyer au serveur lors de chaque visite d'une page à "
+"accès restreint."
+msgstr ""
+
+#: admin/deconnexion.admin.php:18
+#, php-format
+msgid ""
+"L'identifiant et le mot de passe sont donc gérés au niveau du client, et non "
+"au niveau du serveur. Il n'y a rien de prévu dans le protocole <acronym "
+"%1$s>HTTP</acronym>/1.1 pour permettre au serveur de forcer un navigateur à "
+"cesser une connexion déjà établie."
+msgstr ""
+
+#: admin/deconnexion.admin.php:20
+msgid "Ainsi, les seules méthodes de déconnexion tout à fait fiables sont:"
+msgstr ""
+
+#: admin/deconnexion.admin.php:23
+msgid "fermer toutes les instances ouvertes du navigateur;"
+msgstr ""
+
+#: admin/deconnexion.admin.php:24
+#, php-format
+msgid ""
+"utiliser une option de suppression des données de connexion en mémoire "
+"offerte par le navigateur, si une telle option existe. Par exemple, <span "
+"%1$s>Firefox</span> 3.5 permet de le faire facilement en allant dans "
+"<em>Outils > Supprimer l'historique récent...</em> et en cochant "
+"<em>Connexions actives</em> dans la section <em>Détails</em> avant de "
+"supprimer l'historique."
+msgstr ""
+
+#: admin/deconnexion.admin.php:27
+msgid ""
+"Cependant, il y a une astuce qui consiste à forcer une nouvelle connexion "
+"avec un identifiant bidon. Ainsi, les nouvelles informations de connexion en "
+"mémoire ne conviendront plus pour la section d'administration. Pour ce "
+"faire, cliquer sur le lien de déconnexion (si une fenêtre apparaît, saisir "
+"<code>deconnexion</code> comme utilisateur et laisser vide le champ pour le "
+"mot de passe). Après avoir effectué cette manoeuvre, il est important de "
+"vérifier que la connexion à l'administration a bien été désactivée (en "
+"visitant une page de l'administration, une fenêtre de connexion devrait vous "
+"inviter à vous identifier à nouveau)."
+msgstr ""
+
+#: admin/deconnexion.admin.php:29
+msgid "Liens utiles"
+msgstr ""
+
+#: admin/deconnexion.admin.php:32
+#, php-format
+msgid ""
+"Section <a href=\"%1$s\">«Accréditifs d'authentification et clients "
+"inactifs»</a> de la traduction en français de la <acronym %2$s>RFC</acronym> "
+"2616 (<em>Protocole de transfert Hypertexte -- <acronym %3$s>HTTP</"
+"acronym>/1.1</em>)."
+msgstr ""
+
+#: admin/deconnexion.admin.php:34
+#, php-format
+msgid ""
+"Le texte original de la même section de la <acronym %1$s>RFC</acronym> 2616: "
+"<a href=\"%2$s\" hreflang=\"en\" %3$s>«Authentication Credentials and Idle "
+"Clients»</a>."
+msgstr ""
+
+#: admin/deconnexion.admin.php:36
+#, php-format
+msgid ""
+"<a href=\"%1$s\" hreflang=\"en\">Section «<span %2$s>Frequently asked "
+"questions about basic auth</span>»</a> du document <em %3$s>Authentication, "
+"Authorization, and Access Control</em> (documentation Apache)."
+msgstr ""
+
+#: admin/deconnexion.admin.php:37
+#, php-format
+msgid ""
+"<a href=\"%1$s\">Authentification, autorisation et contrôle d'accès</a> "
+"(documentation Apache)."
+msgstr ""
+
+#: admin/deconnexion.admin.php:42
+msgid "Se déconnecter"
+msgstr ""
+
+#: admin/deconnexion.admin.php:44
+msgid "Lien de déconnexion"
+msgstr ""
+
+#: admin/xhtml/raccourcis.inc.php:4
+msgid "Créer un fichier"
+msgstr ""
+
+#: admin/xhtml/raccourcis.inc.php:6
+#, php-format
+msgid "Modifier le menu «%1$s»"
+msgstr ""
+
+#: admin/xhtml/raccourcis.inc.php:8
+msgid "Modifier les flux RSS globaux des pages"
+msgstr ""
+
+#: admin/xhtml/raccourcis.inc.php:10
+msgid "Modifier la configuration"
+msgstr ""
+
+#: admin/xhtml/raccourcis.inc.php:12
+msgid "Ajouter des images à une galerie"
+msgstr ""
+
+#: admin/xhtml/raccourcis.inc.php:14
+msgid "Sauvegarder le site"
+msgstr ""
+
+#: admin/xhtml/raccourcis.inc.php:16
+msgid "Mettre le site hors ligne"
+msgstr ""
+
+#: admin/xhtml/ancres.inc.php:2
+msgid "Aller au menu"
+msgstr ""
+
+#: admin/xhtml/ancres.inc.php:3
+msgid "Aller au contenu"
+msgstr ""
+
+#: admin/xhtml/lien-bas.inc.php:1
+msgid "Bas"
+msgstr ""
+
+#: admin/xhtml/menu.inc.php:2 admin/acces.admin.php:3
 msgid "Accès"
+msgstr ""
+
+#: admin/xhtml/menu.inc.php:14
+msgid "Sitemap"
+msgstr ""
+
+#: admin/xhtml/menu.inc.php:18
+msgid "Versions"
+msgstr ""
+
+#: admin/xhtml/menu.inc.php:20
+msgid "Site"
+msgstr ""
+
+#: admin/xhtml/menu.inc.php:22
+msgid "Déconnexion"
+msgstr ""
+
+#: admin/xhtml/menu.inc.php:26
+msgid "Raccourcis"
 msgstr ""
 
 #: admin/acces.admin.php:10 admin/galeries.admin.php:16
@@ -2723,405 +3437,6 @@ msgstr ""
 
 #: admin/acces.admin.php:798
 msgid "Télécharger une copie de sauvegarde du site."
-msgstr ""
-
-#: admin/inc/premier.inc.php:36
-msgid "Administration de Squeletml"
-msgstr ""
-
-#: admin/inc/premier.inc.php:97
-msgid "Piwik"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:126
-#, php-format
-msgid "Modification des permissions de %1$s effectuée (de %2$s vers %3$s)."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:130
-#, php-format
-msgid "Modification des permissions de %1$s impossible (de %2$s vers %3$s)."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:135
-#, php-format
-msgid ""
-"Modification des permissions de %1$s non nécessaire (demande de %2$s vers "
-"%3$s)."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:172 admin/inc/fonctions.inc.php:250
-#: admin/inc/fonctions.inc.php:2245
-#, php-format
-msgid "Accès au dossier %1$s impossible."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:207
-#, php-format
-msgid "Copie de %1$s vers %2$s effectuée."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:211
-#, php-format
-msgid "Copie de %1$s vers %2$s impossible."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:267
-#, php-format
-msgid ""
-"Le fichier Sitemap ne peut être déclaré puisque %1$s n'existe pas, et sa "
-"création automatique a échoué. Veuillez créer ce fichier manuellement."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:285
-#, php-format
-msgid "Le fichier Sitemap est déjà déclaré dans le fichier %1$s."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:295
-#, php-format
-msgid "Déclaration du fichier Sitemap dans le fichier %1$s effectuée."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:298
-msgid "Voici le contenu qui a été enregistré dans le fichier:"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:302
-#, php-format
-msgid "Déclaration du fichier Sitemap dans le fichier %1$s impossible."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:304 admin/inc/fonctions.inc.php:558
-#: admin/inc/fonctions.inc.php:563 admin/inc/fonctions.inc.php:610
-#: admin/inc/fonctions.inc.php:615 admin/inc/fonctions.inc.php:660
-#: admin/inc/fonctions.inc.php:665 admin/inc/fonctions.inc.php:1694
-#: admin/inc/fonctions.inc.php:1699 admin/galeries.admin.php:1419
-#: admin/galeries.admin.php:1424 admin/galeries.admin.php:1596
-#: admin/galeries.admin.php:1601
-msgid "Voici le contenu qui aurait été enregistré dans le fichier:"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:311 admin/inc/fonctions.inc.php:570
-#: admin/inc/fonctions.inc.php:622 admin/inc/fonctions.inc.php:672
-#: admin/inc/fonctions.inc.php:1706 admin/galeries.admin.php:1431
-#: admin/galeries.admin.php:1608 admin/galeries.admin.php:1704
-msgid "Sélectionner le résultat."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:536
-#, php-format
-msgid ""
-"Aucun commentaire ne peut être enregistré puisque le fichier %1$s n'existe "
-"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
-"manuellement."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:540
-#, php-format
-msgid ""
-"Aucun abonnement ne peut être enregistré puisque le fichier %1$s n'existe "
-"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
-"manuellement."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:550 admin/inc/fonctions.inc.php:602
-#: admin/inc/fonctions.inc.php:652 admin/inc/fonctions.inc.php:1686
-#: admin/galeries.admin.php:1411 admin/galeries.admin.php:1588
-msgid "Les modifications ont été enregistrées."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:552 admin/inc/fonctions.inc.php:604
-#: admin/inc/fonctions.inc.php:654 admin/inc/fonctions.inc.php:1688
-#: admin/galeries.admin.php:1413 admin/galeries.admin.php:1590
-#, php-format
-msgid "Voici le contenu qui a été enregistré dans le fichier %1$s:"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:592 admin/rss.admin.php:52
-#, php-format
-msgid ""
-"Aucune page ne peut faire partie du flux RSS des dernières publications "
-"puisque le fichier %1$s n'existe pas, et sa création automatique a échoué. "
-"Veuillez créer ce fichier manuellement."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:642
-#, php-format
-msgid ""
-"Aucune page ne peut faire partie du fichier Sitemap puisque %1$s n'existe "
-"pas, et sa création automatique a échoué. Veuillez créer ce fichier "
-"manuellement."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:729
-#, php-format
-msgid "Erreur lors de l'extraction de l'archive %1$s: «%2$s»."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:734
-#, php-format
-msgid "Début de l'extraction de l'archive %1$s."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:743 admin/inc/fonctions.inc.php:768
-#, php-format
-msgid "Un fichier %1$s existe déjà. Il n'y a donc pas eu extraction."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:778
-#, php-format
-msgid "Erreur lors de l'extraction du fichier %1$s: «%2$s»."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:793
-#, php-format
-msgid "Ajout de %1$s effectué."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:819
-#, php-format
-msgid "Extraction de l'archive %1$s effectuée."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1000
-msgid "dossier"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1047
-#, php-format
-msgid "Aperçu de l'image %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1051
-msgid "Propriétés"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1052
-#, php-format
-msgid "<strong>Type MIME:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1056
-#, php-format
-msgid "<strong>Taille:</strong> %1$s Kio (%2$s octet)"
-msgid_plural "<strong>Taille:</strong> %1$s Kio (%2$s octets)"
-msgstr[0] ""
-msgstr[1] ""
-
-#: admin/inc/fonctions.inc.php:1060
-#, php-format
-msgid "<strong>Dimensions:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1065
-#, php-format
-msgid "<strong>Aperçu:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1068
-#, php-format
-msgid "<strong>Dernier accès:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1069
-#, php-format
-msgid "<strong>Dernière modification:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1073
-#, php-format
-msgid "<strong>uid:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1078
-#, php-format
-msgid "<strong>gid:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1082
-#, php-format
-msgid "<strong>Permissions:</strong> %1$s"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1245 admin/inc/fonctions.inc.php:1249
-msgid "Éditer"
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1949
-msgid "Aucune erreur, le téléchargement est correct."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1953
-msgid ""
-"Le fichier téléchargé excède la taille de <code>upload_max_filesize</code>, "
-"configurée dans le <code>php.ini</code>."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1957
-msgid ""
-"Le fichier téléchargé excède la taille de <code>MAX_FILE_SIZE</code>, qui a "
-"été spécifiée dans le formulaire HTML."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1961
-msgid "Le fichier n'a été que partiellement téléchargé."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1965
-msgid "Aucun fichier n'a été téléchargé."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1969
-msgid "Un dossier temporaire est manquant."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1973
-msgid "Échec de l'écriture du fichier sur le disque."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:1977
-msgid "L'envoi de fichier est arrêté par l'extension."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2148
-msgid "La réécriture d'URL est activée."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2153
-msgid "La réécriture d'URL n'est pas activée."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2159
-msgid "Impossible de déterminer si la réécriture d'URL est activée."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2181
-#, php-format
-msgid "Déplacement de %1$s vers %2$s effectué."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2185
-#, php-format
-msgid "Renommage de %1$s en %2$s effectué."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2192
-#, php-format
-msgid "Déplacement de %1$s vers %2$s impossible."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2196
-#, php-format
-msgid "Renommage de %1$s en %2$s impossible."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2208 admin/inc/fonctions.inc.php:2783
-#, php-format
-msgid "Suppression de %1$s effectuée."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2212 admin/inc/fonctions.inc.php:2787
-#, php-format
-msgid "Suppression de %1$s impossible."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2292
-#, php-format
-msgid "Aucune rotation automatique à effectuer pour l'image %1$s."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2300 admin/inc/fonctions.inc.php:2359
-#, php-format
-msgid ""
-"Rotation automatique et sans perte de qualité effectuée par %1$s pour "
-"l'image %2$s."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2304 admin/inc/fonctions.inc.php:2368
-#, php-format
-msgid ""
-"Rotation automatique et sans perte de qualité par %1$s impossible pour "
-"l'image %2$s. Vérifier l'état de l'image sur le serveur."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2363 admin/inc/fonctions.inc.php:2440
-#, php-format
-msgid ""
-"Suppression sans perte de qualité des données Exif effectuée par %1$s pour "
-"l'image %2$s."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2372 admin/inc/fonctions.inc.php:2444
-#, php-format
-msgid ""
-"Suppression sans perte de qualité des données Exif par %1$s impossible pour "
-"l'image %2$s. Vérifier l'état de l'image sur le serveur."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2380
-#, php-format
-msgid ""
-"Votre environnement ne permet pas d'effectuer une rotation automatique et "
-"sans perte de qualité. La configuration nécessaire est soit un accès à "
-"l'exécutable %1$s, soit un accès à l'exécutable %2$s ainsi qu'à la fonction "
-"PHP %3$s."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2451
-#, php-format
-msgid ""
-"Votre environnement ne permet pas d'effectuer une suppression sans perte de "
-"qualité des données Exif. La configuration nécessaire est un accès à "
-"l'exécutable %1$s."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2512
-#, php-format
-msgid "Avertissement: l'adresse IP %1$s ne semble pas avoir une forme valide."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2528
-#, php-format
-msgid "Avertissement: la date %1$s ne semble pas avoir une forme valide."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2546
-#, php-format
-msgid ""
-"Avertissement: selon la configuration des commentaires, le nom est "
-"obligatoire, mais celui associé au commentaire %1$s est vide."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2566
-#, php-format
-msgid ""
-"Avertissement: selon la configuration des commentaires, le courriel est "
-"obligatoire, mais celui associé au commentaire %1$s est vide."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2579
-#, php-format
-msgid "Avertissement: le site Web %1$s ne semble pas avoir une forme valide."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2586
-#, php-format
-msgid ""
-"Avertissement: selon la configuration des commentaires, le site est "
-"obligatoire, mais celui associé au commentaire %1$s est vide."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2599
-#, php-format
-msgid "Avertissement: la pièce jointe %1$s n'existe pas sur le disque."
-msgstr ""
-
-#: admin/inc/fonctions.inc.php:2606
-#, php-format
-msgid ""
-"Avertissement: selon la configuration des commentaires, la pièce jointe est "
-"obligatoire, mais le commentaire %1$s n'en a pas."
 msgstr ""
 
 #: admin/galeries.admin.php:17
@@ -3560,20 +3875,6 @@ msgid ""
 "des galeries %2$s."
 msgstr ""
 
-#: admin/galeries.admin.php:2129 admin/categories.admin.php:595
-#, php-format
-msgid ""
-"La page web %1$s existe déjà. Vous pouvez <a href=\"%2$s\">éditer le "
-"fichier</a> ou <a href=\"%3$s\">visiter la page</a>."
-msgstr ""
-
-#: admin/galeries.admin.php:2143 admin/categories.admin.php:608
-#, php-format
-msgid ""
-"Création du modèle de page %1$s effectuée. Vous pouvez <a href=\"%2$s"
-"\">éditer le fichier</a> ou <a href=\"%3$s\">visiter la page</a>."
-msgstr ""
-
 #: admin/galeries.admin.php:2153
 #, php-format
 msgid ""
@@ -3627,15 +3928,6 @@ msgid ""
 "en adresse relative."
 msgstr ""
 
-#: admin/galeries.admin.php:2204 admin/rss.admin.php:149
-msgid "Voici un exemple:"
-msgstr ""
-
-#: admin/galeries.admin.php:2208 admin/categories.admin.php:235
-#: admin/rss.admin.php:153
-msgid "Le résultat sera semblable à ci-dessous:"
-msgstr ""
-
 #: admin/galeries.admin.php:2221
 #, php-format
 msgid ""
@@ -3665,16 +3957,6 @@ msgstr ""
 
 #: admin/galeries.admin.php:2243
 msgid "Si nouvelle galerie, RSS:"
-msgstr ""
-
-#: admin/galeries.admin.php:2245 admin/galeries.admin.php:2607
-#: admin/categories.admin.php:156 admin/categories.admin.php:324
-msgid "Activé"
-msgstr ""
-
-#: admin/galeries.admin.php:2246 admin/galeries.admin.php:2608
-#: admin/categories.admin.php:164 admin/categories.admin.php:325
-msgid "Désactivé"
 msgstr ""
 
 #: admin/galeries.admin.php:2249
@@ -4132,631 +4414,328 @@ msgid ""
 "<code>.zip</code>):"
 msgstr ""
 
-#: admin/categories.admin.php:8
-msgid "Gestion des catégories"
+#: admin/sitemap.admin.php:3 admin/sitemap.admin.php:61
+msgid "Fichiers Sitemap"
 msgstr ""
 
-#: admin/categories.admin.php:196
-msgid "Liste des pages classées par catégorie"
+#: admin/sitemap.admin.php:10
+msgid "Gestion des fichiers Sitemap"
 msgstr ""
 
-#: admin/categories.admin.php:202
+#: admin/sitemap.admin.php:22
+msgid "Ajout automatique des pages du site dans le fichier Sitemap"
+msgstr ""
+
+#: admin/sitemap.admin.php:34
+msgid ""
+"Vérification de la déclaration du fichier Sitemap dans le fichier "
+"<code>robots.txt</code>"
+msgstr ""
+
+#: admin/sitemap.admin.php:50
+msgid "L'ajout de pages par le cron dans le fichier Sitemap est activé"
+msgstr ""
+
+#: admin/sitemap.admin.php:52
+msgid "L'ajout de pages par le cron dans le fichier Sitemap n'est pas activé"
+msgstr ""
+
+#: admin/sitemap.admin.php:69
+msgid "Ajouter automatiquement les pages du site dans le fichier Sitemap"
+msgstr ""
+
+#: admin/sitemap.admin.php:71
+#, php-format
+msgid "Vérifier la déclaration du fichier Sitemap dans le fichier %1$s"
+msgstr ""
+
+#: admin/sitemap.admin.php:75
+msgid "Choisir"
+msgstr ""
+
+#: admin/commentaires.admin.php:3
+msgid "Commentaires et abonnements"
+msgstr ""
+
+#: admin/commentaires.admin.php:9
+msgid "Gestion des commentaires et des abonnements"
+msgstr ""
+
+#: admin/commentaires.admin.php:52
+#, php-format
+msgid "Page sélectionnée: %1$s"
+msgstr ""
+
+#: admin/commentaires.admin.php:57
+#, php-format
+msgid "Fichier de configuration des commentaires associé: %1$s"
+msgstr ""
+
+#: admin/commentaires.admin.php:62
 #, php-format
 msgid ""
-"Les pages sont classées par section représentant une catégorie. À "
-"l'intérieur d'une section, chaque page est déclarée sous la forme %1$s. "
-"Optionnellement, vous pouvez préciser la langue à laquelle appartient une "
-"catégorie, et ce à l'aide du paramètre %2$s. Vous pouvez également préciser "
-"l'URL relative de la page d'accueil de chaque catégorie à l'aide du "
-"paramètre %3$s ainsi que la catégorie parente, s'il y a lieu, grâce à %4$s. "
-"Voici un exemple:"
+"Fichier de configuration des abonnements aux notifications associé: %1$s"
 msgstr ""
 
-#: admin/categories.admin.php:202 admin/rss.admin.php:134
-msgid "URL relative de la page"
+#: admin/commentaires.admin.php:66
+msgid "Aucune page sélectionnée."
 msgstr ""
 
-#: admin/categories.admin.php:202
-msgid "langue à laquelle appartient la catégorie"
+#: admin/commentaires.admin.php:89
+#, php-format
+msgid "Le commentaire %1$s a été publié."
 msgstr ""
 
-#: admin/categories.admin.php:202
-msgid "URL relative de la page d'accueil de la catégorie"
+#: admin/commentaires.admin.php:115 admin/commentaires.admin.php:166
+#: admin/commentaires.admin.php:221
+#, php-format
+msgid "Le commentaire %1$s n'a pas été trouvé."
 msgstr ""
 
-#: admin/categories.admin.php:202
-msgid "identifiant de la catégorie parente"
+#: admin/commentaires.admin.php:118
+msgid "Publication en ligne d'un commentaire"
 msgstr ""
 
-#: admin/categories.admin.php:217
+#: admin/commentaires.admin.php:140
+#, php-format
+msgid "L'affichage du commentaire %1$s a été désactivé."
+msgstr ""
+
+#: admin/commentaires.admin.php:169
+msgid "Désactivation de l'affichage en ligne d'un commentaire"
+msgstr ""
+
+#: admin/commentaires.admin.php:195
+#, php-format
+msgid "Le commentaire %1$s a été supprimé."
+msgstr ""
+
+#: admin/commentaires.admin.php:224
+msgid "Suppression d'un commentaire"
+msgstr ""
+
+#: admin/commentaires.admin.php:239
+msgid "Liste des commentaires en attente de modération"
+msgstr ""
+
+#: admin/commentaires.admin.php:304
+#, php-format
+msgid "%1$s a écrit sur la page %2$s le %3$s à %4$s:"
+msgstr ""
+
+#: admin/commentaires.admin.php:356
+msgid "Désactiver l'affichage sans le supprimer"
+msgstr ""
+
+#: admin/commentaires.admin.php:370
+msgid "Aucun commentaire en attente de modération."
+msgstr ""
+
+#: admin/commentaires.admin.php:375 admin/commentaires.admin.php:650
+#, php-format
+msgid "Configuration actuelle (%1$s commentaire)"
+msgid_plural "Configuration actuelle (%1$s commentaires)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/commentaires.admin.php:394
+msgid "Liste des commentaires"
+msgstr ""
+
+#: admin/commentaires.admin.php:414
+#, php-format
+msgid "Commentaire %1$s"
+msgstr ""
+
+#: admin/commentaires.admin.php:497
+msgid "Activée"
+msgstr ""
+
+#: admin/commentaires.admin.php:505
+msgid "Désactivée"
+msgstr ""
+
+#: admin/commentaires.admin.php:535
+msgid "(utiliser le formulaire réservé à cette fin)"
+msgstr ""
+
+#: admin/commentaires.admin.php:552 admin/commentaires.admin.php:594
+msgid "Oui"
+msgstr ""
+
+#: admin/commentaires.admin.php:560 admin/commentaires.admin.php:602
+msgid "Non"
+msgstr ""
+
+#: admin/commentaires.admin.php:624 admin/commentaires.admin.php:733
+msgid "Lien vers «Enregistrer»"
+msgstr ""
+
+#: admin/commentaires.admin.php:632
 #, php-format
 msgid ""
-"Cet exemple fait référence à la catégorie en français «%1$s», accessible à "
-"l'adresse %2$s, enfant de la catégorie «%3$s» et contenant une page dont "
-"l'URL est %4$s."
+"Pour désactiver l'affichage d'un commentaire, simplement définir à «Non» le "
+"paramètre %1$s associé."
 msgstr ""
 
-#: admin/categories.admin.php:219
+#: admin/commentaires.admin.php:634
+msgid ""
+"Pour supprimer un commentaire, simplement effacer tout le contenu du message "
+"associé."
+msgstr ""
+
+#: admin/commentaires.admin.php:636
+msgid "Pour supprimer une pièce jointe, effacer le contenu du champ associé."
+msgstr ""
+
+#: admin/commentaires.admin.php:638
+msgid ""
+"Prendre note que les modifications effectuées dans ce formulaire ne sont pas "
+"appliquées aux abonnements aux notifications (nom, courriel, état de la "
+"notification). Pour ce faire, utiliser plutôt le formulaire réservé à cette "
+"fin."
+msgstr ""
+
+#: admin/commentaires.admin.php:640
+msgid ""
+"Aussi, la liste des commentaires est triable. Pour ce faire, cliquer sur la "
+"flèche correspondant au commentaire à déplacer et glisser-la à l'endroit "
+"désiré à l'intérieur de la liste."
+msgstr ""
+
+#: admin/commentaires.admin.php:655
+#, php-format
+msgid "La page %1$s ne contient aucun commentaire."
+msgstr ""
+
+#: admin/commentaires.admin.php:663
+msgid "Supprimer tous les commentaires de la page sélectionnée"
+msgstr ""
+
+#: admin/commentaires.admin.php:690
+msgid "Liste des abonnements aux notifications des nouveaux commentaires"
+msgstr ""
+
+#: admin/commentaires.admin.php:711 admin/commentaires.admin.php:773
+#: compte.php:109 compte.php:150
+msgid "Courriel:"
+msgstr ""
+
+#: admin/commentaires.admin.php:742
+msgid ""
+"Pour supprimer un abonnement, simplement effacer le contenu du champ du "
+"courriel associé."
+msgstr ""
+
+#: admin/commentaires.admin.php:744
+msgid ""
+"Prendre note que les modifications effectuées dans ce formulaire ne sont pas "
+"appliquées au fichier de configuration des commentaires. Pour ce faire, "
+"utiliser plutôt le formulaire réservé à cette fin."
+msgstr ""
+
+#: admin/commentaires.admin.php:754
+#, php-format
+msgid "Configuration actuelle (%1$s abonnement)"
+msgid_plural "Configuration actuelle (%1$s abonnements)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/commentaires.admin.php:759
+#, php-format
+msgid "La page %1$s ne contient aucun abonnement."
+msgstr ""
+
+#: admin/commentaires.admin.php:767
+msgid "Supprimer tous les abonnements de la page sélectionnée"
+msgstr ""
+
+#: admin/commentaires.admin.php:770
+msgid "Ajouter un abonnement"
+msgstr ""
+
+#: admin/commentaires.admin.php:806
+msgid "Enregistrement des modifications aux commentaires"
+msgstr ""
+
+#: admin/commentaires.admin.php:927
+msgid ""
+"Enregistrement des modifications aux abonnements aux notifications des "
+"nouveaux commentaires"
+msgstr ""
+
+#: admin/commentaires.admin.php:992
 #, php-format
 msgid ""
-"Si la langue d'une catégorie n'est pas précisée à l'aide du paramètre %1$s, "
-"la langue sera celle déclarée par défaut dans le fichier de configuration du "
-"site."
+"Avertissement: selon la configuration des commentaires, le nom est "
+"obligatoire, mais celui associé à l'abonnement du courriel %1$s est vide."
 msgstr ""
 
-#: admin/categories.admin.php:221
+#: admin/commentaires.admin.php:1025
+msgid "L'ajout de commentaires est activé par défaut"
+msgstr ""
+
+#: admin/commentaires.admin.php:1027
+msgid "L'ajout de commentaires est désactivé par défaut"
+msgstr ""
+
+#: admin/commentaires.admin.php:1031
+msgid ""
+"L'affichage des commentaires existants est activé pour les pages dont "
+"l'ajout est désactivé"
+msgstr ""
+
+#: admin/commentaires.admin.php:1033
+msgid ""
+"L'affichage des commentaires existants est désactivé pour les pages dont "
+"l'ajout est désactivé"
+msgstr ""
+
+#: admin/commentaires.admin.php:1037
+msgid "La modération des commentaires est activée"
+msgstr ""
+
+#: admin/commentaires.admin.php:1039
+msgid "La modération des commentaires est désactivée"
+msgstr ""
+
+#: admin/commentaires.admin.php:1048
+msgid "Gérer les commentaires et les abonnements"
+msgstr ""
+
+#: admin/commentaires.admin.php:1054
+msgid "Seules les pages ayant au moins un commentaire sont listées."
+msgstr ""
+
+#: admin/commentaires.admin.php:1066
+msgid "Page individuelle"
+msgstr ""
+
+#: admin/commentaires.admin.php:1073
+msgid "URL de la page:"
+msgstr ""
+
+#: admin/commentaires.admin.php:1081
+msgid "Aucune page ayant au moins un commentaire."
+msgstr ""
+
+#: admin/commentaires.admin.php:1093
+msgid "Abonnements aux notifications des nouveaux commentaires"
+msgstr ""
+
+#: admin/commentaires.admin.php:1098
+msgid "Toutes les pages"
+msgstr ""
+
+#: admin/commentaires.admin.php:1107
 #, php-format
-msgid ""
-"Aussi, si la page d'accueil d'une catégorie n'est pas précisée à l'aide du "
-"paramètre %1$s, l'URL sera générée automatiquement, et ce sous la forme %2$s "
-"(%3$s représente la variable %4$s filtrée). Dans ce cas, il n'est pas "
-"nécessaire de créer la page d'accueil manuellement puisque %5$s est une page "
-"livrée par défaut avec Squeletml et gérant l'affichage des articles d'une "
-"catégorie."
-msgstr ""
-
-#: admin/categories.admin.php:223 admin/rss.admin.php:145
-msgid "Pour enlever une page, simplement supprimer le contenu du champ."
-msgstr ""
-
-#: admin/categories.admin.php:225 admin/rss.admin.php:147
-msgid ""
-"Prendre note que si une URL contient des caractères spéciaux, elle devra "
-"être fournie sous forme encodée. Le plus simple est de copier l'adresse dans "
-"la barre de navigation du navigateur utilisé et de coller le résultat dans "
-"le champ approprié. L'URL racine sera automatiquement supprimée pour "
-"convertir l'adresse fournie en adresse relative."
-msgstr ""
-
-#: admin/categories.admin.php:227
-msgid "Voici un exemple pour l'URL d'une nouvelle catégorie:"
-msgstr ""
-
-#: admin/categories.admin.php:231
-msgid "et pour une nouvelle page dans cette catégorie:"
-msgstr ""
-
-#: admin/categories.admin.php:250 admin/rss.admin.php:157
-msgid ""
-"Aussi, chaque ligne est triable. Pour ce faire, cliquer sur la flèche "
-"correspondant à la ligne à déplacer et glisser-la à l'endroit désiré à "
-"l'intérieur de la liste."
-msgstr ""
-
-#: admin/categories.admin.php:262 admin/rss.admin.php:169
-msgid "Le fichier est vide. Aucune page n'y est listée."
-msgstr ""
-
-#: admin/categories.admin.php:274 admin/rss.admin.php:181
-msgid "Ajouter une page"
-msgstr ""
-
-#: admin/categories.admin.php:276
-msgid ""
-"Il est possible d'ajouter une page à plus d'une catégorie. Il est aussi "
-"possible de créer une catégorie. Pour ce faire, ajouter «Nouvelle catégorie» "
-"à votre sélection et saisir le nom dans le champ. Pour créer plus d'une "
-"catégorie, séparer les noms par un carré (exemple: <code>animaux#chiens</"
-"code>)."
-msgstr ""
-
-#: admin/categories.admin.php:297
-msgid "Nouvelle catégorie"
-msgstr ""
-
-#: admin/categories.admin.php:300
-msgid ""
-"Si nouvelle catégorie, URL de la page Web (laisser vide pour génération "
-"automatique; si plusieurs catégories sont créées, il y aura génération "
-"automatique):"
-msgstr ""
-
-#: admin/categories.admin.php:320
-msgid "Si nouvelle catégorie, langue:"
-msgstr ""
-
-#: admin/categories.admin.php:322
-msgid "Si nouvelle catégorie, RSS:"
-msgstr ""
-
-#: admin/categories.admin.php:331
-msgid "Options d'ajout"
-msgstr ""
-
-#: admin/categories.admin.php:735
-msgid "Lister les pages classées par catégorie."
-msgstr ""
-
-#: admin/versions.admin.php:3 admin/versions.admin.php:63
-msgid "Version de Squeletml et autres informations"
-msgstr ""
-
-#: admin/versions.admin.php:11 admin/versions.admin.php:50
-#, php-format
-msgid "Version de Squeletml: %1$s"
-msgstr ""
-
-#: admin/versions.admin.php:32
-#, php-format
-msgid "(<a href=\"%1$s\"><strong>la version %2$s est disponible</strong></a>)"
-msgstr ""
-
-#: admin/versions.admin.php:36
-msgid "(il s'agit de la dernière version publiée)"
-msgstr ""
-
-#: admin/versions.admin.php:40 admin/versions.admin.php:45
-#, php-format
-msgid ""
-"(impossible de vérifier si une version plus récente a été publiée; <a href="
-"\"%1$s\">vérifier manuellement</a>)"
-msgstr ""
-
-#: admin/versions.admin.php:50
-msgid "impossible de déterminer la version"
-msgstr ""
-
-#: admin/versions.admin.php:55
-msgid "La bibliothèque GD est installée."
-msgstr ""
-
-#: admin/versions.admin.php:59
-msgid "La bibliothèque GD n'est pas installée."
-msgstr ""
-
-#: admin/versions.admin.php:65
-msgid "Aperçu"
-msgstr ""
-
-#: admin/versions.admin.php:69
-#, php-format
-msgid "Version de PHP: %1$s"
-msgstr ""
-
-#: admin/versions.admin.php:70
-#, php-format
-msgid "Version d'Apache: %1$s"
-msgstr ""
-
-#: admin/versions.admin.php:73
-#, php-format
-msgid "Système d'exploitation: %1$s"
-msgstr ""
-
-#: admin/versions.admin.php:77
-msgid "Afficher le <code>phpinfo()</code>"
-msgstr ""
-
-#: admin/versions.admin.php:78
-msgid "Afficher la liste des fonctions internes de PHP"
-msgstr ""
-
-#: admin/versions.admin.php:82
-msgid "Fonctions internes de PHP"
-msgstr ""
-
-#: admin/versions.admin.php:88
-#, php-format
-msgid ""
-"Il y a %1$s fonctions internes réparties entre %2$s modules. En voici la "
-"liste:"
-msgstr ""
-
-#: admin/deconnexion.admin.php:3 admin/deconnexion.admin.php:10
-msgid "Déconnexion de la section d'administration"
-msgstr ""
-
-#: admin/deconnexion.admin.php:13
-msgid "Explications"
-msgstr ""
-
-#: admin/deconnexion.admin.php:16
-#, php-format
-msgid ""
-"Avant de se déconnecter de la section d'administration, il est important de "
-"bien comprendre la manière dont l'accès est géré. Squeletml utilise "
-"l'authentification basique <acronym %1$s>HTTP</acronym> offerte par Apache. "
-"Les informations de connexion sont gardées en mémoire par le navigateur, qui "
-"va automatiquement les envoyer au serveur lors de chaque visite d'une page à "
-"accès restreint."
-msgstr ""
-
-#: admin/deconnexion.admin.php:18
-#, php-format
-msgid ""
-"L'identifiant et le mot de passe sont donc gérés au niveau du client, et non "
-"au niveau du serveur. Il n'y a rien de prévu dans le protocole <acronym "
-"%1$s>HTTP</acronym>/1.1 pour permettre au serveur de forcer un navigateur à "
-"cesser une connexion déjà établie."
-msgstr ""
-
-#: admin/deconnexion.admin.php:20
-msgid "Ainsi, les seules méthodes de déconnexion tout à fait fiables sont:"
-msgstr ""
-
-#: admin/deconnexion.admin.php:23
-msgid "fermer toutes les instances ouvertes du navigateur;"
-msgstr ""
-
-#: admin/deconnexion.admin.php:24
-#, php-format
-msgid ""
-"utiliser une option de suppression des données de connexion en mémoire "
-"offerte par le navigateur, si une telle option existe. Par exemple, <span "
-"%1$s>Firefox</span> 3.5 permet de le faire facilement en allant dans "
-"<em>Outils > Supprimer l'historique récent...</em> et en cochant "
-"<em>Connexions actives</em> dans la section <em>Détails</em> avant de "
-"supprimer l'historique."
-msgstr ""
-
-#: admin/deconnexion.admin.php:27
-msgid ""
-"Cependant, il y a une astuce qui consiste à forcer une nouvelle connexion "
-"avec un identifiant bidon. Ainsi, les nouvelles informations de connexion en "
-"mémoire ne conviendront plus pour la section d'administration. Pour ce "
-"faire, cliquer sur le lien de déconnexion (si une fenêtre apparaît, saisir "
-"<code>deconnexion</code> comme utilisateur et laisser vide le champ pour le "
-"mot de passe). Après avoir effectué cette manoeuvre, il est important de "
-"vérifier que la connexion à l'administration a bien été désactivée (en "
-"visitant une page de l'administration, une fenêtre de connexion devrait vous "
-"inviter à vous identifier à nouveau)."
-msgstr ""
-
-#: admin/deconnexion.admin.php:29
-msgid "Liens utiles"
-msgstr ""
-
-#: admin/deconnexion.admin.php:32
-#, php-format
-msgid ""
-"Section <a href=\"%1$s\">«Accréditifs d'authentification et clients "
-"inactifs»</a> de la traduction en français de la <acronym %2$s>RFC</acronym> "
-"2616 (<em>Protocole de transfert Hypertexte -- <acronym %3$s>HTTP</"
-"acronym>/1.1</em>)."
-msgstr ""
-
-#: admin/deconnexion.admin.php:34
-#, php-format
-msgid ""
-"Le texte original de la même section de la <acronym %1$s>RFC</acronym> 2616: "
-"<a href=\"%2$s\" hreflang=\"en\" %3$s>«Authentication Credentials and Idle "
-"Clients»</a>."
-msgstr ""
-
-#: admin/deconnexion.admin.php:36
-#, php-format
-msgid ""
-"<a href=\"%1$s\" hreflang=\"en\">Section «<span %2$s>Frequently asked "
-"questions about basic auth</span>»</a> du document <em %3$s>Authentication, "
-"Authorization, and Access Control</em> (documentation Apache)."
-msgstr ""
-
-#: admin/deconnexion.admin.php:37
-#, php-format
-msgid ""
-"<a href=\"%1$s\">Authentification, autorisation et contrôle d'accès</a> "
-"(documentation Apache)."
-msgstr ""
-
-#: admin/deconnexion.admin.php:42
-msgid "Se déconnecter"
-msgstr ""
-
-#: admin/deconnexion.admin.php:44
-msgid "Lien de déconnexion"
-msgstr ""
-
-#: admin/rss.admin.php:3
-msgid "Flux RSS globaux"
-msgstr ""
-
-#: admin/rss.admin.php:9
-msgid "Gestion des flux RSS globaux"
-msgstr ""
-
-#: admin/rss.admin.php:29
-msgid "Liste des pages du flux RSS des derniers ajouts aux galeries"
-msgstr ""
-
-#: admin/rss.admin.php:32
-#, php-format
-msgid ""
-"Cette liste est générée à partir des galeries dont le flux RSS est activé "
-"dans le <a href=\"%1$s\">fichier de configuration des galeries</a>."
-msgstr ""
-
-#: admin/rss.admin.php:128
-msgid "Liste des pages du flux RSS des dernières publications"
-msgstr ""
-
-#: admin/rss.admin.php:134
-#, php-format
-msgid ""
-"Les pages sont classées par section représentant la langue. À l'intérieur "
-"d'une section, chaque ligne est sous la forme %1$s. Voici un exemple:"
-msgstr ""
-
-#: admin/rss.admin.php:143
-#, php-format
-msgid "Cet exemple fait référence à une page en français dont l'URL est %1$s."
-msgstr ""
-
-#: admin/rss.admin.php:224
-msgid "Enregistrement des modifications pour les pages du site"
-msgstr ""
-
-#: admin/rss.admin.php:315
-msgid "Le flux RSS des dernières publications est activé"
-msgstr ""
-
-#: admin/rss.admin.php:317
-msgid "Le flux RSS des dernières publications n'est pas activé"
-msgstr ""
-
-#: admin/rss.admin.php:321
-msgid "Le flux RSS des derniers ajouts aux galeries est activé"
-msgstr ""
-
-#: admin/rss.admin.php:323
-msgid "Le flux RSS des derniers ajouts aux galeries n'est pas activé"
-msgstr ""
-
-#: admin/rss.admin.php:332
-msgid "Pages ajoutées aux flux RSS globaux"
-msgstr ""
-
-#: admin/rss.admin.php:345
-msgid "Lister les pages"
-msgstr ""
-
-#: admin/xhtml/lien-bas.inc.php:1
-msgid "Bas"
-msgstr ""
-
-#: admin/xhtml/menu.inc.php:14
-msgid "Sitemap"
-msgstr ""
-
-#: admin/xhtml/menu.inc.php:18
-msgid "Versions"
-msgstr ""
-
-#: admin/xhtml/menu.inc.php:20
-msgid "Site"
-msgstr ""
-
-#: admin/xhtml/menu.inc.php:22
-msgid "Déconnexion"
-msgstr ""
-
-#: admin/xhtml/menu.inc.php:26
-msgid "Raccourcis"
-msgstr ""
-
-#: admin/xhtml/ancres.inc.php:2
-msgid "Aller au menu"
-msgstr ""
-
-#: admin/xhtml/ancres.inc.php:3
-msgid "Aller au contenu"
-msgstr ""
-
-#: admin/xhtml/raccourcis.inc.php:4
-msgid "Créer un fichier"
-msgstr ""
-
-#: admin/xhtml/raccourcis.inc.php:6
-#, php-format
-msgid "Modifier le menu «%1$s»"
-msgstr ""
-
-#: admin/xhtml/raccourcis.inc.php:8
-msgid "Modifier les flux RSS globaux des pages"
-msgstr ""
-
-#: admin/xhtml/raccourcis.inc.php:10
-msgid "Modifier la configuration"
-msgstr ""
-
-#: admin/xhtml/raccourcis.inc.php:12
-msgid "Ajouter des images à une galerie"
-msgstr ""
-
-#: admin/xhtml/raccourcis.inc.php:14
-msgid "Sauvegarder le site"
-msgstr ""
-
-#: admin/xhtml/raccourcis.inc.php:16
-msgid "Mettre le site hors ligne"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:3
-msgid "Votre nom:"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:11 xhtml/form-commentaire.inc.php:30
-msgid "Votre courriel:"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:15
-msgid "Les courriels des destinataires:"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:16
-msgid ""
-"Pour envoyer le message à plus d'une personne, veuillez séparer les adresses "
-"par une virgule."
-msgstr ""
-
-#: xhtml/form-contact.inc.php:19
-msgid "Modèle du message qui sera envoyé aux destinataires:"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:25
-msgid ""
-"Optionnellement, vous pouvez ajouter ci-dessous un petit mot personnalisé:"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:28
-msgid "Votre message:"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:50
-msgid "Je souhaite recevoir une copie du message"
-msgstr ""
-
-#: xhtml/form-contact.inc.php:58
-msgid "Envoyer le message"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:5
-msgid "Tous les champs sont obligatoires."
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:7
-msgid "Les champs obligatoires sont marqués d'un astérisque (<code>*</code>)."
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:15
-msgid "Votre nom ou pseudo<code>*</code>:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:17
-msgid "Votre nom ou pseudo:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:28
-msgid "Votre courriel<code>*</code>:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:33
-msgid "Le courriel ne sera pas divulgué."
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:42
-msgid "Votre site Web<code>*</code>:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:44
-msgid "Votre site Web:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:51
-msgid "Votre commentaire<code>*</code>:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:55
-msgid "Aide au sujet de la syntaxe"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:58
-#, php-format
-msgid "La <a href=\"%1$s\">syntaxe Markdown</a> peut être utilisée."
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:59
-#, php-format
-msgid "Les balises HTML suivantes sont permises: %1$s."
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:67
-msgid "Pièce jointe<code>*</code>:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:69
-msgid "Pièce jointe:"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:76
-msgid "Aide au sujet de la pièce jointe"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:79
-#, php-format
-msgid "Taille maximale: %1$s Mio (%2$s octets)"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:80
-msgid "Types de fichier permis: "
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:83
-msgid "Le lien vers la pièce jointe n'est pas affiché publiquement."
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:103
-msgid ""
-"Je souhaite être notifié par courriel des nouveaux commentaires sur cette "
-"page"
-msgstr ""
-
-#: xhtml/form-commentaire.inc.php:108
-msgid "Envoyer le commentaire"
-msgstr ""
-
-#: xhtml/message-accueil-par-defaut.inc.php:2
-msgid "Bienvenue sur votre site Squeletml"
-msgstr ""
-
-#: xhtml/message-accueil-par-defaut.inc.php:4
-msgid ""
-"<p>Le logiciel libre Squeletml est un système de gestion de contenu sans "
-"base de données, utilisant un squelette de site valide XHTML 1.0 Strict et "
-"géré par inclusion de fichiers PHP, c'est-à-dire un site dont le corps de "
-"chaque page se trouve dans un fichier unique et dont les principaux éléments "
-"de structuration comme l'en-tête, le bas de page, etc. sont partagés entre "
-"toutes les pages. Il a pour but d'optimiser la création et la maintenance de "
-"ce genre de site.</p>"
-msgstr ""
-
-#: xhtml/message-accueil-par-defaut.inc.php:6
-msgid ""
-"<p>En effet, seulement deux fichiers doivent être inclus dans chaque page "
-"(un au début et un à la fin), peu importe le type de page (galerie, "
-"catégorie, formulaire de contact, etc.), et ces derniers fournissent une "
-"structure de site personnalisée et traduite dans la langue de la page (si "
-"disponible). Chaque page peut facilement avoir ses propres informations: "
-"langue, balise <code>title</code>, métabalises, feuilles de style, scripts "
-"Javascript, titre de premier niveau (<code>h1</code>), licence, table des "
-"matières, etc. L'en-tête personnalisée permet d'offrir de meilleurs repères "
-"aux internautes, d'éviter le contenu dupliqué dans les moteurs de recherche "
-"et d'avoir un site optimisé pour le référencement.</p>"
-msgstr ""
-
-#: xhtml/message-accueil-par-defaut.inc.php:8
-msgid ""
-"<p>Aussi, un fichier de configuration permet de paramétrer, par simple "
-"affectation de variables, le flux HTML ainsi que plusieurs aspects visuels "
-"sans devoir bidouiller dans les feuilles de style CSS, la structure de page "
-"XHTML ou la programmation PHP. Bien sûr, il est également possible "
-"d'utiliser ses propres styles ou structure de page.</p>"
-msgstr ""
-
-#: xhtml/message-accueil-par-defaut.inc.php:10
-msgid ""
-"<p>Enfin, Squeletml fournit plusieurs modules prêts à l'emploi: formulaires "
-"de contact, galeries photo, classement par catégories, flux RSS, "
-"commentaires avec notification, partage de la page par courriel ou par "
-"marque-pages et réseaux sociaux, cron, fichiers Sitemap, interface "
-"d'administration reproduisant les principales actions normalement effectuées "
-"par FTP, etc. Un site Squeletml peut être géré autant par l'interface "
-"graphique de l'administration que par un  simple éditeur de texte. Le tout "
-"peut facilement être traduit puisque Squeletml utilise PHP Gettext pour "
-"l'affichage de l'interface.</p>"
-msgstr ""
-
-#: xhtml/message-accueil-par-defaut.inc.php:12
-msgid ""
-"<p>Le fonctionnement de Squeletml est indéniablement inspiré de systèmes de "
-"gestion de contenu comme <a href=\"http://www.drupalfr.org/\">Drupal</a>.</p>"
-msgstr ""
-
-#: xhtml/message-accueil-par-defaut.inc.php:14
-#, php-format
-msgid ""
-"Apprenez-en plus sur les fonctionnalités de Squeletml, et commencez à "
-"personnaliser votre installation, <a href=\"%1$s\">en visitant la "
-"documentation</a>."
+msgid "Commentaires en attente de modération (%1$s commentaire)"
+msgid_plural "Commentaires en attente de modération (%1$s commentaires)"
+msgstr[0] ""
+msgstr[1] ""
+
+#: admin/commentaires.admin.php:1112
+msgid "Gérer"
 msgstr ""
 
 #: compte.php:97
@@ -4788,4 +4767,24 @@ msgstr ""
 
 #: compte.php:165
 msgid "Demander la création d'un compte"
+msgstr ""
+
+#: deconnexion.php:15
+msgid ""
+"Pour vous assurer de la déconnexion, visitez l'accueil de la section "
+"d'administration. Si une fenêtre de connexion vous demande de vous "
+"identifier, la déconnexion a été effectuée avec succès."
+msgstr ""
+
+#: desabonnement.php:59
+#, php-format
+msgid "Le désabonnement a été effectué pour le courriel %1$s à l'adresse %2$s."
+msgstr ""
+
+#: desabonnement.php:63
+msgid ""
+"Le désabonnement n'a pu être effectué. Veuillez vérifier votre URL de "
+"désabonnement dans le courriel de notification reçu. Si le problème "
+"persiste, vous pouvez faire la demande de désabonnement par le formulaire de "
+"contact du site."
 msgstr ""
