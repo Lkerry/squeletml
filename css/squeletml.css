@@ -660,7 +660,7 @@ li.parent {
 	-moz-box-shadow: 0px 1px 2px #cccccc; /* Gecko. */
 	-webkit-box-shadow: 0px 1px 2px #cccccc; /* Webkit. */
 }
-inputPieceJointe
+
 .blocAvecFond > p:first-child, .blocAvecFond > ul:first-child, .blocAvecFond > ul:first-child > li:first-child {
 	margin-top: 0px;
 }
